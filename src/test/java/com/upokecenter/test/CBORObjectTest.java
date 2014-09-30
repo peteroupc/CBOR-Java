@@ -2077,15 +2077,13 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           0x75,
                                 0, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
-  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x74, 0, 0x72, 0, 0x75, 0, 0x65
-         });
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x74, 0, 0x72, 0, 0x75, 0, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
       msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x74, 0, 0x72, 0, 0x75,
           0,
                                 0x65, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
-  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0, 0x72, 0, 0x75, 0, 0x65, 0
-         });
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0, 0x72, 0, 0x75, 0, 0x65, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x74, 0x72, 0x75,
   0x65  });
@@ -2110,14 +2108,12 @@ msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, 0, 0, 0, 1, 0
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x22, (byte)0xd8, 0,
           (byte)0xdc, 0, 0, 0x22  });
         Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
-  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x22, (byte)0xd8, 0, (byte)0xdc, 0, 0, 0x22
-         });
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x22, (byte)0xd8, 0, (byte)0xdc, 0, 0, 0x22  });
         Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x22, 0, 0, (byte)0xd8, 0,
           (byte)0xdc, 0x22, 0  });
         Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
-  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, (byte)0xd8, 0, (byte)0xdc, 0x22, 0
-         });
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, (byte)0xd8, 0, (byte)0xdc, 0x22, 0  });
         Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0, 0x22,
           0, 0, (byte)0xd8, 0, 0, 0, 0,
@@ -2192,8 +2188,7 @@ Assert.fail("Should have failed");
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, (byte)0xdc, 0, (byte)0xdc, 0x22, 0
-         });
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, (byte)0xdc, 0, (byte)0xdc, 0x22, 0  });
         try {
  CBORObject.ReadJSON(msjson);
 Assert.fail("Should have failed");
