@@ -2309,6 +2309,9 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals(
         "\"\u2027\\u2028\\u2029\u202a\"" ,
         CBORObject.FromObject("\u2027\u2028\u2029\u202a").ToJSONString());
+      Assert.assertEquals(
+        "\"\\u0085\\uFEFF\\uFFFE\\uFFFF\"" ,
+        CBORObject.FromObject("\u0085\ufeff\ufffe\uffff").ToJSONString());
       Assert.assertEquals("true", CBORObject.True.ToJSONString());
       Assert.assertEquals("false", CBORObject.False.ToJSONString());
       Assert.assertEquals("null", CBORObject.Null.ToJSONString());
