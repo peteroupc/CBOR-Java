@@ -1,5 +1,6 @@
 package com.upokecenter.test;
 
+import java.util.*;
 import java.io.*;
 
 import org.junit.Assert;
@@ -7,6 +8,60 @@ import org.junit.Test;
 import com.upokecenter.util.*;
 
   public class DataUtilitiesTest {
+    public static List<byte[]> GenerateIllegalUtf8Sequences() {
+      ArrayList<byte[]> list = new ArrayList<byte[]>();
+      // Generate illegal single bytes
+      for (int i = 0x80; i <= 0xff; ++i) {
+        if (i < 0xc2 || i > 0xf4) {
+          list.add(new byte[] { (byte)i, (byte)0x80  });
+        }
+        list.add(new byte[] { (byte)i  });
+      }
+      list.add(new byte[] { (byte)0xe0, (byte)0xa0  });
+      list.add(new byte[] { (byte)0xe1, (byte)0x80  });
+      list.add(new byte[] { (byte)0xef, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf0, (byte)0x90  });
+      list.add(new byte[] { (byte)0xf1, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf3, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf4, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80  });
+      list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80  });
+      // Generate illegal multibyte sequences
+      for (int i = 0x00; i <= 0xff; ++i) {
+        if (i < 0x80 || i > 0xbf) {
+          list.add(new byte[] { (byte)0xc2, (byte)i  });
+          list.add(new byte[] { (byte)0xdf, (byte)i  });
+          list.add(new byte[] { (byte)0xe1, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xef, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf1, (byte)i, (byte)0x80, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf3, (byte)i, (byte)0x80, (byte)0x80  });
+          list.add(new byte[] { (byte)0xe0, (byte)0xa0, (byte)i  });
+          list.add(new byte[] { (byte)0xe1, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xef, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80, (byte)i  });
+        }
+        if (i < 0xa0 || i > 0xbf) {
+          list.add(new byte[] { (byte)0xe0, (byte)i, (byte)0x80  });
+        }
+        if (i < 0x90 || i > 0xbf) {
+          list.add(new byte[] { (byte)0xf0, (byte)i, (byte)0x80, (byte)0x80  });
+        }
+        if (i < 0x80 || i > 0x8f) {
+          list.add(new byte[] { (byte)0xf4, (byte)i, (byte)0x80, (byte)0x80  });
+        }
+      }
+      return list;
+    }
+
     @Test
     public void TestCodePointAt() {
       try {
@@ -40,7 +95,7 @@ import com.upokecenter.util.*;
         ((DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1)));
       Assert.assertEquals(
         0,
-   ((DataUtilities.CodePointCompare("\ud800\udc00" , "\ud800\udc00"
+        ((DataUtilities.CodePointCompare("\ud800\udc00" , "\ud800\udc00"
 )==0) ? 0 : ((DataUtilities.CodePointCompare("\ud800\udc00" , "\ud800\udc00"
 )< 0) ? -1 : 1)));
       Assert.assertEquals(
@@ -180,6 +235,31 @@ import com.upokecenter.util.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      List<byte[]> illegalSeqs = GenerateIllegalUtf8Sequences();
+      for (byte[] seq : illegalSeqs) {
+        try {
+          DataUtilities.GetUtf8String(seq, false);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        String strret = DataUtilities.GetUtf8String(seq, true);
+        if (!(strret.length() > 0))Assert.fail();
+        Assert.assertEquals('\ufffd', strret.charAt(0));
+        try {
+          DataUtilities.GetUtf8String(seq, 0, seq.length, false);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        strret = DataUtilities.GetUtf8String(seq, 0, seq.length, true);
+        if (!(strret.length() > 0))Assert.fail();
+        Assert.assertEquals('\ufffd', strret.charAt(0));
+      }
     }
     @Test
     public void TestReadUtf8() {
@@ -293,6 +373,42 @@ import com.upokecenter.util.*;
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
+      }
+      List<byte[]> illegalSeqs = GenerateIllegalUtf8Sequences();
+      for (byte[] seq : illegalSeqs) {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(seq);
+
+          try {
+            DataUtilities.ReadUtf8ToString(ms, -1, false);
+            Assert.fail("Should have failed");
+          } catch (IOException ex) {
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(seq);
+
+          String strret = null;
+          try {
+            strret = DataUtilities.ReadUtf8ToString(ms, -1, true);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          if (!(strret.length() > 0))Assert.fail();
+          Assert.assertEquals('\ufffd', strret.charAt(0));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
       }
     }
     @Test
