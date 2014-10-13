@@ -383,13 +383,13 @@ ms = new java.io.ByteArrayInputStream(seq);
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
-        java.io.ByteArrayInputStream ms = null;
+        java.io.ByteArrayInputStream ms2 = null;
 try {
-ms = new java.io.ByteArrayInputStream(seq);
+ms2 = new java.io.ByteArrayInputStream(seq);
 
           String strret = null;
           try {
-            strret = DataUtilities.ReadUtf8ToString(ms, -1, true);
+            strret = DataUtilities.ReadUtf8ToString(ms2, -1, true);
           } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -398,7 +398,7 @@ ms = new java.io.ByteArrayInputStream(seq);
           Assert.assertEquals('\ufffd', strret.charAt(0));
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
 }
       }
     }
