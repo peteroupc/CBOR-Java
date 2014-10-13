@@ -38,11 +38,11 @@ import com.upokecenter.util.*;
       Assert.assertEquals(17, BigInteger.valueOf(65536).bitLength());
       Assert.assertEquals(16, BigInteger.valueOf(-65536).bitLength());
       Assert.assertEquals(
-        65,
-        BigInteger.fromString("19084941898444092059").bitLength());
+65,
+BigInteger.fromString("19084941898444092059").bitLength());
       Assert.assertEquals(
-        65,
-        BigInteger.fromString("-19084941898444092059").bitLength());
+65,
+BigInteger.fromString("-19084941898444092059").bitLength());
       Assert.assertEquals(0, BigInteger.valueOf(-1).bitLength());
       Assert.assertEquals(1, BigInteger.valueOf(-2).bitLength());
     }
@@ -80,8 +80,7 @@ import com.upokecenter.util.*;
     @Test
     public void TestFromByteArray() {
       Assert.assertEquals(
-        BigInteger.ZERO,
-        BigInteger.fromByteArray(new byte[] { }, false));
+        BigInteger.ZERO, BigInteger.fromByteArray(new byte[] { }, false));
     }
     @Test
     public void TestFromString() {
@@ -206,8 +205,8 @@ BigInteger biggcd) {
         }
         ba = ba.multiply(bigprime);
         Assert.assertEquals(
-          bigprime,
-          bigprime.gcd(ba));
+bigprime,
+bigprime.gcd(ba));
       }
       TestGcdPair(BigInteger.valueOf(-1867), BigInteger.valueOf(-4456), BigInteger.ONE);
       TestGcdPair(BigInteger.valueOf(4604), BigInteger.valueOf(-4516), BigInteger.valueOf(4));
@@ -331,8 +330,8 @@ BigInteger biggcd) {
         Integer.MIN_VALUE,
         BigInteger.valueOf(Integer.MIN_VALUE).intValue());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).intValue());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).intValue());
       try {
         BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValue();
         Assert.fail("Should have failed");
@@ -356,8 +355,8 @@ BigInteger biggcd) {
         Integer.MIN_VALUE,
         BigInteger.valueOf(Integer.MIN_VALUE).intValueChecked());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
       try {
         BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueChecked();
         Assert.fail("Should have failed");
@@ -381,14 +380,14 @@ BigInteger biggcd) {
         Integer.MIN_VALUE,
         BigInteger.valueOf(Integer.MIN_VALUE).intValueUnchecked());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).intValueUnchecked());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).intValueUnchecked());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueUnchecked());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueUnchecked());
       Assert.assertEquals(
-        Integer.MIN_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueUnchecked());
+Integer.MIN_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueUnchecked());
     }
     @Test
     public void TestIsEven() {
@@ -413,8 +412,8 @@ BigInteger biggcd) {
         Long.MIN_VALUE,
         BigInteger.valueOf(Long.MIN_VALUE).longValue());
       Assert.assertEquals(
-        Long.MAX_VALUE,
-        BigInteger.valueOf(Long.MAX_VALUE).longValue());
+Long.MAX_VALUE,
+BigInteger.valueOf(Long.MAX_VALUE).longValue());
       try {
         BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValue();
         Assert.fail("Should have failed");
@@ -435,28 +434,28 @@ BigInteger biggcd) {
         ((long)0xFFFFFFF200000000L),
         BigInteger.valueOf(((long)0xFFFFFFF200000000L)).longValue());
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000000L),
+((long)0xFFFFFFF280000000L),
         BigInteger.valueOf(((long)0xFFFFFFF280000000L)).longValue());
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000001L),
+((long)0xFFFFFFF280000001L),
         BigInteger.valueOf(((long)0xFFFFFFF280000001L)).longValue());
       Assert.assertEquals(
-        ((long)0xFFFFFFF27FFFFFFFL),
+((long)0xFFFFFFF27FFFFFFFL),
         BigInteger.valueOf(((long)0xFFFFFFF27FFFFFFFL)).longValue());
       Assert.assertEquals(
-        0x0000000380000001L,
-        BigInteger.valueOf(0x0000000380000001L).longValue());
+0x0000000380000001L,
+BigInteger.valueOf(0x0000000380000001L).longValue());
       Assert.assertEquals(
-        0x0000000382222222L,
-        BigInteger.valueOf(0x0000000382222222L).longValue());
+0x0000000382222222L,
+BigInteger.valueOf(0x0000000382222222L).longValue());
       Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValue());
       Assert.assertEquals(-32768L, BigInteger.valueOf(-32768L).longValue());
       Assert.assertEquals(
-        Integer.MIN_VALUE,
-        BigInteger.valueOf(Integer.MIN_VALUE).longValue());
+Integer.MIN_VALUE,
+BigInteger.valueOf(Integer.MIN_VALUE).longValue());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).longValue());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).longValue());
       Assert.assertEquals(0x80000000L, BigInteger.valueOf(0x80000000L).longValue());
       Assert.assertEquals(0x90000000L, BigInteger.valueOf(0x90000000L).longValue());
     }
@@ -466,8 +465,8 @@ BigInteger biggcd) {
         Long.MIN_VALUE,
         BigInteger.valueOf(Long.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-        Long.MAX_VALUE,
-        BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
+Long.MAX_VALUE,
+BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
       try {
         BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE)
           .longValueChecked();
@@ -505,41 +504,40 @@ BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueChecked();
         0x0000000380000001L,
         BigInteger.valueOf(0x0000000380000001L).longValueChecked());
       Assert.assertEquals(
-        0x0000000382222222L,
-        BigInteger.valueOf(0x0000000382222222L).longValueChecked());
+0x0000000382222222L,
+BigInteger.valueOf(0x0000000382222222L).longValueChecked());
       Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValueChecked());
       Assert.assertEquals(-32768L, BigInteger.valueOf(-32768L).longValueChecked());
       Assert.assertEquals(
-        Integer.MIN_VALUE,
-        BigInteger.valueOf(Integer.MIN_VALUE).longValueChecked());
+Integer.MIN_VALUE,
+BigInteger.valueOf(Integer.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).longValueChecked());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).longValueChecked());
       Assert.assertEquals(
-        0x80000000L,
-        BigInteger.valueOf(0x80000000L).longValueChecked());
+0x80000000L,
+BigInteger.valueOf(0x80000000L).longValueChecked());
       Assert.assertEquals(
-        0x90000000L,
-        BigInteger.valueOf(0x90000000L).longValueChecked());
+0x90000000L,
+BigInteger.valueOf(0x90000000L).longValueChecked());
     }
     @Test
     public void TestLongValueUnchecked() {
       Assert.assertEquals(
-        Long.MIN_VALUE,
-        BigInteger.valueOf(Long.MIN_VALUE).longValueUnchecked());
+      Long.MIN_VALUE,
+      BigInteger.valueOf(Long.MIN_VALUE).longValueUnchecked());
       Assert.assertEquals(
-        Long.MAX_VALUE,
-        BigInteger.valueOf(Long.MAX_VALUE).longValueUnchecked());
+Long.MAX_VALUE,
+BigInteger.valueOf(Long.MAX_VALUE).longValueUnchecked());
       Assert.assertEquals(
-        Long.MAX_VALUE,
+Long.MAX_VALUE,
         BigInteger.valueOf(Long.MIN_VALUE)
         .subtract(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
-        Long.MIN_VALUE,
-        BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE)
-        .longValueUnchecked());
+Long.MIN_VALUE,
+BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
-        ((long)0xFFFFFFF200000000L),
+((long)0xFFFFFFF200000000L),
         BigInteger.valueOf(((long)0xFFFFFFF200000000L))
         .longValueUnchecked());
       Assert.assertEquals(
@@ -558,24 +556,24 @@ BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueChecked();
         0x0000000380000001L,
         BigInteger.valueOf(0x0000000380000001L).longValueUnchecked());
       Assert.assertEquals(
-        0x0000000382222222L,
-        BigInteger.valueOf(0x0000000382222222L).longValueUnchecked());
+0x0000000382222222L,
+BigInteger.valueOf(0x0000000382222222L).longValueUnchecked());
       Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValueUnchecked());
       Assert.assertEquals(
-        -32768L,
-        BigInteger.valueOf(-32768L).longValueUnchecked());
+-32768L,
+BigInteger.valueOf(-32768L).longValueUnchecked());
       Assert.assertEquals(
-        Integer.MIN_VALUE,
-        BigInteger.valueOf(Integer.MIN_VALUE).longValueUnchecked());
+Integer.MIN_VALUE,
+BigInteger.valueOf(Integer.MIN_VALUE).longValueUnchecked());
       Assert.assertEquals(
-        Integer.MAX_VALUE,
-        BigInteger.valueOf(Integer.MAX_VALUE).longValueUnchecked());
+Integer.MAX_VALUE,
+BigInteger.valueOf(Integer.MAX_VALUE).longValueUnchecked());
       Assert.assertEquals(
-        0x80000000L,
-        BigInteger.valueOf(0x80000000L).longValueUnchecked());
+0x80000000L,
+BigInteger.valueOf(0x80000000L).longValueUnchecked());
       Assert.assertEquals(
-        0x90000000L,
-        BigInteger.valueOf(0x90000000L).longValueUnchecked());
+0x90000000L,
+BigInteger.valueOf(0x90000000L).longValueUnchecked());
     }
     @Test
     public void TestMod() {

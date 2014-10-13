@@ -24,9 +24,9 @@ private Base64() {
     }
 
     public static void ToBase64URL(
-      StringBuilder str,
-      byte[] data,
-      boolean padding) {
+StringBuilder str,
+byte[] data,
+boolean padding) {
       if (data == null) {
         throw new NullPointerException("data");
       }
@@ -34,38 +34,38 @@ private Base64() {
     }
 
     public static void ToBase64(
-      StringBuilder str,
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) {
+StringBuilder str,
+byte[] data,
+int offset,
+int count,
+boolean padding) {
       ToBase64(str, data, offset, count, Base64Classic, padding);
     }
 
     public static void ToBase64URL(
-      StringBuilder str,
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) {
+StringBuilder str,
+byte[] data,
+int offset,
+int count,
+boolean padding) {
       ToBase64(str, data, offset, count, Base64URL, padding);
     }
 
     public static void WriteBase64(
-      StringOutput writer,
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) throws java.io.IOException {
+StringOutput writer,
+byte[] data,
+int offset,
+int count,
+boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, Base64Classic, padding);
     }
 
     public static void WriteBase64URL(
-      StringOutput writer,
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) throws java.io.IOException {
+StringOutput writer,
+byte[] data,
+int offset,
+int count,
+boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, Base64URL, padding);
     }
 
@@ -84,32 +84,32 @@ private Base64() {
     }
 
     public static String ToBase64String(
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) {
+byte[] data,
+int offset,
+int count,
+boolean padding) {
       StringBuilder builder = new StringBuilder();
       ToBase64(builder, data, offset, count, Base64Classic, padding);
       return builder.toString();
     }
 
     public static String ToBase64URLString(
-      byte[] data,
-      int offset,
-      int count,
-      boolean padding) {
+byte[] data,
+int offset,
+int count,
+boolean padding) {
       StringBuilder builder = new StringBuilder();
       ToBase64(builder, data, offset, count, Base64Classic, padding);
       return builder.toString();
     }
 
     private static void ToBase64(
-      StringBuilder str,
-      byte[] data,
-      int offset,
-      int count,
-      String alphabet,
-      boolean padding) {
+StringBuilder str,
+byte[] data,
+int offset,
+int count,
+String alphabet,
+boolean padding) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -134,8 +134,7 @@ private Base64() {
       }
       if (data.length - offset < count) {
         throw new IllegalArgumentException("data's length minus " + offset + " (" +
-                                    (data.length - offset) +
-                                    ") is less than " + count);
+                (data.length - offset) + ") is less than " + count);
       }
       int length = offset + count;
       int i = offset;
@@ -167,12 +166,12 @@ private Base64() {
     }
 
     private static void WriteBase64(
-      StringOutput writer,
-      byte[] data,
-      int offset,
-      int count,
-      String alphabet,
-      boolean padding) throws java.io.IOException {
+StringOutput writer,
+byte[] data,
+int offset,
+int count,
+String alphabet,
+boolean padding) throws java.io.IOException {
       if (writer == null) {
         throw new NullPointerException("writer");
       }
@@ -194,8 +193,7 @@ private Base64() {
       }
       if (data.length - offset < count) {
         throw new IllegalArgumentException("data's length minus " + offset + " (" +
-                                    (data.length - offset) +
-                                    ") is less than " + count);
+                (data.length - offset) + ") is less than " + count);
       }
       int length = offset + count;
       int i = offset;
@@ -203,11 +201,9 @@ private Base64() {
       for (i = offset; i < (length - 2); i += 3) {
         buffer[0] = (char)alphabet.charAt((data[i] >> 2) & 63);
         buffer[1] = (char)alphabet.charAt(((data[i] & 3) << 4) +
-                                   ((data[i + 1] >> 4) &
-                                    15));
+                ((data[i + 1] >> 4) & 15));
         buffer[2] = (char)alphabet.charAt(((data[i + 1] & 15) << 2) + ((data[i +
-                                                                      2] >> 6) &
-                                                                3));
+                2] >> 6) & 3));
         buffer[3] = (char)alphabet.charAt(data[i + 2] & 63);
         writer.WriteChar(buffer[0]);
         writer.WriteChar(buffer[1]);
@@ -220,8 +216,7 @@ private Base64() {
         buffer[0] = (char)alphabet.charAt((data[i] >> 2) & 63);
         if (lenmod3 == 2) {
           buffer[1] = (char)alphabet.charAt(((data[i] & 3) << 4) + ((data[i + 1] >>
-                                                              4) &
-                                                             15));
+                4) & 15));
           buffer[2] = (char)alphabet.charAt((data[i + 1] & 15) << 2);
           writer.WriteChar(buffer[0]);
           writer.WriteChar(buffer[1]);

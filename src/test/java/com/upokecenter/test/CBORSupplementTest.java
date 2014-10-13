@@ -1117,7 +1117,9 @@ BigInteger.ONE);
       }
       Assert.assertEquals(
         -1,
-        new ExtendedRational(BigInteger.ONE, BigInteger.valueOf(2)).compareTo(
+ new ExtendedRational(
+BigInteger.ONE,
+BigInteger.valueOf(2)).compareTo(
           new ExtendedRational(BigInteger.valueOf(4), BigInteger.ONE)));
       for (int i = 0; i < 100; ++i) {
         BigInteger num = RandomObjects.RandomBigInteger(fr);
@@ -1594,13 +1596,13 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
     public void TestNegativeBigInts() {
       BigInteger minusone = BigInteger.ZERO.subtract(BigInteger.ONE);
       Assert.assertEquals(
-        minusone .subtract(BigInteger.ONE.shiftLeft(8)),
+minusone .subtract(BigInteger.ONE.shiftLeft(8)),
    CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsBigInteger());
       Assert.assertEquals(
-        minusone .subtract(BigInteger.ONE.shiftLeft(16)),
+minusone .subtract(BigInteger.ONE.shiftLeft(16)),
 CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteger());
       Assert.assertEquals(
-        minusone .subtract(BigInteger.ONE.shiftLeft(24)),
+minusone .subtract(BigInteger.ONE.shiftLeft(24)),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1, 0, 0, 0
            }).AsBigInteger());
       Assert.assertEquals(
@@ -1632,73 +1634,18 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteg
     @Test
     public void TestStringRefs() {
       CBORObject cbor = CBORObject.DecodeFromBytes(
-        new byte[] { (byte)0xd9,
-        1,
-        0,
-        (byte)0x9f,
-        0x64,
-        0x61,
-        0x62,
-        0x63,
-        0x64,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        0x64,
-        0x62,
-        0x62,
-        0x63,
-        0x64,
-        (byte)0xd8,
-        0x19,
-        0x01,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        (byte)0xd8,
-        0x19,
-        0x01,
-        (byte)0xff  });
+        new byte[] { (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63,
+        0x64, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64,
+        0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19, 0x01, (byte)0xd8,
+        0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff  });
       String expected =
         "[\"abcd\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
-      cbor = CBORObject.DecodeFromBytes(
-        new byte[] { (byte)0xd9,
-        1,
-        0,
-        (byte)0x9f,
-        0x64,
-        0x61,
-        0x62,
-        0x63,
-        0x64,
-        0x62,
-        0x61,
-        0x61,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        0x64,
-        0x62,
-        0x62,
-        0x63,
-        0x64,
-        (byte)0xd8,
-        0x19,
-        0x01,
-        (byte)0xd8,
-        0x19,
-        0x00,
-        (byte)0xd8,
-        0x19,
-        0x01,
-        (byte)0xff  });
+      cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xd9,
+        1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64,
+        0x62, 0x61, 0x61, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19,
+        0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19,
+        0x01, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff  });
       expected =
   "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]"
 ;

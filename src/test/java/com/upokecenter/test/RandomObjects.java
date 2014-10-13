@@ -30,8 +30,7 @@ private RandomObjects() {
           return CBORObject.FromObject(RandomExtendedDecimal(rand));
         case 5:
           return CBORObject.FromObject(RandomInt64(rand));
-        default:
-          throw new IllegalArgumentException();
+        default: throw new IllegalArgumentException();
       }
     }
 
@@ -51,8 +50,7 @@ private RandomObjects() {
           return CBORObject.FromObject(RandomInt64(rand));
         case 6:
           return CBORObject.FromObject(RandomRational(rand));
-        default:
-          throw new IllegalArgumentException();
+        default: throw new IllegalArgumentException();
       }
     }
 
@@ -209,8 +207,7 @@ private RandomObjects() {
           return RandomCBORMap(rand, depth);
         case 10:
           return RandomCBORTaggedObject(rand, depth);
-        default:
-          return RandomNumber(rand);
+        default: return RandomNumber(rand);
       }
     }
 
@@ -297,8 +294,8 @@ private RandomObjects() {
         }
       }
       return ExtendedFloat.Create(
-        RandomBigInteger(r),
-        BigInteger.valueOf(r.NextValue(400) - 200));
+RandomBigInteger(r),
+BigInteger.valueOf(r.NextValue(400) - 200));
     }
 
     public static String RandomBigIntString(FastRandom r) {

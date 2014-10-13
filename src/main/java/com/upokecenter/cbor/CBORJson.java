@@ -80,19 +80,15 @@ private CBORJson() {
                       c <<= 4;
                       c |= ch + 10 - 'a';
                     } else {
-                      throw
-                        reader.NewError(
-                          "Invalid Unicode escaped character");
+                throw reader.NewError("Invalid Unicode escaped character");
                     }
                   }
                   break;
                 }
-              default:
-                throw reader.NewError("Invalid escaped character");
+              default: throw reader.NewError("Invalid escaped character");
             }
             break;
-          default:
-            escaped = false;
+          default: escaped = false;
             break;
         }
         if (surrogate) {
@@ -161,8 +157,7 @@ private CBORJson() {
       }
       if (c == 't') {
         // Parse true
-        if (reader.NextChar() != 'r' ||
-            reader.NextChar() != 'u' ||
+        if (reader.NextChar() != 'r' || reader.NextChar() != 'u' ||
             reader.NextChar() != 'e') {
           throw reader.NewError("Value can't be parsed.");
         }
@@ -171,10 +166,8 @@ private CBORJson() {
       }
       if (c == 'f') {
         // Parse false
-        if (reader.NextChar() != 'a' ||
-            reader.NextChar() != 'l' ||
-            reader.NextChar() != 's' ||
-            reader.NextChar() != 'e') {
+        if (reader.NextChar() != 'a' || reader.NextChar() != 'l' ||
+            reader.NextChar() != 's' || reader.NextChar() != 'e') {
           throw reader.NewError("Value can't be parsed.");
         }
         nextChar[0] = SkipWhitespaceJSON(reader);
@@ -182,8 +175,7 @@ private CBORJson() {
       }
       if (c == 'n') {
         // Parse null
-        if (reader.NextChar() != 'u' ||
-            reader.NextChar() != 'l' ||
+        if (reader.NextChar() != 'u' || reader.NextChar() != 'l' ||
             reader.NextChar() != 'l') {
           throw reader.NewError("Value can't be parsed.");
         }
@@ -286,19 +278,18 @@ private CBORJson() {
         }
         // NOTE: Will overwrite existing value
         myHashMap.put(key, NextJSONValue(
-          reader,
+reader,
           SkipWhitespaceJSON(reader),
-          noDuplicates,
-          nextchar,
-          depth));
+ noDuplicates,
+ nextchar,
+ depth));
         switch (nextchar[0]) {
           case ',':
             seenComma = true;
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-          default:
-            throw reader.NewError("Expected a ',' or '}'");
+          default: throw reader.NewError("Expected a ',' or '}'");
         }
       }
     }
@@ -329,11 +320,11 @@ private CBORJson() {
         }
         myArrayList.add(
           NextJSONValue(
-            reader,
-            c,
-            noDuplicates,
-            nextchar,
-            depth));
+reader,
+c,
+noDuplicates,
+nextchar,
+depth));
         c = nextchar[0];
         switch (c) {
           case ',':
@@ -366,8 +357,7 @@ private CBORJson() {
           sb.WriteChar('\\');
           sb.WriteChar(c);
         } else if (c < 0x20 || (c >= 0x85 && (c == 0x2028 || c == 0x2029 ||
-                                     c == 0x85 || c == 0xfeff || c == 0xfffe ||
-
+                c == 0x85 || c == 0xfeff || c == 0xfffe ||
                                               c == 0xffff))) {
           // Control characters, and also the line and paragraph separators
           // which apparently can't appear in JavaScript (as opposed to
@@ -434,38 +424,33 @@ private CBORJson() {
           case CBORObject.CBORObjectTypeSingle: {
             float f = ((Float)thisItem).floatValue();
             if (((f) == Float.NEGATIVE_INFINITY) ||
-                ((f) == Float.POSITIVE_INFINITY) ||
-                Float.isNaN(f)) {
+                ((f) == Float.POSITIVE_INFINITY) || Float.isNaN(f)) {
               writer.WriteString("null");
               return;
             }
             writer.WriteString(
               CBORObject.TrimDotZero(
-                Float.toString((float)f)));
+Float.toString((float)f)));
             return;
           }
           case CBORObject.CBORObjectTypeDouble: {
             double f = ((Double)thisItem).doubleValue();
-            if (((f) == Double.NEGATIVE_INFINITY) ||
-                ((f) == Double.POSITIVE_INFINITY) ||
+            if (((f) == Double.NEGATIVE_INFINITY) || ((f) == Double.POSITIVE_INFINITY) ||
                 Double.isNaN(f)) {
               writer.WriteString("null");
               return;
             }
-            writer.WriteString(
-              CBORObject.TrimDotZero(
+            writer.WriteString(CBORObject.TrimDotZero(
                 Double.toString((double)f)));
             return;
           }
           case CBORObject.CBORObjectTypeInteger: {
             long longItem = (((Long)thisItem).longValue());
-            writer.WriteString(
-              CBORUtilities.LongToString(longItem));
+            writer.WriteString(CBORUtilities.LongToString(longItem));
             return;
           }
           case CBORObject.CBORObjectTypeBigInteger: {
-            writer.WriteString(
-              CBORUtilities.BigIntToString((BigInteger)thisItem));
+       writer.WriteString(CBORUtilities.BigIntToString((BigInteger)thisItem));
             return;
           }
           case CBORObject.CBORObjectTypeExtendedDecimal: {
@@ -490,14 +475,13 @@ private CBORJson() {
               // so convert to double instead
               double f = flo.ToDouble();
               if (((f) == Double.NEGATIVE_INFINITY) ||
-                  ((f) == Double.POSITIVE_INFINITY) ||
-                  Double.isNaN(f)) {
+                ((f) == Double.POSITIVE_INFINITY) || Double.isNaN(f)) {
                 writer.WriteString("null");
                 return;
               }
               writer.WriteString(
                 CBORObject.TrimDotZero(
-                  Double.toString((double)f)));
+Double.toString((double)f)));
               return;
             }
             writer.WriteString(flo.toString());
@@ -513,11 +497,11 @@ private CBORJson() {
             writer.WriteChar('\"');
             if (obj.HasTag(22)) {
               Base64.WriteBase64(
-                writer,
-                byteArray,
-                0,
-                byteArray.length,
-                false);
+writer,
+byteArray,
+0,
+byteArray.length,
+false);
             } else if (obj.HasTag(23)) {
               // Write as base16
               for (int i = 0; i < byteArray.length; ++i) {
@@ -526,11 +510,11 @@ private CBORJson() {
               }
             } else {
               Base64.WriteBase64URL(
-                writer,
-                byteArray,
-                0,
-                byteArray.length,
-                false);
+writer,
+byteArray,
+0,
+byteArray.length,
+false);
             }
             writer.WriteChar('\"');
             break;
@@ -607,8 +591,7 @@ private CBORJson() {
               for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
-                String str = (key.getItemType() ==
-                              CBORObject.CBORObjectTypeTextString) ?
+           String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
                   ((String)key.getThisItem()) : key.ToJSONString();
                 stringMap.put(str, value);
               }

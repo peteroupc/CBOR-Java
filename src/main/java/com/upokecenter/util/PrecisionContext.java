@@ -522,11 +522,11 @@ public final void setFlags(int value) {
      */
     public static PrecisionContext ForPrecision(int precision) {
       return new PrecisionContext(
-        precision,
-        Rounding.HalfUp,
-        0,
-        0,
-        false).WithUnlimitedExponents();
+precision,
+Rounding.HalfUp,
+0,
+0,
+false).WithUnlimitedExponents();
     }
 
     /**
@@ -537,11 +537,11 @@ public final void setFlags(int value) {
      */
     public static PrecisionContext ForRounding(Rounding rounding) {
       return new PrecisionContext(
-        0,
-        rounding,
-        0,
-        0,
-        false).WithUnlimitedExponents();
+0,
+rounding,
+0,
+0,
+false).WithUnlimitedExponents();
     }
 
     /**
@@ -555,11 +555,11 @@ public final void setFlags(int value) {
       int precision,
       Rounding rounding) {
       return new PrecisionContext(
-        precision,
-        rounding,
-        0,
-        0,
-        false).WithUnlimitedExponents();
+precision,
+rounding,
+0,
+0,
+false).WithUnlimitedExponents();
     }
 
     /**
@@ -572,11 +572,11 @@ public final void setFlags(int value) {
      * @param clampNormalExponents A Boolean object.
      */
     public PrecisionContext (
-      int precision,
-      Rounding rounding,
-      int exponentMinSmall,
-      int exponentMaxSmall,
-      boolean clampNormalExponents) {
+int precision,
+Rounding rounding,
+int exponentMinSmall,
+int exponentMaxSmall,
+boolean clampNormalExponents) {
       if (precision < 0) {
         throw new IllegalArgumentException("precision (" + precision +
           ") is less than " + "0");
@@ -611,8 +611,7 @@ public final void setFlags(int value) {
 
     public static final PrecisionContext Binary16 =
       PrecisionContext.ForPrecisionAndRounding(11, Rounding.HalfEven)
-      .WithExponentClamp(true)
-      .WithExponentRange(-14, 15);
+      .WithExponentClamp(true).WithExponentRange(-14, 15);
 
     /**
      * Precision context for the IEEE-754-2008 binary32 format, 24 bits precision.
@@ -621,8 +620,7 @@ public final void setFlags(int value) {
 
     public static final PrecisionContext Binary32 =
       PrecisionContext.ForPrecisionAndRounding(24, Rounding.HalfEven)
-      .WithExponentClamp(true)
-      .WithExponentRange(-126, 127);
+      .WithExponentClamp(true).WithExponentRange(-126, 127);
 
     /**
      * Precision context for the IEEE-754-2008 binary64 format, 53 bits precision.
@@ -631,8 +629,7 @@ public final void setFlags(int value) {
 
     public static final PrecisionContext Binary64 =
       PrecisionContext.ForPrecisionAndRounding(53, Rounding.HalfEven)
-      .WithExponentClamp(true)
-      .WithExponentRange(-1022, 1023);
+      .WithExponentClamp(true).WithExponentRange(-1022, 1023);
 
     /**
      * Precision context for the IEEE-754-2008 binary128 format, 113 bits
@@ -641,8 +638,7 @@ public final void setFlags(int value) {
 
     public static final PrecisionContext Binary128 =
       PrecisionContext.ForPrecisionAndRounding(113, Rounding.HalfEven)
-      .WithExponentClamp(true)
-      .WithExponentRange(-16382, 16383);
+      .WithExponentClamp(true).WithExponentRange(-16382, 16383);
 
     /**
      * Precision context for the IEEE-754-2008 decimal32 format. The default
@@ -693,11 +689,10 @@ public final void setFlags(int value) {
 
     public static final PrecisionContext BigDecimalJava =
       new PrecisionContext(0, Rounding.HalfUp, 0, 0, true)
-      .WithExponentClamp(true)
-      .WithAdjustExponent(false)
+      .WithExponentClamp(true).WithAdjustExponent(false)
       .WithBigExponentRange(
-        BigInteger.ZERO.subtract(BigInteger.valueOf(Integer.MAX_VALUE)),
-        BigInteger.ONE.add(BigInteger.valueOf(Integer.MAX_VALUE)));
+BigInteger.ZERO.subtract(BigInteger.valueOf(Integer.MAX_VALUE)),
+BigInteger.ONE.add(BigInteger.valueOf(Integer.MAX_VALUE)));
 
     /**
      * Precision context for Java's BigDecimal format. The default rounding mode is

@@ -57,10 +57,10 @@ private DataUtilities() {
      * greater than the length of "data" .
      */
     public static String GetUtf8String(
-      byte[] bytes,
-      int offset,
-      int bytesCount,
-      boolean replace) {
+byte[] bytes,
+int offset,
+int bytesCount,
+boolean replace) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
@@ -82,8 +82,7 @@ private DataUtilities() {
       }
       if (bytes.length - offset < bytesCount) {
         throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
-                                    (bytes.length - offset) +
-                                    ") is less than " + bytesCount);
+                (bytes.length - offset) + ") is less than " + bytesCount);
       }
       StringBuilder b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, offset, bytesCount, b, replace) != 0) {
@@ -203,9 +202,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(
-      String str,
-      int index,
-      int surrogateBehavior) {
+String str,
+int index,
+int surrogateBehavior) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -258,9 +257,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(
-      String str,
-      int index,
-      int surrogateBehavior) {
+String str,
+int index,
+int surrogateBehavior) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -404,11 +403,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws java.io.IOException An I/O error occurred.
      */
     public static int WriteUtf8(
-      String str,
-      int offset,
-      int length,
-      OutputStream stream,
-      boolean replace) throws java.io.IOException {
+String str,
+int offset,
+int length,
+OutputStream stream,
+boolean replace) throws java.io.IOException {
       return WriteUtf8(str, offset, length, stream, replace, false);
     }
 
@@ -434,12 +433,12 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws java.io.IOException An I/O error occurred.
      */
     public static int WriteUtf8(
-      String str,
-      int offset,
-      int length,
-      OutputStream stream,
-      boolean replace,
-      boolean lenientLineBreaks) throws java.io.IOException {
+String str,
+int offset,
+int length,
+OutputStream stream,
+boolean replace,
+boolean lenientLineBreaks) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -464,8 +463,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
       }
       if (str.length() - offset < length) {
         throw new IllegalArgumentException("str.length() minus offset (" +
-                                    (str.length() - offset) +
-                                    ") is less than " + length);
+                (str.length() - offset) + ") is less than " + length);
       }
       byte[] bytes;
       int retval = 0;
@@ -593,11 +591,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * greater than the length of {@code data} .
      */
     public static int ReadUtf8FromBytes(
-      byte[] data,
-      int offset,
-      int bytesCount,
-      StringBuilder builder,
-      boolean replace) {
+byte[] data,
+int offset,
+int bytesCount,
+StringBuilder builder,
+boolean replace) {
       if (data == null) {
         throw new NullPointerException("data");
       }
@@ -619,8 +617,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
       }
       if (data.length - offset < bytesCount) {
         throw new IllegalArgumentException("data.length minus offset (" +
-                                    (data.length - offset) +
-                                    ") is less than " + bytesCount);
+                (data.length - offset) + ") is less than " + bytesCount);
       }
       if (builder == null) {
         throw new NullPointerException("builder");
@@ -712,8 +709,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws java.io.IOException An I/O error occurred.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
-    public static String ReadUtf8ToString(
-      InputStream stream) throws java.io.IOException {
+    public static String ReadUtf8ToString(InputStream stream) throws java.io.IOException {
       return ReadUtf8ToString(stream, -1, true);
     }
 
@@ -731,15 +727,15 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     public static String ReadUtf8ToString(
-      InputStream stream,
-      int bytesCount,
-      boolean replace) throws java.io.IOException {
+InputStream stream,
+int bytesCount,
+boolean replace) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       int retval = DataUtilities.ReadUtf8(stream, bytesCount, builder, replace);
       if (retval == -1) {
         throw new IOException(
-          "Unpaired surrogate code point found.",
-          new java.nio.charset.MalformedInputException(1));
+       "Unpaired surrogate code point found." ,
+       new java.nio.charset.MalformedInputException(1));
       }
       return builder.toString();
     }
@@ -763,10 +759,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
      * builder} is null.
      */
     public static int ReadUtf8(
-      InputStream stream,
-      int bytesCount,
-      StringBuilder builder,
-      boolean replace) throws java.io.IOException {
+InputStream stream,
+int bytesCount,
+StringBuilder builder,
+boolean replace) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }

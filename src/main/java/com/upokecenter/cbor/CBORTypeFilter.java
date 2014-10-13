@@ -286,10 +286,8 @@ CBORTypeFilter... elements) {
      */
     public boolean ArrayLengthMatches(int length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
-                                              (this.arrayMinLength ?
-                                                this.arrayLength >= length :
-                                                this.arrayLength ==
-                                                length));
+                (this.arrayMinLength ? this.arrayLength >= length :
+                this.arrayLength == length));
     }
 
     /**
@@ -300,10 +298,8 @@ CBORTypeFilter... elements) {
      */
     public boolean ArrayLengthMatches(long length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
-                                              (this.arrayMinLength ?
-                                                this.arrayLength >= length :
-                                                this.arrayLength ==
-                                                length));
+                (this.arrayMinLength ? this.arrayLength >= length :
+                this.arrayLength == length));
     }
 
     /**
@@ -384,8 +380,7 @@ CBORTypeFilter... elements) {
      */
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength ||
-
-            ((this.arrayMinLength || index < this.arrayLength) && index >=
+        ((this.arrayMinLength || index < this.arrayLength) && index >=
                                                 0));
     }
 

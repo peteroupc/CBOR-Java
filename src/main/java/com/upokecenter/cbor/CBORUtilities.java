@@ -228,8 +228,7 @@ private CBORUtilities() {
       int negvalue = (value >= 0x8000) ? (1 << 31) : 0;
       value &= 0x7fff;
       if (value >= 0x7c00) {
-        value = (int)(0x3fc00 |
-                      (value & 0x3ff)) << 13 | negvalue;
+        value = (int)(0x3fc00 | (value & 0x3ff)) << 13 | negvalue;
         return Float.intBitsToFloat(value);
       }
       if (value > 0x400) {
@@ -237,8 +236,7 @@ private CBORUtilities() {
         return Float.intBitsToFloat(value);
       }
       if ((value & 0x400) == value) {
-        value = (int)((value ==
-                       0) ? 0 : 0x38800000) | negvalue;
+        value = (int)((value == 0) ? 0 : 0x38800000) | negvalue;
         return Float.intBitsToFloat(value);
       } else {
         // denormalized

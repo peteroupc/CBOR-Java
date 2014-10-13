@@ -84,9 +84,9 @@ at: http://upokecenter.com/d/
       }
 
     public BitShiftAccumulator (
-      BigInteger bigint,
-      int lastDiscarded,
-      int olderDiscarded) {
+BigInteger bigint,
+int lastDiscarded,
+int olderDiscarded) {
       if (bigint.signum() < 0) {
         throw new IllegalArgumentException("bigint's sign (" + bigint.signum() +
           ") is less than " + "0");

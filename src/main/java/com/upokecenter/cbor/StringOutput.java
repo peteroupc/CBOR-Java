@@ -50,12 +50,13 @@ import com.upokecenter.util.*;
         if (length == 1) {
           this.WriteChar(str.charAt(index));
         } else {
-          if (DataUtilities.WriteUtf8(
-            str,
-            index,
-            length,
-            this.outputStream,
-            false) < 0) {
+          if (
+DataUtilities.WriteUtf8(
+str,
+index,
+length,
+this.outputStream,
+false) < 0) {
             throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
@@ -67,13 +68,11 @@ import com.upokecenter.util.*;
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
       if (codePoint < 0) {
         throw new IllegalArgumentException("codePoint (" + codePoint +
-                                    ") is less than " +
-                                    0);
+                ") is less than " + 0);
       }
       if (codePoint > 0x10ffff) {
         throw new IllegalArgumentException("codePoint (" + codePoint +
-                                    ") is more than " +
-                                    0x10ffff);
+                ") is more than " + 0x10ffff);
       }
       if (this.outputStream != null) {
         if (codePoint < 0x80) {

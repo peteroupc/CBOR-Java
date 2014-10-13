@@ -385,8 +385,7 @@ ctx);
         return ExtendedDecimal.NegativeInfinity;
       }
       ExtendedDecimal ef = (this.isNegative() && this.signum() == 0) ?
- ExtendedDecimal.NegativeZero :
-          ExtendedDecimal.FromBigInteger(this.getNumerator());
+ ExtendedDecimal.NegativeZero : ExtendedDecimal.FromBigInteger(this.getNumerator());
       return ef.Divide(ExtendedDecimal.FromBigInteger(this.getDenominator()), ctx);
     }
 
@@ -425,10 +424,8 @@ ctx);
         return ExtendedDecimal.NegativeZero;
       }
       ExtendedDecimal valueEdNum = (this.isNegative() && this.signum() == 0) ?
- ExtendedDecimal.NegativeZero :
-          ExtendedDecimal.FromBigInteger(this.getNumerator());
- ExtendedDecimal valueEdDen =
-        ExtendedDecimal.FromBigInteger(this.getDenominator());
+ ExtendedDecimal.NegativeZero : ExtendedDecimal.FromBigInteger(this.getNumerator());
+ ExtendedDecimal valueEdDen = ExtendedDecimal.FromBigInteger(this.getDenominator());
       ExtendedDecimal ed = valueEdNum.Divide(valueEdDen, null);
       if (ed.IsNaN()) {
         // Result would be inexact, try again using the precision context
@@ -468,8 +465,7 @@ ctx);
         return ExtendedFloat.NegativeInfinity;
       }
       ExtendedFloat ef = (this.isNegative() && this.signum() == 0) ?
-     ExtendedFloat.NegativeZero :
-          ExtendedFloat.FromBigInteger(this.getNumerator());
+     ExtendedFloat.NegativeZero : ExtendedFloat.FromBigInteger(this.getNumerator());
       return ef.Divide(ExtendedFloat.FromBigInteger(this.getDenominator()), ctx);
     }
 
@@ -508,8 +504,7 @@ ctx);
           ExtendedFloat.Zero;
       }
       ExtendedFloat valueEdNum = (this.isNegative() && this.signum() == 0) ?
-     ExtendedFloat.NegativeZero :
-          ExtendedFloat.FromBigInteger(this.getNumerator());
+     ExtendedFloat.NegativeZero : ExtendedFloat.FromBigInteger(this.getNumerator());
       ExtendedFloat valueEdDen = ExtendedFloat.FromBigInteger(this.getDenominator());
       ExtendedFloat ed = valueEdNum.Divide(valueEdDen, null);
       if (ed.IsNaN()) {
@@ -787,8 +782,7 @@ thisRem = divrem[1]; }
           // System.out.println("Shortcircuit II");
           return this.isNegative() ? 1 : -1;
         }
-      thisIntDec =
-          ExtendedFloat.FromBigInteger(this.getUnsignedNumerator()).Divide(
+      thisIntDec = ExtendedFloat.FromBigInteger(this.getUnsignedNumerator()).Divide(
           ExtendedFloat.FromBigInteger(this.getDenominator()),
           PrecisionContext.ForPrecisionAndRounding(256, Rounding.Down));
         if (thisIntDec.compareTo(otherAbs) > 0) {
@@ -817,8 +811,7 @@ thisRem = divrem[1]; }
       // System.out.println("no shortcircuit");
       // System.out.println(this);
       // System.out.println(other);
-    ExtendedRational otherRational =
-        ExtendedRational.FromExtendedFloat(other);
+    ExtendedRational otherRational = ExtendedRational.FromExtendedFloat(other);
       BigInteger ad = this.getNumerator().multiply(otherRational.getDenominator());
       BigInteger bc = this.getDenominator().multiply(otherRational.getNumerator());
       return ad.compareTo(bc);
@@ -902,8 +895,7 @@ thisRem = divrem[1]; }
         }
         // Conservative approximation of this rational number's absolute value,
         // as a decimal number. The true value will be greater or equal.
-    thisIntDec =
-          ExtendedDecimal.FromBigInteger(this.getUnsignedNumerator()).Divide(
+    thisIntDec = ExtendedDecimal.FromBigInteger(this.getUnsignedNumerator()).Divide(
           ExtendedDecimal.FromBigInteger(this.getDenominator()),
           PrecisionContext.ForPrecisionAndRounding(20, Rounding.Down));
         if (thisIntDec.compareTo(otherAbs) > 0) {
@@ -931,8 +923,7 @@ thisRem = divrem[1]; }
       // System.out.println("no shortcircuit");
       // System.out.println(this);
       // System.out.println(other);
-  ExtendedRational otherRational =
-        ExtendedRational.FromExtendedDecimal(other);
+  ExtendedRational otherRational = ExtendedRational.FromExtendedDecimal(other);
       BigInteger ad = this.getNumerator().multiply(otherRational.getDenominator());
       BigInteger bc = this.getDenominator().multiply(otherRational.getNumerator());
       return ad.compareTo(bc);
@@ -963,8 +954,7 @@ thisRem = divrem[1]; }
      */
     public boolean IsPositiveInfinity() {
       return (this.flags & (BigNumberFlags.FlagInfinity |
-        BigNumberFlags.FlagNegative)) ==
-        BigNumberFlags.FlagInfinity;
+        BigNumberFlags.FlagNegative)) == BigNumberFlags.FlagInfinity;
     }
 
     /**

@@ -74,8 +74,8 @@ import java.io.*;
           }
           if (surr == 0xdc00) {
             throw CharacterReader.NewError(
-              "Unpaired surrogate code point",
-              this.offset);
+"Unpaired surrogate code point",
+this.offset);
           }
           ++this.offset;
           return c1;

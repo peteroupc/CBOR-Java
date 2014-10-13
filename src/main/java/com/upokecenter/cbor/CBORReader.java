@@ -86,8 +86,7 @@ int expectedType) throws java.io.IOException {
           throw new CBORException("Unexpected data encountered");
         case 31:
           throw new CBORException("Indefinite-length data not allowed here");
-        default:
-          return headByte;
+        default: return headByte;
       }
     }
 
@@ -153,8 +152,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
       }
     }
 
-    public CBORObject Read(
-      CBORTypeFilter filter) throws java.io.IOException {
+    public CBORObject Read(CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -166,8 +164,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
     }
 
     public CBORObject ReadForFirstByte(
-      int firstbyte,
-      CBORTypeFilter filter) throws java.io.IOException {
+int firstbyte,
+CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -320,8 +318,8 @@ ms = new java.io.ByteArrayOutputStream();
             }
             data = ms.toByteArray();
             return new CBORObject(
-              CBORObject.CBORObjectTypeByteString,
-              data);
+CBORObject.CBORObjectTypeByteString,
+data);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
@@ -338,8 +336,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
           CBORObject cbor = new CBORObject(CBORObject.CBORObjectTypeByteString, data);
           if (this.stringRefs != null) {
             int hint = (uadditional > Integer.MAX_VALUE || hasBigAdditional) ?
-            Integer.MAX_VALUE :
-              (int)uadditional;
+            Integer.MAX_VALUE : (int)uadditional;
             this.stringRefs.AddStringIfNeeded(cbor, hint);
           }
           return cbor;
@@ -402,8 +399,7 @@ CBORObject.CBORObjectTypeTextString,
 builder.toString());
           if (this.stringRefs != null) {
             int hint = (uadditional > Integer.MAX_VALUE || hasBigAdditional) ?
-            Integer.MAX_VALUE :
-              (int)uadditional;
+            Integer.MAX_VALUE : (int)uadditional;
             this.stringRefs.AddStringIfNeeded(cbor, hint);
           }
           return cbor;
@@ -432,8 +428,8 @@ builder.toString());
             }
             ++this.depth;
             CBORObject o = this.ReadForFirstByte(
-              headByte,
-              filter == null ? null : filter.GetSubFilter(vtindex));
+headByte,
+filter == null ? null : filter.GetSubFilter(vtindex));
             --this.depth;
             cbor.Add(o);
             ++vtindex;

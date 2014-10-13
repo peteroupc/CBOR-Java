@@ -34,8 +34,7 @@ private DecimalUtility() {
       BigInteger.valueOf(476837158203125L), BigInteger.valueOf(2384185791015625L),
       BigInteger.valueOf(11920928955078125L),
       BigInteger.valueOf(59604644775390625L), BigInteger.valueOf(298023223876953125L),
-      BigInteger.valueOf(1490116119384765625L),
-      BigInteger.valueOf(7450580596923828125L)
+      BigInteger.valueOf(1490116119384765625L), BigInteger.valueOf(7450580596923828125L)
     };
 
     static int ShiftLeftOne(int[] arr) {

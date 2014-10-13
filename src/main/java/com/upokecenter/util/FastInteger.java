@@ -148,8 +148,7 @@ at: http://upokecenter.com/d/
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
-              Integer.MAX_VALUE)) :
-                  ((x2 >> 31) == 0)) {
+              Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
                 // Carry in addition
                 x1 = (x1 + 1);
               }
@@ -191,8 +190,7 @@ at: http://upokecenter.com/d/
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
-              Integer.MAX_VALUE)) :
-                  ((x2 >> 31) == 0)) {
+              Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
                 // Carry in addition
                 x1 = (x1 + 1);
               }
@@ -246,8 +244,7 @@ at: http://upokecenter.com/d/
                   ((this.data[0] >> 31) == 0)) ? -1 : 1;
       }
 
-      MutableNumber SubtractInt(
-        int other) {
+      MutableNumber SubtractInt(int other) {
         if (other < 0) {
      throw new IllegalArgumentException("other (" + other + ") is less than " +
             "0 ");
@@ -274,8 +271,7 @@ at: http://upokecenter.com/d/
               for (int i = 1; i < this.wordCount; ++i) {
                 u = this.data[i] - borrow;
                 borrow = (((this.data[i] >> 31) == (u >> 31)) ?
-                          ((this.data[i] & Integer.MAX_VALUE) < (u &
-                          Integer.MAX_VALUE)) :
+                ((this.data[i] & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
                           ((this.data[i] >> 31) == 0)) ? 1 : 0;
                 this.data[i] = (int)u;
               }
@@ -294,8 +290,7 @@ at: http://upokecenter.com/d/
      * @param other A MutableNumber object.
      * @return The difference of the two objects.
      */
-      MutableNumber Subtract(
-        MutableNumber other) {
+      MutableNumber Subtract(MutableNumber other) {
         {
           {
        // System.out.println("" + this.data.length + " " +
@@ -460,8 +455,7 @@ at: http://upokecenter.com/d/
           return this.mnum.ToInt32();
         case 2:
           return this.largeValue.intValue();
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -475,8 +469,8 @@ at: http://upokecenter.com/d/
       switch ((this.integerMode << 2) | val.integerMode) {
           case (0 << 2) | 0: {
             int vsv = val.smallValue;
-            return (this.smallValue == vsv) ? 0 :
-              (this.smallValue < vsv ? -1 : 1);
+        return (this.smallValue == vsv) ? 0 : (this.smallValue < vsv ? -1 :
+              1);
           }
         case (0 << 2) | 1:
           return -val.mnum.CompareToInt(this.smallValue);
@@ -492,8 +486,7 @@ at: http://upokecenter.com/d/
         case (2 << 2) | 1:
         case (2 << 2) | 2:
           return this.largeValue.compareTo(val.AsBigInteger());
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -627,8 +620,7 @@ bigrem = divrem[1]; }
           case 2:
             this.largeValue = this.largeValue.multiply(BigInteger.valueOf(val));
             break;
-          default:
-            throw new IllegalStateException();
+          default: throw new IllegalStateException();
         }
       }
       return this;
@@ -711,8 +703,7 @@ bigrem = divrem[1]; }
           valValue = val.AsBigInteger();
           this.largeValue = this.largeValue.subtract(valValue);
           break;
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
       return this;
     }
@@ -836,8 +827,7 @@ bigrem = divrem[1]; }
           valValue = val.AsBigInteger();
           this.largeValue = this.largeValue.add(valValue);
           break;
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
       return this;
     }
@@ -975,8 +965,8 @@ bigrem = divrem[1]; }
       switch (this.integerMode) {
         case 0:
           if ((this.smallValue < 0 && (int)val < Integer.MIN_VALUE -
-          this.smallValue) ||
-              (this.smallValue > 0 && (int)val > Integer.MAX_VALUE -
+        this.smallValue) || (this.smallValue > 0 && (int)val >
+            Integer.MAX_VALUE -
               this.smallValue)) {
             // would overflow
             if (val >= 0) {
@@ -1006,8 +996,7 @@ bigrem = divrem[1]; }
           valValue = BigInteger.valueOf(val);
           this.largeValue = this.largeValue.add(valValue);
           break;
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
       return this;
     }
@@ -1038,8 +1027,7 @@ bigrem = divrem[1]; }
           return this.mnum.ToBigInteger().toString();
         case 2:
           return this.largeValue.toString();
-        default:
-          return "";
+        default: return "";
       }
     }
 
@@ -1092,8 +1080,7 @@ bigrem = divrem[1]; }
           return this.mnum.ToBigInteger().compareTo(BigInteger.valueOf(val));
         case 2:
           return this.largeValue.compareTo(BigInteger.valueOf(val));
-        default:
-          return 0;
+        default: return 0;
       }
     }
 
@@ -1105,8 +1092,7 @@ bigrem = divrem[1]; }
           return this.mnum.ToBigInteger();
         case 2:
           return this.largeValue;
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
     }
   }

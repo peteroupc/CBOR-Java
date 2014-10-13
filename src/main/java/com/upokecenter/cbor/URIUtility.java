@@ -62,28 +62,28 @@ private URIUtility() {
     private static final String HexChars = "0123456789ABCDEF";
 
     private static void appendAuthority(
-      StringBuilder builder,
-      String refValue,
-      int[] segments) {
+StringBuilder builder,
+String refValue,
+int[] segments) {
       if (segments[2] >= 0) {
         builder.append("//");
         builder.append(
-          refValue.substring(
-            segments[2], (
-            segments[2]) + (segments[3] - segments[2])));
+refValue.substring(
+segments[2], (
+segments[2]) + (segments[3] - segments[2])));
       }
     }
 
     private static void appendFragment(
-      StringBuilder builder,
-      String refValue,
-      int[] segments) {
+StringBuilder builder,
+String refValue,
+int[] segments) {
       if (segments[8] >= 0) {
         builder.append('#');
         builder.append(
-          refValue.substring(
-            segments[8], (
-            segments[8]) + (segments[9] - segments[8])));
+refValue.substring(
+segments[8], (
+segments[8]) + (segments[9] - segments[8])));
       }
     }
 
@@ -93,43 +93,43 @@ private URIUtility() {
       int[] segments) {
       builder.append(
         normalizePath(
-          refValue.substring(
-            segments[4], (
-            segments[4]) + (segments[5] - segments[4]))));
+refValue.substring(
+segments[4], (
+segments[4]) + (segments[5] - segments[4]))));
     }
 
     private static void appendPath(
-      StringBuilder builder,
-      String refValue,
-      int[] segments) {
+StringBuilder builder,
+String refValue,
+int[] segments) {
       builder.append(
-        refValue.substring(
-          segments[4], (
-          segments[4]) + (segments[5] - segments[4])));
+refValue.substring(
+segments[4], (
+segments[4]) + (segments[5] - segments[4])));
     }
 
     private static void appendQuery(
-      StringBuilder builder,
-      String refValue,
-      int[] segments) {
+StringBuilder builder,
+String refValue,
+int[] segments) {
       if (segments[6] >= 0) {
         builder.append('?');
         builder.append(
-          refValue.substring(
-            segments[6], (
-            segments[6]) + (segments[7] - segments[6])));
+refValue.substring(
+segments[6], (
+segments[6]) + (segments[7] - segments[6])));
       }
     }
 
     private static void appendScheme(
-      StringBuilder builder,
-      String refValue,
-      int[] segments) {
+StringBuilder builder,
+String refValue,
+int[] segments) {
       if (segments[0] >= 0) {
         builder.append(
           refValue.substring(
-            segments[0], (
-            segments[0]) + (segments[1] - segments[0])));
+segments[0], (
+segments[0]) + (segments[1] - segments[0])));
         builder.append(':');
       }
     }
@@ -150,20 +150,19 @@ private URIUtility() {
       if (mode == 1) {
         components = (
           s == null) ? null : splitIRI(
-          s,
-          0,
-          s.length(),
-          ParseMode.IRIStrict);
+s,
+0,
+s.length(),
+ParseMode.IRIStrict);
         if (components == null) {
           return null;
         }
       } else {
-        components = (
-          s == null) ? null : splitIRI(
-          s,
-          0,
-          s.length(),
-          ParseMode.IRISurrogateLenient);
+        components = (s == null) ? null : splitIRI(
+s,
+0,
+s.length(),
+ParseMode.IRISurrogateLenient);
       }
       int index = 0;
       int valueSLength = s.length();
@@ -197,8 +196,7 @@ private URIUtility() {
             continue;
           }
           if (c >= 0x7f || c <= 0x20 ||
-              ((c & 0x7f) == c &&
-               "{}|^\\`<>\"".indexOf((char)c) >= 0)) {
+              ((c & 0x7f) == c && "{}|^\\`<>\"".indexOf((char)c) >= 0)) {
             percentEncodeUtf8(builder, c);
           } else if (c == '[' || c == ']') {
             if (components != null && index >= components[2] && index <
@@ -266,8 +264,7 @@ private URIUtility() {
      * otherwise, false.
      */
     public static boolean hasScheme(String refValue) {
-      int[] segments = (
-        refValue == null) ? null : splitIRI(
+      int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
         refValue.length(),
@@ -296,66 +293,55 @@ private URIUtility() {
 
     private static boolean isHexChar(char c) {
       return (c >= 'a' && c <= 'f') ||
-        (c >= 'A' && c <= 'F') ||
-        (c >= '0' && c <= '9');
+        (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
     }
 
     private static boolean isIfragmentChar(int c) {
       // '%' omitted
-      return (c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
-        (c >= 0xa0 && c <= 0xd7ff) ||
-        (c >= 0xf900 && c <= 0xfdcf) ||
+        (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean isIpchar(int c) {
       // '%' omitted
-      return (c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
-        (c >= 0xa0 && c <= 0xd7ff) ||
-        (c >= 0xf900 && c <= 0xfdcf) ||
+        (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean isIqueryChar(int c) {
       // '%' omitted
-      return (c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
-        (c >= 0xa0 && c <= 0xd7ff) ||
-        (c >= 0xe000 && c <= 0xfdcf) ||
+        (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xe000 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0x10fffd && (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean isIRegNameChar(int c) {
       // '%' omitted
-      return (c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
-        (c >= 0xa0 && c <= 0xd7ff) ||
-        (c >= 0xf900 && c <= 0xfdcf) ||
+        (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean isIUserInfoChar(int c) {
       // '%' omitted
-      return (c >= 'a' && c <= 'z') ||
-        (c >= 'A' && c <= 'Z') ||
+      return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
-        (c >= 0xa0 && c <= 0xd7ff) ||
-        (c >= 0xf900 && c <= 0xfdcf) ||
+        (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
         (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
     }
@@ -453,12 +439,13 @@ private URIUtility() {
     }
 
     public static boolean isValidIRI(String s) {
-      return ((
-        s == null) ? null : splitIRI(
-                s,
-                0,
-                s.length(),
-                ParseMode.IRIStrict)) != null;
+      return (
+(
+s == null) ? null : splitIRI(
+s,
+0,
+s.length(),
+ParseMode.IRIStrict)) != null;
     }
 
     private static String normalizePath(String path) {
@@ -475,10 +462,8 @@ private URIUtility() {
       int index = 0;
       while (index < len) {
         char c = path.charAt(index);
-        if ((index + 3 <= len && c == '/' &&
-             path.charAt(index + 1) == '.' &&
-             path.charAt(index + 2) == '/') ||
-            (index + 2 == len && c == '.' &&
+        if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+             path.charAt(index + 2) == '/') || (index + 2 == len && c == '.' &&
              path.charAt(index + 1) == '.')) {
           // begins with "/./" or is "..";
           // move index by 2
@@ -486,16 +471,14 @@ private URIUtility() {
           continue;
         }
         if (index + 3 <= len && c == '.' &&
-            path.charAt(index + 1) == '.' &&
-            path.charAt(index + 2) == '/') {
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '/') {
           // begins with "../";
           // move index by 3
           index += 3;
           continue;
         }
         if ((index + 2 <= len && c == '.' &&
-             path.charAt(index + 1) == '/') ||
-            (index + 1 == len && c == '.')) {
+             path.charAt(index + 1) == '/') || (index + 1 == len && c == '.')) {
           // begins with "./" or is ".";
           // move index by 1
           ++index;
@@ -508,8 +491,7 @@ private URIUtility() {
           break;
         }
         if (index + 3 == len && c == '/' &&
-            path.charAt(index + 1) == '.' &&
-            path.charAt(index + 2) == '.') {
+            path.charAt(index + 1) == '.' && path.charAt(index + 2) == '.') {
           // is "/.."; remove last segment,
           // append "/" and return
           int index2 = builder.length() - 1;
@@ -526,10 +508,8 @@ private URIUtility() {
           builder.append('/');
           break;
         }
-        if (index + 4 <= len && c == '/' &&
-            path.charAt(index + 1) == '.' &&
-            path.charAt(index + 2) == '.' &&
-            path.charAt(index + 3) == '/') {
+        if (index + 4 <= len && c == '/' && path.charAt(index + 1) == '.' &&
+            path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
           // begins with "/../"; remove last segment
           int index2 = builder.length() - 1;
           while (index2 >= 0) {
@@ -562,19 +542,19 @@ private URIUtility() {
     }
 
     private static int parseDecOctet(
-      String s,
-      int index,
-      int endOffset,
-      int c,
-      int delim) {
+String s,
+int index,
+int endOffset,
+int c,
+int delim) {
       if (c >= '1' && c <= '9' && index + 2 < endOffset &&
           s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9' &&
           s.charAt(index + 2) == delim) {
         return ((c - '0') * 10) + (s.charAt(index + 1) - '0');
       }
       if (c == '2' && index + 3 < endOffset &&
-          (s.charAt(index + 1) == '5') &&
-          (s.charAt(index + 2) >= '0' && s.charAt(index + 2) <= '5') &&
+       (s.charAt(index + 1) == '5') && (s.charAt(index + 2) >= '0' && s.charAt(index + 2) <= '5'
+) &&
           s.charAt(index + 3) == delim) {
         return 250 + (s.charAt(index + 2) - '0');
       }
@@ -624,8 +604,7 @@ private URIUtility() {
         hex = false;
         while (index < endOffset) {
           char c = s.charAt(index);
-          if ((c >= 'a' && c <= 'z') ||
-              (c >= 'A' && c <= 'Z') ||
+          if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
               (c >= '0' && c <= '9') ||
               ((c & 0x7F) == c && ":-._~!$&'()*+,;=".indexOf(c) >= 0)) {
             hex = true;
@@ -689,11 +668,11 @@ private URIUtility() {
                 }
                 char tmpc = (index < endOffset) ? s.charAt(index) : '\0';
                 decOctet = parseDecOctet(
-                  s,
-                  index,
-                  endOffset,
-                  tmpc,
-                  '.');
+s,
+index,
+endOffset,
+tmpc,
+'.');
                 if (decOctet >= 100) {
                   index += 4;
                 } else if (decOctet >= 10) {
@@ -788,8 +767,7 @@ private URIUtility() {
               }
               if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
              (c >= '0' && c <= '9') || c == '.' || c == '_' || c == '-' ||
-                    c ==
-                  '~') {
+                c == '~') {
                 // unreserved character under RFC3986
                 ++index;
                 haveChar = true;
@@ -808,9 +786,9 @@ private URIUtility() {
     }
 
     private static String pathParent(
-      String refValue,
-      int startIndex,
-      int endIndex) {
+String refValue,
+int startIndex,
+int endIndex) {
       if (startIndex > endIndex) {
         return "";
       }
@@ -869,11 +847,10 @@ private URIUtility() {
      * If base is null or is not a valid IRI, returns refValue.
      */
     public static String relativeResolve(
-      String refValue,
-      String baseURI,
-      ParseMode parseMode) {
-      int[] segments = (
-        refValue == null) ? null : splitIRI(
+String refValue,
+String baseURI,
+ParseMode parseMode) {
+      int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
         refValue.length(),
@@ -883,10 +860,10 @@ private URIUtility() {
       }
       int[] segmentsBase = (
         baseURI == null) ? null : splitIRI(
-        baseURI,
-        0,
-        baseURI.length(),
-        parseMode);
+baseURI,
+0,
+baseURI.length(),
+parseMode);
       if (segmentsBase == null) {
         return refValue;
       }
@@ -927,9 +904,9 @@ private URIUtility() {
           } else {
             merged.append(
               pathParent(
-                baseURI,
-                segmentsBase[4],
-                segmentsBase[5]));
+baseURI,
+segmentsBase[4],
+segmentsBase[5]));
             appendPath(merged, refValue, segments);
             builder.append(normalizePath(merged.toString()));
           }
@@ -979,10 +956,10 @@ private URIUtility() {
      * or is not a valid IRI, returns null.
      */
     public static int[] splitIRI(
-      String s,
-      int offset,
-      int length,
-      ParseMode parseMode) {
+String s,
+int offset,
+int length,
+ParseMode parseMode) {
       if (s == null) {
         return null;
       }
@@ -1013,15 +990,12 @@ private URIUtility() {
           break;
         }
         if (strict && index == offset && !((c >= 'a' && c <= 'z') ||
-                                           (c >= 'A' && c <=
-                                                               'Z'))) {
+                (c >= 'A' && c <= 'Z'))) {
           break;
         }
         if (strict && index > offset &&
         !((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' &&
-              c <=
-                                                                   '9') ||
-              c == '+' || c == '-' || c == '.')) {
+              c <= '9') || c == '+' || c == '-' || c == '.')) {
           break;
         }
         if (!strict && (c == '#' || c == ':' || c == '?' || c == '/')) {

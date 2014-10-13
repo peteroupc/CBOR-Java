@@ -59,9 +59,9 @@ at: http://upokecenter.com/d/
       }
 
     public DigitShiftAccumulator (
-      BigInteger bigint,
-      int lastDiscarded,
-      int olderDiscarded) {
+BigInteger bigint,
+int lastDiscarded,
+int olderDiscarded) {
       if (bigint.canFitInInt()) {
         this.shiftedSmall = bigint.intValue();
         if (this.shiftedSmall < 0) {
