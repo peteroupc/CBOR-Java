@@ -1973,7 +1973,7 @@ CBORObject.FromObject(ExtendedRational.Create(10, 1)));
       java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b,
-                                         0x7d  });
+                              0x7d  });
 
         try {
           CBORObject.ReadJSON(ms);
@@ -1989,7 +1989,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x20, (byte)0xef, (byte)0xbb, (byte)0xbf,
-                                          0x7b, 0x7d  });
+                              0x7b, 0x7d  });
 
         try {
           CBORObject.ReadJSON(ms2);
@@ -2007,7 +2007,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
       java.io.ByteArrayInputStream ms3 = null;
 try {
 ms3 = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, (byte)0xef,
-                                          (byte)0xbb, (byte)0xbf, 0x7b, 0x7d  });
+                              (byte)0xbb, (byte)0xbf, 0x7b, 0x7d  });
 
         try {
           CBORObject.ReadJSON(ms3);
@@ -2024,7 +2024,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
       try {
     java.io.ByteArrayInputStream msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0,
           0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
-                                0x65  });
+                              0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x74, 0, 0, 0, 0x72, 0,
           0, 0, 0x75, 0, 0, 0, 0x65  });

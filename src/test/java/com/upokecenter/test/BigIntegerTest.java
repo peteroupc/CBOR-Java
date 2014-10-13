@@ -9,16 +9,17 @@ import com.upokecenter.util.*;
       private String stringValue;
 
       public final String getStringValue() {
- return this.stringValue;
-}
+          return this.stringValue;
+        }
 
       private BigInteger bigintValue;
 
       public final BigInteger getBigIntValue() {
- return this.bigintValue;
-}
+          return this.bigintValue;
+        }
 
       private static final String digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      private static final String digitsLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 
       public static StringAndBigInt Generate(FastRandom rand, int radix) {
         BigInteger bv = BigInteger.ZERO;
@@ -32,7 +33,11 @@ import com.upokecenter.util.*;
         }
         for (int i = 0; i < numDigits; ++i) {
           int digit = rand.NextValue(radix);
-          builder.append(digits.charAt(digit));
+          if (rand.NextValue(2) == 0) {
+            builder.append(digits.charAt(digit));
+          } else {
+            builder.append(digitsLower.charAt(digit));
+          }
           BigInteger bigintTmp = BigInteger.valueOf(radix);
           bv = bv.multiply(bigintTmp);
           bigintTmp = BigInteger.valueOf(digit);
@@ -158,45 +163,45 @@ BigInteger.fromString("-19084941898444092059").bitLength());
         throw new IllegalStateException("", ex);
       }
       try {
- BigInteger.fromRadixString("0", 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixString("0", 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixString("0", 0);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixString("0", 0);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixString("0", -37);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixString("0", -37);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixString("0", Integer.MIN_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixString("0", Integer.MIN_VALUE);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixString("0", Integer.MAX_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixString("0", Integer.MAX_VALUE);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       FastRandom fr = new FastRandom();
       for (int i = 2; i <= 36; ++i) {
         for (int j = 0; j < 100; ++j) {
@@ -218,45 +223,45 @@ BigInteger.fromRadixString(sabi.getStringValue(), i));
         throw new IllegalStateException("", ex);
       }
       try {
- BigInteger.fromRadixSubstring("0", 1, 0, 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixSubstring("0", 1, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixSubstring("0", 0, 0, 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixSubstring("0", 0, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixSubstring("0", -37, 0, 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixSubstring("0", -37, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixSubstring("0", Integer.MIN_VALUE, 0, 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixSubstring("0", Integer.MIN_VALUE, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- BigInteger.fromRadixSubstring("0", Integer.MAX_VALUE, 0, 1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        BigInteger.fromRadixSubstring("0", Integer.MAX_VALUE, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       FastRandom fr = new FastRandom();
       for (int i = 2; i <= 36; ++i) {
         StringBuilder padding = new StringBuilder();
@@ -264,7 +269,7 @@ throw new IllegalStateException("", ex);
           StringAndBigInt sabi = StringAndBigInt.Generate(fr, i);
           padding.append('!');
           BigInteger actualBigInt = BigInteger.fromRadixSubstring(
-                                           padding + sabi.getStringValue(),
+            padding + sabi.getStringValue(),
             i,
             j + 1,
             j + 1 + sabi.getStringValue().length());
@@ -605,13 +610,13 @@ BigInteger.valueOf(Long.MAX_VALUE).longValue());
         BigInteger.valueOf(((long)0xFFFFFFF200000000L)).longValue());
       Assert.assertEquals(
 ((long)0xFFFFFFF280000000L),
-        BigInteger.valueOf(((long)0xFFFFFFF280000000L)).longValue());
+BigInteger.valueOf(((long)0xFFFFFFF280000000L)).longValue());
       Assert.assertEquals(
 ((long)0xFFFFFFF280000001L),
-        BigInteger.valueOf(((long)0xFFFFFFF280000001L)).longValue());
+BigInteger.valueOf(((long)0xFFFFFFF280000001L)).longValue());
       Assert.assertEquals(
 ((long)0xFFFFFFF27FFFFFFFL),
-        BigInteger.valueOf(((long)0xFFFFFFF27FFFFFFFL)).longValue());
+BigInteger.valueOf(((long)0xFFFFFFF27FFFFFFFL)).longValue());
       Assert.assertEquals(
 0x0000000380000001L,
 BigInteger.valueOf(0x0000000380000001L).longValue());
@@ -647,7 +652,8 @@ BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
         throw new IllegalStateException("", ex);
       }
       try {
-BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueChecked();
+   BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE)
+          .longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -694,22 +700,22 @@ BigInteger.valueOf(0x90000000L).longValueChecked());
     @Test
     public void TestLongValueUnchecked() {
       Assert.assertEquals(
-      Long.MIN_VALUE,
-      BigInteger.valueOf(Long.MIN_VALUE).longValueUnchecked());
+        Long.MIN_VALUE,
+        BigInteger.valueOf(Long.MIN_VALUE).longValueUnchecked());
       Assert.assertEquals(
 Long.MAX_VALUE,
 BigInteger.valueOf(Long.MAX_VALUE).longValueUnchecked());
       Assert.assertEquals(
 Long.MAX_VALUE,
-        BigInteger.valueOf(Long.MIN_VALUE)
-        .subtract(BigInteger.ONE).longValueUnchecked());
+                      BigInteger.valueOf(Long.MIN_VALUE)
+                      .subtract(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
 Long.MIN_VALUE,
 BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
 ((long)0xFFFFFFF200000000L),
-        BigInteger.valueOf(((long)0xFFFFFFF200000000L))
-        .longValueUnchecked());
+                      BigInteger.valueOf(((long)0xFFFFFFF200000000L))
+                      .longValueUnchecked());
       Assert.assertEquals(
         ((long)0xFFFFFFF280000000L),
         BigInteger.valueOf(((long)0xFFFFFFF280000000L))
@@ -892,6 +898,116 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
     public void TestToByteArray() {
       // not implemented yet
     }
+
+    private static String ToUpperCaseAscii(String str) {
+      if (str == null) {
+        return null;
+      }
+      int len = str.length();
+      char c = (char)0;
+      boolean hasLowerCase = false;
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'a' && c <= 'z') {
+          hasLowerCase = true;
+          break;
+        }
+      }
+      if (!hasLowerCase) {
+        return str;
+      }
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'a' && c <= 'z') {
+          builder.append((char)(c - 0x20));
+        } else {
+          builder.append(c);
+        }
+      }
+      return builder.toString();
+    }
+
+    @Test
+    public void TestToRadixString() {
+      FastRandom fr = new FastRandom();
+      try {
+        BigInteger.ONE.toRadixString(-1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.ONE.toRadixString(0);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.ONE.toRadixString(1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.ONE.toRadixString(37);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.ONE.toRadixString(Integer.MIN_VALUE);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.ONE.toRadixString(Integer.MAX_VALUE);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      for (int i = 2; i <= 36; ++i) {
+        for (int j = 0; j < 100; ++j) {
+          StringAndBigInt sabi = StringAndBigInt.Generate(fr, i);
+          // Upper case result expected
+          String expected = ToUpperCaseAscii(sabi.getStringValue());
+          int k = 0;
+          // Expects result with no unnecessary leading zeros
+          boolean negative = sabi.getBigIntValue().signum() < 0;
+          if (expected.charAt(0) == '-') {
+            ++k;
+          }
+          while (k < expected.length() - 1) {
+            if (expected.charAt(k) == '0') {
+              ++k;
+            } else {
+              break;
+            }
+          }
+          expected = expected.substring(k);
+          if (negative) {
+            expected = "-" + expected;
+          }
+          Assert.assertEquals(
+expected,
+sabi.getBigIntValue().toRadixString(i));
+        }
+      }
+    }
+
     @Test
     public void TestToString() {
       // not implemented yet

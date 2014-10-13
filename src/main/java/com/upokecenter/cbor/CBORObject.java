@@ -263,7 +263,7 @@ public final void setConverter(Object value) {
       if (bigintTag.bitLength() > 64) {
         throw new IllegalArgumentException("bigintTag.bitLength (" +
                 (long)bigintTag.bitLength() + ") is more than " +
-                                    "64");
+                              "64");
       }
       synchronized (tagHandlers) {
         tagHandlers.put(bigintTag, handler);
@@ -505,7 +505,7 @@ public final void setConverter(Object value) {
      */
     public int CompareToIgnoreTags(CBORObject other) {
       return (other == null) ? 1 : ((this == other) ? 0 :
-                                    this.Untag().compareTo(other.Untag()));
+                              this.Untag().compareTo(other.Untag()));
     }
 
     /**
@@ -586,7 +586,7 @@ public int compareTo(CBORObject other) {
           return 1;
         }
         cmp = (simpleValueA == simpleValueB) ? 0 : ((simpleValueA <
-                                                     simpleValueB) ? -1 : 1);
+                              simpleValueB) ? -1 : 1);
       } else if (typeA == typeB) {
         switch (typeA) {
             case CBORObjectTypeInteger: {
@@ -601,7 +601,7 @@ public int compareTo(CBORObject other) {
               // Treat NaN as greater than all other numbers
               cmp = Float.isNaN(a) ? (Float.isNaN(b) ? 0 : 1) :
                 (Float.isNaN(b) ? (-1) : ((a == b) ? 0 : ((a < b) ? -1 :
-                                                           1)));
+                              1)));
               break;
             }
             case CBORObjectTypeBigInteger: {
@@ -616,7 +616,7 @@ public int compareTo(CBORObject other) {
               // Treat NaN as greater than all other numbers
               cmp = Double.isNaN(a) ? (Double.isNaN(b) ? 0 : 1) :
                 (Double.isNaN(b) ? (-1) : ((a == b) ? 0 : ((a < b) ? -1 :
-                                                           1)));
+                              1)));
               break;
             }
             case CBORObjectTypeExtendedDecimal: {
@@ -1045,7 +1045,7 @@ public boolean equals(CBORObject other) {
           valueHashCode += 651869479 * itemHashCode;
         }
         valueHashCode += 651869483 * (this.itemtypeValue +
-                                 this.tagLow + this.tagHigh);
+                              this.tagLow + this.tagHigh);
       }
       return valueHashCode;
     }
@@ -1372,7 +1372,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {
         throw new IllegalArgumentException("tagValue (" + tagValue +
-                                    ") is less than " + "0");
+                              ") is less than " + "0");
       }
       CBORObject obj = this;
       while (true) {
@@ -3328,7 +3328,7 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
       }
       if (simpleValue >= 24 && simpleValue < 32) {
         throw new IllegalArgumentException("Simple value is from 24 to 31: " +
-                                    simpleValue);
+                              simpleValue);
       }
       if (simpleValue < 32) {
         return valueFixedObjects[0xe0 + simpleValue];
@@ -3638,7 +3638,7 @@ otherValue));
      * {@code dic} is null.
      */
     public static <TKey, TValue> CBORObject FromObject(Map<TKey,
-                                                      TValue> dic) {
+                              TValue> dic) {
       if (dic == null) {
         return CBORObject.Null;
       }
