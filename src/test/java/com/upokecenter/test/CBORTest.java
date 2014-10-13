@@ -312,26 +312,26 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
                                      (byte)0x90, 0x4c, 0x14, (byte)0xba, 0x59,
                 (byte)0xf0, (byte)0xc6,
                       (byte)0xcb, (byte)0x8c, (byte)0x8d, 0x40, (byte)0x80  }));
- AddSubCompare(
-CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+      AddSubCompare(
+     CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
         (byte)0x82, 0x38, (byte)0xc7, 0x3b, 0x00, 0x00, 0x08,
                 (byte)0xbf, (byte)0xda, (byte)0xaf, 0x73, 0x46  }),
-        CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a, (byte)0x9b,
+             CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a, (byte)0x9b,
           (byte)0x9a, (byte)0x9c, (byte)0xb4, (byte)0x95, (byte)0xbf, 0x71  }));
- AddSubCompare(
-CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0xbb,
+      AddSubCompare(
+     CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0xbb,
         0x0c, (byte)0xf7, 0x52  }),
-        CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0x82, 0x00,
+             CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0x82, 0x00,
                                      (byte)0xbf, (byte)0xf9  }));
       AddSubCompare(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x1f,
                                      (byte)0x80, (byte)0xdb, (byte)0x9b  }),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x31,
           (byte)0x90, (byte)0xea, 0x16, (byte)0xbe, (byte)0x80, 0x0b, 0x37  }));
- AddSubCompare(
-CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x3c,
+      AddSubCompare(
+     CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x3c,
         0x00, (byte)0xcf, (byte)0xb6, (byte)0xbd, (byte)0xff, 0x37, 0x38  }),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x30,
+             CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x30,
                                      (byte)0x80, 0x75, 0x63  }));
       AddSubCompare(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
@@ -4226,7 +4226,7 @@ CBORObject.FromObject(Double.NaN),
         BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(500)),
         BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(500)),
         ((BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE)).subtract(BigInteger.valueOf(500)),
-        maxuint, };
+        maxuint };
       if (CBORObject.True.isTagged())Assert.fail();
       Assert.assertEquals(
 BigInteger.ZERO.subtract(BigInteger.ONE),
@@ -4252,7 +4252,7 @@ CBORObject.True.getInnermostTag());
           Assert.assertEquals(1, tags.length);
           Assert.assertEquals(bigintTemp, tags[0]);
           if (!obj.getInnermostTag().equals(bigintTemp)) {
-            Assert.assertEquals(String.format(java.util.Locale.US,"obj tag doesn't match: %s" , obj),bigintTemp,obj.getInnermostTag());
+            Assert.assertEquals(String.format(java.util.Locale.US,"obj tag doesn't match: %s", obj),bigintTemp,obj.getInnermostTag());
           }
           TestCommon.AssertSer(
 obj,

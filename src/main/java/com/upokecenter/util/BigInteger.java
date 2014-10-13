@@ -20,7 +20,6 @@ at: http://upokecenter.com/d/
      * checks if each side of the operator is the same instance).</p>
      */
   public final class BigInteger implements Comparable<BigInteger> {
-
     private static int CountWords(short[] array, int n) {
       while (n != 0 && array[n - 1] == 0) {
         --n;
@@ -2108,8 +2107,8 @@ boolean returnRemainder) {
           }
         }
       }
-    return returnRemainder ? ((short)(((int)dividendHigh) &
-        0xffff)) : ((short)(((int)dividendLow) & 0xffff));
+      return returnRemainder ? ((short)(((int)dividendHigh) &
+          0xffff)) : ((short)(((int)dividendLow) & 0xffff));
     }
 
     private static short DivideUnsigned(int x, short y) {
@@ -2232,8 +2231,8 @@ int iend) {
             int a0b0high = (valueA0B0 >> 16) & 0xffff;
             int valueA1B1 = valueA1 * valueB1;
             int tempInt;
-       tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
-              0xffff) + (((int)valueA1B1) & 0xffff);
+            tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
+                   0xffff) + (((int)valueA1B1) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
             tempInt = valueA1B1 + (((int)(tempInt >> 16)) & 0xffff) +
@@ -2262,8 +2261,8 @@ int iend) {
 
             int valueA1B1 = valueA1 * valueB1;
             int tempInt;
-       tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
-              0xffff) + (((int)valueA1B1) & 0xffff);
+            tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
+                   0xffff) + (((int)valueA1B1) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
             tempInt = valueA1B1 + (((int)(tempInt >> 16)) & 0xffff) +
@@ -3668,13 +3667,31 @@ shiftBits);
       if (str == null) {
         throw new NullPointerException("str");
       }
-      return fromSubstring(str, 0, str.length());
+      return fromRadixSubstring(str, 10, 0, str.length());
     }
 
-    private static final int MaxSafeInt = 214748363;
+    /**
+     * Converts a string to an arbitrary-precision integer in a given radix.
+     * @param str A string containing only digits, except that it may start with a
+     * minus sign.
+     * @param radix A base from 2 to 36. The possible digits start from 0 to 9,
+     * then from A to Z in base 36, and the possible digits start from 0 to
+     * 9, then from A to F in base 16.
+     * @return A BigInteger object with the same value as given in the string.
+     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws NumberFormatException The parameter {@code str} is in an invalid format.
+     */
+    public static BigInteger fromRadixString(String str, int radix) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      return fromRadixSubstring(str, radix, 0, str.length());
+    }
 
     /**
-     * Converts a portion of a string to an arbitrary-precision integer.
+     * Converts a portion of a string to an arbitrary-precision integer. The string
+     * portion can begin with a minus sign ('-') to indicate that it's
+     * negative.
      * @param str A string object.
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
@@ -3694,6 +3711,65 @@ int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
+      return fromRadixSubstring(str, 10, index, endIndex);
+    }
+
+    private static int[] valueMaxSafeInts = { 1073741823, 715827881,
+      536870911, 429496728, 357913940, 306783377, 268435455, 238609293,
+      214748363, 195225785, 178956969, 165191048, 153391688, 143165575,
+      134217727, 126322566, 119304646, 113025454, 107374181, 102261125,
+      97612892, 93368853, 89478484, 85899344, 82595523, 79536430, 76695843,
+      74051159, 71582787, 69273665, 67108863, 65075261, 63161282, 61356674,
+      59652322 };
+
+ private static int[] valueCharToDigit = { 36, 36, 36, 36, 36, 36, 36,
+      36,
+      36, 36, 36, 36, 36, 36, 36, 36,
+      36, 36, 36, 36, 36, 36, 36, 36,
+      36, 36, 36, 36, 36, 36, 36, 36,
+      36, 36, 36, 36, 36, 36, 36, 36,
+      36, 36, 36, 36, 36, 36, 36, 36,
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 36, 36, 36, 36, 36, 36,
+      36, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 36, 36, 36, 36,
+      36, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+      25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 36, 36, 36, 36 };
+
+    /**
+     * Converts a portion of a string to an arbitrary-precision integer in a given
+     * radix. The string portion can begin with a minus sign ('-') to
+     * indicate that it's negative.
+     * @param str A string object.
+     * @param radix A base from 2 to 36. The possible digits start from 0 to 9,
+     * then from A to Z in base 36, and the possible digits start from 0 to
+     * 9, then from A to F in base 16.
+     * @param index The index of the string that starts the string portion.
+     * @param endIndex The index of the string that ends the string portion. The
+     * length will be index + endIndex - 1.
+     * @return A BigInteger object with the same value as given in the string
+     * portion.
+     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException The parameter {@code index} is less than 0, {@code
+     * endIndex} is less than 0, or either is greater than the string's
+     * length, or {@code endIndex} is less than {@code index} .
+     * @throws NumberFormatException The string portion is empty or in an invalid format.
+     */
+    public static BigInteger fromRadixSubstring(
+    String str,
+    int radix,
+    int index,
+    int endIndex) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (radix < 2) {
+        throw new IllegalArgumentException("radix (" + radix +
+          ") is less than 2");
+      }
+      if (radix > 36) {
+        throw new IllegalArgumentException("radix (" + radix +
+          ") is more than 36");
+      }
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index + ") is less than " +
                                     "0");
@@ -3703,8 +3779,8 @@ int endIndex) {
                                     str.length());
       }
       if (endIndex < 0) {
-      throw new IllegalArgumentException("endIndex (" + endIndex +
-          ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+            ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -3718,62 +3794,121 @@ int endIndex) {
         throw new NumberFormatException("No digits");
       }
       boolean negative = false;
-      if (str.charAt(0) == '-') {
+      if (str.charAt(index) == '-') {
         ++index;
+        if (index == endIndex) {
+          throw new NumberFormatException("No digits");
+        }
         negative = true;
       }
-      short[] bigint = new short[4];
-      boolean haveDigits = false;
-      boolean haveSmallInt = true;
-      int smallInt = 0;
-      for (int i = index; i < endIndex; ++i) {
-        char c = str.charAt(i);
-        if (c < '0' || c > '9') {
-          throw new NumberFormatException("Illegal character found");
-        }
-        haveDigits = true;
-        int digit = (int)(c - '0');
-        if (haveSmallInt && smallInt < MaxSafeInt) {
-          smallInt *= 10;
-          smallInt += digit;
-        } else {
-          if (haveSmallInt) {
-            bigint[0] = ((short)(smallInt & 0xffff));
-            bigint[1] = ((short)((smallInt >> 16) & 0xffff));
-            haveSmallInt = false;
-          }
-          // Multiply by 10
-          short carry = 0;
-          int n = bigint.length;
-          for (int j = 0; j < n; ++j) {
-            int p;
-            {
-              p = (((int)bigint[j]) & 0xffff) * 10;
-              p += ((int)carry) & 0xffff;
-              bigint[j] = (short)p;
-              carry = (short)(p >> 16);
-            }
-          }
-          if (carry != 0) {
-            bigint = GrowForCarry(bigint, carry);
-          }
-          // Add the parsed digit
-          if (digit != 0) {
-            int d = bigint[0] & 0xffff;
-            if (d <= 65526) {
-              bigint[0] = ((short)(d + digit));
-            } else if (Increment(bigint, 0, bigint.length, (short)digit) != 0) {
-              bigint = GrowForCarry(bigint, (short)1);
-            }
-          }
+      // Skip leading zeros
+      for (; index < endIndex; ++index) {
+        char c = str.charAt(index);
+        if (c != 0x30) {
+          break;
         }
       }
-      if (!haveDigits) {
-        throw new NumberFormatException("No digits");
+      int effectiveLength = endIndex - index;
+      if (effectiveLength == 0) {
+        return BigInteger.ZERO;
       }
-      if (haveSmallInt) {
-        bigint[0] = ((short)(smallInt & 0xffff));
-        bigint[1] = ((short)((smallInt >> 16) & 0xffff));
+      short[] bigint;
+      if (radix == 16) {
+        // Special case for hexadecimal radix
+        int leftover = effectiveLength & 3;
+        int wordCount = effectiveLength >> 2;
+        if (leftover != 0) {
+          ++wordCount;
+        }
+        bigint = new short[wordCount];
+        int currentDigit = wordCount - 1;
+        // Get most significant digits if effective
+        // length is not divisible by 4
+        if (leftover != 0) {
+          int extraWord = 0;
+          for (int i = 0; i < leftover; ++i) {
+            extraWord <<= 4;
+            char c = str.charAt(index + i);
+            int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+            if (digit >= 16) {
+              throw new NumberFormatException("Illegal character found");
+            }
+            extraWord |= digit;
+          }
+          bigint[currentDigit] = ((short)extraWord);
+          --currentDigit;
+          index += leftover;
+        }
+
+        while (index < endIndex) {
+          char c = str.charAt(index + 3);
+          int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          int word = digit;
+          c = str.charAt(index + 2);
+          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          word |= digit << 4;
+          c = str.charAt(index + 1);
+          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          word |= digit << 8;
+          c = str.charAt(index);
+          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          word |= digit << 12;
+          index += 4;
+          bigint[currentDigit] = ((short)word);
+          --currentDigit;
+        }
+      } else {
+        bigint = new short[4];
+        boolean haveSmallInt = true;
+        int maxSafeInt = valueMaxSafeInts[radix - 2];
+        int maxShortPlusOneMinusRadix = 65536 - radix;
+        int smallInt = 0;
+        for (int i = index; i < endIndex; ++i) {
+          char c = str.charAt(i);
+          int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          if (digit >= radix) {
+            throw new NumberFormatException("Illegal character found");
+          }
+          if (haveSmallInt && smallInt < maxSafeInt) {
+            smallInt *= radix;
+            smallInt += digit;
+          } else {
+            if (haveSmallInt) {
+              bigint[0] = ((short)(smallInt & 0xffff));
+              bigint[1] = ((short)((smallInt >> 16) & 0xffff));
+              haveSmallInt = false;
+            }
+            // Multiply by the radix
+            short carry = 0;
+            int n = bigint.length;
+            for (int j = 0; j < n; ++j) {
+              int p;
+              {
+                p = (((int)bigint[j]) & 0xffff) * radix;
+                p += ((int)carry) & 0xffff;
+                bigint[j] = (short)p;
+                carry = (short)(p >> 16);
+              }
+            }
+            if (carry != 0) {
+              bigint = GrowForCarry(bigint, carry);
+            }
+            // Add the parsed digit
+            if (digit != 0) {
+              int d = bigint[0] & 0xffff;
+              if (d <= maxShortPlusOneMinusRadix) {
+                bigint[0] = ((short)(d + digit));
+              } else if (Increment(bigint, 0, bigint.length, (short)digit) !=
+                   0) {
+                bigint = GrowForCarry(bigint, (short)1);
+              }
+            }
+          }
+        }
+        if (haveSmallInt) {
+          bigint[0] = ((short)(smallInt & 0xffff));
+          bigint[1] = ((short)((smallInt >> 16) & 0xffff));
+        }
       }
       int count = CountWords(bigint, bigint.length);
       return (count == 0) ? BigInteger.ZERO : new BigInteger(
