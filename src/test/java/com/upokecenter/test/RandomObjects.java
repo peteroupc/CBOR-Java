@@ -271,13 +271,24 @@ private RandomObjects() {
       return ExtendedDecimal.FromString(RandomDecimalString(r));
     }
 
+    private static final String HexDigits = "0123456789ABCDEF";
+
     public static BigInteger RandomBigInteger(FastRandom r) {
+      int selection = r.NextValue(100);
+      if (selection < 40) {
+        StringAndBigInt sabi = StringAndBigInt.Generate(r, 16);
+        return sabi.getBigIntValue();
+      } else if (selection < 50) {
+        StringAndBigInt sabi = StringAndBigInt.Generate(r, 2 + r.NextValue(35));
+        return sabi.getBigIntValue();
+      } else {
       int count = r.NextValue(60) + 1;
       byte[] bytes = new byte[count];
       for (int i = 0; i < count; ++i) {
         bytes[i] = (byte)((int)r.NextValue(256));
       }
       return BigInteger.fromByteArray(bytes, true);
+     }
     }
 
     public static ExtendedFloat RandomExtendedFloat(FastRandom r) {

@@ -5,53 +5,6 @@ import org.junit.Test;
 import com.upokecenter.util.*;
 
   public class BigIntegerTest {
-    private static final class StringAndBigInt {
-      private String stringValue;
-
-      public final String getStringValue() {
-          return this.stringValue;
-        }
-
-      private BigInteger bigintValue;
-
-      public final BigInteger getBigIntValue() {
-          return this.bigintValue;
-        }
-
-      private static final String digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      private static final String digitsLower = "0123456789abcdefghijklmnopqrstuvwxyz";
-
-      public static StringAndBigInt Generate(FastRandom rand, int radix) {
-        BigInteger bv = BigInteger.ZERO;
-        StringAndBigInt sabi = new StringAndBigInt();
-        int numDigits = 1 + rand.NextValue(100);
-        boolean negative = false;
-        StringBuilder builder = new StringBuilder();
-        if (rand.NextValue(2) == 0) {
-          builder.append('-');
-          negative = true;
-        }
-        for (int i = 0; i < numDigits; ++i) {
-          int digit = rand.NextValue(radix);
-          if (rand.NextValue(2) == 0) {
-            builder.append(digits.charAt(digit));
-          } else {
-            builder.append(digitsLower.charAt(digit));
-          }
-          BigInteger bigintTmp = BigInteger.valueOf(radix);
-          bv = bv.multiply(bigintTmp);
-          bigintTmp = BigInteger.valueOf(digit);
-          bv = bv.add(bigintTmp);
-        }
-        if (negative) {
-          bv = bv.negate();
-        }
-        sabi.bigintValue = bv;
-        sabi.stringValue = builder.toString();
-        return sabi;
-      }
-    }
-
     @Test
     public void TestAbs() {
       // not implemented yet
@@ -272,7 +225,7 @@ BigInteger.fromRadixString(sabi.getStringValue(), i));
             padding + sabi.getStringValue(),
             i,
             j + 1,
-            j + 1 + sabi.getStringValue().length());
+            j + 1 + sabi.getStringValue().length);
           Assert.assertEquals(
 sabi.getBigIntValue(),
 actualBigInt);
@@ -768,7 +721,34 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
     }
     @Test
     public void TestMultiply() {
-      // not implemented yet
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 1000; ++i) {
+        BigInteger bigintA = RandomObjects.RandomBigInteger(r);
+        BigInteger bigintB = bigintA .add(BigInteger.ONE);
+        BigInteger bigintC = bigintA.multiply(bigintB);
+        // Test near-squaring
+        if (bigintA.signum() == 0 || bigintB.signum() == 0) {
+          Assert.assertEquals(BigInteger.ZERO, bigintC);
+        }
+        if (bigintA.equals(BigInteger.ONE)) {
+          Assert.assertEquals(bigintB, bigintC);
+        }
+        if (bigintB.equals(BigInteger.ONE)) {
+          Assert.assertEquals(bigintA, bigintC);
+        }
+        bigintB = bigintA;
+        // Test squaring
+        bigintC = bigintA.multiply(bigintB);
+        if (bigintA.signum() == 0 || bigintB.signum() == 0) {
+          Assert.assertEquals(BigInteger.ZERO, bigintC);
+        }
+        if (bigintA.equals(BigInteger.ONE)) {
+          Assert.assertEquals(bigintB, bigintC);
+        }
+        if (bigintB.equals(BigInteger.ONE)) {
+          Assert.assertEquals(bigintA, bigintC);
+        }
+      }
     }
     @Test
     public void TestNegate() {
@@ -860,6 +840,21 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
       bigint = bigint.shiftLeft(100);
       Assert.assertEquals(bigint.shiftLeft(12), bigint.shiftRight(-12));
       Assert.assertEquals(bigint.shiftLeft(-12), bigint.shiftRight(12));
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 1000; ++i) {
+        BigInteger bigintA = RandomObjects.RandomBigInteger(r);
+        BigInteger bigintB = bigintA;
+        for (int j = 0; j < 100; ++j) {
+          BigInteger ba = bigintA;
+          ba = ba.shiftLeft(j);
+          Assert.assertEquals(bigintB, ba);
+          int negj = -j;
+          ba = bigintA;
+          ba = ba.shiftRight(negj);
+          Assert.assertEquals(bigintB, ba);
+          bigintB = bigintB.multiply(BigInteger.valueOf(2));
+        }
+      }
     }
     @Test
     public void TestShiftRight() {
@@ -867,6 +862,31 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
       bigint = bigint.shiftLeft(80);
       Assert.assertEquals(bigint.shiftLeft(12), bigint.shiftRight(-12));
       Assert.assertEquals(bigint.shiftLeft(-12), bigint.shiftRight(12));
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 1000; ++i) {
+        int smallint = r.NextValue(0x7fffffff);
+        BigInteger bigintA = BigInteger.valueOf(smallint);
+        String str = bigintA.toString();
+        for (int j = 32; j < 80; ++j) {
+          TestCommon.DoTestShiftRight(str, j, "0");
+          TestCommon.DoTestShiftRight("-" + str, j, "-1");
+        }
+      }
+      for (int i = 0; i < 1000; ++i) {
+        BigInteger bigintA = RandomObjects.RandomBigInteger(r);
+        bigintA = (bigintA).abs();
+        BigInteger bigintB = bigintA;
+        for (int j = 0; j < 100; ++j) {
+          BigInteger ba = bigintA;
+          ba = ba.shiftRight(j);
+          Assert.assertEquals(bigintB, ba);
+          int negj = -j;
+          ba = bigintA;
+          ba = ba.shiftLeft(negj);
+          Assert.assertEquals(bigintB, ba);
+          bigintB = bigintB.divide(BigInteger.valueOf(2));
+        }
+      }
     }
     @Test
     public void TestSign() {

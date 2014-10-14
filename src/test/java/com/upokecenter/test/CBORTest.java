@@ -217,7 +217,7 @@ o2,
     @Test
     public void TestDecFracCompareIntegerVsBigFraction() {
       ExtendedDecimal a = ExtendedDecimal.FromString(
-          "7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
+"7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
       ExtendedDecimal b = ExtendedDecimal.FromString("5");
       Assert.assertEquals(1, a.compareTo(b));
       Assert.assertEquals(-1, b.compareTo(a));
@@ -906,8 +906,7 @@ BigInteger.valueOf(5234222),
 BigInteger.valueOf(-24936668661488L))));
       Assert.assertEquals(1, actual);
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x31,
-                              0x19, 0x03, 0x43
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00,
+                0x19, 0x03, 0x43  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00,
                 (byte)0xa3, 0x35, (byte)0xc8, (byte)0xc5,
                 (byte)0x82, 0x1b, 0x00, 0x01, (byte)0xe0,
                 (byte)0xb2, (byte)0x83,
@@ -1051,8 +1050,7 @@ BigInteger.valueOf(-24936668661488L))));
                 (byte)0xe3, (byte)0xec,
                               (byte)0x81, (byte)0x93, 0x6d, (byte)0xa8,
                 (byte)0x9f, 0x58, (byte)0xc2, 0x4f, 0x4e, 0x1c, (byte)0xda,
-                              0x68, (byte)0x8a
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+                0x68, (byte)0x8a  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
                               (byte)0x82, 0x1a, 0x00, 0x4f, 0x01, 0x53,
                 0x1a, 0x14, (byte)0xe4, 0x07, (byte)0x88  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a,
@@ -1161,8 +1159,7 @@ BigInteger.valueOf(-24936668661488L))));
                 (byte)0xdf, 0x2d, 0x6c, 0x3b, (byte)0xfd, 0x0a, 0x64, 0x56,
                 (byte)0xab, 0x6f,
                 (byte)0xd6, (byte)0x8c, 0x60, (byte)0x90, 0x1b, 0x7d,
-                              (byte)0xc7, (byte)0xef
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+             (byte)0xc7, (byte)0xef  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
                 (byte)0x82, 0x1b, 0x00, 0x00, 0x00, 0x24,
                 (byte)0x86, (byte)0xe1,
                               (byte)0x8e, (byte)0xfd, (byte)0xc3, 0x4f,
@@ -1206,8 +1203,7 @@ BigInteger.valueOf(-24936668661488L))));
                               (byte)0xc2, 0x4f, 0x6c, 0x54, 0x2b, 0x00,
                 0x5c, (byte)0xab,
                 0x35, 0x75, 0x2f, (byte)0x98, 0x71, 0x51, 0x75,
-                              0x4b, (byte)0xf5
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
+                0x4b, (byte)0xf5  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x1d,
                 0x7b, (byte)0xaf, 0x6d, (byte)0xd7, (byte)0xb5,
                 (byte)0xa1, (byte)0xb8,
@@ -1295,8 +1291,7 @@ BigInteger.valueOf(-24936668661488L))));
                 0x57, (byte)0x8f,
                 (byte)0xbb, (byte)0xab, (byte)0xb8, (byte)0x8e,
                 0x42, 0x56, (byte)0xe1, (byte)0x82, (byte)0x82, 0x51,
-                              0x07, (byte)0xa9
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+                0x07, (byte)0xa9  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
                               (byte)0x82, 0x1b, (byte)0x80, (byte)0xbc,
                 0x30, (byte)0xc1, 0x2b, 0x01, 0x37, (byte)0x90, (byte)0xc3,
                 0x51, 0x21, (byte)0x8b, (byte)0xa8, (byte)0xda, (byte)0xf7,
@@ -1436,8 +1431,7 @@ BigInteger.valueOf(-24936668661488L))));
                 0x2e, (byte)0x93, (byte)0x96, 0x49, (byte)0xfd, 0x3e, 0x2d,
                 0x47, 0x46,
                 (byte)0xb6, (byte)0xe9, (byte)0xb9, 0x0b, (byte)0x9b,
-                              (byte)0x83, (byte)0xce
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
+             (byte)0x83, (byte)0xce  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc2, 0x49, 0x18,
                 0x6f, 0x19,
                 (byte)0xf9, 0x72, 0x4d, (byte)0x82, 0x4b, (byte)0xf0,
@@ -1476,8 +1470,7 @@ BigInteger.valueOf(-24936668661488L))));
                 (byte)0xd1, 0x35,
                 0x69, (byte)0x9a, (byte)0xb0, (byte)0x91, 0x01,
                 (byte)0x9f, 0x56, (byte)0xb8, 0x6f, 0x2d, (byte)0xda, 0x5b,
-                              (byte)0xa0, 0x38
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+                (byte)0xa0, 0x38  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
                 (byte)0x82, 0x1b, 0x00, 0x00, 0x08, (byte)0xed,
                 0x21, 0x0e, (byte)0x83, (byte)0x9e, (byte)0xc2, 0x58, 0x1c,
                 0x46, 0x67,
@@ -1543,8 +1536,7 @@ BigInteger.valueOf(-24936668661488L))));
                 0x43, 0x43, 0x73, 0x60, (byte)0x87, (byte)0xfc, 0x7f,
                 (byte)0xfd, 0x4c,
                 (byte)0xba, (byte)0x94, 0x7e, 0x17, (byte)0xec,
-                              (byte)0xd1, (byte)0xae, 0x5b
-                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
+       (byte)0xd1, (byte)0xae, 0x5b  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, 0x1b, 0x00, 0x00, 0x4a,
                 0x32, (byte)0x84,
                 0x37, (byte)0x90, (byte)0x8a, (byte)0xc2, 0x58, 0x28,

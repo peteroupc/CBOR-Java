@@ -105,9 +105,9 @@ CBORObject.FromObject(ExtendedRational.FromDouble(-2.5)).Abs());
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        String numberString = numberinfo.get("number").AsString();
         CBORObject cbornumber =
-          CBORObject.FromObject(ExtendedDecimal.FromString(numberinfo.get("number"
-).AsString()));
+          CBORObject.FromObject(ExtendedDecimal.FromString(numberString));
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
           Assert.assertEquals(
 numberinfo.get("integer").AsString(),
@@ -193,8 +193,8 @@ cbornumber.AsBigInteger().toString());
 ).AsString()));
         if (numberinfo.get("byte").AsBoolean()) {
           Assert.assertEquals(
-            BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-            ((int)cbornumber.AsByte()) & 0xff);
+           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
+           ((int)cbornumber.AsByte()) & 0xff);
         } else {
           try {
             cbornumber.AsByte();
@@ -281,8 +281,8 @@ cbornumber.AsBigInteger().toString());
           CBORObject.FromObject(ExtendedDecimal.FromString(numberinfo.get("number"
 ).AsString()));
         AreEqualExact(
-          (double)ExtendedDecimal.FromString(numberinfo.get("number").AsString()).ToDouble(),
-          cbornumber.AsDouble());
+(double)ExtendedDecimal.FromString(numberinfo.get("number").AsString()).ToDouble(),
+cbornumber.AsDouble());
       }
     }
     @Test
@@ -448,8 +448,8 @@ CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedRational());
 ).AsString()));
         if (numberinfo.get("int16").AsBoolean()) {
           Assert.assertEquals(
-            BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-            cbornumber.AsInt16());
+           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
+           cbornumber.AsInt16());
         } else {
           try {
             cbornumber.AsInt16();
@@ -525,8 +525,8 @@ CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedRational());
         CBORObject cbornumbersingle = CBORObject.FromObject(edec.ToSingle());
         if (numberinfo.get("int32").AsBoolean()) {
           Assert.assertEquals(
-            BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-            cbornumber.AsInt32());
+           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
+           cbornumber.AsInt32());
           if (isdouble) {
             Assert.assertEquals(
            BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
