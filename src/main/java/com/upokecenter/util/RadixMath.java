@@ -410,6 +410,8 @@ BigInteger.ZERO,
         if (ctx.getHasMaxPrecision() && ctx.getHasExponentRange() &&
             (roundingOnOverflow == Rounding.Down || roundingOnOverflow ==
              Rounding.ZeroFiveUp ||
+                (roundingOnOverflow == Rounding.OddOrZeroFiveUp ||
+                  roundingOnOverflow == Rounding.Odd) ||
              (roundingOnOverflow == Rounding.Ceiling && neg) ||
              (roundingOnOverflow == Rounding.Floor && !neg))) {
           // Set to the highest possible value for
@@ -467,7 +469,8 @@ FastInteger fastint) {
             incremented |= !fastint.isEvenNumber();
           }
         }
-      } else if (rounding == Rounding.ZeroFiveUp) {
+      } else if (rounding == Rounding.ZeroFiveUp ||
+        (rounding == Rounding.OddOrZeroFiveUp && this.thisRadix != 2)) {
         int radix = this.thisRadix;
         if ((accum.getLastDiscardedDigit() | accum.getOlderDiscardedDigits()) != 0) {
           if (radix == 2) {
@@ -499,6 +502,9 @@ boolean neg,
 BigInteger bigval) {
       boolean incremented = false;
       int radix = this.thisRadix;
+      if (rounding == Rounding.OddOrZeroFiveUp) {
+        rounding = (radix == 2) ? Rounding.Odd : Rounding.ZeroFiveUp;
+      }
       if (rounding == Rounding.HalfUp) {
         incremented |= lastDiscarded >= (radix / 2);
       } else if (rounding == Rounding.HalfEven) {
@@ -523,6 +529,8 @@ BigInteger bigval) {
                 (radix / 2) && olderDiscarded != 0);
       } else if (rounding == Rounding.Up) {
         incremented |= (lastDiscarded | olderDiscarded) != 0;
+      } else if (rounding == Rounding.Odd) {
+        incremented |= (lastDiscarded | olderDiscarded) != 0 && bigval.testBit(0) == false;
       } else if (rounding == Rounding.ZeroFiveUp) {
         if ((lastDiscarded | olderDiscarded) != 0) {
           if (radix == 2) {
@@ -725,23 +733,30 @@ ctx)));
         return this.ReturnQuietNaN(value, ctx);
       }
       BigInteger mant = this.helper.GetMantissa(value);
+      T zero;
       if ((flags & BigNumberFlags.FlagInfinity) == 0 && mant.signum() == 0) {
         if ((flags & BigNumberFlags.FlagNegative) == 0) {
           // positive 0 minus positive 0 is always positive 0
-          return this.RoundToPrecision(
-            this.helper.CreateNewWithFlags(mant, this.helper.GetExponent(value), flags & ~BigNumberFlags.FlagNegative),
-            ctx);
+          zero = this.helper.CreateNewWithFlags(
+mant,
+this.helper.GetExponent(value),
+flags & ~BigNumberFlags.FlagNegative);
+          return this.RoundToPrecision(zero, ctx);
         }
         if (ctx != null && ctx.getRounding() == Rounding.Floor) {
           // positive 0 minus negative 0 is negative 0 only if
           // the rounding is Floor
-          return this.RoundToPrecision(
-            this.helper.CreateNewWithFlags(mant, this.helper.GetExponent(value), flags | BigNumberFlags.FlagNegative),
-            ctx);
+          zero = this.helper.CreateNewWithFlags(
+mant,
+this.helper.GetExponent(value),
+flags | BigNumberFlags.FlagNegative);
+        } else {
+          zero = this.helper.CreateNewWithFlags(
+mant,
+this.helper.GetExponent(value),
+flags & ~BigNumberFlags.FlagNegative);
         }
-        return this.RoundToPrecision(
-          this.helper.CreateNewWithFlags(mant, this.helper.GetExponent(value), flags & ~BigNumberFlags.FlagNegative),
-          ctx);
+        return this.RoundToPrecision(zero, ctx);
       }
       flags ^= BigNumberFlags.FlagNegative;
       return this.RoundToPrecision(
@@ -863,8 +878,8 @@ ctx,
       T a = this.helper.ValueOf(1);
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
-        ctx.getPrecision().add(BigInteger.TEN)).WithRounding(this.thisRadix == 2 ?
-                Rounding.HalfEven : Rounding.ZeroFiveUp);
+        ctx.getPrecision().add(BigInteger.TEN))
+        .WithRounding(Rounding.OddOrZeroFiveUp);
       T two = this.helper.ValueOf(2);
       T b = this.Divide(a, this.SquareRoot(two, ctxdiv), ctxdiv);
       T four = this.helper.ValueOf(4);
@@ -930,8 +945,7 @@ PrecisionContext ctx) {
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         workingPrecision.add(BigInteger.valueOf(6)))
-        .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                      Rounding.ZeroFiveUp);
+        .WithRounding(Rounding.OddOrZeroFiveUp);
       T z = this.Add(this.NegateRaw(thisValue), this.helper.ValueOf(1), null);
       T zpow = this.Multiply(z, z, ctxdiv);
       T guess = this.NegateRaw(z);
@@ -973,8 +987,7 @@ PrecisionContext ctx) {
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         workingPrecision.add(BigInteger.valueOf(6)))
-        .WithRounding(this.thisRadix == 2 ? Rounding.Down :
-                      Rounding.ZeroFiveUp);
+        .WithRounding(Rounding.OddOrZeroFiveUp);
       BigInteger bigintN = BigInteger.valueOf(2);
       BigInteger facto = BigInteger.ONE;
       // Guess starts with 1 + thisValue
@@ -1059,8 +1072,7 @@ ctx);
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         ctx.getPrecision().add(bigError))
-        .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                      Rounding.ZeroFiveUp).WithBlankFlags();
+        .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
       if (sign < 0) {
         // Use the reciprocal for negative powers
         thisValue = this.Divide(one, thisValue, ctxdiv);
@@ -1332,8 +1344,7 @@ BigInteger.ZERO.subtract(BigInteger.ONE),
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         ctx.getPrecision().add(guardDigits));
-      ctxdiv = ctxdiv.WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                              Rounding.ZeroFiveUp).WithBlankFlags();
+      ctxdiv = ctxdiv.WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
       T lnresult = this.Ln(thisValue, ctxdiv);
       /* System.out.println("guard= " + guardDigits + " prec=" + ctx.getPrecision()+
         " newprec= " + ctxdiv.getPrecision());
@@ -1444,8 +1455,7 @@ bigrem = divrem[1]; }
             PrecisionContext ctxdiv = SetPrecisionIfLimited(
               ctx,
               ctx.getPrecision().add(BigInteger.TEN))
-              .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                            Rounding.ZeroFiveUp).WithBlankFlags();
+              .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
             T logNatural = this.Ln(thisValue, ctxdiv);
             T logTen = this.LnTenConstant(ctxdiv);
             // T logTen = this.Ln(this.helper.ValueOf(10), ctxdiv);
@@ -1499,8 +1509,7 @@ bigrem = divrem[1]; }
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         ctx.getPrecision().add(bigError))
-        .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                      Rounding.ZeroFiveUp).WithBlankFlags();
+        .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
       for (int i = 0; i < 9; ++i) {
         thisValue = this.SquareRoot(thisValue, ctxdiv.WithUnlimitedExponents());
       }
@@ -1563,8 +1572,7 @@ BigNumberFlags.FlagNegative | BigNumberFlags.FlagInfinity);
           FastInteger error = new FastInteger(10);
           BigInteger bigError = error.AsBigInteger();
           ctxdiv = SetPrecisionIfLimited(ctx, ctx.getPrecision().add(bigError))
-            .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                          Rounding.ZeroFiveUp).WithBlankFlags();
+            .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
           T quarter = this.Divide(one, this.helper.ValueOf(4), ctxCopy);
           if (this.compareTo(thisValue, quarter) <= 0) {
             // One quarter or less
@@ -1620,8 +1628,7 @@ ctxCopy);
             error = new FastInteger(10);
             bigError = error.AsBigInteger();
             ctxdiv = SetPrecisionIfLimited(ctx, ctx.getPrecision().add(bigError))
-              .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                            Rounding.ZeroFiveUp).WithBlankFlags();
+              .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
             T smallfrac = this.Divide(one, this.helper.ValueOf(10), ctxdiv);
             T closeToOne = this.Add(one, smallfrac, null);
             // Take square root until this value
@@ -1649,8 +1656,7 @@ ctxCopy);
             error = new FastInteger(10);
             bigError = error.AsBigInteger();
             ctxdiv = SetPrecisionIfLimited(ctx, ctx.getPrecision().add(bigError))
-              .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                            Rounding.ZeroFiveUp).WithBlankFlags();
+              .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
             T smallfrac = this.Divide(one, this.helper.ValueOf(16), ctxdiv);
             T closeToOne = this.Add(one, smallfrac, null);
             if (this.compareTo(thisValue, closeToOne) >= 0) {
@@ -1729,8 +1735,7 @@ ctx,
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
         ctx.getPrecision().add(guardDigits))
-        .WithRounding(this.thisRadix == 2 ? Rounding.HalfEven :
-                      Rounding.ZeroFiveUp).WithBlankFlags();
+        .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
       if (sign == 0) {
         thisValue = this.RoundToPrecision(one, ctxCopy);
       } else if (sign > 0 && this.compareTo(thisValue, one) < 0) {
@@ -3550,8 +3555,10 @@ thisFlags);
           return this.SignalInvalidWithMessage(ctx, "Rounding was required");
         }
         if (!unlimitedPrec && (rounding == Rounding.Down || rounding ==
-                Rounding.ZeroFiveUp || (rounding == Rounding.Ceiling &&
-                neg) || (rounding == Rounding.Floor && !neg))) {
+                Rounding.ZeroFiveUp ||
+                (rounding == Rounding.OddOrZeroFiveUp && this.thisRadix != 2) ||
+                (rounding == Rounding.Ceiling && neg) || (rounding ==
+                  Rounding.Floor && !neg))) {
           // Set to the highest possible value for
           // the given precision
           BigInteger overflowMant = BigInteger.ZERO;
@@ -3758,7 +3765,10 @@ neg ? BigNumberFlags.FlagNegative : 0);
           flags |= PrecisionContext.FlagOverflow |
             PrecisionContext.FlagInexact | PrecisionContext.FlagRounded;
           if (!unlimitedPrec && (rounding == Rounding.Down || rounding ==
-                   Rounding.ZeroFiveUp || (rounding == Rounding.Ceiling &&
+                   Rounding.ZeroFiveUp ||
+          (rounding == Rounding.OddOrZeroFiveUp || rounding == Rounding.Odd) ||
+
+                   (rounding == Rounding.Ceiling &&
                 neg) || (rounding == Rounding.Floor && !neg))) {
             // Set to the highest possible value for
             // the given precision

@@ -380,6 +380,8 @@ PrecisionContext ctx) {
         if (pc.getHasMaxPrecision() && pc.getHasExponentRange() &&
             (roundingOnOverflow == Rounding.Down || roundingOnOverflow ==
              Rounding.ZeroFiveUp ||
+             (roundingOnOverflow == Rounding.OddOrZeroFiveUp) ||
+             (roundingOnOverflow == Rounding.Odd) ||
              (roundingOnOverflow == Rounding.Ceiling && neg) ||
              (roundingOnOverflow == Rounding.Floor && !neg))) {
           // Set to the highest possible value for

@@ -271,8 +271,6 @@ private RandomObjects() {
       return ExtendedDecimal.FromString(RandomDecimalString(r));
     }
 
-    private static final String HexDigits = "0123456789ABCDEF";
-
     public static BigInteger RandomBigInteger(FastRandom r) {
       int selection = r.NextValue(100);
       if (selection < 40) {

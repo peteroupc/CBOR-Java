@@ -5,6 +5,11 @@ import org.junit.Assert;
 import com.upokecenter.util.*;
 
   final class StringAndBigInt {
+    private static final String ValueDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private static final String ValueDigitsLower =
+          "0123456789abcdefghijklmnopqrstuvwxyz";
+
     private String stringValue;
 
     public final String getStringValue() {
@@ -16,11 +21,6 @@ import com.upokecenter.util.*;
     public final BigInteger getBigIntValue() {
         return this.bigintValue;
       }
-
-    private static final String ValueDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-private static final String ValueDigitsLower =
-      "0123456789abcdefghijklmnopqrstuvwxyz";
 
     public static StringAndBigInt Generate(FastRandom rand, int radix) {
       BigInteger bv = BigInteger.ZERO;

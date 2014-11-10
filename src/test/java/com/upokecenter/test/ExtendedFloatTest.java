@@ -5,6 +5,59 @@ import org.junit.Test;
 import com.upokecenter.util.*;
 
   public class ExtendedFloatTest {
+    public ExtendedFloat FromBinary(String str) {
+      int smallExponent = 0;
+      int index = 0;
+      BigInteger ret = BigInteger.ZERO;
+      while (index < str.length()) {
+        if (str.charAt(index) == '0') {
+          ++index;
+        } else {
+          break;
+        }
+      }
+      while (index < str.length()) {
+        if (str.charAt(index) == '.') {
+          ++index;
+          break;
+        } else if (str.charAt(index)=='1') {
+          ++index;
+          if (ret.signum() == 0) {
+            ret = BigInteger.ONE;
+          } else {
+            ret = ret.shiftLeft(1);
+            ret = ret.add(BigInteger.ONE);
+          }
+        } else if (str.charAt(index)=='0') {
+          ++index;
+          ret = ret.shiftLeft(1);
+          continue;
+        } else {
+          break;
+        }
+      }
+      while (index < str.length()) {
+        if (str.charAt(index) == '1') {
+          ++index;
+          --smallExponent;
+          if (ret.signum() == 0) {
+            ret = BigInteger.ONE;
+          } else {
+            ret = ret.shiftLeft(1);
+            ret = ret.add(BigInteger.ONE);
+          }
+        } else if (str.charAt(index) == '0') {
+          ++index;
+          --smallExponent;
+          ret = ret.shiftLeft(1);
+          continue;
+        } else {
+          break;
+        }
+      }
+      return ExtendedFloat.Create(ret, BigInteger.valueOf(smallExponent));
+    }
+
     @Test
     public void TestAbs() {
       // not implemented yet
