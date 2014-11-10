@@ -1,7 +1,5 @@
 package com.upokecenter.test;
 
-import org.junit.Assert;
-
 import com.upokecenter.util.*;
 
   final class StringAndBigInt {

@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.upokecenter.util.*;
 
   public class ExtendedFloatTest {
-    public ExtendedFloat FromBinary(String str) {
+    public static ExtendedFloat FromBinary(String str) {
       int smallExponent = 0;
       int index = 0;
       BigInteger ret = BigInteger.ZERO;
@@ -20,7 +20,8 @@ import com.upokecenter.util.*;
         if (str.charAt(index) == '.') {
           ++index;
           break;
-        } else if (str.charAt(index)=='1') {
+        }
+        if (str.charAt(index) == '1') {
           ++index;
           if (ret.signum() == 0) {
             ret = BigInteger.ONE;
@@ -28,7 +29,7 @@ import com.upokecenter.util.*;
             ret = ret.shiftLeft(1);
             ret = ret.add(BigInteger.ONE);
           }
-        } else if (str.charAt(index)=='0') {
+        } else if (str.charAt(index) == '0') {
           ++index;
           ret = ret.shiftLeft(1);
           continue;

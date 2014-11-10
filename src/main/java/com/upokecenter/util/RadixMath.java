@@ -3767,8 +3767,7 @@ neg ? BigNumberFlags.FlagNegative : 0);
           if (!unlimitedPrec && (rounding == Rounding.Down || rounding ==
                    Rounding.ZeroFiveUp ||
           (rounding == Rounding.OddOrZeroFiveUp || rounding == Rounding.Odd) ||
-
-                   (rounding == Rounding.Ceiling &&
+                (rounding == Rounding.Ceiling &&
                 neg) || (rounding == Rounding.Floor && !neg))) {
             // Set to the highest possible value for
             // the given precision
