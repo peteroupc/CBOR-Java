@@ -734,7 +734,7 @@ boolean replace) throws java.io.IOException {
       int retval = DataUtilities.ReadUtf8(stream, bytesCount, builder, replace);
       if (retval == -1) {
         throw new IOException(
-       "Unpaired surrogate code point found." ,
+       "Unpaired surrogate code point found.",
        new java.nio.charset.MalformedInputException(1));
       }
       return builder.toString();

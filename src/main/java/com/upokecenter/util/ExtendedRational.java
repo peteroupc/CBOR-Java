@@ -585,7 +585,9 @@ rem = divrem[1]; }
      * exceeds the range of a 64-bit floating point number.
      */
     public double ToDouble() {
-      return this.ToExtendedFloat(PrecisionContext.Binary64).ToDouble();
+      return
+  this.ToExtendedFloat(PrecisionContext.Binary64.WithRounding(Rounding.Odd))
+        .ToDouble();
     }
 
     /**
@@ -596,7 +598,9 @@ rem = divrem[1]; }
      * exceeds the range of a 32-bit floating point number.
      */
     public float ToSingle() {
-      return this.ToExtendedFloat(PrecisionContext.Binary32).ToSingle();
+      return
+  this.ToExtendedFloat(PrecisionContext.Binary32.WithRounding(Rounding.Odd))
+        .ToSingle();
     }
 
     /**
@@ -904,7 +908,7 @@ thisRem = divrem[1]; }
           // System.out.println("Shortcircuit III");
           return this.isNegative() ? -1 : 1;
         }
-        // System.out.println("---" + this + " " + (other));
+        // System.out.println("---" + this + " " + other);
         if (other.getExponent().signum() > 0) {
           int digitCount = this.getUnsignedNumerator().getDigitCount();
           --digitCount;

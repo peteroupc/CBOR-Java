@@ -2134,15 +2134,13 @@ at: http://upokecenter.com/d/
       short valueQ;
       {
         valueQ = ((short)(valueB1 + 1) == 0) ? words1[words1Start + 2] :
-          (
-            (
-              valueB1 != 0) ? DivideUnsigned(
-              MakeUint(
-                words1[words1Start + 1],
-                words1[words1Start + 2]),
-              (short)(((int)valueB1 + 1) & 0xffff)) : DivideUnsigned(
-              MakeUint(words1[words1Start], words1[words1Start + 1]),
-              valueB0));
+          ((valueB1 != 0) ? DivideUnsigned(
+            MakeUint(
+              words1[words1Start + 1],
+              words1[words1Start + 2]),
+            (short)(((int)valueB1 + 1) & 0xffff)) : DivideUnsigned(
+             MakeUint(words1[words1Start], words1[words1Start + 1]),
+             valueB0));
 
         int valueQint = ((int)valueQ) & 0xffff;
         int valueB0int = ((int)valueB0) & 0xffff;
@@ -3417,14 +3415,14 @@ at: http://upokecenter.com/d/
                               ((value >= 100000000000000L) ? 15 : ((value >=
                               10000000000000L) ?
                               14 : ((value >= 1000000000000L) ? 13 : ((value >=
-                       100000000000L) ? 12 : ((value >= 10000000000L) ?
-                11 : ((value >= 1000000000L) ? 10 : 9)))))))));
+                100000000000L) ? 12 : ((value >= 10000000000L) ?
+                              11 : ((value >= 1000000000L) ? 10 : 9)))))))));
         } else {
           int v2 = (int)value;
           return (v2 >= 100000000) ? 9 : ((v2 >= 10000000) ? 8 : ((v2 >=
                               1000000) ? 7 : ((v2 >= 100000) ? 6 : ((v2 >=
-                    10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ? 3 :
-                ((v2 >= 10) ? 2 : 1)))))));
+                              10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ?
+                3 : ((v2 >= 10) ? 2 : 1)))))));
         }
       }
       int bitlen = this.getUnsignedBitLength();
@@ -4063,18 +4061,19 @@ at: http://upokecenter.com/d/
         } else {
           return (((c << 15) & 0xffff) != 0) ? (retSetBit + 0) : ((((c <<
                               14) & 0xffff) != 0) ? (retSetBit + 1) : ((((c <<
-                         13) & 0xffff) != 0) ? (retSetBit + 2) : ((((c <<
-               12) & 0xffff) != 0) ? (retSetBit + 3) : ((((c << 11) & 0xffff) !=
-                0) ? (retSetBit +
+                              13) & 0xffff) != 0) ? (retSetBit + 2) : ((((c <<
+                 12) & 0xffff) != 0) ? (retSetBit + 3) : ((((c << 11) &
+                0xffff) != 0) ? (retSetBit +
                               4) : ((((c << 10) & 0xffff) != 0) ? (retSetBit +
-                  5) : ((((c << 9) & 0xffff) != 0) ? (retSetBit + 6) : ((((c <<
+                     5) : ((((c << 9) & 0xffff) != 0) ? (retSetBit + 6) :
+                              ((((c <<
                 8) & 0xffff) != 0) ? (retSetBit + 7) : ((((c << 7) & 0xffff) !=
                 0) ? (retSetBit + 8) : ((((c << 6) & 0xffff) !=
-                0) ? (retSetBit + 9) : ((((c <<
+                              0) ? (retSetBit + 9) : ((((c <<
                               5) & 0xffff) != 0) ? (retSetBit + 10) : ((((c <<
-               4) & 0xffff) != 0) ? (retSetBit + 11) : ((((c << 3) & 0xffff) !=
-                0) ? (retSetBit + 12) : ((((c << 2) & 0xffff) !=
-                          0) ? (retSetBit + 13) : ((((c << 1) & 0xffff) !=
+                  4) & 0xffff) != 0) ? (retSetBit + 11) : ((((c << 3) &
+                0xffff) != 0) ? (retSetBit + 12) : ((((c << 2) & 0xffff) !=
+                              0) ? (retSetBit + 13) : ((((c << 1) & 0xffff) !=
                 0) ? (retSetBit + 14) : (retSetBit + 15)))))))))))))));
         }
       }

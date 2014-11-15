@@ -75,7 +75,7 @@ import com.upokecenter.cbor.*;
       FastRandom r = new FastRandom();
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 =
-            CBORObject.FromObject(RandomObjects.RandomBigInteger(r));
+          CBORObject.FromObject(RandomObjects.RandomBigInteger(r));
       CBORObject o2 = CBORObject.FromObject(RandomObjects.RandomBigInteger(r));
         if (o2.signum() == 0) {
           continue;
@@ -134,9 +134,9 @@ import com.upokecenter.cbor.*;
     }
 
     private static String ObjectMessages(
-CBORObject o1,
-CBORObject o2,
-String s) {
+      CBORObject o1,
+      CBORObject o2,
+      String s) {
       if (o1.getType() == CBORType.Number && o2.getType() == CBORType.Number) {
         return s + ":\n" + o1 + " and\n" + o2 + "\nOR\n" +
           o1.AsExtendedDecimal() + " and\n" + o2.AsExtendedDecimal() +
@@ -150,18 +150,18 @@ String s) {
     public static void CompareTestEqual(CBORObject o1, CBORObject o2) {
       if (CompareTestReciprocal(o1, o2) != 0) {
         Assert.fail(ObjectMessages(
-o1,
-o2,
-"Not equal: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Not equal: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
     public static void CompareTestLess(CBORObject o1, CBORObject o2) {
       if (CompareTestReciprocal(o1, o2) >= 0) {
         Assert.fail(ObjectMessages(
-o1,
-o2,
-"Not less: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Not less: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
@@ -217,7 +217,7 @@ o2,
     @Test
     public void TestDecFracCompareIntegerVsBigFraction() {
       ExtendedDecimal a = ExtendedDecimal.FromString(
-"7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
+        "7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
       ExtendedDecimal b = ExtendedDecimal.FromString("5");
       Assert.assertEquals(1, a.compareTo(b));
       Assert.assertEquals(-1, b.compareTo(a));
@@ -226,10 +226,11 @@ o2,
       o1 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, (byte)0x8b,
                        0x44, (byte)0xf2, (byte)0xa9, 0x0c, 0x27, 0x42, 0x28  });
       o2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-                0x38, (byte)0xa4, (byte)0xc3, 0x50, 0x02,
-                (byte)0x98, (byte)0xc5, (byte)0xa8, 0x02,
-                (byte)0xc1, (byte)0xf6, (byte)0xc0, 0x1a, (byte)0xbe,
-                0x08, 0x04, (byte)0x86, (byte)0x99, 0x3e, (byte)0xf1  });
+                              0x38, (byte)0xa4, (byte)0xc3, 0x50, 0x02,
+                              (byte)0x98, (byte)0xc5, (byte)0xa8, 0x02,
+                          (byte)0xc1, (byte)0xf6, (byte)0xc0, 0x1a,
+                              (byte)0xbe,
+                       0x08, 0x04, (byte)0x86, (byte)0x99, 0x3e, (byte)0xf1  });
       AddSubCompare(o1, o2);
     }
 
@@ -249,17 +250,17 @@ o2,
       ExtendedDecimal cmpCobj = CBORObject.Addition(o1, o2).AsExtendedDecimal();
       if (cmpDecFrac.compareTo(cmpCobj) != 0) {
         Assert.assertEquals(ObjectMessages(
-o1,
-o2,
-"Add: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
+            o1,
+            o2,
+            "Add: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
       }
       cmpDecFrac = o1.AsExtendedDecimal().Subtract(o2.AsExtendedDecimal());
       cmpCobj = CBORObject.Subtract(o1, o2).AsExtendedDecimal();
       if (cmpDecFrac.compareTo(cmpCobj) != 0) {
         Assert.assertEquals(ObjectMessages(
-o1,
-o2,
-"Subtract: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
+            o1,
+            o2,
+            "Subtract: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
       }
       CompareDecimals(o1, o2);
     }
@@ -271,36 +272,40 @@ o2,
       if (!(CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa,
             0x7f, (byte)0x80, 0x00, 0x00  }).AsExtendedRational().IsInfinity()))Assert.fail();
       AddSubCompare(
-CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
                               (byte)0x82, (byte)0xc2, 0x58, 0x28, 0x77,
-                0x24, 0x73, (byte)0x84, (byte)0xbd, 0x72, (byte)0x82, 0x7c,
-                (byte)0xd6, (byte)0x93,
-                0x18, 0x44, (byte)0x8a, (byte)0x88, 0x43, 0x67,
-                (byte)0xa2, (byte)0xeb,
-                0x11, 0x00, 0x15, 0x1b, 0x1d, 0x5d, (byte)0xdc,
-                (byte)0xeb, 0x39, 0x17, 0x72, 0x11, 0x5b, 0x03, (byte)0xfa,
-                (byte)0xa8, 0x3f,
-                          (byte)0xd2, 0x75, (byte)0xf8, 0x36, (byte)0xc8,
-                0x1a, 0x00, 0x2e, (byte)0x8c, (byte)0x8d  }),
+                    0x24, 0x73, (byte)0x84, (byte)0xbd, 0x72, (byte)0x82,
+                              0x7c,
+                              (byte)0xd6, (byte)0x93,
+                              0x18, 0x44, (byte)0x8a, (byte)0x88, 0x43, 0x67,
+                              (byte)0xa2, (byte)0xeb,
+                              0x11, 0x00, 0x15, 0x1b, 0x1d, 0x5d, (byte)0xdc,
+                    (byte)0xeb, 0x39, 0x17, 0x72, 0x11, 0x5b, 0x03,
+                              (byte)0xfa,
+                              (byte)0xa8, 0x3f,
+                              (byte)0xd2, 0x75, (byte)0xf8, 0x36, (byte)0xc8,
+                              0x1a, 0x00, 0x2e, (byte)0x8c, (byte)0x8d  }),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
                               (byte)0x80, 0x00, 0x00  }));
       CompareTestLess(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
                               (byte)0x82, (byte)0xc2, 0x58, 0x28, 0x77,
-                0x24, 0x73, (byte)0x84, (byte)0xbd, 0x72, (byte)0x82, 0x7c,
-                (byte)0xd6, (byte)0x93,
-                0x18, 0x44, (byte)0x8a, (byte)0x88, 0x43, 0x67,
-                (byte)0xa2, (byte)0xeb,
-                0x11, 0x00, 0x15, 0x1b, 0x1d, 0x5d, (byte)0xdc,
-                (byte)0xeb, 0x39, 0x17, 0x72, 0x11, 0x5b, 0x03, (byte)0xfa,
-                (byte)0xa8, 0x3f,
-                          (byte)0xd2, 0x75, (byte)0xf8, 0x36, (byte)0xc8,
-                0x1a, 0x00, 0x2e, (byte)0x8c, (byte)0x8d  }),
+                    0x24, 0x73, (byte)0x84, (byte)0xbd, 0x72, (byte)0x82,
+                              0x7c,
+                              (byte)0xd6, (byte)0x93,
+                              0x18, 0x44, (byte)0x8a, (byte)0x88, 0x43, 0x67,
+                              (byte)0xa2, (byte)0xeb,
+                              0x11, 0x00, 0x15, 0x1b, 0x1d, 0x5d, (byte)0xdc,
+                    (byte)0xeb, 0x39, 0x17, 0x72, 0x11, 0x5b, 0x03,
+                              (byte)0xfa,
+                              (byte)0xa8, 0x3f,
+                              (byte)0xd2, 0x75, (byte)0xf8, 0x36, (byte)0xc8,
+                              0x1a, 0x00, 0x2e, (byte)0x8c, (byte)0x8d  }),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
                               (byte)0x80, 0x00, 0x00  }));
       AddSubCompare(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x7f,
-                             (byte)0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  }),
+                              (byte)0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  }),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
                               (byte)0x80, 0x00, 0x00  }));
       AddSubCompare(
@@ -308,20 +313,21 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
                               (byte)0xb0, 0x52  }),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
                               0x38, 0x5f, (byte)0xc2, 0x50, 0x08, 0x70,
-                (byte)0xf3, (byte)0xc4,
+                              (byte)0xf3, (byte)0xc4,
                               (byte)0x90, 0x4c, 0x14, (byte)0xba, 0x59,
-                (byte)0xf0, (byte)0xc6,
+                              (byte)0xf0, (byte)0xc6,
                       (byte)0xcb, (byte)0x8c, (byte)0x8d, 0x40, (byte)0x80  }));
       AddSubCompare(
-     CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
-        (byte)0x82, 0x38, (byte)0xc7, 0x3b, 0x00, 0x00, 0x08,
-                (byte)0xbf, (byte)0xda, (byte)0xaf, 0x73, 0x46  }),
-             CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a, (byte)0x9b,
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+                          (byte)0x82, 0x38, (byte)0xc7, 0x3b, 0x00, 0x00,
+                              0x08,
+                              (byte)0xbf, (byte)0xda, (byte)0xaf, 0x73, 0x46  }),
+        CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a, (byte)0x9b,
           (byte)0x9a, (byte)0x9c, (byte)0xb4, (byte)0x95, (byte)0xbf, 0x71  }));
       AddSubCompare(
-     CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0xbb,
-        0x0c, (byte)0xf7, 0x52  }),
-             CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0x82, 0x00,
+        CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0xbb,
+                              0x0c, (byte)0xf7, 0x52  }),
+        CBORObject.DecodeFromBytes(new byte[] { 0x1a, (byte)0x82, 0x00,
                               (byte)0xbf, (byte)0xf9  }));
       AddSubCompare(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x1f,
@@ -329,27 +335,27 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x31,
           (byte)0x90, (byte)0xea, 0x16, (byte)0xbe, (byte)0x80, 0x0b, 0x37  }));
       AddSubCompare(
-     CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x3c,
-        0x00, (byte)0xcf, (byte)0xb6, (byte)0xbd, (byte)0xff, 0x37, 0x38  }),
-             CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x30,
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, 0x3c,
+           0x00, (byte)0xcf, (byte)0xb6, (byte)0xbd, (byte)0xff, 0x37, 0x38  }),
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x30,
                               (byte)0x80, 0x75, 0x63  }));
       AddSubCompare(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-          0x38, 0x7d, 0x3a, 0x06, (byte)0xbc, (byte)0xd5, (byte)0xb8  }),
+                 0x38, 0x7d, 0x3a, 0x06, (byte)0xbc, (byte)0xd5, (byte)0xb8  }),
         CBORObject.DecodeFromBytes(new byte[] { 0x38, 0x5c  }));
       TestCommon.AssertRoundTrip(
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00, 0x1d,
-                          (byte)0xdb, 0x03, (byte)0xfb, (byte)0xff,
-                (byte)0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  }));
+                              (byte)0xdb, 0x03, (byte)0xfb, (byte)0xff,
+                            (byte)0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  }));
       CBORObject cbor = CBORObject.FromObjectAndTag(
         Double.NEGATIVE_INFINITY,
         1956611);
       TestCommon.AssertRoundTrip(cbor);
       cbor =
 
-   CBORObject.FromObjectAndTag(
-CBORObject.FromObject(Double.NEGATIVE_INFINITY),
-1956611);
+        CBORObject.FromObjectAndTag(
+          CBORObject.FromObject(Double.NEGATIVE_INFINITY),
+          1956611);
       TestCommon.AssertRoundTrip(cbor);
       cbor =
 
@@ -369,41 +375,6 @@ CBORObject.FromObject(Double.NEGATIVE_INFINITY),
           CBORObject.FromObject(ExtendedRational.NegativeInfinity),
           1956611);
       TestCommon.AssertRoundTrip(cbor);
-    }
-
-    @Test
-    public void ExtraDecimalTests() {
-      Assert.assertEquals(
-        ExtendedDecimal.NegativeInfinity,
-        ExtendedDecimal.FromString("-79228162514264337593543950336"
-)
-        .RoundToPrecision(PrecisionContext.CliDecimal));
-      Assert.assertEquals(
-ExtendedDecimal.PositiveInfinity,
-        ExtendedDecimal.FromString("8.782580686213340724E+28"
-)
-        .RoundToPrecision(PrecisionContext.CliDecimal));
-      Assert.assertEquals(
-ExtendedDecimal.NegativeInfinity,
-        ExtendedDecimal.FromString("-9.3168444507547E+28"
-)
-        .RoundToPrecision(PrecisionContext.CliDecimal));
-      Assert.assertEquals(
-"-9344285899206687626894794544",
-
-  ExtendedDecimal.FromString("-9344285899206687626894794544.04982268810272216796875"
-).RoundToPrecision(PrecisionContext.CliDecimal)
-        .ToPlainString());
-      Assert.assertEquals(
-        ExtendedDecimal.PositiveInfinity,
-        ExtendedDecimal.FromString("96148154858060747311034406200"
-)
-        .RoundToPrecision(PrecisionContext.CliDecimal));
-      Assert.assertEquals(
-ExtendedDecimal.PositiveInfinity,
-        ExtendedDecimal.FromString("90246605365627217170000000000"
-)
-        .RoundToPrecision(PrecisionContext.CliDecimal));
     }
 
     @Test
@@ -568,56 +539,56 @@ ExtendedDecimal.PositiveInfinity,
       if (!(ExtendedRational.NegativeInfinity.isNegative()))Assert.fail();
 
       Assert.assertEquals(
-ExtendedDecimal.PositiveInfinity,
-ExtendedDecimal.FromDouble(Double.POSITIVE_INFINITY));
+        ExtendedDecimal.PositiveInfinity,
+        ExtendedDecimal.FromDouble(Double.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedDecimal.NegativeInfinity,
-ExtendedDecimal.FromDouble(Double.NEGATIVE_INFINITY));
+        ExtendedDecimal.NegativeInfinity,
+        ExtendedDecimal.FromDouble(Double.NEGATIVE_INFINITY));
       Assert.assertEquals(
-ExtendedDecimal.PositiveInfinity,
-ExtendedDecimal.FromSingle(Float.POSITIVE_INFINITY));
+        ExtendedDecimal.PositiveInfinity,
+        ExtendedDecimal.FromSingle(Float.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedDecimal.NegativeInfinity,
-ExtendedDecimal.FromSingle(Float.NEGATIVE_INFINITY));
+        ExtendedDecimal.NegativeInfinity,
+        ExtendedDecimal.FromSingle(Float.NEGATIVE_INFINITY));
 
       Assert.assertEquals(
-ExtendedFloat.PositiveInfinity,
-ExtendedFloat.FromDouble(Double.POSITIVE_INFINITY));
+        ExtendedFloat.PositiveInfinity,
+        ExtendedFloat.FromDouble(Double.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedFloat.NegativeInfinity,
-ExtendedFloat.FromDouble(Double.NEGATIVE_INFINITY));
+        ExtendedFloat.NegativeInfinity,
+        ExtendedFloat.FromDouble(Double.NEGATIVE_INFINITY));
       Assert.assertEquals(
-ExtendedFloat.PositiveInfinity,
-ExtendedFloat.FromSingle(Float.POSITIVE_INFINITY));
+        ExtendedFloat.PositiveInfinity,
+        ExtendedFloat.FromSingle(Float.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedFloat.NegativeInfinity,
-ExtendedFloat.FromSingle(Float.NEGATIVE_INFINITY));
+        ExtendedFloat.NegativeInfinity,
+        ExtendedFloat.FromSingle(Float.NEGATIVE_INFINITY));
 
       Assert.assertEquals(
-ExtendedRational.PositiveInfinity,
-ExtendedRational.FromDouble(Double.POSITIVE_INFINITY));
+        ExtendedRational.PositiveInfinity,
+        ExtendedRational.FromDouble(Double.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedRational.NegativeInfinity,
-ExtendedRational.FromDouble(Double.NEGATIVE_INFINITY));
+        ExtendedRational.NegativeInfinity,
+        ExtendedRational.FromDouble(Double.NEGATIVE_INFINITY));
       Assert.assertEquals(
-ExtendedRational.PositiveInfinity,
-ExtendedRational.FromSingle(Float.POSITIVE_INFINITY));
+        ExtendedRational.PositiveInfinity,
+        ExtendedRational.FromSingle(Float.POSITIVE_INFINITY));
       Assert.assertEquals(
-ExtendedRational.NegativeInfinity,
-ExtendedRational.FromSingle(Float.NEGATIVE_INFINITY));
+        ExtendedRational.NegativeInfinity,
+        ExtendedRational.FromSingle(Float.NEGATIVE_INFINITY));
 
       Assert.assertEquals(
-ExtendedRational.PositiveInfinity,
-ExtendedRational.FromExtendedDecimal(ExtendedDecimal.PositiveInfinity));
+        ExtendedRational.PositiveInfinity,
+        ExtendedRational.FromExtendedDecimal(ExtendedDecimal.PositiveInfinity));
       Assert.assertEquals(
-ExtendedRational.NegativeInfinity,
-ExtendedRational.FromExtendedDecimal(ExtendedDecimal.NegativeInfinity));
+        ExtendedRational.NegativeInfinity,
+        ExtendedRational.FromExtendedDecimal(ExtendedDecimal.NegativeInfinity));
       Assert.assertEquals(
-ExtendedRational.PositiveInfinity,
-ExtendedRational.FromExtendedFloat(ExtendedFloat.PositiveInfinity));
+        ExtendedRational.PositiveInfinity,
+        ExtendedRational.FromExtendedFloat(ExtendedFloat.PositiveInfinity));
       Assert.assertEquals(
-ExtendedRational.NegativeInfinity,
-ExtendedRational.FromExtendedFloat(ExtendedFloat.NegativeInfinity));
+        ExtendedRational.NegativeInfinity,
+        ExtendedRational.FromExtendedFloat(ExtendedFloat.NegativeInfinity));
 
   if (!(((ExtendedRational.PositiveInfinity.ToDouble()) == Double.POSITIVE_INFINITY)))Assert.fail();
 
@@ -844,8 +815,8 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
         "-Infinity",
         CBORObject.FromObject(ExtendedRational.NegativeInfinity).toString());
       Assert.assertEquals(
-"Infinity",
-CBORObject.FromObject(ExtendedRational.PositiveInfinity).toString());
+        "Infinity",
+        CBORObject.FromObject(ExtendedRational.PositiveInfinity).toString());
 
   TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.NegativeInfinity));
 
@@ -888,691 +859,877 @@ CBORObject.FromObject(ExtendedRational.PositiveInfinity).toString());
       // for all these test cases
       CBORObject obj;
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82,
-                0x3a, 0x00, 0x1c, 0x2d, 0x0d, 0x1a, 0x13,
-                0x6c, (byte)0xa1, (byte)0x97  });
+                              0x3a, 0x00, 0x1c, 0x2d, 0x0d, 0x1a, 0x13,
+                              0x6c, (byte)0xa1, (byte)0x97  });
       TestCommon.AssertRoundTrip(obj);
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00, 0x14,
-                          0x57, (byte)0xce, (byte)0xc5, (byte)0x82, 0x1a,
-                0x46, 0x5a, 0x37, (byte)0x87, (byte)0xc3, 0x50, 0x5e,
-                (byte)0xec, (byte)0xfd,
-                0x73, 0x50, 0x64, (byte)0xa1, 0x1f, 0x10,
-                (byte)0xc4, (byte)0xff,
-                             (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12  });
+                              0x57, (byte)0xce, (byte)0xc5, (byte)0x82, 0x1a,
+                          0x46, 0x5a, 0x37, (byte)0x87, (byte)0xc3, 0x50,
+                              0x5e,
+                              (byte)0xec, (byte)0xfd,
+                              0x73, 0x50, 0x64, (byte)0xa1, 0x1f, 0x10,
+                              (byte)0xc4, (byte)0xff,
+                              (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12  });
       TestCommon.AssertRoundTrip(obj);
       int actual = CBORObject.FromObject(
         ExtendedDecimal.Create(BigInteger.valueOf(333333), BigInteger.valueOf(-2)))
         .compareTo(CBORObject.FromObject(ExtendedFloat.Create(
-BigInteger.valueOf(5234222),
-BigInteger.valueOf(-24936668661488L))));
+          BigInteger.valueOf(5234222),
+          BigInteger.valueOf(-24936668661488L))));
       Assert.assertEquals(1, actual);
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x31,
                 0x19, 0x03, 0x43  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00,
-                (byte)0xa3, 0x35, (byte)0xc8, (byte)0xc5,
-                (byte)0x82, 0x1b, 0x00, 0x01, (byte)0xe0,
-                (byte)0xb2, (byte)0x83,
-                          0x32, 0x0f, (byte)0x8b, (byte)0xc2, 0x58, 0x27,
-                0x2a, 0x65, 0x4a, (byte)0xbd, 0x67, 0x00, 0x15,
-                (byte)0x94, (byte)0xb3,
-                (byte)0xdd, (byte)0x80, 0x49, 0x7c, 0x16,
-                (byte)0x9f, (byte)0x83,
-                0x05, (byte)0xd0, (byte)0x80, (byte)0xf8,
-                (byte)0x8d, (byte)0xe3,
-                0x26, 0x14, (byte)0xd6, 0x2d, (byte)0xab,
-                0x53, (byte)0xd1, 0x79, (byte)0xe7, (byte)0xb5, (byte)0xc0,
-                0x73, (byte)0xf0, 0x1d, (byte)0xbd, 0x45, (byte)0xfa  }));
+                              (byte)0xa3, 0x35, (byte)0xc8, (byte)0xc5,
+                              (byte)0x82, 0x1b, 0x00, 0x01, (byte)0xe0,
+                              (byte)0xb2, (byte)0x83,
+                              0x32, 0x0f, (byte)0x8b, (byte)0xc2, 0x58, 0x27,
+                              0x2a, 0x65, 0x4a, (byte)0xbd, 0x67, 0x00, 0x15,
+                              (byte)0x94, (byte)0xb3,
+                              (byte)0xdd, (byte)0x80, 0x49, 0x7c, 0x16,
+                              (byte)0x9f, (byte)0x83,
+                              0x05, (byte)0xd0, (byte)0x80, (byte)0xf8,
+                              (byte)0x8d, (byte)0xe3,
+                              0x26, 0x14, (byte)0xd6, 0x2d, (byte)0xab,
+                    0x53, (byte)0xd1, 0x79, (byte)0xe7, (byte)0xb5,
+                              (byte)0xc0,
+                      0x73, (byte)0xf0, 0x1d, (byte)0xbd, 0x45, (byte)0xfa  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82, 0x1b,
                               0x01, 0x58, 0x0a, (byte)0xc0, (byte)0xc8,
-                0x66, 0x47, (byte)0xc0, (byte)0xc3, 0x58, 0x19, 0x50, 0x4d,
-                (byte)0x89, 0x04,
-                (byte)0x8a, (byte)0xc4, (byte)0xb7, 0x3a, 0x49, (byte)0xcc,
-                0x13, 0x4c, 0x33, (byte)0x80, 0x0c, 0x60, (byte)0xe7,
-                (byte)0xd4, 0x5b,
-                (byte)0x89, (byte)0xdb, (byte)0xc8, (byte)0x81, 0x0a,
+                    0x66, 0x47, (byte)0xc0, (byte)0xc3, 0x58, 0x19, 0x50,
+                              0x4d,
+                              (byte)0x89, 0x04,
+                    (byte)0x8a, (byte)0xc4, (byte)0xb7, 0x3a, 0x49,
+                              (byte)0xcc,
+                          0x13, 0x4c, 0x33, (byte)0x80, 0x0c, 0x60,
+                              (byte)0xe7,
+                              (byte)0xd4, 0x5b,
+                          (byte)0x89, (byte)0xdb, (byte)0xc8, (byte)0x81,
+                              0x0a,
     (byte)0x85  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x28,
-                0x3b, 0x1f, 0x60, (byte)0xa0, 0x4a, (byte)0xd3,
-                (byte)0x94, 0x20,
-                (byte)0xe9, (byte)0xfa, (byte)0xd2, 0x03, (byte)0xb5,
-                (byte)0xd2, 0x0f,
-                0x7b, 0x7c, (byte)0x8d, 0x50, 0x4b, (byte)0x93,
-                0x5d, 0x6a, (byte)0xc6, (byte)0xdf, 0x01, (byte)0xa9,
-                (byte)0xa6, 0x3c, (byte)0xf4, (byte)0xf8, (byte)0xb2, 0x41,
-                (byte)0xc3, (byte)0xfd,
-                0x5d, (byte)0xc8, (byte)0x86, 0x2b, (byte)0xf3,
-                (byte)0xc2, 0x52, 0x58, 0x3a, (byte)0xaf, 0x69,
-                (byte)0x89, (byte)0xc0,
-                (byte)0xa4, (byte)0xe1, 0x51, (byte)0x9f, 0x09,
+                              0x3b, 0x1f, 0x60, (byte)0xa0, 0x4a, (byte)0xd3,
+                              (byte)0x94, 0x20,
+                          (byte)0xe9, (byte)0xfa, (byte)0xd2, 0x03,
+                              (byte)0xb5,
+                              (byte)0xd2, 0x0f,
+                              0x7b, 0x7c, (byte)0x8d, 0x50, 0x4b, (byte)0x93,
+                          0x5d, 0x6a, (byte)0xc6, (byte)0xdf, 0x01,
+                              (byte)0xa9,
+                    (byte)0xa6, 0x3c, (byte)0xf4, (byte)0xf8, (byte)0xb2,
+                              0x41,
+                              (byte)0xc3, (byte)0xfd,
+                              0x5d, (byte)0xc8, (byte)0x86, 0x2b, (byte)0xf3,
+                              (byte)0xc2, 0x52, 0x58, 0x3a, (byte)0xaf, 0x69,
+                              (byte)0x89, (byte)0xc0,
+                              (byte)0xa4, (byte)0xe1, 0x51, (byte)0x9f, 0x09,
                 (byte)0xcb, (byte)0xbb, 0x15, 0x35, (byte)0xcf, 0x2b, 0x52  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x23,
                               0x3b, 0x00, 0x1b, (byte)0xda, (byte)0xb3,
-                0x03, 0x15, 0x28,
+                              0x03, 0x15, 0x28,
     (byte)0xd8  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
-                (byte)0x82, 0x1b, 0x00, 0x6f, 0x25, 0x52, (byte)0xc2,
+                          (byte)0x82, 0x1b, 0x00, 0x6f, 0x25, 0x52,
+                              (byte)0xc2,
                               0x11, (byte)0xe1, (byte)0xe7, (byte)0xc3,
-                0x58, 0x3a, 0x64, (byte)0xc7, 0x29, (byte)0xdd, (byte)0x94,
-                0x6c, 0x4b, 0x09, (byte)0xa3, (byte)0xdf, 0x28,
-                (byte)0xaf, 0x0f,
-                (byte)0xbf, (byte)0xdf, (byte)0xd7, 0x73, (byte)0xac,
-                0x20, 0x40,
-                (byte)0xaf, (byte)0x94, 0x6d, (byte)0xd7, (byte)0xd2,
-                0x38, (byte)0xd6,
-                0x14, 0x0a, 0x58, (byte)0xa2, 0x18, 0x12, 0x19,
-                0x2d, 0x40,
-                (byte)0x99, (byte)0xca, (byte)0xb6, (byte)0x98, 0x61,
-                (byte)0x91, 0x5d, 0x49, 0x68, (byte)0xac, 0x1b, 0x32, 0x57,
-                (byte)0xca, (byte)0x85,
+                    0x58, 0x3a, 0x64, (byte)0xc7, 0x29, (byte)0xdd,
+                              (byte)0x94,
+                              0x6c, 0x4b, 0x09, (byte)0xa3, (byte)0xdf, 0x28,
+                              (byte)0xaf, 0x0f,
+                          (byte)0xbf, (byte)0xdf, (byte)0xd7, 0x73,
+                              (byte)0xac,
+                              0x20, 0x40,
+                          (byte)0xaf, (byte)0x94, 0x6d, (byte)0xd7,
+                              (byte)0xd2,
+                              0x38, (byte)0xd6,
+                              0x14, 0x0a, 0x58, (byte)0xa2, 0x18, 0x12, 0x19,
+                              0x2d, 0x40,
+                          (byte)0x99, (byte)0xca, (byte)0xb6, (byte)0x98,
+                              0x61,
+                    (byte)0x91, 0x5d, 0x49, 0x68, (byte)0xac, 0x1b, 0x32,
+                              0x57,
+                              (byte)0xca, (byte)0x85,
                 0x0a, (byte)0xea, 0x48, (byte)0xf8, 0x09, (byte)0xc2, 0x7e  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x00, 0x01, (byte)0xec, (byte)0xb5,
-                0x38, (byte)0xdf, (byte)0xc2, 0x58, 0x37, 0x58, (byte)0xd6,
-                0x14, (byte)0xc8,
-                (byte)0x95, 0x03, 0x44, (byte)0xf3, (byte)0xd4,
-                0x34, (byte)0x9a,
-                (byte)0xdd, (byte)0xf9, (byte)0xca, (byte)0xfb,
-                (byte)0xa3, 0x6d, 0x19, (byte)0xe7, 0x2a, 0x41, (byte)0xf8,
-                (byte)0xad, (byte)0x9f,
+                              0x00, 0x00, 0x00, 0x01, (byte)0xec, (byte)0xb5,
+                    0x38, (byte)0xdf, (byte)0xc2, 0x58, 0x37, 0x58,
+                              (byte)0xd6,
+                              0x14, (byte)0xc8,
+                              (byte)0x95, 0x03, 0x44, (byte)0xf3, (byte)0xd4,
+                              0x34, (byte)0x9a,
+                              (byte)0xdd, (byte)0xf9, (byte)0xca, (byte)0xfb,
+                    (byte)0xa3, 0x6d, 0x19, (byte)0xe7, 0x2a, 0x41,
+                              (byte)0xf8,
+                              (byte)0xad, (byte)0x9f,
                               (byte)0xee, 0x5b, 0x4b, (byte)0xd7, 0x12,
-                0x16, (byte)0xeb,
-                (byte)0x80, (byte)0x83, 0x6e, 0x20, (byte)0xe1,
-                0x68, 0x4e, (byte)0x8d, (byte)0x83, (byte)0x9d, (byte)0xaf,
-                0x4c, 0x04, 0x6c, (byte)0xf4, (byte)0x96, 0x35, (byte)0xa4,
-                0x75, (byte)0x81, 0x45, (byte)0x88, (byte)0xf4, (byte)0xeb
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xc4, (byte)0x82, 0x3b, 0x0d, (byte)0xd0, 0x71,
-                (byte)0xbc, 0x37,
-                0x65, 0x0d, (byte)0xa4, (byte)0xc2, 0x58, 0x21,
-                0x15, 0x67, (byte)0xce, (byte)0xb0, 0x03, 0x10, (byte)0xc2,
-                (byte)0xf6, 0x0d,
-                (byte)0x86, 0x6d, 0x19, 0x29, (byte)0xa3, 0x41,
-                0x77, 0x0e, (byte)0xe7, (byte)0xe7, 0x3d, 0x42, 0x67, 0x2d,
-                (byte)0xe4, 0x0e, (byte)0xfd,
+                              0x16, (byte)0xeb,
+                              (byte)0x80, (byte)0x83, 0x6e, 0x20, (byte)0xe1,
+                    0x68, 0x4e, (byte)0x8d, (byte)0x83, (byte)0x9d,
+                              (byte)0xaf,
+                    0x4c, 0x04, 0x6c, (byte)0xf4, (byte)0x96, 0x35,
+                              (byte)0xa4,
+                              0x75, (byte)0x81, 0x45, (byte)0x88,
+             (byte)0xf4, (byte)0xeb  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b, 0x0d,
+                              (byte)0xd0, 0x71,
+                              (byte)0xbc, 0x37,
+                              0x65, 0x0d, (byte)0xa4, (byte)0xc2, 0x58, 0x21,
+                    0x15, 0x67, (byte)0xce, (byte)0xb0, 0x03, 0x10,
+                              (byte)0xc2,
+                              (byte)0xf6, 0x0d,
+                              (byte)0x86, 0x6d, 0x19, 0x29, (byte)0xa3, 0x41,
+                    0x77, 0x0e, (byte)0xe7, (byte)0xe7, 0x3d, 0x42, 0x67,
+                              0x2d,
+                              (byte)0xe4, 0x0e, (byte)0xfd,
           (byte)0x95, (byte)0xdc, (byte)0xb1, (byte)0xc7, 0x6c, 0x08, 0x40  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
-                (byte)0xc3, 0x58, 0x1d, 0x20, 0x04, (byte)0x9d,
-                (byte)0xbf, 0x72,
-                0x2b, 0x43, 0x1c, (byte)0x8d, 0x19, (byte)0x83,
-                (byte)0xfd, (byte)0xf3, (byte)0xef, (byte)0xb3,
-                (byte)0xaf, (byte)0x93,
-                (byte)0xe2, (byte)0xc5, (byte)0xb6, (byte)0x95,
-                (byte)0xed, (byte)0xcc, 0x68, (byte)0xd8, 0x01, 0x22,
-                (byte)0xbe, 0x11, (byte)0xc2, 0x58, 0x18, 0x44, (byte)0x99,
-                (byte)0xfe, (byte)0xb7,
+                              (byte)0xc3, 0x58, 0x1d, 0x20, 0x04, (byte)0x9d,
+                              (byte)0xbf, 0x72,
+                              0x2b, 0x43, 0x1c, (byte)0x8d, 0x19, (byte)0x83,
+                              (byte)0xfd, (byte)0xf3, (byte)0xef, (byte)0xb3,
+                              (byte)0xaf, (byte)0x93,
+                              (byte)0xe2, (byte)0xc5, (byte)0xb6, (byte)0x95,
+                          (byte)0xed, (byte)0xcc, 0x68, (byte)0xd8, 0x01,
+                              0x22,
+                    (byte)0xbe, 0x11, (byte)0xc2, 0x58, 0x18, 0x44,
+                              (byte)0x99,
+                              (byte)0xfe, (byte)0xb7,
                               0x23, 0x36, (byte)0xe6, (byte)0xca, 0x36,
-                0x36, (byte)0xe3,
-                0x17, (byte)0xbe, 0x44, (byte)0xb1, 0x14, 0x51,
-                0x22, 0x56, (byte)0x90, 0x57, (byte)0xa3, (byte)0xba,
-                  (byte)0xeb  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82, 0x3a, 0x30, (byte)0xa2,
-                0x34, (byte)0xe6, (byte)0xc3,
-                0x58, 0x39, 0x6a, 0x07, 0x25, (byte)0x81,
-                (byte)0xe5, 0x29, (byte)0xf0, 0x42, (byte)0x95, (byte)0xfd,
-                0x18, (byte)0x95,
-                (byte)0xc5, 0x25, 0x56, (byte)0xd4, (byte)0x89,
-                0x0b, (byte)0x8c,
-                (byte)0xad, 0x45, 0x3e, (byte)0xdb, (byte)0xc9,
-                0x39, (byte)0xc8,
-                (byte)0xfd, 0x41, 0x02, (byte)0xad, (byte)0xdf,
-                0x21, (byte)0xd6, 0x04, 0x24, (byte)0xf6, 0x55, (byte)0x8d,
-                0x79, (byte)0xde, 0x08, (byte)0x9b, (byte)0xce, 0x26,
-                (byte)0xb3, (byte)0xf3,
-                0x47, (byte)0x8f, 0x4b, 0x38, 0x51, 0x20,
-                0x66, (byte)0x82, (byte)0xd6, (byte)0x94, (byte)0xa8  }));
+                              0x36, (byte)0xe3,
+                              0x17, (byte)0xbe, 0x44, (byte)0xb1, 0x14, 0x51,
+                          0x22, 0x56, (byte)0x90, 0x57, (byte)0xa3,
+                              (byte)0xba,
+                         (byte)0xeb  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82, 0x3a, 0x30,
+                              (byte)0xa2,
+                              0x34, (byte)0xe6, (byte)0xc3,
+                              0x58, 0x39, 0x6a, 0x07, 0x25, (byte)0x81,
+                    (byte)0xe5, 0x29, (byte)0xf0, 0x42, (byte)0x95,
+                              (byte)0xfd,
+                              0x18, (byte)0x95,
+                              (byte)0xc5, 0x25, 0x56, (byte)0xd4, (byte)0x89,
+                              0x0b, (byte)0x8c,
+                              (byte)0xad, 0x45, 0x3e, (byte)0xdb, (byte)0xc9,
+                              0x39, (byte)0xc8,
+                              (byte)0xfd, 0x41, 0x02, (byte)0xad, (byte)0xdf,
+                    0x21, (byte)0xd6, 0x04, 0x24, (byte)0xf6, 0x55,
+                              (byte)0x8d,
+                          0x79, (byte)0xde, 0x08, (byte)0x9b, (byte)0xce,
+                              0x26,
+                              (byte)0xb3, (byte)0xf3,
+                              0x47, (byte)0x8f, 0x4b, 0x38, 0x51, 0x20,
+                      0x66, (byte)0x82, (byte)0xd6, (byte)0x94, (byte)0xa8  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x27, 0x37, (byte)0xf6, (byte)0x91,
-                0x48, (byte)0xe5, (byte)0xc3, 0x58, 0x18, 0x58, (byte)0xfb,
-                0x1d, 0x37,
-                (byte)0xfb, (byte)0x95, 0x13, (byte)0xdc, 0x11, 0x57,
-                0x55, 0x46, 0x58, (byte)0xc6, 0x01, 0x2a, (byte)0xef,
-                (byte)0x9c, 0x4c, (byte)0xab, 0x23, 0x72, (byte)0x95, 0x5b
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x25,
-                0x52, (byte)0x82, (byte)0xf2, (byte)0xe2, (byte)0xb2,
-                (byte)0xad, (byte)0x81,
-                          (byte)0xb1, (byte)0xe7, (byte)0x86, 0x21,
-                (byte)0xc3, 0x0d, 0x23, (byte)0x92, (byte)0x91, 0x0d, 0x15,
-                (byte)0xc6, (byte)0xcf, 0x6b, (byte)0xdf, 0x2d, (byte)0xcc,
-                (byte)0x8f, (byte)0x94,
-                (byte)0xab, (byte)0xfb, (byte)0xf1, (byte)0xae, 0x7d,
-                (byte)0x99, 0x5e,
-                0x6a, 0x6a, (byte)0xd7, (byte)0xbe, (byte)0xc2,
-                0x4f, 0x16,
-                0x0a, (byte)0x9d, 0x47, 0x34, 0x4b, (byte)0xfb, 0x62,
-                0x57, 0x02, 0x07, (byte)0x84, 0x77, 0x5c, 0x33  }));
+                              0x00, 0x00, 0x27, 0x37, (byte)0xf6, (byte)0x91,
+                    0x48, (byte)0xe5, (byte)0xc3, 0x58, 0x18, 0x58,
+                              (byte)0xfb,
+                              0x1d, 0x37,
+                          (byte)0xfb, (byte)0x95, 0x13, (byte)0xdc, 0x11,
+                              0x57,
+                          0x55, 0x46, 0x58, (byte)0xc6, 0x01, 0x2a,
+                              (byte)0xef,
+                              (byte)0x9c, 0x4c, (byte)0xab, 0x23, 0x72,
+                (byte)0x95, 0x5b  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc3, 0x58, 0x25,
+                          0x52, (byte)0x82, (byte)0xf2, (byte)0xe2,
+                              (byte)0xb2,
+                              (byte)0xad, (byte)0x81,
+                              (byte)0xb1, (byte)0xe7, (byte)0x86, 0x21,
+                    (byte)0xc3, 0x0d, 0x23, (byte)0x92, (byte)0x91, 0x0d,
+                              0x15,
+                    (byte)0xc6, (byte)0xcf, 0x6b, (byte)0xdf, 0x2d,
+                              (byte)0xcc,
+                              (byte)0x8f, (byte)0x94,
+                          (byte)0xab, (byte)0xfb, (byte)0xf1, (byte)0xae,
+                              0x7d,
+                              (byte)0x99, 0x5e,
+                              0x6a, 0x6a, (byte)0xd7, (byte)0xbe, (byte)0xc2,
+                              0x4f, 0x16,
+                          0x0a, (byte)0x9d, 0x47, 0x34, 0x4b, (byte)0xfb,
+                              0x62,
+                            0x57, 0x02, 0x07, (byte)0x84, 0x77, 0x5c, 0x33  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
                               (byte)0xc2, 0x51, 0x42, 0x63, (byte)0x9c,
-                (byte)0xa0, (byte)0xcc,
+                              (byte)0xa0, (byte)0xcc,
                               (byte)0xd0, 0x7d, (byte)0xfd, (byte)0xab,
-                (byte)0x98, 0x07,
-                (byte)0xf3, (byte)0xac, (byte)0xd1, (byte)0xb4,
-                0x54, (byte)0x8a, (byte)0xc2, 0x58, 0x20, 0x14, (byte)0xb6,
-                0x42, 0x55,
-                (byte)0xed, (byte)0xe3, 0x4b, 0x0c, 0x4e, (byte)0xf4,
-                0x3d, 0x55, 0x60, (byte)0xac, (byte)0xf6, (byte)0xdb, 0x3b,
-                (byte)0xe3, (byte)0xec,
+                              (byte)0x98, 0x07,
+                              (byte)0xf3, (byte)0xac, (byte)0xd1, (byte)0xb4,
+                    0x54, (byte)0x8a, (byte)0xc2, 0x58, 0x20, 0x14,
+                              (byte)0xb6,
+                              0x42, 0x55,
+                          (byte)0xed, (byte)0xe3, 0x4b, 0x0c, 0x4e,
+                              (byte)0xf4,
+                    0x3d, 0x55, 0x60, (byte)0xac, (byte)0xf6, (byte)0xdb,
+                              0x3b,
+                              (byte)0xe3, (byte)0xec,
                               (byte)0x81, (byte)0x93, 0x6d, (byte)0xa8,
-                (byte)0x9f, 0x58, (byte)0xc2, 0x4f, 0x4e, 0x1c, (byte)0xda,
-                0x68, (byte)0x8a  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+                    (byte)0x9f, 0x58, (byte)0xc2, 0x4f, 0x4e, 0x1c,
+                              (byte)0xda,
+                   0x68, (byte)0x8a  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
                               (byte)0x82, 0x1a, 0x00, 0x4f, 0x01, 0x53,
-                0x1a, 0x14, (byte)0xe4, 0x07, (byte)0x88  }));
+                              0x1a, 0x14, (byte)0xe4, 0x07, (byte)0x88  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a,
-                          0x06, (byte)0x93, 0x34, 0x2c, (byte)0xc2, 0x58,
-                0x31, 0x42, 0x0e, (byte)0xfa, 0x5c, (byte)0xb4, (byte)0xe6,
-                (byte)0xed, (byte)0x8c,
-                          (byte)0xf4, 0x23, 0x76, (byte)0xe6, 0x46,
-                (byte)0xfe, 0x4f,
-                0x6f, (byte)0xed, 0x0c, 0x54, (byte)0xce, 0x28,
-                0x2d, (byte)0x93, (byte)0xd9, (byte)0x85, (byte)0x91, 0x04,
-                (byte)0x90, 0x48,
-                0x69, (byte)0xb1, (byte)0xea, 0x00, (byte)0x9f,
-                0x1e, (byte)0xf4,
-                0x7d, 0x0b, 0x5d, (byte)0xf6, 0x2e, (byte)0xef,
-                0x0b, 0x35, 0x37, (byte)0xf5, 0x5f, 0x4b, (byte)0xa8
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc2, 0x58, 0x3b,
-                0x45, 0x4f, 0x0a,
-                0x18, (byte)0xca, 0x6f, (byte)0xa3, 0x01, 0x38, 0x01,
-                0x63, 0x7b, 0x50, (byte)0xf6, 0x12, (byte)0x8b, (byte)0xbd,
-                0x5d, (byte)0xac, 0x58, (byte)0x9d, (byte)0xde, 0x27, 0x59,
-                (byte)0xea, 0x11, 0x12, (byte)0x88, (byte)0x81,
-                (byte)0xe0, (byte)0xd3, (byte)0xe5, (byte)0xfc, (byte)0xb4,
-                (byte)0x8b, (byte)0x9b,
-                (byte)0x9f, (byte)0xa5, 0x65, 0x32, 0x75, 0x2a,
-                0x2f, (byte)0xd2,
-                0x04, (byte)0x9d, (byte)0xf6, 0x4d, 0x75, 0x77,
-                (byte)0xf2, 0x21, 0x3e, 0x19, (byte)0xb2, (byte)0x94,
-                (byte)0xa5, (byte)0xa7,
-                (byte)0x94, (byte)0xc2, 0x58, 0x2e, 0x19,
-                (byte)0x8e, (byte)0xa7,
-                (byte)0xb2, (byte)0x98, (byte)0xb3, (byte)0xbc,
-                (byte)0xa5, (byte)0xc4,
-                0x50, (byte)0xed, 0x49, (byte)0x9a, 0x27,
-                0x03, (byte)0xfc, 0x0a, (byte)0xf3, 0x70, (byte)0x8e, 0x2e,
-                0x61, 0x18, (byte)0xcd, (byte)0xd5, (byte)0xc8, (byte)0xfd,
-                (byte)0xa6, (byte)0x8d,
-                0x3b, (byte)0xc5, (byte)0xa7, 0x40, (byte)0xd7,
-                0x5c, (byte)0xd6, 0x1a, (byte)0xf6, (byte)0xee, 0x10,
-                0x72, (byte)0xf7,
-                (byte)0x8e, (byte)0xc0, (byte)0x80, (byte)0x94  }));
+                              0x06, (byte)0x93, 0x34, 0x2c, (byte)0xc2, 0x58,
+                    0x31, 0x42, 0x0e, (byte)0xfa, 0x5c, (byte)0xb4,
+                              (byte)0xe6,
+                              (byte)0xed, (byte)0x8c,
+                              (byte)0xf4, 0x23, 0x76, (byte)0xe6, 0x46,
+                              (byte)0xfe, 0x4f,
+                              0x6f, (byte)0xed, 0x0c, 0x54, (byte)0xce, 0x28,
+                    0x2d, (byte)0x93, (byte)0xd9, (byte)0x85, (byte)0x91,
+                              0x04,
+                              (byte)0x90, 0x48,
+                              0x69, (byte)0xb1, (byte)0xea, 0x00, (byte)0x9f,
+                              0x1e, (byte)0xf4,
+                              0x7d, 0x0b, 0x5d, (byte)0xf6, 0x2e, (byte)0xef,
+                              0x0b, 0x35, 0x37, (byte)0xf5, 0x5f, 0x4b,
+                (byte)0xa8  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc2, 0x58, 0x3b,
+                              0x45, 0x4f, 0x0a,
+                          0x18, (byte)0xca, 0x6f, (byte)0xa3, 0x01, 0x38,
+                              0x01,
+                    0x63, 0x7b, 0x50, (byte)0xf6, 0x12, (byte)0x8b,
+                              (byte)0xbd,
+                    0x5d, (byte)0xac, 0x58, (byte)0x9d, (byte)0xde, 0x27,
+                              0x59,
+                              (byte)0xea, 0x11, 0x12, (byte)0x88, (byte)0x81,
+                    (byte)0xe0, (byte)0xd3, (byte)0xe5, (byte)0xfc,
+                              (byte)0xb4,
+                              (byte)0x8b, (byte)0x9b,
+                              (byte)0x9f, (byte)0xa5, 0x65, 0x32, 0x75, 0x2a,
+                              0x2f, (byte)0xd2,
+                              0x04, (byte)0x9d, (byte)0xf6, 0x4d, 0x75, 0x77,
+                          (byte)0xf2, 0x21, 0x3e, 0x19, (byte)0xb2,
+                              (byte)0x94,
+                              (byte)0xa5, (byte)0xa7,
+                              (byte)0x94, (byte)0xc2, 0x58, 0x2e, 0x19,
+                              (byte)0x8e, (byte)0xa7,
+                              (byte)0xb2, (byte)0x98, (byte)0xb3, (byte)0xbc,
+                              (byte)0xa5, (byte)0xc4,
+                              0x50, (byte)0xed, 0x49, (byte)0x9a, 0x27,
+                    0x03, (byte)0xfc, 0x0a, (byte)0xf3, 0x70, (byte)0x8e,
+                              0x2e,
+                    0x61, 0x18, (byte)0xcd, (byte)0xd5, (byte)0xc8,
+                              (byte)0xfd,
+                              (byte)0xa6, (byte)0x8d,
+                              0x3b, (byte)0xc5, (byte)0xa7, 0x40, (byte)0xd7,
+                          0x5c, (byte)0xd6, 0x1a, (byte)0xf6, (byte)0xee,
+                              0x10,
+                              0x72, (byte)0xf7,
+                            (byte)0x8e, (byte)0xc0, (byte)0x80, (byte)0x94  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
                               (byte)0xc3, 0x58, 0x3a, 0x2f, (byte)0xae,
-                (byte)0x80, (byte)0x9f,
+                              (byte)0x80, (byte)0x9f,
                               0x14, (byte)0xcd, (byte)0xca, (byte)0xf7,
-                (byte)0xd6, (byte)0xc9,
-                          (byte)0xaa, 0x02, (byte)0x85, 0x2f, 0x28, 0x14,
-                0x7b, 0x1e, 0x68, 0x79, 0x17, 0x40, 0x6b, (byte)0xde, 0x4a,
-                (byte)0xe2, (byte)0x83,
-                (byte)0xab, (byte)0xb1, (byte)0x84, (byte)0xe0,
-                (byte)0x85, (byte)0xd0, (byte)0xd7, 0x72, 0x58, 0x5c,
-                (byte)0x8c, (byte)0xef,
-                          (byte)0xd5, (byte)0xef, 0x28, 0x4a, (byte)0xe9,
-                0x13, 0x40, 0x73, (byte)0xe5, 0x2a, 0x70, 0x00, 0x7f,
-                (byte)0xc7, 0x70,
-                (byte)0xb0, (byte)0xac, 0x13, 0x14, (byte)0xc2, 0x58,
-                0x19, 0x14, 0x15, (byte)0xbb, (byte)0xbf, 0x06, 0x67, 0x46,
-                0x1e, (byte)0x98, (byte)0xa4, (byte)0xb6, 0x27, (byte)0xd8,
-                0x4a, 0x3f, 0x69, (byte)0xe2, 0x79, (byte)0xd9, (byte)0xd7,
-                (byte)0xed, (byte)0xe7, (byte)0xc9, (byte)0xe2, 0x34
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xc4, (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x01,
-                0x1c, (byte)0x8f,
-                0x5d, 0x3d, (byte)0xc3, 0x4c, 0x6c, 0x77, 0x44,
-                0x6f, (byte)0xcc, 0x57,
+                              (byte)0xd6, (byte)0xc9,
+                              (byte)0xaa, 0x02, (byte)0x85, 0x2f, 0x28, 0x14,
+                    0x7b, 0x1e, 0x68, 0x79, 0x17, 0x40, 0x6b, (byte)0xde,
+                              0x4a,
+                              (byte)0xe2, (byte)0x83,
+                              (byte)0xab, (byte)0xb1, (byte)0x84, (byte)0xe0,
+                          (byte)0x85, (byte)0xd0, (byte)0xd7, 0x72, 0x58,
+                              0x5c,
+                              (byte)0x8c, (byte)0xef,
+                              (byte)0xd5, (byte)0xef, 0x28, 0x4a, (byte)0xe9,
+                          0x13, 0x40, 0x73, (byte)0xe5, 0x2a, 0x70, 0x00,
+                              0x7f,
+                              (byte)0xc7, 0x70,
+                          (byte)0xb0, (byte)0xac, 0x13, 0x14, (byte)0xc2,
+                              0x58,
+                    0x19, 0x14, 0x15, (byte)0xbb, (byte)0xbf, 0x06, 0x67,
+                              0x46,
+                    0x1e, (byte)0x98, (byte)0xa4, (byte)0xb6, 0x27,
+                              (byte)0xd8,
+                    0x4a, 0x3f, 0x69, (byte)0xe2, 0x79, (byte)0xd9,
+                              (byte)0xd7,
+                              (byte)0xed, (byte)0xe7, (byte)0xc9,
+                (byte)0xe2, 0x34  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b, 0x00,
+                              0x00, 0x00, 0x01,
+                              0x1c, (byte)0x8f,
+                              0x5d, 0x3d, (byte)0xc3, 0x4c, 0x6c, 0x77, 0x44,
+                              0x6f, (byte)0xcc, 0x57,
           (byte)0xad, (byte)0x99, 0x1c, (byte)0xbc, (byte)0xca, (byte)0x8a  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
-                          0x3b, 0x00, 0x2a, 0x4e, (byte)0xf7, (byte)0x87,
-                0x4c, 0x14, 0x50, (byte)0xc2, 0x58, 0x3a, 0x48, (byte)0xed,
-                0x45, 0x49, (byte)0xa1, 0x4d, 0x48, (byte)0x80, (byte)0xfc,
-                (byte)0xa4, (byte)0x96,
+                              0x3b, 0x00, 0x2a, 0x4e, (byte)0xf7, (byte)0x87,
+                    0x4c, 0x14, 0x50, (byte)0xc2, 0x58, 0x3a, 0x48,
+                              (byte)0xed,
+                    0x45, 0x49, (byte)0xa1, 0x4d, 0x48, (byte)0x80,
+                              (byte)0xfc,
+                              (byte)0xa4, (byte)0x96,
                               (byte)0xce, (byte)0xc0, (byte)0xfb, 0x23,
-                (byte)0x81, (byte)0xc4,
-                          (byte)0xfe, 0x56, (byte)0x9b, 0x55, (byte)0xac,
-                0x74, 0x77, 0x39, 0x00, 0x1a, 0x37, (byte)0xe5, (byte)0xfe,
-                0x42, 0x63,
-                (byte)0x9b, 0x6f, 0x15, 0x21, (byte)0x98, (byte)0xb8,
-                0x29, (byte)0xf5, (byte)0x85, (byte)0xda, 0x20, (byte)0xe5,
-                0x3b, 0x0f,
-                (byte)0xa9, 0x3d, 0x10, 0x3c, (byte)0xe9, (byte)0xce,
-                (byte)0x9c, (byte)0xd6, 0x5e, (byte)0xa6, 0x16, 0x55
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xc4, (byte)0x82, 0x3a, 0x00, (byte)0x8d, 0x14,
-                (byte)0x9b, (byte)0xc3,
-                0x58, 0x25, 0x43, 0x65, 0x68, 0x79, (byte)0x9c,
-                0x24, (byte)0x95, 0x56, 0x37, (byte)0xaa, (byte)0xd2, 0x3e,
-                0x46, 0x18, (byte)0xf4, (byte)0xef, 0x31, 0x1b, 0x3e,
-                (byte)0xa7, (byte)0xce,
-                0x18, (byte)0xbe, (byte)0xdf, (byte)0xd4,
-                0x12, (byte)0x94,
-                (byte)0x97, 0x47, (byte)0xb7, 0x14, (byte)0xc0,
-                (byte)0x8e, 0x07, (byte)0xc3, 0x00, (byte)0xae  }));
+                              (byte)0x81, (byte)0xc4,
+                              (byte)0xfe, 0x56, (byte)0x9b, 0x55, (byte)0xac,
+                    0x74, 0x77, 0x39, 0x00, 0x1a, 0x37, (byte)0xe5,
+                              (byte)0xfe,
+                              0x42, 0x63,
+                          (byte)0x9b, 0x6f, 0x15, 0x21, (byte)0x98,
+                              (byte)0xb8,
+                    0x29, (byte)0xf5, (byte)0x85, (byte)0xda, 0x20,
+                              (byte)0xe5,
+                              0x3b, 0x0f,
+                          (byte)0xa9, 0x3d, 0x10, 0x3c, (byte)0xe9,
+                              (byte)0xce,
+                              (byte)0x9c, (byte)0xd6, 0x5e, (byte)0xa6,
+                0x16, 0x55  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3a, 0x00,
+                              (byte)0x8d, 0x14,
+                              (byte)0x9b, (byte)0xc3,
+                              0x58, 0x25, 0x43, 0x65, 0x68, 0x79, (byte)0x9c,
+                    0x24, (byte)0x95, 0x56, 0x37, (byte)0xaa, (byte)0xd2,
+                              0x3e,
+                          0x46, 0x18, (byte)0xf4, (byte)0xef, 0x31, 0x1b,
+                              0x3e,
+                              (byte)0xa7, (byte)0xce,
+                              0x18, (byte)0xbe, (byte)0xdf, (byte)0xd4,
+                              0x12, (byte)0x94,
+                              (byte)0x97, 0x47, (byte)0xb7, 0x14, (byte)0xc0,
+                            (byte)0x8e, 0x07, (byte)0xc3, 0x00, (byte)0xae  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
-                (byte)0xc3, 0x54, 0x4e, 0x49, 0x4b, (byte)0xeb,
-                0x09, (byte)0xcc, (byte)0xd6, 0x7d, (byte)0x95, (byte)0x8c,
-                (byte)0xc8, 0x34, (byte)0xc4, 0x69, (byte)0x9b, (byte)0xc5,
-                (byte)0x9a, 0x5a, (byte)0xa4, 0x72, (byte)0xc2, 0x58, 0x34,
-                0x6f, (byte)0xb1,
-                0x4c, (byte)0x9b, 0x74, (byte)0x8f, (byte)0xf0,
-                (byte)0x9a, 0x56, 0x39, (byte)0x91, (byte)0xe6, (byte)0xbd,
-                (byte)0xca, (byte)0x91,
-                0x38, 0x4f, 0x2f, (byte)0xf9, (byte)0x92,
-                (byte)0xfe, (byte)0x85,
-                (byte)0xe4, 0x06, 0x59, (byte)0xb8, (byte)0x84,
-                0x1a, (byte)0x83, (byte)0x9b, 0x0e, 0x73, 0x30, (byte)0xfe,
-                (byte)0xdf, 0x2d, 0x6c, 0x3b, (byte)0xfd, 0x0a, 0x64, 0x56,
-                (byte)0xab, 0x6f,
-                (byte)0xd6, (byte)0x8c, 0x60, (byte)0x90, 0x1b, 0x7d,
+                              (byte)0xc3, 0x54, 0x4e, 0x49, 0x4b, (byte)0xeb,
+                    0x09, (byte)0xcc, (byte)0xd6, 0x7d, (byte)0x95,
+                              (byte)0x8c,
+                    (byte)0xc8, 0x34, (byte)0xc4, 0x69, (byte)0x9b,
+                              (byte)0xc5,
+                    (byte)0x9a, 0x5a, (byte)0xa4, 0x72, (byte)0xc2, 0x58,
+                              0x34,
+                              0x6f, (byte)0xb1,
+                              0x4c, (byte)0x9b, 0x74, (byte)0x8f, (byte)0xf0,
+                    (byte)0x9a, 0x56, 0x39, (byte)0x91, (byte)0xe6,
+                              (byte)0xbd,
+                              (byte)0xca, (byte)0x91,
+                              0x38, 0x4f, 0x2f, (byte)0xf9, (byte)0x92,
+                              (byte)0xfe, (byte)0x85,
+                              (byte)0xe4, 0x06, 0x59, (byte)0xb8, (byte)0x84,
+                    0x1a, (byte)0x83, (byte)0x9b, 0x0e, 0x73, 0x30,
+                              (byte)0xfe,
+                    (byte)0xdf, 0x2d, 0x6c, 0x3b, (byte)0xfd, 0x0a, 0x64,
+                              0x56,
+                              (byte)0xab, 0x6f,
+                          (byte)0xd6, (byte)0x8c, 0x60, (byte)0x90, 0x1b,
+                              0x7d,
              (byte)0xc7, (byte)0xef  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
-                (byte)0x82, 0x1b, 0x00, 0x00, 0x00, 0x24,
-                (byte)0x86, (byte)0xe1,
+                              (byte)0x82, 0x1b, 0x00, 0x00, 0x00, 0x24,
+                              (byte)0x86, (byte)0xe1,
                               (byte)0x8e, (byte)0xfd, (byte)0xc3, 0x4f,
-                0x50, 0x71, (byte)0xea, (byte)0xb9, 0x16, 0x4f, 0x3e, 0x0a,
-                0x66, (byte)0xda,
-                0x12, (byte)0xf5, (byte)0xbd, (byte)0xf0, 0x14  }));
+                    0x50, 0x71, (byte)0xea, (byte)0xb9, 0x16, 0x4f, 0x3e,
+                              0x0a,
+                              0x66, (byte)0xda,
+                            0x12, (byte)0xf5, (byte)0xbd, (byte)0xf0, 0x14  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
                               (byte)0xc2, 0x58, 0x3a, 0x6b, 0x72, 0x30,
-                (byte)0xe4, (byte)0xeb,
+                              (byte)0xe4, (byte)0xeb,
                               (byte)0xbd, 0x3d, (byte)0xa9, (byte)0xca,
-                (byte)0xee, 0x03,
-                (byte)0xbb, (byte)0xb1, (byte)0xcb, (byte)0xe8,
-                (byte)0xd8, (byte)0xc5, (byte)0xbc, (byte)0xfe,
-                (byte)0xa2, (byte)0xa1,
-                0x58, (byte)0xce, (byte)0xfd, (byte)0xd2,
-                (byte)0xf9, 0x7f,
-                (byte)0xc2, 0x39, 0x49, (byte)0xd8, 0x52, 0x41, 0x06,
-                0x61, 0x41, (byte)0xbc, 0x7e, (byte)0x9b, 0x68, (byte)0xa7,
-                (byte)0xf4, (byte)0xc3,
-                0x58, (byte)0xf0, 0x7e, 0x73, 0x77, (byte)0xf8,
-                (byte)0x81, 0x09, (byte)0x88, 0x48, (byte)0x80, (byte)0xa5,
-                0x79, 0x22, 0x23, (byte)0xc2, 0x58, 0x1e, 0x6c, (byte)0xc7,
-                0x0a, 0x54,
-                0x26, (byte)0xe1, (byte)0x84, 0x6a, 0x6a, 0x5b, 0x0a,
-                0x5f, 0x41, 0x3b, 0x6d, 0x66, (byte)0xf5, 0x47, 0x19,
-                (byte)0xe5, 0x71,
-                0x0f, (byte)0xcb, 0x1b, (byte)0xf0, (byte)0xb4,
-                (byte)0xbe, 0x3b, (byte)0x9a, 0x03
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xc4, (byte)0x82, 0x1a, 0x00, 0x07, (byte)0xbb,
-                  0x62,
+                              (byte)0xee, 0x03,
+                              (byte)0xbb, (byte)0xb1, (byte)0xcb, (byte)0xe8,
+                              (byte)0xd8, (byte)0xc5, (byte)0xbc, (byte)0xfe,
+                              (byte)0xa2, (byte)0xa1,
+                              0x58, (byte)0xce, (byte)0xfd, (byte)0xd2,
+                              (byte)0xf9, 0x7f,
+                          (byte)0xc2, 0x39, 0x49, (byte)0xd8, 0x52, 0x41,
+                              0x06,
+                    0x61, 0x41, (byte)0xbc, 0x7e, (byte)0x9b, 0x68,
+                              (byte)0xa7,
+                              (byte)0xf4, (byte)0xc3,
+                              0x58, (byte)0xf0, 0x7e, 0x73, 0x77, (byte)0xf8,
+                    (byte)0x81, 0x09, (byte)0x88, 0x48, (byte)0x80,
+                              (byte)0xa5,
+                    0x79, 0x22, 0x23, (byte)0xc2, 0x58, 0x1e, 0x6c,
+                              (byte)0xc7,
+                              0x0a, 0x54,
+                          0x26, (byte)0xe1, (byte)0x84, 0x6a, 0x6a, 0x5b,
+                              0x0a,
+                          0x5f, 0x41, 0x3b, 0x6d, 0x66, (byte)0xf5, 0x47,
+                              0x19,
+                              (byte)0xe5, 0x71,
+                              0x0f, (byte)0xcb, 0x1b, (byte)0xf0, (byte)0xb4,
+ (byte)0xbe, 0x3b, (byte)0x9a, 0x03  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a, 0x00,
+                              0x07, (byte)0xbb,
+                              0x62,
                 0x1b, 0x00, 0x00, 0x00, 0x29, 0x43, 0x5d, 0x7b, (byte)0xe8  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b,
-                0x00, 0x00, 0x00, 0x0f, (byte)0x93, (byte)0xd8,
-                (byte)0xb1, 0x6a, (byte)0xc3, 0x58, 0x25, 0x25, 0x54, 0x48,
-                (byte)0x8f, 0x4c,
-                0x2a, 0x2e, 0x09, 0x65, 0x52, 0x1b, (byte)0x8b,
-                (byte)0xcf, (byte)0xbb,
+                              0x00, 0x00, 0x00, 0x0f, (byte)0x93, (byte)0xd8,
+                    (byte)0xb1, 0x6a, (byte)0xc3, 0x58, 0x25, 0x25, 0x54,
+                              0x48,
+                              (byte)0x8f, 0x4c,
+                              0x2a, 0x2e, 0x09, 0x65, 0x52, 0x1b, (byte)0x8b,
+                              (byte)0xcf, (byte)0xbb,
                               0x13, (byte)0xf3, (byte)0xc7, (byte)0xf1,
-                (byte)0x93, (byte)0xc6,
+                              (byte)0x93, (byte)0xc6,
                               (byte)0xc2, 0x4f, 0x6c, 0x54, 0x2b, 0x00,
-                0x5c, (byte)0xab,
-                0x35, 0x75, 0x2f, (byte)0x98, 0x71, 0x51, 0x75,
+                              0x5c, (byte)0xab,
+                              0x35, 0x75, 0x2f, (byte)0x98, 0x71, 0x51, 0x75,
                 0x4b, (byte)0xf5  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x1d,
-                0x7b, (byte)0xaf, 0x6d, (byte)0xd7, (byte)0xb5,
-                (byte)0xa1, (byte)0xb8,
-                (byte)0xba, (byte)0xef, (byte)0xd7, (byte)0x92, (byte)0xba,
-                0x6d, 0x0a, 0x62, (byte)0xd5, (byte)0x98, 0x7d, 0x3f,
-                (byte)0xcb, (byte)0xab,
-                0x6c, 0x1d, 0x35, 0x59, 0x24, 0x46, 0x40,
-                (byte)0x90, (byte)0xc2, 0x58, 0x20, 0x16, (byte)0xd0, 0x18,
-                (byte)0xc6, (byte)0xd7,
-                (byte)0xb1, (byte)0xce, (byte)0xdd, (byte)0xf3, (byte)0xc1,
-                0x48, 0x75, 0x0c, 0x1d, 0x0c, (byte)0x9a, 0x2f, 0x05,
-                (byte)0x8b, 0x0f,
-                (byte)0xde, 0x23, (byte)0x88, 0x59, (byte)0x8c,
-                0x42, (byte)0xb5,
-                0x72, (byte)0x97, 0x44, (byte)0xfb, (byte)0x86  }));
+                              0x7b, (byte)0xaf, 0x6d, (byte)0xd7, (byte)0xb5,
+                              (byte)0xa1, (byte)0xb8,
+                    (byte)0xba, (byte)0xef, (byte)0xd7, (byte)0x92,
+                              (byte)0xba,
+                          0x6d, 0x0a, 0x62, (byte)0xd5, (byte)0x98, 0x7d,
+                              0x3f,
+                              (byte)0xcb, (byte)0xab,
+                              0x6c, 0x1d, 0x35, 0x59, 0x24, 0x46, 0x40,
+                    (byte)0x90, (byte)0xc2, 0x58, 0x20, 0x16, (byte)0xd0,
+                              0x18,
+                              (byte)0xc6, (byte)0xd7,
+                    (byte)0xb1, (byte)0xce, (byte)0xdd, (byte)0xf3,
+                              (byte)0xc1,
+                          0x48, 0x75, 0x0c, 0x1d, 0x0c, (byte)0x9a, 0x2f,
+                              0x05,
+                              (byte)0x8b, 0x0f,
+                              (byte)0xde, 0x23, (byte)0x88, 0x59, (byte)0x8c,
+                              0x42, (byte)0xb5,
+                            0x72, (byte)0x97, 0x44, (byte)0xfb, (byte)0x86  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1a, (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc2, 0x58, 0x1f,
-                0x03, (byte)0x9f, 0x5d, (byte)0x81, (byte)0x96, (byte)0xff,
-                (byte)0xcb, 0x19,
-                (byte)0x8f, 0x07, 0x25, (byte)0xe9, (byte)0xf1,
-                (byte)0xe9, 0x6b,
-                0x0a, (byte)0xb3, 0x67, (byte)0xfc, (byte)0xb1,
-                (byte)0xe4, 0x2c,
-                          (byte)0xd6, (byte)0xef, (byte)0xce, (byte)0xfb,
-                0x0d, 0x25, 0x78, 0x1d, (byte)0xf0, (byte)0xc2, 0x58, 0x31,
-                0x77, 0x40, (byte)0xea, 0x07, (byte)0x8e, (byte)0x8d, 0x02,
-                (byte)0xda, 0x24,
-                (byte)0xb7, (byte)0xb3, 0x14, (byte)0xa0, (byte)0x8f,
-                0x07, 0x7a, 0x5f, (byte)0xe2, 0x1d, 0x4d, 0x4f, 0x5c, 0x24,
-                0x37, (byte)0xc7,
-                0x64, (byte)0xb0, 0x36, 0x22, (byte)0xa3, 0x66,
-                (byte)0xec, (byte)0xe2,
+                    0x03, (byte)0x9f, 0x5d, (byte)0x81, (byte)0x96,
+                              (byte)0xff,
+                              (byte)0xcb, 0x19,
+                              (byte)0x8f, 0x07, 0x25, (byte)0xe9, (byte)0xf1,
+                              (byte)0xe9, 0x6b,
+                              0x0a, (byte)0xb3, 0x67, (byte)0xfc, (byte)0xb1,
+                              (byte)0xe4, 0x2c,
+                              (byte)0xd6, (byte)0xef, (byte)0xce, (byte)0xfb,
+                    0x0d, 0x25, 0x78, 0x1d, (byte)0xf0, (byte)0xc2, 0x58,
+                              0x31,
+                    0x77, 0x40, (byte)0xea, 0x07, (byte)0x8e, (byte)0x8d,
+                              0x02,
+                              (byte)0xda, 0x24,
+                          (byte)0xb7, (byte)0xb3, 0x14, (byte)0xa0,
+                              (byte)0x8f,
+                    0x07, 0x7a, 0x5f, (byte)0xe2, 0x1d, 0x4d, 0x4f, 0x5c,
+                              0x24,
+                              0x37, (byte)0xc7,
+                              0x64, (byte)0xb0, 0x36, 0x22, (byte)0xa3, 0x66,
+                              (byte)0xec, (byte)0xe2,
                               (byte)0xb0, 0x3a, 0x58, (byte)0xbc, 0x56,
-                0x58, 0x74,
-                (byte)0xca, (byte)0xb2, 0x09, 0x28, (byte)0xcb, 0x57,
-                (byte)0xd0, (byte)0xf0,
+                              0x58, 0x74,
+                          (byte)0xca, (byte)0xb2, 0x09, 0x28, (byte)0xcb,
+                              0x57,
+                              (byte)0xd0, (byte)0xf0,
     (byte)0xfc  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
-                (byte)0x82, 0x1b, 0x00, 0x1b, (byte)0xd3, 0x64, 0x45,
+                          (byte)0x82, 0x1b, 0x00, 0x1b, (byte)0xd3, 0x64,
+                              0x45,
                               (byte)0xce, 0x21, 0x46, (byte)0xc2, 0x58,
-                0x1d, 0x47, 0x3d, (byte)0xdb, (byte)0xb3, 0x46, 0x57,
-                0x1f, (byte)0xee,
-                (byte)0xa3, (byte)0x84, 0x5c, 0x01, (byte)0xd6,
-                (byte)0xa0, 0x5a,
-                (byte)0xaa, 0x71, 0x21, 0x65, 0x48, (byte)0xbe,
-                0x26, 0x07,
-                (byte)0x86, (byte)0xae, 0x29, 0x2a, (byte)0xd5, 0x37  }));
+                          0x1d, 0x47, 0x3d, (byte)0xdb, (byte)0xb3, 0x46,
+                              0x57,
+                              0x1f, (byte)0xee,
+                              (byte)0xa3, (byte)0x84, 0x5c, 0x01, (byte)0xd6,
+                              (byte)0xa0, 0x5a,
+                              (byte)0xaa, 0x71, 0x21, 0x65, 0x48, (byte)0xbe,
+                              0x26, 0x07,
+                      (byte)0x86, (byte)0xae, 0x29, 0x2a, (byte)0xd5, 0x37  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x08, (byte)0xd6, 0x39, (byte)0xec,
-                0x14, 0x07, (byte)0xc3, 0x58, 0x2d, 0x38, 0x68, 0x32,
-                (byte)0xe5, (byte)0xdf,
-                (byte)0xf3, (byte)0xb4, (byte)0x84, (byte)0xbe,
-                (byte)0xf8, 0x72, (byte)0xa9, 0x68, (byte)0xcd, 0x0c, 0x13,
-                0x62, 0x43, 0x19, (byte)0xff, 0x77, (byte)0xe7, 0x70,
-                (byte)0xf5, (byte)0x85,
-                0x22, 0x23, 0x1c, 0x72, 0x0b, (byte)0x9e, 0x43,
-                (byte)0xa6, (byte)0xee,
+                              0x00, 0x00, 0x08, (byte)0xd6, 0x39, (byte)0xec,
+                          0x14, 0x07, (byte)0xc3, 0x58, 0x2d, 0x38, 0x68,
+                              0x32,
+                              (byte)0xe5, (byte)0xdf,
+                              (byte)0xf3, (byte)0xb4, (byte)0x84, (byte)0xbe,
+                    (byte)0xf8, 0x72, (byte)0xa9, 0x68, (byte)0xcd, 0x0c,
+                              0x13,
+                          0x62, 0x43, 0x19, (byte)0xff, 0x77, (byte)0xe7,
+                              0x70,
+                              (byte)0xf5, (byte)0x85,
+                              0x22, 0x23, 0x1c, 0x72, 0x0b, (byte)0x9e, 0x43,
+                              (byte)0xa6, (byte)0xee,
                               (byte)0x81, 0x18, 0x76, 0x0b, (byte)0xb4,
-                0x4f, (byte)0x97, 0x27, 0x39, 0x13, 0x78
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xda, 0x00, (byte)0xef, 0x7f, 0x16, (byte)0xd8,
-                0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x2a,
-                0x49, 0x3c,
-                (byte)0xb2, (byte)0x89, (byte)0xa2, 0x37, (byte)0xc4,
-                0x5d, (byte)0xbf, 0x0b, 0x4c, 0x77, 0x2c, 0x05, 0x32,
-                (byte)0xa7, (byte)0x85,
-                (byte)0xe2, 0x31, 0x20, 0x61, (byte)0xa8, 0x06,
-                (byte)0xd3, (byte)0xe2,
-                0x71, 0x06, 0x05, (byte)0xe6, (byte)0x8a,
-                (byte)0xa1, 0x03,
-                (byte)0xce, 0x2c, (byte)0xb6, (byte)0xba, 0x28,
-                (byte)0xfb, (byte)0xb1,
-                0x5c, (byte)0x97, (byte)0x85, (byte)0xc2, 0x58, 0x29,
-                0x5b, 0x73, 0x34, 0x0f, (byte)0x9f, (byte)0xa4, (byte)0x81,
-                (byte)0x82, 0x63,
-                0x6b, 0x16, 0x4e, 0x62, (byte)0x9d, (byte)0xcc,
-                (byte)0xe4, 0x06, 0x17, 0x35, (byte)0xc7, 0x52, (byte)0xf4,
-                (byte)0xe2, 0x28, (byte)0xe7, 0x12, 0x4b, 0x7b, 0x06, 0x77,
-                (byte)0xa3, (byte)0xdd, (byte)0xeb,
+                              0x4f, (byte)0x97, 0x27, 0x39, 0x13, 0x78
+                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00, (byte)0xef, 0x7f,
+                              0x16, (byte)0xd8,
+                              0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x2a,
+                              0x49, 0x3c,
+                          (byte)0xb2, (byte)0x89, (byte)0xa2, 0x37,
+                              (byte)0xc4,
+                          0x5d, (byte)0xbf, 0x0b, 0x4c, 0x77, 0x2c, 0x05,
+                              0x32,
+                              (byte)0xa7, (byte)0x85,
+                              (byte)0xe2, 0x31, 0x20, 0x61, (byte)0xa8, 0x06,
+                              (byte)0xd3, (byte)0xe2,
+                              0x71, 0x06, 0x05, (byte)0xe6, (byte)0x8a,
+                              (byte)0xa1, 0x03,
+                              (byte)0xce, 0x2c, (byte)0xb6, (byte)0xba, 0x28,
+                              (byte)0xfb, (byte)0xb1,
+                          0x5c, (byte)0x97, (byte)0x85, (byte)0xc2, 0x58,
+                              0x29,
+                    0x5b, 0x73, 0x34, 0x0f, (byte)0x9f, (byte)0xa4,
+                              (byte)0x81,
+                              (byte)0x82, 0x63,
+                              0x6b, 0x16, 0x4e, 0x62, (byte)0x9d, (byte)0xcc,
+                    (byte)0xe4, 0x06, 0x17, 0x35, (byte)0xc7, 0x52,
+                              (byte)0xf4,
+                    (byte)0xe2, 0x28, (byte)0xe7, 0x12, 0x4b, 0x7b, 0x06,
+                              0x77,
+                              (byte)0xa3, (byte)0xdd, (byte)0xeb,
           0x70, 0x76, (byte)0xe6, (byte)0xa9, 0x16, 0x74, 0x29, (byte)0x86  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x00, 0x01, (byte)0x84, (byte)0xfa,
-                (byte)0xb7, (byte)0xe1, (byte)0xc3, 0x57, 0x54,
-                (byte)0xe6, 0x76,
-                0x1b, (byte)0xe8, 0x78, (byte)0x92, 0x28, 0x39,
-                0x57, (byte)0x8f,
-                (byte)0xbb, (byte)0xab, (byte)0xb8, (byte)0x8e,
-                0x42, 0x56, (byte)0xe1, (byte)0x82, (byte)0x82, 0x51,
-                0x07, (byte)0xa9  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+                              0x00, 0x00, 0x00, 0x01, (byte)0x84, (byte)0xfa,
+                              (byte)0xb7, (byte)0xe1, (byte)0xc3, 0x57, 0x54,
+                              (byte)0xe6, 0x76,
+                              0x1b, (byte)0xe8, 0x78, (byte)0x92, 0x28, 0x39,
+                              0x57, (byte)0x8f,
+                              (byte)0xbb, (byte)0xab, (byte)0xb8, (byte)0x8e,
+                          0x42, 0x56, (byte)0xe1, (byte)0x82, (byte)0x82,
+                              0x51,
+                   0x07, (byte)0xa9  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
                               (byte)0x82, 0x1b, (byte)0x80, (byte)0xbc,
-                0x30, (byte)0xc1, 0x2b, 0x01, 0x37, (byte)0x90, (byte)0xc3,
-                0x51, 0x21, (byte)0x8b, (byte)0xa8, (byte)0xda, (byte)0xf7,
-                0x15, 0x4a,
-                (byte)0x95, (byte)0x87, 0x79, 0x1e, 0x49, (byte)0xad,
-                0x3c, (byte)0xba, 0x41, 0x2d  }));
+                    0x30, (byte)0xc1, 0x2b, 0x01, 0x37, (byte)0x90,
+                              (byte)0xc3,
+                    0x51, 0x21, (byte)0x8b, (byte)0xa8, (byte)0xda,
+                              (byte)0xf7,
+                              0x15, 0x4a,
+                          (byte)0x95, (byte)0x87, 0x79, 0x1e, 0x49,
+                              (byte)0xad,
+                              0x3c, (byte)0xba, 0x41, 0x2d  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3a,
-                          0x00, 0x0e, 0x31, (byte)0xb4, 0x3b, 0x00, 0x00,
-                0x00, 0x0e, 0x2d, (byte)0xbf, (byte)0xb4, (byte)0xcb
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x38,
-                0x77, (byte)0x9d, (byte)0x81, 0x19, 0x13, 0x4a, 0x2e, 0x58,
-                0x71, 0x70, (byte)0x90, (byte)0xc2, (byte)0xb9, (byte)0xd1,
-                0x0a, (byte)0xd6,
-                (byte)0xfb, 0x6b, 0x3d, 0x68, (byte)0xf2, 0x68, (byte)0x84,
-                0x06, 0x0b, 0x5a, (byte)0xdf, (byte)0xe6, (byte)0xac, 0x51,
-                0x7e, (byte)0xf4,
-                0x29, (byte)0xe9, 0x17, 0x05, 0x79, (byte)0xe7,
-                0x4c, 0x72, 0x04, (byte)0xcc, 0x71, (byte)0xa6,
-                (byte)0xad, (byte)0xc5,
-                (byte)0xc7, 0x05, (byte)0x91, (byte)0xa3, 0x3c, (byte)0x98,
-                0x18, 0x72, 0x49, (byte)0xa1, (byte)0xc2, 0x58, 0x22, 0x65,
-                0x60, 0x0a,
-                (byte)0xe6, (byte)0x9a, (byte)0xdb, 0x00, (byte)0xb0,
-                (byte)0xce, 0x65, 0x72, 0x11, (byte)0x89, 0x0b, (byte)0xbd,
-                (byte)0xbb, 0x33, (byte)0xab, (byte)0x9b, (byte)0xa9, 0x48,
-                (byte)0xe3, 0x60,
-                (byte)0xad, (byte)0xaa, (byte)0x99, (byte)0xe5,
-                0x72, (byte)0xd2,
-                (byte)0xfd, 0x41, (byte)0x96, (byte)0xa7, (byte)0x82  }));
+                              0x00, 0x0e, 0x31, (byte)0xb4, 0x3b, 0x00, 0x00,
+                              0x00, 0x0e, 0x2d, (byte)0xbf, (byte)0xb4,
+                (byte)0xcb  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc3, 0x58, 0x38,
+                    0x77, (byte)0x9d, (byte)0x81, 0x19, 0x13, 0x4a, 0x2e,
+                              0x58,
+                    0x71, 0x70, (byte)0x90, (byte)0xc2, (byte)0xb9,
+                              (byte)0xd1,
+                              0x0a, (byte)0xd6,
+                    (byte)0xfb, 0x6b, 0x3d, 0x68, (byte)0xf2, 0x68,
+                              (byte)0x84,
+                    0x06, 0x0b, 0x5a, (byte)0xdf, (byte)0xe6, (byte)0xac,
+                              0x51,
+                              0x7e, (byte)0xf4,
+                              0x29, (byte)0xe9, 0x17, 0x05, 0x79, (byte)0xe7,
+                              0x4c, 0x72, 0x04, (byte)0xcc, 0x71, (byte)0xa6,
+                              (byte)0xad, (byte)0xc5,
+                    (byte)0xc7, 0x05, (byte)0x91, (byte)0xa3, 0x3c,
+                              (byte)0x98,
+                    0x18, 0x72, 0x49, (byte)0xa1, (byte)0xc2, 0x58, 0x22,
+                              0x65,
+                              0x60, 0x0a,
+                          (byte)0xe6, (byte)0x9a, (byte)0xdb, 0x00,
+                              (byte)0xb0,
+                    (byte)0xce, 0x65, 0x72, 0x11, (byte)0x89, 0x0b,
+                              (byte)0xbd,
+                    (byte)0xbb, 0x33, (byte)0xab, (byte)0x9b, (byte)0xa9,
+                              0x48,
+                              (byte)0xe3, 0x60,
+                              (byte)0xad, (byte)0xaa, (byte)0x99, (byte)0xe5,
+                              0x72, (byte)0xd2,
+                      (byte)0xfd, 0x41, (byte)0x96, (byte)0xa7, (byte)0x82  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a,
-                          0x01, (byte)0xea, 0x05, (byte)0x8b, (byte)0xc2,
-                0x58, 0x2b, 0x47, (byte)0x81, 0x70, 0x43, (byte)0x97,
-                (byte)0xf4, (byte)0x91,
-                0x2f, 0x67, 0x3e, 0x7a, (byte)0xa6, 0x15,
-                (byte)0x9e, (byte)0x9f,
+                              0x01, (byte)0xea, 0x05, (byte)0x8b, (byte)0xc2,
+                          0x58, 0x2b, 0x47, (byte)0x81, 0x70, 0x43,
+                              (byte)0x97,
+                              (byte)0xf4, (byte)0x91,
+                              0x2f, 0x67, 0x3e, 0x7a, (byte)0xa6, 0x15,
+                              (byte)0x9e, (byte)0x9f,
                               (byte)0x97, 0x40, (byte)0xea, (byte)0xd1,
-                (byte)0xc0, (byte)0xda,
-                0x25, (byte)0x8d, (byte)0xa2, 0x2e, (byte)0xc3,
-                (byte)0xe1, (byte)0xc9, 0x15, 0x43, 0x71, (byte)0xd3,
-                (byte)0xa5, 0x55, (byte)0x86, 0x7d, 0x05, 0x5d, (byte)0xdc,
-                0x48, (byte)0xdb, (byte)0xc1, 0x6c
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc2, 0x58, 0x2e,
-                0x3c, (byte)0xc5, 0x71, (byte)0xe2, 0x4c,
-                0x69, 0x25,
-                (byte)0xce, (byte)0xb0, 0x70, 0x77, 0x2e, (byte)0xa3,
-                0x1f, 0x55, (byte)0xe3, 0x1f, (byte)0xb1, (byte)0xb9, 0x4e,
-                (byte)0xa9, (byte)0xe5, 0x35, (byte)0xa3, (byte)0xb6, 0x3a,
-                0x7c, (byte)0x94,
-                (byte)0xd7, (byte)0xe4, 0x0c, 0x57, (byte)0xe0,
-                (byte)0xf4, 0x03,
-                (byte)0x93, 0x5a, (byte)0x80, 0x25, 0x28, (byte)0x84,
-                0x10, (byte)0x83,
-                0x0a, (byte)0xf0, (byte)0xc9, (byte)0xc2, 0x58,
-                0x2a, 0x67,
-                (byte)0xd6, 0x33, (byte)0xd6, 0x79, 0x38, (byte)0xbd, 0x6d,
-                0x71, 0x53, 0x3f, (byte)0xc3, 0x31, 0x6e, (byte)0xa6,
-                0x4c, (byte)0xe7, 0x1a, (byte)0xbe, (byte)0xaf, (byte)0xeb,
-                0x7e, (byte)0xcc, (byte)0xe7, 0x40, 0x59, (byte)0xbc,
-                (byte)0xd7, (byte)0xf8,
-                (byte)0x93, (byte)0xab, (byte)0xce, 0x2e, 0x58,
-                (byte)0x9c, (byte)0xf2,
-                0x10, 0x4e, 0x59, (byte)0xe0, 0x26, 0x74  }));
+                              (byte)0xc0, (byte)0xda,
+                              0x25, (byte)0x8d, (byte)0xa2, 0x2e, (byte)0xc3,
+                          (byte)0xe1, (byte)0xc9, 0x15, 0x43, 0x71,
+                              (byte)0xd3,
+                    (byte)0xa5, 0x55, (byte)0x86, 0x7d, 0x05, 0x5d,
+                              (byte)0xdc,
+ 0x48, (byte)0xdb, (byte)0xc1, 0x6c  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc2, 0x58, 0x2e,
+                              0x3c, (byte)0xc5, 0x71, (byte)0xe2, 0x4c,
+                              0x69, 0x25,
+                          (byte)0xce, (byte)0xb0, 0x70, 0x77, 0x2e,
+                              (byte)0xa3,
+                    0x1f, 0x55, (byte)0xe3, 0x1f, (byte)0xb1, (byte)0xb9,
+                              0x4e,
+                    (byte)0xa9, (byte)0xe5, 0x35, (byte)0xa3, (byte)0xb6,
+                              0x3a,
+                              0x7c, (byte)0x94,
+                              (byte)0xd7, (byte)0xe4, 0x0c, 0x57, (byte)0xe0,
+                              (byte)0xf4, 0x03,
+                          (byte)0x93, 0x5a, (byte)0x80, 0x25, 0x28,
+                              (byte)0x84,
+                              0x10, (byte)0x83,
+                              0x0a, (byte)0xf0, (byte)0xc9, (byte)0xc2, 0x58,
+                              0x2a, 0x67,
+                    (byte)0xd6, 0x33, (byte)0xd6, 0x79, 0x38, (byte)0xbd,
+                              0x6d,
+                          0x71, 0x53, 0x3f, (byte)0xc3, 0x31, 0x6e,
+                              (byte)0xa6,
+                    0x4c, (byte)0xe7, 0x1a, (byte)0xbe, (byte)0xaf,
+                              (byte)0xeb,
+                          0x7e, (byte)0xcc, (byte)0xe7, 0x40, 0x59,
+                              (byte)0xbc,
+                              (byte)0xd7, (byte)0xf8,
+                              (byte)0x93, (byte)0xab, (byte)0xce, 0x2e, 0x58,
+                              (byte)0x9c, (byte)0xf2,
+                              0x10, 0x4e, 0x59, (byte)0xe0, 0x26, 0x74  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b,
                               0x00, 0x00, 0x00, 0x58, 0x30, (byte)0xd2,
-                0x37, (byte)0xd7,
-                (byte)0xc2, 0x58, 0x1c, 0x2d, 0x10, (byte)0xe5,
-                0x04, 0x75, (byte)0x8a, 0x75, (byte)0xf1, 0x2c, 0x28,
-                (byte)0xab, (byte)0xeb,
+                              0x37, (byte)0xd7,
+                              (byte)0xc2, 0x58, 0x1c, 0x2d, 0x10, (byte)0xe5,
+                          0x04, 0x75, (byte)0x8a, 0x75, (byte)0xf1, 0x2c,
+                              0x28,
+                              (byte)0xab, (byte)0xeb,
                               (byte)0xcd, 0x47, (byte)0xf1, (byte)0x8c,
-                0x3b, (byte)0xf8, (byte)0x93, 0x2b, (byte)0xee, (byte)0xd9,
-                (byte)0x9b, (byte)0xe6, (byte)0xba, (byte)0xde, (byte)0xc4,
+                    0x3b, (byte)0xf8, (byte)0x93, 0x2b, (byte)0xee,
+                              (byte)0xd9,
+                    (byte)0x9b, (byte)0xe6, (byte)0xba, (byte)0xde,
+                              (byte)0xc4,
     (byte)0x99  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc2, 0x58, 0x3c,
-                0x71, (byte)0xb3,
-                0x06, (byte)0xa3, 0x1c, 0x29, (byte)0xcd, 0x4c, 0x52,
-                0x0c, 0x0c, 0x3a, (byte)0xe8, 0x35, 0x08, (byte)0xcc, 0x46,
-                0x77, 0x78,
-                (byte)0x94, (byte)0xe6, (byte)0x83, 0x73, 0x74, 0x1a,
-                (byte)0xc5, 0x34, 0x70, (byte)0x83, 0x5c, 0x48, 0x65,
-                (byte)0xe0, 0x68,
-                (byte)0xb6, (byte)0xab, 0x12, 0x29, 0x11, 0x03,
-                0x4c, (byte)0xdd,
-                (byte)0x99, (byte)0xe7, (byte)0x97, (byte)0xa0, (byte)0x88,
-                0x19, 0x6a, 0x00, (byte)0xb1, 0x0e, (byte)0xa8, 0x09,
-                (byte)0xfd, (byte)0x93,
-                0x16, 0x60, 0x28, (byte)0xce, (byte)0xc2, 0x58,
-                0x2c, 0x71, 0x11, (byte)0x95, (byte)0xf9, (byte)0xfe,
-                0x24, (byte)0xc7, (byte)0xab, 0x36, 0x4e, (byte)0x82, 0x32,
-                (byte)0xfc, (byte)0x8b,
-                (byte)0xd2, (byte)0xc7, 0x45, 0x58, 0x36, 0x0a,
-                0x1b, (byte)0x82,
-                (byte)0xe5, (byte)0xba, (byte)0xba, (byte)0xc7, 0x0d,
-                (byte)0xc6, 0x53, 0x0b, 0x6c, (byte)0xdf, (byte)0xf2,
-                (byte)0x8e, (byte)0xd9, (byte)0x94,
+                              0x71, (byte)0xb3,
+                          0x06, (byte)0xa3, 0x1c, 0x29, (byte)0xcd, 0x4c,
+                              0x52,
+                    0x0c, 0x0c, 0x3a, (byte)0xe8, 0x35, 0x08, (byte)0xcc,
+                              0x46,
+                              0x77, 0x78,
+                          (byte)0x94, (byte)0xe6, (byte)0x83, 0x73, 0x74,
+                              0x1a,
+                          (byte)0xc5, 0x34, 0x70, (byte)0x83, 0x5c, 0x48,
+                              0x65,
+                              (byte)0xe0, 0x68,
+                              (byte)0xb6, (byte)0xab, 0x12, 0x29, 0x11, 0x03,
+                              0x4c, (byte)0xdd,
+                    (byte)0x99, (byte)0xe7, (byte)0x97, (byte)0xa0,
+                              (byte)0x88,
+                          0x19, 0x6a, 0x00, (byte)0xb1, 0x0e, (byte)0xa8,
+                              0x09,
+                              (byte)0xfd, (byte)0x93,
+                              0x16, 0x60, 0x28, (byte)0xce, (byte)0xc2, 0x58,
+                          0x2c, 0x71, 0x11, (byte)0x95, (byte)0xf9,
+                              (byte)0xfe,
+                    0x24, (byte)0xc7, (byte)0xab, 0x36, 0x4e, (byte)0x82,
+                              0x32,
+                              (byte)0xfc, (byte)0x8b,
+                              (byte)0xd2, (byte)0xc7, 0x45, 0x58, 0x36, 0x0a,
+                              0x1b, (byte)0x82,
+                          (byte)0xe5, (byte)0xba, (byte)0xba, (byte)0xc7,
+                              0x0d,
+                          (byte)0xc6, 0x53, 0x0b, 0x6c, (byte)0xdf,
+                              (byte)0xf2,
+                              (byte)0x8e, (byte)0xd9, (byte)0x94,
                       0x3c, 0x08, 0x15, 0x07, (byte)0xac, 0x5e, 0x56, 0x16  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
                               (byte)0xc3, 0x58, 0x33, 0x58, 0x36, 0x69,
-                (byte)0xa1, 0x1c,
-                (byte)0xd4, (byte)0xa2, 0x66, 0x7e, (byte)0xed,
-                (byte)0xcf, (byte)0xe1, 0x19, 0x11, 0x47, 0x5e, 0x38,
-                0x35, (byte)0xc4, (byte)0xf6, 0x65, (byte)0xff, 0x53, 0x1f,
-                0x14, 0x25, 0x7c, (byte)0x84, (byte)0xb4, 0x32, 0x72,
-                (byte)0xe6, (byte)0xa1,
-                          (byte)0xba, 0x63, 0x2f, 0x5f, 0x26, 0x20,
-                (byte)0xd4, 0x4b,
-                0x2e, (byte)0xfe, 0x59, 0x09, 0x2a, 0x21, 0x49,
-                0x3d, 0x32,
-                (byte)0xc5, (byte)0xc2, 0x58, 0x1e, 0x4e, 0x69, 0x29,
-                (byte)0xe0, 0x27,
-                0x09, 0x36, 0x50, 0x61, 0x72, 0x57, 0x15, 0x6a,
-                0x1f, 0x70, 0x54, (byte)0xdf, 0x14, 0x3f, 0x04, 0x51, 0x48,
-                (byte)0xba, 0x5c, 0x09, 0x32, (byte)0xf4, 0x54, (byte)0xee,
-                  0x4c  }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                    (byte)0xc4, (byte)0x82, 0x1a, 0x03, 0x48, (byte)0xc6,
-                (byte)0x86, (byte)0xc3,
-                0x58, 0x32, 0x6c, 0x7f, (byte)0xcb, (byte)0xcc,
-                (byte)0xfb, 0x42,
-                (byte)0xb3, 0x5e, 0x4f, (byte)0x90, (byte)0xc7,
-                0x2c, (byte)0xa5, (byte)0xd1, (byte)0xa9, (byte)0xcc, 0x34,
-                0x1b, (byte)0xa4, (byte)0xab, 0x01, (byte)0xe1, (byte)0xb4,
-                0x1a, 0x1b, 0x20, (byte)0xc2, 0x60, (byte)0xe2,
-                (byte)0xb1, (byte)0xd0,
-                (byte)0xd8, 0x09, (byte)0xe6, 0x06, 0x7e, 0x03,
-                0x1b, 0x63, (byte)0x99, (byte)0x96, 0x4e, 0x29, 0x2a, 0x41,
-                0x24, (byte)0x99, 0x29, (byte)0xdd, 0x11  }));
+                              (byte)0xa1, 0x1c,
+                              (byte)0xd4, (byte)0xa2, 0x66, 0x7e, (byte)0xed,
+                          (byte)0xcf, (byte)0xe1, 0x19, 0x11, 0x47, 0x5e,
+                              0x38,
+                    0x35, (byte)0xc4, (byte)0xf6, 0x65, (byte)0xff, 0x53,
+                              0x1f,
+                          0x14, 0x25, 0x7c, (byte)0x84, (byte)0xb4, 0x32,
+                              0x72,
+                              (byte)0xe6, (byte)0xa1,
+                              (byte)0xba, 0x63, 0x2f, 0x5f, 0x26, 0x20,
+                              (byte)0xd4, 0x4b,
+                              0x2e, (byte)0xfe, 0x59, 0x09, 0x2a, 0x21, 0x49,
+                              0x3d, 0x32,
+                          (byte)0xc5, (byte)0xc2, 0x58, 0x1e, 0x4e, 0x69,
+                              0x29,
+                              (byte)0xe0, 0x27,
+                              0x09, 0x36, 0x50, 0x61, 0x72, 0x57, 0x15, 0x6a,
+                    0x1f, 0x70, 0x54, (byte)0xdf, 0x14, 0x3f, 0x04, 0x51,
+                              0x48,
+                    (byte)0xba, 0x5c, 0x09, 0x32, (byte)0xf4, 0x54,
+                              (byte)0xee,
+                              0x4c  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a, 0x03,
+                              0x48, (byte)0xc6,
+                              (byte)0x86, (byte)0xc3,
+                              0x58, 0x32, 0x6c, 0x7f, (byte)0xcb, (byte)0xcc,
+                              (byte)0xfb, 0x42,
+                              (byte)0xb3, 0x5e, 0x4f, (byte)0x90, (byte)0xc7,
+                    0x2c, (byte)0xa5, (byte)0xd1, (byte)0xa9, (byte)0xcc,
+                              0x34,
+                    0x1b, (byte)0xa4, (byte)0xab, 0x01, (byte)0xe1,
+                              (byte)0xb4,
+                              0x1a, 0x1b, 0x20, (byte)0xc2, 0x60, (byte)0xe2,
+                              (byte)0xb1, (byte)0xd0,
+                              (byte)0xd8, 0x09, (byte)0xe6, 0x06, 0x7e, 0x03,
+                    0x1b, 0x63, (byte)0x99, (byte)0x96, 0x4e, 0x29, 0x2a,
+                              0x41,
+                              0x24, (byte)0x99, 0x29, (byte)0xdd, 0x11  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b,
                               0x00, 0x01, (byte)0x97, (byte)0xcf, 0x67,
-                0x3d, (byte)0xeb,
-                0x15, (byte)0xc2, 0x58, 0x25, 0x26, (byte)0xe2,
-                (byte)0x87, 0x03, (byte)0xe4, (byte)0xb2, (byte)0xaa, 0x68,
-                (byte)0x91, 0x2f,
-                (byte)0xbf, (byte)0xc6, (byte)0xf5, (byte)0xf6,
-                0x24, (byte)0xc6,
-                0x5b, (byte)0xaa, 0x29, (byte)0xdb, (byte)0xda,
-                0x2e, (byte)0x93, (byte)0x96, 0x49, (byte)0xfd, 0x3e, 0x2d,
-                0x47, 0x46,
-                (byte)0xb6, (byte)0xe9, (byte)0xb9, 0x0b, (byte)0x9b,
+                              0x3d, (byte)0xeb,
+                              0x15, (byte)0xc2, 0x58, 0x25, 0x26, (byte)0xe2,
+                    (byte)0x87, 0x03, (byte)0xe4, (byte)0xb2, (byte)0xaa,
+                              0x68,
+                              (byte)0x91, 0x2f,
+                              (byte)0xbf, (byte)0xc6, (byte)0xf5, (byte)0xf6,
+                              0x24, (byte)0xc6,
+                              0x5b, (byte)0xaa, 0x29, (byte)0xdb, (byte)0xda,
+                    0x2e, (byte)0x93, (byte)0x96, 0x49, (byte)0xfd, 0x3e,
+                              0x2d,
+                              0x47, 0x46,
+                          (byte)0xb6, (byte)0xe9, (byte)0xb9, 0x0b,
+                              (byte)0x9b,
              (byte)0x83, (byte)0xce  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, (byte)0xc2, 0x49, 0x18,
-                0x6f, 0x19,
-                (byte)0xf9, 0x72, 0x4d, (byte)0x82, 0x4b, (byte)0xf0,
-                (byte)0xc2, 0x4d, 0x18, (byte)0xc6, 0x07, (byte)0x81, 0x5c,
-                (byte)0xe7, (byte)0xc6,
-                0x41, 0x1b, (byte)0xc9, (byte)0xba, (byte)0xf6, 0x75  }));
+                              0x6f, 0x19,
+                          (byte)0xf9, 0x72, 0x4d, (byte)0x82, 0x4b,
+                              (byte)0xf0,
+                    (byte)0xc2, 0x4d, 0x18, (byte)0xc6, 0x07, (byte)0x81,
+                              0x5c,
+                              (byte)0xe7, (byte)0xc6,
+                      0x41, 0x1b, (byte)0xc9, (byte)0xba, (byte)0xf6, 0x75  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x00, 0x05, 0x59, 0x47, (byte)0xdc,
-                0x6c, (byte)0xc2, 0x58, 0x22, 0x7e, (byte)0xd8, 0x2d, 0x59,
-                0x0b, (byte)0x8e,
-                0x0b, 0x33, 0x4f, (byte)0xae, 0x6c, (byte)0xbc, 0x23,
-                0x43, 0x49, 0x18, (byte)0xca, 0x53, (byte)0x85, (byte)0xc8,
-                (byte)0xc0, 0x5a,
-                0x39, 0x01, 0x01, 0x73, (byte)0xcc, 0x57, 0x51,
-                (byte)0x88, (byte)0xa1, 0x74, 0x29, 0x10
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, 0x1a, 0x00, 0x31,
-                (byte)0x8d, 0x53, 0x19, 0x24, 0x1d  }));
+                              0x00, 0x00, 0x00, 0x05, 0x59, 0x47, (byte)0xdc,
+                    0x6c, (byte)0xc2, 0x58, 0x22, 0x7e, (byte)0xd8, 0x2d,
+                              0x59,
+                              0x0b, (byte)0x8e,
+                          0x0b, 0x33, 0x4f, (byte)0xae, 0x6c, (byte)0xbc,
+                              0x23,
+                    0x43, 0x49, 0x18, (byte)0xca, 0x53, (byte)0x85,
+                              (byte)0xc8,
+                              (byte)0xc0, 0x5a,
+                              0x39, 0x01, 0x01, 0x73, (byte)0xcc, 0x57, 0x51,
+                              (byte)0x88, (byte)0xa1, 0x74, 0x29, 0x10
+                                 }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82, 0x1a,
+                              0x00, 0x31,
+                              (byte)0x8d, 0x53, 0x19, 0x24, 0x1d  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
                               (byte)0xc2, 0x58, 0x34, 0x47, 0x21, 0x59,
-                (byte)0x88, (byte)0xb3,
+                              (byte)0x88, (byte)0xb3,
                               (byte)0xb9, (byte)0x85, 0x6b, 0x0d, 0x39,
-                (byte)0x97, 0x17,
-                (byte)0xd0, 0x10, (byte)0xd9, 0x62, (byte)0xd8,
-                (byte)0xf4, 0x3a, (byte)0xfa, 0x3f, (byte)0x97, (byte)0xf5,
-                (byte)0xaf, 0x47,
-                0x72, (byte)0xf8, (byte)0xd3, 0x36, (byte)0x9a,
-                0x79, (byte)0xdd,
-                (byte)0x8f, 0x5b, (byte)0xfe, 0x19, (byte)0xee,
-                (byte)0x9e, (byte)0xe4, (byte)0x8a, 0x74, 0x3e,
-                (byte)0x90, (byte)0xe7,
-                          (byte)0x94, 0x66, 0x36, 0x7a, (byte)0xca,
-                (byte)0xea, 0x3d,
-                0x61, (byte)0xc2, 0x58, 0x19, 0x73, (byte)0xe4,
-                (byte)0xa8, 0x56, (byte)0xd5, 0x30, 0x4f, (byte)0xc0, 0x4e,
-                (byte)0xd1, 0x35,
-                0x69, (byte)0x9a, (byte)0xb0, (byte)0x91, 0x01,
-                (byte)0x9f, 0x56, (byte)0xb8, 0x6f, 0x2d, (byte)0xda, 0x5b,
-                (byte)0xa0, 0x38  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
-                (byte)0x82, 0x1b, 0x00, 0x00, 0x08, (byte)0xed,
-                0x21, 0x0e, (byte)0x83, (byte)0x9e, (byte)0xc2, 0x58, 0x1c,
-                0x46, 0x67,
-                0x31, (byte)0xb3, (byte)0xd1, 0x4e, (byte)0xf9, 0x54,
-                0x08, 0x34, 0x7e, 0x43, (byte)0xce, 0x13, 0x3c, (byte)0xc0,
-                (byte)0xb5, 0x54, 0x1a, (byte)0xd9, (byte)0xb2, (byte)0x8f,
-                0x2f, (byte)0xfe, 0x54, (byte)0x8c, (byte)0xd3, 0x73  }));
+                              (byte)0x97, 0x17,
+                              (byte)0xd0, 0x10, (byte)0xd9, 0x62, (byte)0xd8,
+                    (byte)0xf4, 0x3a, (byte)0xfa, 0x3f, (byte)0x97,
+                              (byte)0xf5,
+                              (byte)0xaf, 0x47,
+                              0x72, (byte)0xf8, (byte)0xd3, 0x36, (byte)0x9a,
+                              0x79, (byte)0xdd,
+                              (byte)0x8f, 0x5b, (byte)0xfe, 0x19, (byte)0xee,
+                              (byte)0x9e, (byte)0xe4, (byte)0x8a, 0x74, 0x3e,
+                              (byte)0x90, (byte)0xe7,
+                              (byte)0x94, 0x66, 0x36, 0x7a, (byte)0xca,
+                              (byte)0xea, 0x3d,
+                              0x61, (byte)0xc2, 0x58, 0x19, 0x73, (byte)0xe4,
+                    (byte)0xa8, 0x56, (byte)0xd5, 0x30, 0x4f, (byte)0xc0,
+                              0x4e,
+                              (byte)0xd1, 0x35,
+                              0x69, (byte)0x9a, (byte)0xb0, (byte)0x91, 0x01,
+                    (byte)0x9f, 0x56, (byte)0xb8, 0x6f, 0x2d, (byte)0xda,
+                              0x5b,
+                   (byte)0xa0, 0x38  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+                              (byte)0x82, 0x1b, 0x00, 0x00, 0x08, (byte)0xed,
+                    0x21, 0x0e, (byte)0x83, (byte)0x9e, (byte)0xc2, 0x58,
+                              0x1c,
+                              0x46, 0x67,
+                          0x31, (byte)0xb3, (byte)0xd1, 0x4e, (byte)0xf9,
+                              0x54,
+                    0x08, 0x34, 0x7e, 0x43, (byte)0xce, 0x13, 0x3c,
+                              (byte)0xc0,
+                    (byte)0xb5, 0x54, 0x1a, (byte)0xd9, (byte)0xb2,
+                              (byte)0x8f,
+                      0x2f, (byte)0xfe, 0x54, (byte)0x8c, (byte)0xd3, 0x73  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1b,
-                0x00, 0x00, 0x00, 0x01, 0x60, 0x1e, (byte)0xc1,
-                (byte)0xcd, 0x39, 0x58, 0x73
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc3, 0x4e, 0x70,
-                0x08, (byte)0x91, (byte)0xcc, 0x08, (byte)0x90, (byte)0x8e,
-                (byte)0xc9, (byte)0xe0, (byte)0xaf, (byte)0xae,
-                (byte)0xbb, 0x77,
-                (byte)0x83, (byte)0xc2, 0x58, 0x2d, 0x19, 0x7e,
-                (byte)0x9a, (byte)0xe6, 0x65, 0x7d, (byte)0xe7, 0x01, 0x7a,
-                (byte)0xae, (byte)0x9f,
-                (byte)0x92, 0x19, (byte)0xe6, (byte)0xc3, (byte)0xed,
-                (byte)0xb8, 0x1f,
-                0x7b, 0x7a, (byte)0x90, (byte)0xe9, 0x1a, 0x3d,
-                0x6a, (byte)0x82, 0x1c, (byte)0xe4, (byte)0x8f, 0x1e,
-                (byte)0xc9, (byte)0x87,
-                0x2f, (byte)0xbf, 0x3f, 0x47, (byte)0xaa,
-                (byte)0xe4, (byte)0xc8,
-                0x20, 0x1e, 0x03, (byte)0xa5, 0x3c, 0x23  }));
+                              0x00, 0x00, 0x00, 0x01, 0x60, 0x1e, (byte)0xc1,
+       (byte)0xcd, 0x39, 0x58, 0x73  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc3, 0x4e, 0x70,
+                    0x08, (byte)0x91, (byte)0xcc, 0x08, (byte)0x90,
+                              (byte)0x8e,
+                              (byte)0xc9, (byte)0xe0, (byte)0xaf, (byte)0xae,
+                              (byte)0xbb, 0x77,
+                              (byte)0x83, (byte)0xc2, 0x58, 0x2d, 0x19, 0x7e,
+                    (byte)0x9a, (byte)0xe6, 0x65, 0x7d, (byte)0xe7, 0x01,
+                              0x7a,
+                              (byte)0xae, (byte)0x9f,
+                          (byte)0x92, 0x19, (byte)0xe6, (byte)0xc3,
+                              (byte)0xed,
+                              (byte)0xb8, 0x1f,
+                              0x7b, 0x7a, (byte)0x90, (byte)0xe9, 0x1a, 0x3d,
+                          0x6a, (byte)0x82, 0x1c, (byte)0xe4, (byte)0x8f,
+                              0x1e,
+                              (byte)0xc9, (byte)0x87,
+                              0x2f, (byte)0xbf, 0x3f, 0x47, (byte)0xaa,
+                              (byte)0xe4, (byte)0xc8,
+                              0x20, 0x1e, 0x03, (byte)0xa5, 0x3c, 0x23  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x3b,
                               0x00, 0x63, (byte)0x93, (byte)0xb7, 0x75,
-                0x43, (byte)0xf2,
-                0x68, (byte)0xc3, 0x58, 0x1f, 0x02, 0x17, 0x38,
-                (byte)0xee, 0x0e,
-                0x2a, 0x45, 0x58, 0x5c, 0x79, 0x75, (byte)0x88,
-                0x18, (byte)0xa6, (byte)0xc5, (byte)0xcf, 0x02, 0x08, 0x29,
-                0x76, (byte)0x89, (byte)0xe8, (byte)0xfb, 0x40, (byte)0xf3,
-                (byte)0x84, (byte)0xc4, 0x11, (byte)0xbe, 0x57, (byte)0xaf
-                   }).compareTo(CBORObject.DecodeFromBytes(new byte[] {
-                  (byte)0xd8, 0x1e, (byte)0x82, (byte)0xc3, 0x58, 0x24,
-                0x3a, (byte)0xb3, 0x22, (byte)0x92, 0x6a, (byte)0xde,
-                (byte)0xe2, 0x2d,
-                (byte)0x98, (byte)0xe4, 0x04, 0x5f, (byte)0xb7,
-                0x19, (byte)0xab,
-                0x4e, (byte)0xc1, 0x28, (byte)0xad, (byte)0xe6,
-                0x2a, (byte)0xda, 0x43, 0x40, 0x46, 0x03, 0x63, 0x20,
-                0x44, (byte)0xdc,
-                (byte)0xee, (byte)0xc1, 0x06, 0x3b, (byte)0x87, 0x04,
-                (byte)0xc2, 0x58, 0x30, 0x5f, 0x2d, 0x43, 0x03, (byte)0x88,
-                0x45, (byte)0xc6,
-                0x23, (byte)0xd8, 0x04, 0x68, 0x35, (byte)0xef,
-                (byte)0xd0, 0x5a, 0x78, (byte)0xac, 0x23, 0x29, (byte)0xf2,
-                0x78, (byte)0xf1, 0x7d, (byte)0xa6, 0x4f, 0x4c, (byte)0xf3,
-                0x03, 0x44, (byte)0xf7, (byte)0xe4, 0x77, 0x21, 0x08, 0x38,
-                (byte)0x9a, 0x70,
-                (byte)0xa2, 0x60, 0x53, (byte)0xc7, (byte)0x80,
-                (byte)0xef, (byte)0x89,
-                0x09, (byte)0xc2, (byte)0x9e, (byte)0xb6  }));
+                              0x43, (byte)0xf2,
+                              0x68, (byte)0xc3, 0x58, 0x1f, 0x02, 0x17, 0x38,
+                              (byte)0xee, 0x0e,
+                              0x2a, 0x45, 0x58, 0x5c, 0x79, 0x75, (byte)0x88,
+                    0x18, (byte)0xa6, (byte)0xc5, (byte)0xcf, 0x02, 0x08,
+                              0x29,
+                    0x76, (byte)0x89, (byte)0xe8, (byte)0xfb, 0x40,
+                              (byte)0xf3,
+                              (byte)0x84, (byte)0xc4, 0x11, (byte)0xbe,
+                0x57, (byte)0xaf  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x82,
+                              (byte)0xc3, 0x58, 0x24,
+                          0x3a, (byte)0xb3, 0x22, (byte)0x92, 0x6a,
+                              (byte)0xde,
+                              (byte)0xe2, 0x2d,
+                              (byte)0x98, (byte)0xe4, 0x04, 0x5f, (byte)0xb7,
+                              0x19, (byte)0xab,
+                              0x4e, (byte)0xc1, 0x28, (byte)0xad, (byte)0xe6,
+                          0x2a, (byte)0xda, 0x43, 0x40, 0x46, 0x03, 0x63,
+                              0x20,
+                              0x44, (byte)0xdc,
+                          (byte)0xee, (byte)0xc1, 0x06, 0x3b, (byte)0x87,
+                              0x04,
+                    (byte)0xc2, 0x58, 0x30, 0x5f, 0x2d, 0x43, 0x03,
+                              (byte)0x88,
+                              0x45, (byte)0xc6,
+                              0x23, (byte)0xd8, 0x04, 0x68, 0x35, (byte)0xef,
+                    (byte)0xd0, 0x5a, 0x78, (byte)0xac, 0x23, 0x29,
+                              (byte)0xf2,
+                    0x78, (byte)0xf1, 0x7d, (byte)0xa6, 0x4f, 0x4c,
+                              (byte)0xf3,
+                    0x03, 0x44, (byte)0xf7, (byte)0xe4, 0x77, 0x21, 0x08,
+                              0x38,
+                              (byte)0x9a, 0x70,
+                              (byte)0xa2, 0x60, 0x53, (byte)0xc7, (byte)0x80,
+                              (byte)0xef, (byte)0x89,
+                              0x09, (byte)0xc2, (byte)0x9e, (byte)0xb6  }));
       CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82, 0x1a,
-                          0x37, (byte)0xe1, 0x17, (byte)0xbe, (byte)0xc2,
-                0x58, 0x25, 0x1f, (byte)0xa9, (byte)0xe2, 0x1e, 0x77,
-                (byte)0xd1, 0x70,
-                (byte)0xea, 0x7e, (byte)0xcc, 0x31, 0x76, (byte)0x8b,
-                (byte)0xe0, 0x3f,
-                0x02, (byte)0xaa, (byte)0xac, (byte)0xc7, (byte)0xe1,
-                0x43, 0x43, 0x73, 0x60, (byte)0x87, (byte)0xfc, 0x7f,
-                (byte)0xfd, 0x4c,
-                (byte)0xba, (byte)0x94, 0x7e, 0x17, (byte)0xec,
+                              0x37, (byte)0xe1, 0x17, (byte)0xbe, (byte)0xc2,
+                          0x58, 0x25, 0x1f, (byte)0xa9, (byte)0xe2, 0x1e,
+                              0x77,
+                              (byte)0xd1, 0x70,
+                          (byte)0xea, 0x7e, (byte)0xcc, 0x31, 0x76,
+                              (byte)0x8b,
+                              (byte)0xe0, 0x3f,
+                          0x02, (byte)0xaa, (byte)0xac, (byte)0xc7,
+                              (byte)0xe1,
+                          0x43, 0x43, 0x73, 0x60, (byte)0x87, (byte)0xfc,
+                              0x7f,
+                              (byte)0xfd, 0x4c,
+                              (byte)0xba, (byte)0x94, 0x7e, 0x17, (byte)0xec,
        (byte)0xd1, (byte)0xae, 0x5b  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8,
                               0x1e, (byte)0x82, 0x1b, 0x00, 0x00, 0x4a,
-                0x32, (byte)0x84,
-                0x37, (byte)0x90, (byte)0x8a, (byte)0xc2, 0x58, 0x28,
-                0x35, 0x12, 0x3f, 0x2b, (byte)0xf4, 0x29, (byte)0xbd,
-                0x12, (byte)0xc9,
-                (byte)0xfa, (byte)0x89, 0x7b, (byte)0x91, (byte)0x9e,
-                0x4f, 0x13,
-                (byte)0xdb, (byte)0xd7, (byte)0xdb, (byte)0x9a, (byte)0xe7,
-                0x10, 0x5d, 0x47, 0x5d, (byte)0xad, 0x15, 0x5c,
-                (byte)0xbe, 0x30,
-                (byte)0xf7, (byte)0xef, (byte)0xe8, (byte)0xe0,
-                0x4a, (byte)0xe5,
-                (byte)0xca, (byte)0xea, (byte)0xb9, (byte)0x89  }));
+                              0x32, (byte)0x84,
+                          0x37, (byte)0x90, (byte)0x8a, (byte)0xc2, 0x58,
+                              0x28,
+                          0x35, 0x12, 0x3f, 0x2b, (byte)0xf4, 0x29,
+                              (byte)0xbd,
+                              0x12, (byte)0xc9,
+                          (byte)0xfa, (byte)0x89, 0x7b, (byte)0x91,
+                              (byte)0x9e,
+                              0x4f, 0x13,
+                    (byte)0xdb, (byte)0xd7, (byte)0xdb, (byte)0x9a,
+                              (byte)0xe7,
+                              0x10, 0x5d, 0x47, 0x5d, (byte)0xad, 0x15, 0x5c,
+                              (byte)0xbe, 0x30,
+                              (byte)0xf7, (byte)0xef, (byte)0xe8, (byte)0xe0,
+                              0x4a, (byte)0xe5,
+                            (byte)0xca, (byte)0xea, (byte)0xb9, (byte)0x89  }));
       Assert.assertEquals(
--1,
+        -1,
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e,
                               (byte)0x82, (byte)0xc2, 0x58, 0x1e, 0x0e,
-                0x53, 0x4f, (byte)0xfe, 0x4d, 0x54, (byte)0xbb, 0x21, 0x3f,
-                (byte)0xd5, (byte)0xea,
-                0x61, (byte)0x90, 0x68, (byte)0x8a, 0x14,
-                (byte)0xfd, (byte)0x8d,
-                0x19, (byte)0xba, (byte)0xaf, (byte)0xbf, 0x3a, 0x67,
-                0x5e, 0x2d, 0x52, 0x41, (byte)0x93, (byte)0xa7, 0x18,
+                    0x53, 0x4f, (byte)0xfe, 0x4d, 0x54, (byte)0xbb, 0x21,
+                              0x3f,
+                              (byte)0xd5, (byte)0xea,
+                              0x61, (byte)0x90, 0x68, (byte)0x8a, 0x14,
+                              (byte)0xfd, (byte)0x8d,
+                          0x19, (byte)0xba, (byte)0xaf, (byte)0xbf, 0x3a,
+                              0x67,
+                          0x5e, 0x2d, 0x52, 0x41, (byte)0x93, (byte)0xa7,
+                              0x18,
           0x41  }).compareTo(CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
-                (byte)0x82, 0x1b, 0x00, 0x00, 0x4b, 0x3e,
-                (byte)0xcb, (byte)0xe8,
-                          (byte)0xc4, (byte)0xa3, (byte)0xc2, 0x58, 0x2a,
-                0x17, 0x0a, 0x4d, (byte)0x88, 0x40, (byte)0xe7,
-                (byte)0xe9, (byte)0xe1,
-                (byte)0x95, (byte)0xdc, (byte)0xad, (byte)0x97,
-                (byte)0x87, 0x66,
-                (byte)0x8c, 0x77, 0x4b, (byte)0xd6, 0x46, 0x52,
-                0x00, (byte)0xf0,
-                (byte)0xdd, 0x77, 0x16, (byte)0xa5, (byte)0xca, 0x71,
-                0x5d, (byte)0xf5, 0x7c, 0x6b, (byte)0x82, (byte)0x85, 0x47,
-                0x2d, (byte)0x90, (byte)0x89, 0x12, (byte)0x93, 0x0b, 0x1e  })));
+                              (byte)0x82, 0x1b, 0x00, 0x00, 0x4b, 0x3e,
+                              (byte)0xcb, (byte)0xe8,
+                              (byte)0xc4, (byte)0xa3, (byte)0xc2, 0x58, 0x2a,
+                              0x17, 0x0a, 0x4d, (byte)0x88, 0x40, (byte)0xe7,
+                              (byte)0xe9, (byte)0xe1,
+                              (byte)0x95, (byte)0xdc, (byte)0xad, (byte)0x97,
+                              (byte)0x87, 0x66,
+                              (byte)0x8c, 0x77, 0x4b, (byte)0xd6, 0x46, 0x52,
+                              0x00, (byte)0xf0,
+                          (byte)0xdd, 0x77, 0x16, (byte)0xa5, (byte)0xca,
+                              0x71,
+                    0x5d, (byte)0xf5, 0x7c, 0x6b, (byte)0x82, (byte)0x85,
+                              0x47,
+               0x2d, (byte)0x90, (byte)0x89, 0x12, (byte)0x93, 0x0b, 0x1e  })));
     }
 
     @Test
@@ -1598,8 +1755,8 @@ ms = new java.io.ByteArrayOutputStream();
         try {
           obj.WriteJSONTo(ms);
           objA = CBORObject.FromJSONString(DataUtilities.GetUtf8String(
-ms.toByteArray(),
-true));
+            ms.toByteArray(),
+            true));
         } catch (IOException ex) {
           throw new IllegalStateException("", ex);
         }
@@ -1768,8 +1925,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       TestExtendedFloatDoubleCore(3.5, "3.5");
       TestExtendedFloatDoubleCore((double)Integer.MIN_VALUE, "-2147483648");
       TestExtendedFloatDoubleCore(
-(double)Long.MIN_VALUE,
-"-9223372036854775808");
+        (double)Long.MIN_VALUE,
+        "-9223372036854775808");
       FastRandom rand = new FastRandom();
       for (int i = 0; i < 2047; ++i) {
         // Try a random double with a given
@@ -1792,8 +1949,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       Assert.assertEquals(1, o.size());
       Assert.assertEquals("\r\n\u0006\u000E\u001A\\\"", o.get(0).AsString());
       Assert.assertEquals(
-"[\"\\r\\n\\u0006\\u000E\\u001A\\\\\\\"\"]",
-o.ToJSONString());
+        "[\"\\r\\n\\u0006\\u000E\\u001A\\\\\\\"\"]",
+        o.ToJSONString());
       TestCommon.AssertRoundTrip(o);
     }
 
@@ -1961,11 +2118,11 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
       }
       Assert.assertEquals("true", CBORObject.FromJSONString("true").ToJSONString());
       Assert.assertEquals(
-"true",
-CBORObject.FromJSONString(" true ").ToJSONString());
+        "true",
+        CBORObject.FromJSONString(" true ").ToJSONString());
       Assert.assertEquals(
-"false",
-CBORObject.FromJSONString("false").ToJSONString());
+        "false",
+        CBORObject.FromJSONString("false").ToJSONString());
       Assert.assertEquals("null", CBORObject.FromJSONString("null").ToJSONString());
       Assert.assertEquals("5", CBORObject.FromJSONString("5").ToJSONString());
     }
@@ -1982,33 +2139,33 @@ CBORObject.FromJSONString("false").ToJSONString());
     public void TestByte() {
       for (int i = 0; i <= 255; ++i) {
         TestCommon.AssertSer(
-CBORObject.FromObject((byte)i),
-"" + i);
+          CBORObject.FromObject((byte)i),
+          "" + i);
       }
     }
 
     public void DoTestReadUtf8(
-byte[] bytes,
-int expectedRet,
-String expectedString,
-int noReplaceRet,
-String noReplaceString) {
+      byte[] bytes,
+      int expectedRet,
+      String expectedString,
+      int noReplaceRet,
+      String noReplaceString) {
       DoTestReadUtf8(
-bytes,
-bytes.length,
-expectedRet,
-expectedString,
-noReplaceRet,
-noReplaceString);
+        bytes,
+        bytes.length,
+        expectedRet,
+        expectedString,
+        noReplaceRet,
+        noReplaceString);
     }
 
     public static void DoTestReadUtf8(
-byte[] bytes,
-int length,
-int expectedRet,
-String expectedString,
-int noReplaceRet,
-String noReplaceString) {
+      byte[] bytes,
+      int length,
+      int expectedRet,
+      String expectedString,
+      int noReplaceRet,
+      String noReplaceString) {
       try {
         StringBuilder builder = new StringBuilder();
         int ret = 0;
@@ -2035,22 +2192,22 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         if (bytes.length >= length) {
           builder.setLength(0);
           ret = DataUtilities.ReadUtf8FromBytes(
-bytes,
-0,
-length,
-builder,
-true);
+            bytes,
+            0,
+            length,
+            builder,
+            true);
           Assert.assertEquals(expectedRet, ret);
           if (expectedRet == 0) {
             Assert.assertEquals(expectedString, builder.toString());
           }
           builder.setLength(0);
           ret = DataUtilities.ReadUtf8FromBytes(
-bytes,
-0,
-length,
-builder,
-false);
+            bytes,
+            0,
+            length,
+            builder,
+            false);
           Assert.assertEquals(noReplaceRet, ret);
           if (noReplaceRet == 0) {
             Assert.assertEquals(noReplaceString, builder.toString());
@@ -2067,44 +2224,46 @@ false);
         "0",
         CBORObject.FromObject((float)0.75).AsBigInteger().toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((float)0.99).AsBigInteger().toString());
+        "0",
+        CBORObject.FromObject((float)0.99).AsBigInteger().toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((float)0.0000000000000001).AsBigInteger().toString());
+        "0",
+CBORObject.FromObject((float)0.0000000000000001).AsBigInteger()
+          .toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((float)0.5).AsBigInteger().toString());
+        "0",
+        CBORObject.FromObject((float)0.5).AsBigInteger().toString());
       Assert.assertEquals(
-"1",
-CBORObject.FromObject((float)1.5).AsBigInteger().toString());
+        "1",
+        CBORObject.FromObject((float)1.5).AsBigInteger().toString());
       Assert.assertEquals(
-"2",
-CBORObject.FromObject((float)2.5).AsBigInteger().toString());
+        "2",
+        CBORObject.FromObject((float)2.5).AsBigInteger().toString());
       Assert.assertEquals(
-"328323",
-CBORObject.FromObject((float)328323f).AsBigInteger().toString());
+        "328323",
+        CBORObject.FromObject((float)328323f).AsBigInteger().toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((double)0.75).AsBigInteger().toString());
+        "0",
+        CBORObject.FromObject((double)0.75).AsBigInteger().toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((double)0.99).AsBigInteger().toString());
+        "0",
+        CBORObject.FromObject((double)0.99).AsBigInteger().toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((double)0.0000000000000001).AsBigInteger().toString());
+        "0",
+CBORObject.FromObject((double)0.0000000000000001).AsBigInteger()
+          .toString());
       Assert.assertEquals(
-"0",
-CBORObject.FromObject((double)0.5).AsBigInteger().toString());
+        "0",
+        CBORObject.FromObject((double)0.5).AsBigInteger().toString());
       Assert.assertEquals(
-"1",
-CBORObject.FromObject((double)1.5).AsBigInteger().toString());
+        "1",
+        CBORObject.FromObject((double)1.5).AsBigInteger().toString());
       Assert.assertEquals(
-"2",
-CBORObject.FromObject((double)2.5).AsBigInteger().toString());
+        "2",
+        CBORObject.FromObject((double)2.5).AsBigInteger().toString());
       Assert.assertEquals(
-"328323",
-CBORObject.FromObject((double)328323).AsBigInteger().toString());
+        "328323",
+        CBORObject.FromObject((double)328323).AsBigInteger().toString());
       try {
         CBORObject.FromObject(Float.POSITIVE_INFINITY).AsBigInteger();
         Assert.fail("Should have failed");
@@ -2159,88 +2318,88 @@ CBORObject.FromObject((double)328323).AsBigInteger().toString());
     public void TestReadUtf8() {
       DoTestReadUtf8(
         new byte[] { 0x21, 0x21, 0x21  },
- 0, "!!!", 0, "!!!");
+        0, "!!!", 0, "!!!");
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
- 0, " \u0080", 0, " \u0080");
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
+        0, " \u0080", 0, " \u0080");
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
         0, " \u0080 ", 0, " \u0080 ");
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xc2, (byte)0x80, (byte)0xc2  },
- 0, " \u0080\ufffd", -1, null);
+        new byte[] { 0x20,
+          (byte)0xc2, (byte)0x80, (byte)0xc2  },
+        0, " \u0080\ufffd", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
+        new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
         0, " \ufffd!!", -1,
- null);
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xc2, (byte)0xff, 0x20  },
- 0, " \ufffd\ufffd ", -1, null);
+        new byte[] { 0x20,
+          (byte)0xc2, (byte)0xff, 0x20  },
+        0, " \ufffd\ufffd ", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
         0, " \u0800", 0, " \u0800");
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 ", 0, " \u0800 ");
+        new byte[] { 0x20,
+          (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 ", 0, " \u0800 ");
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  }, 0, " \ud800\udc00", 0, " \ud800\udc00");
+        new byte[] { 0x20,
+          (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  }, 0, " \ud800\udc00", 0, " \ud800\udc00");
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
- 3,
- 0, " \ufffd", -1, null);
+        new byte[] { 0x20,
+          (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        3,
+        0, " \ufffd", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
- 5,
- -2,
- null,
- -1,
- null);
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
+        5,
+        -2,
+        null,
+        -1,
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20,
-        0x20, 0x20  },
- 5,
- -2,
- null,
- -2,
- null);
+        new byte[] { 0x20,
+          0x20, 0x20  },
+        5,
+        -2,
+        null,
+        -2,
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xf0,
-        (byte)0x90, (byte)0x80, (byte)0x80, 0x20  }, 0, " \ud800\udc00 ", 0, " \ud800\udc00 ");
+        new byte[] { 0x20, (byte)0xf0,
+          (byte)0x90, (byte)0x80, (byte)0x80, 0x20  }, 0, " \ud800\udc00 ", 0, " \ud800\udc00 ");
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  }, 0, " \ufffd ", -1,
- null);
+        new byte[] { 0x20,
+          (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  }, 0, " \ufffd ", -1,
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xf0, (byte)0x90, 0x20  },
- 0, " \ufffd ", -1, null);
+        new byte[] { 0x20,
+          (byte)0xf0, (byte)0x90, 0x20  },
+        0, " \ufffd ", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80,
-        (byte)0xff  },
- 0, " \ufffd\ufffd", -1, null);
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80,
+          (byte)0xff  },
+        0, " \ufffd\ufffd", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
         0, " \ufffd\ufffd", -1,
- null);
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xe0, (byte)0xa0, 0x20  },
- 0, " \ufffd ", -1, null);
+        new byte[] { 0x20,
+          (byte)0xe0, (byte)0xa0, 0x20  },
+        0, " \ufffd ", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xe0, 0x20  },
- 0, " \ufffd ", -1, null);
+        new byte[] { 0x20, (byte)0xe0, 0x20  },
+        0, " \ufffd ", -1, null);
       DoTestReadUtf8(
-new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
         0, " \ufffd\ufffd", -1,
- null);
+        null);
       DoTestReadUtf8(
-new byte[] { 0x20,
-        (byte)0xe0, (byte)0xff  }, 0, " \ufffd\ufffd", -1,
- null);
+        new byte[] { 0x20,
+          (byte)0xe0, (byte)0xff  }, 0, " \ufffd\ufffd", -1,
+        null);
     }
 
     private static boolean ByteArrayEquals(byte[] arrayA, byte[] arrayB) {
@@ -2269,7 +2428,7 @@ new byte[] { 0x20,
       byte[] bytes = cbor.EncodeToBytes();
       boolean isequal = ByteArrayEquals(
         new byte[] { (byte)(0x80 | 2), 3, 4  },
- bytes);
+        bytes);
       if (!(isequal))Assert.fail("array not equal");
       cbor = CBORObject.FromObject(new String[] { "a", "b", "c", "d", "e" });
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
@@ -2287,8 +2446,8 @@ new byte[] { 0x20,
         CBORObject.FromObject(2),
         cbor.get(CBORObject.FromObject("a")));
       TestCommon.AssertEqualsHashCode(
-CBORObject.FromObject(4),
-cbor.get(CBORObject.FromObject("b")));
+        CBORObject.FromObject(4),
+        cbor.get(CBORObject.FromObject("b")));
       Assert.assertEquals(2, cbor.get(CBORObject.FromObject("a")).AsInt32());
       Assert.assertEquals(4, cbor.get(CBORObject.FromObject("b")).AsInt32());
       Assert.assertEquals(0, CBORObject.True.size());
@@ -2296,11 +2455,11 @@ cbor.get(CBORObject.FromObject("b")));
                               0x61, 0x62, 4, (byte)0xff  });
       Assert.assertEquals(2, cbor.size());
       TestCommon.AssertEqualsHashCode(
-CBORObject.FromObject(2),
-cbor.get(CBORObject.FromObject("a")));
+        CBORObject.FromObject(2),
+        cbor.get(CBORObject.FromObject("a")));
       TestCommon.AssertEqualsHashCode(
-CBORObject.FromObject(4),
-cbor.get(CBORObject.FromObject("b")));
+        CBORObject.FromObject(4),
+        cbor.get(CBORObject.FromObject("b")));
       Assert.assertEquals(2, cbor.get(CBORObject.FromObject("a")).AsInt32());
       Assert.assertEquals(4, cbor.get(CBORObject.FromObject("b")).AsInt32());
     }
@@ -2352,12 +2511,12 @@ cbor.get(CBORObject.FromObject("b")));
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoTagsBeforeDefinite() {
       TestCommon.FromBytesTestAB(new byte[] { 0x7f,
-        0x61, 0x20, (byte)0xc0, 0x61, 0x20, (byte)0xff  });
+                              0x61, 0x20, (byte)0xc0, 0x61, 0x20, (byte)0xff  });
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
       TestCommon.FromBytesTestAB(new byte[] { 0x7f,
-        0x61, 0x20, 0x7f, 0x61, 0x20, (byte)0xff, (byte)0xff  });
+                              0x61, 0x20, 0x7f, 0x61, 0x20, (byte)0xff, (byte)0xff  });
     }
 
     @Test
@@ -2368,7 +2527,7 @@ cbor.get(CBORObject.FromObject("b")));
     @Test(expected = CBORException.class)
     public void TestByteStringStreamNoTagsBeforeDefinite() {
       TestCommon.FromBytesTestAB(new byte[] { 0x5f,
-        0x41, 0x20, (byte)0xc2, 0x41, 0x20, (byte)0xff  });
+                              0x41, 0x20, (byte)0xc2, 0x41, 0x20, (byte)0xff  });
     }
 
     public static void AssertDecimalsEquivalent(String a, String b) {
@@ -2385,876 +2544,914 @@ cbor.get(CBORObject.FromObject("b")));
         "0.0001265",
         ExtendedDecimal.FromString("1.265e-4").toString());
       Assert.assertEquals(
-"0.0001265",
-ExtendedDecimal.FromString("1.265e-4").ToEngineeringString());
+        "0.0001265",
+        ExtendedDecimal.FromString("1.265e-4").ToEngineeringString());
       Assert.assertEquals(
-"0.0001265",
-ExtendedDecimal.FromString("1.265e-4").ToPlainString());
+        "0.0001265",
+        ExtendedDecimal.FromString("1.265e-4").ToPlainString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000E-1").toString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000E-1").toString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000E-1").ToEngineeringString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000E-1").ToEngineeringString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000E-1").ToPlainString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000E-1").ToPlainString());
       Assert.assertEquals(
-"0E-16",
-ExtendedDecimal.FromString("0.0000000000000e-3").toString());
+        "0E-16",
+        ExtendedDecimal.FromString("0.0000000000000e-3").toString());
       Assert.assertEquals(
-"0.0E-15",
-ExtendedDecimal.FromString("0.0000000000000e-3").ToEngineeringString());
+        "0.0E-15",
+        ExtendedDecimal.FromString("0.0000000000000e-3").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000",
-ExtendedDecimal.FromString("0.0000000000000e-3").ToPlainString());
+        "0.0000000000000000",
+        ExtendedDecimal.FromString("0.0000000000000e-3").ToPlainString());
       Assert.assertEquals(
-"0E-8",
-ExtendedDecimal.FromString("0.000000000e+1").toString());
+        "0E-8",
+        ExtendedDecimal.FromString("0.000000000e+1").toString());
       Assert.assertEquals(
-"0.00E-6",
-ExtendedDecimal.FromString("0.000000000e+1").ToEngineeringString());
+        "0.00E-6",
+        ExtendedDecimal.FromString("0.000000000e+1").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000",
-ExtendedDecimal.FromString("0.000000000e+1").ToPlainString());
+        "0.00000000",
+        ExtendedDecimal.FromString("0.000000000e+1").ToPlainString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000000000000000e+12").toString());
+        "0.000",
+        ExtendedDecimal.FromString("0.000000000000000e+12").toString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000000000000000e+12").ToEngineeringString());
+        "0.000",
+    ExtendedDecimal.FromString("0.000000000000000e+12"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000000000000000e+12").ToPlainString());
+        "0.000",
+        ExtendedDecimal.FromString("0.000000000000000e+12").ToPlainString());
       Assert.assertEquals(
-"0E-25",
-ExtendedDecimal.FromString("0.00000000000000e-11").toString());
+        "0E-25",
+        ExtendedDecimal.FromString("0.00000000000000e-11").toString());
       Assert.assertEquals(
-"0.0E-24",
-ExtendedDecimal.FromString("0.00000000000000e-11").ToEngineeringString());
+        "0.0E-24",
+     ExtendedDecimal.FromString("0.00000000000000e-11"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000000e-11").ToPlainString());
+        "0.0000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000e-11").ToPlainString());
       Assert.assertEquals(
-"0E-7",
-ExtendedDecimal.FromString("0.000000000000e+5").toString());
+        "0E-7",
+        ExtendedDecimal.FromString("0.000000000000e+5").toString());
       Assert.assertEquals(
-"0.0E-6",
-ExtendedDecimal.FromString("0.000000000000e+5").ToEngineeringString());
+        "0.0E-6",
+        ExtendedDecimal.FromString("0.000000000000e+5").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000",
-ExtendedDecimal.FromString("0.000000000000e+5").ToPlainString());
+        "0.0000000",
+        ExtendedDecimal.FromString("0.000000000000e+5").ToPlainString());
       Assert.assertEquals(
-"0E-8",
-ExtendedDecimal.FromString("0.0000e-4").toString());
+        "0E-8",
+        ExtendedDecimal.FromString("0.0000e-4").toString());
       Assert.assertEquals(
-"0.00E-6",
-ExtendedDecimal.FromString("0.0000e-4").ToEngineeringString());
+        "0.00E-6",
+        ExtendedDecimal.FromString("0.0000e-4").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000",
-ExtendedDecimal.FromString("0.0000e-4").ToPlainString());
+        "0.00000000",
+        ExtendedDecimal.FromString("0.0000e-4").ToPlainString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000000e+2").toString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000000e+2").toString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000000e+2").ToEngineeringString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000000e+2").ToEngineeringString());
       Assert.assertEquals(
-"0.0000",
-ExtendedDecimal.FromString("0.000000e+2").ToPlainString());
+        "0.0000",
+        ExtendedDecimal.FromString("0.000000e+2").ToPlainString());
       Assert.assertEquals("0E+2", ExtendedDecimal.FromString("0.0e+3").toString());
       Assert.assertEquals(
-"0.0E+3",
-ExtendedDecimal.FromString("0.0e+3").ToEngineeringString());
+        "0.0E+3",
+        ExtendedDecimal.FromString("0.0e+3").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0e+3").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0e+3").ToPlainString());
       Assert.assertEquals(
-"0E-7",
-ExtendedDecimal.FromString("0.000000000000000e+8").toString());
+        "0E-7",
+        ExtendedDecimal.FromString("0.000000000000000e+8").toString());
       Assert.assertEquals(
-"0.0E-6",
-ExtendedDecimal.FromString("0.000000000000000e+8").ToEngineeringString());
+        "0.0E-6",
+     ExtendedDecimal.FromString("0.000000000000000e+8"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000",
-ExtendedDecimal.FromString("0.000000000000000e+8").ToPlainString());
+        "0.0000000",
+        ExtendedDecimal.FromString("0.000000000000000e+8").ToPlainString());
       Assert.assertEquals(
-"0E+7",
-ExtendedDecimal.FromString("0.000e+10").toString());
+        "0E+7",
+        ExtendedDecimal.FromString("0.000e+10").toString());
       Assert.assertEquals(
-"0.00E+9",
-ExtendedDecimal.FromString("0.000e+10").ToEngineeringString());
+        "0.00E+9",
+        ExtendedDecimal.FromString("0.000e+10").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000e+10").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000e+10").ToPlainString());
       Assert.assertEquals(
-"0E-31",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").toString());
+        "0E-31",
+        ExtendedDecimal.FromString("0.0000000000000000000e-12").toString());
       Assert.assertEquals(
-"0.0E-30",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").ToEngineeringString());
+        "0.0E-30",
+ExtendedDecimal.FromString("0.0000000000000000000e-12"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").ToPlainString());
+        "0.0000000000000000000000000000000",
+      ExtendedDecimal.FromString("0.0000000000000000000e-12"
+).ToPlainString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000e-1").toString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.0000e-1").toString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000e-1").ToEngineeringString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.0000e-1").ToEngineeringString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000e-1").ToPlainString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.0000e-1").ToPlainString());
       Assert.assertEquals(
-"0E-22",
-ExtendedDecimal.FromString("0.00000000000e-11").toString());
+        "0E-22",
+        ExtendedDecimal.FromString("0.00000000000e-11").toString());
       Assert.assertEquals(
-"0.0E-21",
-ExtendedDecimal.FromString("0.00000000000e-11").ToEngineeringString());
+        "0.0E-21",
+        ExtendedDecimal.FromString("0.00000000000e-11").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-11").ToPlainString());
+        "0.0000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-11").ToPlainString());
       Assert.assertEquals(
-"0E-28",
-ExtendedDecimal.FromString("0.00000000000e-17").toString());
+        "0E-28",
+        ExtendedDecimal.FromString("0.00000000000e-17").toString());
       Assert.assertEquals(
-"0.0E-27",
-ExtendedDecimal.FromString("0.00000000000e-17").ToEngineeringString());
+        "0.0E-27",
+        ExtendedDecimal.FromString("0.00000000000e-17").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-17").ToPlainString());
+        "0.0000000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-17").ToPlainString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000000e+9").toString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.00000000000000e+9").toString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000000e+9").ToEngineeringString());
+        "0.00000",
+      ExtendedDecimal.FromString("0.00000000000000e+9"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000000e+9").ToPlainString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.00000000000000e+9").ToPlainString());
       Assert.assertEquals(
-"0E-28",
-ExtendedDecimal.FromString("0.0000000000e-18").toString());
+        "0E-28",
+        ExtendedDecimal.FromString("0.0000000000e-18").toString());
       Assert.assertEquals(
-"0.0E-27",
-ExtendedDecimal.FromString("0.0000000000e-18").ToEngineeringString());
+        "0.0E-27",
+        ExtendedDecimal.FromString("0.0000000000e-18").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000e-18").ToPlainString());
+        "0.0000000000000000000000000000",
+        ExtendedDecimal.FromString("0.0000000000e-18").ToPlainString());
       Assert.assertEquals(
-"0E-14",
-ExtendedDecimal.FromString("0.0e-13").toString());
+        "0E-14",
+        ExtendedDecimal.FromString("0.0e-13").toString());
       Assert.assertEquals(
-"0.00E-12",
-ExtendedDecimal.FromString("0.0e-13").ToEngineeringString());
+        "0.00E-12",
+        ExtendedDecimal.FromString("0.0e-13").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000",
-ExtendedDecimal.FromString("0.0e-13").ToPlainString());
+        "0.00000000000000",
+        ExtendedDecimal.FromString("0.0e-13").ToPlainString());
       Assert.assertEquals(
-"0E-8",
-ExtendedDecimal.FromString("0.000000000000000000e+10").toString());
+        "0E-8",
+        ExtendedDecimal.FromString("0.000000000000000000e+10").toString());
       Assert.assertEquals(
-"0.00E-6",
-ExtendedDecimal.FromString("0.000000000000000000e+10").ToEngineeringString());
+        "0.00E-6",
+ ExtendedDecimal.FromString("0.000000000000000000e+10"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000",
-ExtendedDecimal.FromString("0.000000000000000000e+10").ToPlainString());
+        "0.00000000",
+        ExtendedDecimal.FromString("0.000000000000000000e+10").ToPlainString());
       Assert.assertEquals(
-"0E+15",
-ExtendedDecimal.FromString("0.0000e+19").toString());
+        "0E+15",
+        ExtendedDecimal.FromString("0.0000e+19").toString());
       Assert.assertEquals(
-"0E+15",
-ExtendedDecimal.FromString("0.0000e+19").ToEngineeringString());
+        "0E+15",
+        ExtendedDecimal.FromString("0.0000e+19").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0000e+19").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0000e+19").ToPlainString());
       Assert.assertEquals(
-"0E-13",
-ExtendedDecimal.FromString("0.00000e-8").toString());
+        "0E-13",
+        ExtendedDecimal.FromString("0.00000e-8").toString());
       Assert.assertEquals(
-"0.0E-12",
-ExtendedDecimal.FromString("0.00000e-8").ToEngineeringString());
+        "0.0E-12",
+        ExtendedDecimal.FromString("0.00000e-8").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000",
-ExtendedDecimal.FromString("0.00000e-8").ToPlainString());
+        "0.0000000000000",
+        ExtendedDecimal.FromString("0.00000e-8").ToPlainString());
       Assert.assertEquals(
-"0E+3",
-ExtendedDecimal.FromString("0.00000000000e+14").toString());
+        "0E+3",
+        ExtendedDecimal.FromString("0.00000000000e+14").toString());
       Assert.assertEquals(
-"0E+3",
-ExtendedDecimal.FromString("0.00000000000e+14").ToEngineeringString());
+        "0E+3",
+        ExtendedDecimal.FromString("0.00000000000e+14").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000000000e+14").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00000000000e+14").ToPlainString());
       Assert.assertEquals(
-"0E-17",
-ExtendedDecimal.FromString("0.000e-14").toString());
+        "0E-17",
+        ExtendedDecimal.FromString("0.000e-14").toString());
       Assert.assertEquals(
-"0.00E-15",
-ExtendedDecimal.FromString("0.000e-14").ToEngineeringString());
+        "0.00E-15",
+        ExtendedDecimal.FromString("0.000e-14").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000",
-ExtendedDecimal.FromString("0.000e-14").ToPlainString());
+        "0.00000000000000000",
+        ExtendedDecimal.FromString("0.000e-14").ToPlainString());
       Assert.assertEquals(
-"0E-25",
-ExtendedDecimal.FromString("0.000000e-19").toString());
+        "0E-25",
+        ExtendedDecimal.FromString("0.000000e-19").toString());
       Assert.assertEquals(
-"0.0E-24",
-ExtendedDecimal.FromString("0.000000e-19").ToEngineeringString());
+        "0.0E-24",
+        ExtendedDecimal.FromString("0.000000e-19").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000",
-ExtendedDecimal.FromString("0.000000e-19").ToPlainString());
+        "0.0000000000000000000000000",
+        ExtendedDecimal.FromString("0.000000e-19").ToPlainString());
       Assert.assertEquals(
-"0E+7",
-ExtendedDecimal.FromString("0.000000000000e+19").toString());
+        "0E+7",
+        ExtendedDecimal.FromString("0.000000000000e+19").toString());
       Assert.assertEquals(
-"0.00E+9",
-ExtendedDecimal.FromString("0.000000000000e+19").ToEngineeringString());
+        "0.00E+9",
+        ExtendedDecimal.FromString("0.000000000000e+19").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000000e+19").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000000e+19").ToPlainString());
       Assert.assertEquals(
-"0E+5",
-ExtendedDecimal.FromString("0.0000000000000e+18").toString());
+        "0E+5",
+        ExtendedDecimal.FromString("0.0000000000000e+18").toString());
       Assert.assertEquals(
-"0.0E+6",
-ExtendedDecimal.FromString("0.0000000000000e+18").ToEngineeringString());
+        "0.0E+6",
+      ExtendedDecimal.FromString("0.0000000000000e+18"
+).ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0000000000000e+18").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0000000000000e+18").ToPlainString());
       Assert.assertEquals(
-"0E-16",
-ExtendedDecimal.FromString("0.00000000000000e-2").toString());
+        "0E-16",
+        ExtendedDecimal.FromString("0.00000000000000e-2").toString());
       Assert.assertEquals(
-"0.0E-15",
-ExtendedDecimal.FromString("0.00000000000000e-2").ToEngineeringString());
+        "0.0E-15",
+      ExtendedDecimal.FromString("0.00000000000000e-2"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000",
-ExtendedDecimal.FromString("0.00000000000000e-2").ToPlainString());
+        "0.0000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000e-2").ToPlainString());
       Assert.assertEquals(
-"0E-31",
-ExtendedDecimal.FromString("0.0000000000000e-18").toString());
+        "0E-31",
+        ExtendedDecimal.FromString("0.0000000000000e-18").toString());
       Assert.assertEquals(
-"0.0E-30",
-ExtendedDecimal.FromString("0.0000000000000e-18").ToEngineeringString());
+        "0.0E-30",
+      ExtendedDecimal.FromString("0.0000000000000e-18"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000e-18").ToPlainString());
+        "0.0000000000000000000000000000000",
+        ExtendedDecimal.FromString("0.0000000000000e-18").ToPlainString());
       Assert.assertEquals("0E-17", ExtendedDecimal.FromString("0e-17").toString());
       Assert.assertEquals(
-"0.00E-15",
-ExtendedDecimal.FromString("0e-17").ToEngineeringString());
+        "0.00E-15",
+        ExtendedDecimal.FromString("0e-17").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000",
-ExtendedDecimal.FromString("0e-17").ToPlainString());
+        "0.00000000000000000",
+        ExtendedDecimal.FromString("0e-17").ToPlainString());
       Assert.assertEquals("0E+17", ExtendedDecimal.FromString("0e+17").toString());
       Assert.assertEquals(
-"0.0E+18",
-ExtendedDecimal.FromString("0e+17").ToEngineeringString());
+        "0.0E+18",
+        ExtendedDecimal.FromString("0e+17").ToEngineeringString());
       Assert.assertEquals("0", ExtendedDecimal.FromString("0e+17").ToPlainString());
       Assert.assertEquals(
-"0E-17",
-ExtendedDecimal.FromString("0.00000000000000000e+0").toString());
+        "0E-17",
+        ExtendedDecimal.FromString("0.00000000000000000e+0").toString());
       Assert.assertEquals(
-"0.00E-15",
-ExtendedDecimal.FromString("0.00000000000000000e+0").ToEngineeringString());
+        "0.00E-15",
+   ExtendedDecimal.FromString("0.00000000000000000e+0"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000",
-ExtendedDecimal.FromString("0.00000000000000000e+0").ToPlainString());
+        "0.00000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000000e+0").ToPlainString());
       Assert.assertEquals(
-"0E-13",
-ExtendedDecimal.FromString("0.0000000000000e+0").toString());
+        "0E-13",
+        ExtendedDecimal.FromString("0.0000000000000e+0").toString());
       Assert.assertEquals(
-"0.0E-12",
-ExtendedDecimal.FromString("0.0000000000000e+0").ToEngineeringString());
+        "0.0E-12",
+        ExtendedDecimal.FromString("0.0000000000000e+0").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000",
-ExtendedDecimal.FromString("0.0000000000000e+0").ToPlainString());
+        "0.0000000000000",
+        ExtendedDecimal.FromString("0.0000000000000e+0").ToPlainString());
       Assert.assertEquals(
-"0E-31",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").toString());
+        "0E-31",
+        ExtendedDecimal.FromString("0.0000000000000000000e-12").toString());
       Assert.assertEquals(
-"0.0E-30",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").ToEngineeringString());
+        "0.0E-30",
+ExtendedDecimal.FromString("0.0000000000000000000e-12"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000000e-12").ToPlainString());
+        "0.0000000000000000000000000000000",
+      ExtendedDecimal.FromString("0.0000000000000000000e-12"
+).ToPlainString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.0000000000000000000e+10").toString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.0000000000000000000e+10").toString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.0000000000000000000e+10").ToEngineeringString());
+        "0E-9",
+ExtendedDecimal.FromString("0.0000000000000000000e+10"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000",
-ExtendedDecimal.FromString("0.0000000000000000000e+10").ToPlainString());
+        "0.000000000",
+      ExtendedDecimal.FromString("0.0000000000000000000e+10"
+).ToPlainString());
       Assert.assertEquals(
-"0E-7",
-ExtendedDecimal.FromString("0.00000e-2").toString());
+        "0E-7",
+        ExtendedDecimal.FromString("0.00000e-2").toString());
       Assert.assertEquals(
-"0.0E-6",
-ExtendedDecimal.FromString("0.00000e-2").ToEngineeringString());
+        "0.0E-6",
+        ExtendedDecimal.FromString("0.00000e-2").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000",
-ExtendedDecimal.FromString("0.00000e-2").ToPlainString());
+        "0.0000000",
+        ExtendedDecimal.FromString("0.00000e-2").ToPlainString());
       Assert.assertEquals(
-"0E+9",
-ExtendedDecimal.FromString("0.000000e+15").toString());
+        "0E+9",
+        ExtendedDecimal.FromString("0.000000e+15").toString());
       Assert.assertEquals(
-"0E+9",
-ExtendedDecimal.FromString("0.000000e+15").ToEngineeringString());
+        "0E+9",
+        ExtendedDecimal.FromString("0.000000e+15").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000e+15").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000e+15").ToPlainString());
       Assert.assertEquals(
-"0E-19",
-ExtendedDecimal.FromString("0.000000000e-10").toString());
+        "0E-19",
+        ExtendedDecimal.FromString("0.000000000e-10").toString());
       Assert.assertEquals(
-"0.0E-18",
-ExtendedDecimal.FromString("0.000000000e-10").ToEngineeringString());
+        "0.0E-18",
+        ExtendedDecimal.FromString("0.000000000e-10").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000",
-ExtendedDecimal.FromString("0.000000000e-10").ToPlainString());
+        "0.0000000000000000000",
+        ExtendedDecimal.FromString("0.000000000e-10").ToPlainString());
       Assert.assertEquals(
-"0E-8",
-ExtendedDecimal.FromString("0.00000000000000e+6").toString());
+        "0E-8",
+        ExtendedDecimal.FromString("0.00000000000000e+6").toString());
       Assert.assertEquals(
-"0.00E-6",
-ExtendedDecimal.FromString("0.00000000000000e+6").ToEngineeringString());
+        "0.00E-6",
+      ExtendedDecimal.FromString("0.00000000000000e+6"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000",
-ExtendedDecimal.FromString("0.00000000000000e+6").ToPlainString());
+        "0.00000000",
+        ExtendedDecimal.FromString("0.00000000000000e+6").ToPlainString());
       Assert.assertEquals(
-"0E+12",
-ExtendedDecimal.FromString("0.00000e+17").toString());
+        "0E+12",
+        ExtendedDecimal.FromString("0.00000e+17").toString());
       Assert.assertEquals(
-"0E+12",
-ExtendedDecimal.FromString("0.00000e+17").ToEngineeringString());
+        "0E+12",
+        ExtendedDecimal.FromString("0.00000e+17").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000e+17").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00000e+17").ToPlainString());
       Assert.assertEquals(
-"0E-18",
-ExtendedDecimal.FromString("0.000000000000000000e-0").toString());
+        "0E-18",
+        ExtendedDecimal.FromString("0.000000000000000000e-0").toString());
       Assert.assertEquals(
-"0E-18",
-ExtendedDecimal.FromString("0.000000000000000000e-0").ToEngineeringString());
+        "0E-18",
+  ExtendedDecimal.FromString("0.000000000000000000e-0"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000",
-ExtendedDecimal.FromString("0.000000000000000000e-0").ToPlainString());
+        "0.000000000000000000",
+        ExtendedDecimal.FromString("0.000000000000000000e-0").ToPlainString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000000000000000e+11").toString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.0000000000000000e+11").toString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000000000000000e+11").ToEngineeringString());
+        "0.00000",
+   ExtendedDecimal.FromString("0.0000000000000000e+11"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.0000000000000000e+11").ToPlainString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.0000000000000000e+11").ToPlainString());
       Assert.assertEquals(
-"0E+3",
-ExtendedDecimal.FromString("0.000000000000e+15").toString());
+        "0E+3",
+        ExtendedDecimal.FromString("0.000000000000e+15").toString());
       Assert.assertEquals(
-"0E+3",
-ExtendedDecimal.FromString("0.000000000000e+15").ToEngineeringString());
+        "0E+3",
+        ExtendedDecimal.FromString("0.000000000000e+15").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000000e+15").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000000e+15").ToPlainString());
       Assert.assertEquals(
-"0E-27",
-ExtendedDecimal.FromString("0.00000000e-19").toString());
+        "0E-27",
+        ExtendedDecimal.FromString("0.00000000e-19").toString());
       Assert.assertEquals(
-"0E-27",
-ExtendedDecimal.FromString("0.00000000e-19").ToEngineeringString());
+        "0E-27",
+        ExtendedDecimal.FromString("0.00000000e-19").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000e-19").ToPlainString());
+        "0.000000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000e-19").ToPlainString());
       Assert.assertEquals(
-"0E-11",
-ExtendedDecimal.FromString("0.00000e-6").toString());
+        "0E-11",
+        ExtendedDecimal.FromString("0.00000e-6").toString());
       Assert.assertEquals(
-"0.00E-9",
-ExtendedDecimal.FromString("0.00000e-6").ToEngineeringString());
+        "0.00E-9",
+        ExtendedDecimal.FromString("0.00000e-6").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000",
-ExtendedDecimal.FromString("0.00000e-6").ToPlainString());
+        "0.00000000000",
+        ExtendedDecimal.FromString("0.00000e-6").ToPlainString());
       Assert.assertEquals("0E-14", ExtendedDecimal.FromString("0e-14").toString());
       Assert.assertEquals(
-"0.00E-12",
-ExtendedDecimal.FromString("0e-14").ToEngineeringString());
+        "0.00E-12",
+        ExtendedDecimal.FromString("0e-14").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000",
-ExtendedDecimal.FromString("0e-14").ToPlainString());
+        "0.00000000000000",
+        ExtendedDecimal.FromString("0e-14").ToPlainString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000e+9").toString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000e+9").toString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000e+9").ToEngineeringString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000e+9").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000e+9").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000e+9").ToPlainString());
       Assert.assertEquals(
-"0E+8",
-ExtendedDecimal.FromString("0.00000e+13").toString());
+        "0E+8",
+        ExtendedDecimal.FromString("0.00000e+13").toString());
       Assert.assertEquals(
-"0.0E+9",
-ExtendedDecimal.FromString("0.00000e+13").ToEngineeringString());
+        "0.0E+9",
+        ExtendedDecimal.FromString("0.00000e+13").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000e+13").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00000e+13").ToPlainString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000e-0").toString());
+        "0.000",
+        ExtendedDecimal.FromString("0.000e-0").toString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000e-0").ToEngineeringString());
+        "0.000",
+        ExtendedDecimal.FromString("0.000e-0").ToEngineeringString());
       Assert.assertEquals(
-"0.000",
-ExtendedDecimal.FromString("0.000e-0").ToPlainString());
+        "0.000",
+        ExtendedDecimal.FromString("0.000e-0").ToPlainString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.000000000000000e+6").toString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.000000000000000e+6").toString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.000000000000000e+6").ToEngineeringString());
+        "0E-9",
+     ExtendedDecimal.FromString("0.000000000000000e+6"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000",
-ExtendedDecimal.FromString("0.000000000000000e+6").ToPlainString());
+        "0.000000000",
+        ExtendedDecimal.FromString("0.000000000000000e+6").ToPlainString());
       Assert.assertEquals(
-"0E+8",
-ExtendedDecimal.FromString("0.000000000e+17").toString());
+        "0E+8",
+        ExtendedDecimal.FromString("0.000000000e+17").toString());
       Assert.assertEquals(
-"0.0E+9",
-ExtendedDecimal.FromString("0.000000000e+17").ToEngineeringString());
+        "0.0E+9",
+        ExtendedDecimal.FromString("0.000000000e+17").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000e+17").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000e+17").ToPlainString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000e+6").toString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.00000000000e+6").toString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000e+6").ToEngineeringString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.00000000000e+6").ToEngineeringString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.00000000000e+6").ToPlainString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.00000000000e+6").ToPlainString());
       Assert.assertEquals(
-"0E-11",
-ExtendedDecimal.FromString("0.00000000000000e+3").toString());
+        "0E-11",
+        ExtendedDecimal.FromString("0.00000000000000e+3").toString());
       Assert.assertEquals(
-"0.00E-9",
-ExtendedDecimal.FromString("0.00000000000000e+3").ToEngineeringString());
+        "0.00E-9",
+      ExtendedDecimal.FromString("0.00000000000000e+3"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000",
-ExtendedDecimal.FromString("0.00000000000000e+3").ToPlainString());
+        "0.00000000000",
+        ExtendedDecimal.FromString("0.00000000000000e+3").ToPlainString());
       Assert.assertEquals("0", ExtendedDecimal.FromString("0e+0").toString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0e+0").ToEngineeringString());
+        "0",
+        ExtendedDecimal.FromString("0e+0").ToEngineeringString());
       Assert.assertEquals("0", ExtendedDecimal.FromString("0e+0").ToPlainString());
       Assert.assertEquals(
-"0E+9",
-ExtendedDecimal.FromString("0.000e+12").toString());
+        "0E+9",
+        ExtendedDecimal.FromString("0.000e+12").toString());
       Assert.assertEquals(
-"0E+9",
-ExtendedDecimal.FromString("0.000e+12").ToEngineeringString());
+        "0E+9",
+        ExtendedDecimal.FromString("0.000e+12").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000e+12").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000e+12").ToPlainString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.00000000000e+9").toString());
+        "0.00",
+        ExtendedDecimal.FromString("0.00000000000e+9").toString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.00000000000e+9").ToEngineeringString());
+        "0.00",
+        ExtendedDecimal.FromString("0.00000000000e+9").ToEngineeringString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.00000000000e+9").ToPlainString());
+        "0.00",
+        ExtendedDecimal.FromString("0.00000000000e+9").ToPlainString());
       Assert.assertEquals(
-"0E-23",
-ExtendedDecimal.FromString("0.00000000000000e-9").toString());
+        "0E-23",
+        ExtendedDecimal.FromString("0.00000000000000e-9").toString());
       Assert.assertEquals(
-"0.00E-21",
-ExtendedDecimal.FromString("0.00000000000000e-9").ToEngineeringString());
+        "0.00E-21",
+      ExtendedDecimal.FromString("0.00000000000000e-9"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000000e-9").ToPlainString());
+        "0.00000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000e-9").ToPlainString());
       Assert.assertEquals("0.0", ExtendedDecimal.FromString("0e-1").toString());
       Assert.assertEquals(
-"0.0",
-ExtendedDecimal.FromString("0e-1").ToEngineeringString());
+        "0.0",
+        ExtendedDecimal.FromString("0e-1").ToEngineeringString());
       Assert.assertEquals(
-"0.0",
-ExtendedDecimal.FromString("0e-1").ToPlainString());
+        "0.0",
+        ExtendedDecimal.FromString("0e-1").ToPlainString());
       Assert.assertEquals(
-"0E-17",
-ExtendedDecimal.FromString("0.0000e-13").toString());
+        "0E-17",
+        ExtendedDecimal.FromString("0.0000e-13").toString());
       Assert.assertEquals(
-"0.00E-15",
-ExtendedDecimal.FromString("0.0000e-13").ToEngineeringString());
+        "0.00E-15",
+        ExtendedDecimal.FromString("0.0000e-13").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000",
-ExtendedDecimal.FromString("0.0000e-13").ToPlainString());
+        "0.00000000000000000",
+        ExtendedDecimal.FromString("0.0000e-13").ToPlainString());
       Assert.assertEquals(
-"0E-18",
-ExtendedDecimal.FromString("0.00000000000e-7").toString());
+        "0E-18",
+        ExtendedDecimal.FromString("0.00000000000e-7").toString());
       Assert.assertEquals(
-"0E-18",
-ExtendedDecimal.FromString("0.00000000000e-7").ToEngineeringString());
+        "0E-18",
+        ExtendedDecimal.FromString("0.00000000000e-7").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-7").ToPlainString());
+        "0.000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-7").ToPlainString());
       Assert.assertEquals(
-"0E-10",
-ExtendedDecimal.FromString("0.00000000000000e+4").toString());
+        "0E-10",
+        ExtendedDecimal.FromString("0.00000000000000e+4").toString());
       Assert.assertEquals(
-"0.0E-9",
-ExtendedDecimal.FromString("0.00000000000000e+4").ToEngineeringString());
+        "0.0E-9",
+      ExtendedDecimal.FromString("0.00000000000000e+4"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000",
-ExtendedDecimal.FromString("0.00000000000000e+4").ToPlainString());
+        "0.0000000000",
+        ExtendedDecimal.FromString("0.00000000000000e+4").ToPlainString());
       Assert.assertEquals(
-"0E-16",
-ExtendedDecimal.FromString("0.00000000e-8").toString());
+        "0E-16",
+        ExtendedDecimal.FromString("0.00000000e-8").toString());
       Assert.assertEquals(
-"0.0E-15",
-ExtendedDecimal.FromString("0.00000000e-8").ToEngineeringString());
+        "0.0E-15",
+        ExtendedDecimal.FromString("0.00000000e-8").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000",
-ExtendedDecimal.FromString("0.00000000e-8").ToPlainString());
+        "0.0000000000000000",
+        ExtendedDecimal.FromString("0.00000000e-8").ToPlainString());
       Assert.assertEquals("0E-8", ExtendedDecimal.FromString("0.00e-6").toString());
       Assert.assertEquals(
-"0.00E-6",
-ExtendedDecimal.FromString("0.00e-6").ToEngineeringString());
+        "0.00E-6",
+        ExtendedDecimal.FromString("0.00e-6").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000",
-ExtendedDecimal.FromString("0.00e-6").ToPlainString());
+        "0.00000000",
+        ExtendedDecimal.FromString("0.00e-6").ToPlainString());
       Assert.assertEquals("0.00", ExtendedDecimal.FromString("0.0e-1").toString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.0e-1").ToEngineeringString());
+        "0.00",
+        ExtendedDecimal.FromString("0.0e-1").ToEngineeringString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.0e-1").ToPlainString());
+        "0.00",
+        ExtendedDecimal.FromString("0.0e-1").ToPlainString());
       Assert.assertEquals(
-"0E-26",
-ExtendedDecimal.FromString("0.0000000000000000e-10").toString());
+        "0E-26",
+        ExtendedDecimal.FromString("0.0000000000000000e-10").toString());
       Assert.assertEquals(
-"0.00E-24",
-ExtendedDecimal.FromString("0.0000000000000000e-10").ToEngineeringString());
+        "0.00E-24",
+   ExtendedDecimal.FromString("0.0000000000000000e-10"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000e-10").ToPlainString());
+        "0.00000000000000000000000000",
+        ExtendedDecimal.FromString("0.0000000000000000e-10").ToPlainString());
       Assert.assertEquals(
-"0E+12",
-ExtendedDecimal.FromString("0.00e+14").toString());
+        "0E+12",
+        ExtendedDecimal.FromString("0.00e+14").toString());
       Assert.assertEquals(
-"0E+12",
-ExtendedDecimal.FromString("0.00e+14").ToEngineeringString());
+        "0E+12",
+        ExtendedDecimal.FromString("0.00e+14").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00e+14").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00e+14").ToPlainString());
       Assert.assertEquals(
-"0E-13",
-ExtendedDecimal.FromString("0.000000000000000000e+5").toString());
+        "0E-13",
+        ExtendedDecimal.FromString("0.000000000000000000e+5").toString());
       Assert.assertEquals(
-"0.0E-12",
-ExtendedDecimal.FromString("0.000000000000000000e+5").ToEngineeringString());
+        "0.0E-12",
+  ExtendedDecimal.FromString("0.000000000000000000e+5"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000",
-ExtendedDecimal.FromString("0.000000000000000000e+5").ToPlainString());
+        "0.0000000000000",
+        ExtendedDecimal.FromString("0.000000000000000000e+5").ToPlainString());
       Assert.assertEquals("0E+6", ExtendedDecimal.FromString("0.0e+7").toString());
       Assert.assertEquals(
-"0E+6",
-ExtendedDecimal.FromString("0.0e+7").ToEngineeringString());
+        "0E+6",
+        ExtendedDecimal.FromString("0.0e+7").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0e+7").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0e+7").ToPlainString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000000e+8").toString());
+        "0",
+        ExtendedDecimal.FromString("0.00000000e+8").toString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000000e+8").ToEngineeringString());
+        "0",
+        ExtendedDecimal.FromString("0.00000000e+8").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000000e+8").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00000000e+8").ToPlainString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.000000000e+0").toString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.000000000e+0").toString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.000000000e+0").ToEngineeringString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.000000000e+0").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000",
-ExtendedDecimal.FromString("0.000000000e+0").ToPlainString());
+        "0.000000000",
+        ExtendedDecimal.FromString("0.000000000e+0").ToPlainString());
       Assert.assertEquals(
-"0E+10",
-ExtendedDecimal.FromString("0.000e+13").toString());
+        "0E+10",
+        ExtendedDecimal.FromString("0.000e+13").toString());
       Assert.assertEquals(
-"0.00E+12",
-ExtendedDecimal.FromString("0.000e+13").ToEngineeringString());
+        "0.00E+12",
+        ExtendedDecimal.FromString("0.000e+13").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000e+13").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000e+13").ToPlainString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0000000000000000e+16").toString());
+        "0",
+        ExtendedDecimal.FromString("0.0000000000000000e+16").toString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0000000000000000e+16").ToEngineeringString());
+        "0",
+   ExtendedDecimal.FromString("0.0000000000000000e+16"
+).ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0000000000000000e+16").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0000000000000000e+16").ToPlainString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.00000000e-1").toString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.00000000e-1").toString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.00000000e-1").ToEngineeringString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.00000000e-1").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000",
-ExtendedDecimal.FromString("0.00000000e-1").ToPlainString());
+        "0.000000000",
+        ExtendedDecimal.FromString("0.00000000e-1").ToPlainString());
       Assert.assertEquals(
-"0E-26",
-ExtendedDecimal.FromString("0.00000000000e-15").toString());
+        "0E-26",
+        ExtendedDecimal.FromString("0.00000000000e-15").toString());
       Assert.assertEquals(
-"0.00E-24",
-ExtendedDecimal.FromString("0.00000000000e-15").ToEngineeringString());
+        "0.00E-24",
+        ExtendedDecimal.FromString("0.00000000000e-15").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-15").ToPlainString());
+        "0.00000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-15").ToPlainString());
       Assert.assertEquals(
-"0E+10",
-ExtendedDecimal.FromString("0.0e+11").toString());
+        "0E+10",
+        ExtendedDecimal.FromString("0.0e+11").toString());
       Assert.assertEquals(
-"0.00E+12",
-ExtendedDecimal.FromString("0.0e+11").ToEngineeringString());
+        "0.00E+12",
+        ExtendedDecimal.FromString("0.0e+11").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0e+11").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0e+11").ToPlainString());
       Assert.assertEquals(
-"0E+2",
-ExtendedDecimal.FromString("0.00000e+7").toString());
+        "0E+2",
+        ExtendedDecimal.FromString("0.00000e+7").toString());
       Assert.assertEquals(
-"0.0E+3",
-ExtendedDecimal.FromString("0.00000e+7").ToEngineeringString());
+        "0.0E+3",
+        ExtendedDecimal.FromString("0.00000e+7").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00000e+7").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00000e+7").ToPlainString());
       Assert.assertEquals(
-"0E-38",
-ExtendedDecimal.FromString("0.0000000000000000000e-19").toString());
+        "0E-38",
+        ExtendedDecimal.FromString("0.0000000000000000000e-19").toString());
       Assert.assertEquals(
-"0.00E-36",
-ExtendedDecimal.FromString("0.0000000000000000000e-19").ToEngineeringString());
+        "0.00E-36",
+ExtendedDecimal.FromString("0.0000000000000000000e-19"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000000e-19").ToPlainString());
+        "0.00000000000000000000000000000000000000",
+      ExtendedDecimal.FromString("0.0000000000000000000e-19"
+).ToPlainString());
       Assert.assertEquals(
-"0E-16",
-ExtendedDecimal.FromString("0.0000000000e-6").toString());
+        "0E-16",
+        ExtendedDecimal.FromString("0.0000000000e-6").toString());
       Assert.assertEquals(
-"0.0E-15",
-ExtendedDecimal.FromString("0.0000000000e-6").ToEngineeringString());
+        "0.0E-15",
+        ExtendedDecimal.FromString("0.0000000000e-6").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000",
-ExtendedDecimal.FromString("0.0000000000e-6").ToPlainString());
+        "0.0000000000000000",
+        ExtendedDecimal.FromString("0.0000000000e-6").ToPlainString());
       Assert.assertEquals(
-"0E-32",
-ExtendedDecimal.FromString("0.00000000000000000e-15").toString());
+        "0E-32",
+        ExtendedDecimal.FromString("0.00000000000000000e-15").toString());
       Assert.assertEquals(
-"0.00E-30",
-ExtendedDecimal.FromString("0.00000000000000000e-15").ToEngineeringString());
+        "0.00E-30",
+  ExtendedDecimal.FromString("0.00000000000000000e-15"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000000000e-15").ToPlainString());
+        "0.00000000000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000000e-15").ToPlainString());
       Assert.assertEquals(
-"0E-13",
-ExtendedDecimal.FromString("0.000000000000000e+2").toString());
+        "0E-13",
+        ExtendedDecimal.FromString("0.000000000000000e+2").toString());
       Assert.assertEquals(
-"0.0E-12",
-ExtendedDecimal.FromString("0.000000000000000e+2").ToEngineeringString());
+        "0.0E-12",
+     ExtendedDecimal.FromString("0.000000000000000e+2"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000",
-ExtendedDecimal.FromString("0.000000000000000e+2").ToPlainString());
+        "0.0000000000000",
+        ExtendedDecimal.FromString("0.000000000000000e+2").ToPlainString());
       Assert.assertEquals(
-"0E-19",
-ExtendedDecimal.FromString("0.0e-18").toString());
+        "0E-19",
+        ExtendedDecimal.FromString("0.0e-18").toString());
       Assert.assertEquals(
-"0.0E-18",
-ExtendedDecimal.FromString("0.0e-18").ToEngineeringString());
+        "0.0E-18",
+        ExtendedDecimal.FromString("0.0e-18").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000",
-ExtendedDecimal.FromString("0.0e-18").ToPlainString());
+        "0.0000000000000000000",
+        ExtendedDecimal.FromString("0.0e-18").ToPlainString());
       Assert.assertEquals(
-"0E-20",
-ExtendedDecimal.FromString("0.00000000000000e-6").toString());
+        "0E-20",
+        ExtendedDecimal.FromString("0.00000000000000e-6").toString());
       Assert.assertEquals(
-"0.00E-18",
-ExtendedDecimal.FromString("0.00000000000000e-6").ToEngineeringString());
+        "0.00E-18",
+      ExtendedDecimal.FromString("0.00000000000000e-6"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000",
-ExtendedDecimal.FromString("0.00000000000000e-6").ToPlainString());
+        "0.00000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000e-6").ToPlainString());
       Assert.assertEquals(
-"0E-20",
-ExtendedDecimal.FromString("0.000e-17").toString());
+        "0E-20",
+        ExtendedDecimal.FromString("0.000e-17").toString());
       Assert.assertEquals(
-"0.00E-18",
-ExtendedDecimal.FromString("0.000e-17").ToEngineeringString());
+        "0.00E-18",
+        ExtendedDecimal.FromString("0.000e-17").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000",
-ExtendedDecimal.FromString("0.000e-17").ToPlainString());
+        "0.00000000000000000000",
+        ExtendedDecimal.FromString("0.000e-17").ToPlainString());
       Assert.assertEquals(
-"0E-21",
-ExtendedDecimal.FromString("0.00000000000000e-7").toString());
+        "0E-21",
+        ExtendedDecimal.FromString("0.00000000000000e-7").toString());
       Assert.assertEquals(
-"0E-21",
-ExtendedDecimal.FromString("0.00000000000000e-7").ToEngineeringString());
+        "0E-21",
+      ExtendedDecimal.FromString("0.00000000000000e-7"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000000e-7").ToPlainString());
+        "0.000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000000e-7").ToPlainString());
       Assert.assertEquals(
-"0E-15",
-ExtendedDecimal.FromString("0.000000e-9").toString());
+        "0E-15",
+        ExtendedDecimal.FromString("0.000000e-9").toString());
       Assert.assertEquals(
-"0E-15",
-ExtendedDecimal.FromString("0.000000e-9").ToEngineeringString());
+        "0E-15",
+        ExtendedDecimal.FromString("0.000000e-9").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000",
-ExtendedDecimal.FromString("0.000000e-9").ToPlainString());
+        "0.000000000000000",
+        ExtendedDecimal.FromString("0.000000e-9").ToPlainString());
       Assert.assertEquals("0E-11", ExtendedDecimal.FromString("0e-11").toString());
       Assert.assertEquals(
-"0.00E-9",
-ExtendedDecimal.FromString("0e-11").ToEngineeringString());
+        "0.00E-9",
+        ExtendedDecimal.FromString("0e-11").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000",
-ExtendedDecimal.FromString("0e-11").ToPlainString());
+        "0.00000000000",
+        ExtendedDecimal.FromString("0e-11").ToPlainString());
       Assert.assertEquals(
-"0E+2",
-ExtendedDecimal.FromString("0.000000000e+11").toString());
+        "0E+2",
+        ExtendedDecimal.FromString("0.000000000e+11").toString());
       Assert.assertEquals(
-"0.0E+3",
-ExtendedDecimal.FromString("0.000000000e+11").ToEngineeringString());
+        "0.0E+3",
+        ExtendedDecimal.FromString("0.000000000e+11").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.000000000e+11").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.000000000e+11").ToPlainString());
       Assert.assertEquals(
-"0.0",
-ExtendedDecimal.FromString("0.0000000000000000e+15").toString());
+        "0.0",
+        ExtendedDecimal.FromString("0.0000000000000000e+15").toString());
       Assert.assertEquals(
-"0.0",
-ExtendedDecimal.FromString("0.0000000000000000e+15").ToEngineeringString());
+        "0.0",
+   ExtendedDecimal.FromString("0.0000000000000000e+15"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0",
-ExtendedDecimal.FromString("0.0000000000000000e+15").ToPlainString());
+        "0.0",
+        ExtendedDecimal.FromString("0.0000000000000000e+15").ToPlainString());
       Assert.assertEquals(
-"0.000000",
-ExtendedDecimal.FromString("0.0000000000000000e+10").toString());
+        "0.000000",
+        ExtendedDecimal.FromString("0.0000000000000000e+10").toString());
       Assert.assertEquals(
-"0.000000",
-ExtendedDecimal.FromString("0.0000000000000000e+10").ToEngineeringString());
+        "0.000000",
+   ExtendedDecimal.FromString("0.0000000000000000e+10"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000",
-ExtendedDecimal.FromString("0.0000000000000000e+10").ToPlainString());
+        "0.000000",
+        ExtendedDecimal.FromString("0.0000000000000000e+10").ToPlainString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.000000000e+4").toString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.000000000e+4").toString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.000000000e+4").ToEngineeringString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.000000000e+4").ToEngineeringString());
       Assert.assertEquals(
-"0.00000",
-ExtendedDecimal.FromString("0.000000000e+4").ToPlainString());
+        "0.00000",
+        ExtendedDecimal.FromString("0.000000000e+4").ToPlainString());
       Assert.assertEquals(
-"0E-28",
-ExtendedDecimal.FromString("0.000000000000000e-13").toString());
+        "0E-28",
+        ExtendedDecimal.FromString("0.000000000000000e-13").toString());
       Assert.assertEquals(
-"0.0E-27",
-ExtendedDecimal.FromString("0.000000000000000e-13").ToEngineeringString());
+        "0.0E-27",
+    ExtendedDecimal.FromString("0.000000000000000e-13"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000000000000000",
-ExtendedDecimal.FromString("0.000000000000000e-13").ToPlainString());
+        "0.0000000000000000000000000000",
+        ExtendedDecimal.FromString("0.000000000000000e-13").ToPlainString());
       Assert.assertEquals(
-"0E-27",
-ExtendedDecimal.FromString("0.0000000000000000000e-8").toString());
+        "0E-27",
+        ExtendedDecimal.FromString("0.0000000000000000000e-8").toString());
       Assert.assertEquals(
-"0E-27",
-ExtendedDecimal.FromString("0.0000000000000000000e-8").ToEngineeringString());
+        "0E-27",
+ ExtendedDecimal.FromString("0.0000000000000000000e-8"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000000e-8").ToPlainString());
+        "0.000000000000000000000000000",
+        ExtendedDecimal.FromString("0.0000000000000000000e-8").ToPlainString());
       Assert.assertEquals(
-"0E-26",
-ExtendedDecimal.FromString("0.00000000000e-15").toString());
+        "0E-26",
+        ExtendedDecimal.FromString("0.00000000000e-15").toString());
       Assert.assertEquals(
-"0.00E-24",
-ExtendedDecimal.FromString("0.00000000000e-15").ToEngineeringString());
+        "0.00E-24",
+        ExtendedDecimal.FromString("0.00000000000e-15").ToEngineeringString());
       Assert.assertEquals(
-"0.00000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-15").ToPlainString());
+        "0.00000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-15").ToPlainString());
       Assert.assertEquals(
-"0E+10",
-ExtendedDecimal.FromString("0.00e+12").toString());
+        "0E+10",
+        ExtendedDecimal.FromString("0.00e+12").toString());
       Assert.assertEquals(
-"0.00E+12",
-ExtendedDecimal.FromString("0.00e+12").ToEngineeringString());
+        "0.00E+12",
+        ExtendedDecimal.FromString("0.00e+12").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.00e+12").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.00e+12").ToPlainString());
       Assert.assertEquals("0E+4", ExtendedDecimal.FromString("0.0e+5").toString());
       Assert.assertEquals(
-"0.00E+6",
-ExtendedDecimal.FromString("0.0e+5").ToEngineeringString());
+        "0.00E+6",
+        ExtendedDecimal.FromString("0.0e+5").ToEngineeringString());
       Assert.assertEquals(
-"0",
-ExtendedDecimal.FromString("0.0e+5").ToPlainString());
+        "0",
+        ExtendedDecimal.FromString("0.0e+5").ToPlainString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.0000000000000000e+7").toString());
+        "0E-9",
+        ExtendedDecimal.FromString("0.0000000000000000e+7").toString());
       Assert.assertEquals(
-"0E-9",
-ExtendedDecimal.FromString("0.0000000000000000e+7").ToEngineeringString());
+        "0E-9",
+    ExtendedDecimal.FromString("0.0000000000000000e+7"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.000000000",
-ExtendedDecimal.FromString("0.0000000000000000e+7").ToPlainString());
+        "0.000000000",
+        ExtendedDecimal.FromString("0.0000000000000000e+7").ToPlainString());
       Assert.assertEquals(
-"0E-16",
-ExtendedDecimal.FromString("0.0000000000000000e-0").toString());
+        "0E-16",
+        ExtendedDecimal.FromString("0.0000000000000000e-0").toString());
       Assert.assertEquals(
-"0.0E-15",
-ExtendedDecimal.FromString("0.0000000000000000e-0").ToEngineeringString());
+        "0.0E-15",
+    ExtendedDecimal.FromString("0.0000000000000000e-0"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000000",
-ExtendedDecimal.FromString("0.0000000000000000e-0").ToPlainString());
+        "0.0000000000000000",
+        ExtendedDecimal.FromString("0.0000000000000000e-0").ToPlainString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.000000000000000e+13").toString());
+        "0.00",
+        ExtendedDecimal.FromString("0.000000000000000e+13").toString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.000000000000000e+13").ToEngineeringString());
+        "0.00",
+    ExtendedDecimal.FromString("0.000000000000000e+13"
+).ToEngineeringString());
       Assert.assertEquals(
-"0.00",
-ExtendedDecimal.FromString("0.000000000000000e+13").ToPlainString());
+        "0.00",
+        ExtendedDecimal.FromString("0.000000000000000e+13").ToPlainString());
       Assert.assertEquals(
-"0E-24",
-ExtendedDecimal.FromString("0.00000000000e-13").toString());
+        "0E-24",
+        ExtendedDecimal.FromString("0.00000000000e-13").toString());
       Assert.assertEquals(
-"0E-24",
-ExtendedDecimal.FromString("0.00000000000e-13").ToEngineeringString());
+        "0E-24",
+        ExtendedDecimal.FromString("0.00000000000e-13").ToEngineeringString());
       Assert.assertEquals(
-"0.000000000000000000000000",
-ExtendedDecimal.FromString("0.00000000000e-13").ToPlainString());
+        "0.000000000000000000000000",
+        ExtendedDecimal.FromString("0.00000000000e-13").ToPlainString());
       Assert.assertEquals(
-"0E-13",
-ExtendedDecimal.FromString("0.000e-10").toString());
+        "0E-13",
+        ExtendedDecimal.FromString("0.000e-10").toString());
       Assert.assertEquals(
-"0.0E-12",
-ExtendedDecimal.FromString("0.000e-10").ToEngineeringString());
+        "0.0E-12",
+        ExtendedDecimal.FromString("0.000e-10").ToEngineeringString());
       Assert.assertEquals(
-"0.0000000000000",
-ExtendedDecimal.FromString("0.000e-10").ToPlainString());
+        "0.0000000000000",
+        ExtendedDecimal.FromString("0.000e-10").ToPlainString());
     }
 
     @Test
@@ -3388,7 +3585,7 @@ ExtendedDecimal.FromString("0.000e-10").ToPlainString());
     @Test(expected = CBORException.class)
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
       TestCommon.FromBytesTestAB(new byte[] { 0x5f,
-        0x41, 0x20, 0x5f, 0x41, 0x20, (byte)0xff, (byte)0xff  });
+                              0x41, 0x20, 0x5f, 0x41, 0x20, (byte)0xff, (byte)0xff  });
     }
 
     @Test
@@ -3502,24 +3699,24 @@ ExtendedDecimal.FromString("0.000e-10").ToPlainString());
     @Test
     public void TestExtendedMiscellaneous() {
       Assert.assertEquals(
-ExtendedDecimal.Zero,
-ExtendedDecimal.FromExtendedFloat(ExtendedFloat.Zero));
+        ExtendedDecimal.Zero,
+        ExtendedDecimal.FromExtendedFloat(ExtendedFloat.Zero));
       Assert.assertEquals(
-ExtendedDecimal.NegativeZero,
-ExtendedDecimal.FromExtendedFloat(ExtendedFloat.NegativeZero));
+        ExtendedDecimal.NegativeZero,
+        ExtendedDecimal.FromExtendedFloat(ExtendedFloat.NegativeZero));
       Assert.assertEquals(ExtendedDecimal.Zero, ExtendedDecimal.FromInt32(0));
       Assert.assertEquals(ExtendedDecimal.One, ExtendedDecimal.FromInt32(1));
       Assert.assertEquals("sNaN", ExtendedDecimal.SignalingNaN.toString());
       Assert.assertEquals(
-"sNaN",
-ExtendedDecimal.SignalingNaN.ToEngineeringString());
+        "sNaN",
+        ExtendedDecimal.SignalingNaN.ToEngineeringString());
       Assert.assertEquals("sNaN", ExtendedDecimal.SignalingNaN.ToPlainString());
       Assert.assertEquals(
-ExtendedFloat.Zero,
-ExtendedDecimal.Zero.ToExtendedFloat());
+        ExtendedFloat.Zero,
+        ExtendedDecimal.Zero.ToExtendedFloat());
       Assert.assertEquals(
-   ExtendedFloat.NegativeZero,
-   ExtendedDecimal.NegativeZero.ToExtendedFloat());
+        ExtendedFloat.NegativeZero,
+        ExtendedDecimal.NegativeZero.ToExtendedFloat());
       if (0.0 != ExtendedDecimal.Zero.ToSingle()) {
         Assert.fail("Failed " + ExtendedDecimal.Zero.ToSingle());
       }
@@ -3595,20 +3792,20 @@ ExtendedDecimal.Zero.ToExtendedFloat());
         CBORObject.FromObjectAndTag(0.1, 999999).Untag());
       Assert.assertEquals(-1, CBORObject.NewArray().getSimpleValue());
       Assert.assertEquals(
-0,
-CBORObject.FromObject(0.1).compareTo(CBORObject.FromObject(0.1)));
+        0,
+        CBORObject.FromObject(0.1).compareTo(CBORObject.FromObject(0.1)));
       Assert.assertEquals(
-0,
-CBORObject.FromObject(0.1f).compareTo(CBORObject.FromObject(0.1f)));
+        0,
+        CBORObject.FromObject(0.1f).compareTo(CBORObject.FromObject(0.1f)));
       Assert.assertEquals(
-CBORObject.FromObject(2),
-CBORObject.FromObject(-2).Negate());
+        CBORObject.FromObject(2),
+        CBORObject.FromObject(-2).Negate());
       Assert.assertEquals(
-CBORObject.FromObject(-2),
-CBORObject.FromObject(2).Negate());
+        CBORObject.FromObject(-2),
+        CBORObject.FromObject(2).Negate());
       Assert.assertEquals(
-CBORObject.FromObject(2),
-CBORObject.FromObject(-2).Abs());
+        CBORObject.FromObject(2),
+        CBORObject.FromObject(-2).Abs());
       Assert.assertEquals(CBORObject.FromObject(2), CBORObject.FromObject(2).Abs());
     }
 
@@ -3813,8 +4010,8 @@ CBORObject.FromObject(-2).Abs());
     @Test
     public void TestCanFitInSpecificCases() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
-                0x41, (byte)0xe0, (byte)0x85, 0x48,
-                0x2d, 0x14, 0x47, 0x7a  });  // 2217361768.63373
+                              0x41, (byte)0xe0, (byte)0x85, 0x48,
+                              0x2d, 0x14, 0x47, 0x7a  });  // 2217361768.63373
       Assert.assertEquals(BigInteger.fromString("2217361768"), cbor.AsBigInteger());
       if (cbor.AsBigInteger().canFitInInt())Assert.fail();
       if (cbor.CanTruncatedIntFitInInt32())Assert.fail();
@@ -3890,12 +4087,12 @@ CBORObject.FromObject(-2).Abs());
     @Test(expected = CBORException.class)
     public void TestDecimalFracExponentMustNotBeBignum() {
       TestCommon.FromBytesTestAB(new byte[] { (byte)0xc4,
-        (byte)0x82, (byte)0xc2, 0x41, 1, 0x1a, 1, 2, 3, 4  });
+                              (byte)0x82, (byte)0xc2, 0x41, 1, 0x1a, 1, 2, 3, 4  });
     }
     @Test(expected = CBORException.class)
     public void TestDecimalFracExactlyTwoElements() {
       TestCommon.FromBytesTestAB(new byte[] { (byte)0xc4,
-        (byte)0x82, (byte)0xc2, 0x41, 1  });
+                              (byte)0x82, (byte)0xc2, 0x41, 1  });
     }
 
     @Test
@@ -3903,16 +4100,16 @@ CBORObject.FromObject(-2).Abs());
       CBORObject o = TestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1  });
       Assert.assertEquals(
-ExtendedDecimal.Create(BigInteger.ONE, BigInteger.valueOf(3)),
-o.AsExtendedDecimal());
+        ExtendedDecimal.Create(BigInteger.ONE, BigInteger.valueOf(3)),
+        o.AsExtendedDecimal());
     }
 
     @Test
     public void TestShort() {
       for (int i = Short.MIN_VALUE; i <= Short.MAX_VALUE; ++i) {
         TestCommon.AssertSer(
-CBORObject.FromObject((short)i),
-"" + i);
+          CBORObject.FromObject((short)i),
+          "" + i);
       }
     }
 
@@ -3942,10 +4139,9 @@ CBORObject.FromObject((short)i),
     public void TestMapInMap() {
       CBORObject oo;
       oo = CBORObject.NewArray().Add(CBORObject.NewMap()
-             .Add(
-new ExtendedRational(BigInteger.ONE, BigInteger.valueOf(2)),
-3).Add(4, false))
-        .Add(true);
+                              .Add(
+                           new ExtendedRational(BigInteger.ONE, BigInteger.valueOf(2)),
+                           3).Add(4, false)).Add(true);
       TestCommon.AssertRoundTrip(oo);
       oo = CBORObject.NewArray();
       oo.Add(CBORObject.FromObject(0));
@@ -4035,11 +4231,11 @@ new ExtendedRational(BigInteger.ONE, BigInteger.valueOf(2)),
     @Test
     public void TestCBORBigInteger() {
       CBORObject o = CBORObject.DecodeFromBytes(new byte[] { 0x3b,
-                (byte)0xce, (byte)0xe2, 0x5a, 0x57, (byte)0xd8,
-                0x21, (byte)0xb9, (byte)0xa7  });
+                              (byte)0xce, (byte)0xe2, 0x5a, 0x57, (byte)0xd8,
+                              0x21, (byte)0xb9, (byte)0xa7  });
       Assert.assertEquals(
-BigInteger.fromString("-14907577049884506536"),
-o.AsBigInteger());
+        BigInteger.fromString("-14907577049884506536"),
+        o.AsBigInteger());
     }
 
     public static void AssertAdd(BigInteger bi, BigInteger bi2, String s) {
@@ -4081,15 +4277,15 @@ o.AsBigInteger());
       AssertBigIntString("898989", other);
       for (int i = 0; i < 500; ++i) {
         TestCommon.AssertSer(
-CBORObject.FromObject(bi),
-String.format(java.util.Locale.US,"%s", bi));
+          CBORObject.FromObject(bi),
+          String.format(java.util.Locale.US,"%s", bi));
         if (!(CBORObject.FromObject(bi).isIntegral()))Assert.fail();
         TestCommon.AssertRoundTrip(CBORObject.FromObject(bi));
 
         TestCommon.AssertRoundTrip(CBORObject.FromObject(
-            ExtendedDecimal.Create(
-bi,
-BigInteger.ONE)));
+          ExtendedDecimal.Create(
+            bi,
+            BigInteger.ONE)));
         bi = bi.multiply(negseven);
       }
       BigInteger[] ranges = {
@@ -4105,8 +4301,8 @@ BigInteger.ONE)));
         BigInteger bigintTemp = ranges[i];
         while (true) {
           TestCommon.AssertSer(
-CBORObject.FromObject(bigintTemp),
-String.format(java.util.Locale.US,"%s", bigintTemp));
+            CBORObject.FromObject(bigintTemp),
+            String.format(java.util.Locale.US,"%s", bigintTemp));
           if (bigintTemp.equals(ranges[i + 1])) {
             break;
           }
@@ -4119,7 +4315,7 @@ String.format(java.util.Locale.US,"%s", bigintTemp));
     public void TestLong() {
       long[] ranges = {
         -65539, 65539, 0xFFFFF000L, 0x100000400L,
-   Long.MAX_VALUE - 1000, Long.MAX_VALUE, Long.MIN_VALUE, Long.MIN_VALUE +
+        Long.MAX_VALUE - 1000, Long.MAX_VALUE, Long.MIN_VALUE, Long.MIN_VALUE +
           1000 };
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
@@ -4128,16 +4324,16 @@ String.format(java.util.Locale.US,"%s", bigintTemp));
           if (!(CBORObject.FromObject(j).CanFitInInt64()))Assert.fail();
           if (!(CBORObject.FromObject(j).CanTruncatedIntFitInInt64()))Assert.fail();
           TestCommon.AssertSer(
-CBORObject.FromObject(j),
-String.format(java.util.Locale.US,"%s", j));
+            CBORObject.FromObject(j),
+            String.format(java.util.Locale.US,"%s", j));
           Assert.assertEquals(
-CBORObject.FromObject(j),
-CBORObject.FromObject(BigInteger.valueOf(j)));
+            CBORObject.FromObject(j),
+            CBORObject.FromObject(BigInteger.valueOf(j)));
           CBORObject obj = CBORObject.FromJSONString(
             String.format(java.util.Locale.US,"[%s]", j));
           TestCommon.AssertSer(
-obj,
-String.format(java.util.Locale.US,"[%s]", j));
+            obj,
+            String.format(java.util.Locale.US,"[%s]", j));
           if (j == ranges[i + 1]) {
             break;
           }
@@ -4170,11 +4366,11 @@ String.format(java.util.Locale.US,"[%s]", j));
         CBORObject.FromObject(true),
         "true");
       TestCommon.AssertSer(
-CBORObject.FromObject(false),
-"false");
+        CBORObject.FromObject(false),
+        "false");
       TestCommon.AssertSer(
-CBORObject.FromObject((Object)null),
-"null");
+        CBORObject.FromObject((Object)null),
+        "null");
     }
 
     @Test
@@ -4184,14 +4380,14 @@ CBORObject.FromObject((Object)null),
         Assert.fail("Not positive infinity");
       }
       TestCommon.AssertSer(
-CBORObject.FromObject(Double.POSITIVE_INFINITY),
-"Infinity");
+        CBORObject.FromObject(Double.POSITIVE_INFINITY),
+        "Infinity");
       TestCommon.AssertSer(
-CBORObject.FromObject(Double.NEGATIVE_INFINITY),
-"-Infinity");
+        CBORObject.FromObject(Double.NEGATIVE_INFINITY),
+        "-Infinity");
       TestCommon.AssertSer(
-CBORObject.FromObject(Double.NaN),
-"NaN");
+        CBORObject.FromObject(Double.NaN),
+        "NaN");
       CBORObject oldobj = null;
       for (int i = -65539; i <= 65539; ++i) {
         CBORObject o = CBORObject.FromObject((double)i);
@@ -4221,8 +4417,8 @@ CBORObject.FromObject(Double.NaN),
         maxuint };
       if (CBORObject.True.isTagged())Assert.fail();
       Assert.assertEquals(
-BigInteger.ZERO.subtract(BigInteger.ONE),
-CBORObject.True.getInnermostTag());
+        BigInteger.ZERO.subtract(BigInteger.ONE),
+        CBORObject.True.getInnermostTag());
       BigInteger[] tagstmp = CBORObject.True.GetTags();
       Assert.assertEquals(0, tagstmp.length);
       for (int i = 0; i < ranges.length; i += 2) {
@@ -4244,11 +4440,12 @@ CBORObject.True.getInnermostTag());
           Assert.assertEquals(1, tags.length);
           Assert.assertEquals(bigintTemp, tags[0]);
           if (!obj.getInnermostTag().equals(bigintTemp)) {
-            Assert.assertEquals(String.format(java.util.Locale.US,"obj tag doesn't match: %s", obj),bigintTemp,obj.getInnermostTag());
+            Assert.assertEquals(String.format(java.util.Locale.US,"obj tag doesn't match: %s",
+obj), bigintTemp, obj.getInnermostTag());
           }
           TestCommon.AssertSer(
-obj,
-String.format(java.util.Locale.US,"%s(0)", bigintTemp));
+            obj,
+            String.format(java.util.Locale.US,"%s(0)", bigintTemp));
           if (!bigintTemp.equals(maxuint)) {
             BigInteger bigintNew = bigintTemp .add(BigInteger.ONE);
             if (bigintNew.equals(BigInteger.valueOf(264)) ||
@@ -4260,26 +4457,27 @@ String.format(java.util.Locale.US,"%s(0)", bigintTemp));
             CBORObject obj2 = CBORObject.FromObjectAndTag(obj, bigintNew);
             BigInteger[] bi = obj2.GetTags();
             if (bi.length != 2) {
-              Assert.assertEquals(String.format(java.util.Locale.US,"Expected 2 tags: %s", obj2),2,bi.length);
+              Assert.assertEquals(String.format(java.util.Locale.US,"Expected 2 tags: %s",
+obj2), 2, bi.length);
             }
             if (!bi[0].equals((BigInteger)bigintTemp .add(BigInteger.ONE))) {
               Assert.assertEquals(String.format(java.util.Locale.US,"Outer tag doesn't match: %s",
-obj2), bigintTemp .add(BigInteger.ONE), bi[0]);
+                  obj2), bigintTemp .add(BigInteger.ONE), bi[0]);
             }
             if (!bi[1].equals(bigintTemp)) {
               Assert.assertEquals(String.format(java.util.Locale.US,"Inner tag doesn't match: %s",
-obj2), bigintTemp, bi[1]);
+                  obj2), bigintTemp, bi[1]);
             }
             if (!obj2.getInnermostTag().equals(bigintTemp)) {
               Assert.assertEquals(String.format(java.util.Locale.US,"Innermost tag doesn't match: %s",
-obj2), bigintTemp, obj2.getInnermostTag());
+                  obj2), bigintTemp, obj2.getInnermostTag());
             }
             String str = String.format(java.util.Locale.US,"%s(%s(0))",
-bigintTemp .add(BigInteger.ONE),
-bigintTemp);
+              bigintTemp .add(BigInteger.ONE),
+              bigintTemp);
             TestCommon.AssertSer(
-obj2,
-str);
+              obj2,
+              str);
           }
           if (bigintTemp.equals(ranges[i + 1])) {
             break;

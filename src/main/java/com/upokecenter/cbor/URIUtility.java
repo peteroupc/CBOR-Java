@@ -553,8 +553,7 @@ int delim) {
         return ((c - '0') * 10) + (s.charAt(index + 1) - '0');
       }
       if (c == '2' && index + 3 < endOffset &&
-       (s.charAt(index + 1) == '5') && (s.charAt(index + 2) >= '0' && s.charAt(index + 2) <= '5'
-) &&
+       (s.charAt(index + 1) == '5') && (s.charAt(index + 2) >= '0' && s.charAt(index + 2) <= '5') &&
           s.charAt(index + 3) == delim) {
         return 250 + (s.charAt(index + 2) - '0');
       }

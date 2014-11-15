@@ -141,7 +141,35 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestRemainder() {
-      // not implemented yet
+      FastRandom fr = new FastRandom();
+      for (int i = 0; i < 100; ++i) {
+        ExtendedRational er;
+        ExtendedRational er2;
+        er = new ExtendedRational(
+          RandomObjects.RandomBigInteger(fr),
+          BigInteger.ONE);
+        er2 = new ExtendedRational(
+          RandomObjects.RandomBigInteger(fr),
+          BigInteger.ONE);
+        if (er2.signum() == 0 || !er2.isFinite()) {
+          continue;
+        }
+        if (er.signum() == 0 || !er.isFinite()) {
+          // Code below will divide by "er",
+          // so skip if "er" is zero
+          continue;
+        }
+        ExtendedRational ermult = er.Multiply(er2);
+        ExtendedRational erdiv = ermult.Divide(er);
+        erdiv = ermult.Remainder(er);
+        if (erdiv.signum() != 0) {
+          Assert.fail(ermult + "; " + er);
+        }
+        erdiv = ermult.Remainder(er2);
+        if (erdiv.signum() != 0) {
+          Assert.fail(er + "; " + er2);
+        }
+      }
     }
     @Test
     public void TestSign() {
@@ -165,7 +193,15 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestToDouble() {
-      // not implemented yet
+      // test for correct rounding
+      double dbl;
+      dbl = ExtendedRational.FromExtendedDecimal(
+        ExtendedDecimal.FromString(
+       "1.972579273363468721491642554610734805464744567871093749999999999999"))
+        .ToDouble();
+      Assert.assertEquals(
+        "1.9725792733634686104693400920950807631015777587890625",
+        ExtendedFloat.FromDouble(dbl).ToPlainString());
     }
     @Test
     public void TestToExtendedDecimal() {

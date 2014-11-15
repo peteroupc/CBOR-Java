@@ -14,17 +14,56 @@ at: http://upokecenter.com/d/
      */
   public class FastRandom
   {
-    private static final int ReseedCount = 10000;
+    private static final int ReseedCount = 500;
 
     private java.util.Random rand;
+    private java.util.Random rand2;
     private int count;
 
     private int w = 521288629;
     private int z = 362436069;
+    private static int[] seeds = new int[32];
+
+    private static void AddSeed(int seed) {
+      synchronized (seeds) {
+        if (seedIndex == -1) {
+          seedIndex = 0;
+        }
+        seeds[seedIndex ]^=seed;
+        seedCount = Math.max(seedCount, seedIndex + 1);
+        ++seedIndex;
+        seedIndex %= seeds.length;
+      }
+    }
+
+    private static int GetSeed() {
+      synchronized (seeds) {
+        if (seedCount == 0) {
+          return 0;
+        }
+        if (seedReadIndex >= seedCount) {
+          seedReadIndex = 0;
+        }
+        return seeds[seedReadIndex++];
+      }
+    }
+
+    private static int seedIndex = 0;
+    private static int seedCount = 0;
+    private static int seedReadIndex = 0;
 
     public FastRandom () {
-      this.rand = new java.util.Random();
+      int randseed = GetSeed();
+      this.rand = (randseed == 0) ? (new java.util.Random()) : (new java.util.Random(randseed));
+      int randseed2 = (GetSeed() ^SysRandNext(this.rand, this.rand));
+      this.rand2 = (randseed2 == 0) ? (new java.util.Random()) : (new java.util.Random(randseed2));
       this.count = ReseedCount;
+    }
+
+    private static int SysRandNext(java.util.Random randA, java.util.Random randB) {
+      int ret = randA.nextInt(0x10000);
+      ret |= randB.nextInt(0x10000) << 16;
+      return ret;
     }
 
     private int NextValueInternal() {
@@ -44,7 +83,7 @@ at: http://upokecenter.com/d/
     public int NextValue(int v) {
       if (v <= 0) {
         throw new IllegalArgumentException(
-"v (" + v + ") is not greater than " + "0");
+          "v (" + v + ") is not greater than " + "0");
       }
       if (v <= 1) {
         return 0;
@@ -54,9 +93,18 @@ at: http://upokecenter.com/d/
         // every once in a while, to reseed
         this.count = 0;
         if (this.rand != null) {
-          int seed = this.rand.nextInt(0x10000);
-          seed |= this.rand.nextInt(0x10000) << 16;
+          int seed = SysRandNext(this.rand, this.rand2);
           this.z ^= seed;
+          seed = SysRandNext(this.rand2, this.rand);
+          this.w ^= seed;
+          if (this.z == 0) {
+            this.z = 362436069;
+          }
+          if (this.w == 0) {
+            this.w = 521288629;
+          }
+          seed = SysRandNext(this.rand, this.rand2);
+          AddSeed(seed);
           return this.rand.nextInt(v);
         }
       }

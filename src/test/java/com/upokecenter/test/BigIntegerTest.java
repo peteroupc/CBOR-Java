@@ -75,7 +75,10 @@ BigInteger.fromString("-19084941898444092059").bitLength());
     }
     @Test
     public void TestEquals() {
-      // not implemented yet
+      if (BigInteger.ONE.equals(null))Assert.fail();
+      if (BigInteger.ZERO.equals(null))Assert.fail();
+      if (BigInteger.ONE.equals(BigInteger.ZERO))Assert.fail();
+      if (BigInteger.ZERO.equals(BigInteger.ONE))Assert.fail();
     }
     @Test
     public void TestFromByteArray() {
@@ -271,8 +274,8 @@ actualBigInt);
         return false;
       }
       if (n <= 23) {
-        return (n == 3 || n == 5 || n == 7 || n == 11 ||
-                n == 13 || n == 17 || n == 19 || n == 23);
+        return n == 3 || n == 5 || n == 7 || n == 11 ||
+                n == 13 || n == 17 || n == 19 || n == 23;
       }
       // Use a deterministic Rabin-Miller test
       int d = n - 1;
@@ -1043,5 +1046,6 @@ sabi.getBigIntValue().toRadixString(i));
     @Test
     public void TestZero() {
       // not implemented yet
+      Assert.assertEquals("0", BigInteger.ZERO.toString());
     }
   }
