@@ -1928,7 +1928,7 @@ at: http://upokecenter.com/d/
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
      * places from the number. For example, -3 means round to the sixteenth
-     * (10b^-3, 0.0001b), and 3 means round to the sixteens place (10b^3,
+     * (10b^-3, 0.0001b), and 3 means round to the sixteen-place (10b^3,
      * 1000b). A value of 0 rounds the number to an integer.
      * @param ctx A PrecisionContext object.
      * @return A binary number rounded to the closest value representable in the
@@ -1952,7 +1952,7 @@ at: http://upokecenter.com/d/
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
      * places from the number. For example, -3 means round to the sixteenth
-     * (10b^-3, 0.0001b), and 3 means round to the sixteens place (10b^3,
+     * (10b^-3, 0.0001b), and 3 means round to the sixteen-place (10b^3,
      * 1000b). A value of 0 rounds the number to an integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -1981,7 +1981,7 @@ at: http://upokecenter.com/d/
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
      * places number. For example, -3 means round to the sixteenth (10b^-3,
-     * 0.0001b), and 3 means round to the sixteens place (10b^3, 1000b). A
+     * 0.0001b), and 3 means round to the sixteen-place (10b^3, 1000b). A
      * value of 0 rounds the number to an integer.
      * @param ctx A PrecisionContext object.
      * @return A binary number rounded to the closest value representable in the
@@ -2005,7 +2005,7 @@ at: http://upokecenter.com/d/
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
      * places number. For example, -3 means round to the sixteenth (10b^-3,
-     * 0.0001b), and 3 means round to the sixteens place (10b^3, 1000b). A
+     * 0.0001b), and 3 means round to the sixteen-place (10b^3, 1000b). A
      * value of 0 rounds the number to an integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -2268,5 +2268,278 @@ at: http://upokecenter.com/d/
      */
     public static ExtendedFloat PI(PrecisionContext ctx) {
       return MathValue.Pi(ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointLeft(int places) {
+      return this.MovePointLeft(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointLeft(int places, PrecisionContext ctx) {
+      return this.MovePointLeft(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointLeft(BigInteger bigPlaces) {
+      return this.MovePointLeft(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the left.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointLeft(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      return (!this.isFinite()) ? this.RoundToPrecision(ctx) :
+        this.MovePointRight((bigPlaces).negate(), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the right.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointRight(int places) {
+      return this.MovePointRight(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the right.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointRight(int places, PrecisionContext ctx) {
+      return this.MovePointRight(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the right.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat MovePointRight(BigInteger bigPlaces) {
+      return this.MovePointRight(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the radix point moved to
+     * the right. <param name='ctx'>A precision context to control
+     * precision, rounding, and exponent range of the result. If HasFlags of
+     * the context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A PrecisionContext object.
+     * @return A number whose scale is increased by {@code bigPlaces} , but not to
+     * more than 0.
+     */
+    public ExtendedFloat MovePointRight(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      BigInteger bigExp = this.getExponent();
+      bigExp = bigExp.add(bigPlaces);
+      if (bigExp.signum() > 0) {
+        BigInteger mant = DecimalUtility.ShiftLeft(
+          this.unsignedMantissa,
+          bigExp);
+        return CreateWithFlags(
+mant,
+BigInteger.ZERO,
+this.flags).RoundToPrecision(ctx);
+      }
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedFloat ScaleByPowerOfTwo(int places) {
+      return this.ScaleByPowerOfTwo(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedFloat ScaleByPowerOfTwo(int places, PrecisionContext ctx) {
+      return this.ScaleByPowerOfTwo(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted. <param
+     * name='ctx'>A precision context to control precision, rounding, and
+     * exponent range of the result. If HasFlags of the context is true,
+     * will also store the flags resulting from the operation (the flags are
+     * in addition to the pre-existing flags). Can be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces) {
+      return this.ScaleByPowerOfTwo(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with its scale adjusted.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @return A number whose scale is increased by {@code bigPlaces} .
+     */
+    public ExtendedFloat ScaleByPowerOfTwo(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      BigInteger bigExp = this.getExponent();
+      bigExp = bigExp.add(bigPlaces);
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
+    }
+
+    /**
+     * Finds the number of digits in this number's mantissa. Returns 1 if this
+     * value is 0, and 0 if this value is infinity or NaN.
+     * @return A BigInteger object.
+     */
+    public BigInteger Precision() {
+      if (!this.isFinite()) {
+ return BigInteger.ZERO;
+}
+      if (this.signum() == 0) {
+ return BigInteger.ONE;
+}
+      int bitlen = this.unsignedMantissa.bitLength();
+      return BigInteger.valueOf(bitlen);
+    }
+
+    /**
+     * Returns the unit in the last place. The mantissa will be 1 and the exponent
+     * will be this number's exponent. Returns 1 with an exponent of 0 if
+     * this number is infinity or NaN.
+     * @return An ExtendedFloat object.
+     */
+    public ExtendedFloat Ulp() {
+      return (!this.isFinite()) ? ExtendedFloat.One :
+        ExtendedFloat.Create(BigInteger.ONE, this.exponent);
+    }
+
+    /**
+     * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
+     * and the formula in RemainderNaturalScale. This is meant to be similar
+     * to the divideAndRemainder method in Java's BigDecimal.
+     * @param divisor The number to divide by.
+     * @return A 2 element array consisting of the quotient and remainder in that
+     * order.
+     */
+ public ExtendedFloat[] DivideAndRemainderNaturalScale(ExtendedFloat divisor) {
+      return this.DivideAndRemainderNaturalScale(divisor, null);
+    }
+
+    /**
+     * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
+     * and the formula in RemainderNaturalScale. This is meant to be similar
+     * to the divideAndRemainder method in Java's BigDecimal.
+     * @param divisor The number to divide by.
+     * @param ctx A precision context object to control the precision, rounding,
+     * and exponent range of the result. This context will be used only in
+     * the division portion of the remainder calculation; as a result,
+     * it&apos;s possible for the remainder to have a higher precision than
+     * given in this context. Flags will be set on the given context only if
+     * the context&apos;s HasFlags is true and the integer part of the
+     * division result doesn&apos;t fit the precision and exponent range
+     * without rounding.
+     * @return A 2 element array consisting of the quotient and remainder in that
+     * order.
+     */
+    public ExtendedFloat[] DivideAndRemainderNaturalScale(
+      ExtendedFloat divisor,
+      PrecisionContext ctx) {
+      ExtendedFloat[] result = new ExtendedFloat[2];
+      result[0] = this.DivideToIntegerNaturalScale(divisor, ctx);
+      result[1] = this.Subtract(
+        result[0].Multiply(divisor, null),
+        null);
+      return result;
     }
   }

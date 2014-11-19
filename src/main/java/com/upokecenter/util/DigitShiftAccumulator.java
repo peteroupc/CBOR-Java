@@ -66,7 +66,7 @@ int olderDiscarded) {
         this.shiftedSmall = bigint.intValue();
         if (this.shiftedSmall < 0) {
           throw new IllegalArgumentException("shiftedSmall (" + this.shiftedSmall +
-            ") is less than " + "0");
+            ") is less than 0");
         }
         this.isSmall = true;
       } else {
@@ -136,7 +136,7 @@ int olderDiscarded) {
         this.knownBitLength = new FastInteger(1);
         return;
       }
-      // System.out.println("digits=" + (digits));
+      // System.out.println("digits=" + digits);
       if (digits == 1) {
         BigInteger bigrem;
         BigInteger bigquo;
@@ -361,7 +361,7 @@ bigrem = divrem[1]; }
         this.knownBitLength.SubtractInt(digitShift);
         int newLength = (int)(digitLength - digitShift);
         // System.out.println("dlen= " + digitLength + " dshift=" +
-        // digitShift + " newlen= " + (newLength));
+        // digitShift + " newlen= " + newLength);
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         if (digitShift <= Integer.MAX_VALUE) {
           this.discardedBitCount.AddInt((int)digitShift);
@@ -455,7 +455,7 @@ bigrem = divrem[1]; }
       } else {
         if (bits.signum() < 0) {
           throw new IllegalArgumentException("bits's sign (" + bits.signum() +
-            ") is less than " + "0");
+            ") is less than 0");
         }
         this.knownBitLength = this.CalcKnownDigitLength();
         BigInteger bigintDiff = this.knownBitLength.AsBigInteger();

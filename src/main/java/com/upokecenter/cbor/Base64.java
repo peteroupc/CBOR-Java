@@ -126,7 +126,7 @@ boolean padding) {
       }
       if (count < 0) {
         throw new IllegalArgumentException("count (" + count + ") is less than " +
-                                    "0 ");
+                              "0 ");
       }
       if (count > data.length) {
         throw new IllegalArgumentException(
@@ -142,7 +142,7 @@ boolean padding) {
         str.append(alphabet.charAt((data[i] >> 2) & 63));
         str.append(alphabet.charAt(((data[i] & 3) << 4) + ((data[i + 1] >> 4) & 15)));
         str.append(alphabet.charAt(((data[i + 1] & 15) << 2) + ((data[i + 2] >> 6) &
-                                                         3)));
+                              3)));
         str.append(alphabet.charAt(data[i + 2] & 63));
       }
       int lenmod3 = count % 3;
@@ -151,7 +151,7 @@ boolean padding) {
         str.append(alphabet.charAt((data[i] >> 2) & 63));
         if (lenmod3 == 2) {
           str.append(alphabet.charAt(((data[i] & 3) << 4) + ((data[i + 1] >> 4) &
-                                                      15)));
+                              15)));
           str.append(alphabet.charAt((data[i + 1] & 15) << 2));
           if (padding) {
             str.append("=");
@@ -177,19 +177,19 @@ boolean padding) throws java.io.IOException {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                                    "0 ");
+                              "0 ");
       }
       if (offset > data.length) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                                    data.length);
+                              data.length);
       }
       if (count < 0) {
         throw new IllegalArgumentException("count (" + count + ") is less than " +
-                                    "0 ");
+                              "0 ");
       }
       if (count > data.length) {
         throw new IllegalArgumentException("count (" + count + ") is more than " +
-                                    data.length);
+                              data.length);
       }
       if (data.length - offset < count) {
         throw new IllegalArgumentException("data's length minus " + offset + " (" +

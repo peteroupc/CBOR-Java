@@ -95,16 +95,16 @@ import com.upokecenter.util.*;
         ((DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1)));
       Assert.assertEquals(
 0,
-((DataUtilities.CodePointCompare("\ud800\udc00" , "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("\ud800\udc00" , "\ud800\udc00")< 0) ? -1 : 1)));
+((DataUtilities.CodePointCompare("\ud800\udc00", "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("\ud800\udc00", "\ud800\udc00")< 0) ? -1 : 1)));
       Assert.assertEquals(
 -1,
-((DataUtilities.CodePointCompare("abc" , "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("abc" , "\ud800\udc00")< 0) ? -1 : 1)));
+((DataUtilities.CodePointCompare("abc", "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("abc", "\ud800\udc00")< 0) ? -1 : 1)));
       Assert.assertEquals(
 -1,
-((DataUtilities.CodePointCompare("\uf000" , "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("\uf000" , "\ud800\udc00")< 0) ? -1 : 1)));
+((DataUtilities.CodePointCompare("\uf000", "\ud800\udc00")==0) ? 0 : ((DataUtilities.CodePointCompare("\uf000", "\ud800\udc00")< 0) ? -1 : 1)));
       Assert.assertEquals(
 1,
-((DataUtilities.CodePointCompare("\uf000" , "\ud800")==0) ? 0 : ((DataUtilities.CodePointCompare("\uf000" , "\ud800")< 0) ? -1 : 1)));
+((DataUtilities.CodePointCompare("\uf000", "\ud800")==0) ? 0 : ((DataUtilities.CodePointCompare("\uf000", "\ud800")< 0) ? -1 : 1)));
     }
     @Test
     public void TestGetUtf8Bytes() {

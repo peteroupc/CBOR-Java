@@ -74,7 +74,7 @@ boolean replace) {
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (bytesCount > bytes.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
@@ -609,7 +609,7 @@ boolean replace) {
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (bytesCount > data.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +

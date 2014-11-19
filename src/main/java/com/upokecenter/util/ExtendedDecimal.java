@@ -15,7 +15,7 @@ at: http://upokecenter.com/d/
      * a number, ignoring the decimal point and exponent. For example, in
      * the number 2356.78, the mantissa is 235678. The exponent is where the
      * "floating" decimal point of the number is located. A positive
-     * exponent means "move it to the right" , and a negative exponent means
+     * exponent means "move it to the right", and a negative exponent means
      * "move it to the left." In the example 2, 356.78, the exponent is -2,
      * since it has 2 decimal places and the decimal point is "moved to the
      * left by 2." Therefore, in the ExtendedDecimal representation, this
@@ -316,10 +316,13 @@ at: http://upokecenter.com/d/
      * upper and lower case.</p> <p>The format generally follows the
      * definition in java.math.BigDecimal(), except that the digits must be
      * ASCII digits ('0' through '9').</p>
-     * @param str A string object.
+     * @param str A string object, a portion of which represents a number.
      * @param offset A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
-     * @param ctx A PrecisionContext object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision decimal number with the same value as the
      * given string.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -478,8 +481,7 @@ at: http://upokecenter.com/d/
         // Signaling NaN
         if ((str.charAt(i) == 'S' || str.charAt(i) == 's') && (str.charAt(i + 1) == 'N' || str.charAt(i +
                       1) == 'n') && (str.charAt(i + 2) == 'A' || str.charAt(i + 2) == 'a') &&
-
-            (str.charAt(i + 3) == 'N' || str.charAt(i + 3) == 'n')) {
+                (str.charAt(i + 3) == 'N' || str.charAt(i + 3) == 'n')) {
           if (ctx != null && ctx.isSimplified() && i < endStr) {
             throw new NumberFormatException("NaN not allowed");
           }
@@ -1180,7 +1182,7 @@ bigrem = divrem[1]; }
           return (signA > 0) ? 1 : -1;
         }
       if (thisAdjExp.signum() > 0 && thisAdjExp.compareTo(BigInteger.valueOf(1000)) >= 0 &&
-            otherAdjExp.compareTo(BigInteger.valueOf(1000)) >= 0) {
+              otherAdjExp.compareTo(BigInteger.valueOf(1000)) >= 0) {
           thisAdjExp = thisAdjExp.add(BigInteger.ONE);
           otherAdjExp = otherAdjExp.add(BigInteger.ONE);
           BigInteger ratio = otherAdjExp.divide(thisAdjExp);
@@ -1730,8 +1732,8 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Converts this value to a string, but without an exponent part. The format of
-     * the return value follows the format of the
+     * Converts this value to a string, but without using exponential notation. The
+     * format of the return value follows the format of the
      * java.math.BigDecimal.toPlainString() method.
      * @return A string object.
      */
@@ -2389,7 +2391,8 @@ remainder = divrem[1]; }
 
     /**
      * Finds the next value that is closer to the other object&apos;s value than
-     * this object&apos;s value.
+     * this object&apos;s value. Returns a copy of this value with the same
+     * sign as the other value if both values are equal.
      * @param otherValue An ExtendedDecimal object.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
@@ -3102,5 +3105,284 @@ remainder = divrem[1]; }
      */
     public static ExtendedDecimal PI(PrecisionContext ctx) {
       return MathValue.Pi(ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the right. <param name='ctx'>A precision context to control
+     * precision, rounding, and exponent range of the result. If HasFlags of
+     * the context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointLeft(int places) {
+      return this.MovePointLeft(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointLeft(int places, PrecisionContext ctx) {
+      return this.MovePointLeft(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointLeft(BigInteger bigPlaces) {
+      return this.MovePointLeft(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the left. <param name='ctx'>A precision context to control precision,
+     * rounding, and exponent range of the result. If HasFlags of the
+     * context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointLeft(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      return (!this.isFinite()) ? this.RoundToPrecision(ctx) :
+        this.MovePointRight((bigPlaces).negate(), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the right.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointRight(int places) {
+      return this.MovePointRight(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the right.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointRight(int places, PrecisionContext ctx) {
+      return this.MovePointRight(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the right. <param name='ctx'>A precision context to control
+     * precision, rounding, and exponent range of the result. If HasFlags of
+     * the context is true, will also store the flags resulting from the
+     * operation (the flags are in addition to the pre-existing flags). Can
+     * be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal MovePointRight(BigInteger bigPlaces) {
+      return this.MovePointRight(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the decimal point moved to
+     * the right.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A PrecisionContext object.
+     * @return A number whose scale is increased by {@code bigPlaces} , but not to
+     * more than 0.
+     */
+    public ExtendedDecimal MovePointRight(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      BigInteger bigExp = this.getExponent();
+      bigExp = bigExp.add(bigPlaces);
+      if (bigExp.signum() > 0) {
+        BigInteger mant = this.unsignedMantissa;
+        BigInteger bigPower = DecimalUtility.FindPowerOfTenFromBig(bigExp);
+        mant = mant.multiply(bigPower);
+        return CreateWithFlags(
+mant,
+BigInteger.ZERO,
+this.flags).RoundToPrecision(ctx);
+      }
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted.
+     * @param places A 32-bit signed integer.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal ScaleByPowerOfTen(int places) {
+      return this.ScaleByPowerOfTen(BigInteger.valueOf(places), null);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted.
+     * @param places A 32-bit signed integer.
+     * @param ctx A PrecisionContext object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal ScaleByPowerOfTen(int places, PrecisionContext ctx) {
+      return this.ScaleByPowerOfTen(BigInteger.valueOf(places), ctx);
+    }
+
+    /**
+     * Returns a number similar to this number but with the scale adjusted. <param
+     * name='ctx'>A precision context to control precision, rounding, and
+     * exponent range of the result. If HasFlags of the context is true,
+     * will also store the flags resulting from the operation (the flags are
+     * in addition to the pre-existing flags). Can be null.</param>
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
+     * @param bigPlaces A BigInteger object.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal ScaleByPowerOfTen(BigInteger bigPlaces) {
+      return this.ScaleByPowerOfTen(bigPlaces, null);
+    }
+
+    /**
+     * Returns a number similar to this number but with its scale adjusted.
+     * @param bigPlaces A BigInteger object.
+     * @param ctx A PrecisionContext object.
+     * @return A number whose scale is increased by {@code bigPlaces} .
+     */
+    public ExtendedDecimal ScaleByPowerOfTen(
+BigInteger bigPlaces,
+PrecisionContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
+      }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      BigInteger bigExp = this.getExponent();
+      bigExp = bigExp.add(bigPlaces);
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
+    }
+
+    /**
+     * Finds the number of digits in this number's mantissa. Returns 1 if this
+     * value is 0, and 0 if this value is infinity or NaN.
+     * @return A BigInteger object.
+     */
+    public BigInteger Precision() {
+      if (!this.isFinite()) {
+ return BigInteger.ZERO;
+}
+      if (this.signum() == 0) {
+ return BigInteger.ONE;
+}
+      int digcount = this.unsignedMantissa.getDigitCount();
+      return BigInteger.valueOf(digcount);
+    }
+
+    /**
+     * Returns the unit in the last place. The mantissa will be 1 and the exponent
+     * will be this number's exponent. Returns 1 with an exponent of 0 if
+     * this number is infinity or NaN.
+     * @return An ExtendedDecimal object.
+     */
+    public ExtendedDecimal Ulp() {
+      return (!this.isFinite()) ? ExtendedDecimal.One :
+        ExtendedDecimal.Create(BigInteger.ONE, this.exponent);
+    }
+
+    /**
+     * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
+     * and the formula in RemainderNaturalScale. This is meant to be similar
+     * to the divideAndRemainder method in Java's BigDecimal.
+     * @param divisor The number to divide by.
+     * @return A 2 element array consisting of the quotient and remainder in that
+     * order.
+     */
+    public ExtendedDecimal[] DivideAndRemainderNaturalScale(ExtendedDecimal
+      divisor) {
+      return this.DivideAndRemainderNaturalScale(divisor, null);
+    }
+
+    /**
+     * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
+     * and the formula in RemainderNaturalScale. This is meant to be similar
+     * to the divideAndRemainder method in Java's BigDecimal.
+     * @param divisor The number to divide by.
+     * @param ctx A precision context object to control the precision, rounding,
+     * and exponent range of the result. This context will be used only in
+     * the division portion of the remainder calculation; as a result,
+     * it&apos;s possible for the remainder to have a higher precision than
+     * given in this context. Flags will be set on the given context only if
+     * the context&apos;s HasFlags is true and the integer part of the
+     * division result doesn&apos;t fit the precision and exponent range
+     * without rounding.
+     * @return A 2 element array consisting of the quotient and remainder in that
+     * order.
+     */
+    public ExtendedDecimal[] DivideAndRemainderNaturalScale(
+      ExtendedDecimal divisor,
+      PrecisionContext ctx) {
+      ExtendedDecimal[] result = new ExtendedDecimal[2];
+      result[0] = this.DivideToIntegerNaturalScale(divisor, ctx);
+      result[1] = this.Subtract(
+        result[0].Multiply(divisor, null),
+        null);
+      return result;
     }
   }

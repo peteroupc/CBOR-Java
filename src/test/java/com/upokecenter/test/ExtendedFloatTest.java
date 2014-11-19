@@ -5,6 +5,23 @@ import org.junit.Test;
 import com.upokecenter.util.*;
 
   public class ExtendedFloatTest {
+    @Test
+    public void TestMovePointRight() {
+      ExtendedFloat ef;
+      ExtendedFloat ef2;
+      ef = ExtendedFloat.FromInt32(0x100).MovePointRight(4);
+      ef2 = ExtendedFloat.FromInt32(0x1000);
+      Assert.assertEquals(0, ef.compareTo(ef2));
+    }
+    @Test
+    public void TestMovePointLeft() {
+      ExtendedFloat ef;
+      ExtendedFloat ef2;
+      ef = ExtendedFloat.FromInt32(0x150).MovePointLeft(4);
+      ef2 = ExtendedFloat.FromInt32(0x15);
+      Assert.assertEquals(0, ef.compareTo(ef2));
+    }
+
     public static ExtendedFloat FromBinary(String str) {
       int smallExponent = 0;
       int index = 0;

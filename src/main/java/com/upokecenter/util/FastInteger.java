@@ -966,8 +966,7 @@ bigrem = divrem[1]; }
         case 0:
           if ((this.smallValue < 0 && (int)val < Integer.MIN_VALUE -
         this.smallValue) || (this.smallValue > 0 && (int)val >
-            Integer.MAX_VALUE -
-              this.smallValue)) {
+            Integer.MAX_VALUE - this.smallValue)) {
             // would overflow
             if (val >= 0) {
               this.integerMode = 1;

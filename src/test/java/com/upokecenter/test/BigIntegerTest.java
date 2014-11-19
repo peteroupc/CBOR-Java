@@ -224,11 +224,12 @@ BigInteger.fromRadixString(sabi.getStringValue(), i));
         for (int j = 0; j < 100; ++j) {
           StringAndBigInt sabi = StringAndBigInt.Generate(fr, i);
           padding.append('!');
+          String sabiString = sabi.getStringValue();
           BigInteger actualBigInt = BigInteger.fromRadixSubstring(
-            padding + sabi.getStringValue(),
+            padding + sabiString,
             i,
             j + 1,
-            j + 1 + sabi.getStringValue().length);
+            j + 1 + sabiString.length());
           Assert.assertEquals(
 sabi.getBigIntValue(),
 actualBigInt);
@@ -239,15 +240,15 @@ actualBigInt);
     public static int ModPow(int x, int pow, int intMod) {
       if (x < 0) {
         throw new IllegalArgumentException(
-          "x (" + x + ") is less than " + "0");
+          "x (" + x + ") is less than 0");
       }
       if (pow <= 0) {
         throw new IllegalArgumentException(
-          "pow (" + pow + ") is not greater than " + "0");
+          "pow (" + pow + ") is not greater than 0");
       }
       if (intMod <= 0) {
         throw new IllegalArgumentException(
-          "mod (" + intMod + ") is not greater than " + "0");
+          "mod (" + intMod + ") is not greater than 0");
       }
       int r = 1;
       int v = x;

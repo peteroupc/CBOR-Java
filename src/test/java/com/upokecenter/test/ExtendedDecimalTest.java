@@ -6,6 +6,27 @@ import com.upokecenter.util.*;
 
   public class ExtendedDecimalTest {
     @Test
+    public void TestScaling() {
+      Assert.assertEquals(
+"5.000E+5",
+ExtendedDecimal.FromString("5.000").ScaleByPowerOfTen(5).toString());
+      Assert.assertEquals(
+"0.00005000",
+ExtendedDecimal.FromString("5.000").ScaleByPowerOfTen(-5).toString());
+      Assert.assertEquals(
+"50000000000",
+ExtendedDecimal.FromString("500000").MovePointRight(5).toString());
+      Assert.assertEquals(
+"5.00000",
+ExtendedDecimal.FromString("500000").MovePointRight(-5).toString());
+      Assert.assertEquals(
+"50000000000",
+ExtendedDecimal.FromString("500000").MovePointLeft(-5).toString());
+      Assert.assertEquals(
+"5.00000",
+ExtendedDecimal.FromString("500000").MovePointLeft(5).toString());
+    }
+@Test
     public void TestAbs() {
       // not implemented yet
     }
@@ -248,7 +269,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(0.2133).toString());
 
       Assert.assertEquals(
-  "2.29360000000000010330982488752915582352898127282969653606414794921875E-7" ,
+  "2.29360000000000010330982488752915582352898127282969653606414794921875E-7",
   ExtendedDecimal.FromDouble(2.2936E-7).toString());
       Assert.assertEquals(
         "3893200000",
@@ -267,7 +288,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(0.30233).toString());
 
       Assert.assertEquals(
-   "0.0000019512000000000000548530838806460252499164198525249958038330078125" ,
+   "0.0000019512000000000000548530838806460252499164198525249958038330078125",
    ExtendedDecimal.FromDouble(1.9512E-6).toString());
       Assert.assertEquals(
         "199500",
@@ -324,7 +345,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(3.636E11).toString());
 
       Assert.assertEquals(
-  "0.00000323700000000000009386523676380154057596882921643555164337158203125" ,
+  "0.00000323700000000000009386523676380154057596882921643555164337158203125",
   ExtendedDecimal.FromDouble(3.237E-6).toString());
       Assert.assertEquals(
         "728000",
@@ -397,7 +418,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(244200.0).toString());
 
       Assert.assertEquals(
-  "2.28179999999999995794237200343046456652018605382181704044342041015625E-7" ,
+  "2.28179999999999995794237200343046456652018605382181704044342041015625E-7",
   ExtendedDecimal.FromDouble(2.2818E-7).toString());
       Assert.assertEquals(
         "39.73400000000000176214598468504846096038818359375",
@@ -427,7 +448,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(27.2).toString());
 
       Assert.assertEquals(
-  "0.00000380250000000000001586513038998038638283105683512985706329345703125" ,
+  "0.00000380250000000000001586513038998038638283105683512985706329345703125",
   ExtendedDecimal.FromDouble(3.8025E-6).toString());
 
       Assert.assertEquals(
@@ -444,7 +465,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(2.7534E10).toString());
 
       Assert.assertEquals(
-    "3.911600000000000165617541382501176627783934236504137516021728515625E-7" ,
+    "3.911600000000000165617541382501176627783934236504137516021728515625E-7",
     ExtendedDecimal.FromDouble(3.9116E-7).toString());
 
       Assert.assertEquals(
@@ -484,11 +505,11 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(1.3414E-4).toString());
 
       Assert.assertEquals(
-   "3.4449999999999999446924077266263264363033158588223159313201904296875E-7" ,
+   "3.4449999999999999446924077266263264363033158588223159313201904296875E-7",
    ExtendedDecimal.FromDouble(3.445E-7).toString());
 
       Assert.assertEquals(
-   "1.3610000000000000771138253079228785935583800892345607280731201171875E-7" ,
+   "1.3610000000000000771138253079228785935583800892345607280731201171875E-7",
    ExtendedDecimal.FromDouble(1.361E-7).toString());
       Assert.assertEquals(
         "26090000",
@@ -498,7 +519,7 @@ import com.upokecenter.util.*;
         ExtendedDecimal.FromDouble(9.936).toString());
 
       Assert.assertEquals(
-     "0.00000600000000000000015200514458246772164784488268196582794189453125" ,
+     "0.00000600000000000000015200514458246772164784488268196582794189453125",
      ExtendedDecimal.FromDouble(6.0E-6).toString());
       Assert.assertEquals(
         "260.31000000000000227373675443232059478759765625",
@@ -543,7 +564,7 @@ import com.upokecenter.util.*;
       Assert.assertEquals("36570", ExtendedDecimal.FromDouble(36570.0).toString());
 
       Assert.assertEquals(
-     "0.00001830000000000000097183545932910675446692039258778095245361328125" ,
+     "0.00001830000000000000097183545932910675446692039258778095245361328125",
      ExtendedDecimal.FromDouble(1.83E-5).toString());
       Assert.assertEquals(
         "301310000",

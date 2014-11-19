@@ -1828,16 +1828,16 @@ cbornumber.AsSingle());
     }
     @Test
     public void TestIsNull() {
-      if (CBORObject.True.IsNull)Assert.fail();
+      if (CBORObject.True.isNull())Assert.fail();
       if (CBORObject.FromObject("").isNull())Assert.fail();
       if (CBORObject.NewArray().isNull())Assert.fail();
       if (CBORObject.NewMap().isNull())Assert.fail();
-      if (CBORObject.False.IsNull)Assert.fail();
-      if (!(CBORObject.Null.IsNull))Assert.fail();
-      if (CBORObject.Undefined.IsNull)Assert.fail();
-      if (CBORObject.PositiveInfinity.IsNull)Assert.fail();
-      if (CBORObject.NegativeInfinity.IsNull)Assert.fail();
-      if (CBORObject.NaN.IsNull)Assert.fail();
+      if (CBORObject.False.isNull())Assert.fail();
+      if (!(CBORObject.Null.isNull()))Assert.fail();
+      if (CBORObject.Undefined.isNull())Assert.fail();
+      if (CBORObject.PositiveInfinity.isNull())Assert.fail();
+      if (CBORObject.NegativeInfinity.isNull())Assert.fail();
+      if (CBORObject.NaN.isNull())Assert.fail();
     }
     @Test
     public void TestIsPositiveInfinity() {
@@ -2296,7 +2296,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestToJSONString() {
       Assert.assertEquals(
-        "\"\u2027\\u2028\\u2029\u202a\"" ,
+        "\"\u2027\\u2028\\u2029\u202a\"",
         CBORObject.FromObject("\u2027\u2028\u2029\u202a").ToJSONString());
       Assert.assertEquals(
         "\"\\u0085\\uFEFF\\uFFFE\\uFFFF\"",

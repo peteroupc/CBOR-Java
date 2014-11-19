@@ -80,9 +80,7 @@ private CBORJson() {
                       c <<= 4;
                       c |= ch + 10 - 'a';
                     } else {
-                    throw
-                        reader.NewError("Invalid Unicode escaped character"
-);
+                throw reader.NewError("Invalid Unicode escaped character");
                     }
                   }
                   break;
@@ -594,8 +592,7 @@ private CBORJson() {
               for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
-           String str = (key.getItemType() ==
-                  CBORObject.CBORObjectTypeTextString) ?
+           String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
                   ((String)key.getThisItem()) : key.ToJSONString();
                 stringMap.put(str, value);
               }

@@ -219,7 +219,7 @@ private CBORDataUtilities() {
         return null;
       }
       if ((newScale == null && newScaleInt == 0) || (newScale != null &&
-                                                     newScale.signum() == 0)) {
+                              newScale.signum() == 0)) {
         // No fractional part
         if (mant != null && mant.CanFitInInt32()) {
           mantInt = mant.AsInt32();

@@ -413,7 +413,7 @@ if (CBORObject.FromObject(ExtendedDecimal.NaN)
       Assert.assertEquals(ExtendedDecimal.Zero, ExtendedDecimal.FromString("0"));
   Assert.assertEquals(
 ExtendedDecimal.Zero,
-ExtendedDecimal.FromString("0" , null));
+ExtendedDecimal.FromString("0", null));
       try {
         ExtendedDecimal.FromString(null, null);
         Assert.fail("Should have failed");
@@ -675,7 +675,7 @@ ExtendedDecimal.FromString("0" , null));
       }
       try {
         ExtendedFloat.FromString(
-"Infinity" ,
+"Infinity",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -685,7 +685,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"-Infinity" ,
+"-Infinity",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -695,7 +695,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"NaN" ,
+"NaN",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -705,7 +705,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"sNaN" ,
+"sNaN",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -715,7 +715,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"Infinity" ,
+"Infinity",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -725,7 +725,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"-Infinity" ,
+"-Infinity",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -735,7 +735,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"NaN" ,
+"NaN",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -745,7 +745,7 @@ PrecisionContext.Unlimited.WithSimplified(true));
       }
       try {
         ExtendedFloat.FromString(
-"sNaN" ,
+"sNaN",
 PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
@@ -1044,20 +1044,23 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
     @Test
     public void TestRationalDivide() {
       FastRandom fr = new FastRandom();
-      for (int i = 0; i < 100; ++i) {
+      for (int i = 0; i < 500; ++i) {
         ExtendedRational er = RandomObjects.RandomRational(fr);
         ExtendedRational er2 = RandomObjects.RandomRational(fr);
         if (er2.signum() == 0 || !er2.isFinite()) {
           continue;
         }
+        if (er.signum() == 0 || !er.isFinite()) {
+          continue;
+        }
         ExtendedRational ermult = er.Multiply(er2);
         ExtendedRational erdiv = ermult.Divide(er);
         if (erdiv.compareTo(er2) != 0) {
-          Assert.fail(er + "; " + er2);
+          Assert.fail(er + "; " + erdiv + "; " + er2);
         }
         erdiv = ermult.Divide(er2);
         if (erdiv.compareTo(er) != 0) {
-          Assert.fail(er + "; " + er2);
+          Assert.fail(er + "; " + erdiv + "; " +er2);
         }
       }
     }

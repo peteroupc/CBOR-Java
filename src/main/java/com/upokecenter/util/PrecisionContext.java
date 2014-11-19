@@ -462,7 +462,7 @@ public final void setFlags(int value) {
     public PrecisionContext WithPrecision(int precision) {
       if (precision < 0) {
         throw new IllegalArgumentException("precision (" + precision +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       PrecisionContext pc = this.Copy();
       pc.bigintPrecision = BigInteger.valueOf(precision);
@@ -481,7 +481,7 @@ public final void setFlags(int value) {
       }
       if (bigintPrecision.signum() < 0) {
         throw new IllegalArgumentException("bigintPrecision's sign (" +
-          bigintPrecision.signum() + ") is less than " + "0");
+          bigintPrecision.signum() + ") is less than 0");
       }
       PrecisionContext pc = this.Copy();
       pc.bigintPrecision = bigintPrecision;
@@ -515,8 +515,8 @@ public final void setFlags(int value) {
     }
 
     /**
-     * Creates a new precision context using the given maximum number of digits and
-     * an unlimited exponent range.
+     * Creates a new precision context using the given maximum number of digits, an
+     * unlimited exponent range, and the HalfUp rounding mode.
      * @param precision Maximum number of digits (precision).
      * @return A PrecisionContext object.
      */
@@ -530,8 +530,8 @@ false).WithUnlimitedExponents();
     }
 
     /**
-     * Creates a new PrecisionContext object initialized with unlimited precision
-     * and exponent range, and the given rounding mode.
+     * Creates a new PrecisionContext object initialized with an unlimited
+     * precision, an unlimited exponent range, and the given rounding mode.
      * @param rounding The rounding mode for the new precision context.
      * @return A PrecisionContext object.
      */
@@ -545,8 +545,8 @@ false).WithUnlimitedExponents();
     }
 
     /**
-     * Creates a new PrecisionContext object initialized with unlimited and
-     * exponent range, and the given rounding mode and maximum precision.
+     * Creates a new PrecisionContext object initialized with an unlimited exponent
+     * range, and the given rounding mode and maximum precision.
      * @param precision Maximum number of digits (precision).
      * @param rounding A Rounding object.
      * @return A PrecisionContext object.
@@ -579,7 +579,7 @@ int exponentMaxSmall,
 boolean clampNormalExponents) {
       if (precision < 0) {
         throw new IllegalArgumentException("precision (" + precision +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       if (exponentMinSmall > exponentMaxSmall) {
         throw new IllegalArgumentException("exponentMinSmall (" + exponentMinSmall +

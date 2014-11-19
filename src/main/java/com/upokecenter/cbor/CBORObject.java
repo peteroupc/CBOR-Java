@@ -61,7 +61,7 @@ import com.upokecenter.util.*;
      * returns an empty array and the Type property, or "getType()" in Java,
      * returns TextString). This is because the natural ordering of these
      * instances is consistent with the Equals method.</p> <p><b>Thread
-     * Safety:</b> </p> <p>CBOR objects that are numbers, "simple values" ,
+     * Safety:</b> </p> <p>CBOR objects that are numbers, "simple values",
      * and text strings are immutable (their values can't be changed), so
      * they are inherently safe for use by multiple threads.</p> <p>CBOR
      * objects that are arrays, maps, and byte strings are mutable, but this
@@ -258,7 +258,7 @@ public final void setConverter(Object value) {
       }
       if (bigintTag.signum() < 0) {
         throw new IllegalArgumentException("bigintTag.signum() (" +
-                              bigintTag.signum() + ") is less than " + "0");
+                              bigintTag.signum() + ") is less than 0");
       }
       if (bigintTag.bitLength() > 64) {
         throw new IllegalArgumentException("bigintTag.bitLength (" +
@@ -1372,7 +1372,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {
         throw new IllegalArgumentException("tagValue (" + tagValue +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       CBORObject obj = this;
       while (true) {
@@ -3320,7 +3320,7 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
     public static CBORObject FromSimpleValue(int simpleValue) {
       if (simpleValue < 0) {
         throw new IllegalArgumentException("simpleValue (" + simpleValue +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (simpleValue > 255) {
         throw new IllegalArgumentException("simpleValue (" + simpleValue +
@@ -3767,7 +3767,7 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
       }
       if (bigintTag.signum() < 0) {
         throw new IllegalArgumentException("bigintTag's sign (" + bigintTag.signum() +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (bigintTag.compareTo(UInt64MaxValue) > 0) {
         throw new IllegalArgumentException(
@@ -3858,7 +3858,7 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
       int smallTag) {
       if (smallTag < 0) {
       throw new IllegalArgumentException("smallTag (" + smallTag +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       ICBORTag tagconv = FindTagConverter(smallTag);
       CBORObject c = FromObject(valueObValue);

@@ -3122,7 +3122,7 @@ at: http://upokecenter.com/d/
       int sign = power.signum();
       if (sign < 0) {
         throw new IllegalArgumentException(
-          "sign (" + sign + ") is less than " + "0");
+          "sign (" + sign + ") is less than 0");
       }
       BigInteger thisVar = this;
       if (sign == 0) {
@@ -3158,7 +3158,7 @@ at: http://upokecenter.com/d/
     public BigInteger pow(int powerSmall) {
       if (powerSmall < 0) {
         throw new IllegalArgumentException("powerSmall (" + powerSmall +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       BigInteger thisVar = this;
       if (powerSmall == 0) {
@@ -3911,7 +3911,7 @@ at: http://upokecenter.com/d/
       }
       if (endIndex < 0) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +

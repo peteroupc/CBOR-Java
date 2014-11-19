@@ -179,7 +179,7 @@ CBORTypeFilter... elements) {
       }
       if (arrayLength < 0) {
         throw new IllegalArgumentException("arrayLength (" + arrayLength +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       if (arrayLength < elements.length) {
         throw new IllegalArgumentException("arrayLength (" + arrayLength +
@@ -218,7 +218,7 @@ CBORTypeFilter... elements) {
       }
       if (arrayLength < 0) {
         throw new IllegalArgumentException("arrayLength (" + arrayLength +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       if (arrayLength < elements.length) {
         throw new IllegalArgumentException("arrayLength (" + arrayLength +
@@ -243,7 +243,7 @@ CBORTypeFilter... elements) {
       }
       if (this.arrayLength < 0) {
         throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
-          ") is less than " + "0");
+          ") is less than 0");
       }
       if (this.arrayLength < this.elements.length) {
         throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
@@ -381,7 +381,7 @@ CBORTypeFilter... elements) {
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength ||
         ((this.arrayMinLength || index < this.arrayLength) && index >=
-                                                0));
+                              0));
     }
 
     /**
