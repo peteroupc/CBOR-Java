@@ -3109,15 +3109,7 @@ remainder = divrem[1]; }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the right. <param name='ctx'>A precision context to control
-     * precision, rounding, and exponent range of the result. If HasFlags of
-     * the context is true, will also store the flags resulting from the
-     * operation (the flags are in addition to the pre-existing flags). Can
-     * be null.</param>
-     * @param ctx A precision context to control precision, rounding, and exponent
-     * range of the result. If HasFlags of the context is true, will also
-     * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). Can be null.
+     * the right.
      * @param places A 32-bit signed integer.
      * @return An ExtendedDecimal object.
      */
@@ -3127,17 +3119,12 @@ remainder = divrem[1]; }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the left. <param name='ctx'>A precision context to control precision,
-     * rounding, and exponent range of the result. If HasFlags of the
-     * context is true, will also store the flags resulting from the
-     * operation (the flags are in addition to the pre-existing flags). Can
-     * be null.</param>
+     * the left.
+     * @param places A 32-bit signed integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @param places A 32-bit signed integer.
-     * @param ctx A PrecisionContext object.
      * @return An ExtendedDecimal object.
      */
     public ExtendedDecimal MovePointLeft(int places, PrecisionContext ctx) {
@@ -3146,15 +3133,7 @@ remainder = divrem[1]; }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the left. <param name='ctx'>A precision context to control precision,
-     * rounding, and exponent range of the result. If HasFlags of the
-     * context is true, will also store the flags resulting from the
-     * operation (the flags are in addition to the pre-existing flags). Can
-     * be null.</param>
-     * @param ctx A precision context to control precision, rounding, and exponent
-     * range of the result. If HasFlags of the context is true, will also
-     * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). Can be null.
+     * the left.
      * @param bigPlaces A BigInteger object.
      * @return An ExtendedDecimal object.
      */
@@ -3164,17 +3143,12 @@ remainder = divrem[1]; }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the left. <param name='ctx'>A precision context to control precision,
-     * rounding, and exponent range of the result. If HasFlags of the
-     * context is true, will also store the flags resulting from the
-     * operation (the flags are in addition to the pre-existing flags). Can
-     * be null.</param>
+     * the left.
+     * @param bigPlaces A BigInteger object.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @param bigPlaces A BigInteger object.
-     * @param ctx A PrecisionContext object.
      * @return An ExtendedDecimal object.
      */
     public ExtendedDecimal MovePointLeft(
@@ -3201,7 +3175,10 @@ PrecisionContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param places A 32-bit signed integer.
-     * @param ctx A PrecisionContext object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
      * @return An ExtendedDecimal object.
      */
     public ExtendedDecimal MovePointRight(int places, PrecisionContext ctx) {
@@ -3210,15 +3187,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the right. <param name='ctx'>A precision context to control
-     * precision, rounding, and exponent range of the result. If HasFlags of
-     * the context is true, will also store the flags resulting from the
-     * operation (the flags are in addition to the pre-existing flags). Can
-     * be null.</param>
-     * @param ctx A precision context to control precision, rounding, and exponent
-     * range of the result. If HasFlags of the context is true, will also
-     * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). Can be null.
+     * the right.
      * @param bigPlaces A BigInteger object.
      * @return An ExtendedDecimal object.
      */
@@ -3230,7 +3199,10 @@ PrecisionContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param bigPlaces A BigInteger object.
-     * @param ctx A PrecisionContext object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces} , but not to
      * more than 0.
      */
@@ -3272,7 +3244,10 @@ this.flags).RoundToPrecision(ctx);
     /**
      * Returns a number similar to this number but with the scale adjusted.
      * @param places A 32-bit signed integer.
-     * @param ctx A PrecisionContext object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
      * @return An ExtendedDecimal object.
      */
     public ExtendedDecimal ScaleByPowerOfTen(int places, PrecisionContext ctx) {
@@ -3280,15 +3255,7 @@ this.flags).RoundToPrecision(ctx);
     }
 
     /**
-     * Returns a number similar to this number but with the scale adjusted. <param
-     * name='ctx'>A precision context to control precision, rounding, and
-     * exponent range of the result. If HasFlags of the context is true,
-     * will also store the flags resulting from the operation (the flags are
-     * in addition to the pre-existing flags). Can be null.</param>
-     * @param ctx A precision context to control precision, rounding, and exponent
-     * range of the result. If HasFlags of the context is true, will also
-     * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). Can be null.
+     * Returns a number similar to this number but with the scale adjusted.
      * @param bigPlaces A BigInteger object.
      * @return An ExtendedDecimal object.
      */
@@ -3299,7 +3266,10 @@ this.flags).RoundToPrecision(ctx);
     /**
      * Returns a number similar to this number but with its scale adjusted.
      * @param bigPlaces A BigInteger object.
-     * @param ctx A PrecisionContext object.
+     * @param ctx A precision context to control precision, rounding, and exponent
+     * range of the result. If HasFlags of the context is true, will also
+     * store the flags resulting from the operation (the flags are in
+     * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces} .
      */
     public ExtendedDecimal ScaleByPowerOfTen(
