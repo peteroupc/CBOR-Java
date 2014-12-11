@@ -12,8 +12,7 @@ at: http://upokecenter.com/d/
      * testing. Unfortunately it can be very slow. So we use this wrapper
      * class.
      */
-  public class FastRandom
-  {
+  public class FastRandom {
     private static final int ReseedCount = 500;
 
     private java.util.Random rand;

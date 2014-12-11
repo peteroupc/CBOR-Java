@@ -11,8 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 
-  public class BigIntTest
-  {
+  public class BigIntTest {
     // Test some specific cases
     @Test
     public void TestSpecificCases() {

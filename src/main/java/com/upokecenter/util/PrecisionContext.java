@@ -9,9 +9,12 @@ at: http://upokecenter.com/d/
 
     /**
      * Contains parameters for controlling the precision, rounding, and exponent
-     * range of arbitrary-precision numbers.
+     * range of arbitrary-precision numbers. NOTE: This class is not
+     * designed for inheritance, and inheriting from this class is not
+     * recommended since it may break in future versions.
      */
   public class PrecisionContext {
+    // TODO: Add 'final' to PrecisionContext in version 3
     private BigInteger exponentMax;
 
     /**

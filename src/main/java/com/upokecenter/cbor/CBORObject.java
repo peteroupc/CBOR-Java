@@ -3649,9 +3649,7 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
     }
 
     /**
-     * Not documented yet.
-     * @param obj An arbitrary object.
-     * @return A CBORObject object.
+     *
      */
     public static CBORObject FromObject(Object obj) {
       if (obj == null) {
