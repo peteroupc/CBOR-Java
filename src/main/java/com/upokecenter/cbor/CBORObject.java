@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.util.*;
@@ -1815,7 +1815,7 @@ List<CBORObject> AsList() {
      * @param key A string that serves as the key.
      * @return True if the given key (as a CBOR object) is found, or false if the
      * given key is not found or this object is not a map.
-     * @throws NullPointerException Key is null (as opposed to CBORObject.Null).
+     * @throws NullPointerException Key is null.
      */
     public boolean ContainsKey(String key) {
       if (key == null) {
@@ -1830,9 +1830,9 @@ List<CBORObject> AsList() {
 
     /**
      * Adds a new object to the end of this array. (Used to throw
-     * NullPointerException on a null reference, but now converts the
-     * object to CBORObject.Null, for convenience with the object overload
-     * of this method.).
+     * NullPointerException on a null reference, but now converts the null
+     * reference to CBORObject.Null, for convenience with the object
+     * overload of this method.).
      * @param obj A CBOR object.
      * @return This object.
      * @throws java.lang.IllegalStateException This object is not an array.
@@ -2350,7 +2350,7 @@ List<CBORObject> AsList() {
           bytes[byteIndex++] = (byte)c;
         } else if (c <= 0x7ff) {
           if (byteIndex + 2 > StreamedStringBufferLength) {
-            // Write bytes retrieved so far, the next three bytes
+            // Write bytes retrieved so far - the next three bytes
             // would exceed the length, and the CBOR spec forbids
             // splitting characters when generating text strings
             if (!streaming) {
@@ -2375,7 +2375,7 @@ List<CBORObject> AsList() {
           }
           if (c <= 0xffff) {
             if (byteIndex + 3 > StreamedStringBufferLength) {
-              // Write bytes retrieved so far, the next three bytes
+              // Write bytes retrieved so far - the next three bytes
               // would exceed the length, and the CBOR spec forbids
               // splitting characters when generating text strings
               if (!streaming) {
@@ -2391,7 +2391,7 @@ List<CBORObject> AsList() {
             bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
           } else {
             if (byteIndex + 4 > StreamedStringBufferLength) {
-              // Write bytes retrieved so far, the next four bytes
+              // Write bytes retrieved so far - the next four bytes
               // would exceed the length, and the CBOR spec forbids
               // splitting characters when generating text strings
               if (!streaming) {
