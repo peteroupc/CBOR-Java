@@ -1488,8 +1488,17 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from a 32-bit floating-point number. This method
      * computes the exact value of the floating point number, not an
-     * approximation, as is often the case by converting the number to a
-     * string.
+     * approximation, as is often the case by converting the floating point
+     * number to a string first. Remember, though, that the exact value of a
+     * 32-bit floating-point number is not always the value you get when you
+     * pass a literal decimal number (for example, calling
+     * <code>ExtendedDecimal.FromSingle(0.1f)</code>), since not all decimal
+     * numbers can be converted to exact binary numbers (in the example
+     * given, the resulting ExtendedDecimal will be the the value of the
+     * closest "float" to 0.1, not 0.1 exactly). To create an
+     * ExtendedDecimal number from a decimal number, use FromString instead
+     * in most cases (for example: <code>ExtendedDecimal.FromString("0.1")</code>
+     *).
      * @param flt A 32-bit floating-point number.
      * @return A decimal number with the same value as {@code flt} .
      */
@@ -1585,8 +1594,16 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from a 64-bit floating-point number. This method
      * computes the exact value of the floating point number, not an
-     * approximation, as is often the case by converting the number to a
-     * string.
+     * approximation, as is often the case by converting the floating point
+     * number to a string first. Remember, though, that the exact value of a
+     * 64-bit floating-point number is not always the value you get when you
+     * pass a literal decimal number (for example, calling
+     * <code>ExtendedDecimal.FromDouble(0.1f)</code>), since not all decimal
+     * numbers can be converted to exact binary numbers (in the example
+     * given, the resulting ExtendedDecimal will be the value of the closest
+     * "double" to 0.1, not 0.1 exactly). To create an ExtendedDecimal
+     * number from a decimal number, use FromString instead in most cases
+     * (for example: <code>ExtendedDecimal.FromString("0.1")</code>).
      * @param dbl A 64-bit floating-point number.
      * @return A decimal number with the same value as {@code dbl} .
      */
