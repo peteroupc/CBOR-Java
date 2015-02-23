@@ -119,7 +119,7 @@ Release Notes
 -----------
 For release notes, see the [CBOR .NET repository](https://github.com/peteroupc/CBOR).
 
-The [commit history](https://github.com/peteroupc/CBOR-Java/commits/master) 
+The [commit history](https://github.com/peteroupc/CBOR-Java/commits/master)
 contains details on code changes in previous versions.
 
 Acknowledgments
