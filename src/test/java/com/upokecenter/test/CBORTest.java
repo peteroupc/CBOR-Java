@@ -1965,6 +1965,22 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     @Test
+    public void TestHalfPrecision() {
+      CBORObject o = CBORObject.DecodeFromBytes(
+        new byte[] { (byte)0xf9, 0x7c, 0x00  });
+      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle());
+      o = CBORObject.DecodeFromBytes(
+        new byte[] { (byte)0xf9, 0x00, 0x00  });
+      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle());
+      o = CBORObject.DecodeFromBytes(
+        new byte[] { (byte)0xf9, (byte)0xfc, 0x00  });
+      Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle());
+      o = CBORObject.DecodeFromBytes(
+        new byte[] { (byte)0xf9, 0x7e, 0x00  });
+      if (!(Float.isNaN(o.AsSingle())))Assert.fail();
+    }
+
+    @Test
     public void TestJSON() {
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
