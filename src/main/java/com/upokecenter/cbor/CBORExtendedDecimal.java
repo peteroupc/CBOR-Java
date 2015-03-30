@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORExtendedDecimal implements ICBORNumber {
-
+  class CBORExtendedDecimal implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       ExtendedDecimal ed = (ExtendedDecimal)obj;
       return ed.IsPositiveInfinity();

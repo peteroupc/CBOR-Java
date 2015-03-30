@@ -11,8 +11,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Implemented by classes that validate CBOR objects belonging to a specific
      * tag.
      */
-  public interface ICBORTag {
-
+  public interface ICBORTag
+  {
     /**
      * Gets a type filter specifying what kinds of CBOR objects are supported by
      * this tag.

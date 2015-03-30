@@ -7,8 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  class CBORTag4 implements ICBORTag {
-
+  class CBORTag4 implements ICBORTag
+  {
     public CBORTag4 () {
  this(false);
     }

@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORDouble implements ICBORNumber {
-
+  class CBORDouble implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       return ((((Double)obj).doubleValue()) == Double.POSITIVE_INFINITY);
     }

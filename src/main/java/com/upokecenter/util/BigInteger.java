@@ -99,7 +99,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         for (int i = n - 1; i >= shiftWords; --i) {
           r[rstart + i] = r[rstart + i - shiftWords];
         }
-        java.util.Arrays.fill(r, rstart, (rstart) + (shiftWords), (short)0);
+        java.util.Arrays.fill(r, rstart, (rstart)+(shiftWords), (short)0);
       }
     }
 
@@ -1198,7 +1198,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         int offset2For2 = 0;
         if (countA == 0 || countB == 0) {
           // words1 or words2 is empty, so result is 0
-          java.util.Arrays.fill(resultArr, resultStart, (resultStart) + (count << 1), (short)0);
+          java.util.Arrays.fill(resultArr, resultStart, (resultStart)+(count << 1), (short)0);
           return;
         }
         // Split words1 and words2 in two parts each
@@ -1207,7 +1207,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           if (countA <= count2 && countB <= count2) {
             // System.out.println("Can be smaller: " + AN + "," + BN + "," +
             // (count2));
-            java.util.Arrays.fill(resultArr, resultStart + count, (resultStart + count) + (count), (short)0);
+            java.util.Arrays.fill(resultArr, resultStart + count, (resultStart + count)+(count), (short)0);
             if (count2 == 8) {
               BaselineMultiply8(
                 resultArr,
@@ -1694,7 +1694,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       {
         int carryPos = 0;
         // Set carry to zero
-        java.util.Arrays.fill(productArr, cstart, (cstart) + (bcount), (short)0);
+        java.util.Arrays.fill(productArr, cstart, (cstart)+(bcount), (short)0);
         for (int i = 0; i < acount; i += bcount) {
           int diff = acount - i;
           if (diff > bcount) {
@@ -1830,7 +1830,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         switch (words1[words1Start]) {
           case 0:
             // words1 is zero, so result is 0
-            java.util.Arrays.fill(resultArr, resultStart, (resultStart) + (words2Count + 2), (short)0);
+            java.util.Arrays.fill(resultArr, resultStart, (resultStart)+(words2Count + 2), (short)0);
             return;
           case 1:
             System.arraycopy(
@@ -1996,7 +1996,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         } else if (words1Count + 1 == words2Count ||
                    (words1Count + 2 == words2Count && words2[words2Start +
                               words2Count - 1] == 0)) {
-          java.util.Arrays.fill(resultArr, resultStart, (resultStart) + (words1Count + words2Count), (short)0);
+          java.util.Arrays.fill(resultArr, resultStart, (resultStart)+(words1Count + words2Count), (short)0);
           // Multiply the low parts of each operand
           SameSizeMultiply(
             resultArr,
@@ -3412,16 +3412,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           return (value >= 1000000000000000000L) ? 19 : ((value >=
                 100000000000000000L) ? 18 : ((value >= 10000000000000000L) ?
                               17 : ((value >= 1000000000000000L) ? 16 :
-                              ((value >= 100000000000000L) ? 15 : ((value >=
-                              10000000000000L) ?
-                              14 : ((value >= 1000000000000L) ? 13 : ((value >=
-                100000000000L) ? 12 : ((value >= 10000000000L) ?
+                              ((value >= 100000000000000L) ? 15 : ((value
+                              >= 10000000000000L) ?
+                              14 : ((value >= 1000000000000L) ? 13 : ((value
+                >= 100000000000L) ? 12 : ((value >= 10000000000L) ?
                               11 : ((value >= 1000000000L) ? 10 : 9)))))))));
         } else {
           int v2 = (int)value;
           return (v2 >= 100000000) ? 9 : ((v2 >= 10000000) ? 8 : ((v2 >=
-                              1000000) ? 7 : ((v2 >= 100000) ? 6 : ((v2 >=
-                              10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ?
+                              1000000) ? 7 : ((v2 >= 100000) ? 6 : ((v2
+                              >= 10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ?
                 3 : ((v2 >= 10) ? 2 : 1)))))));
         }
       }
@@ -3657,7 +3657,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         if (this.negative) {
           StringBuilder sb = new StringBuilder(i + 1);
           sb.append('-');
-          sb.append(s, 0, (0) + (i));
+          sb.append(s, 0, (0)+(i));
           return sb.toString();
         }
         return new String(s, 0, i);
@@ -3763,7 +3763,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         if (this.negative) {
           StringBuilder sb = new StringBuilder(i + 1);
           sb.append('-');
-          sb.append(s, 0, (0) + (i));
+          sb.append(s, 0, (0)+(i));
           return sb.toString();
         }
         return new String(s, 0, i);

@@ -60,7 +60,7 @@ false) < 0) {
           }
         }
       } else {
-        this.builder.append(str, index, (index) + (length));
+        this.builder.append(str, index, (index)+(length));
       }
     }
 

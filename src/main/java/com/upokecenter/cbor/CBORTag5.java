@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORTag5 implements ICBORTag {
-
+  class CBORTag5 implements ICBORTag
+  {
     static final CBORTypeFilter Filter = new
     CBORTypeFilter().WithArrayExactLength(
 2,

@@ -304,13 +304,13 @@ boolean negative) {
       num = (num).abs();
       BigInteger den = BigInteger.ONE;
       if (exp.signum() < 0) {
-        exp = (exp).negate();
+        exp=(exp).negate();
         den = DecimalUtility.ShiftLeft(den, exp);
       } else {
         num = DecimalUtility.ShiftLeft(num, exp);
       }
       if (neg) {
-        num = (num).negate();
+        num=(num).negate();
       }
       return new ExtendedRational(num, den);
     }
@@ -352,14 +352,14 @@ boolean negative) {
       num = (num).abs();
       BigInteger den = BigInteger.ONE;
       if (exp.signum() < 0) {
-        exp = (exp).negate();
+        exp=(exp).negate();
         den = DecimalUtility.FindPowerOfTenFromBig(exp);
       } else {
         BigInteger powerOfTen = DecimalUtility.FindPowerOfTenFromBig(exp);
         num = num.multiply(powerOfTen);
       }
       if (neg) {
-        num = (num).negate();
+        num=(num).negate();
       }
       return new ExtendedRational(num, den);
     }
@@ -550,7 +550,7 @@ ctx);
       BigInteger rem;
  BigInteger quo;
 {
-BigInteger[] divrem = (this.getNumerator()).divideAndRemainder(this.denominator);
+BigInteger[] divrem=(this.getNumerator()).divideAndRemainder(this.denominator);
 quo = divrem[0];
 rem = divrem[1]; }
       if (rem.signum() != 0) {
@@ -760,7 +760,7 @@ rem = divrem[1]; }
         BigInteger thisRem;
         BigInteger thisInt;
 {
-BigInteger[] divrem = (this.getUnsignedNumerator()).divideAndRemainder(this.getDenominator());
+BigInteger[] divrem=(this.getUnsignedNumerator()).divideAndRemainder(this.getDenominator());
 thisInt = divrem[0];
 thisRem = divrem[1]; }
         ExtendedFloat otherAbs = other.Abs();
@@ -871,7 +871,7 @@ thisRem = divrem[1]; }
         BigInteger thisRem;
         BigInteger thisInt;
 {
-BigInteger[] divrem = (this.getUnsignedNumerator()).divideAndRemainder(this.getDenominator());
+BigInteger[] divrem=(this.getUnsignedNumerator()).divideAndRemainder(this.getDenominator());
 thisInt = divrem[0];
 thisRem = divrem[1]; }
         ExtendedDecimal otherAbs = other.Abs();

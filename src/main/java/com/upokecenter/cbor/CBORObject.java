@@ -334,8 +334,8 @@ public final void setConverter(Object value) {
      * @return True if this value is a CBOR true value; otherwise, false.
      */
     public final boolean isTrue() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue() ==
-          21;
+        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
+          == 21;
       }
 
     /**
@@ -343,8 +343,8 @@ public final void setConverter(Object value) {
      * @return True if this value is a CBOR false value; otherwise, false.
      */
     public final boolean isFalse() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue() ==
-          20;
+        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
+          == 20;
       }
 
     /**
@@ -352,8 +352,8 @@ public final void setConverter(Object value) {
      * @return True if this value is a CBOR null value; otherwise, false.
      */
     public final boolean isNull() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue() ==
-          22;
+        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
+          == 22;
       }
 
     /**
@@ -361,8 +361,8 @@ public final void setConverter(Object value) {
      * @return True if this value is a CBOR undefined value; otherwise, false.
      */
     public final boolean isUndefined() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue() ==
-          23;
+        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
+          == 23;
       }
 
     /**
@@ -939,7 +939,7 @@ public int compareTo(CBORObject other) {
         CBORObject valueB = null;
         boolean hasKey;
 valueB = mapB.get(kvp.getKey());
-hasKey = (valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
+hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         if (hasKey) {
           CBORObject valueA = kvp.getValue();
           if (!(valueA == null ? valueB == null : valueA.equals(valueB))) {
@@ -1320,11 +1320,11 @@ ms = new java.io.ByteArrayInputStream(data);
 int startingAvailable = ms.available();
 
         CBORObject o = Read(ms);
-        CheckCBORLength((long)data.length, (long)(startingAvailable - ms.available()));
+        CheckCBORLength((long)data.length, (long)(startingAvailable-ms.available()));
         return o;
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 
@@ -2575,7 +2575,7 @@ List<CBORObject> AsList() {
       if (bigint.signum() < 0) {
         datatype = 1;
         bigint = bigint.add(BigInteger.ONE);
-        bigint = (bigint).negate();
+        bigint=(bigint).negate();
       }
       if (bigint.compareTo(Int64MaxValue) <= 0) {
         // If the big integer is representable as a long and in
@@ -3018,7 +3018,7 @@ ms = new java.io.ByteArrayOutputStream(16);
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new CBORException("I/O Error occurred", ex);
@@ -3917,8 +3917,8 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
     }
 
     static String TrimDotZero(String str) {
-      return (str.length() > 2 && str.charAt(str.length() - 1) == '0' && str.charAt(str.length() -
-                              2) == '.') ? str.substring(0,str.length() - 2) :
+      return (str.length() > 2 && str.charAt(str.length() - 1) == '0' && str.charAt(str.length()
+                              - 2) == '.') ? str.substring(0,str.length() - 2) :
         str;
     }
 
@@ -3990,8 +3990,8 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
         }
       } else if (type == CBORObjectTypeSingle) {
         float f = ((Float)this.getThisItem()).floatValue();
-        simvalue = ((f) == Float.NEGATIVE_INFINITY) ? "-Infinity" :
-          (((f) == Float.POSITIVE_INFINITY) ? "Infinity" : (Float.isNaN(f) ?
+        simvalue = ((f)==Float.NEGATIVE_INFINITY) ? "-Infinity" :
+          (((f)==Float.POSITIVE_INFINITY) ? "Infinity" : (Float.isNaN(f) ?
                               "NaN" : TrimDotZero(Float.toString((float)f))));
         if (sb == null) {
           return simvalue;
@@ -3999,8 +3999,8 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
         sb.append(simvalue);
       } else if (type == CBORObjectTypeDouble) {
         double f = ((Double)this.getThisItem()).doubleValue();
-        simvalue = ((f) == Double.NEGATIVE_INFINITY) ? "-Infinity" :
-          (((f) == Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
+        simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
+          (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
                               "NaN" : TrimDotZero(Double.toString((double)f))));
         if (sb == null) {
           return simvalue;

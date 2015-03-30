@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  final class CBORSingle implements ICBORNumber {
-
+  final class CBORSingle implements ICBORNumber
+  {
     private static final float SingleOneLsh64 = 9223372036854775808f;
 
     public boolean IsPositiveInfinity(Object obj) {

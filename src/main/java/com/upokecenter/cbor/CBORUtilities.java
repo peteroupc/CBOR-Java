@@ -108,7 +108,7 @@ private CBORUtilities() {
         BigInteger bigmantissa = BigInteger.valueOf(mantissa);
         bigmantissa = bigmantissa.shiftLeft(fpexponent);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return bigmantissa;
       } else {
@@ -210,7 +210,7 @@ private CBORUtilities() {
         // Value is an integer
         bigmantissa = bigmantissa.shiftLeft(floatExponent);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return bigmantissa;
       } else {
@@ -218,7 +218,7 @@ private CBORUtilities() {
         int exp = -floatExponent;
         bigmantissa = bigmantissa.shiftRight(exp);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return bigmantissa;
       }

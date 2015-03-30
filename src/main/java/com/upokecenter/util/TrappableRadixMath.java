@@ -11,8 +11,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Implements arithmetic methods that support traps.
      * @param <T> Data type for a numeric value in a particular radix.
      */
-  class TrappableRadixMath<T> implements IRadixMath<T> {
-
+  class TrappableRadixMath<T> implements IRadixMath<T>
+  {
     private static PrecisionContext GetTrappableContext(PrecisionContext ctx) {
       return (ctx == null) ? null : ((ctx.getTraps() == 0) ? ctx :
       ctx.WithBlankFlags());
@@ -26,7 +26,7 @@ PrecisionContext dst) {
         return result;
       }
       if (dst != null && dst.getHasFlags()) {
-        dst.setFlags(dst.getFlags() | (src.getFlags()));
+        dst.setFlags(dst.getFlags()|(src.getFlags()));
       }
       int traps = (dst != null) ? dst.getTraps() : 0;
       traps &= src.getFlags();

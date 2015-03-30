@@ -7,8 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  final class BitShiftAccumulator implements IShiftAccumulator {
-
+  final class BitShiftAccumulator implements IShiftAccumulator
+  {
     private static final int SmallBitLength = 32;
     private int bitLeftmost;
 

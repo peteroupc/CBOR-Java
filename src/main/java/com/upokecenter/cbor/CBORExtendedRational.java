@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORExtendedRational implements ICBORNumber {
-
+  class CBORExtendedRational implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       return ((ExtendedRational)obj).IsPositiveInfinity();
     }

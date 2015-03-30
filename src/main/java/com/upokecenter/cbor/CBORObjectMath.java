@@ -316,7 +316,7 @@ BigInteger.valueOf(valueB)));
         BigInteger bigrem;
         BigInteger bigquo;
 {
-BigInteger[] divrem = (b1).divideAndRemainder(b2);
+BigInteger[] divrem=(b1).divideAndRemainder(b2);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         return bigrem.signum() == 0 ? CBORObject.FromObject(bigquo) :

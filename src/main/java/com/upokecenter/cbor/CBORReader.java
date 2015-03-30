@@ -146,7 +146,7 @@ ms = new java.io.ByteArrayOutputStream();
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       }
     }
@@ -207,8 +207,8 @@ CBORTypeFilter filter) throws java.io.IOException {
         // will assume it exists for some head bytes
         data[0] = ((byte)firstbyte);
         if (expectedLength > 1 &&
-            this.stream.read(data, 1, expectedLength - 1) != expectedLength -
-            1) {
+            this.stream.read(data, 1, expectedLength - 1) != expectedLength
+            - 1) {
           throw new CBORException("Premature end of data");
         }
         CBORObject cbor = CBORObject.GetFixedLengthObject(firstbyte, data);
@@ -321,7 +321,7 @@ CBORObject.CBORObjectTypeByteString,
 data);
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
         } else {
           if (hasBigAdditional) {

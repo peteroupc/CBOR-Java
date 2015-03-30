@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
-  final class CharacterReader implements ICharacterReader {
-
+  final class CharacterReader implements ICharacterReader
+  {
     private String str;
     private InputStream stream;
     private int offset;
@@ -390,8 +390,8 @@ this.offset);
       } else {
         int c = (this.offset < this.str.length()) ? this.str.charAt(this.offset) : -1;
         if ((c & 0xfc00) == 0xd800 && this.offset + 1 < this.str.length() &&
-                this.str.charAt(this.offset + 1) >= 0xdc00 && this.str.charAt(this.offset + 1) <=
-                0xdfff) {
+                this.str.charAt(this.offset + 1) >= 0xdc00 && this.str.charAt(this.offset + 1)
+                <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (this.str.charAt(this.offset + 1) -
           0xdc00);

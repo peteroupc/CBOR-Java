@@ -141,7 +141,7 @@ int olderDiscarded) {
         BigInteger bigrem;
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(BigInteger.TEN);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(BigInteger.TEN);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -164,7 +164,7 @@ bigrem = divrem[1]; }
         BigInteger radixPower = DecimalUtility.FindPowerOfTen(startCount);
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(radixPower);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         if (bigrem.signum() != 0) {
@@ -189,7 +189,7 @@ bigrem = divrem[1]; }
         BigInteger bigrem;
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(valueTen);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -203,8 +203,8 @@ bigrem = divrem[1]; }
         return;
       }
       this.knownBitLength = (this.knownBitLength == null) ? (this.GetDigitLength()) : this.knownBitLength;
-      if (new FastInteger(digits).Decrement().compareTo(this.knownBitLength) >=
-      0) {
+      if (new FastInteger(digits).Decrement().compareTo(this.knownBitLength)
+      >= 0) {
         // Shifting more bits than available
         this.bitsAfterLeftmost |= this.shiftedBigInt.signum() == 0 ? 0 : 1;
         this.isSmall = true;
@@ -285,7 +285,7 @@ bigrem = divrem[1]; }
         BigInteger bigrem;
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(valueTen);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -303,7 +303,7 @@ bigrem = divrem[1]; }
         BigInteger radixPower = DecimalUtility.FindPowerOfTen(diffInt);
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(radixPower);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         int rem = bigrem.intValue();
@@ -329,7 +329,7 @@ bigrem = divrem[1]; }
         DecimalUtility.FindPowerOfTen(digitDiff.AsInt32() - 1);
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.shiftedBigInt).divideAndRemainder(radixPower);
+BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -339,7 +339,7 @@ bigrem = divrem[1]; }
         {
           BigInteger bigquo2;
 {
-BigInteger[] divrem = (bigquo).divideAndRemainder(valueTen);
+BigInteger[] divrem=(bigquo).divideAndRemainder(valueTen);
 bigquo2 = divrem[0];
 bigrem = divrem[1]; }
           this.bitLeftmost = bigrem.intValue();

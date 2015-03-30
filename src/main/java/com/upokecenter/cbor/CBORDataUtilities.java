@@ -235,7 +235,7 @@ private CBORDataUtilities() {
         } else {
           BigInteger bigmant2 = mant.AsBigInteger();
           if (negative) {
-            bigmant2 = (bigmant2).negate();
+            bigmant2=(bigmant2).negate();
           }
           return CBORObject.FromObject(bigmant2);
         }
@@ -245,7 +245,7 @@ private CBORDataUtilities() {
         BigInteger bigexp = (newScale == null) ? (BigInteger.valueOf(newScaleInt)) :
           newScale.AsBigInteger();
         if (negative) {
-          bigmant = (bigmant).negate();
+          bigmant=(bigmant).negate();
         }
         return CBORObject.FromObject(ExtendedDecimal.Create(
           bigmant,

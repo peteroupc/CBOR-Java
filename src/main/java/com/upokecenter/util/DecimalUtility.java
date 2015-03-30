@@ -626,7 +626,7 @@ private DecimalUtility() {
           BigInteger bigrem;
           BigInteger bigquo;
 {
-BigInteger[] divrem = (bigmant).divideAndRemainder(bigradix);
+BigInteger[] divrem=(bigmant).divideAndRemainder(bigradix);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
           if (bigrem.signum() != 0) {

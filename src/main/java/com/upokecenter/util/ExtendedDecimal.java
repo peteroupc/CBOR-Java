@@ -772,7 +772,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           BigInteger bigrem;
           BigInteger bigquo;
 {
-BigInteger[] divrem = (tmpden).divideAndRemainder(BigInteger.valueOf(5));
+BigInteger[] divrem=(tmpden).divideAndRemainder(BigInteger.valueOf(5));
 bigquo = divrem[0];
 bigrem = divrem[1]; }
           if (bigrem.signum() != 0) {
@@ -878,12 +878,12 @@ bigrem = divrem[1]; }
         return negative ? "-Infinity" : "Infinity";
       }
       if ((this.flags & BigNumberFlags.FlagSignalingNaN) != 0) {
-        return this.unsignedMantissa.signum() == 0 ? (negative ? "-sNaN" : "sNaN") :
+        return this.unsignedMantissa.signum()==0 ? (negative ? "-sNaN" : "sNaN") :
           (negative ? "-sNaN" + (this.unsignedMantissa).abs() :
            "sNaN" + (this.unsignedMantissa).abs());
       }
       if ((this.flags & BigNumberFlags.FlagQuietNaN) != 0) {
-        return this.unsignedMantissa.signum() == 0 ? (negative ? "-NaN" : "NaN") :
+        return this.unsignedMantissa.signum()==0 ? (negative ? "-NaN" : "NaN") :
           (negative ? "-NaN" + (this.unsignedMantissa).abs() : "NaN" +
            (this.unsignedMantissa).abs());
       }
@@ -981,10 +981,10 @@ bigrem = divrem[1]; }
             if (negative) {
               builder.append('-');
             }
-            builder.append(mantissaString, 0, (0) + (tmpInt));
+            builder.append(mantissaString, 0, (0)+(tmpInt));
             builder.append("0.");
             builder.append(
-              mantissaString, tmpInt, (tmpInt) + (mantissaString.length() - tmpInt));
+              mantissaString, tmpInt, (tmpInt)+(mantissaString.length() - tmpInt));
           } else if (decimalPoint.CompareToInt(mantissaString.length()) > 0) {
             FastInteger insertionPoint = builderLength;
             if (!insertionPoint.CanFitInInt32()) {
@@ -1000,14 +1000,14 @@ bigrem = divrem[1]; }
             if (negative) {
               builder.append('-');
             }
-            builder.append(mantissaString, 0, (0) + (tmpInt));
+            builder.append(mantissaString, 0, (0)+(tmpInt));
             AppendString(
               builder,
               '0',
               FastInteger.Copy(decimalPoint).SubtractInt(builder.length()));
             builder.append('.');
             builder.append(
-              mantissaString, tmpInt, (tmpInt) + (mantissaString.length() - tmpInt));
+              mantissaString, tmpInt, (tmpInt)+(mantissaString.length() - tmpInt));
           } else {
             if (!decimalPoint.CanFitInInt32()) {
               throw new UnsupportedOperationException();
@@ -1022,10 +1022,10 @@ bigrem = divrem[1]; }
             if (negative) {
               builder.append('-');
             }
-            builder.append(mantissaString, 0, (0) + (tmpInt));
+            builder.append(mantissaString, 0, (0)+(tmpInt));
             builder.append('.');
             builder.append(
-              mantissaString, tmpInt, (tmpInt) + (mantissaString.length() - tmpInt));
+              mantissaString, tmpInt, (tmpInt)+(mantissaString.length() - tmpInt));
           }
           return builder.toString();
         }
@@ -1079,10 +1079,10 @@ bigrem = divrem[1]; }
             if (negative) {
               builder.append('-');
             }
-            builder.append(mantissaString, 0, (0) + (tmpInt));
+            builder.append(mantissaString, 0, (0)+(tmpInt));
             builder.append('.');
             builder.append(
-              mantissaString, tmpInt, (tmpInt) + (mantissaString.length() - tmpInt));
+              mantissaString, tmpInt, (tmpInt)+(mantissaString.length() - tmpInt));
           } else if (adjustedExponent.signum() == 0 && !negative) {
             return mantissaString;
           } else if (adjustedExponent.signum() == 0 && negative) {
@@ -1312,7 +1312,7 @@ bigrem = divrem[1]; }
         boolean neg = bigmantissa.signum() < 0;
         BigInteger remainder;
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         FastInteger negscale = FastInteger.Copy(scale).Negate();
         BigInteger divisor =
@@ -1320,7 +1320,7 @@ bigrem = divrem[1]; }
         while (true) {
           BigInteger quotient;
 {
-BigInteger[] divrem = (bigmantissa).divideAndRemainder(divisor);
+BigInteger[] divrem=(bigmantissa).divideAndRemainder(divisor);
 quotient = divrem[0];
 remainder = divrem[1]; }
           // Ensure that the quotient has enough precision
@@ -1370,7 +1370,7 @@ remainder = divrem[1]; }
           }
         }
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedFloat.Create(bigmantissa, scale.AsBigInteger());
       }
@@ -1547,7 +1547,7 @@ remainder = divrem[1]; }
         BigInteger bigmantissa = BigInteger.valueOf(valueFpMantissa);
         bigmantissa = bigmantissa.shiftLeft(floatExponent);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedDecimal.FromBigInteger(bigmantissa);
       } else {
@@ -1556,7 +1556,7 @@ remainder = divrem[1]; }
         BigInteger bigexponent = DecimalUtility.FindPowerOfFive(-floatExponent);
         bigmantissa = bigmantissa.multiply(bigexponent);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedDecimal.Create(bigmantissa, BigInteger.valueOf(floatExponent));
       }
@@ -1653,7 +1653,7 @@ remainder = divrem[1]; }
         BigInteger bigmantissa = valueFpMantissaBig;
         bigmantissa = bigmantissa.shiftLeft(floatExponent);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedDecimal.FromBigInteger(bigmantissa);
       } else {
@@ -1662,7 +1662,7 @@ remainder = divrem[1]; }
         BigInteger exp = DecimalUtility.FindPowerOfFive(-floatExponent);
         bigmantissa = bigmantissa.multiply(exp);
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedDecimal.Create(bigmantissa, BigInteger.valueOf(floatExponent));
       }
@@ -1705,7 +1705,7 @@ remainder = divrem[1]; }
         BigInteger bigmantissa = bigintMant;
         boolean neg = bigmantissa.signum() < 0;
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         while (intcurexp.signum() > 0) {
           int shift = 1000000;
@@ -1716,13 +1716,13 @@ remainder = divrem[1]; }
           intcurexp.AddInt(-shift);
         }
         if (neg) {
-          bigmantissa = (bigmantissa).negate();
+          bigmantissa=(bigmantissa).negate();
         }
         return ExtendedDecimal.FromBigInteger(bigmantissa);
       } else {
         // Fractional number
         BigInteger bigmantissa = bigintMant;
-        BigInteger negbigintExp = (bigintExp).negate();
+        BigInteger negbigintExp=(bigintExp).negate();
         negbigintExp = DecimalUtility.FindPowerOfFiveFromBig(negbigintExp);
         bigmantissa = bigmantissa.multiply(negbigintExp);
         return ExtendedDecimal.Create(bigmantissa, bigintExp);

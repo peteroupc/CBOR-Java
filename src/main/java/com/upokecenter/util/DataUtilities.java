@@ -120,7 +120,7 @@ ms = new java.io.ByteArrayOutputStream();
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) { }
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new IllegalArgumentException("I/O error occurred", ex);

@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORBigInteger implements ICBORNumber {
-
+  class CBORBigInteger implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       return false;
     }
@@ -113,7 +113,7 @@ import com.upokecenter.util.*;
 
     public Object Negate(Object obj) {
       BigInteger bigobj = (BigInteger)obj;
-      bigobj = (bigobj).negate();
+      bigobj=(bigobj).negate();
       return bigobj;
     }
 

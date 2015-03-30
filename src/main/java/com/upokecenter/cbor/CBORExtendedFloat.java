@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-  class CBORExtendedFloat implements ICBORNumber {
-
+  class CBORExtendedFloat implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       ExtendedFloat ef = (ExtendedFloat)obj;
       return ef.IsPositiveInfinity();

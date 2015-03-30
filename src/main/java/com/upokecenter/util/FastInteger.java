@@ -415,7 +415,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private int integerMode;
     private static BigInteger valueInt32MinValue = BigInteger.valueOf(Integer.MIN_VALUE);
     private static BigInteger valueInt32MaxValue = BigInteger.valueOf(Integer.MAX_VALUE);
-    private static BigInteger valueNegativeInt32MinValue = (valueInt32MinValue).negate();
+    private static BigInteger valueNegativeInt32MinValue=(valueInt32MinValue).negate();
 
     FastInteger(int value) {
       this.smallValue = value;
@@ -548,7 +548,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           BigInteger bigrem;
           BigInteger bigquo;
 {
-BigInteger[] divrem = (this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
+BigInteger[] divrem=(this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
           int smallquo = bigquo.intValue();
@@ -560,7 +560,7 @@ bigrem = divrem[1]; }
         BigInteger bigrem;
         BigInteger bigquo;
 {
-BigInteger[] divrem = (this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
+BigInteger[] divrem=(this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         int smallquo = bigquo.intValue();
@@ -646,10 +646,10 @@ bigrem = divrem[1]; }
         case 1:
           this.integerMode = 2;
           this.largeValue = this.mnum.ToBigInteger();
-          this.largeValue = (this.largeValue).negate();
+          this.largeValue=(this.largeValue).negate();
           break;
         case 2:
-          this.largeValue = (this.largeValue).negate();
+          this.largeValue=(this.largeValue).negate();
           break;
         default:
           throw new IllegalStateException();
@@ -789,10 +789,10 @@ bigrem = divrem[1]; }
       switch (this.integerMode) {
         case 0:
           if (val.integerMode == 0) {
-            if ((this.smallValue < 0 && (int)val.smallValue < Integer.MIN_VALUE -
-            this.smallValue) ||
-                (this.smallValue > 0 && (int)val.smallValue > Integer.MAX_VALUE -
-                this.smallValue)) {
+            if ((this.smallValue < 0 && (int)val.smallValue < Integer.MIN_VALUE
+            - this.smallValue) ||
+                (this.smallValue > 0 && (int)val.smallValue > Integer.MAX_VALUE
+                - this.smallValue)) {
               // would overflow
               if (val.smallValue >= 0) {
                 this.integerMode = 1;
@@ -1037,7 +1037,7 @@ bigrem = divrem[1]; }
     final int signum() {
         switch (this.integerMode) {
           case 0:
-            return ((this.smallValue == 0) ? 0 : ((this.smallValue < 0) ? -1 : 1));
+            return ((this.smallValue == 0) ? 0 : ((this.smallValue< 0) ? -1 : 1));
           case 1:
             return this.mnum.signum();
           case 2:

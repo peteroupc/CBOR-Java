@@ -70,7 +70,7 @@ int[] segments) {
         builder.append(
 refValue.substring(
 segments[2], (
-segments[2]) + (segments[3] - segments[2])));
+segments[2])+(segments[3] - segments[2])));
       }
     }
 
@@ -83,7 +83,7 @@ int[] segments) {
         builder.append(
 refValue.substring(
 segments[8], (
-segments[8]) + (segments[9] - segments[8])));
+segments[8])+(segments[9] - segments[8])));
       }
     }
 
@@ -95,7 +95,7 @@ segments[8]) + (segments[9] - segments[8])));
         normalizePath(
 refValue.substring(
 segments[4], (
-segments[4]) + (segments[5] - segments[4]))));
+segments[4])+(segments[5] - segments[4]))));
     }
 
     private static void appendPath(
@@ -105,7 +105,7 @@ int[] segments) {
       builder.append(
 refValue.substring(
 segments[4], (
-segments[4]) + (segments[5] - segments[4])));
+segments[4])+(segments[5] - segments[4])));
     }
 
     private static void appendQuery(
@@ -117,7 +117,7 @@ int[] segments) {
         builder.append(
 refValue.substring(
 segments[6], (
-segments[6]) + (segments[7] - segments[6])));
+segments[6])+(segments[7] - segments[6])));
       }
     }
 
@@ -129,7 +129,7 @@ int[] segments) {
         builder.append(
           refValue.substring(
 segments[0], (
-segments[0]) + (segments[1] - segments[0])));
+segments[0])+(segments[1] - segments[0])));
         builder.append(':');
       }
     }
@@ -794,7 +794,7 @@ int endIndex) {
       --endIndex;
       while (endIndex >= startIndex) {
         if (refValue.charAt(endIndex) == '/') {
-          return refValue.substring(startIndex, (startIndex) + ((endIndex + 1) - startIndex));
+          return refValue.substring(startIndex, (startIndex)+((endIndex + 1) - startIndex));
         }
         --endIndex;
       }

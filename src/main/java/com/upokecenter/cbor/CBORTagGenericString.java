@@ -10,8 +10,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * A generic CBOR tag class for strings.
      */
-  class CBORTagGenericString implements ICBORTag {
-
+  class CBORTagGenericString implements ICBORTag
+  {
     public CBORTypeFilter GetTypeFilter() {
       return CBORTypeFilter.TextString;
     }

@@ -10,8 +10,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Implements CBOR tag 3.
      */
-  class CBORTag3 implements ICBORTag {
-
+  class CBORTag3 implements ICBORTag
+  {
     public CBORTypeFilter GetTypeFilter() {
       return CBORTypeFilter.ByteString;
     }

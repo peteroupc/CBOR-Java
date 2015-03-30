@@ -100,7 +100,7 @@ thisValue,
           // Divisor is infinity, so result will be epsilon
           if (ctx != null && ctx.getHasExponentRange() && ctx.getPrecision().signum() > 0) {
             if (ctx.getHasFlags()) {
-              ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagClamped));
+              ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagClamped));
             }
             BigInteger bigexp = ctx.getEMin();
             BigInteger bigprec = ctx.getPrecision();
@@ -361,14 +361,14 @@ null) : this.ValueOf(-1, null));
 
     private T SignalingNaNInvalid(T value, PrecisionContext ctx) {
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInvalid));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInvalid));
       }
       return this.ReturnQuietNaN(value, ctx);
     }
 
     private T SignalInvalid(PrecisionContext ctx) {
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInvalid));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInvalid));
       }
       if (this.support == BigNumberFlags.FiniteOnly) {
         throw new ArithmeticException("Invalid operation");
@@ -381,7 +381,7 @@ null) : this.ValueOf(-1, null));
 
     private T SignalInvalidWithMessage(PrecisionContext ctx, String str) {
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInvalid));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInvalid));
       }
       if (this.support == BigNumberFlags.FiniteOnly) {
         throw new ArithmeticException(str);
@@ -404,7 +404,7 @@ BigInteger.ZERO,
       if (ctx != null) {
         Rounding roundingOnOverflow = ctx.getRounding();
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagOverflow |
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagOverflow |
             PrecisionContext.FlagInexact | PrecisionContext.FlagRounded));
         }
         if (ctx.getHasMaxPrecision() && ctx.getHasExponentRange() &&
@@ -442,7 +442,7 @@ BigInteger.ZERO,
 
     private T SignalDivideByZero(PrecisionContext ctx, boolean neg) {
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagDivideByZero));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagDivideByZero));
       }
       if (this.support == BigNumberFlags.FiniteOnly) {
         throw new ArithmeticException("Division by zero");
@@ -609,7 +609,7 @@ BigInteger.ZERO);
       if ((ctx2.getFlags() & (PrecisionContext.FlagInvalid |
                          PrecisionContext.FlagDivideByZero)) != 0) {
         if (ctx != null && ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInvalid |
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInvalid |
             PrecisionContext.FlagDivideByZero));
         }
         return ret;
@@ -656,7 +656,7 @@ this.helper.GetFlags(ret));
             BigInteger bigrem;
             BigInteger bigquo;
 {
-BigInteger[] divrem = (bigmantissa).divideAndRemainder(bigradix);
+BigInteger[] divrem=(bigmantissa).divideAndRemainder(bigradix);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
             if (bigrem.signum() != 0) {
@@ -694,7 +694,7 @@ PrecisionContext ctx) {
       if ((ctx2.getFlags() & (PrecisionContext.FlagInvalid |
                          PrecisionContext.FlagDivideByZero)) != 0) {
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (ctx2.getFlags() & (PrecisionContext.FlagInvalid |
+          ctx.setFlags(ctx.getFlags()|(ctx2.getFlags() & (PrecisionContext.FlagInvalid |
                               PrecisionContext.FlagDivideByZero)));
         }
         return ret;
@@ -793,10 +793,10 @@ PrecisionContext ctxSrc) {
       if (ctxDst != null && ctxDst.getHasFlags()) {
         if ((ctxSrc.getFlags() & (PrecisionContext.FlagInvalid |
                              PrecisionContext.FlagDivideByZero)) != 0) {
-          ctxDst.setFlags(ctxDst.getFlags() | (ctxSrc.getFlags() & (PrecisionContext.FlagInvalid |
+          ctxDst.setFlags(ctxDst.getFlags()|(ctxSrc.getFlags() & (PrecisionContext.FlagInvalid |
                               PrecisionContext.FlagDivideByZero)));
         } else {
-          ctxDst.setFlags(ctxDst.getFlags() | (ctxSrc.getFlags()));
+          ctxDst.setFlags(ctxDst.getFlags()|(ctxSrc.getFlags()));
         }
       }
     }
@@ -1131,8 +1131,8 @@ ctx);
         exponent = exponent.subtract(bigPrec);
       }
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact));
       }
       return this.RoundToPrecision(
         this.helper.CreateNewWithFlags(mant, exponent, 0),
@@ -1327,14 +1327,14 @@ BigInteger.ZERO.subtract(BigInteger.ONE),
             this.IsWithinExponentRangeForPow(thisValue, ctx)) {
           PrecisionContext ctxCopy = ctx.WithBlankFlags();
           thisValue = this.SquareRoot(thisValue, ctxCopy);
-          ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagInexact));
-          ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagRounded));
+          ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagInexact));
+          ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagRounded));
           if ((ctxCopy.getFlags() & PrecisionContext.FlagSubnormal) != 0) {
-            ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagUnderflow));
+            ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagUnderflow));
           }
           thisValue = this.ExtendPrecision(thisValue, ctxCopy);
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (ctxCopy.getFlags()));
+            ctx.setFlags(ctx.getFlags()|(ctxCopy.getFlags()));
           }
           return thisValue;
         }
@@ -1367,7 +1367,7 @@ BigInteger.ZERO.subtract(BigInteger.ONE),
         }
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctxdiv.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctxdiv.getFlags()));
       }
       return lnresult;
     }
@@ -1432,7 +1432,7 @@ ctxCopy);
             BigInteger bigrem;
             BigInteger bigquo;
 {
-BigInteger[] divrem = (mantissa).divideAndRemainder(tenBig);
+BigInteger[] divrem=(mantissa).divideAndRemainder(tenBig);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
             if (bigrem.signum() != 0) {
@@ -1462,14 +1462,14 @@ bigrem = divrem[1]; }
             thisValue = this.Divide(logNatural, logTen, ctx);
             // Treat result as inexact
             if (ctx.getHasFlags()) {
-              ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+              ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
                 PrecisionContext.FlagRounded));
             }
           }
         }
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctxCopy.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctxCopy.getFlags()));
       }
       return thisValue;
     }
@@ -1519,8 +1519,8 @@ bigrem = divrem[1]; }
       thisValue = this.NegateRaw(thisValue);
       thisValue = this.Multiply(thisValue, this.helper.ValueOf(1 << 9), ctx);
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact));
-        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact));
+        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
       }
       return thisValue;
     }
@@ -1615,8 +1615,8 @@ ctxCopy);
             }
           }
           if (ctx.getHasFlags()) {
-            ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagInexact));
-            ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagRounded));
+            ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagInexact));
+            ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagRounded));
           }
         } else {
           // Greater than 1
@@ -1681,13 +1681,13 @@ ctxCopy);
             }
           }
           if (ctx.getHasFlags()) {
-            ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagInexact));
-            ctxCopy.setFlags(ctxCopy.getFlags() | (PrecisionContext.FlagRounded));
+            ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagInexact));
+            ctxCopy.setFlags(ctxCopy.getFlags()|(PrecisionContext.FlagRounded));
           }
         }
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctxCopy.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctxCopy.getFlags()));
       }
       return thisValue;
     }
@@ -1723,7 +1723,7 @@ ctx,
             retval,
             ctxCopy);
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (ctxCopy.getFlags()));
+            ctx.setFlags(ctx.getFlags()|(ctxCopy.getFlags()));
           }
           return retval;
         }
@@ -1741,7 +1741,7 @@ ctx,
       } else if (sign > 0 && this.compareTo(thisValue, one) < 0) {
         thisValue = this.ExpInternal(thisValue, ctxdiv.getPrecision(), ctxCopy);
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
             PrecisionContext.FlagRounded));
         }
       } else if (sign < 0) {
@@ -1760,7 +1760,7 @@ ctx,
           if ((ctxdiv.getFlags() & PrecisionContext.FlagOverflow) != 0) {
             // Still overflowed
             if (ctx.getHasFlags()) {
-              ctx.setFlags(ctx.getFlags() | (BigNumberFlags.UnderflowFlags));
+              ctx.setFlags(ctx.getFlags()|(BigNumberFlags.UnderflowFlags));
             }
             // Return a "subnormal" zero, with fake extra digits to stimulate
             // rounding
@@ -1789,7 +1789,7 @@ ctx,
         // System.out.println("end= " + thisValue);
         // System.out.println("endbit "+this.BitMantissa(thisValue));
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
             PrecisionContext.FlagRounded));
         }
       } else {
@@ -1833,11 +1833,11 @@ ctxCopy);
         // System.out.println(thisValue);
         if ((ctxdiv.getFlags() & PrecisionContext.FlagUnderflow) != 0) {
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (ctxdiv.getFlags()));
+            ctx.setFlags(ctx.getFlags()|(ctxdiv.getFlags()));
           }
         }
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
             PrecisionContext.FlagRounded));
         }
         thisValue = this.PowerIntegral(
@@ -1846,7 +1846,7 @@ this.helper.GetMantissa(intpart),
 ctxCopy);
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctxCopy.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctxCopy.getFlags()));
       }
       return thisValue;
     }
@@ -1881,7 +1881,7 @@ ctx,
             this.helper.CreateNewWithFlags(BigInteger.ZERO, idealExp, this.helper.GetFlags(thisValue)),
             ctxtmp);
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (ctxtmp.getFlags()));
+          ctx.setFlags(ctx.getFlags()|(ctxtmp.getFlags()));
         }
         return ret;
       }
@@ -1953,28 +1953,28 @@ ctxtmp);
         if (ctx.getClampNormalExponents() &&
             !this.helper.GetExponent(retval).equals(idealExp) && (ctxtmp.getFlags() &
     PrecisionContext.FlagInexact) == 0) {
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagClamped));
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagClamped));
         }
         rounded |= (ctxtmp.getFlags() & PrecisionContext.FlagOverflow) != 0;
         // System.out.println("guess II " + guess);
         currentExp = this.helper.GetExponent(retval);
         if (rounded) {
-          ctxtmp.setFlags(ctxtmp.getFlags() | (PrecisionContext.FlagRounded));
+          ctxtmp.setFlags(ctxtmp.getFlags()|(PrecisionContext.FlagRounded));
         } else {
           if (currentExp.compareTo(idealExp) > 0) {
             // Greater than the ideal, treat as rounded anyway
-            ctxtmp.setFlags(ctxtmp.getFlags() | (PrecisionContext.FlagRounded));
+            ctxtmp.setFlags(ctxtmp.getFlags()|(PrecisionContext.FlagRounded));
           } else {
             // System.out.println("idealExp= " + idealExp + ", curr" +
             // currentExp + " (II)");
-            ctxtmp.setFlags(ctxtmp.getFlags() & ~(PrecisionContext.FlagRounded));
+            ctxtmp.setFlags(ctxtmp.getFlags()&~(PrecisionContext.FlagRounded));
           }
         }
         if (inexact) {
-          ctxtmp.setFlags(ctxtmp.getFlags() | (PrecisionContext.FlagRounded));
-          ctxtmp.setFlags(ctxtmp.getFlags() | (PrecisionContext.FlagInexact));
+          ctxtmp.setFlags(ctxtmp.getFlags()|(PrecisionContext.FlagRounded));
+          ctxtmp.setFlags(ctxtmp.getFlags()|(PrecisionContext.FlagInexact));
         }
-        ctx.setFlags(ctx.getFlags() | (ctxtmp.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctxtmp.getFlags()));
       }
       return retval;
     }
@@ -2146,7 +2146,7 @@ thisFlags & BigNumberFlags.FlagNegative);
           }
         }
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (ctx2.getFlags()));
+          ctx.setFlags(ctx.getFlags()|(ctx2.getFlags()));
         }
         return val;
       }
@@ -2246,7 +2246,7 @@ desiredExponent);
         }
       }
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctx2.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctx2.getFlags()));
       }
       return ret;
     }
@@ -2406,7 +2406,7 @@ newmantissa)) {
         }
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (flags));
+        ctx.setFlags(ctx.getFlags()|(flags));
       }
       return this.helper.CreateNewWithFlags(
         newmantissa,
@@ -2488,13 +2488,13 @@ BigInteger desiredExponent) {
               fastDesiredExponent.compareTo(naturalExponent) > 0) {
             // Treat as rounded if the desired exponent is greater
             // than the "ideal" exponent
-            ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+            ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
           }
           if (expdiff.compareTo(fastDesiredExponent) <= 0) {
             shift = FastInteger.Copy(fastDesiredExponent).Subtract(expdiff);
             BigInteger quo;
 {
-BigInteger[] divrem = (mantissaDividend).divideAndRemainder(mantissaDivisor);
+BigInteger[] divrem=(mantissaDividend).divideAndRemainder(mantissaDivisor);
 quo = divrem[0];
 rem = divrem[1]; }
             return this.RoundToScale(
@@ -2526,7 +2526,7 @@ ctx,
             }
             BigInteger quo;
 {
-BigInteger[] divrem = (mantissaDividend).divideAndRemainder(mantissaDivisor);
+BigInteger[] divrem=(mantissaDividend).divideAndRemainder(mantissaDivisor);
 quo = divrem[0];
 rem = divrem[1]; }
             return this.RoundToScale(
@@ -2546,7 +2546,7 @@ rem = divrem[1]; }
           // (mantissaDividend.getUnsignedBitLength()) + " divs= " +
           // (mantissaDivisor.getUnsignedBitLength()));
           {
-BigInteger[] divrem = (mantissaDividend).divideAndRemainder(mantissaDivisor);
+BigInteger[] divrem=(mantissaDividend).divideAndRemainder(mantissaDivisor);
 quo = divrem[0];
 rem = divrem[1]; }
           if (rem.signum() == 0) {
@@ -2603,7 +2603,7 @@ rem = divrem[1]; }
               // if shift isn't zero, recalculate the quotient
               // and remainder
               {
-BigInteger[] divrem = (divid).divideAndRemainder(mantissaDivisor);
+BigInteger[] divrem=(divid).divideAndRemainder(mantissaDivisor);
 quo = divrem[0];
 rem = divrem[1]; }
             }
@@ -2635,13 +2635,13 @@ ctx,
               false);
             if ((ctxcopy.getFlags() & PrecisionContext.FlagInexact) != 0) {
               if (ctx.getHasFlags()) {
-                ctx.setFlags(ctx.getFlags() | (ctxcopy.getFlags()));
+                ctx.setFlags(ctx.getFlags()|(ctxcopy.getFlags()));
               }
               return retval2;
             }
             if (ctx.getHasFlags()) {
-              ctx.setFlags(ctx.getFlags() | (ctxcopy.getFlags()));
-              ctx.setFlags(ctx.getFlags() & ~(PrecisionContext.FlagRounded));
+              ctx.setFlags(ctx.getFlags()|(ctxcopy.getFlags()));
+              ctx.setFlags(ctx.getFlags()&~(PrecisionContext.FlagRounded));
             }
             return this.ReduceToPrecisionAndIdealExponent(
               retval2,
@@ -2804,7 +2804,7 @@ ctx,
         if (ctx != null && ctx.getHasFlags() && exp.compareTo(expdiff) > 0) {
           // Treat as rounded if the true exponent is greater
           // than the "ideal" exponent
-          ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+          ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
         }
         BigInteger bigexp = exp.AsBigInteger();
         T retval = this.helper.CreateNewWithFlags(
@@ -3022,7 +3022,7 @@ ctx);
       }
       ret = this.Add(this.Multiply(thisValue, multiplicand, ctx2), augend, ctx);
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (ctx2.getFlags()));
+        ctx.setFlags(ctx.getFlags()|(ctx2.getFlags()));
       }
       return ret;
     }
@@ -3150,7 +3150,7 @@ false);
       if (ctx != null && ctx.getHasFlags()) {
         int flags = tmpctx.getFlags();
         flags &= ~PrecisionContext.FlagUnderflow;
-        ctx.setFlags(ctx.getFlags() | (flags));
+        ctx.setFlags(ctx.getFlags()|(flags));
       }
       return ret;
     }
@@ -3169,7 +3169,7 @@ PrecisionContext ctx) {
         this.helper.CreateNewWithFlags(BigInteger.ONE, expOther, 0),
         pctx);
         if (ctx != null && ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (pctx.getFlags()));
+          ctx.setFlags(ctx.getFlags()|(pctx.getFlags()));
         }
         return ret;
       }
@@ -3225,7 +3225,7 @@ PrecisionContext ctx) {
       PrecisionContext pctx = (ctx == null) ? null : ctx.WithBlankFlags();
       T ret = this.RoundToExponentExact(thisValue, exponent, pctx);
       if (ctx != null && ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (pctx.getFlags() & ~(PrecisionContext.FlagInexact |
+        ctx.setFlags(ctx.getFlags()|(pctx.getFlags() & ~(PrecisionContext.FlagInexact |
                               PrecisionContext.FlagRounded)));
       }
       return ret;
@@ -3264,7 +3264,7 @@ flags);
           PrecisionContext ctxtmp = ctx.WithBlankFlags();
           ret = this.RoundToPrecision(ret, ctxtmp);
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (ctxtmp.getFlags() & ~PrecisionContext.FlagClamped));
+            ctx.setFlags(ctx.getFlags()|(ctxtmp.getFlags() & ~PrecisionContext.FlagClamped));
           }
         }
         ret = this.EnsureSign(ret, (flags & BigNumberFlags.FlagNegative) != 0);
@@ -3296,7 +3296,7 @@ PrecisionContext ctx) {
       if ((thisFlags & BigNumberFlags.FlagSpecial) != 0) {
         if ((thisFlags & BigNumberFlags.FlagSignalingNaN) != 0) {
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInvalid));
+            ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInvalid));
           }
           return this.ReturnQuietNaN(thisValue, ctx);
         }
@@ -3351,7 +3351,7 @@ lastDiscarded,
  (thisFlags & BigNumberFlags.FlagNegative) != 0,
               mantabs)) {
               if (ctx.getHasFlags() && (lastDiscarded | olderDiscarded) != 0) {
-                ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+                ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
                   PrecisionContext.FlagRounded));
               }
               if (!ctx.getHasExponentRange()) {
@@ -3372,7 +3372,7 @@ lastDiscarded,
               }
             } else {
               if (ctx.getHasFlags() && (lastDiscarded | olderDiscarded) != 0) {
-                ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagInexact |
+                ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagInexact |
                   PrecisionContext.FlagRounded));
               }
               boolean stillWithinPrecision = false;
@@ -3481,8 +3481,8 @@ lastDiscarded,
       FastInteger newAdjExponent = adjExponent;
       FastInteger clamp = null;
       BigInteger earlyRounded = BigInteger.ZERO;
-      if (binaryPrec && fastEMax != null && adjExponent.compareTo(fastEMax) ==
-          0) {
+      if (binaryPrec && fastEMax != null && adjExponent.compareTo(fastEMax)
+          == 0) {
         // May or may not be an overflow depending on the mantissa
         FastInteger expdiff =
           FastInteger.Copy(fastPrecision).Subtract(accum.GetDigitLength());
@@ -3522,7 +3522,7 @@ lastDiscarded,
       if (fastEMax != null && adjExponent.compareTo(fastEMax) > 0) {
         if (mantissaWasZero) {
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (flags | PrecisionContext.FlagClamped));
+            ctx.setFlags(ctx.getFlags()|(flags | PrecisionContext.FlagClamped));
           }
           if (ctx.getClampNormalExponents()) {
             // Clamp exponents to eMax + 1 - precision
@@ -3538,7 +3538,7 @@ lastDiscarded,
             }
             if (fastEMax.compareTo(clampExp) > 0) {
               if (ctx.getHasFlags()) {
-                ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagClamped));
+                ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagClamped));
               }
               fastEMax = clampExp;
             }
@@ -3576,7 +3576,7 @@ thisFlags);
             overflowMant = overflowMant.subtract(BigInteger.ONE);
           }
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (flags));
+            ctx.setFlags(ctx.getFlags()|(flags));
           }
           clamp = FastInteger.Copy(fastEMax);
           if (ctx.getAdjustExponent()) {
@@ -3588,7 +3588,7 @@ thisFlags);
             neg ? BigNumberFlags.FlagNegative : 0);
         }
         if (ctx.getHasFlags()) {
-          ctx.setFlags(ctx.getFlags() | (flags));
+          ctx.setFlags(ctx.getFlags()|(flags));
         }
         return this.SignalOverflow(neg);
       }
@@ -3651,7 +3651,7 @@ thisFlags);
               flags |= PrecisionContext.FlagUnderflow |
                 PrecisionContext.FlagRounded;
             }
-            ctx.setFlags(ctx.getFlags() | (flags));
+            ctx.setFlags(ctx.getFlags()|(flags));
           }
           bigmantissa = newmantissa.AsBigInteger();
           if (ctx.getClampNormalExponents()) {
@@ -3681,7 +3681,7 @@ thisFlags);
                 }
               }
               if (ctx.getHasFlags()) {
-                ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagClamped));
+                ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagClamped));
               }
               fastETiny = clampExp;
             }
@@ -3786,7 +3786,7 @@ neg ? BigNumberFlags.FlagNegative : 0);
               overflowMant = overflowMant.subtract(BigInteger.ONE);
             }
             if (ctx.getHasFlags()) {
-              ctx.setFlags(ctx.getFlags() | (flags));
+              ctx.setFlags(ctx.getFlags()|(flags));
             }
             clamp = FastInteger.Copy(fastEMax);
             if (ctx.getAdjustExponent()) {
@@ -3798,13 +3798,13 @@ neg ? BigNumberFlags.FlagNegative : 0);
               neg ? BigNumberFlags.FlagNegative : 0);
           }
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (flags));
+            ctx.setFlags(ctx.getFlags()|(flags));
           }
           return this.SignalOverflow(neg);
         }
       }
       if (ctx.getHasFlags()) {
-        ctx.setFlags(ctx.getFlags() | (flags));
+        ctx.setFlags(ctx.getFlags()|(flags));
       }
       if (ctx.getClampNormalExponents()) {
         // Clamp exponents to eMax + 1 - precision
@@ -3828,7 +3828,7 @@ neg ? BigNumberFlags.FlagNegative : 0);
             }
           }
           if (ctx.getHasFlags()) {
-            ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagClamped));
+            ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagClamped));
           }
           exp = clampExp;
         }
@@ -4000,7 +4000,7 @@ boolean roundToOperandPrecision) {
                       FastInteger shift =
                         FastInteger.Copy(digitLength2).Subtract(fastPrecision);
                       if (oneOpIsZero && ctx != null && ctx.getHasFlags()) {
-                        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+                        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
                       }
                       // System.out.println("Second op's prec too short:
                       // op2MantAbs=" + op2MantAbs + " precdiff= " +
@@ -4041,7 +4041,7 @@ boolean roundToOperandPrecision) {
                       FastInteger shift2 =
                         FastInteger.Copy(digitLength2).Subtract(fastPrecision);
                       if (!sameSign && ctx != null && ctx.getHasFlags()) {
-                        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+                        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
                       }
                       return this.RoundToPrecisionWithShift(
                 other,
@@ -4109,7 +4109,7 @@ boolean roundToOperandPrecision) {
                       FastInteger shift =
                         FastInteger.Copy(digitLength2).Subtract(fastPrecision);
                       if (oneOpIsZero && ctx != null && ctx.getHasFlags()) {
-                        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+                        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
                       }
                       return this.RoundToPrecisionWithShift(
                 thisValue,
@@ -4147,7 +4147,7 @@ boolean roundToOperandPrecision) {
                       FastInteger shift2 =
                         FastInteger.Copy(digitLength2).Subtract(fastPrecision);
                       if (!sameSign && ctx != null && ctx.getHasFlags()) {
-                        ctx.setFlags(ctx.getFlags() | (PrecisionContext.FlagRounded));
+                        ctx.setFlags(ctx.getFlags()|(PrecisionContext.FlagRounded));
                       }
                       return this.RoundToPrecisionWithShift(
                 thisValue,
