@@ -2182,14 +2182,16 @@ List<CBORObject> AsList() {
 
     private static void WriteObjectArray(
       List<CBORObject> list,
-      OutputStream outputStream) throws java.io.IOException {
-      WriteObjectArray(list, outputStream, null);
+      OutputStream outputStream,
+      CBOREncodeOptions options) throws java.io.IOException {
+      WriteObjectArray(list, outputStream, null, options);
     }
 
     private static void WriteObjectMap(
       Map<CBORObject, CBORObject> map,
-      OutputStream outputStream) throws java.io.IOException {
-      WriteObjectMap(map, outputStream, null);
+      OutputStream outputStream,
+      CBOREncodeOptions options) throws java.io.IOException {
+      WriteObjectMap(map, outputStream, null, options);
     }
 
     private static List<Object> PushObject(
@@ -2213,7 +2215,8 @@ List<CBORObject> AsList() {
       Object parentThisItem,
       CBORObject child,
       OutputStream outputStream,
-      List<Object> stack) throws java.io.IOException {
+      List<Object> stack,
+      CBOREncodeOptions options) throws java.io.IOException {
       if (child == null) {
         outputStream.write(0xf6);
       } else {
@@ -2221,12 +2224,12 @@ List<CBORObject> AsList() {
         if (type == CBORObjectTypeArray) {
           stack = PushObject(stack, parentThisItem, child.getThisItem());
           child.WriteTags(outputStream);
-          WriteObjectArray(child.AsList(), outputStream, stack);
+          WriteObjectArray(child.AsList(), outputStream, stack, options);
           stack.remove(stack.size() - 1);
         } else if (type == CBORObjectTypeMap) {
           stack = PushObject(stack, parentThisItem, child.getThisItem());
           child.WriteTags(outputStream);
-          WriteObjectMap(child.AsMap(), outputStream, stack);
+          WriteObjectMap(child.AsMap(), outputStream, stack, options);
           stack.remove(stack.size() - 1);
         } else {
           child.WriteTo(outputStream);
@@ -2238,25 +2241,37 @@ List<CBORObject> AsList() {
     private static void WriteObjectArray(
       List<CBORObject> list,
       OutputStream outputStream,
-      List<Object> stack) throws java.io.IOException {
+      List<Object> stack,
+      CBOREncodeOptions options) throws java.io.IOException {
       Object thisObj = list;
       WritePositiveInt(4, list.size(), outputStream);
       for (CBORObject i : list) {
-        stack = WriteChildObject(thisObj, i, outputStream, stack);
+        stack = WriteChildObject(thisObj, i, outputStream, stack, options);
       }
     }
 
     private static void WriteObjectMap(
       Map<CBORObject, CBORObject> map,
       OutputStream outputStream,
-      List<Object> stack) throws java.io.IOException {
+      List<Object> stack,
+      CBOREncodeOptions options) throws java.io.IOException {
       Object thisObj = map;
       WritePositiveInt(5, map.size(), outputStream);
       for (Map.Entry<CBORObject, CBORObject> entry : map.entrySet()) {
         CBORObject key = entry.getKey();
         CBORObject value = entry.getValue();
-        stack = WriteChildObject(thisObj, key, outputStream, stack);
-        stack = WriteChildObject(thisObj, value, outputStream, stack);
+        stack = WriteChildObject(
+thisObj,
+key,
+outputStream,
+stack,
+options);
+        stack = WriteChildObject(
+thisObj,
+value,
+outputStream,
+stack,
+options);
       }
     }
 
@@ -2431,6 +2446,38 @@ List<CBORObject> AsList() {
         stream.write(0xf6);  // Write null instead of String
       } else {
         WriteStreamedString(str, stream);
+      }
+    }
+
+    /**
+     * Writes a string in CBOR format to a data stream.
+     * @param str The string to write. Can be null.
+     * @param stream A writable data stream.
+     * @param options Options for encoding the data to CBOR.
+     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
+     */
+    public static void Write(
+String str,
+OutputStream stream,
+CBOREncodeOptions options) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if (str == null) {
+        stream.write(0xf6);  // Write null instead of String
+      } else {
+ CBOREncodeOptions noIndef =
+   options.And(CBOREncodeOptions.NoIndefLengthStrings);
+        if (noIndef.getValue() != 0) {
+          // NOTE: Length of a String Object won't be higher than the maximum
+          // allowed for definite-length strings
+          long codePointLength = DataUtilities.GetUtf8Length(str, true);
+          WritePositiveInt64(3, codePointLength, stream);
+          DataUtilities.WriteUtf8(str, stream, true);
+        } else {
+          WriteStreamedString(str, stream);
+        }
       }
     }
 
@@ -2660,6 +2707,17 @@ List<CBORObject> AsList() {
      * @throws java.io.IOException An I/O error occurred.
      */
     public void WriteTo(OutputStream stream) throws java.io.IOException {
+      this.WriteTo(stream, CBOREncodeOptions.None);
+    }
+
+    /**
+     * Writes this CBOR object to a data stream.
+     * @param stream A writable data stream.
+     * @param options Options for encoding the data to CBOR.
+     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
+     */
+    public void WriteTo(OutputStream stream, CBOREncodeOptions options) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -2677,9 +2735,9 @@ List<CBORObject> AsList() {
           stream);
         stream.write(arr, 0, arr.length);
       } else if (type == CBORObjectTypeTextString) {
-        Write((String)this.getThisItem(), stream);
+        Write((String)this.getThisItem(), stream, options);
       } else if (type == CBORObjectTypeArray) {
-        WriteObjectArray(this.AsList(), stream);
+        WriteObjectArray(this.AsList(), stream, options);
       } else if (type == CBORObjectTypeExtendedDecimal) {
         ExtendedDecimal dec = (ExtendedDecimal)this.getThisItem();
         Write(dec, stream);
@@ -2690,7 +2748,7 @@ List<CBORObject> AsList() {
         ExtendedRational flo = (ExtendedRational)this.getThisItem();
         Write(flo, stream);
       } else if (type == CBORObjectTypeMap) {
-        WriteObjectMap(this.AsMap(), stream);
+        WriteObjectMap(this.AsMap(), stream, options);
       } else if (type == CBORObjectTypeSimpleValue) {
         int value = ((Integer)this.getThisItem()).intValue();
         if (value < 24) {
@@ -2911,6 +2969,15 @@ List<CBORObject> AsList() {
      * @return A byte array in CBOR format.
      */
     public byte[] EncodeToBytes() {
+      return this.EncodeToBytes(CBOREncodeOptions.None);
+    }
+
+    /**
+     * Gets the binary representation of this data item.
+     * @param options Options for encoding the data to CBOR.
+     * @return A byte array in CBOR format.
+     */
+    public byte[] EncodeToBytes(CBOREncodeOptions options) {
       // For some types, a memory stream is a lot of
       // overhead since the amount of memory the types
       // use is fixed and small
@@ -3014,7 +3081,7 @@ List<CBORObject> AsList() {
 try {
 ms = new java.io.ByteArrayOutputStream(16);
 
-          this.WriteTo(ms);
+          this.WriteTo(ms, options);
           return ms.toByteArray();
 }
 finally {
@@ -3043,17 +3110,30 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
+     * Not documented yet.
+     * @param objValue An arbitrary object.
+     * @param stream A writable data stream.
+     */
+    public static void Write(Object objValue, OutputStream stream) throws java.io.IOException {
+      Write(objValue, stream, CBOREncodeOptions.None);
+    }
+
+    /**
      * Writes an arbitrary object to a CBOR data stream. Currently, the following
      * objects are supported: <ul><li>Lists of CBORObject.</li> <li>Maps of
      * CBORObject.</li> <li>Null.</li> <li>Any object accepted by the
      * FromObject static methods.</li> </ul>
      * @param objValue The value to write.
      * @param stream A writable data stream.
+     * @param options Options for encoding the data to CBOR.
      * @throws IllegalArgumentException The object's type is not supported.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     @SuppressWarnings("unchecked")
-public static void Write(Object objValue, OutputStream stream) throws java.io.IOException {
+public static void Write(
+Object objValue,
+OutputStream stream,
+CBOREncodeOptions options) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -3068,11 +3148,17 @@ public static void Write(Object objValue, OutputStream stream) throws java.io.IO
         return;
       }
       if (objValue instanceof List<?>) {
-        WriteObjectArray((List<CBORObject>)objValue, stream);
+        WriteObjectArray(
+(List<CBORObject>)objValue,
+stream,
+options);
         return;
       }
       if (objValue instanceof Map<?, ?>) {
-        WriteObjectMap((Map<CBORObject, CBORObject>)objValue, stream);
+        WriteObjectMap(
+(Map<CBORObject, CBORObject>)objValue,
+stream,
+options);
         return;
       }
       FromObject(objValue).WriteTo(stream);

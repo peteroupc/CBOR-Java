@@ -1968,13 +1968,13 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public void TestHalfPrecision() {
       CBORObject o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7c, 0x00  });
-      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle());
+      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle(), 0f);
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x00, 0x00  });
       Assert.assertEquals((float)0, o.AsSingle(), 0f);
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, (byte)0xfc, 0x00  });
-      Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle());
+      Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle(), 0f);
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7e, 0x00  });
       if (!(Float.isNaN(o.AsSingle())))Assert.fail();
@@ -2496,33 +2496,31 @@ CBORObject.FromObject((double)0.0000000000000001).AsBigInteger()
       return sb.toString();
     }
 
+    private void TestTextStringStreamOne(String longString) {
+      CBORObject cbor, cbor2;
+      cbor = CBORObject.FromObject(longString);
+      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
+      Assert.assertEquals(
+longString,
+CBORObject.DecodeFromBytes(cbor.EncodeToBytes()).AsString());
+      Assert.assertEquals(
+longString,
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(
+        CBOREncodeOptions.NoIndefLengthStrings)).AsString());
+      TestCommon.AssertEqualsHashCode(cbor, cbor2);
+      Assert.assertEquals(longString, cbor2.AsString());
+    }
+
     @Test
     public void TestTextStringStream() {
       CBORObject cbor = TestCommon.FromBytesTestAB(
         new byte[] { 0x7f, 0x61, 0x2e, 0x61, 0x2e, (byte)0xff  });
       Assert.assertEquals("..", cbor.AsString());
       // Test streaming of long strings
-      String longString = Repeat('x', 200000);
-      CBORObject cbor2;
-      cbor = CBORObject.FromObject(longString);
-      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
-      TestCommon.AssertEqualsHashCode(cbor, cbor2);
-      Assert.assertEquals(longString, cbor2.AsString());
-      longString = Repeat('\u00e0', 200000);
-      cbor = CBORObject.FromObject(longString);
-      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
-      TestCommon.AssertEqualsHashCode(cbor, cbor2);
-      Assert.assertEquals(longString, cbor2.AsString());
-      longString = Repeat('\u3000', 200000);
-      cbor = CBORObject.FromObject(longString);
-      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
-      TestCommon.AssertEqualsHashCode(cbor, cbor2);
-      Assert.assertEquals(longString, cbor2.AsString());
-      longString = Repeat("\ud800\udc00", 200000);
-      cbor = CBORObject.FromObject(longString);
-      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
-      TestCommon.AssertEqualsHashCode(cbor, cbor2);
-      Assert.assertEquals(longString, cbor2.AsString());
+      this.TestTextStringStreamOne(Repeat('x', 200000));
+      this.TestTextStringStreamOne(Repeat('\u00e0', 200000));
+      this.TestTextStringStreamOne(Repeat('\u3000', 200000));
+      this.TestTextStringStreamOne(Repeat("\ud800\udc00", 200000));
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoTagsBeforeDefinite() {
