@@ -1589,7 +1589,7 @@ List<CBORObject> AsList() {
 
     /**
      * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key A CBORObject object. (2).
+     * @param key Another CBOR object.
      * @return A CBORObject object.
      * @throws NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
@@ -1608,7 +1608,7 @@ List<CBORObject> AsList() {
 
     /**
      * Sets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key A CBORObject object. (2).
+     * @param key Another CBOR object.
      * @throws NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
      * @throws java.lang.IllegalStateException This object is not a map.
@@ -3325,7 +3325,7 @@ options);
 
     /**
      * Finds the sum of two CBOR number objects.
-     * @param first A CBORObject object. (2).
+     * @param first Another CBOR object.
      * @param second A CBORObject object. (3).
      * @return A CBORObject object.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
@@ -3338,7 +3338,7 @@ options);
     /**
      * Finds the difference between two CBOR number objects.
      * @param first A CBORObject object.
-     * @param second A CBORObject object. (2).
+     * @param second Another CBOR object.
      * @return The difference of the two objects.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -3350,7 +3350,7 @@ options);
     /**
      * Multiplies two CBOR number objects.
      * @param first A CBORObject object.
-     * @param second A CBORObject object. (2).
+     * @param second Another CBOR object.
      * @return The product of the two objects.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -3362,7 +3362,7 @@ options);
     /**
      * Divides a CBORObject object by the value of a CBORObject object.
      * @param first A CBORObject object.
-     * @param second A CBORObject object. (2).
+     * @param second Another CBOR object.
      * @return The quotient of the two objects.
      */
     public static CBORObject Divide(CBORObject first, CBORObject second) {
@@ -3373,7 +3373,7 @@ options);
      * Finds the remainder that results when a CBORObject object is divided by the
      * value of a CBORObject object.
      * @param first A CBORObject object.
-     * @param second A CBORObject object. (2).
+     * @param second Another CBOR object.
      * @return The remainder of the two objects.
      */
     public static CBORObject Remainder(CBORObject first, CBORObject second) {

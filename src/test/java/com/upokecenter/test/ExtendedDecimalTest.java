@@ -730,7 +730,24 @@ ExtendedDecimal.FromString("500000").MovePointLeft(5).toString());
     }
     @Test
     public void TestPI() {
-      // not implemented yet
+      ExtendedDecimal pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(3));
+      Assert.assertEquals("3.14", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(4));
+      Assert.assertEquals("3.142", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(5));
+      Assert.assertEquals("3.1416", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(6));
+      Assert.assertEquals("3.14159", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(7));
+      Assert.assertEquals("3.141593", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(8));
+      Assert.assertEquals("3.1415927", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(9));
+      Assert.assertEquals("3.14159265", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(10));
+      Assert.assertEquals("3.141592654", pi.ToPlainString());
+      pi = ExtendedDecimal.PI(PrecisionContext.ForPrecision(25));
+      Assert.assertEquals("3.141592653589793238462643", pi.ToPlainString());
     }
     @Test
     public void TestPlus() {
