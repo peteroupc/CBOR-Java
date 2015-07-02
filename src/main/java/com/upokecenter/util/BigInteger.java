@@ -3111,7 +3111,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Not documented yet.
-     * @param power A BigInteger object. (2).
+     * @param power Another BigInteger object.
      * @return A BigInteger object.
      * @throws NullPointerException The parameter {@code power} is null.
      */
@@ -4083,7 +4083,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Returns the greatest common divisor of two integers. The greatest common
      * divisor (GCD) is also known as the greatest common factor (GCF).
-     * @param bigintSecond A BigInteger object. (2).
+     * @param bigintSecond Another BigInteger object.
      * @return A BigInteger object.
      * @throws NullPointerException The parameter {@code bigintSecond} is null.
      */
@@ -4141,7 +4141,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Calculates the remainder when a BigInteger raised to a certain power is
      * divided by another BigInteger.
-     * @param pow A BigInteger object. (2).
+     * @param pow Another BigInteger object.
      * @param mod A BigInteger object. (3).
      * @return A BigInteger object.
      * @throws NullPointerException The parameter {@code pow} is null.

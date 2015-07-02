@@ -371,7 +371,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * This is an internal method.
      * @param num A BigInteger object.
-     * @param den A BigInteger object. (2).
+     * @param den Another BigInteger object.
      * @return A Boolean object.
      */
       public boolean HasTerminatingRadixExpansion(BigInteger num, BigInteger den) {
@@ -388,7 +388,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param bigint A BigInteger object. (2).
+     * @param bigint Another BigInteger object.
      * @param power A FastInteger object.
      * @return A BigInteger object.
      */
@@ -431,7 +431,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * This is an internal method.
      * @param mantissa A BigInteger object.
-     * @param exponent A BigInteger object. (2).
+     * @param exponent Another BigInteger object.
      * @param flags A 32-bit signed integer.
      * @return An ExtendedFloat object.
      */
@@ -1202,7 +1202,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Not documented yet.
-     * @param divisor An ExtendedFloat object. (2).
+     * @param divisor Another ExtendedFloat object.
      * @return An ExtendedFloat object.
      */
     public ExtendedFloat RemainderNaturalScale(
@@ -1214,7 +1214,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Calculates the remainder of a number by the formula this - ((this / divisor)
      * * divisor). This is meant to be similar to the remainder operation in
      * Java's BigDecimal.
-     * @param divisor An ExtendedFloat object. (2).
+     * @param divisor Another ExtendedFloat object.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. This context
      * will be used only in the division portion of the remainder
@@ -1621,7 +1621,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the greater value between two binary floats.
      * @param first An ExtendedFloat object.
-     * @param second An ExtendedFloat object. (2).
+     * @param second Another ExtendedFloat object.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -1638,7 +1638,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the lesser value between two binary floats.
      * @param first An ExtendedFloat object.
-     * @param second An ExtendedFloat object. (2).
+     * @param second Another ExtendedFloat object.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -1655,7 +1655,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the greater value between two values, ignoring their signs. If the
      * absolute values are equal, has the same effect as Max.
-     * @param first An ExtendedFloat object. (2).
+     * @param first Another ExtendedFloat object.
      * @param second An ExtendedFloat object. (3).
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -1673,7 +1673,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the lesser value between two values, ignoring their signs. If the
      * absolute values are equal, has the same effect as Min.
-     * @param first An ExtendedFloat object. (2).
+     * @param first Another ExtendedFloat object.
      * @param second An ExtendedFloat object. (3).
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -1691,7 +1691,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the greater value between two binary floats.
      * @param first An ExtendedFloat object.
-     * @param second An ExtendedFloat object. (2).
+     * @param second Another ExtendedFloat object.
      * @return The larger value of the two objects.
      */
     public static ExtendedFloat Max(
@@ -1703,7 +1703,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the lesser value between two binary floats.
      * @param first An ExtendedFloat object.
-     * @param second An ExtendedFloat object. (2).
+     * @param second Another ExtendedFloat object.
      * @return The smaller value of the two objects.
      */
     public static ExtendedFloat Min(
@@ -1715,7 +1715,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the greater value between two values, ignoring their signs. If the
      * absolute values are equal, has the same effect as Max.
-     * @param first An ExtendedFloat object. (2).
+     * @param first Another ExtendedFloat object.
      * @param second An ExtendedFloat object. (3).
      * @return An ExtendedFloat object.
      */
@@ -1728,7 +1728,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Gets the lesser value between two values, ignoring their signs. If the
      * absolute values are equal, has the same effect as Min.
-     * @param first An ExtendedFloat object. (2).
+     * @param first Another ExtendedFloat object.
      * @param second An ExtendedFloat object. (3).
      * @return An ExtendedFloat object.
      */

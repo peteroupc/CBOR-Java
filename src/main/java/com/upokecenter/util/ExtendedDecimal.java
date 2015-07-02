@@ -749,7 +749,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * This is an internal method.
      * @param numerator A BigInteger object.
-     * @param denominator A BigInteger object. (2).
+     * @param denominator Another BigInteger object.
      * @return A Boolean object.
      */
       public boolean HasTerminatingRadixExpansion(
@@ -785,7 +785,7 @@ bigrem = divrem[1]; }
 
     /**
      * This is an internal method.
-     * @param bigint A BigInteger object. (2).
+     * @param bigint Another BigInteger object.
      * @param power A FastInteger object.
      * @return A BigInteger object.
      */
@@ -827,7 +827,7 @@ bigrem = divrem[1]; }
     /**
      * This is an internal method.
      * @param mantissa A BigInteger object.
-     * @param exponent A BigInteger object. (2).
+     * @param exponent Another BigInteger object.
      * @param flags A 32-bit signed integer.
      * @return An ExtendedDecimal object.
      */
@@ -2500,7 +2500,7 @@ remainder = divrem[1]; }
     /**
      * Gets the greater value between two decimal numbers.
      * @param first An ExtendedDecimal object.
-     * @param second An ExtendedDecimal object. (2).
+     * @param second Another ExtendedDecimal object.
      * @return The larger value of the two objects.
      */
     public static ExtendedDecimal Max(

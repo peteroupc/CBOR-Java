@@ -96,7 +96,7 @@ int denominatorSmall) {
     /**
      * Creates a number with the given numerator and denominator.
      * @param numerator A BigInteger object.
-     * @param denominator A BigInteger object. (2).
+     * @param denominator Another BigInteger object.
      * @return An ExtendedRational object.
      */
     public static ExtendedRational Create(
@@ -108,7 +108,7 @@ BigInteger denominator) {
     /**
      * Initializes a new instance of the ExtendedRational class.
      * @param numerator A BigInteger object.
-     * @param denominator A BigInteger object. (2).
+     * @param denominator Another BigInteger object.
      * @throws NullPointerException The parameter {@code numerator} or {@code
      * denominator} is null.
      */
@@ -1065,7 +1065,7 @@ BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
 
     /**
      * Adds two rational numbers.
-     * @param otherValue An ExtendedRational object. (2).
+     * @param otherValue Another ExtendedRational object.
      * @return The sum of the two numbers. Returns NaN if either operand is NaN.
      * @throws NullPointerException The parameter {@code otherValue} is null.
      */

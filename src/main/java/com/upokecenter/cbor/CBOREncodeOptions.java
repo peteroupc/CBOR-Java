@@ -32,7 +32,7 @@ package com.upokecenter.cbor;
 
     /**
      * Combines the flags of this options object with another options object.
-     * @param o A CBOREncodeOptions object. (2).
+     * @param o Another CBOREncodeOptions object.
      * @return A CBOREncodeOptions object.
      */
     public CBOREncodeOptions Or(CBOREncodeOptions o) {
@@ -42,7 +42,7 @@ package com.upokecenter.cbor;
     /**
      * Returns an options object whose flags are shared by this and another options
      * object.
-     * @param o A CBOREncodeOptions object. (2).
+     * @param o Another CBOREncodeOptions object.
      * @return A CBOREncodeOptions object.
      */
     public CBOREncodeOptions And(CBOREncodeOptions o) {
