@@ -366,7 +366,7 @@ public final void setConverter(Object value) {
       }
 
     /**
-     * Gets a value indicating whether this object&apos;s value equals 0.
+     * Gets a value indicating whether this object&#x27;s value equals 0.
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
@@ -375,7 +375,7 @@ public final void setConverter(Object value) {
       }
 
     /**
-     * Gets this object&apos;s value with the sign reversed.
+     * Gets this object&#x27;s value with the sign reversed.
      * @return The reversed-sign form of this number.
      * @throws java.lang.IllegalStateException This object's type is not a number
      * type.
@@ -410,7 +410,7 @@ public final void setConverter(Object value) {
     }
 
     /**
-     * Gets this value&apos;s sign: -1 if negative; 1 if positive; 0 if zero.
+     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      * @throws java.lang.IllegalStateException This object's type is not a number
      * type, including the special not-a-number value (NaN).
@@ -483,7 +483,7 @@ public final void setConverter(Object value) {
 
     /**
      * Gets a value indicating whether this CBOR object represents a not-a-number
-     * value (as opposed to whether this object&apos;s type is not a number
+     * value (as opposed to whether this object&#x27;s type is not a number
      * type).
      * @return True if this CBOR object represents a not-a-number value (as opposed
      * to whether this object's type is not a number type); otherwise,
@@ -3564,7 +3564,7 @@ options);
     }
 
     /**
-     * Returns the CBOR true value or false value, depending on &quot;value&quot;.
+     * Returns the CBOR true value or false value, depending on &#x22;value&#x22;.
      * @param value Either True or False.
      * @return CBORObject.True if value is true; otherwise CBORObject.False.
      */
@@ -3831,12 +3831,12 @@ options);
      * object a tag.
      * @param valueOb An arbitrary object. If the tag number is 2 or 3, this must
      * be a byte string whose bytes represent an integer in little-endian
-     * byte order, and the value of the number is 1 minus the integer&apos;s
+     * byte order, and the value of the number is 1 minus the integer&#x27;s
      * value for tag 3. If the tag number is 4 or 5, this must be an array
      * with two elements: the first must be an integer representing the
      * exponent, and the second must be an integer representing a mantissa.
      * @param bigintTag Tag number. The tag number 55799 can be used to mark a
-     * &quot;self-described CBOR&quot; object.
+     * &#x22;self-described CBOR&#x22; object.
      * @return A CBOR object where the object {@code valueOb} is converted to a
      * CBOR object and given the tag {@code bigintTag} .
      * @throws IllegalArgumentException The parameter {@code bigintTag} is less than 0 or
@@ -3926,12 +3926,12 @@ options);
      * @param valueObValue An arbitrary object. If the tag number is 2 or 3, this
      * must be a byte string whose bytes represent an integer in
      * little-endian byte order, and the value of the number is 1 minus the
-     * integer&apos;s value for tag 3. If the tag number is 4 or 5, this
+     * integer&#x27;s value for tag 3. If the tag number is 4 or 5, this
      * must be an array with two elements: the first must be an integer
      * representing the exponent, and the second must be an integer
      * representing a mantissa.
      * @param smallTag A 32-bit integer that specifies a tag number. The tag number
-     * 55799 can be used to mark a &quot;self-described CBOR&quot; object.
+     * 55799 can be used to mark a &#x22;self-described CBOR&#x22; object.
      * @return A CBOR object where the object {@code valueObValue} is converted to
      * a CBOR object and given the tag {@code smallTag} .
      * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0 or

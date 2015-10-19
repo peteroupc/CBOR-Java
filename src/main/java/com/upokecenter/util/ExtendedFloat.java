@@ -38,7 +38,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private final int flags;
 
     /**
-     * Gets this object&apos;s exponent. This object&apos;s value will be an
+     * Gets this object&#x27;s exponent. This object&#x27;s value will be an
      * integer if the exponent is positive or zero.
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
@@ -48,7 +48,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     * Gets the absolute value of this object&apos;s un-scaled value.
+     * Gets the absolute value of this object&#x27;s un-scaled value.
      * @return The absolute value of this object's un-scaled value.
      */
     public final BigInteger getUnsignedMantissa() {
@@ -56,7 +56,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     * Gets this object&apos;s un-scaled value.
+     * Gets this object&#x27;s un-scaled value.
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
      */
@@ -66,7 +66,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     * Determines whether this object&apos;s mantissa and exponent are equal to
+     * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
      * @param otherValue An ExtendedFloat object.
      * @return True if this object's mantissa and exponent are equal to those of
@@ -82,7 +82,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Determines whether this object&apos;s mantissa and exponent are equal to
+     * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
      * @param other An ExtendedFloat object.
      * @return True if this object's mantissa and exponent are equal to those of
@@ -93,7 +93,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Determines whether this object&apos;s mantissa and exponent are equal to
+     * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object and that other object is a decimal fraction.
      * @param obj An arbitrary object.
      * @return True if the objects are equal; otherwise, false.
@@ -103,7 +103,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Calculates this object&apos;s hash code.
+     * Calculates this object&#x27;s hash code.
      * @return This object's hash code.
      */
     @Override public int hashCode() {
@@ -243,17 +243,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * not be exact. However, the resulting binary float will contain enough
      * precision to accurately convert it to a 32-bit or 64-bit floating
      * point number (float or double). <p>The format of the string generally
-     * consists of: <ul><li>An optional '-' or '+' character (if '-' , the
-     * value is negative.)</li> <li>One or more digits, with a single
+     * consists of:</p> <ul><li>An optional '-' or '+' character (if '-' ,
+     * the value is negative.)</li> <li>One or more digits, with a single
      * optional decimal point after the first digit and before the last
      * digit.</li> <li>Optionally, E+ (positive exponent) or E- (negative
      * exponent) plus one or more digits specifying the exponent.</li> </ul>
-     * </p> <p>The string can also be "-INF", "-Infinity", "Infinity",
-     * "INF", quiet NaN ("qNaN") followed by any number of digits, or
-     * signaling NaN ("sNaN") followed by any number of digits, all in any
-     * combination of upper and lower case.</p> <p>The format generally
-     * follows the definition in java.math.BigDecimal(), except that the
-     * digits must be ASCII digits ('0' through '9').</p>
+     * <p>The string can also be "-INF" , "-Infinity" , "Infinity" , "INF",
+     * quiet NaN ("qNaN") followed by any number of digits, or signaling NaN
+     * ("sNaN") followed by any number of digits, all in any combination of
+     * upper and lower case.</p> <p>The format generally follows the
+     * definition in java.math.BigDecimal(), except that the digits must be
+     * ASCII digits ('0' through '9').</p>
      * @param str A string object.
      * @param offset A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
@@ -992,7 +992,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       BigNumberFlags.FlagQuietNaN);
 
     /**
-     * A not-a-number value that signals an invalid operation flag when it&apos;s
+     * A not-a-number value that signals an invalid operation flag when it&#x27;s
      * passed as an argument to any arithmetic operation in ExtendedFloat.
      */
     public static final ExtendedFloat SignalingNaN = CreateWithFlags(
@@ -1093,7 +1093,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Gets this value&apos;s sign: -1 if negative; 1 if positive; 0 if zero.
+     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      */
     public final int signum() {
@@ -1103,7 +1103,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     * Gets a value indicating whether this object&apos;s value equals 0.
+     * Gets a value indicating whether this object&#x27;s value equals 0.
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
@@ -1169,7 +1169,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Divides two ExtendedFloat objects, and returns the integer part of the
      * result, rounded down, with the preferred exponent set to this
-     * value&apos;s exponent minus the divisor&apos;s exponent.
+     * value&#x27;s exponent minus the divisor&#x27;s exponent.
      * @param divisor The divisor.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
@@ -1184,7 +1184,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Removes trailing zeros from this object&apos;s mantissa. For example, 1.000
+     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.000
      * becomes 1. <p>If this object's value is 0, changes the exponent to 0.
      * (This is unlike the behavior in Java's BigDecimal method
      * "stripTrailingZeros" in Java 7 and earlier.)</p>
@@ -1219,8 +1219,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * and exponent range of the integer part of the result. This context
      * will be used only in the division portion of the remainder
      * calculation. Flags will be set on the given context only if the
-     * context&apos;s HasFlags is true and the integer part of the division
-     * result doesn&apos;t fit the precision and exponent range without
+     * context&#x27;s HasFlags is true and the integer part of the division
+     * result doesn&#x27;t fit the precision and exponent range without
      * rounding.
      * @return An ExtendedFloat object.
      */
@@ -1245,7 +1245,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value. If the precision given in the context is other than 0, calls
      * the Quantize method with both arguments equal to the result of the
      * operation (and can signal FlagInvalid and return NaN if the result
-     * doesn&apos;t fit the given precision). If HasFlags of the context is
+     * doesn&#x27;t fit the given precision). If HasFlags of the context is
      * true, will also store the flags resulting from the operation (the
      * flags are in addition to the pre-existing flags). Can be null, in
      * which case the default rounding mode is HalfEven.
@@ -1269,8 +1269,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Divides this ExtendedFloat object by another ExtendedFloat object. The
-     * preferred exponent for the result is this object&apos;s exponent
-     * minus the divisor&apos;s exponent.
+     * preferred exponent for the result is this object&#x27;s exponent
+     * minus the divisor&#x27;s exponent.
      * @param divisor The divisor.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -1330,7 +1330,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value. If the precision given in the context is other than 0, calls
      * the Quantize method with both arguments equal to the result of the
      * operation (and can signal FlagInvalid and return NaN if the result
-     * doesn&apos;t fit the given precision). If HasFlags of the context is
+     * doesn&#x27;t fit the given precision). If HasFlags of the context is
      * true, will also store the flags resulting from the operation (the
      * flags are in addition to the pre-existing flags). Can be null, in
      * which case the default rounding mode is HalfEven.
@@ -1377,7 +1377,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the absolute value of this object (if it&apos;s negative, it becomes
+     * Finds the absolute value of this object (if it&#x27;s negative, it becomes
      * positive).
      * @param context A precision context to control precision, rounding, and
      * exponent range of the result. If HasFlags of the context is true,
@@ -1476,13 +1476,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Divides this object by another object, and returns the integer part of the
-     * result, with the preferred exponent set to this value&apos;s exponent
-     * minus the divisor&apos;s exponent.
+     * result, with the preferred exponent set to this value&#x27;s exponent
+     * minus the divisor&#x27;s exponent.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. Flags will be
-     * set on the given context only if the context&apos;s HasFlags is true
-     * and the integer part of the result doesn&apos;t fit the precision and
+     * set on the given context only if the context&#x27;s HasFlags is true
+     * and the integer part of the result doesn&#x27;t fit the precision and
      * exponent range without rounding.
      * @return The integer part of the quotient of the two objects. Returns null if
      * the return value would overflow the exponent range. A caller can
@@ -1535,8 +1535,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Finds the distance to the closest multiple of the given divisor, based on
-     * the result of dividing this object&apos;s value by another
-     * object&apos;s value. <ul><li>If this and the other object divide
+     * the result of dividing this object&#x27;s value by another
+     * object&#x27;s value. <ul><li>If this and the other object divide
      * evenly, the result is 0.</li> <li>If the remainder's absolute value
      * is less than half of the divisor's absolute value, the result has the
      * same sign as this object and will be the distance to the closest
@@ -1568,7 +1568,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the largest value that&apos;s smaller than the given value.
+     * Finds the largest value that&#x27;s smaller than the given value.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
      * If HasFlags of the context is true, will also store the flags
@@ -1584,7 +1584,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the smallest value that&apos;s greater than the given value.
+     * Finds the smallest value that&#x27;s greater than the given value.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
      * If HasFlags of the context is true, will also store the flags
@@ -1599,8 +1599,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the next value that is closer to the other object&apos;s value than
-     * this object&apos;s value.
+     * Finds the next value that is closer to the other object&#x27;s value than
+     * this object&#x27;s value.
      * @param otherValue An ExtendedFloat object.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
@@ -1800,7 +1800,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the sum of this object and another object. The result&apos;s exponent
+     * Finds the sum of this object and another object. The result&#x27;s exponent
      * is set to the lower of the exponents of the two operands.
      * @param otherValue The number to add to.
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -2028,7 +2028,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Multiplies two binary floats. The resulting scale will be the sum of the
-     * scales of the two binary floats. The result&apos;s sign is positive
+     * scales of the two binary floats. The result&#x27;s sign is positive
      * if both operands have the same sign, and negative if they have
      * different signs.
      * @param op Another binary float.
@@ -2091,7 +2091,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Rounds this object&apos;s value to a given precision, using the given
+     * Rounds this object&#x27;s value to a given precision, using the given
      * rounding mode and range of exponent.
      * @param ctx A context for controlling the precision, rounding mode, and
      * exponent range. Can be null.
@@ -2104,7 +2104,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Rounds this object&apos;s value to a given precision, using the given
+     * Rounds this object&#x27;s value to a given precision, using the given
      * rounding mode and range of exponent, and also converts negative zero
      * to positive zero.
      * @param ctx A context for controlling the precision, rounding mode, and
@@ -2118,7 +2118,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Rounds this object&apos;s value to a given maximum bit length, using the
+     * Rounds this object&#x27;s value to a given maximum bit length, using the
      * given rounding mode and range of exponent.
      * @param ctx A context for controlling the precision, rounding mode, and
      * exponent range. The precision is interpreted as the maximum bit
@@ -2144,12 +2144,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the square root of this object&apos;s value.
+     * Finds the square root of this object&#x27;s value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the square root function&apos;s results are generally not exact
+     * as the square root function&#x27;s results are generally not exact
      * for many inputs.--.
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
@@ -2163,12 +2163,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Finds e (the base of natural logarithms) raised to the power of this
-     * object&apos;s value.
+     * object&#x27;s value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the exponential function&apos;s results are generally not
+     * as the exponential function&#x27;s results are generally not
      * exact.--.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
@@ -2182,12 +2182,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Finds the natural logarithm of this object, that is, the power (exponent)
      * that e (the base of natural logarithms) must be raised to in order to
-     * equal this object&apos;s value.
+     * equal this object&#x27;s value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function&apos;s results are generally not exact.--.
+     * as the ln function&#x27;s results are generally not exact.--.
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2202,12 +2202,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Finds the base-10 logarithm of this object, that is, the power (exponent)
      * that the number 10 must be raised to in order to equal this
-     * object&apos;s value.
+     * object&#x27;s value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function&apos;s results are generally not exact.--.
+     * as the ln function&#x27;s results are generally not exact.--.
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns NaN
      * if this object is less than 0. Signals FlagInvalid and returns NaN if
      * the parameter {@code ctx} is null or the precision is unlimited (the
@@ -2218,7 +2218,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Raises this object&apos;s value to the given exponent.
+     * Raises this object&#x27;s value to the given exponent.
      * @param exponent An ExtendedFloat object.
      * @param ctx A PrecisionContext object.
      * @return This^exponent. Signals the flag FlagInvalid and returns NaN if this
@@ -2233,7 +2233,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Raises this object&apos;s value to the given exponent.
+     * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -2247,7 +2247,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Raises this object&apos;s value to the given exponent.
+     * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
      * @return This^exponent. Returns NaN if this object and exponent are both 0.
      */
@@ -2499,10 +2499,10 @@ PrecisionContext ctx) {
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the result. This context will be used only in
      * the division portion of the remainder calculation; as a result,
-     * it&apos;s possible for the remainder to have a higher precision than
+     * it&#x27;s possible for the remainder to have a higher precision than
      * given in this context. Flags will be set on the given context only if
-     * the context&apos;s HasFlags is true and the integer part of the
-     * division result doesn&apos;t fit the precision and exponent range
+     * the context&#x27;s HasFlags is true and the integer part of the
+     * division result doesn&#x27;t fit the precision and exponent range
      * without rounding.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.

@@ -24,7 +24,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     Boolean,
 
     /**
-     * A &quot;simple value&quot; other than floating point values, true, and
+     * A &#x22;simple value&#x22; other than floating point values, true, and
      * false.
      */
     SimpleValue,

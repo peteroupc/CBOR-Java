@@ -2722,7 +2722,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a byte array of this object&apos;s value.
+     * Returns a byte array of this object&#x27;s value.
      * @param littleEndian A Boolean object.
      * @return A byte array that represents the value of this object.
      */
@@ -2789,7 +2789,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Shifts this object&apos;s value by a number of bits. A value of 1 doubles
+     * Shifts this object&#x27;s value by a number of bits. A value of 1 doubles
      * this value, a value of 2 multiplies it by 4, a value of 3 by 8, a
      * value of 4 by 16, and so on.
      * @param numberBits The number of bits to shift. Can be negative, in which
@@ -3218,7 +3218,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the minimum number of bits needed to represent this object&apos;s
+     * Finds the minimum number of bits needed to represent this object&#x27;s
      * absolute value.
      * @return The number of bits in this object's value. Returns 0 if this
      * object's value is 0, and returns 1 if the value is negative 1.
@@ -3285,7 +3285,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the minimum number of bits needed to represent this object&apos;s
+     * Finds the minimum number of bits needed to represent this object&#x27;s
      * value, except for its sign. If the value is negative, finds the
      * number of bits in a value equal to this object's absolute value minus
      * 1.
@@ -4984,7 +4984,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     * Finds the square root of this instance&apos;s value, rounded down.
+     * Finds the square root of this instance&#x27;s value, rounded down.
      * @return The square root of this object's value. Returns 0 if this value is 0
      * or less.
      */

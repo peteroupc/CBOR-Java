@@ -571,7 +571,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the current value times another integer.
+     * Sets this object&#x27;s value to the current value times another integer.
      * @param val The integer to multiply by.
      * @return This object.
      */
@@ -627,7 +627,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to 0 minus its current value (reverses its
+     * Sets this object&#x27;s value to 0 minus its current value (reverses its
      * sign).
      * @return This object.
      */
@@ -658,7 +658,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the current value minus the given
+     * Sets this object&#x27;s value to the current value minus the given
      * FastInteger value.
      * @param val The subtrahend.
      * @return This object.
@@ -709,7 +709,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the current value minus the given integer.
+     * Sets this object&#x27;s value to the current value minus the given integer.
      * @param val The subtrahend.
      * @return This object.
      */
@@ -733,7 +733,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the current value plus the given integer.
+     * Sets this object&#x27;s value to the current value plus the given integer.
      * @param bigintVal The number to add.
      * @return This object.
      */
@@ -758,7 +758,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the current value minus the given integer.
+     * Sets this object&#x27;s value to the current value minus the given integer.
      * @param bigintVal The subtrahend.
      * @return This object.
      */
@@ -833,7 +833,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Sets this object&apos;s value to the remainder of the current value divided
+     * Sets this object&#x27;s value to the remainder of the current value divided
      * by the given integer.
      * @param divisor The divisor.
      * @return This object.
@@ -939,7 +939,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Gets a value indicating whether this object&apos;s value is even.
+     * Gets a value indicating whether this object&#x27;s value is even.
      * @return True if this object's value is even; otherwise, false.
      */
     final boolean isEvenNumber() {
@@ -1031,7 +1031,7 @@ bigrem = divrem[1]; }
     }
 
     /**
-     * Gets the sign of this object&apos;s value.
+     * Gets the sign of this object&#x27;s value.
      * @return 1 if positive, -1 if negative, 0 if zero.
      */
     final int signum() {

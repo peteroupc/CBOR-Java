@@ -8,9 +8,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
     /**
-     * Specifies the mode to use when &quot;shortening&quot; numbers that otherwise
-     * can&apos;t fit a given number of digits, so that the shortened number
-     * has about the same value. This &quot;shortening&quot; is known as
+     * Specifies the mode to use when &#x22;shortening&#x22; numbers that otherwise
+     * can&#x27;t fit a given number of digits, so that the shortened number
+     * has about the same value. This &#x22;shortening&#x22; is known as
      * rounding.
      */
   public enum Rounding {
@@ -27,13 +27,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * If there is a fractional part, the number is rounded to the highest
-     * representable number that&apos;s closest to it.
+     * representable number that&#x27;s closest to it.
      */
     Ceiling,
 
     /**
      * If there is a fractional part, the number is rounded to the lowest
-     * representable number that&apos;s closest to it.
+     * representable number that&#x27;s closest to it.
      */
     Floor,
 
@@ -53,7 +53,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Rounded to the nearest number; if the fractional part is exactly half, the
      * number is rounded to the closest representable number that is even.
-     * This is sometimes also known as &quot;banker&apos;s rounding&quot;.
+     * This is sometimes also known as &#x22;banker&#x27;s rounding&#x22;.
      */
     HalfEven,
 
