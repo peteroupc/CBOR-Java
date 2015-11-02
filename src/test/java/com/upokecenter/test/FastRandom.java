@@ -47,9 +47,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
     }
 
-    private static int seedIndex = 0;
-    private static int seedCount = 0;
-    private static int seedReadIndex = 0;
+    private static int seedIndex;
+    private static int seedCount;
+    private static int seedReadIndex;
 
     public FastRandom () {
       int randseed = GetSeed();

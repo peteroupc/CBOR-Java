@@ -225,7 +225,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (diag.signum() < 0) {
         throw new
        IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
-                            diag);
+                    diag);
       }
       if (diag.signum() == 0 && !negative) {
         return signaling ? SignalingNaN : NaN;
@@ -340,23 +340,23 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       if (tmpoffset < 0) {
         throw new NumberFormatException("offset (" + tmpoffset + ") is less than " +
-                              "0");
+                    "0");
       }
       if (tmpoffset > str.length()) {
         throw new NumberFormatException("offset (" + tmpoffset + ") is more than " +
-                              str.length());
+                    str.length());
       }
       if (length < 0) {
         throw new NumberFormatException("length (" + length + ") is less than " +
-                              "0");
+                    "0");
       }
       if (length > str.length()) {
         throw new NumberFormatException("length (" + length + ") is more than " +
-                              str.length());
+                    str.length());
       }
       if (str.length() - tmpoffset < length) {
         throw new NumberFormatException("str's length minus " + tmpoffset + " (" +
-                        (str.length() - tmpoffset) + ") is less than " + length);
+                    (str.length() - tmpoffset) + ") is less than " + length);
       }
       if (length == 0) {
         throw new NumberFormatException();
@@ -384,10 +384,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             (str.charAt(i + 1) == 'N' || str.charAt(i + 1) == 'n') &&
             (str.charAt(i + 2) == 'F' || str.charAt(i + 2) == 'f') &&
             (str.charAt(i + 3) == 'I' || str.charAt(i + 3) == 'i') && (str.charAt(i + 4) == 'N' ||
-                              str.charAt(i + 4) == 'n') && (str.charAt(i + 5) ==
-                              'I' || str.charAt(i + 5) == 'i') &&
+                    str.charAt(i + 4) == 'n') && (str.charAt(i + 5) ==
+                    'I' || str.charAt(i + 5) == 'i') &&
             (str.charAt(i + 6) == 'T' || str.charAt(i + 6) == 't') && (str.charAt(i + 7) == 'Y' ||
-                              str.charAt(i + 7) == 'y')) {
+                    str.charAt(i + 7) == 'y')) {
           if (ctx != null && ctx.isSimplified() && i < endStr) {
             throw new NumberFormatException("Infinity not allowed");
           }
@@ -397,7 +397,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (i + 3 == endStr) {
         if ((str.charAt(i) == 'I' || str.charAt(i) == 'i') &&
             (str.charAt(i + 1) == 'N' || str.charAt(i + 1) == 'n') && (str.charAt(i + 2) == 'F' ||
-                              str.charAt(i + 2) == 'f')) {
+                    str.charAt(i + 2) == 'f')) {
           if (ctx != null && ctx.isSimplified() && i < endStr) {
             throw new NumberFormatException("Infinity not allowed");
           }
@@ -480,7 +480,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (i + 4 <= endStr) {
         // Signaling NaN
         if ((str.charAt(i) == 'S' || str.charAt(i) == 's') && (str.charAt(i + 1) == 'N' || str.charAt(i +
-                      1) == 'n') && (str.charAt(i + 2) == 'A' || str.charAt(i + 2) == 'a') &&
+                    1) == 'n') && (str.charAt(i + 2) == 'A' || str.charAt(i + 2) == 'a') &&
                 (str.charAt(i + 3) == 'N' || str.charAt(i + 3) == 'n')) {
           if (ctx != null && ctx.isSimplified() && i < endStr) {
             throw new NumberFormatException("NaN not allowed");
@@ -878,12 +878,12 @@ bigrem = divrem[1]; }
         return negative ? "-Infinity" : "Infinity";
       }
       if ((this.flags & BigNumberFlags.FlagSignalingNaN) != 0) {
-        return this.unsignedMantissa.signum()==0 ? (negative ? "-sNaN" : "sNaN") :
+        return this.unsignedMantissa.signum() == 0 ? (negative ? "-sNaN" : "sNaN") :
           (negative ? "-sNaN" + (this.unsignedMantissa).abs() :
            "sNaN" + (this.unsignedMantissa).abs());
       }
       if ((this.flags & BigNumberFlags.FlagQuietNaN) != 0) {
-        return this.unsignedMantissa.signum()==0 ? (negative ? "-NaN" : "NaN") :
+        return this.unsignedMantissa.signum() == 0 ? (negative ? "-NaN" : "NaN") :
           (negative ? "-NaN" + (this.unsignedMantissa).abs() : "NaN" +
            (this.unsignedMantissa).abs());
       }
@@ -910,7 +910,7 @@ bigrem = divrem[1]; }
         int intphase =
           FastInteger.Copy(adjustedExponent).Abs().Remainder(3).AsInt32();
         if (iszero && (adjustedExponent.compareTo(threshold) < 0 || scaleSign <
-                       0)) {
+                    0)) {
           if (intphase == 1) {
             if (adjExponentNegative) {
               decimalPointAdjust.Increment();
@@ -951,7 +951,7 @@ bigrem = divrem[1]; }
         adjustedExponent = newExponent;
       }
       if (mode == 2 || (adjustedExponent.compareTo(threshold) >= 0 &&
-                        scaleSign >= 0)) {
+                    scaleSign >= 0)) {
         if (scaleSign > 0) {
           FastInteger decimalPoint =
             FastInteger.Copy(thisExponent).Add(builderLength);
@@ -960,7 +960,7 @@ bigrem = divrem[1]; }
           if (cmp < 0) {
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
-                              0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
+                    0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
@@ -977,7 +977,7 @@ bigrem = divrem[1]; }
             }
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
-                              0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
+                    0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
@@ -996,7 +996,7 @@ bigrem = divrem[1]; }
             }
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
-                              0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
+                    0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
@@ -1018,7 +1018,7 @@ bigrem = divrem[1]; }
             }
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
-                              0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
+                    0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
@@ -1075,7 +1075,7 @@ bigrem = divrem[1]; }
             }
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
-                              0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
+                    0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
@@ -1119,7 +1119,9 @@ bigrem = divrem[1]; }
      * Compares a ExtendedFloat object with this instance.
      * @param other An ExtendedFloat object.
      * @return Zero if the values are equal; a negative number if this instance is
-     * less, or a positive number if this instance is greater.
+     * less, or a positive number if this instance is greater. Returns 0 if
+     * both values are NaN (even signaling NaN) and 1 if this value is NaN
+     * (even signaling NaN) and the other isn't.
      */
     public int CompareToBinary(ExtendedFloat other) {
       if (other == null) {
@@ -1255,7 +1257,7 @@ bigrem = divrem[1]; }
         DigitShiftAccumulator acc = new DigitShiftAccumulator(bigmantissa, 0, 0);
         acc.ShiftRight(bigexponent);
         if (exact && (acc.getLastDiscardedDigit() != 0 || acc.getOlderDiscardedDigits() !=
-                      0)) {
+                    0)) {
           // Some digits were discarded
           throw new ArithmeticException("Not an exact integer");
         }
@@ -1465,7 +1467,7 @@ remainder = divrem[1]; }
       }
       if (this.isNegative() && this.signum() == 0) {
         return Extras.IntegersToDouble(new int[] { ((int)(1 << 31)),
-                              0 });
+                    0 });
       }
       if (this.signum() == 0) {
         return 0.0;
@@ -1475,7 +1477,7 @@ remainder = divrem[1]; }
         // Very low exponent, treat as 0
         return this.isNegative() ?
           Extras.IntegersToDouble(new int[] { ((int)(1 << 31)),
-                              0 }) : 0.0;
+                    0 }) : 0.0;
       }
       if (adjExp.compareTo(BigInteger.valueOf(309)) > 0) {
         // Very high exponent, treat as infinity
@@ -1835,7 +1837,7 @@ remainder = divrem[1]; }
     public boolean IsNegativeInfinity() {
       return (this.flags & (BigNumberFlags.FlagInfinity |
                 BigNumberFlags.FlagNegative)) == (BigNumberFlags.FlagInfinity |
-                              BigNumberFlags.FlagNegative);
+                    BigNumberFlags.FlagNegative);
     }
 
     /**
@@ -1853,7 +1855,7 @@ remainder = divrem[1]; }
      */
     public boolean IsNaN() {
       return (this.flags & (BigNumberFlags.FlagQuietNaN |
-                            BigNumberFlags.FlagSignalingNaN)) != 0;
+                    BigNumberFlags.FlagSignalingNaN)) != 0;
     }
 
     /**
@@ -1873,7 +1875,7 @@ remainder = divrem[1]; }
      */
     public final boolean isFinite() {
         return (this.flags & (BigNumberFlags.FlagInfinity |
-                              BigNumberFlags.FlagNaN)) == 0;
+                    BigNumberFlags.FlagNaN)) == 0;
       }
 
     /**
@@ -1911,7 +1913,7 @@ remainder = divrem[1]; }
     public final int signum() {
         return (((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
                 this.unsignedMantissa.signum() == 0) ? 0 : (((this.flags &
-                              BigNumberFlags.FlagNegative) != 0) ? -1 : 1);
+                    BigNumberFlags.FlagNegative) != 0) ? -1 : 1);
       }
 
     /**
@@ -1987,7 +1989,7 @@ remainder = divrem[1]; }
      * divisor and the dividend are 0.
      */
     public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal
-                              divisor) {
+                    divisor) {
       return this.DivideToIntegerNaturalScale(
         divisor,
         PrecisionContext.ForRounding(Rounding.Down));
@@ -2281,7 +2283,7 @@ remainder = divrem[1]; }
     private static final IRadixMath<ExtendedDecimal> MathValue = new
       TrappableRadixMath<ExtendedDecimal>(
         new ExtendedOrSimpleRadixMath<ExtendedDecimal>(new
-                              DecimalMathHelper()));
+                    DecimalMathHelper()));
 
     /**
      * Divides this object by another object, and returns the integer part of the

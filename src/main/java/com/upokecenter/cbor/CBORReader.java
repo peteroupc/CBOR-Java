@@ -271,7 +271,7 @@ CBORTypeFilter filter) throws java.io.IOException {
               uabytes[7] = data[0];
               uabytes[8] = 0;
               hasBigAdditional = true;
-              bigintAdditional = BigInteger.fromByteArray(uabytes, true);
+              bigintAdditional = BigInteger.fromBytes(uabytes, true);
             } else {
               uadditional = ((long)(data[0] & (long)0xff)) << 56;
               uadditional |= ((long)(data[1] & (long)0xff)) << 48;

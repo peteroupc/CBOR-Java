@@ -448,14 +448,17 @@ s.length(),
 ParseMode.IRIStrict)) != null;
     }
 
+    private static final String ValueValueDotSlash = "." + "/";
+    private static final String ValueValueSlashDot = "/" + ".";
+
     private static String normalizePath(String path) {
       int len = path.length();
       if (len == 0 || path.equals("..") || path.equals(".")) {
         return "";
       }
-      if (path.indexOf("/. ") < 0 &&
+      if (path.indexOf(ValueValueSlashDot) < 0 &&
           path.indexOf(
-"./ ") < 0) {
+ValueValueDotSlash) < 0) {
         return path;
       }
       StringBuilder builder = new StringBuilder();

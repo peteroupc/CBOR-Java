@@ -38,7 +38,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           for (int i = 0; i < n; ++i) {
             u = r[rstart + i];
             r[rstart + i] = (short)((int)(u << (int)shiftBits) | (((int)carry) &
-                              0xffff));
+                    0xffff));
             carry = (short)((((int)u) & 0xffff) >> (int)(16 - shiftBits));
           }
         }
@@ -59,8 +59,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           for (int i = n; i > 0; --i) {
             u = r[rstart + i - 1];
             r[rstart + i - 1] = (short)((((((int)u) & 0xffff) >>
-                              (int)shiftBits) & 0xffff) | (((int)carry) &
-                              0xffff));
+                    (int)shiftBits) & 0xffff) | (((int)carry) &
+                    0xffff));
             carry = (short)((((int)u) & 0xffff) << (int)(16 - shiftBits));
           }
         }
@@ -81,7 +81,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           for (int i = n; i > 0; --i) {
             u = r[rstart + i - 1];
             r[rstart + i - 1] = (short)(((((int)u) & 0xffff) >>
-                              (int)shiftBits) | (((int)carry) & 0xffff));
+                    (int)shiftBits) | (((int)carry) & 0xffff));
             carry = (short)((((int)u) & 0xffff) << (int)(16 - shiftBits));
           }
         }
@@ -265,7 +265,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         u = 0;
         for (int i = 0; i < n; i += 2) {
           u = (((int)words1[astart + i]) & 0xffff) + (((int)words2[bstart +
-                              i]) & 0xffff) + (short)(u >> 16);
+                    i]) & 0xffff) + (short)(u >> 16);
           c[cstart + i] = (short)u;
           u = (((int)words1[astart + i + 1]) & 0xffff) +
             (((int)words2[bstart + i + 1]) & 0xffff) + (short)(u >> 16);
@@ -290,7 +290,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         u = 0;
         for (int i = 0; i < n; i += 1) {
           u = (((int)words1[astart + i]) & 0xffff) + (((int)words2[bstart +
-                              i]) & 0xffff) + (short)(u >> 16);
+                    i]) & 0xffff) + (short)(u >> 16);
           c[cstart + i] = (short)u;
         }
         return ((int)u >> 16) & 0xffff;
@@ -312,7 +312,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         int cm1 = words1Count - 1;
         for (int i = 0; i < cm1; i += 1) {
           u = (((int)words1[astart]) & 0xffff) - (((int)words2[bstart]) &
-                              0xffff) - (int)((u >> 31) & 1);
+                    0xffff) - (int)((u >> 31) & 1);
           c[cstart++] = (short)u;
           ++astart;
           ++bstart;
@@ -338,7 +338,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         int cm1 = words2Count - 1;
         for (int i = 0; i < cm1; i += 1) {
           u = (((int)words1[astart]) & 0xffff) - (((int)words2[bstart]) &
-                              0xffff) - (int)((u >> 31) & 1);
+                    0xffff) - (int)((u >> 31) & 1);
           c[cstart++] = (short)u;
           ++astart;
           ++bstart;
@@ -389,12 +389,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         u = 0;
         for (int i = 0; i < n; i += 2) {
           u = (((int)words1[astart]) & 0xffff) - (((int)words2[bstart]) &
-                              0xffff) - (int)((u >> 31) & 1);
+                    0xffff) - (int)((u >> 31) & 1);
           c[cstart++] = (short)u;
           ++astart;
           ++bstart;
           u = (((int)words1[astart]) & 0xffff) - (((int)words2[bstart]) &
-                              0xffff) - (int)((u >> 31) & 1);
+                    0xffff) - (int)((u >> 31) & 1);
           c[cstart++] = (short)u;
           ++astart;
           ++bstart;
@@ -418,7 +418,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         u = 0;
         for (int i = 0; i < n; i += 1) {
           u = (((int)words1[astart]) & 0xffff) - (((int)words2[bstart]) &
-                              0xffff) - (int)((u >> 31) & 1);
+                    0xffff) - (int)((u >> 31) & 1);
           c[cstart++] = (short)u;
           ++astart;
           ++bstart;
@@ -481,19 +481,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       {
         int p; short c; int d; int e;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart]) &
-                              0xffff); result[rstart] = (short)p; e = ((int)p >>
-                              16) & 0xffff;
+                    0xffff); result[rstart] = (short)p; e = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 1]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<=
           1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 1] = c;
+                    0xffff); result[rstart + 1] = c;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              1]) & 0xffff);
+                    1]) & 0xffff);
         p += e; result[rstart + 2] = (short)p; result[rstart + 3] = (short)(p >>
-                              16);
+                    16);
       }
     }
 
@@ -505,56 +505,56 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       {
         int p; short c; int d; int e;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart]) &
-                              0xffff); result[rstart] = (short)p; e = ((int)p >>
-                              16) & 0xffff;
+                    0xffff); result[rstart] = (short)p; e = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 1]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<=
           1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 1] = c;
+                    0xffff); result[rstart + 1] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 2]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<=
           1;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              1]) & 0xffff);
+                    1]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 2] = c;
+                    0xffff); result[rstart + 2] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 3]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              2]) & 0xffff);
+                    2]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 3] = c;
+                    0xffff); result[rstart + 3] = c;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    3]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<= 1;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              2]) & 0xffff);
+                    2]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 4] = c;
+                    0xffff); result[rstart + 4] = c;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    3]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + (2 * 4) - 3] = c;
+                    0xffff); result[rstart + (2 * 4) - 3] = c;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff);
+                    3]) & 0xffff);
         p += e; result[rstart + 6] = (short)p; result[rstart + 7] = (short)(p >>
-                              16);
+                    16);
       }
     }
 
@@ -566,174 +566,174 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       {
         int p; short c; int d; int e;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart]) &
-                              0xffff); result[rstart] = (short)p; e = ((int)p >>
-                              16) & 0xffff;
+                    0xffff); result[rstart] = (short)p; e = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 1]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<=
           1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 1] = c;
+                    0xffff); result[rstart + 1] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 2]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<=
           1;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              1]) & 0xffff);
+                    1]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 2] = c;
+                    0xffff); result[rstart + 2] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 3]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              2]) & 0xffff);
+                    2]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 3] = c;
+                    0xffff); result[rstart + 3] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 4]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff);
+                    3]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              2]) & 0xffff);
+                    2]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 4] = c;
+                    0xffff); result[rstart + 4] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 5]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              4]) & 0xffff);
+                    4]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff);
+                    3]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 5] = c;
+                    0xffff); result[rstart + 5] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 6]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              5]) & 0xffff);
+                    5]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              4]) & 0xffff);
+                    4]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              3]) & 0xffff);
+                    3]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 6] = c;
+                    0xffff); result[rstart + 6] = c;
         p = (((int)words1[astart]) & 0xffff) * (((int)words1[astart + 7]) &
-                              0xffff); c = (short)p; d = ((int)p >> 16) &
+                    0xffff); c = (short)p; d = ((int)p >> 16) &
           0xffff;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              5]) & 0xffff);
+                    5]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              4]) & 0xffff);
+                    4]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 7] = c;
+                    0xffff); result[rstart + 7] = c;
         p = (((int)words1[astart + 1]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              5]) & 0xffff);
+                    5]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         p = (((int)words1[astart + 4]) & 0xffff) * (((int)words1[astart +
-                              4]) & 0xffff);
+                    4]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 8] = c;
+                    0xffff); result[rstart + 8] = c;
         p = (((int)words1[astart + 2]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         p = (((int)words1[astart + 4]) & 0xffff) * (((int)words1[astart +
-                              5]) & 0xffff);
+                    5]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 9] = c;
+                    0xffff); result[rstart + 9] = c;
         p = (((int)words1[astart + 3]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart + 4]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         p = (((int)words1[astart + 5]) & 0xffff) * (((int)words1[astart +
-                              5]) & 0xffff);
+                    5]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 10] = c;
+                    0xffff); result[rstart + 10] = c;
         p = (((int)words1[astart + 4]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         p = (((int)words1[astart + 5]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff; d = (int)((d << 1) + (((int)c >> 15) &
-                              1)); c <<= 1;
+                    1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 11] = c;
+                    0xffff); result[rstart + 11] = c;
         p = (((int)words1[astart + 5]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<= 1;
         p = (((int)words1[astart + 6]) & 0xffff) * (((int)words1[astart +
-                              6]) & 0xffff);
+                    6]) & 0xffff);
         p += ((int)c) & 0xffff; c = (short)p;
         d += ((int)p >> 16) & 0xffff;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 12] = c;
+                    0xffff); result[rstart + 12] = c;
         p = (((int)words1[astart + 6]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff); c = (short)p; d = ((int)p >>
-                              16) & 0xffff;
+                    7]) & 0xffff); c = (short)p; d = ((int)p >>
+                    16) & 0xffff;
         d = (int)((d << 1) + (((int)c >> 15) & 1)); c <<= 1;
         e += ((int)c) & 0xffff; c = (short)e; e = d + (((int)e >> 16) &
-                              0xffff); result[rstart + 13] = c;
+                    0xffff); result[rstart + 13] = c;
         p = (((int)words1[astart + 7]) & 0xffff) * (((int)words1[astart +
-                              7]) & 0xffff);
+                    7]) & 0xffff);
         p += e; result[rstart + 14] = (short)p; result[rstart + 15] =
           (short)(p >> 16);
       }
@@ -766,7 +766,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         d += ((int)p >> 16) & 0xffff; result[rstart + 1] = c;
         p = a1 * b1;
         p += d; result[rstart + 2] = (short)p; result[rstart + 3] = (short)(p >>
-                              16);
+                    16);
       }
     }
 
@@ -798,7 +798,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * b0;
@@ -809,12 +809,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
 
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * b0;
@@ -822,30 +822,30 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         d += ((int)p >> 16) & SMask; result[rstart + 3] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 4] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 5] = c;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += d; result[rstart + 6] = (short)p; result[rstart + 7] = (short)(p >>
-                              16);
+                    16);
       }
     }
 
@@ -860,271 +860,271 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         int p; short c; int d;
         int SMask = ShortMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart]) &
-                              SMask); c = (short)p; d = ((int)p >> 16) &
+                    SMask); c = (short)p; d = ((int)p >> 16) &
           SMask;
         result[rstart] = c; c = (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 1]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 1] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 2]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 2] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 3]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 3] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 4]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 4] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 5]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 5] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 6]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 6] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart]) & SMask) * (((int)words2[bstart + 7]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart]) &
-                              SMask);
+                    SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 7] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 1]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              1]) & SMask);
+                    1]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 8] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 2]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              2]) & SMask);
+                    2]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 9] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 3]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              3]) & SMask);
+                    3]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 10] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 4]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              4]) & SMask);
+                    4]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 11] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 5]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              5]) & SMask);
+                    5]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 12] = c; c =
           (short)d; d = ((int)d >> 16) & SMask;
         p = (((int)words1[astart + 6]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              6]) & SMask);
+                    6]) & SMask);
         p += ((int)c) & SMask; c = (short)p;
         d += ((int)p >> 16) & SMask; result[rstart + 13] = c;
         p = (((int)words1[astart + 7]) & SMask) * (((int)words2[bstart +
-                              7]) & SMask);
+                    7]) & SMask);
         p += d; result[rstart + 14] = (short)p; result[rstart + 15] =
           (short)(p >> 16);
       }
@@ -1242,7 +1242,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             count2) > 0 ? 0 : count2;
           // Absolute value of low part minus high part of words1
           int tmpvar = (int)(words1Start + (count2 ^
-                              offset2For1));
+                    offset2For1));
           SubtractOneByOne(
             resultArr,
             resultStart,
@@ -1826,7 +1826,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
       if (words1Count == 1 || (words1Count == 2 && words1[words1Start + 1] ==
-                              0)) {
+                    0)) {
         switch (words1[words1Start]) {
           case 0:
             // words1 is zero, so result is 0
@@ -1995,7 +1995,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             words1Count);
         } else if (words1Count + 1 == words2Count ||
                    (words1Count + 2 == words2Count && words2[words2Start +
-                              words2Count - 1] == 0)) {
+                    words2Count - 1] == 0)) {
           java.util.Arrays.fill(resultArr, resultStart, (resultStart)+(words1Count + words2Count), (short)0);
           // Multiply the low parts of each operand
           SameSizeMultiply(
@@ -2091,7 +2091,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         tmpInt = dividendHigh >> 31;
         dividendHigh <<= 1;
         dividendHigh = ((int)(dividendHigh | ((int)((dividendLow >>
-                              31) & 1))));
+                    31) & 1))));
         dividendLow <<= 1;
         tmpInt |= dividendHigh;
         // unsigned greater-than-or-equal check
@@ -2103,8 +2103,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
       }
       return returnRemainder ? ((short)(((int)dividendHigh) &
-                              0xffff)) : ((short)(((int)dividendLow) &
-                              0xffff));
+                    0xffff)) : ((short)(((int)dividendLow) &
+                    0xffff));
     }
 
     private static short DivideUnsigned(int x, short y) {
@@ -2154,9 +2154,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         words1[words1Start + 2] += GetHighHalf(u);
         while (words1[words1Start + 2] != 0 ||
                (((int)words1[words1Start + 1]) & 0xffff) > (((int)valueB1) &
-                              0xffff) || (words1[words1Start + 1] == valueB1 &&
-                           (((int)words1[words1Start]) & 0xffff) >=
-                           (((int)valueB0) & 0xffff))) {
+                    0xffff) || (words1[words1Start + 1] == valueB1 &&
+                    (((int)words1[words1Start]) & 0xffff) >=
+                    (((int)valueB0) & 0xffff))) {
           u = (((int)words1[words1Start]) & 0xffff) - valueB0int;
           words1[words1Start] = GetLowHalf(u);
           u = (((int)words1[words1Start + 1]) & 0xffff) - valueB1int -
@@ -2226,12 +2226,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             int valueA1B1 = valueA1 * valueB1;
             int tempInt;
             tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
-                              0xffff) + (((int)valueA1B1) & 0xffff);
+                    0xffff) + (((int)valueA1B1) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
             tempInt = valueA1B1 + (((int)(tempInt >> 16)) & 0xffff) +
               a0b0high + (((int)(d >> 16)) & 0xffff) + (((int)(valueA1B1 >>
-                              16)) & 0xffff) - (((int)s) & 0xffff);
+                    16)) & 0xffff) - (((int)s) & 0xffff);
 
             c[csi + 2] = (short)(((int)tempInt) & 0xffff);
             c[csi + 3] = (short)(((int)(tempInt >> 16)) & 0xffff);
@@ -2247,7 +2247,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             } else {
               s = (short)0;
               d = (((int)valueA0 - valueA1) & 0xffff) * (((int)valueB1 -
-                              valueB0) & 0xffff);
+                    valueB0) & 0xffff);
             }
             int valueA0B0 = valueA0 * valueB0;
             int a0b0high = (valueA0B0 >> 16) & 0xffff;
@@ -2256,12 +2256,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             int valueA1B1 = valueA1 * valueB1;
             int tempInt;
             tempInt = a0b0high + (((int)valueA0B0) & 0xffff) + (((int)d) &
-                              0xffff) + (((int)valueA1B1) & 0xffff);
+                    0xffff) + (((int)valueA1B1) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
             tempInt = valueA1B1 + (((int)(tempInt >> 16)) & 0xffff) +
               a0b0high + (((int)(d >> 16)) & 0xffff) + (((int)(valueA1B1 >>
-                              16)) & 0xffff) - (((int)s) & 0xffff);
+                    16)) & 0xffff) - (((int)s) & 0xffff);
 
             c[csi + 2] = (short)(((int)tempInt) & 0xffff);
             c[csi + 3] = (short)(((int)(tempInt >> 16)) & 0xffff);
@@ -2307,7 +2307,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             int a1b1low = valueA1B1 & 0xffff;
             int a1b1high = ((int)(valueA1B1 >> 16)) & 0xffff;
             tempInt = (((int)(tempInt >> 16)) & 0xffff) + (((int)valueA0B0) &
-                              0xffff) + (((int)d) & 0xffff) + a1b1low +
+                    0xffff) + (((int)d) & 0xffff) + a1b1low +
               (((int)c[csi + 1]) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
@@ -2335,7 +2335,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             } else {
               s = (short)0;
               d = (((int)valueA0 - valueA1) & 0xffff) * (((int)valueB1 -
-                              valueB0) & 0xffff);
+                    valueB0) & 0xffff);
             }
             int valueA0B0 = valueA0 * valueB0;
             int a0b0high = (valueA0B0 >> 16) & 0xffff;
@@ -2347,7 +2347,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             int a1b1low = valueA1B1 & 0xffff;
             int a1b1high = (valueA1B1 >> 16) & 0xffff;
             tempInt = (((int)(tempInt >> 16)) & 0xffff) + (((int)valueA0B0) &
-                              0xffff) + (((int)d) & 0xffff) + a1b1low +
+                    0xffff) + (((int)d) & 0xffff) + a1b1low +
               (((int)c[csi + 1]) & 0xffff);
             c[csi + 1] = (short)(((int)tempInt) & 0xffff);
 
@@ -2411,7 +2411,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         // copy words2 into TB and normalize it so that TB has highest bit
         // set to 1
         int shiftWords = (short)(words2[words2Start + words2Count - 1] == 0 ?
-                              1 : 0);
+                    1 : 0);
         tempArr[valueTBstart] = (short)0;
         tempArr[valueTBstart + words2Count - 1] = (short)0;
         System.arraycopy(
@@ -2421,7 +2421,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           (int)(valueTBstart + shiftWords),
           words2Count - shiftWords);
         short shiftBits = (short)((short)16 - BitPrecision(tempArr[valueTBstart +
-                              words2Count - 1]));
+                    words2Count - 1]));
         ShiftWordsLeftByBits(
           tempArr,
           valueTBstart,
@@ -2476,9 +2476,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
 
         short valueBT0 = (short)(tempArr[valueTBstart + words2Count - 2] +
-                              (short)1);
+                    (short)1);
         short valueBT1 = (short)(tempArr[valueTBstart + words2Count - 1] +
-                              (short)(valueBT0 == (short)0 ? 1 : 0));
+                    (short)(valueBT0 == (short)0 ? 1 : 0));
 
         // start reducing valueTA mod TB, 2 words at a time
         short[] valueTAtomic = new short[4];
@@ -2603,21 +2603,30 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Initializes a BigInteger object from an array of bytes.
-     * @param bytes A byte array. Can be empty, in which case the return value is
-     * 0.
+     * @param bytes A byte array.
+     * @param littleEndian A Boolean object.
+     * @return A BigInteger object.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @deprecated Renamed to 'fromBytes'.
+ */
+@Deprecated
+    public static BigInteger fromByteArray(byte[] bytes, boolean littleEndian) {
+      return fromBytes(bytes, littleEndian);
+    }
+
+    /**
+     * Initializes a BigInteger object from an array of bytes.
+     * @param bytes A byte array.
      * @param littleEndian A Boolean object.
      * @return A BigInteger object.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
-    public static BigInteger fromByteArray(byte[] bytes, boolean littleEndian) {
+    public static BigInteger fromBytes(byte[] bytes, boolean littleEndian) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
       if (bytes.length == 0) {
         return BigInteger.ZERO;
-      }
-      if (bytes == null) {
-        throw new NullPointerException("bytes");
       }
       int len = bytes.length;
       int wordLength = ((int)len + 1) >> 1;
@@ -2658,10 +2667,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         --newwordCount;
       }
       return (newwordCount == 0) ? BigInteger.ZERO : (new
-                              BigInteger(
-                              newwordCount,
-                              newreg,
-                              newnegative));
+                    BigInteger(
+                    newwordCount,
+                    newreg,
+                    newnegative));
     }
 
     private static short[] GrowForCarry(short[] a, short carry) {
@@ -2685,7 +2694,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * object's value.
      * @param index Zero based index of the bit to test. 0 means the least
      * significant bit.
-     * @return True if the specified bit is set; otherwise, false.
+     * @return True if a bit is set in the two's-complement representation of this
+     * object's value; otherwise, false.
      */
     public boolean testBit(int index) {
       if (index < 0) {
@@ -2718,15 +2728,26 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     private boolean GetUnsignedBit(int n) {
       return ((n >> 4) < this.words.length) && ((boolean)(((this.words[(n >>
-                              4)] >> (int)(n & 15)) & 1) != 0));
+                    4)] >> (int)(n & 15)) & 1) != 0));
     }
 
     /**
      * Returns a byte array of this object&#x27;s value.
      * @param littleEndian A Boolean object.
-     * @return A byte array that represents the value of this object.
-     */
+     * @return A byte array.
+     * @deprecated Renamed to 'toBytes'.
+ */
+@Deprecated
     public byte[] toByteArray(boolean littleEndian) {
+      return this.toBytes(true);
+    }
+
+    /**
+     * Returns a byte array of this object&#x27;s value.
+     * @param littleEndian A Boolean object.
+     * @return A byte array.
+     */
+    public byte[] toBytes(boolean littleEndian) {
       int sign = this.signum();
       if (sign == 0) {
         return new byte[] { (byte)0  };
@@ -2811,7 +2832,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int shiftBits = (int)(numberBits & 15);
       if (!this.negative) {
         short[] ret = new short[RoundupSize(numWords +
-                              BitsToWords((int)numberBits))];
+                    BitsToWords((int)numberBits))];
         System.arraycopy(this.words, 0, ret, shiftWords, numWords);
         ShiftWordsLeftByBits(
           ret,
@@ -2821,7 +2842,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return new BigInteger(CountWords(ret, ret.length), ret, false);
       } else {
         short[] ret = new short[RoundupSize(numWords +
-                              BitsToWords((int)numberBits))];
+                    BitsToWords((int)numberBits))];
         System.arraycopy(this.words, 0, ret, 0, numWords);
         TwosComplement(ret, 0, (int)ret.length);
         ShiftWordsLeftByWords(ret, 0, numWords + shiftWords, shiftWords);
@@ -3056,13 +3077,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Converts this object's value to a 32-bit signed integer. To make the
-     * conversion intention clearer, use the <code>intValueChecked</code> and
-     * <code>intValueUnchecked</code> methods instead.
+     * Converts this object's value to a 32-bit signed integer.
      * @return A 32-bit signed integer.
      * @throws ArithmeticException This object's value is too big to fit a 32-bit
      * signed integer.
-     */
+     * @deprecated To make the conversion intention clearer use the 'intValueChecked' and
+ *'intValueUnchecked' methods instead. Replace 'intValue' with
+ *'intValueChecked' in your code.
+ */
+@Deprecated
     public int intValue() {
       return this.intValueChecked();
     }
@@ -3098,13 +3121,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Converts this object's value to a 64-bit signed integer. To make the
-     * conversion intention clearer, use the <code>longValueChecked</code> and
-     * <code>longValueUnchecked</code> methods instead.
+     * Converts this object's value to a 64-bit signed integer.
      * @return A 64-bit signed integer.
      * @throws ArithmeticException This object's value is too big to fit a 64-bit
      * signed integer.
-     */
+     * @deprecated To make the conversion intention clearer use the 'longValueChecked' and
+ *'longValueUnchecked' methods instead. Replace 'longValue' with
+ *'longValueChecked' in your code.
+ */
+@Deprecated
     public long longValue() {
       return this.longValueChecked();
     }
@@ -3158,7 +3183,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public BigInteger pow(int powerSmall) {
       if (powerSmall < 0) {
         throw new IllegalArgumentException("powerSmall (" + powerSmall +
-                              ") is less than 0");
+                    ") is less than 0");
       }
       BigInteger thisVar = this;
       if (powerSmall == 0) {
@@ -3334,7 +3359,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     private String SmallValueToString() {
-      long value = this.longValue();
+      long value = this.longValueChecked();
       if (value == Long.MIN_VALUE) {
         return "-9223372036854775808";
       }
@@ -3401,7 +3426,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return 1;
       }
       if (this.HasSmallValue()) {
-        long value = this.longValue();
+        long value = this.longValueChecked();
         if (value == Long.MIN_VALUE) {
           return 19;
         }
@@ -3410,19 +3435,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
         if (value >= 1000000000L) {
           return (value >= 1000000000000000000L) ? 19 : ((value >=
-                100000000000000000L) ? 18 : ((value >= 10000000000000000L) ?
-                              17 : ((value >= 1000000000000000L) ? 16 :
-                              ((value >= 100000000000000L) ? 15 : ((value
-                              >= 10000000000000L) ?
-                              14 : ((value >= 1000000000000L) ? 13 : ((value
-                >= 100000000000L) ? 12 : ((value >= 10000000000L) ?
-                              11 : ((value >= 1000000000L) ? 10 : 9)))))))));
+                   100000000000000000L) ? 18 : ((value >= 10000000000000000L) ?
+                    17 : ((value >= 1000000000000000L) ? 16 :
+                    ((value >= 100000000000000L) ? 15 : ((value
+                    >= 10000000000000L) ?
+                    14 : ((value >= 1000000000000L) ? 13 : ((value
+                    >= 100000000000L) ? 12 : ((value >= 10000000000L) ?
+                    11 : ((value >= 1000000000L) ? 10 : 9)))))))));
         } else {
           int v2 = (int)value;
           return (v2 >= 100000000) ? 9 : ((v2 >= 10000000) ? 8 : ((v2 >=
-                              1000000) ? 7 : ((v2 >= 100000) ? 6 : ((v2
-                              >= 10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ?
-                3 : ((v2 >= 10) ? 2 : 1)))))));
+                    1000000) ? 7 : ((v2 >= 100000) ? 6 : ((v2
+                    >= 10000) ? 5 : ((v2 >= 1000) ? 4 : ((v2 >= 100) ?
+                    3 : ((v2 >= 10) ? 2 : 1)))))));
         }
       }
       int bitlen = this.getUnsignedBitLength();
@@ -3503,7 +3528,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           while ((wci--) > 0) {
             int curValue = ((int)dividend[wci]) & 0xffff;
             int currentDividend = ((int)(curValue |
-                              ((int)remainderShort << 16)));
+                    ((int)remainderShort << 16)));
             quo = currentDividend / 10000;
             if (!firstdigit && quo != 0) {
               firstdigit = true;
@@ -3578,11 +3603,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public String toRadixString(int radix) {
       if (radix < 2) {
         throw new IllegalArgumentException("radix (" + radix +
-                              ") is less than 2");
+                    ") is less than 2");
       }
       if (radix > 36) {
         throw new IllegalArgumentException("radix (" + radix +
-                              ") is more than 36");
+                    ") is more than 36");
       }
       if (this.wordCount == 0) {
         return "0";
@@ -3628,7 +3653,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             // Divide by 10000
             while ((wci--) > 0) {
               int currentDividend = ((int)((((int)tempReg[wci]) &
-                              0xffff) | ((int)remainderShort << 16)));
+                    0xffff) | ((int)remainderShort << 16)));
               quo = currentDividend / 10000;
               tempReg[wci] = ((short)quo);
               rem = currentDividend - (10000 * quo);
@@ -3745,7 +3770,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             // Divide by radix
             while ((wci--) > 0) {
               int currentDividend = ((int)((((int)tempReg[wci]) &
-                              0xffff) | ((int)remainderShort << 16)));
+                    0xffff) | ((int)remainderShort << 16)));
               quo = currentDividend / radix;
               tempReg[wci] = ((short)quo);
               rem = currentDividend - (radix * quo);
@@ -3895,31 +3920,31 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       if (radix < 2) {
         throw new IllegalArgumentException("radix (" + radix +
-                              ") is less than 2");
+                    ") is less than 2");
       }
       if (radix > 36) {
         throw new IllegalArgumentException("radix (" + radix +
-                              ") is more than 36");
+                    ") is more than 36");
       }
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index + ") is less than " +
-                              "0");
+                    "0");
       }
       if (index > str.length()) {
         throw new IllegalArgumentException("index (" + index + ") is more than " +
-                              str.length());
+                    str.length());
       }
       if (endIndex < 0) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
-                              ") is less than 0");
+                    ") is less than 0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
-                              ") is more than " + str.length());
+                    ") is more than " + str.length());
       }
       if (endIndex < index) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
-                              ") is less than " + index);
+                    ") is less than " + index);
       }
       if (index == endIndex) {
         throw new NumberFormatException("No digits");
@@ -3974,15 +3999,29 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         while (index < endIndex) {
           char c = str.charAt(index + 3);
           int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          if (digit >= 16) {
+            throw new NumberFormatException("Illegal character found");
+          }
           int word = digit;
           c = str.charAt(index + 2);
           digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          if (digit >= 16) {
+            throw new NumberFormatException("Illegal character found");
+          }
+
           word |= digit << 4;
           c = str.charAt(index + 1);
           digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          if (digit >= 16) {
+            throw new NumberFormatException("Illegal character found");
+          }
+
           word |= digit << 8;
           c = str.charAt(index);
           digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          if (digit >= 16) {
+            throw new NumberFormatException("Illegal character found");
+          }
           word |= digit << 12;
           index += 4;
           bigint[currentDigit] = ((short)word);
@@ -4030,7 +4069,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
               if (d <= maxShortPlusOneMinusRadix) {
                 bigint[0] = ((short)(d + digit));
               } else if (Increment(bigint, 0, bigint.length, (short)digit) !=
-                         0) {
+                    0) {
                 bigint = GrowForCarry(bigint, (short)1);
               }
             }
@@ -4060,21 +4099,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           retSetBit += 16;
         } else {
           return (((c << 15) & 0xffff) != 0) ? (retSetBit + 0) : ((((c <<
-                              14) & 0xffff) != 0) ? (retSetBit + 1) : ((((c <<
-                              13) & 0xffff) != 0) ? (retSetBit + 2) : ((((c <<
-                 12) & 0xffff) != 0) ? (retSetBit + 3) : ((((c << 11) &
-                0xffff) != 0) ? (retSetBit +
-                              4) : ((((c << 10) & 0xffff) != 0) ? (retSetBit +
-                     5) : ((((c << 9) & 0xffff) != 0) ? (retSetBit + 6) :
-                              ((((c <<
+                    14) & 0xffff) != 0) ? (retSetBit + 1) : ((((c <<
+                    13) & 0xffff) != 0) ? (retSetBit + 2) : ((((c <<
+                    12) & 0xffff) != 0) ? (retSetBit + 3) : ((((c << 11) &
+                    0xffff) != 0) ? (retSetBit +
+                    4) : ((((c << 10) & 0xffff) != 0) ? (retSetBit +
+                    5) : ((((c << 9) & 0xffff) != 0) ? (retSetBit + 6) :
+                    ((((c <<
                 8) & 0xffff) != 0) ? (retSetBit + 7) : ((((c << 7) & 0xffff) !=
-                0) ? (retSetBit + 8) : ((((c << 6) & 0xffff) !=
-                              0) ? (retSetBit + 9) : ((((c <<
-                              5) & 0xffff) != 0) ? (retSetBit + 10) : ((((c <<
-                  4) & 0xffff) != 0) ? (retSetBit + 11) : ((((c << 3) &
-                0xffff) != 0) ? (retSetBit + 12) : ((((c << 2) & 0xffff) !=
-                              0) ? (retSetBit + 13) : ((((c << 1) & 0xffff) !=
-                0) ? (retSetBit + 14) : (retSetBit + 15)))))))))))))));
+                    0) ? (retSetBit + 8) : ((((c << 6) & 0xffff) !=
+                    0) ? (retSetBit + 9) : ((((c <<
+                    5) & 0xffff) != 0) ? (retSetBit + 10) : ((((c <<
+                    4) & 0xffff) != 0) ? (retSetBit + 11) : ((((c << 3) &
+                    0xffff) != 0) ? (retSetBit + 12) : ((((c << 2) & 0xffff) !=
+                    0) ? (retSetBit + 13) : ((((c << 1) & 0xffff) !=
+                    0) ? (retSetBit + 14) : (retSetBit + 15)))))))))))))));
         }
       }
       return 0;
@@ -4144,11 +4183,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param pow Another BigInteger object.
      * @param mod A BigInteger object. (3).
      * @return A BigInteger object.
-     * @throws NullPointerException The parameter {@code pow} is null.
+     * @throws NullPointerException The parameter {@code pow} or {@code mod} is
+     * null.
      */
     public BigInteger ModPow(BigInteger pow, BigInteger mod) {
       if (pow == null) {
         throw new NullPointerException("pow");
+      }
+      if (mod == null) {
+        throw new NullPointerException("mod");
       }
       if (pow.signum() < 0) {
         throw new IllegalArgumentException("pow (" + pow + ") is less than 0");
@@ -4173,7 +4216,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return True if this object and another object are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       BigInteger other = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
@@ -4196,7 +4239,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Returns the hash code for this instance.
-     * @return A 32-bit hash code.
+     * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {
       int hashCodeValue = 0;
@@ -4213,7 +4256,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Adds this object and another object.
-     * @param bigintAugend A BigInteger object.
+     * @param bigintAugend Another BigInteger object.
      * @return The sum of the two objects.
      * @throws NullPointerException The parameter {@code bigintAugend} is null.
      */
@@ -4260,8 +4303,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if ((!this.negative) == (!bigintAugend.negative)) {
         sumreg = new short[(
           int)Math.max(
-                             this.words.length,
-                             bigintAugend.words.length)];
+                    this.words.length,
+                    bigintAugend.words.length)];
         // both nonnegative or both negative
         int carry;
         int addendCount = this.wordCount;
@@ -4356,8 +4399,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       short borrow;
       short[] diffReg = new short[(
         int)Math.max(
-                              minuend.words.length,
-                              subtrahend.words.length)];
+                    minuend.words.length,
+                    subtrahend.words.length)];
       if (words1Size == words2Size) {
         if (Compare(minuend.words, 0, subtrahend.words, 0, (int)words1Size) >=
             0) {
@@ -4430,7 +4473,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Subtracts a BigInteger from this BigInteger.
-     * @param subtrahend A BigInteger object.
+     * @param subtrahend Another BigInteger object.
      * @return The difference of the two objects.
      * @throws NullPointerException The parameter {@code subtrahend} is null.
      */
@@ -4458,7 +4501,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Multiplies this instance by the value of a BigInteger object.
-     * @param bigintMult A BigInteger object.
+     * @param bigintMult Another BigInteger object.
      * @return The product of the two objects.
      * @throws NullPointerException The parameter {@code bigintMult} is null.
      */
@@ -4594,7 +4637,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int quo, rem;
       while ((i--) > 0) {
         int currentDividend = ((int)((((int)dividendReg[i]) & 0xffff) |
-                              ((int)remainderShort << 16)));
+                    ((int)remainderShort << 16)));
         if ((currentDividend >> 31) == 0) {
           quo = currentDividend / idivisor;
           quotientReg[i] = ((short)quo);
@@ -4625,7 +4668,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       while ((i--) > 0) {
         int currentDividend =
           ((int)((((int)dividendReg[dividendStart + i]) & 0xffff) |
-                          ((int)remainderShort << 16)));
+                    ((int)remainderShort << 16)));
         if ((currentDividend >> 31) == 0) {
           quo = currentDividend / idivisor;
           quotientReg[quotientStart + i] = ((short)quo);
@@ -4647,7 +4690,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * is 0, it will be negative if this object is positive and the other is
      * negative, or vice versa, and will be positive if both are positive or
      * both are negative.
-     * @param bigintDivisor A BigInteger object.
+     * @param bigintDivisor Another BigInteger object.
      * @return The quotient of the two objects.
      * @throws ArithmeticException The divisor is zero.
      * @throws NullPointerException The parameter {@code bigintDivisor} is null.
@@ -4670,8 +4713,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       if (words1Size <= 2 && words2Size <= 2 && this.canFitInInt() &&
           bigintDivisor.canFitInInt()) {
-        int valueASmall = this.intValue();
-        int valueBSmall = bigintDivisor.intValue();
+        int valueASmall = this.intValueChecked();
+        int valueBSmall = bigintDivisor.intValueChecked();
         if (valueASmall != Integer.MIN_VALUE || valueBSmall != -1) {
           int result = valueASmall / valueBSmall;
           return BigInteger.valueOf(result);
@@ -4725,7 +4768,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Divides this object by another big integer and returns the quotient and
      * remainder.
-     * @param divisor The divisor.
+     * @param divisor A BigInteger object.
      * @return An array with two big integers: the first is the quotient, and the
      * second is the remainder.
      * @throws NullPointerException The parameter divisor is null.
@@ -4797,7 +4840,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       words2Size += words2Size & 1;
       short[] bigRemainderreg = new short[RoundupSize((int)words2Size)];
       short[] quotientreg = new short[RoundupSize((int)(words1Size - words2Size +
-                              2))];
+                    2))];
       short[] tempbuf = new short[words1Size + (3 * (words2Size + 2))];
       Divide(
         bigRemainderreg,
@@ -4854,7 +4897,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * the absolute value of this object is divided by the absolute value of
      * the other object; the remainder has the same sign (positive or
      * negative) as this object.
-     * @param divisor A BigInteger object.
+     * @param divisor Another BigInteger object.
      * @return The remainder of the two objects.
      * @throws NullPointerException The parameter {@code divisor} is null.
      * @throws ArithmeticException Attempted to divide by zero.
@@ -5012,7 +5055,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       BigInteger thisValue = this;
       int powerBits = (thisValue.getUnsignedBitLength() + 1) / 2;
       if (thisValue.canFitInInt()) {
-        int smallValue = thisValue.intValue();
+        int smallValue = thisValue.intValueChecked();
         // No need to check for zero; already done above
         int smallintX = 0;
         int smallintY = 1 << powerBits;

@@ -157,7 +157,7 @@ bigintRem = divrem[1]; }
         BigInteger bigintA = BigInteger.valueOf(a);
         BigInteger bigintB = BigInteger.valueOf(b);
         BigInteger bigintC = bigintA.divide(bigintB);
-        Assert.assertEquals(bigintC.intValue(), c);
+        Assert.assertEquals(bigintC.intValueChecked(), c);
       }
     }
 
@@ -166,9 +166,9 @@ bigintRem = divrem[1]; }
       Assert.assertEquals(1, BigInteger.ZERO.getDigitCount());
       BigInteger minValue = BigInteger.valueOf(Integer.MIN_VALUE);
       BigInteger minValueTimes2 = minValue.add(minValue);
-      Assert.assertEquals(Integer.MIN_VALUE, minValue.intValue());
+      Assert.assertEquals(Integer.MIN_VALUE, minValue.intValueChecked());
       try {
-        System.out.println(minValueTimes2.intValue());
+        System.out.println(minValueTimes2.intValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -177,7 +177,7 @@ bigintRem = divrem[1]; }
       }
       BigInteger verybig = BigInteger.ONE.shiftLeft(80);
       try {
-        System.out.println(verybig.intValue());
+        System.out.println(verybig.intValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -185,7 +185,7 @@ bigintRem = divrem[1]; }
         throw new IllegalStateException("", ex);
       }
       try {
-        System.out.println(verybig.longValue());
+        System.out.println(verybig.longValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -277,7 +277,7 @@ bigintRem = divrem[1]; }
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.fromByteArray(null, false);
+        BigInteger.fromBytes(null, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {

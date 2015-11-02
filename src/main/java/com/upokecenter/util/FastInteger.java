@@ -18,7 +18,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           throw new IllegalArgumentException("bigintVal's sign (" + bigintVal.signum() +
             ") is less than " + "0 ");
         }
-        byte[] bytes = bigintVal.toByteArray(true);
+        byte[] bytes = bigintVal.toBytes(true);
         int len = bytes.length;
         int newWordCount = Math.max(4, (len / 4) + 1);
         if (newWordCount > mnum.data.length) {
@@ -77,7 +77,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           bytes[(i * 4) + 3] = (byte)((this.data[i] >> 24) & 0xff);
         }
         bytes[bytes.length - 1] = (byte)0;
-        return BigInteger.fromByteArray(bytes, true);
+        return BigInteger.fromBytes(bytes, true);
       }
 
       int[] GetLastWordsInternal(int numWords32Bit) {
@@ -432,7 +432,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     static FastInteger FromBig(BigInteger bigintVal) {
       if (bigintVal.canFitInInt()) {
-        return new FastInteger(bigintVal.intValue());
+        return new FastInteger(bigintVal.intValueChecked());
       }
       if (bigintVal.signum() > 0) {
         FastInteger fi = new FastInteger(0);
@@ -454,7 +454,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         case 1:
           return this.mnum.ToInt32();
         case 2:
-          return this.largeValue.intValue();
+          return this.largeValue.intValueChecked();
         default: throw new IllegalStateException();
       }
     }
@@ -507,7 +507,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         bytes[(i * 4) + 3] = (byte)((words[i] >> 24) & 0xff);
       }
       bytes[bytes.length - 1] = (byte)0;
-      return BigInteger.fromByteArray(bytes, true);
+      return BigInteger.fromBytes(bytes, true);
     }
 
     static int[] GetLastWords(BigInteger bigint, int numWords32Bit) {
@@ -551,7 +551,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 BigInteger[] divrem=(this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-          int smallquo = bigquo.intValue();
+          int smallquo = bigquo.intValueChecked();
           this.integerMode = 2;
           this.largeValue = bigrem;
           return smallquo;
@@ -563,7 +563,7 @@ bigrem = divrem[1]; }
 BigInteger[] divrem=(this.AsBigInteger()).divideAndRemainder(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-        int smallquo = bigquo.intValue();
+        int smallquo = bigquo.intValueChecked();
         this.integerMode = 2;
         this.largeValue = bigrem;
         return smallquo;
@@ -740,7 +740,7 @@ bigrem = divrem[1]; }
     FastInteger AddBig(BigInteger bigintVal) {
       switch (this.integerMode) {
           case 0: {
-            return bigintVal.canFitInInt() ? this.AddInt(bigintVal.intValue()) :
+            return bigintVal.canFitInInt() ? this.AddInt(bigintVal.intValueChecked()) :
             this.Add(FastInteger.FromBig(bigintVal));
           }
         case 1:
@@ -774,10 +774,10 @@ bigrem = divrem[1]; }
         // Check if this value fits an int, except if
         // it's MinValue
         if (sign < 0 && bigintVal.compareTo(valueInt32MinValue) > 0) {
-          return this.AddInt(-(bigintVal.intValue()));
+          return this.AddInt(-(bigintVal.intValueChecked()));
         }
         if (sign > 0 && bigintVal.compareTo(valueInt32MaxValue) <= 0) {
-          return this.SubtractInt(bigintVal.intValue());
+          return this.SubtractInt(bigintVal.intValueChecked());
         }
         bigintVal = bigintVal.negate();
         return this.AddBig(bigintVal);
@@ -850,12 +850,12 @@ bigrem = divrem[1]; }
           case 1:
             this.largeValue = this.mnum.ToBigInteger();
             this.largeValue = this.largeValue.remainder(BigInteger.valueOf(divisor));
-            this.smallValue = this.largeValue.intValue();
+            this.smallValue = this.largeValue.intValueChecked();
             this.integerMode = 0;
             break;
           case 2:
             this.largeValue = this.largeValue.remainder(BigInteger.valueOf(divisor));
-            this.smallValue = this.largeValue.intValue();
+            this.smallValue = this.largeValue.intValueChecked();
             this.integerMode = 0;
             break;
           default:

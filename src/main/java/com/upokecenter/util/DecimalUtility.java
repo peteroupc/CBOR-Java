@@ -144,7 +144,7 @@ private DecimalUtility() {
         val = val.shiftLeft(1000000);
         bigShift = bigShift.subtract(valueBigShiftIteration);
       }
-      int lastshift = bigShift.intValue();
+      int lastshift = bigShift.intValueChecked();
       val = val.shiftLeft(lastshift);
       return val;
     }
@@ -269,7 +269,7 @@ private DecimalUtility() {
               this.outputs[i] = this.outputs[i - 1];
             }
             this.inputs[0] = input;
-            this.inputsInts[0] = input.canFitInInt() ? input.intValue() : -1;
+       this.inputsInts[0] = input.canFitInInt() ? input.intValueChecked() : -1;
             this.outputs[0] = output;
             ++this.size;
           } else {
@@ -280,7 +280,7 @@ private DecimalUtility() {
               this.outputs[i] = this.outputs[i - 1];
             }
             this.inputs[0] = input;
-            this.inputsInts[0] = input.canFitInInt() ? input.intValue() : -1;
+       this.inputsInts[0] = input.canFitInInt() ? input.intValueChecked() : -1;
             this.outputs[0] = output;
           }
         }
@@ -353,7 +353,7 @@ private DecimalUtility() {
         return BigInteger.ONE;
       }
       if (bigintExponent.compareTo(valueBigInt36) <= 0) {
-        return FindPowerOfTen(bigintExponent.intValue());
+        return FindPowerOfTen(bigintExponent.intValueChecked());
       }
       FastInteger intcurexp = FastInteger.FromBig(bigintExponent);
       BigInteger mantissa = BigInteger.ONE;
@@ -434,7 +434,7 @@ private DecimalUtility() {
         if (otherPower != null) {
           BigInteger otherPower0 = otherPower[0];
           BigInteger otherPower1 = otherPower[1];
-          precision -= otherPower0.intValue();
+          precision -= otherPower0.intValueChecked();
           if (first) {
             bigpow = otherPower[1];
           } else {
@@ -534,7 +534,7 @@ private DecimalUtility() {
         if (otherPower != null) {
           BigInteger otherPower0 = otherPower[0];
           BigInteger otherPower1 = otherPower[1];
-          precision -= otherPower0.intValue();
+          precision -= otherPower0.intValueChecked();
           if (first) {
             bigpow = otherPower[1];
           } else {

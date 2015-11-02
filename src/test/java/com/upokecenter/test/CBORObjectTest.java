@@ -38,7 +38,38 @@ import com.upokecenter.cbor.*;
     }
     @Test
     public void TestAddition() {
-      // not implemented yet
+      try {
+ CBORObject.Addition(null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Addition(CBORObject.FromObject(2), null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Addition(CBORObject.Null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Addition(CBORObject.FromObject(2), CBORObject.Null);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestAddTagHandler() {
@@ -193,8 +224,8 @@ import com.upokecenter.cbor.*;
 ).AsString()));
         if (numberinfo.get("byte").AsBoolean()) {
           Assert.assertEquals(
-           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-           ((int)cbornumber.AsByte()) & 0xff);
+    BigInteger.fromString(numberinfo.get("integer").AsString()).intValueChecked(),
+    ((int)cbornumber.AsByte()) & 0xff);
         } else {
           try {
             cbornumber.AsByte();
@@ -444,12 +475,12 @@ cbornumber.AsDouble());
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
-          CBORObject.FromObject(ExtendedDecimal.FromString(numberinfo.get("number"
-).AsString()));
+          CBORObject.FromObject(
+            ExtendedDecimal.FromString(numberinfo.get("number").AsString()));
         if (numberinfo.get("int16").AsBoolean()) {
           Assert.assertEquals(
-           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-           cbornumber.AsInt16());
+    BigInteger.fromString(numberinfo.get("integer").AsString()).intValueChecked(),
+    cbornumber.AsInt16());
         } else {
           try {
             cbornumber.AsInt16();
@@ -525,17 +556,17 @@ cbornumber.AsDouble());
         CBORObject cbornumbersingle = CBORObject.FromObject(edec.ToSingle());
         if (numberinfo.get("int32").AsBoolean()) {
           Assert.assertEquals(
-           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-           cbornumber.AsInt32());
+    BigInteger.fromString(numberinfo.get("integer").AsString()).intValueChecked(),
+    cbornumber.AsInt32());
           if (isdouble) {
             Assert.assertEquals(
-           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-           cbornumberdouble.AsInt32());
+    BigInteger.fromString(numberinfo.get("integer").AsString()).intValueChecked(),
+    cbornumberdouble.AsInt32());
           }
           if (issingle) {
             Assert.assertEquals(
-           BigInteger.fromString(numberinfo.get("integer").AsString()).intValue(),
-           cbornumbersingle.AsInt32());
+    BigInteger.fromString(numberinfo.get("integer").AsString()).intValueChecked(),
+    cbornumbersingle.AsInt32());
           }
         } else {
           try {
@@ -631,17 +662,17 @@ cbornumber.AsDouble());
         CBORObject cbornumbersingle = CBORObject.FromObject(edec.ToSingle());
         if (numberinfo.get("int64").AsBoolean()) {
           Assert.assertEquals(
-          BigInteger.fromString(numberinfo.get("integer").AsString()).longValue(),
-          cbornumber.AsInt64());
+   BigInteger.fromString(numberinfo.get("integer").AsString()).longValueChecked(),
+   cbornumber.AsInt64());
           if (isdouble) {
             Assert.assertEquals(
-          BigInteger.fromString(numberinfo.get("integer").AsString()).longValue(),
-          cbornumberdouble.AsInt64());
+   BigInteger.fromString(numberinfo.get("integer").AsString()).longValueChecked(),
+   cbornumberdouble.AsInt64());
           }
           if (issingle) {
             Assert.assertEquals(
-          BigInteger.fromString(numberinfo.get("integer").AsString()).longValue(),
-          cbornumbersingle.AsInt64());
+   BigInteger.fromString(numberinfo.get("integer").AsString()).longValueChecked(),
+   cbornumbersingle.AsInt64());
           }
         } else {
           try {
@@ -799,7 +830,7 @@ cbornumber.AsSingle());
 ).AsBoolean()) {
           if (!(cbornumber.CanFitInInt32()))Assert.fail();
           if (!(CBORObject.FromObject(cbornumber.AsInt32())
-                        .CanFitInInt32()))Assert.fail();
+                    .CanFitInInt32()))Assert.fail();
         } else {
           if (cbornumber.CanFitInInt32())Assert.fail();
         }
@@ -825,7 +856,7 @@ cbornumber.AsSingle());
 ).AsBoolean()) {
           if (!(cbornumber.CanFitInInt64()))Assert.fail();
           if (!(CBORObject.FromObject(cbornumber.AsInt64())
-                        .CanFitInInt64()))Assert.fail();
+                    .CanFitInInt64()))Assert.fail();
         } else {
           if (cbornumber.CanFitInInt64())Assert.fail();
         }
@@ -886,7 +917,7 @@ cbornumber.AsSingle());
       if (!(CBORObject.FromObject(0).CanTruncatedIntFitInInt32()))Assert.fail();
       if (CBORObject.True.CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.FromObject("")
-                     .CanTruncatedIntFitInInt32())Assert.fail();
+                    .CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.NewArray().CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.NewMap().CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.False.CanTruncatedIntFitInInt32())Assert.fail();
@@ -896,8 +927,8 @@ cbornumber.AsSingle());
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
-          CBORObject.FromObject(ExtendedDecimal.FromString(numberinfo.get("number"
-).AsString()));
+          CBORObject.FromObject(
+            ExtendedDecimal.FromString(numberinfo.get("number").AsString()));
         if (numberinfo.get("int32").AsBoolean()) {
           if (!(cbornumber.CanTruncatedIntFitInInt32()))Assert.fail();
         } else {
@@ -937,7 +968,7 @@ cbornumber.AsSingle());
       if (!(CBORObject.FromObject(0).CanTruncatedIntFitInInt64()))Assert.fail();
       if (CBORObject.True.CanTruncatedIntFitInInt64())Assert.fail();
       if (CBORObject.FromObject("")
-                     .CanTruncatedIntFitInInt64())Assert.fail();
+                    .CanTruncatedIntFitInInt64())Assert.fail();
       if (CBORObject.NewArray().CanTruncatedIntFitInInt64())Assert.fail();
       if (CBORObject.NewMap().CanTruncatedIntFitInInt64())Assert.fail();
       if (CBORObject.False.CanTruncatedIntFitInInt64())Assert.fail();
@@ -1048,7 +1079,38 @@ cbornumber.AsSingle());
     }
     @Test
     public void TestDivide() {
-      // not implemented yet
+      try {
+ CBORObject.Divide(null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Divide(CBORObject.FromObject(2), null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Divide(CBORObject.Null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Divide(CBORObject.FromObject(2), CBORObject.Null);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestEncodeToBytes() {
@@ -1480,9 +1542,12 @@ cbornumber.AsSingle());
       Assert.assertEquals(CBORObject.False, CBORObject.FromJSONString("false"));
       Assert.assertEquals(CBORObject.Null, CBORObject.FromJSONString("null"));
       Assert.assertEquals(5, CBORObject.FromJSONString(" 5 ").AsInt32());
-      Assert.assertEquals(
-        "/\b",
-        CBORObject.FromJSONString("\"\\/\\b\"").AsString());
+      {
+String stringTemp = CBORObject.FromJSONString("\"\\/\\b\"").AsString();
+Assert.assertEquals(
+"/\b",
+stringTemp);
+}
     }
     @Test
     public void TestFromObject() {
@@ -1862,7 +1927,16 @@ cbornumber.AsSingle());
     }
     @Test
     public void TestIsUndefined() {
-      // not implemented yet
+      if (CBORObject.True.isUndefined())Assert.fail();
+      if (CBORObject.FromObject("").isUndefined())Assert.fail();
+      if (CBORObject.NewArray().isUndefined())Assert.fail();
+      if (CBORObject.NewMap().isUndefined())Assert.fail();
+      if (CBORObject.False.isUndefined())Assert.fail();
+      if (CBORObject.Null.isUndefined())Assert.fail();
+      if (!(CBORObject.Undefined.isUndefined()))Assert.fail();
+      if (CBORObject.PositiveInfinity.isUndefined())Assert.fail();
+      if (CBORObject.NegativeInfinity.isUndefined())Assert.fail();
+      if (CBORObject.NaN.isUndefined())Assert.fail();
     }
     @Test
     public void TestIsZero() {
@@ -1922,7 +1996,38 @@ cbornumber.AsSingle());
     }
     @Test
     public void TestMultiply() {
-      // not implemented yet
+      try {
+ CBORObject.Multiply(null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Multiply(CBORObject.FromObject(2), null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Multiply(CBORObject.Null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Multiply(CBORObject.FromObject(2), CBORObject.Null);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestNegate() {
@@ -2003,8 +2108,8 @@ cbornumber.AsSingle());
     public void TestReadJSON() {
       java.io.ByteArrayInputStream ms = null;
 try {
-ms = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b,
-                              0x7d  });
+ms = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b, 0x7d
+         });
 
         try {
           CBORObject.ReadJSON(ms);
@@ -2020,7 +2125,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x20, (byte)0xef, (byte)0xbb, (byte)0xbf,
-                              0x7b, 0x7d  });
+        0x7b, 0x7d  });
 
         try {
           CBORObject.ReadJSON(ms2);
@@ -2034,11 +2139,43 @@ ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x20, (byte)0xef, (byte)0xbb
 finally {
 try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
 }
+      java.io.ByteArrayInputStream ms2a = null;
+try {
+ms2a = new java.io.ByteArrayInputStream(new byte[] { 0x7b, 0x05, 0x7d  });
+
+        try {
+          CBORObject.ReadJSON(ms2a);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms2a != null)ms2a.close(); } catch (java.io.IOException ex) {}
+}
+      java.io.ByteArrayInputStream ms2b = null;
+try {
+ms2b = new java.io.ByteArrayInputStream(new byte[] { 0x05, 0x7b, 0x7d  });
+
+        try {
+          CBORObject.ReadJSON(ms2b);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
+}
       // two BOMs
       java.io.ByteArrayInputStream ms3 = null;
 try {
 ms3 = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, (byte)0xef,
-                              (byte)0xbb, (byte)0xbf, 0x7b, 0x7d  });
+        (byte)0xbb, (byte)0xbf, 0x7b, 0x7d  });
 
         try {
           CBORObject.ReadJSON(ms3);
@@ -2054,60 +2191,99 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
 }
       try {
         java.io.ByteArrayInputStream msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0,
-                              0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
-                              0x65  });
+                    0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
+                    0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x74, 0, 0, 0, 0x72, 0,
-                              0, 0, 0x75, 0, 0, 0, 0x65  });
+                    0, 0, 0x75, 0, 0, 0, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0, 0, 0x74, 0, 0, 0,
-                              0x72, 0, 0, 0, 0x75, 0, 0, 0, 0x65, 0, 0, 0  });
+                    0x72, 0, 0, 0, 0x75, 0, 0, 0, 0x65, 0, 0, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0, 0, 0, 0x72, 0, 0, 0,
-                              0x75, 0, 0, 0, 0x65, 0, 0, 0  });
+                    0x75, 0, 0, 0, 0x65, 0, 0, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x74, 0, 0x72, 0,
-                              0x75, 0, 0x65  });
+                    0x75, 0, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
   msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x74, 0, 0x72, 0, 0x75, 0, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
-     msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x74, 0, 0x72, 0,
-          0x75,
-                              0, 0x65, 0  });
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x74, 0, 0x72, 0,
+                    0x75,
+                    0, 0x65, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
   msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0, 0x72, 0, 0x75, 0, 0x65, 0  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
-     msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x74, 0x72,
-          0x75,
-                              0x65  });
+     msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x74, 0x72, 0x75,
+       0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0x72, 0x75, 0x65  });
         Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0, 0x22,
-                              0, 1, 0, 0, 0, 0, 0, 0x22  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+                    0, 1, 0, 0, 0, 0, 0, 0x22  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x22, 0, 1, 0, 0, 0, 0,
-                              0, 0x22  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+                    0, 0x22  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0, 0, 0x22, 0, 0, 0,
-                              0, 0, 1, 0, 0x22, 0, 0, 0  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
-     msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, 0, 0, 0, 1, 0, 0x22,
-          0,
-                              0, 0  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+                    0, 0, 1, 0, 0x22, 0, 0, 0  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, 0, 0, 0, 1, 0, 0x22,
+                    0,
+                    0, 0  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x22, (byte)0xd8, 0,
-                              (byte)0xdc, 0, 0, 0x22  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+                    (byte)0xdc, 0, 0, 0x22  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
   msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x22, (byte)0xd8, 0, (byte)0xdc, 0, 0, 0x22  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x22, 0, 0, (byte)0xd8, 0,
-                              (byte)0xdc, 0x22, 0  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+                    (byte)0xdc, 0x22, 0  });
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
   msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, (byte)0xd8, 0, (byte)0xdc, 0x22, 0  });
-        Assert.assertEquals("\ud800\udc00", CBORObject.ReadJSON(msjson).AsString());
+        {
+String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+Assert.assertEquals(
+"\ud800\udc00",
+stringTemp);
+}
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0, 0x22,
-                              0, 0, (byte)0xd8, 0, 0, 0, 0, 0x22  });
+                    0, 0, (byte)0xd8, 0, 0, 0, 0, 0x22  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2116,9 +2292,9 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
-     msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x22, 0, 0, (byte)0xd8, 0, 0,
-          0,
-                              0, 0x22  });
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x22, 0, 0, (byte)0xd8, 0, 0,
+                    0,
+                    0, 0x22  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2128,7 +2304,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0, 0, 0x22, 0, 0, 0,
-                              0, (byte)0xd8, 0, 0, 0x22, 0, 0, 0  });
+                    0, (byte)0xd8, 0, 0, 0x22, 0, 0, 0  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2138,7 +2314,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0x22, 0, 0, 0, 0, (byte)0xd8, 0, 0,
-                              0x22, 0, 0, 0  });
+                    0x22, 0, 0, 0  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2148,7 +2324,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x22, 0, (byte)0xdc, 0,
-                              (byte)0xdc, 0, 0, 0x22  });
+                    (byte)0xdc, 0, 0, 0x22  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2158,7 +2334,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0x22, 0, (byte)0xdc, 0, (byte)0xdc, 0, 0,
-                              0x22  });
+                    0x22  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2168,7 +2344,7 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x22, 0, 0, (byte)0xdc, 0,
-                              (byte)0xdc, 0x22, 0  });
+                    (byte)0xdc, 0x22, 0  });
         try {
           CBORObject.ReadJSON(msjson);
           Assert.fail("Should have failed");
@@ -2204,6 +2380,318 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
+        // Illegal UTF-16
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0x20, 0x20, 0x20  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x20, 0x20, 0x20  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xd8, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xd8, 0x00, 0x20, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00, 0x20, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xd8, 0x00, (byte)0xd8, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00, (byte)0xd8, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00, (byte)0xd8,
+          0x00, (byte)0xdc, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00, (byte)0xdc, 0x00  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xd8  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xd8, 0x00, 0x20  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc, 0x00, 0x20  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xd8, 0x00, (byte)0xd8  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc, 0x00, (byte)0xd8  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc, 0x00,
+          (byte)0xd8, 0x00, (byte)0xdc  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc, 0x00, (byte)0xdc  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+
+        // Illegal UTF-32
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0, (byte)0xd8, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0, (byte)0xdc, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+     msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0x11, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+     msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, (byte)0xff, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0x1, 0, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+     msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, (byte)0xd8, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+     msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0, (byte)0xdc, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0x11, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+  msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, (byte)0xff, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+   msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0x1, 0, 0x00, 0  });
+        try {
+ CBORObject.ReadJSON(msjson);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2211,7 +2699,38 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestRemainder() {
-      // not implemented yet
+      try {
+ CBORObject.Remainder(null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Remainder(CBORObject.FromObject(2), null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Remainder(CBORObject.Null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Remainder(CBORObject.FromObject(2), CBORObject.Null);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestRemove() {
@@ -2290,60 +2809,173 @@ try { if (ms3 != null)ms3.close(); } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestSubtract() {
-      // not implemented yet
+      try {
+ CBORObject.Subtract(null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Subtract(CBORObject.FromObject(2), null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Subtract(CBORObject.Null, CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Subtract(CBORObject.FromObject(2), CBORObject.Null);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
 
     @Test
     public void TestToJSONString() {
-      Assert.assertEquals(
-        "\"\u2027\\u2028\\u2029\u202a\"",
-        CBORObject.FromObject("\u2027\u2028\u2029\u202a").ToJSONString());
-      Assert.assertEquals(
-        "\"\\u0085\\uFEFF\\uFFFE\\uFFFF\"",
-        CBORObject.FromObject("\u0085\ufeff\ufffe\uffff").ToJSONString());
-      Assert.assertEquals("true", CBORObject.True.ToJSONString());
-      Assert.assertEquals("false", CBORObject.False.ToJSONString());
-      Assert.assertEquals("null", CBORObject.Null.ToJSONString());
-      Assert.assertEquals(
-        "null",
-        CBORObject.FromObject(Float.POSITIVE_INFINITY).ToJSONString());
-      Assert.assertEquals(
-        "null",
-        CBORObject.FromObject(Float.NEGATIVE_INFINITY).ToJSONString());
-      Assert.assertEquals("null", CBORObject.FromObject(Float.NaN).ToJSONString());
-      Assert.assertEquals(
-        "null",
-        CBORObject.FromObject(Double.POSITIVE_INFINITY).ToJSONString());
-      Assert.assertEquals(
-        "null",
-        CBORObject.FromObject(Double.NEGATIVE_INFINITY).ToJSONString());
-      Assert.assertEquals("null", CBORObject.FromObject(Double.NaN).ToJSONString());
+      {
+String stringTemp = CBORObject.FromObject(
+"\u2027\u2028\u2029\u202a").ToJSONString();
+Assert.assertEquals(
+"\"\u2027\\u2028\\u2029\u202a\"",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.FromObject(
+"\u0085\ufeff\ufffe\uffff").ToJSONString();
+Assert.assertEquals(
+"\"\\u0085\\uFEFF\\uFFFE\\uFFFF\"",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.True.ToJSONString();
+Assert.assertEquals(
+"true",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.False.ToJSONString();
+Assert.assertEquals(
+"false",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.Null.ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp =
+  CBORObject.FromObject(Float.POSITIVE_INFINITY).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp =
+  CBORObject.FromObject(Float.NEGATIVE_INFINITY).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.FromObject(Float.NaN).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp =
+  CBORObject.FromObject(Double.POSITIVE_INFINITY).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp =
+  CBORObject.FromObject(Double.NEGATIVE_INFINITY).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.FromObject(Double.NaN).ToJSONString();
+Assert.assertEquals(
+"null",
+stringTemp);
+}
       // Base64 tests
       CBORObject o;
       o = CBORObject.FromObjectAndTag(
         new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8  }, 22);
-      Assert.assertEquals("\"mtbw6A\"", o.ToJSONString());
+      {
+String stringTemp = o.ToJSONString();
+Assert.assertEquals(
+"\"mtbw6A\"",
+stringTemp);
+}
       o = CBORObject.FromObject(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8  });
-      Assert.assertEquals("\"mtbw6A\"", o.ToJSONString());
+      {
+String stringTemp = o.ToJSONString();
+Assert.assertEquals(
+"\"mtbw6A\"",
+stringTemp);
+}
       o = CBORObject.FromObjectAndTag(
-        new byte[] { (byte)0x9a,
-          (byte)0xd6, (byte)0xf0, (byte)0xe8  },
+        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8  },
         23);
-      Assert.assertEquals("\"9AD6F0E8\"", o.ToJSONString());
+      {
+String stringTemp = o.ToJSONString();
+Assert.assertEquals(
+"\"9AD6F0E8\"",
+stringTemp);
+}
       o = CBORObject.FromObject(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8  });
       // Encode with Base64URL by default
-      Assert.assertEquals("\"mtb_6A\"", o.ToJSONString());
+      {
+String stringTemp = o.ToJSONString();
+Assert.assertEquals(
+"\"mtb_6A\"",
+stringTemp);
+}
       o = CBORObject.FromObjectAndTag(
-        new byte[] { (byte)0x9a,
-          (byte)0xd6, (byte)0xff, (byte)0xe8  },
+        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8  },
         22);
       // Encode with Base64
-      Assert.assertEquals("\"mtb/6A\"", o.ToJSONString());
+      {
+String stringTemp = o.ToJSONString();
+Assert.assertEquals(
+"\"mtb/6A\"",
+stringTemp);
+}
     }
     @Test
     public void TestToString() {
-      Assert.assertEquals("undefined", CBORObject.Undefined.toString());
-      Assert.assertEquals("simple(50)", CBORObject.FromSimpleValue(50).toString());
+      {
+String stringTemp = CBORObject.Undefined.toString();
+Assert.assertEquals(
+"undefined",
+stringTemp);
+}
+      {
+String stringTemp = CBORObject.FromSimpleValue(50).toString();
+Assert.assertEquals(
+"simple(50)",
+stringTemp);
+}
     }
     @Test
     public void TestType() {

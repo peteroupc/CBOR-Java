@@ -6,17 +6,10 @@ import com.upokecenter.util.*;
 
   public class BigIntegerTest {
     @Test
-    public void TestAbs() {
-      // not implemented yet
-    }
-    @Test
     public void TestAdd() {
       // not implemented yet
     }
-    @Test
-    public void TestAnd() {
-      // not implemented yet
-    }
+
     @Test
     public void TestBitLength() {
       Assert.assertEquals(31, BigInteger.valueOf(-2147483647L).bitLength());
@@ -38,11 +31,11 @@ import com.upokecenter.util.*;
       Assert.assertEquals(17, BigInteger.valueOf(65536).bitLength());
       Assert.assertEquals(16, BigInteger.valueOf(-65536).bitLength());
       Assert.assertEquals(
-65,
-BigInteger.fromString("19084941898444092059").bitLength());
+        65,
+        BigInteger.fromString("19084941898444092059").bitLength());
       Assert.assertEquals(
-65,
-BigInteger.fromString("-19084941898444092059").bitLength());
+        65,
+        BigInteger.fromString("-19084941898444092059").bitLength());
       Assert.assertEquals(0, BigInteger.valueOf(-1).bitLength());
       Assert.assertEquals(1, BigInteger.valueOf(-2).bitLength());
     }
@@ -83,7 +76,7 @@ BigInteger.fromString("-19084941898444092059").bitLength());
     @Test
     public void TestFromByteArray() {
       Assert.assertEquals(
-        BigInteger.ZERO, BigInteger.fromByteArray(new byte[] { }, false));
+        BigInteger.ZERO, BigInteger.fromBytes(new byte[] { }, false));
     }
     @Test
     public void TestFromString() {
@@ -105,6 +98,30 @@ BigInteger.fromString("-19084941898444092059").bitLength());
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
+      }
+      {
+ String stringTemp = BigInteger.fromSubstring("0123456789" , 9, 10).toString();
+        Assert.assertEquals(
+          "9",
+          stringTemp);
+      }
+      {
+ String stringTemp = BigInteger.fromSubstring("0123456789" , 8, 10).toString();
+        Assert.assertEquals(
+          "89",
+          stringTemp);
+      }
+      {
+ String stringTemp = BigInteger.fromSubstring("0123456789" , 7, 10).toString();
+        Assert.assertEquals(
+          "789",
+          stringTemp);
+      }
+      {
+ String stringTemp = BigInteger.fromSubstring("0123456789" , 6, 10).toString();
+        Assert.assertEquals(
+          "6789",
+          stringTemp);
       }
     }
 
@@ -163,8 +180,8 @@ BigInteger.fromString("-19084941898444092059").bitLength());
         for (int j = 0; j < 100; ++j) {
           StringAndBigInt sabi = StringAndBigInt.Generate(fr, i);
           Assert.assertEquals(
-sabi.getBigIntValue(),
-BigInteger.fromRadixString(sabi.getStringValue(), i));
+            sabi.getBigIntValue(),
+            BigInteger.fromRadixString(sabi.getStringValue(), i));
         }
       }
     }
@@ -218,6 +235,102 @@ BigInteger.fromRadixString(sabi.getStringValue(), i));
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, -1, 2);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 4, 5);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 0, -8);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 0, 6);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 2, 0);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 0, 0);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("123", 10, 1, 1);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("-", 10, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("g", 16, 0, 1);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("0123gggg", 16, 0, 8);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("0123gggg", 10, 0, 8);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.fromRadixSubstring("0123aaaa", 10, 0, 8);
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       FastRandom fr = new FastRandom();
       for (int i = 2; i <= 36; ++i) {
         StringBuilder padding = new StringBuilder();
@@ -231,8 +344,8 @@ BigInteger.fromRadixString(sabi.getStringValue(), i));
             j + 1,
             j + 1 + sabiString.length());
           Assert.assertEquals(
-sabi.getBigIntValue(),
-actualBigInt);
+            sabi.getBigIntValue(),
+            actualBigInt);
         }
       }
     }
@@ -276,7 +389,7 @@ actualBigInt);
       }
       if (n <= 23) {
         return n == 3 || n == 5 || n == 7 || n == 11 ||
-                n == 13 || n == 17 || n == 19 || n == 23;
+          n == 13 || n == 17 || n == 19 || n == 23;
       }
       // Use a deterministic Rabin-Miller test
       int d = n - 1;
@@ -342,9 +455,9 @@ actualBigInt);
     }
 
     private static void TestGcdPair(
-BigInteger biga,
-BigInteger bigb,
-BigInteger biggcd) {
+      BigInteger biga,
+      BigInteger bigb,
+      BigInteger biggcd) {
       BigInteger ba = biga.gcd(bigb);
       BigInteger bb = bigb.gcd(biga);
       Assert.assertEquals(ba, biggcd);
@@ -353,6 +466,96 @@ BigInteger biggcd) {
 
     @Test
     public void TestGcd() {
+      try {
+ BigInteger.ZERO.gcd(null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      {
+String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString("244"
+)).toString();
+Assert.assertEquals(
+"244",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString("-244"
+)).toString();
+Assert.assertEquals(
+"244",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("244"
+).gcd(BigInteger.ZERO).toString();
+Assert.assertEquals(
+"244",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("-244"
+).gcd(BigInteger.ZERO).toString();
+Assert.assertEquals(
+"244",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.ONE.gcd(BigInteger.fromString("244")).toString();
+Assert.assertEquals(
+"1",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.ONE.gcd(BigInteger.fromString("-244"
+)).toString();
+Assert.assertEquals(
+"1",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("244").gcd(BigInteger.ONE).toString();
+Assert.assertEquals(
+"1",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("-244"
+).gcd(BigInteger.ONE).toString();
+Assert.assertEquals(
+"1",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("15").gcd(BigInteger.fromString(
+"15")).toString();
+Assert.assertEquals(
+"15",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("-15").gcd(
+        BigInteger.fromString("15")).toString();
+Assert.assertEquals(
+"15",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString("15").gcd(
+        BigInteger.fromString("-15")).toString();
+Assert.assertEquals(
+"15",
+stringTemp);
+}
+      {
+String stringTemp = BigInteger.fromString(
+"-15").gcd(BigInteger.fromString("-15")).toString();
+Assert.assertEquals(
+"15",
+stringTemp);
+}
       int prime = 0;
       FastRandom rand = new FastRandom();
       for (int i = 0; i < 1000; ++i) {
@@ -370,8 +573,8 @@ BigInteger biggcd) {
         }
         ba = ba.multiply(bigprime);
         Assert.assertEquals(
-bigprime,
-bigprime.gcd(ba));
+          bigprime,
+          bigprime.gcd(ba));
       }
       TestGcdPair(BigInteger.valueOf(-1867), BigInteger.valueOf(-4456), BigInteger.ONE);
       TestGcdPair(BigInteger.valueOf(4604), BigInteger.valueOf(-4516), BigInteger.valueOf(4));
@@ -490,38 +693,43 @@ bigprime.gcd(ba));
       // not implemented yet
     }
     @Test
-    public void TestIntValue() {
-      Assert.assertEquals(
-        Integer.MIN_VALUE,
-        BigInteger.valueOf(Integer.MIN_VALUE).intValue());
-      Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).intValue());
-      try {
-        BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValue();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValue();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-    }
-    @Test
     public void TestIntValueChecked() {
       Assert.assertEquals(
         Integer.MIN_VALUE,
         BigInteger.valueOf(Integer.MIN_VALUE).intValueChecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
+      try {
+        BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueChecked();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueChecked();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+  BigInteger.fromString("999999999999999999999999999999999").intValueChecked();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      Assert.assertEquals(
+        Integer.MIN_VALUE,
+        BigInteger.valueOf(Integer.MIN_VALUE).intValueChecked());
+      Assert.assertEquals(
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
       try {
         BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueChecked();
         Assert.fail("Should have failed");
@@ -541,18 +749,19 @@ BigInteger.valueOf(Integer.MAX_VALUE).intValueChecked());
     }
     @Test
     public void TestIntValueUnchecked() {
+      Assert.assertEquals(0L, BigInteger.ZERO.intValueUnchecked());
       Assert.assertEquals(
         Integer.MIN_VALUE,
         BigInteger.valueOf(Integer.MIN_VALUE).intValueUnchecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).intValueUnchecked());
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).intValueUnchecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueUnchecked());
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueUnchecked());
       Assert.assertEquals(
-Integer.MIN_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueUnchecked());
+        Integer.MIN_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueUnchecked());
     }
     @Test
     public void TestIsEven() {
@@ -572,15 +781,15 @@ BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueUnchecked());
       // not implemented yet
     }
     @Test
-    public void TestLongValue() {
+    public void TestLongValueChecked() {
       Assert.assertEquals(
         Long.MIN_VALUE,
-        BigInteger.valueOf(Long.MIN_VALUE).longValue());
+        BigInteger.valueOf(Long.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-Long.MAX_VALUE,
-BigInteger.valueOf(Long.MAX_VALUE).longValue());
+        Long.MAX_VALUE,
+        BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
       try {
-        BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValue();
+BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -588,7 +797,7 @@ BigInteger.valueOf(Long.MAX_VALUE).longValue());
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValue();
+     BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
       } catch (Exception ex) {
@@ -597,41 +806,50 @@ BigInteger.valueOf(Long.MAX_VALUE).longValue());
       }
       Assert.assertEquals(
         ((long)0xFFFFFFF200000000L),
-        BigInteger.valueOf(((long)0xFFFFFFF200000000L)).longValue());
+  BigInteger.valueOf(((long)0xFFFFFFF200000000L)).longValueChecked());
       Assert.assertEquals(
-((long)0xFFFFFFF280000000L),
-BigInteger.valueOf(((long)0xFFFFFFF280000000L)).longValue());
+        ((long)0xFFFFFFF280000000L),
+  BigInteger.valueOf(((long)0xFFFFFFF280000000L)).longValueChecked());
       Assert.assertEquals(
-((long)0xFFFFFFF280000001L),
-BigInteger.valueOf(((long)0xFFFFFFF280000001L)).longValue());
+        ((long)0xFFFFFFF280000001L),
+  BigInteger.valueOf(((long)0xFFFFFFF280000001L)).longValueChecked());
       Assert.assertEquals(
-((long)0xFFFFFFF27FFFFFFFL),
-BigInteger.valueOf(((long)0xFFFFFFF27FFFFFFFL)).longValue());
+        ((long)0xFFFFFFF27FFFFFFFL),
+  BigInteger.valueOf(((long)0xFFFFFFF27FFFFFFFL)).longValueChecked());
       Assert.assertEquals(
-0x0000000380000001L,
-BigInteger.valueOf(0x0000000380000001L).longValue());
+        0x0000000380000001L,
+        BigInteger.valueOf(0x0000000380000001L).longValueChecked());
       Assert.assertEquals(
-0x0000000382222222L,
-BigInteger.valueOf(0x0000000382222222L).longValue());
-      Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValue());
-      Assert.assertEquals(-32768L, BigInteger.valueOf(-32768L).longValue());
+        0x0000000382222222L,
+        BigInteger.valueOf(0x0000000382222222L).longValueChecked());
+      Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValueChecked());
+      Assert.assertEquals(-32768L, BigInteger.valueOf(-32768L).longValueChecked());
       Assert.assertEquals(
-Integer.MIN_VALUE,
-BigInteger.valueOf(Integer.MIN_VALUE).longValue());
+        Integer.MIN_VALUE,
+        BigInteger.valueOf(Integer.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).longValue());
-      Assert.assertEquals(0x80000000L, BigInteger.valueOf(0x80000000L).longValue());
-      Assert.assertEquals(0x90000000L, BigInteger.valueOf(0x90000000L).longValue());
-    }
-    @Test
-    public void TestLongValueChecked() {
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).longValueChecked());
+      Assert.assertEquals(
+        0x80000000L,
+        BigInteger.valueOf(0x80000000L).longValueChecked());
+      Assert.assertEquals(
+        0x90000000L,
+        BigInteger.valueOf(0x90000000L).longValueChecked());
+      try {
+ BigInteger.fromString("999999999999999999999999999999999").longValueChecked();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       Assert.assertEquals(
         Long.MIN_VALUE,
         BigInteger.valueOf(Long.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-Long.MAX_VALUE,
-BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
+        Long.MAX_VALUE,
+        BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
       try {
         BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE)
           .longValueChecked();
@@ -642,7 +860,7 @@ BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
         throw new IllegalStateException("", ex);
       }
       try {
-   BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE)
+        BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE)
           .longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -670,42 +888,43 @@ BigInteger.valueOf(Long.MAX_VALUE).longValueChecked());
         0x0000000380000001L,
         BigInteger.valueOf(0x0000000380000001L).longValueChecked());
       Assert.assertEquals(
-0x0000000382222222L,
-BigInteger.valueOf(0x0000000382222222L).longValueChecked());
+        0x0000000382222222L,
+        BigInteger.valueOf(0x0000000382222222L).longValueChecked());
       Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValueChecked());
       Assert.assertEquals(-32768L, BigInteger.valueOf(-32768L).longValueChecked());
       Assert.assertEquals(
-Integer.MIN_VALUE,
-BigInteger.valueOf(Integer.MIN_VALUE).longValueChecked());
+        Integer.MIN_VALUE,
+        BigInteger.valueOf(Integer.MIN_VALUE).longValueChecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).longValueChecked());
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).longValueChecked());
       Assert.assertEquals(
-0x80000000L,
-BigInteger.valueOf(0x80000000L).longValueChecked());
+        0x80000000L,
+        BigInteger.valueOf(0x80000000L).longValueChecked());
       Assert.assertEquals(
-0x90000000L,
-BigInteger.valueOf(0x90000000L).longValueChecked());
+        0x90000000L,
+        BigInteger.valueOf(0x90000000L).longValueChecked());
     }
     @Test
     public void TestLongValueUnchecked() {
+      Assert.assertEquals(0L, BigInteger.ZERO.longValueUnchecked());
       Assert.assertEquals(
         Long.MIN_VALUE,
         BigInteger.valueOf(Long.MIN_VALUE).longValueUnchecked());
       Assert.assertEquals(
-Long.MAX_VALUE,
-BigInteger.valueOf(Long.MAX_VALUE).longValueUnchecked());
+        Long.MAX_VALUE,
+        BigInteger.valueOf(Long.MAX_VALUE).longValueUnchecked());
       Assert.assertEquals(
-Long.MAX_VALUE,
-                      BigInteger.valueOf(Long.MIN_VALUE)
-                      .subtract(BigInteger.ONE).longValueUnchecked());
+        Long.MAX_VALUE,
+        BigInteger.valueOf(Long.MIN_VALUE)
+        .subtract(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
-Long.MIN_VALUE,
-BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
+        Long.MIN_VALUE,
+  BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
       Assert.assertEquals(
-((long)0xFFFFFFF200000000L),
-                      BigInteger.valueOf(((long)0xFFFFFFF200000000L))
-                      .longValueUnchecked());
+        ((long)0xFFFFFFF200000000L),
+        BigInteger.valueOf(((long)0xFFFFFFF200000000L))
+        .longValueUnchecked());
       Assert.assertEquals(
         ((long)0xFFFFFFF280000000L),
         BigInteger.valueOf(((long)0xFFFFFFF280000000L))
@@ -722,24 +941,24 @@ BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
         0x0000000380000001L,
         BigInteger.valueOf(0x0000000380000001L).longValueUnchecked());
       Assert.assertEquals(
-0x0000000382222222L,
-BigInteger.valueOf(0x0000000382222222L).longValueUnchecked());
+        0x0000000382222222L,
+        BigInteger.valueOf(0x0000000382222222L).longValueUnchecked());
       Assert.assertEquals(-8L, BigInteger.valueOf(-8L).longValueUnchecked());
       Assert.assertEquals(
--32768L,
-BigInteger.valueOf(-32768L).longValueUnchecked());
+        -32768L,
+        BigInteger.valueOf(-32768L).longValueUnchecked());
       Assert.assertEquals(
-Integer.MIN_VALUE,
-BigInteger.valueOf(Integer.MIN_VALUE).longValueUnchecked());
+        Integer.MIN_VALUE,
+        BigInteger.valueOf(Integer.MIN_VALUE).longValueUnchecked());
       Assert.assertEquals(
-Integer.MAX_VALUE,
-BigInteger.valueOf(Integer.MAX_VALUE).longValueUnchecked());
+        Integer.MAX_VALUE,
+        BigInteger.valueOf(Integer.MAX_VALUE).longValueUnchecked());
       Assert.assertEquals(
-0x80000000L,
-BigInteger.valueOf(0x80000000L).longValueUnchecked());
+        0x80000000L,
+        BigInteger.valueOf(0x80000000L).longValueUnchecked());
       Assert.assertEquals(
-0x90000000L,
-BigInteger.valueOf(0x90000000L).longValueUnchecked());
+        0x90000000L,
+        BigInteger.valueOf(0x90000000L).longValueUnchecked());
     }
     @Test
     public void TestMod() {
@@ -752,9 +971,73 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
-    public void TestModPow() {
-      // not implemented yet
+    public void TestBigIntegerModPow() {
+      try {
+ BigInteger.ONE.ModPow(null, null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(null, BigInteger.ZERO);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.ZERO, null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.fromString("-1"),BigInteger.fromString("1"));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.fromString("0"),BigInteger.fromString("0"));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.fromString("0"),BigInteger.fromString("-1"));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.fromString("1"),BigInteger.fromString("0"));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ BigInteger.ONE.ModPow(BigInteger.fromString("1"),BigInteger.fromString("-1"));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestMultiply() {
@@ -1059,8 +1342,8 @@ BigInteger.valueOf(0x90000000L).longValueUnchecked());
             expected = "-" + expected;
           }
           Assert.assertEquals(
-expected,
-sabi.getBigIntValue().toRadixString(i));
+            expected,
+            sabi.getBigIntValue().toRadixString(i));
         }
       }
     }
@@ -1080,6 +1363,11 @@ sabi.getBigIntValue().toRadixString(i));
     @Test
     public void TestZero() {
       // not implemented yet
-      Assert.assertEquals("0", BigInteger.ZERO.toString());
+      {
+        String stringTemp = BigInteger.ZERO.toString();
+        Assert.assertEquals(
+          "0",
+          stringTemp);
+      }
     }
   }

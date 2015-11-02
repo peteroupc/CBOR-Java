@@ -22,6 +22,59 @@ private TestCommon() {
       AssertEqualsHashCode(a2, b);
     }
 
+    public static String ToByteArrayString(byte[] bytes) {
+      if (bytes == null) {
+ return "null";
+}
+      StringBuilder sb = new StringBuilder();
+      String hex = "0123456789ABCDEF";
+      sb.append("new byte[] { ");
+      for (int i = 0; i < bytes.length; ++i) {
+        if (i > 0) {
+          sb.append(",");  }
+        if ((bytes[i] & 0x80) != 0) {
+          sb.append("(byte)0x");
+        } else {
+          sb.append("0x");
+        }
+        sb.append(hex.charAt((bytes[i] >> 4) & 0xf));
+        sb.append(hex.charAt(bytes[i] & 0xf));
+      }
+      sb.append("}");
+      return sb.toString();
+    }
+
+    public static String ToByteArrayString(CBORObject obj) {
+   return new StringBuilder().append("CBORObject.DecodeFromBytes(")
+        .append(ToByteArrayString(obj.EncodeToBytes()))
+        .append(")").toString();
+    }
+
+    private static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {
+      if (arr1 == null) {
+ return arr2 == null;
+}
+      if (arr2 == null) {
+ return false;
+}
+      if (arr1.length != arr2.length) {
+        return false;
+      }
+      for (int i = 0; i < arr1.length; ++i) {
+        if (arr1[i ]!=arr2[i]) {
+ return false;
+}
+      }
+      return true;
+    }
+
+    public static void AssertByteArraysEqual(byte[] arr1, byte[] arr2) {
+      if (!ByteArraysEqual(arr1, arr2)) {
+     Assert.fail("Expected " + ToByteArrayString(arr1) + ", got " +
+       ToByteArrayString(arr2));
+      }
+    }
+
     public static void DoTestDivide(
 String dividend,
 String divisor,

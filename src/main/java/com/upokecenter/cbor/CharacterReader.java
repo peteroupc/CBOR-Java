@@ -80,7 +80,7 @@ this.offset);
           ++this.offset;
           return c1;
         } catch (IOException ex) {
-          throw new CBORException(
+          throw new NumberFormatException(
             "I/O error occurred (offset " + this.offset + ")",
             ex);
         }
@@ -125,7 +125,7 @@ this.offset);
           ++this.offset;
           return c1;
         } catch (IOException ex) {
-          throw new CBORException(
+          throw new NumberFormatException(
             "I/O error occurred (offset " + this.offset + ")",
             ex);
         }
@@ -212,7 +212,7 @@ this.offset);
             return ret;
           }
         } catch (IOException ex) {
-          throw new CBORException(
+          throw new NumberFormatException(
             "I/O error occurred (offset " + this.offset + ")",
             ex);
         }
@@ -362,17 +362,17 @@ this.offset);
           return c1;
         }
       } catch (IOException ex) {
-        throw new CBORException(
+        throw new NumberFormatException(
           "I/O error occurred (offset " + this.offset + ")",
           ex);
       }
     }
 
-    public static CBORException NewError(String str, int offset) {
-      return new CBORException(str + " (offset " + offset + ")");
+    public static NumberFormatException NewError(String str, int offset) {
+      return new NumberFormatException(str + " (offset " + offset + ")");
     }
 
-    public CBORException NewError(String str) {
+    public NumberFormatException NewError(String str) {
       return NewError(str, this.offset);
     }
 
