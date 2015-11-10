@@ -69,16 +69,4 @@ private static final long serialVersionUID = 1L;
       this.ctx = (ctx == null) ? null : ctx.Copy();
       this.result = result;
     }
-/*
-    public TrapException () {
-    }
-
-    public TrapException (String message) {
- super(message);
-    }
-
-    public TrapException (String message, Throwable innerException) {
- super(message, innerException);
-    }
-  */
   }

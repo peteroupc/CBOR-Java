@@ -317,8 +317,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * java.math.BigDecimal(), except that the digits must be ASCII digits
      * ('0' through '9').</p>
      * @param str A string object, a portion of which represents a number.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
+     * @param offset A zero-based index that identifies the start of the number.
+     * @param length The length of the number within the string.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
