@@ -144,32 +144,42 @@ Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,1
       }
       {
         long numberTemp = ((
-          DataUtilities.CodePointCompare("\ud800\udc00",
-                    "\ud800\udc00")==0) ? 0 : ((
-          DataUtilities.CodePointCompare("\ud800\udc00",
-                    "\ud800\udc00")< 0) ? -1 : 1));
+          DataUtilities.CodePointCompare(
+"\ud800\udc00",
+"\ud800\udc00")==0) ? 0 : ((
+          DataUtilities.CodePointCompare(
+"\ud800\udc00",
+"\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(0, numberTemp);
       }
       {
         long numberTemp = ((
-          DataUtilities.CodePointCompare("abc",
-                    "\ud800\udc00")==0) ? 0 : ((
-          DataUtilities.CodePointCompare("abc",
-                    "\ud800\udc00")< 0) ? -1 : 1));
+          DataUtilities.CodePointCompare(
+"abc",
+"\ud800\udc00")==0) ? 0 : ((
+          DataUtilities.CodePointCompare(
+"abc",
+"\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
         long numberTemp = ((
-          DataUtilities.CodePointCompare("\uf000",
-                    "\ud800\udc00")==0) ? 0 : ((
-          DataUtilities.CodePointCompare("\uf000",
-                    "\ud800\udc00")< 0) ? -1 : 1));
+          DataUtilities.CodePointCompare(
+"\uf000",
+"\ud800\udc00")==0) ? 0 : ((
+          DataUtilities.CodePointCompare(
+"\uf000",
+"\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        long numberTemp = ((DataUtilities.CodePointCompare("\uf000",
-          "\ud800")==0) ? 0 : ((DataUtilities.CodePointCompare("\uf000",
-          "\ud800")< 0) ? -1 : 1));
+        long numberTemp = ((
+DataUtilities.CodePointCompare(
+"\uf000",
+"\ud800")==0) ? 0 : ((
+DataUtilities.CodePointCompare(
+"\uf000",
+"\ud800")< 0) ? -1 : 1));
         Assert.assertEquals(1, numberTemp);
       }
       if (!(DataUtilities.CodePointCompare("abc", "def") < 0))Assert.fail();
@@ -752,7 +762,9 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestToLowerCaseAscii() {
-      if ((DataUtilities.ToLowerCaseAscii(null)) != null)Assert.fail();
+      if (DataUtilities.ToLowerCaseAscii(null) != null) {
+ Assert.fail();
+ }
       {
         String stringTemp = DataUtilities.ToLowerCaseAscii("abc012-=?");
         Assert.assertEquals(
@@ -770,7 +782,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
     public void TestWriteUtf8() {
       try {
         {
-          java.io.ByteArrayOutputStream ms = null;
+           java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -917,47 +929,47 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         }
         {
           java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r1",0,3,ms,true,true);
+          DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n1",0,3,ms,true,true);
+          DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\n1",0,4,ms,true,true);
+          DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r1",0,4,ms,true,true);
+          DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\r1",0,4,ms,true,true);
+          DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r\n1",0,5,ms,true,true);
+          DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\r\n1",0,5,ms,true,true);
+          DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\n\r1",0,5,ms,true,true);
+          DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r\r1",0,5,ms,true,true);
+          DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());

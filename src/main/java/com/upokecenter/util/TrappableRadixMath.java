@@ -111,8 +111,8 @@ PrecisionContext ctx) {
 
     /**
      * Finds the remainder that results when dividing two T objects.
-     * @param thisValue A T object.
-     * @param divisor A T object. (2).
+     * @param thisValue Not documented yet.
+     * @param divisor A T object.
      * @param ctx A PrecisionContext object.
      * @return The remainder of the two objects.
      */
@@ -202,8 +202,8 @@ tctx);
 
     /**
      * Divides two T objects.
-     * @param thisValue A T object.
-     * @param divisor A T object. (2).
+     * @param thisValue Not documented yet.
+     * @param divisor A T object.
      * @param ctx A PrecisionContext object.
      * @return The quotient of the two objects.
      */
@@ -239,8 +239,8 @@ tctx);
 
     /**
      * Multiplies two T objects.
-     * @param thisValue A T object.
-     * @param other A T object. (2).
+     * @param thisValue Not documented yet.
+     * @param other A T object.
      * @param ctx A PrecisionContext object.
      * @return The product of the two objects.
      */
@@ -326,10 +326,7 @@ ctx);
 
     /**
      * Compares a T object with this instance.
-     * @param thisValue A T object.
-     * @param otherValue A T object. (2).
-     * @param treatQuietNansAsSignaling A Boolean object.
-     * @param ctx A PrecisionContext object.
+     * @param thisValue Not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
@@ -349,8 +346,9 @@ PrecisionContext ctx) {
 
     /**
      * Compares a T object with this instance.
-     * @param thisValue A T object.
-     * @param otherValue A T object. (2).
+     * @param thisValue Not documented yet.
+     * @param thisValue Not documented yet.
+     * @param otherValue Not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */

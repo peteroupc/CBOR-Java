@@ -482,8 +482,7 @@ boolean lenientLineBreaks) throws java.io.IOException {
               bytes[byteIndex++] = 0x0d;
               bytes[byteIndex++] = 0x0a;
               continue;
-            }
-            if (c == 0x0d && str.charAt(index + 1) == 0x0a) {
+            } else if (c == 0x0d) {
               // CR-LF pair
               if (byteIndex + 2 > StreamedStringBufferLength) {
                 // Write bytes retrieved so far

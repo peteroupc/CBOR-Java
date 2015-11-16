@@ -53,7 +53,7 @@ import com.upokecenter.util.*;
           bi.compareTo(CBORObject.Int64MinValue) < 0) {
         throw new ArithmeticException("This Object's value is out of range");
       }
-      return bi.longValue();
+      return bi.longValueChecked();
     }
 
     public boolean CanFitInSingle(Object obj) {
@@ -103,7 +103,7 @@ import com.upokecenter.util.*;
     public int AsInt32(Object obj, int minValue, int maxValue) {
       BigInteger bi = (BigInteger)obj;
       if (bi.canFitInInt()) {
-        int ret = bi.intValue();
+        int ret = bi.intValueChecked();
         if (ret >= minValue && ret <= maxValue) {
           return ret;
         }

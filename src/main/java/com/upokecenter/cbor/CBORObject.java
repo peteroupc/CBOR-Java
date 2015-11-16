@@ -3195,11 +3195,11 @@ public static void Write(
        if (CBORJson.SkipWhitespaceJSON(reader) != -1) {
         throw reader.NewError("End of String not reached");
        }
+       return obj;
     } catch (NumberFormatException ex) {
     // thrown by the underlying CharacterReader
         throw new CBORException(ex.getMessage(), ex.getCause());
     }
-    return obj;
     }
 
     /**
@@ -3219,7 +3219,7 @@ public static void Write(
      * JSON format.
      */
     public static CBORObject ReadJSON(InputStream stream) throws java.io.IOException {
-    if ((stream) == null) {
+    if (stream == null) {
   throw new NullPointerException("stream");
 }
       CharacterReader reader = new CharacterReader(stream);

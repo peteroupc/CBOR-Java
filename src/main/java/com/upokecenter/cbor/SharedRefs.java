@@ -27,7 +27,7 @@ import com.upokecenter.util.*;
       }
       if (smallIndex > Integer.MAX_VALUE) {
         throw new CBORException("Index " + smallIndex +
-                              " is bigger than supported ");
+                    " is bigger than supported ");
       }
       int index = (int)smallIndex;
       if (index >= this.sharedObjects.size()) {
@@ -42,9 +42,9 @@ import com.upokecenter.util.*;
       }
       if (!bigIndex.canFitInInt()) {
         throw new CBORException("Index " + bigIndex +
-                              " is bigger than supported ");
+                    " is bigger than supported ");
       }
-      int index = bigIndex.intValue();
+      int index = bigIndex.intValueChecked();
       if (index >= this.sharedObjects.size()) {
         throw new CBORException("Index " + index + " is not valid");
       }

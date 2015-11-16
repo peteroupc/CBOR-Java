@@ -60,7 +60,7 @@ import com.upokecenter.util.*;
       ExtendedFloat ef = (ExtendedFloat)obj;
       if (this.CanTruncatedIntFitInInt64(obj)) {
         BigInteger bi = ef.ToBigInteger();
-        return bi.longValue();
+        return bi.longValueChecked();
       }
       throw new ArithmeticException("This Object's value is out of range");
     }
@@ -141,7 +141,7 @@ import com.upokecenter.util.*;
       ExtendedFloat ef = (ExtendedFloat)obj;
       if (this.CanTruncatedIntFitInInt32(obj)) {
         BigInteger bi = ef.ToBigInteger();
-        int ret = bi.intValue();
+        int ret = bi.intValueChecked();
         if (ret >= minValue && ret <= maxValue) {
           return ret;
         }

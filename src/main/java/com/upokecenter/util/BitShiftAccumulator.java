@@ -93,7 +93,7 @@ int olderDiscarded) {
       }
       if (bigint.canFitInInt()) {
         this.isSmall = true;
-        this.shiftedSmall = bigint.intValue();
+        this.shiftedSmall = bigint.intValueChecked();
       } else {
         this.shiftedBigInt = bigint;
       }
@@ -125,7 +125,7 @@ int olderDiscarded) {
         while (bi.signum() > 0) {
           int count = 1000000;
           if (bi.compareTo(BigInteger.valueOf(1000000)) < 0) {
-            count = bi.intValue();
+            count = bi.intValueChecked();
           }
           this.ShiftRightInt(count);
           bi = bi.subtract(BigInteger.valueOf(count));
@@ -191,7 +191,7 @@ int olderDiscarded) {
           // Shifting to small number of bits,
           // convert to small integer
           this.isSmall = true;
-          this.shiftedSmall = this.shiftedBigInt.intValue();
+          this.shiftedSmall = this.shiftedBigInt.intValueChecked();
         }
         this.bitsAfterLeftmost = (this.bitsAfterLeftmost != 0) ? 1 : 0;
       }
@@ -274,7 +274,7 @@ int olderDiscarded) {
           // Shifting to small number of bits,
           // convert to small integer
           this.isSmall = true;
-          this.shiftedSmall = this.shiftedBigInt.intValue();
+          this.shiftedSmall = this.shiftedBigInt.intValueChecked();
         }
         this.bitsAfterLeftmost = (this.bitsAfterLeftmost != 0) ? 1 : 0;
       }
@@ -284,7 +284,7 @@ int olderDiscarded) {
      * Shifts a number to the right, gathering information on whether the last bit
      * discarded is set and whether the discarded bits to the right of that
      * bit are set. Assumes that the big integer being shifted is positive.
-     * @param bits A 32-bit signed integer.
+     * @param bits Not documented yet.
      */
     public void ShiftRightInt(int bits) {
       if (this.isSmall) {
@@ -337,7 +337,7 @@ int olderDiscarded) {
      * information on whether the last bit discarded is set and whether the
      * discarded bits to the right of that bit are set. Assumes that the big
      * integer being shifted is positive.
-     * @param bits A 32-bit signed integer.
+     * @param bits Not documented yet.
      */
     public void ShiftToDigitsInt(int bits) {
       if (bits < 0) {

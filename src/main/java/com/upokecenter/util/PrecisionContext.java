@@ -373,7 +373,7 @@ public final void setFlags(int value) {
      * Gets a value indicating whether this context's Precision property is in
      * bits, rather than digits. The default is false.
      * @return True if this context's Precision property is in bits, rather than
-     * digits; otherwise, false.. The default is false.
+     * digits; otherwise, false. The default is false.
      */
     public final boolean isPrecisionInBits() {
         return this.precisionInBits;

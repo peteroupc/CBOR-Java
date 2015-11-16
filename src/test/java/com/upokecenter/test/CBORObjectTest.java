@@ -2108,8 +2108,8 @@ throw new IllegalStateException("", ex);
     public void TestReadJSON() {
       java.io.ByteArrayInputStream ms = null;
 try {
-ms = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b, 0x7d
-         });
+ms = new java.io.ByteArrayInputStream(new byte[] { (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b,
+        0x7d  });
 
         try {
           CBORObject.ReadJSON(ms);

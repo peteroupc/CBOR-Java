@@ -380,7 +380,7 @@ CBORTypeFilter... elements) {
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength ||
         ((this.arrayMinLength || index < this.arrayLength) && index >=
-                              0));
+                    0));
     }
 
     /**

@@ -475,29 +475,29 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       {
-String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString("244"
-)).toString();
+String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString(
+"244")).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString("-244"
-)).toString();
+String stringTemp = BigInteger.ZERO.gcd(BigInteger.fromString(
+"-244")).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.fromString("244"
-).gcd(BigInteger.ZERO).toString();
+String stringTemp = BigInteger.fromString(
+"244").gcd(BigInteger.ZERO).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.fromString("-244"
-).gcd(BigInteger.ZERO).toString();
+String stringTemp = BigInteger.fromString(
+"-244").gcd(BigInteger.ZERO).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
@@ -509,8 +509,8 @@ Assert.assertEquals(
 stringTemp);
 }
       {
-String stringTemp = BigInteger.ONE.gcd(BigInteger.fromString("-244"
-)).toString();
+String stringTemp = BigInteger.ONE.gcd(BigInteger.fromString(
+"-244")).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
@@ -522,8 +522,8 @@ Assert.assertEquals(
 stringTemp);
 }
       {
-String stringTemp = BigInteger.fromString("-244"
-).gcd(BigInteger.ONE).toString();
+String stringTemp = BigInteger.fromString(
+"-244").gcd(BigInteger.ONE).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
@@ -999,7 +999,7 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.fromString("-1"),BigInteger.fromString("1"));
+ BigInteger.ONE.ModPow(BigInteger.fromString("-1"), BigInteger.fromString("1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 } catch (Exception ex) {
@@ -1007,7 +1007,7 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.fromString("0"),BigInteger.fromString("0"));
+ BigInteger.ONE.ModPow(BigInteger.fromString("0"), BigInteger.fromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 } catch (Exception ex) {
@@ -1015,7 +1015,7 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.fromString("0"),BigInteger.fromString("-1"));
+ BigInteger.ONE.ModPow(BigInteger.fromString("0"), BigInteger.fromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 } catch (Exception ex) {
@@ -1023,7 +1023,7 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.fromString("1"),BigInteger.fromString("0"));
+ BigInteger.ONE.ModPow(BigInteger.fromString("1"), BigInteger.fromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 } catch (Exception ex) {
@@ -1031,7 +1031,7 @@ Assert.fail("Should have failed");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.fromString("1"),BigInteger.fromString("-1"));
+ BigInteger.ONE.ModPow(BigInteger.fromString("1"), BigInteger.fromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 } catch (Exception ex) {

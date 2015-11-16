@@ -139,9 +139,12 @@ segments[0])+(segments[1] - segments[0])));
      * idempotent; that is, calling the function again on the result with
      * the same mode doesn't change the result.
      * @param s A string to escape.
-     * @param mode A 32-bit signed integer.
-     * @return A string object.
      */
+
+  /**
+   * Not documented yet.
+   * @return Not documented yet.
+   */
     public static String escapeURI(String s, int mode) {
       if (s == null) {
         return null;
@@ -188,7 +191,7 @@ ParseMode.IRISurrogateLenient);
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
                 builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                              0xd800));
+                    0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             }
@@ -206,7 +209,7 @@ ParseMode.IRISurrogateLenient);
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
                 builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                              0xd800));
+                    0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
@@ -232,7 +235,7 @@ ParseMode.IRISurrogateLenient);
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
                 builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                              0xd800));
+                    0xd800));
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
@@ -259,7 +262,7 @@ ParseMode.IRISurrogateLenient);
      * cases return true:</p> <code> xx-x:mm example:/ww </code> The
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
-     * @param refValue A string object.
+     * @param refValue Not documented yet.
      * @return True if the string is a valid IRI with a scheme component;
      * otherwise, false.
      */
@@ -278,7 +281,7 @@ ParseMode.IRISurrogateLenient);
      * return true: <code> http://example/z xx-x:mm example:/ww </code> The
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
-     * @param refValue A string object.
+     * @param refValue Not documented yet.
      * @return True if the string is a valid URI with a scheme component;
      * otherwise, false.
      */
@@ -349,12 +352,20 @@ ParseMode.IRISurrogateLenient);
     /**
      * Determines whether the substring is a valid CURIE reference under RDFA 1.1.
      * (The CURIE reference is the part after the colon.).
-     * @param s A string object.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
+     * @param s Not documented yet.
+     */
+
+    /**
+     *
+     * @param length Another 32-bit signed integer.
      * @return True if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false.
      */
+
+  /**
+   * Not documented yet.
+   * @return Not documented yet.
+   */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
@@ -832,22 +843,33 @@ int endIndex) {
 
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue A string object. (2).
-     * @param baseURI A string object. (3).
-     * @return A string object.
+     * @param refValue Not documented yet.
+     * @param baseURI Another string object.
      */
+
+  /**
+   * Not documented yet.
+   * @return Not documented yet.
+   */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue A string object.
-     * @param baseURI A string object. (2).
-     * @param parseMode A ParseMode object.
+     * @param refValue Not documented yet.
+     */
+
+    /**
+     *
      * @return The resolved IRI, or null if refValue is null or is not a valid IRI.
      * If base is null or is not a valid IRI, returns refValue.
      */
+
+  /**
+   * Not documented yet.
+   * @return Not documented yet.
+   */
     public static String relativeResolve(
 String refValue,
 String baseURI,
@@ -929,7 +951,7 @@ segmentsBase[5]));
      * authority, path, query, or fragment component, respectively. If a
      * component is absent, both indices in that pair will be -1. If the
      * string is null or is not a valid IRI, returns null.</returns>
-     * @param s A string object.
+     * @param s Not documented yet.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
@@ -946,10 +968,7 @@ segmentsBase[5]));
      * (IRI) under RFC3987. If the IRI is syntactically valid, splits the
      * string into its components and returns an array containing the
      * indices into the components.
-     * @param s A string object.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
-     * @param parseMode A ParseMode object.
+     * @param s Not documented yet.
      * @return If the string is a valid IRI, returns an array of 10 integers. Each
      * of the five pairs corresponds to the start and end index of the IRI's
      * scheme, authority, path, query, or fragment component, respectively.
@@ -1194,8 +1213,9 @@ ParseMode parseMode) {
      * RFC3987. If the IRI is syntactically valid, splits the string into
      * its components and returns an array containing the indices into the
      * components.
-     * @param s A string object.
-     * @param parseMode A ParseMode object.
+     * @param s Not documented yet.
+     * @param s Not documented yet.
+     * @param parseMode Not documented yet.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment

@@ -63,7 +63,7 @@ BigInteger bigint,
 int lastDiscarded,
 int olderDiscarded) {
       if (bigint.canFitInInt()) {
-        this.shiftedSmall = bigint.intValue();
+        this.shiftedSmall = bigint.intValueChecked();
         if (this.shiftedSmall < 0) {
           throw new IllegalArgumentException("shiftedSmall (" + this.shiftedSmall +
             ") is less than 0");
@@ -112,7 +112,7 @@ int olderDiscarded) {
         while (bi.signum() > 0) {
           int count = 1000000;
           if (bi.compareTo(BigInteger.valueOf(1000000)) < 0) {
-            count = bi.intValue();
+            count = bi.intValueChecked();
           }
           this.ShiftRightInt(count);
           bi = bi.subtract(BigInteger.valueOf(count));
@@ -145,7 +145,7 @@ BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(BigInteger.TEN);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValue();
+        this.bitLeftmost = bigrem.intValueChecked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.AddInt(digits);
@@ -193,7 +193,7 @@ BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValue();
+        this.bitLeftmost = bigrem.intValueChecked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.Increment();
@@ -218,7 +218,7 @@ bigrem = divrem[1]; }
       }
       if (this.shiftedBigInt.canFitInInt()) {
         this.isSmall = true;
-        this.shiftedSmall = this.shiftedBigInt.intValue();
+        this.shiftedSmall = this.shiftedBigInt.intValueChecked();
         this.ShiftRightSmall(digits);
         return;
       }
@@ -289,7 +289,7 @@ BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValue();
+        this.bitLeftmost = bigrem.intValueChecked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.Add(digitDiff);
@@ -306,7 +306,7 @@ bigrem = divrem[1]; }
 BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-        int rem = bigrem.intValue();
+        int rem = bigrem.intValueChecked();
         this.bitsAfterLeftmost |= this.bitLeftmost;
         for (int i = 0; i < diffInt; ++i) {
           if (i == diffInt - 1) {
@@ -342,7 +342,7 @@ bigrem = divrem[1]; }
 BigInteger[] divrem=(bigquo).divideAndRemainder(valueTen);
 bigquo2 = divrem[0];
 bigrem = divrem[1]; }
-          this.bitLeftmost = bigrem.intValue();
+          this.bitLeftmost = bigrem.intValueChecked();
           this.shiftedBigInt = bigquo2;
         }
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
@@ -391,7 +391,7 @@ bigrem = divrem[1]; }
      * digit discarded is set and whether the discarded digits to the right
      * of that digit are set. Assumes that the big integer being shifted is
      * positive.
-     * @param digits A 32-bit signed integer.
+     * @param digits Not documented yet.
      */
     public void ShiftRightInt(int digits) {
       if (this.isSmall) {
@@ -474,7 +474,7 @@ bigrem = divrem[1]; }
      * information on whether the last digit discarded is set and whether
      * the discarded digits to the right of that digit are set. Assumes that
      * the big integer being shifted is positive.
-     * @param digits A 32-bit signed integer.
+     * @param digits Not documented yet.
      */
     public void ShiftToDigitsInt(int digits) {
       if (this.isSmall) {

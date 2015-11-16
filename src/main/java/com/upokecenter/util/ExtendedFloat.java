@@ -151,7 +151,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (diag.signum() < 0) {
         throw new
   IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
-                            diag);
+                    diag);
       }
       if (diag.signum() == 0 && !negative) {
         return signaling ? SignalingNaN : NaN;
@@ -516,7 +516,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         BitShiftAccumulator acc = new BitShiftAccumulator(bigmantissa, 0, 0);
         acc.ShiftRight(bigexponent);
         if (exact && (acc.getLastDiscardedDigit() != 0 || acc.getOlderDiscardedDigits() !=
-                      0)) {
+                    0)) {
           // Some digits were discarded
           throw new ArithmeticException("Not an exact integer");
         }
@@ -562,7 +562,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         if (this.getUnsignedMantissa().signum() != 0) {
           // Transfer diagnostic information
           BigInteger bigdata = this.getUnsignedMantissa().remainder(BigInteger.valueOf(0x200000));
-          nan |= bigdata.intValue();
+          nan |= bigdata.intValueChecked();
         }
         return Float.intBitsToFloat(nan);
       }
@@ -579,7 +579,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int smallmant = 0;
       FastInteger fastSmallMant;
       if (bigmant.compareTo(valueOneShift23) < 0) {
-        smallmant = bigmant.intValue();
+        smallmant = bigmant.intValueChecked();
         int exponentchange = 0;
         while (smallmant < (1 << 23)) {
           smallmant <<= 1;
@@ -597,7 +597,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       // Round half-even
       if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
-                              !fastSmallMant.isEvenNumber())) {
+                    !fastSmallMant.isEvenNumber())) {
         fastSmallMant.Increment();
         if (fastSmallMant.CompareToInt(1 << 24) == 0) {
           fastSmallMant = new FastInteger(1 << 23);
@@ -624,7 +624,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         fastSmallMant = accum.getShiftedIntFast();
         // Round half-even
         if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
-                              !fastSmallMant.isEvenNumber())) {
+                    !fastSmallMant.isEvenNumber())) {
           fastSmallMant.Increment();
           if (fastSmallMant.CompareToInt(1 << 24) == 0) {
             fastSmallMant = new FastInteger(1 << 23);
@@ -720,7 +720,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       // Round half-even
       if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
-                              DecimalUtility.HasBitSet(mantissaBits, 0))) {
+                    DecimalUtility.HasBitSet(mantissaBits, 0))) {
         // Add 1 to the bits
         mantissaBits[0] = ((int)(mantissaBits[0] + 1));
         if (mantissaBits[0] == 0) {
@@ -754,7 +754,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         mantissaBits = FastInteger.GetLastWords(accum.getShiftedInt(), 2);
         // Round half-even
         if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
-                              DecimalUtility.HasBitSet(mantissaBits, 0))) {
+                    DecimalUtility.HasBitSet(mantissaBits, 0))) {
           // Add 1 to the bits
           mantissaBits[0] = ((int)(mantissaBits[0] + 1));
           if (mantissaBits[0] == 0) {
@@ -1022,7 +1022,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
     public boolean IsNegativeInfinity() {
       return (this.flags & (BigNumberFlags.FlagInfinity |
-                            BigNumberFlags.FlagNegative)) ==
+                    BigNumberFlags.FlagNegative)) ==
         (BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
     }
 
@@ -1041,7 +1041,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
     public boolean IsNaN() {
       return (this.flags & (BigNumberFlags.FlagQuietNaN |
-                            BigNumberFlags.FlagSignalingNaN)) != 0;
+                    BigNumberFlags.FlagSignalingNaN)) != 0;
     }
 
     /**
@@ -1061,7 +1061,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
     public final boolean isFinite() {
         return (this.flags & (BigNumberFlags.FlagInfinity |
-                              BigNumberFlags.FlagNaN)) == 0;
+                    BigNumberFlags.FlagNaN)) == 0;
       }
 
     /**

@@ -79,7 +79,7 @@ import com.upokecenter.util.*;
     throw new CBORException("Index " + bigIndex +
           " is bigger than supported ");
       }
-      int index = bigIndex.intValue();
+      int index = bigIndex.intValueChecked();
       ArrayList<CBORObject> lastList = this.stack.get(this.stack.size() - 1);
       if (index >= lastList.size()) {
         throw new CBORException("Index " + index + " is not valid");

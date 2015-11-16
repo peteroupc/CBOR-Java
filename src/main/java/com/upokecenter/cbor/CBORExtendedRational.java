@@ -61,7 +61,7 @@ import com.upokecenter.util.*;
       if (ef.isFinite()) {
         BigInteger bi = ef.ToBigInteger();
         if (bi.bitLength() <= 63) {
-          return bi.longValue();
+          return bi.longValueChecked();
         }
       }
       throw new ArithmeticException("This Object's value is out of range");
@@ -135,7 +135,7 @@ import com.upokecenter.util.*;
       if (ef.isFinite()) {
         BigInteger bi = ef.ToBigInteger();
         if (bi.canFitInInt()) {
-          int ret = bi.intValue();
+          int ret = bi.intValueChecked();
           if (ret >= minValue && ret <= maxValue) {
             return ret;
           }

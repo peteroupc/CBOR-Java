@@ -107,7 +107,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Multiplies this instance by the value of a 32-bit signed integer.
-     * @param multiplicand A 32-bit signed integer.
+     * @param multiplicand Not documented yet.
      * @return The product of the two objects.
      */
       MutableNumber Multiply(int multiplicand) {
@@ -264,15 +264,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             int a = this.data[0];
             u = a - other;
             borrow = ((((a >> 31) == (u >> 31)) ?
-                       ((a & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
-                       ((a >> 31) == 0)) || (a == u && other != 0)) ? 1 : 0;
+                    ((a & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
+                    ((a >> 31) == 0)) || (a == u && other != 0)) ? 1 : 0;
             this.data[0] = (int)u;
             if (borrow != 0) {
               for (int i = 1; i < this.wordCount; ++i) {
                 u = this.data[i] - borrow;
                 borrow = (((this.data[i] >> 31) == (u >> 31)) ?
                 ((this.data[i] & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
-                          ((this.data[i] >> 31) == 0)) ? 1 : 0;
+                    ((this.data[i] >> 31) == 0)) ? 1 : 0;
                 this.data[i] = (int)u;
               }
             }
@@ -287,7 +287,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Subtracts a MutableNumber object from this instance.
-     * @param other A MutableNumber object.
+     * @param other Not documented yet.
      * @return The difference of the two objects.
      */
       MutableNumber Subtract(MutableNumber other) {
@@ -311,8 +311,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
               u = (a - other.data[i]) - borrow;
               borrow = ((((a >> 31) == (u >> 31)) ? ((a & Integer.MAX_VALUE) <
               (u & Integer.MAX_VALUE)) :
-                         ((a >> 31) == 0)) || (a == u && other.data[i] !=
-                         0)) ? 1 : 0;
+                    ((a >> 31) == 0)) || (a == u && other.data[i] !=
+                    0)) ? 1 : 0;
               this.data[i] = (int)u;
             }
             if (borrow != 0) {
@@ -321,8 +321,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
                 u = (a - other.data[i]) - borrow;
                 borrow = ((((a >> 31) == (u >> 31)) ? ((a & Integer.MAX_VALUE) <
                 (u & Integer.MAX_VALUE)) :
-                           ((a >> 31) == 0)) || (a == u && other.data[i] !=
-                           0)) ? 1 : 0;
+                    ((a >> 31) == 0)) || (a == u && other.data[i] !=
+                    0)) ? 1 : 0;
                 this.data[i] = (int)u;
               }
             }
@@ -358,7 +358,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Adds a 32-bit signed integer to this instance.
-     * @param augend A 32-bit signed integer.
+     * @param augend Not documented yet.
      * @return This instance.
      */
       MutableNumber Add(int augend) {
@@ -383,7 +383,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             u = (a + augend) + carry;
             carry = ((((u >> 31) == (a >> 31)) ? ((u & Integer.MAX_VALUE) < (a &
             Integer.MAX_VALUE)) :
-                      ((u >> 31) == 0)) || (u == a && augend != 0)) ? 1 : 0;
+                    ((u >> 31) == 0)) || (u == a && augend != 0)) ? 1 : 0;
             this.data[i] = u;
             if (carry == 0) {
               return this;
@@ -461,7 +461,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Compares a FastInteger object with this instance.
-     * @param val A FastInteger object.
+     * @param val Not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
@@ -586,10 +586,10 @@ bigrem = divrem[1]; }
             boolean bpos = val > 0L;
             if (
               (apos && ((!bpos && (Integer.MIN_VALUE / this.smallValue) > val) ||
-                        (bpos && this.smallValue > (Integer.MAX_VALUE / val)))) ||
+                    (bpos && this.smallValue > (Integer.MAX_VALUE / val)))) ||
               (!apos && ((!bpos && this.smallValue != 0L &&
-                          (Integer.MAX_VALUE / this.smallValue) > val) ||
-                         (bpos && this.smallValue < (Integer.MIN_VALUE / val))))) {
+                    (Integer.MAX_VALUE / this.smallValue) > val) ||
+                    (bpos && this.smallValue < (Integer.MIN_VALUE / val))))) {
               // would overflow, convert to large
               if (apos && bpos) {
                 // if both operands are nonnegative
@@ -896,7 +896,7 @@ bigrem = divrem[1]; }
 
     /**
      * Divides this instance by the value of a 32-bit signed integer.
-     * @param divisor A 32-bit signed integer.
+     * @param divisor Not documented yet.
      * @return The quotient of the two objects.
      * @throws ArithmeticException Attempted to divide by zero.
      */
@@ -957,7 +957,7 @@ bigrem = divrem[1]; }
 
     /**
      * Adds a 32-bit signed integer to this instance.
-     * @param val A 32-bit signed integer.
+     * @param val Not documented yet.
      * @return This instance.
      */
     FastInteger AddInt(int val) {
@@ -1066,7 +1066,7 @@ bigrem = divrem[1]; }
 
     /**
      * Compares a 32-bit signed integer with this instance.
-     * @param val A 32-bit signed integer.
+     * @param val Not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */

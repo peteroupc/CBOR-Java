@@ -103,7 +103,7 @@ throw new IllegalStateException("", ex);
     public void TestCliDecimal() {
       ExtendedDecimal valueEdTmp;
       valueEdTmp = ExtendedDecimal.FromString(
-        "-79228162514264337593543950336").RoundToPrecision(PrecisionContext.CliDecimal);
+"-79228162514264337593543950336").RoundToPrecision(PrecisionContext.CliDecimal);
       Assert.assertEquals(
         ExtendedDecimal.NegativeInfinity,
         valueEdTmp);
@@ -120,7 +120,7 @@ throw new IllegalStateException("", ex);
         String stringTemp =
 
           ExtendedDecimal.FromString(
-            "-9344285899206687626894794544.04982268810272216796875").RoundToPrecision(PrecisionContext.CliDecimal)
+"-9344285899206687626894794544.04982268810272216796875").RoundToPrecision(PrecisionContext.CliDecimal)
           .ToPlainString();
         Assert.assertEquals(
           "-9344285899206687626894794544",
@@ -129,11 +129,11 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals(
         ExtendedDecimal.PositiveInfinity,
         ExtendedDecimal.FromString(
-          "96148154858060747311034406200").RoundToPrecision(PrecisionContext.CliDecimal));
+"96148154858060747311034406200").RoundToPrecision(PrecisionContext.CliDecimal));
       Assert.assertEquals(
         ExtendedDecimal.PositiveInfinity,
         ExtendedDecimal.FromString(
-          "90246605365627217170000000000").RoundToPrecision(PrecisionContext.CliDecimal));
+"90246605365627217170000000000").RoundToPrecision(PrecisionContext.CliDecimal));
     }
 
     @Test
@@ -182,7 +182,9 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestToString() {
-      if ((PrecisionContext.Unlimited.toString()) == null)Assert.fail();
+      if (PrecisionContext.Unlimited.toString() == null) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestTraps() {

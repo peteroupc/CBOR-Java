@@ -2743,9 +2743,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a byte array of this object&#x27;s value.
-     * @param littleEndian A Boolean object.
-     * @return A byte array.
+     * Returns a byte array of this object&#x27;s value. The byte array will take
+     * the form of the number's two' s-complement representation, using the
+     * fewest bytes necessary to represent its value unambiguously. If this
+     * value is negative, the bits that appear "before" the most significant
+     * bit of the number will be all ones.
+     * @param littleEndian If true, the least significant bits will appear first.
+     * @return A byte array. If this value is 0, returns a byte array with the
+     * single element 0.
      */
     public byte[] toBytes(boolean littleEndian) {
       int sign = this.signum();
@@ -3831,10 +3836,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A BigInteger object with the same value as given in the string
      * portion.
      * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter "index" is less than 0, "endIndex"
-     * is less than 0, or either is greater than the string's length, or
-     * "endIndex" is less than "index" ; or radix is less than 2 or greater
-     * than 36.
+     * @throws IllegalArgumentException The parameter {@code radix} is less than 2 or
+     * greater than 36.
      * @throws NumberFormatException The string portion is empty or in an invalid format.
      */
     public static BigInteger fromRadixString(String str, int radix) {
