@@ -2971,10 +2971,10 @@ T thisValue,
 T multiplicand,
 T augend,
 PrecisionContext ctx) {
-    if ((multiplicand) == null) {
+    if (multiplicand == null) {
   throw new NullPointerException("multiplicand");
 }
-    if ((augend) == null) {
+    if (augend == null) {
   throw new NullPointerException("augend");
 }
       PrecisionContext ctx2 = PrecisionContext.Unlimited.WithBlankFlags();

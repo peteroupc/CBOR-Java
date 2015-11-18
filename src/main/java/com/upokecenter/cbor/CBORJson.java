@@ -24,8 +24,9 @@ private CBORJson() {
       }
     }
 
-    static String NextJSONString(CharacterInputWithCount reader,
-      int quote) {
+    static String NextJSONString(
+CharacterInputWithCount reader,
+int quote) {
       int c;
       StringBuilder sb = null;
       boolean surrogate = false;
@@ -87,6 +88,7 @@ private CBORJson() {
                   break;
                 }
                 default: reader.RaiseError("Invalid escaped character");
+                  break;
             }
             break;
             default: escaped = false;
@@ -239,7 +241,7 @@ private CBORJson() {
         reader.RaiseError("Too deeply nested");
       }
       int c;
-      CBORObject key;
+      CBORObject key = null;
       CBORObject obj;
       int[] nextchar = new int[1];
       boolean seenComma = false;
@@ -249,19 +251,23 @@ private CBORJson() {
         switch (c) {
           case -1:
             reader.RaiseError("A JSONObject must end with '}'");
+            break;
           case '}':
             if (seenComma) {
               // Situation like '{"0"=>1,}'
               reader.RaiseError("Trailing comma");
+              return null;
             }
             return CBORObject.FromRaw(myHashMap);
             default: {
               // Read the next String
               if (c < 0) {
                 reader.RaiseError("Unexpected end of data");
+                return null;
               }
               if (c != '"') {
                 reader.RaiseError("Expected a String as a key");
+                return null;
               }
               // Parse a String that represents the Object's key
               // The tokenizer already checked the String for invalid
@@ -271,6 +277,7 @@ private CBORJson() {
               key = obj;
               if (noDuplicates && myHashMap.containsKey(obj)) {
                 reader.RaiseError("Key already exists: " + key);
+                return null;
               }
               break;
             }
@@ -292,6 +299,7 @@ private CBORJson() {
           case '}':
             return CBORObject.FromRaw(myHashMap);
             default: reader.RaiseError("Expected a ',' or '}'");
+            break;
         }
       }
     }
@@ -336,6 +344,7 @@ private CBORJson() {
             return CBORObject.FromRaw(myArrayList);
           default:
             reader.RaiseError("Expected a ',' or ']'");
+            break;
         }
       }
     }

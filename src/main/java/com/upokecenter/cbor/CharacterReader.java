@@ -10,11 +10,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.io.*;
 
   final class CharacterReader implements ICharacterInput {
-    private interface ITransform {
+    private interface IByteReader {
       int read();
     }
 
-    private static final class WrappedStream implements ITransform {
+    private static final class WrappedStream implements IByteReader {
       private InputStream stream;
 
       public WrappedStream (InputStream stream) {
@@ -31,7 +31,7 @@ import java.io.*;
     }
 
     private String str;
-    private ITransform stream;
+    private IByteReader stream;
     private int mode;
     private int offset;
 
@@ -39,34 +39,39 @@ import java.io.*;
       private int[] saved;
       private int savedOffset;
       private int savedLength;
+
       private void Ensure(int size) {
-        saved = (saved == null) ? ((new int[savedLength + size])) : saved;
-        if (savedOffset + size < saved.length) {
-          int[] newsaved = new int[savedOffset + size + 4];
-          System.arraycopy(saved, 0, newsaved, 0, savedLength);
-          saved = newsaved;
+        this.saved = (this.saved == null) ? ((new int[this.savedLength + size])) : this.saved;
+        if (this.savedOffset + size < this.saved.length) {
+          int[] newsaved = new int[this.savedOffset + size + 4];
+          System.arraycopy(this.saved, 0, newsaved, 0, this.savedLength);
+          this.saved = newsaved;
         }
       }
+
       public void AddOne(int a) {
-        Ensure(1);
-        saved[savedLength++] = a;
+        this.Ensure(1);
+        this.saved[this.savedLength++] = a;
       }
+
       public void AddTwo(int a, int b) {
-        Ensure(2);
-        saved[savedLength++] = a;
-        saved[savedLength++] = b;
+        this.Ensure(2);
+        this.saved[this.savedLength++] = a;
+        this.saved[this.savedLength++] = b;
       }
+
       public void AddThree(int a, int b, int c) {
-        Ensure(4);
-        saved[savedLength++] = a;
-        saved[savedLength++] = b;
-        saved[savedLength++] = c;
+        this.Ensure(4);
+        this.saved[this.savedLength++] = a;
+        this.saved[this.savedLength++] = b;
+        this.saved[this.savedLength++] = c;
       }
-      public int Read(ITransform input) {
-        if (savedOffset < savedLength) {
-          int ret = saved[savedOffset++];
-          if (savedOffset >= savedLength) {
-            savedOffset = savedLength = 0;
+
+      public int Read(IByteReader input) {
+        if (this.savedOffset < this.savedLength) {
+          int ret = this.saved[this.savedOffset++];
+          if (this.savedOffset >= this.savedLength) {
+            this.savedOffset = this.savedLength = 0;
           }
           return ret;
         }
@@ -76,10 +81,10 @@ import java.io.*;
 
     private static final class Utf16Reader implements ICharacterInput {
       private final boolean bigEndian;
-      private final ITransform stream;
+      private final IByteReader stream;
       private SavedState state;
 
-      public Utf16Reader (ITransform stream, boolean bigEndian) {
+      public Utf16Reader (IByteReader stream, boolean bigEndian) {
         this.stream = stream;
         this.bigEndian = bigEndian;
         this.state = new SavedState();
@@ -128,7 +133,7 @@ import java.io.*;
       public int Read(int[] chars, int index, int length) {
         int count = 0;
         for (int i = 0; i < length; ++i) {
-          int c = ReadChar();
+          int c = this.ReadChar();
           if (c < 0) {
  return count;
 }
@@ -140,11 +145,11 @@ import java.io.*;
 
     private static final class Utf32Reader implements ICharacterInput {
       private final boolean bigEndian;
-      private final ITransform stream;
+      private final IByteReader stream;
 
       private SavedState state;
 
-      public Utf32Reader (ITransform stream, boolean bigEndian) {
+      public Utf32Reader (IByteReader stream, boolean bigEndian) {
         this.stream = stream;
         this.bigEndian = bigEndian;
         this.state = new SavedState();
@@ -180,7 +185,7 @@ import java.io.*;
       public int Read(int[] chars, int index, int length) {
         int count = 0;
         for (int i = 0; i < length; ++i) {
-          int c = ReadChar();
+          int c = this.ReadChar();
           if (c < 0) {
  return count;
 }
@@ -191,11 +196,11 @@ import java.io.*;
     }
 
     private static final class Utf8Reader implements ICharacterInput {
-      private final ITransform stream;
+      private final IByteReader stream;
       private int lastChar;
       private SavedState state;
 
-      public Utf8Reader (ITransform stream) {
+      public Utf8Reader (IByteReader stream) {
         this.stream = stream;
         this.lastChar = -1;
         this.state = new SavedState();
@@ -277,7 +282,7 @@ import java.io.*;
       public int Read(int[] chars, int index, int length) {
         int count = 0;
         for (int i = 0; i < length; ++i) {
-          int c = ReadChar();
+          int c = this.ReadChar();
           if (c < 0) {
  return count;
 }
@@ -304,7 +309,7 @@ import java.io.*;
     }
 
     public CharacterReader (InputStream stream) {
- this(stream, 0);
+ this(stream, 2);
     }
 
     // Mode can be:
@@ -508,6 +513,7 @@ import java.io.*;
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (this.str.charAt(this.offset + 1) -
           0xdc00);
+          ++this.offset;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           throw new IllegalStateException("Unpaired surrogate code point");
@@ -518,7 +524,7 @@ import java.io.*;
     }
 
     public int Read(int[] chars, int index, int length) {
-      if ((chars) == null) {
+      if (chars == null) {
   throw new NullPointerException("chars");
 }
 if (index < 0) {
@@ -537,13 +543,13 @@ if (length > chars.length) {
   throw new IllegalArgumentException("length (" + length +
     ") is more than " + chars.length);
 }
-if (chars.length-index < length) {
+if (chars.length - index < length) {
   throw new IllegalArgumentException("chars's length minus " + index + " (" +
-    (chars.length-index) + ") is less than " + length);
+    (chars.length - index) + ") is less than " + length);
 }
       int count = 0;
       for (int i = 0; i < length; ++i) {
-        int c = ReadChar();
+        int c = this.ReadChar();
         if (c < 0) {
  return count;
 }
