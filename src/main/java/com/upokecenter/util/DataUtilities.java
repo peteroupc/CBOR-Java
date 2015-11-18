@@ -417,6 +417,7 @@ int surrogateBehavior) {
      * {@code length} is less than 0, or {@code offset} plus {@code length}
      * is greater than the string's length.
      * @throws java.io.IOException An I/O error occurred.
+     * @throws
      */
     public static int WriteUtf8(
 String str,
@@ -447,6 +448,7 @@ boolean replace) throws java.io.IOException {
      * {@code length} is less than 0, or {@code offset} plus {@code length}
      * is greater than the string's length.
      * @throws java.io.IOException An I/O error occurred.
+     * @throws
      */
     public static int WriteUtf8(
 String str,

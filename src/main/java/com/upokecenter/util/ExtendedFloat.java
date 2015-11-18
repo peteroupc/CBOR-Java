@@ -260,6 +260,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A PrecisionContext object.
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "str"'s length, or "str"'s length minus "offset" is
+     * less than "length".
      */
     public static ExtendedFloat FromString(
       String str,
@@ -304,6 +307,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param length A 32-bit signed integer. (2).
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "str"'s length, or "str"'s length minus "offset" is
+     * less than "length".
      */
     public static ExtendedFloat FromString(String str, int offset, int length) {
       return FromString(str, offset, length, null);
