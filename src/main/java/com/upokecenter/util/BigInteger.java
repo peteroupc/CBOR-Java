@@ -51,8 +51,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int rstart,
       int n,
       int shiftBits) {
-      // Debugif(!(shiftBits< 16))Assert.fail("{0} line {1}: shiftBits<16"
-      // ,"words.h" ,67);
       short u, carry = 0;
       {
         if (shiftBits != 0) {
@@ -73,8 +71,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int rstart,
       int n,
       int shiftBits) {
-      // Debugif(!(shiftBits< 16))Assert.fail("{0} line {1}: shiftBits<16"
-      // ,"words.h" ,67);
       {
         short u, carry = (short)((int)0xffff << (int)(16 - shiftBits));
         if (shiftBits != 0) {
@@ -204,7 +200,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int n,
       short words2) {
       {
-        // Debugif(!(n!=0))Assert.fail("{0} line {1}: n","integer.cpp",63);
         short tmp = words1[words1Start];
         words1[words1Start] = (short)(tmp + words2);
         if ((((int)words1[words1Start]) & 0xffff) >= (((int)tmp) & 0xffff)) {
@@ -225,7 +220,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int words1Start,
       int n,
       short words2) {
-      // Debugif(!(n!=0))Assert.fail("{0} line {1}: n","integer.cpp",76);
       {
         short tmp = words1[words1Start];
         words1[words1Start] = (short)(tmp - words2);
@@ -258,8 +252,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       short[] words2,
       int bstart,
       int n) {
-      // Debugif(!(n%2 == 0))Assert.fail("{0} line {1}: n%2 == 0" ,"integer.cpp"
-      // , 799);
       {
         int u;
         u = 0;
@@ -283,8 +275,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       short[] words2,
       int bstart,
       int n) {
-      // Debugif(!(n%2 == 0))Assert.fail("{0} line {1}: n%2 == 0" ,"integer.cpp"
-      // , 799);
       {
         int u;
         u = 0;
@@ -382,8 +372,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       short[] words2,
       int bstart,
       int n) {
-      // Debugif(!(n%2 == 0))Assert.fail("{0} line {1}: n%2 == 0" ,"integer.cpp"
-      // , 799);
       {
         int u;
         u = 0;
@@ -411,8 +399,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       short[] words2,
       int bstart,
       int n) {
-      // Debugif(!(n%2 == 0))Assert.fail("{0} line {1}: n%2 == 0" ,"integer.cpp"
-      // , 799);
       {
         int u;
         u = 0;
@@ -3828,17 +3814,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Converts a portion of a string to an arbitrary-precision integer. The string
-     * portion can begin with a minus sign ('-') to indicate that it's
-     * negative.
+     * Converts a string to an arbitrary-precision integer. The string portion can
+     * begin with a minus sign ('-') to indicate that it's negative.
      * @param str A string object.
-     * @param radix A 32-bit signed integer.
-     * @return A BigInteger object with the same value as given in the string
-     * portion.
+     * @param radix A base from 2 to 36. The possible digits start from 0 to 9,
+     * then from A to Z in base 36, and the possible digits start from 0 to
+     * 9, then from A to F in base 16.
+     * @return A BigInteger object with the same value as given in the string.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code radix} is less than 2 or
      * greater than 36.
-     * @throws NumberFormatException The string portion is empty or in an invalid format.
+     * @throws NumberFormatException The string is empty or in an invalid format.
      */
     public static BigInteger fromRadixString(String str, int radix) {
       if (str == null) {

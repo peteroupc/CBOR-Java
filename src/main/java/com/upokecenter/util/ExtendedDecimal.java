@@ -33,7 +33,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * very high number can't be represented in a given exponent range.
      * <b>Not-a-number</b> is generally used to signal errors.</p> <p>This
      * class implements the General Decimal Arithmetic Specification version
-     * 1.70: <code>http://speleotrove.com/decimal/decarith.html</code> </p>
+     * 1.70: <code>http://speleotrove.com/decimal/decarith.html</code></p>
      * <p>Passing a signaling NaN to any arithmetic operation shown here
      * will signal the flag FlagInvalid and return a quiet NaN, even if
      * another operand to that operation is a quiet NaN, unless noted
@@ -47,12 +47,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * exception too, unless the flag's trap is enabled in the precision
      * context (see PrecisionContext's Traps property).</p> <p>An
      * ExtendedDecimal value can be serialized in one of the following
-     * ways:</p> <ul><li>By calling the toString() method, which will always
-     * return distinct strings for distinct ExtendedDecimal values.</li>
-     * <li>By calling the UnsignedMantissa, Exponent, and IsNegative
-     * properties, and calling the IsInfinity, IsQuietNaN, and
+     * ways:</p> <ul> <li>By calling the toString() method, which will
+     * always return distinct strings for distinct ExtendedDecimal
+     * values.</li> <li>By calling the UnsignedMantissa, Exponent, and
+     * IsNegative properties, and calling the IsInfinity, IsQuietNaN, and
      * IsSignalingNaN methods. The return values combined will uniquely
-     * identify a particular ExtendedDecimal value.</li> </ul>
+     * identify a particular ExtendedDecimal value.</li></ul>
      */
   public final class ExtendedDecimal implements Comparable<ExtendedDecimal> {
     private static final int MaxSafeInt = 214748363;
@@ -304,13 +304,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * <p>Creates a decimal number from a string that represents a number.</p>
-     * <p>The format of the string generally consists of:</p> <ul><li>An
+     * <p>The format of the string generally consists of:</p> <ul> <li>An
      * optional '-' or '+' character (if '-' , the value is negative.)</li>
      * <li>One or more digits, with a single optional decimal point after
      * the first digit and before the last digit.</li> <li>Optionally, E+
      * (positive exponent) or E- (negative exponent) plus one or more digits
-     * specifying the exponent.</li> </ul> <p>The string can also be "-INF",
-     * "-Infinity" , "Infinity" , "INF" , quiet NaN ("qNaN" /"-qNaN")
+     * specifying the exponent.</li></ul> <p>The string can also be "-INF",
+     * "-Infinity" , "Infinity", "INF" , quiet NaN ("qNaN" /"-qNaN")
      * followed by any number of digits, or signaling NaN ("sNaN" /"-sNaN")
      * followed by any number of digits, all in any combination of upper and
      * lower case.</p> <p>The format generally follows the definition in
@@ -1502,7 +1502,7 @@ remainder = divrem[1]; }
      * in most cases (for example: <code>ExtendedDecimal.FromString("0.1")</code>
      *).
      * @param flt A 32-bit floating-point number.
-     * @return A decimal number with the same value as {@code flt} .
+     * @return A decimal number with the same value as {@code flt}.
      */
     public static ExtendedDecimal FromSingle(float flt) {
       int value = Float.floatToRawIntBits(flt);
@@ -1607,7 +1607,7 @@ remainder = divrem[1]; }
      * number from a decimal number, use FromString instead in most cases
      * (for example: <code>ExtendedDecimal.FromString("0.1")</code>).
      * @param dbl A 64-bit floating-point number.
-     * @return A decimal number with the same value as {@code dbl} .
+     * @return A decimal number with the same value as {@code dbl}.
      */
     public static ExtendedDecimal FromDouble(double dbl) {
       int[] value = Extras.DoubleToIntegers(dbl);
@@ -2272,7 +2272,7 @@ remainder = divrem[1]; }
      * Multiplies by one decimal number, and then adds another decimal number.
      * @param multiplicand The value to multiply.
      * @param augend The value to add.
-     * @return The result this * {@code multiplicand} + {@code augend} .
+     * @return The result this * {@code multiplicand} + {@code augend}.
      */
     public ExtendedDecimal MultiplyAndAdd(
       ExtendedDecimal multiplicand,
@@ -2345,7 +2345,7 @@ remainder = divrem[1]; }
     /**
      * Finds the distance to the closest multiple of the given divisor, based on
      * the result of dividing this object&#x27;s value by another
-     * object&#x27;s value. <ul><li>If this and the other object divide
+     * object&#x27;s value. <ul> <li>If this and the other object divide
      * evenly, the result is 0.</li> <li>If the remainder's absolute value
      * is less than half of the divisor's absolute value, the result has the
      * same sign as this object and will be the distance to the closest
@@ -2356,8 +2356,9 @@ remainder = divrem[1]; }
      * of the divisor's absolute value, the result has the opposite sign of
      * this object if the quotient, rounded down, is odd, and has the same
      * sign as this object if the quotient, rounded down, is even, and the
-     * result's absolute value is half of the divisor's absolute value.</li>
-     * </ul> This function is also known as the "IEEE Remainder" function.
+     * result's absolute value is half of the divisor's absolute
+     * value.</li></ul> This function is also known as the "IEEE Remainder"
+     * function.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
@@ -2922,12 +2923,16 @@ remainder = divrem[1]; }
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The result thisValue * multiplicand - subtrahend.
-     * @throws NullPointerException The parameter "otherValue" is null.
+     * @throws NullPointerException The parameter {@code op} or {@code subtrahend}
+     * is null.
      */
     public ExtendedDecimal MultiplyAndSubtract(
       ExtendedDecimal op,
       ExtendedDecimal subtrahend,
       PrecisionContext ctx) {
+      if (op == null) {
+        throw new NullPointerException("op");
+      }
       if (subtrahend == null) {
         throw new NullPointerException("subtrahend");
       }
@@ -3222,7 +3227,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return A number whose scale is increased by {@code bigPlaces} , but not to
+     * @return A number whose scale is increased by {@code bigPlaces}, but not to
      * more than 0.
      */
     public ExtendedDecimal MovePointRight(
@@ -3289,7 +3294,7 @@ this.flags).RoundToPrecision(ctx);
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return A number whose scale is increased by {@code bigPlaces} .
+     * @return A number whose scale is increased by {@code bigPlaces}.
      */
     public ExtendedDecimal ScaleByPowerOfTen(
 BigInteger bigPlaces,

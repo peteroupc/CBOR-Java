@@ -102,7 +102,26 @@ boolean replace) {
      * @throws IllegalArgumentException The string contains an unpaired surrogate code
      * point and {@code replace} is false, or an internal error occurred.
      */
-    public static byte[] GetUtf8Bytes(String str, boolean replace) {
+        public static byte[] GetUtf8Bytes(String str, boolean replace) {
+          return GetUtf8Bytes(str, replace, false);
+        }
+
+    /**
+     * Encodes a string in UTF-8 as a byte array.
+     * @param str A text string.
+     * @param replace If true, replaces unpaired surrogate code points with the
+     * replacement character (U + FFFD). If false, stops processing when an
+     * unpaired surrogate code point is seen.
+     * @param lenientLineBreaks A Boolean object.
+     * @return The string encoded in UTF-8.
+     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException The string contains an unpaired surrogate code
+     * point and {@code replace} is false, or an internal error occurred.
+     */
+    public static byte[] GetUtf8Bytes(
+String str,
+boolean replace,
+boolean lenientLineBreaks) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -596,7 +615,7 @@ boolean lenientLineBreaks) throws java.io.IOException {
      * builder} is null.
      * @throws IllegalArgumentException The parameter {@code offset} is less than 0,
      * {@code bytesCount} is less than 0, or offset plus bytesCount is
-     * greater than the length of {@code data} .
+     * greater than the length of {@code data}.
      */
     public static int ReadUtf8FromBytes(
 byte[] data,

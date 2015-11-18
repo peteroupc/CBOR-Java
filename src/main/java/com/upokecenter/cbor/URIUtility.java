@@ -139,12 +139,9 @@ segments[0])+(segments[1] - segments[0])));
      * idempotent; that is, calling the function again on the result with
      * the same mode doesn't change the result.
      * @param s A string to escape.
+     * @param mode A 32-bit signed integer.
+     * @return A string object.
      */
-
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
     public static String escapeURI(String s, int mode) {
       if (s == null) {
         return null;
@@ -353,19 +350,11 @@ ParseMode.IRISurrogateLenient);
      * Determines whether the substring is a valid CURIE reference under RDFA 1.1.
      * (The CURIE reference is the part after the colon.).
      * @param s Not documented yet.
-     */
-
-    /**
-     *
-     * @param length Another 32-bit signed integer.
+     * @param offset Not documented yet.
+     * @param length Not documented yet. (3).
      * @return True if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false.
      */
-
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
@@ -845,12 +834,8 @@ int endIndex) {
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue Not documented yet.
      * @param baseURI Another string object.
+     * @return A string object.
      */
-
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
@@ -858,18 +843,12 @@ int endIndex) {
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue Not documented yet.
-     */
-
-    /**
-     *
+     * @param refValue Not documented yet.
+     * @param baseURI Not documented yet.
+     * @param parseMode Not documented yet. (3).
      * @return The resolved IRI, or null if refValue is null or is not a valid IRI.
      * If base is null or is not a valid IRI, returns refValue.
      */
-
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
     public static String relativeResolve(
 String refValue,
 String baseURI,
@@ -969,6 +948,9 @@ segmentsBase[5]));
      * string into its components and returns an array containing the
      * indices into the components.
      * @param s Not documented yet.
+     * @param offset Not documented yet.
+     * @param length Not documented yet. (3).
+     * @param parseMode Not documented yet. (4).
      * @return If the string is a valid IRI, returns an array of 10 integers. Each
      * of the five pairs corresponds to the start and end index of the IRI's
      * scheme, authority, path, query, or fragment component, respectively.
@@ -1214,8 +1196,6 @@ ParseMode parseMode) {
      * its components and returns an array containing the indices into the
      * components.
      * @param s Not documented yet.
-     * @param s Not documented yet.
-     * @param parseMode Not documented yet.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment

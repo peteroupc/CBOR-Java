@@ -28,7 +28,7 @@ import com.upokecenter.util.*;
     public void WriteString(String str) throws java.io.IOException {
       if (this.outputStream != null) {
         if (str.length() == 1) {
-          this.WriteChar(str.charAt(0));
+          this.WriteCodePoint((int)str.charAt(0));
         } else {
           if (DataUtilities.WriteUtf8(
             str,
@@ -47,7 +47,7 @@ import com.upokecenter.util.*;
     public void WriteString(String str, int index, int length) throws java.io.IOException {
       if (this.outputStream != null) {
         if (length == 1) {
-          this.WriteChar(str.charAt(index));
+          this.WriteCodePoint((int)str.charAt(index));
         } else {
           if (
 DataUtilities.WriteUtf8(
@@ -107,29 +107,6 @@ false) < 0) {
                     0x3ff) + 0xd800));
           this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) + 0xdc00));
         }
-      }
-    }
-
-    public void WriteChar(char ch) throws java.io.IOException {
-      if (this.outputStream != null) {
-        if (ch < 0x80) {
-          this.outputStream.write((byte)ch);
-        } else if (ch <= 0x7ff) {
-          this.outputStream.write((byte)(0xc0 | ((ch >> 6) & 0x1f)));
-          this.outputStream.write((byte)(0x80 | (ch & 0x3f)));
-        } else {
-          if ((ch & 0xf800) == 0xd800) {
-            throw new IllegalArgumentException("ch is a surrogate");
-          }
-          this.outputStream.write((byte)(0xe0 | ((ch >> 12) & 0x0f)));
-          this.outputStream.write((byte)(0x80 | ((ch >> 6) & 0x3f)));
-          this.outputStream.write((byte)(0x80 | (ch & 0x3f)));
-        }
-      } else {
-        if ((ch & 0xf800) == 0xd800) {
-          throw new IllegalArgumentException("ch is a surrogate");
-        }
-        this.builder.append(ch);
       }
     }
   }

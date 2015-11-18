@@ -24,13 +24,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * exception too, unless the operation's trap is enabled in the
      * precision context (see PrecisionContext's Traps property).</p> <p>An
      * ExtendedFloat value can be serialized in one of the following
-     * ways:</p> <ul><li>By calling the toString() method. However, not all
+     * ways:</p> <ul> <li>By calling the toString() method. However, not all
      * strings can be converted back to an ExtendedFloat without loss,
      * especially if the string has a fractional part.</li> <li>By calling
      * the UnsignedMantissa, Exponent, and IsNegative properties, and
      * calling the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The
      * return values combined will uniquely identify a particular
-     * ExtendedFloat value.</li> </ul>
+     * ExtendedFloat value.</li></ul>
      */
   public final class ExtendedFloat implements Comparable<ExtendedFloat> {
     private final BigInteger exponent;
@@ -243,12 +243,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * not be exact. However, the resulting binary float will contain enough
      * precision to accurately convert it to a 32-bit or 64-bit floating
      * point number (float or double). <p>The format of the string generally
-     * consists of:</p> <ul><li>An optional '-' or '+' character (if '-' ,
+     * consists of:</p> <ul> <li>An optional '-' or '+' character (if '-' ,
      * the value is negative.)</li> <li>One or more digits, with a single
      * optional decimal point after the first digit and before the last
      * digit.</li> <li>Optionally, E+ (positive exponent) or E- (negative
-     * exponent) plus one or more digits specifying the exponent.</li> </ul>
-     * <p>The string can also be "-INF" , "-Infinity" , "Infinity" , "INF",
+     * exponent) plus one or more digits specifying the exponent.</li></ul>
+     * <p>The string can also be "-INF", "-Infinity" , "Infinity", "INF",
      * quiet NaN ("qNaN") followed by any number of digits, or signaling NaN
      * ("sNaN") followed by any number of digits, all in any combination of
      * upper and lower case.</p> <p>The format generally follows the
@@ -792,7 +792,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * approximation, as is often the case by converting the floating point
      * number to a string first.
      * @param flt A 32-bit floating-point number.
-     * @return A binary float with the same value as {@code flt} .
+     * @return A binary float with the same value as {@code flt}.
      */
     public static ExtendedFloat FromSingle(float flt) {
       int value = Float.floatToRawIntBits(flt);
@@ -874,7 +874,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * approximation, as is often the case by converting the floating point
      * number to a string first.
      * @param dbl A 64-bit floating-point number.
-     * @return A binary float with the same value as {@code dbl} .
+     * @return A binary float with the same value as {@code dbl}.
      */
     public static ExtendedFloat FromDouble(double dbl) {
       int[] value = Extras.DoubleToIntegers(dbl);
@@ -1536,7 +1536,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Finds the distance to the closest multiple of the given divisor, based on
      * the result of dividing this object&#x27;s value by another
-     * object&#x27;s value. <ul><li>If this and the other object divide
+     * object&#x27;s value. <ul> <li>If this and the other object divide
      * evenly, the result is 0.</li> <li>If the remainder's absolute value
      * is less than half of the divisor's absolute value, the result has the
      * same sign as this object and will be the distance to the closest
@@ -1547,8 +1547,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * of the divisor's absolute value, the result has the opposite sign of
      * this object if the quotient, rounded down, is odd, and has the same
      * sign as this object if the quotient, rounded down, is even, and the
-     * result's absolute value is half of the divisor's absolute value.</li>
-     * </ul> This function is also known as the "IEEE Remainder" function.
+     * result's absolute value is half of the divisor's absolute
+     * value.</li></ul> This function is also known as the "IEEE Remainder"
+     * function.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
@@ -2070,12 +2071,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The result thisValue * multiplicand - subtrahend.
-     * @throws NullPointerException The parameter "otherValue" is null.
+     * @throws NullPointerException The parameter {@code op} or {@code subtrahend}
+     * is null.
      */
     public ExtendedFloat MultiplyAndSubtract(
       ExtendedFloat op,
       ExtendedFloat subtrahend,
       PrecisionContext ctx) {
+      if (op == null) {
+        throw new NullPointerException("op");
+      }
       if (subtrahend == null) {
         throw new NullPointerException("subtrahend");
       }
@@ -2366,7 +2371,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return A number whose scale is increased by {@code bigPlaces} , but not to
+     * @return A number whose scale is increased by {@code bigPlaces}, but not to
      * more than 0.
      */
     public ExtendedFloat MovePointRight(
@@ -2433,7 +2438,7 @@ this.flags).RoundToPrecision(ctx);
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return A number whose scale is increased by {@code bigPlaces} .
+     * @return A number whose scale is increased by {@code bigPlaces}.
      */
     public ExtendedFloat ScaleByPowerOfTwo(
 BigInteger bigPlaces,
