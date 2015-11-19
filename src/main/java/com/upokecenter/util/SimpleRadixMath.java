@@ -7,15 +7,14 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-    /**
-     * Implements the simplified arithmetic in Appendix A of the General Decimal
-     * Arithmetic Specification. Unfortunately, it doesn't pass all the test
-     * cases, since some aspects of the spec are left open. For example: in
-     * which cases is the Clamped flag set? The test cases set the Clamped
-     * flag in only a handful of test cases, all within the <code>exp</code>
-     * operation.
-     * @param <T> Data type for a numeric value in a particular radix.
-     */
+    // <summary>Implements the simplified arithmetic in Appendix A of the
+    // General Decimal Arithmetic Specification. Unfortunately, it doesn't
+    // pass all the test cases, since some aspects of the spec are left
+    // open. For example: in which cases is the Clamped flag set? The test
+    // cases set the Clamped flag in only a handful of test cases, all
+    // within the <c>exp</c> operation.</summary>
+    // <typeparam name='T'>Data type for a numeric value in a particular
+    // radix.</typeparam>
   final class SimpleRadixMath<T> implements IRadixMath<T> {
     private IRadixMath<T> wrapper;
 
@@ -335,14 +334,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return this.PostProcess(value, ctx, ctx2);
     }
 
-    /**
-     * Finds the remainder that results when dividing two T objects.
-     * @param thisValue Not documented yet.
-     * @param thisValue Not documented yet.
-     * @param divisor Not documented yet.
-     * @param ctx Not documented yet. (3).
-     * @return The remainder of the two objects.
-     */
+    // <summary>Finds the remainder that results when dividing two T
+    // objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <summary>Finds the remainder that results when dividing two T
+    // objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <param name='divisor'>Not documented yet.</param>
+    // <param name='ctx'>Not documented yet. (3).</param>
+    // <returns>The remainder of the two objects.</returns>
     public T Remainder(T thisValue, T divisor, PrecisionContext ctx) {
       T ret = this.CheckNotANumber2(thisValue, divisor, ctx);
       if ((Object)ret != (Object)null) {
@@ -547,14 +547,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return this.PostProcessAfterDivision(thisValue, ctx, ctx2);
     }
 
-    /**
-     * Divides two T objects.
-     * @param thisValue Not documented yet.
-     * @param thisValue Not documented yet.
-     * @param divisor Not documented yet.
-     * @param ctx Not documented yet. (3).
-     * @return The quotient of the two objects.
-     */
+    // <summary>Divides two T objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <summary>Divides two T objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <param name='divisor'>Not documented yet.</param>
+    // <param name='ctx'>Not documented yet. (3).</param>
+    // <returns>The quotient of the two objects.</returns>
     public T Divide(T thisValue, T divisor, PrecisionContext ctx) {
       T ret = this.CheckNotANumber2(thisValue, divisor, ctx);
       if ((Object)ret != (Object)null) {
@@ -617,14 +616,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return this.PostProcess(a, ctx, ctx2);
     }
 
-    /**
-     * Multiplies two T objects.
-     * @param thisValue Not documented yet.
-     * @param thisValue Not documented yet.
-     * @param other Not documented yet.
-     * @param ctx Not documented yet. (3).
-     * @return The product of the two objects.
-     */
+    // <summary>Multiplies two T objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <summary>Multiplies two T objects.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <param name='other'>Not documented yet.</param>
+    // <param name='ctx'>Not documented yet. (3).</param>
+    // <returns>The product of the two objects.</returns>
     public T Multiply(T thisValue, T other, PrecisionContext ctx) {
       T ret = this.CheckNotANumber2(thisValue, other, ctx);
       if ((Object)ret != (Object)null) {
@@ -809,15 +807,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return this.Add(thisValue, other, ctx);
     }
 
-    /**
-     * Compares a T object with this instance.
-     * @param thisValue Not documented yet.
-     * @param otherValue A T object.
-     * @param treatQuietNansAsSignaling A Boolean object.
-     * @param ctx A PrecisionContext object.
-     * @return Zero if the values are equal; a negative number if this instance is
-     * less, or a positive number if this instance is greater.
-     */
+    // <summary>Compares a T Object with this instance.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <param name='otherValue'>A T Object.</param>
+    // <param name='treatQuietNansAsSignaling'>A Boolean Object.</param>
+    // <param name='ctx'>A PrecisionContext Object.</param>
+    // <returns>Zero if the values are equal; a negative number if this
+    // instance is less, or a positive number if this instance is
+    // greater.</returns>
     public T CompareToWithContext(
       T thisValue,
       T otherValue,
@@ -836,12 +833,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         ctx);
     }
 
-    /**
-     * Compares a T object with this instance.
-     * @param thisValue Not documented yet.
-     * @return Zero if the values are equal; a negative number if this instance is
-     * less, or a positive number if this instance is greater.
-     */
+    // <summary>Compares a T Object with this instance.</summary>
+    // <param name='thisValue'>Not documented yet.</param>
+    // <returns>Zero if the values are equal; a negative number if this
+    // instance is less, or a positive number if this instance is
+    // greater.</returns>
     public int compareTo(T thisValue, T otherValue) {
       return this.wrapper.compareTo(thisValue, otherValue);
     }

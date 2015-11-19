@@ -3126,9 +3126,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Raises a big integer to a power, which is given as another big integer.
      * @param power Another BigInteger object.
-     * @return A BigInteger object.
+     * @return The result. Returns 1 if "power" is 0.
      * @throws NullPointerException The parameter {@code power} is null.
      */
     public BigInteger PowBigIntVar(BigInteger power) {
@@ -3169,7 +3169,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Not documented yet.
      * @param powerSmall A 32-bit signed integer.
-     * @return A BigInteger object.
+     * @return The result. Returns 1 if "powerSmall" is 0.
+     * @throws IllegalArgumentException "powerSmall" is less than 0.
      */
     public BigInteger pow(int powerSmall) {
       if (powerSmall < 0) {

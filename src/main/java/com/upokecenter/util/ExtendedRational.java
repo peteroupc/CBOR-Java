@@ -167,9 +167,9 @@ BigInteger denominator) {
     }
 
     /**
-     * Not documented yet.
+     * Converts a big integer to a rational number.
      * @param bigint A BigInteger object.
-     * @return An ExtendedRational object.
+     * @return The exact value of the integer as a rational number.
      */
     public static ExtendedRational FromBigInteger(BigInteger bigint) {
       return new ExtendedRational(bigint, BigInteger.ONE);

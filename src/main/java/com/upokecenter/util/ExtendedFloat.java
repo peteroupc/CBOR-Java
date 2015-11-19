@@ -935,16 +935,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts this value to a string.
-     * @return A string representation of this object.
+     * @return A string representation of this object. The value is converted to
+     * decimal and the decimal form of this number's value is returned.
      */
     @Override public String toString() {
       return ExtendedDecimal.FromExtendedFloat(this).toString();
     }
 
     /**
-     * Same as toString(), except that when an exponent is used it will be a
-     * multiple of 3. The format of the return value follows the format of
-     * the java.math.BigDecimal.toEngineeringString() method.
+     * Converts this value to an extended decimal, then returns the value of that
+     * decimal's ToEngineeringString method.
      * @return A string object.
      */
     public String ToEngineeringString() {
