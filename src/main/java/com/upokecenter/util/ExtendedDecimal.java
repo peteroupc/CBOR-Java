@@ -287,8 +287,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * <code>FromString(string, int, int, PrecisionContext)</code> for more
      * information.
      * @param str A string that represents a number.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='str'/> begins.
+     * @param length The length, in code units, of the desired portion of.
+     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
+     * length).
      * @return An arbitrary-precision decimal number with the same value as the
      * given string.
      * @throws NullPointerException The parameter {@code str} is null.

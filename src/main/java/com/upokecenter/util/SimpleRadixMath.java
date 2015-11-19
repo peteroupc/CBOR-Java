@@ -338,6 +338,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Finds the remainder that results when dividing two T objects.
      * @param thisValue Not documented yet.
+     * @param divisor A T object.
+     * @param ctx A PrecisionContext object.
      * @return The remainder of the two objects.
      */
     public T Remainder(T thisValue, T divisor, PrecisionContext ctx) {
@@ -547,6 +549,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Divides two T objects.
      * @param thisValue Not documented yet.
+     * @param divisor A T object.
+     * @param ctx A PrecisionContext object.
      * @return The quotient of the two objects.
      */
     public T Divide(T thisValue, T divisor, PrecisionContext ctx) {
@@ -614,6 +618,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Multiplies two T objects.
      * @param thisValue Not documented yet.
+     * @param other A T object.
+     * @param ctx A PrecisionContext object.
      * @return The product of the two objects.
      */
     public T Multiply(T thisValue, T other, PrecisionContext ctx) {
@@ -803,10 +809,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Compares a T object with this instance.
      * @param thisValue Not documented yet.
-     * @param thisValue Not documented yet.
-     * @param otherValue Not documented yet.
-     * @param treatQuietNansAsSignaling Not documented yet. (3).
-     * @param ctx Not documented yet. (4).
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
@@ -831,7 +833,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Compares a T object with this instance.
      * @param thisValue Not documented yet.
-     * @param otherValue A T object.
+     * @param thisValue Not documented yet.
+     * @param otherValue Not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */

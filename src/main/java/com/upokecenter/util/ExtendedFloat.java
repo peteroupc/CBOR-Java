@@ -255,14 +255,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * definition in java.math.BigDecimal(), except that the digits must be
      * ASCII digits ('0' through '9').</p>
      * @param str A string object.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='str'/> begins.
+     * @param length The length, in code units, of the desired portion of.
+     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
+     * length).
      * @param ctx A PrecisionContext object.
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "str"'s length, or "str"'s length minus "offset" is
-     * less than "length".
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * length minus {@code offset} is less than {@code length}.
      */
     public static ExtendedFloat FromString(
       String str,
@@ -303,13 +306,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Not documented yet.
      * @param str A string object.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='str'/> begins.
+     * @param length The length, in code units, of the desired portion of.
+     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
+     * length).
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "str"'s length, or "str"'s length minus "offset" is
-     * less than "length".
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * length minus {@code offset} is less than {@code length}.
      */
     public static ExtendedFloat FromString(String str, int offset, int length) {
       return FromString(str, offset, length, null);
