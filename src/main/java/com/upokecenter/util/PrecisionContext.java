@@ -286,7 +286,7 @@ public final void setFlags(int value) {
     /**
      * Copies this PrecisionContext with Traps set to the given value.
      * @param traps Flags representing the traps to enable. See the property
-     * &#x22;Traps&#x22;.
+     * "Traps".
      * @return A PrecisionContext object.
      */
     public PrecisionContext WithTraps(int traps) {

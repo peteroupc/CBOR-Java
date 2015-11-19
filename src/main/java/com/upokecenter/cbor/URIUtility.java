@@ -350,10 +350,10 @@ ParseMode.IRISurrogateLenient);
      * Determines whether the substring is a valid CURIE reference under RDFA 1.1.
      * (The CURIE reference is the part after the colon.).
      * @param s Not documented yet.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='s'/> begins.
-     * @param length The number of elements in the desired portion of. <paramref
-     * name='s'/> (but not more than <paramref name='s'/> 's length).
+     * @param offset A zero-based index showing where the desired portion of "s"
+     * begins.
+     * @param length The number of elements in the desired portion of "s" (but not
+     * more than "s" 's length).
      * @return True if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
@@ -849,6 +849,8 @@ int endIndex) {
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue Not documented yet.
+     * @param baseURI A string object.
+     * @param parseMode A ParseMode object.
      * @return The resolved IRI, or null if refValue is null or is not a valid IRI.
      * If base is null or is not a valid IRI, returns refValue.
      */
@@ -951,10 +953,10 @@ segmentsBase[5]));
      * string into its components and returns an array containing the
      * indices into the components.
      * @param s Not documented yet.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='s'/> begins.
-     * @param length The number of elements in the desired portion of. <paramref
-     * name='s'/> (but not more than <paramref name='s'/> 's length).
+     * @param offset A zero-based index showing where the desired portion of "s"
+     * begins.
+     * @param length The number of elements in the desired portion of "s" (but not
+     * more than "s" 's length).
      * @param parseMode Not documented yet. (4).
      * @return If the string is a valid IRI, returns an array of 10 integers. Each
      * of the five pairs corresponds to the start and end index of the IRI's
@@ -1205,7 +1207,8 @@ ParseMode parseMode) {
      * its components and returns an array containing the indices into the
      * components.
      * @param s Not documented yet.
-     * @param parseMode A ParseMode object.
+     * @param s Not documented yet.
+     * @param parseMode Not documented yet.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment

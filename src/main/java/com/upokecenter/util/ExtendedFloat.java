@@ -255,11 +255,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * definition in java.math.BigDecimal(), except that the digits must be
      * ASCII digits ('0' through '9').</p>
      * @param str A string object.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='str'/> begins.
-     * @param length The length, in code units, of the desired portion of.
-     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of "str"
+     * begins.
+     * @param length The length, in code units, of the desired portion of "str"
+     * (but not more than "str" 's length).
      * @param ctx A PrecisionContext object.
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -306,11 +305,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Not documented yet.
      * @param str A string object.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='str'/> begins.
-     * @param length The length, in code units, of the desired portion of.
-     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of "str"
+     * begins.
+     * @param length The length, in code units, of the desired portion of "str"
+     * (but not more than "str" 's length).
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
@@ -1231,9 +1229,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * and exponent range of the integer part of the result. This context
      * will be used only in the division portion of the remainder
      * calculation. Flags will be set on the given context only if the
-     * context&#x27;s HasFlags is true and the integer part of the division
-     * result doesn&#x27;t fit the precision and exponent range without
-     * rounding.
+     * context's HasFlags is true and the integer part of the division
+     * result doesn't fit the precision and exponent range without rounding.
      * @return An ExtendedFloat object.
      */
     public ExtendedFloat RemainderNaturalScale(
@@ -1257,10 +1254,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value. If the precision given in the context is other than 0, calls
      * the Quantize method with both arguments equal to the result of the
      * operation (and can signal FlagInvalid and return NaN if the result
-     * doesn&#x27;t fit the given precision). If HasFlags of the context is
-     * true, will also store the flags resulting from the operation (the
-     * flags are in addition to the pre-existing flags). Can be null, in
-     * which case the default rounding mode is HalfEven.
+     * doesn't fit the given precision). If HasFlags of the context is true,
+     * will also store the flags resulting from the operation (the flags are
+     * in addition to the pre-existing flags). Can be null, in which case
+     * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
      * Signals FlagInvalid and returns NaN if the divisor and the dividend
@@ -1342,10 +1339,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value. If the precision given in the context is other than 0, calls
      * the Quantize method with both arguments equal to the result of the
      * operation (and can signal FlagInvalid and return NaN if the result
-     * doesn&#x27;t fit the given precision). If HasFlags of the context is
-     * true, will also store the flags resulting from the operation (the
-     * flags are in addition to the pre-existing flags). Can be null, in
-     * which case the default rounding mode is HalfEven.
+     * doesn't fit the given precision). If HasFlags of the context is true,
+     * will also store the flags resulting from the operation (the flags are
+     * in addition to the pre-existing flags). Can be null, in which case
+     * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
      * Signals FlagInvalid and returns NaN if the divisor and the dividend
@@ -1493,9 +1490,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. Flags will be
-     * set on the given context only if the context&#x27;s HasFlags is true
-     * and the integer part of the result doesn&#x27;t fit the precision and
-     * exponent range without rounding.
+     * set on the given context only if the context's HasFlags is true and
+     * the integer part of the result doesn't fit the precision and exponent
+     * range without rounding.
      * @return The integer part of the quotient of the two objects. Returns null if
      * the return value would overflow the exponent range. A caller can
      * handle a null return value by treating it as positive infinity if
@@ -2166,8 +2163,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the square root function&#x27;s results are generally not exact
-     * for many inputs.--.
+     * as the square root function's results are generally not exact for
+     * many inputs.--.
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN).
@@ -2185,8 +2182,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the exponential function&#x27;s results are generally not
-     * exact.--.
+     * as the exponential function's results are generally not exact.--.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the precision
@@ -2204,7 +2200,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function&#x27;s results are generally not exact.--.
+     * as the ln function's results are generally not exact.--.
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2224,7 +2220,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function&#x27;s results are generally not exact.--.
+     * as the ln function's results are generally not exact.--.
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns NaN
      * if this object is less than 0. Signals FlagInvalid and returns NaN if
      * the parameter {@code ctx} is null or the precision is unlimited (the
@@ -2515,12 +2511,11 @@ PrecisionContext ctx) {
      * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the result. This context will be used only in
-     * the division portion of the remainder calculation; as a result,
-     * it&#x27;s possible for the remainder to have a higher precision than
-     * given in this context. Flags will be set on the given context only if
-     * the context&#x27;s HasFlags is true and the integer part of the
-     * division result doesn&#x27;t fit the precision and exponent range
-     * without rounding.
+     * the division portion of the remainder calculation; as a result, it's
+     * possible for the remainder to have a higher precision than given in
+     * this context. Flags will be set on the given context only if the
+     * context's HasFlags is true and the integer part of the division
+     * result doesn't fit the precision and exponent range without rounding.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
      */
