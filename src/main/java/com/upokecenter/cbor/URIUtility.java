@@ -259,7 +259,7 @@ ParseMode.IRISurrogateLenient);
      * cases return true:</p> <code> xx-x:mm example:/ww </code> The
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
-     * @param refValue Not documented yet.
+     * @param refValue A string representing an IRI to check.
      * @return True if the string is a valid IRI with a scheme component;
      * otherwise, false.
      */
@@ -278,7 +278,7 @@ ParseMode.IRISurrogateLenient);
      * return true: <code> http://example/z xx-x:mm example:/ww </code> The
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
-     * @param refValue Not documented yet.
+     * @param refValue A string representing an IRI to check.
      * @return True if the string is a valid URI with a scheme component;
      * otherwise, false.
      */
@@ -349,17 +349,17 @@ ParseMode.IRISurrogateLenient);
     /**
      * Determines whether the substring is a valid CURIE reference under RDFA 1.1.
      * (The CURIE reference is the part after the colon.).
-     * @param s Not documented yet.
+     * @param s A string containing a CURIE reference. Can be null.
      * @param offset A zero-based index showing where the desired portion of "s"
      * begins.
      * @param length The number of elements in the desired portion of "s" (but not
      * more than "s" 's length).
      * @return True if the substring is a valid CURIE reference under RDFA 1;
-     * otherwise, false.
+     * otherwise, false. Returns false if {@code s} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code s} 's length, or {@code s} 's length
      * minus {@code offset} is less than {@code length}.
-     * @throws NullPointerException The parameter {@code s} is null.
+     * @throws NullPointerException --.
      */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
@@ -838,9 +838,13 @@ int endIndex) {
 
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue Not documented yet.
-     * @param baseURI Another string object.
-     * @return A string object.
+     * @param refValue A string representing a URI or IRI reference. Example:
+     * {@code dir/file.txt}.
+     * @param baseURI A string representing an absolute URI reference. Example:
+     * {@code http://example.com/my/path/}.
+     * @return The resolved IRI, or null if {@code refValue} is null or is not a
+     * valid IRI. If base is null or is not a valid IRI, returns refValue.
+     * Example: http://example.com/my/path/dir/file.txt.
      */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
@@ -848,12 +852,14 @@ int endIndex) {
 
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
-     * @param refValue Not documented yet.
-     * @param refValue Not documented yet.
-     * @param baseURI Not documented yet.
-     * @param parseMode Not documented yet. (3).
-     * @return The resolved IRI, or null if refValue is null or is not a valid IRI.
-     * If base is null or is not a valid IRI, returns refValue.
+     * @param refValue A string representing a URI or IRI reference. Example:
+     * {@code dir/file.txt}.
+     * @param baseURI A string representing an absolute URI reference. Example:
+     * {@code http://example.com/my/path/}.
+     * @param parseMode Parse mode that specifies whether certain characters are
+     * allowed when parsing IRIs and URIs.
+     * @return The resolved IRI, or null if {@code refValue} is null or is not a
+     * valid IRI. If base is null or is not a valid IRI, returns refValue.
      */
     public static String relativeResolve(
 String refValue,
@@ -936,7 +942,7 @@ segmentsBase[5]));
      * authority, path, query, or fragment component, respectively. If a
      * component is absent, both indices in that pair will be -1. If the
      * string is null or is not a valid IRI, returns null.</returns>
-     * @param s Not documented yet.
+     * @param s A string that contains an IRI.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
@@ -953,12 +959,13 @@ segmentsBase[5]));
      * (IRI) under RFC3987. If the IRI is syntactically valid, splits the
      * string into its components and returns an array containing the
      * indices into the components.
-     * @param s Not documented yet.
+     * @param s A string that contains an IRI.
      * @param offset A zero-based index showing where the desired portion of "s"
      * begins.
-     * @param length The number of elements in the desired portion of "s" (but not
-     * more than "s" 's length).
-     * @param parseMode Not documented yet. (4).
+     * @param length The length of the desired portion of "s" (but not more than
+     * "s" 's length).
+     * @param parseMode Parse mode that specifies whether certain characters are
+     * allowed when parsing IRIs and URIs.
      * @return If the string is a valid IRI, returns an array of 10 integers. Each
      * of the five pairs corresponds to the start and end index of the IRI's
      * scheme, authority, path, query, or fragment component, respectively.
@@ -1207,7 +1214,7 @@ ParseMode parseMode) {
      * RFC3987. If the IRI is syntactically valid, splits the string into
      * its components and returns an array containing the indices into the
      * components.
-     * @param s Not documented yet.
+     * @param s A string representing an IRI. Can be null.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment

@@ -3127,11 +3127,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Raises a big integer to a power, which is given as another big integer.
-     * @param power Another BigInteger object.
-     * @return The result. Returns 1 if "power" is 0.
+     * @param power The exponent to raise to.
+     * @return The result. Returns 1 if {@code power} is 0.
      * @throws NullPointerException The parameter {@code power} is null.
+     * @throws IllegalArgumentException The parameter {@code power} is less than 0.
      */
-    public BigInteger PowBigIntVar(BigInteger power) {
+  public BigInteger PowBigIntVar(BigInteger power) {
       if (power == null) {
         throw new NullPointerException("power");
       }
@@ -3167,10 +3168,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
-     * @param powerSmall A 32-bit signed integer.
-     * @return The result. Returns 1 if "powerSmall" is 0.
-     * @throws IllegalArgumentException "powerSmall" is less than 0.
+     * Raises a big integer to a power.
+     * @param powerSmall The exponent to raise to.
+     * @return The result. Returns 1 if {@code powerSmall} is 0.
+     * @throws IllegalArgumentException The parameter {@code powerSmall} is less than 0.
      */
     public BigInteger pow(int powerSmall) {
       if (powerSmall < 0) {
@@ -4078,10 +4079,22 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
+     * See <code>getLowBit()</code>
+     * @return See getLowBit().
+     * @deprecated Renamed to getLowBit.
+ */
+@Deprecated
     public int getLowestSetBit() {
+      return this.getLowBit();
+    }
+
+    /**
+     * Gets the lowest set bit in this number's absolute value.
+     * @return The lowest bit set in the number, starting at 0. Returns 0 if this
+     * value is 0 or odd. (NOTE: In future versions, may return -1 instead
+     * if this value is 0.).
+     */
+    public int getLowBit() {
       int retSetBit = 0;
       for (int i = 0; i < this.wordCount; ++i) {
         short c = this.words[i];
@@ -4137,8 +4150,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       if (thisValue.wordCount <= 10 && bigintSecond.wordCount <= 10) {
         int expOfTwo = Math.min(
-          thisValue.getLowestSetBit(),
-          bigintSecond.getLowestSetBit());
+          thisValue.getLowBit(),
+          bigintSecond.getLowBit());
         while (true) {
           BigInteger bigintA = (thisValue.subtract(bigintSecond)).abs();
           if (bigintA.signum() == 0) {
@@ -4147,7 +4160,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             }
             return thisValue;
           }
-          int setbit = bigintA.getLowestSetBit();
+          int setbit = bigintA.getLowBit();
           bigintA = bigintA.shiftRight(setbit);
           bigintSecond = (thisValue.compareTo(bigintSecond) < 0) ? thisValue :
             bigintSecond;

@@ -259,8 +259,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * begins.
      * @param length The length, in code units, of the desired portion of "str"
      * (but not more than "str" 's length).
-     * @param ctx A PrecisionContext object.
-     * @return An ExtendedFloat object.
+     * @param ctx A PrecisionContext object specifying the precision, rounding, and
+     * exponent range to apply to the parsed number. Can be null.
+     * @return The parsed number, converted to ExtendedFloat.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code str} 's length, or {@code str} 's
@@ -282,10 +283,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Creates a binary float from a string that represents a number. See the
+     * four-parameter FromString method.
      * @param str A string object.
-     * @return An ExtendedFloat object.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @return The parsed number, converted to ExtendedFloat.
      */
     public static ExtendedFloat FromString(String str) {
       return FromString(str, 0, str == null ? 0 : str.length(), null);
@@ -294,8 +295,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Not documented yet.
      * @param str A string object.
-     * @param ctx A PrecisionContext object.
-     * @return An ExtendedFloat object.
+     * @param ctx A PrecisionContext object specifying the precision, rounding, and
+     * exponent range to apply to the parsed number. Can be null.
+     * @return The parsed number, converted to ExtendedFloat.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static ExtendedFloat FromString(String str, PrecisionContext ctx) {

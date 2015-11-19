@@ -105,12 +105,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return mbi;
       }
 
-    /**
-     * Multiplies this instance by the value of a 32-bit signed integer.
-     * @param multiplicand Not documented yet.
-     * @return The product of the two objects.
-     */
-      MutableNumber Multiply(int multiplicand) {
+        MutableNumber Multiply(int multiplicand) {
         if (multiplicand < 0) {
           throw new IllegalArgumentException("multiplicand (" + multiplicand +
             ") is less than " + "0 ");
@@ -285,11 +280,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return this;
       }
 
-    /**
-     * Subtracts a MutableNumber object from this instance.
-     * @param other Not documented yet.
-     * @return The difference of the two objects.
-     */
       MutableNumber Subtract(MutableNumber other) {
         {
           {
@@ -356,12 +346,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return 0;
       }
 
-    /**
-     * Adds a 32-bit signed integer to this instance.
-     * @param augend Not documented yet.
-     * @return This instance.
-     */
-      MutableNumber Add(int augend) {
+       MutableNumber Add(int augend) {
         if (augend < 0) {
    throw new IllegalArgumentException("augend (" + augend + ") is less than " +
             "0 ");
@@ -459,13 +444,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
     }
 
-    /**
-     * Compares a FastInteger object with this instance.
-     * @param val Not documented yet.
-     * @return Zero if the values are equal; a negative number if this instance is
-     * less, or a positive number if this instance is greater.
-     */
-    public int compareTo(FastInteger val) {
+     public int compareTo(FastInteger val) {
       switch ((this.integerMode << 2) | val.integerMode) {
           case (0 << 2) | 0: {
             int vsv = val.smallValue;
@@ -894,12 +873,6 @@ bigrem = divrem[1]; }
       return this.SubtractInt(1);
     }
 
-    /**
-     * Divides this instance by the value of a 32-bit signed integer.
-     * @param divisor Not documented yet.
-     * @return The quotient of the two objects.
-     * @throws ArithmeticException Attempted to divide by zero.
-     */
     FastInteger Divide(int divisor) {
       if (divisor != 0) {
         switch (this.integerMode) {
@@ -955,11 +928,6 @@ bigrem = divrem[1]; }
         }
       }
 
-    /**
-     * Adds a 32-bit signed integer to this instance.
-     * @param val Not documented yet.
-     * @return This instance.
-     */
     FastInteger AddInt(int val) {
       BigInteger valValue;
       switch (this.integerMode) {
@@ -1064,12 +1032,6 @@ bigrem = divrem[1]; }
         }
       }
 
-    /**
-     * Compares a 32-bit signed integer with this instance.
-     * @param val Not documented yet.
-     * @return Zero if the values are equal; a negative number if this instance is
-     * less, or a positive number if this instance is greater.
-     */
     int CompareToInt(int val) {
       switch (this.integerMode) {
         case 0:

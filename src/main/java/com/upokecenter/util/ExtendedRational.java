@@ -1053,8 +1053,8 @@ BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
 
     private ExtendedRational Simplify() {
       if ((this.flags & BigNumberFlags.FlagSpecial) == 0) {
-        int lowBit = this.unsignedNumerator.getLowestSetBit();
-        lowBit = Math.min(lowBit, this.denominator.getLowestSetBit());
+        int lowBit = this.unsignedNumerator.getLowBit();
+        lowBit = Math.min(lowBit, this.denominator.getLowBit());
         if (lowBit > 0) {
           this.unsignedNumerator = unsignedNumerator.shiftRight(lowBit);
           this.denominator = denominator.shiftRight(lowBit);

@@ -255,6 +255,8 @@ public final void setConverter(Object value) {
      * @param handler An ICBORTag object.
      * @throws NullPointerException The parameter {@code bigintTag} or {@code
      * handler} is null.
+     * @throws NullPointerException The parameter {@code bigintTag} is less than 0
+     * or greater than (2^64-1).
      */
     public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
@@ -3117,7 +3119,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Not documented yet.
+     * Writes a CBOR object to a CBOR data stream. See the three-parameter Write
+     * method that takes a CBOREncodeOptions.
      * @param objValue An arbitrary object.
      * @param stream A writable data stream.
      */
@@ -3130,17 +3133,21 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * objects are supported: <ul> <li>Lists of CBORObject.</li> <li>Maps of
      * CBORObject.</li> <li>Null.</li> <li>Any object accepted by the
      * FromObject static methods.</li></ul>
-     * @param objValue Not documented yet.
-     * @param output Not documented yet.
-     * @param options Not documented yet. (3).
+     * @param objValue The arbitrary object to be serialized. Can be null.
+     * @param output A writable data stream.
+     * @param options CBOR options for encoding the CBOR object to bytes.
      * @throws IllegalArgumentException The object's type is not supported.
-     * @throws NullPointerException The parameter "stream" is null.
+     * @throws NullPointerException The parameter {@code options} or {@code
+     * output} is null.
      */
     @SuppressWarnings("unchecked")
 public static void Write(
       Object objValue,
       OutputStream output,
       CBOREncodeOptions options) throws java.io.IOException {
+      if (options == null) {
+  throw new NullPointerException("options");
+}
       if (output == null) {
         throw new NullPointerException("output");
       }

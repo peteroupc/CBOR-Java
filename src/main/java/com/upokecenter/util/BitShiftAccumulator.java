@@ -172,7 +172,7 @@ int olderDiscarded) {
           this.bitLeftmost = odd ? 1 : 0;
         } else {
           this.bitsAfterLeftmost |= this.bitLeftmost;
-          int lowestSetBit = this.shiftedBigInt.getLowestSetBit();
+          int lowestSetBit = this.shiftedBigInt.getLowBit();
           if (lowestSetBit < bs - 1) {
             // One of the discarded bits after
             // the last one is set
@@ -255,7 +255,7 @@ int olderDiscarded) {
           this.bitLeftmost = odd ? 1 : 0;
         } else {
           this.bitsAfterLeftmost |= this.bitLeftmost;
-          int lowestSetBit = this.shiftedBigInt.getLowestSetBit();
+          int lowestSetBit = this.shiftedBigInt.getLowBit();
           if (lowestSetBit < bs - 1) {
             // One of the discarded bits after
             // the last one is set
@@ -280,13 +280,11 @@ int olderDiscarded) {
       }
     }
 
-    /**
-     * Shifts a number to the right, gathering information on whether the last bit
-     * discarded is set and whether the discarded bits to the right of that
-     * bit are set. Assumes that the big integer being shifted is positive.
-     * @param bits Not documented yet.
-     */
     public void ShiftRightInt(int bits) {
+      // <summary>Shifts a number to the right, gathering information on
+      // whether the last bit discarded is set and whether the discarded
+      // bits to the right of that bit are set. Assumes that the big integer
+      // being shifted is positive.</summary>
       if (this.isSmall) {
         this.ShiftRightSmall(bits);
       } else {
@@ -332,14 +330,7 @@ int olderDiscarded) {
       this.bitsAfterLeftmost = (this.bitsAfterLeftmost != 0) ? 1 : 0;
     }
 
-    /**
-     * Shifts a number until it reaches the given number of bits, gathering
-     * information on whether the last bit discarded is set and whether the
-     * discarded bits to the right of that bit are set. Assumes that the big
-     * integer being shifted is positive.
-     * @param bits Not documented yet.
-     */
-    public void ShiftToDigitsInt(int bits) {
+      public void ShiftToDigitsInt(int bits) {
       if (bits < 0) {
         throw new IllegalArgumentException("bits (" + bits + ") is less than 0");
       }
