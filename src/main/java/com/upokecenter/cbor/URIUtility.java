@@ -1215,6 +1215,7 @@ ParseMode parseMode) {
      * its components and returns an array containing the indices into the
      * components.
      * @param s A string representing an IRI. Can be null.
+     * @param parseMode A ParseMode object.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
