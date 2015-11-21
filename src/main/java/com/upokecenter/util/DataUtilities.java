@@ -112,7 +112,8 @@ boolean replace) {
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
      * unpaired surrogate code point is seen.
-     * @param lenientLineBreaks A Boolean object.
+     * @param lenientLineBreaks If true, replaces carriage return (CR) not followed
+     * by line feed (LF) and LF not preceded by CR with CR-LF pairs.
      * @return The string encoded in UTF-8.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The string contains an unpaired surrogate code

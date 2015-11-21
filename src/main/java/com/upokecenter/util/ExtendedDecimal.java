@@ -1501,8 +1501,8 @@ remainder = divrem[1]; }
      * given, the resulting ExtendedDecimal will be the the value of the
      * closest "float" to 0.1, not 0.1 exactly). To create an
      * ExtendedDecimal number from a decimal number, use FromString instead
-     * in most cases (for example:
-     * <code>ExtendedDecimal.FromString("0.1")</code>).
+     * in most cases (for example: <code>ExtendedDecimal.FromString("0.1")</code>
+     *).
      * @param flt A 32-bit floating-point number.
      * @return A decimal number with the same value as {@code flt}.
      */
