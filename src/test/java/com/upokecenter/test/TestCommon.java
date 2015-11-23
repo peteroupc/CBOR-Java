@@ -272,7 +272,8 @@ o2));
           o.AsByte();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-        } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
         }
@@ -280,7 +281,8 @@ o2));
           o.AsInt16();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-        } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
         }
@@ -288,7 +290,8 @@ o2));
           o.AsInt32();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-        } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
         }
@@ -296,7 +299,8 @@ o2));
           o.AsInt64();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-        } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
         }
@@ -316,7 +320,8 @@ o2));
           o.AsBigInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-        } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
         }

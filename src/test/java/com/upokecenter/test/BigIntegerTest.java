@@ -57,7 +57,8 @@ import com.upokecenter.util.*;
         BigInteger.ONE.divideAndRemainder(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -84,7 +85,8 @@ import com.upokecenter.util.*;
         BigInteger.fromString(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -95,7 +97,8 @@ import com.upokecenter.util.*;
         BigInteger.fromSubstring(null, 0, 1);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -131,7 +134,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString(null, 10);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -139,7 +143,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString("0", 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -147,7 +152,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString("0", 0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -155,7 +161,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString("0", -37);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -163,7 +170,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString("0", Integer.MIN_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -171,7 +179,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixString("0", Integer.MAX_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -191,7 +200,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring(null, 10, 0, 1);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -199,7 +209,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0", 1, 0, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -207,7 +218,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0", 0, 0, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -215,7 +227,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0", -37, 0, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -223,7 +236,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0", Integer.MIN_VALUE, 0, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -231,7 +245,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0", Integer.MAX_VALUE, 0, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -239,7 +254,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, -1, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -247,7 +263,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 4, 5);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -255,7 +272,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 0, -8);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -263,7 +281,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 0, 6);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -271,7 +290,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 2, 0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -279,7 +299,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 0, 0);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -287,7 +308,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("123", 10, 1, 1);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -295,7 +317,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("-", 10, 0, 1);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -303,7 +326,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("g", 16, 0, 1);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -311,7 +335,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0123gggg", 16, 0, 8);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -319,7 +344,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0123gggg", 10, 0, 8);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -327,7 +353,8 @@ import com.upokecenter.util.*;
         BigInteger.fromRadixSubstring("0123aaaa", 10, 0, 8);
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -470,6 +497,7 @@ import com.upokecenter.util.*;
  BigInteger.ZERO.gcd(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -704,7 +732,8 @@ stringTemp);
         BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -712,7 +741,8 @@ stringTemp);
         BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -720,7 +750,8 @@ stringTemp);
   BigInteger.fromString("999999999999999999999999999999999").intValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -734,7 +765,8 @@ stringTemp);
         BigInteger.valueOf(Integer.MIN_VALUE - 1L).intValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -742,7 +774,8 @@ stringTemp);
         BigInteger.valueOf(Integer.MAX_VALUE + 1L).intValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -792,7 +825,8 @@ stringTemp);
 BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -800,7 +834,8 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
      BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -840,7 +875,8 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
  BigInteger.fromString("999999999999999999999999999999999").longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -855,7 +891,8 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
           .longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -864,7 +901,8 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
           .longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -966,7 +1004,8 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
         BigInteger.ONE.mod(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -978,6 +1017,7 @@ BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE).longValueChecked();
  BigInteger.ONE.ModPow(null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -986,6 +1026,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(null, BigInteger.ZERO);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -994,6 +1035,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.ZERO, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1002,6 +1044,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.fromString("-1"), BigInteger.fromString("1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1010,6 +1053,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.fromString("0"), BigInteger.fromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1018,6 +1062,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.fromString("0"), BigInteger.fromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1026,6 +1071,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.fromString("1"), BigInteger.fromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1034,6 +1080,7 @@ throw new IllegalStateException("", ex);
  BigInteger.ONE.ModPow(BigInteger.fromString("1"), BigInteger.fromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1275,7 +1322,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1283,7 +1331,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1291,7 +1340,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1299,7 +1349,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(37);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1307,7 +1358,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(Integer.MIN_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1315,7 +1367,8 @@ throw new IllegalStateException("", ex);
         BigInteger.ONE.toRadixString(Integer.MAX_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }

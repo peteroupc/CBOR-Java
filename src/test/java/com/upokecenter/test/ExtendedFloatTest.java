@@ -222,7 +222,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.Max(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -230,7 +231,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.Max(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       } }
@@ -244,7 +246,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.Min(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -252,7 +255,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.Min(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -263,7 +267,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.MinMagnitude(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -271,7 +276,8 @@ import com.upokecenter.util.*;
         ExtendedFloat.MinMagnitude(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }

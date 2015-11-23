@@ -13,7 +13,8 @@ import com.upokecenter.util.*;
           new PrecisionContext(-1, Rounding.HalfEven, 0, 0, false));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -23,7 +24,8 @@ import com.upokecenter.util.*;
           new PrecisionContext(0, Rounding.HalfEven, 0, -1, false));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -65,6 +67,7 @@ import com.upokecenter.util.*;
  PrecisionContext.Unlimited.ExponentWithinRange(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -77,7 +80,8 @@ throw new IllegalStateException("", ex);
         ctx.setFlags(5);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -93,7 +97,8 @@ throw new IllegalStateException("", ex);
         ctx.setFlags(5);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -204,7 +209,8 @@ throw new IllegalStateException("", ex);
         PrecisionContext.Unlimited.WithBigPrecision(BigInteger.ONE.negate());
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -223,7 +229,8 @@ throw new IllegalStateException("", ex);
         PrecisionContext.Unlimited.WithExponentRange(1, 0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -231,7 +238,8 @@ throw new IllegalStateException("", ex);
         PrecisionContext.Unlimited.WithBigExponentRange(null, BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -239,7 +247,8 @@ throw new IllegalStateException("", ex);
         PrecisionContext.Unlimited.WithBigExponentRange(BigInteger.ZERO, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -250,7 +259,8 @@ throw new IllegalStateException("", ex);
           BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -265,7 +275,8 @@ throw new IllegalStateException("", ex);
         PrecisionContext.Unlimited.WithPrecision(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
