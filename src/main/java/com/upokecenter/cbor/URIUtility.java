@@ -418,27 +418,31 @@ ParseMode.IRISurrogateLenient);
           }
           return false;
         }
-        if (state == 0) {  // Path
-          if (c == '?') {
-            state = 1;  // move to query state
-          } else if (c == '#') {
-            state = 2;  // move to fragment state
-          } else if (!isIpchar(c)) {
-            return false;
-          }
-          ++index;
-        } else if (state == 1) {  // Query
-          if (c == '#') {
-            state = 2;  // move to fragment state
-          } else if (!isIqueryChar(c)) {
-            return false;
-          }
-          ++index;
-        } else if (state == 2) {  // Fragment
-          if (!isIfragmentChar(c)) {
-            return false;
-          }
-          ++index;
+        switch (state) {
+          case 0:
+            if (c == '?') {
+              state = 1;  // move to query state
+            } else if (c == '#') {
+              state = 2;  // move to fragment state
+            } else if (!isIpchar(c)) {
+              return false;
+            }
+            ++index;
+            break;
+          case 1:
+            if (c == '#') {
+              state = 2;  // move to fragment state
+            } else if (!isIqueryChar(c)) {
+              return false;
+            }
+            ++index;
+            break;
+          case 2:
+            if (!isIfragmentChar(c)) {
+              return false;
+            }
+            ++index;
+            break;
         }
       }
       return true;
@@ -1064,71 +1068,78 @@ ParseMode parseMode) {
             }
             return null;
           }
-          if (state == 0) {  // User info
-            if (c == '/' || c == '?' || c == '#') {
-              // not user info
-              state = 1;
-              index = authorityStart;
-              continue;
-            }
-            if (strict && c == '@') {
-              // is user info
-              ++index;
-              state = 1;
-              continue;
-            }
-            if (strict && isIUserInfoChar(c)) {
-              ++index;
-              if (index == valueSLength) {
+          switch (state) {
+            case 0:
+              if (c == '/' || c == '?' || c == '#') {
                 // not user info
                 state = 1;
                 index = authorityStart;
                 continue;
               }
-            } else {
-              // not user info
-              state = 1;
-              index = authorityStart;
-              continue;
-            }
-          } else if (state == 1) {  // host
-            if (c == '/' || c == '?' || c == '#') {
-              // end of authority
-              retval[3] = index;
+              if (strict && c == '@') {
+                // is user info
+                ++index;
+                state = 1;
+                continue;
+              }
+              if (strict && isIUserInfoChar(c)) {
+                ++index;
+                if (index == valueSLength) {
+                  // not user info
+                  state = 1;
+                  index = authorityStart;
+                  continue;
+                }
+              } else {
+                // not user info
+                state = 1;
+                index = authorityStart;
+                continue;
+              }
+
               break;
-            }
-            if (!strict) {
-              ++index;
-            } else if (c == '[') {
-              ++index;
-              index = parseIPLiteral(s, index, valueSLength);
-              if (index < 0) {
+            case 1:
+              if (c == '/' || c == '?' || c == '#') {
+                // end of authority
+                retval[3] = index;
+                break;
+              }
+              if (!strict) {
+                ++index;
+              } else if (c == '[') {
+                ++index;
+                index = parseIPLiteral(s, index, valueSLength);
+                if (index < 0) {
+                  return null;
+                }
+                continue;
+              } else if (c == ':') {
+                // port
+                state = 2;
+                ++index;
+              } else if (isIRegNameChar(c)) {
+                // is valid host name char
+                // (note: IPv4 addresses included
+                // in ireg-name)
+                ++index;
+              } else {
                 return null;
               }
-              continue;
-            } else if (c == ':') {
-              // port
-              state = 2;
-              ++index;
-            } else if (isIRegNameChar(c)) {
-              // is valid host name char
-              // (note: IPv4 addresses included
-              // in ireg-name)
-              ++index;
-            } else {
-              return null;
-            }
-          } else if (state == 2) {  // Port
-            if (c == '/' || c == '?' || c == '#') {
-              // end of authority
-              retval[3] = index;
+
               break;
-            }
-            if (c >= '0' && c <= '9') {
-              ++index;
-            } else {
-              return null;
-            }
+            case 2:
+              if (c == '/' || c == '?' || c == '#') {
+                // end of authority
+                retval[3] = index;
+                break;
+              }
+              if (c >= '0' && c <= '9') {
+                ++index;
+              } else {
+                return null;
+              }
+
+              break;
           }
         }
       }
@@ -1162,45 +1173,49 @@ ParseMode parseMode) {
           }
           return null;
         }
-        if (state == 0) {  // Path
-          if (c == ':' && fullyRelative) {
-            colon = true;
-          } else if (c == '/' && fullyRelative && !segment) {
-            // noscheme path can't have colon before slash
-            if (strict && colon) {
+        switch (state) {
+          case 0:
+            if (c == ':' && fullyRelative) {
+              colon = true;
+            } else if (c == '/' && fullyRelative && !segment) {
+              // noscheme path can't have colon before slash
+              if (strict && colon) {
+                return null;
+              }
+              segment = true;
+            }
+            if (c == '?') {
+              retval[5] = index;
+              retval[6] = index + 1;
+              retval[7] = valueSLength;
+              state = 1;  // move to query state
+            } else if (c == '#') {
+              retval[5] = index;
+              retval[8] = index + 1;
+              retval[9] = valueSLength;
+              state = 2;  // move to fragment state
+            } else if (strict && !isIpchar(c)) {
               return null;
             }
-            segment = true;
-          }
-          if (c == '?') {
-            retval[5] = index;
-            retval[6] = index + 1;
-            retval[7] = valueSLength;
-            state = 1;  // move to query state
-          } else if (c == '#') {
-            retval[5] = index;
-            retval[8] = index + 1;
-            retval[9] = valueSLength;
-            state = 2;  // move to fragment state
-          } else if (strict && !isIpchar(c)) {
-            return null;
-          }
-          ++index;
-        } else if (state == 1) {  // Query
-          if (c == '#') {
-            retval[7] = index;
-            retval[8] = index + 1;
-            retval[9] = valueSLength;
-            state = 2;  // move to fragment state
-          } else if (strict && !isIqueryChar(c)) {
-            return null;
-          }
-          ++index;
-        } else if (state == 2) {  // Fragment
-          if (strict && !isIfragmentChar(c)) {
-            return null;
-          }
-          ++index;
+            ++index;
+            break;
+          case 1:
+            if (c == '#') {
+              retval[7] = index;
+              retval[8] = index + 1;
+              retval[9] = valueSLength;
+              state = 2;  // move to fragment state
+            } else if (strict && !isIqueryChar(c)) {
+              return null;
+            }
+            ++index;
+            break;
+          case 2:
+            if (strict && !isIfragmentChar(c)) {
+              return null;
+            }
+            ++index;
+            break;
         }
       }
       if (strict && fullyRelative && colon && !segment) {
@@ -1215,7 +1230,6 @@ ParseMode parseMode) {
      * its components and returns an array containing the indices into the
      * components.
      * @param s A string representing an IRI. Can be null.
-     * @param s Not documented yet.
      * @param parseMode Not documented yet.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end

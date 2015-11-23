@@ -4,7 +4,7 @@ import com.upokecenter.util.*;
 
   class CharacterInputWithCount implements ICharacterInput {
     private int offset;
-    private ICharacterInput ci;
+    private final ICharacterInput ci;
 
     public CharacterInputWithCount (ICharacterInput ci) {
       this.ci = ci;

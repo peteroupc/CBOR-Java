@@ -13,7 +13,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  this(false);
     }
 
-    private boolean extended;
+    private final boolean extended;
 
     public CBORTag4 (boolean extended) {
       this.extended = extended;

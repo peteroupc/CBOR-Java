@@ -12,9 +12,9 @@ import java.io.*;
 import com.upokecenter.util.*;
 
   class CBORReader {
-    private SharedRefs sharedRefs;
+    private final SharedRefs sharedRefs;
     private StringRefs stringRefs;
-    private InputStream stream;
+    private final InputStream stream;
     private boolean addSharedRef;
     private int depth;
 
@@ -506,33 +506,39 @@ filter == null ? null : filter.GetSubFilter(vtindex));
               uadditional);
           }
           // Tag 256: String namespace
-          if (uadditional == 256) {
-            this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
+          switch (uadditional) {
+            case 256:
+              this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
               this.stringRefs.Push();
-          } else if (uadditional == 25) {
-            // String reference
-            if (this.stringRefs == null) {
-              throw new CBORException("No stringref namespace");
-            }
-          } else if (uadditional == 28) {
-            // Shareable Object
-            newFirstByte = this.stream.read();
-            if (newFirstByte < 0) {
-              throw new CBORException("Premature end of data");
-            }
-            if (newFirstByte >= 0x80 && newFirstByte < 0xc0) {
-              // Major types 4 and 5 (array and map)
-              this.addSharedRef = true;
-            } else if ((newFirstByte & 0xe0) == 0xc0) {
-              // Major type 6 (tagged Object)
-              tagObject = new CBORObject(CBORObject.Undefined, 28, 0);
-              this.sharedRefs.AddObject(tagObject);
-            } else {
-              // All other major types
-              unnestedObject = true;
-            }
-            haveFirstByte = true;
+              break;
+            case 25:
+              // String reference
+              if (this.stringRefs == null) {
+                throw new CBORException("No stringref namespace");
+              }
+
+              break;
+            case 28:
+              // Shareable Object
+              newFirstByte = this.stream.read();
+              if (newFirstByte < 0) {
+                throw new CBORException("Premature end of data");
+              }
+              if (newFirstByte >= 0x80 && newFirstByte < 0xc0) {
+                // Major types 4 and 5 (array and map)
+                this.addSharedRef = true;
+              } else if ((newFirstByte & 0xe0) == 0xc0) {
+                // Major type 6 (tagged Object)
+                tagObject = new CBORObject(CBORObject.Undefined, 28, 0);
+                this.sharedRefs.AddObject(tagObject);
+              } else {
+                // All other major types
+                unnestedObject = true;
+              }
+              haveFirstByte = true;
+              break;
           }
+
           taginfo = CBORObject.FindTagConverterLong(uadditional);
         } else {
           if (filter != null && !filter.TagAllowed(bigintAdditional)) {
@@ -551,26 +557,31 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
           return CBORObject.FromObjectAndTag(o, bigintAdditional);
         }
         if (uadditional < 65536) {
-          if (uadditional == 256) {
-            // String tag
-            this.stringRefs.Pop();
-          } else if (uadditional == 25) {
-            // stringref tag
-            return this.stringRefs.GetString(o.AsBigInteger());
-          } else if (uadditional == 28) {
-            // shareable Object
-            this.addSharedRef = false;
-            if (unnestedObject) {
-              this.sharedRefs.AddObject(o);
-            }
-            if (tagObject != null) {
-              tagObject.Redefine(o);
-              o = tagObject;
-            }
-          } else if (uadditional == 29) {
-            // shared Object reference
-            return this.sharedRefs.GetObject(o.AsBigInteger());
+          switch (uadditional) {
+            case 256:
+              // String tag
+              this.stringRefs.Pop();
+              break;
+            case 25:
+              // stringref tag
+              return this.stringRefs.GetString(o.AsBigInteger());
+            case 28:
+              // shareable Object
+              this.addSharedRef = false;
+              if (unnestedObject) {
+                this.sharedRefs.AddObject(o);
+              }
+              if (tagObject != null) {
+                tagObject.Redefine(o);
+                o = tagObject;
+              }
+
+              break;
+            case 29:
+              // shared Object reference
+              return this.sharedRefs.GetObject(o.AsBigInteger());
           }
+
           return CBORObject.FromObjectAndTag(
             o,
             (int)uadditional);

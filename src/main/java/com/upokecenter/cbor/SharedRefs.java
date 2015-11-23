@@ -11,7 +11,7 @@ import java.util.*;
 import com.upokecenter.util.*;
 
   class SharedRefs {
-    private List<CBORObject> sharedObjects;
+    private final List<CBORObject> sharedObjects;
 
     public SharedRefs () {
       this.sharedObjects = new ArrayList<CBORObject>();

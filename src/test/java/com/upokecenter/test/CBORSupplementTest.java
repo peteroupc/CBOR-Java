@@ -22,7 +22,7 @@ import com.upokecenter.cbor.*;
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -33,7 +33,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -43,7 +43,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -53,7 +53,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -63,7 +63,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -73,7 +73,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -89,7 +89,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -100,7 +100,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -110,7 +110,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -120,7 +120,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -130,7 +130,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -140,7 +140,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -159,7 +159,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.FromObject('\udddd');
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch(IllegalArgumentException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -175,7 +175,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.AddConverter(null, new FakeConverter());
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -184,7 +184,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.AddConverter(String.class, new FakeConverter());
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch(IllegalArgumentException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -193,7 +193,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.AddTagHandler(null, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -202,7 +202,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.True.Abs();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -211,7 +211,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.False.Abs();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -220,7 +220,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.NewArray().Abs();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -229,7 +229,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.NewMap().Abs();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -238,7 +238,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.True.AsExtendedRational();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -247,7 +247,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.False.AsExtendedRational();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -256,7 +256,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.NewArray().AsExtendedRational();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -265,7 +265,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.NewMap().AsExtendedRational();
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch(IllegalStateException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -305,7 +305,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -320,7 +320,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -342,7 +342,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -353,7 +353,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -373,7 +373,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedRational.PositiveInfinity.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -382,7 +382,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedRational.NegativeInfinity.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -391,7 +391,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedRational.NaN.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -400,7 +400,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedRational.SignalingNaN.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -413,7 +413,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.Create(null, BigInteger.ONE);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -422,7 +422,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.Create(null, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -431,7 +431,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.Create(BigInteger.ONE, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -440,7 +440,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString(null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -453,7 +453,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString(null, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -462,7 +462,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -471,7 +471,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString(null, 0, 1);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -480,7 +480,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", -1, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -489,7 +489,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 2, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -498,7 +498,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 0, -1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -507,7 +507,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 0, 2);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -516,7 +516,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 1, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -525,7 +525,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString(null, 0, 1, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -534,7 +534,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", -1, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -543,7 +543,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 2, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -552,7 +552,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 0, -1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -561,7 +561,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 0, 2, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -570,7 +570,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("x", 1, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -580,7 +580,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.Create(null, BigInteger.ONE);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -589,7 +589,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.Create(null, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -598,7 +598,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.Create(BigInteger.ONE, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -607,7 +607,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString(null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -618,7 +618,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString(null, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -627,7 +627,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -636,7 +636,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString(null, 0, 1);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -645,7 +645,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", -1, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -654,7 +654,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 2, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -663,7 +663,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 0, -1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -672,7 +672,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 0, 2);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -681,7 +681,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 1, 1);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -690,7 +690,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString(null, 0, 1, null);
         Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -699,7 +699,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", -1, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -708,7 +708,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 2, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -717,7 +717,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 0, -1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -726,7 +726,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 0, 2, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -735,7 +735,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("x", 1, 1, null);
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -746,7 +746,7 @@ System.out.println(ex.getMessage());
           "Infinity",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -757,7 +757,7 @@ System.out.println(ex.getMessage());
           "-Infinity",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -768,7 +768,7 @@ System.out.println(ex.getMessage());
           "NaN",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -779,7 +779,7 @@ System.out.println(ex.getMessage());
           "sNaN",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -790,7 +790,7 @@ System.out.println(ex.getMessage());
           "Infinity",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -801,7 +801,7 @@ System.out.println(ex.getMessage());
           "-Infinity",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -812,7 +812,7 @@ System.out.println(ex.getMessage());
           "NaN",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -823,7 +823,7 @@ System.out.println(ex.getMessage());
           "sNaN",
           PrecisionContext.Unlimited.WithSimplified(true));
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -833,7 +833,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("0..1");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -842,7 +842,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("0.1x+222");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -851,7 +851,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.FromString("0.1g-222");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -860,7 +860,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("0..1");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -869,7 +869,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("0.1x+222");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -878,7 +878,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.FromString("0.1g-222");
         Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -894,7 +894,7 @@ System.out.println(ex.getMessage());
       try {
         dec.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -903,7 +903,7 @@ System.out.println(ex.getMessage());
       try {
         flo.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -912,7 +912,7 @@ System.out.println(ex.getMessage());
       try {
         rat.ToBigIntegerExact();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -947,7 +947,7 @@ System.out.println(ex.getMessage());
       try {
         cbor.WriteTo(new java.io.ByteArrayOutputStream());
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch(IllegalArgumentException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -976,7 +976,7 @@ ms = new java.io.ByteArrayOutputStream();
           try {
             CBORObject.DecodeFromBytes(ms.toByteArray());
             Assert.fail("Should have failed");
-          } catch (CBORException ex) {
+          } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
             Assert.fail(ex.toString());
@@ -1024,7 +1024,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       try {
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1033,7 +1033,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1044,7 +1044,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1053,7 +1053,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1063,7 +1063,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1115,9 +1115,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
     @Test
     public void TestRationalCompareDecimal() {
       FastRandom fr = new FastRandom();
-      // System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
-      // System.Diagnostics.Stopwatch sw2 = new System.Diagnostics.Stopwatch();
-      for (int i = 0; i < 100; ++i) {
+       for (int i = 0; i < 100; ++i) {
         ExtendedRational er = RandomObjects.RandomRational(fr);
         int exp = -100000 + fr.NextValue(200000);
         ExtendedDecimal ed = ExtendedDecimal.Create(
@@ -1217,7 +1215,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1226,7 +1224,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x20  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1235,7 +1233,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x60  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1244,7 +1242,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0x80  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1253,7 +1251,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0xa0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1262,7 +1260,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0xe0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1272,7 +1270,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1281,7 +1279,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x20  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1290,7 +1288,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x60  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1299,7 +1297,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0x80  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1308,7 +1306,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0xa0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1317,7 +1315,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0xe0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1327,7 +1325,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1336,7 +1334,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x20  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1345,7 +1343,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x40  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1354,7 +1352,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x60  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1363,7 +1361,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x80  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1378,7 +1376,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, 0x01, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1387,7 +1385,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1408,7 +1406,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x9f, 0x00, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1417,7 +1415,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x9f, 0x00, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1426,7 +1424,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1435,7 +1433,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1444,7 +1442,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x81, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1453,7 +1451,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0xa0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1462,7 +1460,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0xe0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1472,7 +1470,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1481,7 +1479,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x20  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1490,7 +1488,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x40  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1499,7 +1497,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x60  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1508,7 +1506,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x80  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1517,7 +1515,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x81, 0x00  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1526,7 +1524,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0xa0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1535,7 +1533,7 @@ System.out.println(ex.getMessage());
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0xe0  });
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+      } catch(CBORException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1587,7 +1585,7 @@ System.out.println(ex.getMessage());
       try {
         MiniCBOR.ReadInt32(new java.io.ByteArrayInputStream(bytes));
         Assert.fail("Should have failed");
-      } catch (IOException ex) {
+      } catch(IOException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1597,7 +1595,7 @@ System.out.println(ex.getMessage());
       try {
         MiniCBOR.ReadInt32(new java.io.ByteArrayInputStream(bytes));
         Assert.fail("Should have failed");
-      } catch (IOException ex) {
+      } catch(IOException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1607,7 +1605,7 @@ System.out.println(ex.getMessage());
       try {
         MiniCBOR.ReadInt32(new java.io.ByteArrayInputStream(bytes));
         Assert.fail("Should have failed");
-      } catch (IOException ex) {
+      } catch(IOException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1617,7 +1615,7 @@ System.out.println(ex.getMessage());
       try {
         MiniCBOR.ReadInt32(new java.io.ByteArrayInputStream(bytes));
         Assert.fail("Should have failed");
-      } catch (IOException ex) {
+      } catch(IOException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1627,7 +1625,7 @@ System.out.println(ex.getMessage());
       try {
         MiniCBOR.ReadInt32(new java.io.ByteArrayInputStream(bytes));
         Assert.fail("Should have failed");
-      } catch (IOException ex) {
+      } catch(IOException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1773,7 +1771,7 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteg
       try {
         ExtendedDecimal.PositiveInfinity.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1782,7 +1780,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.NegativeInfinity.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1791,7 +1789,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.NaN.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1800,7 +1798,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedDecimal.SignalingNaN.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1809,7 +1807,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.PositiveInfinity.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1818,7 +1816,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.NegativeInfinity.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1827,7 +1825,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.NaN.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1836,7 +1834,7 @@ System.out.println(ex.getMessage());
       try {
         ExtendedFloat.SignalingNaN.ToBigInteger();
         Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
+      } catch(ArithmeticException ex) {
 System.out.println(ex.getMessage());
 } catch (Exception ex) {
         Assert.fail(ex.toString());

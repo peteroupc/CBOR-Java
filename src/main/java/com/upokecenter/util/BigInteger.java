@@ -1136,40 +1136,44 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       // " b=" + words2Start + "]");
 
       if (count <= RecursionLimit) {
-        if (count == 2) {
-          BaselineMultiply2(
-            resultArr,
-            resultStart,
-            words1,
-            words1Start,
-            words2,
-            words2Start);
-        } else if (count == 4) {
-          BaselineMultiply4(
-            resultArr,
-            resultStart,
-            words1,
-            words1Start,
-            words2,
-            words2Start);
-        } else if (count == 8) {
-          BaselineMultiply8(
-            resultArr,
-            resultStart,
-            words1,
-            words1Start,
-            words2,
-            words2Start);
-        } else {
-          SchoolbookMultiply(
-            resultArr,
-            resultStart,
-            words1,
-            words1Start,
-            count,
-            words2,
-            words2Start,
-            count);
+        switch (count) {
+          case 2:
+            BaselineMultiply2(
+resultArr,
+resultStart,
+words1,
+words1Start,
+words2,
+words2Start);
+            break;
+          case 4:
+            BaselineMultiply4(
+  resultArr,
+  resultStart,
+  words1,
+  words1Start,
+  words2,
+  words2Start);
+            break;
+          case 8:
+            BaselineMultiply8(
+  resultArr,
+  resultStart,
+  words1,
+  words1Start,
+  words2,
+  words2Start);
+            break;
+          default: SchoolbookMultiply(
+resultArr,
+resultStart,
+words1,
+words1Start,
+count,
+words2,
+words2Start,
+count);
+            break;
         }
       } else {
         int countA = count;
@@ -1510,14 +1514,20 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int words1Start,
       int count) {
       if (count <= RecursionLimit) {
-        if (count == 2) {
-          BaselineSquare2(resultArr, resultStart, words1, words1Start);
-        } else if (count == 4) {
-          BaselineSquare4(resultArr, resultStart, words1, words1Start);
-        } else if (count == 8) {
-          BaselineSquare8(resultArr, resultStart, words1, words1Start);
-        } else {
-          SchoolbookSquare(resultArr, resultStart, words1, words1Start, count);
+        switch (count) {
+          case 2:
+            BaselineSquare2(resultArr, resultStart, words1, words1Start);
+            break;
+          case 4:
+            BaselineSquare4(resultArr, resultStart, words1, words1Start);
+            break;
+          case 8:
+            BaselineSquare8(resultArr, resultStart, words1, words1Start);
+            break;
+          default:
+          SchoolbookSquare(resultArr, resultStart, words1, words1Start,
+              count);
+            break;
         }
       } else if ((count & 1) == 0) {
         int count2 = count >> 1;
@@ -3861,7 +3871,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return fromRadixSubstring(str, 10, index, endIndex);
     }
 
-    private static int[] valueMaxSafeInts = { 1073741823, 715827881,
+    private static final int[] valueMaxSafeInts = { 1073741823, 715827881,
       536870911, 429496728, 357913940, 306783377, 268435455, 238609293,
       214748363, 195225785, 178956969, 165191048, 153391688, 143165575,
       134217727, 126322566, 119304646, 113025454, 107374181, 102261125,
@@ -3869,7 +3879,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       74051159, 71582787, 69273665, 67108863, 65075261, 63161282, 61356674,
       59652322 };
 
-    private static int[] valueCharToDigit = { 36, 36, 36, 36, 36, 36, 36,
+ private static final int[] valueCharToDigit = { 36, 36, 36, 36, 36, 36,
+      36,
       36,
       36, 36, 36, 36, 36, 36, 36, 36,
       36, 36, 36, 36, 36, 36, 36, 36,

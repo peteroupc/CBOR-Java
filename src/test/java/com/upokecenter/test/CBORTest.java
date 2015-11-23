@@ -360,7 +360,6 @@ Assert.assertEquals(-1, numberTemp);
     // [Timeout(10000)]
     public void TestCompare() {
       FastRandom r = new FastRandom();
-      // String badstr = null;
       int CompareCount = 500;
       for (int i = 0; i < CompareCount; ++i) {
         CBORObject o1 = RandomObjects.RandomCBORObject(r);
@@ -1373,7 +1372,7 @@ stringTemp);
       String json = cbor.ToJSONString();
     }
 
-    private void TestWriteToJSON(CBORObject obj) {
+    private static void TestWriteToJSON(CBORObject obj) {
       CBORObject objA = null;
       java.io.ByteArrayOutputStream ms = null;
 try {
@@ -1438,7 +1437,7 @@ int startingAvailable = ms.available();
                 if (o.getType() == CBORType.Array || o.getType() == CBORType.Map) {
                   jsonString = o.ToJSONString();
                   CBORObject.FromJSONString(jsonString);
-                  this.TestWriteToJSON(o);
+                  TestWriteToJSON(o);
                 }
               } catch (Exception ex) {
                 Assert.fail(jsonString + "\n" + ex);
@@ -1512,7 +1511,7 @@ int startingAvailable = ms.available();
                   jsonString = o.ToJSONString();
                   // reread JSON String to test validity
                   CBORObject.FromJSONString(jsonString);
-                  this.TestWriteToJSON(o);
+                  TestWriteToJSON(o);
                 }
               } catch (Exception ex) {
                 Assert.fail(jsonString + "\n" + ex);
@@ -1536,7 +1535,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       for (int i = 0; i < 1000; ++i) {
         obj = RandomObjects.RandomCBORObject(rand);
         TestCommon.AssertRoundTrip(obj);
-        this.TestWriteToJSON(obj);
+        TestWriteToJSON(obj);
       }
     }
 
@@ -1832,7 +1831,7 @@ stringTemp);
       }
     }
 
-    public void DoTestReadUtf8(
+    public static void DoTestReadUtf8(
       byte[] bytes,
       int expectedRet,
       String expectedString,
@@ -2222,7 +2221,7 @@ stringTemp);
       return sb.toString();
     }
 
-    private void TestTextStringStreamOne(String longString) {
+    private static void TestTextStringStreamOne(String longString) {
       CBORObject cbor, cbor2;
       cbor = CBORObject.FromObject(longString);
       cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
@@ -2247,11 +2246,10 @@ Assert.assertEquals(
 "..",
 stringTemp);
 }
-      // Test streaming of long strings
-      this.TestTextStringStreamOne(Repeat('x', 200000));
-      this.TestTextStringStreamOne(Repeat('\u00e0', 200000));
-      this.TestTextStringStreamOne(Repeat('\u3000', 200000));
-      this.TestTextStringStreamOne(Repeat("\ud800\udc00", 200000));
+      TestTextStringStreamOne(Repeat('x', 200000));
+      TestTextStringStreamOne(Repeat('\u00e0', 200000));
+      TestTextStringStreamOne(Repeat('\u3000', 200000));
+      TestTextStringStreamOne(Repeat("\ud800\udc00", 200000));
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoTagsBeforeDefinite() {

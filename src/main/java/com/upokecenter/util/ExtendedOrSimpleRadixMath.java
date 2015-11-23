@@ -9,8 +9,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
   class ExtendedOrSimpleRadixMath<T> implements IRadixMath<T>
   {
-    private RadixMath<T> ext;
-    private SimpleRadixMath<T> simp;
+    private final RadixMath<T> ext;
+    private final SimpleRadixMath<T> simp;
 
     public ExtendedOrSimpleRadixMath (IRadixMathHelper<T> helper) {
       this.ext = new RadixMath<T>(helper);

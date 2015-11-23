@@ -15,7 +15,7 @@ import com.upokecenter.util.*;
      * <code>http://cbor.schmorp.de/stringref</code>
      */
   class StringRefs {
-    private ArrayList<ArrayList<CBORObject>> stack;
+    private final ArrayList<ArrayList<CBORObject>> stack;
 
     public StringRefs () {
       this.stack = new ArrayList<ArrayList<CBORObject>>();

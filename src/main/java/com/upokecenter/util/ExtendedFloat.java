@@ -540,8 +540,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
     }
 
-    private static BigInteger valueOneShift23 = BigInteger.ONE.shiftLeft(23);
-    private static BigInteger valueOneShift52 = BigInteger.ONE.shiftLeft(52);
+    private static final BigInteger valueOneShift23 = BigInteger.ONE.shiftLeft(23);
+    private static final BigInteger valueOneShift52 = BigInteger.ONE.shiftLeft(52);
 
     /**
      * Converts this value to a 32-bit floating-point number. The half-even

@@ -398,9 +398,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private MutableNumber mnum;  // if integerMode is 1
     private BigInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static BigInteger valueInt32MinValue = BigInteger.valueOf(Integer.MIN_VALUE);
-    private static BigInteger valueInt32MaxValue = BigInteger.valueOf(Integer.MAX_VALUE);
-    private static BigInteger valueNegativeInt32MinValue=(valueInt32MinValue).negate();
+    private static final BigInteger valueInt32MinValue =
+      BigInteger.valueOf(Integer.MIN_VALUE);
+    private static final BigInteger valueInt32MaxValue =
+      BigInteger.valueOf(Integer.MAX_VALUE);
+    private static final BigInteger valueNegativeInt32MinValue=(valueInt32MinValue).negate();
 
     FastInteger(int value) {
       this.smallValue = value;

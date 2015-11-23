@@ -16,7 +16,7 @@ package com.upokecenter.cbor;
     public static final CBOREncodeOptions NoIndefLengthStrings =
       new CBOREncodeOptions(1);
 
-    private int value;
+    private final int value;
 
     /**
      * Gets this options object's value.

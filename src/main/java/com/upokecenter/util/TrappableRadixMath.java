@@ -70,7 +70,7 @@ result);
       return result;
     }
 
-    private IRadixMath<T> math;
+    private final IRadixMath<T> math;
 
     public TrappableRadixMath (IRadixMath<T> math) {
       this.math = math;

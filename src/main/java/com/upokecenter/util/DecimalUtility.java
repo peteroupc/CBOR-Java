@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   final class DecimalUtility {
 private DecimalUtility() {
 }
-    private static BigInteger[] valueBigIntPowersOfTen = {
+    private static final BigInteger[] valueBigIntPowersOfTen = {
       BigInteger.ONE, BigInteger.TEN, BigInteger.valueOf(100), BigInteger.valueOf(1000),
       BigInteger.valueOf(10000), BigInteger.valueOf(100000), BigInteger.valueOf(1000000),
       BigInteger.valueOf(10000000), BigInteger.valueOf(100000000), BigInteger.valueOf(1000000000),
@@ -21,7 +21,7 @@ private DecimalUtility() {
       BigInteger.valueOf(100000000000000000L), BigInteger.valueOf(1000000000000000000L)
     };
 
-    private static BigInteger[] valueBigIntPowersOfFive = {
+    private static final BigInteger[] valueBigIntPowersOfFive = {
       BigInteger.ONE, BigInteger.valueOf(5), BigInteger.valueOf(25), BigInteger.valueOf(125),
       BigInteger.valueOf(625), BigInteger.valueOf(3125), BigInteger.valueOf(15625),
       BigInteger.valueOf(78125), BigInteger.valueOf(390625),
@@ -134,7 +134,8 @@ private DecimalUtility() {
       }
     }
 
-    private static BigInteger valueBigShiftIteration = BigInteger.valueOf(1000000);
+    private static final BigInteger valueBigShiftIteration =
+      BigInteger.valueOf(1000000);
 
     static BigInteger ShiftLeft(BigInteger val, BigInteger bigShift) {
       if (val.signum() == 0) {
@@ -169,9 +170,9 @@ private DecimalUtility() {
 
     private static final class PowerCache {
       private static final int MaxSize = 64;
-      private BigInteger[] outputs;
-      private BigInteger[] inputs;
-      private int[] inputsInts;
+      private final BigInteger[] outputs;
+      private final BigInteger[] inputs;
+      private final int[] inputsInts;
 
       public PowerCache () {
         this.outputs = new BigInteger[MaxSize];
@@ -287,10 +288,11 @@ private DecimalUtility() {
       }
     }
 
-    private static PowerCache powerOfFiveCache = new
+    private static final PowerCache powerOfFiveCache = new
     DecimalUtility.PowerCache();
 
-    private static PowerCache powerOfTenCache = new DecimalUtility.PowerCache();
+    private static final PowerCache powerOfTenCache = new
+      DecimalUtility.PowerCache();
 
     static BigInteger FindPowerOfFiveFromBig(BigInteger diff) {
       int sign = diff.signum();
@@ -341,7 +343,7 @@ private DecimalUtility() {
       return mantissa;
     }
 
-    private static BigInteger valueBigInt36 = BigInteger.valueOf(36);
+    private static final BigInteger valueBigInt36 = BigInteger.valueOf(36);
 
     static BigInteger FindPowerOfTenFromBig(BigInteger
     bigintExponent) {
@@ -381,7 +383,7 @@ private DecimalUtility() {
       return mantissa;
     }
 
-    private static BigInteger valueFivePower40 =
+    private static final BigInteger valueFivePower40 =
     (BigInteger.valueOf(95367431640625L)).multiply(BigInteger.valueOf(95367431640625L));
 
     static BigInteger FindPowerOfFive(int precision) {

@@ -47,7 +47,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return this.discardedBitCount;
       }
 
-    private static BigInteger valueTen = BigInteger.TEN;
+    private static final BigInteger valueTen = BigInteger.TEN;
 
     /**
      * Gets the current integer after shifting.

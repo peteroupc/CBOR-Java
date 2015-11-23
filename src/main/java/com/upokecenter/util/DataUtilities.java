@@ -131,7 +131,8 @@ boolean lenientLineBreaks) {
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          if (WriteUtf8(str, ms, replace) != 0) {
+       if (WriteUtf8(str, 0, str.length(), ms, replace, lenientLineBreaks) !=
+            0) {
             throw new IllegalArgumentException("Unpaired surrogate code point");
           }
           return ms.toByteArray();

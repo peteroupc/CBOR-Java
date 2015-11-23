@@ -1271,7 +1271,7 @@ bigrem = divrem[1]; }
       }
     }
 
-    private static BigInteger valueOneShift62 = BigInteger.ONE.shiftLeft(62);
+    private static final BigInteger valueOneShift62 = BigInteger.ONE.shiftLeft(62);
 
     /**
      * Creates a binary floating-point number from this object&#x27;s value. Note

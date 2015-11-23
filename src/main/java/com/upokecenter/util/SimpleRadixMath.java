@@ -16,7 +16,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     // <typeparam name='T'>Data type for a numeric value in a particular
     // radix.</typeparam>
   final class SimpleRadixMath<T> implements IRadixMath<T> {
-    private IRadixMath<T> wrapper;
+    private final IRadixMath<T> wrapper;
 
     public SimpleRadixMath (IRadixMath<T> wrapper) {
       this.wrapper = wrapper;
