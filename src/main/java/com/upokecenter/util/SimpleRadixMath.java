@@ -424,9 +424,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         thisValue =
           this.wrapper.RoundToPrecision(this.GetHelper().ValueOf(1), ctx2);
       } else {
-        // System.out.println("was " + thisValue);
-        // BigInteger powExponent = this.GetHelper().GetExponent(pow);
-        // BigInteger powInteger =
         (this.GetHelper().GetMantissa(pow)).abs();
         {
           thisValue = this.wrapper.Power(thisValue, pow, ctx2);

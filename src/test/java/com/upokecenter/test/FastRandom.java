@@ -15,13 +15,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   public class FastRandom {
     private static final int ReseedCount = 500;
 
-    private java.util.Random rand;
-    private java.util.Random rand2;
+    private final java.util.Random rand;
+    private final java.util.Random rand2;
     private int count;
 
     private int w = 521288629;
     private int z = 362436069;
-    private static int[] seeds = new int[32];
+    private static final int[] seeds = new int[32];
 
     private static void AddSeed(int seed) {
       synchronized (seeds) {

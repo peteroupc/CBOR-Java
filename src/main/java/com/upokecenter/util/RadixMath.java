@@ -247,8 +247,7 @@ boolean roundToOperandPrecision) {
                     boolean sameSign = this.helper.GetSign(thisValue) ==
                     this.helper.GetSign(other);
                     boolean oneOpIsZero = op2MantAbs.signum() == 0;
-                  digitLength2 =
-                      this.helper.CreateShiftAccumulator(op1MantAbs)
+                digitLength2 = this.helper.CreateShiftAccumulator(op1MantAbs)
                     .GetDigitLength();
                     if (digitLength2.compareTo(fastPrecision) < 0) {
                     // Second operand's precision too short
@@ -1005,7 +1004,6 @@ bigrem = divrem[1]; }
               .WithRounding(Rounding.OddOrZeroFiveUp).WithBlankFlags();
             T logNatural = this.Ln(thisValue, ctxdiv);
             T logTen = this.LnTenConstant(ctxdiv);
-            // T logTen = this.Ln(this.helper.ValueOf(10), ctxdiv);
             thisValue = this.Divide(logNatural, logTen, ctx);
             // Treat result as inexact
             if (ctx.getHasFlags()) {
@@ -1642,7 +1640,8 @@ PrecisionContext.ForRounding(Rounding.Down));
       }
       if ((!isPowIntegral || powSign < 0) && (ctx == null ||
                     !ctx.getHasMaxPrecision())) {
-        String outputMessage = "ctx is null or has unlimited precision, " +
+      String outputMessage =
+          "ctx is null or has unlimited precision, " +
           "and pow's exponent is not an integer or is negative";
         return this.SignalInvalidWithMessage(
 ctx,
@@ -1798,8 +1797,7 @@ negativeFlag);
       } else if (expcmp > 0) {
         // Other exponent is less
         // System.out.println("other exp less");
-   FastInteger radixPower =
-          FastInteger.FromBig(expThis).SubtractBig(expOther);
+   FastInteger radixPower = FastInteger.FromBig(expThis).SubtractBig(expOther);
         if (tmpctx.getPrecision().signum() > 0 &&
             radixPower.compareTo(FastInteger.FromBig(tmpctx.getPrecision())
                 .AddInt(10)) > 0) {
@@ -1906,8 +1904,7 @@ BigInteger.ZERO);
       if ((ctx2.getFlags() & PrecisionContext.FlagInvalid) != 0) {
         return this.SignalInvalid(ctx);
       }
- if (this.helper.GetFlags(ret2) == 0 &&
-        this.helper.GetMantissa(ret2).signum() == 0) {
+ if (this.helper.GetFlags(ret2) == 0 && this.helper.GetMantissa(ret2).signum() == 0) {
         ret2 = this.EnsureSign(
 ret2,
 (this.helper.GetFlags(thisValue) & BigNumberFlags.FlagNegative) != 0);
@@ -1980,8 +1977,7 @@ ctx,
           (this.helper.GetMantissa(thisValue)).abs();
         FastInteger shift = FastInteger.FromBig(expOther)
           .SubtractBig(this.helper.GetExponent(thisValue));
-     IShiftAccumulator accum =
-          this.helper.CreateShiftAccumulator(bigmantissa);
+     IShiftAccumulator accum = this.helper.CreateShiftAccumulator(bigmantissa);
         accum.ShiftRight(shift);
         bigmantissa = accum.getShiftedInt();
         thisValue = this.helper.CreateNewWithFlags(
@@ -2351,15 +2347,13 @@ null) : this.ValueOf(-1, null));
       BigInteger op2Exponent = this.helper.GetExponent(otherValue);
       FastInteger fastOp1Exp = FastInteger.FromBig(op1Exponent);
       FastInteger fastOp2Exp = FastInteger.FromBig(op2Exponent);
- FastInteger expdiff =
-        FastInteger.Copy(fastOp1Exp).Subtract(fastOp2Exp).Abs();
+ FastInteger expdiff = FastInteger.Copy(fastOp1Exp).Subtract(fastOp2Exp).Abs();
       // Check if exponent difference is too big for
       // radix-power calculation to work quickly
       if (expdiff.CompareToInt(100) >= 0) {
         BigInteger op1MantAbs =
           (this.helper.GetMantissa(thisValue)).abs();
-   BigInteger op2MantAbs =
-          (this.helper.GetMantissa(otherValue)).abs();
+   BigInteger op2MantAbs = (this.helper.GetMantissa(otherValue)).abs();
         FastInteger precision1 =
           this.helper.CreateShiftAccumulator(op1MantAbs).GetDigitLength();
         FastInteger precision2 =
@@ -2512,8 +2506,7 @@ BigInteger desiredExponent) {
           FastInteger.FromBig(this.helper.GetExponent(thisValue));
         FastInteger expDivisor =
           FastInteger.FromBig(this.helper.GetExponent(divisor));
-      FastInteger expdiff =
-          FastInteger.Copy(expDividend).Subtract(expDivisor);
+      FastInteger expdiff = FastInteger.Copy(expDividend).Subtract(expDivisor);
         FastInteger adjust = new FastInteger(0);
         FastInteger result = new FastInteger(0);
         FastInteger naturalExponent = FastInteger.Copy(expdiff);
@@ -2528,8 +2521,7 @@ BigInteger desiredExponent) {
         if (integerMode == IntegerModeFixedScale) {
           FastInteger shift;
           BigInteger rem;
-        FastInteger fastDesiredExponent =
-            FastInteger.FromBig(desiredExponent);
+        FastInteger fastDesiredExponent = FastInteger.FromBig(desiredExponent);
           if (ctx != null && ctx.getHasFlags() &&
               fastDesiredExponent.compareTo(naturalExponent) > 0) {
             // Treat as rounded if the desired exponent is greater
@@ -2609,8 +2601,7 @@ rem = divrem[1]; }
           if (hasPrecision) {
             BigInteger divid = mantissaDividend;
             FastInteger shift = FastInteger.FromBig(ctx.getPrecision());
-       dividendPrecision =
-              this.helper.CreateShiftAccumulator(mantissaDividend)
+       dividendPrecision = this.helper.CreateShiftAccumulator(mantissaDividend)
                     .GetDigitLength();
             divisorPrecision =
               this.helper.CreateShiftAccumulator(mantissaDivisor)
@@ -2644,8 +2635,7 @@ rem = divrem[1]; }
             }
             dividendPrecision =
               this.helper.CreateShiftAccumulator(divid).GetDigitLength();
-         divisorPrecision =
-              this.helper.CreateShiftAccumulator(mantissaDivisor)
+         divisorPrecision = this.helper.CreateShiftAccumulator(mantissaDivisor)
                     .GetDigitLength();
             if (shift.signum() != 0 || quo == null) {
               // if shift isn't zero, recalculate the quotient
@@ -2703,8 +2693,7 @@ ctx,
         int mantcmp = mantissaDividend.compareTo(mantissaDivisor);
         if (mantcmp < 0) {
           // dividend mantissa is less than divisor mantissa
-       dividendPrecision =
-            this.helper.CreateShiftAccumulator(mantissaDividend)
+       dividendPrecision = this.helper.CreateShiftAccumulator(mantissaDividend)
                   .GetDigitLength();
           divisorPrecision =
             this.helper.CreateShiftAccumulator(mantissaDivisor)
@@ -2736,8 +2725,7 @@ ctx,
           }
         } else if (mantcmp > 0) {
           // dividend mantissa is greater than divisor mantissa
-       dividendPrecision =
-            this.helper.CreateShiftAccumulator(mantissaDividend)
+       dividendPrecision = this.helper.CreateShiftAccumulator(mantissaDividend)
                   .GetDigitLength();
           divisorPrecision =
             this.helper.CreateShiftAccumulator(mantissaDivisor)
@@ -3597,8 +3585,7 @@ PrecisionContext ctx) {
         // Fast path to check if rounding is necessary at all
         if (fastPrecision.signum() > 0 && (shift == null || shift.isValueZero()) &&
             (thisFlags & BigNumberFlags.FlagSpecial) == 0) {
-       BigInteger mantabs =
-            (this.helper.GetMantissa(thisValue)).abs();
+       BigInteger mantabs = (this.helper.GetMantissa(thisValue)).abs();
           if (adjustNegativeZero && (thisFlags & BigNumberFlags.FlagNegative) !=
               0 && mantabs.signum() == 0 && (ctx.getRounding() != Rounding.Floor)) {
             // Change negative zero to positive zero
@@ -3694,8 +3681,7 @@ lastDiscarded,
         thisFlags = 0;
       }
       boolean neg = (thisFlags & BigNumberFlags.FlagNegative) != 0;
-   BigInteger bigmantissa =
-        (this.helper.GetMantissa(thisValue)).abs();
+   BigInteger bigmantissa = (this.helper.GetMantissa(thisValue)).abs();
       // save mantissa in case result is subnormal
       // and must be rounded again
       BigInteger oldmantissa = bigmantissa;
@@ -4196,8 +4182,7 @@ newmantissa)) {
             flags |= PrecisionContext.FlagRounded;
           }
           if ((accum.getLastDiscardedDigit() | accum.getOlderDiscardedDigits()) != 0) {
-          flags |= PrecisionContext.FlagInexact |
-              PrecisionContext.FlagRounded;
+          flags |= PrecisionContext.FlagInexact | PrecisionContext.FlagRounded;
             if (rounding == Rounding.Unnecessary) {
               return this.SignalInvalidWithMessage(
                 ctx,

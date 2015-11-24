@@ -85,6 +85,7 @@ String result) {
         try {
           bigintA.divide(bigintB); Assert.fail("Expected divide by 0 error");
         } catch (ArithmeticException ex) {
+          System.out.println(ex.getMessage());
         }
       } else {
         AssertBigIntegersEqual(result, bigintA.divide(bigintB));
@@ -101,6 +102,7 @@ String result) {
         try {
           bigintA.remainder(bigintB); Assert.fail("Expected divide by 0 error");
         } catch (ArithmeticException ex) {
+          System.out.println(ex.getMessage());
         }
       } else {
         AssertBigIntegersEqual(result, bigintA.remainder(bigintB));
@@ -127,6 +129,7 @@ rembi = divrem[1]; }
           }
           Assert.fail("Expected divide by 0 error");
         } catch (ArithmeticException ex) {
+          System.out.println(ex.getMessage());
         }
       } else {
         BigInteger quo;
@@ -210,7 +213,8 @@ String name) {
     }
 
     private static CBORObject FromBytesB(byte[] b) {
-      java.io.ByteArrayInputStream ms = null;
+      {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
@@ -223,6 +227,7 @@ int startingAvailable = ms.available();
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
 }
     }
     // Tests the equivalence of the FromBytes and Read methods.

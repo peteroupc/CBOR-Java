@@ -505,9 +505,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
          throw new CBORException("Unexpected tag encountered: " +
               uadditional);
           }
-          // Tag 256: String namespace
-          switch (uadditional) {
+          int uad = (uadditional >= 257 ? 257 : (uadditional<0 ? 0 :
+            (int)uadditional));
+          switch (uad) {
             case 256:
+              // Tag 256: String namespace
               this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
               this.stringRefs.Push();
               break;
@@ -557,7 +559,9 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
           return CBORObject.FromObjectAndTag(o, bigintAdditional);
         }
         if (uadditional < 65536) {
-          switch (uadditional) {
+          int uaddl = (uadditional >= 257 ? 257 : (uadditional<0 ? 0 :
+            (int)uadditional));
+          switch (uaddl) {
             case 256:
               // String tag
               this.stringRefs.Pop();

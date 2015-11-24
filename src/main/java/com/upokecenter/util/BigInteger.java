@@ -2735,7 +2735,7 @@ count);
  */
 @Deprecated
     public byte[] toByteArray(boolean littleEndian) {
-      return this.toBytes(true);
+      return this.toBytes(littleEndian);
     }
 
     /**

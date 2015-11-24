@@ -760,8 +760,7 @@ InputStream stream,
 int bytesCount,
 boolean replace) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
-      int retval = DataUtilities.ReadUtf8(stream, bytesCount, builder, replace);
-      if (retval == -1) {
+      if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
         throw new IOException(
        "Unpaired surrogate code point found.",
        new java.nio.charset.MalformedInputException(1));

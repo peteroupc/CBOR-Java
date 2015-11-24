@@ -755,7 +755,8 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
             MiniCBOR.WriteInt32(val, ms);
-            java.io.ByteArrayInputStream ms2 = null;
+            {
+java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
 
@@ -763,6 +764,7 @@ ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
 }
 finally {
 try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
+}
 }
 }
 finally {
@@ -775,7 +777,8 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
             CBORObject.Write(val, ms);
-            java.io.ByteArrayInputStream ms2 = null;
+            {
+java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
 
@@ -783,6 +786,7 @@ ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
 }
 finally {
 try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
+}
 }
 }
 finally {
@@ -1414,7 +1418,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
             array[j] = (byte)rand.NextValue(256);
           }
         }
-        java.io.ByteArrayInputStream ms = null;
+        {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(array);
 int startingAvailable = ms.available();
@@ -1445,11 +1450,13 @@ int startingAvailable = ms.available();
               }
             } catch (CBORException ex) {
               // Expected exception
+              System.out.println(ex.getMessage());
             }
           }
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
 }
       }
     }
@@ -1487,14 +1494,15 @@ stringTemp);
           int index = rand.NextValue(array.length);
           array[index] = ((byte)rand.NextValue(256));
         }
-        java.io.ByteArrayInputStream ms = null;
+        {
+java.io.ByteArrayInputStream inputStream = null;
 try {
-ms = new java.io.ByteArrayInputStream(array);
-int startingAvailable = ms.available();
+inputStream = new java.io.ByteArrayInputStream(array);
+int startingAvailable = inputStream.available();
 
-          while ((startingAvailable-ms.available()) != startingAvailable) {
+          while ((startingAvailable-inputStream.available()) != startingAvailable) {
             try {
-              CBORObject o = CBORObject.Read(ms);
+              CBORObject o = CBORObject.Read(inputStream);
               byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
               try {
                 CBORObject.DecodeFromBytes(encodedBytes);
@@ -1519,11 +1527,13 @@ int startingAvailable = ms.available();
               }
             } catch (CBORException ex) {
               // Expected exception
+              System.out.println(ex.getMessage());
             }
           }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (inputStream != null)inputStream.close(); } catch (java.io.IOException ex) {}
+}
 }
       }
     }
@@ -1712,7 +1722,8 @@ System.out.println(ex.getMessage());
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      java.io.ByteArrayInputStream ms2a = null;
+      {
+java.io.ByteArrayInputStream ms2a = null;
 try {
 ms2a = new java.io.ByteArrayInputStream(new byte[] { });
 
@@ -1729,7 +1740,9 @@ System.out.println(ex.getMessage());
 finally {
 try { if (ms2a != null)ms2a.close(); } catch (java.io.IOException ex) {}
 }
-      java.io.ByteArrayInputStream ms2b = null;
+}
+      {
+java.io.ByteArrayInputStream ms2b = null;
 try {
 ms2b = new java.io.ByteArrayInputStream(new byte[] { 0x20  });
 
@@ -1745,6 +1758,7 @@ System.out.println(ex.getMessage());
 }
 finally {
 try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
+}
 }
       try {
         CBORObject.FromJSONString("");
@@ -1856,7 +1870,8 @@ stringTemp);
       try {
         StringBuilder builder = new StringBuilder();
         int ret = 0;
-        java.io.ByteArrayInputStream ms = null;
+        {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -1875,6 +1890,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
 }
         if (bytes.length >= length) {
           builder.setLength(0);

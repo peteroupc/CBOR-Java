@@ -87,12 +87,16 @@ import com.upokecenter.util.*;
      * CBORException.</p>
      */
   public final class CBORObject implements Comparable<CBORObject> {
+    private static CBORObject ConstructSimpleValue(int v) {
+      return new CBORObject(CBORObjectTypeSimpleValue, v);
+    }
+
     /**
      * Represents the value false.
      */
 
-    public static final CBORObject False = new
-      CBORObject(CBORObjectTypeSimpleValue, 20);
+    public static final CBORObject False =
+      CBORObject.ConstructSimpleValue(20);
 
     /**
      * A not-a-number value.
@@ -109,8 +113,8 @@ import com.upokecenter.util.*;
      * Represents the value null.
      */
 
-    public static final CBORObject Null = new
-      CBORObject(CBORObjectTypeSimpleValue, 22);
+    public static final CBORObject Null =
+      CBORObject.ConstructSimpleValue(22);
 
     /**
      * The value positive infinity.
@@ -122,15 +126,15 @@ import com.upokecenter.util.*;
      * Represents the value true.
      */
 
-    public static final CBORObject True = new
-      CBORObject(CBORObjectTypeSimpleValue, 21);
+    public static final CBORObject True =
+      CBORObject.ConstructSimpleValue(21);
 
     /**
      * Represents the value undefined.
      */
 
-    public static final CBORObject Undefined = new
-      CBORObject(CBORObjectTypeSimpleValue, 23);
+    public static final CBORObject Undefined =
+      CBORObject.ConstructSimpleValue(23);
     static final int CBORObjectTypeArray = 4;
     static final int CBORObjectTypeBigInteger = 1;  // all other integers
     static final int CBORObjectTypeByteString = 2;
@@ -681,7 +685,8 @@ import com.upokecenter.util.*;
       // For objects with variable length,
       // read the Object as though
       // the byte array were a stream
-      java.io.ByteArrayInputStream ms = null;
+      {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(data);
 int startingAvailable = ms.available();
@@ -692,6 +697,7 @@ int startingAvailable = ms.available();
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
 }
     }
 
@@ -724,7 +730,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           "JSON Object began with a byte order mark (U+FEFF) (offset 0)");
       }
       CharacterInputWithCount reader = new CharacterInputWithCount(
-        new CharacterReader(str));
+        new CharacterReader(str, false, true));
       CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, 0);
       if (CBORJson.SkipWhitespaceJSON(reader) != -1) {
         reader.RaiseError("End of String not reached");
@@ -1298,15 +1304,15 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * (JSON) format. The JSON stream may begin with a byte order mark (U +
      * FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16, or
      * UTF-32 encoding; the encoding is detected by assuming that the first
-     * character read must be a byte order mark or an ASCII character. (In
-     * previous versions, only UTF-8 was allowed.) <p>If a JSON object has
-     * the same key, only the last given value will be used for each
-     * duplicated key.</p>
+     * character read must be a byte order mark or a nonzero ASCII
+     * character. (In previous versions, only UTF-8 was allowed.) <p>If a
+     * JSON object has the same key, only the last given value will be used
+     * for each duplicated key.</p>
      * @param stream A readable data stream.
      * @return A CBORObject object.
      * @throws NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
-     * @throws CBORException The data stream contains invalid UTF-8 or is not in
+     * @throws CBORException The data stream contains invalid encoding or is not in
      * JSON format.
      */
     public static CBORObject ReadJSON(InputStream stream) throws java.io.IOException {
@@ -1314,7 +1320,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new NullPointerException("stream");
       }
       CharacterInputWithCount reader = new CharacterInputWithCount(
-        new CharacterReader(stream, 2));
+        new CharacterReader(stream, 2, true));
       try {
         CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, 0);
         if (CBORJson.SkipWhitespaceJSON(reader) != -1) {
@@ -2406,22 +2412,18 @@ public int compareTo(CBORObject other) {
         } else {
           // DebugUtility.Log("a=" + this + " b=" + other);
           if (typeA == CBORObjectTypeExtendedRational) {
-        ExtendedRational e1 =
-              NumberInterfaces[typeA].AsExtendedRational(objA);
+        ExtendedRational e1 = NumberInterfaces[typeA].AsExtendedRational(objA);
             if (typeB == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e2 =
-                NumberInterfaces[typeB].AsExtendedDecimal(objB);
+          ExtendedDecimal e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
               cmp = e1.CompareToDecimal(e2);
             } else {
               ExtendedFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
               cmp = e1.CompareToBinary(e2);
             }
           } else if (typeB == CBORObjectTypeExtendedRational) {
-        ExtendedRational e2 =
-              NumberInterfaces[typeB].AsExtendedRational(objB);
+        ExtendedRational e2 = NumberInterfaces[typeB].AsExtendedRational(objB);
             if (typeA == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e1 =
-                NumberInterfaces[typeA].AsExtendedDecimal(objA);
+          ExtendedDecimal e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
               cmp = e2.CompareToDecimal(e1);
               cmp = -cmp;
             } else {
