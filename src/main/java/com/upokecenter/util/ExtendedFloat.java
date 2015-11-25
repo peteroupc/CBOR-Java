@@ -255,10 +255,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * definition in java.math.BigDecimal(), except that the digits must be
      * ASCII digits ('0' through '9').</p>
      * @param str A string object.
-     * @param offset A zero-based index showing where the desired portion of "str"
-     * begins.
-     * @param length The length, in code units, of the desired portion of "str"
-     * (but not more than "str" 's length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @param ctx A PrecisionContext object specifying the precision, rounding, and
      * exponent range to apply to the parsed number. Can be null.
      * @return The parsed number, converted to ExtendedFloat.
@@ -273,7 +273,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int length,
       PrecisionContext ctx) {
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException(<paramref name='str'/>);
       }
       return ExtendedDecimal.FromString(
         str,
@@ -307,10 +307,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Not documented yet.
      * @param str A string object.
-     * @param offset A zero-based index showing where the desired portion of "str"
-     * begins.
-     * @param length The length, in code units, of the desired portion of "str"
-     * (but not more than "str" 's length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @return An ExtendedFloat object.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
