@@ -852,7 +852,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Converts a big integer to the same value as a binary float.
      * @param bigint A BigInteger object.
      * @return An ExtendedFloat object.
      */
@@ -861,7 +861,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Converts a 64-bit integer to the same value as a binary float.
      * @param valueSmall A 64-bit signed integer.
      * @return An ExtendedFloat object.
      */
