@@ -13,7 +13,7 @@ import com.upokecenter.util.*;
           new PrecisionContext(-1, Rounding.HalfEven, 0, 0, false));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -24,7 +24,7 @@ System.out.println(ex.getMessage());
           new PrecisionContext(0, Rounding.HalfEven, 0, -1, false));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -67,7 +67,7 @@ System.out.println(ex.getMessage());
  PrecisionContext.Unlimited.ExponentWithinRange(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -80,7 +80,7 @@ throw new IllegalStateException("", ex);
         ctx.setFlags(5);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -97,7 +97,7 @@ System.out.println(ex.getMessage());
         ctx.setFlags(5);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -209,7 +209,7 @@ System.out.println(ex.getMessage());
         PrecisionContext.Unlimited.WithBigPrecision(BigInteger.ONE.negate());
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -229,7 +229,7 @@ System.out.println(ex.getMessage());
         PrecisionContext.Unlimited.WithExponentRange(1, 0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -238,7 +238,7 @@ System.out.println(ex.getMessage());
         PrecisionContext.Unlimited.WithBigExponentRange(null, BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -247,7 +247,7 @@ System.out.println(ex.getMessage());
         PrecisionContext.Unlimited.WithBigExponentRange(BigInteger.ZERO, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -259,7 +259,7 @@ System.out.println(ex.getMessage());
           BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -275,7 +275,7 @@ System.out.println(ex.getMessage());
         PrecisionContext.Unlimited.WithPrecision(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

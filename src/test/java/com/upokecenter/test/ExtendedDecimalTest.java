@@ -1095,7 +1095,7 @@ Assert.assertEquals(1, numberTemp);
         ExtendedDecimal.Min(null, ExtendedDecimal.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1104,7 +1104,7 @@ System.out.println(ex.getMessage());
         ExtendedDecimal.Min(ExtendedDecimal.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1189,7 +1189,7 @@ stringTemp);
  ExtendedDecimal.One.MultiplyAndAdd(null, ExtendedDecimal.Zero, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1198,7 +1198,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndAdd(ExtendedDecimal.Zero, null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1207,7 +1207,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndAdd(null, null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1216,7 +1216,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndAdd(null, ExtendedDecimal.Zero);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1225,7 +1225,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndAdd(ExtendedDecimal.Zero, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1234,7 +1234,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndAdd(null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1246,7 +1246,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndSubtract(null, ExtendedDecimal.Zero, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1255,7 +1255,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndSubtract(ExtendedDecimal.Zero, null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1264,7 +1264,7 @@ throw new IllegalStateException("", ex);
  ExtendedDecimal.One.MultiplyAndSubtract(null, null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

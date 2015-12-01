@@ -171,7 +171,7 @@ bigintRem = divrem[1]; }
         System.out.println(minValueTimes2.intValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -181,7 +181,7 @@ System.out.println(ex.getMessage());
         System.out.println(verybig.intValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -190,7 +190,7 @@ System.out.println(ex.getMessage());
         System.out.println(verybig.longValueChecked());
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -199,7 +199,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.PowBigIntVar(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -208,7 +208,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.divideAndRemainder(BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -217,7 +217,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.pow(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -226,7 +226,7 @@ System.out.println(ex.getMessage());
         (BigInteger.ZERO.subtract(BigInteger.ONE)).PowBigIntVar(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -245,7 +245,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString("xyz");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -254,7 +254,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString("");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -264,7 +264,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring(null, 0, 1);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -273,7 +273,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -283,7 +283,7 @@ System.out.println(ex.getMessage());
         BigInteger.ZERO.testBit(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -292,7 +292,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromBytes(null, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -302,7 +302,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", -1, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -311,7 +311,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", 4, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -320,7 +320,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", 1, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -329,7 +329,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", 1, 4);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -338,7 +338,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", 1, 0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -347,7 +347,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromSubstring("123", 2, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -356,7 +356,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString("x11");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -365,7 +365,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString(".");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -374,7 +374,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString("..");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -383,7 +383,7 @@ System.out.println(ex.getMessage());
         BigInteger.fromString("e200");
         Assert.fail("Should have failed");
       } catch (NumberFormatException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -393,7 +393,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.mod(BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -402,7 +402,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.add(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -411,7 +411,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.subtract(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -420,7 +420,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.multiply(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -429,7 +429,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.divide(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -438,7 +438,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.divide(BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -447,7 +447,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.remainder(BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -456,7 +456,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.mod(BigInteger.ZERO);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -465,7 +465,7 @@ System.out.println(ex.getMessage());
         BigInteger.ONE.remainder(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -476,7 +476,7 @@ System.out.println(ex.getMessage());
         (BigInteger.valueOf(13)).mod(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -485,7 +485,7 @@ System.out.println(ex.getMessage());
         (BigInteger.valueOf(13)).mod(BigInteger.valueOf(-4));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -494,7 +494,7 @@ System.out.println(ex.getMessage());
         (BigInteger.valueOf(-13)).mod(BigInteger.valueOf(-4));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
