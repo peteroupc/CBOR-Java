@@ -3595,12 +3595,14 @@ count);
      * Generates a string representing the value of this object, in the given
      * radix.
      * @param radix A radix from 2 through 36. For example, to generate a
-     * hexadecimal string, specify 16. To generate a decimal string, specify
-     * 10.
+     * hexadecimal (base-16) string, specify 16. To generate a decimal
+     * (base-10) string, specify 10.
      * @return A string representing the value of this object. If this value is 0,
      * returns "0". If negative, the string will begin with a hyphen/minus
-     * ("-"). Depending on the radix, the string will use ASCII characters
-     * ranging from 0 to 9 and then from A to Z. as the digits.
+     * ("-"). Depending on the radix, the string will use the basic digits 0
+     * to 9 (U + 0030 to U + 0039) and then the basic letters A to Z (U +
+     * 0041 to U + 005A). For example, 0-9 in radix 10, and 0-9, then A-F in
+     * radix 16.
      * @throws IllegalArgumentException The parameter "index" is less than 0, "endIndex"
      * is less than 0, or either is greater than the string's length, or
      * "endIndex" is less than "index" ; or radix is less than 2 or greater
@@ -3804,8 +3806,8 @@ count);
     /**
      * Converts this object to a text string in base 10.
      * @return A string representation of this object. If negative, the string will
-     * begin with a hyphen/minus ("-"). The string will use the ASCII digits
-     * from 0 to 9.
+     * begin with a minus sign ("-", U+002D). The string will use the basic
+     * digits 0 to 9 (U + 0030 to U + 0039).
      */
     @Override public String toString() {
       if (this.signum() == 0) {
@@ -3817,8 +3819,8 @@ count);
 
     /**
      * Converts a string to an arbitrary-precision integer.
-     * @param str A string containing only ASCII digits, except that it may start
-     * with a minus sign.
+     * @param str A string containing only basic digits 0 to 9 (U + 0030 to U +
+     * 0039), except that it may start with a minus sign ("-", U+002D).
      * @return A BigInteger object with the same value as given in the string.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws NumberFormatException The parameter {@code str} is in an invalid format.
@@ -3832,11 +3834,13 @@ count);
 
     /**
      * Converts a string to an arbitrary-precision integer. The string portion can
-     * begin with a minus sign ('-') to indicate that it's negative.
+     * begin with a minus sign ("-" , U+002D) to indicate that it's
+     * negative.
      * @param str A string object.
-     * @param radix A base from 2 to 36. The possible ASCII digits start from 0 to
-     * 9, then from A to Z in base 36, and the possible ASCII digits start
-     * from 0 to 9, then from A to F in base 16.
+     * @param radix A base from 2 to 36. Depending on the radix, the string can use
+     * the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic
+     * letters A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10,
+     * and 0-9, then A-F in radix 16.
      * @return A BigInteger object with the same value as given in the string.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code radix} is less than 2 or
@@ -3852,8 +3856,8 @@ count);
 
     /**
      * Converts a portion of a string to an arbitrary-precision integer. The string
-     * portion can begin with a minus sign ('-') to indicate that it's
-     * negative.
+     * portion can begin with a minus sign ("-", U+002D) to indicate that
+     * it's negative.
      * @param str A string object.
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
@@ -3900,12 +3904,13 @@ count);
 
     /**
      * Converts a portion of a string to an arbitrary-precision integer in a given
-     * radix. The string portion can begin with a minus sign ('-') to
-     * indicate that it's negative.
+     * radix. The string portion can begin with a minus sign ("-" , U+002D)
+     * to indicate that it's negative.
      * @param str A string object.
-     * @param radix A base from 2 to 36. The possible digits start from 0 to 9,
-     * then from A to Z in base 36, and the possible digits start from 0 to
-     * 9, then from A to F in base 16.
+     * @param radix A base from 2 to 36. Depending on the radix, the string can use
+     * the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic
+     * letters A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10,
+     * and 0-9, then A-F in radix 16.
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
      * length will be index + endIndex - 1.

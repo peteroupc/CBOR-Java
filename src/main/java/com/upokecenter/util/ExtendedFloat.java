@@ -243,17 +243,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * not be exact. However, the resulting binary float will contain enough
      * precision to accurately convert it to a 32-bit or 64-bit floating
      * point number (float or double). <p>The format of the string generally
-     * consists of:</p> <ul> <li>An optional '-' or '+' character (if '-' ,
-     * the value is negative.)</li> <li>One or more digits, with a single
-     * optional decimal point after the first digit and before the last
-     * digit.</li> <li>Optionally, E+ (positive exponent) or E- (negative
-     * exponent) plus one or more digits specifying the exponent.</li></ul>
-     * <p>The string can also be "-INF", "-Infinity" , "Infinity", "INF",
-     * quiet NaN ("qNaN") followed by any number of digits, or signaling NaN
-     * ("sNaN") followed by any number of digits, all in any combination of
-     * upper and lower case.</p> <p>The format generally follows the
-     * definition in java.math.BigDecimal(), except that the digits must be
-     * ASCII digits ('0' through '9').</p>
+     * consists of:</p> <ul> <li>An optional plus sign ("+" , U+002B) or
+     * minus sign ("-", U+002D) (if '-' , the value is negative.)</li>
+     * <li>One or more digits, with a single optional decimal point after
+     * the first digit and before the last digit.</li> <li>Optionally, "E+"
+     * (positive exponent) or "E-" (negative exponent) plus one or more
+     * digits specifying the exponent.</li></ul> <p>The string can also be
+     * "-INF", "-Infinity" , "Infinity", "INF", quiet NaN ("qNaN") followed
+     * by any number of digits, or signaling NaN ("sNaN") followed by any
+     * number of digits, all in any combination of upper and lower case.</p>
+     * <p>The format generally follows the definition in
+     * java.math.BigDecimal(), except that the digits must be the basic
+     * digits 0 to 9 (U + 0030 to U + 0039).</p>
      * @param str A string object.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
@@ -273,7 +274,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int length,
       PrecisionContext ctx) {
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException(<paramref name='str'/>);
       }
       return ExtendedDecimal.FromString(
         str,

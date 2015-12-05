@@ -126,13 +126,15 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 1));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
-    Assert.assertEquals(
--1,
-DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 2));
+    {
+long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 2);
+Assert.assertEquals(-1, numberTemp);
+}
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
-    Assert.assertEquals(
--1,
-DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 2));
+    {
+long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 2);
+Assert.assertEquals(-1, numberTemp);
+}
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 2));
     }

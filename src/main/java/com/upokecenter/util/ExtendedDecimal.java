@@ -307,17 +307,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * <p>Creates a decimal number from a string that represents a number.</p>
      * <p>The format of the string generally consists of:</p> <ul> <li>An
-     * optional '-' or '+' character (if '-' , the value is negative.)</li>
-     * <li>One or more digits, with a single optional decimal point after
-     * the first digit and before the last digit.</li> <li>Optionally, E+
-     * (positive exponent) or E- (negative exponent) plus one or more digits
-     * specifying the exponent.</li></ul> <p>The string can also be "-INF",
-     * "-Infinity" , "Infinity", "INF" , quiet NaN ("qNaN" /"-qNaN")
-     * followed by any number of digits, or signaling NaN ("sNaN" /"-sNaN")
-     * followed by any number of digits, all in any combination of upper and
-     * lower case.</p> <p>The format generally follows the definition in
-     * java.math.BigDecimal(), except that the digits must be ASCII digits
-     * ('0' through '9').</p>
+     * optional plus sign ("+" , U+002B) or minus sign ("-", U+002D) (if '-'
+     * , the value is negative.)</li> <li>One or more digits, with a single
+     * optional decimal point after the first digit and before the last
+     * digit.</li> <li>Optionally, "E+" (positive exponent) or "E-"
+     * (negative exponent) plus one or more digits specifying the
+     * exponent.</li></ul> <p>The string can also be "-INF", "-Infinity",
+     * "Infinity", "INF" , quiet NaN ("qNaN" /"-qNaN") followed by any
+     * number of digits, or signaling NaN ("sNaN" /"-sNaN") followed by any
+     * number of digits, all in any combination of upper and lower case.</p>
+     * <p>The format generally follows the definition in
+     * java.math.BigDecimal(), except that the digits must be the basic
+     * digits 0 to 9 (U + 0030 to U + 0039).</p>
      * @param str A string object, a portion of which represents a number.
      * @param offset A zero-based index that identifies the start of the number.
      * @param length The length of the number within the string.

@@ -21,15 +21,16 @@ private URIUtility() {
      */
     enum ParseMode {
     /**
-     * The rules follow the syntax for parsing IRIs. In particular, many
-     * internationalized characters are allowed. Strings with unpaired
-     * surrogate code points are considered invalid.
+     * The rules follow the syntax for parsing IRIs. In particular, many code
+     * points outside the Basic Latin range (U + 0000 to U + 007F) are
+     * allowed. Strings with unpaired surrogate code points are considered
+     * invalid.
      */
       IRIStrict,
 
     /**
-     * The rules follow the syntax for parsing IRIs, except that non-ASCII
-     * characters are not allowed.
+     * The rules follow the syntax for parsing IRIs, except that code points
+     * outside the Basic Latin range (U + 0000 to U + 007F) are not allowed.
      */
       URIStrict,
 
@@ -44,7 +45,8 @@ private URIUtility() {
     /**
      * The rules only check for the appropriate delimiters when splitting the path,
      * without checking if all the characters in each component are valid.
-     * Non-ASCII characters are not allowed.
+     * Code points outside the Basic Latin range (U + 0000 to U + 007F) are
+     * not allowed.
      */
       URILenient,
 
@@ -454,17 +456,17 @@ s.length(),
 ParseMode.IRIStrict)) != null;
     }
 
-    private static final String ValueValueDotSlash = "." + "/";
-    private static final String ValueValueSlashDot = "/" + ".";
+    private static final String ValueDotSlash = "." + "/";
+    private static final String ValueSlashDot = "/" + ".";
 
     private static String normalizePath(String path) {
       int len = path.length();
       if (len == 0 || path.equals("..") || path.equals(".")) {
         return "";
       }
-      if (path.indexOf(ValueValueSlashDot) < 0 &&
+      if (path.indexOf(ValueSlashDot) < 0 &&
           path.indexOf(
-ValueValueDotSlash) < 0) {
+ValueDotSlash) < 0) {
         return path;
       }
       StringBuilder builder = new StringBuilder();

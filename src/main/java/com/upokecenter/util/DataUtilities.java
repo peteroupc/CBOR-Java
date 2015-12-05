@@ -302,8 +302,8 @@ int surrogateBehavior) {
     }
 
     /**
-     * Returns a string with upper-case ASCII letters (A to Z) converted to
-     * lower-case. Other characters remain unchanged.
+     * Returns a string with the basic upper-case letters A to Z (U + 0041 to U +
+     * 005A) converted to lower-case. Other characters remain unchanged.
      * @param str A string.
      * @return The converted string, or null if {@code str} is null.
      */

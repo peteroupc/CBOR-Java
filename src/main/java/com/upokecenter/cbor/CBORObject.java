@@ -1304,10 +1304,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * (JSON) format. The JSON stream may begin with a byte order mark (U +
      * FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16, or
      * UTF-32 encoding; the encoding is detected by assuming that the first
-     * character read must be a byte order mark or a nonzero ASCII
-     * character. (In previous versions, only UTF-8 was allowed.) <p>If a
-     * JSON object has the same key, only the last given value will be used
-     * for each duplicated key.</p>
+     * character read must be a byte order mark or a nonzero basic character
+     * (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
+     * allowed.) <p>If a JSON object has the same key, only the last given
+     * value will be used for each duplicated key.</p>
      * @param stream A readable data stream.
      * @return A CBORObject object.
      * @throws NullPointerException The parameter {@code stream} is null.
