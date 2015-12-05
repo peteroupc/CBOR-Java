@@ -1450,7 +1450,7 @@ int startingAvailable = ms.available();
               }
             } catch (CBORException ex) {
               // Expected exception
-              System.out.println(ex.getMessage());
+              System.out.print("");
             }
           }
 }
@@ -5029,7 +5029,7 @@ stringTemp);
       for (int i = Short.MIN_VALUE; i <= Short.MAX_VALUE; ++i) {
         TestCommon.AssertSer(
           CBORObject.FromObject((short)i),
-          "" + i);
+          TestCommon.IntToString(i));
       }
     }
 
@@ -5275,7 +5275,7 @@ stringTemp);
       for (int i = -65539; i <= 65539; ++i) {
         TestCommon.AssertSer(
           CBORObject.FromObject((float)i),
-          "" + i);
+          TestCommon.IntToString(i));
       }
     }
 
@@ -5315,7 +5315,7 @@ stringTemp);
         if (!(o.isIntegral()))Assert.fail();
         TestCommon.AssertSer(
           o,
-          "" + i);
+          TestCommon.IntToString(i));
         if (oldobj != null) {
           CompareTestLess(oldobj, o);
         }

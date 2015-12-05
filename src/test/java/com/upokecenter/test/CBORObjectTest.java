@@ -1873,8 +1873,8 @@ cbornumber.AsSingle());
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger bigintNull = null;
-        CBORObject.True.HasTag(bigintNull);
+        BigInteger ValueBigintNull = null;
+        CBORObject.True.HasTag(ValueBigintNull);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         System.out.print("");

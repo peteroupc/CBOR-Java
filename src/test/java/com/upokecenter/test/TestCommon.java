@@ -27,7 +27,7 @@ private TestCommon() {
  return "null";
 }
       StringBuilder sb = new StringBuilder();
-      String hex = "0123456789ABCDEF";
+      String ValueHex = "0123456789ABCDEF";
       sb.append("new byte[] { ");
       for (int i = 0; i < bytes.length; ++i) {
         if (i > 0) {
@@ -37,8 +37,8 @@ private TestCommon() {
         } else {
           sb.append("0x");
         }
-        sb.append(hex.charAt((bytes[i] >> 4) & 0xf));
-        sb.append(hex.charAt(bytes[i] & 0xf));
+        sb.append(ValueHex.charAt((bytes[i] >> 4) & 0xf));
+        sb.append(ValueHex.charAt(bytes[i] & 0xf));
       }
       sb.append("}");
       return sb.toString();
@@ -240,6 +240,74 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       return oa;
     }
 
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (int i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    private static String valueDigits = "0123456789";
+
+    public static String LongToString(long longValue) {
+      if (longValue == Long.MIN_VALUE) {
+ return "-9223372036854775808";
+}
+      if (longValue == 0L) {
+ return "0";
+}
+      boolean neg = longValue < 0;
+      char[] chars = new char[24];
+      int count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        longValue = -longValue;
+      }
+      while (longValue != 0) {
+        char digit = valueDigits.charAt((int)(longValue % 10));
+        chars[count++] = digit;
+        longValue /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
+    public static String IntToString(int value) {
+      if (value == Integer.MIN_VALUE) {
+ return "-2147483648";
+}
+      if (value == 0) {
+ return "0";
+}
+      boolean neg = value < 0;
+      char[] chars = new char[24];
+      int count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        value = -value;
+      }
+      while (value != 0) {
+        char digit = valueDigits.charAt((int)(value % 10));
+        chars[count++] = digit;
+        value /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
     public static void AssertEqualsHashCode(Object o, Object o2) {
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
@@ -264,6 +332,19 @@ o2));
 o,
 o2));
         }
+        // At least check that hashCode doesn't throw
+        try {
+ o.hashCode();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        try {
+ o2.hashCode();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       }
     }
 

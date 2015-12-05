@@ -10,7 +10,8 @@ import com.upokecenter.cbor.*;
   public class BEncodingTest {
     private static CBORObject EncodingFromBytes(byte[] b) {
       try {
-        java.io.ByteArrayInputStream s = null;
+        {
+java.io.ByteArrayInputStream s = null;
 try {
 s = new java.io.ByteArrayInputStream(b);
 
@@ -18,6 +19,7 @@ s = new java.io.ByteArrayInputStream(b);
 }
 finally {
 try { if (s != null)s.close(); } catch (java.io.IOException ex) {}
+}
 }
       } catch (IOException ex) {
         throw new CBORException("", ex);
@@ -42,7 +44,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     public static void doTestLong(long value) {
-      String b = "i" + value + "e";
+      String b = "i" + TestCommon.LongToString(value) + "e";
       CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b, true));
       Assert.assertEquals(value, beo.AsInt64());
       String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), true);

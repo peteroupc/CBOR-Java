@@ -83,10 +83,12 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00X", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0));
-   Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00",
-        0));
-   Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00",
-        0));
+   Assert.assertEquals(
+0xfffd,
+DataUtilities.CodePointAt("\ud800\ud800\udc00", 0));
+   Assert.assertEquals(
+0xfffd,
+DataUtilities.CodePointAt("\udc00\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800", 0, 0));
@@ -95,10 +97,12 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00X", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0, 0));
-Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
-        0));
-Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
-        0));
+Assert.assertEquals(
+0xfffd,
+DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 0));
+Assert.assertEquals(
+0xfffd,
+DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0, 0));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 0));
 
@@ -107,11 +111,13 @@ Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800X", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00X", 0, 1));
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800\ud800", 0, 1));
-Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
-        1));
+Assert.assertEquals(
+0xd800,
+DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800", 0, 1));
-Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
-        1));
+Assert.assertEquals(
+0xdc00,
+DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\udc00", 0, 1));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 1));
 
@@ -120,11 +126,13 @@ Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
-    Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
-        2));
+    Assert.assertEquals(
+-1,
+DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
-    Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
-        2));
+    Assert.assertEquals(
+-1,
+DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 2));
     }
