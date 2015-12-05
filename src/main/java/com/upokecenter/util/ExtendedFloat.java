@@ -274,7 +274,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int length,
       PrecisionContext ctx) {
       if (str == null) {
-        throw new NullPointerException(<paramref name='str'/>);
+        throw new NullPointerException("str");
       }
       return ExtendedDecimal.FromString(
         str,
