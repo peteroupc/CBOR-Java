@@ -8,7 +8,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.util.*;
-
 import java.io.*;
 
 import com.upokecenter.util.*;
@@ -3081,8 +3080,9 @@ public boolean equals(CBORObject other) {
             } else {
               sb = (sb == null) ? ((new StringBuilder())) : sb;
               sb.append("simple(");
+              int thisItemInt = ((Integer)this.getThisItem()).intValue();
               sb.append(
-                Integer.toString(((Integer)this.getThisItem()).intValue()));
+                CBORUtilities.LongToString(thisItemInt));
               sb.append(")");
             }
 
@@ -3092,7 +3092,7 @@ public boolean equals(CBORObject other) {
             float f = ((Float)this.getThisItem()).floatValue();
             simvalue = ((f)==Float.NEGATIVE_INFINITY) ? "-Infinity" :
               (((f)==Float.POSITIVE_INFINITY) ? "Infinity" : (Float.isNaN(f) ?
-                    "NaN" : TrimDotZero(Float.toString((float)f))));
+                    "NaN" : TrimDotZero(CBORUtilities.SingleToString(f))));
             if (sb == null) {
               return simvalue;
             }
@@ -3103,7 +3103,7 @@ public boolean equals(CBORObject other) {
             double f = ((Double)this.getThisItem()).doubleValue();
             simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
               (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
-                    "NaN" : TrimDotZero(Double.toString((double)f))));
+                    "NaN" : TrimDotZero(CBORUtilities.DoubleToString(f))));
             if (sb == null) {
               return simvalue;
             }
@@ -4176,7 +4176,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         int low = curobject.tagLow;
         int high = curobject.tagHigh;
         if (high == 0 && (low >> 16) == 0) {
-          sb.append(Integer.toString((int)low));
+          sb.append(CBORUtilities.LongToString(low));
         } else {
           BigInteger bi = LowHighToBigInteger(low, high);
           sb.append(CBORUtilities.BigIntToString(bi));

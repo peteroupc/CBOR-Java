@@ -76,6 +76,18 @@ private CBORUtilities() {
       return (a.length != b.length) ? ((a.length < b.length) ? -1 : 1) : 0;
     }
 
+    public static String DoubleToString(double dbl) {
+      return Double.toString((double)dbl);
+      // TODO: Use this version in version 3
+      //return ExtendedFloat.FromDouble(dbl).toString();
+    }
+
+    public static String SingleToString(float sing) {
+      return Float.toString((float)sing);
+      // TODO: Use this version in version 3
+      //return ExtendedFloat.FromSingle(dbl).toString();
+    }
+
     public static BigInteger BigIntegerFromSingle(float flt) {
       int value = Float.floatToRawIntBits(flt);
       int fpexponent = (int)((value >> 23) & 0xff);

@@ -453,7 +453,7 @@ int quote) {
               return;
             }
             writer.WriteString(CBORObject.TrimDotZero(
-              Double.toString((double)f)));
+              CBORUtilities.DoubleToString(f)));
             return;
           }
           case CBORObject.CBORObjectTypeInteger: {
@@ -494,7 +494,7 @@ int quote) {
               }
               writer.WriteString(
                 CBORObject.TrimDotZero(
-                  Double.toString((double)f)));
+                  CBORUtilities.DoubleToString(f)));
               return;
             }
             writer.WriteString(flo.toString());

@@ -329,7 +329,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
   CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
           }
           if (uadditional > Integer.MAX_VALUE) {
-            throw new CBORException("Length of " + Long.toString((long)uadditional) + " is bigger than supported");
+            throw new CBORException("Length of " +
+              CBORUtilities.LongToString(uadditional) +
+              " is bigger than supported");
           }
           data = ReadByteData(this.stream, uadditional, null);
           CBORObject cbor = new CBORObject(CBORObject.CBORObjectTypeByteString, data);
@@ -379,7 +381,9 @@ false)) {
   CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
           }
           if (uadditional > Integer.MAX_VALUE) {
-            throw new CBORException("Length of " + Long.toString((long)uadditional) + " is bigger than supported");
+            throw new CBORException("Length of " +
+              CBORUtilities.LongToString(uadditional) +
+              " is bigger than supported");
           }
           StringBuilder builder = new StringBuilder();
           switch (
@@ -440,7 +444,9 @@ filter == null ? null : filter.GetSubFilter(vtindex));
   CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
         }
         if (uadditional > Integer.MAX_VALUE) {
-          throw new CBORException("Length of " + Long.toString((long)uadditional) + " is bigger than supported");
+          throw new CBORException("Length of " +
+            CBORUtilities.LongToString(uadditional) +
+            " is bigger than supported");
         }
         if (filter != null && !filter.ArrayLengthMatches(uadditional)) {
           throw new CBORException("Array is too long");
@@ -483,7 +489,9 @@ filter == null ? null : filter.GetSubFilter(vtindex));
   CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
         }
         if (uadditional > Integer.MAX_VALUE) {
-          throw new CBORException("Length of " + Long.toString((long)uadditional) + " is bigger than supported");
+          throw new CBORException("Length of " +
+            CBORUtilities.LongToString(uadditional) +
+            " is bigger than supported");
         }
         for (long i = 0; i < uadditional; ++i) {
           ++this.depth;

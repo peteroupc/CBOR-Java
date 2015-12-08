@@ -2638,7 +2638,9 @@ count);
           int index2 = littleEndian ? i + 1 : len - 2 - i;
           newreg[j] = (short)(((int)bytes[index]) & 0xff);
           if (index2 >= 0 && index2 < len) {
-            newreg[j] |= ((short)(((short)bytes[index2]) << 8));
+            {
+              newreg[j] |= ((short)(((short)bytes[index2]) << 8));
+            }
           }
         }
       } else {
@@ -2647,7 +2649,9 @@ count);
           int index2 = littleEndian ? i + 1 : len - 2 - i;
           newreg[j] = (short)(((int)bytes[index]) & 0xff);
           if (index2 >= 0 && index2 < len) {
-            newreg[j] |= ((short)(((short)bytes[index2]) << 8));
+            {
+              newreg[j] |= ((short)(((short)bytes[index2]) << 8));
+            }
           } else {
             // sign extend the last byte
             newreg[j] |= ((short)0xff00);
@@ -3820,7 +3824,7 @@ count);
     /**
      * Converts a string to an arbitrary-precision integer.
      * @param str A string containing only basic digits 0 to 9 (U + 0030 to U +
-     * 0039), except that it may start with a minus sign ("-", U+002D).
+     * 0039), except that it may start with a minus sign ("-", U + 002D).
      * @return A BigInteger object with the same value as given in the string.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws NumberFormatException The parameter {@code str} is in an invalid format.
