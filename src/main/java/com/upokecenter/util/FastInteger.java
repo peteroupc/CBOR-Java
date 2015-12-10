@@ -53,7 +53,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
         this.data = new int[4];
         this.wordCount = (val == 0) ? 0 : 1;
-        this.data[0] = ((int)(val & 0xFFFFFFFFL));
+        this.data[0] = val;
       }
 
       MutableNumber SetInt(int val) {
@@ -61,7 +61,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           throw new IllegalArgumentException("val (" + val + ") is less than " + "0 ");
         }
         this.wordCount = (val == 0) ? 0 : 1;
-        this.data[0] = ((int)(val & 0xFFFFFFFFL));
+        this.data[0] = val;
         return this;
       }
 
@@ -984,6 +984,46 @@ bigrem = divrem[1]; }
       }
     }
 
+    private static String HexAlphabet = "0123456789ABCDEF";
+
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (int i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    private static String IntToString(int value) {
+      if (value == Integer.MIN_VALUE) {
+        return "-2147483648";
+      }
+      if (value == 0) {
+        return "0";
+      }
+      boolean neg = value < 0;
+      char[] chars = new char[24];
+      int count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        value = -value;
+      }
+      while (value != 0) {
+        char digit = HexAlphabet.charAt((int)(value % 10));
+        chars[count++] = digit;
+        value /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
     /**
      * Converts this object to a text string.
      * @return A string representation of this object.
@@ -991,7 +1031,7 @@ bigrem = divrem[1]; }
     @Override public String toString() {
       switch (this.integerMode) {
         case 0:
-          return Integer.toString((int)this.smallValue);
+          return IntToString(this.smallValue);
         case 1:
           return this.mnum.ToBigInteger().toString();
         case 2:
@@ -1007,13 +1047,13 @@ bigrem = divrem[1]; }
     final int signum() {
         switch (this.integerMode) {
           case 0:
-            return ((this.smallValue == 0) ? 0 : ((this.smallValue< 0) ? -1 : 1));
+          return (this.smallValue == 0) ? (0) : ((this.smallValue< 0) ? -1 :
+              1);
           case 1:
             return this.mnum.signum();
           case 2:
             return this.largeValue.signum();
-          default:
-            return 0;
+          default: return 0;
         }
       }
 

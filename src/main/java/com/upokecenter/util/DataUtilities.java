@@ -763,7 +763,7 @@ boolean replace) throws java.io.IOException {
       if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
         throw new IOException(
        "Unpaired surrogate code point found.",
-       new java.nio.charset.MalformedInputException(1));
+       new IllegalArgumentException("Unpaired surrogate code point found."));
       }
       return builder.toString();
     }

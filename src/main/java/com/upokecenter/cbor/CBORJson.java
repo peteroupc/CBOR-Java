@@ -442,7 +442,7 @@ int quote) {
             }
             writer.WriteString(
               CBORObject.TrimDotZero(
-                Float.toString((float)f)));
+                CBORUtilities.SingleToString(f)));
             return;
           }
           case CBORObject.CBORObjectTypeDouble: {

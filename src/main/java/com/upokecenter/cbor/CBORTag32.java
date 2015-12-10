@@ -31,6 +31,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (uri == null) {
         throw new NullPointerException("uri");
       }
-      return CBORObject.FromObjectAndTag(uri.toString(), (int)32);
+      String uriString = uri.toString();
+      return CBORObject.FromObjectAndTag(uriString, (int)32);
     }
   }

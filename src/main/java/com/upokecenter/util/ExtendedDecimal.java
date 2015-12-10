@@ -1110,8 +1110,9 @@ bigrem = divrem[1]; }
             adjustedExponent.Divide(10);
           }
           int count = builderReversed.length();
+          String builderReversedString = builderReversed.toString();
           for (int i = 0; i < count; ++i) {
-            builder.append(builderReversed.charAt(count - 1 - i));
+            builder.append(builderReversedString.charAt(count - 1 - i));
           }
         }
         return builder.toString();

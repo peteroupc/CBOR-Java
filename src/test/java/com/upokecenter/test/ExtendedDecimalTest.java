@@ -315,660 +315,661 @@ Assert.assertEquals(1, numberTemp);
     }
     @Test
     public void TestFromDouble() {
+      String stringTemp;
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.75).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.75).toString();
         Assert.assertEquals(
           "0.75",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.5).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.5).toString();
         Assert.assertEquals(
           "0.5",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.25).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.25).toString();
         Assert.assertEquals(
           "0.25",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.875).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.875).toString();
         Assert.assertEquals(
           "0.875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.125).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.125).toString();
         Assert.assertEquals(
           "0.125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.2133).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.2133).toString();
         Assert.assertEquals(
           "0.213299999999999989608312489508534781634807586669921875",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.2936E-7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.2936E-7).toString();
         Assert.assertEquals(
    "2.29360000000000010330982488752915582352898127282969653606414794921875E-7",
    stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.8932E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.8932E9).toString();
         Assert.assertEquals(
           "3893200000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(128230.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(128230.0).toString();
         Assert.assertEquals(
           "128230",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(127210.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(127210.0).toString();
         Assert.assertEquals(
           "127210",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.26723).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.26723).toString();
         Assert.assertEquals(
           "0.267230000000000023074875343809253536164760589599609375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.30233).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.30233).toString();
         Assert.assertEquals(
           "0.302329999999999987636556397774256765842437744140625",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.9512E-6).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.9512E-6).toString();
         Assert.assertEquals(
     "0.0000019512000000000000548530838806460252499164198525249958038330078125",
     stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(199500.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(199500.0).toString();
         Assert.assertEquals(
           "199500",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.6214E7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.6214E7).toString();
         Assert.assertEquals(
           "36214000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.9133E12).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.9133E12).toString();
         Assert.assertEquals(
           "1913300000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.1735E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.1735E-4).toString();
         Assert.assertEquals(
           "0.0002173499999999999976289799530349000633577816188335418701171875",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.1035E-5).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.1035E-5).toString();
         Assert.assertEquals(
        "0.0000310349999999999967797807698399736864303122274577617645263671875",
        stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.275).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.275).toString();
         Assert.assertEquals(
           "1.274999999999999911182158029987476766109466552734375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(214190.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(214190.0).toString();
         Assert.assertEquals(
           "214190",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.9813E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.9813E9).toString();
         Assert.assertEquals(
           "3981300000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1092700.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1092700.0).toString();
         Assert.assertEquals(
           "1092700",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.02361).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.02361).toString();
         Assert.assertEquals(
           "0.023609999999999999042987752773115062154829502105712890625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(12.322).toString();
+        stringTemp = ExtendedDecimal.FromDouble(12.322).toString();
         Assert.assertEquals(
           "12.321999999999999175770426518283784389495849609375",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.002587).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.002587).toString();
         Assert.assertEquals(
           "0.002586999999999999889921387108415729016996920108795166015625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.322E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.322E9).toString();
         Assert.assertEquals(
           "1322000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(9.531E10).toString();
+        stringTemp = ExtendedDecimal.FromDouble(9.531E10).toString();
         Assert.assertEquals(
           "95310000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(142.38).toString();
+        stringTemp = ExtendedDecimal.FromDouble(142.38).toString();
         Assert.assertEquals(
           "142.3799999999999954525264911353588104248046875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2252.5).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2252.5).toString();
         Assert.assertEquals(
           "2252.5",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.636E11).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.636E11).toString();
         Assert.assertEquals(
           "363600000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.237E-6).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.237E-6).toString();
         Assert.assertEquals(
    "0.00000323700000000000009386523676380154057596882921643555164337158203125",
    stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(728000.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(728000.0).toString();
         Assert.assertEquals(
           "728000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.5818E7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.5818E7).toString();
         Assert.assertEquals(
           "25818000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1090000.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1090000.0).toString();
         Assert.assertEquals(
           "1090000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.551).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.551).toString();
         Assert.assertEquals(
           "1.5509999999999999342747969421907328069210052490234375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(26.035).toString();
+        stringTemp = ExtendedDecimal.FromDouble(26.035).toString();
         Assert.assertEquals(
           "26.035000000000000142108547152020037174224853515625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(8.33E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(8.33E8).toString();
         Assert.assertEquals(
           "833000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(8.123E11).toString();
+        stringTemp = ExtendedDecimal.FromDouble(8.123E11).toString();
         Assert.assertEquals(
           "812300000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2622.9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2622.9).toString();
         Assert.assertEquals(
           "2622.90000000000009094947017729282379150390625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.291).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.291).toString();
         Assert.assertEquals(
           "1.290999999999999925393012745189480483531951904296875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(286140.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(286140.0).toString();
         Assert.assertEquals(
           "286140",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.06733).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.06733).toString();
         Assert.assertEquals(
           "0.06733000000000000095923269327613525092601776123046875",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.2516E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.2516E-4).toString();
         Assert.assertEquals(
           "0.000325160000000000010654532811571471029310487210750579833984375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.8323E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.8323E8).toString();
         Assert.assertEquals(
           "383230000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.028433).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.028433).toString();
         Assert.assertEquals(
           "0.02843299999999999994049204588009160943329334259033203125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(8.37E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(8.37E8).toString();
         Assert.assertEquals(
           "837000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.01608).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.01608).toString();
         Assert.assertEquals(
           "0.0160800000000000005428990590417015482671558856964111328125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.621E12).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.621E12).toString();
         Assert.assertEquals(
           "3621000000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(78.12).toString();
+        stringTemp = ExtendedDecimal.FromDouble(78.12).toString();
         Assert.assertEquals(
           "78.1200000000000045474735088646411895751953125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.308E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.308E9).toString();
         Assert.assertEquals(
           "1308000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.031937).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.031937).toString();
         Assert.assertEquals(
           "0.031937000000000000110578213252665591426193714141845703125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1581500.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1581500.0).toString();
         Assert.assertEquals(
           "1581500",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(244200.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(244200.0).toString();
         Assert.assertEquals(
           "244200",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.2818E-7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.2818E-7).toString();
         Assert.assertEquals(
    "2.28179999999999995794237200343046456652018605382181704044342041015625E-7",
    stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(39.734).toString();
+        stringTemp = ExtendedDecimal.FromDouble(39.734).toString();
         Assert.assertEquals(
           "39.73400000000000176214598468504846096038818359375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1614.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1614.0).toString();
         Assert.assertEquals(
           "1614",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.8319E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.8319E-4).toString();
         Assert.assertEquals(
           "0.0003831899999999999954607143859419693399104289710521697998046875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(543.4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(543.4).toString();
         Assert.assertEquals(
           "543.3999999999999772626324556767940521240234375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.1931E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.1931E8).toString();
         Assert.assertEquals(
           "319310000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1429000.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1429000.0).toString();
         Assert.assertEquals(
           "1429000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.6537E12).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.6537E12).toString();
         Assert.assertEquals(
           "2653700000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(7.22E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(7.22E8).toString();
         Assert.assertEquals(
           "722000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(27.2).toString();
+        stringTemp = ExtendedDecimal.FromDouble(27.2).toString();
         Assert.assertEquals(
           "27.199999999999999289457264239899814128875732421875",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.8025E-6).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.8025E-6).toString();
         Assert.assertEquals(
    "0.00000380250000000000001586513038998038638283105683512985706329345703125",
    stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.6416E-5).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.6416E-5).toString();
         Assert.assertEquals(
           "0.0000364159999999999982843446044711299691698513925075531005859375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2006000.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2006000.0).toString();
         Assert.assertEquals(
           "2006000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.6812E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.6812E9).toString();
         Assert.assertEquals(
           "2681200000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.7534E10).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.7534E10).toString();
         Assert.assertEquals(
           "27534000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.9116E-7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.9116E-7).toString();
         Assert.assertEquals(
      "3.911600000000000165617541382501176627783934236504137516021728515625E-7",
      stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.0028135).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.0028135).toString();
         Assert.assertEquals(
           "0.0028135000000000000286437540353290387429296970367431640625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.9119).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.9119).toString();
         Assert.assertEquals(
           "0.91190000000000004387601393318618647754192352294921875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2241200.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2241200.0).toString();
         Assert.assertEquals(
           "2241200",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(32.45).toString();
+        stringTemp = ExtendedDecimal.FromDouble(32.45).toString();
         Assert.assertEquals(
           "32.4500000000000028421709430404007434844970703125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.38E10).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.38E10).toString();
         Assert.assertEquals(
           "13800000000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.0473).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.0473).toString();
         Assert.assertEquals(
           "0.047300000000000001765254609153998899273574352264404296875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(205.34).toString();
+        stringTemp = ExtendedDecimal.FromDouble(205.34).toString();
         Assert.assertEquals(
           "205.340000000000003410605131648480892181396484375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.9819).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.9819).toString();
         Assert.assertEquals(
           "3.981899999999999995026200849679298698902130126953125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1152.8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1152.8).toString();
         Assert.assertEquals(
           "1152.799999999999954525264911353588104248046875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1322000.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1322000.0).toString();
         Assert.assertEquals(
           "1322000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.3414E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.3414E-4).toString();
         Assert.assertEquals(
           "0.00013414000000000001334814203612921801322954706847667694091796875",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.445E-7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.445E-7).toString();
         Assert.assertEquals(
     "3.4449999999999999446924077266263264363033158588223159313201904296875E-7",
     stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.361E-7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.361E-7).toString();
         Assert.assertEquals(
     "1.3610000000000000771138253079228785935583800892345607280731201171875E-7",
     stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.609E7).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.609E7).toString();
         Assert.assertEquals(
           "26090000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(9.936).toString();
+        stringTemp = ExtendedDecimal.FromDouble(9.936).toString();
         Assert.assertEquals(
           "9.93599999999999994315658113919198513031005859375",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(6.0E-6).toString();
+        stringTemp = ExtendedDecimal.FromDouble(6.0E-6).toString();
         Assert.assertEquals(
       "0.00000600000000000000015200514458246772164784488268196582794189453125",
       stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(260.31).toString();
+        stringTemp = ExtendedDecimal.FromDouble(260.31).toString();
         Assert.assertEquals(
           "260.31000000000000227373675443232059478759765625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(344.6).toString();
+        stringTemp = ExtendedDecimal.FromDouble(344.6).toString();
         Assert.assertEquals(
           "344.6000000000000227373675443232059478759765625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.4237).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.4237).toString();
         Assert.assertEquals(
           "3.423700000000000187583282240666449069976806640625",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.3421E9).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.3421E9).toString();
         Assert.assertEquals(
           "2342100000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.331E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.331E-4).toString();
         Assert.assertEquals(
           "0.00023310000000000000099260877295392901942250318825244903564453125",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.734).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.734).toString();
         Assert.assertEquals(
           "0.7339999999999999857891452847979962825775146484375",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.015415).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.015415).toString();
         Assert.assertEquals(
           "0.01541499999999999988287147090204598498530685901641845703125",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.0035311).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.0035311).toString();
         Assert.assertEquals(
           "0.0035311000000000001240729741169843691750429570674896240234375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.2217E12).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.2217E12).toString();
         Assert.assertEquals(
           "1221700000000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.483).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.483).toString();
         Assert.assertEquals(
           "0.48299999999999998490096686509787105023860931396484375",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.872E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.872E-4).toString();
         Assert.assertEquals(
           "0.0002871999999999999878506906636488338335766457021236419677734375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(96.11).toString();
+        stringTemp = ExtendedDecimal.FromDouble(96.11).toString();
         Assert.assertEquals(
           "96.1099999999999994315658113919198513031005859375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(36570.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(36570.0).toString();
         Assert.assertEquals(
           "36570",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(1.83E-5).toString();
+        stringTemp = ExtendedDecimal.FromDouble(1.83E-5).toString();
         Assert.assertEquals(
       "0.00001830000000000000097183545932910675446692039258778095245361328125",
       stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.0131E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.0131E8).toString();
         Assert.assertEquals(
           "301310000",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(382200.0).toString();
+        stringTemp = ExtendedDecimal.FromDouble(382200.0).toString();
         Assert.assertEquals(
           "382200",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(2.4835E8).toString();
+        stringTemp = ExtendedDecimal.FromDouble(2.4835E8).toString();
         Assert.assertEquals(
           "248350000",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(0.001584).toString();
+        stringTemp = ExtendedDecimal.FromDouble(0.001584).toString();
         Assert.assertEquals(
           "0.0015839999999999999046040866090834242640994489192962646484375",
           stringTemp);
       }
 
       {
-        String stringTemp = ExtendedDecimal.FromDouble(7.62E-4).toString();
+        stringTemp = ExtendedDecimal.FromDouble(7.62E-4).toString();
         Assert.assertEquals(
           "0.000761999999999999982035203682784185730270110070705413818359375",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromDouble(3.133E11).toString();
+        stringTemp = ExtendedDecimal.FromDouble(3.133E11).toString();
         Assert.assertEquals(
           "313300000000",
           stringTemp);
@@ -988,32 +989,33 @@ Assert.assertEquals(1, numberTemp);
     }
     @Test
     public void TestFromSingle() {
+      String stringTemp;
       {
-        String stringTemp = ExtendedDecimal.FromSingle(0.75f).toString();
+        stringTemp = ExtendedDecimal.FromSingle(0.75f).toString();
         Assert.assertEquals(
           "0.75",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromSingle(0.5f).toString();
+        stringTemp = ExtendedDecimal.FromSingle(0.5f).toString();
         Assert.assertEquals(
           "0.5",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromSingle(0.25f).toString();
+        stringTemp = ExtendedDecimal.FromSingle(0.25f).toString();
         Assert.assertEquals(
           "0.25",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromSingle(0.875f).toString();
+        stringTemp = ExtendedDecimal.FromSingle(0.875f).toString();
         Assert.assertEquals(
           "0.875",
           stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromSingle(0.125f).toString();
+        stringTemp = ExtendedDecimal.FromSingle(0.125f).toString();
         Assert.assertEquals(
           "0.125",
           stringTemp);

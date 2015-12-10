@@ -506,8 +506,9 @@ ValueDotSlash) < 0) {
           // is "/.."; remove last segment,
           // append "/" and return
           int index2 = builder.length() - 1;
+          String builderString = builder.toString();
           while (index2 >= 0) {
-            if (builder.charAt(index2) == '/') {
+            if (builderString.charAt(index2) == '/') {
               break;
             }
             --index2;
@@ -523,8 +524,9 @@ ValueDotSlash) < 0) {
             path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
           // begins with "/../"; remove last segment
           int index2 = builder.length() - 1;
+          String builderString = builder.toString();
           while (index2 >= 0) {
-            if (builder.charAt(index2) == '/') {
+            if (builderString.charAt(index2) == '/') {
               break;
             }
             --index2;

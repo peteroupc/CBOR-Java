@@ -56,7 +56,7 @@ import com.upokecenter.util.*;
       if (intItem == Long.MIN_VALUE) {
         return true;
       }
-      intItem = Math.abs(intItem);
+      intItem = (intItem< 0) ? -intItem : intItem;
       while (intItem >= (1L << 24) && (intItem & 1) == 0) {
         intItem >>= 1;
       }
@@ -68,7 +68,7 @@ import com.upokecenter.util.*;
       if (intItem == Long.MIN_VALUE) {
         return true;
       }
-      intItem = Math.abs(intItem);
+      intItem = (intItem < 0) ? -intItem : intItem;
       while (intItem >= (1L << 53) && (intItem & 1) == 0) {
         intItem >>= 1;
       }
