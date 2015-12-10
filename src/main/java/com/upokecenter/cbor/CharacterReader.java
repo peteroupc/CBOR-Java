@@ -10,9 +10,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.io.*;
 
     /**
-     * A general-purpose character input for reading Unicode text from byte streams
-     * and text strings. It supports UTF-8 by default, but can be configured
-     * to support UTF-16 and UTF-32 as well.
+     * A general-purpose character input for reading text from byte streams and
+     * text strings. When reading byte streams, this class supports the
+     * UTF-8 character encoding by default, but can be configured to support
+     * UTF-16 and UTF-32 as well.
      */
   final class CharacterReader implements ICharacterInput {
     private final int mode;
@@ -47,10 +48,21 @@ import java.io.*;
       this.stream = null;
     }
 
+    /**
+     * Initializes a new instance of the CharacterReader class, reading UTF-8 text
+     * that can start with an optional byte order mark (U + FEFF), and where
+     * invalid UTF-8 is replaced with replacement characters.
+     */
     public CharacterReader (InputStream stream) {
  this(stream, 0, false);
     }
 
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param stream A readable byte stream. If the stream is detected as UTF-8,
+     * will skip the first code point if that code point is a byte order
+     * mark (U + FEFF).
+     */
     public CharacterReader (InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
@@ -59,12 +71,7 @@ import java.io.*;
     }
 
     /**
-     * Initializes a new instance of the CharacterReader class.
-     * @param stream Not documented yet.
-     * @param mode Not documented yet.
-     * @param errorThrow Not documented yet. (3).
-     * @param dontSkipUtf8Bom Not documented yet. (4).
-     * @throws NullPointerException The parameter {@code stream} is null.
+     *
      */
     public CharacterReader (InputStream stream, int mode, boolean errorThrow,
       boolean dontSkipUtf8Bom) {
@@ -183,18 +190,15 @@ import java.io.*;
           return 0xfffd;
         }
       } else if (c1 == 0 && mode == 4) {
-        // Here, the relevant cases are:
-        // 0 0 0 NZA --> UTF-32BE (if mode is 4)
+        // Here, the relevant case is:
         // 0 0 FE FF --> UTF-32BE
         // Anything else is treated as UTF-8
         c2 = this.stream.read();
         c3 = this.stream.read();
         c4 = this.stream.read();
-        if (c2 == 0 &&
-           ((c3 == 0xfe && c4 == 0xff) ||
-            (c3 == 0 && c4 >= 0x01 && c4 <= 0x7f))) {
+        if (c2 == 0 && c3 == 0xfe && c4 == 0xff) {
           this.reader = new Utf32Reader(this.stream, true, errorThrow);
-          return c3 == 0 ? c4 : this.reader.ReadChar();
+          return this.reader.ReadChar();
         } else {
           Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
           utf8reader.UngetThree(c2, c3, c4);
@@ -334,7 +338,7 @@ import java.io.*;
         utf8reader = new Utf8Reader(this.stream, errorThrow);
         this.reader = utf8reader;
         c1 = utf8reader.ReadChar();
-        if (c1 == 0xfeff) {
+        if (c1 == 0xfeff && !dontSkipUtf8Bom) {
           // Skip BOM
           c1 = utf8reader.ReadChar();
         }
