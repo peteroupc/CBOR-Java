@@ -15,10 +15,10 @@ import com.upokecenter.util.*;
     // Test some specific cases
     @Test
     public void TestSpecificCases() {
-      TestCommon.DoTestRemainder(
-        "-2472320648",
-        "2831812081",
-        "359491433");
+      TestCommon.DoTestDivide("2472320648", "2831812081", "0");
+      TestCommon.DoTestDivide("-2472320648", "2831812081", "0");
+      TestCommon.DoTestRemainder("2472320648", "2831812081", "2472320648");
+      TestCommon.DoTestRemainder("-2472320648", "2831812081", "-2472320648");
       TestCommon.DoTestMultiply(
 "39258416159456516340113264558732499166970244380745050",
 "39258416159456516340113264558732499166970244380745051",
@@ -47,11 +47,9 @@ import com.upokecenter.util.*;
     @Test
     public void TestMultiplyDivide() {
       FastRandom r = new FastRandom();
-      for (int i = 0; i < 4000; ++i) {
+      for (int i = 0; i < 10000; ++i) {
         BigInteger bigintA = RandomObjects.RandomBigInteger(r);
         BigInteger bigintB = RandomObjects.RandomBigInteger(r);
-        bigintA = BigInteger.fromString("-2472320648");
-        bigintB = BigInteger.fromString("2831812081");
         // Test that A*B/A = B and A*B/B = A
         BigInteger bigintC = bigintA.multiply(bigintB);
         BigInteger bigintRem;
@@ -100,10 +98,7 @@ bigintRem = divrem[1]; }
 BigInteger[] divrem=(bigintA).divideAndRemainder(bigintB);
 bigintC = divrem[0];
 bigintRem = divrem[1]; }
-          System.out.println(bigintC);
-          System.out.println(bigintRem);
           bigintD = bigintB.multiply(bigintC);
-          System.out.println(bigintD);
           bigintD = bigintD.add(bigintRem);
           if (!bigintD.equals(bigintA)) {
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,bigintA,bigintD);

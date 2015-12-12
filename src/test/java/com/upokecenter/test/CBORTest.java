@@ -1449,8 +1449,7 @@ int startingAvailable = ms.available();
                 throw new IllegalStateException("", ex);
               }
             } catch (CBORException ex) {
-              // Expected exception
-              System.out.print("");
+              System.out.print("");  // Expected exception
             }
           }
 }

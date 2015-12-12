@@ -83,12 +83,23 @@ String result) {
       BigInteger bigintB = BigInteger.fromString(divisor);
       if (bigintB.signum() == 0) {
         try {
-          bigintA.divide(bigintB); Assert.fail("Expected divide by 0 error");
+          bigintA.divide(bigintB);
+          Assert.fail("Expected divide by 0 error");
         } catch (ArithmeticException ex) {
           System.out.println(ex.getMessage());
         }
+        try {
+ bigintA.divideAndRemainder(bigintB);
+Assert.fail("Should have failed");
+} catch (ArithmeticException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       } else {
         AssertBigIntegersEqual(result, bigintA.divide(bigintB));
+        AssertBigIntegersEqual(result, bigintA.divideAndRemainder(bigintB)[0]);
       }
     }
 
@@ -104,8 +115,18 @@ String result) {
         } catch (ArithmeticException ex) {
           System.out.println(ex.getMessage());
         }
+        try {
+ bigintA.divideAndRemainder(bigintB);
+Assert.fail("Should have failed");
+} catch (ArithmeticException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       } else {
         AssertBigIntegersEqual(result, bigintA.remainder(bigintB));
+        AssertBigIntegersEqual(result, bigintA.divideAndRemainder(bigintB)[1]);
       }
     }
 
