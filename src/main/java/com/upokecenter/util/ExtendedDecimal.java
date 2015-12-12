@@ -2365,10 +2365,9 @@ remainder = divrem[1]; }
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
-     * mode is always ((treated instanceof HalfEven) ? (HalfEven)treated :
-     * null)). If HasFlags of the context is true, will also store the flags
-     * resulting from the operation (the flags are in addition to the
-     * pre-existing flags). Can be null.
+     * mode is always treated as HalfEven). If HasFlags of the context is
+     * true, will also store the flags resulting from the operation (the
+     * flags are in addition to the pre-existing flags). Can be null.
      * @return The distance of the closest multiple. Signals FlagInvalid and
      * returns NaN if the divisor is 0, or either the result of integer
      * division (the quotient) or the remainder wouldn't fit the given

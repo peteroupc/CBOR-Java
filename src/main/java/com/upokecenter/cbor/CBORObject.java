@@ -69,21 +69,20 @@ import com.upokecenter.util.*;
      * without such synchronization.</p> <p>One kind of CBOR object is
      * called a map, or a list of key-value pairs. Keys can be any kind of
      * CBOR object, including numbers, strings, arrays, and maps. However,
-     * text strings are the most suitable to ((use instanceof keys) ?
-     * (keys)use : null); other kinds of CBOR object are much better used as
-     * map values instead, keeping in mind that some of them are not thread
-     * safe without synchronizing reads and writes to them.</p> <p>To find
-     * the type of a CBOR object, call its Type property (or "getType()" in
-     * Java). The return value can be Number, Boolean, SimpleValue, or
-     * TextString for immutable CBOR objects, and Array, Map, or ByteString
-     * for mutable CBOR objects.</p> <p><b>Nesting Depth:</b></p> <p>The
-     * DecodeFromBytes method can only read objects with a limited maximum
-     * depth of arrays and maps nested within other arrays and maps. The
-     * code sets this maximum depth to 500 (allowing more than enough
-     * nesting for most purposes), but it's possible that stack overflows in
-     * some runtimes might lower the effective maximum nesting depth. When
-     * the nesting depth goes above 500, the DecodeFromBytes method throws a
-     * CBORException.</p>
+     * text strings are the most suitable to use as keys; other kinds of
+     * CBOR object are much better used as map values instead, keeping in
+     * mind that some of them are not thread safe without synchronizing
+     * reads and writes to them.</p> <p>To find the type of a CBOR object,
+     * call its Type property (or "getType()" in Java). The return value can
+     * be Number, Boolean, SimpleValue, or TextString for immutable CBOR
+     * objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
+     * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes method can only
+     * read objects with a limited maximum depth of arrays and maps nested
+     * within other arrays and maps. The code sets this maximum depth to 500
+     * (allowing more than enough nesting for most purposes), but it's
+     * possible that stack overflows in some runtimes might lower the
+     * effective maximum nesting depth. When the nesting depth goes above
+     * 500, the DecodeFromBytes method throws a CBORException.</p>
      */
   public final class CBORObject implements Comparable<CBORObject> {
     private static CBORObject ConstructSimpleValue(int v) {
@@ -1048,7 +1047,33 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     *
+     * Generates a CBORObject from an arbitrary object. The following types are
+     * specially handled by this method: null , primitive types, strings,
+     * CBORObject , ExtendedDecimal , ExtendedFloat , ExtendedRational, the
+     * custom BigInteger , lists, arrays, enumerations (<code>Enum</code>
+     * objects), and maps.<p>In the .NET version, if the object is a type
+     * not specially handled by this method, returns a CBOR map with the
+     * values of each of its read/write properties (or all properties in the
+     * case of an anonymous type). Properties are converted to their
+     * camel-case names (meaning if a name starts with A to Z, that letter
+     * is lower-cased). If the property name begins with the word "Is", that
+     * word is deleted from the name. Also, .NET <code>Enum</code> objects will be
+     * converted to their integer values, and a multidimensional array is
+     * converted to an array of arrays.</p> <p>In the Java version, if the
+     * object is a type not specially handled by this method, this method
+     * checks the CBOR object for methods starting with the word "get" or
+     * "is" that take no parameters, and returns a CBOR map with one entry
+     * for each such method found. For each method found, the starting word
+     * "get" or "is" is deleted from its name, and the name is converted to
+     * camel case (meaning if a name starts with A to Z, that letter is
+     * lower-cased). Also, Java <code>Enum</code> objects will be converted to the
+     * result of their name method.</p> <p>If the input is a byte array, the
+     * byte array is copied to a new byte array. (This method can't be used
+     * to decode CBOR data from a byte array; for that, use the
+     * DecodeFromBytes method instead.).</p>
+     * @param obj An arbitrary object.
+     * @return A CBOR object corresponding to the given object. Returns
+     * CBORObject.Null if the object is null.
      */
     public static CBORObject FromObject(Object obj) {
       if (obj == null) {
