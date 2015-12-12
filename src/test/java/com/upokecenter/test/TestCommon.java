@@ -7,6 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
+import java.util.*;
 import org.junit.Assert;
 
 import com.upokecenter.util.*;
@@ -448,9 +449,158 @@ System.out.print("");
       }
     }
 
+    public static String ObjectMessages(
+      Object o1,
+      Object o2,
+      String s) {
+        CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
+        CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
+      if (co1 != null) {
+        TestCommon.ObjectMessages(co1, co2, s);
+      }
+      return s + ":\n" + o1 + " and\n" + o2;
+    }
+
+    public static String ObjectMessages(
+      CBORObject o1,
+      CBORObject o2,
+      String s) {
+      if (o1.getType() == CBORType.Number && o2.getType() == CBORType.Number) {
+        return s + ":\n" + o1 + " and\n" + o2 + "\nOR\n" +
+          o1.AsExtendedDecimal() + " and\n" + o2.AsExtendedDecimal() +
+       "\nOR\n" + "AddSubCompare(" + TestCommon.ToByteArrayString(o1) + ",\n" +
+          TestCommon.ToByteArrayString(o2) + ");";
+      }
+      return s + ":\n" + o1 + " and\n" + o2 + "\nOR\n" +
+TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2);
+    }
+
+    public static String ObjectMessages(
+      Object o1,
+      Object o2,
+      Object o3,
+      String s) {
+      CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
+      CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
+      CBORObject co3 = ((o3 instanceof CBORObject) ? (CBORObject)o3 : null);
+      if (co1 != null) {
+        TestCommon.ObjectMessages(co1, co2, co3, s);
+      }
+      return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3;
+    }
+
+    public static String ObjectMessages(
+      CBORObject o1,
+      CBORObject o2,
+      CBORObject o3,
+      String s) {
+      return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3 + "\nOR\n" +
+TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
+ " and\n" + TestCommon.ToByteArrayString(o3);
+    }
+
+  public static <T extends Comparable<T>> void CompareTestEqual(T o1, T o2) {
+      if (CompareTestReciprocal(o1, o2) != 0) {
+        Assert.fail(ObjectMessages(
+          o1,
+          o2,
+          "Not equal: " + CompareTestReciprocal(o1, o2)));
+      }
+    }
+
+    public static <T extends Comparable<T>> void CompareTestLess(T o1, T o2) {
+      if (CompareTestReciprocal(o1, o2) >= 0) {
+        Assert.fail(ObjectMessages(
+          o1,
+          o2,
+          "Not less: " + CompareTestReciprocal(o1, o2)));
+      }
+    }
+
+    public static <T extends Comparable<T>> int CompareTestReciprocal(T o1, T o2) {
+      if (o1 == null) {
+        throw new NullPointerException("o1");
+      }
+      if (o2 == null) {
+        throw new NullPointerException("o2");
+      }
+      int cmp = ((o1.compareTo(o2) == 0) ? 0 : ((o1.compareTo(o2)< 0) ? -1 : 1));
+      int cmp2 = ((o2.compareTo(o1) == 0) ? 0 : ((o2.compareTo(o1)< 0) ? -1 : 1));
+      if (-cmp2 != cmp) {
+        Assert.assertEquals(ObjectMessages(o1, o2, "Not reciprocal"),cmp,-cmp2);
+      }
+      return cmp;
+    }
+
+    public static <T extends Comparable<T>> void CompareTestConsistency(T o1, T o2, T o3) {
+      if (o1 == null) {
+        throw new NullPointerException("o1");
+      }
+      if (o2 == null) {
+        throw new NullPointerException("o2");
+      }
+      if (o3 == null) {
+        throw new NullPointerException("o3");
+      }
+      int cmp = CompareTestReciprocal(o1, o2);
+      int cmp2 = CompareTestReciprocal(o2, o3);
+      int cmp3 = CompareTestReciprocal(o1, o3);
+      Assert.assertEquals(cmp == 0, o1.equals(o2));
+      Assert.assertEquals(cmp == 0, o2.equals(o1));
+      Assert.assertEquals(cmp2 == 0, o2.equals(o3));
+      Assert.assertEquals(cmp2 == 0, o3.equals(o2));
+      Assert.assertEquals(cmp3 == 0, o1.equals(o3));
+      Assert.assertEquals(cmp3 == 0, o3.equals(o1));
+    }
+
+    public static <T extends Comparable<T>> void CompareTestRelations(T o1, T o2, T o3) {
+      if (o1 == null) {
+        throw new NullPointerException("o1");
+      }
+      if (o2 == null) {
+        throw new NullPointerException("o2");
+      }
+      if (o3 == null) {
+        throw new NullPointerException("o3");
+      }
+      if (o1.compareTo(o1) != 0) {
+        Assert.fail(o1.toString());
+      }
+      if (o2.compareTo(o2) != 0) {
+        Assert.fail(o2.toString());
+      }
+      if (o3.compareTo(o3) != 0) {
+        Assert.fail(o3.toString());
+      }
+      int cmp12 = CompareTestReciprocal(o1, o2);
+      int cmp23 = CompareTestReciprocal(o2, o3);
+      int cmp13 = CompareTestReciprocal(o1, o3);
+      int cmp21 = -cmp12;
+      int cmp32 = -cmp23;
+      int cmp31 = -cmp13;
+      // Transitivity checks
+      for (int i = -1; i <= 1; ++i) {
+        if (cmp12 == i) {
+          if (cmp23 == i && cmp13 != i) {
+ Assert.fail(ObjectMessages(o1, o2, o3, "Not transitive"));
+}
+        }
+        if (cmp23 == i) {
+          if (cmp31 == i && cmp21 != i) {
+ Assert.fail(ObjectMessages(o1, o2, o3, "Not transitive"));
+}
+        }
+        if (cmp31 == i) {
+          if (cmp12 == i && cmp32 != i) {
+ Assert.fail(ObjectMessages(o1, o2, o3, "Not transitive"));
+}
+        }
+      }
+    }
+
     public static void AssertRoundTrip(CBORObject o) {
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
-      int cmp = o.compareTo(o2);
+      int cmp = CompareTestReciprocal(o, o2);
       if (cmp != 0) {
         Assert.assertEquals(o + "\nvs.\n" + o2,0,cmp);
       }

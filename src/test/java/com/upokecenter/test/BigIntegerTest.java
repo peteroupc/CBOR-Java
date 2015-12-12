@@ -45,7 +45,14 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestCompareTo() {
-      // not implemented yet
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        BigInteger bigintA = RandomObjects.RandomBigInteger(r);
+        BigInteger bigintB = RandomObjects.RandomBigInteger(r);
+        BigInteger bigintC = RandomObjects.RandomBigInteger(r);
+        TestCommon.CompareTestRelations(bigintA, bigintB, bigintC);
+        TestCommon.CompareTestConsistency(bigintA, bigintB, bigintC);
+      }
     }
     @Test
     public void TestDivide() {
