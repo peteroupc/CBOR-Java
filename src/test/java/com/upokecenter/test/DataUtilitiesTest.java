@@ -165,9 +165,10 @@ DataUtilities.CodePointBefore("A\ud800\udc00B", 2));
  Assert.assertEquals(
 0xd800,
 DataUtilities.CodePointBefore("A\ud800\udc00B", 2, 1));
-    Assert.assertEquals(
--1,
-DataUtilities.CodePointBefore("A\ud800\udc00B" , 2, 2));
+    {
+long numberTemp = DataUtilities.CodePointBefore("A\ud800\udc00B" , 2, 2);
+Assert.assertEquals(-1, numberTemp);
+}
       Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("\udc00B", 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointBefore("\udc00B", 1, 1));
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("\udc00B", 1, 2));
