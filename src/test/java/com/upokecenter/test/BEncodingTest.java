@@ -45,17 +45,17 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     public static void doTestLong(long value) {
       String b = "i" + TestCommon.LongToString(value) + "e";
-      CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b, true));
+      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b, false));
       Assert.assertEquals(value, beo.AsInt64());
-      String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), true);
+      String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
     }
 
     public static void doTestString(String value) {
       String b = DataUtilities.GetUtf8Length(value, false) + ":" + value;
-      CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b, true));
+      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b, false));
       Assert.assertEquals(value, beo.AsString());
-      String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), true);
+      String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
     }
 

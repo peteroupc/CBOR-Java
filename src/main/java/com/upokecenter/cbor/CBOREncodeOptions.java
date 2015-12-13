@@ -26,6 +26,24 @@ package com.upokecenter.cbor;
  return this.value;
 }
 
+    /**
+     * Not documented yet.
+     * @param other An arbitrary object.
+     * @return A Boolean object.
+     */
+    @Override public boolean equals(Object other) {
+      CBOREncodeOptions enc = ((other instanceof CBOREncodeOptions) ? (CBOREncodeOptions)other : null);
+      return (enc == null) ? (false) : (enc.getValue() == this.getValue());
+    }
+
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
+    @Override public int hashCode() {
+      return this.getValue();
+    }
+
     private CBOREncodeOptions(int value) {
       this.value = value;
     }

@@ -156,9 +156,10 @@ private BEncoding() {
         if (length < 0) {
           throw new CBORException("invalid String");
         }
+        BigInteger bigLength = BigInteger.valueOf(length);
         writeUtf8(
-          Long.toString((long)length),
-          stream);
+bigLength.toString(),
+stream);
         stream.write(((byte)((byte)':')));
         writeUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
@@ -188,9 +189,10 @@ private BEncoding() {
             if (length < 0) {
               throw new CBORException("invalid String");
             }
+            BigInteger bigLength = BigInteger.valueOf(length);
             writeUtf8(
-              Long.toString((long)length),
-              stream);
+bigLength.toString(),
+stream);
             stream.write(((byte)((byte)':')));
             writeUtf8(key, stream);
             Write(value, stream);
@@ -204,9 +206,10 @@ private BEncoding() {
             if (length < 0) {
               throw new CBORException("invalid String");
             }
+            BigInteger bigLength = BigInteger.valueOf(length);
             writeUtf8(
-              Long.toString((long)length),
-              stream);
+bigLength.toString(),
+stream);
             stream.write(((byte)((byte)':')));
             writeUtf8(str, stream);
             Write(obj.get(key), stream);
@@ -225,9 +228,10 @@ private BEncoding() {
         if (length < 0) {
           throw new CBORException("invalid String");
         }
+        BigInteger bigLength = BigInteger.valueOf(length);
         writeUtf8(
-          Long.toString((long)length),
-          stream);
+bigLength.toString(),
+stream);
         stream.write(((byte)((byte)':')));
         writeUtf8(str, stream);
       }

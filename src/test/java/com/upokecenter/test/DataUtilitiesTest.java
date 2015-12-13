@@ -149,7 +149,31 @@ Assert.assertEquals(-1, numberTemp);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // not implemented yet
+      Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", 0));
+      Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", -1));
+      Assert.assertEquals((int)'A', DataUtilities.CodePointBefore("A", 1));
+      Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", 2));
+ Assert.assertEquals(
+(int)'A' ,
+DataUtilities.CodePointBefore("A\ud800\udc00B", 1));
+  Assert.assertEquals(
+0x10000,
+DataUtilities.CodePointBefore("A\ud800\udc00B", 3));
+   Assert.assertEquals(
+0xfffd,
+DataUtilities.CodePointBefore("A\ud800\udc00B", 2));
+ Assert.assertEquals(
+0xd800,
+DataUtilities.CodePointBefore("A\ud800\udc00B", 2, 1));
+    Assert.assertEquals(
+-1,
+DataUtilities.CodePointBefore("A\ud800\udc00B" , 2, 2));
+      Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("\udc00B", 1));
+      Assert.assertEquals(0xdc00, DataUtilities.CodePointBefore("\udc00B", 1, 1));
+      Assert.assertEquals(-1, DataUtilities.CodePointBefore("\udc00B", 1, 2));
+      Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("A\udc00B", 2));
+      Assert.assertEquals(0xdc00, DataUtilities.CodePointBefore("A\udc00B", 2, 1));
+      Assert.assertEquals(-1, DataUtilities.CodePointBefore("A\udc00B", 2, 2));
     }
     @Test
     public void TestCodePointCompare() {
@@ -234,6 +258,21 @@ DataUtilities.CodePointCompare(
           "a\ud7ff\udc00",
           "a\ud800\udc00") < 0))Assert.fail();
     }
+
+    public static String Repeat(String c, int num) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < num; ++i) {
+        sb.append(c);
+      }
+      return sb.toString();
+    }
+
+    private void TestUtf8RoundTrip(String str) {
+      Assert.assertEquals(
+str,
+DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
+    }
+
     @Test
     public void TestGetUtf8Bytes() {
       try {
@@ -478,6 +517,18 @@ DataUtilities.CodePointCompare(
     }
     @Test
     public void TestGetUtf8String() {
+      this.TestUtf8RoundTrip("A" + Repeat("\u00e0", 10000));
+      this.TestUtf8RoundTrip("AA" + Repeat("\u00e0", 10000));
+      this.TestUtf8RoundTrip("AAA" + Repeat("\u00e0", 10000));
+      this.TestUtf8RoundTrip("AAAA" + Repeat("\u00e0", 10000));
+      this.TestUtf8RoundTrip("A" + Repeat("\u0ae0", 10000));
+      this.TestUtf8RoundTrip("AA" + Repeat("\u0ae0", 10000));
+      this.TestUtf8RoundTrip("AAA" + Repeat("\u0ae0", 10000));
+      this.TestUtf8RoundTrip("AAAA" + Repeat("\u0ae0", 10000));
+      this.TestUtf8RoundTrip("A" + Repeat("\ud800\udc00", 10000));
+      this.TestUtf8RoundTrip("AA" + Repeat("\ud800\udc00", 10000));
+      this.TestUtf8RoundTrip("AAA" + Repeat("\ud800\udc00", 10000));
+      this.TestUtf8RoundTrip("AAAA" + Repeat("\ud800\udc00", 10000));
       try {
         DataUtilities.GetUtf8String(null, false);
         Assert.fail("Should have failed");
@@ -600,6 +651,82 @@ DataUtilities.CodePointCompare(
         Assert.assertEquals('\ufffd', strret.charAt(0));
       }
     }
+
+    public static void DoTestReadUtf8(
+  byte[] bytes,
+  int expectedRet,
+  String expectedString,
+  int noReplaceRet,
+  String noReplaceString) {
+      DoTestReadUtf8(
+        bytes,
+        bytes.length,
+        expectedRet,
+        expectedString,
+        noReplaceRet,
+        noReplaceString);
+    }
+
+    public static void DoTestReadUtf8(
+      byte[] bytes,
+      int length,
+      int expectedRet,
+      String expectedString,
+      int noReplaceRet,
+      String noReplaceString) {
+      try {
+        StringBuilder builder = new StringBuilder();
+        int ret = 0;
+        {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+          ret = DataUtilities.ReadUtf8(ms, length, builder, true);
+          Assert.assertEquals(expectedRet, ret);
+          if (expectedRet == 0) {
+            Assert.assertEquals(expectedString, builder.toString());
+          }
+          ms.reset();
+          builder.setLength(0);
+          ret = DataUtilities.ReadUtf8(ms, length, builder, false);
+          Assert.assertEquals(noReplaceRet, ret);
+          if (noReplaceRet == 0) {
+            Assert.assertEquals(noReplaceString, builder.toString());
+          }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+}
+        if (bytes.length >= length) {
+          builder.setLength(0);
+          ret = DataUtilities.ReadUtf8FromBytes(
+            bytes,
+            0,
+            length,
+            builder,
+            true);
+          Assert.assertEquals(expectedRet, ret);
+          if (expectedRet == 0) {
+            Assert.assertEquals(expectedString, builder.toString());
+          }
+          builder.setLength(0);
+          ret = DataUtilities.ReadUtf8FromBytes(
+            bytes,
+            0,
+            length,
+            builder,
+            false);
+          Assert.assertEquals(noReplaceRet, ret);
+          if (noReplaceRet == 0) {
+            Assert.assertEquals(noReplaceString, builder.toString());
+          }
+        }
+      } catch (IOException ex) {
+        throw new IllegalStateException("", ex);
+      }
+    }
     @Test
     public void TestReadUtf8() {
       try {
@@ -653,6 +780,80 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
 }
       }
+      DoTestReadUtf8(
+  new byte[] { 0x21, 0x21, 0x21  },
+  0, "!!!", 0, "!!!");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
+        0, " \u0080", 0, " \u0080");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
+        0, " \u0080 ", 0, " \u0080 ");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80, (byte)0xc2  },
+        0, " \u0080\ufffd", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
+        0, " \ufffd!!", -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xc2, (byte)0xff, 0x20  },
+        0, " \ufffd\ufffd ", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
+        0, " \u0800", 0, " \u0800");
+      DoTestReadUtf8(
+    new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 ", 0, " \u0800 ");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  }, 0, " \ud800\udc00", 0,
+          " \ud800\udc00");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        3,
+        0, " \ufffd", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
+        5,
+        -2,
+        null,
+        -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, 0x20, 0x20  },
+        5,
+        -2,
+        null,
+        -2,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20  }, 0, " \ud800\udc00 ",
+          0, " \ud800\udc00 ");
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  }, 0, " \ufffd ", -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, 0x20  },
+        0, " \ufffd ", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0xff  },
+        0, " \ufffd\ufffd", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
+        0, " \ufffd\ufffd", -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, 0x20  },
+        0, " \ufffd ", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, 0x20  },
+        0, " \ufffd ", -1, null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
+        0, " \ufffd\ufffd", -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xff  }, 0, " \ufffd\ufffd", -1,
+        null);
     }
     @Test
     public void TestReadUtf8FromBytes() {

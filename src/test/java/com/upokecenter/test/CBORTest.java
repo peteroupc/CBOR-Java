@@ -136,12 +136,9 @@ import com.upokecenter.cbor.*;
 
     @Test
     public void TestExtendedCompare() {
-      {
-long numberTemp = ExtendedRational.Zero.compareTo(ExtendedRational.NaN);
-Assert.assertEquals(-1, numberTemp);
-}
-      Assert.assertEquals(-1, ExtendedFloat.Zero.compareTo(ExtendedFloat.NaN));
-      Assert.assertEquals(-1, ExtendedDecimal.Zero.compareTo(ExtendedDecimal.NaN));
+      TestCommon.CompareTestLess(ExtendedRational.Zero, ExtendedRational.NaN);
+      TestCommon.CompareTestLess(ExtendedFloat.Zero, ExtendedFloat.NaN);
+      TestCommon.CompareTestLess(ExtendedDecimal.Zero, ExtendedDecimal.NaN);
     }
 
     @Test
@@ -149,8 +146,7 @@ Assert.assertEquals(-1, numberTemp);
       ExtendedDecimal a = ExtendedDecimal.FromString(
         "7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
       ExtendedDecimal b = ExtendedDecimal.FromString("5");
-      Assert.assertEquals(1, a.compareTo(b));
-      Assert.assertEquals(-1, b.compareTo(a));
+      TestCommon.CompareTestLess(b, a);
       CBORObject o1 = null;
       CBORObject o2 = null;
       o1 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, (byte)0x8b, 0x44,
@@ -166,20 +162,10 @@ Assert.assertEquals(-1, numberTemp);
       ExtendedDecimal cmpDecFrac =
         o1.AsExtendedDecimal().Add(o2.AsExtendedDecimal());
       ExtendedDecimal cmpCobj = CBORObject.Addition(o1, o2).AsExtendedDecimal();
-      if (cmpDecFrac.compareTo(cmpCobj) != 0) {
-        Assert.assertEquals(TestCommon.ObjectMessages(
-            o1,
-            o2,
-            "Add: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
-      }
+      TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       cmpDecFrac = o1.AsExtendedDecimal().Subtract(o2.AsExtendedDecimal());
       cmpCobj = CBORObject.Subtract(o1, o2).AsExtendedDecimal();
-      if (cmpDecFrac.compareTo(cmpCobj) != 0) {
-        Assert.assertEquals(TestCommon.ObjectMessages(
-            o1,
-            o2,
-            "Subtract: Results don't match:\n" + cmpDecFrac + " vs\n" + cmpCobj),0,cmpDecFrac.compareTo(cmpCobj));
-      }
+      TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       CBORObjectTest.CompareDecimals(o1, o2);
     }
 
@@ -1691,82 +1677,6 @@ stringTemp);
       }
     }
 
-    public static void DoTestReadUtf8(
-      byte[] bytes,
-      int expectedRet,
-      String expectedString,
-      int noReplaceRet,
-      String noReplaceString) {
-      DoTestReadUtf8(
-        bytes,
-        bytes.length,
-        expectedRet,
-        expectedString,
-        noReplaceRet,
-        noReplaceString);
-    }
-
-    public static void DoTestReadUtf8(
-      byte[] bytes,
-      int length,
-      int expectedRet,
-      String expectedString,
-      int noReplaceRet,
-      String noReplaceString) {
-      try {
-        StringBuilder builder = new StringBuilder();
-        int ret = 0;
-        {
-java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          ret = DataUtilities.ReadUtf8(ms, length, builder, true);
-          Assert.assertEquals(expectedRet, ret);
-          if (expectedRet == 0) {
-            Assert.assertEquals(expectedString, builder.toString());
-          }
-          ms.reset();
-          builder.setLength(0);
-          ret = DataUtilities.ReadUtf8(ms, length, builder, false);
-          Assert.assertEquals(noReplaceRet, ret);
-          if (noReplaceRet == 0) {
-            Assert.assertEquals(noReplaceString, builder.toString());
-          }
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-}
-        if (bytes.length >= length) {
-          builder.setLength(0);
-          ret = DataUtilities.ReadUtf8FromBytes(
-            bytes,
-            0,
-            length,
-            builder,
-            true);
-          Assert.assertEquals(expectedRet, ret);
-          if (expectedRet == 0) {
-            Assert.assertEquals(expectedString, builder.toString());
-          }
-          builder.setLength(0);
-          ret = DataUtilities.ReadUtf8FromBytes(
-            bytes,
-            0,
-            length,
-            builder,
-            false);
-          Assert.assertEquals(noReplaceRet, ret);
-          if (noReplaceRet == 0) {
-            Assert.assertEquals(noReplaceString, builder.toString());
-          }
-        }
-      } catch (IOException ex) {
-        throw new CBORException("", ex);
-      }
-    }
-
     @Test
     public void TestFPToBigInteger() {
       {
@@ -1922,84 +1832,6 @@ System.out.print("");
       }
     }
 
-    @Test
-    public void TestReadUtf8() {
-      DoTestReadUtf8(
-        new byte[] { 0x21, 0x21, 0x21  },
-        0, "!!!", 0, "!!!");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
-        0, " \u0080", 0, " \u0080");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
-        0, " \u0080 ", 0, " \u0080 ");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80, (byte)0xc2  },
-        0, " \u0080\ufffd", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
-        0, " \ufffd!!", -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0xff, 0x20  },
-        0, " \ufffd\ufffd ", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
-        0, " \u0800", 0, " \u0800");
-      DoTestReadUtf8(
-    new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 " , 0, " \u0800 ");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  }, 0, " \ud800\udc00" , 0,
-          " \ud800\udc00");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
-        3,
-        0, " \ufffd", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
-        5,
-        -2,
-        null,
-        -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, 0x20, 0x20  },
-        5,
-        -2,
-        null,
-        -2,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20  }, 0, " \ud800\udc00 ",
-          0, " \ud800\udc00 ");
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  }, 0, " \ufffd ", -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, 0x20  },
-        0, " \ufffd ", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0xff  },
-        0, " \ufffd\ufffd", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
-        0, " \ufffd\ufffd", -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, 0x20  },
-        0, " \ufffd ", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, 0x20  },
-        0, " \ufffd ", -1, null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
-        0, " \ufffd\ufffd", -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xff  }, 0, " \ufffd\ufffd", -1,
-        null);
-    }
-
     private static boolean ByteArrayEquals(byte[] arrayA, byte[] arrayB) {
       if (arrayA == null) {
         return arrayB == null;
@@ -2067,22 +1899,6 @@ stringTemp);
       Assert.assertEquals(4, cbor.get(CBORObject.FromObject("b")).AsInt32());
     }
 
-    private static String Repeat(char c, int num) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < num; ++i) {
-        sb.append(c);
-      }
-      return sb.toString();
-    }
-
-    private static String Repeat(String c, int num) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < num; ++i) {
-        sb.append(c);
-      }
-      return sb.toString();
-    }
-
     private static void TestTextStringStreamOne(String longString) {
       CBORObject cbor, cbor2;
       cbor = CBORObject.FromObject(longString);
@@ -2108,10 +1924,10 @@ Assert.assertEquals(
 "..",
 stringTemp);
 }
-      TestTextStringStreamOne(Repeat('x', 200000));
-      TestTextStringStreamOne(Repeat('\u00e0', 200000));
-      TestTextStringStreamOne(Repeat('\u3000', 200000));
-      TestTextStringStreamOne(Repeat("\ud800\udc00", 200000));
+      TestTextStringStreamOne(TestCommon.Repeat('x', 200000));
+      TestTextStringStreamOne(TestCommon.Repeat('\u00e0', 200000));
+      TestTextStringStreamOne(TestCommon.Repeat('\u3000', 200000));
+      TestTextStringStreamOne(TestCommon.Repeat("\ud800\udc00", 200000));
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoTagsBeforeDefinite() {
@@ -4384,12 +4200,6 @@ System.out.print("");
 
     @Test
     public void TestExtendedMiscellaneous() {
-      Assert.assertEquals(
-        ExtendedDecimal.Zero,
-        ExtendedDecimal.FromExtendedFloat(ExtendedFloat.Zero));
-      Assert.assertEquals(
-        ExtendedDecimal.NegativeZero,
-        ExtendedDecimal.FromExtendedFloat(ExtendedFloat.NegativeZero));
       Assert.assertEquals(ExtendedDecimal.Zero, ExtendedDecimal.FromInt32(0));
       Assert.assertEquals(ExtendedDecimal.One, ExtendedDecimal.FromInt32(1));
       {

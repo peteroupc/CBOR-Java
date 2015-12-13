@@ -334,9 +334,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
           Assert.fail(
-String.format(java.util.Locale.US,"%s equals %s but not vice versa",
-o,
-o2));
+"" + o + " equals " + o2 + " but not vice versa");
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -344,15 +342,12 @@ o2));
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
           Assert.fail(
-String.format(java.util.Locale.US,"%s and %s don't have equal hash codes",
-o,
-o2));
+"" + o + " and " + o2 + " don't have equal hash codes");
         }
       } else {
         if (o2.equals(o)) {
-          Assert.fail(String.format(java.util.Locale.US,"%s does not equal %s but not vice versa",
-o,
-o2));
+          Assert.fail("" + o + " does not equal " + o2 +
+            " but not vice versa");
         }
         // At least check that hashCode doesn't throw
         try {
@@ -368,6 +363,22 @@ Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
       }
+    }
+
+    public static String Repeat(char c, int num) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < num; ++i) {
+        sb.append(c);
+      }
+      return sb.toString();
+    }
+
+    public static String Repeat(String c, int num) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < num; ++i) {
+        sb.append(c);
+      }
+      return sb.toString();
     }
 
     public static void TestNumber(CBORObject o) {
@@ -515,6 +526,10 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
           o2,
           "Not less: " + CompareTestReciprocal(o1, o2)));
       }
+    }
+
+public static <T extends Comparable<T>> void CompareTestGreater(T o1, T o2) {
+      CompareTestLess(o2, o1);
     }
 
     public static <T extends Comparable<T>> int CompareTestReciprocal(T o1, T o2) {

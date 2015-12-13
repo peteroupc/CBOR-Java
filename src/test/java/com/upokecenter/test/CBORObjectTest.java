@@ -1051,7 +1051,9 @@ cbornumber.AsSingle());
     }
 
     static void CompareDecimals(CBORObject o1, CBORObject o2) {
-      int cmpDecFrac = o1.AsExtendedDecimal().compareTo(o2.AsExtendedDecimal());
+      int cmpDecFrac = TestCommon.CompareTestReciprocal(
+        o1.AsExtendedDecimal(),
+        o2.AsExtendedDecimal());
       int cmpCobj = TestCommon.CompareTestReciprocal(o1, o2);
       if (cmpDecFrac != cmpCobj) {
         Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Compare: Results don't match"),cmpDecFrac,cmpCobj);
@@ -1777,6 +1779,61 @@ CBORObject.FromSimpleValue(0));
         "/\b",
         stringTemp);
       }
+      {
+        String stringTemp = CBORObject.FromJSONString("\"\\/\\f\"").AsString();
+        Assert.assertEquals(
+        "/\f",
+        stringTemp);
+      }
+ String jsonTemp = TestCommon.Repeat(
+"[",
+2000) + TestCommon.Repeat("]",
+        2000);
+      try {
+ CBORObject.FromJSONString(jsonTemp);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromJSONString("\"abc");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromJSONString("\"ab\u0004c\"");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromJSONString("\u0004\"abc\"");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromJSONString("[1,\u0004" + "2]");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestFromObject() {
@@ -3783,9 +3840,9 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     public void TestToJSONString() {
       {
         String stringTemp = CBORObject.FromObject(
-        "\u2027\u2028\u2029\u202a").ToJSONString();
+        "\u2027\u2028\u2029\u202a\u0008\u000c").ToJSONString();
         Assert.assertEquals(
-        "\"\u2027\\u2028\\u2029\u202a\"",
+        "\"\u2027\\u2028\\u2029\u202a\\b\\f\"",
         stringTemp);
       }
       {

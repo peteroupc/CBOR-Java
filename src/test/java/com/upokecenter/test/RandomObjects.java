@@ -364,7 +364,7 @@ BigInteger.valueOf(r.NextValue(400) - 200));
         if (count != 0) {
           sb.append(r.NextValue(2) == 0 ? '+' : '-');
         }
-        sb.append(Integer.toString((int)count));
+        sb.append(TestCommon.IntToString(count));
       }
       return sb.toString();
     }
