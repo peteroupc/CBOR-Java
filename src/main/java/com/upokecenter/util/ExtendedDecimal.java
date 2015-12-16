@@ -3134,7 +3134,7 @@ remainder = divrem[1]; }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
-     * the right.
+     * the left.
      * @param places A 32-bit signed integer.
      * @return An ExtendedDecimal object.
      */
