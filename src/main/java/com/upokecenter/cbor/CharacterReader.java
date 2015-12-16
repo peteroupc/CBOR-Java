@@ -10,9 +10,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.io.*;
 
     /**
-     * A general-purpose character input for reading Unicode text from byte streams
-     * and text strings. It supports UTF-8 by default, but can be configured
-     * to support UTF-16 and UTF-32 as well.
+     * A general-purpose character input for reading text from byte streams and
+     * text strings. When reading byte streams, this class supports the
+     * UTF-8 character encoding by default, but can be configured to support
+     * UTF-16 and UTF-32 as well.
      */
   final class CharacterReader implements ICharacterInput {
     private final int mode;
@@ -25,16 +26,34 @@ import java.io.*;
     private final String str;
     private final IByteReader stream;
 
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param str A string object.
+     */
     public CharacterReader (String str) {
  this(str, false, false);
     }
 
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param str A string object.
+     * @param skipByteOrderMark A Boolean object.
+     */
     public CharacterReader (String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
 
-  public CharacterReader (String str, boolean skipByteOrderMark, boolean
-      errorThrow) {
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param str Not documented yet.
+     * @param skipByteOrderMark Not documented yet.
+     * @param errorThrow Not documented yet. (3).
+     * @throws NullPointerException The parameter {@code str} is null.
+     */
+  public CharacterReader (
+String str,
+boolean skipByteOrderMark,
+boolean errorThrow) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -47,13 +66,29 @@ import java.io.*;
       this.stream = null;
     }
 
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param stream A readable data stream.
+     */
     public CharacterReader (InputStream stream) {
  this(stream, 0, false);
     }
 
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param stream A readable data stream.
+     * @param mode A 32-bit signed integer.
+     * @param errorThrow A Boolean object.
+     */
     public CharacterReader (InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
+
+    /**
+     * Initializes a new instance of the CharacterReader class.
+     * @param stream A readable data stream.
+     * @param mode A 32-bit signed integer.
+     */
     public CharacterReader (InputStream stream, int mode) {
  this(stream, mode, false, false);
     }
@@ -62,12 +97,18 @@ import java.io.*;
      * Initializes a new instance of the CharacterReader class.
      * @param stream Not documented yet.
      * @param mode Not documented yet.
-     * @param errorThrow Not documented yet. (3).
-     * @param dontSkipUtf8Bom Not documented yet. (4).
+     * @param errorThrow If true, will throw an exception if invalid byte sequences
+     * (in the detected encoding) are found in the byte stream.
+     * @param dontSkipUtf8Bom If the stream is detected as UTF-8 and this parameter
+     * is {@code true}, won't skip the BOM character if it occurs at the
+     * start of the stream.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
-    public CharacterReader (InputStream stream, int mode, boolean errorThrow,
-      boolean dontSkipUtf8Bom) {
+    public CharacterReader (
+InputStream stream,
+int mode,
+boolean errorThrow,
+boolean dontSkipUtf8Bom) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -77,10 +118,24 @@ import java.io.*;
       this.dontSkipUtf8Bom = dontSkipUtf8Bom;
       this.str = "";
     }
+
     private interface IByteReader {
       int read();
     }
 
+    /**
+     * Reads a series of characters from a Unicode stream or a string.
+     * @param chars Not documented yet.
+     * @param index A zero-based index showing where the desired portion of {@code
+     * chars} begins.
+     * @param length The number of elements in the desired portion of {@code chars}
+     * (but not more than {@code chars} 's length).
+     * @return A 32-bit signed integer.
+     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
+     * length minus {@code index} is less than {@code length}.
+     */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new NullPointerException("chars");
@@ -139,7 +194,7 @@ import java.io.*;
           ++this.offset;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Unpaired surrogate code point");
 } else {
  c = 0xfffd;
@@ -158,16 +213,19 @@ import java.io.*;
         // FF FE ... --> UTF-16LE
         // FE FF --> UTF-16BE
         c2 = this.stream.read();
-        boolean bigEndian = (c1 == 0xfe);
-        int otherbyte = (bigEndian) ? 0xff : 0xfe;
+        boolean bigEndian = c1 == 0xfe;
+        int otherbyte = bigEndian ? 0xff : 0xfe;
         if (c2 == otherbyte) {
           c3 = this.stream.read();
           c4 = this.stream.read();
           if (!bigEndian && c3 == 0 && c4 == 0) {
-            this.reader = new Utf32Reader(this.stream, false, errorThrow);
+            this.reader = new Utf32Reader(this.stream, false, this.errorThrow);
             return this.reader.ReadChar();
           } else {
-            Utf16Reader newReader = new Utf16Reader(this.stream, bigEndian, errorThrow);
+      Utf16Reader newReader = new Utf16Reader(
+this.stream,
+bigEndian,
+this.errorThrow);
             newReader.Unget(c3, c4);
             this.reader = newReader;
             return newReader.ReadChar();
@@ -177,12 +235,12 @@ import java.io.*;
         if (this.errorThrow) {
           throw new IllegalStateException("Invalid Unicode stream");
         } else {
-          Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+          Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
           utf8reader.Unget(c2);
           this.reader = utf8reader;
           return 0xfffd;
         }
-      } else if (c1 == 0 && mode == 4) {
+      } else if (c1 == 0 && this.mode == 4) {
         // Here, the relevant cases are:
         // 0 0 0 NZA --> UTF-32BE (if mode is 4)
         // 0 0 FE FF --> UTF-32BE
@@ -193,15 +251,15 @@ import java.io.*;
         if (c2 == 0 &&
            ((c3 == 0xfe && c4 == 0xff) ||
             (c3 == 0 && c4 >= 0x01 && c4 <= 0x7f))) {
-          this.reader = new Utf32Reader(this.stream, true, errorThrow);
+          this.reader = new Utf32Reader(this.stream, true, this.errorThrow);
           return c3 == 0 ? c4 : this.reader.ReadChar();
         } else {
-          Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+          Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
           utf8reader.UngetThree(c2, c3, c4);
           this.reader = utf8reader;
           return c1;
         }
-      } else if (mode == 2) {
+      } else if (this.mode == 2) {
         if (c1 >= 0x01 && c1 <= 0x7f) {
           // Nonzero ASCII character
           c2 = this.stream.read();
@@ -210,17 +268,23 @@ import java.io.*;
             c3 = this.stream.read();
             c4 = this.stream.read();
             if (c3 == 0 && c4 == 0) {
-              this.reader = new Utf32Reader(this.stream, false, errorThrow);
+            this.reader = new Utf32Reader(
+this.stream,
+false,
+this.errorThrow);
               return c1;
             } else {
-              Utf16Reader newReader = new Utf16Reader(this.stream, false, errorThrow);
+          Utf16Reader newReader = new Utf16Reader(
+this.stream,
+false,
+this.errorThrow);
               newReader.Unget(c3, c4);
               this.reader = newReader;
               return c1;
             }
           } else {
             // NZA NZ, so UTF-8
-            Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+            Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
             utf8reader.Unget(c2);
             this.reader = utf8reader;
             return c1;
@@ -230,7 +294,7 @@ import java.io.*;
           c2 = this.stream.read();
           if (c2 >= 0x01 && c2 <= 0x7f) {
             // 0 NZA, so UTF-16BE
-            Utf16Reader newReader = new Utf16Reader(this.stream, true, errorThrow);
+            Utf16Reader newReader = new Utf16Reader(this.stream, true, this.errorThrow);
             this.reader = newReader;
             return c2;
           } else if (c2 == 0) {
@@ -239,22 +303,22 @@ import java.io.*;
             c4 = this.stream.read();
             if (c3 == 0 && c4 >= 0x01 && c4 <= 0x7f) {
               // 0 0 0 NZA
-              this.reader = new Utf32Reader(this.stream, true, errorThrow);
+              this.reader = new Utf32Reader(this.stream, true, this.errorThrow);
               return c4;
             } else if (c3 == 0xfe && c4 == 0xff) {
               // 0 0 FE FF
-              this.reader = new Utf32Reader(this.stream, true, errorThrow);
+              this.reader = new Utf32Reader(this.stream, true, this.errorThrow);
               return this.reader.ReadChar();
             } else {
               // 0 0 ...
-              Utf8Reader newReader = new Utf8Reader(this.stream, errorThrow);
+              Utf8Reader newReader = new Utf8Reader(this.stream, this.errorThrow);
               newReader.UngetThree(c2, c3, c4);
               this.reader = newReader;
               return c1;
             }
           } else {
             // 0 NonAscii, so UTF-8
-            Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+            Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
             utf8reader.Unget(c2);
             this.reader = utf8reader;
             return c1;
@@ -264,15 +328,19 @@ import java.io.*;
       // Use default of UTF-8
       return -2;
     }
+
     private int DetectUtf8OrUtf16(int c1) {
       int mode = this.mode;
       int c2;
       if (c1 == 0xff || c1 == 0xfe) {
         c2 = this.stream.read();
-        boolean bigEndian = (c1 == 0xfe);
-        int otherbyte = (bigEndian) ? 0xff : 0xfe;
+        boolean bigEndian = c1 == 0xfe;
+        int otherbyte = bigEndian ? 0xff : 0xfe;
         if (c2 == otherbyte) {
-          Utf16Reader newReader = new Utf16Reader(this.stream, bigEndian, errorThrow);
+      Utf16Reader newReader = new Utf16Reader(
+this.stream,
+bigEndian,
+this.errorThrow);
           this.reader = newReader;
           return newReader.ReadChar();
         }
@@ -280,7 +348,7 @@ import java.io.*;
         if (this.errorThrow) {
           throw new IllegalStateException("Invalid Unicode stream");
         } else {
-          Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+          Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
           utf8reader.Unget(c2);
           this.reader = utf8reader;
           return 0xfffd;
@@ -291,11 +359,14 @@ import java.io.*;
           c2 = this.stream.read();
           if (c2 == 0) {
             // NZA 0, so UTF-16LE
-            Utf16Reader newReader = new Utf16Reader(this.stream, false, errorThrow);
+          Utf16Reader newReader = new Utf16Reader(
+this.stream,
+false,
+this.errorThrow);
             this.reader = newReader;
           } else {
             // NZA NZ
-            Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+            Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
             utf8reader.Unget(c2);
             this.reader = utf8reader;
           }
@@ -305,11 +376,11 @@ import java.io.*;
           c2 = this.stream.read();
           if (c2 >= 0x01 && c2 <= 0x7f) {
             // 0 NZA, so UTF-16BE
-            Utf16Reader newReader = new Utf16Reader(this.stream, true, errorThrow);
+            Utf16Reader newReader = new Utf16Reader(this.stream, true, this.errorThrow);
             this.reader = newReader;
             return c2;
           } else {
-            Utf8Reader utf8reader = new Utf8Reader(this.stream, errorThrow);
+            Utf8Reader utf8reader = new Utf8Reader(this.stream, this.errorThrow);
             utf8reader.Unget(c2);
             this.reader = utf8reader;
             return c1;
@@ -331,7 +402,7 @@ import java.io.*;
       Utf8Reader utf8reader;
       if (mode == 0) {
         // UTF-8 only
-        utf8reader = new Utf8Reader(this.stream, errorThrow);
+        utf8reader = new Utf8Reader(this.stream, this.errorThrow);
         this.reader = utf8reader;
         c1 = utf8reader.ReadChar();
         if (c1 == 0xfeff) {
@@ -340,23 +411,23 @@ import java.io.*;
         }
         return c1;
       } else if (mode == 1 || mode == 3) {
-        c2 = DetectUtf8OrUtf16(c1);
+        c2 = this.DetectUtf8OrUtf16(c1);
         if (c2 >= -1) {
  return c2;
 }
       } else if (mode == 2 || mode == 4) {
         // UTF-8, UTF-16, or UTF-32
-        c2 = DetectUtf8Or16Or32(c1);
+        c2 = this.DetectUtf8Or16Or32(c1);
         if (c2 >= -1) {
  return c2;
 }
       }
       // Default case: assume UTF-8
-      utf8reader = new Utf8Reader(this.stream, errorThrow);
+      utf8reader = new Utf8Reader(this.stream, this.errorThrow);
       this.reader = utf8reader;
       utf8reader.Unget(c1);
       c1 = utf8reader.ReadChar();
-      if (!dontSkipUtf8Bom && c1 == 0xfeff) {
+      if (!this.dontSkipUtf8Bom && c1 == 0xfeff) {
         // Skip BOM
         c1 = utf8reader.ReadChar();
       }
@@ -430,7 +501,7 @@ import java.io.*;
         int c2 = this.state.Read(this.stream);
         if (c2 < 0) {
           this.state.AddOne(-1);
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-16");
 } else {
  return 0xfffd;
@@ -444,7 +515,7 @@ import java.io.*;
           c2 = this.state.Read(this.stream);
           if (c1 < 0 || c2 < 0) {
             this.state.AddOne(-1);
-            if (errorThrow) {
+            if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-16");
 } else {
  return 0xfffd;
@@ -455,14 +526,14 @@ import java.io.*;
             return 0x10000 + ((surr - 0xd800) << 10) + (unit2 - 0xdc00);
           }
           this.Unget(c1, c2);
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-16");
 } else {
  return 0xfffd;
 }
         }
         if (surr == 0xdc00) {
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-16");
 } else {
  return 0xfffd;
@@ -508,7 +579,7 @@ import java.io.*;
         int c4 = this.state.Read(this.stream);
         if (c2 < 0 || c3 < 0 || c4 < 0) {
           this.state.AddOne(-1);
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-32");
 } else {
  return 0xfffd;
@@ -517,7 +588,7 @@ import java.io.*;
         c1 = this.bigEndian ? ((c1 << 24) | (c2 << 16) | (c3 << 8) | c4) :
           ((c4 << 24) | (c3 << 16) | (c2 << 8) | c1);
         if (c1 < 0 || c1 >= 0x110000 || (c1 & 0xfff800) == 0xd800) {
-          if (errorThrow) {
+          if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-32");
 } else {
  return 0xfffd;
@@ -578,7 +649,7 @@ import java.io.*;
           if (b < 0) {
             if (bytesNeeded != 0) {
               bytesNeeded = 0;
-              if (errorThrow) {
+              if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-8");
 } else {
  return 0xfffd;
@@ -606,7 +677,7 @@ import java.io.*;
               bytesNeeded = 3;
               cp = (b - 0xf0) << 18;
             } else {
-              if (errorThrow) {
+              if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-8");
 } else {
  return 0xfffd;
@@ -617,7 +688,7 @@ import java.io.*;
           if (b < lower || b > upper) {
             cp = bytesNeeded = bytesSeen = 0;
             this.state.AddOne(b);
-            if (errorThrow) {
+            if (this.errorThrow) {
  throw new IllegalStateException("Invalid UTF-8");
 } else {
  return 0xfffd;
