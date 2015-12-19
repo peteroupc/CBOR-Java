@@ -13,16 +13,9 @@ import org.junit.Assert;
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 
-  final class TestCommon {
+  public final class TestCommon {
 private TestCommon() {
 }
-    public static void AssertBigIntegersEqual(String a, BigInteger b) {
-      Assert.assertEquals(a, b.toString());
-      BigInteger a2 = BigInteger.fromString(a);
-      Assert.assertEquals(a2, b);
-      AssertEqualsHashCode(a2, b);
-    }
-
     public static String ToByteArrayString(byte[] bytes) {
       if (bytes == null) {
  return "null";
@@ -74,130 +67,6 @@ private TestCommon() {
      Assert.fail("Expected " + ToByteArrayString(arr1) + ", got " +
        ToByteArrayString(arr2));
       }
-    }
-
-    public static void DoTestDivide(
-String dividend,
-String divisor,
-String result) {
-      BigInteger bigintA = BigInteger.fromString(dividend);
-      BigInteger bigintB = BigInteger.fromString(divisor);
-      if (bigintB.signum() == 0) {
-        try {
-          bigintA.divide(bigintB);
-          Assert.fail("Expected divide by 0 error");
-        } catch (ArithmeticException ex) {
-          System.out.println(ex.getMessage());
-        }
-        try {
- bigintA.divideAndRemainder(bigintB);
-Assert.fail("Should have failed");
-} catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-      } else {
-        AssertBigIntegersEqual(result, bigintA.divide(bigintB));
-        AssertBigIntegersEqual(result, bigintA.divideAndRemainder(bigintB)[0]);
-      }
-    }
-
-    public static void DoTestRemainder(
-String dividend,
-String divisor,
-String result) {
-      BigInteger bigintA = BigInteger.fromString(dividend);
-      BigInteger bigintB = BigInteger.fromString(divisor);
-      if (bigintB.signum() == 0) {
-        try {
-          bigintA.remainder(bigintB); Assert.fail("Expected divide by 0 error");
-        } catch (ArithmeticException ex) {
-          System.out.println(ex.getMessage());
-        }
-        try {
- bigintA.divideAndRemainder(bigintB);
-Assert.fail("Should have failed");
-} catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-      } else {
-        AssertBigIntegersEqual(result, bigintA.remainder(bigintB));
-        AssertBigIntegersEqual(result, bigintA.divideAndRemainder(bigintB)[1]);
-      }
-    }
-
-    public static void DoTestDivideAndRemainder(
-String dividend,
-String divisor,
-String result,
-String rem) {
-      BigInteger bigintA = BigInteger.fromString(dividend);
-      BigInteger bigintB = BigInteger.fromString(divisor);
-      BigInteger rembi;
-      if (bigintB.signum() == 0) {
-        try {
-          BigInteger quo;
-{
-BigInteger[] divrem=(bigintA).divideAndRemainder(bigintB);
-quo = divrem[0];
-rembi = divrem[1]; }
-          if (((Object)quo) == null) {
-            Assert.fail();
-          }
-          Assert.fail("Expected divide by 0 error");
-        } catch (ArithmeticException ex) {
-          System.out.println(ex.getMessage());
-        }
-      } else {
-        BigInteger quo;
-{
-BigInteger[] divrem=(bigintA).divideAndRemainder(bigintB);
-quo = divrem[0];
-rembi = divrem[1]; }
-        AssertBigIntegersEqual(result, quo);
-        AssertBigIntegersEqual(rem, rembi);
-      }
-    }
-
-    public static void DoTestMultiply(String m1, String m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      BigInteger bigintB = BigInteger.fromString(m2);
-      AssertBigIntegersEqual(result, bigintA.multiply(bigintB));
-    }
-
-    public static void DoTestAdd(String m1, String m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      BigInteger bigintB = BigInteger.fromString(m2);
-      AssertBigIntegersEqual(result, bigintA.add(bigintB));
-    }
-
-    public static void DoTestSubtract(String m1, String m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      BigInteger bigintB = BigInteger.fromString(m2);
-      AssertBigIntegersEqual(result, bigintA.subtract(bigintB));
-    }
-
-    public static void DoTestPow(String m1, int m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      AssertBigIntegersEqual(result, bigintA.pow(m2));
-      AssertBigIntegersEqual(result, bigintA.PowBigIntVar(BigInteger.valueOf(m2)));
-    }
-
-    public static void DoTestShiftLeft(String m1, int m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      AssertBigIntegersEqual(result, bigintA.shiftLeft(m2));
-      AssertBigIntegersEqual(result, bigintA.shiftRight(-m2));
-    }
-
-    public static void DoTestShiftRight(String m1, int m2, String result) {
-      BigInteger bigintA = BigInteger.fromString(m1);
-      AssertBigIntegersEqual(result, bigintA.shiftRight(m2));
-      AssertBigIntegersEqual(result, bigintA.shiftLeft(-m2));
     }
 
     public static void AssertDecFrac(
@@ -516,6 +385,31 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
           o1,
           o2,
           "Not equal: " + CompareTestReciprocal(o1, o2)));
+      }
+    }
+
+    public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(T o1, T o2) {
+      CompareTestEqualAndConsistent(o1, o2, null);
+    }
+
+    public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(T o1, T o2,
+ String
+      msg) {
+      if (CompareTestReciprocal(o1, o2) != 0) {
+        msg = (msg == null ? "" : (msg + "\r\n")) +
+          "Not equal: " + CompareTestReciprocal(o1, o2);
+        Assert.fail(ObjectMessages(
+          o1,
+          o2,
+          msg));
+      }
+      if (!o1.equals(o2)) {
+        msg = (msg == null ? "" : (msg + "\r\n")) +
+          "Not equal: " + CompareTestReciprocal(o1, o2);
+        Assert.fail(ObjectMessages(
+          o1,
+          o2,
+          msg));
       }
     }
 
