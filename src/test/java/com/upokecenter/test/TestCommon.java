@@ -392,9 +392,10 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
       CompareTestEqualAndConsistent(o1, o2, null);
     }
 
-    public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(T o1, T o2,
- String
-      msg) {
+    public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(
+T o1,
+T o2,
+String msg) {
       if (CompareTestReciprocal(o1, o2) != 0) {
         msg = (msg == null ? "" : (msg + "\r\n")) +
           "Not equal: " + CompareTestReciprocal(o1, o2);
