@@ -1,20 +1,28 @@
 package com.upokecenter.cbor;
 
     /**
-     * Specifies options for encoding CBOR objects to bytes.
+     * Specifies options for encoding and decoding CBOR objects.
      */
   public final class CBOREncodeOptions {
     /**
-     * No special options for encoding. Value: 0.
+     * No special options for encoding/decoding. Value: 0.
      */
     public static final CBOREncodeOptions None =
       new CBOREncodeOptions(0);
 
     /**
-     * Always encode strings with a definite-length encoding. Value: 1.
+     * Always encode strings with a definite-length encoding. Used only when
+     * encoding CBOR objects. Value: 1.
      */
     public static final CBOREncodeOptions NoIndefLengthStrings =
       new CBOREncodeOptions(1);
+
+    /**
+     * Disallow duplicate keys when reading CBOR objects from a data stream. Used
+     * only when decoding CBOR objects. Value: 2.
+     */
+    public static final CBOREncodeOptions NoDuplicateKeys =
+      new CBOREncodeOptions(2);
 
     private final int value;
 

@@ -17,11 +17,24 @@ import com.upokecenter.util.*;
     private final InputStream stream;
     private boolean addSharedRef;
     private int depth;
+    CBORDuplicatePolicy policy;
+
+    enum CBORDuplicatePolicy {
+      Overwrite, Disallow
+    }
 
     public CBORReader (InputStream stream) {
       this.stream = stream;
       this.sharedRefs = new SharedRefs();
+      this.policy = CBORDuplicatePolicy.Overwrite;
     }
+
+    public final CBORDuplicatePolicy getDuplicatePolicy() {
+        return policy;
+      }
+public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
+        this.policy = value;
+      }
 
     private static long ReadDataLength(
 InputStream stream,
@@ -480,6 +493,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
             CBORObject key = this.ReadForFirstByte(headByte, null);
             CBORObject value = this.Read(null);
             --this.depth;
+            if (policy == CBORDuplicatePolicy.Disallow) {
+              if (cbor.ContainsKey(key)) {
+                throw new CBORException("Duplicate key already exists: " + key);
+              }
+            }
             cbor.set(key, value);
           }
           return cbor;
@@ -498,6 +516,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
           CBORObject key = this.Read(null);
           CBORObject value = this.Read(null);
           --this.depth;
+          if (policy == CBORDuplicatePolicy.Disallow) {
+            if (cbor.ContainsKey(key)) {
+              throw new CBORException("Duplicate key already exists: " + key);
+            }
+          }
           cbor.set(key, value);
         }
         return cbor;

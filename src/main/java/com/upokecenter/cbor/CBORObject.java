@@ -654,6 +654,22 @@ import com.upokecenter.util.*;
      * @throws NullPointerException The parameter {@code data} is null.
      */
     public static CBORObject DecodeFromBytes(byte[] data) {
+      return DecodeFromBytes(data, CBOREncodeOptions.None);
+    }
+
+    /**
+     * Generates a CBOR object from an array of CBOR-encoded bytes.
+     * @param data A byte array.
+     * @param options A CBOREncodeOptions object.
+     * @return A CBOR object corresponding to the data.
+     * @throws CBORException There was an error in reading or parsing the data.
+     * This includes cases where not all of the byte array represents a CBOR
+     * object. This exception is also thrown if the parameter {@code data}
+     * is empty.
+     * @throws NullPointerException The parameter {@code data} is null.
+     */
+    public static CBORObject DecodeFromBytes(byte[] data, CBOREncodeOptions
+      options) {
       if (data == null) {
         throw new NullPointerException("data");
       }
@@ -689,7 +705,7 @@ try {
 ms = new java.io.ByteArrayInputStream(data);
 int startingAvailable = ms.available();
 
-        CBORObject o = Read(ms);
+        CBORObject o = Read(ms, options);
         CheckCBORLength((long)data.length, (long)(startingAvailable-ms.available()));
         return o;
 }
@@ -1318,6 +1334,29 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public static CBORObject Read(InputStream stream) {
       try {
         return new CBORReader(stream).Read(null);
+      } catch (IOException ex) {
+        throw new CBORException("I/O error occurred.", ex);
+      }
+    }
+
+    /**
+     * Reads an object in CBOR format from a data stream. This method will read
+     * from the stream until the end of the CBOR object is reached or an
+     * error occurs, whichever happens first.
+     * @param stream A readable data stream.
+     * @param options A CBOREncodeOptions object.
+     * @return A CBOR object that was read.
+     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws CBORException There was an error in reading or parsing the data.
+     */
+    public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
+      try {
+        CBORReader reader = new CBORReader(stream);
+        if (options.And(CBOREncodeOptions.NoDuplicateKeys).getValue()==
+          CBOREncodeOptions.NoDuplicateKeys.Value) {
+          reader.setDuplicatePolicy(CBORReader.CBORDuplicatePolicy.Disallow);
+        }
+        return reader.Read(null);
       } catch (IOException ex) {
         throw new CBORException("I/O error occurred.", ex);
       }
