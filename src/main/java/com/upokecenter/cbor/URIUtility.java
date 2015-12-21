@@ -142,7 +142,8 @@ segments[0])+(segments[1] - segments[0])));
      * the same mode doesn't change the result.
      * @param s A string to escape.
      * @param mode A 32-bit signed integer.
-     * @return A string object.
+     * @return A string possibly containing escaped characters, or null if s is
+     * null.
      */
     public static String escapeURI(String s, int mode) {
       if (s == null) {
@@ -857,7 +858,7 @@ int endIndex) {
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue A string representing a URI or IRI reference. Example:
-     * {@code dir/file.txt}.
+     * {@code dir/file.txt}. Can be null.
      * @param baseURI A string representing an absolute URI reference. Example:
      * {@code http://example.com/my/path/}.
      * @param parseMode Parse mode that specifies whether certain characters are
@@ -946,7 +947,7 @@ segmentsBase[5]));
      * authority, path, query, or fragment component, respectively. If a
      * component is absent, both indices in that pair will be -1. If the
      * string is null or is not a valid IRI, returns null.</returns>
-     * @param s A string that contains an IRI.
+     * @param s A string that contains an IRI. Can be null.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
@@ -963,7 +964,7 @@ segmentsBase[5]));
      * (IRI) under RFC3987. If the IRI is syntactically valid, splits the
      * string into its components and returns an array containing the
      * indices into the components.
-     * @param s A string that contains an IRI.
+     * @param s A string that contains an IRI. Can be null.
      * @param offset A zero-based index showing where the desired portion of "s"
      * begins.
      * @param length The length of the desired portion of "s" (but not more than
@@ -989,9 +990,29 @@ ParseMode parseMode) {
       if (s == null) {
         return null;
       }
-      if (offset < 0 || length < 0 || offset + length > s.length()) {
-        throw new IllegalArgumentException();
-      }
+      if ((s) == null) {
+  throw new NullPointerException("s");
+}
+if (offset < 0) {
+  throw new IllegalArgumentException("offset (" + offset +
+    ") is less than " + 0);
+}
+if (offset > s.length()) {
+  throw new IllegalArgumentException("offset (" + offset +
+    ") is more than " + s.length());
+}
+if (length < 0) {
+  throw new IllegalArgumentException("length (" + length +
+    ") is less than " + 0);
+}
+if (length > s.length()) {
+  throw new IllegalArgumentException("length (" + length +
+    ") is more than " + s.length());
+}
+if (s.length()-offset < length) {
+  throw new IllegalArgumentException("s's length minus " + offset + " (" +
+    (s.length()-offset) + ") is less than " + length);
+}
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
       if (length == 0) {
         retval[4] = 0;

@@ -1234,8 +1234,7 @@ System.out.print("");
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03
-         };
+   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03  };
       try {
  CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
 Assert.fail("Should have failed");

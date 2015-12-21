@@ -1352,7 +1352,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
       try {
         CBORReader reader = new CBORReader(stream);
-        if (options.And(CBOREncodeOptions.NoDuplicateKeys).getValue()==
+        if (options.And(CBOREncodeOptions.NoDuplicateKeys).getValue() ==
           CBOREncodeOptions.NoDuplicateKeys.Value) {
           reader.setDuplicatePolicy(CBORReader.CBORDuplicatePolicy.Disallow);
         }
@@ -1423,7 +1423,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Writes a string in CBOR format to a data stream.
+     * Writes a string in CBOR format to a data stream. The string will be encoded
+     * using indefinite-length encoding if its length exceeds a certain
+     * threshold (this behavior may change in future versions of this
+     * library).
      * @param str The string to write. Can be null.
      * @param stream A writable data stream.
      * @throws NullPointerException The parameter {@code stream} is null.
@@ -1683,7 +1686,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
             stream.write(bytes, 0, byteCount);
             break;
           default: stream.write((datatype == 0) ?
-           (byte)0xc2 : (byte)0xc3);
+    (byte)0xc2 : (byte)0xc3);
             WritePositiveInt(2, byteCount, stream);
             stream.write(bytes, 0, byteCount);
             break;
@@ -1877,7 +1880,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Writes an arbitrary object to a CBOR data stream. Currently, the following
      * objects are supported: <ul> <li>Lists of CBORObject.</li> <li>Maps of
-     * CBORObject.</li> <li>Null.</li> <li>Any object accepted by the
+     * CBORObject.</li> <li>Null.</li> <li>Byte arrays, which will always be
+     * written as definite-length byte strings.</li> <li>string objects,
+     * which will be written as indefinite-length text strings if their size
+     * exceeds a certain threshold (this behavior may change in future
+     * versions of this library).</li> <li>Any object accepted by the
      * FromObject static methods.</li></ul>
      * @param objValue The arbitrary object to be serialized. Can be null.
      * @param output A writable data stream.
@@ -2475,18 +2482,22 @@ public int compareTo(CBORObject other) {
         } else {
           // DebugUtility.Log("a=" + this + " b=" + other);
           if (typeA == CBORObjectTypeExtendedRational) {
-        ExtendedRational e1 = NumberInterfaces[typeA].AsExtendedRational(objA);
+        ExtendedRational e1 =
+              NumberInterfaces[typeA].AsExtendedRational(objA);
             if (typeB == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
+          ExtendedDecimal e2 =
+                NumberInterfaces[typeB].AsExtendedDecimal(objB);
               cmp = e1.CompareToDecimal(e2);
             } else {
               ExtendedFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
               cmp = e1.CompareToBinary(e2);
             }
           } else if (typeB == CBORObjectTypeExtendedRational) {
-        ExtendedRational e2 = NumberInterfaces[typeB].AsExtendedRational(objB);
+        ExtendedRational e2 =
+              NumberInterfaces[typeB].AsExtendedRational(objB);
             if (typeA == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
+          ExtendedDecimal e1 =
+                NumberInterfaces[typeA].AsExtendedDecimal(objA);
               cmp = e2.CompareToDecimal(e1);
               cmp = -cmp;
             } else {
