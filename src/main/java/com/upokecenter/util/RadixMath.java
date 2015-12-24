@@ -2934,9 +2934,10 @@ T thisValue,
 BigInteger workingPrecision,
 PrecisionContext ctx) {
       T one = this.helper.ValueOf(1);
+      int precisionAdd = this.thisRadix == 2 ? 18 : 6;
       PrecisionContext ctxdiv = SetPrecisionIfLimited(
         ctx,
-        workingPrecision.add(BigInteger.valueOf(6)))
+        workingPrecision + BigInteger.valueOf(precisionAdd))
         .WithRounding(Rounding.OddOrZeroFiveUp);
       BigInteger bigintN = BigInteger.valueOf(2);
       BigInteger facto = BigInteger.ONE;
