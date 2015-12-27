@@ -462,7 +462,7 @@ false).WithUnlimitedExponents();
     /**
      * Determines whether a number can have the given Exponent property under this
      * precision context.
-     * @param exponent An arbitrary-precision integer object indicating the desired
+     * @param exponent An arbitrary-precision integer indicating the desired
      * exponent.
      * @return True if a number can have the given Exponent property under this
      * precision context; otherwise, false. If this context allows unlimited

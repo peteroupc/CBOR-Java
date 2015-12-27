@@ -363,7 +363,10 @@ import com.upokecenter.util.*;
       }
 
     /**
-     *
+     * Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
+     * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including the special not-a-number value (NaN).
      */
     public final int signum() {
         int ret = GetSignInternal(this.getItemType(), this.getThisItem());
@@ -600,7 +603,7 @@ import com.upokecenter.util.*;
 
     /**
      * Registers an object that validates CBOR objects with new tags.
-     * @param bigintTag An arbitrary-precision integer object.
+     * @param bigintTag An arbitrary-precision integer.
      * @param handler An ICBORTag object.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
      * {@code handler} is null.

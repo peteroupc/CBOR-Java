@@ -5047,7 +5047,8 @@ String stringTemp = String.format(java.util.Locale.US,"Expected 2 tags: %s",
 Assert.assertEquals(stringTemp, 2, bi.length);
 }
             }
-            if (!bi[0].equals(BigInteger.valueOf(bigintTemp.add)(BigInteger.valueOf(1)))) {
+            bigintNew = bigintTemp.add(BigInteger.valueOf(1));
+            if (!bi[0].equals(bigintNew)) {
               {
 String stringTemp = String.format(java.util.Locale.US,"Outer tag doesn't match: %s",
                   obj2);

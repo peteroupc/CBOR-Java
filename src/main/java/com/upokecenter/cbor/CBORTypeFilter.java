@@ -303,7 +303,7 @@ CBORTypeFilter... elements) {
 
     /**
      * Returns whether an array's length is allowed under a filter.
-     * @param bigLength An arbitrary-precision integer object.
+     * @param bigLength An arbitrary-precision integer.
      * @return True if this filter allows CBOR arrays and an array's length is
      * allowed under a filter; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code bigLength} is

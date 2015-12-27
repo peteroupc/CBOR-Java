@@ -27,14 +27,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private static final int ShortMask = 0xffff;
 
     /**
-     * EInteger object for the number one.
+     * Einteger for the number one.
      */
 
     private static final EInteger one = new EInteger(
       1, new short[] { 1, 0 }, false);
 
     /**
-     * EInteger object for the number ten.
+     * Einteger for the number ten.
      */
 
     private static final EInteger ten = new EInteger(
@@ -63,7 +63,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       59652322 };
 
     /**
-     * EInteger object for the number zero.
+     * Einteger for the number zero.
      */
 
     private static final EInteger zero = new EInteger(
@@ -108,7 +108,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
 
     /**
-     *
+     * Gets the sign of this object's value.
+     * @return 0 if this value is zero; -1 if this value is negative, or 1 if this
+     * value is positive.
      */
     public final int signum() {
         return (this.wordCount == 0) ? 0 : (this.negative ? -1 : 1);

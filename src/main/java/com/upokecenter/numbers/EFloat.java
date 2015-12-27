@@ -362,7 +362,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param bigint An arbitrary-precision integer object.
+     * @param bigint An arbitrary-precision integer.
      * @param lastDigit A 32-bit signed integer.
      * @param olderDigits A 32-bit signed integer. (2).
      * @return An IShiftAccumulator object.
@@ -376,7 +376,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param bigint An arbitrary-precision integer object.
+     * @param bigint An arbitrary-precision integer.
      * @return An IShiftAccumulator object.
      */
       public IShiftAccumulator CreateShiftAccumulator(EInteger bigint) {
@@ -385,8 +385,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param num An arbitrary-precision integer object.
-     * @param den Another arbitrary-precision integer object.
+     * @param num An arbitrary-precision integer.
+     * @param den Another arbitrary-precision integer.
      * @return A Boolean object.
      */
       public boolean HasTerminatingRadixExpansion(EInteger num, EInteger den) {
@@ -403,8 +403,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param bigint Another arbitrary-precision integer object.
-     * @param power A FastInteger object.
+     * @param bigint Another arbitrary-precision integer.
+     * @param power A Fastinteger.
      * @return An arbitrary-precision integer.
      */
       public EInteger MultiplyByRadixPower(
@@ -445,8 +445,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param mantissa An arbitrary-precision integer object.
-     * @param exponent Another arbitrary-precision integer object.
+     * @param mantissa An arbitrary-precision integer.
+     * @param exponent Another arbitrary-precision integer.
      * @param flags A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
@@ -856,7 +856,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts a big integer to the same value as a binary float.
-     * @param bigint An arbitrary-precision integer object.
+     * @param bigint An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
      */
     public static EFloat FromBigInteger(EInteger bigint) {
@@ -1103,7 +1103,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     *
+     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
+     * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      */
     public final int signum() {
         return (((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
@@ -1142,8 +1143,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param divisor The divisor.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0.
      * @throws ArithmeticException The result can't be exact because it would have
      * a nonterminating binary expansion.
      */
@@ -1161,8 +1162,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * to have the same exponent as this value.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
@@ -1182,8 +1183,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param divisor The divisor.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
-     * dividend is nonzero. Signals FlagInvalid and returns NaN if the
-     * divisor and the dividend are 0.
+     * dividend is nonzero. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the divisor and the dividend are 0.
      */
     public EFloat DivideToIntegerNaturalScale(
       EFloat divisor) {
@@ -1259,9 +1260,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the context defines an
-     * exponent range and the desired exponent is outside that range.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the context defines an exponent range and the desired
+     * exponent is outside that range.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
@@ -1286,8 +1288,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * addition to the pre-existing flags). Can be null.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0.
      * @throws ArithmeticException Either {@code ctx} is null or {@code ctx} 's
      * precision is 0, and the result would have a nonterminating binary
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
@@ -1311,8 +1313,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
@@ -1344,9 +1346,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the context defines an
-     * exponent range and the desired exponent is outside that range.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the context defines an exponent range and the desired
+     * exponent is outside that range.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
@@ -1369,8 +1372,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
@@ -1499,7 +1502,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * both operands have the same sign or as negative infinity if both
      * operands have different signs. Signals FlagDivideByZero and returns
      * infinity if the divisor is 0 and the dividend is nonzero. Signals
-     * FlagInvalid and returns NaN if the divisor and the dividend are 0.
+     * FlagInvalid and returns not-a-number (NaN) if the divisor and the
+     * dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the integer part of the result is not exact.
      */
@@ -1521,8 +1525,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return The integer part of the quotient of the two objects. The exponent
      * will be set to 0. Signals FlagDivideByZero and returns infinity if
      * the divisor is 0 and the dividend is nonzero. Signals FlagInvalid and
-     * returns NaN if the divisor and the dividend are 0, or if the result
-     * doesn't fit the given precision.
+     * returns not-a-number (NaN) if the divisor and the dividend are 0, or
+     * if the result doesn't fit the given precision.
      */
     public EFloat DivideToIntegerZeroScale(
       EFloat divisor,
@@ -1567,9 +1571,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * true, will also store the flags resulting from the operation (the
      * flags are in addition to the pre-existing flags). Can be null.
      * @return The distance of the closest multiple. Signals FlagInvalid and
-     * returns NaN if the divisor is 0, or either the result of integer
-     * division (the quotient) or the remainder wouldn't fit the given
-     * precision.
+     * returns not-a-number (NaN) if the divisor is 0, or either the result
+     * of integer division (the quotient) or the remainder wouldn't fit the
+     * given precision.
      */
     public EFloat RemainderNear(
       EFloat divisor,
@@ -1827,13 +1831,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Returns a binary float with the same value but a new exponent.
-     * @param desiredExponent An arbitrary-precision integer object.
+     * @param desiredExponent An arbitrary-precision integer.
      * @param ctx A PrecisionContext object.
      * @return A binary float with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if an overflow
-     * error occurred, or the rounded result can't fit the given precision,
-     * or if the context defines an exponent range and the given exponent is
-     * outside that range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if an overflow error occurred, or the rounded result can't fit the
+     * given precision, or if the context defines an exponent range and the
+     * given exponent is outside that range.
      */
     public EFloat Quantize(
       EInteger desiredExponent,
@@ -1848,10 +1852,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param desiredExponentSmall A 32-bit signed integer.
      * @param ctx A PrecisionContext object.
      * @return A binary float with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if an overflow
-     * error occurred, or the rounded result can't fit the given precision,
-     * or if the context defines an exponent range and the given exponent is
-     * outside that range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if an overflow error occurred, or the rounded result can't fit the
+     * given precision, or if the context defines an exponent range and the
+     * given exponent is outside that range.
      */
     public EFloat Quantize(
       int desiredExponentSmall,
@@ -1877,11 +1881,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A binary float with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if an overflow
-     * error occurred, or the result can't fit the given precision without
-     * rounding. Signals FlagInvalid and returns NaN if the new exponent is
-     * outside of the valid range of the precision context, if it defines an
-     * exponent range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if an overflow error occurred, or the result can't fit the given
+     * precision without rounding. Signals FlagInvalid and returns
+     * not-a-number (NaN) if the new exponent is outside of the valid range
+     * of the precision context, if it defines an exponent range.
      */
     public EFloat Quantize(
       EFloat otherValue,
@@ -1899,11 +1903,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A binary number rounded to the closest integer representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to 0 when rounding, and 0 is outside
-     * of the valid range of the precision context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to 0 when
+     * rounding, and 0 is outside of the valid range of the precision
+     * context.
      */
     public EFloat RoundToIntegralExact(EContext ctx) {
       return MathValue.RoundToExponentExact(this, EInteger.FromInt64(0), ctx);
@@ -1922,9 +1927,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A binary number rounded to the closest integer representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to 0 when rounding, and 0 is outside
-     * of the valid range of the precision context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to 0 when rounding,
+     * and 0 is outside of the valid range of the precision context.
      */
     public EFloat RoundToIntegralNoRoundedFlag(EContext ctx) {
       return MathValue.RoundToExponentNoRoundedFlag(this, EInteger.FromInt64(0), ctx);
@@ -1942,12 +1947,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * 1000b). A value of 0 rounds the number to an integer.
      * @param ctx A PrecisionContext object.
      * @return A binary number rounded to the closest value representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to the
+     * given exponent when rounding, and the given exponent is outside of
+     * the valid range of the precision context.
      */
     public EFloat RoundToExponentExact(
       EInteger exponent,
@@ -1972,10 +1977,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A binary number rounded to the closest value representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to the given
+     * exponent when rounding, and the given exponent is outside of the
+     * valid range of the precision context.
      */
     public EFloat RoundToExponent(
       EInteger exponent,
@@ -1995,12 +2000,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value of 0 rounds the number to an integer.
      * @param ctx A PrecisionContext object.
      * @return A binary number rounded to the closest value representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to the
+     * given exponent when rounding, and the given exponent is outside of
+     * the valid range of the precision context.
      */
     public EFloat RoundToExponentExact(
       int exponentSmall,
@@ -2025,10 +2030,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A binary number rounded to the closest value representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to the given
+     * exponent when rounding, and the given exponent is outside of the
+     * valid range of the precision context.
      */
     public EFloat RoundToExponent(
       int exponentSmall,
@@ -2221,10 +2226,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
      * as the ln function's results are generally not exact.--.
-     * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns NaN
-     * if this object is less than 0. Signals FlagInvalid and returns NaN if
-     * the parameter {@code ctx} is null or the precision is unlimited (the
-     * context's Precision property is 0).
+     * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
+     * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
+     * and returns not-a-number (NaN) if the parameter {@code ctx} is null
+     * or the precision is unlimited (the context's Precision property is
+     * 0).
      */
     public EFloat Log10(EContext ctx) {
       return MathValue.Log10(this, ctx);
@@ -2262,7 +2268,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. Returns NaN if this object and exponent are both 0.
+     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * exponent are both 0.
      */
     public EFloat Pow(int exponentSmall) {
       return this.Pow(EFloat.FromInt64(exponentSmall), null);
@@ -2310,7 +2317,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Returns a number similar to this number but with the radix point moved to
      * the left.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
      */
     public EFloat MovePointLeft(EInteger bigPlaces) {
@@ -2320,7 +2327,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Returns a number similar to this number but with the radix point moved to
      * the left.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2364,7 +2371,7 @@ EContext ctx) {
     /**
      * Returns a number similar to this number but with the radix point moved to
      * the right.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
      */
     public EFloat MovePointRight(EInteger bigPlaces) {
@@ -2374,7 +2381,7 @@ EContext ctx) {
     /**
      * Returns a number similar to this number but with the radix point moved to
      * the right.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2432,7 +2439,7 @@ this.flags).RoundToPrecision(ctx);
 
     /**
      * Returns a number similar to this number but with the scale adjusted.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
      */
     public EFloat ScaleByPowerOfTwo(EInteger bigPlaces) {
@@ -2441,7 +2448,7 @@ this.flags).RoundToPrecision(ctx);
 
     /**
      * Returns a number similar to this number but with its scale adjusted.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in

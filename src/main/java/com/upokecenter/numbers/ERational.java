@@ -95,8 +95,8 @@ int denominatorSmall) {
 
     /**
      * Creates a number with the given numerator and denominator.
-     * @param numerator An arbitrary-precision integer object.
-     * @param denominator Another arbitrary-precision integer object.
+     * @param numerator An arbitrary-precision integer.
+     * @param denominator Another arbitrary-precision integer.
      * @return An arbitrary-precision rational number.
      */
     public static ERational Create(
@@ -107,8 +107,8 @@ EInteger denominator) {
 
     /**
      * Initializes a new instance of the arbitrary-precision rational number class.
-     * @param numerator An arbitrary-precision integer object.
-     * @param denominator Another arbitrary-precision integer object.
+     * @param numerator An arbitrary-precision integer.
+     * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
      * {@code denominator} is null.
      */
@@ -168,7 +168,7 @@ EInteger denominator) {
 
     /**
      * Converts a big integer to a rational number.
-     * @param bigint An arbitrary-precision integer object.
+     * @param bigint An arbitrary-precision integer.
      * @return The exact value of the integer as a rational number.
      */
     public static ERational FromBigInteger(EInteger bigint) {
@@ -618,7 +618,9 @@ rem = divrem[1]; }
       }
 
     /**
-     *
+     * Gets the sign of this rational number.
+     * @return Zero if this value is zero or negative zero; -1 if this value is
+     * less than 0; and 1 if this value is greater than 0.
      */
     public final int signum() {
         return ((this.flags & (BigNumberFlags.FlagInfinity |
@@ -1041,7 +1043,8 @@ BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
     /**
      * Adds two rational numbers.
      * @param otherValue Another arbitrary-precision rational number.
-     * @return The sum of the two numbers. Returns NaN if either operand is NaN.
+     * @return The sum of the two numbers. returns not-a-number (NaN) if either
+     * operand is NaN.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */

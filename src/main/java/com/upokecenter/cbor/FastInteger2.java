@@ -583,7 +583,8 @@ import com.upokecenter.util.*;
     }
 
     /**
-     *
+     * Gets the sign of this object&#x27;s value.
+     * @return 1 if positive, -1 if negative, 0 if zero.
      */
     final int signum() {
         switch (this.integerMode) {

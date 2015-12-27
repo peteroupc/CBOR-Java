@@ -33,7 +33,7 @@ import java.io.*;
      * to U + DFFF) in the string are replaced with replacement characters
      * (U + FFFD).
      * @param str The string to read.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public CharacterReader (String str) {
  this(str, false, false);
@@ -46,7 +46,7 @@ import java.io.*;
      * @param str The string to read.
      * @param skipByteOrderMark If true and the string begins with a byte-order
      * mark (U + FEFF), will skip that code point as it reads the string.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public CharacterReader (String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
@@ -62,7 +62,7 @@ import java.io.*;
      * code points (U + D800 to U + DFFF) are found in the string. If false,
      * replaces those byte sequences with replacement characters (U + FFFD) as
      * the stream is read.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
   public CharacterReader (
 String str,
@@ -86,7 +86,7 @@ boolean errorThrow) {
      * first in the stream, and replace invalidly encoded bytes with
      * replacement characters (U + FFFD).
      * @param stream A readable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (InputStream stream) {
  this(stream, 0, false);
@@ -110,7 +110,7 @@ boolean errorThrow) {
      * (in the detected encoding) are found in the byte stream. If false,
      * replaces those byte sequences with replacement characters (U + FFFD) as
      * the stream is read.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
@@ -131,7 +131,7 @@ boolean errorThrow) {
      * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
      * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
      * (Tries to detect UTF-32 first.)</li></ul>.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (InputStream stream, int mode) {
  this(stream, mode, false, false);
@@ -157,7 +157,7 @@ boolean errorThrow) {
      * @param dontSkipUtf8Bom If the stream is detected as UTF-8 and this parameter
      * is {@code true}, won't skip the BOM character if it occurs at the
      * start of the stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (
 InputStream stream,
@@ -188,10 +188,10 @@ boolean dontSkipUtf8Bom) {
      * @return The number of code points read from the stream. This can be less
      * than the {@code length} parameter if the end of the stream is
      * reached.
-     * @throws NullPointerException The parameter {@code chars} is null.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
-     * length minus {@code index} is less than {@code length}.
+     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is
+     * less than 0 or greater than {@code chars} 's length, or {@code chars}
+     * 's length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

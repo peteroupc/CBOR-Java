@@ -23,7 +23,7 @@ import com.upokecenter.numbers.*;
      */
   public final class BigInteger implements Comparable<BigInteger> {
     /**
-     * BigInteger object for the number one.
+     * Biginteger for the number one.
      */
 
     public static final BigInteger ONE = new BigInteger(EInteger.FromInt64(1));
@@ -38,13 +38,13 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * BigInteger object for the number ten.
+     * Biginteger for the number ten.
      */
 
     public static final BigInteger TEN = BigInteger.valueOf(10);
 
     /**
-     * BigInteger object for the number zero.
+     * Biginteger for the number zero.
      */
 
     public static final BigInteger ZERO = new BigInteger(EInteger.FromInt64(0));
@@ -66,17 +66,19 @@ import com.upokecenter.numbers.*;
 }
 
     /**
-     *
+     * Gets the sign of this object's value.
+     * @return 0 if this value is zero; -1 if this value is negative, or 1 if this
+     * value is positive.
      */
     public final int signum() {
  return this.ei.signum();
 }
 
     /**
-     * Initializes an arbitrary-precision integer object from an array of bytes.
+     * Initializes an arbitrary-precision integer from an array of bytes.
      * @param bytes A byte array.
      * @param littleEndian A Boolean object.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      * @deprecated Renamed to 'fromBytes'.
  */
@@ -86,10 +88,10 @@ import com.upokecenter.numbers.*;
  }
 
     /**
-     * Initializes an arbitrary-precision integer object from an array of bytes.
+     * Initializes an arbitrary-precision integer from an array of bytes.
      * @param bytes A byte array.
      * @param littleEndian A Boolean object.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
     public static BigInteger fromBytes(byte[] bytes, boolean littleEndian) {
@@ -105,8 +107,8 @@ import com.upokecenter.numbers.*;
      * the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic letters
      * A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10, and 0-9,
      * then A-F in radix 16.
-     * @return An arbitrary-precision integer object with the same value as given
-     * in the string.
+     * @return An arbitrary-precision integer with the same value as given in the
+     * string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code radix} is less than 2
      * or greater than 36.
@@ -128,8 +130,8 @@ import com.upokecenter.numbers.*;
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
      * length will be index + endIndex - 1.
-     * @return An arbitrary-precision integer object with the same value as given
-     * in the string portion.
+     * @return An arbitrary-precision integer with the same value as given in the
+     * string portion.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
@@ -168,8 +170,8 @@ return new BigInteger(EInteger.fromString(str));
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
      * length will be index + endIndex - 1.
-     * @return An arbitrary-precision integer object with the same value as given
-     * in the string portion.
+     * @return An arbitrary-precision integer with the same value as given in the
+     * string portion.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
@@ -186,8 +188,8 @@ return new BigInteger(EInteger.FromSubstring(str, index, endIndex));
     /**
      * Converts a 64-bit signed integer to a big integer.
      * @param longerValue A 64-bit signed integer.
-     * @return An arbitrary-precision integer object with the same value as the
-     * 64-bit number.
+     * @return An arbitrary-precision integer with the same value as the 64-bit
+     * number.
      */
     public static BigInteger valueOf(long longerValue) {
       return new BigInteger(EInteger.FromInt64(longerValue));
@@ -269,7 +271,7 @@ return this.ei.canFitInInt();
     /**
      * Divides this object by another big integer and returns the quotient and
      * remainder.
-     * @param divisor An arbitrary-precision integer object.
+     * @param divisor An arbitrary-precision integer.
      * @return An array with two big integers: the first is the quotient, and the
      * second is the remainder.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
@@ -538,7 +540,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * @param numberBits The number of bits to shift. Can be negative, in which
      * case this is the same as shiftRight with the absolute value of
      * numberBits.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      */
     public BigInteger shiftLeft(int numberBits) {
       return new BigInteger(this.ei.ShiftLeft(numberBits));
@@ -550,7 +552,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * complement representation. Thus, for negative values, the
      * arbitrary-precision integer is sign-extended.
      * @param numberBits Number of bits to shift right.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      */
     public BigInteger shiftRight(int numberBits) {
       return new BigInteger(this.ei.ShiftRight(numberBits));
@@ -581,7 +583,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
     /**
      * Subtracts an arbitrary-precision integer from this arbitrary-precision
      * integer.
-     * @param subtrahend Another arbitrary-precision integer object.
+     * @param subtrahend Another arbitrary-precision integer.
      * @return The difference of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code subtrahend} is
      * null.

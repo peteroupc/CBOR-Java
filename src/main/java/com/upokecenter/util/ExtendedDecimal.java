@@ -306,7 +306,7 @@ try {
     /**
      * Converts this value to an arbitrary-precision integer. Any fractional part
      * in this value will be discarded when converting to a big integer.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
@@ -374,7 +374,7 @@ try {
     /**
      * Converts this value to an arbitrary-precision integer, checking whether the
      * fractional part of the integer would be lost.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      * @throws ArithmeticException This object's value is not an exact integer.
      */
@@ -452,7 +452,7 @@ try {
 
     /**
      * Converts a big integer to an arbitrary precision decimal.
-     * @param bigint An arbitrary-precision integer object.
+     * @param bigint An arbitrary-precision integer.
      * @return An arbitrary-precision decimal object with the exponent set to 0.
      */
     public static ExtendedDecimal FromBigInteger(BigInteger bigint) {
@@ -669,7 +669,8 @@ try {
     }
 
     /**
-     *
+     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
+     * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      */
     public final int signum() {
         return this.ed.signum();
@@ -705,9 +706,9 @@ try {
      * @param divisor The divisor.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Returns NaN if the divisor and the dividend are 0. Returns NaN if the
-     * result can't be exact because it would have a nonterminating decimal
-     * expansion.
+     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns NaN if the result can't be exact because it would have a
+     * nonterminating decimal expansion.
      */
     public ExtendedDecimal Divide(ExtendedDecimal divisor) {
       if ((divisor) == null) {
@@ -724,9 +725,10 @@ try {
      * to have the same exponent as this value.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
+     * not exact.
      */
     public ExtendedDecimal DivideToSameExponent(ExtendedDecimal divisor,
       Rounding rounding) {
@@ -744,8 +746,8 @@ try {
      * @param divisor The divisor.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
-     * dividend is nonzero. Signals FlagInvalid and returns NaN if the
-     * divisor and the dividend are 0.
+     * dividend is nonzero. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the divisor and the dividend are 0.
      */
     public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal
                     divisor) {
@@ -833,11 +835,12 @@ try {
      * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the context defines an
-     * exponent range and the desired exponent is outside that range.
-     * Signals FlagInvalid and returns NaN if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the context defines an exponent range and the desired
+     * exponent is outside that range. Signals FlagInvalid and returns
+     * not-a-number (NaN) if the rounding mode is Rounding.Unnecessary and
+     * the result is not exact.
      */
     public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
       long desiredExponentSmall,
@@ -865,11 +868,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0; or, either {@code ctx} is null or {@code ctx} 's precision is
-     * 0, and the result would have a nonterminating decimal expansion; or,
-     * the rounding mode is Rounding.Unnecessary and the result is not
-     * exact.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0; or, either {@code ctx} is null or {@code ctx} 's
+     * precision is 0, and the result would have a nonterminating decimal
+     * expansion; or, the rounding mode is Rounding.Unnecessary and the
+     * result is not exact.
      */
     public ExtendedDecimal Divide(ExtendedDecimal divisor,
       PrecisionContext ctx) {
@@ -896,9 +899,10 @@ try {
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
+     * not exact.
      */
     public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
       long desiredExponentSmall,
@@ -928,11 +932,12 @@ try {
      * the default rounding mode is HalfEven.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Signals FlagInvalid and returns NaN if the divisor and the dividend
-     * are 0. Signals FlagInvalid and returns NaN if the context defines an
-     * exponent range and the desired exponent is outside that range.
-     * Signals FlagInvalid and returns NaN if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
+     * the dividend are 0. Signals FlagInvalid and returns not-a-number
+     * (NaN) if the context defines an exponent range and the desired
+     * exponent is outside that range. Signals FlagInvalid and returns
+     * not-a-number (NaN) if the rounding mode is Rounding.Unnecessary and
+     * the result is not exact.
      */
     public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
       BigInteger exponent,
@@ -964,8 +969,9 @@ try {
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * Returns NaN if the divisor and the dividend are 0. Returns NaN if the
-     * rounding mode is Rounding.Unnecessary and the result is not exact.
+     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns NaN if the rounding mode is Rounding.Unnecessary and the
+     * result is not exact.
      */
     public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
       BigInteger desiredExponent,
@@ -1110,12 +1116,13 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * the integer part of the result doesn't fit the precision and exponent
      * range without rounding.
      * @return The integer part of the quotient of the two objects. Signals
-     * FlagInvalid and returns NaN if the return value would overflow the
-     * exponent range. Signals FlagDivideByZero and returns infinity if the
-     * divisor is 0 and the dividend is nonzero. Signals FlagInvalid and
-     * returns NaN if the divisor and the dividend are 0. Signals
-     * FlagInvalid and returns NaN if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * FlagInvalid and returns not-a-number (NaN) if the return value would
+     * overflow the exponent range. Signals FlagDivideByZero and returns
+     * infinity if the divisor is 0 and the dividend is nonzero. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the divisor and the
+     * dividend are 0. Signals FlagInvalid and returns not-a-number (NaN) if
+     * the rounding mode is Rounding.Unnecessary and the result is not
+     * exact.
      */
     public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal divisor,
       PrecisionContext ctx) {
@@ -1142,8 +1149,8 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * @return The integer part of the quotient of the two objects. The exponent
      * will be set to 0. Signals FlagDivideByZero and returns infinity if
      * the divisor is 0 and the dividend is nonzero. Signals FlagInvalid and
-     * returns NaN if the divisor and the dividend are 0, or if the result
-     * doesn't fit the given precision.
+     * returns not-a-number (NaN) if the divisor and the dividend are 0, or
+     * if the result doesn't fit the given precision.
      */
     public ExtendedDecimal DivideToIntegerZeroScale(ExtendedDecimal divisor,
       PrecisionContext ctx) {
@@ -1202,9 +1209,9 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * true, will also store the flags resulting from the operation (the
      * flags are in addition to the pre-existing flags). Can be null.
      * @return The distance of the closest multiple. Signals FlagInvalid and
-     * returns NaN if the divisor is 0, or either the result of integer
-     * division (the quotient) or the remainder wouldn't fit the given
-     * precision.
+     * returns not-a-number (NaN) if the divisor is 0, or either the result
+     * of integer division (the quotient) or the remainder wouldn't fit the
+     * given precision.
      */
     public ExtendedDecimal RemainderNear(ExtendedDecimal divisor,
       PrecisionContext ctx) {
@@ -1228,8 +1235,9 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * pre-existing flags).
      * @return Returns the largest value that's less than the given value. Returns
      * negative infinity if the result is negative infinity. Signals
-     * FlagInvalid and returns NaN if the parameter {@code ctx} is null, the
-     * precision is 0, or {@code ctx} has an unlimited exponent range.
+     * FlagInvalid and returns not-a-number (NaN) if the parameter {@code
+     * ctx} is null, the precision is 0, or {@code ctx} has an unlimited
+     * exponent range.
      */
     public ExtendedDecimal NextMinus(PrecisionContext ctx) {
       try {
@@ -1248,9 +1256,9 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * resulting from the operation (the flags are in addition to the
      * pre-existing flags).
      * @return Returns the smallest value that's greater than the given
-     * value.Signals FlagInvalid and returns NaN if the parameter {@code
-     * ctx} is null, the precision is 0, or {@code ctx} has an unlimited
-     * exponent range.
+     * value.Signals FlagInvalid and returns not-a-number (NaN) if the
+     * parameter {@code ctx} is null, the precision is 0, or {@code ctx} has
+     * an unlimited exponent range.
      */
     public ExtendedDecimal NextPlus(PrecisionContext ctx) {
       try {
@@ -1562,16 +1570,17 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * the maximum precision. If rounding to a number of decimal places is
      * desired, it's better to use the RoundToExponent and RoundToIntegral
      * methods instead.</p>
-     * @param desiredExponent An arbitrary-precision integer object.
+     * @param desiredExponent An arbitrary-precision integer.
      * @param ctx A precision context to control precision and rounding of the
      * result. If HasFlags of the context is true, will also store the flags
      * resulting from the operation (the flags are in addition to the
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if the rounded
-     * result can't fit the given precision, or if the context defines an
-     * exponent range and the given exponent is outside that range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the rounded result can't fit the given precision, or if the
+     * context defines an exponent range and the given exponent is outside
+     * that range.
      */
     public ExtendedDecimal Quantize(BigInteger desiredExponent,
       PrecisionContext ctx) {
@@ -1591,7 +1600,7 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * @param desiredExponentSmall A 32-bit signed integer.
      * @param rounding Not documented yet.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. Returns NaN if the rounding mode is
+     * exponent changed. returns not-a-number (NaN) if the rounding mode is
      * Rounding.Unnecessary and the result is not exact.
      */
     public ExtendedDecimal Quantize(int desiredExponentSmall,
@@ -1620,9 +1629,10 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if the rounded
-     * result can't fit the given precision, or if the context defines an
-     * exponent range and the given exponent is outside that range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the rounded result can't fit the given precision, or if the
+     * context defines an exponent range and the given exponent is outside
+     * that range.
      */
     public ExtendedDecimal Quantize(int desiredExponentSmall,
       PrecisionContext ctx) {
@@ -1655,10 +1665,10 @@ return new ExtendedDecimal(this.ed.Quantize(desiredExponentSmall, ctx ==
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding, or if the precision
-     * context defines an exponent range and the given exponent is outside
-     * that range.
+     * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding, or if
+     * the precision context defines an exponent range and the given
+     * exponent is outside that range.
      */
     public ExtendedDecimal Quantize(ExtendedDecimal otherValue,
       PrecisionContext ctx) {
@@ -1683,11 +1693,12 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * pre-existing flags). Can be null, in which case the default rounding
      * mode is HalfEven.
      * @return A decimal number rounded to the closest integer representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to 0 when rounding, and 0 is outside
-     * of the valid range of the precision context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to 0 when
+     * rounding, and 0 is outside of the valid range of the precision
+     * context.
      */
     public ExtendedDecimal RoundToIntegralExact(PrecisionContext ctx) {
       try {
@@ -1711,9 +1722,9 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * @return A decimal number rounded to the closest integer representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to 0 when rounding, and 0 is outside
-     * of the valid range of the precision context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to 0 when rounding,
+     * and 0 is outside of the valid range of the precision context.
      */
     public ExtendedDecimal RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
       try {
@@ -1736,12 +1747,12 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * value of 0 rounds the number to an integer.
      * @param ctx An EContext object.
      * @return A decimal number rounded to the closest value representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to the
+     * given exponent when rounding, and the given exponent is outside of
+     * the valid range of the precision context.
      */
     public ExtendedDecimal RoundToExponentExact(BigInteger exponent,
       PrecisionContext ctx) {
@@ -1773,10 +1784,10 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * @return A decimal number rounded to the closest value representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to the given
+     * exponent when rounding, and the given exponent is outside of the
+     * valid range of the precision context.
      */
     public ExtendedDecimal RoundToExponent(BigInteger exponent,
       PrecisionContext ctx) {
@@ -1803,12 +1814,12 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * value of 0 rounds the number to an integer.
      * @param ctx An EContext object.
      * @return A decimal number rounded to the closest value representable in the
-     * given precision. Signals FlagInvalid and returns NaN if the result
-     * can't fit the given precision without rounding. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * given precision. Signals FlagInvalid and returns not-a-number (NaN)
+     * if the result can't fit the given precision without rounding. Signals
+     * FlagInvalid and returns not-a-number (NaN) if the precision context
+     * defines an exponent range, the new exponent must be changed to the
+     * given exponent when rounding, and the given exponent is outside of
+     * the valid range of the precision context.
      */
     public ExtendedDecimal RoundToExponentExact(int exponentSmall,
       PrecisionContext ctx) {
@@ -1837,10 +1848,10 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * @return A decimal number rounded to the closest value representable in the
      * given precision, meaning if the result can't fit the precision,
      * additional digits are discarded to make it fit. Signals FlagInvalid
-     * and returns NaN if the precision context defines an exponent range,
-     * the new exponent must be changed to the given exponent when rounding,
-     * and the given exponent is outside of the valid range of the precision
-     * context.
+     * and returns not-a-number (NaN) if the precision context defines an
+     * exponent range, the new exponent must be changed to the given
+     * exponent when rounding, and the given exponent is outside of the
+     * valid range of the precision context.
      */
     public ExtendedDecimal RoundToExponent(int exponentSmall,
       PrecisionContext ctx) {
@@ -2001,8 +2012,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN). Signals FlagInvalid and
-     * returns NaN if the parameter {@code ctx} is null or the precision is
-     * unlimited (the context's Precision property is 0).
+     * returns not-a-number (NaN) if the parameter {@code ctx} is null or
+     * the precision is unlimited (the context's Precision property is 0).
      */
     public ExtendedDecimal SquareRoot(PrecisionContext ctx) {
       try {
@@ -2023,8 +2034,9 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * as the exponential function's results are generally not exact.--.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision. Signals FlagInvalid
-     * and returns NaN if the parameter {@code ctx} is null or the precision
-     * is unlimited (the context's Precision property is 0).
+     * and returns not-a-number (NaN) if the parameter {@code ctx} is null
+     * or the precision is unlimited (the context's Precision property is
+     * 0).
      */
     public ExtendedDecimal Exp(PrecisionContext ctx) {
       try {
@@ -2047,10 +2059,10 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
      * imaginary part equal to pi, but the return value is still NaN.).
-     * Signals FlagInvalid and returns NaN if the parameter {@code ctx} is
-     * null or the precision is unlimited (the context's Precision property
-     * is 0). Signals no flags and returns negative infinity if this
-     * object's value is 0.
+     * Signals FlagInvalid and returns not-a-number (NaN) if the parameter
+     * {@code ctx} is null or the precision is unlimited (the context's
+     * Precision property is 0). Signals no flags and returns negative
+     * infinity if this object's value is 0.
      */
     public ExtendedDecimal Log(PrecisionContext ctx) {
       try {
@@ -2069,10 +2081,11 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). --This parameter cannot be null,
      * as the ln function's results are generally not exact.--.
-     * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns NaN
-     * if this object is less than 0. Signals FlagInvalid and returns NaN if
-     * the parameter {@code ctx} is null or the precision is unlimited (the
-     * context's Precision property is 0).
+     * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
+     * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
+     * and returns not-a-number (NaN) if the parameter {@code ctx} is null
+     * or the precision is unlimited (the context's Precision property is
+     * 0).
      */
     public ExtendedDecimal Log10(PrecisionContext ctx) {
       try {
@@ -2092,9 +2105,9 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * @return This^exponent. Signals the flag FlagInvalid and returns NaN if this
      * object and exponent are both 0; or if this value is less than 0 and
      * the exponent either has a fractional part or is infinity. Signals
-     * FlagInvalid and returns NaN if the parameter {@code ctx} is null or
-     * the precision is unlimited (the context's Precision property is 0),
-     * and the exponent has a fractional part.
+     * FlagInvalid and returns not-a-number (NaN) if the parameter {@code
+     * ctx} is null or the precision is unlimited (the context's Precision
+     * property is 0), and the exponent has a fractional part.
      */
     public ExtendedDecimal Pow(ExtendedDecimal exponent, PrecisionContext ctx) {
       try {
@@ -2130,7 +2143,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. Returns NaN if this object and exponent are both 0.
+     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * exponent are both 0.
      */
     public ExtendedDecimal Pow(int exponentSmall) {
       return new ExtendedDecimal(this.ed.Pow(exponentSmall));
@@ -2144,8 +2158,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * addition to the pre-existing flags). --This parameter cannot be null,
      * as pi can never be represented exactly.--.
      * @return Pi rounded to the given precision. Signals FlagInvalid and returns
-     * NaN if the parameter {@code ctx} is null or the precision is
-     * unlimited (the context's Precision property is 0).
+     * not-a-number (NaN) if the parameter {@code ctx} is null or the
+     * precision is unlimited (the context's Precision property is 0).
      */
     public static ExtendedDecimal PI(PrecisionContext ctx) {
       return new ExtendedDecimal(EDecimal.PI(ctx == null ? null : ctx.ec));
@@ -2183,7 +2197,7 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
     /**
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision decimal object.
      */
     public ExtendedDecimal MovePointLeft(BigInteger bigPlaces) {
@@ -2196,7 +2210,7 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
     /**
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2248,7 +2262,7 @@ PrecisionContext ctx) {
     /**
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision decimal object.
      */
     public ExtendedDecimal MovePointRight(BigInteger bigPlaces) {
@@ -2261,7 +2275,7 @@ PrecisionContext ctx) {
     /**
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2312,7 +2326,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a number similar to this number but with the scale adjusted.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision decimal object.
      */
     public ExtendedDecimal ScaleByPowerOfTen(BigInteger bigPlaces) {
@@ -2324,7 +2338,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a number similar to this number but with its scale adjusted.
-     * @param bigPlaces An arbitrary-precision integer object.
+     * @param bigPlaces An arbitrary-precision integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2348,7 +2362,7 @@ PrecisionContext ctx) {
     /**
      * Finds the number of digits in this number's mantissa. Returns 1 if this
      * value is 0, and 0 if this value is infinity or NaN.
-     * @return An arbitrary-precision integer object.
+     * @return An arbitrary-precision integer.
      */
     public BigInteger Precision() {
       return new BigInteger(this.ed.Precision());
