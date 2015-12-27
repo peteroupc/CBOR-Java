@@ -120,7 +120,7 @@ import com.upokecenter.util.*;
       if (!ef.isFinite()) {
         return false;
       }
-      if (ef.getDenominator().equals(BigInteger.ONE)) {
+      if (ef.getDenominator().equals(BigInteger.valueOf(1))) {
         return true;
       }
       // A rational number is integral if the remainder

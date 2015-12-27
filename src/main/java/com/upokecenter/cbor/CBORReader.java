@@ -105,7 +105,7 @@ int expectedType) throws java.io.IOException {
     private static BigInteger ToUnsignedBigInteger(long val) {
       BigInteger lval = BigInteger.valueOf(val & ~(1L << 63));
       if ((val >> 63) != 0) {
-        BigInteger bigintAdd = BigInteger.ONE.shiftLeft(63);
+        BigInteger bigintAdd = BigInteger.valueOf(1).shiftLeft(63);
         lval = lval.add(bigintAdd);
       }
       return lval;
@@ -234,7 +234,7 @@ CBORTypeFilter filter) throws java.io.IOException {
         return cbor;
       }
       long uadditional = (long)additional;
-      BigInteger bigintAdditional = BigInteger.ZERO;
+      BigInteger bigintAdditional = BigInteger.valueOf(0);
       boolean hasBigAdditional = false;
       data = new byte[8];
       int lowAdditional = 0;

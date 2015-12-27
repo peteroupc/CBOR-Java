@@ -173,7 +173,7 @@ private RandomObjects() {
       BigInteger bigintA = RandomBigInteger(rand);
       BigInteger bigintB = RandomBigInteger(rand);
       if (bigintB.signum() == 0) {
-        bigintB = BigInteger.ONE;
+        bigintB = BigInteger.valueOf(1);
       }
       return new ExtendedRational(bigintA, bigintB);
     }

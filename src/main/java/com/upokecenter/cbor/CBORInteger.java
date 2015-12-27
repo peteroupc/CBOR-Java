@@ -85,7 +85,7 @@ import com.upokecenter.util.*;
     }
 
     public Object Negate(Object obj) {
-      return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (BigInteger.ONE.shiftLeft(63)) :
+      return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (BigInteger.valueOf(1).shiftLeft(63)) :
       (-((((Long)obj).longValue())));
     }
 
@@ -121,7 +121,7 @@ import com.upokecenter.util.*;
 
     public Object Abs(Object obj) {
       long val = (((Long)obj).longValue());
-      return (val == Integer.MIN_VALUE) ? (BigInteger.ONE.shiftLeft(63)) : ((val < 0) ?
+      return (val == Integer.MIN_VALUE) ? (BigInteger.valueOf(1).shiftLeft(63)) : ((val < 0) ?
       -val : obj);
     }
 

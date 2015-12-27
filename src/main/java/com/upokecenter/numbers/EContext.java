@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -7,15 +7,11 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.numbers.*;
-
     /**
      * Contains parameters for controlling the precision, rounding, and exponent
      * range of arbitrary-precision numbers.
      */
-  public class PrecisionContext {
-    // TODO: Add 'final' to PrecisionContext class in version 3
-
+  public final class EContext {
     /**
      * Signals that the exponent was adjusted to fit the exponent range.
      */
@@ -68,59 +64,61 @@ import com.upokecenter.numbers.*;
      */
     public static final int FlagUnderflow = 8;
 
-    final EContext ec;
-
-    PrecisionContext(EContext ec) {
-      this.ec = ec;
-    }
-
     /**
      * Basic precision context, 9 digits precision, rounding mode half-up,
      * unlimited exponent range. The default rounding mode is HalfUp.
      */
 
-    public static final PrecisionContext Basic =
-      new PrecisionContext(EContext.Basic);
+    public static final EContext Basic =
+      EContext.ForPrecisionAndRounding(9, ERounding.HalfUp);
 
     /**
      * Precision context for Java's BigDecimal format. The default rounding mode is
      * HalfUp.
      */
 
-    public static final PrecisionContext BigDecimalJava =
-      new PrecisionContext(EContext.BigDecimalJava);
+    public static final EContext BigDecimalJava =
+      new EContext(0, ERounding.HalfUp, 0, 0, true)
+      .WithExponentClamp(true).WithAdjustExponent(false)
+      .WithBigExponentRange(
+EInteger.FromInt64(0).Subtract(EInteger.FromInt64(Integer.MAX_VALUE)),
+EInteger.FromInt64(1).Add(EInteger.FromInt64(Integer.MAX_VALUE)));
 
     /**
      * Precision context for the IEEE-754-2008 binary128 format, 113 bits
      * precision. The default rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Binary128 =
-      new PrecisionContext(EContext.Binary128);
+    public static final EContext Binary128 =
+      EContext.ForPrecisionAndRounding(113, ERounding.HalfEven)
+      .WithExponentClamp(true).WithExponentRange(-16382, 16383);
 
     /**
      * Precision context for the IEEE-754-2008 binary16 format, 11 bits precision.
      * The default rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Binary16 =
-      new PrecisionContext(EContext.Binary16);
+    public static final EContext Binary16 =
+      EContext.ForPrecisionAndRounding(11, ERounding.HalfEven)
+      .WithExponentClamp(true).WithExponentRange(-14, 15);
 
     /**
      * Precision context for the IEEE-754-2008 binary32 format, 24 bits precision.
      * The default rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Binary32 =
-      new PrecisionContext(EContext.Binary32);
+    public static final EContext Binary32 =
+      EContext.ForPrecisionAndRounding(24, ERounding.HalfEven)
+      .WithExponentClamp(true).WithExponentRange(-126, 127);
 
     /**
      * Precision context for the IEEE-754-2008 binary64 format, 53 bits precision.
      * The default rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Binary64 =
-      new PrecisionContext(EContext.Binary64);
+    public static final EContext Binary64 =
+      EContext.ForPrecisionAndRounding(53, ERounding.HalfEven)
+      .WithExponentClamp(true).WithExponentRange(-1022, 1023);
 
     /**
      * Precision context for the Common Language Infrastructure (.NET Framework)
@@ -128,49 +126,62 @@ import com.upokecenter.numbers.*;
      * to 0. The default rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext CliDecimal =
-      new PrecisionContext(EContext.CliDecimal);
+    public static final EContext CliDecimal =
+      new EContext(96, ERounding.HalfEven, 0, 28, true)
+      .WithPrecisionInBits(true);
 
     /**
      * Precision context for the IEEE-754-2008 decimal128 format. The default
      * rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Decimal128 =
-      new PrecisionContext(EContext.Decimal128);
+    public static final EContext Decimal128 =
+      new EContext(34, ERounding.HalfEven, -6143, 6144, true);
 
     /**
      * Precision context for the IEEE-754-2008 decimal32 format. The default
      * rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Decimal32 =
-      new PrecisionContext(EContext.Decimal32);
+    public static final EContext Decimal32 =
+      new EContext(7, ERounding.HalfEven, -95, 96, true);
 
     /**
      * Precision context for the IEEE-754-2008 decimal64 format. The default
      * rounding mode is HalfEven.
      */
 
-    public static final PrecisionContext Decimal64 =
-      new PrecisionContext(EContext.Decimal64);
-
-    /**
-     * Precision context for Java's BigDecimal format. The default rounding mode is
-     * HalfUp.
-     * @deprecated This context had the wrong settings in previous versions. Use BigDecimalJava
-* instead.
- */
-@Deprecated
-
-    public static final PrecisionContext JavaBigDecimal = BigDecimalJava;
+    public static final EContext Decimal64 =
+      new EContext(16, ERounding.HalfEven, -383, 384, true);
 
     /**
      * No specific limit on precision. Rounding mode HalfUp.
      */
 
-    public static final PrecisionContext Unlimited =
-      PrecisionContext.ForPrecision(0);
+    public static final EContext Unlimited =
+      EContext.ForPrecision(0);
+
+    private boolean adjustExponent;
+
+    private EInteger bigintPrecision;
+
+    private boolean clampNormalExponents;
+    private EInteger exponentMax;
+
+    private EInteger exponentMin;
+
+    private int flags;
+
+    private boolean hasExponentRange;
+    private boolean hasFlags;
+
+    private boolean precisionInBits;
+
+    private ERounding rounding;
+
+    private boolean simplified;
+
+    private int traps;
 
     /**
      * Initializes a new instance of the PrecisionContext class. HasFlags will be
@@ -181,16 +192,31 @@ import com.upokecenter.numbers.*;
      * @param exponentMaxSmall Not documented yet. (4).
      * @param clampNormalExponents Not documented yet. (5).
      */
-    public PrecisionContext (
+    public EContext (
 int precision,
-Rounding rounding,
+ERounding rounding,
 int exponentMinSmall,
 int exponentMaxSmall,
 boolean clampNormalExponents) {
-      this.ec = new EContext(precision,
-        ExtendedDecimal.ToERounding(rounding),
-        exponentMinSmall, exponentMaxSmall, clampNormalExponents);
- }
+      if (precision < 0) {
+        throw new IllegalArgumentException("precision (" + precision +
+          ") is less than 0");
+      }
+      if (exponentMinSmall > exponentMaxSmall) {
+        throw new IllegalArgumentException("exponentMinSmall (" + exponentMinSmall +
+          ") is more than " + exponentMaxSmall);
+      }
+      this.bigintPrecision = precision == 0 ? EInteger.FromInt64(0) :
+        EInteger.FromInt64(precision);
+      this.rounding = rounding;
+      this.clampNormalExponents = clampNormalExponents;
+      this.hasExponentRange = true;
+      this.adjustExponent = true;
+      this.exponentMax = exponentMaxSmall == 0 ? EInteger.FromInt64(0) :
+        EInteger.FromInt64(exponentMaxSmall);
+      this.exponentMin = exponentMinSmall == 0 ? EInteger.FromInt64(0) :
+        EInteger.FromInt64(exponentMinSmall);
+    }
 
     /**
      * Gets a value indicating whether the EMax and EMin properties refer to the
@@ -205,8 +231,8 @@ boolean clampNormalExponents) {
      * to just the number's Exponent property.
      */
     public final boolean getAdjustExponent() {
-return this.ec.getAdjustExponent();
-}
+        return this.adjustExponent;
+      }
 
     /**
      * Gets a value indicating whether a converted number&#x27;s Exponent property
@@ -219,8 +245,8 @@ return this.ec.getAdjustExponent();
      * than EMax + 1 - Precision.
      */
     public final boolean getClampNormalExponents() {
-return this.ec.getClampNormalExponents();
-}
+        return this.hasExponentRange && this.clampNormalExponents;
+      }
 
     /**
      * Gets the highest exponent possible when a converted number is expressed in
@@ -236,9 +262,9 @@ return this.ec.getClampNormalExponents();
      * possible Exponent property.) If HasExponentRange is false, this value
      * will be 0.
      */
-    public final BigInteger getEMax() {
-return new BigInteger(this.ec.getEMax());
-}
+    public final EInteger getEMax() {
+        return this.hasExponentRange ? this.exponentMax : EInteger.FromInt64(0);
+      }
 
     /**
      * Gets the lowest exponent possible when a converted number is expressed in
@@ -250,9 +276,9 @@ return new BigInteger(this.ec.getEMax());
      * @return The lowest exponent possible when a converted number is expressed in
      * scientific notation with one digit before the decimal point.
      */
-    public final BigInteger getEMin() {
-return new BigInteger(this.ec.getEMin());
-}
+    public final EInteger getEMin() {
+        return this.hasExponentRange ? this.exponentMin : EInteger.FromInt64(0);
+      }
 
     /**
      * Gets the flags that are set from converting numbers according to this
@@ -265,11 +291,14 @@ return new BigInteger(this.ec.getEMin());
      * precision context. If HasFlags is false, this value will be 0.
      */
     public final int getFlags() {
-return this.ec.getFlags();
-}
+        return this.flags;
+      }
 public final void setFlags(int value) {
-        this.ec.setFlags(value);
-}
+        if (!this.getHasFlags()) {
+          throw new IllegalStateException("Can't set flags");
+        }
+        this.flags = value;
+      }
 
     /**
      * Gets a value indicating whether this context defines a minimum and maximum
@@ -279,24 +308,24 @@ public final void setFlags(int value) {
      * otherwise, false.
      */
     public final boolean getHasExponentRange() {
-return this.ec.getHasExponentRange();
-}
+        return this.hasExponentRange;
+      }
 
     /**
      * Gets a value indicating whether this context has a mutable Flags field.
      * @return True if this context has a mutable Flags field; otherwise, false.
      */
     public final boolean getHasFlags() {
-return this.ec.getHasFlags();
-}
+        return this.hasFlags;
+      }
 
     /**
      * Gets a value indicating whether this context defines a maximum precision.
      * @return True if this context defines a maximum precision; otherwise, false.
      */
     public final boolean getHasMaxPrecision() {
-return this.ec.getHasMaxPrecision();
-}
+        return this.bigintPrecision.signum() != 0;
+      }
 
     /**
      * Gets a value indicating whether this context's Precision property is in
@@ -305,8 +334,8 @@ return this.ec.getHasMaxPrecision();
      * digits; otherwise, false. The default is false.
      */
     public final boolean isPrecisionInBits() {
-return this.ec.isPrecisionInBits();
-}
+        return this.precisionInBits;
+      }
 
     /**
      * Gets a value indicating whether to use a "simplified" arithmetic. In the
@@ -317,8 +346,8 @@ return this.ec.isPrecisionInBits();
      * @return True if a "simplified" arithmetic will be used; otherwise, false.
      */
     public final boolean isSimplified() {
-return this.ec.isSimplified();
-}
+        return this.simplified;
+      }
 
     /**
      * Gets the maximum length of a converted number in digits, ignoring the
@@ -328,9 +357,9 @@ return this.ec.isSimplified();
      * @return The maximum length of a converted number in digits, ignoring the
      * decimal point and exponent.
      */
-    public final BigInteger getPrecision() {
-return new BigInteger(this.ec.getPrecision());
-}
+    public final EInteger getPrecision() {
+        return this.bigintPrecision;
+      }
 
     /**
      * Gets the desired rounding mode when converting numbers that can&#x27;t be
@@ -338,9 +367,9 @@ return new BigInteger(this.ec.getPrecision());
      * @return The desired rounding mode when converting numbers that can't be
      * represented in the given precision and exponent range.
      */
-    public final Rounding getRounding() {
-        return ExtendedDecimal.ToRounding(this.ec.getRounding());
-}
+    public final ERounding getRounding() {
+        return this.rounding;
+      }
 
     /**
      * Gets the traps that are set for each flag in the context. Whenever a flag is
@@ -353,8 +382,8 @@ return new BigInteger(this.ec.getPrecision());
      * @return The traps that are set for each flag in the context.
      */
     public final int getTraps() {
-return this.ec.getTraps();
-}
+        return this.traps;
+      }
 
     /**
      * Creates a new precision context using the given maximum number of digits, an
@@ -362,9 +391,14 @@ return this.ec.getTraps();
      * @param precision Maximum number of digits (precision).
      * @return An EContext object.
      */
-    public static PrecisionContext ForPrecision(int precision) {
-return new PrecisionContext(EContext.ForPrecision(precision));
-}
+    public static EContext ForPrecision(int precision) {
+      return new EContext(
+precision,
+ERounding.HalfUp,
+0,
+0,
+false).WithUnlimitedExponents();
+    }
 
     /**
      * Creates a new PrecisionContext object initialized with an unlimited exponent
@@ -373,11 +407,16 @@ return new PrecisionContext(EContext.ForPrecision(precision));
      * @param rounding An ERounding object.
      * @return An EContext object.
      */
-    public static PrecisionContext ForPrecisionAndRounding(int precision,
-      Rounding rounding) {
-return new PrecisionContext(EContext.ForPrecisionAndRounding(precision,
-  ExtendedDecimal.ToERounding(rounding)));
-}
+    public static EContext ForPrecisionAndRounding(
+      int precision,
+      ERounding rounding) {
+      return new EContext(
+precision,
+rounding,
+0,
+0,
+false).WithUnlimitedExponents();
+    }
 
     /**
      * Creates a new PrecisionContext object initialized with an unlimited
@@ -385,19 +424,40 @@ return new PrecisionContext(EContext.ForPrecisionAndRounding(precision,
      * @param rounding The rounding mode for the new precision context.
      * @return An EContext object.
      */
-    public static PrecisionContext ForRounding(Rounding rounding) {
-return new
-  PrecisionContext(EContext.ForRounding(ExtendedDecimal.ToERounding(rounding)));
-}
+    public static EContext ForRounding(ERounding rounding) {
+      return new EContext(
+0,
+rounding,
+0,
+0,
+false).WithUnlimitedExponents();
+    }
 
     /**
      * Initializes a new PrecisionContext that is a copy of another
      * PrecisionContext.
      * @return An EContext object.
      */
-    public PrecisionContext Copy() {
-return new PrecisionContext(this.ec.Copy());
-}
+    public EContext Copy() {
+      EContext pcnew = new EContext(
+        0,
+        this.rounding,
+        0,
+        0,
+        this.clampNormalExponents);
+      pcnew.hasFlags = this.hasFlags;
+      pcnew.precisionInBits = this.precisionInBits;
+      pcnew.adjustExponent = this.adjustExponent;
+      pcnew.simplified = this.simplified;
+      pcnew.flags = this.flags;
+      pcnew.exponentMax = this.exponentMax;
+      pcnew.exponentMin = this.exponentMin;
+      pcnew.hasExponentRange = this.hasExponentRange;
+      pcnew.bigintPrecision = this.bigintPrecision;
+      pcnew.rounding = this.rounding;
+      pcnew.clampNormalExponents = this.clampNormalExponents;
+      return pcnew;
+    }
 
     /**
      * Determines whether a number can have the given Exponent property under this
@@ -410,12 +470,28 @@ return new PrecisionContext(this.ec.Copy());
      * than EMax.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
-    public boolean ExponentWithinRange(BigInteger exponent) {
-  if ((exponent) == null) {
-  throw new NullPointerException("exponent");
-}
-return this.ec.ExponentWithinRange(exponent.ei);
-}
+    public boolean ExponentWithinRange(EInteger exponent) {
+      if (exponent == null) {
+        throw new NullPointerException("exponent");
+      }
+      if (!this.getHasExponentRange()) {
+        return true;
+      }
+      if (this.bigintPrecision.signum() == 0) {
+        // Only check EMax, since with an unlimited
+        // precision, any exponent less than EMin will exceed EMin if
+        // the mantissa is the right size
+        return exponent.compareTo(this.getEMax()) <= 0;
+      } else {
+        EInteger bigint = exponent;
+        if (this.adjustExponent) {
+          bigint = bigint.Add(this.bigintPrecision);
+          bigint = bigint.Subtract(EInteger.FromInt64(1));
+        }
+        return (bigint.compareTo(this.getEMin()) >= 0) &&
+          (exponent.compareTo(this.getEMax()) <= 0);
+      }
+    }
 
     /**
      * Gets a string representation of this object. Note that the format is not
@@ -423,8 +499,13 @@ return this.ec.ExponentWithinRange(exponent.ei);
      * @return A string representation of this object.
      */
     @Override public String toString() {
-return this.ec.toString();
-}
+      return "[PrecisionContext ExponentMax=" + this.exponentMax +
+        ", Traps=" + this.traps + ", ExponentMin=" + this.exponentMin +
+        ", HasExponentRange=" + this.hasExponentRange + ", BigintPrecision=" +
+        this.bigintPrecision + ", Rounding=" + this.rounding +
+        ", ClampNormalExponents=" + this.clampNormalExponents + ", Flags=" +
+        this.flags + ", HasFlags=" + this.hasFlags + "]";
+    }
 
     /**
      * Copies this PrecisionContext and sets the copy's "AdjustExponent" property
@@ -432,9 +513,11 @@ return this.ec.toString();
      * @param adjustExponent Not documented yet.
      * @return An EContext object.
      */
-    public PrecisionContext WithAdjustExponent(boolean adjustExponent) {
-return new PrecisionContext(this.ec.WithAdjustExponent(adjustExponent));
-}
+    public EContext WithAdjustExponent(boolean adjustExponent) {
+      EContext pc = this.Copy();
+      pc.adjustExponent = adjustExponent;
+      return pc;
+    }
 
     /**
      * Copies this precision context and sets the copy's exponent range.
@@ -446,17 +529,24 @@ return new PrecisionContext(this.ec.WithAdjustExponent(adjustExponent));
      * @throws java.lang.NullPointerException The parameter {@code exponentMax} is
      * null.
      */
-    public PrecisionContext WithBigExponentRange(BigInteger exponentMin,
-      BigInteger exponentMax) {
-  if ((exponentMin) == null) {
-  throw new NullPointerException("exponentMin");
-}
-  if ((exponentMax) == null) {
-  throw new NullPointerException("exponentMax");
-}
-return new PrecisionContext(this.ec.WithBigExponentRange(exponentMin.ei,
-  exponentMax.ei));
-}
+    public EContext WithBigExponentRange(
+      EInteger exponentMin,
+      EInteger exponentMax) {
+      if (exponentMin == null) {
+        throw new NullPointerException("exponentMin");
+      }
+      if (exponentMax == null) {
+        throw new NullPointerException("exponentMax");
+      }
+      if (exponentMin.compareTo(exponentMax) > 0) {
+        throw new IllegalArgumentException("exponentMin greater than exponentMax");
+      }
+      EContext pc = this.Copy();
+      pc.hasExponentRange = true;
+      pc.exponentMin = exponentMin;
+      pc.exponentMax = exponentMax;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
@@ -465,21 +555,30 @@ return new PrecisionContext(this.ec.WithBigExponentRange(exponentMin.ei,
      * @throws java.lang.NullPointerException The parameter {@code bigintPrecision}
      * is null.
      */
-    public PrecisionContext WithBigPrecision(BigInteger bigintPrecision) {
-  if ((bigintPrecision) == null) {
-  throw new NullPointerException("bigintPrecision");
-}
-return new PrecisionContext(this.ec.WithBigPrecision(bigintPrecision.ei));
-}
+    public EContext WithBigPrecision(EInteger bigintPrecision) {
+      if (bigintPrecision == null) {
+        throw new NullPointerException("bigintPrecision");
+      }
+      if (bigintPrecision.signum() < 0) {
+        throw new IllegalArgumentException("bigintPrecision's sign (" +
+          bigintPrecision.signum() + ") is less than 0");
+      }
+      EContext pc = this.Copy();
+      pc.bigintPrecision = bigintPrecision;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext with HasFlags set to true and a Flags value of
      * 0.
      * @return An EContext object.
      */
-    public PrecisionContext WithBlankFlags() {
-return new PrecisionContext(this.ec.WithBlankFlags());
-}
+    public EContext WithBlankFlags() {
+      EContext pc = this.Copy();
+      pc.hasFlags = true;
+      pc.flags = 0;
+      return pc;
+    }
 
     /**
      * Copies this precision context and sets the copy&#x27;s
@@ -487,9 +586,11 @@ return new PrecisionContext(this.ec.WithBlankFlags());
      * @param clamp Not documented yet.
      * @return An EContext object.
      */
-    public PrecisionContext WithExponentClamp(boolean clamp) {
-return new PrecisionContext(this.ec.WithExponentClamp(clamp));
-}
+    public EContext WithExponentClamp(boolean clamp) {
+      EContext pc = this.Copy();
+      pc.clampNormalExponents = clamp;
+      return pc;
+    }
 
     /**
      * Copies this precision context and sets the copy&#x27;s exponent range.
@@ -497,29 +598,46 @@ return new PrecisionContext(this.ec.WithExponentClamp(clamp));
      * @param exponentMaxSmall Desired maximum exponent (EMax).
      * @return An EContext object.
      */
-    public PrecisionContext WithExponentRange(int exponentMinSmall,
+    public EContext WithExponentRange(
+      int exponentMinSmall,
       int exponentMaxSmall) {
-return new PrecisionContext(this.ec.WithExponentRange(exponentMinSmall,
-  exponentMaxSmall));
-}
+      if (exponentMinSmall > exponentMaxSmall) {
+        throw new IllegalArgumentException("exponentMinSmall (" + exponentMinSmall +
+          ") is more than " + exponentMaxSmall);
+      }
+      EContext pc = this.Copy();
+      pc.hasExponentRange = true;
+      pc.exponentMin = EInteger.FromInt64(exponentMinSmall);
+      pc.exponentMax = EInteger.FromInt64(exponentMaxSmall);
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext with HasFlags set to false and a Flags value of
      * 0.
      * @return An EContext object.
      */
-    public PrecisionContext WithNoFlags() {
-return new PrecisionContext(this.ec.WithNoFlags());
-}
+    public EContext WithNoFlags() {
+      EContext pc = this.Copy();
+      pc.hasFlags = false;
+      pc.flags = 0;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
      * @param precision Desired precision. 0 means unlimited precision.
      * @return An EContext object.
      */
-    public PrecisionContext WithPrecision(int precision) {
-return new PrecisionContext(this.ec.WithPrecision(precision));
-}
+    public EContext WithPrecision(int precision) {
+      if (precision < 0) {
+        throw new IllegalArgumentException("precision (" + precision +
+          ") is less than 0");
+      }
+      EContext pc = this.Copy();
+      pc.bigintPrecision = EInteger.FromInt64(precision);
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext and sets the copy's "IsPrecisionInBits"
@@ -527,19 +645,22 @@ return new PrecisionContext(this.ec.WithPrecision(precision));
      * @param isPrecisionBits Not documented yet.
      * @return An EContext object.
      */
-    public PrecisionContext WithPrecisionInBits(boolean isPrecisionBits) {
-return new PrecisionContext(this.ec.WithPrecisionInBits(isPrecisionBits));
-}
+    public EContext WithPrecisionInBits(boolean isPrecisionBits) {
+      EContext pc = this.Copy();
+      pc.precisionInBits = isPrecisionBits;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext with the specified rounding mode.
      * @param rounding Not documented yet.
      * @return An EContext object.
      */
-    public PrecisionContext WithRounding(Rounding rounding) {
-return new
-  PrecisionContext(this.ec.WithRounding(ExtendedDecimal.ToERounding(rounding)));
-}
+    public EContext WithRounding(ERounding rounding) {
+      EContext pc = this.Copy();
+      pc.rounding = rounding;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext and sets the copy's "IsSimplified" property to
@@ -547,9 +668,11 @@ return new
      * @param simplified Not documented yet.
      * @return An EContext object.
      */
-    public PrecisionContext WithSimplified(boolean simplified) {
-return new PrecisionContext(this.ec.WithSimplified(simplified));
-}
+    public EContext WithSimplified(boolean simplified) {
+      EContext pc = this.Copy();
+      pc.simplified = simplified;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext with Traps set to the given value.
@@ -557,15 +680,20 @@ return new PrecisionContext(this.ec.WithSimplified(simplified));
      * "Traps".
      * @return An EContext object.
      */
-    public PrecisionContext WithTraps(int traps) {
-return new PrecisionContext(this.ec.WithTraps(traps));
-}
+    public EContext WithTraps(int traps) {
+      EContext pc = this.Copy();
+      pc.hasFlags = true;
+      pc.traps = traps;
+      return pc;
+    }
 
     /**
      * Copies this PrecisionContext with an unlimited exponent range.
      * @return An EContext object.
      */
-    public PrecisionContext WithUnlimitedExponents() {
-return new PrecisionContext(this.ec.WithUnlimitedExponents());
-}
+    public EContext WithUnlimitedExponents() {
+      EContext pc = this.Copy();
+      pc.hasExponentRange = false;
+      return pc;
+    }
   }

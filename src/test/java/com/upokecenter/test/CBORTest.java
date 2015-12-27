@@ -95,6 +95,12 @@ import com.upokecenter.cbor.*;
           Assert.fail(TestCommon.ObjectMessages(o1, o2, "Results don't match"));
         }
       }
+      try {
+ ExtendedDecimal.FromString("1").Divide(ExtendedDecimal.FromString("3"), null);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestMultiply() {
@@ -4678,7 +4684,7 @@ cbor.AsBigInteger());
       CBORObject o = TestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1  });
       Assert.assertEquals(
-        ExtendedDecimal.Create(BigInteger.ONE, BigInteger.valueOf(3)),
+        ExtendedDecimal.Create(BigInteger.valueOf(1), BigInteger.valueOf(3)),
         o.AsExtendedDecimal());
     }
 
@@ -4718,7 +4724,7 @@ cbor.AsBigInteger());
       CBORObject oo;
       oo = CBORObject.NewArray().Add(CBORObject.NewMap()
                     .Add(
-                    new ExtendedRational(BigInteger.ONE, BigInteger.valueOf(2)),
+                    new ExtendedRational(BigInteger.valueOf(1), BigInteger.valueOf(2)),
                     3).Add(4, false)).Add(true);
       TestCommon.AssertRoundTrip(oo);
       oo = CBORObject.NewArray();
@@ -4748,7 +4754,7 @@ cbor.AsBigInteger());
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.FromObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObject(BigInteger.ONE.shiftLeft(100));
+        o = CBORObject.FromObject(BigInteger.valueOf(1).shiftLeft(100));
         o2 = CBORObject.FromObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.FromObjectAndTag(o, i + 1);
@@ -4818,8 +4824,8 @@ cbor.AsBigInteger());
     public static void AssertAdd(BigInteger bi, BigInteger bi2, String s) {
       AssertBigIntString(s, bi.add(bi2));
       AssertBigIntString(s, bi2.add(bi));
-      BigInteger negbi = BigInteger.ZERO.subtract(bi);
-      BigInteger negbi2 = BigInteger.ZERO.subtract(bi2);
+      BigInteger negbi = BigInteger.valueOf(0).subtract(bi);
+      BigInteger negbi2 = BigInteger.valueOf(0).subtract(bi2);
       AssertBigIntString(s, bi.subtract(negbi2));
       AssertBigIntString(s, bi2.subtract(negbi));
     }
@@ -4827,9 +4833,9 @@ cbor.AsBigInteger());
     @Test
     public void TestBigIntAddSub() {
       BigInteger posSmall = BigInteger.valueOf(5);
-      BigInteger negSmall=(BigInteger.valueOf(5)).negate();
+      BigInteger negSmall = BigInteger.valueOf(-5);
       BigInteger posLarge = BigInteger.valueOf(5555555);
-      BigInteger negLarge=(BigInteger.valueOf(5555555)).negate();
+      BigInteger negLarge = BigInteger.valueOf(-5555555);
       AssertAdd(posSmall, posSmall, "10");
       AssertAdd(posSmall, negSmall, "0");
       AssertAdd(posSmall, posLarge, "5555560");
@@ -4862,17 +4868,17 @@ cbor.AsBigInteger());
         TestCommon.AssertRoundTrip(CBORObject.FromObject(
           ExtendedDecimal.Create(
             bi,
-            BigInteger.ONE)));
+            BigInteger.valueOf(1))));
         bi = bi.multiply(negseven);
       }
       BigInteger[] ranges = {
         BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.valueOf(512)),
         BigInteger.valueOf(Long.MIN_VALUE).add(BigInteger.valueOf(512)),
-        BigInteger.ZERO.subtract(BigInteger.valueOf(512)), BigInteger.ZERO.add(BigInteger.valueOf(512)),
+        BigInteger.valueOf(0).subtract(BigInteger.valueOf(512)), BigInteger.valueOf(0).add(BigInteger.valueOf(512)),
         BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(512)),
         BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(512)),
-        ((BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE)).subtract(BigInteger.valueOf(512)),
-        ((BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE)).add(BigInteger.valueOf(512)),
+        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).subtract(BigInteger.valueOf(512)),
+        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).add(BigInteger.valueOf(512)),
       };
       for (int i = 0; i < ranges.length; i += 2) {
         BigInteger bigintTemp = ranges[i];
@@ -4883,7 +4889,7 @@ cbor.AsBigInteger());
           if (bigintTemp.equals(ranges[i + 1])) {
             break;
           }
-          bigintTemp = bigintTemp.add(BigInteger.ONE);
+          bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
         }
       }
     }
@@ -4983,18 +4989,18 @@ cbor.AsBigInteger());
 
     @Test
     public void TestTags() {
-      BigInteger maxuint = (BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE);
+      BigInteger maxuint = (BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1));
       BigInteger[] ranges = {
         BigInteger.valueOf(37),
         BigInteger.valueOf(65539), BigInteger.valueOf(Integer.MAX_VALUE).subtract(BigInteger.valueOf(500)),
         BigInteger.valueOf(Integer.MAX_VALUE).add(BigInteger.valueOf(500)),
         BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(500)),
         BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(500)),
-        ((BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE)).subtract(BigInteger.valueOf(500)),
+        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).subtract(BigInteger.valueOf(500)),
         maxuint };
       if (CBORObject.True.isTagged())Assert.fail();
       Assert.assertEquals(
-        BigInteger.ZERO.subtract(BigInteger.ONE),
+        BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)),
         CBORObject.True.getInnermostTag());
       BigInteger[] tagstmp = CBORObject.True.GetTags();
       Assert.assertEquals(0, tagstmp.length);
@@ -5003,12 +5009,12 @@ cbor.AsBigInteger());
         while (true) {
           if (bigintTemp.compareTo(BigInteger.valueOf(-1)) >= 0 &&
               bigintTemp.compareTo(BigInteger.valueOf(37)) <= 0) {
-            bigintTemp = bigintTemp.add(BigInteger.ONE);
+            bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
             continue;
           }
           if (bigintTemp.compareTo(BigInteger.valueOf(264)) == 0 ||
               bigintTemp.compareTo(BigInteger.valueOf(265)) == 0) {
-            bigintTemp = bigintTemp.add(BigInteger.ONE);
+            bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
             continue;
           }
           CBORObject obj = CBORObject.FromObjectAndTag(0, bigintTemp);
@@ -5025,10 +5031,10 @@ cbor.AsBigInteger());
             obj,
             String.format(java.util.Locale.US,"%s(0)", bigintTemp));
           if (!bigintTemp.equals(maxuint)) {
-            BigInteger bigintNew = bigintTemp .add(BigInteger.ONE);
+            BigInteger bigintNew = bigintTemp.add(BigInteger.valueOf(1));
             if (bigintNew.equals(BigInteger.valueOf(264)) ||
                 bigintNew.equals(BigInteger.valueOf(265))) {
-              bigintTemp = bigintTemp.add(BigInteger.ONE);
+              bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
               continue;
             }
             // Test multiple tags
@@ -5041,11 +5047,11 @@ String stringTemp = String.format(java.util.Locale.US,"Expected 2 tags: %s",
 Assert.assertEquals(stringTemp, 2, bi.length);
 }
             }
-            if (!bi[0].equals((BigInteger)bigintTemp .add(BigInteger.ONE))) {
+            if (!bi[0].equals(BigInteger.valueOf(bigintTemp.add)(BigInteger.valueOf(1)))) {
               {
 String stringTemp = String.format(java.util.Locale.US,"Outer tag doesn't match: %s",
                   obj2);
-Assert.assertEquals(stringTemp, bigintTemp .add(BigInteger.ONE), bi[0]);
+Assert.assertEquals(stringTemp, bigintTemp.add(BigInteger.valueOf(1)), bi[0]);
 }
             }
             if (!bi[1].equals(bigintTemp)) {
@@ -5063,7 +5069,7 @@ Assert.assertEquals(stringTemp, bigintTemp, obj2.getInnermostTag());
 }
             }
             String str = String.format(java.util.Locale.US,"%s(%s(0))",
-              bigintTemp .add(BigInteger.ONE),
+              bigintTemp.add(BigInteger.valueOf(1)),
               bigintTemp);
             TestCommon.AssertSer(
               obj2,
@@ -5072,7 +5078,7 @@ Assert.assertEquals(stringTemp, bigintTemp, obj2.getInnermostTag());
           if (bigintTemp.equals(ranges[i + 1])) {
             break;
           }
-          bigintTemp = bigintTemp.add(BigInteger.ONE);
+          bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
         }
       }
     }

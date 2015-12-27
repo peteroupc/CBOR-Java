@@ -126,9 +126,9 @@ import com.upokecenter.util.*;
 
     /**
      * Not documented yet.
-     * @param tags A BigInteger[] object.
+     * @param tags An arbitrary-precision integer[] object.
      * @return A CBORTypeFilter object.
-     * @throws NullPointerException The parameter "tags[i]" is null.
+     * @throws java.lang.NullPointerException The parameter "tags[i]" is null.
      */
     public CBORTypeFilter WithTags(BigInteger... tags) {
       if (this.any) {
@@ -163,9 +163,9 @@ import com.upokecenter.util.*;
      * the arrayLength parameter.
      * @return A CBORTypeFilter object.
      * @throws IllegalArgumentException The parameter arrayLength is less than 0.
-     * @throws NullPointerException The parameter elements is null.
-     * @throws IllegalArgumentException The parameter elements has fewer elements than
-     * specified in arrayLength.
+     * @throws java.lang.NullPointerException The parameter elements is null.
+     * @throws IllegalArgumentException The parameter elements has fewer elements
+     * than specified in arrayLength.
      */
     public CBORTypeFilter WithArrayExactLength(
 int arrayLength,
@@ -202,9 +202,9 @@ CBORTypeFilter... elements) {
      * the arrayLength parameter.
      * @return A CBORTypeFilter object.
      * @throws IllegalArgumentException The parameter arrayLength is less than 0.
-     * @throws NullPointerException The parameter elements is null.
-     * @throws IllegalArgumentException The parameter elements has fewer elements than
-     * specified in arrayLength.
+     * @throws java.lang.NullPointerException The parameter elements is null.
+     * @throws IllegalArgumentException The parameter elements has fewer elements
+     * than specified in arrayLength.
      */
     public CBORTypeFilter WithArrayMinLength(
 int arrayLength,
@@ -303,10 +303,11 @@ CBORTypeFilter... elements) {
 
     /**
      * Returns whether an array's length is allowed under a filter.
-     * @param bigLength A BigInteger object.
+     * @param bigLength An arbitrary-precision integer object.
      * @return True if this filter allows CBOR arrays and an array's length is
      * allowed under a filter; otherwise, false.
-     * @throws NullPointerException The parameter {@code bigLength} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bigLength} is
+     * null.
      */
     public boolean ArrayLengthMatches(BigInteger bigLength) {
       if (bigLength == null) {
@@ -344,7 +345,7 @@ CBORTypeFilter... elements) {
      * @param bigTag A tag number. Returns false if this is less than 0.
      * @return True if CBOR objects can have the given tag number; otherwise,
      * false.
-     * @throws NullPointerException The parameter {@code bigTag} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
      */
     public boolean TagAllowed(BigInteger bigTag) {
       if (bigTag == null) {

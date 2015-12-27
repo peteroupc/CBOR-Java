@@ -45,14 +45,14 @@ System.out.print("");
     @Test
     public void TestEMax() {
       PrecisionContext ctx = PrecisionContext.Unlimited;
-      Assert.assertEquals(BigInteger.ZERO, ctx.getEMax());
+      Assert.assertEquals(BigInteger.valueOf(0), ctx.getEMax());
       ctx = PrecisionContext.Unlimited.WithExponentRange(-5, 5);
       Assert.assertEquals(BigInteger.valueOf(5), ctx.getEMax());
     }
     @Test
     public void TestEMin() {
       PrecisionContext ctx = PrecisionContext.Unlimited;
-      Assert.assertEquals(BigInteger.ZERO, ctx.getEMin());
+      Assert.assertEquals(BigInteger.valueOf(0), ctx.getEMin());
       ctx = PrecisionContext.Unlimited.WithExponentRange(-5, 5);
       Assert.assertEquals(BigInteger.valueOf(-5), ctx.getEMin());
     }
@@ -206,7 +206,7 @@ System.out.print("");
     @Test
     public void TestWithBigPrecision() {
       try {
-        PrecisionContext.Unlimited.WithBigPrecision(BigInteger.ONE.negate());
+        PrecisionContext.Unlimited.WithBigPrecision(BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -235,7 +235,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        PrecisionContext.Unlimited.WithBigExponentRange(null, BigInteger.ZERO);
+        PrecisionContext.Unlimited.WithBigExponentRange(null, BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -244,7 +244,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        PrecisionContext.Unlimited.WithBigExponentRange(BigInteger.ZERO, null);
+        PrecisionContext.Unlimited.WithBigExponentRange(BigInteger.valueOf(0), null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -253,10 +253,10 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger bigintBig = BigInteger.ONE.shiftLeft(64);
+        BigInteger bigintBig = BigInteger.valueOf(1).shiftLeft(64);
         PrecisionContext.Unlimited.WithBigExponentRange(
           bigintBig,
-          BigInteger.ZERO);
+          BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 System.out.print("");

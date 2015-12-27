@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -16,22 +16,22 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     int GetFlags(T value);
 
-    BigInteger GetMantissa(T value);
+    EInteger GetMantissa(T value);
 
-    BigInteger GetExponent(T value);
+    EInteger GetExponent(T value);
 
     T ValueOf(int val);
 
-    T CreateNewWithFlags(BigInteger mantissa, BigInteger exponent, int flags);
+    T CreateNewWithFlags(EInteger mantissa, EInteger exponent, int flags);
 
     IShiftAccumulator CreateShiftAccumulatorWithDigits(
-BigInteger value,
+EInteger value,
 int lastDigit,
 int olderDigits);
 
-    IShiftAccumulator CreateShiftAccumulator(BigInteger value);
+    IShiftAccumulator CreateShiftAccumulator(EInteger value);
 
-    boolean HasTerminatingRadixExpansion(BigInteger num, BigInteger den);
+    boolean HasTerminatingRadixExpansion(EInteger num, EInteger den);
 
-    BigInteger MultiplyByRadixPower(BigInteger value, FastInteger power);
+    EInteger MultiplyByRadixPower(EInteger value, FastInteger power);
   }

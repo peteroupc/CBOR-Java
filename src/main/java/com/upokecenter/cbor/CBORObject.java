@@ -168,7 +168,7 @@ import com.upokecenter.util.*;
       HashMap<BigInteger, ICBORTag>();
 
     private static final BigInteger UInt64MaxValue =
-      (BigInteger.ONE.shiftLeft(64)).subtract(BigInteger.ONE);
+      (BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1));
 
     private static final BigInteger[] valueEmptyTags = new BigInteger[0];
     // Expected lengths for each head byte.
@@ -238,7 +238,7 @@ import com.upokecenter.util.*;
      */
     public final BigInteger getInnermostTag() {
         if (!this.isTagged()) {
-          return BigInteger.ZERO.subtract(BigInteger.ONE);
+          return BigInteger.valueOf(0).subtract(BigInteger.valueOf(1));
         }
         CBORObject previtem = this;
         CBORObject curitem = (CBORObject)this.itemValue;
@@ -333,7 +333,7 @@ import com.upokecenter.util.*;
     /**
      * Gets a collection of the keys of this CBOR object in an undefined order.
      * @return A collection of the keys of this CBOR object.
-     * @throws java.lang.IllegalStateException This object is not a map.
+     * @throws IllegalStateException This object is not a map.
      */
     public final Collection<CBORObject> getKeys() {
         if (this.getItemType() == CBORObjectTypeMap) {
@@ -351,7 +351,7 @@ import com.upokecenter.util.*;
      */
     public final BigInteger getOutermostTag() {
         if (!this.isTagged()) {
-          return BigInteger.ZERO.subtract(BigInteger.ONE);
+          return BigInteger.valueOf(0).subtract(BigInteger.valueOf(1));
         }
         if (this.tagHigh == 0 &&
             this.tagLow >= 0 && this.tagLow < 0x10000) {
@@ -363,10 +363,7 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
-     * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type, including the special not-a-number value (NaN).
+     *
      */
     public final int signum() {
         int ret = GetSignInternal(this.getItemType(), this.getThisItem());
@@ -423,8 +420,7 @@ import com.upokecenter.util.*;
      * If this is an array, returns all the values of the array in the order
      * they are listed.
      * @return A collection of the values of this CBOR object.
-     * @throws java.lang.IllegalStateException This object is not a map or an
-     * array.
+     * @throws IllegalStateException This object is not a map or an array.
      */
     public final Collection<CBORObject> getValues() {
         if (this.getItemType() == CBORObjectTypeMap) {
@@ -457,9 +453,9 @@ import com.upokecenter.util.*;
      * Gets the value of a CBOR object by integer index in this array.
      * @param index Zero-based index of the element.
      * @return A CBORObject object.
-     * @throws java.lang.IllegalStateException This object is not an array.
-     * @throws NullPointerException The parameter "value" is null (as opposed to
-     * CBORObject.Null).
+     * @throws IllegalStateException This object is not an array.
+     * @throws java.lang.NullPointerException The parameter "value" is null (as
+     * opposed to CBORObject.Null).
      */
     public CBORObject get(int index) {
         if (this.getItemType() == CBORObjectTypeArray) {
@@ -473,11 +469,7 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Sets the value of a CBOR object by integer index in this array.
-     * @param index Zero-based index of the element.
-     * @throws java.lang.IllegalStateException This object is not an array.
-     * @throws NullPointerException The parameter "value" is null (as opposed to
-     * CBORObject.Null).
+     *
      */
     public void set(int index, CBORObject value) {
         if (this.getItemType() == CBORObjectTypeArray) {
@@ -495,9 +487,9 @@ import com.upokecenter.util.*;
      * Gets the value of a CBOR object in this map, using a CBOR object as the key.
      * @param key Another CBOR object.
      * @return A CBORObject object.
-     * @throws NullPointerException The key is null (as opposed to
+     * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
-     * @throws java.lang.IllegalStateException This object is not a map.
+     * @throws IllegalStateException This object is not a map.
      */
     public CBORObject get(CBORObject key) {
         if (key == null) {
@@ -511,11 +503,7 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Sets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key Another CBOR object.
-     * @throws NullPointerException The key is null (as opposed to
-     * CBORObject.Null); or the set method is called and the value is null.
-     * @throws java.lang.IllegalStateException This object is not a map.
+     *
      */
     public void set(CBORObject key, CBORObject value) {
         if (key == null) {
@@ -536,8 +524,8 @@ import com.upokecenter.util.*;
      * Gets the value of a CBOR object in this map, using a string as the key.
      * @param key A key that points to the desired value.
      * @return A CBORObject object.
-     * @throws NullPointerException The key is null.
-     * @throws java.lang.IllegalStateException This object is not a map.
+     * @throws java.lang.NullPointerException The key is null.
+     * @throws IllegalStateException This object is not a map.
      */
     public CBORObject get(String key) {
         if (key == null) {
@@ -548,10 +536,7 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Sets the value of a CBOR object in this map, using a string as the key.
-     * @param key A key that points to the desired value.
-     * @throws NullPointerException The key is null.
-     * @throws java.lang.IllegalStateException This object is not a map.
+     *
      */
     public void set(String key, CBORObject value) {
         if (key == null) {
@@ -576,7 +561,7 @@ import com.upokecenter.util.*;
      * CBOR objects.
      * @param converter An ICBORConverter object.
      * @param <T> Must be the same as the "type" parameter.
-     * @throws NullPointerException The parameter {@code type} or {@code
+     * @throws java.lang.NullPointerException The parameter {@code type} or {@code
      * converter} is null.
      */
     public static <T> void AddConverter(Class<?> type, ICBORConverter<T> converter) {
@@ -602,7 +587,7 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Finds the sum of two CBOR number objects.
+     * Finds the sum of two CBOR numbers.
      * @param first Another CBOR object.
      * @param second A CBORObject object. (3).
      * @return A CBORObject object.
@@ -615,12 +600,12 @@ import com.upokecenter.util.*;
 
     /**
      * Registers an object that validates CBOR objects with new tags.
-     * @param bigintTag A BigInteger object.
+     * @param bigintTag An arbitrary-precision integer object.
      * @param handler An ICBORTag object.
-     * @throws NullPointerException The parameter {@code bigintTag} or {@code
-     * handler} is null.
-     * @throws NullPointerException The parameter {@code bigintTag} is less than 0
-     * or greater than (2^64-1).
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
+     * {@code handler} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
+     * than 0 or greater than (2^64-1).
      */
     public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
@@ -647,11 +632,11 @@ import com.upokecenter.util.*;
      * Generates a CBOR object from an array of CBOR-encoded bytes.
      * @param data A byte array.
      * @return A CBOR object corresponding to the data.
-     * @throws CBORException There was an error in reading or parsing the data.
-     * This includes cases where not all of the byte array represents a CBOR
-     * object. This exception is also thrown if the parameter {@code data}
-     * is empty.
-     * @throws NullPointerException The parameter {@code data} is null.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte array
+     * represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty.
+     * @throws java.lang.NullPointerException The parameter {@code data} is null.
      */
     public static CBORObject DecodeFromBytes(byte[] data) {
       return DecodeFromBytes(data, CBOREncodeOptions.None);
@@ -662,11 +647,11 @@ import com.upokecenter.util.*;
      * @param data A byte array.
      * @param options A CBOREncodeOptions object.
      * @return A CBOR object corresponding to the data.
-     * @throws CBORException There was an error in reading or parsing the data.
-     * This includes cases where not all of the byte array represents a CBOR
-     * object. This exception is also thrown if the parameter {@code data}
-     * is empty.
-     * @throws NullPointerException The parameter {@code data} is null.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte array
+     * represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty.
+     * @throws java.lang.NullPointerException The parameter {@code data} is null.
      */
     public static CBORObject DecodeFromBytes(byte[] data, CBOREncodeOptions
       options) {
@@ -732,8 +717,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * begin with a byte order mark (U + FEFF).</p>
      * @param str A string in JSON format.
      * @return A CBORObject object.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws CBORException The string is not in JSON format.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
      */
     public static CBORObject FromJSONString(String str) {
       if (str == null) {
@@ -773,7 +758,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBOR object from an arbitrary-precision integer.
      * @param bigintValue An arbitrary-precision value.
-     * @return A CBOR number object.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(BigInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
@@ -792,7 +777,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Generates a CBOR object from an arbitrary-precision binary floating-point
      * number.
      * @param bigValue An arbitrary-precision binary floating-point number.
-     * @return A CBOR number object.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedFloat bigValue) {
       if ((Object)bigValue == (Object)null) {
@@ -812,11 +797,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBOR object from a rational number.
      * @param bigValue A rational number.
-     * @return A CBOR number object.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedRational bigValue) {
       return ((Object)bigValue == (Object)null) ? CBORObject.Null :
-        ((bigValue.isFinite() && bigValue.getDenominator().equals(BigInteger.ONE)) ?
+        ((bigValue.isFinite() && bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
          FromObject(bigValue.getNumerator()) : (new CBORObject(
            CBORObjectTypeExtendedRational,
            bigValue)));
@@ -825,7 +810,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBOR object from a decimal number.
      * @param otherValue An arbitrary-precision decimal number.
-     * @return A CBOR number object.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedDecimal otherValue) {
       if ((Object)otherValue == (Object)null) {
@@ -847,8 +832,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param strValue A string value. Can be null.
      * @return A CBOR object representing the string, or CBORObject.Null if
      * stringValue is null.
-     * @throws IllegalArgumentException The string contains an unpaired surrogate code
-     * point.
+     * @throws IllegalArgumentException The string contains an unpaired surrogate
+     * code point.
      */
     public static CBORObject FromObject(String strValue) {
       if (strValue == null) {
@@ -883,8 +868,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Generates a CBOR string object from a Unicode character.
      * @param value A char object.
      * @return A CBORObject object.
-     * @throws IllegalArgumentException The parameter {@code value} is a surrogate code
-     * point.
+     * @throws IllegalArgumentException The parameter {@code value} is a surrogate
+     * code point.
      */
     public static CBORObject FromObject(char value) {
       char[] valueChar = { value };
@@ -997,12 +982,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Generates a CBOR object from a list of objects.
-     * @param value An array of CBOR objects. Can be null.
-     * @param <T> A type convertible to CBORObject.
-     * @return A CBOR object where each element of the given array is converted to
-     * a CBOR object and copied to a new array, or CBORObject.Null if the
-     * value is null.
+     *
      */
     public static <T> CBORObject FromObject(List<T> value) {
       if (value == null) {
@@ -1019,14 +999,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Generates a CBOR object from an enumerable set of objects.
-     * @param value An object that implements the Iterable interface. In the .NET
-     * version, this can be the return value of an iterator or the result of
-     * a LINQ query.
-     * @param <T> A type convertible to CBORObject.
-     * @return A CBOR object where each element of the given enumerable object is
-     * converted to a CBOR object and copied to a new array, or
-     * CBORObject.Null if the value is null.
+     *
      */
     public static <T> CBORObject FromObject(Iterable<T> value) {
       if (value == null) {
@@ -1040,13 +1013,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Generates a CBOR object from a map of objects.
-     * @param dic A map of CBOR objects.
-     * @param <TKey> A type convertible to CBORObject; the type of the keys.
-     * @param <TValue> A type convertible to CBORObject; the type of the values.
-     * @return A CBOR object where each key and value of the given map is converted
-     * to a CBOR object and copied to a new map, or CBORObject.Null if
-     * {@code dic} is null.
+     *
      */
     public static <TKey, TValue> CBORObject FromObject(Map<TKey,
                     TValue> dic) {
@@ -1065,28 +1032,29 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBORObject from an arbitrary object. The following types are
      * specially handled by this method: null , primitive types, strings,
-     * CBORObject , ExtendedDecimal , ExtendedFloat , ExtendedRational, the
-     * custom BigInteger , lists, arrays, enumerations (<code>Enum</code>
-     * objects), and maps. <p>In the .NET version, if the object is a type
-     * not specially handled by this method, returns a CBOR map with the
-     * values of each of its read/write properties (or all properties in the
-     * case of an anonymous type). Properties are converted to their
-     * camel-case names (meaning if a name starts with A to Z, that letter
-     * is lower-cased). If the property name begins with the word "Is", that
-     * word is deleted from the name. Also, .NET <code>Enum</code> objects will be
-     * converted to their integer values, and a multidimensional array is
-     * converted to an array of arrays.</p> <p>In the Java version, if the
-     * object is a type not specially handled by this method, this method
-     * checks the CBOR object for methods starting with the word "get" or
-     * "is" that take no parameters, and returns a CBOR map with one entry
-     * for each such method found. For each method found, the starting word
-     * "get" or "is" is deleted from its name, and the name is converted to
-     * camel case (meaning if a name starts with A to Z, that letter is
-     * lower-cased). Also, Java <code>Enum</code> objects will be converted to the
-     * result of their name method.</p> <p>If the input is a byte array, the
-     * byte array is copied to a new byte array. (This method can't be used
-     * to decode CBOR data from a byte array; for that, use the
-     * DecodeFromBytes method instead.).</p>
+     * CBORObject , arbitrary-precision decimal , arbitrary-precision binary
+     * float , arbitrary-precision rational number, the custom
+     * arbitrary-precision integer , lists, arrays, enumerations (
+     * <code>Enum</code> objects), and maps. <p>In the .NET version, if the object
+     * is a type not specially handled by this method, returns a CBOR map
+     * with the values of each of its read/write properties (or all
+     * properties in the case of an anonymous type). Properties are
+     * converted to their camel-case names (meaning if a name starts with A
+     * to Z, that letter is lower-cased). If the property name begins with
+     * the word "Is", that word is deleted from the name. Also, .NET
+     * <code>Enum</code> objects will be converted to their integer values, and a
+     * multidimensional array is converted to an array of arrays.</p> <p>In
+     * the Java version, if the object is a type not specially handled by
+     * this method, this method checks the CBOR object for methods starting
+     * with the word "get" or "is" that take no parameters, and returns a
+     * CBOR map with one entry for each such method found. For each method
+     * found, the starting word "get" or "is" is deleted from its name, and
+     * the name is converted to camel case (meaning if a name starts with A
+     * to Z, that letter is lower-cased). Also, Java <code>Enum</code> objects
+     * will be converted to the result of their name method.</p> <p>If the
+     * input is a byte array, the byte array is copied to a new byte array.
+     * (This method can't be used to decode CBOR data from a byte array; for
+     * that, use the DecodeFromBytes method instead.).</p>
      * @param obj An arbitrary object.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
@@ -1193,9 +1161,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * "self-described CBOR" object.
      * @return A CBOR object where the object {@code valueOb} is converted to a
      * CBOR object and given the tag {@code bigintTag}.
-     * @throws IllegalArgumentException The parameter {@code bigintTag} is less than 0 or
-     * greater than 2^64-1, or {@code valueOb} 's type is unsupported.
-     * @throws NullPointerException The parameter {@code bigintTag} is null.
+     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
+     * than 0 or greater than 2^64-1, or {@code valueOb} 's type is
+     * unsupported.
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is
+     * null.
      */
     public static CBORObject FromObjectAndTag(
       Object valueOb,
@@ -1250,8 +1220,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * 55799 can be used to mark a "self-described CBOR" object.
      * @return A CBOR object where the object {@code valueObValue} is converted to
      * a CBOR object and given the tag {@code smallTag}.
-     * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0 or
-     * {@code valueObValue} 's type is unsupported.
+     * @throws IllegalArgumentException The parameter {@code smallTag} is less than
+     * 0 or {@code valueObValue} 's type is unsupported.
      */
     public static CBORObject FromObjectAndTag(
       Object valueObValue,
@@ -1270,8 +1240,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Creates a CBOR object from a simple value number.
      * @param simpleValue A 32-bit signed integer.
      * @return A CBORObject object.
-     * @throws IllegalArgumentException The parameter {@code simpleValue} is less than 0,
-     * greater than 255, or from 24 through 31.
+     * @throws IllegalArgumentException The parameter {@code simpleValue} is less
+     * than 0, greater than 255, or from 24 through 31.
      */
     public static CBORObject FromSimpleValue(int simpleValue) {
       if (simpleValue < 0) {
@@ -1295,7 +1265,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Multiplies two CBOR number objects.
+     * Multiplies two CBOR numbers.
      * @param first A CBORObject object.
      * @param second Another CBOR object.
      * @return The product of the two objects.
@@ -1328,10 +1298,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * error occurs, whichever happens first.
      * @param stream A readable data stream.
      * @return A CBOR object that was read.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     * @throws CBORException There was an error in reading or parsing the data.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data.
      */
     public static CBORObject Read(InputStream stream) {
+      if ((stream) == null) {
+  throw new NullPointerException("stream");
+}
       try {
         return new CBORReader(stream).Read(null);
       } catch (IOException ex) {
@@ -1346,14 +1320,15 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param stream A readable data stream.
      * @param options A CBOREncodeOptions object.
      * @return A CBOR object that was read.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     * @throws CBORException There was an error in reading or parsing the data.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data.
      */
     public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
       try {
         CBORReader reader = new CBORReader(stream);
-        if (options.And(CBOREncodeOptions.NoDuplicateKeys).getValue() ==
-          CBOREncodeOptions.NoDuplicateKeys.Value) {
+        CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
+        if (opt.getValue() != 0) {
           reader.setDuplicatePolicy(CBORReader.CBORDuplicatePolicy.Disallow);
         }
         return reader.Read(null);
@@ -1364,19 +1339,19 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Generates a CBOR object from a data stream in JavaScript Object Notation
-     * (JSON) format. The JSON stream may begin with a byte order mark (U +
-     * FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16, or
-     * UTF-32 encoding; the encoding is detected by assuming that the first
-     * character read must be a byte order mark or a nonzero basic character
-     * (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
+     * (JSON) format. The JSON stream may begin with a byte order mark
+     * (U + FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16,
+     * or UTF-32 encoding; the encoding is detected by assuming that the
+     * first character read must be a byte order mark or a nonzero basic
+     * character (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
      * allowed.) <p>If a JSON object has the same key, only the last given
      * value will be used for each duplicated key.</p>
      * @param stream A readable data stream.
      * @return A CBORObject object.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
-     * @throws CBORException The data stream contains invalid encoding or is not in
-     * JSON format.
+     * @throws com.upokecenter.cbor.CBORException The data stream contains invalid
+     * encoding or is not in JSON format.
      */
     public static CBORObject ReadJSON(InputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1429,7 +1404,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * library).
      * @param str The string to write. Can be null.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(String str, OutputStream stream) throws java.io.IOException {
@@ -1448,7 +1423,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param str The string to write. Can be null.
      * @param stream A writable data stream.
      * @param options Options for encoding the data to CBOR.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(
@@ -1485,9 +1460,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * writes the value as an unsigned integer or signed integer if the
      * number can fit either type or as a big integer otherwise.</li> <li>In
      * all other cases, writes the value as a big float.</li></ul>
-     * @param bignum An ExtendedFloat object.
+     * @param bignum An arbitrary-precision binary float.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(ExtendedFloat bignum, OutputStream stream) throws java.io.IOException {
@@ -1523,9 +1498,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Writes a rational number in CBOR format to a data stream.
-     * @param rational An ExtendedRational object.
+     * @param rational An arbitrary-precision rational number.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(ExtendedRational rational, OutputStream stream) throws java.io.IOException {
@@ -1540,7 +1515,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Write(rational.ToDouble(), stream);
         return;
       }
-      if (rational.getDenominator().equals(BigInteger.ONE)) {
+      if (rational.getDenominator().equals(BigInteger.valueOf(1))) {
         Write(rational.getNumerator(), stream);
         return;
       }
@@ -1563,7 +1538,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * all other cases, writes the value as a decimal number.</li></ul>
      * @param bignum Decimal fraction to write. Can be null.
      * @param stream InputStream to write to.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(ExtendedDecimal bignum, OutputStream stream) throws java.io.IOException {
@@ -1601,7 +1576,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a big integer in CBOR format to a data stream.
      * @param bigint Big integer to write. Can be null.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(BigInteger bigint, OutputStream stream) throws java.io.IOException {
@@ -1615,7 +1590,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       int datatype = 0;
       if (bigint.signum() < 0) {
         datatype = 1;
-        bigint = bigint.add(BigInteger.ONE);
+        bigint = bigint.add(BigInteger.valueOf(1));
         bigint=(bigint).negate();
       }
       if (bigint.compareTo(Int64MaxValue) <= 0) {
@@ -1698,7 +1673,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a 64-bit signed integer in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(long value, OutputStream stream) throws java.io.IOException {
@@ -1718,7 +1693,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a 32-bit signed integer in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(int value, OutputStream stream) throws java.io.IOException {
@@ -1752,7 +1727,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a 16-bit signed integer in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(short value, OutputStream stream) throws java.io.IOException {
@@ -1763,9 +1738,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a Unicode character as a string in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     * @throws IllegalArgumentException The parameter {@code value} is a surrogate code
-     * point.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws IllegalArgumentException The parameter {@code value} is a surrogate
+     * code point.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(char value, OutputStream stream) throws java.io.IOException {
@@ -1780,7 +1755,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a Boolean value in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(boolean value, OutputStream stream) throws java.io.IOException {
@@ -1796,7 +1771,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * byte 24, then this byte's value.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(byte value, OutputStream stream) throws java.io.IOException {
@@ -1815,7 +1790,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a 32-bit floating-point number in CBOR format to a data stream.
      * @param value The value to write.
      * @param s A writable data stream.
-     * @throws NullPointerException The parameter {@code s} is null.
+     * @throws java.lang.NullPointerException The parameter {@code s} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(float value, OutputStream s) throws java.io.IOException {
@@ -1833,7 +1808,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a 64-bit floating-point number in CBOR format to a data stream.
      * @param value The value to write.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(double value, OutputStream stream) throws java.io.IOException {
@@ -1841,7 +1816,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new NullPointerException("stream");
       }
       long bits =
-        Double.doubleToRawLongBits((double)value);
+        Double.doubleToRawLongBits(value);
       byte[] data = {  (byte)0xfb,
         (byte)((bits >> 56) & 0xff), (byte)((bits >> 48) & 0xff),
         (byte)((bits >> 40) & 0xff), (byte)((bits >> 32) & 0xff),
@@ -1854,7 +1829,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes a CBOR object to a CBOR data stream.
      * @param value The value to write. Can be null.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public static void Write(CBORObject value, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1881,7 +1856,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Writes an arbitrary object to a CBOR data stream. Currently, the following
      * objects are supported: <ul> <li>Lists of CBORObject.</li> <li>Maps of
      * CBORObject.</li> <li>Null.</li> <li>Byte arrays, which will always be
-     * written as definite-length byte strings.</li> <li>string objects,
+     * written as definite-length byte strings.</li> <li>String objects,
      * which will be written as indefinite-length text strings if their size
      * exceeds a certain threshold (this behavior may change in future
      * versions of this library).</li> <li>Any object accepted by the
@@ -1890,7 +1865,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param output A writable data stream.
      * @param options CBOR options for encoding the CBOR object to bytes.
      * @throws IllegalArgumentException The object's type is not supported.
-     * @throws NullPointerException The parameter {@code options} or {@code
+     * @throws java.lang.NullPointerException The parameter {@code options} or {@code
      * output} is null.
      */
     @SuppressWarnings("unchecked")
@@ -1957,8 +1932,7 @@ public static void Write(
     /**
      * Gets this object's absolute value.
      * @return This object's absolute without its negative sign.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      */
     public CBORObject Abs() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -1980,11 +1954,11 @@ public static void Write(
      * a CBORObject. Can be null, in which case this value is converted to
      * CBORObject.Null.
      * @return This object.
-     * @throws IllegalArgumentException The parameter {@code key} already exists in this
-     * map.
+     * @throws IllegalArgumentException The parameter {@code key} already exists in
+     * this map.
      * @throws IllegalStateException This object is not a map.
-     * @throws IllegalArgumentException The parameter {@code key} or {@code valueOb} has
-     * an unsupported type.
+     * @throws IllegalArgumentException The parameter {@code key} or {@code
+     * valueOb} has an unsupported type.
      */
     public CBORObject Add(Object key, Object valueOb) {
       if (this.getItemType() == CBORObjectTypeMap) {
@@ -2016,11 +1990,11 @@ public static void Write(
     /**
      * Adds a new object to the end of this array. (Used to throw
      * NullPointerException on a null reference, but now converts the null
-     * reference to CBORObject.Null, for convenience with the object
+     * reference to CBORObject.Null, for convenience with the Object
      * overload of this method.).
      * @param obj A CBOR object.
      * @return This object.
-     * @throws java.lang.IllegalStateException This object is not an array.
+     * @throws IllegalStateException This object is not an array.
      */
     public CBORObject Add(CBORObject obj) {
       if (this.getItemType() == CBORObjectTypeArray) {
@@ -2035,7 +2009,7 @@ public static void Write(
      * Converts an object to a CBOR object and adds it to the end of this array.
      * @param obj A CBOR object.
      * @return This object.
-     * @throws java.lang.IllegalStateException This object is not an array.
+     * @throws IllegalStateException This object is not an array.
      * @throws IllegalArgumentException The type of {@code obj} is not supported.
      */
     public CBORObject Add(Object obj) {
@@ -2051,10 +2025,10 @@ public static void Write(
      * Converts this object to an arbitrary-precision integer. Fractional values
      * are truncated to an integer.
      * @return The closest big integer to this object.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type, including if this object is CBORObject.Null.
-     * @throws ArithmeticException This object's value is infinity or not-a-number
-     * (NaN).
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
+     * @throws java.lang.ArithmeticException This object's value is infinity or
+     * not-a-number (NaN).
      */
     public BigInteger AsBigInteger() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2076,8 +2050,7 @@ public static void Write(
      * Converts this object to a byte (0 to 255). Floating point values are
      * truncated to an integer.
      * @return The closest byte-sized integer to this object.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
      * byte (would be less than 0 or greater than 255 when truncated to an
      * integer).
@@ -2091,8 +2064,7 @@ public static void Write(
      * @return The closest 64-bit floating point number to this object. The return
      * value can be positive infinity or negative infinity if this value
      * exceeds the range of a 64-bit floating point number.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      */
     public double AsDouble() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2107,8 +2079,8 @@ public static void Write(
      * @return A decimal number for this object's value. If this object is a
      * rational number with a nonterminating decimal expansion, returns a
      * decimal number rounded to 34 digits.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type, including if this object is CBORObject.Null.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public ExtendedDecimal AsExtendedDecimal() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2124,9 +2096,10 @@ public static void Write(
      * object's value. Note that if this object is a decimal number with a
      * fractional part, the conversion may lose information depending on the
      * number. If this object is a rational number with a nonterminating
-     * binary expansion, returns a decimal number rounded to 113 digits.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type, including if this object is CBORObject.Null.
+     * binary expansion, returns a binary floating-point number rounded to
+     * 113 bits.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public ExtendedFloat AsExtendedFloat() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2139,8 +2112,8 @@ public static void Write(
     /**
      * Converts this object to a rational number.
      * @return A rational number for this object's value.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type, including if this object is CBORObject.Null.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public ExtendedRational AsExtendedRational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2154,8 +2127,7 @@ public static void Write(
      * Converts this object to a 16-bit signed integer. Floating point values are
      * truncated to an integer.
      * @return The closest 16-bit signed integer to this object.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
      * 16-bit signed integer.
      */
@@ -2167,8 +2139,7 @@ public static void Write(
      * Converts this object to a 32-bit signed integer. Floating point values are
      * truncated to an integer.
      * @return The closest big integer to this object.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
      * 32-bit signed integer.
      */
@@ -2180,8 +2151,7 @@ public static void Write(
      * Converts this object to a 64-bit signed integer. Floating point values are
      * truncated to an integer.
      * @return The closest 64-bit signed integer to this object.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
      * 64-bit signed integer.
      */
@@ -2198,8 +2168,7 @@ public static void Write(
      * @return The closest 32-bit floating point number to this object. The return
      * value can be positive infinity or negative infinity if this object's
      * value exceeds the range of a 32-bit floating point number.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      */
     public float AsSingle() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2482,22 +2451,18 @@ public int compareTo(CBORObject other) {
         } else {
           // DebugUtility.Log("a=" + this + " b=" + other);
           if (typeA == CBORObjectTypeExtendedRational) {
-        ExtendedRational e1 =
-              NumberInterfaces[typeA].AsExtendedRational(objA);
+        ExtendedRational e1 = NumberInterfaces[typeA].AsExtendedRational(objA);
             if (typeB == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e2 =
-                NumberInterfaces[typeB].AsExtendedDecimal(objB);
+          ExtendedDecimal e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
               cmp = e1.CompareToDecimal(e2);
             } else {
               ExtendedFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
               cmp = e1.CompareToBinary(e2);
             }
           } else if (typeB == CBORObjectTypeExtendedRational) {
-        ExtendedRational e2 =
-              NumberInterfaces[typeB].AsExtendedRational(objB);
+        ExtendedRational e2 = NumberInterfaces[typeB].AsExtendedRational(objB);
             if (typeA == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e1 =
-                NumberInterfaces[typeA].AsExtendedDecimal(objA);
+          ExtendedDecimal e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
               cmp = e2.CompareToDecimal(e1);
               cmp = -cmp;
             } else {
@@ -2562,7 +2527,8 @@ public int compareTo(CBORObject other) {
      * @param key An object that serves as the key.
      * @return True if the given key is found, or false if the given key is not
      * found or this object is not a map.
-     * @throws NullPointerException Key is null (as opposed to CBORObject.Null).
+     * @throws java.lang.NullPointerException Key is null (as opposed to
+     * CBORObject.Null).
      */
     public boolean ContainsKey(CBORObject key) {
       if (key == null) {
@@ -2580,7 +2546,7 @@ public int compareTo(CBORObject other) {
      * @param key A string that serves as the key.
      * @return True if the given key (as a CBOR object) is found, or false if the
      * given key is not found or this object is not a map.
-     * @throws NullPointerException Key is null.
+     * @throws java.lang.NullPointerException Key is null.
      */
     public boolean ContainsKey(String key) {
       if (key == null) {
@@ -2853,7 +2819,7 @@ public boolean equals(CBORObject other) {
      * @param tagValue The tag value to search for.
      * @return True if this object has a tag of the given number; otherwise, false.
      * @throws IllegalArgumentException TagValue is less than 0.
-     * @throws NullPointerException The parameter "obj" is null.
+     * @throws java.lang.NullPointerException The parameter "obj" is null.
      */
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {
@@ -2876,7 +2842,7 @@ public boolean equals(CBORObject other) {
      * Returns whether this object has a tag of the given number.
      * @param bigTagValue The tag value to search for.
      * @return True if this object has a tag of the given number; otherwise, false.
-     * @throws NullPointerException BigTagValue is null.
+     * @throws java.lang.NullPointerException BigTagValue is null.
      * @throws IllegalArgumentException BigTagValue is less than 0.
      */
     public boolean HasTag(BigInteger bigTagValue) {
@@ -2903,8 +2869,9 @@ public boolean equals(CBORObject other) {
      * CBORObject.Null.
      * @return This object.
      * @throws IllegalStateException This object is not an array.
-     * @throws IllegalArgumentException The parameter {@code valueOb} has an unsupported
-     * type; or {@code index} is not a valid index into this array.
+     * @throws IllegalArgumentException The parameter {@code valueOb} has an
+     * unsupported type; or {@code index} is not a valid index into this
+     * array.
      */
     public CBORObject Insert(int index, Object valueOb) {
       if (this.getItemType() == CBORObjectTypeArray) {
@@ -2971,10 +2938,9 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     * Gets this object&#x27;s value with the sign reversed.
+     * Gets this object's value with the sign reversed.
      * @return The reversed-sign form of this number.
-     * @throws java.lang.IllegalStateException This object's type is not a number
-     * type.
+     * @throws IllegalStateException This object's type is not a number type.
      */
     public CBORObject Negate() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2990,9 +2956,9 @@ public boolean equals(CBORObject other) {
      * given key from the map.
      * @param obj The item or key to remove.
      * @return True if the item was removed; otherwise, false.
-     * @throws NullPointerException The parameter {@code obj} is null (as opposed
-     * to CBORObject.Null).
-     * @throws java.lang.IllegalStateException The object is not an array or map.
+     * @throws java.lang.NullPointerException The parameter {@code obj} is null (as
+     * opposed to CBORObject.Null).
+     * @throws IllegalStateException The object is not an array or map.
      */
     public boolean Remove(CBORObject obj) {
       if (obj == null) {
@@ -3025,8 +2991,8 @@ public boolean equals(CBORObject other) {
      * CBORObject.Null.
      * @return This object.
      * @throws IllegalStateException This object is not a map.
-     * @throws IllegalArgumentException The parameter {@code key} or {@code valueOb} has
-     * an unsupported type.
+     * @throws IllegalArgumentException The parameter {@code key} or {@code
+     * valueOb} has an unsupported type.
      */
     public CBORObject Set(Object key, Object valueOb) {
       if (this.getItemType() == CBORObjectTypeMap) {
@@ -3308,7 +3274,8 @@ public boolean equals(CBORObject other) {
      * data stream in UTF-8.
      * @param outputStream A writable data stream.
      * @throws java.io.IOException An I/O error occurred.
-     * @throws NullPointerException The parameter {@code outputStream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code outputStream} is
+     * null.
      */
     public void WriteJSONTo(OutputStream outputStream) throws java.io.IOException {
       if (outputStream == null) {
@@ -3320,7 +3287,7 @@ public boolean equals(CBORObject other) {
     /**
      * Writes this CBOR object to a data stream.
      * @param stream A writable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public void WriteTo(OutputStream stream) throws java.io.IOException {
@@ -3331,7 +3298,7 @@ public boolean equals(CBORObject other) {
      * Writes this CBOR object to a data stream.
      * @param stream A writable data stream.
      * @param options Options for encoding the data to CBOR.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
     public void WriteTo(OutputStream stream, CBOREncodeOptions options) throws java.io.IOException {
@@ -3422,7 +3389,7 @@ public boolean equals(CBORObject other) {
         AddTagHandler(BigInteger.valueOf(28), new CBORTag28());
         AddTagHandler(BigInteger.valueOf(29), new CBORTagUnsigned());
         AddTagHandler(BigInteger.valueOf(256), new CBORTagAny());
-        AddTagHandler(BigInteger.ZERO, new CBORTag0());
+        AddTagHandler(BigInteger.valueOf(0), new CBORTag0());
         AddTagHandler(BigInteger.valueOf(32), new CBORTag32());
         AddTagHandler(BigInteger.valueOf(33), new CBORTagGenericString());
         AddTagHandler(BigInteger.valueOf(34), new CBORTagGenericString());
@@ -3529,7 +3496,7 @@ public boolean equals(CBORObject other) {
               int low = ((int)((uadditional) & 0xFFFFFFFFL));
               int high = ((int)((uadditional >> 32) & 0xFFFFFFFFL));
               BigInteger bigintAdditional = LowHighToBigInteger(low, high);
-              BigInteger minusOne =(BigInteger.ONE).negate();
+              BigInteger minusOne = BigInteger.valueOf(-1);
               bigintAdditional = minusOne.subtract(bigintAdditional);
               return FromObject(bigintAdditional);
             }
@@ -3951,7 +3918,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         uabytes[4] = 0;
         return BigInteger.fromBytes(uabytes, true);
       }
-      return BigInteger.ZERO;
+      return BigInteger.valueOf(0);
     }
 
     private static int MapCompare(

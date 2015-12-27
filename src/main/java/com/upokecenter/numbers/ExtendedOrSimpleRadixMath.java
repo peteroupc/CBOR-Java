@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  class ExtendedOrSimpleRadixMath<T> implements IRadixMath<T>
+  public class ExtendedOrSimpleRadixMath<T> implements IRadixMath<T>
   {
     private final RadixMath<T> ext;
     private final SimpleRadixMath<T> simp;
@@ -26,7 +26,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public T DivideToIntegerNaturalScale(
 T thisValue,
 T divisor,
-PrecisionContext ctx) {
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.DivideToIntegerNaturalScale(thisValue, divisor, ctx) :
         this.simp.DivideToIntegerNaturalScale(thisValue, divisor, ctx);
@@ -35,39 +35,39 @@ PrecisionContext ctx) {
     public T DivideToIntegerZeroScale(
 T thisValue,
 T divisor,
-PrecisionContext ctx) {
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.DivideToIntegerZeroScale(thisValue, divisor, ctx) :
         this.simp.DivideToIntegerZeroScale(thisValue, divisor, ctx);
     }
 
-    public T Abs(T value, PrecisionContext ctx) {
+    public T Abs(T value, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Abs(value, ctx) :
         this.simp.Abs(value, ctx);
     }
 
-    public T Negate(T value, PrecisionContext ctx) {
+    public T Negate(T value, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Negate(value, ctx) :
         this.simp.Negate(value, ctx);
     }
 
-    public T Remainder(T thisValue, T divisor, PrecisionContext ctx) {
+    public T Remainder(T thisValue, T divisor, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.Remainder(thisValue, divisor, ctx) :
         this.simp.Remainder(thisValue, divisor, ctx);
     }
 
-    public T RemainderNear(T thisValue, T divisor, PrecisionContext ctx) {
+    public T RemainderNear(T thisValue, T divisor, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RemainderNear(thisValue, divisor, ctx) :
         this.simp.RemainderNear(thisValue, divisor, ctx);
     }
 
-    public T Pi(PrecisionContext ctx) {
+    public T Pi(EContext ctx) {
       return (!ctx.isSimplified()) ? this.ext.Pi(ctx) : this.simp.Pi(ctx);
     }
 
-    public T Power(T thisValue, T pow, PrecisionContext ctx) {
+    public T Power(T thisValue, T pow, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Power(
 thisValue,
@@ -76,7 +76,7 @@ ctx) :
         this.simp.Power(thisValue, pow, ctx);
     }
 
-    public T Log10(T thisValue, PrecisionContext ctx) {
+    public T Log10(T thisValue, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Log10(
 thisValue,
@@ -84,17 +84,17 @@ ctx) :
         this.simp.Log10(thisValue, ctx);
     }
 
-    public T Ln(T thisValue, PrecisionContext ctx) {
+    public T Ln(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Ln(thisValue, ctx) :
         this.simp.Ln(thisValue, ctx);
     }
 
-    public T Exp(T thisValue, PrecisionContext ctx) {
+    public T Exp(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Exp(thisValue, ctx) :
         this.simp.Exp(thisValue, ctx);
     }
 
-    public T SquareRoot(T thisValue, PrecisionContext ctx) {
+    public T SquareRoot(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
     this.ext.SquareRoot(
 thisValue,
@@ -103,18 +103,18 @@ thisValue,
 ctx);
     }
 
-    public T NextMinus(T thisValue, PrecisionContext ctx) {
+    public T NextMinus(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.NextMinus(thisValue, ctx) : this.simp.NextMinus(thisValue, ctx);
     }
 
-    public T NextToward(T thisValue, T otherValue, PrecisionContext ctx) {
+    public T NextToward(T thisValue, T otherValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.NextToward(thisValue, otherValue, ctx) :
         this.simp.NextToward(thisValue, otherValue, ctx);
     }
 
-    public T NextPlus(T thisValue, PrecisionContext ctx) {
+    public T NextPlus(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.NextPlus(thisValue, ctx) : this.simp.NextPlus(thisValue, ctx);
     }
@@ -122,14 +122,14 @@ ctx);
     public T DivideToExponent(
 T thisValue,
 T divisor,
-BigInteger desiredExponent,
-PrecisionContext ctx) {
+EInteger desiredExponent,
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.DivideToExponent(thisValue, divisor, desiredExponent, ctx) :
         this.simp.DivideToExponent(thisValue, divisor, desiredExponent, ctx);
     }
 
-   public T Divide(T thisValue, T divisor, PrecisionContext ctx) {
+   public T Divide(T thisValue, T divisor, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Divide(
 thisValue,
@@ -138,7 +138,7 @@ ctx) :
         this.simp.Divide(thisValue, divisor, ctx);
     }
 
-    public T MinMagnitude(T a, T b, PrecisionContext ctx) {
+    public T MinMagnitude(T a, T b, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.MinMagnitude(
 a,
@@ -146,7 +146,7 @@ b,
 ctx) : this.simp.MinMagnitude(a, b, ctx);
     }
 
-    public T MaxMagnitude(T a, T b, PrecisionContext ctx) {
+    public T MaxMagnitude(T a, T b, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.MaxMagnitude(
 a,
@@ -154,17 +154,17 @@ b,
 ctx) : this.simp.MaxMagnitude(a, b, ctx);
     }
 
-    public T Max(T a, T b, PrecisionContext ctx) {
+    public T Max(T a, T b, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Max(a, b, ctx) :
       this.simp.Max(a, b, ctx);
     }
 
-    public T Min(T a, T b, PrecisionContext ctx) {
+    public T Min(T a, T b, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ? this.ext.Min(a, b, ctx) :
       this.simp.Min(a, b, ctx);
     }
 
-    public T Multiply(T thisValue, T other, PrecisionContext ctx) {
+    public T Multiply(T thisValue, T other, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.Multiply(thisValue, other, ctx) :
         this.simp.Multiply(thisValue, other, ctx);
@@ -174,13 +174,13 @@ ctx) : this.simp.MaxMagnitude(a, b, ctx);
 T thisValue,
 T multiplicand,
 T augend,
-PrecisionContext ctx) {
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.MultiplyAndAdd(thisValue, multiplicand, augend, ctx) :
         this.simp.MultiplyAndAdd(thisValue, multiplicand, augend, ctx);
     }
 
-    public T Plus(T thisValue, PrecisionContext ctx) {
+    public T Plus(T thisValue, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Plus(
 thisValue,
@@ -188,19 +188,19 @@ ctx) :
         this.simp.Plus(thisValue, ctx);
     }
 
-    public T RoundToPrecision(T thisValue, PrecisionContext ctx) {
+    public T RoundToPrecision(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RoundToPrecision(thisValue, ctx) :
         this.simp.RoundToPrecision(thisValue, ctx);
     }
 
-    public T RoundAfterConversion(T thisValue, PrecisionContext ctx) {
+    public T RoundAfterConversion(T thisValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RoundAfterConversion(thisValue, ctx) :
         this.simp.RoundAfterConversion(thisValue, ctx);
     }
 
-    public T Quantize(T thisValue, T otherValue, PrecisionContext ctx) {
+    public T Quantize(T thisValue, T otherValue, EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.Quantize(thisValue, otherValue, ctx) :
         this.simp.Quantize(thisValue, otherValue, ctx);
@@ -208,8 +208,8 @@ ctx) :
 
     public T RoundToExponentExact(
 T thisValue,
-BigInteger expOther,
-PrecisionContext ctx) {
+EInteger expOther,
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RoundToExponentExact(thisValue, expOther, ctx) :
         this.simp.RoundToExponentExact(thisValue, expOther, ctx);
@@ -217,8 +217,8 @@ PrecisionContext ctx) {
 
     public T RoundToExponentSimple(
 T thisValue,
-BigInteger expOther,
-PrecisionContext ctx) {
+EInteger expOther,
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RoundToExponentSimple(thisValue, expOther, ctx) :
         this.simp.RoundToExponentSimple(thisValue, expOther, ctx);
@@ -226,14 +226,14 @@ PrecisionContext ctx) {
 
     public T RoundToExponentNoRoundedFlag(
 T thisValue,
-BigInteger exponent,
-PrecisionContext ctx) {
+EInteger exponent,
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.RoundToExponentNoRoundedFlag(thisValue, exponent, ctx) :
         this.simp.RoundToExponentNoRoundedFlag(thisValue, exponent, ctx);
     }
 
-    public T Reduce(T thisValue, PrecisionContext ctx) {
+    public T Reduce(T thisValue, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Reduce(
 thisValue,
@@ -241,7 +241,7 @@ ctx) :
         this.simp.Reduce(thisValue, ctx);
     }
 
-    public T Add(T thisValue, T other, PrecisionContext ctx) {
+    public T Add(T thisValue, T other, EContext ctx) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.Add(
 thisValue,
@@ -253,7 +253,7 @@ ctx) :
     public T AddEx(
 T thisValue,
 T other,
-PrecisionContext ctx,
+EContext ctx,
 boolean roundToOperandPrecision) {
       return (
 ctx == null || !ctx.isSimplified()) ? this.ext.AddEx(
@@ -268,7 +268,7 @@ roundToOperandPrecision) :
 T thisValue,
 T otherValue,
 boolean treatQuietNansAsSignaling,
-PrecisionContext ctx) {
+EContext ctx) {
       return (ctx == null || !ctx.isSimplified()) ?
       this.ext.CompareToWithContext(
 thisValue,

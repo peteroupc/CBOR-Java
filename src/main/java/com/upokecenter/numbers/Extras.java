@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  final class Extras {
+  public final class Extras {
 private Extras() {
 }
     public static int[] DoubleToIntegers(double dbl) {

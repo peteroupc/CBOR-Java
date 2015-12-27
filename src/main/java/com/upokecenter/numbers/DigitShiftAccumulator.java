@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  final class DigitShiftAccumulator implements IShiftAccumulator {
+  public final class DigitShiftAccumulator implements IShiftAccumulator {
     private int bitLeftmost;
 
     /**
@@ -30,7 +30,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return this.bitsAfterLeftmost;
       }
 
-    private BigInteger shiftedBigInt;
+    private EInteger shiftedBigInt;
     private FastInteger knownBitLength;
 
     public FastInteger GetDigitLength() {
@@ -47,23 +47,23 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return this.discardedBitCount;
       }
 
-    private static final BigInteger valueTen = BigInteger.TEN;
+    private static final EInteger valueTen = EInteger.FromInt64(10);
 
     /**
      * Gets the current integer after shifting.
      * @return The current integer after shifting.
      */
-    public final BigInteger getShiftedInt() {
-        return this.isSmall ? (BigInteger.valueOf(this.shiftedSmall)) :
+    public final EInteger getShiftedInt() {
+        return this.isSmall ? (EInteger.FromInt64(this.shiftedSmall)) :
         this.shiftedBigInt;
       }
 
     public DigitShiftAccumulator (
-BigInteger bigint,
+EInteger bigint,
 int lastDiscarded,
 int olderDiscarded) {
       if (bigint.canFitInInt()) {
-        this.shiftedSmall = bigint.intValueChecked();
+        this.shiftedSmall = bigint.AsInt32Checked();
         if (this.shiftedSmall < 0) {
           throw new IllegalArgumentException("shiftedSmall (" + this.shiftedSmall +
             ") is less than 0");
@@ -108,14 +108,14 @@ int olderDiscarded) {
       if (fastint.CanFitInInt32()) {
         this.ShiftRightInt(fastint.AsInt32());
       } else {
-        BigInteger bi = fastint.AsBigInteger();
+        EInteger bi = fastint.AsBigInteger();
         while (bi.signum() > 0) {
           int count = 1000000;
-          if (bi.compareTo(BigInteger.valueOf(1000000)) < 0) {
-            count = bi.intValueChecked();
+          if (bi.compareTo(EInteger.FromInt64(1000000)) < 0) {
+            count = bi.AsInt32Checked();
           }
           this.ShiftRightInt(count);
-          bi = bi.subtract(BigInteger.valueOf(count));
+          bi = bi.Subtract(EInteger.FromInt64(count));
           if (this.isSmall ? this.shiftedSmall == 0 :
           this.shiftedBigInt.signum() == 0) {
             break;
@@ -138,14 +138,14 @@ int olderDiscarded) {
       }
       // System.out.println("digits=" + digits);
       if (digits == 1) {
-        BigInteger bigrem;
-        BigInteger bigquo;
+        EInteger bigrem;
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(BigInteger.TEN);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(EInteger.FromInt64(10));
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValueChecked();
+        this.bitLeftmost = bigrem.AsInt32Checked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.AddInt(digits);
@@ -160,11 +160,11 @@ bigrem = divrem[1]; }
       }
       int startCount = Math.min(4, digits - 1);
       if (startCount > 0) {
-        BigInteger bigrem;
-        BigInteger radixPower = DecimalUtility.FindPowerOfTen(startCount);
-        BigInteger bigquo;
+        EInteger bigrem;
+        EInteger radixPower = DecimalUtility.FindPowerOfTen(startCount);
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         if (bigrem.signum() != 0) {
@@ -186,14 +186,14 @@ bigrem = divrem[1]; }
         }
       }
       if (digits == 1) {
-        BigInteger bigrem;
-        BigInteger bigquo;
+        EInteger bigrem;
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValueChecked();
+        this.bitLeftmost = bigrem.AsInt32Checked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.Increment();
@@ -218,7 +218,7 @@ bigrem = divrem[1]; }
       }
       if (this.shiftedBigInt.canFitInInt()) {
         this.isSmall = true;
-        this.shiftedSmall = this.shiftedBigInt.intValueChecked();
+        this.shiftedSmall = this.shiftedBigInt.AsInt32Checked();
         this.ShiftRightSmall(digits);
         return;
       }
@@ -245,7 +245,7 @@ bigrem = divrem[1]; }
           this.isSmall = true;
           this.shiftedSmall = FastParseLong(str, 0, newLength);
         } else {
-          this.shiftedBigInt = BigInteger.fromSubstring(str, 0, newLength);
+          this.shiftedBigInt = EInteger.FromSubstring(str, 0, newLength);
         }
       }
       for (int i = str.length() - 1; i >= 0; --i) {
@@ -282,14 +282,14 @@ bigrem = divrem[1]; }
       FastInteger digitDiff =
       FastInteger.Copy(this.knownBitLength).SubtractInt(digits);
       if (digitDiff.CompareToInt(1) == 0) {
-        BigInteger bigrem;
-        BigInteger bigquo;
+        EInteger bigrem;
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(valueTen);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(valueTen);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitLeftmost = bigrem.intValueChecked();
+        this.bitLeftmost = bigrem.AsInt32Checked();
         this.shiftedBigInt = bigquo;
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
         this.discardedBitCount.Add(digitDiff);
@@ -298,15 +298,15 @@ bigrem = divrem[1]; }
         return;
       }
       if (digitDiff.CompareToInt(9) <= 0) {
-        BigInteger bigrem;
+        EInteger bigrem;
         int diffInt = digitDiff.AsInt32();
-        BigInteger radixPower = DecimalUtility.FindPowerOfTen(diffInt);
-        BigInteger bigquo;
+        EInteger radixPower = DecimalUtility.FindPowerOfTen(diffInt);
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-        int rem = bigrem.intValueChecked();
+        int rem = bigrem.AsInt32Checked();
         this.bitsAfterLeftmost |= this.bitLeftmost;
         for (int i = 0; i < diffInt; ++i) {
           if (i == diffInt - 1) {
@@ -324,12 +324,12 @@ bigrem = divrem[1]; }
         return;
       }
       if (digitDiff.CompareToInt(Integer.MAX_VALUE) <= 0) {
-        BigInteger bigrem;
-        BigInteger radixPower =
+        EInteger bigrem;
+        EInteger radixPower =
         DecimalUtility.FindPowerOfTen(digitDiff.AsInt32() - 1);
-        BigInteger bigquo;
+        EInteger bigquo;
 {
-BigInteger[] divrem=(this.shiftedBigInt).divideAndRemainder(radixPower);
+EInteger[] divrem=(this.shiftedBigInt).DivRem(radixPower);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -337,12 +337,12 @@ bigrem = divrem[1]; }
           this.bitsAfterLeftmost |= 1;
         }
         {
-          BigInteger bigquo2;
+          EInteger bigquo2;
 {
-BigInteger[] divrem=(bigquo).divideAndRemainder(valueTen);
+EInteger[] divrem=(bigquo).DivRem(valueTen);
 bigquo2 = divrem[0];
 bigrem = divrem[1]; }
-          this.bitLeftmost = bigrem.intValueChecked();
+          this.bitLeftmost = bigrem.AsInt32Checked();
           this.shiftedBigInt = bigquo2;
         }
         this.discardedBitCount = (this.discardedBitCount == null) ? ((new FastInteger(0))) : this.discardedBitCount;
@@ -366,7 +366,7 @@ bigrem = divrem[1]; }
         if (digitShift <= Integer.MAX_VALUE) {
           this.discardedBitCount.AddInt((int)digitShift);
         } else {
-          this.discardedBitCount.AddBig(BigInteger.valueOf(digitShift));
+          this.discardedBitCount.AddBig(EInteger.FromInt64(digitShift));
         }
         for (int i = str.length() - 1; i >= 0; --i) {
           this.bitsAfterLeftmost |= this.bitLeftmost;
@@ -380,7 +380,7 @@ bigrem = divrem[1]; }
           this.isSmall = true;
           this.shiftedSmall = FastParseLong(str, 0, newLength);
         } else {
-          this.shiftedBigInt = BigInteger.fromSubstring(str, 0, newLength);
+          this.shiftedBigInt = EInteger.FromSubstring(str, 0, newLength);
         }
         this.bitsAfterLeftmost = (this.bitsAfterLeftmost != 0) ? 1 : 0;
       }
@@ -455,9 +455,9 @@ bigrem = divrem[1]; }
             ") is less than 0");
         }
         this.knownBitLength = this.CalcKnownDigitLength();
-        BigInteger bigintDiff = this.knownBitLength.AsBigInteger();
-        BigInteger bitsBig = bits.AsBigInteger();
-        bigintDiff = bigintDiff.subtract(bitsBig);
+        EInteger bigintDiff = this.knownBitLength.AsBigInteger();
+        EInteger bitsBig = bits.AsBigInteger();
+        bigintDiff = bigintDiff.Subtract(bitsBig);
         if (bigintDiff.signum() > 0) {
           // current length is greater than the
           // desired bit length

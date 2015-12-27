@@ -25,7 +25,7 @@ import com.upokecenter.util.*;
     public static ExtendedFloat FromBinary(String str) {
       int smallExponent = 0;
       int index = 0;
-      BigInteger ret = BigInteger.ZERO;
+      BigInteger ret = BigInteger.valueOf(0);
       while (index < str.length()) {
         if (str.charAt(index) == '0') {
           ++index;
@@ -41,10 +41,10 @@ import com.upokecenter.util.*;
         if (str.charAt(index) == '1') {
           ++index;
           if (ret.signum() == 0) {
-            ret = BigInteger.ONE;
+            ret = BigInteger.valueOf(1);
           } else {
             ret = ret.shiftLeft(1);
-            ret = ret.add(BigInteger.ONE);
+            ret = ret.add(BigInteger.valueOf(1));
           }
         } else if (str.charAt(index) == '0') {
           ++index;
@@ -59,10 +59,10 @@ import com.upokecenter.util.*;
           ++index;
           --smallExponent;
           if (ret.signum() == 0) {
-            ret = BigInteger.ONE;
+            ret = BigInteger.valueOf(1);
           } else {
             ret = ret.shiftLeft(1);
-            ret = ret.add(BigInteger.ONE);
+            ret = ret.add(BigInteger.valueOf(1));
           }
         } else if (str.charAt(index) == '0') {
           ++index;
@@ -112,7 +112,12 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestDivide() {
-      // not implemented yet
+      try {
+ ExtendedDecimal.FromString("1").Divide(ExtendedDecimal.FromString("3"), null);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestDivideToExponent() {
@@ -132,7 +137,12 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestEquals() {
-      // not implemented yet
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        ExtendedFloat bigintA = RandomObjects.RandomExtendedFloat(r);
+        ExtendedFloat bigintB = RandomObjects.RandomExtendedFloat(r);
+        TestCommon.AssertEqualsHashCode(bigintA, bigintB);
+      }
     }
     @Test
     public void TestEqualsInternal() {
@@ -168,23 +178,31 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestFromString() {
-      // not implemented yet
-    }
-    @Test
-    public void TestGetHashCode() {
-      // not implemented yet
+      try {
+ ExtendedFloat.FromString("2", 0, 1, null);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestIsFinite() {
       // not implemented yet
     }
+
     @Test
     public void TestIsInfinity() {
-      // not implemented yet
+      if (!(ExtendedFloat.PositiveInfinity.IsInfinity()))Assert.fail();
+      if (!(ExtendedFloat.NegativeInfinity.IsInfinity()))Assert.fail();
+      if (ExtendedFloat.Zero.IsInfinity())Assert.fail();
+      if (ExtendedFloat.NaN.IsInfinity())Assert.fail();
     }
     @Test
     public void TestIsNaN() {
-      // not implemented yet
+      if (ExtendedFloat.PositiveInfinity.IsNaN())Assert.fail();
+      if (ExtendedFloat.NegativeInfinity.IsNaN())Assert.fail();
+      if (ExtendedFloat.Zero.IsNaN())Assert.fail();
+      if (!(ExtendedFloat.NaN.IsNaN()))Assert.fail();
     }
     @Test
     public void TestIsNegative() {
@@ -212,11 +230,14 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestLog() {
-      // not implemented yet
+      if (!(ExtendedFloat.One.Log(null).IsNaN()))Assert.fail();
+      if (!(ExtendedFloat.One.Log(PrecisionContext.Unlimited).IsNaN()))Assert.fail();
     }
     @Test
     public void TestLog10() {
-      // not implemented yet
+      if (!(ExtendedFloat.One.Log10(null).IsNaN()))Assert.fail();
+      if (!(ExtendedFloat.One.Log10(PrecisionContext.Unlimited)
+              .IsNaN()))Assert.fail();
     }
     @Test
     public void TestMantissa() {

@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -7,14 +7,13 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.numbers.*;
-
     /**
      * Exception thrown for arithmetic trap errors.
      */
-  public class TrapException extends ArithmeticException {
+  public class ETrapException extends ArithmeticException {
 private static final long serialVersionUID = 1L;
-    ETrapException ete;
+    private final Object result;
+    private final EContext ctx;
 
     /**
      * Gets the precision context used during the operation that triggered the
@@ -22,17 +21,19 @@ private static final long serialVersionUID = 1L;
      * @return The precision context used during the operation that triggered the
      * trap. May be null.
      */
-    public final PrecisionContext getContext() {
-        return new PrecisionContext(ete.getContext());
-}
+    public final EContext getContext() {
+        return this.ctx;
+      }
+
+    private final int error;
 
     /**
      * Gets the defined result of the operation that caused the trap.
      * @return The defined result of the operation that caused the trap.
      */
     public final Object getResult() {
-        return ete.getResult();
-}
+        return this.result;
+      }
 
     /**
      * Gets the flag that specifies the kind of error (PrecisionContext.FlagXXX).
@@ -42,17 +43,18 @@ private static final long serialVersionUID = 1L;
      * FlagInexact or FlagSubnormal.
      */
     public final int getError() {
-        return ete.getError();
-}
+        return this.error;
+      }
 
-    private TrapException() {
- super();
-    }
-
-    static TrapException Create(ETrapException ete) {
-      TrapException ex = new TrapException();
-      ex.ete = ete;
-      return ex;
+    private static String FlagToMessage(int flag) {
+      return (flag == EContext.FlagClamped) ? "Clamped" : ((flag ==
+        EContext.FlagDivideByZero) ? "DivideByZero" : ((flag ==
+        EContext.FlagInexact) ? "Inexact" : ((flag ==
+        EContext.FlagInvalid) ? "Invalid" : ((flag ==
+        EContext.FlagOverflow) ? "Overflow" : ((flag ==
+        EContext.FlagRounded) ? "Rounded" : ((flag ==
+        EContext.FlagSubnormal) ? "Subnormal" : ((flag ==
+        EContext.FlagUnderflow) ? "Underflow" : "Trap")))))));
     }
 
     /**
@@ -61,22 +63,10 @@ private static final long serialVersionUID = 1L;
      * @param ctx An EContext object.
      * @param result An arbitrary object.
      */
-    public TrapException (int flag, PrecisionContext ctx, Object result) {
- super("");
-      Object wrappedResult = result;
-      EDecimal ed = ((result instanceof EDecimal) ? (EDecimal)result : null);
-      ERational er = ((result instanceof ERational) ? (ERational)result : null);
-      EFloat ef = ((result instanceof EFloat) ? (EFloat)result : null);
-      if (ed != null) {
- wrappedResult = new ExtendedDecimal(ed);
-}
-      if (er != null) {
- wrappedResult = new ExtendedRational(er);
-}
-      if (ef != null) {
- wrappedResult = new ExtendedFloat(ef);
-}
-      ete = new ETrapException(flag, ctx == null ? null : ctx.ec,
-        wrappedResult);
+    public ETrapException (int flag, EContext ctx, Object result) {
+ super(FlagToMessage(flag));
+      this.error = flag;
+      this.ctx = (ctx == null) ? null : ctx.Copy();
+      this.result = result;
     }
   }

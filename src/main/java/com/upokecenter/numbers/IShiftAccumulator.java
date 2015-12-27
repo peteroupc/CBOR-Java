@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -12,7 +12,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * information on whether a non-zero digit was discarded this way.
      */
   interface IShiftAccumulator {
-    BigInteger getShiftedInt();
+    EInteger getShiftedInt();
 
     FastInteger GetDigitLength();
 

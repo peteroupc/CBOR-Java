@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.numbers;
 /*
 Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
@@ -6,8 +6,6 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
-
-import com.upokecenter.numbers.*;
 
     /**
      * Represents an arbitrary-precision binary floating-point number. Consists of
@@ -35,11 +33,10 @@ import com.upokecenter.numbers.*;
      * values combined will uniquely identify a particular
      * arbitrary-precision binary float value.</li></ul>
      */
-  public final class ExtendedFloat implements Comparable<ExtendedFloat> {
-    final EFloat ef;
-    ExtendedFloat(EFloat ef) {
-      this.ef = ef;
-    }
+  public final class EFloat implements Comparable<EFloat> {
+    private final EInteger exponent;
+    private final EInteger unsignedMantissa;
+    private final int flags;
 
     /**
      * Gets this object&#x27;s exponent. This object&#x27;s value will be an
@@ -47,16 +44,16 @@ import com.upokecenter.numbers.*;
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
      */
-    public final BigInteger getExponent() {
-        return new BigInteger(this.ef.getExponent());
+    public final EInteger getExponent() {
+        return this.exponent;
       }
 
     /**
      * Gets the absolute value of this object&#x27;s un-scaled value.
      * @return The absolute value of this object's un-scaled value.
      */
-    public final BigInteger getUnsignedMantissa() {
-        return new BigInteger(this.ef.getUnsignedMantissa());
+    public final EInteger getUnsignedMantissa() {
+        return this.unsignedMantissa;
       }
 
     /**
@@ -64,8 +61,9 @@ import com.upokecenter.numbers.*;
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
      */
-    public final BigInteger getMantissa() {
-        return new BigInteger(this.ef.getMantissa());
+    public final EInteger getMantissa() {
+        return this.isNegative() ? ((this.unsignedMantissa).Negate()) :
+          this.unsignedMantissa;
       }
 
     /**
@@ -75,11 +73,13 @@ import com.upokecenter.numbers.*;
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      */
-    public boolean EqualsInternal(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
-        throw new NullPointerException("otherValue");
+    public boolean EqualsInternal(EFloat otherValue) {
+      if (otherValue == null) {
+        return false;
       }
-      return this.ef.EqualsInternal(otherValue.ef);
+      return this.exponent.equals(otherValue.exponent) &&
+        this.unsignedMantissa.equals(otherValue.unsignedMantissa) &&
+        this.flags == otherValue.flags;
     }
 
     /**
@@ -89,11 +89,8 @@ import com.upokecenter.numbers.*;
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      */
-    public boolean equals(ExtendedFloat other) {
-      if ((other) == null) {
-        throw new NullPointerException("other");
-      }
-      return this.ef.equals(other.ef);
+    public boolean equals(EFloat other) {
+      return this.EqualsInternal(other);
     }
 
     /**
@@ -103,8 +100,7 @@ import com.upokecenter.numbers.*;
      * @return True if the objects are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
-      ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
-      return (bi == null) ? (false) : (this.ef.equals(bi.ef));
+      return this.EqualsInternal(((obj instanceof EFloat) ? (EFloat)obj : null));
     }
 
     /**
@@ -112,7 +108,13 @@ import com.upokecenter.numbers.*;
      * @return This object's hash code.
      */
     @Override public int hashCode() {
-      return this.ef.hashCode();
+      int valueHashCode = 403796923;
+      {
+        valueHashCode += 403797019 * this.exponent.hashCode();
+        valueHashCode += 403797059 * this.unsignedMantissa.hashCode();
+        valueHashCode += 403797127 * this.flags;
+      }
+      return valueHashCode;
     }
 
     /**
@@ -123,11 +125,8 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
-    public static ExtendedFloat CreateNaN(BigInteger diag) {
-      if ((diag) == null) {
-        throw new NullPointerException("diag");
-      }
-      return new ExtendedFloat(EFloat.CreateNaN(diag.ei));
+    public static EFloat CreateNaN(EInteger diag) {
+      return CreateNaN(diag, false, false, null);
     }
 
     /**
@@ -142,16 +141,41 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
-    public static ExtendedFloat CreateNaN(BigInteger diag,
+    public static EFloat CreateNaN(
+      EInteger diag,
       boolean signaling,
       boolean negative,
-      PrecisionContext ctx) {
-      if ((diag) == null) {
+      EContext ctx) {
+      if (diag == null) {
         throw new NullPointerException("diag");
       }
-
-      return new ExtendedFloat(EFloat.CreateNaN(diag.ei, signaling,
-        negative, ctx == null ? null : ctx.ec));
+      if (diag.signum() < 0) {
+        throw new
+  IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
+                    diag);
+      }
+      if (diag.signum() == 0 && !negative) {
+        return signaling ? SignalingNaN : NaN;
+      }
+      int flags = 0;
+      if (negative) {
+        flags |= BigNumberFlags.FlagNegative;
+      }
+      if (ctx != null && ctx.getHasMaxPrecision()) {
+        flags |= BigNumberFlags.FlagQuietNaN;
+        EFloat ef = CreateWithFlags(
+          diag,
+          EInteger.FromInt64(0),
+          flags).RoundToPrecision(ctx);
+        int newFlags = ef.flags;
+        newFlags &= ~BigNumberFlags.FlagQuietNaN;
+        newFlags |= signaling ? BigNumberFlags.FlagSignalingNaN :
+          BigNumberFlags.FlagQuietNaN;
+        return new EFloat(ef.unsignedMantissa, ef.exponent, newFlags);
+      }
+      flags |= signaling ? BigNumberFlags.FlagSignalingNaN :
+        BigNumberFlags.FlagQuietNaN;
+      return CreateWithFlags(diag, EInteger.FromInt64(0), flags);
     }
 
     /**
@@ -160,8 +184,8 @@ import com.upokecenter.numbers.*;
      * @param exponentSmall The binary exponent.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat Create(int mantissaSmall, int exponentSmall) {
-      return new ExtendedFloat(EFloat.Create(mantissaSmall, exponentSmall));
+    public static EFloat Create(int mantissaSmall, int exponentSmall) {
+      return Create(EInteger.FromInt64(mantissaSmall), EInteger.FromInt64(exponentSmall));
     }
 
     /**
@@ -172,15 +196,46 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
      */
-    public static ExtendedFloat Create(BigInteger mantissa,
-      BigInteger exponent) {
-      if ((mantissa) == null) {
+    public static EFloat Create(
+      EInteger mantissa,
+      EInteger exponent) {
+      if (mantissa == null) {
         throw new NullPointerException("mantissa");
       }
-      if ((exponent) == null) {
+      if (exponent == null) {
         throw new NullPointerException("exponent");
       }
-      return new ExtendedFloat(EFloat.Create(mantissa.ei, exponent.ei));
+      int sign = mantissa.signum();
+      return new EFloat(
+        sign < 0 ? ((mantissa).Negate()) : mantissa,
+        exponent,
+        (sign < 0) ? BigNumberFlags.FlagNegative : 0);
+    }
+
+    private EFloat(
+      EInteger unsignedMantissa,
+      EInteger exponent,
+      int flags) {
+      this.unsignedMantissa = unsignedMantissa;
+      this.exponent = exponent;
+      this.flags = flags;
+    }
+
+    public static EFloat CreateWithFlags(
+      EInteger mantissa,
+      EInteger exponent,
+      int flags) {
+      if (mantissa == null) {
+        throw new NullPointerException("mantissa");
+      }
+      if (exponent == null) {
+        throw new NullPointerException("exponent");
+      }
+      int sign = mantissa == null ? 0 : mantissa.signum();
+      return new EFloat(
+        sign < 0 ? ((mantissa).Negate()) : mantissa,
+        exponent,
+        flags);
     }
 
     /**
@@ -215,17 +270,20 @@ import com.upokecenter.numbers.*;
      * less than 0 or greater than {@code str} 's length, or {@code str} 's
      * length minus {@code offset} is less than {@code length}.
      */
-    public static ExtendedFloat FromString(String str,
+    public static EFloat FromString(
+      String str,
       int offset,
       int length,
-      PrecisionContext ctx) {
-try {
-      return new ExtendedFloat(EFloat.FromString(str, offset, length,
-        ctx == null ? null : ctx.ec));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+      EContext ctx) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      return EDecimal.FromString(
+        str,
+        offset,
+        length,
+        ctx).ToExtendedFloat();
+    }
 
     /**
      * Creates a binary float from a string that represents a number. See the
@@ -233,8 +291,8 @@ try {
      * @param str Not documented yet.
      * @return The parsed number, converted to arbitrary-precision binary float.
      */
-    public static ExtendedFloat FromString(String str) {
-      return new ExtendedFloat(EFloat.FromString(str));
+    public static EFloat FromString(String str) {
+      return FromString(str, 0, str == null ? 0 : str.length(), null);
     }
 
     /**
@@ -245,14 +303,9 @@ try {
      * @return The parsed number, converted to arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
-    public static ExtendedFloat FromString(String str, PrecisionContext ctx) {
-try {
-      return new ExtendedFloat(EFloat.FromString(str, ctx == null ? null :
-           ctx.ec));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+    public static EFloat FromString(String str, EContext ctx) {
+      return FromString(str, 0, str == null ? 0 : str.length(), ctx);
+    }
 
     /**
      *
@@ -267,8 +320,159 @@ try {
      * less than 0 or greater than {@code str} 's length, or {@code str} 's
      * length minus {@code offset} is less than {@code length}.
      */
-    public static ExtendedFloat FromString(String str, int offset, int length) {
-      return new ExtendedFloat(EFloat.FromString(str, offset, length));
+    public static EFloat FromString(String str, int offset, int length) {
+      return FromString(str, offset, length, null);
+    }
+
+    private static final class BinaryMathHelper implements IRadixMathHelper<EFloat> {
+    /**
+     * This is an internal method.
+     * @return A 32-bit signed integer.
+     */
+      public int GetRadix() {
+        return 2;
+      }
+
+    /**
+     * This is an internal method.
+     * @param value An arbitrary-precision binary float.
+     * @return A 32-bit signed integer.
+     */
+      public int GetSign(EFloat value) {
+        return value.signum();
+      }
+
+    /**
+     * This is an internal method.
+     * @param value An arbitrary-precision binary float.
+     * @return An arbitrary-precision integer.
+     */
+      public EInteger GetMantissa(EFloat value) {
+        return value.getMantissa();
+      }
+
+    /**
+     * This is an internal method.
+     * @param value An arbitrary-precision binary float.
+     * @return An arbitrary-precision integer.
+     */
+      public EInteger GetExponent(EFloat value) {
+        return value.exponent;
+      }
+
+    /**
+     * This is an internal method.
+     * @param bigint An arbitrary-precision integer object.
+     * @param lastDigit A 32-bit signed integer.
+     * @param olderDigits A 32-bit signed integer. (2).
+     * @return An IShiftAccumulator object.
+     */
+      public IShiftAccumulator CreateShiftAccumulatorWithDigits(
+        EInteger bigint,
+        int lastDigit,
+        int olderDigits) {
+        return new BitShiftAccumulator(bigint, lastDigit, olderDigits);
+      }
+
+    /**
+     * This is an internal method.
+     * @param bigint An arbitrary-precision integer object.
+     * @return An IShiftAccumulator object.
+     */
+      public IShiftAccumulator CreateShiftAccumulator(EInteger bigint) {
+        return new BitShiftAccumulator(bigint, 0, 0);
+      }
+
+    /**
+     * This is an internal method.
+     * @param num An arbitrary-precision integer object.
+     * @param den Another arbitrary-precision integer object.
+     * @return A Boolean object.
+     */
+      public boolean HasTerminatingRadixExpansion(EInteger num, EInteger den) {
+        EInteger gcd = num.gcd(den);
+        if (gcd.signum() == 0) {
+          return false;
+        }
+        den = den.Divide(gcd);
+        while (den.isEven()) {
+          den = den.ShiftRight(1);
+        }
+        return den.equals(EInteger.FromInt64(1));
+      }
+
+    /**
+     * This is an internal method.
+     * @param bigint Another arbitrary-precision integer object.
+     * @param power A FastInteger object.
+     * @return An arbitrary-precision integer.
+     */
+      public EInteger MultiplyByRadixPower(
+        EInteger bigint,
+        FastInteger power) {
+        EInteger tmpbigint = bigint;
+        if (power.signum() <= 0) {
+          return tmpbigint;
+        }
+        if (tmpbigint.signum() < 0) {
+          tmpbigint = tmpbigint.Negate();
+          if (power.CanFitInInt32()) {
+            tmpbigint = DecimalUtility.ShiftLeftInt(tmpbigint, power.AsInt32());
+            tmpbigint = tmpbigint.Negate();
+          } else {
+            tmpbigint = DecimalUtility.ShiftLeft(
+              tmpbigint,
+              power.AsBigInteger());
+            tmpbigint = tmpbigint.Negate();
+          }
+          return tmpbigint;
+        }
+        return power.CanFitInInt32() ? DecimalUtility.ShiftLeftInt(
+          tmpbigint,
+          power.AsInt32()) : DecimalUtility.ShiftLeft(
+          tmpbigint,
+          power.AsBigInteger());
+      }
+
+    /**
+     * This is an internal method.
+     * @param value An arbitrary-precision binary float.
+     * @return A 32-bit signed integer.
+     */
+      public int GetFlags(EFloat value) {
+        return value.flags;
+      }
+
+    /**
+     * This is an internal method.
+     * @param mantissa An arbitrary-precision integer object.
+     * @param exponent Another arbitrary-precision integer object.
+     * @param flags A 32-bit signed integer.
+     * @return An arbitrary-precision binary float.
+     */
+      public EFloat CreateNewWithFlags(
+        EInteger mantissa,
+        EInteger exponent,
+        int flags) {
+        return EFloat.CreateWithFlags(mantissa, exponent, flags);
+      }
+
+    /**
+     * This is an internal method.
+     * @return A 32-bit signed integer.
+     */
+      public int GetArithmeticSupport() {
+        return BigNumberFlags.FiniteAndNonFinite;
+      }
+
+    /**
+     * This is an internal method.
+     * @param val A 32-bit signed integer.
+     * @return An arbitrary-precision binary float.
+     */
+      public EFloat ValueOf(int val) {
+        return FromInt64(val);
+      }
     }
 
     /**
@@ -277,8 +481,8 @@ try {
      * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
-    public BigInteger ToBigInteger() {
-      return new BigInteger(this.ef.ToBigInteger());
+    public EInteger ToBigInteger() {
+      return this.ToBigIntegerInternal(false);
     }
 
     /**
@@ -288,9 +492,59 @@ try {
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      * @throws ArithmeticException This object's value is not an exact integer.
      */
-    public BigInteger ToBigIntegerExact() {
-      return new BigInteger(this.ef.ToBigIntegerExact());
+    public EInteger ToBigIntegerExact() {
+      return this.ToBigIntegerInternal(true);
     }
+
+    private EInteger ToBigIntegerInternal(boolean exact) {
+      if (!this.isFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      if (this.signum() == 0) {
+        return EInteger.FromInt64(0);
+      }
+      int expsign = this.getExponent().signum();
+      if (expsign == 0) {
+        // Integer
+        return this.getMantissa();
+      }
+      if (expsign > 0) {
+        // Integer with trailing zeros
+        EInteger curexp = this.getExponent();
+        EInteger bigmantissa = this.getMantissa();
+        if (bigmantissa.signum() == 0) {
+          return bigmantissa;
+        }
+        boolean neg = bigmantissa.signum() < 0;
+        if (neg) {
+          bigmantissa = bigmantissa.Negate();
+        }
+        bigmantissa = DecimalUtility.ShiftLeft(bigmantissa, curexp);
+        if (neg) {
+          bigmantissa = bigmantissa.Negate();
+        }
+        return bigmantissa;
+      } else {
+        EInteger bigmantissa = this.getMantissa();
+        FastInteger bigexponent = FastInteger.FromBig(this.getExponent()).Negate();
+        bigmantissa = bigmantissa.Abs();
+        BitShiftAccumulator acc = new BitShiftAccumulator(bigmantissa, 0, 0);
+        acc.ShiftRight(bigexponent);
+        if (exact && (acc.getLastDiscardedDigit() != 0 || acc.getOlderDiscardedDigits() !=
+                    0)) {
+          // Some digits were discarded
+          throw new ArithmeticException("Not an exact integer");
+        }
+        bigmantissa = acc.getShiftedInt();
+        if (this.isNegative()) {
+          bigmantissa = bigmantissa.Negate();
+        }
+        return bigmantissa;
+      }
+    }
+
+    private static final EInteger valueOneShift23 = EInteger.FromInt64(1).ShiftLeft(23);
+    private static final EInteger valueOneShift52 = EInteger.FromInt64(1).ShiftLeft(52);
 
     /**
      * Converts this value to a 32-bit floating-point number. The half-even
@@ -305,7 +559,111 @@ try {
      * exceeds the range of a 32-bit floating point number.
      */
     public float ToSingle() {
-      return this.ef.ToSingle();
+      if (this.IsPositiveInfinity()) {
+        return Float.POSITIVE_INFINITY;
+      }
+      if (this.IsNegativeInfinity()) {
+        return Float.NEGATIVE_INFINITY;
+      }
+      if (this.IsNaN()) {
+        int nan = 0x7f800000;
+        if (this.isNegative()) {
+          nan |= ((int)(1 << 31));
+        }
+        // IsQuietNaN(): the quiet bit for X86 at least
+        // Not IsQuietNaN(): not really the signaling bit, but done to keep
+        // the mantissa from being zero
+        nan |= this.IsQuietNaN() ? 0x400000 : 0x200000;
+        if (this.getUnsignedMantissa().signum() != 0) {
+          // Transfer diagnostic information
+          EInteger bigdata = this.getUnsignedMantissa().Remainder(EInteger.FromInt64(0x200000));
+          nan |= bigdata.AsInt32Checked();
+        }
+        return Float.intBitsToFloat(nan);
+      }
+      if (this.isNegative() && this.signum() == 0) {
+        return Float.intBitsToFloat(1 << 31);
+      }
+      EInteger bigmant = this.unsignedMantissa.Abs();
+      FastInteger bigexponent = FastInteger.FromBig(this.exponent);
+      int bitLeftmost = 0;
+      int bitsAfterLeftmost = 0;
+      if (this.unsignedMantissa.signum() == 0) {
+        return 0.0f;
+      }
+      int smallmant = 0;
+      FastInteger fastSmallMant;
+      if (bigmant.compareTo(valueOneShift23) < 0) {
+        smallmant = bigmant.AsInt32Checked();
+        int exponentchange = 0;
+        while (smallmant < (1 << 23)) {
+          smallmant <<= 1;
+          ++exponentchange;
+        }
+        bigexponent.SubtractInt(exponentchange);
+        fastSmallMant = new FastInteger(smallmant);
+      } else {
+        BitShiftAccumulator accum = new BitShiftAccumulator(bigmant, 0, 0);
+        accum.ShiftToDigitsInt(24);
+        bitsAfterLeftmost = accum.getOlderDiscardedDigits();
+        bitLeftmost = accum.getLastDiscardedDigit();
+        bigexponent.Add(accum.getDiscardedDigitCount());
+        fastSmallMant = accum.getShiftedIntFast();
+      }
+      // Round half-even
+      if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
+                    !fastSmallMant.isEvenNumber())) {
+        fastSmallMant.Increment();
+        if (fastSmallMant.CompareToInt(1 << 24) == 0) {
+          fastSmallMant = new FastInteger(1 << 23);
+          bigexponent.Increment();
+        }
+      }
+      boolean subnormal = false;
+      if (bigexponent.CompareToInt(104) > 0) {
+        // exponent too big
+        return this.isNegative() ? Float.NEGATIVE_INFINITY :
+          Float.POSITIVE_INFINITY;
+      }
+      if (bigexponent.CompareToInt(-149) < 0) {
+        // subnormal
+        subnormal = true;
+        // Shift while number remains subnormal
+        BitShiftAccumulator accum =
+          BitShiftAccumulator.FromInt32(fastSmallMant.AsInt32());
+        FastInteger fi = FastInteger.Copy(bigexponent).SubtractInt(-149).Abs();
+        accum.ShiftRight(fi);
+        bitsAfterLeftmost = accum.getOlderDiscardedDigits();
+        bitLeftmost = accum.getLastDiscardedDigit();
+        bigexponent.Add(accum.getDiscardedDigitCount());
+        fastSmallMant = accum.getShiftedIntFast();
+        // Round half-even
+        if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
+                    !fastSmallMant.isEvenNumber())) {
+          fastSmallMant.Increment();
+          if (fastSmallMant.CompareToInt(1 << 24) == 0) {
+            fastSmallMant = new FastInteger(1 << 23);
+            bigexponent.Increment();
+          }
+        }
+      }
+      if (bigexponent.CompareToInt(-149) < 0) {
+        // exponent too small, so return zero
+        return this.isNegative() ?
+          Float.intBitsToFloat(1 << 31) :
+          Float.intBitsToFloat(0);
+      } else {
+        int smallexponent = bigexponent.AsInt32();
+        smallexponent += 150;
+        int smallmantissa = ((int)fastSmallMant.AsInt32()) & 0x7fffff;
+        if (!subnormal) {
+          smallmantissa |= smallexponent << 23;
+        }
+        if (this.isNegative()) {
+          smallmantissa |= 1 << 31;
+        }
+        return Float.intBitsToFloat(smallmantissa);
+      }
     }
 
     /**
@@ -321,7 +679,126 @@ try {
      * exceeds the range of a 64-bit floating point number.
      */
     public double ToDouble() {
-      return this.ef.ToDouble();
+      if (this.IsPositiveInfinity()) {
+        return Double.POSITIVE_INFINITY;
+      }
+      if (this.IsNegativeInfinity()) {
+        return Double.NEGATIVE_INFINITY;
+      }
+      if (this.IsNaN()) {
+        int[] nan = { 0, 0x7ff00000 };
+        if (this.isNegative()) {
+          nan[1] |= ((int)(1 << 31));
+        }
+        // 0x40000 is not really the signaling bit, but done to keep
+        // the mantissa from being zero
+        if (this.IsQuietNaN()) {
+          nan[1] |= 0x80000;
+        } else {
+          nan[1] |= 0x40000;
+        }
+        if (this.getUnsignedMantissa().signum() != 0) {
+          // Copy diagnostic information
+          int[] words = FastInteger.GetLastWords(this.getUnsignedMantissa(), 2);
+          nan[0] = words[0];
+          nan[1] = words[1] & 0x3ffff;
+        }
+        return Extras.IntegersToDouble(nan);
+      }
+      if (this.isNegative() && this.signum() == 0) {
+        return Extras.IntegersToDouble(new int[] { ((int)(1 << 31)), 0 });
+      }
+      EInteger bigmant = this.unsignedMantissa.Abs();
+      FastInteger bigexponent = FastInteger.FromBig(this.exponent);
+      int bitLeftmost = 0;
+      int bitsAfterLeftmost = 0;
+      if (this.unsignedMantissa.signum() == 0) {
+        return 0.0d;
+      }
+      int[] mantissaBits;
+      if (bigmant.compareTo(valueOneShift52) < 0) {
+        mantissaBits = FastInteger.GetLastWords(bigmant, 2);
+        // This will be an infinite loop if both elements
+        // of the bits array are 0, but the check for
+        // 0 was already done above
+        while (!DecimalUtility.HasBitSet(mantissaBits, 52)) {
+          DecimalUtility.ShiftLeftOne(mantissaBits);
+          bigexponent.Decrement();
+        }
+      } else {
+        BitShiftAccumulator accum = new BitShiftAccumulator(bigmant, 0, 0);
+        accum.ShiftToDigitsInt(53);
+        bitsAfterLeftmost = accum.getOlderDiscardedDigits();
+        bitLeftmost = accum.getLastDiscardedDigit();
+        bigexponent.Add(accum.getDiscardedDigitCount());
+        mantissaBits = FastInteger.GetLastWords(accum.getShiftedInt(), 2);
+      }
+      // Round half-even
+      if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
+                    DecimalUtility.HasBitSet(mantissaBits, 0))) {
+        // Add 1 to the bits
+        mantissaBits[0] = ((int)(mantissaBits[0] + 1));
+        if (mantissaBits[0] == 0) {
+          mantissaBits[1] = ((int)(mantissaBits[1] + 1));
+        }
+        if (mantissaBits[0] == 0 &&
+            mantissaBits[1] == (1 << 21)) {  // if mantissa is now 2^53
+          mantissaBits[1] >>= 1;  // change it to 2^52
+          bigexponent.Increment();
+        }
+      }
+      boolean subnormal = false;
+      if (bigexponent.CompareToInt(971) > 0) {
+        // exponent too big
+        return this.isNegative() ? Double.NEGATIVE_INFINITY :
+          Double.POSITIVE_INFINITY;
+      }
+      if (bigexponent.CompareToInt(-1074) < 0) {
+        // subnormal
+        subnormal = true;
+        // Shift while number remains subnormal
+        BitShiftAccumulator accum = new BitShiftAccumulator(
+          FastInteger.WordsToBigInteger(mantissaBits),
+          0,
+          0);
+        FastInteger fi = FastInteger.Copy(bigexponent).SubtractInt(-1074).Abs();
+        accum.ShiftRight(fi);
+        bitsAfterLeftmost = accum.getOlderDiscardedDigits();
+        bitLeftmost = accum.getLastDiscardedDigit();
+        bigexponent.Add(accum.getDiscardedDigitCount());
+        mantissaBits = FastInteger.GetLastWords(accum.getShiftedInt(), 2);
+        // Round half-even
+        if (bitLeftmost > 0 && (bitsAfterLeftmost > 0 ||
+                    DecimalUtility.HasBitSet(mantissaBits, 0))) {
+          // Add 1 to the bits
+          mantissaBits[0] = ((int)(mantissaBits[0] + 1));
+          if (mantissaBits[0] == 0) {
+            mantissaBits[1] = ((int)(mantissaBits[1] + 1));
+          }
+          if (mantissaBits[0] == 0 &&
+              mantissaBits[1] == (1 << 21)) {  // if mantissa is now 2^53
+            mantissaBits[1] >>= 1;  // change it to 2^52
+            bigexponent.Increment();
+          }
+        }
+      }
+      if (bigexponent.CompareToInt(-1074) < 0) {
+        // exponent too small, so return zero
+        return this.isNegative() ?
+          Extras.IntegersToDouble(new int[] { 0, ((int)0x80000000) }) :
+          0.0d;
+      }
+      bigexponent.AddInt(1075);
+      // Clear the high bits where the exponent and sign are
+      mantissaBits[1] &= 0xfffff;
+      if (!subnormal) {
+        int smallexponent = bigexponent.AsInt32() << 20;
+        mantissaBits[1] |= smallexponent;
+      }
+      if (this.isNegative()) {
+        mantissaBits[1] |= ((int)(1 << 31));
+      }
+      return Extras.IntegersToDouble(mantissaBits);
     }
 
     /**
@@ -332,8 +809,49 @@ try {
      * @param flt A 32-bit floating-point number.
      * @return A binary float with the same value as {@code flt}.
      */
-    public static ExtendedFloat FromSingle(float flt) {
-      return new ExtendedFloat(EFloat.FromSingle(flt));
+    public static EFloat FromSingle(float flt) {
+      int value = Float.floatToRawIntBits(flt);
+      boolean neg = (value >> 31) != 0;
+      int floatExponent = (int)((value >> 23) & 0xff);
+      int valueFpMantissa = value & 0x7fffff;
+      EInteger bigmant;
+      if (floatExponent == 255) {
+        if (valueFpMantissa == 0) {
+          return neg ? NegativeInfinity : PositiveInfinity;
+        }
+        // Treat high bit of mantissa as quiet/signaling bit
+        boolean quiet = (valueFpMantissa & 0x400000) != 0;
+        valueFpMantissa &= 0x1fffff;
+        bigmant = EInteger.FromInt64(valueFpMantissa);
+        value = (neg ? BigNumberFlags.FlagNegative : 0) | (quiet ?
+                BigNumberFlags.FlagQuietNaN : BigNumberFlags.FlagSignalingNaN);
+        if (bigmant.signum() == 0) {
+          return quiet ? NaN : SignalingNaN;
+        }
+        return CreateWithFlags(
+          bigmant,
+          EInteger.FromInt64(0),
+          value);
+      }
+      if (floatExponent == 0) {
+        ++floatExponent;
+      } else {
+        valueFpMantissa |= 1 << 23;
+      }
+      if (valueFpMantissa == 0) {
+        return neg ? EFloat.NegativeZero : EFloat.Zero;
+      }
+      while ((valueFpMantissa & 1) == 0) {
+        ++floatExponent;
+        valueFpMantissa >>= 1;
+      }
+      if (neg) {
+        valueFpMantissa = -valueFpMantissa;
+      }
+      bigmant = EInteger.FromInt64(valueFpMantissa);
+      return EFloat.Create(
+        bigmant,
+        EInteger.FromInt64(floatExponent - 150));
     }
 
     /**
@@ -341,11 +859,8 @@ try {
      * @param bigint An arbitrary-precision integer object.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat FromBigInteger(BigInteger bigint) {
-      if ((bigint) == null) {
-        throw new NullPointerException("bigint");
-      }
-      return new ExtendedFloat(EFloat.FromBigInteger(bigint.ei));
+    public static EFloat FromBigInteger(EInteger bigint) {
+      return EFloat.Create(bigint, EInteger.FromInt64(0));
     }
 
     /**
@@ -353,8 +868,9 @@ try {
      * @param valueSmall A 64-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat FromInt64(long valueSmall) {
-      return new ExtendedFloat(EFloat.FromInt64(valueSmall));
+    public static EFloat FromInt64(long valueSmall) {
+      EInteger bigint = EInteger.FromInt64(valueSmall);
+      return EFloat.Create(bigint, EInteger.FromInt64(0));
     }
 
     /**
@@ -362,8 +878,9 @@ try {
      * @param valueSmaller A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat FromInt32(int valueSmaller) {
-      return new ExtendedFloat(EFloat.FromInt32(valueSmaller));
+    public static EFloat FromInt32(int valueSmaller) {
+      EInteger bigint = EInteger.FromInt64(valueSmaller);
+      return EFloat.Create(bigint, EInteger.FromInt64(0));
     }
 
     /**
@@ -374,16 +891,47 @@ try {
      * @param dbl A 64-bit floating-point number.
      * @return A binary float with the same value as {@code dbl}.
      */
-    public static ExtendedFloat FromDouble(double dbl) {
-      return new ExtendedFloat(EFloat.FromDouble(dbl));
+    public static EFloat FromDouble(double dbl) {
+      int[] value = Extras.DoubleToIntegers(dbl);
+      int floatExponent = (int)((value[1] >> 20) & 0x7ff);
+      boolean neg = (value[1] >> 31) != 0;
+      if (floatExponent == 2047) {
+        if ((value[1] & 0xfffff) == 0 && value[0] == 0) {
+          return neg ? NegativeInfinity : PositiveInfinity;
+        }
+        // Treat high bit of mantissa as quiet/signaling bit
+        boolean quiet = (value[1] & 0x80000) != 0;
+        value[1] &= 0x3ffff;
+        EInteger info = FastInteger.WordsToBigInteger(value);
+        if (info.signum() == 0) {
+          return quiet ? NaN : SignalingNaN;
+        }
+        value[0] = (neg ? BigNumberFlags.FlagNegative : 0) |
+       (quiet ? BigNumberFlags.FlagQuietNaN : BigNumberFlags.FlagSignalingNaN);
+        return CreateWithFlags(
+          info,
+          EInteger.FromInt64(0),
+          value[0]);
+      }
+      value[1] &= 0xfffff;  // Mask out the exponent and sign
+      if (floatExponent == 0) {
+        ++floatExponent;
+      } else {
+        value[1] |= 0x100000;
+      }
+      if ((value[1] | value[0]) != 0) {
+      floatExponent += DecimalUtility.ShiftAwayTrailingZerosTwoElements(value);
+      } else {
+        return neg ? EFloat.NegativeZero : EFloat.Zero;
+      }
+      return CreateWithFlags(
+        FastInteger.WordsToBigInteger(value),
+        EInteger.FromInt64(floatExponent - 1075),
+        neg ? BigNumberFlags.FlagNegative : 0);
     }
 
-    /**
-     * Converts this value to an extended decimal.
-     * @return An extended decimal with the same value as this extended float.
-     */
-    public ExtendedDecimal ToExtendedDecimal() {
-      return new ExtendedDecimal(this.ef.ToExtendedDecimal());
+    public EDecimal ToExtendedDecimal() {
+      return EDecimal.FromExtendedFloat(this);
     }
 
     /**
@@ -392,7 +940,7 @@ try {
      * decimal and the decimal form of this number's value is returned.
      */
     @Override public String toString() {
-      return this.ef.toString();
+      return EDecimal.FromExtendedFloat(this).toString();
     }
 
     /**
@@ -401,7 +949,7 @@ try {
      * @return A string object.
      */
     public String ToEngineeringString() {
-      return this.ef.ToEngineeringString();
+      return this.ToExtendedDecimal().ToEngineeringString();
     }
 
     /**
@@ -409,71 +957,83 @@ try {
      * @return A string object.
      */
     public String ToPlainString() {
-      return this.ef.ToPlainString();
+      return this.ToExtendedDecimal().ToPlainString();
     }
 
     /**
      * Represents the number 1.
      */
 
-    public static final ExtendedFloat One =
-      new ExtendedFloat(EFloat.One);
+    public static final EFloat One =
+      EFloat.Create(EInteger.FromInt64(1), EInteger.FromInt64(0));
 
     /**
      * Represents the number 0.
      */
 
-    public static final ExtendedFloat Zero =
-      new ExtendedFloat(EFloat.Zero);
+    public static final EFloat Zero =
+      EFloat.Create(EInteger.FromInt64(0), EInteger.FromInt64(0));
 
     /**
      * Represents the number negative zero.
      */
 
-    public static final ExtendedFloat NegativeZero =
-      new ExtendedFloat(EFloat.NegativeZero);
+    public static final EFloat NegativeZero = CreateWithFlags(
+      EInteger.FromInt64(0),
+      EInteger.FromInt64(0),
+      BigNumberFlags.FlagNegative);
 
     /**
      * Represents the number 10.
      */
 
-    public static final ExtendedFloat Ten =
-      new ExtendedFloat(EFloat.Ten);
+    public static final EFloat Ten =
+      EFloat.Create(EInteger.FromInt64(10), EInteger.FromInt64(0));
 
     //----------------------------------------------------------------
 
     /**
      * A not-a-number value.
      */
-    public static final ExtendedFloat NaN =
-      new ExtendedFloat(EFloat.NaN);
+    public static final EFloat NaN = CreateWithFlags(
+      EInteger.FromInt64(0),
+      EInteger.FromInt64(0),
+      BigNumberFlags.FlagQuietNaN);
 
     /**
      * A not-a-number value that signals an invalid operation flag when it&#x27;s
      * passed as an argument to any arithmetic operation in
      * arbitrary-precision binary float.
      */
-    public static final ExtendedFloat SignalingNaN =
-      new ExtendedFloat(EFloat.SignalingNaN);
+    public static final EFloat SignalingNaN = CreateWithFlags(
+      EInteger.FromInt64(0),
+      EInteger.FromInt64(0),
+      BigNumberFlags.FlagSignalingNaN);
 
     /**
      * Positive infinity, greater than any other number.
      */
-    public static final ExtendedFloat PositiveInfinity =
-      new ExtendedFloat(EFloat.PositiveInfinity);
+    public static final EFloat PositiveInfinity = CreateWithFlags(
+      EInteger.FromInt64(0),
+      EInteger.FromInt64(0),
+      BigNumberFlags.FlagInfinity);
 
     /**
      * Negative infinity, less than any other number.
      */
-    public static final ExtendedFloat NegativeInfinity =
-      new ExtendedFloat(EFloat.NegativeInfinity);
+    public static final EFloat NegativeInfinity = CreateWithFlags(
+      EInteger.FromInt64(0),
+      EInteger.FromInt64(0),
+      BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
 
     /**
      * Returns whether this object is negative infinity.
      * @return True if this object is negative infinity; otherwise, false.
      */
     public boolean IsNegativeInfinity() {
-      return this.ef.IsNegativeInfinity();
+      return (this.flags & (BigNumberFlags.FlagInfinity |
+                    BigNumberFlags.FlagNegative)) ==
+        (BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
     }
 
     /**
@@ -481,7 +1041,8 @@ try {
      * @return True if this object is positive infinity; otherwise, false.
      */
     public boolean IsPositiveInfinity() {
-      return this.ef.IsPositiveInfinity();
+      return (this.flags & (BigNumberFlags.FlagInfinity |
+                BigNumberFlags.FlagNegative)) == BigNumberFlags.FlagInfinity;
     }
 
     /**
@@ -489,7 +1050,8 @@ try {
      * @return True if this object is a not-a-number value; otherwise, false.
      */
     public boolean IsNaN() {
-      return this.ef.IsNaN();
+      return (this.flags & (BigNumberFlags.FlagQuietNaN |
+                    BigNumberFlags.FlagSignalingNaN)) != 0;
     }
 
     /**
@@ -499,7 +1061,7 @@ try {
      * false.
      */
     public boolean IsInfinity() {
-      return this.ef.IsInfinity();
+      return (this.flags & BigNumberFlags.FlagInfinity) != 0;
     }
 
     /**
@@ -508,7 +1070,8 @@ try {
      * false.
      */
     public final boolean isFinite() {
-        return this.ef.isFinite();
+        return (this.flags & (BigNumberFlags.FlagInfinity |
+                    BigNumberFlags.FlagNaN)) == 0;
       }
 
     /**
@@ -518,7 +1081,7 @@ try {
      * false.
      */
     public final boolean isNegative() {
-        return this.ef.isNegative();
+        return (this.flags & BigNumberFlags.FlagNegative) != 0;
       }
 
     /**
@@ -526,7 +1089,7 @@ try {
      * @return True if this object is a quiet not-a-number value; otherwise, false.
      */
     public boolean IsQuietNaN() {
-      return this.ef.IsQuietNaN();
+      return (this.flags & BigNumberFlags.FlagQuietNaN) != 0;
     }
 
     /**
@@ -536,14 +1099,16 @@ try {
      * false.
      */
     public boolean IsSignalingNaN() {
-      return this.ef.IsSignalingNaN();
+      return (this.flags & BigNumberFlags.FlagSignalingNaN) != 0;
     }
 
     /**
      *
      */
     public final int signum() {
-        return this.ef.signum();
+        return (((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
+                this.unsignedMantissa.signum() == 0) ? 0 :
+          (((this.flags & BigNumberFlags.FlagNegative) != 0) ? -1 : 1);
       }
 
     /**
@@ -551,23 +1116,24 @@ try {
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-        return this.ef.signum() == 0;
+        return ((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
+          this.unsignedMantissa.signum() == 0;
       }
 
     /**
      * Gets the absolute value of this object.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat Abs() {
-      return new ExtendedFloat(this.ef.Abs());
+    public EFloat Abs() {
+      return this.Abs(null);
     }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat Negate() {
-      return new ExtendedFloat(this.ef.Negate());
+    public EFloat Negate() {
+      return this.Negate(null);
     }
 
     /**
@@ -581,11 +1147,10 @@ try {
      * @throws ArithmeticException The result can't be exact because it would have
      * a nonterminating binary expansion.
      */
-    public ExtendedFloat Divide(ExtendedFloat divisor) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      return new ExtendedFloat(this.ef.Divide(divisor.ef));
+    public EFloat Divide(EFloat divisor) {
+      return this.Divide(
+        divisor,
+        EContext.ForRounding(ERounding.None));
     }
 
     /**
@@ -601,13 +1166,13 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
-    public ExtendedFloat DivideToSameExponent(ExtendedFloat divisor,
-      Rounding rounding) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      return new ExtendedFloat(this.ef.DivideToSameExponent(divisor.ef,
-        ExtendedDecimal.ToERounding(rounding)));
+    public EFloat DivideToSameExponent(
+      EFloat divisor,
+      ERounding rounding) {
+      return this.DivideToExponent(
+        divisor,
+        this.exponent,
+        EContext.ForRounding(rounding));
     }
 
     /**
@@ -620,11 +1185,11 @@ try {
      * dividend is nonzero. Signals FlagInvalid and returns NaN if the
      * divisor and the dividend are 0.
      */
-    public ExtendedFloat DivideToIntegerNaturalScale(ExtendedFloat divisor) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      return new ExtendedFloat(this.ef.DivideToIntegerNaturalScale(divisor.ef));
+    public EFloat DivideToIntegerNaturalScale(
+      EFloat divisor) {
+      return this.DivideToIntegerNaturalScale(
+        divisor,
+        EContext.ForRounding(ERounding.Down));
     }
 
     /**
@@ -640,12 +1205,8 @@ try {
      * a very high exponent and the context says to clamp high exponents,
      * there may still be some trailing zeros in the mantissa.
      */
-    public ExtendedFloat Reduce(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Reduce(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Reduce(EContext ctx) {
+      return MathValue.Reduce(this, ctx);
     }
 
     /**
@@ -653,11 +1214,9 @@ try {
      * @param divisor Another arbitrary-precision binary float.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat RemainderNaturalScale(ExtendedFloat divisor) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      return new ExtendedFloat(this.ef.RemainderNaturalScale(divisor.ef));
+    public EFloat RemainderNaturalScale(
+      EFloat divisor) {
+      return this.RemainderNaturalScale(divisor, null);
     }
 
     /**
@@ -673,18 +1232,12 @@ try {
      * result doesn't fit the precision and exponent range without rounding.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat RemainderNaturalScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.RemainderNaturalScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RemainderNaturalScale(
+      EFloat divisor,
+      EContext ctx) {
+      return this.Subtract(
+        this.DivideToIntegerNaturalScale(divisor, ctx).Multiply(divisor, null),
+        null);
     }
 
     /**
@@ -712,19 +1265,14 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
+    public EFloat DivideToExponent(
+      EFloat divisor,
       long desiredExponentSmall,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-          desiredExponentSmall, ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+      EContext ctx) {
+      return this.DivideToExponent(
+        divisor,
+        EInteger.FromInt64(desiredExponentSmall),
+        ctx);
     }
 
     /**
@@ -745,17 +1293,10 @@ try {
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
      */
-    public ExtendedFloat Divide(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-        return new ExtendedFloat(this.ef.Divide(divisor.ef, ctx == null ? null :
-          ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Divide(
+      EFloat divisor,
+      EContext ctx) {
+      return MathValue.Divide(this, divisor, ctx);
     }
 
     /**
@@ -775,14 +1316,14 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
+    public EFloat DivideToExponent(
+      EFloat divisor,
       long desiredExponentSmall,
-      Rounding rounding) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-        desiredExponentSmall, ExtendedDecimal.ToERounding(rounding)));
+      ERounding rounding) {
+      return this.DivideToExponent(
+        divisor,
+        EInteger.FromInt64(desiredExponentSmall),
+        EContext.ForRounding(rounding));
     }
 
     /**
@@ -809,22 +1350,11 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      BigInteger exponent,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-        if ((exponent) == null) {
-          throw new NullPointerException("exponent");
-        }
-
-     return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-          exponent.ei, ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat DivideToExponent(
+      EFloat divisor,
+      EInteger exponent,
+      EContext ctx) {
+      return MathValue.DivideToExponent(this, divisor, exponent, ctx);
     }
 
     /**
@@ -844,17 +1374,14 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      BigInteger desiredExponent,
-      Rounding rounding) {
-      if ((divisor) == null) {
-        throw new NullPointerException("divisor");
-      }
-      if ((desiredExponent) == null) {
-        throw new NullPointerException("desiredExponent");
-      }
-      return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-        desiredExponent.ei, ExtendedDecimal.ToERounding(rounding)));
+    public EFloat DivideToExponent(
+      EFloat divisor,
+      EInteger desiredExponent,
+      ERounding rounding) {
+      return this.DivideToExponent(
+        divisor,
+        desiredExponent,
+        EContext.ForRounding(rounding));
     }
 
     /**
@@ -866,13 +1393,8 @@ try {
      * in addition to the pre-existing flags). Can be null.
      * @return The absolute value of this object.
      */
-    public ExtendedFloat Abs(PrecisionContext context) {
-      try {
-        return new ExtendedFloat(this.ef.Abs(context == null ? null :
-            context.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Abs(EContext context) {
+      return MathValue.Abs(this, context);
     }
 
     /**
@@ -884,16 +1406,8 @@ try {
      * in addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat Negate(PrecisionContext context) {
-      try {
-        if ((context) == null) {
-          throw new NullPointerException("context");
-        }
-        return new ExtendedFloat(this.ef.Negate(context == null ? null :
-             context.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Negate(EContext context) {
+      return MathValue.Negate(this, context);
     }
 
     /**
@@ -901,11 +1415,8 @@ try {
      * @param otherValue An arbitrary-precision binary float.
      * @return The sum of the two objects.
      */
-    public ExtendedFloat Add(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
-        throw new NullPointerException("otherValue");
-      }
-      return new ExtendedFloat(this.ef.Add(otherValue.ef));
+    public EFloat Add(EFloat otherValue) {
+      return this.Add(otherValue, EContext.Unlimited);
     }
 
     /**
@@ -914,11 +1425,8 @@ try {
      * @param otherValue An arbitrary-precision binary float.
      * @return The difference of the two objects.
      */
-    public ExtendedFloat Subtract(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
-        throw new NullPointerException("otherValue");
-      }
-      return new ExtendedFloat(this.ef.Subtract(otherValue.ef));
+    public EFloat Subtract(EFloat otherValue) {
+      return this.Subtract(otherValue, null);
     }
 
     /**
@@ -932,18 +1440,21 @@ try {
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
-    public ExtendedFloat Subtract(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
-      try {
-        if ((otherValue) == null) {
-          throw new NullPointerException("otherValue");
-        }
-
-        return new ExtendedFloat(this.ef.Subtract(otherValue.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat Subtract(
+      EFloat otherValue,
+      EContext ctx) {
+      if (otherValue == null) {
+        throw new NullPointerException("otherValue");
       }
+      EFloat negated = otherValue;
+      if ((otherValue.flags & BigNumberFlags.FlagNaN) == 0) {
+        int newflags = otherValue.flags ^ BigNumberFlags.FlagNegative;
+        negated = CreateWithFlags(
+          otherValue.unsignedMantissa,
+          otherValue.exponent,
+          newflags);
+      }
+      return this.Add(negated, ctx);
     }
 
     /**
@@ -952,11 +1463,8 @@ try {
      * @param otherValue Another binary float.
      * @return The product of the two binary floats.
      */
-    public ExtendedFloat Multiply(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
-        throw new NullPointerException("otherValue");
-      }
-      return new ExtendedFloat(this.ef.Multiply(otherValue.ef));
+    public EFloat Multiply(EFloat otherValue) {
+      return this.Multiply(otherValue, EContext.Unlimited);
     }
 
     /**
@@ -965,17 +1473,15 @@ try {
      * @param augend The value to add.
      * @return The result this * multiplicand + augend.
      */
-    public ExtendedFloat MultiplyAndAdd(ExtendedFloat multiplicand,
-      ExtendedFloat augend) {
-      if ((multiplicand) == null) {
-        throw new NullPointerException("multiplicand");
-      }
-      if ((augend) == null) {
-        throw new NullPointerException("augend");
-      }
-      return new ExtendedFloat(this.ef.MultiplyAndAdd(multiplicand.ef,
-            augend.ef));
+    public EFloat MultiplyAndAdd(
+      EFloat multiplicand,
+      EFloat augend) {
+      return this.MultiplyAndAdd(multiplicand, augend, null);
     }
+    //----------------------------------------------------------------
+    private static final IRadixMath<EFloat> MathValue = new
+      TrappableRadixMath<EFloat>(
+        new ExtendedOrSimpleRadixMath<EFloat>(new BinaryMathHelper()));
 
     /**
      * Divides this object by another object, and returns the integer part of the
@@ -997,18 +1503,10 @@ try {
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the integer part of the result is not exact.
      */
-    public ExtendedFloat DivideToIntegerNaturalScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.DivideToIntegerNaturalScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat DivideToIntegerNaturalScale(
+      EFloat divisor,
+      EContext ctx) {
+      return MathValue.DivideToIntegerNaturalScale(this, divisor, ctx);
     }
 
     /**
@@ -1026,18 +1524,10 @@ try {
      * returns NaN if the divisor and the dividend are 0, or if the result
      * doesn't fit the given precision.
      */
-    public ExtendedFloat DivideToIntegerZeroScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.DivideToIntegerZeroScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat DivideToIntegerZeroScale(
+      EFloat divisor,
+      EContext ctx) {
+      return MathValue.DivideToIntegerZeroScale(this, divisor, ctx);
     }
 
     /**
@@ -1047,18 +1537,10 @@ try {
      * @param ctx A PrecisionContext object.
      * @return The remainder of the two objects.
      */
-    public ExtendedFloat Remainder(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.Remainder(divisor.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Remainder(
+      EFloat divisor,
+      EContext ctx) {
+      return MathValue.Remainder(this, divisor, ctx);
     }
 
     /**
@@ -1089,18 +1571,10 @@ try {
      * division (the quotient) or the remainder wouldn't fit the given
      * precision.
      */
-    public ExtendedFloat RemainderNear(ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        if ((divisor) == null) {
-          throw new NullPointerException("divisor");
-        }
-
-        return new ExtendedFloat(this.ef.RemainderNear(divisor.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RemainderNear(
+      EFloat divisor,
+      EContext ctx) {
+      return MathValue.RemainderNear(this, divisor, ctx);
     }
 
     /**
@@ -1115,13 +1589,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
      */
-    public ExtendedFloat NextMinus(PrecisionContext ctx) {
-      try {
-      return new ExtendedFloat(this.ef.NextMinus(ctx == null ? null :
-          ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat NextMinus(EContext ctx) {
+      return MathValue.NextMinus(this, ctx);
     }
 
     /**
@@ -1135,12 +1604,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
      */
-    public ExtendedFloat NextPlus(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.NextPlus(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat NextPlus(EContext ctx) {
+      return MathValue.NextPlus(this, ctx);
     }
 
     /**
@@ -1157,18 +1622,10 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
      */
-    public ExtendedFloat NextToward(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
-      try {
-        if ((otherValue) == null) {
-          throw new NullPointerException("otherValue");
-        }
-
-        return new ExtendedFloat(this.ef.NextToward(otherValue.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat NextToward(
+      EFloat otherValue,
+      EContext ctx) {
+      return MathValue.NextToward(this, otherValue, ctx);
     }
 
     /**
@@ -1181,18 +1638,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The larger value of the two objects.
      */
-    public static ExtendedFloat Max(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-
-      return new ExtendedFloat(EFloat.Max(first.ef, second.ef, ctx == null ?
-        null : ctx.ec));
+    public static EFloat Max(
+      EFloat first,
+      EFloat second,
+      EContext ctx) {
+      return MathValue.Max(first, second, ctx);
     }
 
     /**
@@ -1205,18 +1655,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The smaller value of the two objects.
      */
-    public static ExtendedFloat Min(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-
-      return new ExtendedFloat(EFloat.Min(first.ef, second.ef, ctx == null ?
-        null : ctx.ec));
+    public static EFloat Min(
+      EFloat first,
+      EFloat second,
+      EContext ctx) {
+      return MathValue.Min(first, second, ctx);
     }
 
     /**
@@ -1230,18 +1673,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat MaxMagnitude(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-
-      return new ExtendedFloat(EFloat.MaxMagnitude(first.ef, second.ef,
-        ctx == null ? null : ctx.ec));
+    public static EFloat MaxMagnitude(
+      EFloat first,
+      EFloat second,
+      EContext ctx) {
+      return MathValue.MaxMagnitude(first, second, ctx);
     }
 
     /**
@@ -1255,18 +1691,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat MinMagnitude(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-
-      return new ExtendedFloat(EFloat.MinMagnitude(first.ef, second.ef,
-        ctx == null ? null : ctx.ec));
+    public static EFloat MinMagnitude(
+      EFloat first,
+      EFloat second,
+      EContext ctx) {
+      return MathValue.MinMagnitude(first, second, ctx);
     }
 
     /**
@@ -1275,15 +1704,10 @@ try {
      * @param second Another arbitrary-precision binary float.
      * @return The larger value of the two objects.
      */
-    public static ExtendedFloat Max(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-      return new ExtendedFloat(EFloat.Max(first.ef, second.ef));
+    public static EFloat Max(
+      EFloat first,
+      EFloat second) {
+      return Max(first, second, null);
     }
 
     /**
@@ -1292,15 +1716,10 @@ try {
      * @param second Another arbitrary-precision binary float.
      * @return The smaller value of the two objects.
      */
-    public static ExtendedFloat Min(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-      return new ExtendedFloat(EFloat.Min(first.ef, second.ef));
+    public static EFloat Min(
+      EFloat first,
+      EFloat second) {
+      return Min(first, second, null);
     }
 
     /**
@@ -1310,15 +1729,10 @@ try {
      * @param second An arbitrary-precision binary float. (3).
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat MaxMagnitude(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-      return new ExtendedFloat(EFloat.MaxMagnitude(first.ef, second.ef));
+    public static EFloat MaxMagnitude(
+      EFloat first,
+      EFloat second) {
+      return MaxMagnitude(first, second, null);
     }
 
     /**
@@ -1328,15 +1742,10 @@ try {
      * @param second An arbitrary-precision binary float. (3).
      * @return An arbitrary-precision binary float.
      */
-    public static ExtendedFloat MinMagnitude(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
-        throw new NullPointerException("first");
-      }
-      if ((second) == null) {
-        throw new NullPointerException("second");
-      }
-      return new ExtendedFloat(EFloat.MinMagnitude(first.ef, second.ef));
+    public static EFloat MinMagnitude(
+      EFloat first,
+      EFloat second) {
+      return MinMagnitude(first, second, null);
     }
 
     /**
@@ -1354,11 +1763,8 @@ try {
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
      */
-    public int compareTo(ExtendedFloat other) {
-      if ((other) == null) {
-        throw new NullPointerException("other");
-      }
-      return this.ef.compareTo(other.ef);
+    public int compareTo(EFloat other) {
+      return MathValue.compareTo(this, other);
     }
 
     /**
@@ -1376,18 +1782,10 @@ try {
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      */
-    public ExtendedFloat CompareToWithContext(ExtendedFloat other,
-      PrecisionContext ctx) {
-      try {
-        if ((other) == null) {
-          throw new NullPointerException("other");
-        }
-
-        return new ExtendedFloat(this.ef.CompareToWithContext(other.ef,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat CompareToWithContext(
+      EFloat other,
+      EContext ctx) {
+      return MathValue.CompareToWithContext(this, other, false, ctx);
     }
 
     /**
@@ -1405,18 +1803,10 @@ try {
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      */
-    public ExtendedFloat CompareToSignal(ExtendedFloat other,
-      PrecisionContext ctx) {
-      try {
-        if ((other) == null) {
-          throw new NullPointerException("other");
-        }
-
-        return new ExtendedFloat(this.ef.CompareToSignal(other.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat CompareToSignal(
+      EFloat other,
+      EContext ctx) {
+      return MathValue.CompareToWithContext(this, other, true, ctx);
     }
 
     /**
@@ -1429,18 +1819,10 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The sum of thisValue and the other object.
      */
-    public ExtendedFloat Add(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
-      try {
-        if ((otherValue) == null) {
-          throw new NullPointerException("otherValue");
-        }
-
-        return new ExtendedFloat(this.ef.Add(otherValue.ef, ctx == null ? null :
-          ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Add(
+      EFloat otherValue,
+      EContext ctx) {
+      return MathValue.Add(this, otherValue, ctx);
     }
 
     /**
@@ -1453,18 +1835,12 @@ try {
      * or if the context defines an exponent range and the given exponent is
      * outside that range.
      */
-    public ExtendedFloat Quantize(BigInteger desiredExponent,
-      PrecisionContext ctx) {
-      try {
-        if ((desiredExponent) == null) {
-          throw new NullPointerException("desiredExponent");
-        }
-
-        return new ExtendedFloat(this.ef.Quantize(desiredExponent.ei,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Quantize(
+      EInteger desiredExponent,
+      EContext ctx) {
+      return this.Quantize(
+        EFloat.Create(EInteger.FromInt64(1), desiredExponent),
+        ctx);
     }
 
     /**
@@ -1477,14 +1853,12 @@ try {
      * or if the context defines an exponent range and the given exponent is
      * outside that range.
      */
-    public ExtendedFloat Quantize(int desiredExponentSmall,
-      PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Quantize(desiredExponentSmall,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Quantize(
+      int desiredExponentSmall,
+      EContext ctx) {
+      return this.Quantize(
+        EFloat.Create(EInteger.FromInt64(1), EInteger.FromInt64(desiredExponentSmall)),
+        ctx);
     }
 
     /**
@@ -1509,17 +1883,10 @@ try {
      * outside of the valid range of the precision context, if it defines an
      * exponent range.
      */
-    public ExtendedFloat Quantize(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
-      try {
-        if ((otherValue) == null) {
-          throw new NullPointerException("otherValue");
-        }
-        return new ExtendedFloat(this.ef.Quantize(otherValue.ef, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Quantize(
+      EFloat otherValue,
+      EContext ctx) {
+      return MathValue.Quantize(this, otherValue, ctx);
     }
 
     /**
@@ -1538,13 +1905,8 @@ try {
      * the new exponent must be changed to 0 when rounding, and 0 is outside
      * of the valid range of the precision context.
      */
-    public ExtendedFloat RoundToIntegralExact(PrecisionContext ctx) {
-      try {
-     return new ExtendedFloat(this.ef.RoundToIntegralExact(ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToIntegralExact(EContext ctx) {
+      return MathValue.RoundToExponentExact(this, EInteger.FromInt64(0), ctx);
     }
 
     /**
@@ -1564,14 +1926,8 @@ try {
      * the new exponent must be changed to 0 when rounding, and 0 is outside
      * of the valid range of the precision context.
      */
-    public ExtendedFloat RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
-      try {
-        return new
-        ExtendedFloat(this.ef.RoundToIntegralNoRoundedFlag(ctx == null ?
-            null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToIntegralNoRoundedFlag(EContext ctx) {
+      return MathValue.RoundToExponentNoRoundedFlag(this, EInteger.FromInt64(0), ctx);
     }
 
     /**
@@ -1593,18 +1949,10 @@ try {
      * and the given exponent is outside of the valid range of the precision
      * context.
      */
-    public ExtendedFloat RoundToExponentExact(BigInteger exponent,
-      PrecisionContext ctx) {
-      try {
-        if ((exponent) == null) {
-          throw new NullPointerException("exponent");
-        }
-
-        return new ExtendedFloat(this.ef.RoundToExponentExact(exponent.ei,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToExponentExact(
+      EInteger exponent,
+      EContext ctx) {
+      return MathValue.RoundToExponentExact(this, exponent, ctx);
     }
 
     /**
@@ -1629,18 +1977,10 @@ try {
      * and the given exponent is outside of the valid range of the precision
      * context.
      */
-    public ExtendedFloat RoundToExponent(BigInteger exponent,
-      PrecisionContext ctx) {
-      try {
-        if ((exponent) == null) {
-          throw new NullPointerException("exponent");
-        }
-
-        return new ExtendedFloat(this.ef.RoundToExponent(exponent.ei,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToExponent(
+      EInteger exponent,
+      EContext ctx) {
+      return MathValue.RoundToExponentSimple(this, exponent, ctx);
     }
 
     /**
@@ -1662,14 +2002,10 @@ try {
      * and the given exponent is outside of the valid range of the precision
      * context.
      */
-    public ExtendedFloat RoundToExponentExact(int exponentSmall,
-      PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.RoundToExponentExact(exponentSmall,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToExponentExact(
+      int exponentSmall,
+      EContext ctx) {
+      return this.RoundToExponentExact(EInteger.FromInt64(exponentSmall), ctx);
     }
 
     /**
@@ -1694,14 +2030,10 @@ try {
      * and the given exponent is outside of the valid range of the precision
      * context.
      */
-    public ExtendedFloat RoundToExponent(int exponentSmall,
-      PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.RoundToExponent(exponentSmall,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToExponent(
+      int exponentSmall,
+      EContext ctx) {
+      return this.RoundToExponent(EInteger.FromInt64(exponentSmall), ctx);
     }
 
     /**
@@ -1716,18 +2048,10 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The product of the two binary floats.
      */
-    public ExtendedFloat Multiply(ExtendedFloat op,
-      PrecisionContext ctx) {
-      try {
-        if ((op) == null) {
-          throw new NullPointerException("op");
-        }
-
-        return new ExtendedFloat(this.ef.Multiply(op.ef, ctx == null ? null :
-              ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Multiply(
+      EFloat op,
+      EContext ctx) {
+      return MathValue.Multiply(this, op, ctx);
     }
 
     /**
@@ -1740,22 +2064,11 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return The result thisValue * multiplicand + augend.
      */
-    public ExtendedFloat MultiplyAndAdd(ExtendedFloat op,
-      ExtendedFloat augend,
-      PrecisionContext ctx) {
-      try {
-        if ((op) == null) {
-          throw new NullPointerException("op");
-        }
-        if ((augend) == null) {
-          throw new NullPointerException("augend");
-        }
-
-        return new ExtendedFloat(this.ef.MultiplyAndAdd(op.ef, augend.ef,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat MultiplyAndAdd(
+      EFloat op,
+      EFloat augend,
+      EContext ctx) {
+      return MathValue.MultiplyAndAdd(this, op, augend, ctx);
     }
 
     /**
@@ -1770,22 +2083,25 @@ try {
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * subtrahend} is null.
      */
-    public ExtendedFloat MultiplyAndSubtract(ExtendedFloat op,
-      ExtendedFloat subtrahend,
-      PrecisionContext ctx) {
-      try {
-        if ((op) == null) {
-          throw new NullPointerException("op");
-        }
-        if ((subtrahend) == null) {
-          throw new NullPointerException("subtrahend");
-        }
-
-     return new ExtendedFloat(this.ef.MultiplyAndSubtract(op.ef,
-          subtrahend.ef, ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat MultiplyAndSubtract(
+      EFloat op,
+      EFloat subtrahend,
+      EContext ctx) {
+      if (op == null) {
+        throw new NullPointerException("op");
       }
+      if (subtrahend == null) {
+        throw new NullPointerException("subtrahend");
+      }
+      EFloat negated = subtrahend;
+      if ((subtrahend.flags & BigNumberFlags.FlagNaN) == 0) {
+        int newflags = subtrahend.flags ^ BigNumberFlags.FlagNegative;
+        negated = CreateWithFlags(
+          subtrahend.unsignedMantissa,
+          subtrahend.exponent,
+          newflags);
+      }
+      return MathValue.MultiplyAndAdd(this, op, negated, ctx);
     }
 
     /**
@@ -1797,13 +2113,8 @@ try {
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
      */
-    public ExtendedFloat RoundToPrecision(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.RoundToPrecision(ctx == null ? null :
-               ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat RoundToPrecision(EContext ctx) {
+      return MathValue.RoundToPrecision(this, ctx);
     }
 
     /**
@@ -1816,12 +2127,8 @@ try {
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
      */
-    public ExtendedFloat Plus(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Plus(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Plus(EContext ctx) {
+      return MathValue.Plus(this, ctx);
     }
 
     /**
@@ -1837,13 +2144,17 @@ try {
 * with the IsPrecisionInBits property set.
  */
 @Deprecated
-    public ExtendedFloat RoundToBinaryPrecision(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.RoundToBinaryPrecision(ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat RoundToBinaryPrecision(
+      EContext ctx) {
+      if (ctx == null) {
+        return this;
       }
+      EContext ctx2 = ctx.Copy().WithPrecisionInBits(true);
+      EFloat ret = MathValue.RoundToPrecision(this, ctx2);
+      if (ctx2.getHasFlags()) {
+        ctx.setFlags(ctx2.getFlags());
+      }
+      return ret;
     }
 
     /**
@@ -1860,13 +2171,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */
-    public ExtendedFloat SquareRoot(PrecisionContext ctx) {
-      try {
-     return new ExtendedFloat(this.ef.SquareRoot(ctx == null ? null :
-          ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat SquareRoot(EContext ctx) {
+      return MathValue.SquareRoot(this, ctx);
     }
 
     /**
@@ -1882,12 +2188,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */
-    public ExtendedFloat Exp(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Exp(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Exp(EContext ctx) {
+      return MathValue.Exp(this, ctx);
     }
 
     /**
@@ -1906,12 +2208,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */
-    public ExtendedFloat Log(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Log(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Log(EContext ctx) {
+      return MathValue.Ln(this, ctx);
     }
 
     /**
@@ -1928,12 +2226,8 @@ try {
      * the parameter {@code ctx} is null or the precision is unlimited (the
      * context's Precision property is 0).
      */
-    public ExtendedFloat Log10(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Log10(ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Log10(EContext ctx) {
+      return MathValue.Log10(this, ctx);
     }
 
     /**
@@ -1947,16 +2241,8 @@ try {
      * precision is unlimited (the context's Precision property is 0), and
      * the exponent has a fractional part.
      */
-    public ExtendedFloat Pow(ExtendedFloat exponent, PrecisionContext ctx) {
-      try {
-        if ((exponent) == null) {
-          throw new NullPointerException("exponent");
-        }
-        return new ExtendedFloat(this.ef.Pow(exponent.ef, ctx == null ? null :
-               ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Pow(EFloat exponent, EContext ctx) {
+      return MathValue.Power(this, exponent, ctx);
     }
 
     /**
@@ -1969,13 +2255,8 @@ try {
      * @return This^exponent. Signals the flag FlagInvalid and returns NaN if this
      * object and exponent are both 0.
      */
-    public ExtendedFloat Pow(int exponentSmall, PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.Pow(exponentSmall, ctx == null ? null :
-          ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat Pow(int exponentSmall, EContext ctx) {
+      return this.Pow(EFloat.FromInt64(exponentSmall), ctx);
     }
 
     /**
@@ -1983,8 +2264,8 @@ try {
      * @param exponentSmall A 32-bit signed integer.
      * @return This^exponent. Returns NaN if this object and exponent are both 0.
      */
-    public ExtendedFloat Pow(int exponentSmall) {
-      return new ExtendedFloat(this.ef.Pow(exponentSmall));
+    public EFloat Pow(int exponentSmall) {
+      return this.Pow(EFloat.FromInt64(exponentSmall), null);
     }
 
     /**
@@ -1998,8 +2279,8 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */
-    public static ExtendedFloat PI(PrecisionContext ctx) {
-      return new ExtendedFloat(EFloat.PI(ctx == null ? null : ctx.ec));
+    public static EFloat PI(EContext ctx) {
+      return MathValue.Pi(ctx);
     }
 
     /**
@@ -2008,8 +2289,8 @@ try {
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointLeft(int places) {
-      return new ExtendedFloat(this.ef.MovePointLeft(places));
+    public EFloat MovePointLeft(int places) {
+      return this.MovePointLeft(EInteger.FromInt64(places), null);
     }
 
     /**
@@ -2022,13 +2303,8 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointLeft(int places, PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.MovePointLeft(places, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat MovePointLeft(int places, EContext ctx) {
+      return this.MovePointLeft(EInteger.FromInt64(places), ctx);
     }
 
     /**
@@ -2037,11 +2313,8 @@ try {
      * @param bigPlaces An arbitrary-precision integer object.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointLeft(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
-        throw new NullPointerException("bigPlaces");
-      }
-      return new ExtendedFloat(this.ef.MovePointLeft(bigPlaces.ei));
+    public EFloat MovePointLeft(EInteger bigPlaces) {
+      return this.MovePointLeft(bigPlaces, null);
     }
 
     /**
@@ -2054,18 +2327,14 @@ try {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointLeft(BigInteger bigPlaces,
-PrecisionContext ctx) {
-      try {
-        if ((bigPlaces) == null) {
-          throw new NullPointerException("bigPlaces");
-        }
-
-     return new ExtendedFloat(this.ef.MovePointLeft(bigPlaces.ei, ctx ==
-          null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat MovePointLeft(
+EInteger bigPlaces,
+EContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
       }
+      return (!this.isFinite()) ? this.RoundToPrecision(ctx) :
+        this.MovePointRight((bigPlaces).Negate(), ctx);
     }
 
     /**
@@ -2074,8 +2343,8 @@ PrecisionContext ctx) {
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointRight(int places) {
-      return new ExtendedFloat(this.ef.MovePointRight(places));
+    public EFloat MovePointRight(int places) {
+      return this.MovePointRight(EInteger.FromInt64(places), null);
     }
 
     /**
@@ -2088,13 +2357,8 @@ PrecisionContext ctx) {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointRight(int places, PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.MovePointRight(places, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat MovePointRight(int places, EContext ctx) {
+      return this.MovePointRight(EInteger.FromInt64(places), ctx);
     }
 
     /**
@@ -2103,11 +2367,8 @@ PrecisionContext ctx) {
      * @param bigPlaces An arbitrary-precision integer object.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat MovePointRight(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
-        throw new NullPointerException("bigPlaces");
-      }
-      return new ExtendedFloat(this.ef.MovePointRight(bigPlaces.ei));
+    public EFloat MovePointRight(EInteger bigPlaces) {
+      return this.MovePointRight(bigPlaces, null);
     }
 
     /**
@@ -2121,18 +2382,30 @@ PrecisionContext ctx) {
      * @return A number whose scale is increased by {@code bigPlaces}, but not to
      * more than 0.
      */
-    public ExtendedFloat MovePointRight(BigInteger bigPlaces,
-PrecisionContext ctx) {
-      try {
-        if ((bigPlaces) == null) {
-          throw new NullPointerException("bigPlaces");
-        }
-
-        return new ExtendedFloat(this.ef.MovePointRight(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat MovePointRight(
+EInteger bigPlaces,
+EContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
       }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      EInteger bigExp = this.getExponent();
+      bigExp = bigExp.Add(bigPlaces);
+      if (bigExp.signum() > 0) {
+        EInteger mant = DecimalUtility.ShiftLeft(
+          this.unsignedMantissa,
+          bigExp);
+        return CreateWithFlags(
+mant,
+EInteger.FromInt64(0),
+this.flags).RoundToPrecision(ctx);
+      }
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
     }
 
     /**
@@ -2140,8 +2413,8 @@ PrecisionContext ctx) {
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat ScaleByPowerOfTwo(int places) {
-      return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(places));
+    public EFloat ScaleByPowerOfTwo(int places) {
+      return this.ScaleByPowerOfTwo(EInteger.FromInt64(places), null);
     }
 
     /**
@@ -2153,13 +2426,8 @@ PrecisionContext ctx) {
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat ScaleByPowerOfTwo(int places, PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(places, ctx == null ?
-          null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat ScaleByPowerOfTwo(int places, EContext ctx) {
+      return this.ScaleByPowerOfTwo(EInteger.FromInt64(places), ctx);
     }
 
     /**
@@ -2167,11 +2435,8 @@ PrecisionContext ctx) {
      * @param bigPlaces An arbitrary-precision integer object.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
-        throw new NullPointerException("bigPlaces");
-      }
-      return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(bigPlaces.ei));
+    public EFloat ScaleByPowerOfTwo(EInteger bigPlaces) {
+      return this.ScaleByPowerOfTwo(bigPlaces, null);
     }
 
     /**
@@ -2183,18 +2448,21 @@ PrecisionContext ctx) {
      * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces}.
      */
-    public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces,
-PrecisionContext ctx) {
-      try {
-        if ((bigPlaces) == null) {
-          throw new NullPointerException("bigPlaces");
-        }
-
-        return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+    public EFloat ScaleByPowerOfTwo(
+EInteger bigPlaces,
+EContext ctx) {
+      if (bigPlaces.signum() == 0) {
+        return this.RoundToPrecision(ctx);
       }
+      if (!this.isFinite()) {
+        return this.RoundToPrecision(ctx);
+      }
+      EInteger bigExp = this.getExponent();
+      bigExp = bigExp.Add(bigPlaces);
+      return CreateWithFlags(
+        this.unsignedMantissa,
+        bigExp,
+        this.flags).RoundToPrecision(ctx);
     }
 
     /**
@@ -2202,8 +2470,15 @@ PrecisionContext ctx) {
      * value is 0, and 0 if this value is infinity or NaN.
      * @return An arbitrary-precision integer.
      */
-    public BigInteger Precision() {
-      return new BigInteger(this.ef.Precision());
+    public EInteger Precision() {
+      if (!this.isFinite()) {
+ return EInteger.FromInt64(0);
+}
+      if (this.signum() == 0) {
+ return EInteger.FromInt64(1);
+}
+      int bitlen = this.unsignedMantissa.bitLength();
+      return EInteger.FromInt64(bitlen);
     }
 
     /**
@@ -2212,8 +2487,9 @@ PrecisionContext ctx) {
      * this number is infinity or NaN.
      * @return An arbitrary-precision binary float.
      */
-    public ExtendedFloat Ulp() {
-      return new ExtendedFloat(this.ef.Ulp());
+    public EFloat Ulp() {
+      return (!this.isFinite()) ? EFloat.One :
+        EFloat.Create(EInteger.FromInt64(1), this.exponent);
     }
 
     /**
@@ -2224,13 +2500,8 @@ PrecisionContext ctx) {
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
      */
-    public ExtendedFloat[] DivideAndRemainderNaturalScale(ExtendedFloat
-         divisor) {
-      EFloat[] edec = this.ef.DivideAndRemainderNaturalScale(divisor == null?
-        null : divisor.ef);
-      return new ExtendedFloat[] {
-        new ExtendedFloat(edec[0]), new ExtendedFloat(edec[1])
-      };
+ public EFloat[] DivideAndRemainderNaturalScale(EFloat divisor) {
+      return this.DivideAndRemainderNaturalScale(divisor, null);
     }
 
     /**
@@ -2248,18 +2519,14 @@ PrecisionContext ctx) {
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
      */
-    public ExtendedFloat[] DivideAndRemainderNaturalScale(
-      ExtendedFloat divisor,
-      PrecisionContext ctx) {
-      try {
-        EFloat[] edec = this.ef.DivideAndRemainderNaturalScale(divisor ==
-          null ? null : divisor.ef,
-          ctx == null ? null : ctx.ec);
-        return new ExtendedFloat[] {
-        new ExtendedFloat(edec[0]), new ExtendedFloat(edec[1])
-      };
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
-      }
+    public EFloat[] DivideAndRemainderNaturalScale(
+      EFloat divisor,
+      EContext ctx) {
+      EFloat[] result = new EFloat[2];
+      result[0] = this.DivideToIntegerNaturalScale(divisor, ctx);
+      result[1] = this.Subtract(
+        result[0].Multiply(divisor, null),
+        null);
+      return result;
     }
   }

@@ -22,9 +22,8 @@ private URIUtility() {
     enum ParseMode {
     /**
      * The rules follow the syntax for parsing IRIs. In particular, many code
-     * points outside the Basic Latin range (U + 0000 to U + 007F) are
-     * allowed. Strings with unpaired surrogate code points are considered
-     * invalid.
+     * points outside the Basic Latin range (U + 0000 to U + 007F) are allowed.
+     * Strings with unpaired surrogate code points are considered invalid.
      */
       IRIStrict,
 
@@ -359,10 +358,10 @@ ParseMode.IRISurrogateLenient);
      * more than "s" 's length).
      * @return True if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false. Returns false if {@code s} is null.
-     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
-     * than 0 or greater than {@code s} 's length, or {@code s} 's length
-     * minus {@code offset} is less than {@code length}.
-     * @throws NullPointerException --.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is
+     * less than 0 or greater than {@code s} 's length, or {@code s} 's
+     * length minus {@code offset} is less than {@code length}.
+     * @throws java.lang.NullPointerException --.
      */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
@@ -977,10 +976,10 @@ segmentsBase[5]));
      * If a component is absent, both indices in that pair will be -1 (an
      * index won't be less than 0 in any other case). If the string is null
      * or is not a valid IRI, returns null.
-     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
-     * than 0 or greater than {@code s} 's length, or {@code s} 's length
-     * minus {@code offset} is less than {@code length}.
-     * @throws NullPointerException The parameter {@code s} is null.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is
+     * less than 0 or greater than {@code s} 's length, or {@code s} 's
+     * length minus {@code offset} is less than {@code length}.
+     * @throws java.lang.NullPointerException The parameter {@code s} is null.
      */
     public static int[] splitIRI(
 String s,

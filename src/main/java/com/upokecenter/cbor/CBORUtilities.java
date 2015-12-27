@@ -101,7 +101,7 @@ private CBORUtilities() {
         mantissa |= 1 << 23;
       }
       if (mantissa == 0) {
-        return BigInteger.ZERO;
+        return BigInteger.valueOf(0);
       }
       fpexponent -= 150;
       while ((mantissa & 1) == 0) {

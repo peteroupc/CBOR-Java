@@ -21,7 +21,7 @@ import com.upokecenter.util.*;
       }
 
     public static StringAndBigInt Generate(FastRandom rand, int radix) {
-      BigInteger bv = BigInteger.ZERO;
+      BigInteger bv = BigInteger.valueOf(0);
       StringAndBigInt sabi = new StringAndBigInt();
       int numDigits = 1 + rand.NextValue(100);
       boolean negative = false;

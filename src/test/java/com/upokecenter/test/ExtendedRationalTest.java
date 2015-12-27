@@ -165,10 +165,10 @@ import com.upokecenter.util.*;
         ExtendedRational er2;
         er = new ExtendedRational(
           RandomObjects.RandomBigInteger(fr),
-          BigInteger.ONE);
+          BigInteger.valueOf(1));
         er2 = new ExtendedRational(
           RandomObjects.RandomBigInteger(fr),
-          BigInteger.ONE);
+          BigInteger.valueOf(1));
         if (er2.signum() == 0 || !er2.isFinite()) {
           continue;
         }

@@ -19,7 +19,7 @@ private CBORDataUtilities() {
 
     /**
      * Parses a number whose format follows the JSON specification. See
-     * #ParseJSONNumber(string, integersOnly, parseOnly) for more
+     * #ParseJSONNumber(String, integersOnly, parseOnly) for more
      * information.
      * @param str A string to parse.
      * @return A CBOR object that represents the parsed number. Returns null if the
@@ -58,7 +58,7 @@ private CBORDataUtilities() {
         ++offset;
       }
       int mantInt = 0;
-      FastInteger mant = null;
+      FastInteger2 mant = null;
       int mantBuffer = 0;
       int mantBufferMult = 1;
       int expBuffer = 0;
@@ -68,7 +68,7 @@ private CBORDataUtilities() {
       boolean haveDigitsAfterDecimal = false;
       boolean haveExponent = false;
       int newScaleInt = 0;
-      FastInteger newScale = null;
+      FastInteger2 newScale = null;
       int i = offset;
       // Ordinary number
       if (i < str.length() && str.charAt(i) == '0') {
@@ -95,7 +95,7 @@ private CBORDataUtilities() {
           int thisdigit = (int)(str.charAt(i) - '0');
           if (mantInt > MaxSafeInt) {
             if (mant == null) {
-              mant = new FastInteger(mantInt);
+              mant = new FastInteger2(mantInt);
               mantBuffer = thisdigit;
               mantBufferMult = 10;
             } else {
@@ -117,7 +117,7 @@ private CBORDataUtilities() {
           if (haveDecimalPoint) {
             haveDigitsAfterDecimal = true;
             if (newScaleInt == Integer.MIN_VALUE) {
-              newScale = (newScale == null) ? ((new FastInteger(newScaleInt))) : newScale;
+              newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
               newScale.AddInt(-1);
             } else {
               --newScaleInt;
@@ -147,7 +147,7 @@ private CBORDataUtilities() {
         mant.Multiply(mantBufferMult).AddInt(mantBuffer);
       }
       if (haveExponent) {
-        FastInteger exp = null;
+        FastInteger2 exp = null;
         int expInt = 0;
         offset = 1;
         haveDigits = false;
@@ -166,7 +166,7 @@ private CBORDataUtilities() {
             int thisdigit = (int)(str.charAt(i) - '0');
             if (expInt > MaxSafeInt) {
               if (exp == null) {
-                exp = new FastInteger(expInt);
+                exp = new FastInteger2(expInt);
                 expBuffer = thisdigit;
                 expBufferMult = 10;
               } else {
@@ -199,14 +199,14 @@ private CBORDataUtilities() {
             null) {
           newScaleInt = expInt;
         } else if (exp == null) {
-          newScale = (newScale == null) ? ((new FastInteger(newScaleInt))) : newScale;
+          newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
           if (offset < 0) {
             newScale.SubtractInt(expInt);
           } else if (expInt != 0) {
             newScale.AddInt(expInt);
           }
         } else {
-          newScale = (newScale == null) ? ((new FastInteger(newScaleInt))) : newScale;
+          newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
           if (offset < 0) {
             newScale.Subtract(exp);
           } else {

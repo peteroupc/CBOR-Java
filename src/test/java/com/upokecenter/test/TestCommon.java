@@ -141,7 +141,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
     }
 
-    private static String valueDigits = "0123456789";
+    private static final String valueDigits = "0123456789";
 
     public static String LongToString(long longValue) {
       if (longValue == Long.MIN_VALUE) {

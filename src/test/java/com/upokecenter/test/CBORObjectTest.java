@@ -1386,12 +1386,12 @@ throw new IllegalStateException("", ex);
       for (int i = 0; i < bigRanges.length; i += 2) {
         BigInteger bj = BigInteger.fromString(bigRanges[i]);
         BigInteger valueBjEnd = BigInteger.fromString(bigRanges[i + 1]);
-        while (bj < valueBjEnd) {
+        while (bj.compareTo(valueBjEnd)< 0) {
           byte[] bytes = CBORObject.FromObject(bj).EncodeToBytes();
           if (bytes.length != bigSizes[i / 2]) {
             Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
           }
-          bj = bj.add(BigInteger.ONE);
+          bj = bj.add(BigInteger.valueOf(1));
         }
       }
     }
@@ -1969,7 +1969,7 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestFromObjectAndTag() {
-      BigInteger bigvalue = BigInteger.ONE.shiftLeft(100);
+      BigInteger bigvalue = BigInteger.valueOf(1).shiftLeft(100);
       try {
         CBORObject.FromObjectAndTag(2, bigvalue);
         Assert.fail("Should have failed");
@@ -2013,7 +2013,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(2, BigInteger.ZERO.subtract(BigInteger.ONE));
+        CBORObject.FromObjectAndTag(2, BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -2146,7 +2146,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.HasTag(BigInteger.ONE.negate());
+        CBORObject.True.HasTag(BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -2155,7 +2155,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       if (CBORObject.True.HasTag(0))Assert.fail();
-      if (CBORObject.True.HasTag(BigInteger.ZERO))Assert.fail();
+      if (CBORObject.True.HasTag(BigInteger.valueOf(0)))Assert.fail();
     }
     @Test
     public void TestInnermostTag() {
@@ -2224,9 +2224,9 @@ throw new IllegalStateException("", ex);
       if (CBORObject.FromObject("").isIntegral())Assert.fail();
       if (CBORObject.NewArray().isIntegral())Assert.fail();
       if (CBORObject.NewMap().isIntegral())Assert.fail();
-      if (!(CBORObject.FromObject(BigInteger.ONE.shiftLeft(63)).isIntegral()))Assert.fail();
-      if (!(CBORObject.FromObject(BigInteger.ONE.shiftLeft(64)).isIntegral()))Assert.fail();
-      if (!(CBORObject.FromObject(BigInteger.ONE.shiftLeft(80)).isIntegral()))Assert.fail();
+      if (!(CBORObject.FromObject(BigInteger.valueOf(1).shiftLeft(63)).isIntegral()))Assert.fail();
+      if (!(CBORObject.FromObject(BigInteger.valueOf(1).shiftLeft(64)).isIntegral()))Assert.fail();
+      if (!(CBORObject.FromObject(BigInteger.valueOf(1).shiftLeft(80)).isIntegral()))Assert.fail();
       if (!(CBORObject.FromObject(
         ExtendedDecimal.FromString("4444e+800")).isIntegral()))Assert.fail();
 
@@ -2517,7 +2517,15 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestRead() {
-      // not implemented yet
+      try {
+ CBORObject.Read(null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestReadJSON() {
@@ -4075,7 +4083,10 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestUntag() {
-      // not implemented yet
+      CBORObject o = CBORObject.FromObjectAndTag("test", 999);
+      Assert.assertEquals(BigInteger.valueOf(999), o.getInnermostTag());
+      o = o.Untag();
+      Assert.assertEquals(BigInteger.valueOf(-1), o.getInnermostTag());
     }
     @Test
     public void TestUntagOne() {

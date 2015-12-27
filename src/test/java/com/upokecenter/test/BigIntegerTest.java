@@ -136,7 +136,7 @@ bigintRem = divrem[1]; }
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB + ";\n" + bigintC,bigintA,bigintD);
           }
           if (bigintRem.signum() != 0) {
-            Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.ZERO,bigintRem);
+            Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.valueOf(0),bigintRem);
           }
           bigintE = bigintC.divide(bigintB);
           if (!bigintD.equals(bigintE)) {
@@ -162,7 +162,7 @@ bigintRem = divrem[1]; }
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,bigintB,bigintD);
           }
           if (bigintRem.signum() != 0) {
-            Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.ZERO,bigintRem);
+            Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.valueOf(0),bigintRem);
           }
         }
         if (bigintB.signum() != 0) {
@@ -251,17 +251,17 @@ String result) {
     }
     @Test
     public void TestDivide() {
-      int a, b;
+      int intA, intB;
       FastRandom fr = new FastRandom();
       for (int i = 0; i < 10000; ++i) {
-        a = fr.NextValue(0x1000000);
-        b = fr.NextValue(0x1000000);
-        if (b.signum() == 0) {
+        intA = fr.NextValue(0x1000000);
+        intB = fr.NextValue(0x1000000);
+        if (intB == 0) {
           continue;
         }
-        int c = a.divide(b);
-        BigInteger bigintA = BigInteger.valueOf(a);
-        BigInteger bigintB = BigInteger.valueOf(b);
+        int c = intA / intB;
+        BigInteger bigintA = BigInteger.valueOf(intA);
+        BigInteger bigintB = BigInteger.valueOf(intB);
         BigInteger bigintC = bigintA.divide(bigintB);
         Assert.assertEquals(bigintC.intValueChecked(), c);
       }
@@ -278,10 +278,16 @@ String result) {
     }
     @Test
     public void TestEquals() {
-      if (BigInteger.ONE.equals(null))Assert.fail();
-      if (BigInteger.ZERO.equals(null))Assert.fail();
-      if (BigInteger.ONE.equals(BigInteger.ZERO))Assert.fail();
-      if (BigInteger.ZERO.equals(BigInteger.ONE))Assert.fail();
+      if (BigInteger.valueOf(1).equals(null))Assert.fail();
+      if (BigInteger.valueOf(0).equals(null))Assert.fail();
+      if (BigInteger.valueOf(1).equals(BigInteger.valueOf(0)))Assert.fail();
+      if (BigInteger.valueOf(0).equals(BigInteger.valueOf(1)))Assert.fail();
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        BigInteger bigintA = RandomObjects.RandomBigInteger(r);
+        BigInteger bigintB = RandomObjects.RandomBigInteger(r);
+        TestCommon.AssertEqualsHashCode(bigintA, bigintB);
+      }
     }
 
     public static int ModPow(int x, int pow, int intMod) {
@@ -401,7 +407,7 @@ String result) {
     @Test
     public void TestGcd() {
       try {
- BigInteger.ZERO.gcd(null);
+ BigInteger.valueOf(0).gcd(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 System.out.print("");
@@ -409,16 +415,15 @@ System.out.print("");
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-
       {
-String stringTemp = BigInteger.ZERO.gcd(BigFromString(
+String stringTemp = BigInteger.valueOf(0).gcd(BigFromString(
 "244")).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.ZERO.gcd(BigFromString(
+String stringTemp = BigInteger.valueOf(0).gcd(BigFromString(
 "-244")).toString();
 Assert.assertEquals(
 "244",
@@ -426,40 +431,40 @@ stringTemp);
 }
       {
 String stringTemp = BigFromString(
-"244").gcd(BigInteger.ZERO).toString();
+"244").gcd(BigInteger.valueOf(0)).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
 String stringTemp = BigFromString(
-"-244").gcd(BigInteger.ZERO).toString();
+"-244").gcd(BigInteger.valueOf(0)).toString();
 Assert.assertEquals(
 "244",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.ONE.gcd(BigFromString("244")).toString();
+String stringTemp = BigInteger.valueOf(1).gcd(BigFromString("244")).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
 }
       {
-String stringTemp = BigInteger.ONE.gcd(BigFromString(
+String stringTemp = BigInteger.valueOf(1).gcd(BigFromString(
 "-244")).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
 }
       {
-String stringTemp = BigFromString("244").gcd(BigInteger.ONE).toString();
+String stringTemp = BigFromString("244").gcd(BigInteger.valueOf(1)).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
 }
       {
 String stringTemp = BigFromString(
-"-244").gcd(BigInteger.ONE).toString();
+"-244").gcd(BigInteger.valueOf(1)).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
@@ -512,87 +517,87 @@ stringTemp);
           bigprime,
           bigprime.gcd(ba));
       }
-      TestGcdPair(BigInteger.valueOf(-1867), BigInteger.valueOf(-4456), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-1867), BigInteger.valueOf(-4456), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(4604), BigInteger.valueOf(-4516), BigInteger.valueOf(4));
-      TestGcdPair(BigInteger.valueOf(-1756), BigInteger.valueOf(4525), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(1568), BigInteger.valueOf(-4955), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(2519), BigInteger.valueOf(2845), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-1756), BigInteger.valueOf(4525), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(1568), BigInteger.valueOf(-4955), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(2519), BigInteger.valueOf(2845), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-1470), BigInteger.valueOf(132), BigInteger.valueOf(6));
-      TestGcdPair(BigInteger.valueOf(-2982), BigInteger.valueOf(2573), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-244), BigInteger.valueOf(-3929), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-3794), BigInteger.valueOf(-2325), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-2667), BigInteger.valueOf(2123), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-2982), BigInteger.valueOf(2573), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-244), BigInteger.valueOf(-3929), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-3794), BigInteger.valueOf(-2325), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-2667), BigInteger.valueOf(2123), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-3712), BigInteger.valueOf(-1850), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(2329), BigInteger.valueOf(3874), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(2329), BigInteger.valueOf(3874), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(1384), BigInteger.valueOf(-4278), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(213), BigInteger.valueOf(-1217), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(1163), BigInteger.valueOf(2819), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(1921), BigInteger.valueOf(-579), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(3886), BigInteger.valueOf(-13), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-3270), BigInteger.valueOf(-3760), BigInteger.TEN);
+      TestGcdPair(BigInteger.valueOf(213), BigInteger.valueOf(-1217), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(1163), BigInteger.valueOf(2819), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(1921), BigInteger.valueOf(-579), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(3886), BigInteger.valueOf(-13), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-3270), BigInteger.valueOf(-3760), BigInteger.valueOf(10));
       TestGcdPair(BigInteger.valueOf(-3528), BigInteger.valueOf(1822), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(1547), BigInteger.valueOf(-333), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(1547), BigInteger.valueOf(-333), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(2402), BigInteger.valueOf(2850), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(4519), BigInteger.valueOf(1296), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(4519), BigInteger.valueOf(1296), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(1821), BigInteger.valueOf(2949), BigInteger.valueOf(3));
       TestGcdPair(BigInteger.valueOf(-2634), BigInteger.valueOf(-4353), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(-1728), BigInteger.valueOf(199), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-1728), BigInteger.valueOf(199), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-4646), BigInteger.valueOf(-1418), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(-35), BigInteger.valueOf(-3578), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-35), BigInteger.valueOf(-3578), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-2244), BigInteger.valueOf(-3250), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(-3329), BigInteger.valueOf(1039), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-3329), BigInteger.valueOf(1039), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-3064), BigInteger.valueOf(-4730), BigInteger.valueOf(2));
       TestGcdPair(BigInteger.valueOf(-1214), BigInteger.valueOf(4130), BigInteger.valueOf(2));
       TestGcdPair(BigInteger.valueOf(-3038), BigInteger.valueOf(-3184), BigInteger.valueOf(2));
       TestGcdPair(BigInteger.valueOf(-209), BigInteger.valueOf(-1617), BigInteger.valueOf(11));
       TestGcdPair(BigInteger.valueOf(-1101), BigInteger.valueOf(-2886), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(-3021), BigInteger.valueOf(-4499), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-3021), BigInteger.valueOf(-4499), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(3108), BigInteger.valueOf(1815), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(1195), BigInteger.valueOf(4618), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-3643), BigInteger.valueOf(2156), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(1195), BigInteger.valueOf(4618), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-3643), BigInteger.valueOf(2156), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-2067), BigInteger.valueOf(-3780), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(4251), BigInteger.valueOf(1607), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(4251), BigInteger.valueOf(1607), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(438), BigInteger.valueOf(741), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(-3692), BigInteger.valueOf(-2135), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-1076), BigInteger.valueOf(2149), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-3692), BigInteger.valueOf(-2135), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-1076), BigInteger.valueOf(2149), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-3224), BigInteger.valueOf(-1532), BigInteger.valueOf(4));
-      TestGcdPair(BigInteger.valueOf(-3713), BigInteger.valueOf(1721), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(3038), BigInteger.valueOf(-2657), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(4977), BigInteger.valueOf(-110), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-3305), BigInteger.valueOf(-922), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-3713), BigInteger.valueOf(1721), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(3038), BigInteger.valueOf(-2657), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(4977), BigInteger.valueOf(-110), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-3305), BigInteger.valueOf(-922), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(1902), BigInteger.valueOf(2481), BigInteger.valueOf(3));
       TestGcdPair(BigInteger.valueOf(-4804), BigInteger.valueOf(-1378), BigInteger.valueOf(2));
       TestGcdPair(BigInteger.valueOf(-1446), BigInteger.valueOf(-4226), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(-1409), BigInteger.valueOf(3303), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-1626), BigInteger.valueOf(-3193), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(912), BigInteger.valueOf(-421), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(751), BigInteger.valueOf(-1755), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(3135), BigInteger.valueOf(-3581), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-4941), BigInteger.valueOf(-2885), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(-1409), BigInteger.valueOf(3303), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-1626), BigInteger.valueOf(-3193), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(912), BigInteger.valueOf(-421), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(751), BigInteger.valueOf(-1755), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(3135), BigInteger.valueOf(-3581), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-4941), BigInteger.valueOf(-2885), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(4744), BigInteger.valueOf(3240), BigInteger.valueOf(8));
       TestGcdPair(BigInteger.valueOf(3488), BigInteger.valueOf(4792), BigInteger.valueOf(8));
       TestGcdPair(BigInteger.valueOf(3632), BigInteger.valueOf(3670), BigInteger.valueOf(2));
       TestGcdPair(BigInteger.valueOf(-4821), BigInteger.valueOf(-1749), BigInteger.valueOf(3));
-      TestGcdPair(BigInteger.valueOf(4666), BigInteger.valueOf(2013), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(4666), BigInteger.valueOf(2013), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(810), BigInteger.valueOf(-3466), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(2199), BigInteger.valueOf(161), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(2199), BigInteger.valueOf(161), BigInteger.valueOf(1));
       TestGcdPair(BigInteger.valueOf(-1137), BigInteger.valueOf(-1620), BigInteger.valueOf(3));
       TestGcdPair(BigInteger.valueOf(-472), BigInteger.valueOf(66), BigInteger.valueOf(2));
-      TestGcdPair(BigInteger.valueOf(3825), BigInteger.valueOf(2804), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-2895), BigInteger.valueOf(1942), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(1576), BigInteger.valueOf(-4209), BigInteger.ONE);
-      TestGcdPair(BigInteger.valueOf(-277), BigInteger.valueOf(-4415), BigInteger.ONE);
+      TestGcdPair(BigInteger.valueOf(3825), BigInteger.valueOf(2804), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-2895), BigInteger.valueOf(1942), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(1576), BigInteger.valueOf(-4209), BigInteger.valueOf(1));
+      TestGcdPair(BigInteger.valueOf(-277), BigInteger.valueOf(-4415), BigInteger.valueOf(1));
       for (int i = 0; i < 1000; ++i) {
         prime = rand.NextValue(0x7fffffff);
         if (rand.NextValue(2) == 0) {
           prime = -prime;
         }
-        int b = rand.NextValue(0x7fffffff);
+        int intB = rand.NextValue(0x7fffffff);
         if (rand.NextValue(2) == 0) {
-          b = b.negate();
+          intB = -intB;
         }
         BigInteger biga = BigInteger.valueOf(prime);
-        BigInteger bigb = BigInteger.valueOf(b);
+        BigInteger bigb = BigInteger.valueOf(intB);
         BigInteger ba = biga.gcd(bigb);
         BigInteger bb = bigb.gcd(biga);
         Assert.assertEquals(ba, bb);
@@ -604,19 +609,11 @@ stringTemp);
       // not implemented yet
     }
     @Test
-    public void TestGetHashCode() {
-      // not implemented yet
-    }
-    @Test
     public void TestGetLowBit() {
       // not implemented yet
     }
     @Test
     public void TestGetUnsignedBitLength() {
-      // not implemented yet
-    }
-    @Test
-    public void TestGreatestCommonDivisor() {
       // not implemented yet
     }
 
@@ -687,7 +684,7 @@ stringTemp);
       for (int i = 0; i < 1000; ++i) {
         BigInteger bigintA = RandomBigInteger(r);
         BigInteger mod = bigintA.remainder(BigValueOf(2));
-        Assert.assertEquals(mod.signum() == 0, bigintA.testBit(0) == false);
+        Assert.assertEquals(mod.signum() == 0, bigintA.isEven());
       }
     }
 
@@ -701,7 +698,7 @@ stringTemp);
         BigValueOf(Long.MAX_VALUE).longValueChecked());
       try {
         BigInteger bigintTemp = BigValueOf(Long.MIN_VALUE);
-        bigintTemp = bigintTemp.subtract(BigInteger.ONE);
+        bigintTemp = bigintTemp.subtract(BigInteger.valueOf(1));
         bigintTemp.longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -712,7 +709,7 @@ stringTemp);
       }
       try {
         BigInteger bigintTemp = BigValueOf(Long.MAX_VALUE);
-        bigintTemp = bigintTemp.add(BigInteger.ONE);
+        bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
         bigintTemp.longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -770,7 +767,7 @@ stringTemp);
         BigValueOf(Long.MAX_VALUE).longValueChecked());
       try {
         BigInteger bigintTemp = BigValueOf(Long.MIN_VALUE);
-        bigintTemp = bigintTemp.subtract(BigInteger.ONE);
+        bigintTemp = bigintTemp.subtract(BigInteger.valueOf(1));
         bigintTemp.longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -781,7 +778,7 @@ stringTemp);
       }
       try {
         BigInteger bigintTemp = BigValueOf(Long.MAX_VALUE);
-        bigintTemp = bigintTemp.add(BigInteger.ONE);
+        bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
         bigintTemp.longValueChecked();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -831,7 +828,7 @@ stringTemp);
     @Test
     public void TestMod() {
       try {
-        BigInteger.ONE.mod(null);
+        BigInteger.valueOf(1).mod(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         System.out.print("");
@@ -870,7 +867,7 @@ stringTemp);
 
     @Test
     public void TestIntValueUnchecked() {
-      Assert.assertEquals(0L, BigInteger.ZERO.intValueUnchecked());
+      Assert.assertEquals(0L, BigInteger.valueOf(0).intValueUnchecked());
       Assert.assertEquals(
         Integer.MIN_VALUE,
         BigValueOf(Integer.MIN_VALUE).intValueUnchecked());
@@ -886,7 +883,7 @@ stringTemp);
     }
     @Test
     public void TestLongValueUnchecked() {
-      Assert.assertEquals(0L, BigInteger.ZERO.longValueUnchecked());
+      Assert.assertEquals(0L, BigInteger.valueOf(0).longValueUnchecked());
       Assert.assertEquals(
         Long.MIN_VALUE,
         BigValueOf(Long.MIN_VALUE).longValueUnchecked());
@@ -896,10 +893,10 @@ stringTemp);
       Assert.assertEquals(
         Long.MAX_VALUE,
         BigValueOf(Long.MIN_VALUE)
-        .subtract(BigInteger.ONE).longValueUnchecked());
+        .subtract(BigInteger.valueOf(1)).longValueUnchecked());
       Assert.assertEquals(
         Long.MIN_VALUE,
-        BigValueOf(Long.MAX_VALUE).add(BigInteger.ONE).longValueUnchecked());
+        BigValueOf(Long.MAX_VALUE).add(BigInteger.valueOf(1)).longValueUnchecked());
       Assert.assertEquals(
         ((long)0xFFFFFFF200000000L),
         BigValueOf(((long)0xFFFFFFF200000000L))
@@ -951,7 +948,7 @@ stringTemp);
     @Test
     public void TestDivideAndRemainder() {
       try {
-        BigInteger.ONE.divideAndRemainder(BigInteger.ZERO);
+        BigInteger.valueOf(1).divideAndRemainder(BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         System.out.print("");
@@ -960,7 +957,7 @@ stringTemp);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.divideAndRemainder(null);
+        BigInteger.valueOf(1).divideAndRemainder(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -972,7 +969,7 @@ System.out.print("");
     @Test
     public void TestFromBytes() {
       Assert.assertEquals(
-        BigInteger.ZERO, BigInteger.fromBytes(new byte[] { }, false));
+        BigInteger.valueOf(0), BigInteger.fromBytes(new byte[] { }, false));
 
       try {
         BigInteger.fromBytes(null, false);
@@ -1394,7 +1391,7 @@ System.out.print("");
     @Test
     public void TestBigIntegerModPow() {
       try {
- BigInteger.ONE.ModPow(null, null);
+ BigInteger.valueOf(1).ModPow(null, null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 System.out.print("");
@@ -1403,7 +1400,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(null, BigInteger.ZERO);
+ BigInteger.valueOf(1).ModPow(null, BigInteger.valueOf(0));
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 System.out.print("");
@@ -1412,7 +1409,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigInteger.ZERO, null);
+ BigInteger.valueOf(1).ModPow(BigInteger.valueOf(0), null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 System.out.print("");
@@ -1421,7 +1418,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigFromString("-1"), BigFromString("1"));
+ BigInteger.valueOf(1).ModPow(BigFromString("-1"), BigFromString("1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1430,7 +1427,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigFromString("0"), BigFromString("0"));
+ BigInteger.valueOf(1).ModPow(BigFromString("0"), BigFromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1439,7 +1436,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigFromString("0"), BigFromString("-1"));
+ BigInteger.valueOf(1).ModPow(BigFromString("0"), BigFromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1448,7 +1445,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigFromString("1"), BigFromString("0"));
+ BigInteger.valueOf(1).ModPow(BigFromString("1"), BigFromString("0"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1457,7 +1454,7 @@ System.out.print("");
 throw new IllegalStateException("", ex);
 }
       try {
- BigInteger.ONE.ModPow(BigFromString("1"), BigFromString("-1"));
+ BigInteger.valueOf(1).ModPow(BigFromString("1"), BigFromString("-1"));
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1476,11 +1473,11 @@ throw new IllegalStateException("", ex);
           bigintA = bigintA.negate();
         }
         if (bigintA.signum() == 0) {
-          bigintA = BigInteger.ONE;
+          bigintA = BigInteger.valueOf(1);
         }
         BigInteger sr = bigintA.sqrt();
         BigInteger srsqr = sr.multiply(sr);
-        sr = sr.add(BigInteger.ONE);
+        sr = sr.add(BigInteger.valueOf(1));
         BigInteger sronesqr = sr.multiply(sr);
         if (srsqr.compareTo(bigintA) > 0) {
           Assert.fail(srsqr + " not " + bigintA +
@@ -1494,10 +1491,10 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestTestBit() {
-      if (BigInteger.ZERO.testBit(0))Assert.fail();
-      if (BigInteger.ZERO.testBit(1))Assert.fail();
-      if (!(BigInteger.ONE.testBit(0)))Assert.fail();
-      if (BigInteger.ONE.testBit(1))Assert.fail();
+      if (BigInteger.valueOf(0).testBit(0))Assert.fail();
+      if (BigInteger.valueOf(0).testBit(1))Assert.fail();
+      if (!(BigInteger.valueOf(1).testBit(0)))Assert.fail();
+      if (BigInteger.valueOf(1).testBit(1))Assert.fail();
       for (int i = 0; i < 32; ++i) {
         if (!(BigValueOf(-1).testBit(i)))Assert.fail();
       }
@@ -1507,7 +1504,7 @@ throw new IllegalStateException("", ex);
     public void TestToRadixString() {
       FastRandom fr = new FastRandom();
       try {
-        BigInteger.ONE.toRadixString(-1);
+        BigInteger.valueOf(1).toRadixString(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1516,7 +1513,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.toRadixString(0);
+        BigInteger.valueOf(1).toRadixString(0);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1525,7 +1522,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.toRadixString(1);
+        BigInteger.valueOf(1).toRadixString(1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1534,7 +1531,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.toRadixString(37);
+        BigInteger.valueOf(1).toRadixString(37);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1543,7 +1540,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.toRadixString(Integer.MIN_VALUE);
+        BigInteger.valueOf(1).toRadixString(Integer.MIN_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1552,7 +1549,7 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.toRadixString(Integer.MAX_VALUE);
+        BigInteger.valueOf(1).toRadixString(Integer.MAX_VALUE);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -1686,31 +1683,40 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestMultiply() {
+      try {
+        BigInteger.valueOf(1).multiply(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       FastRandom r = new FastRandom();
       for (int i = 0; i < 10000; ++i) {
         BigInteger bigintA = RandomBigInteger(r);
-        BigInteger bigintB = bigintA .add(BigInteger.ONE);
+        BigInteger bigintB = bigintA.add(BigInteger.valueOf(1));
         BigInteger bigintC = bigintA.multiply(bigintB);
         // Test near-squaring
         if (bigintA.signum() == 0 || bigintB.signum() == 0) {
-          Assert.assertEquals(BigInteger.ZERO, bigintC);
+          Assert.assertEquals(BigInteger.valueOf(0), bigintC);
         }
-        if (bigintA.equals(BigInteger.ONE)) {
+        if (bigintA.equals(BigInteger.valueOf(1))) {
           Assert.assertEquals(bigintB, bigintC);
         }
-        if (bigintB.equals(BigInteger.ONE)) {
+        if (bigintB.equals(BigInteger.valueOf(1))) {
           Assert.assertEquals(bigintA, bigintC);
         }
         bigintB = bigintA;
         // Test squaring
         bigintC = bigintA.multiply(bigintB);
         if (bigintA.signum() == 0 || bigintB.signum() == 0) {
-          Assert.assertEquals(BigInteger.ZERO, bigintC);
+          Assert.assertEquals(BigInteger.valueOf(0), bigintC);
         }
-        if (bigintA.equals(BigInteger.ONE)) {
+        if (bigintA.equals(BigInteger.valueOf(1))) {
           Assert.assertEquals(bigintB, bigintC);
         }
-        if (bigintB.equals(BigInteger.ONE)) {
+        if (bigintB.equals(BigInteger.valueOf(1))) {
           Assert.assertEquals(bigintA, bigintC);
         }
       }
@@ -1735,30 +1741,30 @@ throw new IllegalStateException("", ex);
 
     public static void DoTestShiftLeft(String m1, int m2, String result) {
       BigInteger bigintA = BigFromString(m1);
-      AssertBigIntegersEqual(result, bigintA << m2);
+      AssertBigIntegersEqual(result, bigintA.shiftLeft(m2));
       m2 = -m2;
-      AssertBigIntegersEqual(result, bigintA >> m2);
+      AssertBigIntegersEqual(result, bigintA.shiftRight(m2));
     }
 
     public static void DoTestShiftRight(String m1, int m2, String result) {
       BigInteger bigintA = BigFromString(m1);
-      AssertBigIntegersEqual(result, bigintA >> m2);
+      AssertBigIntegersEqual(result, bigintA.shiftRight(m2));
       m2 = -m2;
-      AssertBigIntegersEqual(result, bigintA << m2);
+      AssertBigIntegersEqual(result, bigintA.shiftLeft(m2));
     }
 
     public static void DoTestShiftRight2(String m1, int m2, BigInteger result) {
       BigInteger bigintA = BigFromString(m1);
-      TestCommon.CompareTestEqualAndConsistent(result, bigintA >> m2);
+      TestCommon.CompareTestEqualAndConsistent(result, bigintA.shiftRight(m2));
       m2 = -m2;
-      TestCommon.CompareTestEqualAndConsistent(result, bigintA << m2);
+      TestCommon.CompareTestEqualAndConsistent(result, bigintA.shiftLeft(m2));
     }
     @Test
     public void TestShiftLeft() {
-      BigInteger bigint = BigInteger.ONE;
+      BigInteger bigint = BigInteger.valueOf(1);
       bigint = bigint.shiftLeft(100);
-      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(12), bigint >> -12);
-      TestCommon.CompareTestEqualAndConsistent(bigint << -12, bigint.shiftRight(12));
+      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(12), bigint.shiftRight(-12));
+      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(-12), bigint.shiftRight(12));
       FastRandom r = new FastRandom();
       for (int i = 0; i < 1000; ++i) {
         BigInteger bigintA = RandomBigInteger(r);
@@ -1777,19 +1783,19 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestShiftRight() {
-      BigInteger bigint = BigInteger.ONE;
+      BigInteger bigint = BigInteger.valueOf(1);
       bigint = bigint.shiftLeft(80);
-      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(12), bigint >> -12);
-      TestCommon.CompareTestEqualAndConsistent(bigint << -12, bigint.shiftRight(12));
+      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(12), bigint.shiftRight(-12));
+      TestCommon.CompareTestEqualAndConsistent(bigint.shiftLeft(-12), bigint.shiftRight(12));
       FastRandom r = new FastRandom();
-      BigInteger minusone = BigInteger.ZERO;
-      minusone = minusone.subtract(BigInteger.ONE);
+      BigInteger minusone = BigInteger.valueOf(0);
+      minusone = minusone.subtract(BigInteger.valueOf(1));
       for (int i = 0; i < 1000; ++i) {
         int smallint = r.NextValue(0x7fffffff);
         BigInteger bigintA = BigInteger.valueOf(smallint);
         String str = bigintA.toString();
         for (int j = 32; j < 80; ++j) {
-          DoTestShiftRight2(str, j, BigInteger.ZERO);
+          DoTestShiftRight2(str, j, BigInteger.valueOf(0));
           DoTestShiftRight2("-" + str, j, minusone);
         }
       }
@@ -1876,7 +1882,7 @@ throw new IllegalStateException("", ex);
     public void TestZero() {
       // not implemented yet
       {
-        String stringTemp = BigInteger.ZERO.toString();
+        String stringTemp = BigInteger.valueOf(0).toString();
         Assert.assertEquals(
           "0",
           stringTemp);
@@ -1885,7 +1891,7 @@ throw new IllegalStateException("", ex);
 
     @Test
     public void TestMiscellaneous() {
-      Assert.assertEquals(1, BigInteger.ZERO.getDigitCount());
+      Assert.assertEquals(1, BigInteger.valueOf(0).getDigitCount());
       BigInteger minValue = BigInteger.valueOf(Integer.MIN_VALUE);
       BigInteger minValueTimes2 = minValue.add(minValue);
       Assert.assertEquals(Integer.MIN_VALUE, minValue.intValueChecked());
@@ -1898,7 +1904,7 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      BigInteger verybig = BigInteger.ONE.shiftLeft(80);
+      BigInteger verybig = BigInteger.valueOf(1).shiftLeft(80);
       try {
         System.out.println(verybig.intValueChecked());
         Assert.fail("Should have failed");
@@ -1918,7 +1924,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.PowBigIntVar(null);
+        BigInteger.valueOf(1).PowBigIntVar(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -1927,7 +1933,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.pow(-1);
+        BigInteger.valueOf(1).pow(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -1936,7 +1942,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        (BigInteger.ZERO.subtract(BigInteger.ONE)).PowBigIntVar(null);
+        (BigInteger.valueOf(0).subtract(BigInteger.valueOf(1))).PowBigIntVar(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -1944,25 +1950,16 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      if (BigInteger.ONE.equals(BigInteger.ZERO))Assert.fail();
-      if (verybig.equals(BigInteger.ZERO))Assert.fail();
-      if (BigInteger.ONE.equals(BigInteger.ZERO.subtract(BigInteger.ONE)))Assert.fail();
-      Assert.assertEquals(1, BigInteger.ONE.compareTo(null));
-      BigInteger[] tmpsqrt = BigInteger.ZERO.sqrtWithRemainder();
-      Assert.assertEquals(BigInteger.ZERO, tmpsqrt[0]);
+      if (BigInteger.valueOf(1).equals(BigInteger.valueOf(0)))Assert.fail();
+      if (verybig.equals(BigInteger.valueOf(0)))Assert.fail();
+      if (BigInteger.valueOf(1).equals(BigInteger.valueOf(0).subtract(BigInteger.valueOf(1))))Assert.fail();
+      Assert.assertEquals(1, BigInteger.valueOf(1).compareTo(null));
+      BigInteger[] tmpsqrt = BigInteger.valueOf(0).sqrtWithRemainder();
+      Assert.assertEquals(BigInteger.valueOf(0), tmpsqrt[0]);
     }
 
     @Test
     public void TestExceptions() {
-      try {
-        BigInteger.fromSubstring(null, 0, 1);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
       try {
         BigFromString(null);
         Assert.fail("Should have failed");
@@ -1974,7 +1971,7 @@ System.out.print("");
       }
 
       try {
-        BigInteger.ZERO.testBit(-1);
+        BigInteger.valueOf(0).testBit(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 System.out.print("");
@@ -2020,7 +2017,7 @@ System.out.print("");
       }
 
       try {
-        BigInteger.ONE.mod(BigInteger.valueOf(-1));
+        BigInteger.valueOf(1).mod(BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 System.out.print("");
@@ -2029,7 +2026,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.add(null);
+        BigInteger.valueOf(1).add(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -2038,7 +2035,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.subtract(null);
+        BigInteger.valueOf(1).subtract(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -2047,7 +2044,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.multiply(null);
+        BigInteger.valueOf(1).divide(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -2056,16 +2053,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.divide(null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        BigInteger.ONE.divide(BigInteger.ZERO);
+        BigInteger.valueOf(1).divide(BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 System.out.print("");
@@ -2074,7 +2062,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.remainder(BigInteger.ZERO);
+        BigInteger.valueOf(1).remainder(BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 System.out.print("");
@@ -2083,7 +2071,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.mod(BigInteger.ZERO);
+        BigInteger.valueOf(1).mod(BigInteger.valueOf(0));
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 System.out.print("");
@@ -2092,7 +2080,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        BigInteger.ONE.remainder(null);
+        BigInteger.valueOf(1).remainder(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -2100,7 +2088,7 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      Assert.assertEquals(BigInteger.ONE, (BigInteger.valueOf(13)).mod(BigInteger.valueOf(4)));
+      Assert.assertEquals(BigInteger.valueOf(1), (BigInteger.valueOf(13)).mod(BigInteger.valueOf(4)));
       Assert.assertEquals(BigInteger.valueOf(3), (BigInteger.valueOf(-13)).mod(BigInteger.valueOf(4)));
     }
   }

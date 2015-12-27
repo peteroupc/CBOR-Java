@@ -142,7 +142,12 @@ Assert.assertEquals(1, numberTemp);
     }
     @Test
     public void TestEquals() {
-      // not implemented yet
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        ExtendedDecimal bigintA = RandomObjects.RandomExtendedDecimal(r);
+        ExtendedDecimal bigintB = RandomObjects.RandomExtendedDecimal(r);
+        TestCommon.AssertEqualsHashCode(bigintA, bigintB);
+      }
     }
     @Test
     public void TestExp() {
@@ -150,7 +155,7 @@ Assert.assertEquals(1, numberTemp);
     }
     @Test
     public void TestExponent() {
-      Assert.assertEquals((BigInteger.valueOf(7)).negate(),
+      Assert.assertEquals(BigInteger.valueOf(-7),
         ExtendedDecimal.FromString("1.265e-4").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-4),
@@ -182,7 +187,7 @@ Assert.assertEquals(1, numberTemp);
         BigInteger.valueOf(7),
         ExtendedDecimal.FromString("0.485654575150e+19").getExponent());
       Assert.assertEquals(
-        BigInteger.ZERO,
+        BigInteger.valueOf(0),
         ExtendedDecimal.FromString("0.48515648e+8").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-45),
@@ -290,7 +295,7 @@ Assert.assertEquals(1, numberTemp);
         BigInteger.valueOf(5),
         ExtendedDecimal.FromString("0.5354e+9").getExponent());
       Assert.assertEquals(
-        BigInteger.ONE,
+        BigInteger.valueOf(1),
         ExtendedDecimal.FromString("0.54e+3").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-38),
@@ -1037,10 +1042,6 @@ Assert.assertEquals(1, numberTemp);
       // not implemented yet
     }
     @Test
-    public void TestGetHashCode() {
-      // not implemented yet
-    }
-    @Test
     public void TestIsFinite() {
       // not implemented yet
     }
@@ -1130,21 +1131,21 @@ System.out.print("");
     public void TestMovePointLeft() {
       {
 String stringTemp = ExtendedDecimal.FromString(
-"1").MovePointLeft(BigInteger.ZERO, null).toString();
+"1").MovePointLeft(BigInteger.valueOf(0), null).toString();
 Assert.assertEquals(
 "1",
 stringTemp);
 }
       {
 String stringTemp = ExtendedDecimal.FromString(
-"0.1").MovePointLeft(BigInteger.ZERO, null).toString();
+"0.1").MovePointLeft(BigInteger.valueOf(0), null).toString();
 Assert.assertEquals(
 "0.1",
 stringTemp);
 }
       {
 String stringTemp = ExtendedDecimal.FromString(
-"0.01").MovePointLeft(BigInteger.ZERO, null).toString();
+"0.01").MovePointLeft(BigInteger.valueOf(0), null).toString();
 Assert.assertEquals(
 "0.01",
 stringTemp);

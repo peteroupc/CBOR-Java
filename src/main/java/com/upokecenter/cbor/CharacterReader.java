@@ -29,7 +29,7 @@ import java.io.*;
     /**
      * Initializes a new instance of the CharacterReader class using a Unicode
      * 16-bit string; if the string begins with a byte-order mark (U + FEFF),
-     * it won't be skipped, and any unpaired surrogate code points (U + D800
+     * it won't be skipped, and any unpaired surrogate code points (U+D800
      * to U + DFFF) in the string are replaced with replacement characters
      * (U + FFFD).
      * @param str The string to read.
@@ -41,9 +41,8 @@ import java.io.*;
 
     /**
      * Initializes a new instance of the CharacterReader class using a Unicode
-     * 16-bit string; any unpaired surrogate code points (U + D800 to U +
-     * DFFF) in the string are replaced with replacement characters (U +
-     * FFFD).
+     * 16-bit string; any unpaired surrogate code points (U + D800 to U + DFFF)
+     * in the string are replaced with replacement characters (U + FFFD).
      * @param str The string to read.
      * @param skipByteOrderMark If true and the string begins with a byte-order
      * mark (U + FEFF), will skip that code point as it reads the string.
@@ -61,8 +60,8 @@ import java.io.*;
      * mark (U + FEFF), will skip that code point as it reads the string.
      * @param errorThrow If true, will throw an exception if unpaired surrogate
      * code points (U + D800 to U + DFFF) are found in the string. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD)
-     * as the stream is read.
+     * replaces those byte sequences with replacement characters (U + FFFD) as
+     * the stream is read.
      * @throws NullPointerException The parameter {@code str} is null.
      */
   public CharacterReader (
@@ -99,18 +98,18 @@ boolean errorThrow) {
      * @param stream A readable byte stream.
      * @param mode The method to use when detecting encodings other than UTF-8 in
      * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic
-     * code point (NZB, U + 0001 to U + 007F) before reading the rest of the
-     * stream. This value can be one of the following: <ul> <li>0: UTF-8
-     * only.</li> <li>1: Detect UTF-16 using BOM or NZB, otherwise
-     * UTF-8.</li> <li>2: Detect UTF-16/UTF-32 using BOM or NZB, otherwise
-     * UTF-8. (Tries to detect UTF-32 first.)</li> <li>3: Detect UTF-16
-     * using BOM, otherwise UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using
-     * BOM, otherwise UTF-8. (Tries to detect UTF-32 first.)</li></ul>.
+     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
+     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
+     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
+     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
+     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
+     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
+     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
+     * (Tries to detect UTF-32 first.)</li></ul>.
      * @param errorThrow If true, will throw an exception if invalid byte sequences
      * (in the detected encoding) are found in the byte stream. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD)
-     * as the stream is read.
+     * replaces those byte sequences with replacement characters (U + FFFD) as
+     * the stream is read.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (InputStream stream, int mode, boolean errorThrow) {
@@ -120,19 +119,18 @@ boolean errorThrow) {
     /**
      * Initializes a new instance of the CharacterReader class; will skip the
      * byte-order mark (U + FEFF) if it appears first in the stream and
-     * replace invalidly encoded bytes with replacement characters (U +
-     * FFFD).
+     * replace invalidly encoded bytes with replacement characters (U + FFFD).
      * @param stream A readable byte stream.
      * @param mode The method to use when detecting encodings other than UTF-8 in
      * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic
-     * code point (NZB, U + 0001 to U + 007F) before reading the rest of the
-     * stream. This value can be one of the following: <ul> <li>0: UTF-8
-     * only.</li> <li>1: Detect UTF-16 using BOM or NZB, otherwise
-     * UTF-8.</li> <li>2: Detect UTF-16/UTF-32 using BOM or NZB, otherwise
-     * UTF-8. (Tries to detect UTF-32 first.)</li> <li>3: Detect UTF-16
-     * using BOM, otherwise UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using
-     * BOM, otherwise UTF-8. (Tries to detect UTF-32 first.)</li></ul>.
+     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
+     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
+     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
+     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
+     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
+     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
+     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
+     * (Tries to detect UTF-32 first.)</li></ul>.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
     public CharacterReader (InputStream stream, int mode) {
@@ -144,18 +142,18 @@ boolean errorThrow) {
      * @param stream A readable byte stream.
      * @param mode The method to use when detecting encodings other than UTF-8 in
      * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic
-     * code point (NZB, U + 0001 to U + 007F) before reading the rest of the
-     * stream. This value can be one of the following: <ul> <li>0: UTF-8
-     * only.</li> <li>1: Detect UTF-16 using BOM or NZB, otherwise
-     * UTF-8.</li> <li>2: Detect UTF-16/UTF-32 using BOM or NZB, otherwise
-     * UTF-8. (Tries to detect UTF-32 first.)</li> <li>3: Detect UTF-16
-     * using BOM, otherwise UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using
-     * BOM, otherwise UTF-8. (Tries to detect UTF-32 first.)</li></ul>.
+     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
+     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
+     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
+     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
+     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
+     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
+     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
+     * (Tries to detect UTF-32 first.)</li></ul>.
      * @param errorThrow If true, will throw an exception if invalid byte sequences
      * (in the detected encoding) are found in the byte stream. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD)
-     * as the stream is read.
+     * replaces those byte sequences with replacement characters (U + FFFD) as
+     * the stream is read.
      * @param dontSkipUtf8Bom If the stream is detected as UTF-8 and this parameter
      * is {@code true}, won't skip the BOM character if it occurs at the
      * start of the stream.
