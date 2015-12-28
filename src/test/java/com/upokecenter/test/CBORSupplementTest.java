@@ -369,74 +369,7 @@ System.out.print("");
     }
 
     @Test
-    public void TestExtendedRationalArgValidation() {
-      try {
-        ExtendedRational.PositiveInfinity.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedRational.NegativeInfinity.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedRational.NaN.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedRational.SignalingNaN.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-    }
-
-    @Test
     public void TestExtendedDecimalArgValidation() {
-      try {
-        ExtendedDecimal.Create(null, BigInteger.valueOf(1));
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.Create(null, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.Create(BigInteger.valueOf(1), null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
       try {
         ExtendedDecimal.FromString(null);
         Assert.fail("Should have failed");
@@ -1084,16 +1017,14 @@ System.out.print("");
       CBORObject co, co2;
       co = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
       co2 = CBORObject.FromObject(Double.POSITIVE_INFINITY);
-      Assert.assertEquals(0, co.compareTo(co2));
-      Assert.assertEquals(0, co2.compareTo(co));
+      TestCommon.CompareTestEqual(co, co2);
       co = CBORObject.NewMap().Add(
         ExtendedDecimal.PositiveInfinity,
         CBORObject.Undefined);
       co2 = CBORObject.NewMap().Add(
         Double.POSITIVE_INFINITY,
         CBORObject.Undefined);
-      Assert.assertEquals(0, co.compareTo(co2));
-      Assert.assertEquals(0, co2.compareTo(co));
+      TestCommon.CompareTestEqual(co, co2);
     }
 
     @Test
@@ -1136,85 +1067,6 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
         int c2d = er.CompareToDecimal(ed);
         // sw2.Stop();
         Assert.assertEquals(c2r, c2d);
-      }
-      // System.out.println("compareTo: " + (sw1.getElapsedMilliseconds()/1000.0)
-      // + " s");
-      // System.out.println("CompareToDecimal: " +
-      // (sw2.getElapsedMilliseconds()/1000.0) + " s");
-    }
-
-    @Test
-    public void TestRationalDivide() {
-      FastRandom fr = new FastRandom();
-      for (int i = 0; i < 500; ++i) {
-        ExtendedRational er = RandomObjects.RandomRational(fr);
-        ExtendedRational er2 = RandomObjects.RandomRational(fr);
-        if (er2.signum() == 0 || !er2.isFinite()) {
-          continue;
-        }
-        if (er.signum() == 0 || !er.isFinite()) {
-          continue;
-        }
-        ExtendedRational ermult = er.Multiply(er2);
-        ExtendedRational erdiv = ermult.Divide(er);
-        if (erdiv.compareTo(er2) != 0) {
-          Assert.fail(er + "; " + erdiv + "; " + er2);
-        }
-        erdiv = ermult.Divide(er2);
-        if (erdiv.compareTo(er) != 0) {
-          Assert.fail(er + "; " + erdiv + "; " + er2);
-        }
-      }
-    }
-
-    @Test
-    public void TestRationalCompare() {
-      FastRandom fr = new FastRandom();
-      for (int i = 0; i < 100; ++i) {
-        BigInteger num = RandomObjects.RandomBigInteger(fr);
-        if (num.signum() == 0) {
-          // Skip if number is 0; 0/1 and 0/2 are
-          // equal in that case
-          continue;
-        }
-        num = (num).abs();
-        ExtendedRational rat = new ExtendedRational(num, BigInteger.valueOf(1));
-        ExtendedRational rat2 = new ExtendedRational(num, BigInteger.valueOf(2));
-        if (rat2.compareTo(rat) != -1) {
-          Assert.fail(rat + "; " + rat2);
-        }
-        if (rat.compareTo(rat2) != 1) {
-          Assert.fail(rat + "; " + rat2);
-        }
-      }
-      Assert.assertEquals(
-        -1,
-        new ExtendedRational(
-          BigInteger.valueOf(1),
-          BigInteger.valueOf(2)).compareTo(
-          new ExtendedRational(BigInteger.valueOf(4), BigInteger.valueOf(1))));
-      for (int i = 0; i < 100; ++i) {
-        BigInteger num = RandomObjects.RandomBigInteger(fr);
-        BigInteger den = RandomObjects.RandomBigInteger(fr);
-        if (den.signum() == 0) {
-          den = BigInteger.valueOf(1);
-        }
-        ExtendedRational rat = new ExtendedRational(num, den);
-        for (int j = 0; j < 10; ++j) {
-          BigInteger num2 = num;
-          BigInteger den2 = den;
-          BigInteger mult = RandomObjects.RandomBigInteger(fr);
-          if (mult.signum() == 0 || mult.equals(BigInteger.valueOf(1))) {
-            mult = BigInteger.valueOf(2);
-          }
-          num2 = num2.multiply(mult);
-          den2 = den2.multiply(mult);
-          ExtendedRational rat2 = new ExtendedRational(num2, den2);
-          if (rat.compareTo(rat2) != 0) {
-            Assert.assertEquals(rat + "; " + rat2 + "; " + rat.ToDouble() + "; " +
-              rat2.ToDouble(), 0, rat.compareTo(rat2));
-          }
-        }
       }
     }
 
@@ -1832,81 +1684,5 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteg
       if (ExtendedFloat.SignalingNaN.signum() == 0)Assert.fail();
       if (ExtendedRational.NaN.signum() == 0)Assert.fail();
       if (ExtendedRational.SignalingNaN.signum() == 0)Assert.fail();
-    }
-
-    @Test
-    public void TestToBigIntegerNonFinite() {
-      try {
-        ExtendedDecimal.PositiveInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.NegativeInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.NaN.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.SignalingNaN.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.PositiveInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.NegativeInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.NaN.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.SignalingNaN.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
     }
   }

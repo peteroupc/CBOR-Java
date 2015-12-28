@@ -95,7 +95,7 @@ return new ExtendedRational(ERational.Create(numerator.ei, denominator.ei));
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
      * {@code denominator} is null.
      */
-    public ExtendedRational (BigInteger numerator, BigInteger denominator) {
+    public ExtendedRational(BigInteger numerator, BigInteger denominator) {
       this.er = new ERational(numerator.ei, denominator.ei);
  }
 

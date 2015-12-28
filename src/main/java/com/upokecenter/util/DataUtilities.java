@@ -12,6 +12,18 @@ import java.io.*;
     /**
      * Contains methods useful for reading and writing strings. It is designed to
      * have no dependencies other than the basic runtime class library.
+     * <p>In C# and Java, text strings are represented as sequences of
+     * 16-bit values called <code>char</code>s. These sequences are well-formed
+     * under the UTF-16 encoding form of Unicode, except if they contain
+     * unpaired surrogate code points. (A surrogate code point is used to
+     * encode supplementary characters, those with code points U + 10000 or
+     * higher, in UTF-16. A surrogate pair is a high surrogate [U + D800 to
+     * U + DBFF] followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
+     * surrogate code point is a surrogate not appearing in a surrogate
+     * pair.) Many of the methods in the class allow setting the behavior to
+     * follow when unpaired surrogate code points are found in text strings,
+     * such as throwing an error or treating the unpaired surrogate as a
+     * replacement character (U + FFFD).</p>
      */
   public final class DataUtilities {
 private DataUtilities() {
@@ -195,7 +207,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str A string.
+     * @param str A text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
@@ -209,7 +221,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str A string.
+     * @param str A text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -250,7 +262,7 @@ int surrogateBehavior) {
 
     /**
      * Gets the Unicode code point at the given index of the string.
-     * @param str A string.
+     * @param str A text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
@@ -264,7 +276,7 @@ int surrogateBehavior) {
 
     /**
      * Gets the Unicode code point at the given index of the string.
-     * @param str A string.
+     * @param str A text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -306,7 +318,7 @@ int surrogateBehavior) {
     /**
      * Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
      * converted to lower-case. Other characters remain unchanged.
-     * @param str A string.
+     * @param str A text string.
      * @return The converted string, or null if {@code str} is null.
      */
     public static String ToLowerCaseAscii(String str) {

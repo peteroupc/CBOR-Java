@@ -230,10 +230,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Converts a string to an arbitrary-precision integer. The string portion can
-     * begin with a minus sign ("-" , U+002D) to indicate that it's
-     * negative.
-     * @param str Not documented yet.
+     * Converts a string to an arbitrary-precision integer.
+     * @param str A text string. The string must contain only characters allowed by
+     * the given radix, except that it may start with a minus sign ("-",
+     * U + 002D) to indicate a negative number. The string is not allowed to
+     * contain white space characters, including spaces.
      * @param radix A base from 2 to 36. Depending on the radix, the string can use
      * the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic letters
      * A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10, and 0-9,
@@ -254,9 +255,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts a portion of a string to an arbitrary-precision integer in a given
-     * radix. The string portion can begin with a minus sign ("-" , U+002D)
-     * to indicate that it's negative.
-     * @param str Not documented yet.
+     * radix.
+     * @param str A text string. The desired portion of the string must contain
+     * only characters allowed by the given radix, except that it may start
+     * with a minus sign ("-", U+002D) to indicate a negative number. The
+     * desired portion is not allowed to contain white space characters,
+     * including spaces.
      * @param radix A base from 2 to 36. Depending on the radix, the string can use
      * the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic letters
      * A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10, and 0-9,
@@ -451,8 +455,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts a string to an arbitrary-precision integer.
-     * @param str A string containing only basic digits 0 to 9 (U + 0030 to
-     * U+0039), except that it may start with a minus sign ("-", U+002D).
+     * @param str A text string. The string must contain only basic digits 0 to 9
+     * (U+0030 to U+0039), except that it may start with a minus sign ("-",
+     * U + 002D) to indicate a negative number. The string is not allowed to
+     * contain white space characters, including spaces.
      * @return An arbitrary-precision integer with the same value as given in the
      * string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
@@ -467,10 +473,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Converts a portion of a string to an arbitrary-precision integer. The string
-     * portion can begin with a minus sign ("-", U+002D) to indicate that
-     * it's negative.
-     * @param str Not documented yet.
+     * Converts a portion of a string to an arbitrary-precision integer.
+     * @param str A text string. The desired portion of the string must contain
+     * only basic digits 0 to 9 (U + 0030 to U + 0039), except that it may start
+     * with a minus sign ("-", U+002D) to indicate a negative number. The
+     * desired portion is not allowed to contain white space characters,
+     * including spaces.
      * @param index The index of the string that starts the string portion.
      * @param endIndex The index of the string that ends the string portion. The
      * length will be index + endIndex - 1.

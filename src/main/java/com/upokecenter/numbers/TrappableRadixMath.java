@@ -79,7 +79,7 @@ result);
 
     private final IRadixMath<T> math;
 
-    public TrappableRadixMath (IRadixMath<T> math) {
+    public TrappableRadixMath(IRadixMath<T> math) {
       this.math = math;
     }
 

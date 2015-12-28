@@ -9,13 +9,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
   class CBORTag4 implements ICBORTag
   {
-    public CBORTag4 () {
+    public CBORTag4() {
  this(false);
     }
 
     private final boolean extended;
 
-    public CBORTag4 (boolean extended) {
+    public CBORTag4(boolean extended) {
       this.extended = extended;
     }
 

@@ -57,11 +57,13 @@ private static final long serialVersionUID = 1L;
 
     /**
      * Initializes a new instance of the TrapException class.
-     * @param flag A 32-bit signed integer.
+     * @param flag A flag that specifies the kind of error
+     * (PrecisionContext.FlagXXX). This will only be one flag, such as
+     * FlagInexact or FlagSubnormal.
      * @param ctx An EContext object.
      * @param result An arbitrary object.
      */
-    public TrapException (int flag, PrecisionContext ctx, Object result) {
+    public TrapException(int flag, PrecisionContext ctx, Object result) {
  super("");
       Object wrappedResult = result;
       EDecimal ed = ((result instanceof EDecimal) ? (EDecimal)result : null);

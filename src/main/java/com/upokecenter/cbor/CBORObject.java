@@ -717,7 +717,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
      * format. <p>If a JSON object has the same key, only the last given
      * value will be used for each duplicated key. The JSON string may not
-     * begin with a byte order mark (U + FEFF).</p>
+     * begin with a byte-order mark (U + FEFF).</p>
      * @param str A string in JSON format.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
@@ -733,8 +733,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       CharacterInputWithCount reader = new CharacterInputWithCount(
         new CharacterReader(str, false, true));
-      CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, 0);
-      if (CBORJson.SkipWhitespaceJSON(reader) != -1) {
+      // TODO: Support no-duplicates option for next version
+      int[] nextchar = new int[1];
+   CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, nextchar,
+        0);
+      if (nextchar[0] != -1) {
         reader.RaiseError("End of String not reached");
       }
       return obj;
@@ -985,7 +988,12 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     *
+     * Generates a CBOR object from a list of objects.
+     * @param value An array of CBOR objects. Can be null.
+     * @param <T> A type convertible to CBORObject.
+     * @return A CBOR object where each element of the given array is converted to
+     * a CBOR object and copied to a new array, or CBORObject.Null if the
+     * value is null.
      */
     public static <T> CBORObject FromObject(List<T> value) {
       if (value == null) {
@@ -1002,7 +1010,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     *
+     * Generates a CBOR object from an enumerable set of objects.
+     * @param value An object that implements the IEnumerable interface. In the
+     * .NET version, this can be the return value of an iterator or the
+     * result of a LINQ query.
+     * @param <T> A type convertible to CBORObject.
+     * @return A CBOR object where each element of the given enumerable object is
+     * converted to a CBOR object and copied to a new array, or
+     * CBORObject.Null if the value is null.
      */
     public static <T> CBORObject FromObject(Iterable<T> value) {
       if (value == null) {
@@ -1016,7 +1031,13 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     *
+     * Generates a CBOR object from a map of objects.
+     * @param dic A map of CBOR objects.
+     * @param <TKey> A type convertible to CBORObject; the type of the keys.
+     * @param <TValue> A type convertible to CBORObject; the type of the values.
+     * @return A CBOR object where each key and value of the given map is converted
+     * to a CBOR object and copied to a new map, or CBORObject.Null if
+     * {@code dic} is null.
      */
     public static <TKey, TValue> CBORObject FromObject(Map<TKey,
                     TValue> dic) {
@@ -1342,10 +1363,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Generates a CBOR object from a data stream in JavaScript Object Notation
-     * (JSON) format. The JSON stream may begin with a byte order mark
+     * (JSON) format. The JSON stream may begin with a byte-order mark
      * (U + FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16,
      * or UTF-32 encoding; the encoding is detected by assuming that the
-     * first character read must be a byte order mark or a nonzero basic
+     * first character read must be a byte-order mark or a nonzero basic
      * character (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
      * allowed.) <p>If a JSON object has the same key, only the last given
      * value will be used for each duplicated key.</p>
@@ -1363,8 +1384,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       CharacterInputWithCount reader = new CharacterInputWithCount(
         new CharacterReader(stream, 2, true));
       try {
-        CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, 0);
-        if (CBORJson.SkipWhitespaceJSON(reader) != -1) {
+        // TODO: Support no-duplicates option for next version
+        int[] nextchar = new int[1];
+   CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, nextchar,
+          0);
+        if (nextchar[0] != -1) {
           reader.RaiseError("End of data stream not reached");
         }
         return obj;
@@ -1956,7 +1980,7 @@ public static void Write(
      * @param valueOb An object representing the value, which will be converted to
      * a CBORObject. Can be null, in which case this value is converted to
      * CBORObject.Null.
-     * @return This object.
+     * @return This instance.
      * @throws IllegalArgumentException The parameter {@code key} already exists in
      * this map.
      * @throws IllegalStateException This object is not a map.
@@ -1996,7 +2020,7 @@ public static void Write(
      * reference to CBORObject.Null, for convenience with the Object
      * overload of this method.).
      * @param obj A CBOR object.
-     * @return This object.
+     * @return This instance.
      * @throws IllegalStateException This object is not an array.
      */
     public CBORObject Add(CBORObject obj) {
@@ -2011,7 +2035,7 @@ public static void Write(
     /**
      * Converts an object to a CBOR object and adds it to the end of this array.
      * @param obj A CBOR object.
-     * @return This object.
+     * @return This instance.
      * @throws IllegalStateException This object is not an array.
      * @throws IllegalArgumentException The type of {@code obj} is not supported.
      */
@@ -2870,7 +2894,7 @@ public boolean equals(CBORObject other) {
      * @param valueOb An object representing the value, which will be converted to
      * a CBORObject. Can be null, in which case this value is converted to
      * CBORObject.Null.
-     * @return This object.
+     * @return This instance.
      * @throws IllegalStateException This object is not an array.
      * @throws IllegalArgumentException The parameter {@code valueOb} has an
      * unsupported type; or {@code index} is not a valid index into this
@@ -2992,7 +3016,7 @@ public boolean equals(CBORObject other) {
      * @param valueOb An object representing the value, which will be converted to
      * a CBORObject. Can be null, in which case this value is converted to
      * CBORObject.Null.
-     * @return This object.
+     * @return This instance.
      * @throws IllegalStateException This object is not a map.
      * @throws IllegalArgumentException The parameter {@code key} or {@code
      * valueOb} has an unsupported type.

@@ -192,7 +192,7 @@ EInteger.FromInt64(1).Add(EInteger.FromInt64(Integer.MAX_VALUE)));
      * @param exponentMaxSmall Not documented yet. (4).
      * @param clampNormalExponents Not documented yet. (5).
      */
-    public EContext (
+    public EContext(
 int precision,
 ERounding rounding,
 int exponentMinSmall,

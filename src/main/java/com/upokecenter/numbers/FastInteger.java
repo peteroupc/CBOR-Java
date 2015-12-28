@@ -554,7 +554,7 @@ bigrem = divrem[1]; }
     /**
      * Sets this object&#x27;s value to the current value times another integer.
      * @param val The integer to multiply by.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger Multiply(int val) {
       if (val == 0) {
@@ -610,7 +610,7 @@ bigrem = divrem[1]; }
     /**
      * Sets this object&#x27;s value to 0 minus its current value (reverses its
      * sign).
-     * @return This object.
+     * @return This instance.
      */
     FastInteger Negate() {
       switch (this.integerMode) {
@@ -642,7 +642,7 @@ bigrem = divrem[1]; }
      * Sets this object&#x27;s value to the current value minus the given
      * FastInteger value.
      * @param val The subtrahend.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger Subtract(FastInteger val) {
       EInteger valValue;
@@ -692,7 +692,7 @@ bigrem = divrem[1]; }
     /**
      * Sets this object&#x27;s value to the current value minus the given integer.
      * @param val The subtrahend.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
@@ -716,7 +716,7 @@ bigrem = divrem[1]; }
     /**
      * Sets this object&#x27;s value to the current value plus the given integer.
      * @param bigintVal The number to add.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger AddBig(EInteger bigintVal) {
       switch (this.integerMode) {
@@ -741,7 +741,7 @@ bigrem = divrem[1]; }
     /**
      * Sets this object&#x27;s value to the current value minus the given integer.
      * @param bigintVal The subtrahend.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger SubtractBig(EInteger bigintVal) {
       if (this.integerMode == 2) {
@@ -817,7 +817,7 @@ bigrem = divrem[1]; }
      * Sets this object's value to the remainder of the current value divided by
      * the given integer.
      * @param divisor The divisor.
-     * @return This object.
+     * @return This instance.
      * @throws ArithmeticException Attempted to divide by zero.
      */
     FastInteger Remainder(int divisor) {

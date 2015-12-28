@@ -83,7 +83,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return this.discardedBitCount;
       }
 
-    public BitShiftAccumulator (
+    public BitShiftAccumulator(
 EInteger bigint,
 int lastDiscarded,
 int olderDiscarded) {

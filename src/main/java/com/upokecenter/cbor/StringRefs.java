@@ -17,7 +17,7 @@ import com.upokecenter.util.*;
   class StringRefs {
     private final ArrayList<ArrayList<CBORObject>> stack;
 
-    public StringRefs () {
+    public StringRefs() {
       this.stack = new ArrayList<ArrayList<CBORObject>>();
       ArrayList<CBORObject> firstItem = new ArrayList<CBORObject>();
       this.stack.add(firstItem);

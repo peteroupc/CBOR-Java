@@ -229,9 +229,30 @@ String result) {
       }
     }
 
+    public static void AssertAdd(BigInteger bi, BigInteger bi2, String s) {
+      BigIntegerTest.AssertBigIntegersEqual(s, bi.add(bi2));
+      BigIntegerTest.AssertBigIntegersEqual(s, bi2.add(bi));
+      BigInteger negbi = BigInteger.valueOf(0).subtract(bi);
+      BigInteger negbi2 = BigInteger.valueOf(0).subtract(bi2);
+      BigIntegerTest.AssertBigIntegersEqual(s, bi.subtract(negbi2));
+      BigIntegerTest.AssertBigIntegersEqual(s, bi2.subtract(negbi));
+    }
     @Test
     public void TestAdd() {
-      // not implemented yet
+      BigInteger posSmall = BigInteger.valueOf(5);
+      BigInteger negSmall = BigInteger.valueOf(-5);
+      BigInteger posLarge = BigInteger.valueOf(5555555);
+      BigInteger negLarge = BigInteger.valueOf(-5555555);
+      AssertAdd(posSmall, posSmall, "10");
+      AssertAdd(posSmall, negSmall, "0");
+      AssertAdd(posSmall, posLarge, "5555560");
+      AssertAdd(posSmall, negLarge, "-5555550");
+      AssertAdd(negSmall, negSmall, "-10");
+      AssertAdd(negSmall, posLarge, "5555550");
+      AssertAdd(negSmall, negLarge, "-5555560");
+      AssertAdd(posLarge, posLarge, "11111110");
+      AssertAdd(posLarge, negLarge, "0");
+      AssertAdd(negLarge, negLarge, "-11111110");
     }
 
     @Test
@@ -1860,8 +1881,17 @@ throw new IllegalStateException("", ex);
       }
       return builder.toString();
     }
+
     @Test
     public void TestToString() {
+      BigInteger bi = BigInteger.valueOf(3);
+      AssertBigIntegersEqual("3", bi);
+      BigInteger negseven = BigInteger.valueOf(-7);
+      AssertBigIntegersEqual("-7", negseven);
+      BigInteger other = BigInteger.valueOf(-898989);
+      AssertBigIntegersEqual("-898989", other);
+      other = BigInteger.valueOf(898989);
+      AssertBigIntegersEqual("898989", other);
       FastRandom r = new FastRandom();
       for (int i = 0; i < 1000; ++i) {
         BigInteger bigintA = RandomBigInteger(r);

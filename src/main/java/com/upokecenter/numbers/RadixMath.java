@@ -19,7 +19,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private final int support;
     private final int thisRadix;
 
-    public RadixMath (IRadixMathHelper<T> helper) {
+    public RadixMath(IRadixMathHelper<T> helper) {
       this.helper = helper;
       this.support = helper.GetArithmeticSupport();
       this.thisRadix = helper.GetRadix();

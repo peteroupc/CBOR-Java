@@ -51,7 +51,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private static int seedCount;
     private static int seedReadIndex;
 
-    public FastRandom () {
+    public FastRandom() {
       int randseed = GetSeed();
       this.rand = (randseed == 0) ? (new java.util.Random()) : (new java.util.Random(randseed));
       int randseed2 = (GetSeed() ^SysRandNext(this.rand, this.rand));

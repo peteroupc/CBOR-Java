@@ -23,7 +23,7 @@ import com.upokecenter.util.*;
       Overwrite, Disallow
     }
 
-    public CBORReader (InputStream stream) {
+    public CBORReader(InputStream stream) {
       this.stream = stream;
       this.sharedRefs = new SharedRefs();
       this.policy = CBORDuplicatePolicy.Overwrite;

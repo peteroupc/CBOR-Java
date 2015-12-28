@@ -59,11 +59,13 @@ private static final long serialVersionUID = 1L;
 
     /**
      * Initializes a new instance of the TrapException class.
-     * @param flag A 32-bit signed integer.
+     * @param flag A flag that specifies the kind of error
+     * (PrecisionContext.FlagXXX). This will only be one flag, such as
+     * FlagInexact or FlagSubnormal.
      * @param ctx An EContext object.
      * @param result An arbitrary object.
      */
-    public ETrapException (int flag, EContext ctx, Object result) {
+    public ETrapException(int flag, EContext ctx, Object result) {
  super(FlagToMessage(flag));
       this.error = flag;
       this.ctx = (ctx == null) ? null : ctx.Copy();

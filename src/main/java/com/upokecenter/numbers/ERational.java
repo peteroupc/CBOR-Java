@@ -112,7 +112,7 @@ EInteger denominator) {
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
      * {@code denominator} is null.
      */
-    public ERational (EInteger numerator, EInteger denominator) {
+    public ERational(EInteger numerator, EInteger denominator) {
       if (numerator == null) {
         throw new NullPointerException("numerator");
       }

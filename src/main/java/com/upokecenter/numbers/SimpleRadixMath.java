@@ -18,7 +18,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   public final class SimpleRadixMath<T> implements IRadixMath<T> {
     private final IRadixMath<T> wrapper;
 
-    public SimpleRadixMath (IRadixMath<T> wrapper) {
+    public SimpleRadixMath(IRadixMath<T> wrapper) {
       this.wrapper = wrapper;
     }
 

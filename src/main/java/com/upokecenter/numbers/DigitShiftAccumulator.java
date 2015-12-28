@@ -58,7 +58,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         this.shiftedBigInt;
       }
 
-    public DigitShiftAccumulator (
+    public DigitShiftAccumulator(
 EInteger bigint,
 int lastDiscarded,
 int olderDiscarded) {

@@ -174,7 +174,7 @@ private DecimalUtility() {
       private final EInteger[] inputs;
       private final int[] inputsInts;
 
-      public PowerCache () {
+      public PowerCache() {
         this.outputs = new EInteger[MaxSize];
         this.inputs = new EInteger[MaxSize];
         this.inputsInts = new int[MaxSize];

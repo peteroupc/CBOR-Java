@@ -26,6 +26,46 @@ import com.upokecenter.util.*;
         ExtendedRational bigintC = RandomObjects.RandomRational(r);
         TestCommon.CompareTestRelations(bigintA, bigintB, bigintC);
       }
+      TestCommon.CompareTestLess(ExtendedRational.Zero, ExtendedRational.NaN);
+      for (int i = 0; i < 100; ++i) {
+        BigInteger num = RandomObjects.RandomBigInteger(r);
+        if (num.signum() == 0) {
+          // Skip if number is 0; 0/1 and 0/2 are
+          // equal in that case
+          continue;
+        }
+        num = (num).abs();
+        ExtendedRational rat = new ExtendedRational(num, BigInteger.valueOf(1));
+        ExtendedRational rat2 = new ExtendedRational(num, BigInteger.valueOf(2));
+        TestCommon.CompareTestLess(rat2, rat);
+        TestCommon.CompareTestGreater(rat, rat2);
+      }
+      TestCommon.CompareTestLess(
+        new ExtendedRational(
+          BigInteger.valueOf(1),
+          BigInteger.valueOf(2)),
+ (
+          new ExtendedRational(BigInteger.valueOf(4), BigInteger.valueOf(1))));
+      for (int i = 0; i < 100; ++i) {
+        BigInteger num = RandomObjects.RandomBigInteger(r);
+        BigInteger den = RandomObjects.RandomBigInteger(r);
+        if (den.signum() == 0) {
+          den = BigInteger.valueOf(1);
+        }
+        ExtendedRational rat = new ExtendedRational(num, den);
+        for (int j = 0; j < 10; ++j) {
+          BigInteger num2 = num;
+          BigInteger den2 = den;
+          BigInteger mult = RandomObjects.RandomBigInteger(r);
+          if (mult.signum() == 0 || mult.equals(BigInteger.valueOf(1))) {
+            mult = BigInteger.valueOf(2);
+          }
+          num2 = num2.multiply(mult);
+          den2 = den2.multiply(mult);
+          ExtendedRational rat2 = new ExtendedRational(num2, den2);
+          TestCommon.CompareTestEqual(rat, rat2);
+        }
+      }
     }
     @Test
     public void TestCompareToBinary() {
@@ -49,7 +89,22 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestDivide() {
-      // not implemented yet
+      FastRandom fr = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        ExtendedRational er = RandomObjects.RandomRational(fr);
+        ExtendedRational er2 = RandomObjects.RandomRational(fr);
+        if (er2.signum() == 0 || !er2.isFinite()) {
+          continue;
+        }
+        if (er.signum() == 0 || !er.isFinite()) {
+          continue;
+        }
+        ExtendedRational ermult = er.Multiply(er2);
+        ExtendedRational erdiv = ermult.Divide(er);
+        TestCommon.CompareTestEqual(erdiv, er2);
+        erdiv = ermult.Divide(er2);
+        TestCommon.CompareTestEqual(erdiv, er);
+      }
     }
     @Test
     public void TestEquals() {
@@ -207,7 +262,42 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestToBigIntegerExact() {
-      // not implemented yet
+      try {
+        ExtendedRational.PositiveInfinity.ToBigIntegerExact();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedRational.NegativeInfinity.ToBigIntegerExact();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedRational.NaN.ToBigIntegerExact();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedRational.SignalingNaN.ToBigIntegerExact();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestToDouble() {

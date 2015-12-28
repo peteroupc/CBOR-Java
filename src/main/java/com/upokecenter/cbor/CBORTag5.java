@@ -23,13 +23,13 @@ CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
 CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3),
 CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
 
-    public CBORTag5 () {
+    public CBORTag5() {
  this(false);
     }
 
     private final boolean extended;
 
-    public CBORTag5 (boolean extended) {
+    public CBORTag5(boolean extended) {
       this.extended = extended;
     }
 

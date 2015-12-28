@@ -630,9 +630,8 @@ try {
 
     /**
      * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.000
-     * becomes 1. <p>If this object's value is 0, changes the exponent to 0.
-     * (This is unlike the behavior in Java's BigDecimal method
-     * "stripTrailingZeros" in Java 7 and earlier.)</p>
+     * becomes 1. <p>If this object's value is 0, changes the exponent to
+     * 0.</p>
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in

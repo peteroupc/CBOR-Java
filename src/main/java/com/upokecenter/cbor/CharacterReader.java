@@ -35,7 +35,7 @@ import java.io.*;
      * @param str The string to read.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
-    public CharacterReader (String str) {
+    public CharacterReader(String str) {
  this(str, false, false);
     }
 
@@ -48,7 +48,7 @@ import java.io.*;
      * mark (U + FEFF), will skip that code point as it reads the string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
-    public CharacterReader (String str, boolean skipByteOrderMark) {
+    public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
 
@@ -64,7 +64,7 @@ import java.io.*;
      * the stream is read.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
-  public CharacterReader (
+  public CharacterReader(
 String str,
 boolean skipByteOrderMark,
 boolean errorThrow) {
@@ -88,7 +88,7 @@ boolean errorThrow) {
      * @param stream A readable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
-    public CharacterReader (InputStream stream) {
+    public CharacterReader(InputStream stream) {
  this(stream, 0, false);
     }
 
@@ -112,7 +112,7 @@ boolean errorThrow) {
      * the stream is read.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
-    public CharacterReader (InputStream stream, int mode, boolean errorThrow) {
+    public CharacterReader(InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
 
@@ -133,7 +133,7 @@ boolean errorThrow) {
      * (Tries to detect UTF-32 first.)</li></ul>.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
-    public CharacterReader (InputStream stream, int mode) {
+    public CharacterReader(InputStream stream, int mode) {
  this(stream, mode, false, false);
     }
 
@@ -159,7 +159,7 @@ boolean errorThrow) {
      * start of the stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
-    public CharacterReader (
+    public CharacterReader(
 InputStream stream,
 int mode,
 boolean errorThrow,
@@ -539,7 +539,7 @@ this.errorThrow);
       private final SavedState state;
       private final boolean errorThrow;
 
-      public Utf16Reader (IByteReader stream, boolean bigEndian, boolean errorThrow) {
+      public Utf16Reader(IByteReader stream, boolean bigEndian, boolean errorThrow) {
         this.stream = stream;
         this.bigEndian = bigEndian;
         this.state = new SavedState();
@@ -619,7 +619,7 @@ this.errorThrow);
       private final boolean errorThrow;
       private final SavedState state;
 
-      public Utf32Reader (IByteReader stream, boolean bigEndian, boolean errorThrow) {
+      public Utf32Reader(IByteReader stream, boolean bigEndian, boolean errorThrow) {
         this.stream = stream;
         this.bigEndian = bigEndian;
         this.state = new SavedState();
@@ -674,7 +674,7 @@ this.errorThrow);
       private final SavedState state;
       private final boolean errorThrow;
 
-      public Utf8Reader (IByteReader stream, boolean errorThrow) {
+      public Utf8Reader(IByteReader stream, boolean errorThrow) {
         this.stream = stream;
         this.lastChar = -1;
         this.state = new SavedState();
@@ -783,7 +783,7 @@ this.errorThrow);
     private static final class WrappedStream implements IByteReader {
       private final InputStream stream;
 
-      public WrappedStream (InputStream stream) {
+      public WrappedStream(InputStream stream) {
         this.stream = stream;
       }
 

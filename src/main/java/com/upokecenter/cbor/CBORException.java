@@ -14,14 +14,14 @@ private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the CBORException class.
      */
-    public CBORException () {
+    public CBORException() {
     }
 
     /**
      * Initializes a new instance of the CBORException class.
      * @param message A string object.
      */
-    public CBORException (String message) {
+    public CBORException(String message) {
  super(message);
     }
 
@@ -31,7 +31,7 @@ private static final long serialVersionUID = 1L;
      * @param message A string object.
      * @param innerException An Exception object.
      */
-    public CBORException (String message, Throwable innerException) {
+    public CBORException(String message, Throwable innerException) {
  super(message, innerException);
     }
   }

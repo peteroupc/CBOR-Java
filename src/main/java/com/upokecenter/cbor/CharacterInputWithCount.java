@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
     private int offset;
     private final ICharacterInput ci;
 
-    public CharacterInputWithCount (ICharacterInput ci) {
+    public CharacterInputWithCount(ICharacterInput ci) {
       this.ci = ci;
     }
 

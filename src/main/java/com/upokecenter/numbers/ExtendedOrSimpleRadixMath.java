@@ -12,7 +12,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private final RadixMath<T> ext;
     private final SimpleRadixMath<T> simp;
 
-    public ExtendedOrSimpleRadixMath (IRadixMathHelper<T> helper) {
+    public ExtendedOrSimpleRadixMath(IRadixMathHelper<T> helper) {
       this.ext = new RadixMath<T>(helper);
       this.simp = new SimpleRadixMath<T>(this.ext);
     }

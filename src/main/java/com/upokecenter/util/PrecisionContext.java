@@ -181,7 +181,7 @@ import com.upokecenter.numbers.*;
      * @param exponentMaxSmall Not documented yet. (4).
      * @param clampNormalExponents Not documented yet. (5).
      */
-    public PrecisionContext (
+    public PrecisionContext(
 int precision,
 Rounding rounding,
 int exponentMinSmall,

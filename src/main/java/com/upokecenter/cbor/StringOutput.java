@@ -15,12 +15,12 @@ import com.upokecenter.util.*;
     private final StringBuilder builder;
     private final OutputStream outputStream;
 
-    public StringOutput (StringBuilder builder) {
+    public StringOutput(StringBuilder builder) {
       this.builder = builder;
       this.outputStream = null;
     }
 
-    public StringOutput (OutputStream outputStream) {
+    public StringOutput(OutputStream outputStream) {
       this.outputStream = outputStream;
       this.builder = null;
     }

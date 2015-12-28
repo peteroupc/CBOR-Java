@@ -22,6 +22,19 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0, ef.compareTo(ef2));
     }
 
+    @Test
+    public void TestFloatDecimalRoundTrip() {
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 5000; ++i) {
+        ExtendedFloat ef = RandomObjects.RandomExtendedFloat(r);
+        ExtendedDecimal ed = ef.ToExtendedDecimal();
+        ExtendedFloat ef2 = ed.ToExtendedFloat();
+        // Tests that values converted from float to decimal and
+        // back have the same numerical value
+        TestCommon.CompareTestEqual(ef, ef2);
+      }
+    }
+
     public static ExtendedFloat FromBinary(String str) {
       int smallExponent = 0;
       int index = 0;
@@ -82,7 +95,15 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestAdd() {
-      // not implemented yet
+      try {
+        ExtendedFloat.Zero.Add(null, PrecisionContext.Unlimited);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCompareTo() {
@@ -93,6 +114,11 @@ import com.upokecenter.util.*;
         ExtendedFloat bigintC = RandomObjects.RandomExtendedFloat(r);
         TestCommon.CompareTestRelations(bigintA, bigintB, bigintC);
       }
+      TestCommon.CompareTestLess(ExtendedFloat.Zero, ExtendedFloat.NaN);
+      ExtendedDecimal a = ExtendedDecimal.FromString(
+        "7.00468923842476447758037175245551511770928808756622205663208" + "4784688080253355047487262563521426272927783429622650146484375");
+      ExtendedDecimal b = ExtendedDecimal.FromString("5");
+      TestCommon.CompareTestLess(b, a);
     }
     @Test
     public void TestCompareToSignal() {
@@ -184,6 +210,15 @@ throw new IllegalStateException("", ex);
 Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
+      try {
+        ExtendedFloat.FromString("");
+        Assert.fail("Should have failed");
+      } catch (NumberFormatException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestIsFinite() {
@@ -249,8 +284,8 @@ throw new IllegalStateException("", ex);
         ExtendedFloat.Max(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -258,14 +293,57 @@ System.out.print("");
         ExtendedFloat.Max(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      } }
+      }
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        ExtendedFloat bigintA = RandomObjects.RandomExtendedFloat(r);
+        ExtendedFloat bigintB = RandomObjects.RandomExtendedFloat(r);
+        if (!bigintA.isFinite() || !bigintB.isFinite()) {
+          continue;
+        }
+        int cmp = TestCommon.CompareTestReciprocal(bigintA, bigintB);
+        if (cmp < 0) {
+     TestCommon.CompareTestEqual(
+bigintB,
+ExtendedFloat.Max(bigintA, bigintB));
+        } else if (cmp > 0) {
+     TestCommon.CompareTestEqual(
+bigintA,
+ExtendedFloat.Max(bigintA, bigintB));
+        } else {
+     TestCommon.CompareTestEqual(
+bigintA,
+ExtendedFloat.Max(bigintA, bigintB));
+     TestCommon.CompareTestEqual(
+bigintB,
+ExtendedFloat.Max(bigintA, bigintB));
+        }
+      }
+    }
     @Test
     public void TestMaxMagnitude() {
-      // not implemented yet
+      try {
+        ExtendedFloat.MaxMagnitude(null, ExtendedFloat.One);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedFloat.MaxMagnitude(ExtendedFloat.One, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestMin() {
@@ -273,8 +351,8 @@ System.out.print("");
         ExtendedFloat.Min(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -282,10 +360,36 @@ System.out.print("");
         ExtendedFloat.Min(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
+      }
+
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 500; ++i) {
+        ExtendedFloat bigintA = RandomObjects.RandomExtendedFloat(r);
+        ExtendedFloat bigintB = RandomObjects.RandomExtendedFloat(r);
+        if (!bigintA.isFinite() || !bigintB.isFinite()) {
+          continue;
+        }
+        int cmp = TestCommon.CompareTestReciprocal(bigintA, bigintB);
+        if (cmp < 0) {
+     TestCommon.CompareTestEqual(
+bigintA,
+ExtendedFloat.Min(bigintA, bigintB));
+        } else if (cmp > 0) {
+     TestCommon.CompareTestEqual(
+bigintB,
+ExtendedFloat.Min(bigintA, bigintB));
+        } else {
+     TestCommon.CompareTestEqual(
+bigintA,
+ExtendedFloat.Min(bigintA, bigintB));
+     TestCommon.CompareTestEqual(
+bigintB,
+ExtendedFloat.Min(bigintA, bigintB));
+        }
       }
     }
     @Test
@@ -294,8 +398,8 @@ System.out.print("");
         ExtendedFloat.MinMagnitude(null, ExtendedFloat.One);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -303,8 +407,8 @@ System.out.print("");
         ExtendedFloat.MinMagnitude(ExtendedFloat.One, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
+        System.out.print("");
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -403,11 +507,54 @@ System.out.print("");
     }
     @Test
     public void TestSubtract() {
-      // not implemented yet
+      try {
+        ExtendedFloat.Zero.Subtract(null, PrecisionContext.Unlimited);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestToBigInteger() {
-      // not implemented yet
+      try {
+        ExtendedFloat.PositiveInfinity.ToBigInteger();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedFloat.NegativeInfinity.ToBigInteger();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedFloat.NaN.ToBigInteger();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        ExtendedFloat.SignalingNaN.ToBigInteger();
+        Assert.fail("Should have failed");
+      } catch (ArithmeticException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestToBigIntegerExact() {

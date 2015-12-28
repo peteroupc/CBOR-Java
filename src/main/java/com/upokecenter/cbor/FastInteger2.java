@@ -352,7 +352,7 @@ import com.upokecenter.util.*;
     /**
      * Sets this object&#x27;s value to the current value times another integer.
      * @param val The integer to multiply by.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger2 Multiply(int val) {
       if (val == 0) {
@@ -409,7 +409,7 @@ import com.upokecenter.util.*;
      * Sets this object&#x27;s value to the current value minus the given
      * FastInteger value.
      * @param val The subtrahend.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger2 Subtract(FastInteger2 val) {
       BigInteger valValue;
@@ -459,7 +459,7 @@ import com.upokecenter.util.*;
     /**
      * Sets this object&#x27;s value to the current value minus the given integer.
      * @param val The subtrahend.
-     * @return This object.
+     * @return This instance.
      */
     FastInteger2 SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
