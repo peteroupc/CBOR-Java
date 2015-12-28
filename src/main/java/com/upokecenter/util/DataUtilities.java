@@ -20,10 +20,10 @@ import java.io.*;
      * higher, in UTF-16. A surrogate pair is a high surrogate [U + D800 to
      * U + DBFF] followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
      * surrogate code point is a surrogate not appearing in a surrogate
-     * pair.) Many of the methods in the class allow setting the behavior to
-     * follow when unpaired surrogate code points are found in text strings,
-     * such as throwing an error or treating the unpaired surrogate as a
-     * replacement character (U + FFFD).</p>
+     * pair.) Many of the methods in this class allow setting the behavior
+     * to follow when unpaired surrogate code points are found in text
+     * strings, such as throwing an error or treating the unpaired surrogate
+     * as a replacement character (U + FFFD).</p>
      */
   public final class DataUtilities {
 private DataUtilities() {

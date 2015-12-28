@@ -206,6 +206,15 @@ System.out.print("");
     @Test
     public void TestWithBigPrecision() {
       try {
+        PrecisionContext.Unlimited.WithBigPrecision(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
         PrecisionContext.Unlimited.WithBigPrecision(BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {

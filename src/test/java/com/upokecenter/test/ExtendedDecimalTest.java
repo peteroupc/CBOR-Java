@@ -34,20 +34,23 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestCompareToBinary() {
-    Assert.assertEquals(
-1,
-ExtendedDecimal.NegativeInfinity.CompareToBinary(null));
-    Assert.assertEquals(
-1,
-ExtendedDecimal.PositiveInfinity.CompareToBinary(null));
+    {
+long numberTemp = ExtendedDecimal.NegativeInfinity.CompareToBinary(null);
+Assert.assertEquals(1, numberTemp);
+}
+    {
+long numberTemp = ExtendedDecimal.PositiveInfinity.CompareToBinary(null);
+Assert.assertEquals(1, numberTemp);
+}
       Assert.assertEquals(1, ExtendedDecimal.NaN.CompareToBinary(null));
       Assert.assertEquals(1, ExtendedDecimal.SignalingNaN.CompareToBinary(null));
       Assert.assertEquals(1, ExtendedDecimal.Zero.CompareToBinary(null));
       Assert.assertEquals(1, ExtendedDecimal.One.CompareToBinary(null));
 
-    Assert.assertEquals(
-0,
-ExtendedDecimal.NaN.CompareToBinary(ExtendedFloat.NaN));
+    {
+long numberTemp = ExtendedDecimal.NaN.CompareToBinary(ExtendedFloat.NaN);
+Assert.assertEquals(0, numberTemp);
+}
 
       {
         long numberTemp =
@@ -66,9 +69,10 @@ ExtendedDecimal.NaN.CompareToBinary(ExtendedFloat.NaN));
   ExtendedDecimal.SignalingNaN.CompareToBinary(ExtendedFloat.SignalingNaN);
         Assert.assertEquals(0, numberTemp);
       }
-   Assert.assertEquals(
-1,
-ExtendedDecimal.NaN.CompareToBinary(ExtendedFloat.Zero));
+   {
+long numberTemp = ExtendedDecimal.NaN.CompareToBinary(ExtendedFloat.Zero);
+Assert.assertEquals(1, numberTemp);
+}
 
       {
         long numberTemp =
@@ -1315,8 +1319,8 @@ ExtendedDecimal.Min(bigintA, bigintB));
         stringTemp);
       }
       {
-        String stringTemp = ExtendedDecimal.FromString("1"
-).MovePointLeft(0).toString();
+        String stringTemp = ExtendedDecimal.FromString(
+"1").MovePointLeft(0).toString();
         Assert.assertEquals(
         "1",
         stringTemp);
@@ -1741,8 +1745,8 @@ null);
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("55.0E6"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"55.0E6").ToEngineeringString();
         Assert.assertEquals(
           "55.0E+6",
           stringTemp);
@@ -1874,8 +1878,8 @@ String stringTemp = ExtendedDecimal.FromString("55.0E6"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("4.32E8"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"4.32E8").ToEngineeringString();
         Assert.assertEquals(
           "432E+6",
           stringTemp);
@@ -1944,8 +1948,8 @@ String stringTemp = ExtendedDecimal.FromString("4.32E8"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("43.9E0"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"43.9E0").ToEngineeringString();
         Assert.assertEquals(
           "43.9",
           stringTemp);
@@ -2077,8 +2081,8 @@ String stringTemp = ExtendedDecimal.FromString("43.9E0"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("29.0E4"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"29.0E4").ToEngineeringString();
         Assert.assertEquals(
           "290E+3",
           stringTemp);
@@ -2252,8 +2256,8 @@ String stringTemp = ExtendedDecimal.FromString("29.0E4"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("61.4E8"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"61.4E8").ToEngineeringString();
         Assert.assertEquals(
           "6.14E+9",
           stringTemp);
@@ -2266,8 +2270,8 @@ String stringTemp = ExtendedDecimal.FromString("61.4E8"
           stringTemp);
       }
       {
- String stringTemp = ExtendedDecimal.FromString("5.4E6"
-).ToEngineeringString();
+ String stringTemp = ExtendedDecimal.FromString(
+"5.4E6").ToEngineeringString();
         Assert.assertEquals(
           "5.4E+6",
           stringTemp);
@@ -2336,8 +2340,8 @@ String stringTemp = ExtendedDecimal.FromString("61.4E8"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("97.7E3"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"97.7E3").ToEngineeringString();
         Assert.assertEquals(
           "97.7E+3",
           stringTemp);
@@ -2350,8 +2354,8 @@ String stringTemp = ExtendedDecimal.FromString("97.7E3"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("69.4E2"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"69.4E2").ToEngineeringString();
         Assert.assertEquals(
           "6.94E+3",
           stringTemp);
@@ -2406,8 +2410,8 @@ String stringTemp = ExtendedDecimal.FromString("69.4E2"
           stringTemp);
       }
       {
-String stringTemp = ExtendedDecimal.FromString("70.7E6"
-).ToEngineeringString();
+String stringTemp = ExtendedDecimal.FromString(
+"70.7E6").ToEngineeringString();
         Assert.assertEquals(
           "70.7E+6",
           stringTemp);
@@ -2415,7 +2419,35 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
     }
     @Test
     public void TestToExtendedFloat() {
-      // not implemented yet
+      ExtendedDecimal df;
+      df = ExtendedDecimal.FromInt64(20);
+      {
+        String stringTemp = df.ToExtendedFloat().toString();
+        Assert.assertEquals(
+        "20",
+        stringTemp);
+      }
+      df = ExtendedDecimal.FromInt64(-20);
+      {
+        String stringTemp = df.ToExtendedFloat().toString();
+        Assert.assertEquals(
+        "-20",
+        stringTemp);
+      }
+      df = ExtendedDecimal.Create(BigInteger.valueOf(15), BigInteger.valueOf(-1));
+      {
+        String stringTemp = df.ToExtendedFloat().toString();
+        Assert.assertEquals(
+        "1.5",
+        stringTemp);
+      }
+      df = ExtendedDecimal.Create(BigInteger.valueOf(-15), BigInteger.valueOf(-1));
+      {
+        String stringTemp = df.ToExtendedFloat().toString();
+        Assert.assertEquals(
+        "-1.5",
+        stringTemp);
+      }
     }
     @Test
     public void TestToPlainString() {
@@ -2426,701 +2458,701 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
         stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("277.22E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"277.22E9").ToPlainString();
         Assert.assertEquals(
           "277220000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("391.19E4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"391.19E4").ToPlainString();
         Assert.assertEquals(
           "3911900",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("383.27E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"383.27E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000038327",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("47.33E9"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"47.33E9").ToPlainString();
         Assert.assertEquals(
           "47330000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("322.21E3"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"322.21E3").ToPlainString();
         Assert.assertEquals(
           "322210",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("191.3E-2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"191.3E-2").ToPlainString();
         Assert.assertEquals(
           "1.913",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("119.17E2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"119.17E2").ToPlainString();
         Assert.assertEquals(
           "11917",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("159.6E-6"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"159.6E-6").ToPlainString();
         Assert.assertEquals(
           "0.0001596",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("70.16E9"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"70.16E9").ToPlainString();
         Assert.assertEquals(
           "70160000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("166.24E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"166.24E9").ToPlainString();
         Assert.assertEquals(
           "166240000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("235.25E3"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"235.25E3").ToPlainString();
         Assert.assertEquals(
           "235250",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("37.22E7"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"37.22E7").ToPlainString();
         Assert.assertEquals(
           "372200000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("320.26E8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"320.26E8").ToPlainString();
         Assert.assertEquals(
           "32026000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("127.11E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"127.11E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000012711",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("97.29E-7"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"97.29E-7").ToPlainString();
         Assert.assertEquals(
           "0.000009729",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("175.13E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"175.13E9").ToPlainString();
         Assert.assertEquals(
           "175130000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("38.21E-7"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"38.21E-7").ToPlainString();
         Assert.assertEquals(
           "0.000003821",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("6.28E1"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"6.28E1").ToPlainString();
         Assert.assertEquals(
           "62.8",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("138.29E6"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"138.29E6").ToPlainString();
         Assert.assertEquals(
           "138290000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("160.19E1"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"160.19E1").ToPlainString();
         Assert.assertEquals(
           "1601.9",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("358.12E2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"358.12E2").ToPlainString();
         Assert.assertEquals(
           "35812",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("249.28E10"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"249.28E10").ToPlainString();
         Assert.assertEquals(
           "2492800000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("311.23E-6"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"311.23E-6").ToPlainString();
         Assert.assertEquals(
           "0.00031123",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("164.33E-3"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"164.33E-3").ToPlainString();
         Assert.assertEquals(
           "0.16433",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("299.20E-1"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"299.20E-1").ToPlainString();
         Assert.assertEquals(
           "29.920",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("105.39E3"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"105.39E3").ToPlainString();
         Assert.assertEquals(
           "105390",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("382.5E4"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"382.5E4").ToPlainString();
         Assert.assertEquals(
           "3825000",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("90.9E1"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"90.9E1").ToPlainString();
         Assert.assertEquals(
           "909",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("329.15E8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"329.15E8").ToPlainString();
         Assert.assertEquals(
           "32915000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("245.23E8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"245.23E8").ToPlainString();
         Assert.assertEquals(
           "24523000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("97.19E-8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"97.19E-8").ToPlainString();
         Assert.assertEquals(
           "0.0000009719",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("55.12E7"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"55.12E7").ToPlainString();
         Assert.assertEquals(
           "551200000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("12.38E2"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"12.38E2").ToPlainString();
         Assert.assertEquals(
           "1238",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("250.20E-5"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"250.20E-5").ToPlainString();
         Assert.assertEquals(
           "0.0025020",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("53.20E2"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"53.20E2").ToPlainString();
         Assert.assertEquals(
           "5320",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("141.5E8"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"141.5E8").ToPlainString();
         Assert.assertEquals(
           "14150000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("338.34E-5"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"338.34E-5").ToPlainString();
         Assert.assertEquals(
           "0.0033834",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("160.39E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"160.39E9").ToPlainString();
         Assert.assertEquals(
           "160390000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("152.17E6"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"152.17E6").ToPlainString();
         Assert.assertEquals(
           "152170000",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("13.3E9"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"13.3E9").ToPlainString();
         Assert.assertEquals(
           "13300000000",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("1.38E1"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"1.38E1").ToPlainString();
         Assert.assertEquals(
           "13.8",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("348.21E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"348.21E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000034821",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("52.5E7"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"52.5E7").ToPlainString();
         Assert.assertEquals(
           "525000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("215.21E10"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"215.21E10").ToPlainString();
         Assert.assertEquals(
           "2152100000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("234.28E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"234.28E9").ToPlainString();
         Assert.assertEquals(
           "234280000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("310.24E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"310.24E9").ToPlainString();
         Assert.assertEquals(
           "310240000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("345.39E9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"345.39E9").ToPlainString();
         Assert.assertEquals(
           "345390000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("116.38E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"116.38E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000011638",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("276.25E10"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"276.25E10").ToPlainString();
         Assert.assertEquals(
           "2762500000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("158.32E-8"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"158.32E-8").ToPlainString();
         Assert.assertEquals(
           "0.0000015832",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("272.5E2"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"272.5E2").ToPlainString();
         Assert.assertEquals(
           "27250",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("389.33E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"389.33E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000038933",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("381.15E7"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"381.15E7").ToPlainString();
         Assert.assertEquals(
           "3811500000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("280.0E3"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"280.0E3").ToPlainString();
         Assert.assertEquals(
           "280000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("274.2E-6"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"274.2E-6").ToPlainString();
         Assert.assertEquals(
           "0.0002742",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("387.14E-7"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"387.14E-7").ToPlainString();
         Assert.assertEquals(
           "0.000038714",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("227.7E-7"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"227.7E-7").ToPlainString();
         Assert.assertEquals(
           "0.00002277",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("201.21E2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"201.21E2").ToPlainString();
         Assert.assertEquals(
           "20121",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("255.4E3"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"255.4E3").ToPlainString();
         Assert.assertEquals(
           "255400",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("187.27E-7"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"187.27E-7").ToPlainString();
         Assert.assertEquals(
           "0.000018727",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("169.7E-4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"169.7E-4").ToPlainString();
         Assert.assertEquals(
           "0.01697",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("69.9E9"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"69.9E9").ToPlainString();
         Assert.assertEquals(
           "69900000000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("3.20E-2"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"3.20E-2").ToPlainString();
         Assert.assertEquals(
           "0.0320",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("236.30E2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"236.30E2").ToPlainString();
         Assert.assertEquals(
           "23630",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("220.22E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"220.22E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000022022",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("287.30E-1"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"287.30E-1").ToPlainString();
         Assert.assertEquals(
           "28.730",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("156.3E-9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"156.3E-9").ToPlainString();
         Assert.assertEquals(
           "0.0000001563",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("136.23E-1"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"136.23E-1").ToPlainString();
         Assert.assertEquals(
           "13.623",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("125.27E8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"125.27E8").ToPlainString();
         Assert.assertEquals(
           "12527000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("180.30E-7"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"180.30E-7").ToPlainString();
         Assert.assertEquals(
           "0.000018030",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("351.5E7"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"351.5E7").ToPlainString();
         Assert.assertEquals(
           "3515000000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("28.28E9"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"28.28E9").ToPlainString();
         Assert.assertEquals(
           "28280000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("288.4E-3"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"288.4E-3").ToPlainString();
         Assert.assertEquals(
           "0.2884",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("12.22E4"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"12.22E4").ToPlainString();
         Assert.assertEquals(
           "122200",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("257.5E-5"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"257.5E-5").ToPlainString();
         Assert.assertEquals(
           "0.002575",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("389.20E3"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"389.20E3").ToPlainString();
         Assert.assertEquals(
           "389200",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("394.9E-4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"394.9E-4").ToPlainString();
         Assert.assertEquals(
           "0.03949",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("134.26E-7"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"134.26E-7").ToPlainString();
         Assert.assertEquals(
           "0.000013426",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("58.29E5"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"58.29E5").ToPlainString();
         Assert.assertEquals(
           "5829000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("88.5E-5"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"88.5E-5").ToPlainString();
         Assert.assertEquals(
           "0.000885",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("193.29E-4"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"193.29E-4").ToPlainString();
         Assert.assertEquals(
           "0.019329",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("71.35E10"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"71.35E10").ToPlainString();
         Assert.assertEquals(
           "713500000000",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("252.0E1"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"252.0E1").ToPlainString();
         Assert.assertEquals(
           "2520",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("53.2E-8"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"53.2E-8").ToPlainString();
         Assert.assertEquals(
           "0.000000532",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("181.20E-1"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"181.20E-1").ToPlainString();
         Assert.assertEquals(
           "18.120",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("55.21E-9"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"55.21E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000005521",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("57.31E0"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"57.31E0").ToPlainString();
         Assert.assertEquals(
           "57.31",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("113.13E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"113.13E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000011313",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("53.23E1"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"53.23E1").ToPlainString();
         Assert.assertEquals(
           "532.3",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("368.37E-7"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"368.37E-7").ToPlainString();
         Assert.assertEquals(
           "0.000036837",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("187.4E-4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"187.4E-4").ToPlainString();
         Assert.assertEquals(
           "0.01874",
           stringTemp);
       }
       {
-      String stringTemp = ExtendedDecimal.FromString("5.26E8"
-).ToPlainString();
+      String stringTemp = ExtendedDecimal.FromString(
+"5.26E8").ToPlainString();
         Assert.assertEquals(
           "526000000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("308.32E4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"308.32E4").ToPlainString();
         Assert.assertEquals(
           "3083200",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("76.15E-2"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"76.15E-2").ToPlainString();
         Assert.assertEquals(
           "0.7615",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("117.38E7"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"117.38E7").ToPlainString();
         Assert.assertEquals(
           "1173800000",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("15.37E-4"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"15.37E-4").ToPlainString();
         Assert.assertEquals(
           "0.001537",
           stringTemp);
       }
       {
-     String stringTemp = ExtendedDecimal.FromString("145.3E0"
-).ToPlainString();
+     String stringTemp = ExtendedDecimal.FromString(
+"145.3E0").ToPlainString();
         Assert.assertEquals(
           "145.3",
           stringTemp);
       }
       {
-    String stringTemp = ExtendedDecimal.FromString("226.29E8"
-).ToPlainString();
+    String stringTemp = ExtendedDecimal.FromString(
+"226.29E8").ToPlainString();
         Assert.assertEquals(
           "22629000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("224.26E10"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"224.26E10").ToPlainString();
         Assert.assertEquals(
           "2242600000000",
           stringTemp);
       }
       {
-   String stringTemp = ExtendedDecimal.FromString("268.18E-9"
-).ToPlainString();
+   String stringTemp = ExtendedDecimal.FromString(
+"268.18E-9").ToPlainString();
         Assert.assertEquals(
           "0.00000026818",
           stringTemp);
@@ -3145,14 +3177,14 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
       "0.0000000000000000000e-12" , "0E-31" , "0.0E-30",
       "0.0000000000000000000000000000000" , "0.0000e-1" , "0.00000",
       "0.00000" , "0.00000" , "0.00000000000e-11" , "0E-22" , "0.0E-21",
-      "0.0000000000000000000000" , "0.00000000000e-17" , "0E-28" , "0.0E-27"
-      , "0.0000000000000000000000000000" , "0.00000000000000e+9" , "0.00000"
-      , "0.00000" , "0.00000" , "0.0000000000e-18" , "0E-28" , "0.0E-27",
+      "0.0000000000000000000000" , "0.00000000000e-17" , "0E-28" , "0.0E-27",
+"0.0000000000000000000000000000" , "0.00000000000000e+9" , "0.00000",
+"0.00000" , "0.00000" , "0.0000000000e-18" , "0E-28" , "0.0E-27",
       "0.0000000000000000000000000000" , "0.0e-13" , "0E-14" , "0.00E-12",
       "0.00000000000000" , "0.000000000000000000e+10" , "0E-8" , "0.00E-6",
       "0.00000000" , "0.0000e+19" , "0E+15" , "0E+15" , "0" , "0.00000e-8",
-      "0E-13" , "0.0E-12" , "0.0000000000000" , "0.00000000000e+14" , "0E+3"
-      , "0E+3" , "0" , "0.000e-14" , "0E-17" , "0.00E-15",
+      "0E-13" , "0.0E-12" , "0.0000000000000" , "0.00000000000e+14" , "0E+3",
+"0E+3" , "0" , "0.000e-14" , "0E-17" , "0.00E-15",
       "0.00000000000000000" , "0.000000e-19" , "0E-25" , "0.0E-24",
       "0.0000000000000000000000000" , "0.000000000000e+19" , "0E+7",
       "0.00E+9" , "0" , "0.0000000000000e+18" , "0E+5" , "0.0E+6" , "0",
@@ -3162,26 +3194,26 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
       "0.00000000000000000" , "0e+17" , "0E+17" , "0.0E+18" , "0",
       "0.00000000000000000e+0" , "0E-17" , "0.00E-15",
       "0.00000000000000000" , "0.0000000000000e+0" , "0E-13" , "0.0E-12",
-      "0.0000000000000" , "0.0000000000000000000e-12" , "0E-31" , "0.0E-30"
-      , "0.0000000000000000000000000000000" , "0.0000000000000000000e+10",
+      "0.0000000000000" , "0.0000000000000000000e-12" , "0E-31" , "0.0E-30",
+"0.0000000000000000000000000000000" , "0.0000000000000000000e+10",
       "0E-9" , "0E-9" , "0.000000000" , "0.00000e-2" , "0E-7" , "0.0E-6",
       "0.0000000" , "0.000000e+15" , "0E+9" , "0E+9" , "0",
       "0.000000000e-10" , "0E-19" , "0.0E-18" , "0.0000000000000000000",
       "0.00000000000000e+6" , "0E-8" , "0.00E-6" , "0.00000000",
       "0.00000e+17" , "0E+12" , "0E+12" , "0" , "0.000000000000000000e-0",
-      "0E-18" , "0E-18" , "0.000000000000000000" , "0.0000000000000000e+11"
-      , "0.00000" , "0.00000" , "0.00000" , "0.000000000000e+15" , "0E+3",
+      "0E-18" , "0E-18" , "0.000000000000000000" , "0.0000000000000000e+11",
+"0.00000" , "0.00000" , "0.00000" , "0.000000000000e+15" , "0E+3",
       "0E+3" , "0" , "0.00000000e-19" , "0E-27" , "0E-27",
       "0.000000000000000000000000000" , "0.00000e-6" , "0E-11" , "0.00E-9",
-      "0.00000000000" , "0e-14" , "0E-14" , "0.00E-12" , "0.00000000000000"
-      , "0.000000000e+9" , "0" , "0" , "0" , "0.00000e+13" , "0E+8",
+      "0.00000000000" , "0e-14" , "0E-14" , "0.00E-12" , "0.00000000000000",
+"0.000000000e+9" , "0" , "0" , "0" , "0.00000e+13" , "0E+8",
       "0.0E+9" , "0" , "0.000e-0" , "0.000" , "0.000" , "0.000",
       "0.000000000000000e+6" , "0E-9" , "0E-9" , "0.000000000",
       "0.000000000e+17" , "0E+8" , "0.0E+9" , "0" , "0.00000000000e+6",
       "0.00000" , "0.00000" , "0.00000" , "0.00000000000000e+3" , "0E-11",
       "0.00E-9" , "0.00000000000" , "0e+0" , "0" , "0" , "0" , "0.000e+12",
-      "0E+9" , "0E+9" , "0" , "0.00000000000e+9" , "0.00" , "0.00" , "0.00"
-      , "0.00000000000000e-9" , "0E-23" , "0.00E-21",
+      "0E+9" , "0E+9" , "0" , "0.00000000000e+9" , "0.00" , "0.00" , "0.00",
+"0.00000000000000e-9" , "0E-23" , "0.00E-21",
       "0.00000000000000000000000" , "0e-1" , "0.0" , "0.0" , "0.0",
       "0.0000e-13" , "0E-17" , "0.00E-15" , "0.00000000000000000",
       "0.00000000000e-7" , "0E-18" , "0E-18" , "0.000000000000000000",
@@ -3189,10 +3221,10 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
       "0.00000000e-8" , "0E-16" , "0.0E-15" , "0.0000000000000000",
       "0.00e-6" , "0E-8" , "0.00E-6" , "0.00000000" , "0.0e-1" , "0.00",
       "0.00" , "0.00" , "0.0000000000000000e-10" , "0E-26" , "0.00E-24",
-      "0.00000000000000000000000000" , "0.00e+14" , "0E+12" , "0E+12" , "0"
-      , "0.000000000000000000e+5" , "0E-13" , "0.0E-12" , "0.0000000000000"
-      , "0.0e+7" , "0E+6" , "0E+6" , "0" , "0.00000000e+8" , "0" , "0" , "0"
-      , "0.000000000e+0" , "0E-9" , "0E-9" , "0.000000000" , "0.000e+13",
+      "0.00000000000000000000000000" , "0.00e+14" , "0E+12" , "0E+12" , "0",
+"0.000000000000000000e+5" , "0E-13" , "0.0E-12" , "0.0000000000000",
+"0.0e+7" , "0E+6" , "0E+6" , "0" , "0.00000000e+8" , "0" , "0" , "0",
+"0.000000000e+0" , "0E-9" , "0E-9" , "0.000000000" , "0.000e+13",
       "0E+10" , "0.00E+12" , "0" , "0.0000000000000000e+16" , "0" , "0",
       "0" , "0.00000000e-1" , "0E-9" , "0E-9" , "0.000000000",
       "0.00000000000e-15" , "0E-26" , "0.00E-24",
@@ -3200,16 +3232,16 @@ String stringTemp = ExtendedDecimal.FromString("70.7E6"
       "0" , "0.00000e+7" , "0E+2" , "0.0E+3" , "0",
       "0.0000000000000000000e-19" , "0E-38" , "0.00E-36",
       "0.00000000000000000000000000000000000000" , "0.0000000000e-6",
-      "0E-16" , "0.0E-15" , "0.0000000000000000" , "0.00000000000000000e-15"
-      , "0E-32" , "0.00E-30" , "0.00000000000000000000000000000000",
+      "0E-16" , "0.0E-15" , "0.0000000000000000" , "0.00000000000000000e-15",
+"0E-32" , "0.00E-30" , "0.00000000000000000000000000000000",
       "0.000000000000000e+2" , "0E-13" , "0.0E-12" , "0.0000000000000",
       "0.0e-18" , "0E-19" , "0.0E-18" , "0.0000000000000000000",
       "0.00000000000000e-6" , "0E-20" , "0.00E-18",
       "0.00000000000000000000" , "0.000e-17" , "0E-20" , "0.00E-18",
       "0.00000000000000000000" , "0.00000000000000e-7" , "0E-21" , "0E-21",
       "0.000000000000000000000" , "0.000000e-9" , "0E-15" , "0E-15",
-      "0.000000000000000" , "0e-11" , "0E-11" , "0.00E-9" , "0.00000000000"
-      , "0.000000000e+11" , "0E+2" , "0.0E+3" , "0",
+      "0.000000000000000" , "0e-11" , "0E-11" , "0.00E-9" , "0.00000000000",
+"0.000000000e+11" , "0E+2" , "0.0E+3" , "0",
       "0.0000000000000000e+15" , "0.0" , "0.0" , "0.0",
       "0.0000000000000000e+10" , "0.000000" , "0.000000" , "0.000000",
       "0.000000000e+4" , "0.00000" , "0.00000" , "0.00000",

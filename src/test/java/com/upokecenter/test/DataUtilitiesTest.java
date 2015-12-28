@@ -277,6 +277,51 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
     @Test
     public void TestGetUtf8Bytes() {
       try {
+        DataUtilities.GetUtf8Bytes("\ud800", false);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        DataUtilities.GetUtf8Bytes("\udc00", false);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
         DataUtilities.GetUtf8Bytes(null, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
@@ -530,6 +575,16 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
       this.TestUtf8RoundTrip("AA" + Repeat("\ud800\udc00", 10000));
       this.TestUtf8RoundTrip("AAA" + Repeat("\ud800\udc00", 10000));
       this.TestUtf8RoundTrip("AAAA" + Repeat("\ud800\udc00", 10000));
+
+      try {
+        DataUtilities.GetUtf8String(null, 0, 1, false);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
         DataUtilities.GetUtf8String(null, false);
         Assert.fail("Should have failed");
@@ -1067,6 +1122,42 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestWriteUtf8() {
       try {
+        try {
+          DataUtilities.WriteUtf8(null, 0, 1, null, false);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          DataUtilities.WriteUtf8("xyz", 0, 1, null, false);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          DataUtilities.WriteUtf8(null, null, false);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          DataUtilities.WriteUtf8("xyz", null, false);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
         {
           java.io.ByteArrayOutputStream ms = null;
 try {

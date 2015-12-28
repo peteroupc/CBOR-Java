@@ -664,6 +664,9 @@ import com.upokecenter.util.*;
       if (data.length == 0) {
         throw new CBORException("data is empty.");
       }
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
       int firstbyte = (int)(data[0] & (int)0xff);
       int expectedLength = valueExpectedLengths[firstbyte];
       // if invalid
@@ -716,27 +719,48 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
      * format. <p>If a JSON object has the same key, only the last given
-     * value will be used for each duplicated key. The JSON string may not
-     * begin with a byte-order mark (U + FEFF).</p>
-     * @param str A string in JSON format.
+     * value will be used for each duplicated key.</p>
+     * @param str A string in JSON format. The entire string must contain a single
+     * JSON object and not multiple objects. The string may not begin with a
+     * byte-order mark (U + FEFF).
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
      */
     public static CBORObject FromJSONString(String str) {
+      return FromJSONString(str, CBOREncodeOptions.None);
+    }
+
+    /**
+     * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
+     * format. <p>By default, if a JSON object has the same key, only the
+     * last given value will be used for each duplicated key. </p>
+     * @param str A string in JSON format. The entire string must contain a single
+     * JSON object and not multiple objects. The string may not begin with a
+     * byte-order mark (U + FEFF).
+     * @return A CBORObject object.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
+     */
+    public static CBORObject FromJSONString(String
+      str, CBOREncodeOptions options) {
       if (str == null) {
         throw new NullPointerException("str");
       }
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
       if (str.length() > 0 && str.charAt(0) == 0xfeff) {
         throw new CBORException(
           "JSON Object began with a byte order mark (U+FEFF) (offset 0)");
       }
       CharacterInputWithCount reader = new CharacterInputWithCount(
         new CharacterReader(str, false, true));
-      // TODO: Support no-duplicates option for next version
+      CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
       int[] nextchar = new int[1];
-   CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, nextchar,
-        0);
+CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
+        nextchar,
+           0);
       if (nextchar[0] != -1) {
         reader.RaiseError("End of String not reached");
       }
@@ -1349,6 +1373,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * parsing the data.
      */
     public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
       try {
         CBORReader reader = new CBORReader(stream);
         CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
@@ -1370,7 +1397,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * character (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
      * allowed.) <p>If a JSON object has the same key, only the last given
      * value will be used for each duplicated key.</p>
-     * @param stream A readable data stream.
+     * @param stream A readable data stream. The sequence of bytes read from the
+     * data stream must contain a single JSON object and not multiple
+     * objects.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
@@ -1378,15 +1407,42 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * encoding or is not in JSON format.
      */
     public static CBORObject ReadJSON(InputStream stream) throws java.io.IOException {
+      return ReadJSON(stream, CBOREncodeOptions.None);
+    }
+
+    /**
+     * Generates a CBOR object from a data stream in JavaScript Object Notation
+     * (JSON) format. The JSON stream may begin with a byte-order mark
+     * (U + FEFF). Since version 2.0, the JSON stream can be in UTF-8, UTF-16,
+     * or UTF-32 encoding; the encoding is detected by assuming that the
+     * first character read must be a byte-order mark or a nonzero basic
+     * character (U + 0001 to U + 007F). (In previous versions, only UTF-8 was
+     * allowed.) <p>By default, if a JSON object has the same key, only the
+     * last given value will be used for each duplicated key.</p>
+     * @param stream A readable data stream. The sequence of bytes read from the
+     * data stream must contain a single JSON object and not multiple
+     * objects.
+     * @return A CBORObject object.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
+     * @throws com.upokecenter.cbor.CBORException The data stream contains invalid
+     * encoding or is not in JSON format.
+     */
+  public static CBORObject ReadJSON(InputStream stream, CBOREncodeOptions
+      options) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
       CharacterInputWithCount reader = new CharacterInputWithCount(
         new CharacterReader(stream, 2, true));
       try {
-        // TODO: Support no-duplicates option for next version
+        CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
         int[] nextchar = new int[1];
-   CBORObject obj = CBORJson.ParseJSONValue(reader, false, false, nextchar,
+   CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
+     nextchar,
           0);
         if (nextchar[0] != -1) {
           reader.RaiseError("End of data stream not reached");
@@ -2600,6 +2656,10 @@ public int compareTo(CBORObject other) {
      * @return A byte array in CBOR format.
      */
     public byte[] EncodeToBytes(CBOREncodeOptions options) {
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
+
       // For some types, a memory stream is a lot of
       // overhead since the amount of memory the types
       // use is fixed and small
