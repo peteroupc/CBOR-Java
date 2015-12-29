@@ -76,13 +76,15 @@ import com.upokecenter.util.*;
      * call its Type property (or "getType()" in Java). The return value can
      * be Number, Boolean, SimpleValue, or TextString for immutable CBOR
      * objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
-     * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes method can only
-     * read objects with a limited maximum depth of arrays and maps nested
-     * within other arrays and maps. The code sets this maximum depth to 500
-     * (allowing more than enough nesting for most purposes), but it's
-     * possible that stack overflows in some runtimes might lower the
+     * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and Read methods
+     * can only read objects with a limited maximum depth of arrays and maps
+     * nested within other arrays and maps. The code sets this maximum depth
+     * to 500 (allowing more than enough nesting for most purposes), but
+     * it's possible that stack overflows in some runtimes might lower the
      * effective maximum nesting depth. When the nesting depth goes above
-     * 500, the DecodeFromBytes method throws a CBORException.</p>
+     * 500, the DecodeFromBytes and Read methods throw a CBORException.</p>
+     * <p>The ReadJSON and FromJSONString methods currently have nesting
+     * depths of 1000.</p>
      */
   public final class CBORObject implements Comparable<CBORObject> {
     private static CBORObject ConstructSimpleValue(int v) {
@@ -759,8 +761,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
       int[] nextchar = new int[1];
 CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
-        nextchar,
-           0);
+        nextchar);
       if (nextchar[0] != -1) {
         reader.RaiseError("End of String not reached");
       }
@@ -773,7 +774,8 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(long value) {
-      return new CBORObject(CBORObjectTypeInteger, value);
+      return (value >= 0L && value < 24L) ? (valueFixedObjects[(int)value]) :
+        (new CBORObject(CBORObjectTypeInteger, value));
     }
 
     /**
@@ -882,7 +884,8 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(int value) {
-      return FromObject((long)value);
+      return (value >= 0 && value < 24) ? (valueFixedObjects[value]) :
+        (FromObject((long)value));
     }
 
     /**
@@ -891,7 +894,8 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(short value) {
-      return FromObject((long)value);
+      return (value >= 0 && value < 24) ? (valueFixedObjects[value]) :
+        (FromObject((long)value));
     }
 
     /**
@@ -1316,7 +1320,7 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * Multiplies two CBOR numbers.
      * @param first A CBORObject object.
      * @param second Another CBOR object.
-     * @return The product of the two objects.
+     * @return The product of the two numbers.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
      */
@@ -1442,8 +1446,7 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
         CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
         int[] nextchar = new int[1];
    CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
-     nextchar,
-          0);
+     nextchar);
         if (nextchar[0] != -1) {
           reader.RaiseError("End of data stream not reached");
         }

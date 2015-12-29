@@ -1622,6 +1622,7 @@ throw new IllegalStateException("", ex);
       try {
         bytes = DataUtilities.GetUtf8Bytes(str, false);
       } catch (IllegalArgumentException ex2) {
+        System.out.println(ex2.getMessage());
         // Check only FromJSONString
         try {
           if (opt.getValue() == 0) {
@@ -1653,7 +1654,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
         } catch (CBORException ex) {
           System.out.print("");
         } catch (Exception ex) {
-          Assert.fail(ex.toString());
+          Assert.fail(str + "\r\n" + ex.toString());
           throw new IllegalStateException("", ex);
         }
 }

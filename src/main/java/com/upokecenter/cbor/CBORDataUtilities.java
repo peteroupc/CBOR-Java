@@ -22,8 +22,9 @@ private CBORDataUtilities() {
      * #ParseJSONNumber(String, integersOnly, parseOnly) for more
      * information.
      * @param str A string to parse.
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails.
+     * @return A CBOR object that represents the parsed number. Returns positive
+     * zero if the number is a zero that starts with a minus sign (such as
+     * "-0" or "-0.0"). Returns null if the parsing fails.
      */
     public static CBORObject ParseJSONNumber(String str) {
       return ParseJSONNumber(str, false, false);
@@ -41,13 +42,16 @@ private CBORDataUtilities() {
      * the string.
      * @param positiveOnly If true, only positive numbers are allowed (the leading
      * minus is disallowed).
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails.
+     * @return A CBOR object that represents the parsed number. Returns positive
+     * zero if the number is a zero that starts with a minus sign (such as
+     * "-0" or "-0.0"). Returns null if the parsing fails.
      */
     public static CBORObject ParseJSONNumber(
       String str,
       boolean integersOnly,
       boolean positiveOnly) {
+      // TODO: Add parameter allowing negative zero
+      // to be preserved
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
