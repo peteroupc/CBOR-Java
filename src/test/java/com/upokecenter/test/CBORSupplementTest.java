@@ -1626,34 +1626,52 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
       Assert.assertEquals(
         minusone .subtract(BigInteger.valueOf(1).shiftLeft(16)),
 CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(24)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1, 0, 0, 0
-           }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(32)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x45, 1, 0, 0, 0, 0
-           }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(40)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x46, 1, 0, 0, 0, 0, 0
-           }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(48)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x47, 1, 0, 0, 0, 0,
-                    0, 0  }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(56)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x48, 1, 0, 0, 0, 0,
-                    0, 0, 0  }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(64)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x49, 1, 0, 0, 0, 0,
-                    0, 0, 0, 0  }).AsBigInteger());
-      Assert.assertEquals(
-        minusone .subtract(BigInteger.valueOf(1).shiftLeft(72)),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x4a, 1, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0  }).AsBigInteger());
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(24));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1,
+  0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(32));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x45, 1,
+  0, 0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(40));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x46, 1,
+  0, 0, 0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(48));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x47, 1,
+  0, 0, 0, 0,
+                    0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(56));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x48, 1,
+  0, 0, 0, 0,
+                    0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(64));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x49, 1,
+  0, 0, 0, 0,
+                    0, 0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = minusone .subtract(BigInteger.valueOf(1).shiftLeft(72));
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x4a, 1,
+  0, 0, 0, 0,
+                    0, 0, 0, 0, 0  }).AsBigInteger();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
     }
 
     @Test
@@ -1671,8 +1689,7 @@ CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteg
                       0x62, 0x63, 0x64, (byte)0xd8, 0x19, 0x01, (byte)0xd8, 0x19, 0x00,
                       (byte)0xd8, 0x19, 0x01, (byte)0xff  });
       expected =
-      "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]"
-;
+     "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 

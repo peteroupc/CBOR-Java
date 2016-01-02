@@ -15,8 +15,10 @@ import com.upokecenter.util.*;
     // radix.</typeparam>
   public class TrappableRadixMath<T> implements IRadixMath<T>
   {
-private static void ThrowTrapException(int flag, EContext ctx, Object
-      result) {
+private static void ThrowTrapException(
+int flag,
+EContext ctx,
+Object result) {
       throw new ETrapException(flag, ctx, result);
     }
 

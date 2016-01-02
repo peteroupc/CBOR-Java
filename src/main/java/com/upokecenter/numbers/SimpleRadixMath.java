@@ -83,8 +83,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if ((thisFlags & BigNumberFlags.FlagSpecial) != 0) {
         return (ctxDest.getFlags() == 0) ? this.SignalInvalid(ctxDest) : thisValue;
       }
-      EInteger mant = (this.GetHelper().GetMantissa(thisValue)).Abs();
-      if (mant.signum() == 0) {
+      EInteger mant = this.GetHelper().GetMantissa(thisValue).Abs();
+      if (mant.isZero()) {
         return afterQuantize ? this.GetHelper().CreateNewWithFlags(
           mant,
           this.GetHelper().GetExponent(thisValue),
@@ -147,9 +147,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     private T ReturnQuietNaN(T thisValue, EContext ctx) {
-      EInteger mant = (this.GetHelper().GetMantissa(thisValue)).Abs();
+      EInteger mant = this.GetHelper().GetMantissa(thisValue).Abs();
       boolean mantChanged = false;
-      if (mant.signum() != 0 && ctx != null && ctx.getHasMaxPrecision()) {
+      if (!mant.isZero() && ctx != null && ctx.getHasMaxPrecision()) {
         EInteger limit = this.GetHelper().MultiplyByRadixPower(
           EInteger.FromInt64(1),
           FastInteger.FromBig(ctx.getPrecision()));
@@ -237,7 +237,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return val;
       }
       FastInteger fastPrecision = FastInteger.FromBig(ctx.getPrecision());
-      EInteger mant = (this.GetHelper().GetMantissa(val)).Abs();
+      EInteger mant = this.GetHelper().GetMantissa(val).Abs();
       FastInteger digits =
         this.GetHelper().CreateShiftAccumulator(mant).GetDigitLength();
       EContext ctx2 = ctx.WithBlankFlags().WithTraps(0);
@@ -420,9 +420,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       pow = this.RoundBeforeOp(pow, ctx2);
       // System.out.println("op now " + thisValue + ", "+pow);
       int powSign = this.GetHelper().GetSign(pow);
-      thisValue = (powSign == 0 && this.GetHelper().GetSign(thisValue) == 0)?
-        (this.wrapper.RoundToPrecision(this.GetHelper().ValueOf(1), ctx2)):
-        (this.wrapper.Power(thisValue, pow, ctx2));
+      thisValue = (powSign == 0 && this.GetHelper().GetSign(thisValue) == 0) ?
+        this.wrapper.RoundToPrecision(this.GetHelper().ValueOf(1), ctx2) :
+        this.wrapper.Power(thisValue, pow, ctx2);
       // System.out.println("was " + thisValue);
       thisValue = this.PostProcessAfterDivision(thisValue, ctx, ctx2);
       // System.out.println("result was " + thisValue);
@@ -650,11 +650,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           this.wrapper.RoundToPrecision(this.GetHelper().ValueOf(0), ctx2) :
           augend;
         thisValue = this.RoundToPrecision(thisValue, ctx2);
-      } else thisValue = !zeroB ? this.wrapper.MultiplyAndAdd(
-     thisValue,
-     multiplicand,
-     augend,
-     ctx2) : this.wrapper.Multiply(thisValue, multiplicand, ctx2);
+      } else {
+        thisValue = !zeroB ? this.wrapper.MultiplyAndAdd(
+thisValue,
+multiplicand,
+augend,
+ctx2) : this.wrapper.Multiply(thisValue, multiplicand, ctx2);
+      }
       return this.PostProcess(thisValue, ctx, ctx2);
     }
 

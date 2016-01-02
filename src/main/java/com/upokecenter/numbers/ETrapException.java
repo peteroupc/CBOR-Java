@@ -58,11 +58,11 @@ private static final long serialVersionUID = 1L;
     }
 
     /**
-     * Initializes a new instance of the TrapException class.
-     * @param flag A flag that specifies the kind of error
-     * (PrecisionContext.FlagXXX). This will only be one flag, such as
-     * FlagInexact or FlagSubnormal.
-     * @param ctx An EContext object.
+     * Initializes a new instance of the <see
+     * cref='T:PeterO.Numbers.ETrapException'/> class.
+     * @param flag A flag that specifies the kind of error (EContext.FlagXXX). This
+     * will only be one flag, such as FlagInexact or FlagSubnormal.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @param result An arbitrary object.
      */
     public ETrapException(int flag, EContext ctx, Object result) {

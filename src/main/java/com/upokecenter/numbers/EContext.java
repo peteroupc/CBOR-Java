@@ -184,13 +184,16 @@ EInteger.FromInt64(1).Add(EInteger.FromInt64(Integer.MAX_VALUE)));
     private int traps;
 
     /**
-     * Initializes a new instance of the PrecisionContext class. HasFlags will be
-     * set to false.
-     * @param precision Not documented yet.
-     * @param rounding Not documented yet.
-     * @param exponentMinSmall Not documented yet. (3).
-     * @param exponentMaxSmall Not documented yet. (4).
-     * @param clampNormalExponents Not documented yet. (5).
+     * Initializes a new instance of the <see cref='T:PeterO.Numbers.EContext'/>
+     * class. HasFlags will be set to false.
+     * @param precision The parameter {@code precision} is not documented yet.
+     * @param rounding The parameter {@code rounding} is not documented yet.
+     * @param exponentMinSmall The parameter {@code exponentMinSmall} is not
+     * documented yet.
+     * @param exponentMaxSmall The parameter {@code exponentMaxSmall} is not
+     * documented yet.
+     * @param clampNormalExponents The parameter {@code clampNormalExponents} is
+     * not documented yet.
      */
     public EContext(
 int precision,
@@ -324,7 +327,7 @@ public final void setFlags(int value) {
      * @return True if this context defines a maximum precision; otherwise, false.
      */
     public final boolean getHasMaxPrecision() {
-        return this.bigintPrecision.signum() != 0;
+        return !this.bigintPrecision.isZero();
       }
 
     /**
@@ -389,7 +392,7 @@ public final void setFlags(int value) {
      * Creates a new precision context using the given maximum number of digits, an
      * unlimited exponent range, and the HalfUp rounding mode.
      * @param precision Maximum number of digits (precision).
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public static EContext ForPrecision(int precision) {
       return new EContext(
@@ -405,7 +408,7 @@ false).WithUnlimitedExponents();
      * range, and the given rounding mode and maximum precision.
      * @param precision Maximum number of digits (precision).
      * @param rounding An ERounding object.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public static EContext ForPrecisionAndRounding(
       int precision,
@@ -422,7 +425,7 @@ false).WithUnlimitedExponents();
      * Creates a new PrecisionContext object initialized with an unlimited
      * precision, an unlimited exponent range, and the given rounding mode.
      * @param rounding The rounding mode for the new precision context.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public static EContext ForRounding(ERounding rounding) {
       return new EContext(
@@ -436,7 +439,7 @@ false).WithUnlimitedExponents();
     /**
      * Initializes a new PrecisionContext that is a copy of another
      * PrecisionContext.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext Copy() {
       EContext pcnew = new EContext(
@@ -477,7 +480,7 @@ false).WithUnlimitedExponents();
       if (!this.getHasExponentRange()) {
         return true;
       }
-      if (this.bigintPrecision.signum() == 0) {
+      if (this.bigintPrecision.isZero()) {
         // Only check EMax, since with an unlimited
         // precision, any exponent less than EMin will exceed EMin if
         // the mantissa is the right size
@@ -510,8 +513,9 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext and sets the copy's "AdjustExponent" property
      * to the given value.
-     * @param adjustExponent Not documented yet.
-     * @return An EContext object.
+     * @param adjustExponent The parameter {@code adjustExponent} is not documented
+     * yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithAdjustExponent(boolean adjustExponent) {
       EContext pc = this.Copy();
@@ -523,7 +527,7 @@ false).WithUnlimitedExponents();
      * Copies this precision context and sets the copy's exponent range.
      * @param exponentMin Desired minimum exponent (EMin).
      * @param exponentMax Desired maximum exponent (EMax).
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      * @throws java.lang.NullPointerException The parameter {@code exponentMin} is
      * null.
      * @throws java.lang.NullPointerException The parameter {@code exponentMax} is
@@ -550,8 +554,9 @@ false).WithUnlimitedExponents();
 
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
-     * @param bigintPrecision Not documented yet.
-     * @return An EContext object.
+     * @param bigintPrecision The parameter {@code bigintPrecision} is not
+     * documented yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      * @throws java.lang.NullPointerException The parameter {@code bigintPrecision}
      * is null.
      */
@@ -571,7 +576,7 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext with HasFlags set to true and a Flags value of
      * 0.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithBlankFlags() {
       EContext pc = this.Copy();
@@ -583,8 +588,8 @@ false).WithUnlimitedExponents();
     /**
      * Copies this precision context and sets the copy&#x27;s
      * &#x22;ClampNormalExponents&#x22; flag to the given value.
-     * @param clamp Not documented yet.
-     * @return An EContext object.
+     * @param clamp The parameter {@code clamp} is not documented yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithExponentClamp(boolean clamp) {
       EContext pc = this.Copy();
@@ -596,7 +601,7 @@ false).WithUnlimitedExponents();
      * Copies this precision context and sets the copy&#x27;s exponent range.
      * @param exponentMinSmall Desired minimum exponent (EMin).
      * @param exponentMaxSmall Desired maximum exponent (EMax).
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithExponentRange(
       int exponentMinSmall,
@@ -615,7 +620,7 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext with HasFlags set to false and a Flags value of
      * 0.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithNoFlags() {
       EContext pc = this.Copy();
@@ -627,7 +632,7 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
      * @param precision Desired precision. 0 means unlimited precision.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithPrecision(int precision) {
       if (precision < 0) {
@@ -642,8 +647,9 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext and sets the copy's "IsPrecisionInBits"
      * property to the given value.
-     * @param isPrecisionBits Not documented yet.
-     * @return An EContext object.
+     * @param isPrecisionBits The parameter {@code isPrecisionBits} is not
+     * documented yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithPrecisionInBits(boolean isPrecisionBits) {
       EContext pc = this.Copy();
@@ -653,8 +659,8 @@ false).WithUnlimitedExponents();
 
     /**
      * Copies this PrecisionContext with the specified rounding mode.
-     * @param rounding Not documented yet.
-     * @return An EContext object.
+     * @param rounding The parameter {@code rounding} is not documented yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithRounding(ERounding rounding) {
       EContext pc = this.Copy();
@@ -665,8 +671,8 @@ false).WithUnlimitedExponents();
     /**
      * Copies this PrecisionContext and sets the copy's "IsSimplified" property to
      * the given value.
-     * @param simplified Not documented yet.
-     * @return An EContext object.
+     * @param simplified The parameter {@code simplified} is not documented yet.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithSimplified(boolean simplified) {
       EContext pc = this.Copy();
@@ -678,7 +684,7 @@ false).WithUnlimitedExponents();
      * Copies this PrecisionContext with Traps set to the given value.
      * @param traps Flags representing the traps to enable. See the property
      * "Traps".
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithTraps(int traps) {
       EContext pc = this.Copy();
@@ -689,7 +695,7 @@ false).WithUnlimitedExponents();
 
     /**
      * Copies this PrecisionContext with an unlimited exponent range.
-     * @return An EContext object.
+     * @return A context object for arbitrary-precision arithmetic settings.
      */
     public EContext WithUnlimitedExponents() {
       EContext pc = this.Copy();

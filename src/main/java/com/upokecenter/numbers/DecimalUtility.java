@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   public final class DecimalUtility {
 private DecimalUtility() {
 }
-    private static final EInteger[] valueBigIntPowersOfTen = {
+    private static final EInteger[] ValueBigIntPowersOfTen = {
       EInteger.FromInt64(1), EInteger.FromInt64(10), EInteger.FromInt64(100), EInteger.FromInt64(1000),
       EInteger.FromInt64(10000), EInteger.FromInt64(100000), EInteger.FromInt64(1000000),
       EInteger.FromInt64(10000000), EInteger.FromInt64(100000000), EInteger.FromInt64(1000000000),
@@ -21,7 +21,7 @@ private DecimalUtility() {
       EInteger.FromInt64(100000000000000000L), EInteger.FromInt64(1000000000000000000L)
     };
 
-    private static final EInteger[] valueBigIntPowersOfFive = {
+    private static final EInteger[] ValueBigIntPowersOfFive = {
       EInteger.FromInt64(1), EInteger.FromInt64(5), EInteger.FromInt64(25), EInteger.FromInt64(125),
       EInteger.FromInt64(625), EInteger.FromInt64(3125), EInteger.FromInt64(15625),
       EInteger.FromInt64(78125), EInteger.FromInt64(390625),
@@ -134,16 +134,16 @@ private DecimalUtility() {
       }
     }
 
-    private static final EInteger valueBigShiftIteration =
+    private static final EInteger ValueBigShiftIteration =
       EInteger.FromInt64(1000000);
 
     public static EInteger ShiftLeft(EInteger val, EInteger bigShift) {
-      if (val.signum() == 0) {
+      if (val.isZero()) {
         return val;
       }
-      while (bigShift.compareTo(valueBigShiftIteration) > 0) {
+      while (bigShift.compareTo(ValueBigShiftIteration) > 0) {
         val = val.ShiftLeft(1000000);
-        bigShift = bigShift.Subtract(valueBigShiftIteration);
+        bigShift = bigShift.Subtract(ValueBigShiftIteration);
       }
       int lastshift = bigShift.AsInt32Checked();
       val = val.ShiftLeft(lastshift);
@@ -151,7 +151,7 @@ private DecimalUtility() {
     }
 
     public static EInteger ShiftLeftInt(EInteger val, int shift) {
-      if (val.signum() == 0) {
+      if (val.isZero()) {
         return val;
       }
       while (shift > 1000000) {
@@ -288,10 +288,10 @@ private DecimalUtility() {
       }
     }
 
-    private static final PowerCache powerOfFiveCache = new
+    private static final PowerCache ValuePowerOfFiveCache = new
     DecimalUtility.PowerCache();
 
-    private static final PowerCache powerOfTenCache = new
+    private static final PowerCache ValuePowerOfTenCache = new
       DecimalUtility.PowerCache();
 
     public static EInteger FindPowerOfFiveFromBig(EInteger diff) {
@@ -309,12 +309,12 @@ private DecimalUtility() {
       EInteger mantissa = EInteger.FromInt64(1);
       EInteger bigpow;
       EInteger origdiff = diff;
-      bigpow = powerOfFiveCache.GetCachedPower(origdiff);
+      bigpow = ValuePowerOfFiveCache.GetCachedPower(origdiff);
       if (bigpow != null) {
         return bigpow;
       }
       EInteger[] otherPower =
-      powerOfFiveCache.FindCachedPowerOrSmaller(origdiff);
+      ValuePowerOfFiveCache.FindCachedPowerOrSmaller(origdiff);
       if (otherPower != null) {
         intcurexp.SubtractBig(otherPower[0]);
         bigpow = otherPower[1];
@@ -333,17 +333,17 @@ private DecimalUtility() {
           mantissa = mantissa.Multiply(bigpow);
           break;
         }
-        if (bigpow.signum() == 0) {
+        if (bigpow.isZero()) {
           bigpow = FindPowerOfFive(1).pow(9999999);
         }
         mantissa = mantissa.Multiply(bigpow);
         intcurexp.AddInt(-9999999);
       }
-      powerOfFiveCache.AddPower(origdiff, mantissa);
+      ValuePowerOfFiveCache.AddPower(origdiff, mantissa);
       return mantissa;
     }
 
-    private static final EInteger valueBigInt36 = EInteger.FromInt64(36);
+    private static final EInteger ValueBigInt36 = EInteger.FromInt64(36);
 
     public static EInteger FindPowerOfTenFromBig(EInteger
     bigintExponent) {
@@ -354,7 +354,7 @@ private DecimalUtility() {
       if (sign == 0) {
         return EInteger.FromInt64(1);
       }
-      if (bigintExponent.compareTo(valueBigInt36) <= 0) {
+      if (bigintExponent.compareTo(ValueBigInt36) <= 0) {
         return FindPowerOfTen(bigintExponent.AsInt32Checked());
       }
       FastInteger intcurexp = FastInteger.FromBig(bigintExponent);
@@ -373,7 +373,7 @@ private DecimalUtility() {
           mantissa = mantissa.Multiply(bigpow);
           break;
         }
-        if (bigpow.signum() == 0) {
+        if (bigpow.isZero()) {
           bigpow = FindPowerOfFive(9999999);
           bigpow = bigpow.ShiftLeft(9999999);
         }
@@ -383,7 +383,7 @@ private DecimalUtility() {
       return mantissa;
     }
 
-    private static final EInteger valueFivePower40 =
+    private static final EInteger ValueFivePower40 =
     (EInteger.FromInt64(95367431640625L)).Multiply(EInteger.FromInt64(95367431640625L));
 
     public static EInteger FindPowerOfFive(int precision) {
@@ -396,35 +396,35 @@ private DecimalUtility() {
       EInteger bigpow;
       EInteger ret;
       if (precision <= 27) {
-        return valueBigIntPowersOfFive[(int)precision];
+        return ValueBigIntPowersOfFive[(int)precision];
       }
       if (precision == 40) {
-        return valueFivePower40;
+        return ValueFivePower40;
       }
       int startPrecision = precision;
-      bigpow = powerOfFiveCache.GetCachedPowerInt(precision);
+      bigpow = ValuePowerOfFiveCache.GetCachedPowerInt(precision);
       if (bigpow != null) {
         return bigpow;
       }
       EInteger origPrecision = EInteger.FromInt64(precision);
       if (precision <= 54) {
         if ((precision & 1) == 0) {
-          ret = valueBigIntPowersOfFive[(int)(precision >> 1)];
+          ret = ValueBigIntPowersOfFive[(int)(precision >> 1)];
           ret = ret.Multiply(ret);
-          powerOfFiveCache.AddPower(origPrecision, ret);
+          ValuePowerOfFiveCache.AddPower(origPrecision, ret);
           return ret;
         }
-        ret = valueBigIntPowersOfFive[27];
-        bigpow = valueBigIntPowersOfFive[((int)precision) - 27];
+        ret = ValueBigIntPowersOfFive[27];
+        bigpow = ValueBigIntPowersOfFive[((int)precision) - 27];
         ret = ret.Multiply(bigpow);
-        powerOfFiveCache.AddPower(origPrecision, ret);
+        ValuePowerOfFiveCache.AddPower(origPrecision, ret);
         return ret;
       }
       if (precision > 40 && precision <= 94) {
-        ret = valueFivePower40;
+        ret = ValueFivePower40;
         bigpow = FindPowerOfFive(precision - 40);
         ret = ret.Multiply(bigpow);
-        powerOfFiveCache.AddPower(origPrecision, ret);
+        ValuePowerOfFiveCache.AddPower(origPrecision, ret);
         return ret;
       }
       EInteger[] otherPower;
@@ -432,7 +432,7 @@ private DecimalUtility() {
       bigpow = EInteger.FromInt64(0);
       while (true) {
         otherPower =
-        powerOfFiveCache.FindCachedPowerOrSmaller(EInteger.FromInt64(precision));
+        ValuePowerOfFiveCache.FindCachedPowerOrSmaller(EInteger.FromInt64(precision));
         if (otherPower != null) {
           EInteger otherPower0 = otherPower[0];
           EInteger otherPower1 = otherPower[1];
@@ -450,7 +450,7 @@ private DecimalUtility() {
       ret = !first ? bigpow : EInteger.FromInt64(1);
       while (precision > 0) {
         if (precision <= 27) {
-          bigpow = valueBigIntPowersOfFive[(int)precision];
+          bigpow = ValueBigIntPowersOfFive[(int)precision];
           if (first) {
             ret = bigpow;
           } else {
@@ -461,10 +461,10 @@ private DecimalUtility() {
         }
         if (precision <= 9999999) {
           // System.out.println("calcing pow for "+precision);
-          bigpow = valueBigIntPowersOfFive[1].pow(precision);
+          bigpow = ValueBigIntPowersOfFive[1].pow(precision);
           if (precision != startPrecision) {
             EInteger bigprec = EInteger.FromInt64(precision);
-            powerOfFiveCache.AddPower(bigprec, bigpow);
+            ValuePowerOfFiveCache.AddPower(bigprec, bigpow);
           }
           if (first) {
             ret = bigpow;
@@ -474,7 +474,7 @@ private DecimalUtility() {
           first = false;
           break;
         }
-        if (bigpow.signum() == 0) {
+        if (bigpow.isZero()) {
           bigpow = FindPowerOfFive(9999999);
         }
         if (first) {
@@ -485,7 +485,7 @@ private DecimalUtility() {
         first = false;
         precision -= 9999999;
       }
-      powerOfFiveCache.AddPower(origPrecision, ret);
+      ValuePowerOfFiveCache.AddPower(origPrecision, ret);
       return ret;
     }
 
@@ -499,32 +499,32 @@ private DecimalUtility() {
       EInteger bigpow;
       EInteger ret;
       if (precision <= 18) {
-        return valueBigIntPowersOfTen[(int)precision];
+        return ValueBigIntPowersOfTen[(int)precision];
       }
       int startPrecision = precision;
-      bigpow = powerOfTenCache.GetCachedPowerInt(precision);
+      bigpow = ValuePowerOfTenCache.GetCachedPowerInt(precision);
       if (bigpow != null) {
         return bigpow;
       }
       EInteger origPrecision = EInteger.FromInt64(precision);
       if (precision <= 27) {
         int prec = (int)precision;
-        ret = valueBigIntPowersOfFive[prec];
+        ret = ValueBigIntPowersOfFive[prec];
         ret = ret.ShiftLeft(prec);
-        powerOfTenCache.AddPower(origPrecision, ret);
+        ValuePowerOfTenCache.AddPower(origPrecision, ret);
         return ret;
       }
       if (precision <= 36) {
         if ((precision & 1) == 0) {
-          ret = valueBigIntPowersOfTen[(int)(precision >> 1)];
+          ret = ValueBigIntPowersOfTen[(int)(precision >> 1)];
           ret = ret.Multiply(ret);
-          powerOfTenCache.AddPower(origPrecision, ret);
+          ValuePowerOfTenCache.AddPower(origPrecision, ret);
           return ret;
         }
-        ret = valueBigIntPowersOfTen[18];
-        bigpow = valueBigIntPowersOfTen[((int)precision) - 18];
+        ret = ValueBigIntPowersOfTen[18];
+        bigpow = ValueBigIntPowersOfTen[((int)precision) - 18];
         ret = ret.Multiply(bigpow);
-        powerOfTenCache.AddPower(origPrecision, ret);
+        ValuePowerOfTenCache.AddPower(origPrecision, ret);
         return ret;
       }
       EInteger[] otherPower;
@@ -532,7 +532,7 @@ private DecimalUtility() {
       bigpow = EInteger.FromInt64(0);
       while (true) {
         otherPower =
-        powerOfTenCache.FindCachedPowerOrSmaller(EInteger.FromInt64(precision));
+        ValuePowerOfTenCache.FindCachedPowerOrSmaller(EInteger.FromInt64(precision));
         if (otherPower != null) {
           EInteger otherPower0 = otherPower[0];
           EInteger otherPower1 = otherPower[1];
@@ -550,7 +550,7 @@ private DecimalUtility() {
       ret = !first ? bigpow : EInteger.FromInt64(1);
       while (precision > 0) {
         if (precision <= 18) {
-          bigpow = valueBigIntPowersOfTen[(int)precision];
+          bigpow = ValueBigIntPowersOfTen[(int)precision];
           if (first) {
             ret = bigpow;
           } else {
@@ -565,7 +565,7 @@ private DecimalUtility() {
           bigpow = bigpow.ShiftLeft(precision);
           if (precision != startPrecision) {
             EInteger bigprec = EInteger.FromInt64(precision);
-            powerOfTenCache.AddPower(bigprec, bigpow);
+            ValuePowerOfTenCache.AddPower(bigprec, bigpow);
           }
           if (first) {
             ret = bigpow;
@@ -575,7 +575,7 @@ private DecimalUtility() {
           first = false;
           break;
         }
-        if (bigpow.signum() == 0) {
+        if (bigpow.isZero()) {
           bigpow = FindPowerOfTen(9999999);
         }
         if (first) {
@@ -586,7 +586,7 @@ private DecimalUtility() {
         first = false;
         precision -= 9999999;
       }
-      powerOfTenCache.AddPower(origPrecision, ret);
+      ValuePowerOfTenCache.AddPower(origPrecision, ret);
       return ret;
     }
 
@@ -597,14 +597,14 @@ private DecimalUtility() {
       FastInteger digits,
       FastInteger precision,
       FastInteger idealExp) {
-      if (bigmant.signum() == 0) {
+      if (bigmant.isZero()) {
         exponentMutable.SetInt(0);
         return bigmant;
       }
       EInteger bigradix = EInteger.FromInt64(radix);
       int bitToTest = 0;
       FastInteger bitsToShift = new FastInteger(0);
-      while (bigmant.signum() != 0) {
+      while (!bigmant.isZero()) {
         if (precision != null && digits.compareTo(precision) == 0) {
           break;
         }
@@ -628,10 +628,10 @@ private DecimalUtility() {
           EInteger bigrem;
           EInteger bigquo;
 {
-EInteger[] divrem=(bigmant).DivRem(bigradix);
+EInteger[] divrem = bigmant.DivRem(bigradix);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-          if (bigrem.signum() != 0) {
+          if (!bigrem.isZero()) {
             break;
           }
           bigmant = bigquo;

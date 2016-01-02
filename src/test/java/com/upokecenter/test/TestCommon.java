@@ -8,6 +8,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.util.*;
+
 import org.junit.Assert;
 
 import com.upokecenter.util.*;
@@ -16,7 +17,7 @@ import com.upokecenter.cbor.*;
   public final class TestCommon {
 private TestCommon() {
 }
-    private static final String valueDigits = "0123456789";
+    private static final String ValueDigits = "0123456789";
 
     public static void AssertByteArraysEqual(byte[] arr1, byte[] arr2) {
       if (!ByteArraysEqual(arr1, arr2)) {
@@ -62,10 +63,7 @@ private TestCommon() {
 
     public static void AssertRoundTrip(CBORObject o) {
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
-      int cmp = CompareTestReciprocal(o, o2);
-      if (cmp != 0) {
-        Assert.assertEquals(o + "\nvs.\n" + o2,0,cmp);
-      }
+      CompareTestEqual(o, o2);
       TestNumber(o);
       AssertEqualsHashCode(o, o2);
     }
@@ -240,7 +238,7 @@ String msg) {
         value = -value;
       }
       while (value != 0) {
-        char digit = valueDigits.charAt((int)(value % 10));
+        char digit = ValueDigits.charAt((int)(value % 10));
         chars[count++] = digit;
         value /= 10;
       }
@@ -268,7 +266,7 @@ String msg) {
         longValue = -longValue;
       }
       while (longValue != 0) {
-        char digit = valueDigits.charAt((int)(longValue % 10));
+        char digit = ValueDigits.charAt((int)(longValue % 10));
         chars[count++] = digit;
         longValue /= 10;
       }
@@ -286,10 +284,8 @@ String msg) {
       String s) {
       CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
       CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
-      if (co1 != null) {
-        TestCommon.ObjectMessages(co1, co2, s);
-      }
-      return s + ":\n" + o1 + " and\n" + o2;
+      return (co1 != null) ? TestCommon.ObjectMessages(co1, co2, s) : (s +
+        ":\n" + o1 + " and\n" + o2);
     }
 
     public static String ObjectMessages(
@@ -314,10 +310,8 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2);
       CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
       CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
       CBORObject co3 = ((o3 instanceof CBORObject) ? (CBORObject)o3 : null);
-      if (co1 != null) {
-        TestCommon.ObjectMessages(co1, co2, co3, s);
-      }
-      return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3;
+      return (co1 != null) ? TestCommon.ObjectMessages(co1, co2, co3, s) :
+        (s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3);
     }
 
     public static String ObjectMessages(

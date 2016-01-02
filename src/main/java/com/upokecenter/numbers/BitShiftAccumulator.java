@@ -130,7 +130,7 @@ int olderDiscarded) {
           this.ShiftRightInt(count);
           bi = bi.Subtract(EInteger.FromInt64(count));
           if (this.isSmall ? this.shiftedSmall == 0 :
-          this.shiftedBigInt.signum() == 0) {
+          this.shiftedBigInt.isZero()) {
             break;
           }
         }
@@ -141,7 +141,7 @@ int olderDiscarded) {
       if (bits <= 0) {
         return;
       }
-      if (this.shiftedBigInt.signum() == 0) {
+      if (this.shiftedBigInt.isZero()) {
         this.discardedBitCount.AddInt(bits);
         this.bitsAfterLeftmost |= this.bitLeftmost;
         this.bitLeftmost = 0;
@@ -156,7 +156,7 @@ int olderDiscarded) {
       if (cmp < 0) {
         // too few bits
         this.bitsAfterLeftmost |= this.bitLeftmost;
-        this.bitsAfterLeftmost |= this.shiftedBigInt.signum() == 0 ? 0 : 1;
+        this.bitsAfterLeftmost |= this.shiftedBigInt.isZero() ? 0 : 1;
         this.bitLeftmost = 0;
         this.isSmall = true;
         this.shiftedSmall = 0;
@@ -213,7 +213,7 @@ int olderDiscarded) {
         // System.out.println("{0:X8} kbl=" + kb);
         return new FastInteger(kb);
       }
-      return new FastInteger(this.shiftedBigInt.signum() == 0 ? 1 :
+      return new FastInteger(this.shiftedBigInt.isZero() ? 1 :
       this.shiftedBigInt.bitLength());
     }
 

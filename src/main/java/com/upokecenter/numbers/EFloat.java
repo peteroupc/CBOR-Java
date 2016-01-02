@@ -154,7 +154,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
                     diag);
       }
-      if (diag.signum() == 0 && !negative) {
+      if (diag.isZero() && !negative) {
         return signaling ? SignalingNaN : NaN;
       }
       int flags = 0;
@@ -247,17 +247,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * consists of:</p> <ul> <li>An optional plus sign ("+" , U+002B) or
      * minus sign ("-", U+002D) (if '-' , the value is negative.)</li>
      * <li>One or more digits, with a single optional decimal point after
-     * the first digit and before the last digit.</li> <li>Optionally, "E+"
-     * (positive exponent) or "E-" (negative exponent) plus one or more
-     * digits specifying the exponent.</li></ul> <p>The string can also be
-     * "-INF", "-Infinity" , "Infinity", "INF", quiet NaN ("NaN") followed
-     * by any number of digits, or signaling NaN ("sNaN") followed by any
-     * number of digits, all in any combination of upper and lower case.</p>
-     * <p>All characters mentioned above are the corresponding characters in
-     * the Basic Latin range. In particular, the digits must be the basic
-     * digits 0 to 9 (U + 0030 to U + 0039). The string is not allowed to
-     * contain white space characters, including spaces.</p>
-     * @param str A String object.
+     * the first digit and before the last digit.</li> <li>Optionally,
+     * "E+"/"e+" (positive exponent) or "E-"/"e-" (negative exponent) plus
+     * one or more digits specifying the exponent.</li></ul> <p>The string
+     * can also be "-INF", "-Infinity", "Infinity", "INF", quiet NaN ("NaN")
+     * followed by any number of digits, or signaling NaN ("sNaN") followed
+     * by any number of digits, all in any combination of upper and lower
+     * case.</p> <p>All characters mentioned above are the corresponding
+     * characters in the Basic Latin range. In particular, the digits must
+     * be the basic digits 0 to 9 (U + 0030 to U + 0039). The string is not
+     * allowed to contain white space characters, including spaces.</p>
+     * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The length, in code units, of the desired portion of {@code
@@ -267,7 +267,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return The parsed number, converted to arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code str} 's length, or {@code str} 's
+     * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
      */
     public static EFloat FromString(
@@ -288,7 +288,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Creates a binary float from a string that represents a number. See the
      * four-parameter FromString method.
-     * @param str Not documented yet.
+     * @param str The parameter {@code str} is not documented yet.
      * @return The parsed number, converted to arbitrary-precision binary float.
      */
     public static EFloat FromString(String str) {
@@ -296,8 +296,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     *
-     * @param str A String object.
+     * Not documented yet.
+     * @param str A text string.
      * @param ctx A PrecisionContext object specifying the precision, rounding, and
      * exponent range to apply to the parsed number. Can be null.
      * @return The parsed number, converted to arbitrary-precision binary float.
@@ -308,8 +308,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     *
-     * @param str A String object.
+     * Not documented yet.
+     * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The length, in code units, of the desired portion of {@code
@@ -317,7 +317,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code str} 's length, or {@code str} 's
+     * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
      */
     public static EFloat FromString(String str, int offset, int length) {
@@ -391,7 +391,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
       public boolean HasTerminatingRadixExpansion(EInteger num, EInteger den) {
         EInteger gcd = num.gcd(den);
-        if (gcd.signum() == 0) {
+        if (gcd.isZero()) {
           return false;
         }
         den = den.Divide(gcd);
@@ -404,7 +404,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * This is an internal method.
      * @param bigint Another arbitrary-precision integer.
-     * @param power A Fastinteger.
+     * @param power A fast integer.
      * @return An arbitrary-precision integer.
      */
       public EInteger MultiplyByRadixPower(
@@ -500,7 +500,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (!this.isFinite()) {
         throw new ArithmeticException("Value is infinity or NaN");
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return EInteger.FromInt64(0);
       }
       int expsign = this.getExponent().signum();
@@ -512,7 +512,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         // Integer with trailing zeros
         EInteger curexp = this.getExponent();
         EInteger bigmantissa = this.getMantissa();
-        if (bigmantissa.signum() == 0) {
+        if (bigmantissa.isZero()) {
           return bigmantissa;
         }
         boolean neg = bigmantissa.signum() < 0;
@@ -543,8 +543,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
     }
 
-    private static final EInteger valueOneShift23 = EInteger.FromInt64(1).ShiftLeft(23);
-    private static final EInteger valueOneShift52 = EInteger.FromInt64(1).ShiftLeft(52);
+    private static final EInteger ValueOneShift23 = EInteger.FromInt64(1).ShiftLeft(23);
+    private static final EInteger ValueOneShift52 = EInteger.FromInt64(1).ShiftLeft(52);
 
     /**
      * Converts this value to a 32-bit floating-point number. The half-even
@@ -574,26 +574,26 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         // Not IsQuietNaN(): not really the signaling bit, but done to keep
         // the mantissa from being zero
         nan |= this.IsQuietNaN() ? 0x400000 : 0x200000;
-        if (this.getUnsignedMantissa().signum() != 0) {
+        if (!this.getUnsignedMantissa().isZero()) {
           // Transfer diagnostic information
           EInteger bigdata = this.getUnsignedMantissa().Remainder(EInteger.FromInt64(0x200000));
           nan |= bigdata.AsInt32Checked();
         }
         return Float.intBitsToFloat(nan);
       }
-      if (this.isNegative() && this.signum() == 0) {
+      if (this.isNegative() && this.isZero()) {
         return Float.intBitsToFloat(1 << 31);
       }
       EInteger bigmant = this.unsignedMantissa.Abs();
       FastInteger bigexponent = FastInteger.FromBig(this.exponent);
       int bitLeftmost = 0;
       int bitsAfterLeftmost = 0;
-      if (this.unsignedMantissa.signum() == 0) {
+      if (this.unsignedMantissa.isZero()) {
         return 0.0f;
       }
       int smallmant = 0;
       FastInteger fastSmallMant;
-      if (bigmant.compareTo(valueOneShift23) < 0) {
+      if (bigmant.compareTo(ValueOneShift23) < 0) {
         smallmant = bigmant.AsInt32Checked();
         int exponentchange = 0;
         while (smallmant < (1 << 23)) {
@@ -697,7 +697,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         } else {
           nan[1] |= 0x40000;
         }
-        if (this.getUnsignedMantissa().signum() != 0) {
+        if (!this.getUnsignedMantissa().isZero()) {
           // Copy diagnostic information
           int[] words = FastInteger.GetLastWords(this.getUnsignedMantissa(), 2);
           nan[0] = words[0];
@@ -705,18 +705,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
         return Extras.IntegersToDouble(nan);
       }
-      if (this.isNegative() && this.signum() == 0) {
-        return Extras.IntegersToDouble(new int[] { ((int)(1 << 31)), 0 });
+      if (this.isNegative() && this.isZero()) {
+        return Extras.IntegersToDouble(new int[] { 0, ((int)(1 << 31)) });
       }
       EInteger bigmant = this.unsignedMantissa.Abs();
       FastInteger bigexponent = FastInteger.FromBig(this.exponent);
       int bitLeftmost = 0;
       int bitsAfterLeftmost = 0;
-      if (this.unsignedMantissa.signum() == 0) {
+      if (this.unsignedMantissa.isZero()) {
         return 0.0d;
       }
       int[] mantissaBits;
-      if (bigmant.compareTo(valueOneShift52) < 0) {
+      if (bigmant.compareTo(ValueOneShift52) < 0) {
         mantissaBits = FastInteger.GetLastWords(bigmant, 2);
         // This will be an infinite loop if both elements
         // of the bits array are 0, but the check for
@@ -825,7 +825,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         bigmant = EInteger.FromInt64(valueFpMantissa);
         value = (neg ? BigNumberFlags.FlagNegative : 0) | (quiet ?
                 BigNumberFlags.FlagQuietNaN : BigNumberFlags.FlagSignalingNaN);
-        if (bigmant.signum() == 0) {
+        if (bigmant.isZero()) {
           return quiet ? NaN : SignalingNaN;
         }
         return CreateWithFlags(
@@ -903,7 +903,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         boolean quiet = (value[1] & 0x80000) != 0;
         value[1] &= 0x3ffff;
         EInteger info = FastInteger.WordsToBigInteger(value);
-        if (info.signum() == 0) {
+        if (info.isZero()) {
           return quiet ? NaN : SignalingNaN;
         }
         value[0] = (neg ? BigNumberFlags.FlagNegative : 0) |
@@ -946,7 +946,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Converts this value to an extended decimal, then returns the value of that
      * decimal's ToEngineeringString method.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToEngineeringString() {
       return this.ToExtendedDecimal().ToEngineeringString();
@@ -954,7 +954,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts this value to a string, but without exponential notation.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToPlainString() {
       return this.ToExtendedDecimal().ToPlainString();
@@ -1108,7 +1108,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
     public final int signum() {
         return (((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
-                this.unsignedMantissa.signum() == 0) ? 0 :
+                this.unsignedMantissa.isZero()) ? 0 :
           (((this.flags & BigNumberFlags.FlagNegative) != 0) ? -1 : 1);
       }
 
@@ -1118,7 +1118,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
     public final boolean isZero() {
         return ((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
-          this.unsignedMantissa.signum() == 0;
+          this.unsignedMantissa.isZero();
       }
 
     /**
@@ -1131,7 +1131,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float. If this value is positive zero,
+     * returns positive zero.
      */
     public EFloat Negate() {
       return this.Negate(null);
@@ -1210,7 +1211,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     *
+     * Not documented yet.
      * @param divisor Another arbitrary-precision binary float.
      * @return An arbitrary-precision binary float.
      */
@@ -1406,7 +1407,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * exponent range of the result. If HasFlags of the context is true,
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float. If this value is positive zero,
+     * returns positive zero.
      */
     public EFloat Negate(EContext context) {
       return MathValue.Negate(this, context);
@@ -2267,7 +2269,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
      */
     public EFloat Pow(int exponentSmall) {
@@ -2336,7 +2338,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public EFloat MovePointLeft(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       return (!this.isFinite()) ? this.RoundToPrecision(ctx) :
@@ -2391,7 +2393,7 @@ EContext ctx) {
     public EFloat MovePointRight(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       if (!this.isFinite()) {
@@ -2457,7 +2459,7 @@ this.flags).RoundToPrecision(ctx);
     public EFloat ScaleByPowerOfTwo(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       if (!this.isFinite()) {
@@ -2480,7 +2482,7 @@ EContext ctx) {
       if (!this.isFinite()) {
  return EInteger.FromInt64(0);
 }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
  return EInteger.FromInt64(1);
 }
       int bitlen = this.unsignedMantissa.bitLength();

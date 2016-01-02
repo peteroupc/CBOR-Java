@@ -28,10 +28,10 @@ import com.upokecenter.numbers.*;
 
     public static final BigInteger ONE = new BigInteger(EInteger.FromInt64(1));
 
-    final EInteger ei;
+    private final EInteger ei;
 
     BigInteger(EInteger ei) {
-      if ((ei) == null) {
+      if (ei == null) {
   throw new NullPointerException("ei");
 }
       this.ei = ei;
@@ -54,7 +54,7 @@ import com.upokecenter.numbers.*;
      * @return True if this value is even; otherwise, false.
      */
     public final boolean isEven() {
- return this.ei.isEven();
+ return this.getEi().isEven();
 }
 
     /**
@@ -62,7 +62,7 @@ import com.upokecenter.numbers.*;
      * @return True if this value is 0; otherwise, false.
      */
     public final boolean isZero() {
- return this.ei.signum() == 0;
+ return this.getEi().signum() == 0;
 }
 
     /**
@@ -71,8 +71,12 @@ import com.upokecenter.numbers.*;
      * value is positive.
      */
     public final int signum() {
- return this.ei.signum();
+ return this.getEi().signum();
 }
+
+    final EInteger getEi() {
+        return this.ei;
+      }
 
     /**
      * Initializes an arbitrary-precision integer from an array of bytes.
@@ -139,7 +143,7 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
-     * string's length, or {@code endIndex} is less than {@code index} .
+     * string's length, or {@code endIndex} is less than {@code index}.
      * @throws java.lang.NumberFormatException The string portion is empty or in an invalid
      * format.
      */
@@ -148,8 +152,12 @@ import com.upokecenter.numbers.*;
       int radix,
       int index,
       int endIndex) {
- return new BigInteger(EInteger.FromRadixSubstring(str,
-        radix, index, endIndex));
+ return new BigInteger(
+EInteger.FromRadixSubstring(
+str,
+radix,
+index,
+endIndex));
     }
 
     /**
@@ -183,13 +191,14 @@ return new BigInteger(EInteger.fromString(str));
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
-     * string's length, or {@code endIndex} is less than {@code index} .
+     * string's length, or {@code endIndex} is less than {@code index}.
      * @throws java.lang.NumberFormatException The string portion is empty or in an invalid
      * format.
      */
-    public static BigInteger fromSubstring(String str,
-      int index,
-      int endIndex) {
+    public static BigInteger fromSubstring(
+String str,
+int index,
+int endIndex) {
 return new BigInteger(EInteger.FromSubstring(str, index, endIndex));
 }
 
@@ -208,7 +217,7 @@ return new BigInteger(EInteger.FromSubstring(str, index, endIndex));
      * @return This object's value with the sign removed.
      */
     public BigInteger abs() {
-      return new BigInteger(this.ei.Abs());
+      return new BigInteger(this.getEi().Abs());
  }
 
     /**
@@ -219,10 +228,10 @@ return new BigInteger(EInteger.FromSubstring(str, index, endIndex));
      * null.
      */
     public BigInteger add(BigInteger bigintAugend) {
-      if ((bigintAugend) == null) {
+      if (bigintAugend == null) {
   throw new NullPointerException("bigintAugend");
 }
-return new BigInteger(this.ei.Add(bigintAugend.ei));
+return new BigInteger(this.getEi().Add(bigintAugend.getEi()));
  }
 
     /**
@@ -234,7 +243,7 @@ return new BigInteger(this.ei.Add(bigintAugend.ei));
      * object's value is 0 or negative 1.
      */
     public int bitLength() {
-return this.ei.bitLength();
+return this.getEi().bitLength();
  }
 
     /**
@@ -243,17 +252,17 @@ return this.ei.bitLength();
      * less; otherwise, false.
      */
     public boolean canFitInInt() {
-return this.ei.canFitInInt();
+return this.getEi().canFitInInt();
       }
 
     /**
      * Compares an arbitrary-precision integer with this instance.
-     * @param other Not documented yet.
+     * @param other The parameter {@code other} is not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
     public int compareTo(BigInteger other) {
-      return (other == null) ? (1) : (this.ei.compareTo(other.ei));
+      return (other == null) ? 1 : this.getEi().compareTo(other.getEi());
  }
 
     /**
@@ -270,10 +279,10 @@ return this.ei.canFitInInt();
      * @throws ArithmeticException Attempted to divide by zero.
      */
     public BigInteger divide(BigInteger bigintDivisor) {
-      if ((bigintDivisor) == null) {
+      if (bigintDivisor == null) {
         throw new NullPointerException("bigintDivisor");
       }
-      return new BigInteger(this.ei.Divide(bigintDivisor.ei));
+      return new BigInteger(this.getEi().Divide(bigintDivisor.getEi()));
  }
 
     /**
@@ -287,10 +296,10 @@ return this.ei.canFitInInt();
      * @throws ArithmeticException Attempted to divide by zero.
      */
     public BigInteger[] divideAndRemainder(BigInteger divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
   throw new NullPointerException("divisor");
 }
-      EInteger[] eia = this.ei.DivRem(divisor.ei);
+      EInteger[] eia = this.getEi().DivRem(divisor.getEi());
     return new BigInteger[] { new BigInteger(eia[0]), new BigInteger(eia[1])
         };
  }
@@ -302,7 +311,7 @@ return this.ei.canFitInInt();
      */
     @Override public boolean equals(Object obj) {
       BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
-      return (bi == null) ? (false) : (this.ei.equals(bi.ei));
+      return (bi == null) ? false : this.getEi().equals(bi.getEi());
 }
 
     /**
@@ -314,10 +323,10 @@ return this.ei.canFitInInt();
      * null.
      */
     public BigInteger gcd(BigInteger bigintSecond) {
-  if ((bigintSecond) == null) {
+  if (bigintSecond == null) {
   throw new NullPointerException("bigintSecond");
 }
-return new BigInteger(this.ei.gcd(bigintSecond.ei));
+return new BigInteger(this.getEi().gcd(bigintSecond.getEi()));
 }
 
     /**
@@ -326,7 +335,7 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
      * 0.
      */
     public int getDigitCount() {
-      return this.ei.getDigitCount();
+      return this.getEi().getDigitCount();
  }
 
     /**
@@ -334,7 +343,7 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
      * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {
-      return this.ei.hashCode();
+      return this.getEi().hashCode();
  }
 
     /**
@@ -344,7 +353,7 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
      * if this value is 0.).
      */
     public int getLowBit() {
-      return this.ei.getLowBit();
+      return this.getEi().getLowBit();
  }
 
     /**
@@ -354,7 +363,7 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
  */
 @Deprecated
     public int getLowestSetBit() {
-      return getLowBit();
+      return this.getLowBit();
  }
 
     /**
@@ -364,7 +373,7 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
      * object's value is 0, and returns 1 if the value is negative 1.
      */
     public int getUnsignedBitLength() {
-      return getUnsignedBitLength();
+      return this.getUnsignedBitLength();
  }
 
     /**
@@ -373,12 +382,11 @@ return new BigInteger(this.ei.gcd(bigintSecond.ei));
      * @throws java.lang.ArithmeticException This object's value is too big to fit a
      * 32-bit signed integer.
      * @deprecated To make the conversion intention clearer use the 'intValueChecked' and
- *'intValueUnchecked' methods instead. Replace 'intValue' with
- *'intValueChecked' in your code.
+ *'intValueUnchecked' methods instead.
  */
 @Deprecated
     public int intValue() {
-return this.ei.AsInt32Checked();
+return this.getEi().AsInt32Checked();
 }
 
     /**
@@ -388,7 +396,7 @@ return this.ei.AsInt32Checked();
      * 32-bit signed integer.
      */
     public int intValueChecked() {
-return this.ei.AsInt32Checked();
+return this.getEi().AsInt32Checked();
 }
 
     /**
@@ -399,7 +407,7 @@ return this.ei.AsInt32Checked();
      * @return A 32-bit signed integer.
      */
     public int intValueUnchecked() {
-return this.ei.AsInt32Unchecked();
+return this.getEi().AsInt32Unchecked();
 }
 
     /**
@@ -408,12 +416,11 @@ return this.ei.AsInt32Unchecked();
      * @throws java.lang.ArithmeticException This object's value is too big to fit a
      * 64-bit signed integer.
      * @deprecated To make the conversion intention clearer use the 'longValueChecked' and
- *'longValueUnchecked' methods instead. Replace 'longValue' with
- *'longValueChecked' in your code.
+ *'longValueUnchecked' methods instead.
  */
 @Deprecated
     public long longValue() {
-return this.ei.AsInt64Checked();
+return this.getEi().AsInt64Checked();
 }
 
     /**
@@ -424,7 +431,7 @@ return this.ei.AsInt64Checked();
      * 64-bit signed integer.
      */
     public long longValueChecked() {
-return this.ei.AsInt64Checked();
+return this.getEi().AsInt64Checked();
 }
 
     /**
@@ -435,7 +442,7 @@ return this.ei.AsInt64Checked();
      * @return A 64-bit signed integer.
      */
     public long longValueUnchecked() {
-      return this.ei.AsInt64Unchecked();
+      return this.getEi().AsInt64Unchecked();
  }
 
     /**
@@ -450,10 +457,10 @@ return this.ei.AsInt64Checked();
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public BigInteger mod(BigInteger divisor) {
-  if ((divisor) == null) {
+  if (divisor == null) {
   throw new NullPointerException("divisor");
 }
-return new BigInteger(this.ei.mod(divisor.ei));
+return new BigInteger(this.getEi().mod(divisor.getEi()));
 }
 
     /**
@@ -466,28 +473,28 @@ return new BigInteger(this.ei.mod(divisor.ei));
      * mod} is null.
      */
     public BigInteger ModPow(BigInteger pow, BigInteger mod) {
-  if ((pow) == null) {
+  if (pow == null) {
   throw new NullPointerException("pow");
 }
-  if ((mod) == null) {
+  if (mod == null) {
   throw new NullPointerException("mod");
 }
-return new BigInteger(this.ei.ModPow(pow.ei, mod.ei));
+return new BigInteger(this.getEi().ModPow(pow.getEi(), mod.getEi()));
 }
 
     /**
      * Multiplies this instance by the value of an arbitrary-precision integer
      * object.
      * @param bigintMult Another arbitrary-precision integer.
-     * @return The product of the two objects.
+     * @return The product of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code bigintMult} is
      * null.
      */
     public BigInteger multiply(BigInteger bigintMult) {
-      if ((bigintMult) == null) {
+      if (bigintMult == null) {
         throw new NullPointerException("bigintMult");
       }
-      return new BigInteger(this.ei.Multiply(bigintMult.ei));
+      return new BigInteger(this.getEi().Multiply(bigintMult.getEi()));
     }
 
     /**
@@ -495,7 +502,7 @@ return new BigInteger(this.ei.ModPow(pow.ei, mod.ei));
      * @return This object's value with the sign reversed.
      */
     public BigInteger negate() {
-      return new BigInteger(this.ei.Negate());
+      return new BigInteger(this.getEi().Negate());
  }
 
     /**
@@ -506,7 +513,7 @@ return new BigInteger(this.ei.ModPow(pow.ei, mod.ei));
      * than 0.
      */
     public BigInteger pow(int powerSmall) {
-return new BigInteger(this.ei.pow(powerSmall));
+return new BigInteger(this.getEi().pow(powerSmall));
 }
 
     /**
@@ -517,10 +524,10 @@ return new BigInteger(this.ei.pow(powerSmall));
      * @throws IllegalArgumentException The parameter {@code power} is less than 0.
      */
     public BigInteger PowBigIntVar(BigInteger power) {
-  if ((power) == null) {
+  if (power == null) {
   throw new NullPointerException("power");
 }
-return new BigInteger(this.ei.PowBigIntVar(power.ei));
+return new BigInteger(this.getEi().PowBigIntVar(power.getEi()));
 }
 
     /**
@@ -535,10 +542,10 @@ return new BigInteger(this.ei.PowBigIntVar(power.ei));
      * @throws ArithmeticException Attempted to divide by zero.
      */
     public BigInteger remainder(BigInteger divisor) {
-  if ((divisor) == null) {
+  if (divisor == null) {
   throw new NullPointerException("divisor");
 }
-return new BigInteger(this.ei.Remainder(divisor.ei));
+return new BigInteger(this.getEi().Remainder(divisor.getEi()));
 }
 
     /**
@@ -551,7 +558,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * @return An arbitrary-precision integer.
      */
     public BigInteger shiftLeft(int numberBits) {
-      return new BigInteger(this.ei.ShiftLeft(numberBits));
+      return new BigInteger(this.getEi().ShiftLeft(numberBits));
  }
 
     /**
@@ -563,7 +570,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * @return An arbitrary-precision integer.
      */
     public BigInteger shiftRight(int numberBits) {
-      return new BigInteger(this.ei.ShiftRight(numberBits));
+      return new BigInteger(this.getEi().ShiftRight(numberBits));
     }
 
     /**
@@ -572,7 +579,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * or less.
      */
     public BigInteger sqrt() {
-      return new BigInteger(this.ei.Sqrt());
+      return new BigInteger(this.getEi().Sqrt());
     }
 
     /**
@@ -583,7 +590,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * one and zero if this value equals 1.
      */
     public BigInteger[] sqrtWithRemainder() {
-      EInteger[] eia = this.ei.SqrtRem();
+      EInteger[] eia = this.getEi().SqrtRem();
       return new BigInteger[] { new BigInteger(eia[0]), new BigInteger(eia[1])
         };
     }
@@ -597,10 +604,10 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * null.
      */
     public BigInteger subtract(BigInteger subtrahend) {
-      if ((subtrahend) == null) {
+      if (subtrahend == null) {
   throw new NullPointerException("subtrahend");
 }
-      return new BigInteger(this.ei.Subtract(subtrahend.ei));
+      return new BigInteger(this.getEi().Subtract(subtrahend.getEi()));
  }
 
     /**
@@ -612,7 +619,7 @@ return new BigInteger(this.ei.Remainder(divisor.ei));
      * object's value; otherwise, false.
      */
     public boolean testBit(int index) {
-return this.ei.testBit(index);
+return this.getEi().testBit(index);
 }
 
     /**
@@ -623,7 +630,7 @@ return this.ei.testBit(index);
  */
 @Deprecated
     public byte[] toByteArray(boolean littleEndian) {
-      return toBytes(littleEndian);
+      return this.toBytes(littleEndian);
  }
 
     /**
@@ -637,7 +644,7 @@ return this.ei.testBit(index);
      * single element 0.
      */
     public byte[] toBytes(boolean littleEndian) {
-      return this.ei.toBytes(littleEndian);
+      return this.getEi().toBytes(littleEndian);
  }
 
     /**
@@ -657,7 +664,7 @@ return this.ei.testBit(index);
      * or greater than 36.
      */
     public String toRadixString(int radix) {
-      return this.ei.toRadixString(radix);
+      return this.getEi().toRadixString(radix);
  }
 
     /**
@@ -667,6 +674,6 @@ return this.ei.testBit(index);
      * digits 0 to 9 (U + 0030 to U + 0039).
      */
     @Override public String toString() {
-      return this.ei.toString();
+      return this.getEi().toString();
     }
   }

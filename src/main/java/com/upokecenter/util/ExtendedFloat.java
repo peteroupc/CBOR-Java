@@ -36,7 +36,8 @@ import com.upokecenter.numbers.*;
      * arbitrary-precision binary float value.</li></ul>
      */
   public final class ExtendedFloat implements Comparable<ExtendedFloat> {
-    final EFloat ef;
+    private final EFloat ef;
+
     ExtendedFloat(EFloat ef) {
       this.ef = ef;
     }
@@ -48,7 +49,7 @@ import com.upokecenter.numbers.*;
      * the exponent is positive or zero.
      */
     public final BigInteger getExponent() {
-        return new BigInteger(this.ef.getExponent());
+        return new BigInteger(this.getEf().getExponent());
       }
 
     /**
@@ -56,7 +57,7 @@ import com.upokecenter.numbers.*;
      * @return The absolute value of this object's un-scaled value.
      */
     public final BigInteger getUnsignedMantissa() {
-        return new BigInteger(this.ef.getUnsignedMantissa());
+        return new BigInteger(this.getEf().getUnsignedMantissa());
       }
 
     /**
@@ -65,35 +66,38 @@ import com.upokecenter.numbers.*;
      * value is negative (including a negative NaN).
      */
     public final BigInteger getMantissa() {
-        return new BigInteger(this.ef.getMantissa());
+        return new BigInteger(this.getEf().getMantissa());
       }
 
     /**
-     * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object.
+     * Determines whether this object's mantissa and exponent are equal to those of
+     * another object.
      * @param otherValue An arbitrary-precision binary float.
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public boolean EqualsInternal(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return this.ef.EqualsInternal(otherValue.ef);
+      return this.getEf().EqualsInternal(otherValue.getEf());
     }
 
     /**
-     * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object.
+     * Determines whether this object's mantissa and exponent are equal to those of
+     * another object.
      * @param other An arbitrary-precision binary float.
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public boolean equals(ExtendedFloat other) {
-      if ((other) == null) {
+      if (other == null) {
         throw new NullPointerException("other");
       }
-      return this.ef.equals(other.ef);
+      return this.getEf().equals(other.getEf());
     }
 
     /**
@@ -104,7 +108,7 @@ import com.upokecenter.numbers.*;
      */
     @Override public boolean equals(Object obj) {
       ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
-      return (bi == null) ? (false) : (this.ef.equals(bi.ef));
+      return (bi == null) ? false : this.getEf().equals(bi.getEf());
     }
 
     /**
@@ -112,7 +116,7 @@ import com.upokecenter.numbers.*;
      * @return This object's hash code.
      */
     @Override public int hashCode() {
-      return this.ef.hashCode();
+      return this.getEf().hashCode();
     }
 
     /**
@@ -124,10 +128,10 @@ import com.upokecenter.numbers.*;
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
     public static ExtendedFloat CreateNaN(BigInteger diag) {
-      if ((diag) == null) {
+      if (diag == null) {
         throw new NullPointerException("diag");
       }
-      return new ExtendedFloat(EFloat.CreateNaN(diag.ei));
+      return new ExtendedFloat(EFloat.CreateNaN(diag.getEi()));
     }
 
     /**
@@ -142,16 +146,21 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
-    public static ExtendedFloat CreateNaN(BigInteger diag,
-      boolean signaling,
-      boolean negative,
-      PrecisionContext ctx) {
-      if ((diag) == null) {
+    public static ExtendedFloat CreateNaN(
+BigInteger diag,
+boolean signaling,
+boolean negative,
+PrecisionContext ctx) {
+      if (diag == null) {
         throw new NullPointerException("diag");
       }
 
-      return new ExtendedFloat(EFloat.CreateNaN(diag.ei, signaling,
-        negative, ctx == null ? null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.CreateNaN(
+diag.getEi(),
+signaling,
+negative,
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -172,15 +181,16 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
      */
-    public static ExtendedFloat Create(BigInteger mantissa,
-      BigInteger exponent) {
-      if ((mantissa) == null) {
+    public static ExtendedFloat Create(
+BigInteger mantissa,
+BigInteger exponent) {
+      if (mantissa == null) {
         throw new NullPointerException("mantissa");
       }
-      if ((exponent) == null) {
+      if (exponent == null) {
         throw new NullPointerException("exponent");
       }
-      return new ExtendedFloat(EFloat.Create(mantissa.ei, exponent.ei));
+      return new ExtendedFloat(EFloat.Create(mantissa.getEi(), exponent.getEi()));
     }
 
     /**
@@ -192,17 +202,17 @@ import com.upokecenter.numbers.*;
      * consists of:</p> <ul> <li>An optional plus sign ("+" , U+002B) or
      * minus sign ("-", U+002D) (if '-' , the value is negative.)</li>
      * <li>One or more digits, with a single optional decimal point after
-     * the first digit and before the last digit.</li> <li>Optionally, "E+"
-     * (positive exponent) or "E-" (negative exponent) plus one or more
-     * digits specifying the exponent.</li></ul> <p>The string can also be
-     * "-INF", "-Infinity" , "Infinity", "INF", quiet NaN ("NaN") followed
-     * by any number of digits, or signaling NaN ("sNaN") followed by any
-     * number of digits, all in any combination of upper and lower case.</p>
-     * <p>All characters mentioned above are the corresponding characters in
-     * the Basic Latin range. In particular, the digits must be the basic
-     * digits 0 to 9 (U + 0030 to U + 0039). The string is not allowed to
-     * contain white space characters, including spaces.</p>
-     * @param str A String object.
+     * the first digit and before the last digit.</li> <li>Optionally,
+     * "E+"/"e+" (positive exponent) or "E-"/"e-" (negative exponent) plus
+     * one or more digits specifying the exponent.</li></ul> <p>The string
+     * can also be "-INF", "-Infinity", "Infinity", "INF", quiet NaN ("NaN")
+     * followed by any number of digits, or signaling NaN ("sNaN") followed
+     * by any number of digits, all in any combination of upper and lower
+     * case.</p> <p>All characters mentioned above are the corresponding
+     * characters in the Basic Latin range. In particular, the digits must
+     * be the basic digits 0 to 9 (U + 0030 to U + 0039). The string is not
+     * allowed to contain white space characters, including spaces.</p>
+     * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The length, in code units, of the desired portion of {@code
@@ -212,16 +222,21 @@ import com.upokecenter.numbers.*;
      * @return The parsed number, converted to arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code str} 's length, or {@code str} 's
+     * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
      */
-    public static ExtendedFloat FromString(String str,
-      int offset,
-      int length,
-      PrecisionContext ctx) {
+    public static ExtendedFloat FromString(
+String str,
+int offset,
+int length,
+PrecisionContext ctx) {
 try {
-      return new ExtendedFloat(EFloat.FromString(str, offset, length,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.FromString(
+str,
+offset,
+length,
+ctx == null ? null : ctx.getEc()));
     } catch (ETrapException ex) {
  throw TrapException.Create(ex);
 }
@@ -230,7 +245,7 @@ try {
     /**
      * Creates a binary float from a string that represents a number. See the
      * four-parameter FromString method.
-     * @param str Not documented yet.
+     * @param str The parameter {@code str} is not documented yet.
      * @return The parsed number, converted to arbitrary-precision binary float.
      */
     public static ExtendedFloat FromString(String str) {
@@ -238,8 +253,8 @@ try {
     }
 
     /**
-     *
-     * @param str A String object.
+     * Not documented yet.
+     * @param str A text string.
      * @param ctx A PrecisionContext object specifying the precision, rounding, and
      * exponent range to apply to the parsed number. Can be null.
      * @return The parsed number, converted to arbitrary-precision binary float.
@@ -247,16 +262,18 @@ try {
      */
     public static ExtendedFloat FromString(String str, PrecisionContext ctx) {
 try {
-      return new ExtendedFloat(EFloat.FromString(str, ctx == null ? null :
-           ctx.ec));
+      return new ExtendedFloat(
+EFloat.FromString(
+str,
+ctx == null ? null : ctx.getEc()));
     } catch (ETrapException ex) {
  throw TrapException.Create(ex);
 }
  }
 
     /**
-     *
-     * @param str A String object.
+     * Not documented yet.
+     * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The length, in code units, of the desired portion of {@code
@@ -264,7 +281,7 @@ try {
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code str} 's length, or {@code str} 's
+     * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
      */
     public static ExtendedFloat FromString(String str, int offset, int length) {
@@ -278,7 +295,7 @@ try {
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-      return new BigInteger(this.ef.ToBigInteger());
+      return new BigInteger(this.getEf().ToBigInteger());
     }
 
     /**
@@ -289,7 +306,7 @@ try {
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-      return new BigInteger(this.ef.ToBigIntegerExact());
+      return new BigInteger(this.getEf().ToBigIntegerExact());
     }
 
     /**
@@ -305,7 +322,7 @@ try {
      * exceeds the range of a 32-bit floating point number.
      */
     public float ToSingle() {
-      return this.ef.ToSingle();
+      return this.getEf().ToSingle();
     }
 
     /**
@@ -321,7 +338,7 @@ try {
      * exceeds the range of a 64-bit floating point number.
      */
     public double ToDouble() {
-      return this.ef.ToDouble();
+      return this.getEf().ToDouble();
     }
 
     /**
@@ -340,12 +357,13 @@ try {
      * Converts a big integer to the same value as a binary float.
      * @param bigint An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code bigint} is null.
      */
     public static ExtendedFloat FromBigInteger(BigInteger bigint) {
-      if ((bigint) == null) {
+      if (bigint == null) {
         throw new NullPointerException("bigint");
       }
-      return new ExtendedFloat(EFloat.FromBigInteger(bigint.ei));
+      return new ExtendedFloat(EFloat.FromBigInteger(bigint.getEi()));
     }
 
     /**
@@ -383,7 +401,7 @@ try {
      * @return An extended decimal with the same value as this extended float.
      */
     public ExtendedDecimal ToExtendedDecimal() {
-      return new ExtendedDecimal(this.ef.ToExtendedDecimal());
+      return new ExtendedDecimal(this.getEf().ToExtendedDecimal());
     }
 
     /**
@@ -392,24 +410,24 @@ try {
      * decimal and the decimal form of this number's value is returned.
      */
     @Override public String toString() {
-      return this.ef.toString();
+      return this.getEf().toString();
     }
 
     /**
      * Converts this value to an extended decimal, then returns the value of that
      * decimal's ToEngineeringString method.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToEngineeringString() {
-      return this.ef.ToEngineeringString();
+      return this.getEf().ToEngineeringString();
     }
 
     /**
      * Converts this value to a string, but without exponential notation.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToPlainString() {
-      return this.ef.ToPlainString();
+      return this.getEf().ToPlainString();
     }
 
     /**
@@ -473,7 +491,7 @@ try {
      * @return True if this object is negative infinity; otherwise, false.
      */
     public boolean IsNegativeInfinity() {
-      return this.ef.IsNegativeInfinity();
+      return this.getEf().IsNegativeInfinity();
     }
 
     /**
@@ -481,7 +499,7 @@ try {
      * @return True if this object is positive infinity; otherwise, false.
      */
     public boolean IsPositiveInfinity() {
-      return this.ef.IsPositiveInfinity();
+      return this.getEf().IsPositiveInfinity();
     }
 
     /**
@@ -489,7 +507,7 @@ try {
      * @return True if this object is a not-a-number value; otherwise, false.
      */
     public boolean IsNaN() {
-      return this.ef.IsNaN();
+      return this.getEf().IsNaN();
     }
 
     /**
@@ -499,7 +517,7 @@ try {
      * false.
      */
     public boolean IsInfinity() {
-      return this.ef.IsInfinity();
+      return this.getEf().IsInfinity();
     }
 
     /**
@@ -508,7 +526,7 @@ try {
      * false.
      */
     public final boolean isFinite() {
-        return this.ef.isFinite();
+        return this.getEf().isFinite();
       }
 
     /**
@@ -518,7 +536,7 @@ try {
      * false.
      */
     public final boolean isNegative() {
-        return this.ef.isNegative();
+        return this.getEf().isNegative();
       }
 
     /**
@@ -526,7 +544,7 @@ try {
      * @return True if this object is a quiet not-a-number value; otherwise, false.
      */
     public boolean IsQuietNaN() {
-      return this.ef.IsQuietNaN();
+      return this.getEf().IsQuietNaN();
     }
 
     /**
@@ -536,7 +554,7 @@ try {
      * false.
      */
     public boolean IsSignalingNaN() {
-      return this.ef.IsSignalingNaN();
+      return this.getEf().IsSignalingNaN();
     }
 
     /**
@@ -544,7 +562,7 @@ try {
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      */
     public final int signum() {
-        return this.ef.signum();
+        return this.getEf().signum();
       }
 
     /**
@@ -552,7 +570,11 @@ try {
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-        return this.ef.signum() == 0;
+        return this.getEf().signum() == 0;
+      }
+
+    final EFloat getEf() {
+        return this.ef;
       }
 
     /**
@@ -560,15 +582,16 @@ try {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat Abs() {
-      return new ExtendedFloat(this.ef.Abs());
+      return new ExtendedFloat(this.getEf().Abs());
     }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float. If this value is positive zero,
+     * returns positive zero.
      */
     public ExtendedFloat Negate() {
-      return new ExtendedFloat(this.ef.Negate());
+      return new ExtendedFloat(this.getEf().Negate());
     }
 
     /**
@@ -581,12 +604,13 @@ try {
      * the dividend are 0.
      * @throws ArithmeticException The result can't be exact because it would have
      * a nonterminating binary expansion.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedFloat Divide(ExtendedFloat divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedFloat(this.ef.Divide(divisor.ef));
+      return new ExtendedFloat(this.getEf().Divide(divisor.getEf()));
     }
 
     /**
@@ -601,31 +625,36 @@ try {
      * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat DivideToSameExponent(ExtendedFloat divisor,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedFloat DivideToSameExponent(
+ExtendedFloat divisor,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedFloat(this.ef.DivideToSameExponent(divisor.ef,
-        ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedFloat(
+this.getEf().DivideToSameExponent(
+divisor.getEf(),
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
      * Divides two arbitrary-precision binary floats, and returns the integer part
      * of the result, rounded down, with the preferred exponent set to this
-     * value&#x27;s exponent minus the divisor&#x27;s exponent.
+     * value's exponent minus the divisor's exponent.
      * @param divisor The divisor.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
      * (NaN) if the divisor and the dividend are 0.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedFloat DivideToIntegerNaturalScale(ExtendedFloat divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedFloat(this.ef.DivideToIntegerNaturalScale(divisor.ef));
+      return new ExtendedFloat(this.getEf().DivideToIntegerNaturalScale(divisor.getEf()));
     }
 
     /**
@@ -642,22 +671,23 @@ try {
      */
     public ExtendedFloat Reduce(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Reduce(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().Reduce(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     *
+     * Not documented yet.
      * @param divisor Another arbitrary-precision binary float.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedFloat RemainderNaturalScale(ExtendedFloat divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedFloat(this.ef.RemainderNaturalScale(divisor.ef));
+      return new ExtendedFloat(this.getEf().RemainderNaturalScale(divisor.getEf()));
     }
 
     /**
@@ -672,16 +702,20 @@ try {
      * context's HasFlags is true and the integer part of the division
      * result doesn't fit the precision and exponent range without rounding.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat RemainderNaturalScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat RemainderNaturalScale(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.RemainderNaturalScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RemainderNaturalScale(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -712,17 +746,22 @@ try {
      * exponent is outside that range.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      long desiredExponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedFloat DivideToExponent(
+ExtendedFloat divisor,
+long desiredExponentSmall,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-          desiredExponentSmall, ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().DivideToExponent(
+divisor.getEf(),
+desiredExponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -745,15 +784,19 @@ try {
      * precision is 0, and the result would have a nonterminating binary
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat Divide(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat Divide(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        return new ExtendedFloat(this.ef.Divide(divisor.ef, ctx == null ? null :
-          ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Divide(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -775,15 +818,20 @@ try {
      * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      long desiredExponentSmall,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedFloat DivideToExponent(
+ExtendedFloat divisor,
+long desiredExponentSmall,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-        desiredExponentSmall, ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedFloat(
+this.getEf().DivideToExponent(
+divisor.getEf(),
+desiredExponentSmall,
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
@@ -810,20 +858,26 @@ try {
      * exponent is outside that range.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
+     * exponent} is null.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedFloat DivideToExponent(
+ExtendedFloat divisor,
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
 
-     return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-          exponent.ei, ctx == null ? null : ctx.ec));
+     return new ExtendedFloat(
+this.getEf().DivideToExponent(
+divisor.getEf(),
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -845,18 +899,24 @@ try {
      * the dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
+     * desiredExponent} is null.
      */
-    public ExtendedFloat DivideToExponent(ExtendedFloat divisor,
-      BigInteger desiredExponent,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedFloat DivideToExponent(
+ExtendedFloat divisor,
+BigInteger desiredExponent,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      if ((desiredExponent) == null) {
+      if (desiredExponent == null) {
         throw new NullPointerException("desiredExponent");
       }
-      return new ExtendedFloat(this.ef.DivideToExponent(divisor.ef,
-        desiredExponent.ei, ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedFloat(
+this.getEf().DivideToExponent(
+divisor.getEf(),
+desiredExponent.getEi(),
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
@@ -870,8 +930,8 @@ try {
      */
     public ExtendedFloat Abs(PrecisionContext context) {
       try {
-        return new ExtendedFloat(this.ef.Abs(context == null ? null :
-            context.ec));
+        return new ExtendedFloat(this.getEf().Abs(context == null ? null :
+            context.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -884,15 +944,17 @@ try {
      * exponent range of the result. If HasFlags of the context is true,
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float. If this value is positive zero,
+     * returns positive zero.
+     * @throws java.lang.NullPointerException The parameter {@code context} is null.
      */
     public ExtendedFloat Negate(PrecisionContext context) {
       try {
-        if ((context) == null) {
+        if (context == null) {
           throw new NullPointerException("context");
         }
-        return new ExtendedFloat(this.ef.Negate(context == null ? null :
-             context.ec));
+        return new ExtendedFloat(this.getEf().Negate(context == null ? null :
+             context.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -902,12 +964,14 @@ try {
      * Adds this object and another binary float and returns the result.
      * @param otherValue An arbitrary-precision binary float.
      * @return The sum of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedFloat Add(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedFloat(this.ef.Add(otherValue.ef));
+      return new ExtendedFloat(this.getEf().Add(otherValue.getEf()));
     }
 
     /**
@@ -915,12 +979,14 @@ try {
      * the result..
      * @param otherValue An arbitrary-precision binary float.
      * @return The difference of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedFloat Subtract(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedFloat(this.ef.Subtract(otherValue.ef));
+      return new ExtendedFloat(this.getEf().Subtract(otherValue.getEf()));
     }
 
     /**
@@ -934,15 +1000,18 @@ try {
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
-    public ExtendedFloat Subtract(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
+    public ExtendedFloat Subtract(
+ExtendedFloat otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
 
-        return new ExtendedFloat(this.ef.Subtract(otherValue.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Subtract(
+otherValue.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -953,12 +1022,14 @@ try {
      * exponents of the two binary floats.
      * @param otherValue Another binary float.
      * @return The product of the two binary floats.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedFloat Multiply(ExtendedFloat otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedFloat(this.ef.Multiply(otherValue.ef));
+      return new ExtendedFloat(this.getEf().Multiply(otherValue.getEf()));
     }
 
     /**
@@ -966,17 +1037,22 @@ try {
      * @param multiplicand The value to multiply.
      * @param augend The value to add.
      * @return The result this * multiplicand + augend.
+     * @throws java.lang.NullPointerException The parameter {@code multiplicand} or
+     * {@code augend} is null.
      */
-    public ExtendedFloat MultiplyAndAdd(ExtendedFloat multiplicand,
-      ExtendedFloat augend) {
-      if ((multiplicand) == null) {
+    public ExtendedFloat MultiplyAndAdd(
+ExtendedFloat multiplicand,
+ExtendedFloat augend) {
+      if (multiplicand == null) {
         throw new NullPointerException("multiplicand");
       }
-      if ((augend) == null) {
+      if (augend == null) {
         throw new NullPointerException("augend");
       }
-      return new ExtendedFloat(this.ef.MultiplyAndAdd(multiplicand.ef,
-            augend.ef));
+      return new ExtendedFloat(
+this.getEf().MultiplyAndAdd(
+multiplicand.getEf(),
+augend.getEf()));
     }
 
     /**
@@ -999,16 +1075,20 @@ try {
      * dividend are 0.
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the integer part of the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat DivideToIntegerNaturalScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat DivideToIntegerNaturalScale(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.DivideToIntegerNaturalScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().DivideToIntegerNaturalScale(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1028,16 +1108,20 @@ try {
      * the divisor is 0 and the dividend is nonzero. Signals FlagInvalid and
      * returns not-a-number (NaN) if the divisor and the dividend are 0, or
      * if the result doesn't fit the given precision.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat DivideToIntegerZeroScale(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat DivideToIntegerZeroScale(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.DivideToIntegerZeroScale(divisor.ef,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().DivideToIntegerZeroScale(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1049,16 +1133,20 @@ try {
      * @param divisor An arbitrary-precision binary float.
      * @param ctx A PrecisionContext object.
      * @return The remainder of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat Remainder(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat Remainder(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.Remainder(divisor.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Remainder(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1066,21 +1154,20 @@ try {
 
     /**
      * Finds the distance to the closest multiple of the given divisor, based on
-     * the result of dividing this object&#x27;s value by another
-     * object&#x27;s value. <ul> <li>If this and the other object divide
-     * evenly, the result is 0.</li> <li>If the remainder's absolute value
-     * is less than half of the divisor's absolute value, the result has the
-     * same sign as this object and will be the distance to the closest
-     * multiple.</li> <li>If the remainder's absolute value is more than
-     * half of the divisor' s absolute value, the result has the opposite
-     * sign of this object and will be the distance to the closest
-     * multiple.</li> <li>If the remainder's absolute value is exactly half
-     * of the divisor's absolute value, the result has the opposite sign of
-     * this object if the quotient, rounded down, is odd, and has the same
-     * sign as this object if the quotient, rounded down, is even, and the
-     * result's absolute value is half of the divisor's absolute
-     * value.</li></ul> This function is also known as the "IEEE Remainder"
-     * function.
+     * the result of dividing this object's value by another object's value.
+     * <ul> <li>If this and the other object divide evenly, the result is
+     * 0.</li> <li>If the remainder's absolute value is less than half of
+     * the divisor's absolute value, the result has the same sign as this
+     * object and will be the distance to the closest multiple.</li> <li>If
+     * the remainder's absolute value is more than half of the divisor' s
+     * absolute value, the result has the opposite sign of this object and
+     * will be the distance to the closest multiple.</li> <li>If the
+     * remainder's absolute value is exactly half of the divisor's absolute
+     * value, the result has the opposite sign of this object if the
+     * quotient, rounded down, is odd, and has the same sign as this object
+     * if the quotient, rounded down, is even, and the result's absolute
+     * value is half of the divisor's absolute value.</li></ul> This
+     * function is also known as the "IEEE Remainder" function.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
@@ -1091,16 +1178,20 @@ try {
      * returns not-a-number (NaN) if the divisor is 0, or either the result
      * of integer division (the quotient) or the remainder wouldn't fit the
      * given precision.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedFloat RemainderNear(ExtendedFloat divisor,
-      PrecisionContext ctx) {
+    public ExtendedFloat RemainderNear(
+ExtendedFloat divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
 
-        return new ExtendedFloat(this.ef.RemainderNear(divisor.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RemainderNear(
+divisor.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1120,8 +1211,8 @@ try {
      */
     public ExtendedFloat NextMinus(PrecisionContext ctx) {
       try {
-      return new ExtendedFloat(this.ef.NextMinus(ctx == null ? null :
-          ctx.ec));
+      return new ExtendedFloat(this.getEf().NextMinus(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1140,7 +1231,7 @@ try {
      */
     public ExtendedFloat NextPlus(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.NextPlus(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().NextPlus(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1159,16 +1250,21 @@ try {
      * than this object's value.
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedFloat NextToward(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
+    public ExtendedFloat NextToward(
+ExtendedFloat otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
 
-        return new ExtendedFloat(this.ef.NextToward(otherValue.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().NextToward(
+otherValue.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1183,19 +1279,25 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The larger value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat Max(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedFloat Max(
+ExtendedFloat first,
+ExtendedFloat second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
 
-      return new ExtendedFloat(EFloat.Max(first.ef, second.ef, ctx == null ?
-        null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.Max(
+first.getEf(),
+second.getEf(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1207,19 +1309,25 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The smaller value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat Min(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedFloat Min(
+ExtendedFloat first,
+ExtendedFloat second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
 
-      return new ExtendedFloat(EFloat.Min(first.ef, second.ef, ctx == null ?
-        null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.Min(
+first.getEf(),
+second.getEf(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1232,19 +1340,25 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat MaxMagnitude(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedFloat MaxMagnitude(
+ExtendedFloat first,
+ExtendedFloat second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
 
-      return new ExtendedFloat(EFloat.MaxMagnitude(first.ef, second.ef,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.MaxMagnitude(
+first.getEf(),
+second.getEf(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1257,19 +1371,25 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat MinMagnitude(ExtendedFloat first,
-      ExtendedFloat second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedFloat MinMagnitude(
+ExtendedFloat first,
+ExtendedFloat second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
 
-      return new ExtendedFloat(EFloat.MinMagnitude(first.ef, second.ef,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedFloat(
+EFloat.MinMagnitude(
+first.getEf(),
+second.getEf(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1277,16 +1397,19 @@ try {
      * @param first An arbitrary-precision binary float.
      * @param second Another arbitrary-precision binary float.
      * @return The larger value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat Max(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
+    public static ExtendedFloat Max(
+ExtendedFloat first,
+ExtendedFloat second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedFloat(EFloat.Max(first.ef, second.ef));
+      return new ExtendedFloat(EFloat.Max(first.getEf(), second.getEf()));
     }
 
     /**
@@ -1294,16 +1417,19 @@ try {
      * @param first An arbitrary-precision binary float.
      * @param second Another arbitrary-precision binary float.
      * @return The smaller value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat Min(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
+    public static ExtendedFloat Min(
+ExtendedFloat first,
+ExtendedFloat second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedFloat(EFloat.Min(first.ef, second.ef));
+      return new ExtendedFloat(EFloat.Min(first.getEf(), second.getEf()));
     }
 
     /**
@@ -1312,16 +1438,19 @@ try {
      * @param first Another arbitrary-precision binary float.
      * @param second An arbitrary-precision binary float. (3).
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat MaxMagnitude(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
+    public static ExtendedFloat MaxMagnitude(
+ExtendedFloat first,
+ExtendedFloat second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedFloat(EFloat.MaxMagnitude(first.ef, second.ef));
+      return new ExtendedFloat(EFloat.MaxMagnitude(first.getEf(), second.getEf()));
     }
 
     /**
@@ -1330,16 +1459,19 @@ try {
      * @param first Another arbitrary-precision binary float.
      * @param second An arbitrary-precision binary float. (3).
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedFloat MinMagnitude(ExtendedFloat first,
-      ExtendedFloat second) {
-      if ((first) == null) {
+    public static ExtendedFloat MinMagnitude(
+ExtendedFloat first,
+ExtendedFloat second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedFloat(EFloat.MinMagnitude(first.ef, second.ef));
+      return new ExtendedFloat(EFloat.MinMagnitude(first.getEf(), second.getEf()));
     }
 
     /**
@@ -1356,12 +1488,13 @@ try {
      * @return Less than 0 if this object's value is less than the other value, or
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public int compareTo(ExtendedFloat other) {
-      if ((other) == null) {
+      if (other == null) {
         throw new NullPointerException("other");
       }
-      return this.ef.compareTo(other.ef);
+      return this.getEf().compareTo(other.getEf());
     }
 
     /**
@@ -1378,16 +1511,20 @@ try {
      * @return Quiet NaN if this object or the other object is NaN, or 0 if both
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
-    public ExtendedFloat CompareToWithContext(ExtendedFloat other,
-      PrecisionContext ctx) {
+    public ExtendedFloat CompareToWithContext(
+ExtendedFloat other,
+PrecisionContext ctx) {
       try {
-        if ((other) == null) {
+        if (other == null) {
           throw new NullPointerException("other");
         }
 
-        return new ExtendedFloat(this.ef.CompareToWithContext(other.ef,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().CompareToWithContext(
+other.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1407,40 +1544,49 @@ try {
      * @return Quiet NaN if this object or the other object is NaN, or 0 if both
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
-    public ExtendedFloat CompareToSignal(ExtendedFloat other,
-      PrecisionContext ctx) {
+    public ExtendedFloat CompareToSignal(
+ExtendedFloat other,
+PrecisionContext ctx) {
       try {
-        if ((other) == null) {
+        if (other == null) {
           throw new NullPointerException("other");
         }
 
-        return new ExtendedFloat(this.ef.CompareToSignal(other.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().CompareToSignal(
+other.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Finds the sum of this object and another object. The result&#x27;s exponent
-     * is set to the lower of the exponents of the two operands.
+     * Finds the sum of this object and another object. The result's exponent is
+     * set to the lower of the exponents of the two operands.
      * @param otherValue The number to add to.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The sum of thisValue and the other object.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedFloat Add(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
+    public ExtendedFloat Add(
+ExtendedFloat otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
 
-        return new ExtendedFloat(this.ef.Add(otherValue.ef, ctx == null ? null :
-          ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Add(
+otherValue.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1455,16 +1601,21 @@ try {
      * if an overflow error occurred, or the rounded result can't fit the
      * given precision, or if the context defines an exponent range and the
      * given exponent is outside that range.
+     * @throws java.lang.NullPointerException The parameter {@code desiredExponent}
+     * is null.
      */
-    public ExtendedFloat Quantize(BigInteger desiredExponent,
-      PrecisionContext ctx) {
+    public ExtendedFloat Quantize(
+BigInteger desiredExponent,
+PrecisionContext ctx) {
       try {
-        if ((desiredExponent) == null) {
+        if (desiredExponent == null) {
           throw new NullPointerException("desiredExponent");
         }
 
-        return new ExtendedFloat(this.ef.Quantize(desiredExponent.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Quantize(
+desiredExponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1480,11 +1631,14 @@ try {
      * given precision, or if the context defines an exponent range and the
      * given exponent is outside that range.
      */
-    public ExtendedFloat Quantize(int desiredExponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedFloat Quantize(
+int desiredExponentSmall,
+PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Quantize(desiredExponentSmall,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Quantize(
+desiredExponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1511,15 +1665,20 @@ try {
      * precision without rounding. Signals FlagInvalid and returns
      * not-a-number (NaN) if the new exponent is outside of the valid range
      * of the precision context, if it defines an exponent range.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedFloat Quantize(ExtendedFloat otherValue,
-      PrecisionContext ctx) {
+    public ExtendedFloat Quantize(
+ExtendedFloat otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-        return new ExtendedFloat(this.ef.Quantize(otherValue.ef, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Quantize(
+otherValue.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1544,8 +1703,8 @@ try {
      */
     public ExtendedFloat RoundToIntegralExact(PrecisionContext ctx) {
       try {
-     return new ExtendedFloat(this.ef.RoundToIntegralExact(ctx == null ?
-          null : ctx.ec));
+     return new ExtendedFloat(this.getEf().RoundToIntegralExact(ctx == null ?
+          null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1571,8 +1730,8 @@ try {
     public ExtendedFloat RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
       try {
         return new
-        ExtendedFloat(this.ef.RoundToIntegralNoRoundedFlag(ctx == null ?
-            null : ctx.ec));
+        ExtendedFloat(this.getEf().RoundToIntegralNoRoundedFlag(ctx == null ?
+            null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1596,16 +1755,20 @@ try {
      * defines an exponent range, the new exponent must be changed to the
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
-    public ExtendedFloat RoundToExponentExact(BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedFloat RoundToExponentExact(
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
 
-        return new ExtendedFloat(this.ef.RoundToExponentExact(exponent.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RoundToExponentExact(
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1632,16 +1795,20 @@ try {
      * exponent range, the new exponent must be changed to the given
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
-    public ExtendedFloat RoundToExponent(BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedFloat RoundToExponent(
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
 
-        return new ExtendedFloat(this.ef.RoundToExponent(exponent.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RoundToExponent(
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1666,11 +1833,14 @@ try {
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
      */
-    public ExtendedFloat RoundToExponentExact(int exponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedFloat RoundToExponentExact(
+int exponentSmall,
+PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.RoundToExponentExact(exponentSmall,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RoundToExponentExact(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1698,11 +1868,14 @@ try {
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
      */
-    public ExtendedFloat RoundToExponent(int exponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedFloat RoundToExponent(
+int exponentSmall,
+PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.RoundToExponent(exponentSmall,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().RoundToExponent(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1710,25 +1883,29 @@ try {
 
     /**
      * Multiplies two binary floats. The resulting scale will be the sum of the
-     * scales of the two binary floats. The result&#x27;s sign is positive
-     * if both operands have the same sign, and negative if they have
-     * different signs.
+     * scales of the two binary floats. The result's sign is positive if
+     * both operands have the same sign, and negative if they have different
+     * signs.
      * @param op Another binary float.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The product of the two binary floats.
+     * @throws java.lang.NullPointerException The parameter {@code op} is null.
      */
-    public ExtendedFloat Multiply(ExtendedFloat op,
-      PrecisionContext ctx) {
+    public ExtendedFloat Multiply(
+ExtendedFloat op,
+PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
 
-        return new ExtendedFloat(this.ef.Multiply(op.ef, ctx == null ? null :
-              ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Multiply(
+op.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1743,20 +1920,26 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The result thisValue * multiplicand + augend.
+     * @throws java.lang.NullPointerException The parameter {@code op} or {@code
+     * augend} is null.
      */
-    public ExtendedFloat MultiplyAndAdd(ExtendedFloat op,
-      ExtendedFloat augend,
-      PrecisionContext ctx) {
+    public ExtendedFloat MultiplyAndAdd(
+ExtendedFloat op,
+ExtendedFloat augend,
+PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
-        if ((augend) == null) {
+        if (augend == null) {
           throw new NullPointerException("augend");
         }
 
-        return new ExtendedFloat(this.ef.MultiplyAndAdd(op.ef, augend.ef,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().MultiplyAndAdd(
+op.getEf(),
+augend.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1774,19 +1957,23 @@ try {
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * subtrahend} is null.
      */
-    public ExtendedFloat MultiplyAndSubtract(ExtendedFloat op,
-      ExtendedFloat subtrahend,
-      PrecisionContext ctx) {
+    public ExtendedFloat MultiplyAndSubtract(
+ExtendedFloat op,
+ExtendedFloat subtrahend,
+PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
-        if ((subtrahend) == null) {
+        if (subtrahend == null) {
           throw new NullPointerException("subtrahend");
         }
 
-     return new ExtendedFloat(this.ef.MultiplyAndSubtract(op.ef,
-          subtrahend.ef, ctx == null ? null : ctx.ec));
+     return new ExtendedFloat(
+this.getEf().MultiplyAndSubtract(
+op.getEf(),
+subtrahend.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1803,8 +1990,8 @@ try {
      */
     public ExtendedFloat RoundToPrecision(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.RoundToPrecision(ctx == null ? null :
-               ctx.ec));
+        return new ExtendedFloat(this.getEf().RoundToPrecision(ctx == null ? null :
+               ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1822,7 +2009,7 @@ try {
      */
     public ExtendedFloat Plus(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Plus(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().Plus(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1843,8 +2030,8 @@ try {
 @Deprecated
     public ExtendedFloat RoundToBinaryPrecision(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.RoundToBinaryPrecision(ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(this.getEf().RoundToBinaryPrecision(ctx == null ?
+          null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1866,8 +2053,8 @@ try {
      */
     public ExtendedFloat SquareRoot(PrecisionContext ctx) {
       try {
-     return new ExtendedFloat(this.ef.SquareRoot(ctx == null ? null :
-          ctx.ec));
+     return new ExtendedFloat(this.getEf().SquareRoot(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1888,7 +2075,7 @@ try {
      */
     public ExtendedFloat Exp(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Exp(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().Exp(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1912,7 +2099,7 @@ try {
      */
     public ExtendedFloat Log(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Log(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().Log(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1935,7 +2122,7 @@ try {
      */
     public ExtendedFloat Log10(PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Log10(ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(this.getEf().Log10(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1951,14 +2138,17 @@ try {
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0), and
      * the exponent has a fractional part.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
     public ExtendedFloat Pow(ExtendedFloat exponent, PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-        return new ExtendedFloat(this.ef.Pow(exponent.ef, ctx == null ? null :
-               ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Pow(
+exponent.getEf(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1976,8 +2166,10 @@ try {
      */
     public ExtendedFloat Pow(int exponentSmall, PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.Pow(exponentSmall, ctx == null ? null :
-          ctx.ec));
+        return new ExtendedFloat(
+this.getEf().Pow(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1986,11 +2178,11 @@ try {
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
      */
     public ExtendedFloat Pow(int exponentSmall) {
-      return new ExtendedFloat(this.ef.Pow(exponentSmall));
+      return new ExtendedFloat(this.getEf().Pow(exponentSmall));
     }
 
     /**
@@ -2005,7 +2197,7 @@ try {
      * precision is unlimited (the context's Precision property is 0).
      */
     public static ExtendedFloat PI(PrecisionContext ctx) {
-      return new ExtendedFloat(EFloat.PI(ctx == null ? null : ctx.ec));
+      return new ExtendedFloat(EFloat.PI(ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -2015,7 +2207,7 @@ try {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat MovePointLeft(int places) {
-      return new ExtendedFloat(this.ef.MovePointLeft(places));
+      return new ExtendedFloat(this.getEf().MovePointLeft(places));
     }
 
     /**
@@ -2030,8 +2222,10 @@ try {
      */
     public ExtendedFloat MovePointLeft(int places, PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.MovePointLeft(places, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().MovePointLeft(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2042,12 +2236,14 @@ try {
      * the left.
      * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedFloat MovePointLeft(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedFloat(this.ef.MovePointLeft(bigPlaces.ei));
+      return new ExtendedFloat(this.getEf().MovePointLeft(bigPlaces.getEi()));
     }
 
     /**
@@ -2059,16 +2255,21 @@ try {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedFloat MovePointLeft(BigInteger bigPlaces,
+    public ExtendedFloat MovePointLeft(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
 
-     return new ExtendedFloat(this.ef.MovePointLeft(bigPlaces.ei, ctx ==
-          null ? null : ctx.ec));
+     return new ExtendedFloat(
+this.getEf().MovePointLeft(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2081,7 +2282,7 @@ PrecisionContext ctx) {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat MovePointRight(int places) {
-      return new ExtendedFloat(this.ef.MovePointRight(places));
+      return new ExtendedFloat(this.getEf().MovePointRight(places));
     }
 
     /**
@@ -2096,8 +2297,10 @@ PrecisionContext ctx) {
      */
     public ExtendedFloat MovePointRight(int places, PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.MovePointRight(places, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().MovePointRight(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2108,12 +2311,14 @@ PrecisionContext ctx) {
      * the right.
      * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedFloat MovePointRight(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedFloat(this.ef.MovePointRight(bigPlaces.ei));
+      return new ExtendedFloat(this.getEf().MovePointRight(bigPlaces.getEi()));
     }
 
     /**
@@ -2126,16 +2331,21 @@ PrecisionContext ctx) {
      * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces}, but not to
      * more than 0.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedFloat MovePointRight(BigInteger bigPlaces,
+    public ExtendedFloat MovePointRight(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
 
-        return new ExtendedFloat(this.ef.MovePointRight(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().MovePointRight(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2147,7 +2357,7 @@ PrecisionContext ctx) {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat ScaleByPowerOfTwo(int places) {
-      return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(places));
+      return new ExtendedFloat(this.getEf().ScaleByPowerOfTwo(places));
     }
 
     /**
@@ -2161,8 +2371,10 @@ PrecisionContext ctx) {
      */
     public ExtendedFloat ScaleByPowerOfTwo(int places, PrecisionContext ctx) {
       try {
-        return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(places, ctx == null ?
-          null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().ScaleByPowerOfTwo(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2172,12 +2384,14 @@ PrecisionContext ctx) {
      * Returns a number similar to this number but with the scale adjusted.
      * @param bigPlaces An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(bigPlaces.ei));
+      return new ExtendedFloat(this.getEf().ScaleByPowerOfTwo(bigPlaces.getEi()));
     }
 
     /**
@@ -2188,16 +2402,21 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces}.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces,
+    public ExtendedFloat ScaleByPowerOfTwo(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
 
-        return new ExtendedFloat(this.ef.ScaleByPowerOfTwo(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedFloat(
+this.getEf().ScaleByPowerOfTwo(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2209,7 +2428,7 @@ PrecisionContext ctx) {
      * @return An arbitrary-precision integer.
      */
     public BigInteger Precision() {
-      return new BigInteger(this.ef.Precision());
+      return new BigInteger(this.getEf().Precision());
     }
 
     /**
@@ -2219,7 +2438,7 @@ PrecisionContext ctx) {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat Ulp() {
-      return new ExtendedFloat(this.ef.Ulp());
+      return new ExtendedFloat(this.getEf().Ulp());
     }
 
     /**
@@ -2232,8 +2451,8 @@ PrecisionContext ctx) {
      */
     public ExtendedFloat[] DivideAndRemainderNaturalScale(ExtendedFloat
          divisor) {
-      EFloat[] edec = this.ef.DivideAndRemainderNaturalScale(divisor == null?
-        null : divisor.ef);
+      EFloat[] edec = this.getEf().DivideAndRemainderNaturalScale(divisor == null ?
+        null : divisor.getEf());
       return new ExtendedFloat[] {
         new ExtendedFloat(edec[0]), new ExtendedFloat(edec[1])
       };
@@ -2258,9 +2477,9 @@ PrecisionContext ctx) {
       ExtendedFloat divisor,
       PrecisionContext ctx) {
       try {
-        EFloat[] edec = this.ef.DivideAndRemainderNaturalScale(divisor ==
-          null ? null : divisor.ef,
-          ctx == null ? null : ctx.ec);
+        EFloat[] edec = this.getEf().DivideAndRemainderNaturalScale(
+divisor == null ? null : divisor.getEf(),
+ctx == null ? null : ctx.getEc());
         return new ExtendedFloat[] {
         new ExtendedFloat(edec[0]), new ExtendedFloat(edec[1])
       };

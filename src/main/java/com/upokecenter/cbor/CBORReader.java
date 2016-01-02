@@ -13,15 +13,11 @@ import com.upokecenter.util.*;
 
   class CBORReader {
     private final SharedRefs sharedRefs;
-    private StringRefs stringRefs;
     private final InputStream stream;
     private boolean addSharedRef;
     private int depth;
-    CBORDuplicatePolicy policy;
-
-    enum CBORDuplicatePolicy {
-      Overwrite, Disallow
-    }
+    private CBORDuplicatePolicy policy;
+    private StringRefs stringRefs;
 
     public CBORReader(InputStream stream) {
       this.stream = stream;
@@ -29,140 +25,16 @@ import com.upokecenter.util.*;
       this.policy = CBORDuplicatePolicy.Overwrite;
     }
 
+    enum CBORDuplicatePolicy {
+      Overwrite, Disallow
+    }
+
     public final CBORDuplicatePolicy getDuplicatePolicy() {
-        return policy;
+        return this.policy;
       }
 public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
         this.policy = value;
       }
-
-    private static long ReadDataLength(
-InputStream stream,
-int headByte,
-int expectedType) throws java.io.IOException {
-      if (headByte < 0) {
-        throw new CBORException("Unexpected data encountered");
-      }
-      if (((headByte >> 5) & 0x07) != expectedType) {
-        throw new CBORException("Unexpected data encountered");
-      }
-      headByte &= 0x1f;
-      if (headByte < 24) {
-        return headByte;
-      }
-      byte[] data = new byte[8];
-      switch (headByte & 0x1f) {
-          case 24: {
-            int tmp = stream.read();
-            if (tmp < 0) {
-              throw new CBORException("Premature end of data");
-            }
-            return tmp;
-          }
-          case 25: {
-            if (stream.read(data, 0, 2) != 2) {
-              throw new CBORException("Premature end of data");
-            }
-            int lowAdditional = ((int)(data[0] & (int)0xff)) << 8;
-            lowAdditional |= (int)(data[1] & (int)0xff);
-            return lowAdditional;
-          }
-          case 26: {
-            if (stream.read(data, 0, 4) != 4) {
-              throw new CBORException("Premature end of data");
-            }
-            long uadditional = ((long)(data[0] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
-            uadditional |= (long)(data[3] & (long)0xff);
-            return uadditional;
-          }
-          case 27: {
-            if (stream.read(data, 0, 8) != 8) {
-              throw new CBORException("Premature end of data");
-            }
-            // Treat return value as an unsigned integer
-            long uadditional = ((long)(data[0] & (long)0xff)) << 56;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 48;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 40;
-            uadditional |= ((long)(data[3] & (long)0xff)) << 32;
-            uadditional |= ((long)(data[4] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[5] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[6] & (long)0xff)) << 8;
-            uadditional |= (long)(data[7] & (long)0xff);
-            return uadditional;
-          }
-        case 28:
-        case 29:
-        case 30:
-          throw new CBORException("Unexpected data encountered");
-        case 31:
-          throw new CBORException("Indefinite-length data not allowed here");
-        default: return headByte;
-      }
-    }
-
-    private static BigInteger ToUnsignedBigInteger(long val) {
-      BigInteger lval = BigInteger.valueOf(val & ~(1L << 63));
-      if ((val >> 63) != 0) {
-        BigInteger bigintAdd = BigInteger.valueOf(1).shiftLeft(63);
-        lval = lval.add(bigintAdd);
-      }
-      return lval;
-    }
-
-    private static byte[] ReadByteData(
-InputStream stream,
-long uadditional,
-OutputStream outputStream) throws java.io.IOException {
-      if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
-        throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
-          " is bigger than supported ");
-      }
-      if (uadditional <= 0x10000) {
-        // Simple case: small size
-        byte[] data = new byte[(int)uadditional];
-        if (stream.read(data, 0, data.length) != data.length) {
-          throw new CBORException("Premature end of stream");
-        }
-        if (outputStream != null) {
-          outputStream.write(data, 0, data.length);
-          return null;
-        }
-        return data;
-      } else {
-        byte[] tmpdata = new byte[0x10000];
-        int total = (int)uadditional;
-        if (outputStream != null) {
-          while (total > 0) {
-            int bufsize = Math.min(tmpdata.length, total);
-            if (stream.read(tmpdata, 0, bufsize) != bufsize) {
-              throw new CBORException("Premature end of stream");
-            }
-            outputStream.write(tmpdata, 0, bufsize);
-            total -= bufsize;
-          }
-          return null;
-        }
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          while (total > 0) {
-            int bufsize = Math.min(tmpdata.length, total);
-            if (stream.read(tmpdata, 0, bufsize) != bufsize) {
-              throw new CBORException("Premature end of stream");
-            }
-            ms.write(tmpdata, 0, bufsize);
-            total -= bufsize;
-          }
-          return ms.toByteArray();
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-      }
-    }
 
     public CBORObject Read(CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
@@ -239,7 +111,7 @@ CBORTypeFilter filter) throws java.io.IOException {
       data = new byte[8];
       int lowAdditional = 0;
       switch (firstbyte & 0x1f) {
-          case 24: {
+        case 24: {
             int tmp = this.stream.read();
             if (tmp < 0) {
               throw new CBORException("Premature end of data");
@@ -248,7 +120,7 @@ CBORTypeFilter filter) throws java.io.IOException {
             uadditional = lowAdditional;
             break;
           }
-          case 25: {
+        case 25: {
             if (this.stream.read(data, 0, 2) != 2) {
               throw new CBORException("Premature end of data");
             }
@@ -257,7 +129,7 @@ CBORTypeFilter filter) throws java.io.IOException {
             uadditional = lowAdditional;
             break;
           }
-          case 26: {
+        case 26: {
             if (this.stream.read(data, 0, 4) != 4) {
               throw new CBORException("Premature end of data");
             }
@@ -267,7 +139,7 @@ CBORTypeFilter filter) throws java.io.IOException {
             uadditional |= (long)(data[3] & (long)0xff);
             break;
           }
-          case 27: {
+        case 27: {
             if (this.stream.read(data, 0, 8) != 8) {
               throw new CBORException("Premature end of data");
             }
@@ -493,7 +365,7 @@ filter == null ? null : filter.GetSubFilter(vtindex));
             CBORObject key = this.ReadForFirstByte(headByte, null);
             CBORObject value = this.Read(null);
             --this.depth;
-            if (policy == CBORDuplicatePolicy.Disallow) {
+            if (this.policy == CBORDuplicatePolicy.Disallow) {
               if (cbor.ContainsKey(key)) {
                 throw new CBORException("Duplicate key already exists: " + key);
               }
@@ -516,7 +388,7 @@ filter == null ? null : filter.GetSubFilter(vtindex));
           CBORObject key = this.Read(null);
           CBORObject value = this.Read(null);
           --this.depth;
-          if (policy == CBORDuplicatePolicy.Disallow) {
+          if (this.policy == CBORDuplicatePolicy.Disallow) {
             if (cbor.ContainsKey(key)) {
               throw new CBORException("Duplicate key already exists: " + key);
             }
@@ -533,11 +405,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
         CBORObject tagObject = null;
         if (!hasBigAdditional) {
           if (filter != null && !filter.TagAllowed(uadditional)) {
-         throw new CBORException("Unexpected tag encountered: " +
-              uadditional);
+            throw new CBORException("Unexpected tag encountered: " +
+                 uadditional);
           }
-          int uad = (uadditional >= 257 ? 257 : (uadditional<0 ? 0 :
-            (int)uadditional));
+          int uad = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
+            (int)uadditional);
           switch (uad) {
             case 256:
               // Tag 256: String namespace
@@ -575,8 +447,8 @@ filter == null ? null : filter.GetSubFilter(vtindex));
           taginfo = CBORObject.FindTagConverterLong(uadditional);
         } else {
           if (filter != null && !filter.TagAllowed(bigintAdditional)) {
-         throw new CBORException("Unexpected tag encountered: " +
-              uadditional);
+            throw new CBORException("Unexpected tag encountered: " +
+                 uadditional);
           }
           taginfo = CBORObject.FindTagConverter(bigintAdditional);
         }
@@ -590,8 +462,8 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
           return CBORObject.FromObjectAndTag(o, bigintAdditional);
         }
         if (uadditional < 65536) {
-          int uaddl = (uadditional >= 257 ? 257 : (uadditional<0 ? 0 :
-            (int)uadditional));
+          int uaddl = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
+            (int)uadditional);
           switch (uaddl) {
             case 256:
               // String tag
@@ -626,5 +498,133 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
           BigInteger.valueOf(uadditional));
       }
       throw new CBORException("Unexpected data encountered");
+    }
+
+    private static byte[] ReadByteData(
+InputStream stream,
+long uadditional,
+OutputStream outputStream) throws java.io.IOException {
+      if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
+        throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
+          " is bigger than supported ");
+      }
+      if (uadditional <= 0x10000) {
+        // Simple case: small size
+        byte[] data = new byte[(int)uadditional];
+        if (stream.read(data, 0, data.length) != data.length) {
+          throw new CBORException("Premature end of stream");
+        }
+        if (outputStream != null) {
+          outputStream.write(data, 0, data.length);
+          return null;
+        }
+        return data;
+      } else {
+        byte[] tmpdata = new byte[0x10000];
+        int total = (int)uadditional;
+        if (outputStream != null) {
+          while (total > 0) {
+            int bufsize = Math.min(tmpdata.length, total);
+            if (stream.read(tmpdata, 0, bufsize) != bufsize) {
+              throw new CBORException("Premature end of stream");
+            }
+            outputStream.write(tmpdata, 0, bufsize);
+            total -= bufsize;
+          }
+          return null;
+        }
+        java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+          while (total > 0) {
+            int bufsize = Math.min(tmpdata.length, total);
+            if (stream.read(tmpdata, 0, bufsize) != bufsize) {
+              throw new CBORException("Premature end of stream");
+            }
+            ms.write(tmpdata, 0, bufsize);
+            total -= bufsize;
+          }
+          return ms.toByteArray();
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+      }
+    }
+
+    private static long ReadDataLength(
+InputStream stream,
+int headByte,
+int expectedType) throws java.io.IOException {
+      if (headByte < 0) {
+        throw new CBORException("Unexpected data encountered");
+      }
+      if (((headByte >> 5) & 0x07) != expectedType) {
+        throw new CBORException("Unexpected data encountered");
+      }
+      headByte &= 0x1f;
+      if (headByte < 24) {
+        return headByte;
+      }
+      byte[] data = new byte[8];
+      switch (headByte & 0x1f) {
+        case 24: {
+            int tmp = stream.read();
+            if (tmp < 0) {
+              throw new CBORException("Premature end of data");
+            }
+            return tmp;
+          }
+        case 25: {
+            if (stream.read(data, 0, 2) != 2) {
+              throw new CBORException("Premature end of data");
+            }
+            int lowAdditional = ((int)(data[0] & (int)0xff)) << 8;
+            lowAdditional |= (int)(data[1] & (int)0xff);
+            return lowAdditional;
+          }
+        case 26: {
+            if (stream.read(data, 0, 4) != 4) {
+              throw new CBORException("Premature end of data");
+            }
+            long uadditional = ((long)(data[0] & (long)0xff)) << 24;
+            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
+            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
+            uadditional |= (long)(data[3] & (long)0xff);
+            return uadditional;
+          }
+        case 27: {
+            if (stream.read(data, 0, 8) != 8) {
+              throw new CBORException("Premature end of data");
+            }
+            // Treat return value as an unsigned integer
+            long uadditional = ((long)(data[0] & (long)0xff)) << 56;
+            uadditional |= ((long)(data[1] & (long)0xff)) << 48;
+            uadditional |= ((long)(data[2] & (long)0xff)) << 40;
+            uadditional |= ((long)(data[3] & (long)0xff)) << 32;
+            uadditional |= ((long)(data[4] & (long)0xff)) << 24;
+            uadditional |= ((long)(data[5] & (long)0xff)) << 16;
+            uadditional |= ((long)(data[6] & (long)0xff)) << 8;
+            uadditional |= (long)(data[7] & (long)0xff);
+            return uadditional;
+          }
+        case 28:
+        case 29:
+        case 30:
+          throw new CBORException("Unexpected data encountered");
+        case 31:
+          throw new CBORException("Indefinite-length data not allowed here");
+        default: return headByte;
+      }
+    }
+
+    private static BigInteger ToUnsignedBigInteger(long val) {
+      BigInteger lval = BigInteger.valueOf(val & ~(1L << 63));
+      if ((val >> 63) != 0) {
+        BigInteger bigintAdd = BigInteger.valueOf(1).shiftLeft(63);
+        lval = lval.add(bigintAdd);
+      }
+      return lval;
     }
   }

@@ -80,14 +80,14 @@ private CBORUtilities() {
       return Double.toString((double)dbl);
       // TODO: Use this version in version 3, and preserve
       // TODO: negative zeros in that version
-      //return ExtendedFloat.FromDouble(dbl).toString();
+      // return ExtendedFloat.FromDouble(dbl).toString();
     }
 
     public static String SingleToString(float sing) {
       return Float.toString((float)sing);
       // TODO: Use this version in version 3, and preserve
       // TODO: negative zeros in that version
-      //return ExtendedFloat.FromSingle(dbl).toString();
+      // return ExtendedFloat.FromSingle(dbl).toString();
     }
 
     public static BigInteger BigIntegerFromSingle(float flt) {

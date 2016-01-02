@@ -99,10 +99,10 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0, 0));
 Assert.assertEquals(
 0xfffd,
-DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 0));
+DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 0));
 Assert.assertEquals(
 0xfffd,
-DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 0));
+DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0, 0));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 0));
 
@@ -113,11 +113,11 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 0));
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800\ud800", 0, 1));
 Assert.assertEquals(
 0xd800,
-DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 1));
+DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800", 0, 1));
 Assert.assertEquals(
 0xdc00,
-DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 1));
+DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\udc00", 0, 1));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 1));
 
@@ -127,12 +127,12 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 1));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
     {
-long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 2);
+long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 2);
 Assert.assertEquals(-1, numberTemp);
 }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
     {
-long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 2);
+long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 2);
 Assert.assertEquals(-1, numberTemp);
 }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
@@ -154,7 +154,7 @@ Assert.assertEquals(-1, numberTemp);
       Assert.assertEquals((int)'A', DataUtilities.CodePointBefore("A", 1));
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", 2));
  Assert.assertEquals(
-(int)'A' ,
+(int)'A',
 DataUtilities.CodePointBefore("A\ud800\udc00B", 1));
   Assert.assertEquals(
 0x10000,
@@ -166,7 +166,10 @@ DataUtilities.CodePointBefore("A\ud800\udc00B", 2));
 0xd800,
 DataUtilities.CodePointBefore("A\ud800\udc00B", 2, 1));
     {
-long numberTemp = DataUtilities.CodePointBefore("A\ud800\udc00B" , 2, 2);
+long numberTemp = DataUtilities.CodePointBefore(
+  "A\ud800\udc00B",
+  2,
+  2);
 Assert.assertEquals(-1, numberTemp);
 }
       Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("\udc00B", 1));
@@ -182,9 +185,9 @@ Assert.assertEquals(-1, numberTemp);
       Assert.assertEquals(1, ((DataUtilities.CodePointCompare("A", null)==0) ? 0 : ((DataUtilities.CodePointCompare("A", null)< 0) ? -1 : 1)));
       Assert.assertEquals(0, ((DataUtilities.CodePointCompare(null, null) == 0) ? 0 : ((DataUtilities.CodePointCompare(null, null)< 0) ? -1 : 1)));
       {
-        long numberTemp = ((DataUtilities.CodePointCompare("abc", "abc"
-)==0) ? 0 : ((DataUtilities.CodePointCompare("abc", "abc"
-)< 0) ? -1 : 1));
+        long numberTemp = ((
+          DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((
+          DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1));
         Assert.assertEquals(0, numberTemp);
       }
       {
@@ -838,35 +841,61 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       DoTestReadUtf8(
   new byte[] { 0x21, 0x21, 0x21  },
-  0, "!!!", 0, "!!!");
+  0,
+ "!!!",
+ 0,
+ "!!!");
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
-        0, " \u0080", 0, " \u0080");
+        0,
+ " \u0080",
+ 0,
+ " \u0080");
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
-        0, " \u0080 ", 0, " \u0080 ");
+        0,
+ " \u0080 ",
+ 0,
+ " \u0080 ");
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xc2, (byte)0x80, (byte)0xc2  },
-        0, " \u0080\ufffd", -1, null);
+        0,
+ " \u0080\ufffd",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
-        0, " \ufffd!!", -1,
+        0,
+ " \ufffd!!",
+ -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xc2, (byte)0xff, 0x20  },
-        0, " \ufffd\ufffd ", -1, null);
+        0,
+ " \ufffd\ufffd ",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
-        0, " \u0800", 0, " \u0800");
+        0,
+ " \u0800",
+ 0,
+ " \u0800");
       DoTestReadUtf8(
     new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 ", 0, " \u0800 ");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  }, 0, " \ud800\udc00", 0,
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+ 0,
+ " \ud800\udc00",
+ 0,
           " \ud800\udc00");
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
         3,
-        0, " \ufffd", -1, null);
+        0,
+ " \ufffd",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
         5,
@@ -882,33 +911,58 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         -2,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20  }, 0, " \ud800\udc00 ",
-          0, " \ud800\udc00 ");
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20  },
+ 0,
+ " \ud800\udc00 ",
+          0,
+ " \ud800\udc00 ");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  }, 0, " \ufffd ", -1,
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  },
+ 0,
+ " \ufffd ",
+ -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xf0, (byte)0x90, 0x20  },
-        0, " \ufffd ", -1, null);
+        0,
+ " \ufffd ",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0xff  },
-        0, " \ufffd\ufffd", -1, null);
+        0,
+ " \ufffd\ufffd",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
-        0, " \ufffd\ufffd", -1,
+        0,
+ " \ufffd\ufffd",
+ -1,
         null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xe0, (byte)0xa0, 0x20  },
-        0, " \ufffd ", -1, null);
+        0,
+ " \ufffd ",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xe0, 0x20  },
-        0, " \ufffd ", -1, null);
+        0,
+ " \ufffd ",
+ -1,
+ null);
       DoTestReadUtf8(
         new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
-        0, " \ufffd\ufffd", -1,
+        0,
+ " \ufffd\ufffd",
+ -1,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xff  }, 0, " \ufffd\ufffd", -1,
+        new byte[] { 0x20, (byte)0xe0, (byte)0xff  },
+ 0,
+ " \ufffd\ufffd",
+ -1,
         null);
     }
     @Test

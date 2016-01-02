@@ -44,8 +44,8 @@ private URIUtility() {
     /**
      * The rules only check for the appropriate delimiters when splitting the path,
      * without checking if all the characters in each component are valid.
-     * Code points outside the Basic Latin range (U + 0000 to U + 007F) are
-     * not allowed.
+     * Code points outside the Basic Latin range (U + 0000 to U + 007F) are not
+     * allowed.
      */
       URILenient,
 
@@ -359,7 +359,7 @@ ParseMode.IRISurrogateLenient);
      * @return True if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false. Returns false if {@code s} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code s} 's length, or {@code s} 's
+     * less than 0 or greater than {@code s} 's length, or {@code s} ' s
      * length minus {@code offset} is less than {@code length}.
      * @throws java.lang.NullPointerException --.
      */
@@ -940,12 +940,7 @@ segmentsBase[5]));
      * Parses an Internationalized Resource Identifier (IRI) reference under
      * RFC3987. If the IRI reference is syntactically valid, splits the
      * string into its components and returns an array containing the
-     * indices into the components. <returns>If the string is a valid IRI
-     * reference, returns an array of 10 integers. Each of the five pairs
-     * corresponds to the start and end index of the IRI's scheme,
-     * authority, path, query, or fragment component, respectively. If a
-     * component is absent, both indices in that pair will be -1. If the
-     * string is null or is not a valid IRI, returns null.</returns>
+     * indices into the components.
      * @param s A string that contains an IRI. Can be null.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
@@ -977,7 +972,7 @@ segmentsBase[5]));
      * index won't be less than 0 in any other case). If the string is null
      * or is not a valid IRI, returns null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
-     * less than 0 or greater than {@code s} 's length, or {@code s} 's
+     * less than 0 or greater than {@code s} 's length, or {@code s} ' s
      * length minus {@code offset} is less than {@code length}.
      * @throws java.lang.NullPointerException The parameter {@code s} is null.
      */
@@ -989,7 +984,7 @@ ParseMode parseMode) {
       if (s == null) {
         return null;
       }
-      if ((s) == null) {
+      if (s == null) {
   throw new NullPointerException("s");
 }
 if (offset < 0) {
@@ -1008,9 +1003,9 @@ if (length > s.length()) {
   throw new IllegalArgumentException("length (" + length +
     ") is more than " + s.length());
 }
-if (s.length()-offset < length) {
+if (s.length() - offset < length) {
   throw new IllegalArgumentException("s's length minus " + offset + " (" +
-    (s.length()-offset) + ") is less than " + length);
+    (s.length() - offset) + ") is less than " + length);
 }
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
       if (length == 0) {

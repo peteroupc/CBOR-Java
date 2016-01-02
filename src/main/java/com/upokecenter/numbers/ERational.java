@@ -82,7 +82,7 @@ this.denominator).equals(other.denominator)) && this.flags == other.flags);
     }
 
     /**
-     * Creates a number with the given numerator and denominator.
+     * Creates a rational number with the given numerator and denominator.
      * @param numeratorSmall A 32-bit signed integer.
      * @param denominatorSmall A 32-bit signed integer. (2).
      * @return An arbitrary-precision rational number.
@@ -94,7 +94,7 @@ int denominatorSmall) {
     }
 
     /**
-     * Creates a number with the given numerator and denominator.
+     * Creates a rational number with the given numerator and denominator.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @return An arbitrary-precision rational number.
@@ -106,7 +106,8 @@ EInteger denominator) {
     }
 
     /**
-     * Initializes a new instance of the arbitrary-precision rational number class.
+     * Initializes a new instance of the <see cref='T:PeterO.Numbers.ERational'/>
+     * class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
@@ -119,7 +120,7 @@ EInteger denominator) {
       if (denominator == null) {
         throw new NullPointerException("denominator");
       }
-      if (denominator.signum() == 0) {
+      if (denominator.isZero()) {
         throw new IllegalArgumentException("denominator is zero");
       }
       boolean numNegative = numerator.signum() < 0;
@@ -146,14 +147,14 @@ EInteger denominator) {
     @Override public String toString() {
       if (!this.isFinite()) {
         if (this.IsSignalingNaN()) {
-          if (this.unsignedNumerator.signum() == 0) {
+          if (this.unsignedNumerator.isZero()) {
             return this.isNegative() ? "-sNaN" : "sNaN";
           }
           return this.isNegative() ? "-sNaN" + this.unsignedNumerator :
               "sNaN" + this.unsignedNumerator;
         }
         if (this.IsQuietNaN()) {
-          if (this.unsignedNumerator.signum() == 0) {
+          if (this.unsignedNumerator.isZero()) {
             return this.isNegative() ? "-NaN" : "NaN";
           }
           return this.isNegative() ? "-NaN" + this.unsignedNumerator :
@@ -253,7 +254,7 @@ boolean negative) {
   IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
           diag);
       }
-      if (diag.signum() == 0 && !negative) {
+      if (diag.isZero() && !negative) {
         return signaling ? SignalingNaN : NaN;
       }
       int flags = 0;
@@ -268,7 +269,7 @@ boolean negative) {
     }
 
     /**
-     *
+     * Not documented yet.
      * @param ef An arbitrary-precision binary float.
      * @return An arbitrary-precision rational number.
      * @throws java.lang.NullPointerException The parameter {@code ef} is null.
@@ -297,7 +298,7 @@ boolean negative) {
       }
       EInteger num = ef.getMantissa();
       EInteger exp = ef.getExponent();
-      if (exp.signum() == 0) {
+      if (exp.isZero()) {
         return FromBigInteger(num);
       }
       boolean neg = num.signum() < 0;
@@ -316,8 +317,8 @@ boolean negative) {
     }
 
     /**
-     *
-     * @param ef An arbitrary-precision decimal object.
+     * Converts an arbitrary-precision decimal number to a rational number.
+     * @param ef An arbitrary-precision decimal number.
      * @return An arbitrary-precision rational number.
      * @throws java.lang.NullPointerException The parameter {@code ef} is null.
      */
@@ -345,7 +346,7 @@ boolean negative) {
       }
       EInteger num = ef.getMantissa();
       EInteger exp = ef.getExponent();
-      if (exp.signum() == 0) {
+      if (exp.isZero()) {
         return FromBigInteger(num);
       }
       boolean neg = num.signum() < 0;
@@ -384,7 +385,7 @@ ctx);
       if (this.IsNegativeInfinity()) {
         return EDecimal.NegativeInfinity;
       }
-      EDecimal ef = (this.isNegative() && this.signum() == 0) ?
+      EDecimal ef = (this.isNegative() && this.isZero()) ?
  EDecimal.NegativeZero : EDecimal.FromBigInteger(this.getNumerator());
       return ef.Divide(EDecimal.FromBigInteger(this.getDenominator()), ctx);
     }
@@ -420,10 +421,10 @@ ctx);
       if (this.IsNegativeInfinity()) {
         return EDecimal.NegativeInfinity;
       }
-      if (this.isNegative() && this.signum() == 0) {
+      if (this.isNegative() && this.isZero()) {
         return EDecimal.NegativeZero;
       }
-      EDecimal valueEdNum = (this.isNegative() && this.signum() == 0) ?
+      EDecimal valueEdNum = (this.isNegative() && this.isZero()) ?
  EDecimal.NegativeZero : EDecimal.FromBigInteger(this.getNumerator());
  EDecimal valueEdDen = EDecimal.FromBigInteger(this.getDenominator());
       EDecimal ed = valueEdNum.Divide(valueEdDen, null);
@@ -464,7 +465,7 @@ ctx);
       if (this.IsNegativeInfinity()) {
         return EFloat.NegativeInfinity;
       }
-      EFloat ef = (this.isNegative() && this.signum() == 0) ?
+      EFloat ef = (this.isNegative() && this.isZero()) ?
      EFloat.NegativeZero : EFloat.FromBigInteger(this.getNumerator());
       return ef.Divide(EFloat.FromBigInteger(this.getDenominator()), ctx);
     }
@@ -499,11 +500,11 @@ ctx);
       if (this.IsNegativeInfinity()) {
         return EFloat.NegativeInfinity;
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
       return this.isNegative() ? EFloat.NegativeZero :
           EFloat.Zero;
       }
-      EFloat valueEdNum = (this.isNegative() && this.signum() == 0) ?
+      EFloat valueEdNum = (this.isNegative() && this.isZero()) ?
      EFloat.NegativeZero : EFloat.FromBigInteger(this.getNumerator());
       EFloat valueEdDen = EFloat.FromBigInteger(this.getDenominator());
       EFloat ed = valueEdNum.Divide(valueEdDen, null);
@@ -550,10 +551,10 @@ ctx);
       EInteger rem;
  EInteger quo;
 {
-EInteger[] divrem=(this.getNumerator()).DivRem(this.denominator);
+EInteger[] divrem = this.getNumerator().DivRem(this.denominator);
 quo = divrem[0];
 rem = divrem[1]; }
-      if (rem.signum() != 0) {
+      if (!rem.isZero()) {
         throw new ArithmeticException("Value is not an integral value");
       }
       return quo;
@@ -614,7 +615,7 @@ rem = divrem[1]; }
      */
     public final boolean isZero() {
         return ((this.flags & (BigNumberFlags.FlagInfinity |
-          BigNumberFlags.FlagNaN)) == 0) && this.unsignedNumerator.signum() == 0;
+          BigNumberFlags.FlagNaN)) == 0) && this.unsignedNumerator.isZero();
       }
 
     /**
@@ -625,7 +626,7 @@ rem = divrem[1]; }
     public final int signum() {
         return ((this.flags & (BigNumberFlags.FlagInfinity |
           BigNumberFlags.FlagNaN)) != 0) ? (this.isNegative() ? -1 : 1) :
-          (this.unsignedNumerator.signum() == 0 ? 0 : (this.isNegative() ? -1 : 1));
+          (this.unsignedNumerator.isZero() ? 0 : (this.isNegative() ? -1 : 1));
       }
 
     /**
@@ -730,7 +731,7 @@ rem = divrem[1]; }
       // have the same sign
 
       EInteger bigExponent = other.getExponent();
-      if (bigExponent.signum() == 0) {
+      if (bigExponent.isZero()) {
         // Special case: other has exponent 0
         EInteger otherMant = other.getMantissa();
         EInteger bcx = this.getDenominator().Multiply(otherMant);
@@ -743,12 +744,12 @@ rem = divrem[1]; }
         EInteger thisRem;
         EInteger thisInt;
 {
-EInteger[] divrem=(this.getUnsignedNumerator()).DivRem(this.getDenominator());
+EInteger[] divrem = this.getUnsignedNumerator().DivRem(this.getDenominator());
 thisInt = divrem[0];
 thisRem = divrem[1]; }
         EFloat otherAbs = other.Abs();
         EFloat thisIntDec = EFloat.FromBigInteger(thisInt);
-        if (thisRem.signum() == 0) {
+        if (thisRem.isZero()) {
           // This Object's value is an integer
           // System.out.println("Shortcircuit IV");
           int ret = thisIntDec.compareTo(otherAbs);
@@ -805,8 +806,8 @@ thisRem = divrem[1]; }
     }
 
     /**
-     * Compares an arbitrary-precision decimal object with this instance.
-     * @param other An arbitrary-precision decimal object.
+     * Compares an arbitrary-precision decimal number with this instance.
+     * @param other An arbitrary-precision decimal number.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
@@ -841,7 +842,7 @@ thisRem = divrem[1]; }
       // At this point, both numbers are finite and
       // have the same sign
 
-      if (other.getExponent().signum() == 0) {
+      if (other.getExponent().isZero()) {
         // Special case: other has exponent 0
         EInteger otherMant = other.getMantissa();
         EInteger bcx = this.getDenominator().Multiply(otherMant);
@@ -854,12 +855,12 @@ thisRem = divrem[1]; }
         EInteger thisRem;
         EInteger thisInt;
 {
-EInteger[] divrem=(this.getUnsignedNumerator()).DivRem(this.getDenominator());
+EInteger[] divrem = this.getUnsignedNumerator().DivRem(this.getDenominator());
 thisInt = divrem[0];
 thisRem = divrem[1]; }
         EDecimal otherAbs = other.Abs();
         EDecimal thisIntDec = EDecimal.FromBigInteger(thisInt);
-        if (thisRem.signum() == 0) {
+        if (thisRem.isZero()) {
           // This Object's value is an integer
           // System.out.println("Shortcircuit IV");
           int ret = thisIntDec.compareTo(otherAbs);
@@ -1043,7 +1044,7 @@ BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
     /**
      * Adds two rational numbers.
      * @param otherValue Another arbitrary-precision rational number.
-     * @return The sum of the two numbers. returns not-a-number (NaN) if either
+     * @return The sum of the two numbers. Returns not-a-number (NaN) if either
      * operand is NaN.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
@@ -1128,7 +1129,7 @@ otherValue.isNegative());
      * Multiplies this instance by the value of an arbitrary-precision rational
      * number.
      * @param otherValue An arbitrary-precision rational number.
-     * @return The product of the two objects.
+     * @return The product of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
@@ -1153,16 +1154,16 @@ otherValue.isNegative());
       }
       boolean resultNeg = this.isNegative() ^ otherValue.isNegative();
       if (this.IsInfinity()) {
-        return otherValue.signum() == 0 ? NaN : (resultNeg ? NegativeInfinity :
+        return otherValue.isZero() ? NaN : (resultNeg ? NegativeInfinity :
           PositiveInfinity);
       }
       if (otherValue.IsInfinity()) {
-  return this.signum() == 0 ? NaN : (resultNeg ? NegativeInfinity :
+  return this.isZero() ? NaN : (resultNeg ? NegativeInfinity :
           PositiveInfinity);
       }
       EInteger ac = this.getNumerator().Multiply(otherValue.getNumerator());
       EInteger bd = this.getDenominator().Multiply(otherValue.getDenominator());
-      return ac.signum() == 0 ? (resultNeg ? NegativeZero : Zero) : new
+      return ac.isZero() ? (resultNeg ? NegativeZero : Zero) : new
         ERational(ac, bd).Simplify().ChangeSign(resultNeg);
     }
 
@@ -1201,11 +1202,11 @@ otherValue.isNegative());
       if (otherValue.IsInfinity()) {
         return resultNeg ? NegativeZero : Zero;
       }
-      if (otherValue.signum() == 0) {
-  return this.signum() == 0 ? NaN : (resultNeg ? NegativeInfinity :
+      if (otherValue.isZero()) {
+  return this.isZero() ? NaN : (resultNeg ? NegativeInfinity :
           PositiveInfinity);
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return resultNeg ? NegativeZero : Zero;
       }
       EInteger ad = this.getNumerator().Multiply(otherValue.getDenominator());
@@ -1247,10 +1248,10 @@ otherValue.isNegative());
       if (otherValue.IsInfinity()) {
         return this;
       }
-      if (otherValue.signum() == 0) {
+      if (otherValue.isZero()) {
         return NaN;
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return this;
       }
       EInteger ad = this.getNumerator().Multiply(otherValue.getDenominator());

@@ -99,7 +99,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      */
@@ -135,7 +135,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Creates a number with the value exponent*10^mantissa.
      * @param mantissaSmall The un-scaled value.
      * @param exponentSmall The decimal exponent.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal Create(int mantissaSmall, int exponentSmall) {
       return Create(EInteger.FromInt64(mantissaSmall), EInteger.FromInt64(exponentSmall));
@@ -145,7 +145,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Creates a number with the value exponent*10^mantissa.
      * @param mantissa The un-scaled value.
      * @param exponent The decimal exponent.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
      */
@@ -192,7 +192,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Creates a not-a-number arbitrary-precision decimal object.
+     * Creates a not-a-number arbitrary-precision decimal number.
      * @param diag A number to use as diagnostic information associated with this
      * object. If none is needed, should be zero.
      * @return A quiet not-a-number.
@@ -204,14 +204,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Creates a not-a-number arbitrary-precision decimal object.
+     * Creates a not-a-number arbitrary-precision decimal number.
      * @param diag A number to use as diagnostic information associated with this
      * object. If none is needed, should be zero.
      * @param signaling Whether the return value will be signaling (true) or quiet
      * (false).
      * @param negative Whether the return value is negative.
-     * @param ctx An EContext object.
-     * @return An arbitrary-precision decimal object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null or
      * is less than 0.
      */
@@ -228,7 +228,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
        IllegalArgumentException("Diagnostic information must be 0 or greater, was: " +
                     diag);
       }
-      if (diag.signum() == 0 && !negative) {
+      if (diag.isZero() && !negative) {
         return signaling ? SignalingNaN : NaN;
       }
       int flags = 0;
@@ -288,10 +288,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Creates a decimal number from a string that represents a number. See
      * <code>FromString(String, int, int, EContext)</code> for more information.
      * @param str A string that represents a number.
-     * @param offset A zero-based index showing where the desired portion of "str"
-     * begins.
-     * @param length The length, in code units, of the desired portion of "str"
-     * (but not more than "str" 's length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @return An arbitrary-precision decimal number with the same value as the
      * given string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
@@ -311,8 +311,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * optional plus sign ("+" , U+002B) or minus sign ("-", U+002D) (if '-'
      * , the value is negative.)</li> <li>One or more digits, with a single
      * optional decimal point after the first digit and before the last
-     * digit.</li> <li>Optionally, "E+" (positive exponent) or "E-"
-     * (negative exponent) plus one or more digits specifying the
+     * digit.</li> <li>Optionally, "E+"/"e+" (positive exponent) or
+     * "E-"/"e-" (negative exponent) plus one or more digits specifying the
      * exponent.</li></ul> <p>The string can also be "-INF", "-Infinity",
      * "Infinity", "INF" , quiet NaN ("NaN" /"-NaN") followed by any number
      * of digits, or signaling NaN ("sNaN" /"-sNaN") followed by any number
@@ -321,7 +321,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Basic Latin range. In particular, the digits must be the basic digits
      * 0 to 9 (U + 0030 to U + 0039). The string is not allowed to contain white
      * space characters, including spaces.</p>
-     * @param str A string object, a portion of which represents a number.
+     * @param str A text string, a portion of which represents a number.
      * @param offset A zero-based index that identifies the start of the number.
      * @param length The length of the number within the string.
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -703,7 +703,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param value An arbitrary-precision decimal object.
+     * @param value An arbitrary-precision decimal number.
      * @return A 32-bit signed integer.
      */
       public int GetSign(EDecimal value) {
@@ -712,7 +712,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param value An arbitrary-precision decimal object.
+     * @param value An arbitrary-precision decimal number.
      * @return An arbitrary-precision integer.
      */
       public EInteger GetMantissa(EDecimal value) {
@@ -721,7 +721,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * This is an internal method.
-     * @param value An arbitrary-precision decimal object.
+     * @param value An arbitrary-precision decimal number.
      * @return An arbitrary-precision integer.
      */
       public EInteger GetExponent(EDecimal value) {
@@ -765,22 +765,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           numerator.gcd(denominator);
         EInteger tmpden = denominator;
         tmpden = tmpden.Divide(gcd);
-        if (tmpden.signum() == 0) {
+        if (tmpden.isZero()) {
           return false;
         }
         // Eliminate factors of 2
-        while (tmpden.isEven()) {
-          tmpden = tmpden.ShiftRight(1);
-        }
+        int lowBit = tmpden.getLowBit();
+        tmpden = tmpden.ShiftRight(lowBit);
         // Eliminate factors of 5
         while (true) {
           EInteger bigrem;
           EInteger bigquo;
 {
-EInteger[] divrem=(tmpden).DivRem(EInteger.FromInt64(5));
+EInteger[] divrem = tmpden.DivRem(EInteger.FromInt64(5));
 bigquo = divrem[0];
 bigrem = divrem[1]; }
-          if (bigrem.signum() != 0) {
+          if (!bigrem.isZero()) {
             break;
           }
           tmpden = bigquo;
@@ -791,7 +790,7 @@ bigrem = divrem[1]; }
     /**
      * This is an internal method.
      * @param bigint Another arbitrary-precision integer.
-     * @param power A Fastinteger.
+     * @param power A fast integer.
      * @return An arbitrary-precision integer.
      */
       public EInteger MultiplyByRadixPower(
@@ -801,7 +800,7 @@ bigrem = divrem[1]; }
         if (power.signum() <= 0) {
           return tmpbigint;
         }
-        if (tmpbigint.signum() == 0) {
+        if (tmpbigint.isZero()) {
           return tmpbigint;
         }
         EInteger bigtmp = null;
@@ -822,7 +821,7 @@ bigrem = divrem[1]; }
 
     /**
      * This is an internal method.
-     * @param value An arbitrary-precision decimal object.
+     * @param value An arbitrary-precision decimal number.
      * @return A 32-bit signed integer.
      */
       public int GetFlags(EDecimal value) {
@@ -833,8 +832,8 @@ bigrem = divrem[1]; }
      * This is an internal method.
      * @param mantissa An arbitrary-precision integer.
      * @param exponent Another arbitrary-precision integer.
-     * @param flags Not documented yet. (3).
-     * @return An arbitrary-precision decimal object.
+     * @param flags The parameter {@code flags} is not documented yet.
+     * @return An arbitrary-precision decimal number.
      */
       public EDecimal CreateNewWithFlags(
         EInteger mantissa,
@@ -854,7 +853,7 @@ bigrem = divrem[1]; }
     /**
      * This is an internal method.
      * @param val A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
       public EDecimal ValueOf(int val) {
         return (val == 0) ? Zero : ((val == 1) ? One : FromInt64(val));
@@ -881,12 +880,12 @@ bigrem = divrem[1]; }
         return negative ? "-Infinity" : "Infinity";
       }
       if ((this.flags & BigNumberFlags.FlagSignalingNaN) != 0) {
-        return this.unsignedMantissa.signum() == 0 ? (negative ? "-sNaN" : "sNaN") :
+        return this.unsignedMantissa.isZero() ? (negative ? "-sNaN" : "sNaN") :
           (negative ? "-sNaN" + this.unsignedMantissa.Abs() :
            "sNaN" + this.unsignedMantissa.Abs());
       }
       if ((this.flags & BigNumberFlags.FlagQuietNaN) != 0) {
-        return this.unsignedMantissa.signum() == 0 ? (negative ? "-NaN" : "NaN") :
+        return this.unsignedMantissa.isZero() ? (negative ? "-NaN" : "NaN") :
           (negative ? "-NaN" + this.unsignedMantissa.Abs() : "NaN" +
            this.unsignedMantissa.Abs());
       }
@@ -895,7 +894,7 @@ bigrem = divrem[1]; }
       if (scaleSign == 0) {
         return negative ? "-" + mantissaString : mantissaString;
       }
-      boolean iszero = this.unsignedMantissa.signum() == 0;
+      boolean iszero = this.unsignedMantissa.isZero();
       if (mode == 2 && iszero && scaleSign < 0) {
         // special case for zero in plain
         return negative ? "-" + mantissaString : mantissaString;
@@ -1242,7 +1241,7 @@ bigrem = divrem[1]; }
         throw new ArithmeticException("Value is infinity or NaN");
       }
       int sign = this.getExponent().signum();
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return EInteger.FromInt64(0);
       }
       if (sign == 0) {
@@ -1274,7 +1273,7 @@ bigrem = divrem[1]; }
       }
     }
 
-    private static final EInteger valueOneShift62 = EInteger.FromInt64(1).ShiftLeft(62);
+    private static final EInteger ValueOneShift62 = EInteger.FromInt64(1).ShiftLeft(62);
 
     /**
      * Creates a binary floating-point number from this object&#x27;s value. Note
@@ -1298,11 +1297,11 @@ bigrem = divrem[1]; }
       }
       EInteger bigintExp = this.getExponent();
       EInteger bigintMant = this.getMantissa();
-      if (bigintMant.signum() == 0) {
+      if (bigintMant.isZero()) {
         return this.isNegative() ? EFloat.NegativeZero :
           EFloat.Zero;
       }
-      if (bigintExp.signum() == 0) {
+      if (bigintExp.isZero()) {
         // Integer
         return EFloat.FromBigInteger(bigintMant);
       }
@@ -1327,12 +1326,12 @@ bigrem = divrem[1]; }
         while (true) {
           EInteger quotient;
 {
-EInteger[] divrem=(bigmantissa).DivRem(divisor);
+EInteger[] divrem = bigmantissa.DivRem(divisor);
 quotient = divrem[0];
 remainder = divrem[1]; }
           // Ensure that the quotient has enough precision
           // to be converted accurately to a single or double
-          if (remainder.signum() != 0 && quotient.compareTo(valueOneShift62) < 0) {
+          if (!remainder.isZero() && quotient.compareTo(ValueOneShift62) < 0) {
             // At this point, the quotient has 62 or fewer bits
             int[] bits = FastInteger.GetLastWords(quotient, 2);
             int shift = 0;
@@ -1361,7 +1360,7 @@ remainder = divrem[1]; }
         }
         if (oddRounding) {
           // Round to odd to avoid the double-rounding problem
-          if (remainder.signum() != 0 && bigmantissa.isEven()) {
+          if (!remainder.isZero() && bigmantissa.isEven()) {
             bigmantissa = bigmantissa.Add(EInteger.FromInt64(1));
           }
         } else {
@@ -1402,10 +1401,10 @@ remainder = divrem[1]; }
       if (this.IsNegativeInfinity()) {
         return Float.NEGATIVE_INFINITY;
       }
-      if (this.isNegative() && this.signum() == 0) {
+      if (this.isNegative() && this.isZero()) {
         return Float.intBitsToFloat(1 << 31);
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return 0.0f;
       }
       EInteger adjExp = this.GetAdjustedExponent();
@@ -1427,7 +1426,7 @@ remainder = divrem[1]; }
       if (!this.isFinite()) {
         return EInteger.FromInt64(0);
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return EInteger.FromInt64(0);
       }
       EInteger ret = this.getExponent();
@@ -1441,7 +1440,7 @@ remainder = divrem[1]; }
       if (!ef.isFinite()) {
         return EInteger.FromInt64(0);
       }
-      if (ef.signum() == 0) {
+      if (ef.isZero()) {
         return EInteger.FromInt64(0);
       }
       EInteger ret = ef.getExponent();
@@ -1470,19 +1469,17 @@ remainder = divrem[1]; }
       if (this.IsNegativeInfinity()) {
         return Double.NEGATIVE_INFINITY;
       }
-      if (this.isNegative() && this.signum() == 0) {
-        return Extras.IntegersToDouble(new int[] { ((int)(1 << 31)),
-                    0 });
+      if (this.isNegative() && this.isZero()) {
+        return Extras.IntegersToDouble(new int[] { 0, ((int)(1 << 31)) });
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return 0.0;
       }
       EInteger adjExp = this.GetAdjustedExponent();
       if (adjExp.compareTo(EInteger.FromInt64(-326)) < 0) {
         // Very low exponent, treat as 0
-        return this.isNegative() ?
-          Extras.IntegersToDouble(new int[] { ((int)(1 << 31)),
-                    0 }) : 0.0;
+        return this.isNegative() ? Extras.IntegersToDouble(new int[] { 0,
+            ((int)(1 << 31)) }) : 0.0;
       }
       if (adjExp.compareTo(EInteger.FromInt64(309)) > 0) {
         // Very high exponent, treat as infinity
@@ -1524,7 +1521,7 @@ remainder = divrem[1]; }
         EInteger info = EInteger.FromInt64(valueFpMantissa);
         value = (neg ? BigNumberFlags.FlagNegative : 0) |
        (quiet ? BigNumberFlags.FlagQuietNaN : BigNumberFlags.FlagSignalingNaN);
-        return info.signum() == 0 ? (quiet ? NaN : SignalingNaN) :
+        return info.isZero() ? (quiet ? NaN : SignalingNaN) :
           CreateWithFlags(
             info,
             EInteger.FromInt64(0),
@@ -1572,7 +1569,7 @@ remainder = divrem[1]; }
     /**
      * Converts a big integer to an arbitrary precision decimal.
      * @param bigint An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object with the exponent set to 0.
+     * @return An arbitrary-precision decimal number with the exponent set to 0.
      */
     public static EDecimal FromBigInteger(EInteger bigint) {
       return EDecimal.Create(bigint, EInteger.FromInt64(0));
@@ -1581,7 +1578,7 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from a 64-bit signed integer.
      * @param valueSmall A 64-bit signed integer.
-     * @return An arbitrary-precision decimal object with the exponent set to 0.
+     * @return An arbitrary-precision decimal number with the exponent set to 0.
      */
     public static EDecimal FromInt64(long valueSmall) {
       EInteger bigint = EInteger.FromInt64(valueSmall);
@@ -1591,7 +1588,7 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal FromInt32(int valueSmaller) {
       EInteger bigint = EInteger.FromInt64(valueSmaller);
@@ -1629,7 +1626,7 @@ remainder = divrem[1]; }
         EInteger info = FastInteger.WordsToBigInteger(value);
         value[0] = (neg ? BigNumberFlags.FlagNegative : 0) | (quiet ?
                 BigNumberFlags.FlagQuietNaN : BigNumberFlags.FlagSignalingNaN);
-        return info.signum() == 0 ? (quiet ? NaN : SignalingNaN) :
+        return info.isZero() ? (quiet ? NaN : SignalingNaN) :
           CreateWithFlags(
             info,
             EInteger.FromInt64(0),
@@ -1680,7 +1677,7 @@ remainder = divrem[1]; }
      * Creates a decimal number from an arbitrary-precision binary floating-point
      * number.
      * @param bigfloat A big floating-point number.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigfloat} is null.
      */
     public static EDecimal FromExtendedFloat(EFloat bigfloat) {
@@ -1699,11 +1696,11 @@ remainder = divrem[1]; }
       }
       EInteger bigintExp = bigfloat.getExponent();
       EInteger bigintMant = bigfloat.getMantissa();
-      if (bigintMant.signum() == 0) {
+      if (bigintMant.isZero()) {
         return bigfloat.isNegative() ? EDecimal.NegativeZero :
           EDecimal.Zero;
       }
-      if (bigintExp.signum() == 0) {
+      if (bigintExp.isZero()) {
         // Integer
         return EDecimal.FromBigInteger(bigintMant);
       }
@@ -1749,7 +1746,7 @@ remainder = divrem[1]; }
     /**
      * Same as toString(), except that when an exponent is used it will be a
      * multiple of 3.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToEngineeringString() {
       return this.ToStringInternal(1);
@@ -1757,7 +1754,7 @@ remainder = divrem[1]; }
 
     /**
      * Converts this value to a string, but without using exponential notation.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToPlainString() {
       return this.ToStringInternal(2);
@@ -1915,7 +1912,7 @@ remainder = divrem[1]; }
      */
     public final int signum() {
         return (((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
-                this.unsignedMantissa.signum() == 0) ? 0 : (((this.flags &
+                this.unsignedMantissa.isZero()) ? 0 : (((this.flags &
                     BigNumberFlags.FlagNegative) != 0) ? -1 : 1);
       }
 
@@ -1925,12 +1922,12 @@ remainder = divrem[1]; }
      */
     public final boolean isZero() {
         return ((this.flags & BigNumberFlags.FlagSpecial) == 0) &&
-          this.unsignedMantissa.signum() == 0;
+          this.unsignedMantissa.isZero();
       }
 
     /**
      * Gets the absolute value of this object.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal Abs() {
       return this.Abs(null);
@@ -1938,7 +1935,8 @@ remainder = divrem[1]; }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number. If this value is positive
+     * zero, returns positive zero.
      */
     public EDecimal Negate() {
       return this.Negate(null);
@@ -1950,7 +1948,7 @@ remainder = divrem[1]; }
      * @param divisor The divisor.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns not-a-number (NaN) if the divisor and the dividend are 0.
      * Returns NaN if the result can't be exact because it would have a
      * nonterminating decimal expansion.
      */
@@ -1983,7 +1981,7 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and returns the integer
+     * Divides two arbitrary-precision decimal numbers, and returns the integer
      * part of the result, rounded down, with the preferred exponent set to
      * this value&#x27;s exponent minus the divisor&#x27;s exponent.
      * @param divisor The divisor.
@@ -2019,7 +2017,7 @@ remainder = divrem[1]; }
      * Calculates the remainder of a number by the formula "this" - (("this" /
      * "divisor") * "divisor").
      * @param divisor The number to divide by.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal RemainderNaturalScale(EDecimal divisor) {
       return this.RemainderNaturalScale(divisor, null);
@@ -2036,7 +2034,7 @@ remainder = divrem[1]; }
      * in this context. Flags will be set on the given context only if the
      * context's HasFlags is true and the integer part of the division
      * result doesn't fit the precision and exponent range without rounding.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal RemainderNaturalScale(
       EDecimal divisor,
@@ -2047,9 +2045,9 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponentSmall The desired exponent. A negative number places
      * the cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -2083,8 +2081,8 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides this arbitrary-precision decimal object by another
-     * arbitrary-precision decimal object. The preferred exponent for the
+     * Divides this arbitrary-precision decimal number by another
+     * arbitrary-precision decimal number. The preferred exponent for the
      * result is this object&#x27;s exponent minus the divisor&#x27;s
      * exponent.
      * @param divisor The divisor.
@@ -2107,9 +2105,9 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponentSmall The desired exponent. A negative number places
      * the cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -2134,9 +2132,9 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param exponent The desired exponent. A negative number places the cutoff
      * point to the right of the usual decimal point. A positive number
      * places the cutoff point to the left of the usual decimal point.
@@ -2166,9 +2164,9 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponent The desired exponent. A negative number places the
      * cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -2177,7 +2175,7 @@ remainder = divrem[1]; }
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns not-a-number (NaN) if the divisor and the dividend are 0.
      * Returns NaN if the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
      */
@@ -2211,7 +2209,8 @@ remainder = divrem[1]; }
      * exponent range of the result. If HasFlags of the context is true,
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number. If this value is positive
+     * zero, returns positive zero.
      */
     public EDecimal Negate(EContext context) {
       return MathValue.Negate(this, context);
@@ -2219,7 +2218,7 @@ remainder = divrem[1]; }
 
     /**
      * Adds this object and another decimal number and returns the result.
-     * @param otherValue An arbitrary-precision decimal object.
+     * @param otherValue An arbitrary-precision decimal number.
      * @return The sum of the two objects.
      */
     public EDecimal Add(EDecimal otherValue) {
@@ -2227,9 +2226,9 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Subtracts an arbitrary-precision decimal object from this instance and
+     * Subtracts an arbitrary-precision decimal number from this instance and
      * returns the result.
-     * @param otherValue An arbitrary-precision decimal object.
+     * @param otherValue An arbitrary-precision decimal number.
      * @return The difference of the two objects.
      */
     public EDecimal Subtract(EDecimal otherValue) {
@@ -2237,8 +2236,8 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Subtracts an arbitrary-precision decimal object from this instance.
-     * @param otherValue An arbitrary-precision decimal object.
+     * Subtracts an arbitrary-precision decimal number from this instance.
+     * @param otherValue An arbitrary-precision decimal number.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2339,9 +2338,9 @@ remainder = divrem[1]; }
 
     /**
      * Finds the remainder that results when dividing two arbitrary-precision
-     * decimal objects.
-     * @param divisor An arbitrary-precision decimal object.
-     * @param ctx Not documented yet.
+     * decimal numbers.
+     * @param divisor An arbitrary-precision decimal number.
+     * @param ctx The parameter {@code ctx} is not documented yet.
      * @return The remainder of the two objects.
      */
     public EDecimal Remainder(
@@ -2421,7 +2420,7 @@ remainder = divrem[1]; }
      * Finds the next value that is closer to the other object&#x27;s value than
      * this object&#x27;s value. Returns a copy of this value with the same
      * sign as the other value if both values are equal.
-     * @param otherValue An arbitrary-precision decimal object.
+     * @param otherValue An arbitrary-precision decimal number.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
      * If HasFlags of the context is true, will also store the flags
@@ -2481,7 +2480,7 @@ remainder = divrem[1]; }
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal MaxMagnitude(
       EDecimal first,
@@ -2499,7 +2498,7 @@ remainder = divrem[1]; }
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal MinMagnitude(
       EDecimal first,
@@ -2510,8 +2509,8 @@ remainder = divrem[1]; }
 
     /**
      * Gets the greater value between two decimal numbers.
-     * @param first An arbitrary-precision decimal object.
-     * @param second Another arbitrary-precision decimal object.
+     * @param first An arbitrary-precision decimal number.
+     * @param second Another arbitrary-precision decimal number.
      * @return The larger value of the two objects.
      */
     public static EDecimal Max(
@@ -2537,7 +2536,7 @@ remainder = divrem[1]; }
      * absolute values are equal, has the same effect as Max.
      * @param first The first value to compare.
      * @param second The second value to compare.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal MaxMagnitude(
       EDecimal first,
@@ -2550,7 +2549,7 @@ remainder = divrem[1]; }
      * absolute values are equal, has the same effect as Min.
      * @param first The first value to compare.
      * @param second The second value to compare.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static EDecimal MinMagnitude(
       EDecimal first,
@@ -2568,7 +2567,7 @@ remainder = divrem[1]; }
      * quiet NaN or signaling NaN, this method will not trigger an error.
      * Instead, NaN will compare greater than any other number, including
      * infinity. Two different NaN values will be considered equal.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @return Less than 0 if this object's value is less than the other value, or
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
@@ -2583,7 +2582,7 @@ remainder = divrem[1]; }
      * equal.</p> <p>If this object or the other object is a quiet NaN or
      * signaling NaN, this method returns a quiet NaN, and will signal a
      * FlagInvalid flag if either is a signaling NaN.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @param ctx A precision context. The precision, rounding, and exponent range
      * are ignored. If HasFlags of the context is true, will store the flags
      * resulting from the operation (the flags are in addition to the
@@ -2604,7 +2603,7 @@ remainder = divrem[1]; }
      * zero are considered equal.</p> <p>If this object or the other object
      * is a quiet NaN or signaling NaN, this method will return a quiet NaN
      * and will signal a FlagInvalid flag.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @param ctx A precision context. The precision, rounding, and exponent range
      * are ignored. If HasFlags of the context is true, will store the flags
      * resulting from the operation (the flags are in addition to the
@@ -2666,9 +2665,9 @@ remainder = divrem[1]; }
     /**
      * Returns a decimal number with the same value as this one but a new exponent.
      * @param desiredExponentSmall A 32-bit signed integer.
-     * @param rounding Not documented yet.
+     * @param rounding The parameter {@code rounding} is not documented yet.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. returns not-a-number (NaN) if the rounding mode is
+     * exponent changed. Returns not-a-number (NaN) if the rounding mode is
      * Rounding.Unnecessary and the result is not exact.
      */
     public EDecimal Quantize(
@@ -2796,7 +2795,7 @@ remainder = divrem[1]; }
      * places from the number. For example, -3 means round to the thousandth
      * (10^-3, 0.0001), and 3 means round to the thousand (10^3, 1000). A
      * value of 0 rounds the number to an integer.
-     * @param ctx An EContext object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @return A decimal number rounded to the closest value representable in the
      * given precision. Signals FlagInvalid and returns not-a-number (NaN)
      * if the result can't fit the given precision without rounding. Signals
@@ -2849,7 +2848,7 @@ remainder = divrem[1]; }
      * places from the number. For example, -3 means round to the thousandth
      * (10^-3, 0.0001), and 3 means round to the thousand (10^3, 1000). A
      * value of 0 rounds the number to an integer.
-     * @param ctx An EContext object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @return A decimal number rounded to the closest value representable in the
      * given precision. Signals FlagInvalid and returns not-a-number (NaN)
      * if the result can't fit the given precision without rounding. Signals
@@ -3089,7 +3088,7 @@ remainder = divrem[1]; }
 
     /**
      * Raises this object&#x27;s value to the given exponent.
-     * @param exponent An arbitrary-precision decimal object.
+     * @param exponent An arbitrary-precision decimal number.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -3122,7 +3121,7 @@ remainder = divrem[1]; }
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
      */
     public EDecimal Pow(int exponentSmall) {
@@ -3148,7 +3147,7 @@ remainder = divrem[1]; }
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointLeft(int places) {
       return this.MovePointLeft(EInteger.FromInt64(places), null);
@@ -3162,7 +3161,7 @@ remainder = divrem[1]; }
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointLeft(int places, EContext ctx) {
       return this.MovePointLeft(EInteger.FromInt64(places), ctx);
@@ -3172,7 +3171,7 @@ remainder = divrem[1]; }
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointLeft(EInteger bigPlaces) {
       return this.MovePointLeft(bigPlaces, null);
@@ -3186,12 +3185,12 @@ remainder = divrem[1]; }
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointLeft(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       return (!this.isFinite()) ? this.RoundToPrecision(ctx) :
@@ -3202,7 +3201,7 @@ EContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointRight(int places) {
       return this.MovePointRight(EInteger.FromInt64(places), null);
@@ -3216,7 +3215,7 @@ EContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointRight(int places, EContext ctx) {
       return this.MovePointRight(EInteger.FromInt64(places), ctx);
@@ -3226,7 +3225,7 @@ EContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal MovePointRight(EInteger bigPlaces) {
       return this.MovePointRight(bigPlaces, null);
@@ -3246,7 +3245,7 @@ EContext ctx) {
     public EDecimal MovePointRight(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       if (!this.isFinite()) {
@@ -3272,7 +3271,7 @@ this.flags).RoundToPrecision(ctx);
     /**
      * Returns a number similar to this number but with the scale adjusted.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal ScaleByPowerOfTen(int places) {
       return this.ScaleByPowerOfTen(EInteger.FromInt64(places), null);
@@ -3285,7 +3284,7 @@ this.flags).RoundToPrecision(ctx);
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal ScaleByPowerOfTen(int places, EContext ctx) {
       return this.ScaleByPowerOfTen(EInteger.FromInt64(places), ctx);
@@ -3294,7 +3293,7 @@ this.flags).RoundToPrecision(ctx);
     /**
      * Returns a number similar to this number but with the scale adjusted.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal ScaleByPowerOfTen(EInteger bigPlaces) {
       return this.ScaleByPowerOfTen(bigPlaces, null);
@@ -3312,7 +3311,7 @@ this.flags).RoundToPrecision(ctx);
     public EDecimal ScaleByPowerOfTen(
 EInteger bigPlaces,
 EContext ctx) {
-      if (bigPlaces.signum() == 0) {
+      if (bigPlaces.isZero()) {
         return this.RoundToPrecision(ctx);
       }
       if (!this.isFinite()) {
@@ -3335,7 +3334,7 @@ EContext ctx) {
       if (!this.isFinite()) {
  return EInteger.FromInt64(0);
 }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
  return EInteger.FromInt64(1);
 }
       int digcount = this.unsignedMantissa.getDigitCount();
@@ -3346,7 +3345,7 @@ EContext ctx) {
      * Returns the unit in the last place. The mantissa will be 1 and the exponent
      * will be this number's exponent. Returns 1 with an exponent of 0 if
      * this number is infinity or NaN.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public EDecimal Ulp() {
       return (!this.isFinite()) ? EDecimal.One :

@@ -14,7 +14,7 @@ import com.upokecenter.numbers.*;
      */
   public class TrapException extends ArithmeticException {
 private static final long serialVersionUID = 1L;
-    ETrapException ete;
+    private ETrapException ete;
 
     /**
      * Gets the precision context used during the operation that triggered the
@@ -23,7 +23,7 @@ private static final long serialVersionUID = 1L;
      * trap. May be null.
      */
     public final PrecisionContext getContext() {
-        return new PrecisionContext(ete.getContext());
+        return new PrecisionContext(this.ete.getContext());
 }
 
     /**
@@ -31,7 +31,7 @@ private static final long serialVersionUID = 1L;
      * @return The defined result of the operation that caused the trap.
      */
     public final Object getResult() {
-        return ete.getResult();
+        return this.ete.getResult();
 }
 
     /**
@@ -42,7 +42,7 @@ private static final long serialVersionUID = 1L;
      * FlagInexact or FlagSubnormal.
      */
     public final int getError() {
-        return ete.getError();
+        return this.ete.getError();
 }
 
     private TrapException() {
@@ -56,12 +56,14 @@ private static final long serialVersionUID = 1L;
     }
 
     /**
-     * Initializes a new instance of the TrapException class.
+     * Initializes a new instance of the <see cref='T:PeterO.TrapException'/>
+     * class.
      * @param flag A flag that specifies the kind of error
      * (PrecisionContext.FlagXXX). This will only be one flag, such as
      * FlagInexact or FlagSubnormal.
-     * @param ctx An EContext object.
-     * @param result An arbitrary object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
+     * @param result The desired result of the operation that caused the trap, such
+     * as an {@code ExtendedDecimal} or {@code ExtendedFloat}.
      */
     public TrapException(int flag, PrecisionContext ctx, Object result) {
  super("");
@@ -78,7 +80,9 @@ private static final long serialVersionUID = 1L;
       if (ef != null) {
  wrappedResult = new ExtendedFloat(ef);
 }
-      ete = new ETrapException(flag, ctx == null ? null : ctx.ec,
-        wrappedResult);
+      this.ete = new ETrapException(
+flag,
+ctx == null ? null : ctx.getEc(),
+wrappedResult);
     }
   }

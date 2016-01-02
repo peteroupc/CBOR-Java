@@ -398,11 +398,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private MutableNumber mnum;  // if integerMode is 1
     private EInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static final EInteger valueInt32MinValue =
+    private static final EInteger ValueInt32MinValue =
       EInteger.FromInt64(Integer.MIN_VALUE);
-    private static final EInteger valueInt32MaxValue =
+
+    private static final EInteger ValueInt32MaxValue =
       EInteger.FromInt64(Integer.MAX_VALUE);
-    private static final EInteger valueNegativeInt32MinValue=(valueInt32MinValue).Negate();
+
+    private static final EInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).Negate();
 
     FastInteger(int value) {
       this.smallValue = value;
@@ -529,7 +531,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           EInteger bigrem;
           EInteger bigquo;
 {
-EInteger[] divrem=(this.AsBigInteger()).DivRem(divisor.AsBigInteger());
+EInteger[] divrem = this.AsBigInteger().DivRem(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
           int smallquo = bigquo.AsInt32Checked();
@@ -541,7 +543,7 @@ bigrem = divrem[1]; }
         EInteger bigrem;
         EInteger bigquo;
 {
-EInteger[] divrem=(this.AsBigInteger()).DivRem(divisor.AsBigInteger());
+EInteger[] divrem = this.AsBigInteger().DivRem(divisor.AsBigInteger());
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         int smallquo = bigquo.AsInt32Checked();
@@ -619,7 +621,7 @@ bigrem = divrem[1]; }
             // would overflow, convert to large
             this.integerMode = 1;
             this.mnum =
-            MutableNumber.FromBigInteger(valueNegativeInt32MinValue);
+            MutableNumber.FromBigInteger(ValueNegativeInt32MinValue);
           } else {
             smallValue = -smallValue;
           }
@@ -696,7 +698,7 @@ bigrem = divrem[1]; }
      */
     FastInteger SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
-        return this.AddBig(valueNegativeInt32MinValue);
+        return this.AddBig(ValueNegativeInt32MinValue);
       }
       if (this.integerMode == 0) {
         if ((val < 0 && Integer.MAX_VALUE + val < this.smallValue) ||
@@ -754,10 +756,10 @@ bigrem = divrem[1]; }
         }
         // Check if this value fits an int, except if
         // it's MinValue
-        if (sign < 0 && bigintVal.compareTo(valueInt32MinValue) > 0) {
+        if (sign < 0 && bigintVal.compareTo(ValueInt32MinValue) > 0) {
           return this.AddInt(-(bigintVal.AsInt32Checked()));
         }
-        if (sign > 0 && bigintVal.compareTo(valueInt32MaxValue) <= 0) {
+        if (sign > 0 && bigintVal.compareTo(ValueInt32MaxValue) <= 0) {
           return this.SubtractInt(bigintVal.AsInt32Checked());
         }
         bigintVal = bigintVal.Negate();
@@ -854,7 +856,7 @@ bigrem = divrem[1]; }
           ++this.smallValue;
         } else {
           this.integerMode = 1;
-          this.mnum = MutableNumber.FromBigInteger(valueNegativeInt32MinValue);
+          this.mnum = MutableNumber.FromBigInteger(ValueNegativeInt32MinValue);
         }
         return this;
       }
@@ -867,7 +869,7 @@ bigrem = divrem[1]; }
           --this.smallValue;
         } else {
           this.integerMode = 1;
-          this.mnum = MutableNumber.FromBigInteger(valueInt32MinValue);
+          this.mnum = MutableNumber.FromBigInteger(ValueInt32MinValue);
           this.mnum.SubtractInt(1);
         }
         return this;
@@ -883,7 +885,7 @@ bigrem = divrem[1]; }
               // would overflow, convert to large
               this.integerMode = 1;
               this.mnum =
-              MutableNumber.FromBigInteger(valueNegativeInt32MinValue);
+              MutableNumber.FromBigInteger(ValueNegativeInt32MinValue);
             } else {
               smallValue /= divisor;
             }
@@ -892,14 +894,14 @@ bigrem = divrem[1]; }
             this.integerMode = 2;
             this.largeValue = this.mnum.ToBigInteger();
             this.largeValue = this.largeValue.Divide(EInteger.FromInt64(divisor));
-            if (this.largeValue.signum() == 0) {
+            if (this.largeValue.isZero()) {
               this.integerMode = 0;
               this.smallValue = 0;
             }
             break;
           case 2:
             this.largeValue = this.largeValue.Divide(EInteger.FromInt64(divisor));
-            if (this.largeValue.signum() == 0) {
+            if (this.largeValue.isZero()) {
               this.integerMode = 0;
               this.smallValue = 0;
             }
@@ -1047,7 +1049,7 @@ bigrem = divrem[1]; }
     public final int signum() {
         switch (this.integerMode) {
           case 0:
-          return (this.smallValue == 0) ? (0) : ((this.smallValue< 0) ? -1 :
+          return (this.smallValue == 0) ? 0 : ((this.smallValue < 0) ? -1 :
               1);
           case 1:
             return this.mnum.signum();
@@ -1068,7 +1070,7 @@ bigrem = divrem[1]; }
           case 1:
             return this.mnum.signum() == 0;
           case 2:
-            return this.largeValue.signum() == 0;
+            return this.largeValue.isZero();
           default:
             return false;
         }

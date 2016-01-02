@@ -7,7 +7,7 @@ the public-domain code from the library
 CryptoPP by Wei Dai.
 
 Any copyright is dedicated to the Public Domain.
-http://creativecommons.org/publicdomain.Divide(zero)/1.0/
+http://creativecommons.org/publicdomain.Divide(ValueZero)/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
@@ -26,21 +26,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     private static final int ShortMask = 0xffff;
 
-    /**
-     * Einteger for the number one.
-     */
-
-    private static final EInteger one = new EInteger(
+    private static final EInteger ValueOne = new EInteger(
       1, new short[] { 1, 0 }, false);
 
-    /**
-     * Einteger for the number ten.
-     */
-
-    private static final EInteger ten = new EInteger(
+    private static final EInteger ValueTen = new EInteger(
       1, new short[] { 10, 0 }, false);
 
-    private static final int[] valueCharToDigit = { 36, 36, 36, 36, 36, 36,
+    private static final int[] ValueCharToDigit = { 36, 36, 36, 36, 36, 36,
       36,
       36,
       36, 36, 36, 36, 36, 36, 36, 36,
@@ -54,7 +46,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       36, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
       25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 36, 36, 36, 36 };
 
-    private static final int[] valueMaxSafeInts = { 1073741823, 715827881,
+    private static final int[] ValueMaxSafeInts = { 1073741823, 715827881,
       536870911, 429496728, 357913940, 306783377, 268435455, 238609293,
       214748363, 195225785, 178956969, 165191048, 153391688, 143165575,
       134217727, 126322566, 119304646, 113025454, 107374181, 102261125,
@@ -62,11 +54,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       74051159, 71582787, 69273665, 67108863, 65075261, 63161282, 61356674,
       59652322 };
 
-    /**
-     * Einteger for the number zero.
-     */
-
-    private static final EInteger zero = new EInteger(
+    private static final EInteger ValueZero = new EInteger(
       0, new short[] { 0, 0 }, false);
 
     private final boolean negative;
@@ -80,15 +68,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     public static EInteger getOne() {
-        return one;
+        return ValueOne;
       }
 
     public static EInteger getTen() {
-        return ten;
+        return ValueTen;
       }
 
     public static EInteger getZero() {
-        return zero;
+        return ValueZero;
       }
 
     /**
@@ -142,9 +130,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         for (int i = 0; i < len; i += 2, j++) {
           int index = littleEndian ? i : len - 1 - i;
           int index2 = littleEndian ? i + 1 : len - 2 - i;
-          int nrj = (((int)bytes[index]) & 0xff);
+          int nrj = ((int)bytes[index]) & 0xff;
           if (index2 >= 0 && index2 < len) {
-            nrj |= (((int)bytes[index2]) << 8);
+            nrj |= ((int)bytes[index2]) << 8;
           }
           newreg[j] = ((short)nrj);
         }
@@ -152,9 +140,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         for (int i = 0; i < len; i += 2, j++) {
           int index = littleEndian ? i : len - 1 - i;
           int index2 = littleEndian ? i + 1 : len - 2 - i;
-          int nrj = (((int)bytes[index]) & 0xff);
+          int nrj = ((int)bytes[index]) & 0xff;
           if (index2 >= 0 && index2 < len) {
-            nrj |= (((int)bytes[index2]) << 8);
+            nrj |= ((int)bytes[index2]) << 8;
           } else {
             // sign extend the last byte
             nrj |= 0xff00;
@@ -179,19 +167,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Converts a 64-bit signed integer to a big integer.
-     * @param longerValue Not documented yet.
+     * @param longerValue The parameter {@code longerValue} is not documented yet.
      * @return An arbitrary-precision integer with the same value as the 64-bit
      * number.
      */
     public static EInteger FromInt64(long longerValue) {
       if (longerValue == 0) {
-        return zero;
+        return ValueZero;
       }
       if (longerValue == 1) {
-        return one;
+        return ValueOne;
       }
       if (longerValue == 10) {
-        return ten;
+        return ValueTen;
       }
       short[] retreg;
       boolean retnegative;
@@ -273,7 +261,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
-     * string's length, or {@code endIndex} is less than {@code index} .
+     * string's length, or {@code endIndex} is less than {@code index}.
      * @throws java.lang.NumberFormatException The string portion is empty or in an invalid
      * format.
      */
@@ -352,7 +340,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           for (int i = 0; i < leftover; ++i) {
             extraWord <<= 4;
             char c = str.charAt(index + i);
-            int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+            int digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
             if (digit >= 16) {
               throw new NumberFormatException("Illegal character found");
             }
@@ -365,27 +353,27 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
         while (index < endIndex) {
           char c = str.charAt(index + 3);
-          int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          int digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
           if (digit >= 16) {
             throw new NumberFormatException("Illegal character found");
           }
           int word = digit;
           c = str.charAt(index + 2);
-          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
           if (digit >= 16) {
             throw new NumberFormatException("Illegal character found");
           }
 
           word |= digit << 4;
           c = str.charAt(index + 1);
-          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
           if (digit >= 16) {
             throw new NumberFormatException("Illegal character found");
           }
 
           word |= digit << 8;
           c = str.charAt(index);
-          digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
           if (digit >= 16) {
             throw new NumberFormatException("Illegal character found");
           }
@@ -397,12 +385,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       } else {
         bigint = new short[4];
         boolean haveSmallInt = true;
-        int maxSafeInt = valueMaxSafeInts[radix - 2];
+        int maxSafeInt = ValueMaxSafeInts[radix - 2];
         int maxShortPlusOneMinusRadix = 65536 - radix;
         int smallInt = 0;
         for (int i = index; i < endIndex; ++i) {
           char c = str.charAt(i);
-          int digit = (c >= 0x80) ? 36 : valueCharToDigit[(int)c];
+          int digit = (c >= 0x80) ? 36 : ValueCharToDigit[(int)c];
           if (digit >= radix) {
             throw new NumberFormatException("Illegal character found");
           }
@@ -487,7 +475,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code index} is less than 0,
      * {@code endIndex} is less than 0, or either is greater than the
-     * string's length, or {@code endIndex} is less than {@code index} .
+     * string's length, or {@code endIndex} is less than {@code index}.
      * @throws java.lang.NumberFormatException The string portion is empty or in an invalid
      * format.
      */
@@ -834,7 +822,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Compares an arbitrary-precision integer with this instance.
-     * @param other Not documented yet.
+     * @param other The parameter {@code other} is not documented yet.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
      */
@@ -977,7 +965,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Divides this object by another big integer and returns the quotient and
      * remainder.
-     * @param divisor Not documented yet.
+     * @param divisor The parameter {@code divisor} is not documented yet.
      * @return An array with two big integers: the first is the quotient, and the
      * second is the remainder.
      * @throws java.lang.NullPointerException The parameter divisor is null.
@@ -1093,11 +1081,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       if (bigintSecond == null) {
         throw new NullPointerException("bigintSecond");
       }
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return bigintSecond.Abs();
       }
       EInteger thisValue = this.Abs();
-      if (bigintSecond.signum() == 0) {
+      if (bigintSecond.isZero()) {
         return thisValue;
       }
       bigintSecond = bigintSecond.Abs();
@@ -1114,7 +1102,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           bigintSecond.getLowBit());
         while (true) {
           EInteger bigintA = (thisValue.Subtract(bigintSecond)).Abs();
-          if (bigintA.signum() == 0) {
+          if (bigintA.isZero()) {
             if (expOfTwo != 0) {
               thisValue = thisValue.ShiftLeft(expOfTwo);
             }
@@ -1128,7 +1116,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
       } else {
         EInteger temp;
-        while (thisValue.signum() != 0) {
+        while (!thisValue.isZero()) {
           if (thisValue.compareTo(bigintSecond) < 0) {
             temp = thisValue;
             thisValue = bigintSecond;
@@ -1146,7 +1134,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * 0.
      */
     public int getDigitCount() {
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return 1;
       }
       if (this.HasSmallValue()) {
@@ -1516,12 +1504,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       EInteger r = EInteger.FromInt64(1);
       EInteger v = this;
-      while (pow.signum() != 0) {
+      while (!pow.isZero()) {
         if (!pow.isEven()) {
           r = (r.Multiply(v)).mod(mod);
         }
         pow = pow.ShiftRight(1);
-        if (pow.signum() != 0) {
+        if (!pow.isZero()) {
           v = (v.Multiply(v)).mod(mod);
         }
       }
@@ -1532,7 +1520,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Multiplies this instance by the value of an arbitrary-precision integer
      * object.
      * @param bigintMult Another arbitrary-precision integer.
-     * @return The product of the two objects.
+     * @return The product of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code bigintMult} is
      * null.
      */
@@ -1719,12 +1707,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return (thisVar.Multiply(thisVar)).Multiply(thisVar);
       }
       EInteger r = EInteger.FromInt64(1);
-      while (power.signum() != 0) {
+      while (!power.isZero()) {
         if (!power.isEven()) {
           r = r.Multiply(thisVar);
         }
         power = power.ShiftRight(1);
-        if (power.signum() != 0) {
+        if (!power.isZero()) {
           thisVar = thisVar.Multiply(thisVar);
         }
       }
@@ -1919,7 +1907,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * one and zero if this value equals 1.
      */
     public EInteger[] SqrtRem() {
-      return SqrtRemInternal(true);
+      return this.SqrtRemInternal(true);
     }
 
     /**
@@ -2269,7 +2257,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * digits 0 to 9 (U + 0030 to U + 0039).
      */
     @Override public String toString() {
-      if (this.signum() == 0) {
+      if (this.isZero()) {
         return "0";
       }
       return this.HasSmallValue() ? this.SmallValueToString() :
@@ -2445,7 +2433,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
                     0)) {
         switch (words1[words1Start]) {
           case 0:
-            // words1 is zero, so result is 0
+            // words1 is ValueZero, so result is 0
             java.util.Arrays.fill(resultArr, resultStart, (resultStart)+(words2Count + 2), (short)0);
             return;
           case 1:
@@ -2829,7 +2817,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     //---------------------
     // Baseline multiply
     //---------------------
-
     private static void BaselineMultiply2(
       short[] result,
       int rstart,
@@ -3217,7 +3204,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     //-----------------------------
     // Baseline Square
     //-----------------------------
-
     private static void BaselineSquare2(
       short[] result,
       int rstart,
@@ -3529,7 +3515,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int bcount) {
       {
         int carryPos = 0;
-        // Set carry to zero
+        // Set carry to ValueZero
         java.util.Arrays.fill(productArr, cstart, (cstart)+(bcount), (short)0);
         for (int i = 0; i < acount; i += bcount) {
           int diff = acount - i;
@@ -3681,6 +3667,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       return 0;
     }
+
     private static int CountWords(short[] array, int n) {
       while (n != 0 && array[n - 1] == 0) {
         --n;
@@ -3726,11 +3713,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       // set up temporary work space
 
       if (words2Count == 0) {
-        throw new ArithmeticException("division by zero");
+        throw new ArithmeticException("division by ValueZero");
       }
       if (words2Count == 1) {
         if (words2[words2Start] == 0) {
-          throw new ArithmeticException("division by zero");
+          throw new ArithmeticException("division by ValueZero");
         }
         int smallRemainder = ((int)FastDivideAndRemainder(
           quotientArr,
@@ -4243,8 +4230,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             BaselineSquare8(resultArr, resultStart, words1, words1Start);
             break;
           default:
-            SchoolbookSquare(resultArr, resultStart, words1, words1Start,
-                count);
+            SchoolbookSquare(
+resultArr,
+resultStart,
+words1,
+words1Start,
+count);
             break;
         }
       } else if ((count & 1) == 0) {
@@ -5082,7 +5073,7 @@ count);
 
     /**
      * Calculates the square root and the remainder.
-     * @param useRem Not documented yet.
+     * @param useRem The parameter {@code useRem} is not documented yet.
      * @return An array of two big integers: the first integer is the square root,
      * and the second is the difference between this value and the square of
      * the first integer. Returns two zeros if this value is 0 or less, or
@@ -5101,7 +5092,7 @@ count);
       int powerBits = (thisValue.getUnsignedBitLength() + 1) / 2;
       if (thisValue.canFitInInt()) {
         int smallValue = thisValue.AsInt32Checked();
-        // No need to check for zero; already done above
+        // No need to check for ValueZero; already done above
         int smallintX = 0;
         int smallintY = 1 << powerBits;
         do {

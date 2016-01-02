@@ -808,22 +808,22 @@ stringTemp);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      long longV = ((long)0xFFFFFFF200000000L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF200000000L),
-        BigValueOf(((long)0xFFFFFFF200000000L))
-        .longValueChecked());
+longV,
+BigValueOf(longV).longValueChecked());
+      longV = ((long)0xFFFFFFF280000000L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000000L),
-        BigValueOf(((long)0xFFFFFFF280000000L))
-        .longValueChecked());
+longV,
+BigValueOf(longV).longValueChecked());
+      longV = ((long)0xFFFFFFF280000001L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000001L),
-        BigValueOf(((long)0xFFFFFFF280000001L))
-        .longValueChecked());
+longV,
+BigValueOf(longV).longValueChecked());
+      longV = ((long)0xFFFFFFF27FFFFFFFL);
       Assert.assertEquals(
-        ((long)0xFFFFFFF27FFFFFFFL),
-        BigValueOf(((long)0xFFFFFFF27FFFFFFFL))
-        .longValueChecked());
+longV,
+BigValueOf(longV).longValueChecked());
       Assert.assertEquals(
         0x0000000380000001L,
         BigValueOf(0x0000000380000001L).longValueChecked());
@@ -911,29 +911,31 @@ stringTemp);
       Assert.assertEquals(
         Long.MAX_VALUE,
         BigValueOf(Long.MAX_VALUE).longValueUnchecked());
-      Assert.assertEquals(
-        Long.MAX_VALUE,
-        BigValueOf(Long.MIN_VALUE)
-        .subtract(BigInteger.valueOf(1)).longValueUnchecked());
+      {
+Object objectTemp = Long.MAX_VALUE;
+Object objectTemp2 = BigValueOf(Long.MIN_VALUE)
+        .subtract(BigInteger.valueOf(1)).longValueUnchecked();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       Assert.assertEquals(
         Long.MIN_VALUE,
         BigValueOf(Long.MAX_VALUE).add(BigInteger.valueOf(1)).longValueUnchecked());
+      long aa = ((long)0xFFFFFFF200000000L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF200000000L),
-        BigValueOf(((long)0xFFFFFFF200000000L))
-        .longValueUnchecked());
+              aa,
+              BigValueOf(aa).longValueUnchecked());
+      aa = ((long)0xFFFFFFF280000000L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000000L),
-        BigValueOf(((long)0xFFFFFFF280000000L))
-        .longValueUnchecked());
+              aa,
+              BigValueOf(aa).longValueUnchecked());
+      aa = ((long)0xFFFFFFF200000001L);
       Assert.assertEquals(
-        ((long)0xFFFFFFF280000001L),
-        BigValueOf(((long)0xFFFFFFF280000001L))
-        .longValueUnchecked());
+              aa,
+              BigValueOf(aa).longValueUnchecked());
+      aa = ((long)0xFFFFFFF27FFFFFFFL);
       Assert.assertEquals(
-        ((long)0xFFFFFFF27FFFFFFFL),
-        BigValueOf(((long)0xFFFFFFF27FFFFFFFL))
-        .longValueUnchecked());
+              aa,
+              BigValueOf(aa).longValueUnchecked());
       Assert.assertEquals(
         0x0000000380000001L,
         BigValueOf(0x0000000380000001L).longValueUnchecked());
@@ -1128,25 +1130,37 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       {
- String stringTemp = BigInteger.fromSubstring("0123456789" , 9, 10).toString();
+ String stringTemp = BigInteger.fromSubstring(
+   "0123456789",
+   9,
+   10).toString();
         Assert.assertEquals(
           "9",
           stringTemp);
       }
       {
- String stringTemp = BigInteger.fromSubstring("0123456789" , 8, 10).toString();
+ String stringTemp = BigInteger.fromSubstring(
+   "0123456789",
+   8,
+   10).toString();
         Assert.assertEquals(
           "89",
           stringTemp);
       }
       {
- String stringTemp = BigInteger.fromSubstring("0123456789" , 7, 10).toString();
+ String stringTemp = BigInteger.fromSubstring(
+   "0123456789",
+   7,
+   10).toString();
         Assert.assertEquals(
           "789",
           stringTemp);
       }
       {
- String stringTemp = BigInteger.fromSubstring("0123456789" , 6, 10).toString();
+ String stringTemp = BigInteger.fromSubstring(
+   "0123456789",
+   6,
+   10).toString();
         Assert.assertEquals(
           "6789",
           stringTemp);

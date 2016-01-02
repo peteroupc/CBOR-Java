@@ -266,7 +266,8 @@ private RandomObjects() {
         // Signaling NaN currently not generated because
         // it doesn't round-trip as well
       }
-      return ExtendedDecimal.FromString(RandomDecimalString(r));
+      String str = RandomDecimalString(r);
+      return ExtendedDecimal.FromString(str);
     }
 
     public static BigInteger RandomBigInteger(FastRandom r) {
@@ -339,13 +340,13 @@ BigInteger.valueOf(r.NextValue(400) - 200));
     }
 
     public static String RandomDecimalString(FastRandom r) {
-      int count = r.NextValue(20) + 1;
+      int count = r.NextValue(40) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.NextValue(2) == 0) {
         sb.append('-');
       }
       for (int i = 0; i < count; ++i) {
-        if (i == 0) {
+        if (i == 0 && count > 1) {
           sb.append((char)('1' + r.NextValue(9)));
         } else {
           sb.append((char)('0' + r.NextValue(10)));
@@ -353,14 +354,15 @@ BigInteger.valueOf(r.NextValue(400) - 200));
       }
       if (r.NextValue(2) == 0) {
         sb.append('.');
-        count = r.NextValue(20) + 1;
+        count = r.NextValue(30) + 1;
         for (int i = 0; i < count; ++i) {
           sb.append((char)('0' + r.NextValue(10)));
         }
       }
       if (r.NextValue(2) == 0) {
         sb.append('E');
-        count = r.NextValue(20);
+     count = (r.NextValue(100) < 10) ? r.NextValue(5000) :
+          r.NextValue(20);
         if (count != 0) {
           sb.append(r.NextValue(2) == 0 ? '+' : '-');
         }

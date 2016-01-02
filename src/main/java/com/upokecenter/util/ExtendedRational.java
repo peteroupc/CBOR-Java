@@ -22,7 +22,7 @@ import com.upokecenter.numbers.*;
      * object is negative).
      */
     public final BigInteger getNumerator() {
-return new BigInteger(this.er.getNumerator());
+return new BigInteger(this.getEr().getNumerator());
 }
 
     /**
@@ -31,7 +31,7 @@ return new BigInteger(this.er.getNumerator());
      * returns the diagnostic information.
      */
     public final BigInteger getUnsignedNumerator() {
-return new BigInteger(this.er.getUnsignedNumerator());
+return new BigInteger(this.getEr().getUnsignedNumerator());
 }
 
     /**
@@ -39,7 +39,7 @@ return new BigInteger(this.er.getUnsignedNumerator());
      * @return This object's denominator.
      */
     public final BigInteger getDenominator() {
-return new BigInteger(this.er.getDenominator());
+return new BigInteger(this.getEr().getDenominator());
 }
 
     /**
@@ -49,7 +49,7 @@ return new BigInteger(this.er.getDenominator());
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational bi = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);
-      return (bi == null) ? (false) : (this.er.equals(bi.er));
+      return (bi == null) ? false : this.getEr().equals(bi.getEr());
     }
 
     /**
@@ -57,46 +57,50 @@ return new BigInteger(this.er.getDenominator());
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
-return this.er.hashCode();
+return this.getEr().hashCode();
 }
 
     /**
-     * Creates a number with the given numerator and denominator.
+     * Creates a rational number with the given numerator and denominator.
      * @param numeratorSmall A 32-bit signed integer.
      * @param denominatorSmall A 32-bit signed integer. (2).
      * @return An arbitrary-precision rational number.
      */
-    public static ExtendedRational Create(int numeratorSmall,
+    public static ExtendedRational Create(
+int numeratorSmall,
 int denominatorSmall) {
 return new ExtendedRational(ERational.Create(numeratorSmall, denominatorSmall));
 }
 
     /**
-     * Creates a number with the given numerator and denominator.
+     * Creates a rational number with the given numerator and denominator.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @return An arbitrary-precision rational number.
+     * @throws java.lang.NullPointerException The parameter {@code numerator} or
+     * {@code denominator} is null.
      */
-    public static ExtendedRational Create(BigInteger numerator,
+    public static ExtendedRational Create(
+BigInteger numerator,
 BigInteger denominator) {
-  if ((numerator) == null) {
+  if (numerator == null) {
   throw new NullPointerException("numerator");
 }
-  if ((denominator) == null) {
+  if (denominator == null) {
   throw new NullPointerException("denominator");
 }
-return new ExtendedRational(ERational.Create(numerator.ei, denominator.ei));
+return new ExtendedRational(ERational.Create(numerator.getEi(), denominator.getEi()));
 }
 
     /**
-     * Initializes a new instance of the arbitrary-precision rational number class.
+     * Initializes a new instance of the ExtendedRational/> class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
      * {@code denominator} is null.
      */
     public ExtendedRational(BigInteger numerator, BigInteger denominator) {
-      this.er = new ERational(numerator.ei, denominator.ei);
+      this.er = new ERational(numerator.getEi(), denominator.getEi());
  }
 
     /**
@@ -106,12 +110,13 @@ return new ExtendedRational(ERational.Create(numerator.ei, denominator.ei));
      * number of the following form: [-]numerator/denominator.
      */
     @Override public String toString() {
-return this.er.toString();
+return this.getEr().toString();
 }
 
-    final ERational er;
+    private final ERational er;
+
     ExtendedRational(ERational er) {
-      if ((er) == null) {
+      if (er == null) {
   throw new NullPointerException("er");
 }
       this.er = er;
@@ -123,7 +128,7 @@ return this.er.toString();
      * @return The exact value of the integer as a rational number.
      */
     public static ExtendedRational FromBigInteger(BigInteger bigint) {
-      return new ExtendedRational(ERational.FromBigInteger(bigint.ei));
+      return new ExtendedRational(ERational.FromBigInteger(bigint.getEi()));
  }
 
     /**
@@ -133,7 +138,7 @@ return this.er.toString();
      * expansion.
      */
     public ExtendedDecimal ToExtendedDecimal() {
-return new ExtendedDecimal(this.er.ToExtendedDecimal());
+return new ExtendedDecimal(this.getEr().ToExtendedDecimal());
 }
 
     /**
@@ -169,10 +174,10 @@ return new ExtendedRational(ERational.FromDouble(flt));
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
     public static ExtendedRational CreateNaN(BigInteger diag) {
-  if ((diag) == null) {
+  if (diag == null) {
   throw new NullPointerException("diag");
 }
-return new ExtendedRational(ERational.CreateNaN(diag.ei));
+return new ExtendedRational(ERational.CreateNaN(diag.getEi()));
 }
 
     /**
@@ -186,39 +191,40 @@ return new ExtendedRational(ERational.CreateNaN(diag.ei));
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
      */
-    public static ExtendedRational CreateNaN(BigInteger diag,
+    public static ExtendedRational CreateNaN(
+BigInteger diag,
 boolean signaling,
 boolean negative) {
-  if ((diag) == null) {
+  if (diag == null) {
   throw new NullPointerException("diag");
 }
-return new ExtendedRational(ERational.CreateNaN(diag.ei, signaling, negative));
+return new ExtendedRational(ERational.CreateNaN(diag.getEi(), signaling, negative));
 }
 
     /**
-     *
+     * Not documented yet.
      * @param ef An arbitrary-precision binary float.
      * @return An arbitrary-precision rational number.
      * @throws java.lang.NullPointerException The parameter {@code ef} is null.
      */
     public static ExtendedRational FromExtendedFloat(ExtendedFloat ef) {
-  if ((ef) == null) {
+  if (ef == null) {
   throw new NullPointerException("ef");
 }
-return new ExtendedRational(ERational.FromExtendedFloat(ef.ef));
+return new ExtendedRational(ERational.FromExtendedFloat(ef.getEf()));
 }
 
     /**
-     *
-     * @param ef An arbitrary-precision decimal object.
+     * Converts an arbitrary-precision decimal number to a rational number.
+     * @param ef An arbitrary-precision decimal number.
      * @return An arbitrary-precision rational number.
      * @throws java.lang.NullPointerException The parameter {@code ef} is null.
      */
     public static ExtendedRational FromExtendedDecimal(ExtendedDecimal ef) {
-  if ((ef) == null) {
+  if (ef == null) {
   throw new NullPointerException("ef");
 }
-return new ExtendedRational(ERational.FromExtendedDecimal(ef.ed));
+return new ExtendedRational(ERational.FromExtendedDecimal(ef.getEd()));
 }
 
     /**
@@ -228,8 +234,8 @@ return new ExtendedRational(ERational.FromExtendedDecimal(ef.ed));
      * @return An arbitrary-precision decimal.
      */
     public ExtendedDecimal ToExtendedDecimal(PrecisionContext ctx) {
-return new ExtendedDecimal(this.er.ToExtendedDecimal(ctx == null ? null :
-  ctx.ec));
+return new ExtendedDecimal(this.getEr().ToExtendedDecimal(ctx == null ? null :
+  ctx.getEc()));
 }
 
     /**
@@ -248,8 +254,8 @@ return new ExtendedDecimal(this.er.ToExtendedDecimal(ctx == null ? null :
     public ExtendedDecimal ToExtendedDecimalExactIfPossible(PrecisionContext
       ctx) {
 return new
-  ExtendedDecimal(this.er.ToExtendedDecimalExactIfPossible(ctx == null ? null:
-  ctx.ec));
+  ExtendedDecimal(this.getEr().ToExtendedDecimalExactIfPossible(ctx == null ? null :
+  ctx.getEc()));
 }
 
     /**
@@ -259,7 +265,7 @@ return new
      * expansion.
      */
     public ExtendedFloat ToExtendedFloat() {
-return new ExtendedFloat(this.er.ToExtendedFloat());
+return new ExtendedFloat(this.getEr().ToExtendedFloat());
 }
 
     /**
@@ -269,7 +275,7 @@ return new ExtendedFloat(this.er.ToExtendedFloat());
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat ToExtendedFloat(PrecisionContext ctx) {
-return new ExtendedFloat(this.er.ToExtendedFloat(ctx == null ? null : ctx.ec));
+return new ExtendedFloat(this.getEr().ToExtendedFloat(ctx == null ? null : ctx.getEc()));
 }
 
     /**
@@ -286,8 +292,8 @@ return new ExtendedFloat(this.er.ToExtendedFloat(ctx == null ? null : ctx.ec));
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat ToExtendedFloatExactIfPossible(PrecisionContext ctx) {
-return new ExtendedFloat(this.er.ToExtendedFloatExactIfPossible(ctx == null ?
-  null : ctx.ec));
+return new ExtendedFloat(this.getEr().ToExtendedFloatExactIfPossible(ctx == null ?
+  null : ctx.getEc()));
 }
 
     /**
@@ -296,7 +302,7 @@ return new ExtendedFloat(this.er.ToExtendedFloatExactIfPossible(ctx == null ?
      * false.
      */
     public final boolean isFinite() {
-return this.er.isFinite();
+return this.getEr().isFinite();
 }
 
     /**
@@ -306,7 +312,7 @@ return this.er.isFinite();
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-return new BigInteger(this.er.ToBigInteger());
+return new BigInteger(this.getEr().ToBigInteger());
 }
 
     /**
@@ -317,7 +323,7 @@ return new BigInteger(this.er.ToBigInteger());
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-return new BigInteger(this.er.ToBigIntegerExact());
+return new BigInteger(this.getEr().ToBigIntegerExact());
 }
 
     /**
@@ -346,7 +352,7 @@ return new ExtendedRational(ERational.FromInt64(longInt));
      * exceeds the range of a 64-bit floating point number.
      */
     public double ToDouble() {
-return this.er.ToDouble();
+return this.getEr().ToDouble();
 }
 
     /**
@@ -357,7 +363,7 @@ return this.er.ToDouble();
      * exceeds the range of a 32-bit floating point number.
      */
     public float ToSingle() {
-return this.er.ToSingle();
+return this.getEr().ToSingle();
 }
 
     /**
@@ -365,15 +371,16 @@ return this.er.ToSingle();
      * @return An arbitrary-precision rational number.
      */
     public ExtendedRational Abs() {
-return new ExtendedRational(this.er.Abs());
+return new ExtendedRational(this.getEr().Abs());
 }
 
     /**
-     * Not documented yet.
-     * @return An arbitrary-precision rational number.
+     * Finds a rational number with the same value as this object but with the sign
+     * reversed.
+     * @return The negated form of this rational number.
      */
     public ExtendedRational Negate() {
-return new ExtendedRational(this.er.Negate());
+return new ExtendedRational(this.getEr().Negate());
 }
 
     /**
@@ -381,7 +388,7 @@ return new ExtendedRational(this.er.Negate());
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-return this.er.signum() == 0;
+return this.getEr().signum() == 0;
 }
 
     /**
@@ -390,7 +397,7 @@ return this.er.signum() == 0;
      * less than 0; and 1 if this value is greater than 0.
      */
     public final int signum() {
-return this.er.signum();
+return this.getEr().signum();
 }
 
     /**
@@ -398,12 +405,13 @@ return this.er.signum();
      * @param other An arbitrary-precision rational number.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public int compareTo(ExtendedRational other) {
-  if ((other) == null) {
+  if (other == null) {
   throw new NullPointerException("other");
 }
-return this.er.compareTo(other.er);
+return this.getEr().compareTo(other.getEr());
 }
 
     /**
@@ -411,25 +419,27 @@ return this.er.compareTo(other.er);
      * @param other An arbitrary-precision binary float.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public int CompareToBinary(ExtendedFloat other) {
-  if ((other) == null) {
+  if (other == null) {
   throw new NullPointerException("other");
 }
-return this.er.CompareToBinary(other.ef);
+return this.getEr().CompareToBinary(other.getEf());
 }
 
     /**
-     * Compares an arbitrary-precision decimal object with this instance.
-     * @param other An arbitrary-precision decimal object.
+     * Compares an arbitrary-precision decimal number with this instance.
+     * @param other An arbitrary-precision decimal number.
      * @return Zero if the values are equal; a negative number if this instance is
      * less, or a positive number if this instance is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public int CompareToDecimal(ExtendedDecimal other) {
-  if ((other) == null) {
+  if (other == null) {
   throw new NullPointerException("other");
 }
-return this.er.CompareToDecimal(other.ed);
+return this.getEr().CompareToDecimal(other.getEd());
 }
 
     /**
@@ -439,10 +449,10 @@ return this.er.CompareToDecimal(other.ed);
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public boolean equals(ExtendedRational other) {
-  if ((other) == null) {
+  if (other == null) {
   throw new NullPointerException("other");
 }
-return this.er.equals(other.er);
+return this.getEr().equals(other.getEr());
 }
 
     /**
@@ -450,7 +460,7 @@ return this.er.equals(other.er);
      * @return True if this object is negative infinity; otherwise, false.
      */
     public boolean IsNegativeInfinity() {
-return this.er.IsNegativeInfinity();
+return this.getEr().IsNegativeInfinity();
 }
 
     /**
@@ -458,7 +468,7 @@ return this.er.IsNegativeInfinity();
      * @return True if this object is positive infinity; otherwise, false.
      */
     public boolean IsPositiveInfinity() {
-return this.er.IsPositiveInfinity();
+return this.getEr().IsPositiveInfinity();
 }
 
     /**
@@ -466,7 +476,7 @@ return this.er.IsPositiveInfinity();
      * @return True if this object is a not-a-number value; otherwise, false.
      */
     public boolean IsNaN() {
-return this.er.IsNaN();
+return this.getEr().IsNaN();
 }
 
     /**
@@ -475,15 +485,19 @@ return this.er.IsNaN();
      * @return True if this object's value is negative; otherwise, false.
      */
     public final boolean isNegative() {
-return this.er.isNegative();
+return this.getEr().isNegative();
 }
+
+    final ERational getEr() {
+        return this.er;
+      }
 
     /**
      * Gets a value indicating whether this object's value is infinity.
      * @return True if this object's value is infinity; otherwise, false.
      */
     public boolean IsInfinity() {
-return this.er.IsInfinity();
+return this.getEr().IsInfinity();
 }
 
     /**
@@ -491,7 +505,7 @@ return this.er.IsInfinity();
      * @return True if this object is a quiet not-a-number value; otherwise, false.
      */
     public boolean IsQuietNaN() {
-return this.er.IsQuietNaN();
+return this.getEr().IsQuietNaN();
 }
 
     /**
@@ -503,7 +517,7 @@ return this.er.IsQuietNaN();
      * class); otherwise, false.
      */
     public boolean IsSignalingNaN() {
-return this.er.IsSignalingNaN();
+return this.getEr().IsSignalingNaN();
 }
 
     /**
@@ -533,16 +547,16 @@ return this.er.IsSignalingNaN();
     /**
      * Adds two rational numbers.
      * @param otherValue Another arbitrary-precision rational number.
-     * @return The sum of the two numbers. returns not-a-number (NaN) if either
+     * @return The sum of the two numbers. Returns not-a-number (NaN) if either
      * operand is NaN.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
     public ExtendedRational Add(ExtendedRational otherValue) {
-  if ((otherValue) == null) {
+  if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.er.Add(otherValue.er));
+return new ExtendedRational(this.getEr().Add(otherValue.getEr()));
 }
 
     /**
@@ -553,25 +567,25 @@ return new ExtendedRational(this.er.Add(otherValue.er));
      * null.
      */
     public ExtendedRational Subtract(ExtendedRational otherValue) {
-  if ((otherValue) == null) {
+  if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.er.Subtract(otherValue.er));
+return new ExtendedRational(this.getEr().Subtract(otherValue.getEr()));
 }
 
     /**
      * Multiplies this instance by the value of an arbitrary-precision rational
      * number.
      * @param otherValue An arbitrary-precision rational number.
-     * @return The product of the two objects.
+     * @return The product of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
     public ExtendedRational Multiply(ExtendedRational otherValue) {
-  if ((otherValue) == null) {
+  if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.er.Multiply(otherValue.er));
+return new ExtendedRational(this.getEr().Multiply(otherValue.getEr()));
 }
 
     /**
@@ -583,10 +597,10 @@ return new ExtendedRational(this.er.Multiply(otherValue.er));
      * null.
      */
     public ExtendedRational Divide(ExtendedRational otherValue) {
-  if ((otherValue) == null) {
+  if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.er.Divide(otherValue.er));
+return new ExtendedRational(this.getEr().Divide(otherValue.getEr()));
 }
 
     /**
@@ -598,10 +612,10 @@ return new ExtendedRational(this.er.Divide(otherValue.er));
      * null.
      */
     public ExtendedRational Remainder(ExtendedRational otherValue) {
-  if ((otherValue) == null) {
+  if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.er.Remainder(otherValue.er));
+return new ExtendedRational(this.getEr().Remainder(otherValue.getEr()));
 }
 
     /**

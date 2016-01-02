@@ -12,23 +12,25 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   public class CBORException extends RuntimeException {
 private static final long serialVersionUID = 1L;
     /**
-     * Initializes a new instance of the CBORException class.
+     * Initializes a new instance of the <see cref='T:PeterO.Cbor.CBORException'/>
+     * class.
      */
     public CBORException() {
     }
 
     /**
-     * Initializes a new instance of the CBORException class.
-     * @param message A string object.
+     * Initializes a new instance of the <see cref='T:PeterO.Cbor.CBORException'/>
+     * class.
+     * @param message A text string.
      */
     public CBORException(String message) {
  super(message);
     }
 
     /**
-     * Initializes a new instance of the CBORException class. Uses the given
-     * message and inner exception.
-     * @param message A string object.
+     * Initializes a new instance of the <see cref='T:PeterO.Cbor.CBORException'/>
+     * class. Uses the given message and inner exception.
+     * @param message A text string.
      * @param innerException An Exception object.
      */
     public CBORException(String message, Throwable innerException) {

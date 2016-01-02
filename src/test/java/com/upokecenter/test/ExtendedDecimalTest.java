@@ -157,7 +157,8 @@ Assert.assertEquals(1, numberTemp);
     }
     @Test
     public void TestExponent() {
-      Assert.assertEquals(BigInteger.valueOf(-7),
+      Assert.assertEquals(
+        BigInteger.valueOf(-7),
         ExtendedDecimal.FromString("1.265e-4").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-4),
@@ -168,10 +169,12 @@ Assert.assertEquals(1, numberTemp);
       Assert.assertEquals(
         BigInteger.valueOf(-22),
         ExtendedDecimal.FromString("0.485448e-16").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-20),
-        ExtendedDecimal.FromString(
-          "0.5657575351495151495649565150e+8").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-20);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.5657575351495151495649565150e+8").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(-10),
         ExtendedDecimal.FromString("0e-10").getExponent());
@@ -181,20 +184,24 @@ Assert.assertEquals(1, numberTemp);
       Assert.assertEquals(
         BigInteger.valueOf(-13),
         ExtendedDecimal.FromString("0e-13").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-43),
-        ExtendedDecimal.FromString(
-          "0.49495052535648555757515648e-17").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-43);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.49495052535648555757515648e-17").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(7),
         ExtendedDecimal.FromString("0.485654575150e+19").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(0),
         ExtendedDecimal.FromString("0.48515648e+8").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-45),
-        ExtendedDecimal.FromString(
-          "0.49485251485649535552535451544956e-13").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-45);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.49485251485649535552535451544956e-13").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(-6),
         ExtendedDecimal.FromString("0.565754515152575448505257e+18").getExponent());
@@ -213,67 +220,87 @@ Assert.assertEquals(1, numberTemp);
       Assert.assertEquals(
         BigInteger.valueOf(-25),
         ExtendedDecimal.FromString("0.4956504855525748575456e-3").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-26),
-        ExtendedDecimal.FromString(
-          "0.55575355495654484948525354545053494854e+12").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-22),
-        ExtendedDecimal.FromString(
-          "0.484853575350494950575749545057e+8").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-26);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.55575355495654484948525354545053494854e+12").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-22);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.484853575350494950575749545057e+8").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(11),
         ExtendedDecimal.FromString("0.52545451e+19").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-29),
         ExtendedDecimal.FromString("0.48485654495751485754e-9").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-38),
-        ExtendedDecimal.FromString(
-          "0.56525456555549545257535556495655574848e+0").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-15),
-        ExtendedDecimal.FromString(
-          "0.485456485657545752495450554857e+15").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-38);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.56525456555549545257535556495655574848e+0").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-15);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.485456485657545752495450554857e+15").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(-37),
         ExtendedDecimal.FromString("0.485448525554495048e-19").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-29),
         ExtendedDecimal.FromString("0.494952485550514953565655e-5").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-8),
-        ExtendedDecimal.FromString(
-          "0.50495454554854505051534950e+18").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-37),
-        ExtendedDecimal.FromString(
-          "0.5156524853575655535351554949525449e-3").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-8);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.50495454554854505051534950e+18").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-37);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.5156524853575655535351554949525449e-3").getExponent();
+        Assert.assertEquals(bigintTemp, bigintTemp2);
+      }
       Assert.assertEquals(
         BigInteger.valueOf(3),
         ExtendedDecimal.FromString("0e+3").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-8),
-        ExtendedDecimal.FromString(
-          "0.51505056554957575255555250e+18").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-8);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.51505056554957575255555250e+18").getExponent();
+        Assert.assertEquals(bigintTemp, bigintTemp2);
+      }
       Assert.assertEquals(
         BigInteger.valueOf(-14),
         ExtendedDecimal.FromString("0.5456e-10").getExponent());
       Assert.assertEquals(
         BigInteger.valueOf(-36),
         ExtendedDecimal.FromString("0.494850515656505252555154e-12").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-42),
-        ExtendedDecimal.FromString(
-          "0.535155525253485757525253555749575749e-6").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-29),
-        ExtendedDecimal.FromString(
-          "0.56554952554850525552515549564948e+3").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-40),
-        ExtendedDecimal.FromString(
-          "0.494855545257545656515554495057e-10").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-42);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.535155525253485757525253555749575749e-6").getExponent();
+        Assert.assertEquals(bigintTemp, bigintTemp2);
+      }
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-29);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.56554952554850525552515549564948e+3").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-40);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.494855545257545656515554495057e-10").getExponent();
+Assert.assertEquals(bigintTemp, bigintTemp2);
+}
       Assert.assertEquals(
         BigInteger.valueOf(-18),
         ExtendedDecimal.FromString("0.5656504948515252555456e+4").getExponent());
@@ -283,10 +310,12 @@ Assert.assertEquals(1, numberTemp);
       Assert.assertEquals(
         BigInteger.valueOf(-32),
         ExtendedDecimal.FromString("0.55535551515249535049495256e-6").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-31),
-        ExtendedDecimal.FromString(
-          "0.4948534853564853565654514855e-3").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-31);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.4948534853564853565654514855e-3").getExponent();
+        Assert.assertEquals(bigintTemp, bigintTemp2);
+      }
       Assert.assertEquals(
         BigInteger.valueOf(-38),
         ExtendedDecimal.FromString("0.5048485057535249555455e-16").getExponent());
@@ -299,10 +328,12 @@ Assert.assertEquals(1, numberTemp);
       Assert.assertEquals(
         BigInteger.valueOf(1),
         ExtendedDecimal.FromString("0.54e+3").getExponent());
-      Assert.assertEquals(
-        BigInteger.valueOf(-38),
-        ExtendedDecimal.FromString(
-          "0.4849525755545751574853494948e-10").getExponent());
+      {
+BigInteger bigintTemp = BigInteger.valueOf(-38);
+BigInteger bigintTemp2 = ExtendedDecimal.FromString(
+          "0.4849525755545751574853494948e-10").getExponent();
+        Assert.assertEquals(bigintTemp, bigintTemp2);
+      }
       Assert.assertEquals(
         BigInteger.valueOf(-33),
         ExtendedDecimal.FromString("0.52514853565252565251565548e-7").getExponent());
@@ -3163,112 +3194,112 @@ String stringTemp = ExtendedDecimal.FromString(
       // not implemented yet
     }
 
-    private static final String[] testStrings = { "1.265e-4",
-      "0.0001265" , "0.0001265" , "0.0001265" , "0.000E-1" , "0.0000",
-      "0.0000" , "0.0000" , "0.0000000000000e-3" , "0E-16" , "0.0E-15",
-      "0.0000000000000000" , "0.000000000e+1" , "0E-8" , "0.00E-6",
-      "0.00000000" , "0.000000000000000e+12" , "0.000" , "0.000" , "0.000",
-      "0.00000000000000e-11" , "0E-25" , "0.0E-24",
-      "0.0000000000000000000000000" , "0.000000000000e+5" , "0E-7",
-      "0.0E-6" , "0.0000000" , "0.0000e-4" , "0E-8" , "0.00E-6",
-      "0.00000000" , "0.000000e+2" , "0.0000" , "0.0000" , "0.0000",
-      "0.0e+3" , "0E+2" , "0.0E+3" , "0" , "0.000000000000000e+8" , "0E-7",
-      "0.0E-6" , "0.0000000" , "0.000e+10" , "0E+7" , "0.00E+9" , "0",
-      "0.0000000000000000000e-12" , "0E-31" , "0.0E-30",
-      "0.0000000000000000000000000000000" , "0.0000e-1" , "0.00000",
-      "0.00000" , "0.00000" , "0.00000000000e-11" , "0E-22" , "0.0E-21",
-      "0.0000000000000000000000" , "0.00000000000e-17" , "0E-28" , "0.0E-27",
-"0.0000000000000000000000000000" , "0.00000000000000e+9" , "0.00000",
-"0.00000" , "0.00000" , "0.0000000000e-18" , "0E-28" , "0.0E-27",
-      "0.0000000000000000000000000000" , "0.0e-13" , "0E-14" , "0.00E-12",
-      "0.00000000000000" , "0.000000000000000000e+10" , "0E-8" , "0.00E-6",
-      "0.00000000" , "0.0000e+19" , "0E+15" , "0E+15" , "0" , "0.00000e-8",
-      "0E-13" , "0.0E-12" , "0.0000000000000" , "0.00000000000e+14" , "0E+3",
-"0E+3" , "0" , "0.000e-14" , "0E-17" , "0.00E-15",
-      "0.00000000000000000" , "0.000000e-19" , "0E-25" , "0.0E-24",
-      "0.0000000000000000000000000" , "0.000000000000e+19" , "0E+7",
-      "0.00E+9" , "0" , "0.0000000000000e+18" , "0E+5" , "0.0E+6" , "0",
-      "0.00000000000000e-2" , "0E-16" , "0.0E-15" , "0.0000000000000000",
-      "0.0000000000000e-18" , "0E-31" , "0.0E-30",
-      "0.0000000000000000000000000000000" , "0e-17" , "0E-17" , "0.00E-15",
-      "0.00000000000000000" , "0e+17" , "0E+17" , "0.0E+18" , "0",
-      "0.00000000000000000e+0" , "0E-17" , "0.00E-15",
-      "0.00000000000000000" , "0.0000000000000e+0" , "0E-13" , "0.0E-12",
-      "0.0000000000000" , "0.0000000000000000000e-12" , "0E-31" , "0.0E-30",
-"0.0000000000000000000000000000000" , "0.0000000000000000000e+10",
-      "0E-9" , "0E-9" , "0.000000000" , "0.00000e-2" , "0E-7" , "0.0E-6",
-      "0.0000000" , "0.000000e+15" , "0E+9" , "0E+9" , "0",
-      "0.000000000e-10" , "0E-19" , "0.0E-18" , "0.0000000000000000000",
-      "0.00000000000000e+6" , "0E-8" , "0.00E-6" , "0.00000000",
-      "0.00000e+17" , "0E+12" , "0E+12" , "0" , "0.000000000000000000e-0",
-      "0E-18" , "0E-18" , "0.000000000000000000" , "0.0000000000000000e+11",
-"0.00000" , "0.00000" , "0.00000" , "0.000000000000e+15" , "0E+3",
-      "0E+3" , "0" , "0.00000000e-19" , "0E-27" , "0E-27",
-      "0.000000000000000000000000000" , "0.00000e-6" , "0E-11" , "0.00E-9",
-      "0.00000000000" , "0e-14" , "0E-14" , "0.00E-12" , "0.00000000000000",
-"0.000000000e+9" , "0" , "0" , "0" , "0.00000e+13" , "0E+8",
-      "0.0E+9" , "0" , "0.000e-0" , "0.000" , "0.000" , "0.000",
-      "0.000000000000000e+6" , "0E-9" , "0E-9" , "0.000000000",
-      "0.000000000e+17" , "0E+8" , "0.0E+9" , "0" , "0.00000000000e+6",
-      "0.00000" , "0.00000" , "0.00000" , "0.00000000000000e+3" , "0E-11",
-      "0.00E-9" , "0.00000000000" , "0e+0" , "0" , "0" , "0" , "0.000e+12",
-      "0E+9" , "0E+9" , "0" , "0.00000000000e+9" , "0.00" , "0.00" , "0.00",
-"0.00000000000000e-9" , "0E-23" , "0.00E-21",
-      "0.00000000000000000000000" , "0e-1" , "0.0" , "0.0" , "0.0",
-      "0.0000e-13" , "0E-17" , "0.00E-15" , "0.00000000000000000",
-      "0.00000000000e-7" , "0E-18" , "0E-18" , "0.000000000000000000",
-      "0.00000000000000e+4" , "0E-10" , "0.0E-9" , "0.0000000000",
-      "0.00000000e-8" , "0E-16" , "0.0E-15" , "0.0000000000000000",
-      "0.00e-6" , "0E-8" , "0.00E-6" , "0.00000000" , "0.0e-1" , "0.00",
-      "0.00" , "0.00" , "0.0000000000000000e-10" , "0E-26" , "0.00E-24",
-      "0.00000000000000000000000000" , "0.00e+14" , "0E+12" , "0E+12" , "0",
-"0.000000000000000000e+5" , "0E-13" , "0.0E-12" , "0.0000000000000",
-"0.0e+7" , "0E+6" , "0E+6" , "0" , "0.00000000e+8" , "0" , "0" , "0",
-"0.000000000e+0" , "0E-9" , "0E-9" , "0.000000000" , "0.000e+13",
-      "0E+10" , "0.00E+12" , "0" , "0.0000000000000000e+16" , "0" , "0",
-      "0" , "0.00000000e-1" , "0E-9" , "0E-9" , "0.000000000",
-      "0.00000000000e-15" , "0E-26" , "0.00E-24",
-      "0.00000000000000000000000000" , "0.0e+11" , "0E+10" , "0.00E+12",
-      "0" , "0.00000e+7" , "0E+2" , "0.0E+3" , "0",
-      "0.0000000000000000000e-19" , "0E-38" , "0.00E-36",
-      "0.00000000000000000000000000000000000000" , "0.0000000000e-6",
-      "0E-16" , "0.0E-15" , "0.0000000000000000" , "0.00000000000000000e-15",
-"0E-32" , "0.00E-30" , "0.00000000000000000000000000000000",
-      "0.000000000000000e+2" , "0E-13" , "0.0E-12" , "0.0000000000000",
-      "0.0e-18" , "0E-19" , "0.0E-18" , "0.0000000000000000000",
-      "0.00000000000000e-6" , "0E-20" , "0.00E-18",
-      "0.00000000000000000000" , "0.000e-17" , "0E-20" , "0.00E-18",
-      "0.00000000000000000000" , "0.00000000000000e-7" , "0E-21" , "0E-21",
-      "0.000000000000000000000" , "0.000000e-9" , "0E-15" , "0E-15",
-      "0.000000000000000" , "0e-11" , "0E-11" , "0.00E-9" , "0.00000000000",
-"0.000000000e+11" , "0E+2" , "0.0E+3" , "0",
-      "0.0000000000000000e+15" , "0.0" , "0.0" , "0.0",
-      "0.0000000000000000e+10" , "0.000000" , "0.000000" , "0.000000",
-      "0.000000000e+4" , "0.00000" , "0.00000" , "0.00000",
-      "0.000000000000000e-13" , "0E-28" , "0.0E-27",
-      "0.0000000000000000000000000000" , "0.0000000000000000000e-8",
-      "0E-27" , "0E-27" , "0.000000000000000000000000000",
-      "0.00000000000e-15" , "0E-26" , "0.00E-24",
-      "0.00000000000000000000000000" , "0.00e+12" , "0E+10" , "0.00E+12",
-      "0" , "0.0e+5" , "0E+4" , "0.00E+6" , "0" , "0.0000000000000000e+7",
-      "0E-9" , "0E-9" , "0.000000000" , "0.0000000000000000e-0" , "0E-16",
-      "0.0E-15" , "0.0000000000000000" , "0.000000000000000e+13" , "0.00",
-      "0.00" , "0.00" , "0.00000000000e-13" , "0E-24" , "0E-24",
-      "0.000000000000000000000000" , "0.000e-10" , "0E-13" , "0.0E-12",
+    private static final String[] ValueTestStrings = { "1.265e-4",
+      "0.0001265", "0.0001265", "0.0001265", "0.000E-1", "0.0000",
+      "0.0000", "0.0000", "0.0000000000000e-3", "0E-16", "0.0E-15",
+      "0.0000000000000000", "0.000000000e+1", "0E-8", "0.00E-6",
+      "0.00000000", "0.000000000000000e+12", "0.000", "0.000", "0.000",
+      "0.00000000000000e-11", "0E-25", "0.0E-24",
+      "0.0000000000000000000000000", "0.000000000000e+5", "0E-7",
+      "0.0E-6", "0.0000000", "0.0000e-4", "0E-8", "0.00E-6",
+      "0.00000000", "0.000000e+2", "0.0000", "0.0000", "0.0000",
+      "0.0e+3", "0E+2", "0.0E+3", "0", "0.000000000000000e+8", "0E-7",
+      "0.0E-6", "0.0000000", "0.000e+10", "0E+7", "0.00E+9", "0",
+      "0.0000000000000000000e-12", "0E-31", "0.0E-30",
+      "0.0000000000000000000000000000000", "0.0000e-1", "0.00000",
+      "0.00000", "0.00000", "0.00000000000e-11", "0E-22", "0.0E-21",
+      "0.0000000000000000000000", "0.00000000000e-17", "0E-28", "0.0E-27",
+"0.0000000000000000000000000000", "0.00000000000000e+9", "0.00000",
+"0.00000", "0.00000", "0.0000000000e-18", "0E-28", "0.0E-27",
+      "0.0000000000000000000000000000", "0.0e-13", "0E-14", "0.00E-12",
+      "0.00000000000000", "0.000000000000000000e+10", "0E-8", "0.00E-6",
+      "0.00000000", "0.0000e+19", "0E+15", "0E+15", "0", "0.00000e-8",
+      "0E-13", "0.0E-12", "0.0000000000000", "0.00000000000e+14", "0E+3",
+"0E+3", "0", "0.000e-14", "0E-17", "0.00E-15",
+      "0.00000000000000000", "0.000000e-19", "0E-25", "0.0E-24",
+      "0.0000000000000000000000000", "0.000000000000e+19", "0E+7",
+      "0.00E+9", "0", "0.0000000000000e+18", "0E+5", "0.0E+6", "0",
+      "0.00000000000000e-2", "0E-16", "0.0E-15", "0.0000000000000000",
+      "0.0000000000000e-18", "0E-31", "0.0E-30",
+      "0.0000000000000000000000000000000", "0e-17", "0E-17", "0.00E-15",
+      "0.00000000000000000", "0e+17", "0E+17", "0.0E+18", "0",
+      "0.00000000000000000e+0", "0E-17", "0.00E-15",
+      "0.00000000000000000", "0.0000000000000e+0", "0E-13", "0.0E-12",
+      "0.0000000000000", "0.0000000000000000000e-12", "0E-31", "0.0E-30",
+"0.0000000000000000000000000000000", "0.0000000000000000000e+10",
+      "0E-9", "0E-9", "0.000000000", "0.00000e-2", "0E-7", "0.0E-6",
+      "0.0000000", "0.000000e+15", "0E+9", "0E+9", "0",
+      "0.000000000e-10", "0E-19", "0.0E-18", "0.0000000000000000000",
+      "0.00000000000000e+6", "0E-8", "0.00E-6", "0.00000000",
+      "0.00000e+17", "0E+12", "0E+12", "0", "0.000000000000000000e-0",
+      "0E-18", "0E-18", "0.000000000000000000", "0.0000000000000000e+11",
+"0.00000", "0.00000", "0.00000", "0.000000000000e+15", "0E+3",
+      "0E+3", "0", "0.00000000e-19", "0E-27", "0E-27",
+      "0.000000000000000000000000000", "0.00000e-6", "0E-11", "0.00E-9",
+      "0.00000000000", "0e-14", "0E-14", "0.00E-12", "0.00000000000000",
+"0.000000000e+9", "0", "0", "0", "0.00000e+13", "0E+8",
+      "0.0E+9", "0", "0.000e-0", "0.000", "0.000", "0.000",
+      "0.000000000000000e+6", "0E-9", "0E-9", "0.000000000",
+      "0.000000000e+17", "0E+8", "0.0E+9", "0", "0.00000000000e+6",
+      "0.00000", "0.00000", "0.00000", "0.00000000000000e+3", "0E-11",
+      "0.00E-9", "0.00000000000", "0e+0", "0", "0", "0", "0.000e+12",
+      "0E+9", "0E+9", "0", "0.00000000000e+9", "0.00", "0.00", "0.00",
+"0.00000000000000e-9", "0E-23", "0.00E-21",
+      "0.00000000000000000000000", "0e-1", "0.0", "0.0", "0.0",
+      "0.0000e-13", "0E-17", "0.00E-15", "0.00000000000000000",
+      "0.00000000000e-7", "0E-18", "0E-18", "0.000000000000000000",
+      "0.00000000000000e+4", "0E-10", "0.0E-9", "0.0000000000",
+      "0.00000000e-8", "0E-16", "0.0E-15", "0.0000000000000000",
+      "0.00e-6", "0E-8", "0.00E-6", "0.00000000", "0.0e-1", "0.00",
+      "0.00", "0.00", "0.0000000000000000e-10", "0E-26", "0.00E-24",
+      "0.00000000000000000000000000", "0.00e+14", "0E+12", "0E+12", "0",
+"0.000000000000000000e+5", "0E-13", "0.0E-12", "0.0000000000000",
+"0.0e+7", "0E+6", "0E+6", "0", "0.00000000e+8", "0", "0", "0",
+"0.000000000e+0", "0E-9", "0E-9", "0.000000000", "0.000e+13",
+      "0E+10", "0.00E+12", "0", "0.0000000000000000e+16", "0", "0",
+      "0", "0.00000000e-1", "0E-9", "0E-9", "0.000000000",
+      "0.00000000000e-15", "0E-26", "0.00E-24",
+      "0.00000000000000000000000000", "0.0e+11", "0E+10", "0.00E+12",
+      "0", "0.00000e+7", "0E+2", "0.0E+3", "0",
+      "0.0000000000000000000e-19", "0E-38", "0.00E-36",
+      "0.00000000000000000000000000000000000000", "0.0000000000e-6",
+      "0E-16", "0.0E-15", "0.0000000000000000", "0.00000000000000000e-15",
+"0E-32", "0.00E-30", "0.00000000000000000000000000000000",
+      "0.000000000000000e+2", "0E-13", "0.0E-12", "0.0000000000000",
+      "0.0e-18", "0E-19", "0.0E-18", "0.0000000000000000000",
+      "0.00000000000000e-6", "0E-20", "0.00E-18",
+      "0.00000000000000000000", "0.000e-17", "0E-20", "0.00E-18",
+      "0.00000000000000000000", "0.00000000000000e-7", "0E-21", "0E-21",
+      "0.000000000000000000000", "0.000000e-9", "0E-15", "0E-15",
+      "0.000000000000000", "0e-11", "0E-11", "0.00E-9", "0.00000000000",
+"0.000000000e+11", "0E+2", "0.0E+3", "0",
+      "0.0000000000000000e+15", "0.0", "0.0", "0.0",
+      "0.0000000000000000e+10", "0.000000", "0.000000", "0.000000",
+      "0.000000000e+4", "0.00000", "0.00000", "0.00000",
+      "0.000000000000000e-13", "0E-28", "0.0E-27",
+      "0.0000000000000000000000000000", "0.0000000000000000000e-8",
+      "0E-27", "0E-27", "0.000000000000000000000000000",
+      "0.00000000000e-15", "0E-26", "0.00E-24",
+      "0.00000000000000000000000000", "0.00e+12", "0E+10", "0.00E+12",
+      "0", "0.0e+5", "0E+4", "0.00E+6", "0", "0.0000000000000000e+7",
+      "0E-9", "0E-9", "0.000000000", "0.0000000000000000e-0", "0E-16",
+      "0.0E-15", "0.0000000000000000", "0.000000000000000e+13", "0.00",
+      "0.00", "0.00", "0.00000000000e-13", "0E-24", "0E-24",
+      "0.000000000000000000000000", "0.000e-10", "0E-13", "0.0E-12",
       "0.0000000000000" };
 
     @Test
     public void TestToString() {
-      for (int i = 0; i < testStrings.length; i += 4) {
+      for (int i = 0; i < ValueTestStrings.length; i += 4) {
         Assert.assertEquals(
-testStrings[i + 1],
-ExtendedDecimal.FromString(testStrings[i]).toString());
+ValueTestStrings[i + 1],
+ExtendedDecimal.FromString(ValueTestStrings[i]).toString());
         Assert.assertEquals(
-testStrings[i + 2],
-ExtendedDecimal.FromString(testStrings[i]).ToEngineeringString());
+ValueTestStrings[i + 2],
+ExtendedDecimal.FromString(ValueTestStrings[i]).ToEngineeringString());
         Assert.assertEquals(
-testStrings[i + 3],
-ExtendedDecimal.FromString(testStrings[i]).ToPlainString());
+ValueTestStrings[i + 3],
+ExtendedDecimal.FromString(ValueTestStrings[i]).ToPlainString());
       }
     }
     @Test

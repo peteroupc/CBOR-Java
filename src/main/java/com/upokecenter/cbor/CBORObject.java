@@ -135,6 +135,7 @@ import com.upokecenter.util.*;
 
     public static final CBORObject Undefined =
       CBORObject.ConstructSimpleValue(23);
+
     static final int CBORObjectTypeArray = 4;
     static final int CBORObjectTypeBigInteger = 1;  // all other integers
     static final int CBORObjectTypeByteString = 2;
@@ -156,8 +157,8 @@ import com.upokecenter.util.*;
 
     private static final int StreamedStringBufferLength = 4096;
 
-    private static final Map<Object, ConverterInfo> converters = new
-      HashMap<Object, ConverterInfo>();
+    private static final Map<Object, ConverterInfo>
+      ValueConverters = new HashMap<Object, ConverterInfo>();
 
     private static final ICBORNumber[] NumberInterfaces = {
       new CBORInteger(), new CBORBigInteger(), null, null,
@@ -166,16 +167,16 @@ import com.upokecenter.util.*;
       null, new CBORExtendedFloat(), new CBORExtendedRational()
     };
 
-    private static final Map<BigInteger, ICBORTag> tagHandlers = new
-      HashMap<BigInteger, ICBORTag>();
+    private static final Map<BigInteger, ICBORTag>
+      ValueTagHandlers = new HashMap<BigInteger, ICBORTag>();
 
     private static final BigInteger UInt64MaxValue =
       (BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1));
 
-    private static final BigInteger[] valueEmptyTags = new BigInteger[0];
+    private static final BigInteger[] ValueEmptyTags = new BigInteger[0];
     // Expected lengths for each head byte.
     // 0 means length varies. -1 means invalid.
-    private static final int[] valueExpectedLengths = { 1, 1, 1, 1, 1, 1,
+    private static final int[] ValueExpectedLengths = { 1, 1, 1, 1, 1, 1,
       1, 1, 1,
       1, 1, 1, 1, 1, 1, 1,  // major type 0
       1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1,
@@ -193,17 +194,19 @@ import com.upokecenter.util.*;
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // major type 7
       1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1 };
-    private static final byte[] valueFalseBytes = {  0x66, 0x61, 0x6c,
+
+    private static final byte[] ValueFalseBytes = {  0x66, 0x61, 0x6c,
       0x73, 0x65  };
 
-    private static CBORObject[] valueFixedObjects = InitializeFixedObjects();
-    private static final byte[] valueNullBytes = {  0x6e, 0x75, 0x6c, 0x6c  };
+    private static final byte[] ValueNullBytes = {  0x6e, 0x75, 0x6c, 0x6c  };
 
-    private static final int[] valueNumberTypeOrder = { 0, 0, 2, 3, 4, 5,
+    private static final int[] ValueNumberTypeOrder = { 0, 0, 2, 3, 4, 5,
       1, 0, 0,
       0, 0, 0, 0 };
 
-    private static final byte[] valueTrueBytes = {  0x74, 0x72, 0x75, 0x65  };
+    private static final byte[] ValueTrueBytes = {  0x74, 0x72, 0x75, 0x65  };
+
+    private static CBORObject[] valueFixedObjects = InitializeFixedObjects();
 
     private int itemtypeValue;
     private Object itemValue;
@@ -438,6 +441,7 @@ import com.upokecenter.util.*;
         }
         throw new IllegalStateException("Not a map or array");
       }
+
     final int getItemType() {
         CBORObject curobject = this;
         while (curobject.itemtypeValue == CBORObjectTypeTagged) {
@@ -586,8 +590,8 @@ import com.upokecenter.util.*;
         throw new IllegalArgumentException(
           "Converter doesn't contain a proper ToCBORObject method");
       }
-      synchronized (converters) {
-        converters.put(type, ci);
+      synchronized (ValueConverters) {
+        ValueConverters.put(type, ci);
       }
     }
 
@@ -628,8 +632,8 @@ import com.upokecenter.util.*;
                     (long)bigintTag.bitLength() + ") is more than " +
                     "64");
       }
-      synchronized (tagHandlers) {
-        tagHandlers.put(bigintTag, handler);
+      synchronized (ValueTagHandlers) {
+        ValueTagHandlers.put(bigintTag, handler);
       }
     }
 
@@ -658,19 +662,20 @@ import com.upokecenter.util.*;
      * parameter {@code data} is empty.
      * @throws java.lang.NullPointerException The parameter {@code data} is null.
      */
-    public static CBORObject DecodeFromBytes(byte[] data, CBOREncodeOptions
-      options) {
+    public static CBORObject DecodeFromBytes(
+byte[] data,
+CBOREncodeOptions options) {
       if (data == null) {
         throw new NullPointerException("data");
       }
       if (data.length == 0) {
         throw new CBORException("data is empty.");
       }
-      if ((options) == null) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
       int firstbyte = (int)(data[0] & (int)0xff);
-      int expectedLength = valueExpectedLengths[firstbyte];
+      int expectedLength = ValueExpectedLengths[firstbyte];
       // if invalid
       if (expectedLength == -1) {
         throw new CBORException("Unexpected data encountered");
@@ -736,20 +741,22 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
      * format. <p>By default, if a JSON object has the same key, only the
-     * last given value will be used for each duplicated key. </p>
+     * last given value will be used for each duplicated key.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
+     * @param options A CBOREncodeOptions object.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
      */
-    public static CBORObject FromJSONString(String
-      str, CBOREncodeOptions options) {
+    public static CBORObject FromJSONString(
+String str,
+CBOREncodeOptions options) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      if ((options) == null) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
       if (str.length() > 0 && str.charAt(0) == 0xfeff) {
@@ -760,8 +767,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         new CharacterReader(str, false, true));
       CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
       int[] nextchar = new int[1];
-CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
-        nextchar);
+CBORObject obj = CBORJson.ParseJSONValue(
+reader,
+opt.getValue() != 0,
+false,
+nextchar);
       if (nextchar[0] != -1) {
         reader.RaiseError("End of String not reached");
       }
@@ -774,7 +784,7 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(long value) {
-      return (value >= 0L && value < 24L) ? (valueFixedObjects[(int)value]) :
+      return (value >= 0L && value < 24L) ? valueFixedObjects[(int)value] :
         (new CBORObject(CBORObjectTypeInteger, value));
     }
 
@@ -884,8 +894,8 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(int value) {
-      return (value >= 0 && value < 24) ? (valueFixedObjects[value]) :
-        (FromObject((long)value));
+      return (value >= 0 && value < 24) ? valueFixedObjects[value] :
+        FromObject((long)value);
     }
 
     /**
@@ -894,8 +904,8 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(short value) {
-      return (value >= 0 && value < 24) ? (valueFixedObjects[value]) :
-        (FromObject((long)value));
+      return (value >= 0 && value < 24) ? valueFixedObjects[value] :
+        FromObject((long)value);
     }
 
     /**
@@ -1355,7 +1365,7 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * parsing the data.
      */
     public static CBORObject Read(InputStream stream) {
-      if ((stream) == null) {
+      if (stream == null) {
   throw new NullPointerException("stream");
 }
       try {
@@ -1377,7 +1387,7 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * parsing the data.
      */
     public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
-      if ((options) == null) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
       try {
@@ -1426,18 +1436,20 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
      * @param stream A readable data stream. The sequence of bytes read from the
      * data stream must contain a single JSON object and not multiple
      * objects.
+     * @param options A CBOREncodeOptions object.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      * @throws com.upokecenter.cbor.CBORException The data stream contains invalid
      * encoding or is not in JSON format.
      */
-  public static CBORObject ReadJSON(InputStream stream, CBOREncodeOptions
-      options) throws java.io.IOException {
+  public static CBORObject ReadJSON(
+InputStream stream,
+CBOREncodeOptions options) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
-      if ((options) == null) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
       CharacterInputWithCount reader = new CharacterInputWithCount(
@@ -1445,8 +1457,11 @@ CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
       try {
         CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
         int[] nextchar = new int[1];
-   CBORObject obj = CBORJson.ParseJSONValue(reader, opt.getValue() != 0, false,
-     nextchar);
+   CBORObject obj = CBORJson.ParseJSONValue(
+reader,
+opt.getValue() != 0,
+false,
+nextchar);
         if (nextchar[0] != -1) {
           reader.RaiseError("End of data stream not reached");
         }
@@ -2001,15 +2016,15 @@ public static void Write(
      */
     public static void WriteJSON(Object obj, OutputStream outputStream) throws java.io.IOException {
       if (obj == null) {
-        outputStream.write(valueNullBytes, 0, valueNullBytes.length);
+        outputStream.write(ValueNullBytes, 0, ValueNullBytes.length);
         return;
       }
       if (obj instanceof Boolean) {
         if (((Boolean)obj).booleanValue()) {
-          outputStream.write(valueTrueBytes, 0, valueTrueBytes.length);
+          outputStream.write(ValueTrueBytes, 0, ValueTrueBytes.length);
           return;
         }
-        outputStream.write(valueFalseBytes, 0, valueFalseBytes.length);
+        outputStream.write(ValueFalseBytes, 0, ValueFalseBytes.length);
         return;
       }
       CBORObject.FromObject(obj).WriteJSONTo(outputStream);
@@ -2265,7 +2280,7 @@ public static void Write(
     }
 
     /**
-     * Gets the value of this object as a string object.
+     * Gets the value of this object as a text string.
      * @return Gets this object's string.
      * @throws IllegalStateException This object's type is not a string, including
      * if this object is CBORObject.Null.
@@ -2509,8 +2524,8 @@ public int compareTo(CBORObject other) {
           default: throw new IllegalArgumentException("Unexpected data type");
         }
       } else {
-        int typeOrderA = valueNumberTypeOrder[typeA];
-        int typeOrderB = valueNumberTypeOrder[typeB];
+        int typeOrderA = ValueNumberTypeOrder[typeA];
+        int typeOrderB = ValueNumberTypeOrder[typeB];
         // Check whether general types are different
         // (treating number types the same)
         if (typeOrderA != typeOrderB) {
@@ -2657,9 +2672,10 @@ public int compareTo(CBORObject other) {
      * Gets the binary representation of this data item.
      * @param options Options for encoding the data to CBOR.
      * @return A byte array in CBOR format.
+     * @throws java.lang.NullPointerException The parameter {@code options} is null.
      */
     public byte[] EncodeToBytes(CBOREncodeOptions options) {
-      if ((options) == null) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
 
@@ -2887,7 +2903,7 @@ public boolean equals(CBORObject other) {
      */
     public BigInteger[] GetTags() {
       if (!this.isTagged()) {
-        return valueEmptyTags;
+        return ValueEmptyTags;
       }
       CBORObject curitem = this;
       if (curitem.isTagged()) {
@@ -3133,7 +3149,7 @@ public boolean equals(CBORObject other) {
      * converted to null. (This doesn't include floating-point
      * numbers.)</li> <li>Infinity and not-a-number will be converted to
      * null.</li></ul>
-     * @return A string object containing the converted object.
+     * @return A text string containing the converted object.
      */
     public String ToJSONString() {
       int type = this.getItemType();
@@ -3488,9 +3504,9 @@ public boolean equals(CBORObject other) {
         AddTagHandler(BigInteger.valueOf(37), new CBORTag37());
         AddTagHandler(BigInteger.valueOf(30), new CBORTag30());
       }
-      synchronized (tagHandlers) {
-        if (tagHandlers.containsKey(bigintTag)) {
-          return tagHandlers.get(bigintTag);
+      synchronized (ValueTagHandlers) {
+        if (ValueTagHandlers.containsKey(bigintTag)) {
+          return ValueTagHandlers.get(bigintTag);
         }
 
         return null;
@@ -3515,7 +3531,7 @@ public boolean equals(CBORObject other) {
     }
 
     static int GetExpectedLength(int value) {
-      return valueExpectedLengths[value];
+      return ValueExpectedLengths[value];
     }
 
     // Generate a CBOR Object for head bytes with fixed length.
@@ -3753,6 +3769,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       // same hash code), which is much too difficult to do.
       return (a.size() * 19);
     }
+
     private static void CheckCBORLength(
       long expectedLength,
       long actualLength) {
@@ -3776,14 +3793,14 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
     private static CBORObject ConvertWithConverter(Object obj) {
       Object type = obj.getClass();
       ConverterInfo convinfo = null;
-      synchronized (converters) {
-        if (converters.size() == 0) {
+      synchronized (ValueConverters) {
+        if (ValueConverters.size() == 0) {
           CBORTag0.AddConverter();
           CBORTag37.AddConverter();
           CBORTag32.AddConverter();
         }
-        if (converters.containsKey(type)) {
-          convinfo = converters.get(type);
+        if (ValueConverters.containsKey(type)) {
+          convinfo = ValueConverters.get(type);
         } else {
           return null;
         }
@@ -4088,8 +4105,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
     }
 
     private static boolean TagHandlersEmpty() {
-      synchronized (tagHandlers) {
-        return tagHandlers.size() == 0;
+      synchronized (ValueTagHandlers) {
+        return ValueTagHandlers.size() == 0;
       }
     }
 

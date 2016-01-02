@@ -65,7 +65,7 @@ import com.upokecenter.numbers.*;
      * the exponent is positive or zero.
      */
     public final BigInteger getExponent() {
-        return new BigInteger(this.ed.getExponent());
+        return new BigInteger(this.getEd().getExponent());
       }
 
     /**
@@ -73,7 +73,7 @@ import com.upokecenter.numbers.*;
      * @return The absolute value of this object's un-scaled value.
      */
     public final BigInteger getUnsignedMantissa() {
-        return new BigInteger(this.ed.getUnsignedMantissa());
+        return new BigInteger(this.getEd().getUnsignedMantissa());
       }
 
     /**
@@ -82,18 +82,18 @@ import com.upokecenter.numbers.*;
      * value is negative (including a negative NaN).
      */
     public final BigInteger getMantissa() {
-        return new BigInteger(this.ed.getMantissa());
+        return new BigInteger(this.getEd().getMantissa());
       }
 
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      */
     public boolean equals(ExtendedDecimal other) {
-      return (other == null) ? (false) : (this.ed.equals(other.ed));
+      return (other == null) ? false : this.getEd().equals(other.getEd());
     }
 
     /**
@@ -104,7 +104,7 @@ import com.upokecenter.numbers.*;
      */
     @Override public boolean equals(Object obj) {
       ExtendedDecimal bi = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
-      return (bi == null) ? (false) : (this.ed.equals(bi.ed));
+      return (bi == null) ? false : this.getEd().equals(bi.getEd());
     }
 
     /**
@@ -112,22 +112,23 @@ import com.upokecenter.numbers.*;
      * @return This object's hash code.
      */
     @Override public int hashCode() {
-      return this.ed.hashCode();
+      return this.getEd().hashCode();
     }
 
     /**
      * Creates a number with the value exponent*10^mantissa.
      * @param mantissaSmall The un-scaled value.
      * @param exponentSmall The decimal exponent.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static ExtendedDecimal Create(int mantissaSmall, int exponentSmall) {
       return new ExtendedDecimal(EDecimal.Create(mantissaSmall, exponentSmall));
     }
 
-    final EDecimal ed;
+    private final EDecimal ed;
+
     ExtendedDecimal(EDecimal ed) {
-      if ((ed) == null) {
+      if (ed == null) {
         throw new NullPointerException("ed");
       }
       this.ed = ed;
@@ -137,24 +138,24 @@ import com.upokecenter.numbers.*;
      * Creates a number with the value exponent*10^mantissa.
      * @param mantissa The un-scaled value.
      * @param exponent The decimal exponent.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
      */
     public static ExtendedDecimal Create(
       BigInteger mantissa,
       BigInteger exponent) {
-      if ((mantissa) == null) {
+      if (mantissa == null) {
         throw new NullPointerException("mantissa");
       }
-      if ((exponent) == null) {
+      if (exponent == null) {
         throw new NullPointerException("exponent");
       }
-      return new ExtendedDecimal(EDecimal.Create(mantissa.ei, exponent.ei));
+      return new ExtendedDecimal(EDecimal.Create(mantissa.getEi(), exponent.getEi()));
     }
 
     /**
-     * Creates a not-a-number arbitrary-precision decimal object.
+     * Creates a not-a-number arbitrary-precision decimal number.
      * @param diag A number to use as diagnostic information associated with this
      * object. If none is needed, should be zero.
      * @return A quiet not-a-number.
@@ -162,34 +163,38 @@ import com.upokecenter.numbers.*;
      * is less than 0.
      */
     public static ExtendedDecimal CreateNaN(BigInteger diag) {
-      if ((diag) == null) {
+      if (diag == null) {
         throw new NullPointerException("diag");
       }
-      return new ExtendedDecimal(EDecimal.CreateNaN(diag.ei));
+      return new ExtendedDecimal(EDecimal.CreateNaN(diag.getEi()));
     }
 
     /**
-     * Creates a not-a-number arbitrary-precision decimal object.
+     * Creates a not-a-number arbitrary-precision decimal number.
      * @param diag A number to use as diagnostic information associated with this
      * object. If none is needed, should be zero.
      * @param signaling Whether the return value will be signaling (true) or quiet
      * (false).
      * @param negative Whether the return value is negative.
-     * @param ctx An EContext object.
-     * @return An arbitrary-precision decimal object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null or
      * is less than 0.
      */
-    public static ExtendedDecimal CreateNaN(BigInteger diag,
-      boolean signaling,
-      boolean negative,
-      PrecisionContext ctx) {
-      if ((diag) == null) {
+    public static ExtendedDecimal CreateNaN(
+BigInteger diag,
+boolean signaling,
+boolean negative,
+PrecisionContext ctx) {
+      if (diag == null) {
         throw new NullPointerException("diag");
       }
-    return new ExtendedDecimal(EDecimal.CreateNaN(diag.ei, signaling,
-        negative,
-        ctx == null ? null : ctx.ec));
+    return new ExtendedDecimal(
+EDecimal.CreateNaN(
+diag.getEi(),
+signaling,
+negative,
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -222,8 +227,10 @@ import com.upokecenter.numbers.*;
      */
     public static ExtendedDecimal FromString(String str, PrecisionContext ctx) {
 try {
-      return new ExtendedDecimal(EDecimal.FromString(str, ctx == null ? null :
-        ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.FromString(
+str,
+ctx == null ? null : ctx.getEc()));
     } catch (ETrapException ex) {
  throw TrapException.Create(ex);
 }
@@ -233,19 +240,20 @@ try {
      * Creates a decimal number from a string that represents a number. See
      * <code>FromString(String, int, int, EContext)</code> for more information.
      * @param str A string that represents a number.
-     * @param offset A zero-based index showing where the desired portion of "str"
-     * begins.
-     * @param length The length, in code units, of the desired portion of "str"
-     * (but not more than "str" 's length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @return An arbitrary-precision decimal number with the same value as the
      * given string.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws java.lang.NumberFormatException The parameter {@code str} is not a correctly
      * formatted number string.
      */
-    public static ExtendedDecimal FromString(String str,
-      int offset,
-      int length) {
+    public static ExtendedDecimal FromString(
+String str,
+int offset,
+int length) {
       return new ExtendedDecimal(EDecimal.FromString(str, offset, length));
     }
 
@@ -255,17 +263,17 @@ try {
      * optional plus sign ("+" , U+002B) or minus sign ("-", U+002D) (if '-'
      * , the value is negative.)</li> <li>One or more digits, with a single
      * optional decimal point after the first digit and before the last
-     * digit.</li> <li>Optionally, "E+" (positive exponent) or "E-"
-     * (negative exponent) plus one or more digits specifying the
+     * digit.</li> <li>Optionally, "E+"/"e+" (positive exponent) or
+     * "E-"/"e-" (negative exponent) plus one or more digits specifying the
      * exponent.</li></ul> <p>The string can also be "-INF", "-Infinity",
      * "Infinity", "INF" , quiet NaN ("NaN" /"-NaN") followed by any number
      * of digits, or signaling NaN ("sNaN" /"-sNaN") followed by any number
      * of digits, all in any combination of upper and lower case.</p> <p>All
      * characters mentioned above are the corresponding characters in the
      * Basic Latin range. In particular, the digits must be the basic digits
-     * 0 to 9 (U + 0030 to U + 0039). The string is not allowed to contain white
-     * space characters, including spaces.</p>
-     * @param str A string object, a portion of which represents a number.
+     * 0 to 9 (U + 0030 to U + 0039). The string portion is not allowed to
+     * contain white space characters, including spaces.</p>
+     * @param str A text string, a portion of which represents a number.
      * @param offset A zero-based index that identifies the start of the number.
      * @param length The length of the number within the string.
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -278,13 +286,18 @@ try {
      * @throws java.lang.NumberFormatException The parameter {@code str} is not a correctly
      * formatted number string.
      */
-    public static ExtendedDecimal FromString(String str,
-      int offset,
-      int length,
-      PrecisionContext ctx) {
+    public static ExtendedDecimal FromString(
+String str,
+int offset,
+int length,
+PrecisionContext ctx) {
 try {
-      return new ExtendedDecimal(EDecimal.FromString(str, offset, length,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.FromString(
+str,
+offset,
+length,
+ctx == null ? null : ctx.getEc()));
     } catch (ETrapException ex) {
  throw TrapException.Create(ex);
 }
@@ -300,7 +313,7 @@ try {
      * null.
      */
     public int CompareToBinary(ExtendedFloat other) {
-      return ((other) == null) ? (1) : (this.ed.CompareToBinary(other.ef));
+      return (other == null) ? 1 : this.getEd().CompareToBinary(other.getEf());
     }
 
     /**
@@ -310,7 +323,7 @@ try {
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-      return new BigInteger(this.ed.ToBigInteger());
+      return new BigInteger(this.getEd().ToBigInteger());
     }
 
     static ERounding ToERounding(Rounding r) {
@@ -338,8 +351,8 @@ try {
       if (r == Rounding.OddOrZeroFiveUp) {
         return ERounding.OddOrZeroFiveUp;
       }
-      return (r == Rounding.Unnecessary) ? (ERounding.None) : ((r ==
-        Rounding.Odd) ? (ERounding.Odd) : (ERounding.Down));
+      return (r == Rounding.Unnecessary) ? ERounding.None : ((r ==
+        Rounding.Odd) ? ERounding.Odd : ERounding.Down);
     }
 
     static Rounding ToRounding(ERounding r) {
@@ -367,8 +380,8 @@ try {
       if (r == ERounding.OddOrZeroFiveUp) {
         return Rounding.OddOrZeroFiveUp;
       }
-      return (r == ERounding.None) ? (Rounding.Unnecessary) : ((r ==
-        ERounding.Odd) ? (Rounding.Odd) : (Rounding.Down));
+      return (r == ERounding.None) ? Rounding.Unnecessary : ((r ==
+        ERounding.Odd) ? Rounding.Odd : Rounding.Down);
     }
 
     /**
@@ -379,10 +392,10 @@ try {
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-      return new BigInteger(this.ed.ToBigIntegerExact());
+      return new BigInteger(this.getEd().ToBigIntegerExact());
     }
 
-    private static final BigInteger valueOneShift62 = BigInteger.valueOf(1).shiftLeft(62);
+    private static final BigInteger ValueOneShift62 = BigInteger.valueOf(1).shiftLeft(62);
 
     /**
      * Creates a binary floating-point number from this object&#x27;s value. Note
@@ -394,7 +407,7 @@ try {
      * @return An arbitrary-precision binary float.
      */
     public ExtendedFloat ToExtendedFloat() {
-      return new ExtendedFloat(this.ed.ToExtendedFloat());
+      return new ExtendedFloat(this.getEd().ToExtendedFloat());
     }
 
     /**
@@ -410,7 +423,7 @@ try {
      * exceeds the range of a 32-bit floating point number.
      */
     public float ToSingle() {
-      return this.ed.ToSingle();
+      return this.getEd().ToSingle();
     }
 
     /**
@@ -426,7 +439,7 @@ try {
      * exceeds the range of a 64-bit floating point number.
      */
     public double ToDouble() {
-      return this.ed.ToDouble();
+      return this.getEd().ToDouble();
     }
 
     /**
@@ -453,19 +466,20 @@ try {
     /**
      * Converts a big integer to an arbitrary precision decimal.
      * @param bigint An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object with the exponent set to 0.
+     * @return An arbitrary-precision decimal number with the exponent set to 0.
+     * @throws java.lang.NullPointerException The parameter {@code bigint} is null.
      */
     public static ExtendedDecimal FromBigInteger(BigInteger bigint) {
-      if ((bigint) == null) {
+      if (bigint == null) {
         throw new NullPointerException("bigint");
       }
-      return new ExtendedDecimal(EDecimal.FromBigInteger(bigint.ei));
+      return new ExtendedDecimal(EDecimal.FromBigInteger(bigint.getEi()));
     }
 
     /**
      * Creates a decimal number from a 64-bit signed integer.
      * @param valueSmall A 64-bit signed integer.
-     * @return An arbitrary-precision decimal object with the exponent set to 0.
+     * @return An arbitrary-precision decimal number with the exponent set to 0.
      */
     public static ExtendedDecimal FromInt64(long valueSmall) {
       return new ExtendedDecimal(EDecimal.FromInt64(valueSmall));
@@ -474,7 +488,7 @@ try {
     /**
      * Creates a decimal number from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public static ExtendedDecimal FromInt32(int valueSmaller) {
       return new ExtendedDecimal(EDecimal.FromInt32(valueSmaller));
@@ -505,14 +519,14 @@ try {
      * Creates a decimal number from an arbitrary-precision binary floating-point
      * number.
      * @param bigfloat A big floating-point number.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigfloat} is null.
      */
     public static ExtendedDecimal FromExtendedFloat(ExtendedFloat bigfloat) {
-      if ((bigfloat) == null) {
+      if (bigfloat == null) {
         throw new NullPointerException("bigfloat");
       }
-      return new ExtendedDecimal(EDecimal.FromExtendedFloat(bigfloat.ef));
+      return new ExtendedDecimal(EDecimal.FromExtendedFloat(bigfloat.getEf()));
     }
 
     /**
@@ -521,24 +535,24 @@ try {
      * @return A string representation of this object.
      */
     @Override public String toString() {
-      return this.ed.toString();
+      return this.getEd().toString();
     }
 
     /**
      * Same as toString(), except that when an exponent is used it will be a
      * multiple of 3.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToEngineeringString() {
-      return this.ed.ToEngineeringString();
+      return this.getEd().ToEngineeringString();
     }
 
     /**
      * Converts this value to a string, but without using exponential notation.
-     * @return A string object.
+     * @return A text string.
      */
     public String ToPlainString() {
-      return this.ed.ToPlainString();
+      return this.getEd().ToPlainString();
     }
 
     /**
@@ -602,7 +616,7 @@ try {
      * @return True if this object is negative infinity; otherwise, false.
      */
     public boolean IsNegativeInfinity() {
-      return this.ed.IsNegativeInfinity();
+      return this.getEd().IsNegativeInfinity();
     }
 
     /**
@@ -610,7 +624,7 @@ try {
      * @return True if this object is positive infinity; otherwise, false.
      */
     public boolean IsPositiveInfinity() {
-      return this.ed.IsPositiveInfinity();
+      return this.getEd().IsPositiveInfinity();
     }
 
     /**
@@ -618,7 +632,7 @@ try {
      * @return True if this object is not a number (NaN); otherwise, false.
      */
     public boolean IsNaN() {
-      return this.ed.IsNaN();
+      return this.getEd().IsNaN();
     }
 
     /**
@@ -628,7 +642,7 @@ try {
      * false.
      */
     public boolean IsInfinity() {
-      return this.ed.IsInfinity();
+      return this.getEd().IsInfinity();
     }
 
     /**
@@ -637,7 +651,7 @@ try {
      * false.
      */
     public final boolean isFinite() {
-        return this.ed.isFinite();
+        return this.getEd().isFinite();
       }
 
     /**
@@ -647,7 +661,7 @@ try {
      * false.
      */
     public final boolean isNegative() {
-        return this.ed.isNegative();
+        return this.getEd().isNegative();
       }
 
     /**
@@ -655,7 +669,7 @@ try {
      * @return True if this object is a quiet not-a-number value; otherwise, false.
      */
     public boolean IsQuietNaN() {
-      return this.ed.IsQuietNaN();
+      return this.getEd().IsQuietNaN();
     }
 
     /**
@@ -665,7 +679,7 @@ try {
      * false.
      */
     public boolean IsSignalingNaN() {
-      return this.ed.IsSignalingNaN();
+      return this.getEd().IsSignalingNaN();
     }
 
     /**
@@ -673,7 +687,7 @@ try {
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      */
     public final int signum() {
-        return this.ed.signum();
+        return this.getEd().signum();
       }
 
     /**
@@ -681,23 +695,28 @@ try {
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-        return this.ed.signum() == 0;
+        return this.getEd().signum() == 0;
+      }
+
+    final EDecimal getEd() {
+        return this.ed;
       }
 
     /**
      * Gets the absolute value of this object.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal Abs() {
-      return new ExtendedDecimal(this.ed.Abs());
+      return new ExtendedDecimal(this.getEd().Abs());
     }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number. If this value is positive
+     * zero, returns positive zero.
      */
     public ExtendedDecimal Negate() {
-      return new ExtendedDecimal(this.ed.Negate());
+      return new ExtendedDecimal(this.getEd().Negate());
     }
 
     /**
@@ -706,15 +725,16 @@ try {
      * @param divisor The divisor.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns not-a-number (NaN) if the divisor and the dividend are 0.
      * Returns NaN if the result can't be exact because it would have a
      * nonterminating decimal expansion.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedDecimal Divide(ExtendedDecimal divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedDecimal(this.ed.Divide(divisor.ed));
+      return new ExtendedDecimal(this.getEd().Divide(divisor.getEd()));
     }
 
     /**
@@ -729,32 +749,37 @@ try {
      * the dividend are 0. Signals FlagInvalid and returns not-a-number
      * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
      * not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal DivideToSameExponent(ExtendedDecimal divisor,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedDecimal DivideToSameExponent(
+ExtendedDecimal divisor,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedDecimal(this.ed.DivideToSameExponent(divisor.ed,
-        ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedDecimal(
+this.getEd().DivideToSameExponent(
+divisor.getEd(),
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and returns the integer
+     * Divides two arbitrary-precision decimal numbers, and returns the integer
      * part of the result, rounded down, with the preferred exponent set to
-     * this value&#x27;s exponent minus the divisor&#x27;s exponent.
+     * this value's exponent minus the divisor's exponent.
      * @param divisor The divisor.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
      * (NaN) if the divisor and the dividend are 0.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal
                     divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-   return new ExtendedDecimal(this.ed.DivideToIntegerNaturalScale(divisor.ed));
+   return new ExtendedDecimal(this.getEd().DivideToIntegerNaturalScale(divisor.getEd()));
     }
 
     /**
@@ -771,7 +796,7 @@ try {
      */
     public ExtendedDecimal Reduce(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.Reduce(ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(this.getEd().Reduce(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -781,13 +806,14 @@ try {
      * Calculates the remainder of a number by the formula "this" - (("this" /
      * "divisor") * "divisor").
      * @param divisor The number to divide by.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
     public ExtendedDecimal RemainderNaturalScale(ExtendedDecimal divisor) {
-      if ((divisor) == null) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedDecimal(this.ed.RemainderNaturalScale(divisor.ed));
+      return new ExtendedDecimal(this.getEd().RemainderNaturalScale(divisor.getEd()));
     }
 
     /**
@@ -801,25 +827,29 @@ try {
      * in this context. Flags will be set on the given context only if the
      * context's HasFlags is true and the integer part of the division
      * result doesn't fit the precision and exponent range without rounding.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal RemainderNaturalScale(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RemainderNaturalScale(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        return new ExtendedDecimal(this.ed.RemainderNaturalScale(divisor.ed,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().RemainderNaturalScale(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponentSmall The desired exponent. A negative number places
      * the cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -841,26 +871,30 @@ try {
      * exponent is outside that range. Signals FlagInvalid and returns
      * not-a-number (NaN) if the rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
-      long desiredExponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedDecimal DivideToExponent(
+ExtendedDecimal divisor,
+long desiredExponentSmall,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        return new ExtendedDecimal(this.ed.DivideToExponent(divisor.ed,
-          desiredExponentSmall, ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().DivideToExponent(
+divisor.getEd(),
+desiredExponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Divides this arbitrary-precision decimal object by another
-     * arbitrary-precision decimal object. The preferred exponent for the
-     * result is this object&#x27;s exponent minus the divisor&#x27;s
-     * exponent.
+     * Divides this arbitrary-precision decimal number by another
+     * arbitrary-precision decimal number. The preferred exponent for the
+     * result is this object's exponent minus the divisor's exponent.
      * @param divisor The divisor.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
@@ -873,24 +907,28 @@ try {
      * precision is 0, and the result would have a nonterminating decimal
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal Divide(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Divide(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(this.ed.Divide(divisor.ed, ctx == null ?
-          null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().Divide(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponentSmall The desired exponent. A negative number places
      * the cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -903,21 +941,26 @@ try {
      * the dividend are 0. Signals FlagInvalid and returns not-a-number
      * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
      * not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
-      long desiredExponentSmall,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedDecimal DivideToExponent(
+ExtendedDecimal divisor,
+long desiredExponentSmall,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      return new ExtendedDecimal(this.ed.DivideToExponent(divisor.ed,
-        desiredExponentSmall, ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedDecimal(
+this.getEd().DivideToExponent(
+divisor.getEd(),
+desiredExponentSmall,
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param exponent The desired exponent. A negative number places the cutoff
      * point to the right of the usual decimal point. A positive number
      * places the cutoff point to the left of the usual decimal point.
@@ -938,29 +981,34 @@ try {
      * exponent is outside that range. Signals FlagInvalid and returns
      * not-a-number (NaN) if the rounding mode is Rounding.Unnecessary and
      * the result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
+     * exponent} is null.
      */
-    public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
-      BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedDecimal DivideToExponent(
+ExtendedDecimal divisor,
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-   return new ExtendedDecimal(this.ed.DivideToExponent(divisor.ed,
-          exponent.ei,
-          ctx == null ? null : ctx.ec));
+   return new ExtendedDecimal(
+this.getEd().DivideToExponent(
+divisor.getEd(),
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Divides two arbitrary-precision decimal objects, and gives a particular
+     * Divides two arbitrary-precision decimal numbers, and gives a particular
      * exponent to the result.
-     * @param divisor An arbitrary-precision decimal object.
+     * @param divisor An arbitrary-precision decimal number.
      * @param desiredExponent The desired exponent. A negative number places the
      * cutoff point to the right of the usual decimal point. A positive
      * number places the cutoff point to the left of the usual decimal
@@ -969,21 +1017,27 @@ try {
      * to have the same exponent as this value.
      * @return The quotient of the two objects. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
-     * returns not-a-number (NaN) if the divisor and the dividend are 0.
+     * Returns not-a-number (NaN) if the divisor and the dividend are 0.
      * Returns NaN if the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
+     * desiredExponent} is null.
      */
-    public ExtendedDecimal DivideToExponent(ExtendedDecimal divisor,
-      BigInteger desiredExponent,
-      Rounding rounding) {
-      if ((divisor) == null) {
+    public ExtendedDecimal DivideToExponent(
+ExtendedDecimal divisor,
+BigInteger desiredExponent,
+Rounding rounding) {
+      if (divisor == null) {
         throw new NullPointerException("divisor");
       }
-      if ((desiredExponent) == null) {
+      if (desiredExponent == null) {
         throw new NullPointerException("desiredExponent");
       }
-      return new ExtendedDecimal(this.ed.DivideToExponent(divisor.ed,
-        desiredExponent.ei, ExtendedDecimal.ToERounding(rounding)));
+      return new ExtendedDecimal(
+this.getEd().DivideToExponent(
+divisor.getEd(),
+desiredExponent.getEi(),
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
@@ -997,8 +1051,8 @@ try {
      */
     public ExtendedDecimal Abs(PrecisionContext context) {
       try {
-  return new ExtendedDecimal(this.ed.Abs(context == null ? null :
-          context.ec));
+  return new ExtendedDecimal(this.getEd().Abs(context == null ? null :
+          context.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1011,15 +1065,17 @@ try {
      * exponent range of the result. If HasFlags of the context is true,
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number. If this value is positive
+     * zero, returns positive zero.
+     * @throws java.lang.NullPointerException The parameter {@code context} is null.
      */
     public ExtendedDecimal Negate(PrecisionContext context) {
       try {
-        if ((context) == null) {
+        if (context == null) {
           throw new NullPointerException("context");
         }
-        return new ExtendedDecimal(this.ed.Negate(context == null ? null :
-          context.ec));
+        return new ExtendedDecimal(this.getEd().Negate(context == null ? null :
+          context.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1027,32 +1083,36 @@ try {
 
     /**
      * Adds this object and another decimal number and returns the result.
-     * @param otherValue An arbitrary-precision decimal object.
+     * @param otherValue An arbitrary-precision decimal number.
      * @return The sum of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedDecimal Add(ExtendedDecimal otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedDecimal(this.ed.Add(otherValue.ed));
+      return new ExtendedDecimal(this.getEd().Add(otherValue.getEd()));
     }
 
     /**
-     * Subtracts an arbitrary-precision decimal object from this instance and
+     * Subtracts an arbitrary-precision decimal number from this instance and
      * returns the result.
-     * @param otherValue An arbitrary-precision decimal object.
+     * @param otherValue An arbitrary-precision decimal number.
      * @return The difference of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedDecimal Subtract(ExtendedDecimal otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedDecimal(this.ed.Subtract(otherValue.ed));
+      return new ExtendedDecimal(this.getEd().Subtract(otherValue.getEd()));
     }
 
     /**
-     * Subtracts an arbitrary-precision decimal object from this instance.
-     * @param otherValue An arbitrary-precision decimal object.
+     * Subtracts an arbitrary-precision decimal number from this instance.
+     * @param otherValue An arbitrary-precision decimal number.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -1061,14 +1121,17 @@ try {
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      */
-    public ExtendedDecimal Subtract(ExtendedDecimal otherValue,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Subtract(
+ExtendedDecimal otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-return new ExtendedDecimal(this.ed.Subtract(otherValue.ed, ctx == null ?
-          null : ctx.ec));
+return new ExtendedDecimal(
+this.getEd().Subtract(
+otherValue.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1079,12 +1142,14 @@ return new ExtendedDecimal(this.ed.Subtract(otherValue.ed, ctx == null ?
      * the exponents of the two decimal numbers.
      * @param otherValue Another decimal number.
      * @return The product of the two decimal numbers.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
     public ExtendedDecimal Multiply(ExtendedDecimal otherValue) {
-      if ((otherValue) == null) {
+      if (otherValue == null) {
         throw new NullPointerException("otherValue");
       }
-      return new ExtendedDecimal(this.ed.Multiply(otherValue.ed));
+      return new ExtendedDecimal(this.getEd().Multiply(otherValue.getEd()));
     }
 
     /**
@@ -1092,23 +1157,28 @@ return new ExtendedDecimal(this.ed.Subtract(otherValue.ed, ctx == null ?
      * @param multiplicand The value to multiply.
      * @param augend The value to add.
      * @return The result this * {@code multiplicand} + {@code augend}.
+     * @throws java.lang.NullPointerException The parameter {@code multiplicand} or
+     * {@code augend} is null.
      */
-    public ExtendedDecimal MultiplyAndAdd(ExtendedDecimal multiplicand,
-      ExtendedDecimal augend) {
-      if ((multiplicand) == null) {
+    public ExtendedDecimal MultiplyAndAdd(
+ExtendedDecimal multiplicand,
+ExtendedDecimal augend) {
+      if (multiplicand == null) {
         throw new NullPointerException("multiplicand");
       }
-      if ((augend) == null) {
+      if (augend == null) {
         throw new NullPointerException("augend");
       }
-return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
-        augend.ed));
+return new ExtendedDecimal(
+this.getEd().MultiplyAndAdd(
+multiplicand.getEd(),
+augend.getEd()));
     }
 
     /**
      * Divides this object by another object, and returns the integer part of the
-     * result, with the preferred exponent set to this value&#x27;s exponent
-     * minus the divisor&#x27;s exponent.
+     * result, with the preferred exponent set to this value's exponent
+     * minus the divisor's exponent.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. Flags will be
@@ -1123,15 +1193,19 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * dividend are 0. Signals FlagInvalid and returns not-a-number (NaN) if
      * the rounding mode is Rounding.Unnecessary and the result is not
      * exact.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal DivideToIntegerNaturalScale(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(this.ed.DivideToIntegerNaturalScale(divisor.ed,
-          ctx == null ? null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().DivideToIntegerNaturalScale(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1151,15 +1225,19 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * the divisor is 0 and the dividend is nonzero. Signals FlagInvalid and
      * returns not-a-number (NaN) if the divisor and the dividend are 0, or
      * if the result doesn't fit the given precision.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal DivideToIntegerZeroScale(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal DivideToIntegerZeroScale(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-        return new ExtendedDecimal(this.ed.DivideToIntegerZeroScale(divisor.ed,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().DivideToIntegerZeroScale(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1167,19 +1245,23 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
 
     /**
      * Finds the remainder that results when dividing two arbitrary-precision
-     * decimal objects.
-     * @param divisor An arbitrary-precision decimal object.
-     * @param ctx Not documented yet.
+     * decimal numbers.
+     * @param divisor An arbitrary-precision decimal number.
+     * @param ctx The parameter {@code ctx} is not documented yet.
      * @return The remainder of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal Remainder(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Remainder(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-  return new ExtendedDecimal(this.ed.Remainder(divisor.ed, ctx == null ?
-          null : ctx.ec));
+  return new ExtendedDecimal(
+this.getEd().Remainder(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1187,21 +1269,20 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
 
     /**
      * Finds the distance to the closest multiple of the given divisor, based on
-     * the result of dividing this object&#x27;s value by another
-     * object&#x27;s value. <ul> <li>If this and the other object divide
-     * evenly, the result is 0.</li> <li>If the remainder's absolute value
-     * is less than half of the divisor's absolute value, the result has the
-     * same sign as this object and will be the distance to the closest
-     * multiple.</li> <li>If the remainder's absolute value is more than
-     * half of the divisor' s absolute value, the result has the opposite
-     * sign of this object and will be the distance to the closest
-     * multiple.</li> <li>If the remainder's absolute value is exactly half
-     * of the divisor's absolute value, the result has the opposite sign of
-     * this object if the quotient, rounded down, is odd, and has the same
-     * sign as this object if the quotient, rounded down, is even, and the
-     * result's absolute value is half of the divisor's absolute
-     * value.</li></ul> This function is also known as the "IEEE Remainder"
-     * function.
+     * the result of dividing this object's value by another object's value.
+     * <ul> <li>If this and the other object divide evenly, the result is
+     * 0.</li> <li>If the remainder's absolute value is less than half of
+     * the divisor's absolute value, the result has the same sign as this
+     * object and will be the distance to the closest multiple.</li> <li>If
+     * the remainder's absolute value is more than half of the divisor' s
+     * absolute value, the result has the opposite sign of this object and
+     * will be the distance to the closest multiple.</li> <li>If the
+     * remainder's absolute value is exactly half of the divisor's absolute
+     * value, the result has the opposite sign of this object if the
+     * quotient, rounded down, is odd, and has the same sign as this object
+     * if the quotient, rounded down, is even, and the result's absolute
+     * value is half of the divisor's absolute value.</li></ul> This
+     * function is also known as the "IEEE Remainder" function.
      * @param divisor The divisor.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
@@ -1212,15 +1293,19 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * returns not-a-number (NaN) if the divisor is 0, or either the result
      * of integer division (the quotient) or the remainder wouldn't fit the
      * given precision.
+     * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      */
-    public ExtendedDecimal RemainderNear(ExtendedDecimal divisor,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RemainderNear(
+ExtendedDecimal divisor,
+PrecisionContext ctx) {
       try {
-        if ((divisor) == null) {
+        if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(this.ed.RemainderNear(divisor.ed, ctx ==
-          null ? null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().RemainderNear(
+divisor.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1241,8 +1326,8 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      */
     public ExtendedDecimal NextMinus(PrecisionContext ctx) {
       try {
-    return new ExtendedDecimal(this.ed.NextMinus(ctx == null ? null :
-          ctx.ec));
+    return new ExtendedDecimal(this.getEd().NextMinus(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1262,18 +1347,18 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      */
     public ExtendedDecimal NextPlus(PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(this.ed.NextPlus(ctx == null ? null :
-          ctx.ec));
+     return new ExtendedDecimal(this.getEd().NextPlus(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Finds the next value that is closer to the other object&#x27;s value than
-     * this object&#x27;s value. Returns a copy of this value with the same
-     * sign as the other value if both values are equal.
-     * @param otherValue An arbitrary-precision decimal object.
+     * Finds the next value that is closer to the other object's value than this
+     * object's value. Returns a copy of this value with the same sign as
+     * the other value if both values are equal.
+     * @param otherValue An arbitrary-precision decimal number.
      * @param ctx A precision context object to control the precision and exponent
      * range of the result. The rounding mode from this context is ignored.
      * If HasFlags of the context is true, will also store the flags
@@ -1283,15 +1368,20 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * than this object's value. Signals FlagInvalid and returns NaN if the
      * parameter {@code ctx} is null, the precision is 0, or {@code ctx} has
      * an unlimited exponent range.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedDecimal NextToward(ExtendedDecimal otherValue,
-      PrecisionContext ctx) {
+    public ExtendedDecimal NextToward(
+ExtendedDecimal otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-     return new ExtendedDecimal(this.ed.NextToward(otherValue.ed, ctx ==
-          null ? null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().NextToward(
+otherValue.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1306,18 +1396,24 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The larger value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal Max(ExtendedDecimal first,
-      ExtendedDecimal second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedDecimal Max(
+ExtendedDecimal first,
+ExtendedDecimal second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.Max(first.ed, second.ed, ctx == null ?
-        null : ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.Max(
+first.getEd(),
+second.getEd(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1329,18 +1425,24 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The smaller value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal Min(ExtendedDecimal first,
-      ExtendedDecimal second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedDecimal Min(
+ExtendedDecimal first,
+ExtendedDecimal second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.Min(first.ed, second.ed, ctx == null ?
-        null : ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.Min(
+first.getEd(),
+second.getEd(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1352,19 +1454,25 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal MaxMagnitude(ExtendedDecimal first,
-      ExtendedDecimal second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedDecimal MaxMagnitude(
+ExtendedDecimal first,
+ExtendedDecimal second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.MaxMagnitude(first.ed, second.ed,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.MaxMagnitude(
+first.getEd(),
+second.getEd(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -1376,36 +1484,45 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal MinMagnitude(ExtendedDecimal first,
-      ExtendedDecimal second,
-      PrecisionContext ctx) {
-      if ((first) == null) {
+    public static ExtendedDecimal MinMagnitude(
+ExtendedDecimal first,
+ExtendedDecimal second,
+PrecisionContext ctx) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.MinMagnitude(first.ed, second.ed,
-        ctx == null ? null : ctx.ec));
+      return new ExtendedDecimal(
+EDecimal.MinMagnitude(
+first.getEd(),
+second.getEd(),
+ctx == null ? null : ctx.getEc()));
     }
 
     /**
      * Gets the greater value between two decimal numbers.
-     * @param first An arbitrary-precision decimal object.
-     * @param second Another arbitrary-precision decimal object.
+     * @param first An arbitrary-precision decimal number.
+     * @param second Another arbitrary-precision decimal number.
      * @return The larger value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal Max(ExtendedDecimal first,
-      ExtendedDecimal second) {
-      if ((first) == null) {
+    public static ExtendedDecimal Max(
+ExtendedDecimal first,
+ExtendedDecimal second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.Max(first.ed, second.ed));
+      return new ExtendedDecimal(EDecimal.Max(first.getEd(), second.getEd()));
     }
 
     /**
@@ -1413,16 +1530,19 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * @param first The first value to compare.
      * @param second The second value to compare.
      * @return The smaller value of the two objects.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal Min(ExtendedDecimal first,
-      ExtendedDecimal second) {
-      if ((first) == null) {
+    public static ExtendedDecimal Min(
+ExtendedDecimal first,
+ExtendedDecimal second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.Min(first.ed, second.ed));
+      return new ExtendedDecimal(EDecimal.Min(first.getEd(), second.getEd()));
     }
 
     /**
@@ -1430,17 +1550,20 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * absolute values are equal, has the same effect as Max.
      * @param first The first value to compare.
      * @param second The second value to compare.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal MaxMagnitude(ExtendedDecimal first,
-      ExtendedDecimal second) {
-      if ((first) == null) {
+    public static ExtendedDecimal MaxMagnitude(
+ExtendedDecimal first,
+ExtendedDecimal second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.MaxMagnitude(first.ed, second.ed));
+      return new ExtendedDecimal(EDecimal.MaxMagnitude(first.getEd(), second.getEd()));
     }
 
     /**
@@ -1448,17 +1571,20 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * absolute values are equal, has the same effect as Min.
      * @param first The first value to compare.
      * @param second The second value to compare.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code first} or {@code
+     * second} is null.
      */
-    public static ExtendedDecimal MinMagnitude(ExtendedDecimal first,
-      ExtendedDecimal second) {
-      if ((first) == null) {
+    public static ExtendedDecimal MinMagnitude(
+ExtendedDecimal first,
+ExtendedDecimal second) {
+      if (first == null) {
         throw new NullPointerException("first");
       }
-      if ((second) == null) {
+      if (second == null) {
         throw new NullPointerException("second");
       }
-      return new ExtendedDecimal(EDecimal.MinMagnitude(first.ed, second.ed));
+      return new ExtendedDecimal(EDecimal.MinMagnitude(first.getEd(), second.getEd()));
     }
 
     /**
@@ -1471,16 +1597,17 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * quiet NaN or signaling NaN, this method will not trigger an error.
      * Instead, NaN will compare greater than any other number, including
      * infinity. Two different NaN values will be considered equal.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @return Less than 0 if this object's value is less than the other value, or
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
     public int compareTo(ExtendedDecimal other) {
-      if ((other) == null) {
+      if (other == null) {
         throw new NullPointerException("other");
       }
-      return this.ed.compareTo(other.ed);
+      return this.getEd().compareTo(other.getEd());
     }
 
     /**
@@ -1489,7 +1616,7 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * equal.</p> <p>If this object or the other object is a quiet NaN or
      * signaling NaN, this method returns a quiet NaN, and will signal a
      * FlagInvalid flag if either is a signaling NaN.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @param ctx A precision context. The precision, rounding, and exponent range
      * are ignored. If HasFlags of the context is true, will store the flags
      * resulting from the operation (the flags are in addition to the
@@ -1497,15 +1624,19 @@ return new ExtendedDecimal(this.ed.MultiplyAndAdd(multiplicand.ed,
      * @return Quiet NaN if this object or the other object is NaN, or 0 if both
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
-    public ExtendedDecimal CompareToWithContext(ExtendedDecimal other,
-      PrecisionContext ctx) {
+    public ExtendedDecimal CompareToWithContext(
+ExtendedDecimal other,
+PrecisionContext ctx) {
       try {
-        if ((other) == null) {
+        if (other == null) {
           throw new NullPointerException("other");
         }
-return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
-          null ? null : ctx.ec));
+return new ExtendedDecimal(
+this.getEd().CompareToWithContext(
+other.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1517,7 +1648,7 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * zero are considered equal.</p> <p>If this object or the other object
      * is a quiet NaN or signaling NaN, this method will return a quiet NaN
      * and will signal a FlagInvalid flag.</p>
-     * @param other An arbitrary-precision decimal object.
+     * @param other An arbitrary-precision decimal number.
      * @param ctx A precision context. The precision, rounding, and exponent range
      * are ignored. If HasFlags of the context is true, will store the flags
      * resulting from the operation (the flags are in addition to the
@@ -1525,38 +1656,47 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * @return Quiet NaN if this object or the other object is NaN, or 0 if both
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
+     * @throws java.lang.NullPointerException The parameter {@code other} is null.
      */
-    public ExtendedDecimal CompareToSignal(ExtendedDecimal other,
-      PrecisionContext ctx) {
+    public ExtendedDecimal CompareToSignal(
+ExtendedDecimal other,
+PrecisionContext ctx) {
       try {
-        if ((other) == null) {
+        if (other == null) {
           throw new NullPointerException("other");
         }
-     return new ExtendedDecimal(this.ed.CompareToSignal(other.ed, ctx ==
-          null ? null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().CompareToSignal(
+other.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Finds the sum of this object and another object. The result&#x27;s exponent
-     * is set to the lower of the exponents of the two operands.
+     * Finds the sum of this object and another object. The result's exponent is
+     * set to the lower of the exponents of the two operands.
      * @param otherValue The number to add to.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The sum of thisValue and the other object.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedDecimal Add(ExtendedDecimal otherValue,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Add(
+ExtendedDecimal otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-     return new ExtendedDecimal(this.ed.Add(otherValue.ed, ctx == null ?
-          null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().Add(
+otherValue.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1581,15 +1721,20 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * if the rounded result can't fit the given precision, or if the
      * context defines an exponent range and the given exponent is outside
      * that range.
+     * @throws java.lang.NullPointerException The parameter {@code desiredExponent}
+     * is null.
      */
-    public ExtendedDecimal Quantize(BigInteger desiredExponent,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Quantize(
+BigInteger desiredExponent,
+PrecisionContext ctx) {
       try {
-        if ((desiredExponent) == null) {
+        if (desiredExponent == null) {
           throw new NullPointerException("desiredExponent");
         }
-  return new ExtendedDecimal(this.ed.Quantize(desiredExponent.ei, ctx ==
-          null ? null : ctx.ec));
+  return new ExtendedDecimal(
+this.getEd().Quantize(
+desiredExponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1598,15 +1743,18 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
     /**
      * Returns a decimal number with the same value as this one but a new exponent.
      * @param desiredExponentSmall A 32-bit signed integer.
-     * @param rounding Not documented yet.
+     * @param rounding The parameter {@code rounding} is not documented yet.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. returns not-a-number (NaN) if the rounding mode is
+     * exponent changed. Returns not-a-number (NaN) if the rounding mode is
      * Rounding.Unnecessary and the result is not exact.
      */
-    public ExtendedDecimal Quantize(int desiredExponentSmall,
-      Rounding rounding) {
-      return new ExtendedDecimal(this.ed.Quantize(desiredExponentSmall,
-        ExtendedDecimal.ToERounding(rounding)));
+    public ExtendedDecimal Quantize(
+int desiredExponentSmall,
+Rounding rounding) {
+      return new ExtendedDecimal(
+this.getEd().Quantize(
+desiredExponentSmall,
+ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
@@ -1634,11 +1782,14 @@ return new ExtendedDecimal(this.ed.CompareToWithContext(other.ed, ctx ==
      * context defines an exponent range and the given exponent is outside
      * that range.
      */
-    public ExtendedDecimal Quantize(int desiredExponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Quantize(
+int desiredExponentSmall,
+PrecisionContext ctx) {
       try {
-return new ExtendedDecimal(this.ed.Quantize(desiredExponentSmall, ctx ==
-          null ? null : ctx.ec));
+return new ExtendedDecimal(
+this.getEd().Quantize(
+desiredExponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1669,15 +1820,20 @@ return new ExtendedDecimal(this.ed.Quantize(desiredExponentSmall, ctx ==
      * if the result can't fit the given precision without rounding, or if
      * the precision context defines an exponent range and the given
      * exponent is outside that range.
+     * @throws java.lang.NullPointerException The parameter {@code otherValue} is
+     * null.
      */
-    public ExtendedDecimal Quantize(ExtendedDecimal otherValue,
-      PrecisionContext ctx) {
+    public ExtendedDecimal Quantize(
+ExtendedDecimal otherValue,
+PrecisionContext ctx) {
       try {
-        if ((otherValue) == null) {
+        if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
-          null : ctx.ec));
+return new ExtendedDecimal(
+this.getEd().Quantize(
+otherValue.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1702,8 +1858,8 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      */
     public ExtendedDecimal RoundToIntegralExact(PrecisionContext ctx) {
       try {
-   return new ExtendedDecimal(this.ed.RoundToIntegralExact(ctx == null ?
-          null : ctx.ec));
+   return new ExtendedDecimal(this.getEd().RoundToIntegralExact(ctx == null ?
+          null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1728,8 +1884,8 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      */
     public ExtendedDecimal RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
       try {
-  return new ExtendedDecimal(this.ed.RoundToIntegralNoRoundedFlag(ctx ==
-          null ? null : ctx.ec));
+  return new ExtendedDecimal(this.getEd().RoundToIntegralNoRoundedFlag(ctx ==
+          null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1745,7 +1901,7 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * places from the number. For example, -3 means round to the thousandth
      * (10^-3, 0.0001), and 3 means round to the thousand (10^3, 1000). A
      * value of 0 rounds the number to an integer.
-     * @param ctx An EContext object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @return A decimal number rounded to the closest value representable in the
      * given precision. Signals FlagInvalid and returns not-a-number (NaN)
      * if the result can't fit the given precision without rounding. Signals
@@ -1753,15 +1909,19 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * defines an exponent range, the new exponent must be changed to the
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
-    public ExtendedDecimal RoundToExponentExact(BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RoundToExponentExact(
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-        return new ExtendedDecimal(this.ed.RoundToExponentExact(exponent.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().RoundToExponentExact(
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1788,15 +1948,19 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * exponent range, the new exponent must be changed to the given
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
-    public ExtendedDecimal RoundToExponent(BigInteger exponent,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RoundToExponent(
+BigInteger exponent,
+PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-  return new ExtendedDecimal(this.ed.RoundToExponent(exponent.ei, ctx ==
-          null ? null : ctx.ec));
+  return new ExtendedDecimal(
+this.getEd().RoundToExponent(
+exponent.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1812,7 +1976,7 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * places from the number. For example, -3 means round to the thousandth
      * (10^-3, 0.0001), and 3 means round to the thousand (10^3, 1000). A
      * value of 0 rounds the number to an integer.
-     * @param ctx An EContext object.
+     * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @return A decimal number rounded to the closest value representable in the
      * given precision. Signals FlagInvalid and returns not-a-number (NaN)
      * if the result can't fit the given precision without rounding. Signals
@@ -1821,11 +1985,14 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
      */
-    public ExtendedDecimal RoundToExponentExact(int exponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RoundToExponentExact(
+int exponentSmall,
+PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.RoundToExponentExact(exponentSmall,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().RoundToExponentExact(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1853,11 +2020,14 @@ return new ExtendedDecimal(this.ed.Quantize(otherValue.ed, ctx == null ?
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
      */
-    public ExtendedDecimal RoundToExponent(int exponentSmall,
-      PrecisionContext ctx) {
+    public ExtendedDecimal RoundToExponent(
+int exponentSmall,
+PrecisionContext ctx) {
       try {
-return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
-          null ? null : ctx.ec));
+return new ExtendedDecimal(
+this.getEd().RoundToExponent(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1865,23 +2035,26 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
 
     /**
      * Multiplies two decimal numbers. The resulting scale will be the sum of the
-     * scales of the two decimal numbers. The result&#x27;s sign is positive
-     * if both operands have the same sign, and negative if they have
-     * different signs.
+     * scales of the two decimal numbers. The result's sign is positive if
+     * both operands have the same sign, and negative if they have different
+     * signs.
      * @param op Another decimal number.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The product of the two decimal numbers.
+     * @throws java.lang.NullPointerException The parameter {@code op} is null.
      */
     public ExtendedDecimal Multiply(ExtendedDecimal op, PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
-        return new ExtendedDecimal(this.ed.Multiply(op.ed, ctx == null ? null :
-          ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().Multiply(
+op.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1896,19 +2069,25 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return The result thisValue * multiplicand + augend.
+     * @throws java.lang.NullPointerException The parameter {@code op} or {@code
+     * augend} is null.
      */
-    public ExtendedDecimal MultiplyAndAdd(ExtendedDecimal op,
-      ExtendedDecimal augend,
-      PrecisionContext ctx) {
+    public ExtendedDecimal MultiplyAndAdd(
+ExtendedDecimal op,
+ExtendedDecimal augend,
+PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
-        if ((augend) == null) {
+        if (augend == null) {
           throw new NullPointerException("augend");
         }
-        return new ExtendedDecimal(this.ed.MultiplyAndAdd(op.ed, augend.ed,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().MultiplyAndAdd(
+op.getEd(),
+augend.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1926,18 +2105,22 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * subtrahend} is null.
      */
-    public ExtendedDecimal MultiplyAndSubtract(ExtendedDecimal op,
-      ExtendedDecimal subtrahend,
-      PrecisionContext ctx) {
+    public ExtendedDecimal MultiplyAndSubtract(
+ExtendedDecimal op,
+ExtendedDecimal subtrahend,
+PrecisionContext ctx) {
       try {
-        if ((op) == null) {
+        if (op == null) {
           throw new NullPointerException("op");
         }
-        if ((subtrahend) == null) {
+        if (subtrahend == null) {
           throw new NullPointerException("subtrahend");
         }
-   return new ExtendedDecimal(this.ed.MultiplyAndSubtract(op.ed,
-          subtrahend.ed, ctx == null ? null : ctx.ec));
+   return new ExtendedDecimal(
+this.getEd().MultiplyAndSubtract(
+op.getEd(),
+subtrahend.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1954,8 +2137,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal RoundToPrecision(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.RoundToPrecision(ctx == null ? null :
-          ctx.ec));
+        return new ExtendedDecimal(this.getEd().RoundToPrecision(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1973,7 +2156,7 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal Plus(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.Plus(ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(this.getEd().Plus(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1994,8 +2177,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
 @Deprecated
     public ExtendedDecimal RoundToBinaryPrecision(PrecisionContext ctx) {
       try {
- return new ExtendedDecimal(this.ed.RoundToBinaryPrecision(ctx == null ?
-          null : ctx.ec));
+ return new ExtendedDecimal(this.getEd().RoundToBinaryPrecision(ctx == null ?
+          null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2017,8 +2200,8 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal SquareRoot(PrecisionContext ctx) {
       try {
-   return new ExtendedDecimal(this.ed.SquareRoot(ctx == null ? null :
-          ctx.ec));
+   return new ExtendedDecimal(this.getEd().SquareRoot(ctx == null ? null :
+          ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2040,7 +2223,7 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal Exp(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.Exp(ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(this.getEd().Exp(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2066,7 +2249,7 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal Log(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.Log(ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(this.getEd().Log(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2089,15 +2272,15 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal Log10(PrecisionContext ctx) {
       try {
-        return new ExtendedDecimal(this.ed.Log10(ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(this.getEd().Log10(ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
     }
 
     /**
-     * Raises this object&#x27;s value to the given exponent.
-     * @param exponent An arbitrary-precision decimal object.
+     * Raises this object's value to the given exponent.
+     * @param exponent An arbitrary-precision decimal number.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -2108,14 +2291,17 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * FlagInvalid and returns not-a-number (NaN) if the parameter {@code
      * ctx} is null or the precision is unlimited (the context's Precision
      * property is 0), and the exponent has a fractional part.
+     * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
      */
     public ExtendedDecimal Pow(ExtendedDecimal exponent, PrecisionContext ctx) {
       try {
-        if ((exponent) == null) {
+        if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-        return new ExtendedDecimal(this.ed.Pow(exponent.ed, ctx == null ? null :
-          ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().Pow(
+exponent.getEd(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2133,8 +2319,10 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      */
     public ExtendedDecimal Pow(int exponentSmall, PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(this.ed.Pow(exponentSmall, ctx == null ?
-          null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().Pow(
+exponentSmall,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2143,11 +2331,11 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
     /**
      * Raises this object&#x27;s value to the given exponent.
      * @param exponentSmall A 32-bit signed integer.
-     * @return This^exponent. returns not-a-number (NaN) if this object and
+     * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
      */
     public ExtendedDecimal Pow(int exponentSmall) {
-      return new ExtendedDecimal(this.ed.Pow(exponentSmall));
+      return new ExtendedDecimal(this.getEd().Pow(exponentSmall));
     }
 
     /**
@@ -2162,17 +2350,17 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * precision is unlimited (the context's Precision property is 0).
      */
     public static ExtendedDecimal PI(PrecisionContext ctx) {
-      return new ExtendedDecimal(EDecimal.PI(ctx == null ? null : ctx.ec));
+      return new ExtendedDecimal(EDecimal.PI(ctx == null ? null : ctx.getEc()));
     }
 
     /**
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal MovePointLeft(int places) {
-      return new ExtendedDecimal(this.ed.MovePointLeft(places));
+      return new ExtendedDecimal(this.getEd().MovePointLeft(places));
     }
 
     /**
@@ -2183,12 +2371,14 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal MovePointLeft(int places, PrecisionContext ctx) {
       try {
-  return new ExtendedDecimal(this.ed.MovePointLeft(places, ctx == null ?
-          null : ctx.ec));
+  return new ExtendedDecimal(
+this.getEd().MovePointLeft(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2198,13 +2388,15 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * Returns a number similar to this number but with the decimal point moved to
      * the left.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedDecimal MovePointLeft(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedDecimal(this.ed.MovePointLeft(bigPlaces.ei));
+      return new ExtendedDecimal(this.getEd().MovePointLeft(bigPlaces.getEi()));
     }
 
     /**
@@ -2215,16 +2407,21 @@ return new ExtendedDecimal(this.ed.RoundToExponent(exponentSmall, ctx ==
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedDecimal MovePointLeft(BigInteger bigPlaces,
+    public ExtendedDecimal MovePointLeft(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
-        return new ExtendedDecimal(this.ed.MovePointLeft(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().MovePointLeft(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2234,10 +2431,10 @@ PrecisionContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal MovePointRight(int places) {
-      return new ExtendedDecimal(this.ed.MovePointRight(places));
+      return new ExtendedDecimal(this.getEd().MovePointRight(places));
     }
 
     /**
@@ -2248,12 +2445,14 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal MovePointRight(int places, PrecisionContext ctx) {
       try {
- return new ExtendedDecimal(this.ed.MovePointRight(places, ctx == null ?
-          null : ctx.ec));
+ return new ExtendedDecimal(
+this.getEd().MovePointRight(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2263,13 +2462,15 @@ PrecisionContext ctx) {
      * Returns a number similar to this number but with the decimal point moved to
      * the right.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedDecimal MovePointRight(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedDecimal(this.ed.MovePointRight(bigPlaces.ei));
+      return new ExtendedDecimal(this.getEd().MovePointRight(bigPlaces.getEi()));
     }
 
     /**
@@ -2282,16 +2483,21 @@ PrecisionContext ctx) {
      * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces}, but not to
      * more than 0.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedDecimal MovePointRight(BigInteger bigPlaces,
+    public ExtendedDecimal MovePointRight(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
 
-  return new ExtendedDecimal(this.ed.MovePointRight(bigPlaces.ei, ctx ==
-          null ? null : ctx.ec));
+  return new ExtendedDecimal(
+this.getEd().MovePointRight(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2300,10 +2506,10 @@ PrecisionContext ctx) {
     /**
      * Returns a number similar to this number but with the scale adjusted.
      * @param places A 32-bit signed integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal ScaleByPowerOfTen(int places) {
-      return new ExtendedDecimal(this.ed.ScaleByPowerOfTen(places));
+      return new ExtendedDecimal(this.getEd().ScaleByPowerOfTen(places));
     }
 
     /**
@@ -2313,12 +2519,14 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal ScaleByPowerOfTen(int places, PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(this.ed.ScaleByPowerOfTen(places, ctx ==
-          null ? null : ctx.ec));
+     return new ExtendedDecimal(
+this.getEd().ScaleByPowerOfTen(
+places,
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2327,13 +2535,15 @@ PrecisionContext ctx) {
     /**
      * Returns a number similar to this number but with the scale adjusted.
      * @param bigPlaces An arbitrary-precision integer.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
     public ExtendedDecimal ScaleByPowerOfTen(BigInteger bigPlaces) {
-      if ((bigPlaces) == null) {
+      if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
       }
-      return new ExtendedDecimal(this.ed.ScaleByPowerOfTen(bigPlaces.ei));
+      return new ExtendedDecimal(this.getEd().ScaleByPowerOfTen(bigPlaces.getEi()));
     }
 
     /**
@@ -2344,16 +2554,21 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return A number whose scale is increased by {@code bigPlaces}.
+     * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
+     * null.
      */
-    public ExtendedDecimal ScaleByPowerOfTen(BigInteger bigPlaces,
+    public ExtendedDecimal ScaleByPowerOfTen(
+BigInteger bigPlaces,
 PrecisionContext ctx) {
       try {
-        if ((bigPlaces) == null) {
+        if (bigPlaces == null) {
           throw new NullPointerException("bigPlaces");
         }
 
-        return new ExtendedDecimal(this.ed.ScaleByPowerOfTen(bigPlaces.ei,
-          ctx == null ? null : ctx.ec));
+        return new ExtendedDecimal(
+this.getEd().ScaleByPowerOfTen(
+bigPlaces.getEi(),
+ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2365,17 +2580,17 @@ PrecisionContext ctx) {
      * @return An arbitrary-precision integer.
      */
     public BigInteger Precision() {
-      return new BigInteger(this.ed.Precision());
+      return new BigInteger(this.getEd().Precision());
     }
 
     /**
      * Returns the unit in the last place. The mantissa will be 1 and the exponent
      * will be this number's exponent. Returns 1 with an exponent of 0 if
      * this number is infinity or NaN.
-     * @return An arbitrary-precision decimal object.
+     * @return An arbitrary-precision decimal number.
      */
     public ExtendedDecimal Ulp() {
-      return new ExtendedDecimal(this.ed.Ulp());
+      return new ExtendedDecimal(this.getEd().Ulp());
     }
 
     /**
@@ -2387,8 +2602,8 @@ PrecisionContext ctx) {
      */
     public ExtendedDecimal[] DivideAndRemainderNaturalScale(ExtendedDecimal
       divisor) {
-      EDecimal[] edec = this.ed.DivideAndRemainderNaturalScale(divisor ==
-        null ? null : divisor.ed);
+      EDecimal[] edec = this.getEd().DivideAndRemainderNaturalScale(divisor ==
+        null ? null : divisor.getEd());
       return new ExtendedDecimal[] {
         new ExtendedDecimal(edec[0]), new ExtendedDecimal(edec[1])
       };
@@ -2412,9 +2627,9 @@ PrecisionContext ctx) {
       ExtendedDecimal divisor,
       PrecisionContext ctx) {
       try {
-        EDecimal[] edec = this.ed.DivideAndRemainderNaturalScale(divisor ==
-          null ? null : divisor.ed,
-          ctx == null ? null : ctx.ec);
+        EDecimal[] edec = this.getEd().DivideAndRemainderNaturalScale(
+divisor == null ? null : divisor.getEd(),
+ctx == null ? null : ctx.getEc());
         return new ExtendedDecimal[] {
         new ExtendedDecimal(edec[0]), new ExtendedDecimal(edec[1])
       };

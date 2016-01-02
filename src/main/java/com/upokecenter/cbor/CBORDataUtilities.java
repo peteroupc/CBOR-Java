@@ -21,10 +21,12 @@ private CBORDataUtilities() {
      * Parses a number whose format follows the JSON specification. See
      * #ParseJSONNumber(String, integersOnly, parseOnly) for more
      * information.
-     * @param str A string to parse.
+     * @param str A string to parse. The string is not allowed to contain white
+     * space characters, including spaces.
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
-     * "-0" or "-0.0"). Returns null if the parsing fails.
+     * "-0" or "-0.0"). Returns null if the parsing fails, including if the
+     * string is null or empty.
      */
     public static CBORObject ParseJSONNumber(String str) {
       return ParseJSONNumber(str, false, false);
@@ -37,21 +39,48 @@ private CBORDataUtilities() {
      * is 0), an optional decimal point ("." , full stop) with one or more
      * basic digits, and an optional letter E or e with an optional plus or
      * minus sign and one or more basic digits (the exponent).
-     * @param str A string to parse.
+     * @param str A string to parse. The string is not allowed to contain white
+     * space characters, including spaces.
      * @param integersOnly If true, no decimal points or exponents are allowed in
      * the string.
      * @param positiveOnly If true, only positive numbers are allowed (the leading
      * minus is disallowed).
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
-     * "-0" or "-0.0"). Returns null if the parsing fails.
+     * "-0" or "-0.0"). Returns null if the parsing fails, including if the
+     * string is null or empty.
      */
     public static CBORObject ParseJSONNumber(
       String str,
       boolean integersOnly,
       boolean positiveOnly) {
-      // TODO: Add parameter allowing negative zero
-      // to be preserved
+      return ParseJSONNumber(str, integersOnly, positiveOnly, false);
+    }
+
+    /**
+     * Parses a number whose format follows the JSON specification (RFC 7159).
+     * Roughly speaking, a valid number consists of an optional minus sign,
+     * one or more basic digits (starting with 1 to 9 unless the only digit
+     * is 0), an optional decimal point ("." , full stop) with one or more
+     * basic digits, and an optional letter E or e with an optional plus or
+     * minus sign and one or more basic digits (the exponent).
+     * @param str A string to parse. The string is not allowed to contain white
+     * space characters, including spaces.
+     * @param integersOnly If true, no decimal points or exponents are allowed in
+     * the string.
+     * @param positiveOnly If true, only positive numbers are allowed (the leading
+     * minus is disallowed).
+     * @param preserveNegativeZero If true, returns positive zero if the number is
+     * a zero that starts with a minus sign (such as "-0" or "-0.0").
+     * Otherwise, returns negative zero in this case.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty.
+     */
+    public static CBORObject ParseJSONNumber(
+      String str,
+      boolean integersOnly,
+      boolean positiveOnly,
+      boolean preserveNegativeZero) {
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
@@ -79,6 +108,10 @@ private CBORDataUtilities() {
         ++i;
         haveDigits = true;
         if (i == str.length()) {
+          if (preserveNegativeZero && negative) {
+            return CBORObject.FromObject(
+             ExtendedDecimal.NegativeZero);
+          }
           return CBORObject.FromObject(0);
         }
         if (!integersOnly) {
@@ -230,10 +263,14 @@ private CBORDataUtilities() {
           mant = null;
         }
         if (mant == null) {
-          // NOTE: mantInt can only be positive, so overflow is impossible
+          // NOTE: mantInt can only be 0 or greater, so overflow is impossible
 
           if (negative) {
             mantInt = -mantInt;
+            if (preserveNegativeZero && mantInt == 0) {
+              return CBORObject.FromObject(
+                ExtendedDecimal.NegativeZero);
+            }
           }
           return CBORObject.FromObject(mantInt);
         } else {
@@ -251,9 +288,16 @@ private CBORDataUtilities() {
         if (negative) {
           bigmant=(bigmant).negate();
         }
-        return CBORObject.FromObject(ExtendedDecimal.Create(
+        ExtendedDecimal edec;
+        edec = ExtendedDecimal.Create(
           bigmant,
-          bigexp));
+          bigexp);
+        if (negative && preserveNegativeZero && bigmant.isZero()) {
+          ExtendedDecimal negzero = ExtendedDecimal.NegativeZero;
+          negzero = negzero.Quantize(bigexp, null);
+          edec = negzero.Subtract(edec);
+        }
+        return CBORObject.FromObject(edec);
       }
     }
   }

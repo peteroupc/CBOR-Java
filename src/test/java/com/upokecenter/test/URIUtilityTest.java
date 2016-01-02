@@ -9,107 +9,127 @@ import com.upokecenter.cbor.*;
       return CBORObject.class.getPackage().getName();
     }
 
+    private static final String URIUtilityName =
+      CborNamespace() + ".URIUtility";
+
   private static void assertIdempotency(String s) {
-    if (!((boolean)(Boolean)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
+    boolean cond = (boolean)(Boolean)Reflect.InvokeStatic(
+URIUtilityName,
 "isValidIRI",
-s)))Assert.fail();
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+s);
+      if (!(cond))Assert.fail();
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-0),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 0), 0));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+0);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 0),
+0);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-1),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 1), 1));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+1);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 1),
+1);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-2),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 2), 2));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+2);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 2),
+2);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-3),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 3), 3));
+3);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 3),
+3);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
   }
 
   private static void assertIdempotencyNeg(String s) {
-    Assert.assertTrue(!(
+    if (!(!(
 (boolean)(Boolean)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
+URIUtilityName,
 "isValidIRI",
-s)));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
+s))))Assert.fail();
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-0),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 0), 0));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+0);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 0),
+0);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-1),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 1), 1));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+1);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 1),
+1);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-2),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 2), 2));
-    Assert.assertEquals(
-(String)Reflect.InvokeStatic(
-CborNamespace() + ".URIUtility",
+2);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 2),
+2);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
+    {
+String stringTemp = (String)Reflect.InvokeStatic(
+URIUtilityName,
 "escapeURI",
 s,
-3),
-        (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility" , "escapeURI",
-(String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
-"escapeURI" , s, 3), 3));
+3);
+String stringTemp2 = (String)Reflect.InvokeStatic(
+URIUtilityName,
+"escapeURI",
+(String)Reflect.InvokeStatic(URIUtilityName, "escapeURI", s, 3),
+3);
+Assert.assertEquals(stringTemp, stringTemp2);
+}
   }
 
   private static void assertResolve(String src, String baseuri, String dest) {
@@ -117,7 +137,7 @@ CborNamespace() +".URIUtility",
     assertIdempotency(baseuri);
     assertIdempotency(dest);
     String res = (String)Reflect.InvokeStatic(
-CborNamespace() +".URIUtility",
+URIUtilityName,
 "relativeResolve",
 src,
 baseuri);

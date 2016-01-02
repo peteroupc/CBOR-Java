@@ -21,29 +21,29 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     private int w = 521288629;
     private int z = 362436069;
-    private static final int[] seeds = new int[32];
+    private static final int[] ValueSeeds = new int[32];
 
     private static void AddSeed(int seed) {
-      synchronized (seeds) {
+      synchronized (ValueSeeds) {
         if (seedIndex == -1) {
           seedIndex = 0;
         }
-        seeds[seedIndex ]^=seed;
+        ValueSeeds[seedIndex] ^= seed;
         seedCount = Math.max(seedCount, seedIndex + 1);
         ++seedIndex;
-        seedIndex %= seeds.length;
+        seedIndex %= ValueSeeds.length;
       }
     }
 
     private static int GetSeed() {
-      synchronized (seeds) {
+      synchronized (ValueSeeds) {
         if (seedCount == 0) {
           return 0;
         }
         if (seedReadIndex >= seedCount) {
           seedReadIndex = 0;
         }
-        return seeds[seedReadIndex++];
+        return ValueSeeds[seedReadIndex++];
       }
     }
 
@@ -54,7 +54,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public FastRandom() {
       int randseed = GetSeed();
       this.rand = (randseed == 0) ? (new java.util.Random()) : (new java.util.Random(randseed));
-      int randseed2 = (GetSeed() ^SysRandNext(this.rand, this.rand));
+      int randseed2 = (GetSeed() ^ SysRandNext(this.rand, this.rand));
       this.rand2 = (randseed2 == 0) ? (new java.util.Random()) : (new java.util.Random(randseed2));
       this.count = ReseedCount;
     }

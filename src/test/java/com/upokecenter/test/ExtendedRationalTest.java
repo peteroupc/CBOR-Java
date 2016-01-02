@@ -41,11 +41,8 @@ import com.upokecenter.util.*;
         TestCommon.CompareTestGreater(rat, rat2);
       }
       TestCommon.CompareTestLess(
-        new ExtendedRational(
-          BigInteger.valueOf(1),
-          BigInteger.valueOf(2)),
- (
-          new ExtendedRational(BigInteger.valueOf(4), BigInteger.valueOf(1))));
+        new ExtendedRational(BigInteger.valueOf(1), BigInteger.valueOf(2)),
+        new ExtendedRational(BigInteger.valueOf(4), BigInteger.valueOf(1)));
       for (int i = 0; i < 100; ++i) {
         BigInteger num = RandomObjects.RandomBigInteger(r);
         BigInteger den = RandomObjects.RandomBigInteger(r);

@@ -305,11 +305,13 @@ import com.upokecenter.util.*;
     private MutableNumber mnum;  // if integerMode is 1
     private BigInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static final BigInteger valueInt32MinValue =
+    private static final BigInteger ValueInt32MinValue =
       BigInteger.valueOf(Integer.MIN_VALUE);
-    private static final BigInteger valueInt32MaxValue =
+
+    private static final BigInteger ValueInt32MaxValue =
       BigInteger.valueOf(Integer.MAX_VALUE);
-    private static final BigInteger valueNegativeInt32MinValue=(valueInt32MinValue).negate();
+
+    private static final BigInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).negate();
 
     FastInteger2(int value) {
       this.smallValue = value;
@@ -589,7 +591,7 @@ import com.upokecenter.util.*;
     final int signum() {
         switch (this.integerMode) {
           case 0:
-          return (this.smallValue == 0) ? (0) : ((this.smallValue< 0) ? -1 :
+          return (this.smallValue == 0) ? 0 : ((this.smallValue < 0) ? -1 :
               1);
           case 1:
             return this.mnum.signum();

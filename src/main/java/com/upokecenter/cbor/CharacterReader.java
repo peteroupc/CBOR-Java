@@ -9,61 +9,33 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
-    /**
-     * A general-purpose character input for reading text from byte streams and
-     * text strings. When reading byte streams, this class supports the
-     * UTF-8 character encoding by default, but can be configured to support
-     * UTF-16 and UTF-32 as well.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="T:PeterO.Cbor.CharacterReader"]/*'/>
   final class CharacterReader implements ICharacterInput {
     private final int mode;
     private final boolean errorThrow;
-    private int offset;
     private final boolean dontSkipUtf8Bom;
-
-    private ICharacterInput reader;
-
     private final String str;
+    private final int strLength;
     private final IByteReader stream;
 
-    /**
-     * Initializes a new instance of the CharacterReader class using a Unicode
-     * 16-bit string; if the string begins with a byte-order mark (U + FEFF),
-     * it won't be skipped, and any unpaired surrogate code points (U+D800
-     * to U + DFFF) in the string are replaced with replacement characters
-     * (U + FFFD).
-     * @param str The string to read.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     */
+    private int offset;
+    private ICharacterInput reader;
+
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String)"]/*'/>
     public CharacterReader(String str) {
  this(str, false, false);
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class using a Unicode
-     * 16-bit string; any unpaired surrogate code points (U + D800 to U + DFFF)
-     * in the string are replaced with replacement characters (U + FFFD).
-     * @param str The string to read.
-     * @param skipByteOrderMark If true and the string begins with a byte-order
-     * mark (U + FEFF), will skip that code point as it reads the string.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean)"]/*'/>
     public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class using a Unicode
-     * 16-bit string.
-     * @param str The string to read.
-     * @param skipByteOrderMark If true and the string begins with a byte-order
-     * mark (U + FEFF), will skip that code point as it reads the string.
-     * @param errorThrow If true, will throw an exception if unpaired surrogate
-     * code points (U + D800 to U + DFFF) are found in the string. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD) as
-     * the stream is read.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean,System.Boolean)"]/*'/>
   public CharacterReader(
 String str,
 boolean skipByteOrderMark,
@@ -71,7 +43,8 @@ boolean errorThrow) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.offset = (skipByteOrderMark && str.length() > 0 && str.charAt(0) ==
+      this.strLength = str.length();
+      this.offset = (skipByteOrderMark && this.strLength > 0 && str.charAt(0) ==
         0xfeff) ? 1 : 0;
       this.str = str;
       this.errorThrow = errorThrow;
@@ -80,85 +53,73 @@ boolean errorThrow) {
       this.stream = null;
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class; will read the
-     * stream as UTF-8, skip the byte-order mark (U + FEFF) if it appears
-     * first in the stream, and replace invalidly encoded bytes with
-     * replacement characters (U + FFFD).
-     * @param stream A readable data stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32)"]/*'/>
+    public CharacterReader(String str, int offset, int length) {
+ this(str, offset, length, false, false);
+    }
+
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)"]/*'/>
+    public CharacterReader(
+String str,
+int offset,
+int length,
+boolean skipByteOrderMark,
+boolean errorThrow) {
+      if (str == null) {
+  throw new NullPointerException("str");
+}
+if (offset < 0) {
+  throw new IllegalArgumentException("offset (" + offset +
+    ") is less than " + 0);
+}
+if (offset > str.length()) {
+  throw new IllegalArgumentException("offset (" + offset +
+    ") is more than " + str.length());
+}
+if (length < 0) {
+  throw new IllegalArgumentException("length (" + length +
+    ") is less than " + 0);
+}
+if (length > str.length()) {
+  throw new IllegalArgumentException("length (" + length +
+    ") is more than " + str.length());
+}
+if (str.length() - offset < length) {
+  throw new IllegalArgumentException("str's length minus " + offset + " (" +
+    (str.length() - offset) + ") is less than " + length);
+}
+      this.strLength = length;
+      this.offset = (skipByteOrderMark && length > 0 && str.charAt(offset) ==
+        0xfeff) ? offset + 1 : 0;
+      this.str = str;
+      this.errorThrow = errorThrow;
+      this.mode = -1;
+      this.dontSkipUtf8Bom = false;
+      this.stream = null;
+    }
+
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream)"]/*'/>
     public CharacterReader(InputStream stream) {
  this(stream, 0, false);
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class; will skip the
-     * byte-order mark (U + FEFF) if it appears first in the stream.
-     * @param stream A readable byte stream.
-     * @param mode The method to use when detecting encodings other than UTF-8 in
-     * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
-     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
-     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
-     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
-     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
-     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
-     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
-     * (Tries to detect UTF-32 first.)</li></ul>.
-     * @param errorThrow If true, will throw an exception if invalid byte sequences
-     * (in the detected encoding) are found in the byte stream. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD) as
-     * the stream is read.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean)"]/*'/>
     public CharacterReader(InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class; will skip the
-     * byte-order mark (U + FEFF) if it appears first in the stream and
-     * replace invalidly encoded bytes with replacement characters (U + FFFD).
-     * @param stream A readable byte stream.
-     * @param mode The method to use when detecting encodings other than UTF-8 in
-     * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
-     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
-     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
-     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
-     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
-     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
-     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
-     * (Tries to detect UTF-32 first.)</li></ul>.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32)"]/*'/>
     public CharacterReader(InputStream stream, int mode) {
  this(stream, mode, false, false);
     }
 
-    /**
-     * Initializes a new instance of the CharacterReader class.
-     * @param stream A readable byte stream.
-     * @param mode The method to use when detecting encodings other than UTF-8 in
-     * the byte stream. This usually involves checking whether the stream
-     * begins with a byte-order mark (BOM, U + FEFF) or a non-zero basic code
-     * point (NZB, U + 0001 to U + 007F) before reading the rest of the stream.
-     * This value can be one of the following: <ul> <li>0: UTF-8 only.</li>
-     * <li>1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.</li> <li>2:
-     * Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
-     * detect UTF-32 first.)</li> <li>3: Detect UTF-16 using BOM, otherwise
-     * UTF-8.</li> <li>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8.
-     * (Tries to detect UTF-32 first.)</li></ul>.
-     * @param errorThrow If true, will throw an exception if invalid byte sequences
-     * (in the detected encoding) are found in the byte stream. If false,
-     * replaces those byte sequences with replacement characters (U + FFFD) as
-     * the stream is read.
-     * @param dontSkipUtf8Bom If the stream is detected as UTF-8 and this parameter
-     * is {@code true}, won't skip the BOM character if it occurs at the
-     * start of the stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean,System.Boolean)"]/*'/>
     public CharacterReader(
 InputStream stream,
 int mode,
@@ -172,27 +133,15 @@ boolean dontSkipUtf8Bom) {
       this.errorThrow = errorThrow;
       this.dontSkipUtf8Bom = dontSkipUtf8Bom;
       this.str = "";
+      this.strLength = -1;
     }
 
     private interface IByteReader {
       int read();
     }
 
-    /**
-     * Reads a series of code points from a Unicode stream or a string.
-     * @param chars An array where the code points that were read will be stored.
-     * @param index A zero-based index showing where the desired portion of {@code
-     * chars} begins.
-     * @param length The number of elements in the desired portion of {@code chars}
-     * (but not more than {@code chars} 's length).
-     * @return The number of code points read from the stream. This can be less
-     * than the {@code length} parameter if the end of the stream is
-     * reached.
-     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is
-     * less than 0 or greater than {@code chars} 's length, or {@code chars}
-     * 's length minus {@code index} is less than {@code length}.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new NullPointerException("chars");
@@ -229,11 +178,8 @@ boolean dontSkipUtf8Bom) {
       return count;
     }
 
-    /**
-     * Reads the next character from a Unicode stream or a string.
-     * @return The next character, or -1 if the end of the string or stream was
-     * reached.
-     */
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.ReadChar"]/*'/>
     public int ReadChar() {
       if (this.reader != null) {
         return this.reader.ReadChar();
@@ -241,8 +187,8 @@ boolean dontSkipUtf8Bom) {
       if (this.stream != null) {
         return this.DetectUnicodeEncoding();
       } else {
-        int c = (this.offset < this.str.length()) ? this.str.charAt(this.offset) : -1;
-        if ((c & 0xfc00) == 0xd800 && this.offset + 1 < this.str.length() &&
+        int c = (this.offset < this.strLength) ? this.str.charAt(this.offset) : -1;
+        if ((c & 0xfc00) == 0xd800 && this.offset + 1 < this.strLength &&
                 this.str.charAt(this.offset + 1) >= 0xdc00 && this.str.charAt(this.offset + 1)
                 <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
@@ -670,9 +616,9 @@ this.errorThrow);
 
     private static final class Utf8Reader implements ICharacterInput {
       private final IByteReader stream;
-      private int lastChar;
       private final SavedState state;
       private final boolean errorThrow;
+      private int lastChar;
 
       public Utf8Reader(IByteReader stream, boolean errorThrow) {
         this.stream = stream;
