@@ -31,7 +31,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * UnsignedMantissa, Exponent, and IsNegative properties, and calling
      * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
      * values combined will uniquely identify a particular
-     * arbitrary-precision binary float value.</li></ul>
+     * arbitrary-precision binary float value.</li></ul> <p>If an operation
+     * requires creating an intermediate value that might be too big to fit
+     * in memory (or might require more than 2 gigabytes of memory to store
+     * -- due to the current use of a 32-bit integer internally as a
+     * length), the operation may signal an invalid-operation flag and
+     * return not-a-number (NaN). In certain rare cases, the compareTo
+     * method may throw OutOfMemoryError (called OutOfMemoryError in
+     * Java) in the same circumstances.</p> <p><b>Thread
+     * safety:</b>Instances of this class are immutable, so they are
+     * inherently safe for use by multiple threads. Multiple instances of
+     * this object with the same properties are interchangeable, so they
+     * should not be compared using the "==" operator (which only checks if
+     * each side of the operator is the same instance).</p>
      */
   public final class EFloat implements Comparable<EFloat> {
     private final EInteger exponent;
@@ -95,7 +107,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object and that other object is a decimal fraction.
+     * those of another object and that other object is an
+     * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
      * @return True if the objects are equal; otherwise, false.
      */
@@ -348,7 +361,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return An arbitrary-precision integer.
      */
       public EInteger GetMantissa(EFloat value) {
-        return value.getMantissa();
+        return value.unsignedMantissa;
       }
 
     /**
@@ -1937,9 +1950,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a binary number with the same value as this object but rounded to an
-     * integer, and signals an invalid operation if the result would be
-     * inexact.
+     * Returns a binary number with the same value as this object but rounded to
+     * the given exponent, and signals an invalid operation if the result
+     * would be inexact.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -1962,8 +1975,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a binary number with the same value as this object, and rounds it to
-     * a new exponent if necessary.
+     * Returns a binary number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -1990,9 +2003,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a binary number with the same value as this object but rounded to an
-     * integer, and signals an invalid operation if the result would be
-     * inexact.
+     * Returns a binary number with the same value as this object but rounded to
+     * the given exponent, and signals an invalid operation if the result
+     * would be inexact.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -2015,8 +2028,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a binary number with the same value as this object, and rounds it to
-     * a new exponent if necessary.
+     * Returns a binary number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order

@@ -15,9 +15,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * An arbitrary-precision integer. <p>Instances of this class are immutable, so
      * they are inherently safe for use by multiple threads. Multiple
-     * instances of this object with the same value are interchangeable, so
-     * they should not be compared using the "==" operator (which only
-     * checks if each side of the operator is the same instance).</p>
+     * instances of this object with the same value are interchangeable, but
+     * they should be compared using the "Equals" method rather than the
+     * "==" operator.</p>
      */
   public final class EInteger implements Comparable<EInteger> {
     private static final String Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -186,16 +186,25 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int retwordcount;
       {
         retnegative = longerValue < 0;
-        retreg = new short[4];
-        if (longerValue == Long.MIN_VALUE) {
+        if ((longerValue >> 15) == 0) {
+          retreg = new short[2];
+          long intValue = (int)longerValue;
+          if (retnegative) {
+            intValue = -intValue;
+          }
+          retreg[0] = (short)(intValue & 0xffff);
+          retwordcount = 1;
+        } else if (longerValue == Long.MIN_VALUE) {
+          retreg = new short[4];
           retreg[0] = 0;
           retreg[1] = 0;
           retreg[2] = 0;
           retreg[3] = ((short)0x8000);
           retwordcount = 4;
         } else {
+          retreg = new short[4];
           long ut = longerValue;
-          if (ut < 0) {
+          if (retnegative) {
             ut = -ut;
           }
           retreg[0] = (short)(ut & 0xffff);
@@ -546,11 +555,25 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         }
       }
       if ((!this.negative) == (!bigintAugend.negative)) {
+        // both nonnegative or both negative
+        if (bigintAugend.wordCount <= 2 && this.wordCount <= 2 &&
+           (this.wordCount < 2 || (this.words[1] >> 15) == 0) &&
+           (bigintAugend.wordCount < 2 || (bigintAugend.words[1] >> 15) == 0)) {
+          int a = ((int)this.words[0]) & 0xffff;
+          a |= (((int)this.words[1]) & 0xffff) << 16;
+          int b = ((int)bigintAugend.words[0]) & 0xffff;
+          b |= (((int)bigintAugend.words[1]) & 0xffff) << 16;
+          a = ((int)(a + b));
+          sumreg = new short[2];
+          sumreg[0] = ((short)(a & 0xffff));
+          sumreg[1] = ((short)((a >> 16) & 0xffff));
+          int wcount = (sumreg[1] == 0) ? 1 : 2;
+          return new EInteger(wcount, sumreg, this.negative);
+        }
         sumreg = new short[(
           int)Math.max(
                     this.words.length,
                     bigintAugend.words.length)];
-        // both nonnegative or both negative
         int carry;
         int addendCount = this.wordCount;
         int augendCount = bigintAugend.wordCount;

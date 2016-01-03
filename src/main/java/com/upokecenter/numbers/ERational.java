@@ -8,9 +8,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
     /**
-     * Arbitrary-precision rational number. This class cannot be inherited; this is
-     * a change in version 2.0 from previous versions, where the class was
-     * inadvertently left inheritable.
+     * Arbitrary-precision rational number. This class cannot be inherited.
+     * <p><b>Thread safety:</b>Instances of this class are immutable, so
+     * they are inherently safe for use by multiple threads. Multiple
+     * instances of this object with the same properties are
+     * interchangeable, so they should not be compared using the "=="
+     * operator (which only checks if each side of the operator is the same
+     * instance).</p>
      */
   public final class ERational implements Comparable<ERational> {
     private EInteger unsignedNumerator;
@@ -1030,6 +1034,7 @@ BigNumberFlags.FlagInfinity | BigNumberFlags.FlagNegative);
     }
 
     private ERational Simplify() {
+      // TODO: Don't simplify automatically in version 3.0
       if ((this.flags & BigNumberFlags.FlagSpecial) == 0) {
         int lowBit = this.unsignedNumerator.getLowBit();
         lowBit = Math.min(lowBit, this.denominator.getLowBit());

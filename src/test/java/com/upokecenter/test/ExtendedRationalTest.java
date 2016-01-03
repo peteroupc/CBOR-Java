@@ -29,7 +29,7 @@ import com.upokecenter.util.*;
       TestCommon.CompareTestLess(ExtendedRational.Zero, ExtendedRational.NaN);
       for (int i = 0; i < 100; ++i) {
         BigInteger num = RandomObjects.RandomBigInteger(r);
-        if (num.signum() == 0) {
+        if (num.isZero()) {
           // Skip if number is 0; 0/1 and 0/2 are
           // equal in that case
           continue;
@@ -46,7 +46,7 @@ import com.upokecenter.util.*;
       for (int i = 0; i < 100; ++i) {
         BigInteger num = RandomObjects.RandomBigInteger(r);
         BigInteger den = RandomObjects.RandomBigInteger(r);
-        if (den.signum() == 0) {
+        if (den.isZero()) {
           den = BigInteger.valueOf(1);
         }
         ExtendedRational rat = new ExtendedRational(num, den);
@@ -54,7 +54,7 @@ import com.upokecenter.util.*;
           BigInteger num2 = num;
           BigInteger den2 = den;
           BigInteger mult = RandomObjects.RandomBigInteger(r);
-          if (mult.signum() == 0 || mult.equals(BigInteger.valueOf(1))) {
+          if (mult.isZero() || mult.equals(BigInteger.valueOf(1))) {
             mult = BigInteger.valueOf(2);
           }
           num2 = num2.multiply(mult);
@@ -90,10 +90,10 @@ import com.upokecenter.util.*;
       for (int i = 0; i < 500; ++i) {
         ExtendedRational er = RandomObjects.RandomRational(fr);
         ExtendedRational er2 = RandomObjects.RandomRational(fr);
-        if (er2.signum() == 0 || !er2.isFinite()) {
+        if (er2.isZero() || !er2.isFinite()) {
           continue;
         }
-        if (er.signum() == 0 || !er.isFinite()) {
+        if (er.isZero() || !er.isFinite()) {
           continue;
         }
         ExtendedRational ermult = er.Multiply(er2);
@@ -191,11 +191,13 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestIsZero() {
-      if (!(ExtendedRational.NegativeZero.signum() == 0))Assert.fail();
-      if (!(ExtendedRational.Zero.signum() == 0))Assert.fail();
-      if (ExtendedRational.One.signum() == 0)Assert.fail();
-      if (ExtendedRational.NegativeInfinity.signum() == 0)Assert.fail();
-      if (ExtendedRational.PositiveInfinity.signum() == 0)Assert.fail();
+      if (!(ExtendedRational.NegativeZero.isZero()))Assert.fail();
+      if (!(ExtendedRational.Zero.isZero()))Assert.fail();
+      if (ExtendedRational.One.isZero())Assert.fail();
+      if (ExtendedRational.NegativeInfinity.isZero())Assert.fail();
+      if (ExtendedRational.PositiveInfinity.isZero())Assert.fail();
+      if (ExtendedRational.NaN.isZero())Assert.fail();
+      if (ExtendedRational.SignalingNaN.isZero())Assert.fail();
     }
     @Test
     public void TestMultiply() {
@@ -221,10 +223,10 @@ import com.upokecenter.util.*;
         er2 = new ExtendedRational(
           RandomObjects.RandomBigInteger(fr),
           BigInteger.valueOf(1));
-        if (er2.signum() == 0 || !er2.isFinite()) {
+        if (er2.isZero() || !er2.isFinite()) {
           continue;
         }
-        if (er.signum() == 0 || !er.isFinite()) {
+        if (er.isZero() || !er.isFinite()) {
           // Code below will divide by "er",
           // so skip if "er" is zero
           continue;
@@ -232,11 +234,11 @@ import com.upokecenter.util.*;
         ExtendedRational ermult = er.Multiply(er2);
         ExtendedRational erdiv = ermult.Divide(er);
         erdiv = ermult.Remainder(er);
-        if (erdiv.signum() != 0) {
+        if (!erdiv.isZero()) {
           Assert.fail(ermult + "; " + er);
         }
         erdiv = ermult.Remainder(er2);
-        if (erdiv.signum() != 0) {
+        if (!erdiv.isZero()) {
           Assert.fail(er + "; " + er2);
         }
       }

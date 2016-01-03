@@ -274,32 +274,6 @@ System.out.print("");
     }
 
     @Test
-    public void TestCBORObjectCanTruncatedIntFitInInt32() {
-      if (CBORObject.True.CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.False.CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.NewArray().CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.NewMap().CanTruncatedIntFitInInt32())Assert.fail();
-      if (!(CBORObject.FromObject(0).CanTruncatedIntFitInInt32()))Assert.fail();
-      if (!(CBORObject.FromObject(2.5).CanTruncatedIntFitInInt32()))Assert.fail();
-      if (!(CBORObject.FromObject(Integer.MIN_VALUE)
-                    .CanTruncatedIntFitInInt32()))Assert.fail();
-      if (!(CBORObject.FromObject(Integer.MAX_VALUE)
-                    .CanTruncatedIntFitInInt32()))Assert.fail();
-      if (CBORObject.FromObject(Double.POSITIVE_INFINITY)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(Double.NEGATIVE_INFINITY)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(Double.NaN)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(ExtendedDecimal.PositiveInfinity)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(ExtendedDecimal.NegativeInfinity)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(ExtendedDecimal.NaN)
-                    .CanTruncatedIntFitInInt32())Assert.fail();
-    }
-
-    @Test
     public void TestIncompleteCBORString() {
       byte[] bytes = {  0x65, 0x41, 0x41, 0x41, 0x41  };
       try {
@@ -1691,15 +1665,5 @@ Assert.assertEquals(objectTemp, objectTemp2);
       expected =
      "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
-    }
-
-    @Test
-    public void TestExtendedNaNZero() {
-      if (ExtendedDecimal.NaN.signum() == 0)Assert.fail();
-      if (ExtendedDecimal.SignalingNaN.signum() == 0)Assert.fail();
-      if (ExtendedFloat.NaN.signum() == 0)Assert.fail();
-      if (ExtendedFloat.SignalingNaN.signum() == 0)Assert.fail();
-      if (ExtendedRational.NaN.signum() == 0)Assert.fail();
-      if (ExtendedRational.SignalingNaN.signum() == 0)Assert.fail();
     }
   }

@@ -1154,7 +1154,8 @@ BigInteger bigintTemp2 = ExtendedDecimal.FromString(
     }
     @Test
     public void TestIsZero() {
-      // not implemented yet
+      if (ExtendedDecimal.NaN.isZero())Assert.fail();
+      if (ExtendedDecimal.SignalingNaN.isZero())Assert.fail();
     }
     @Test
     public void TestLog() {
@@ -1582,9 +1583,29 @@ null);
     public void TestRoundToBinaryPrecision() {
       // not implemented yet
     }
+
+    private void TestRoundToExponentOne(
+      String input,
+      String expected,
+      int exponent,
+      Rounding rounding) {
+      ExtendedDecimal inputED = ExtendedDecimal.FromString(input);
+      inputED = inputED.RoundToExponent(
+exponent,
+PrecisionContext.ForRounding(rounding));
+      Assert.assertEquals(expected, inputED.toString());
+    }
     @Test
     public void TestRoundToExponent() {
-      // not implemented yet
+      this.TestRoundToExponentOne("-0", "-0", 0, Rounding.Down);
+      this.TestRoundToExponentOne("-0", "-0", 0, Rounding.HalfEven);
+      this.TestRoundToExponentOne("-0", "-0", 0, Rounding.Floor);
+      this.TestRoundToExponentOne("-0.0", "-0", 0, Rounding.Down);
+      this.TestRoundToExponentOne("-0.0", "-0", 0, Rounding.HalfEven);
+      this.TestRoundToExponentOne("-0.0", "-0", 0, Rounding.Floor);
+      this.TestRoundToExponentOne("-0.0000", "-0", 0, Rounding.Down);
+      this.TestRoundToExponentOne("-0.0000", "-0", 0, Rounding.HalfEven);
+      this.TestRoundToExponentOne("-0.0000", "-0", 0, Rounding.Floor);
     }
     @Test
     public void TestRoundToExponentExact() {

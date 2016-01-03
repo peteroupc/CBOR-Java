@@ -33,7 +33,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * by zero, or when a very high number can't be represented in a given
      * exponent range. <b>Not-a-number</b> is generally used to signal
      * errors.</p> <p>This class implements the General Decimal Arithmetic
-     * Specification version 1.70:
+     * Specification version 1.70 (except part of chapter 6):
      * <code>http://speleotrove.com/decimal/decarith.html</code></p> <p>Passing a
      * signaling NaN to any arithmetic operation shown here will signal the
      * flag FlagInvalid and return a quiet NaN, even if another operand to
@@ -53,7 +53,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * UnsignedMantissa, Exponent, and IsNegative properties, and calling
      * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
      * values combined will uniquely identify a particular
-     * arbitrary-precision decimal value.</li></ul>
+     * arbitrary-precision decimal value.</li></ul> <p>If an operation
+     * requires creating an intermediate value that might be too big to fit
+     * in memory (or might require more than 2 gigabytes of memory to store
+     * -- due to the current use of a 32-bit integer internally as a
+     * length), the operation may signal an invalid-operation flag and
+     * return not-a-number (NaN). In certain rare cases, the compareTo
+     * method may throw OutOfMemoryError (called OutOfMemoryError in
+     * Java) in the same circumstances.</p> <p><b>Thread
+     * safety:</b>Instances of this class are immutable, so they are
+     * inherently safe for use by multiple threads. Multiple instances of
+     * this object with the same properties are interchangeable, so they
+     * should not be compared using the "==" operator (which only checks if
+     * each side of the operator is the same instance).</p>
      */
   public final class EDecimal implements Comparable<EDecimal> {
     private static final int MaxSafeInt = 214748363;
@@ -109,7 +121,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object and that other object is a decimal fraction.
+     * those of another object and that other object is an
+     * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
      * @return True if the objects are equal; otherwise, false.
      */
@@ -687,7 +700,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         bigNewScale,
         negative ? BigNumberFlags.FlagNegative : 0);
       if (ctx != null) {
-        ret = MathValue.RoundAfterConversion(ret, ctx);
+        ret = GetMathValue(ctx).RoundAfterConversion(ret, ctx);
       }
       return ret;
     }
@@ -1490,12 +1503,12 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Creates a decimal number from a 32-bit floating-point number. This method
-     * computes the exact value of the floating point number, not an
+     * Creates a decimal number from a 32-bit binary floating-point number. This
+     * method computes the exact value of the floating point number, not an
      * approximation, as is often the case by converting the floating point
      * number to a string first. Remember, though, that the exact value of a
-     * 32-bit floating-point number is not always the value you get when you
-     * pass a literal decimal number (for example, calling
+     * 32-bit binary floating-point number is not always the value that
+     * results when passing a literal decimal number (for example, calling
      * <code>ExtendedDecimal.FromSingle(0.1f)</code>), since not all decimal
      * numbers can be converted to exact binary numbers (in the example
      * given, the resulting arbitrary-precision decimal will be the the
@@ -1596,12 +1609,12 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Creates a decimal number from a 64-bit floating-point number. This method
-     * computes the exact value of the floating point number, not an
+     * Creates a decimal number from a 64-bit binary floating-point number. This
+     * method computes the exact value of the floating point number, not an
      * approximation, as is often the case by converting the floating point
      * number to a string first. Remember, though, that the exact value of a
-     * 64-bit floating-point number is not always the value you get when you
-     * pass a literal decimal number (for example, calling
+     * 64-bit binary floating-point number is not always the value that
+     * results when passing a literal decimal number (for example, calling
      * <code>ExtendedDecimal.FromDouble(0.1f)</code>), since not all decimal
      * numbers can be converted to exact binary numbers (in the example
      * given, the resulting arbitrary-precision decimal will be the value of
@@ -1676,7 +1689,7 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from an arbitrary-precision binary floating-point
      * number.
-     * @param bigfloat A big floating-point number.
+     * @param bigfloat An arbitrary-precision binary floating-point number.
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigfloat} is null.
      */
@@ -2010,7 +2023,7 @@ remainder = divrem[1]; }
      * there may still be some trailing zeros in the mantissa.
      */
     public EDecimal Reduce(EContext ctx) {
-      return MathValue.Reduce(this, ctx);
+      return GetMathValue(ctx).Reduce(this, ctx);
     }
 
     /**
@@ -2101,7 +2114,7 @@ remainder = divrem[1]; }
     public EDecimal Divide(
       EDecimal divisor,
       EContext ctx) {
-      return MathValue.Divide(this, divisor, ctx);
+      return GetMathValue(ctx).Divide(this, divisor, ctx);
     }
 
     /**
@@ -2160,7 +2173,7 @@ remainder = divrem[1]; }
       EDecimal divisor,
       EInteger exponent,
       EContext ctx) {
-      return MathValue.DivideToExponent(this, divisor, exponent, ctx);
+      return GetMathValue(ctx).DivideToExponent(this, divisor, exponent, ctx);
     }
 
     /**
@@ -2199,7 +2212,8 @@ remainder = divrem[1]; }
      * @return The absolute value of this object.
      */
     public EDecimal Abs(EContext context) {
-      return MathValue.Abs(this, context);
+      return ((context == null || context == EContext.Unlimited) ?
+        ExtendedMathValue : MathValue).Abs(this, context);
     }
 
     /**
@@ -2213,7 +2227,8 @@ remainder = divrem[1]; }
      * zero, returns positive zero.
      */
     public EDecimal Negate(EContext context) {
-      return MathValue.Negate(this, context);
+      return ((context == null || context == EContext.Unlimited) ?
+        ExtendedMathValue : MathValue).Negate(this, context);
     }
 
     /**
@@ -2222,6 +2237,7 @@ remainder = divrem[1]; }
      * @return The sum of the two objects.
      */
     public EDecimal Add(EDecimal otherValue) {
+      // TODO: Use a consistent default rounding mode for version 3
       return this.Add(otherValue, EContext.Unlimited);
     }
 
@@ -2232,7 +2248,7 @@ remainder = divrem[1]; }
      * @return The difference of the two objects.
      */
     public EDecimal Subtract(EDecimal otherValue) {
-      return this.Subtract(otherValue, null);
+      return this.Subtract(otherValue, EContext.Unlimited);
     }
 
     /**
@@ -2290,6 +2306,17 @@ remainder = divrem[1]; }
         new ExtendedOrSimpleRadixMath<EDecimal>(new
                     DecimalMathHelper()));
 
+    private static final IRadixMath<EDecimal> ExtendedMathValue = new
+      RadixMath<EDecimal>(new DecimalMathHelper());
+
+    private static IRadixMath<EDecimal> GetMathValue(EContext ctx) {
+      if (ctx == null || ctx == EContext.Unlimited) {
+ return ExtendedMathValue;
+}
+      return (!ctx.isSimplified() && ctx.getTraps() == 0) ? ExtendedMathValue :
+        MathValue;
+    }
+
     /**
      * Divides this object by another object, and returns the integer part of the
      * result, with the preferred exponent set to this value&#x27;s exponent
@@ -2312,7 +2339,7 @@ remainder = divrem[1]; }
     public EDecimal DivideToIntegerNaturalScale(
       EDecimal divisor,
       EContext ctx) {
-      return MathValue.DivideToIntegerNaturalScale(this, divisor, ctx);
+      return GetMathValue(ctx).DivideToIntegerNaturalScale(this, divisor, ctx);
     }
 
     /**
@@ -2333,7 +2360,7 @@ remainder = divrem[1]; }
     public EDecimal DivideToIntegerZeroScale(
       EDecimal divisor,
       EContext ctx) {
-      return MathValue.DivideToIntegerZeroScale(this, divisor, ctx);
+      return GetMathValue(ctx).DivideToIntegerZeroScale(this, divisor, ctx);
     }
 
     /**
@@ -2346,7 +2373,7 @@ remainder = divrem[1]; }
     public EDecimal Remainder(
       EDecimal divisor,
       EContext ctx) {
-      return MathValue.Remainder(this, divisor, ctx);
+      return GetMathValue(ctx).Remainder(this, divisor, ctx);
     }
 
     /**
@@ -2380,7 +2407,8 @@ remainder = divrem[1]; }
     public EDecimal RemainderNear(
       EDecimal divisor,
       EContext ctx) {
-      return MathValue.RemainderNear(this, divisor, ctx);
+      return GetMathValue(ctx)
+        .RemainderNear(this, divisor, ctx);
     }
 
     /**
@@ -2397,7 +2425,7 @@ remainder = divrem[1]; }
      * exponent range.
      */
     public EDecimal NextMinus(EContext ctx) {
-      return MathValue.NextMinus(this, ctx);
+      return GetMathValue(ctx).NextMinus(this, ctx);
     }
 
     /**
@@ -2413,7 +2441,8 @@ remainder = divrem[1]; }
      * an unlimited exponent range.
      */
     public EDecimal NextPlus(EContext ctx) {
-      return MathValue.NextPlus(this, ctx);
+      return GetMathValue(ctx)
+        .NextPlus(this, ctx);
     }
 
     /**
@@ -2434,7 +2463,8 @@ remainder = divrem[1]; }
     public EDecimal NextToward(
       EDecimal otherValue,
       EContext ctx) {
-      return MathValue.NextToward(this, otherValue, ctx);
+      return GetMathValue(ctx)
+        .NextToward(this, otherValue, ctx);
     }
 
     /**
@@ -2451,7 +2481,7 @@ remainder = divrem[1]; }
       EDecimal first,
       EDecimal second,
       EContext ctx) {
-      return MathValue.Max(first, second, ctx);
+      return GetMathValue(ctx).Max(first, second, ctx);
     }
 
     /**
@@ -2468,7 +2498,7 @@ remainder = divrem[1]; }
       EDecimal first,
       EDecimal second,
       EContext ctx) {
-      return MathValue.Min(first, second, ctx);
+      return GetMathValue(ctx).Min(first, second, ctx);
     }
 
     /**
@@ -2486,7 +2516,7 @@ remainder = divrem[1]; }
       EDecimal first,
       EDecimal second,
       EContext ctx) {
-      return MathValue.MaxMagnitude(first, second, ctx);
+      return GetMathValue(ctx).MaxMagnitude(first, second, ctx);
     }
 
     /**
@@ -2504,7 +2534,7 @@ remainder = divrem[1]; }
       EDecimal first,
       EDecimal second,
       EContext ctx) {
-      return MathValue.MinMagnitude(first, second, ctx);
+      return GetMathValue(ctx).MinMagnitude(first, second, ctx);
     }
 
     /**
@@ -2573,7 +2603,7 @@ remainder = divrem[1]; }
      * or if {@code other} is null, or 0 if both values are equal.
      */
     public int compareTo(EDecimal other) {
-      return MathValue.compareTo(this, other);
+      return ExtendedMathValue.compareTo(this, other);
     }
 
     /**
@@ -2594,7 +2624,7 @@ remainder = divrem[1]; }
     public EDecimal CompareToWithContext(
       EDecimal other,
       EContext ctx) {
-      return MathValue.CompareToWithContext(this, other, false, ctx);
+      return GetMathValue(ctx).CompareToWithContext(this, other, false, ctx);
     }
 
     /**
@@ -2615,7 +2645,7 @@ remainder = divrem[1]; }
     public EDecimal CompareToSignal(
       EDecimal other,
       EContext ctx) {
-      return MathValue.CompareToWithContext(this, other, true, ctx);
+      return GetMathValue(ctx).CompareToWithContext(this, other, true, ctx);
     }
 
     /**
@@ -2631,7 +2661,7 @@ remainder = divrem[1]; }
     public EDecimal Add(
       EDecimal otherValue,
       EContext ctx) {
-      return MathValue.Add(this, otherValue, ctx);
+      return GetMathValue(ctx).Add(this, otherValue, ctx);
     }
 
     /**
@@ -2740,7 +2770,7 @@ remainder = divrem[1]; }
     public EDecimal Quantize(
       EDecimal otherValue,
       EContext ctx) {
-      return MathValue.Quantize(this, otherValue, ctx);
+      return GetMathValue(ctx).Quantize(this, otherValue, ctx);
     }
 
     /**
@@ -2761,7 +2791,7 @@ remainder = divrem[1]; }
      * context.
      */
     public EDecimal RoundToIntegralExact(EContext ctx) {
-      return MathValue.RoundToExponentExact(this, EInteger.FromInt64(0), ctx);
+      return GetMathValue(ctx).RoundToExponentExact(this, EInteger.FromInt64(0), ctx);
     }
 
     /**
@@ -2782,7 +2812,8 @@ remainder = divrem[1]; }
      * and 0 is outside of the valid range of the precision context.
      */
     public EDecimal RoundToIntegralNoRoundedFlag(EContext ctx) {
-      return MathValue.RoundToExponentNoRoundedFlag(this, EInteger.FromInt64(0), ctx);
+      return GetMathValue(ctx)
+        .RoundToExponentNoRoundedFlag(this, EInteger.FromInt64(0), ctx);
     }
 
     /**
@@ -2807,12 +2838,13 @@ remainder = divrem[1]; }
     public EDecimal RoundToExponentExact(
       EInteger exponent,
       EContext ctx) {
-      return MathValue.RoundToExponentExact(this, exponent, ctx);
+      return GetMathValue(ctx)
+        .RoundToExponentExact(this, exponent, ctx);
     }
 
     /**
-     * Returns a decimal number with the same value as this object, and rounds it
-     * to a new exponent if necessary.
+     * Returns a decimal number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -2835,7 +2867,8 @@ remainder = divrem[1]; }
     public EDecimal RoundToExponent(
       EInteger exponent,
       EContext ctx) {
-      return MathValue.RoundToExponentSimple(this, exponent, ctx);
+      return GetMathValue(ctx)
+        .RoundToExponentSimple(this, exponent, ctx);
     }
 
     /**
@@ -2864,8 +2897,8 @@ remainder = divrem[1]; }
     }
 
     /**
-     * Returns a decimal number with the same value as this object, and rounds it
-     * to a new exponent if necessary.
+     * Returns a decimal number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -2904,7 +2937,7 @@ remainder = divrem[1]; }
      * @return The product of the two decimal numbers.
      */
     public EDecimal Multiply(EDecimal op, EContext ctx) {
-      return MathValue.Multiply(this, op, ctx);
+      return GetMathValue(ctx).Multiply(this, op, ctx);
     }
 
     /**
@@ -2921,7 +2954,7 @@ remainder = divrem[1]; }
       EDecimal op,
       EDecimal augend,
       EContext ctx) {
-      return MathValue.MultiplyAndAdd(this, op, augend, ctx);
+      return GetMathValue(ctx).MultiplyAndAdd(this, op, augend, ctx);
     }
 
     /**
@@ -2954,7 +2987,8 @@ remainder = divrem[1]; }
           subtrahend.exponent,
           newflags);
       }
-      return MathValue.MultiplyAndAdd(this, op, negated, ctx);
+      return GetMathValue(ctx)
+        .MultiplyAndAdd(this, op, negated, ctx);
     }
 
     /**
@@ -2967,7 +3001,7 @@ remainder = divrem[1]; }
      * null or the precision and exponent range are unlimited.
      */
     public EDecimal RoundToPrecision(EContext ctx) {
-      return MathValue.RoundToPrecision(this, ctx);
+      return GetMathValue(ctx).RoundToPrecision(this, ctx);
     }
 
     /**
@@ -2981,7 +3015,7 @@ remainder = divrem[1]; }
      * null or the precision and exponent range are unlimited.
      */
     public EDecimal Plus(EContext ctx) {
-      return MathValue.Plus(this, ctx);
+      return GetMathValue(ctx).Plus(this, ctx);
     }
 
     /**
@@ -3002,7 +3036,7 @@ remainder = divrem[1]; }
         return this;
       }
       EContext ctx2 = ctx.Copy().WithPrecisionInBits(true);
-      EDecimal ret = MathValue.RoundToPrecision(this, ctx2);
+      EDecimal ret = GetMathValue(ctx).RoundToPrecision(this, ctx2);
       if (ctx2.getHasFlags()) {
         ctx.setFlags(ctx2.getFlags());
       }
@@ -3024,7 +3058,7 @@ remainder = divrem[1]; }
      * the precision is unlimited (the context's Precision property is 0).
      */
     public EDecimal SquareRoot(EContext ctx) {
-      return MathValue.SquareRoot(this, ctx);
+      return GetMathValue(ctx).SquareRoot(this, ctx);
     }
 
     /**
@@ -3042,7 +3076,7 @@ remainder = divrem[1]; }
      * 0).
      */
     public EDecimal Exp(EContext ctx) {
-      return MathValue.Exp(this, ctx);
+      return GetMathValue(ctx).Exp(this, ctx);
     }
 
     /**
@@ -3064,7 +3098,7 @@ remainder = divrem[1]; }
      * infinity if this object's value is 0.
      */
     public EDecimal Log(EContext ctx) {
-      return MathValue.Ln(this, ctx);
+      return GetMathValue(ctx).Ln(this, ctx);
     }
 
     /**
@@ -3083,7 +3117,7 @@ remainder = divrem[1]; }
      * 0).
      */
     public EDecimal Log10(EContext ctx) {
-      return MathValue.Log10(this, ctx);
+      return GetMathValue(ctx).Log10(this, ctx);
     }
 
     /**
@@ -3101,7 +3135,7 @@ remainder = divrem[1]; }
      * property is 0), and the exponent has a fractional part.
      */
     public EDecimal Pow(EDecimal exponent, EContext ctx) {
-      return MathValue.Power(this, exponent, ctx);
+      return GetMathValue(ctx).Power(this, exponent, ctx);
     }
 
     /**
@@ -3140,7 +3174,7 @@ remainder = divrem[1]; }
      * precision is unlimited (the context's Precision property is 0).
      */
     public static EDecimal PI(EContext ctx) {
-      return MathValue.Pi(ctx);
+      return GetMathValue(ctx).Pi(ctx);
     }
 
     /**

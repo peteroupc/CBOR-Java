@@ -41,23 +41,6 @@ import com.upokecenter.cbor.*;
     }
 
     @Test
-    public void TestAdd() {
-      FastRandom r = new FastRandom();
-      for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
-        ExtendedDecimal cmpDecFrac =
-          o1.AsExtendedDecimal().Add(o2.AsExtendedDecimal());
-        ExtendedDecimal cmpCobj = CBORObject.Addition(
-          o1,
-          o2).AsExtendedDecimal();
-        TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
-        TestCommon.AssertRoundTrip(o1);
-        TestCommon.AssertRoundTrip(o2);
-      }
-    }
-
-    @Test
     public void TestArray() {
       CBORObject cbor = CBORObject.FromJSONString("[]");
       cbor.Add(CBORObject.FromObject(3));
@@ -670,7 +653,7 @@ AddSubCompare(objectTemp, objectTemp2);
         CBORObject o1 =
           CBORObject.FromObject(RandomObjects.RandomBigInteger(r));
       CBORObject o2 = CBORObject.FromObject(RandomObjects.RandomBigInteger(r));
-        if (o2.signum() == 0) {
+        if (o2.isZero()) {
           continue;
         }
         ExtendedRational er = new ExtendedRational(o1.AsBigInteger(), o2.AsBigInteger());

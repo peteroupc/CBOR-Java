@@ -421,6 +421,20 @@ rounding,
 false).WithUnlimitedExponents();
     }
 
+    private static final EContext ForRoundingHalfEven = new EContext(
+0,
+ERounding.HalfEven,
+0,
+0,
+false).WithUnlimitedExponents();
+
+    private static final EContext ForRoundingDown = new EContext(
+0,
+ERounding.Down,
+0,
+0,
+false).WithUnlimitedExponents();
+
     /**
      * Creates a new PrecisionContext object initialized with an unlimited
      * precision, an unlimited exponent range, and the given rounding mode.
@@ -428,6 +442,12 @@ false).WithUnlimitedExponents();
      * @return A context object for arbitrary-precision arithmetic settings.
      */
     public static EContext ForRounding(ERounding rounding) {
+      if (rounding == ERounding.HalfEven) {
+        return ForRoundingHalfEven;
+      }
+      if (rounding == ERounding.Down) {
+        return ForRoundingDown;
+      }
       return new EContext(
 0,
 rounding,

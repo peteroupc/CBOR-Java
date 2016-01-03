@@ -24,6 +24,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     FastInteger getDiscardedDigitCount();
 
+    void TruncateRight(FastInteger bits);
+
     void ShiftRight(FastInteger bits);
 
     void ShiftRightInt(int bits);

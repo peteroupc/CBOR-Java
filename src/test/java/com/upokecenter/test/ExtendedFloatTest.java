@@ -53,7 +53,7 @@ import com.upokecenter.util.*;
         }
         if (str.charAt(index) == '1') {
           ++index;
-          if (ret.signum() == 0) {
+          if (ret.isZero()) {
             ret = BigInteger.valueOf(1);
           } else {
             ret = ret.shiftLeft(1);
@@ -71,7 +71,7 @@ import com.upokecenter.util.*;
         if (str.charAt(index) == '1') {
           ++index;
           --smallExponent;
-          if (ret.signum() == 0) {
+          if (ret.isZero()) {
             ret = BigInteger.valueOf(1);
           } else {
             ret = ret.shiftLeft(1);
@@ -261,7 +261,8 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestIsZero() {
-      // not implemented yet
+      if (ExtendedFloat.NaN.isZero())Assert.fail();
+      if (ExtendedFloat.SignalingNaN.isZero())Assert.fail();
     }
     @Test
     public void TestLog() {
