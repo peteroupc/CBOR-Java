@@ -152,18 +152,39 @@ private CBORUtilities() {
       if (value == 0) {
         return "0";
       }
-      boolean neg = value < 0;
-      char[] chars = new char[24];
-      int count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
+      if (value == (long)Integer.MIN_VALUE) {
+        return "-2147483648";
       }
-      while (value != 0) {
-        char digit = HexAlphabet.charAt((int)(value % 10));
-        chars[count++] = digit;
-        value /= 10;
+      boolean neg = value < 0;
+      int count = 0;
+      char[] chars;
+      int intvalue = ((int)value);
+      if ((long)intvalue == value) {
+        chars = new char[12];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          intvalue = -intvalue;
+        }
+        while (intvalue != 0) {
+          int intdivvalue = intvalue / 10;
+          char digit = HexAlphabet.charAt((int)(intvalue - (intdivvalue * 10)));
+          chars[count++] = digit;
+          intvalue = intdivvalue;
+        }
+      } else {
+        chars = new char[24];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          value = -value;
+        }
+        while (value != 0) {
+          long divvalue = value / 10;
+          char digit = HexAlphabet.charAt((int)(value - (divvalue * 10)));
+          chars[count++] = digit;
+          value = divvalue;
+        }
       }
       if (neg) {
         ReverseChars(chars, 1, count - 1);

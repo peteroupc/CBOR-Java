@@ -18,7 +18,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           throw new IllegalArgumentException("bigintVal's sign (" + bigintVal.signum() +
             ") is less than " + "0 ");
         }
-        byte[] bytes = bigintVal.toBytes(true);
+        byte[] bytes = bigintVal.ToBytes(true);
         int len = bytes.length;
         int newWordCount = Math.max(4, (len / 4) + 1);
         if (newWordCount > mnum.data.length) {
@@ -420,8 +420,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     public static FastInteger FromBig(EInteger bigintVal) {
-      if (bigintVal.canFitInInt()) {
-        return new FastInteger(bigintVal.AsInt32Checked());
+      if (bigintVal.CanFitInInt32()) {
+        return new FastInteger(bigintVal.AsInt32Unchecked());
       }
       if (bigintVal.signum() > 0) {
         FastInteger fi = new FastInteger(0);
@@ -723,7 +723,7 @@ bigrem = divrem[1]; }
     FastInteger AddBig(EInteger bigintVal) {
       switch (this.integerMode) {
           case 0: {
-            return bigintVal.canFitInInt() ? this.AddInt(bigintVal.AsInt32Checked()) :
+            return bigintVal.CanFitInInt32() ? this.AddInt(bigintVal.AsInt32Checked()) :
             this.Add(FastInteger.FromBig(bigintVal));
           }
         case 1:
@@ -979,7 +979,7 @@ bigrem = divrem[1]; }
         case 1:
           return this.mnum.CanFitInInt32();
           case 2: {
-            return this.largeValue.canFitInInt();
+            return this.largeValue.CanFitInInt32();
           }
         default:
           throw new IllegalStateException();

@@ -238,9 +238,10 @@ String msg) {
         value = -value;
       }
       while (value != 0) {
-        char digit = ValueDigits.charAt((int)(value % 10));
+        int intdivvalue = value / 10;
+        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
         chars[count++] = digit;
-        value /= 10;
+        value = intdivvalue;
       }
       if (neg) {
         ReverseChars(chars, 1, count - 1);
@@ -257,18 +258,40 @@ String msg) {
       if (longValue == 0L) {
         return "0";
       }
-      boolean neg = longValue < 0;
-      char[] chars = new char[24];
-      int count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        longValue = -longValue;
+      if (longValue == (long)Integer.MIN_VALUE) {
+        return "-2147483648";
       }
-      while (longValue != 0) {
-        char digit = ValueDigits.charAt((int)(longValue % 10));
-        chars[count++] = digit;
-        longValue /= 10;
+      boolean neg = longValue < 0;
+      int count = 0;
+      char[] chars;
+      int intlongValue = ((int)longValue);
+      if ((long)intlongValue == longValue) {
+        chars = new char[12];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          intlongValue = -intlongValue;
+        }
+        while (intlongValue != 0) {
+          int intdivlongValue = intlongValue / 10;
+        char digit = ValueDigits.charAt((int)(intlongValue - (intdivlongValue *
+            10)));
+          chars[count++] = digit;
+          intlongValue = intdivlongValue;
+        }
+      } else {
+        chars = new char[24];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          longValue = -longValue;
+        }
+        while (longValue != 0) {
+          long divlongValue = longValue / 10;
+          char digit = ValueDigits.charAt((int)(longValue - (divlongValue * 10)));
+          chars[count++] = digit;
+          longValue = divlongValue;
+        }
       }
       if (neg) {
         ReverseChars(chars, 1, count - 1);

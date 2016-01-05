@@ -62,7 +62,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 EInteger bigint,
 int lastDiscarded,
 int olderDiscarded) {
-      if (bigint.canFitInInt()) {
+      if (bigint.CanFitInInt32()) {
         this.shiftedSmall = bigint.AsInt32Checked();
         if (this.shiftedSmall < 0) {
           throw new IllegalArgumentException("shiftedSmall (" + this.shiftedSmall +
@@ -238,7 +238,7 @@ bigrem = divrem[1]; }
         this.bitLeftmost = 0;
         return;
       }
-      if (this.shiftedBigInt.canFitInInt()) {
+      if (this.shiftedBigInt.CanFitInInt32()) {
         this.isSmall = true;
         this.shiftedSmall = this.shiftedBigInt.AsInt32Checked();
         this.ShiftRightSmall(digits);

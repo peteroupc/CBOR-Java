@@ -7,6 +7,161 @@ import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 
   public class CBORObjectTest {
+    private static String[] jsonFails = { "\"\\uxxxx\"",
+      "\"\\ud800\udc00\"",
+      "\"\ud800\\udc00\"", "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
+      "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
+      "trub", "falsb", "nulb", "[true", "[true,", "[true]!",
+      "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
+      "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
+      "[\"\\ud800\"]", "[1,2,", "[1,2,3", "{,\"0\":0,\"1\":1}",
+      "{\"0\":0,,\"1\":1}", "{\"0\":0,\"1\":1,}", "[,0,1,2]", "[0,,1,2]",
+"[0,1,,2]", "[0,1,2,]", "[0001]", "{a:true}",
+      "{\"a\"://comment\ntrue}", "{\"a\":/*comment*/true}", "{'a':true}",
+      "{\"a\":'b'}", "{\"a\t\":true}", "{\"a\r\":true}", "{\"a\n\":true}",
+"['a']", "{\"a\":\"a\t\"}", "[\"a\\'\"]", "[NaN]", "[+Infinity]",
+"[-Infinity]", "[Infinity]", "{\"a\":\"a\r\"}", "{\"a\":\"a\n\"}",
+"[\"a\t\"]", "\"test\"\"", "\"test\"x", "\"test\"\u0300",
+      "\"test\"\u0005", "[5]\"", "[5]x", "[5]\u0300", "[5]\u0005",
+      "{\"test\":5}\"", "{\"test\":5}x", "{\"test\":5}\u0300",
+      "{\"test\":5}\u0005", "true\"", "truex", "true}", "true\u0300",
+      "true\u0005", "8024\"", "8024x", "8024}", "8024\u0300",
+      "8024\u0005", "{\"test\":5}}", "{\"test\":5}{", "[5]]", "[5][",
+      "0000", "0x1", "0xf", "0x20", "0x01",
+"-3x", "-3e89x",
+      "0X1", "0Xf", "0X20", "0X01", ".2", ".05", "-.2",
+      "-.05", "23.", "23.e0", "23.e1", "0.", "[0000]", "[0x1]",
+      "[0xf]", "[0x20]", "[0x01]", "[.2]", "[.05]", "[-.2]", "[-.05]",
+"[23.]", "[23.e0]", "[23.e1]", "[0.]", "\"abc", "\"ab\u0004c\"",
+"\u0004\"abc\"", "[1,\u0004" + "2]" };
+
+    private static final String[] ValueJsonSucceeds = { "[0]",
+      "[0.1]",
+      "[0.1001]",
+      "[0.0]",
+      "[-3 " + ",-5]",
+"[0.00]", "[0.000]", "[0.01]", "[0.001]", "[0.5]", "[0E5]",
+  "[0E+6]", "[\"\ud800\udc00\"]", "[\"\\ud800\\udc00\"]",
+  "[\"\\ud800\\udc00\ud800\udc00\"]", "23.0e01", "23.0e00", "[23.0e01]",
+  "[23.0e00]", "0", "1", "0.2", "0.05", "-0.2", "-0.05" };
+
+    public static CBORObject GetNumberData() {
+      return new AppResources("Resources").GetJSON("numbers");
+    }
+
+    public static void TestFailingJSON(String str) {
+      TestFailingJSON(str, CBOREncodeOptions.None);
+    }
+
+    public static void TestFailingJSON(String str, CBOREncodeOptions opt) {
+      byte[] bytes = null;
+      try {
+        bytes = DataUtilities.GetUtf8Bytes(str, false);
+      } catch (IllegalArgumentException ex2) {
+        System.out.println(ex2.getMessage());
+        // Check only FromJSONString
+        try {
+          if (opt.getValue() == 0) {
+            CBORObject.FromJSONString(str);
+          } else {
+            CBORObject.FromJSONString(str, opt);
+          }
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        return;
+      }
+      {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        try {
+          if (opt.getValue() == 0) {
+            CBORObject.ReadJSON(ms);
+          } else {
+            CBORObject.ReadJSON(ms, opt);
+          }
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(str + "\r\n" + ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+}
+      try {
+        if (opt.getValue() == 0) {
+          CBORObject.FromJSONString(str);
+        } else {
+          CBORObject.FromJSONString(str, opt);
+        }
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    public static CBORObject TestSucceedingJSON(String str) {
+      byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+      try {
+        {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+          CBORObject obj = CBORObject.ReadJSON(ms);
+          TestCommon.CompareTestEqualAndConsistent(
+            obj,
+            CBORObject.FromJSONString(str));
+          TestCommon.AssertRoundTrip(obj);
+          return obj;
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+}
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    public String CharString(int cp, boolean quoted, char[] charbuf) {
+      int index = 0;
+      if (quoted) {
+        charbuf[index++] = (char)0x22;
+      }
+      if (cp < 0x10000) {
+        if (cp >= 0xd800 && cp < 0xe000) {
+          return null;
+        }
+        charbuf[index++] = (char)cp;
+        if (quoted) {
+          charbuf[index++] = (char)0x22;
+        }
+        return new String(charbuf, 0, index);
+      } else {
+        cp -= 0x10000;
+        charbuf[index++] = (char)((cp / 0x400) + 0xd800);
+        charbuf[index++] = (char)((cp & 0x3ff) + 0xdc00);
+        if (quoted) {
+          charbuf[index++] = (char)0x22;
+        }
+        return new String(charbuf, 0, index);
+      }
+    }
     @Test
     public void TestAbs() {
       Assert.assertEquals(
@@ -97,6 +252,7 @@ import com.upokecenter.cbor.*;
     public void TestAddTagHandler() {
       // not implemented yet
     }
+
     @Test
     public void TestAsBigInteger() {
       try {
@@ -431,22 +587,6 @@ import com.upokecenter.cbor.*;
       }
     }
 
-    private static void AreEqualExact(double a, double b) {
-      if (Double.isNaN(a)) {
-        if (!(Double.isNaN(b)))Assert.fail();
-      } else if (a != b) {
-        Assert.fail("expected " + a + ", got " + b);
-      }
-    }
-
-    private static void AreEqualExact(float a, float b) {
-      if (Float.isNaN(a)) {
-        if (!(Float.isNaN(b)))Assert.fail();
-      } else if (a != b) {
-        Assert.fail("expected " + a + ", got " + b);
-      }
-    }
-
     @Test
     public void TestAsDouble() {
       try {
@@ -514,6 +654,7 @@ import com.upokecenter.cbor.*;
 cbornumber.AsDouble());
       }
     }
+
     @Test
     public void TestAsExtendedDecimal() {
       Assert.assertEquals(
@@ -1009,65 +1150,65 @@ cbornumber.AsSingle());
     @Test
     public void TestAsString() {
       {
-String stringTemp = CBORObject.FromObject("test").AsString();
-Assert.assertEquals(
-"test",
-stringTemp);
-}
+        String stringTemp = CBORObject.FromObject("test").AsString();
+        Assert.assertEquals(
+        "test",
+        stringTemp);
+      }
       try {
- CBORObject.FromObject(CBORObject.Null).AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.FromObject(CBORObject.Null).AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.FromObject(true).AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.FromObject(true).AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.FromObject(false).AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.FromObject(false).AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.FromObject(5).AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.FromObject(5).AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewArray().AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsString();
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsString();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestAsUInt16() {
@@ -1305,25 +1446,6 @@ throw new IllegalStateException("", ex);
       }
     }
 
-    static void CompareDecimals(CBORObject o1, CBORObject o2) {
-      int cmpDecFrac = TestCommon.CompareTestReciprocal(
-        o1.AsExtendedDecimal(),
-        o2.AsExtendedDecimal());
-      int cmpCobj = TestCommon.CompareTestReciprocal(o1, o2);
-      if (cmpDecFrac != cmpCobj) {
-        Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Compare: Results don't match"),cmpDecFrac,cmpCobj);
-      }
-      TestCommon.AssertRoundTrip(o1);
-      TestCommon.AssertRoundTrip(o2);
-    }
-
-    @Test
-    public void TestNegativeZero() {
-      CBORObject negzero = CBORObject.FromObject(
-        ExtendedDecimal.FromString("-0"));
-      TestCommon.AssertRoundTrip(negzero);
-    }
-
     @Test
     public void TestCompareTo() {
       FastRandom r = new FastRandom();
@@ -1466,65 +1588,6 @@ CBORObject.FromObject(0.1f));
     }
 
     @Test
-    public void TestDecodeFromBytesNoDuplicateKeys() {
-      byte[] bytes;
-      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x02, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.None);
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      bytes = new byte[] { (byte)0xa2, 0x60, 0x00, 0x60, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      bytes = new byte[] { (byte)0xa2, 0x61, 0x41, 0x00, 0x61, 0x41, 0x03  };
-      try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-    }
-
-    @Test
     public void TestDecodeFromBytes() {
       try {
         CBORObject.DecodeFromBytes(null);
@@ -1591,6 +1654,65 @@ CBORObject.FromObject(0.1f));
       }
       try {
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xff  });
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test
+    public void TestDecodeFromBytesNoDuplicateKeys() {
+      byte[] bytes;
+      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x02, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.None);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { (byte)0xa2, 0x60, 0x00, 0x60, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { (byte)0xa2, 0x61, 0x41, 0x00, 0x61, 0x41, 0x03  };
+      try {
+        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         System.out.print("");
@@ -1696,157 +1818,85 @@ CBORObject.FromObject(0.1f));
       // not implemented yet
     }
 
-    public String CharString(int cp, boolean quoted, char[] charbuf) {
-      int index = 0;
-      if (quoted) {
-        charbuf[index++] = (char)0x22;
-      }
-      if (cp < 0x10000) {
-        if (cp >= 0xd800 && cp < 0xe000) {
-          return null;
-        }
-        charbuf[index++] = (char)cp;
-        if (quoted) {
-          charbuf[index++] = (char)0x22;
-        }
-        return new String(charbuf, 0, index);
-      } else {
-        cp -= 0x10000;
-        charbuf[index++] = (char)((cp / 0x400) + 0xd800);
-        charbuf[index++] = (char)((cp & 0x3ff) + 0xdc00);
-        if (quoted) {
-          charbuf[index++] = (char)0x22;
-        }
-        return new String(charbuf, 0, index);
-      }
-    }
-
-    public static void TestFailingJSON(String str) {
-      TestFailingJSON(str, CBOREncodeOptions.None);
-    }
-
-    public static void TestFailingJSON(String str, CBOREncodeOptions opt) {
-      byte[] bytes = null;
-      try {
-        bytes = DataUtilities.GetUtf8Bytes(str, false);
-      } catch (IllegalArgumentException ex2) {
-        System.out.println(ex2.getMessage());
-        // Check only FromJSONString
-        try {
-          if (opt.getValue() == 0) {
-            CBORObject.FromJSONString(str);
-          } else {
-            CBORObject.FromJSONString(str, opt);
-          }
-          Assert.fail("Should have failed");
-        } catch (CBORException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-        return;
-      }
+    @Test
+    public void TestEquivalentNegativeInfinity() {
+      TestCommon.CompareTestEqualAndConsistent(
+      CBORObject.FromObject(ExtendedDecimal.NegativeInfinity),
+      CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
       {
-java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-        try {
-          if (opt.getValue() == 0) {
-            CBORObject.ReadJSON(ms);
-          } else {
-            CBORObject.ReadJSON(ms, opt);
-          }
-          Assert.fail("Should have failed");
-        } catch (CBORException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail(str + "\r\n" + ex.toString());
-          throw new IllegalStateException("", ex);
-        }
+CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+CBORObject objectTemp2 =
+  CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
-      try {
-        if (opt.getValue() == 0) {
-          CBORObject.FromJSONString(str);
-        } else {
-          CBORObject.FromJSONString(str, opt);
-        }
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
+      {
+CBORObject objectTemp =
+  CBORObject.FromObject(ExtendedRational.NegativeInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+}
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
+CBORObject objectTemp2 =
+  CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+}
     }
 
-    public static CBORObject TestSucceedingJSON(String str) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
-      try {
-        {
-java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          CBORObject obj = CBORObject.ReadJSON(ms);
-          TestCommon.CompareTestEqualAndConsistent(
-            obj,
-            CBORObject.FromJSONString(str));
-          TestCommon.AssertRoundTrip(obj);
-          return obj;
+    @Test
+    public void TestEquivalentPositiveInfinity() {
+      TestCommon.CompareTestEqualAndConsistent(
+      CBORObject.FromObject(ExtendedDecimal.PositiveInfinity),
+      CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+CBORObject objectTemp2 =
+  CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
 }
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
+      {
+CBORObject objectTemp =
+  CBORObject.FromObject(ExtendedRational.PositiveInfinity);
+CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+}
+      {
+CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
+CBORObject objectTemp2 =
+  CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+;
+TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+}
     }
-
-    private static String[] jsonFails = { "\"\\uxxxx\"",
-      "\"\\ud800\udc00\"",
-      "\"\ud800\\udc00\"", "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
-      "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
-      "trub", "falsb", "nulb", "[true", "[true,", "[true]!",
-      "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
-      "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
-      "[\"\\ud800\"]", "[1,2,", "[1,2,3", "{,\"0\":0,\"1\":1}",
-      "{\"0\":0,,\"1\":1}", "{\"0\":0,\"1\":1,}", "[,0,1,2]", "[0,,1,2]",
-"[0,1,,2]", "[0,1,2,]", "[0001]", "{a:true}",
-      "{\"a\"://comment\ntrue}", "{\"a\":/*comment*/true}", "{'a':true}",
-      "{\"a\":'b'}", "{\"a\t\":true}", "{\"a\r\":true}", "{\"a\n\":true}",
-"['a']", "{\"a\":\"a\t\"}", "[\"a\\'\"]", "[NaN]", "[+Infinity]",
-"[-Infinity]", "[Infinity]", "{\"a\":\"a\r\"}", "{\"a\":\"a\n\"}",
-"[\"a\t\"]", "\"test\"\"", "\"test\"x", "\"test\"\u0300",
-      "\"test\"\u0005", "[5]\"", "[5]x", "[5]\u0300", "[5]\u0005",
-      "{\"test\":5}\"", "{\"test\":5}x", "{\"test\":5}\u0300",
-      "{\"test\":5}\u0005", "true\"", "truex", "true}", "true\u0300",
-      "true\u0005", "8024\"", "8024x", "8024}", "8024\u0300",
-      "8024\u0005", "{\"test\":5}}", "{\"test\":5}{", "[5]]", "[5][",
-      "0000", "0x1", "0xf", "0x20", "0x01",
-"-3x", "-3e89x",
-      "0X1", "0Xf", "0X20", "0X01", ".2", ".05", "-.2",
-      "-.05", "23.", "23.e0", "23.e1", "0.", "[0000]", "[0x1]",
-      "[0xf]", "[0x20]", "[0x01]", "[.2]", "[.05]", "[-.2]", "[-.05]",
-"[23.]", "[23.e0]", "[23.e1]", "[0.]", "\"abc", "\"ab\u0004c\"",
-"\u0004\"abc\"", "[1,\u0004" + "2]" };
-
-    private static final String[] ValueJsonSucceeds = { "[0]",
-      "[0.1]",
-      "[0.1001]",
-      "[0.0]",
-      "[-3 " + ",-5]",
-"[0.00]", "[0.000]", "[0.01]", "[0.001]", "[0.5]", "[0E5]",
-  "[0E+6]", "[\"\ud800\udc00\"]", "[\"\\ud800\\udc00\"]",
-  "[\"\\ud800\\udc00\ud800\udc00\"]", "23.0e01", "23.0e00", "[23.0e01]",
-  "[23.0e00]", "0", "1", "0.2", "0.05", "-0.2", "-0.05" };
 
     @Test
     public void TestFromJSONString() {
@@ -1901,11 +1951,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       Assert.assertEquals(CBORObject.FromObject(4), cbor.get("a"));
       cbor = TestSucceedingJSON("\"\\t\"");
       {
-String stringTemp = cbor.AsString();
-Assert.assertEquals(
-"\t",
-stringTemp);
-}
+        String stringTemp = cbor.AsString();
+        Assert.assertEquals(
+        "\t",
+        stringTemp);
+      }
       Assert.assertEquals(CBORObject.True, TestSucceedingJSON("true"));
       Assert.assertEquals(CBORObject.False, TestSucceedingJSON("false"));
       Assert.assertEquals(CBORObject.Null, TestSucceedingJSON("null"));
@@ -2275,10 +2325,6 @@ stringTemp);
         (byte)0x80, 0x00, 0x00  }).IsInfinity()))Assert.fail();
     }
 
-    public static CBORObject GetNumberData() {
-      return new AppResources("Resources").GetJSON("numbers");
-    }
-
     @Test
     public void TestIsIntegral() {
       CBORObject cbor;
@@ -2562,6 +2608,30 @@ stringTemp);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+
+    @Test
+    public void TestNegativeTenDigitLong() {
+      CBORObject obj = CBORObject.FromJSONString("-1000000000");
+      {
+String stringTemp = obj.ToJSONString();
+Assert.assertEquals(
+"-1000000000",
+stringTemp);
+}
+      {
+String stringTemp = obj.toString();
+Assert.assertEquals(
+"-1000000000",
+stringTemp);
+}
+    }
+
+    @Test
+    public void TestNegativeZero() {
+      CBORObject negzero = CBORObject.FromObject(
+        ExtendedDecimal.FromString("-0"));
+      TestCommon.AssertRoundTrip(negzero);
     }
     @Test
     public void TestNewArray() {
@@ -4229,26 +4299,750 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     public void TestValues() {
       // not implemented yet
     }
+    // @Test
+    public void TestWrite() {
+      for (int i = 0; i < 100; ++i) {
+        this.TestWrite2();
+      }
+    }
 
-    private static void AssertWriteThrow(CBORObject cbor) {
+    // @Test
+    public void TestWrite2() {
+      // TODO: Currently fails with negative zero
       try {
- cbor.WriteTo(null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+        String str = null;
+        FastRandom fr = new FastRandom();
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(str);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)str);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(str, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(str, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
 }
-      try {
- CBORObject.Write(cbor, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
+          TestWriteObj((Object)str, null);
+        }
+
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject("test");
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)"test");
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write("test", null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write("test", ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject("test"));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)"test", "test");
+        }
+
+        str = TestCommon.Repeat("test", 4000);
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(str);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)str);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(str, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(str, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(str));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)str, str);
+        }
+
+        ExtendedFloat ef = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(ef);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(ef, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(ef, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)ef, null);
+        }
+
+        ef = ExtendedFloat.FromInt32(20);
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(ef);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(ef, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(ef, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)ef, ef);
+        }
+
+        for (int i = 0; i < 50; ++i) {
+          ef = RandomObjects.RandomExtendedFloat(fr);
+          if (!ef.IsNaN()) {
+            CBORObject cborTemp1 = CBORObject.FromObject(ef);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ef, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ef, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ef, ef);
+          }
+
+          ef = ExtendedFloat.Create(
+           RandomObjects.RandomBigInteger(fr),
+           RandomObjects.RandomBigInteger(fr));
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(ef);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ef, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ef, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              if (ef.isNegative() && ef.isZero()) {
+                AssertReadThree(ms.toByteArray());
+              } else {
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
+              }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ef, ef);
+          }
+        }
+        ExtendedRational er = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(er);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)er);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(er, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(er, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)er, null);
+        }
+
+        er = ExtendedRational.Create(
+          RandomObjects.RandomBigInteger(fr),
+          RandomObjects.RandomBigInteger(fr));
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(er);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)er);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(er, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(er, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            if (er.isNegative() && er.isZero()) {
+              AssertReadThree(ms.toByteArray());
+            } else {
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(er));
+            }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)er, er);
+        }
+
+        ExtendedDecimal ed = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(ed);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(ed, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(ed, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)ed, null);
+        }
+
+        for (int i = 0; i < 50; ++i) {
+          ed = RandomObjects.RandomExtendedDecimal(fr);
+          if (!ed.IsNaN()) {
+            CBORObject cborTemp1 = CBORObject.FromObject(ed);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ed, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ed, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              if (ed.isNegative() && ed.isZero()) {
+                AssertReadThree(ms.toByteArray());
+              } else {
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
+              }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ed, ed);
+          }
+
+          ed = ExtendedDecimal.Create(
+           RandomObjects.RandomBigInteger(fr),
+           RandomObjects.RandomBigInteger(fr));
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(ed);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ed, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ed, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ed, ed);
+          }
+        }
+
+        BigInteger bigint = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(bigint);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)bigint);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(bigint, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(bigint, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)bigint, null);
+        }
+        long[] values ={ 0, 1, 23, 24, -1, -23, -24, -25,
+   0x7f, -128, 255, 256, 0x7fff, -32768, 0x7fff,
+  -32768, -65536, -32769, -65537,
+  0x7fffff, 0x7fff7f, 0x7fff7fff, 0x7fff7fff7fL,
+  0x7fff7fff7fffL, 0x7fff7fff7fff7fL, 0x7fff7fff7fff7fffL,
+      Long.MAX_VALUE, Long.MIN_VALUE, Integer.MIN_VALUE,
+      Integer.MAX_VALUE };
+        for (int i = 0; i < values.length; ++i) {
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(values[i]);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)values[i]);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(values[i], null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(values[i], ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(values[i]));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)values[i], values[i]);
+          }
+
+          BigInteger bigintVal = BigInteger.valueOf(values[i]);
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(bigintVal);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)bigintVal);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(bigintVal, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(bigintVal, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(bigintVal));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)bigintVal, bigintVal);
+          }
+
+          if (values[i] >= (long)Integer.MIN_VALUE && values[i] <=
+                  (long)Integer.MAX_VALUE) {
+            int intval = (int)values[i];
+            {
+              CBORObject cborTemp1 = CBORObject.FromObject(intval);
+              CBORObject cborTemp2 = CBORObject.FromObject((Object)intval);
+              TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+              try {
+                CBORObject.Write(intval, null);
+                Assert.fail("Should have failed");
+              } catch (NullPointerException ex) {
+                System.out.print("");
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+              AssertWriteThrow(cborTemp1);
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+                CBORObject.Write(intval, ms);
+                CBORObject.Write(cborTemp1, ms);
+                cborTemp1.WriteTo(ms);
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(intval));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+              TestWriteObj((Object)intval, intval);
+            }
+          }
+          if (values[i] >= -32768L && values[i] <= 32767) {
+            short shortval = (short)values[i];
+            {
+              CBORObject cborTemp1 = CBORObject.FromObject(shortval);
+              CBORObject cborTemp2 = CBORObject.FromObject((Object)shortval);
+              TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+              try {
+                CBORObject.Write(shortval, null);
+                Assert.fail("Should have failed");
+              } catch (NullPointerException ex) {
+                System.out.print("");
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+              AssertWriteThrow(cborTemp1);
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+                CBORObject.Write(shortval, ms);
+                CBORObject.Write(cborTemp1, ms);
+                cborTemp1.WriteTo(ms);
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(shortval));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+              TestWriteObj((Object)shortval, shortval);
+            }
+          }
+          if (values[i] >= 0L && values[i] <= 255) {
+            byte byteval = (byte)values[i];
+            {
+              CBORObject cborTemp1 = CBORObject.FromObject(byteval);
+              CBORObject cborTemp2 = CBORObject.FromObject((Object)byteval);
+              TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+              try {
+                CBORObject.Write(byteval, null);
+                Assert.fail("Should have failed");
+              } catch (NullPointerException ex) {
+                System.out.print("");
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+              AssertWriteThrow(cborTemp1);
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+                CBORObject.Write(byteval, ms);
+                CBORObject.Write(cborTemp1, ms);
+                cborTemp1.WriteTo(ms);
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(byteval));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+              TestWriteObj((Object)byteval, byteval);
+            }
+          }
+        }
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(0.0f);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)0.0f);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(0.0f, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(0.0f, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(0.0f));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)0.0f, 0.0f);
+        }
+
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(2.6);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)2.6);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(2.6, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(2.6, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(2.6));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)2.6, 2.6);
+        }
+
+        CBORObject cbor = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(cbor);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)cbor);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(cbor, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(cbor, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)cbor, null);
+        }
+
+        Object aobj = null;
+        {
+          CBORObject cborTemp1 = CBORObject.FromObject(aobj);
+          CBORObject cborTemp2 = CBORObject.FromObject((Object)aobj);
+          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+          try {
+            CBORObject.Write(aobj, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          AssertWriteThrow(cborTemp1);
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(aobj, ms);
+            CBORObject.Write(cborTemp1, ms);
+            cborTemp1.WriteTo(ms);
+            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+          TestWriteObj((Object)aobj, null);
+        }
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
+    }
+    @Test
+    public void TestWriteJSON() {
+      // not implemented yet
+    }
+    @Test
+    public void TestWriteJSONTo() {
+      // not implemented yet
+    }
+    @Test
+    public void TestWriteTo() {
+      // not implemented yet
+    }
+
+    static void CompareDecimals(CBORObject o1, CBORObject o2) {
+      int cmpDecFrac = TestCommon.CompareTestReciprocal(
+        o1.AsExtendedDecimal(),
+        o2.AsExtendedDecimal());
+      int cmpCobj = TestCommon.CompareTestReciprocal(o1, o2);
+      if (cmpDecFrac != cmpCobj) {
+        Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Compare: Results don't match"),cmpDecFrac,cmpCobj);
+      }
+      TestCommon.AssertRoundTrip(o1);
+      TestCommon.AssertRoundTrip(o2);
+    }
+
+    private static void AreEqualExact(double a, double b) {
+      if (Double.isNaN(a)) {
+        if (!(Double.isNaN(b)))Assert.fail();
+      } else if (a != b) {
+        Assert.fail("expected " + a + ", got " + b);
+      }
+    }
+
+    private static void AreEqualExact(float a, float b) {
+      if (Float.isNaN(a)) {
+        if (!(Float.isNaN(b)))Assert.fail();
+      } else if (a != b) {
+        Assert.fail("expected " + a + ", got " + b);
+      }
     }
 
     private static void AssertReadThree(byte[] bytes) {
@@ -4272,7 +5066,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
 }
       } catch (Exception ex) {
-        Assert.fail(ex.toString());
+        Assert.fail(ex.toString() + "\r\n" +
+          TestCommon.ToByteArrayString(bytes));
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
@@ -4299,8 +5094,31 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
 }
       } catch (Exception ex) {
-        Assert.fail(ex.toString());
+        Assert.fail(ex.toString() + "\r\n" +
+          TestCommon.ToByteArrayString(bytes) + "\r\n" +
+          "cbor = " + cbor.toString());
         throw new IllegalStateException(ex.toString(), ex);
+      }
+    }
+
+    private static void AssertWriteThrow(CBORObject cbor) {
+      try {
+        cbor.WriteTo(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.Write(cbor, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.print("");
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
       }
     }
 
@@ -4309,14 +5127,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         {
           CBORObject cborTemp1 = CBORObject.FromObject(obj);
           try {
- CBORObject.Write(obj, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+            CBORObject.Write(obj, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
           AssertWriteThrow(cborTemp1);
           java.io.ByteArrayOutputStream ms = null;
 try {
@@ -4342,14 +5160,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         {
           CBORObject cborTemp1 = CBORObject.FromObject(obj);
           try {
- CBORObject.Write(obj, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+            CBORObject.Write(obj, null);
+            Assert.fail("Should have failed");
+          } catch (NullPointerException ex) {
+            System.out.print("");
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
           AssertWriteThrow(cborTemp1);
           java.io.ByteArrayOutputStream ms = null;
 try {
@@ -4368,703 +5186,5 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
       }
-    }
-
-    @Test
-    public void TestWrite() {
-      try {
-        String str = null;
-        FastRandom fr = new FastRandom();
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(str);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)str);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(str, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(str, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)str, null);
-        }
-
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject("test");
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)"test");
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write("test", null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write("test", ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject("test"));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)"test", "test");
-        }
-
-        str = TestCommon.Repeat("test", 4000);
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(str);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)str);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(str, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(str, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(str));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)str, str);
-        }
-
-        ExtendedFloat ef = null;
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(ef);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(ef, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(ef, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)ef, null);
-        }
-
-        ef = ExtendedFloat.FromInt32(20);
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(ef);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(ef, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(ef, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)ef, ef);
-        }
-
-        for (int i = 0; i < 50; ++i) {
-          ef = RandomObjects.RandomExtendedFloat(fr);
-          if (!ef.IsNaN()) {
-            CBORObject cborTemp1 = CBORObject.FromObject(ef);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(ef, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ef, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ef, ef);
-          }
-
-          ef = ExtendedFloat.Create(
-           RandomObjects.RandomBigInteger(fr),
-           RandomObjects.RandomBigInteger(fr));
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(ef);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(ef, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ef, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ef, ef);
-          }
-        }
-        ExtendedRational er = null;
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(er);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)er);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(er, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(er, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)er, null);
-        }
-
-        er = ExtendedRational.Create(
-          RandomObjects.RandomBigInteger(fr),
-          RandomObjects.RandomBigInteger(fr));
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(er);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)er);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(er, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(er, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(er));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)er, er);
-        }
-
-        ExtendedDecimal ed = null;
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(ed);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(ed, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(ed, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)ed, null);
-        }
-
-        for (int i = 0; i < 50; ++i) {
-          ed = RandomObjects.RandomExtendedDecimal(fr);
-          if (ed.IsNaN()) {
-            CBORObject cborTemp1 = CBORObject.FromObject(ed);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(ed, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ed, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ed, ed);
-          }
-
-          ed = ExtendedDecimal.Create(
-           RandomObjects.RandomBigInteger(fr),
-           RandomObjects.RandomBigInteger(fr));
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(ed);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(ed, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ed, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ed, ed);
-          }
-        }
-
-      BigInteger bigint = null;
-      {
-        CBORObject cborTemp1 = CBORObject.FromObject(bigint);
-        CBORObject cborTemp2 = CBORObject.FromObject((Object)bigint);
-        TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-        try {
- CBORObject.Write(bigint, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        AssertWriteThrow(cborTemp1);
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          CBORObject.Write(bigint, ms);
-          CBORObject.Write(cborTemp1, ms);
-          cborTemp1.WriteTo(ms);
-          AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-        TestWriteObj((Object)bigint, null);
-      }
-      long[] values ={ 0, 1, 23, 24, -1, -23, -24, -25,
-   0x7f, -128, 255, 256, 0x7fff, -32768, 0x7fff,
-  -32768, -65536, -32769, -65537,
-  0x7fffff, 0x7fff7f, 0x7fff7fff, 0x7fff7fff7fL,
-  0x7fff7fff7fffL, 0x7fff7fff7fff7fL, 0x7fff7fff7fff7fffL,
-      Long.MAX_VALUE, Long.MIN_VALUE, Integer.MIN_VALUE,
-      Integer.MAX_VALUE };
-      for (int i = 0; i < values.length; ++i) {
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(values[i]);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)values[i]);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(values[i], null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(values[i], ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(values[i]));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)values[i], values[i]);
-        }
-
-        BigInteger bigintVal = BigInteger.valueOf(values[i]);
-        {
-          CBORObject cborTemp1 = CBORObject.FromObject(bigintVal);
-          CBORObject cborTemp2 = CBORObject.FromObject((Object)bigintVal);
-          TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-          try {
- CBORObject.Write(bigintVal, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(bigintVal, ms);
-            CBORObject.Write(cborTemp1, ms);
-            cborTemp1.WriteTo(ms);
-            AssertReadThree(ms.toByteArray(), CBORObject.FromObject(bigintVal));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-          TestWriteObj((Object)bigintVal, bigintVal);
-        }
-
-  if (values[i] >= (long)Integer.MIN_VALUE && values[i] <=
-          (long)Integer.MAX_VALUE) {
-          int intval = (int)values[i];
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(intval);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)intval);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(intval, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(intval, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(intval));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)intval, intval);
-          }
-        }
-        if (values[i] >= -32768L && values[i] <= 32767) {
-          short shortval = (short)values[i];
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(shortval);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)shortval);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(shortval, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(shortval, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(shortval));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)shortval, shortval);
-          }
-        }
-        if (values[i] >= 0L && values[i] <= 255) {
-          byte byteval = (byte)values[i];
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(byteval);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)byteval);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
- CBORObject.Write(byteval, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(byteval, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(byteval));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)byteval, byteval);
-          }
-        }
-      }
-      {
-        CBORObject cborTemp1 = CBORObject.FromObject(0.0f);
-        CBORObject cborTemp2 = CBORObject.FromObject((Object)0.0f);
-        TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-        try {
- CBORObject.Write(0.0f, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        AssertWriteThrow(cborTemp1);
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          CBORObject.Write(0.0f, ms);
-          CBORObject.Write(cborTemp1, ms);
-          cborTemp1.WriteTo(ms);
-          AssertReadThree(ms.toByteArray(), CBORObject.FromObject(0.0f));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-        TestWriteObj((Object)0.0f, 0.0f);
-      }
-
-      {
-        CBORObject cborTemp1 = CBORObject.FromObject(2.6);
-        CBORObject cborTemp2 = CBORObject.FromObject((Object)2.6);
-        TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-        try {
- CBORObject.Write(2.6, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        AssertWriteThrow(cborTemp1);
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          CBORObject.Write(2.6, ms);
-          CBORObject.Write(cborTemp1, ms);
-          cborTemp1.WriteTo(ms);
-          AssertReadThree(ms.toByteArray(), CBORObject.FromObject(2.6));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-        TestWriteObj((Object)2.6, 2.6);
-      }
-
-      CBORObject cbor = null;
-      {
-        CBORObject cborTemp1 = CBORObject.FromObject(cbor);
-        CBORObject cborTemp2 = CBORObject.FromObject((Object)cbor);
-        TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-        try {
- CBORObject.Write(cbor, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        AssertWriteThrow(cborTemp1);
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          CBORObject.Write(cbor, ms);
-          CBORObject.Write(cborTemp1, ms);
-          cborTemp1.WriteTo(ms);
-          AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-        TestWriteObj((Object)cbor, null);
-      }
-
-      Object aobj = null;
-      {
-        CBORObject cborTemp1 = CBORObject.FromObject(aobj);
-        CBORObject cborTemp2 = CBORObject.FromObject((Object)aobj);
-        TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-        try {
- CBORObject.Write(aobj, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-        AssertWriteThrow(cborTemp1);
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          CBORObject.Write(aobj, ms);
-          CBORObject.Write(cborTemp1, ms);
-          cborTemp1.WriteTo(ms);
-          AssertReadThree(ms.toByteArray(), CBORObject.FromObject((Object)null));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-        TestWriteObj((Object)aobj, null);
-      }
-      } catch (IOException ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException(ex.toString(), ex);
-      }
-    }
-    @Test
-    public void TestWriteJSON() {
-      // not implemented yet
-    }
-    @Test
-    public void TestWriteJSONTo() {
-      // not implemented yet
-    }
-    @Test
-    public void TestWriteTo() {
-      // not implemented yet
     }
   }

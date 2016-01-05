@@ -91,7 +91,7 @@ int olderDiscarded) {
         throw new IllegalArgumentException("bigint's sign (" + bigint.signum() +
           ") is less than 0");
       }
-      if (bigint.canFitInInt()) {
+      if (bigint.CanFitInInt32()) {
         this.isSmall = true;
         this.shiftedSmall = bigint.AsInt32Checked();
       } else {

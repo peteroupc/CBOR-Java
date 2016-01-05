@@ -165,6 +165,47 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
                     newnegative));
     }
 
+    public static EInteger FromInt32(int intValue) {
+      if (intValue == 0) {
+        return ValueZero;
+      }
+      if (intValue == 1) {
+        return ValueOne;
+      }
+      if (intValue == 10) {
+        return ValueTen;
+      }
+      short[] retreg;
+      boolean retnegative;
+      int retwordcount;
+      {
+        retnegative = intValue < 0;
+        if ((intValue >> 15) == 0) {
+          retreg = new short[2];
+          if (retnegative) {
+            intValue = -intValue;
+          }
+          retreg[0] = (short)(intValue & 0xffff);
+          retwordcount = 1;
+        } else if (intValue == Integer.MIN_VALUE) {
+          retreg = new short[2];
+          retreg[0] = 0;
+          retreg[1] = ((short)0x8000);
+          retwordcount = 2;
+        } else {
+          retreg = new short[2];
+          if (retnegative) {
+            intValue = -intValue;
+          }
+          retreg[0] = (short)(intValue & 0xffff);
+          intValue >>= 16;
+          retreg[1] = (short)(intValue & 0xffff);
+          retwordcount = (retreg[1] == 0) ? 1 : 2;
+        }
+      }
+      return new EInteger(retwordcount, retreg, retnegative);
+    }
+
     /**
      * Converts a 64-bit signed integer to a big integer.
      * @param longerValue The parameter {@code longerValue} is not documented yet.
@@ -831,7 +872,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return True if this object's value is MinValue or greater, and MaxValue or
      * less; otherwise, false.
      */
-    public boolean canFitInInt() {
+    public boolean CanFitInInt32() {
       int c = (int)this.wordCount;
       if (c > 2) {
         return false;
@@ -931,8 +972,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         // where dividend is 0)
         return EInteger.FromInt64(0);
       }
-      if (words1Size <= 2 && words2Size <= 2 && this.canFitInInt() &&
-          bigintDivisor.canFitInInt()) {
+      if (words1Size <= 2 && words2Size <= 2 && this.CanFitInInt32() &&
+          bigintDivisor.CanFitInInt32()) {
         int valueASmall = this.AsInt32Checked();
         int valueBSmall = bigintDivisor.AsInt32Checked();
         if (valueASmall != Integer.MIN_VALUE || valueBSmall != -1) {
@@ -1996,7 +2037,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A byte array. If this value is 0, returns a byte array with the
      * single element 0.
      */
-    public byte[] toBytes(boolean littleEndian) {
+    public byte[] ToBytes(boolean littleEndian) {
       int sign = this.signum();
       if (sign == 0) {
         return new byte[] { (byte)0  };
@@ -2074,7 +2115,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * length, or "endIndex" is less than "index" ; or radix is less than 2
      * or greater than 36.
      */
-    public String toRadixString(int radix) {
+    public String ToRadixString(int radix) {
       if (radix < 2) {
         throw new IllegalArgumentException("radix (" + radix +
                     ") is less than 2");
@@ -2284,7 +2325,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         return "0";
       }
       return this.HasSmallValue() ? this.SmallValueToString() :
-        this.toRadixString(10);
+        this.ToRadixString(10);
     }
 
     private static int Add(
@@ -5069,22 +5110,43 @@ count);
     }
 
     private String SmallValueToString() {
-      long value = this.AsInt64Checked();
+      long value = this.AsInt64Unchecked();
       if (value == Long.MIN_VALUE) {
         return "-9223372036854775808";
       }
-      boolean neg = value < 0;
-      char[] chars = new char[24];
-      int count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
+      if (value == (long)Integer.MIN_VALUE) {
+        return "-2147483648";
       }
-      while (value != 0) {
-        char digit = Digits.charAt((int)(value % 10));
-        chars[count++] = digit;
-        value /= 10;
+      boolean neg = value < 0;
+      int count = 0;
+      char[] chars;
+      int intvalue = ((int)value);
+      if ((long)intvalue == value) {
+        chars = new char[12];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          intvalue = -intvalue;
+        }
+        while (intvalue != 0) {
+          int intdivvalue = intvalue / 10;
+          char digit = Digits.charAt((int)(intvalue - (intdivvalue * 10)));
+          chars[count++] = digit;
+          intvalue = intdivvalue;
+        }
+      } else {
+        chars = new char[24];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          value = -value;
+        }
+        while (value != 0) {
+          long divvalue = value / 10;
+          char digit = Digits.charAt((int)(value - (divvalue * 10)));
+          chars[count++] = digit;
+          value = divvalue;
+        }
       }
       if (neg) {
         ReverseChars(chars, 1, count - 1);
@@ -5113,7 +5175,7 @@ count);
       EInteger bigintY;
       EInteger thisValue = this;
       int powerBits = (thisValue.getUnsignedBitLength() + 1) / 2;
-      if (thisValue.canFitInInt()) {
+      if (thisValue.CanFitInInt32()) {
         int smallValue = thisValue.AsInt32Checked();
         // No need to check for ValueZero; already done above
         int smallintX = 0;

@@ -40,7 +40,7 @@ String result) {
       BigInteger bigintA = BigFromString(dividend);
       BigInteger bigintB = BigFromString(divisor);
       BigInteger bigintTemp;
-      if (bigintB.signum() == 0) {
+      if (bigintB.isZero()) {
         try {
           bigintTemp = bigintA.divide(bigintB);
           Assert.fail("Expected divide by 0 error");
@@ -72,8 +72,9 @@ String result) {
     public static void DoTestPow(String m1, int m2, String result) {
       BigInteger bigintA = BigFromString(m1);
       AssertBigIntegersEqual(result, bigintA.pow(m2));
-
+//
       AssertBigIntegersEqual(result, bigintA.PowBigIntVar(BigInteger.valueOf(m2)));
+////
     }
 
     public static void AssertBigIntegersEqual(String a, BigInteger b) {
@@ -91,7 +92,7 @@ String rem) {
       BigInteger bigintA = BigFromString(dividend);
       BigInteger bigintB = BigFromString(divisor);
       BigInteger rembi;
-      if (bigintB.signum() == 0) {
+      if (bigintB.isZero()) {
         try {
           BigInteger quo;
 {
@@ -116,18 +117,13 @@ rembi = divrem[1]; }
       }
     }
 
-    @Test
-    public void TestMultiplyDivide() {
-      FastRandom r = new FastRandom();
-      for (int i = 0; i < 10000; ++i) {
-        BigInteger bigintA = RandomBigInteger(r);
-        BigInteger bigintB = RandomBigInteger(r);
+    private void TestMultiplyDivideOne(BigInteger bigintA, BigInteger bigintB) {
         // Test that A*B/A = B and A*B/B = A
         BigInteger bigintC = bigintA.multiply(bigintB);
         BigInteger bigintRem;
         BigInteger bigintE;
         BigInteger bigintD;
-        if (bigintB.signum() != 0) {
+        if (!bigintB.isZero()) {
           {
 BigInteger[] divrem=(bigintC).divideAndRemainder(bigintB);
 bigintD = divrem[0];
@@ -135,7 +131,7 @@ bigintRem = divrem[1]; }
           if (!bigintD.equals(bigintA)) {
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB + ";\n" + bigintC,bigintA,bigintD);
           }
-          if (bigintRem.signum() != 0) {
+          if (!bigintRem.isZero()) {
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.valueOf(0),bigintRem);
           }
           bigintE = bigintC.divide(bigintB);
@@ -153,7 +149,7 @@ bigintRem = divrem[1]; }
               ";\n" + bigintC);
           }
         }
-        if (bigintA.signum() != 0) {
+        if (!bigintA.isZero()) {
           {
 BigInteger[] divrem=(bigintC).divideAndRemainder(bigintA);
 bigintD = divrem[0];
@@ -161,11 +157,11 @@ bigintRem = divrem[1]; }
           if (!bigintD.equals(bigintB)) {
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,bigintB,bigintD);
           }
-          if (bigintRem.signum() != 0) {
+          if (!bigintRem.isZero()) {
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,BigInteger.valueOf(0),bigintRem);
           }
         }
-        if (bigintB.signum() != 0) {
+        if (!bigintB.isZero()) {
           {
 BigInteger[] divrem=(bigintA).divideAndRemainder(bigintB);
 bigintC = divrem[0];
@@ -176,6 +172,16 @@ bigintRem = divrem[1]; }
             Assert.assertEquals("TestMultiplyDivide " + bigintA + "; " + bigintB,bigintA,bigintD);
           }
         }
+    }
+
+    @Test
+    public void TestMultiplyDivide() {
+      FastRandom r = new FastRandom();
+      for (int i = 0; i < 10000; ++i) {
+        BigInteger bigintA = RandomBigInteger(r);
+        BigInteger bigintB = RandomBigInteger(r);
+        this.TestMultiplyDivideOne(bigintA, bigintB);
+        this.TestMultiplyDivideOne(bigintB, bigintA);
       }
     }
 
@@ -208,7 +214,7 @@ String divisor,
 String result) {
       BigInteger bigintA = BigFromString(dividend);
       BigInteger bigintB = BigFromString(divisor);
-      if (bigintB.signum() == 0) {
+      if (bigintB.isZero()) {
         try {
           bigintA.remainder(bigintB); Assert.fail("Expected divide by 0 error");
         } catch (ArithmeticException ex) {
@@ -237,6 +243,7 @@ String result) {
       BigIntegerTest.AssertBigIntegersEqual(s, bi.subtract(negbi2));
       BigIntegerTest.AssertBigIntegersEqual(s, bi2.subtract(negbi));
     }
+
     @Test
     public void TestAdd() {
       BigInteger posSmall = BigInteger.valueOf(5);
@@ -530,7 +537,7 @@ stringTemp);
         }
         BigInteger bigprime = BigInteger.valueOf(prime);
         BigInteger ba = RandomBigInteger(rand);
-        if (ba.signum() == 0) {
+        if (ba.isZero()) {
           continue;
         }
         ba = ba.multiply(bigprime);
@@ -705,7 +712,7 @@ stringTemp);
       for (int i = 0; i < 1000; ++i) {
         BigInteger bigintA = RandomBigInteger(r);
         BigInteger mod = bigintA.remainder(BigValueOf(2));
-        Assert.assertEquals(mod.signum() == 0, bigintA.isEven());
+        Assert.assertEquals(mod.isZero(), bigintA.isEven());
       }
     }
 
@@ -967,6 +974,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
     public void TestIsZero() {
       // not implemented yet
     }
+
+////
 
     @Test
     public void TestDivideAndRemainder() {
@@ -1630,6 +1639,7 @@ throw new IllegalStateException("", ex);
       }
     }
 
+////
     @Test
     public void TestNegate() {
       // not implemented yet
@@ -1733,7 +1743,7 @@ throw new IllegalStateException("", ex);
         BigInteger bigintB = bigintA.add(BigInteger.valueOf(1));
         BigInteger bigintC = bigintA.multiply(bigintB);
         // Test near-squaring
-        if (bigintA.signum() == 0 || bigintB.signum() == 0) {
+        if (bigintA.isZero() || bigintB.isZero()) {
           Assert.assertEquals(BigInteger.valueOf(0), bigintC);
         }
         if (bigintA.equals(BigInteger.valueOf(1))) {
@@ -1745,7 +1755,7 @@ throw new IllegalStateException("", ex);
         bigintB = bigintA;
         // Test squaring
         bigintC = bigintA.multiply(bigintB);
-        if (bigintA.signum() == 0 || bigintB.signum() == 0) {
+        if (bigintA.isZero() || bigintB.isZero()) {
           Assert.assertEquals(BigInteger.valueOf(0), bigintC);
         }
         if (bigintA.equals(BigInteger.valueOf(1))) {
@@ -1933,6 +1943,7 @@ throw new IllegalStateException("", ex);
       }
     }
 
+////
     @Test
     public void TestMiscellaneous() {
       Assert.assertEquals(1, BigInteger.valueOf(0).getDigitCount());
@@ -2135,4 +2146,6 @@ System.out.print("");
       Assert.assertEquals(BigInteger.valueOf(1), (BigInteger.valueOf(13)).mod(BigInteger.valueOf(4)));
       Assert.assertEquals(BigInteger.valueOf(3), (BigInteger.valueOf(-13)).mod(BigInteger.valueOf(4)));
     }
+
+////
   }

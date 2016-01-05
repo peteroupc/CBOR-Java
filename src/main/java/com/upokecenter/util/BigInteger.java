@@ -15,11 +15,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.numbers.*;
 
     /**
-     * An arbitrary-precision integer. <p>Instances of this class are immutable, so
-     * they are inherently safe for use by multiple threads. Multiple
-     * instances of this object with the same value are interchangeable, so
-     * they should not be compared using the "==" operator (which only
-     * checks if each side of the operator is the same instance).</p>
+     * An arbitrary-precision integer. <p><b>Thread safety:</b>Instances of this
+     * class are immutable, so they are inherently safe for use by multiple
+     * threads. Multiple instances of this object with the same value are
+     * interchangeable, but they should be compared using the "Equals"
+     * method rather than the "==" operator.</p>
      */
   public final class BigInteger implements Comparable<BigInteger> {
     /**
@@ -62,7 +62,7 @@ import com.upokecenter.numbers.*;
      * @return True if this value is 0; otherwise, false.
      */
     public final boolean isZero() {
- return this.getEi().signum() == 0;
+ return this.getEi().isZero();
 }
 
     /**
@@ -252,7 +252,7 @@ return this.getEi().bitLength();
      * less; otherwise, false.
      */
     public boolean canFitInInt() {
-return this.getEi().canFitInInt();
+return this.getEi().CanFitInInt32();
       }
 
     /**
@@ -644,7 +644,7 @@ return this.getEi().testBit(index);
      * single element 0.
      */
     public byte[] toBytes(boolean littleEndian) {
-      return this.getEi().toBytes(littleEndian);
+      return this.getEi().ToBytes(littleEndian);
  }
 
     /**
@@ -664,7 +664,7 @@ return this.getEi().testBit(index);
      * or greater than 36.
      */
     public String toRadixString(int radix) {
-      return this.getEi().toRadixString(radix);
+      return this.getEi().ToRadixString(radix);
  }
 
     /**

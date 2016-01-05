@@ -270,7 +270,7 @@ private DecimalUtility() {
               this.outputs[i] = this.outputs[i - 1];
             }
             this.inputs[0] = input;
-       this.inputsInts[0] = input.canFitInInt() ? input.AsInt32Checked() : -1;
+       this.inputsInts[0] = input.CanFitInInt32() ? input.AsInt32Checked() : -1;
             this.outputs[0] = output;
             ++this.size;
           } else {
@@ -281,7 +281,7 @@ private DecimalUtility() {
               this.outputs[i] = this.outputs[i - 1];
             }
             this.inputs[0] = input;
-       this.inputsInts[0] = input.canFitInInt() ? input.AsInt32Checked() : -1;
+       this.inputsInts[0] = input.CanFitInInt32() ? input.AsInt32Checked() : -1;
             this.outputs[0] = output;
           }
         }

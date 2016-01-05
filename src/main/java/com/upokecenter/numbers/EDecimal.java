@@ -8,11 +8,25 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
     /**
-     * Represents an arbitrary-precision decimal floating-point number. Consists of
-     * an integer mantissa and an integer exponent, both
+     * Represents an arbitrary-precision decimal floating-point number. <p><b>About
+     * decimal arithmetic</b></p> <p> Decimal (base-10) arithmetic, such as
+     * that provided by this class, is appropriate for calculations
+     * involving such real-world data as prices, tax rates, and
+     * measurements. These calculations often involve multiplying or
+     * dividing one decimal with another decimal, or performing other
+     * operations on decimal numbers. </p> <p>On the other hand, most
+     * implementations of <code>float</code> and <code>double</code>, including in C#
+     * and Java, store numbers in a binary (base-2) floating-point format
+     * and use binary floating-point arithmetic. Many decimal numbers can't
+     * be represented exactly in binary floating-point format (regardless of
+     * its length). Applying binary arithmetic to numbers intended to be
+     * decimals can sometimes lead to unintuitive results, as is shown in
+     * the description for the FromDouble() method of this class.</p>
+     * <p><b>About EDecimal instances</b></p> <p> Each instance of this
+     * class consists of an integer mantissa and an integer exponent, both
      * arbitrary-precision. The value of the number equals mantissa *
-     * 10^exponent. <p>The mantissa is the value of the digits that make up
-     * a number, ignoring the decimal point and exponent. For example, in
+     * 10^exponent.</p> <p>The mantissa is the value of the digits that make
+     * up a number, ignoring the decimal point and exponent. For example, in
      * the number 2356.78, the mantissa is 235678. The exponent is where the
      * "floating" decimal point of the number is located. A positive
      * exponent means "move it to the right", and a negative exponent means
@@ -34,38 +48,43 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * exponent range. <b>Not-a-number</b> is generally used to signal
      * errors.</p> <p>This class implements the General Decimal Arithmetic
      * Specification version 1.70 (except part of chapter 6):
-     * <code>http://speleotrove.com/decimal/decarith.html</code></p> <p>Passing a
-     * signaling NaN to any arithmetic operation shown here will signal the
-     * flag FlagInvalid and return a quiet NaN, even if another operand to
-     * that operation is a quiet NaN, unless noted otherwise.</p> <p>Passing
-     * a quiet NaN to any arithmetic operation shown here will return a
-     * quiet NaN, unless noted otherwise. Invalid operations will also
-     * return a quiet NaN, as stated in the individual methods.</p>
-     * <p>Unless noted otherwise, passing a null arbitrary-precision decimal
-     * argument to any method here will throw an exception.</p> <p>When an
-     * arithmetic operation signals the flag FlagInvalid, FlagOverflow, or
-     * FlagDivideByZero, it will not throw an exception too, unless the
-     * flag's trap is enabled in the precision context (see EContext's Traps
-     * property).</p> <p>An arbitrary-precision decimal value can be
-     * serialized in one of the following ways:</p> <ul> <li>By calling the
-     * toString() method, which will always return distinct strings for
-     * distinct arbitrary-precision decimal values.</li> <li>By calling the
-     * UnsignedMantissa, Exponent, and IsNegative properties, and calling
-     * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
-     * values combined will uniquely identify a particular
-     * arbitrary-precision decimal value.</li></ul> <p>If an operation
+     * <code>http://speleotrove.com/decimal/decarith.html</code></p> <p><b>Errors
+     * and Exceptions</b></p> <p>Passing a signaling NaN to any arithmetic
+     * operation shown here will signal the flag FlagInvalid and return a
+     * quiet NaN, even if another operand to that operation is a quiet NaN,
+     * unless noted otherwise.</p> <p>Passing a quiet NaN to any arithmetic
+     * operation shown here will return a quiet NaN, unless noted otherwise.
+     * Invalid operations will also return a quiet NaN, as stated in the
+     * individual methods.</p> <p>Unless noted otherwise, passing a null
+     * arbitrary-precision decimal argument to any method here will throw an
+     * exception.</p> <p>When an arithmetic operation signals the flag
+     * FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not throw an
+     * exception too, unless the flag's trap is enabled in the precision
+     * context (see EContext's Traps property).</p> <p>If an operation
      * requires creating an intermediate value that might be too big to fit
      * in memory (or might require more than 2 gigabytes of memory to store
      * -- due to the current use of a 32-bit integer internally as a
      * length), the operation may signal an invalid-operation flag and
      * return not-a-number (NaN). In certain rare cases, the compareTo
      * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Thread
-     * safety:</b>Instances of this class are immutable, so they are
+     * Java) in the same circumstances.</p> <p><b>Serialization</b></p>
+     * <p>An arbitrary-precision decimal value can be serialized (converted
+     * to a stable format) in one of the following ways:</p> <ul> <li>By
+     * calling the toString() method, which will always return distinct
+     * strings for distinct arbitrary-precision decimal values.</li> <li>By
+     * calling the UnsignedMantissa, Exponent, and IsNegative properties,
+     * and calling the IsInfinity, IsQuietNaN, and IsSignalingNaN methods.
+     * The return values combined will uniquely identify a particular
+     * arbitrary-precision decimal value.</li></ul> <p><b>Thread
+     * safety</b></p> <p>Instances of this class are immutable, so they are
      * inherently safe for use by multiple threads. Multiple instances of
      * this object with the same properties are interchangeable, so they
      * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p>
+     * each side of the operator is the same instance).</p> <p><b>Comparison
+     * considerations</b></p> <p>This class's natural ordering (under the
+     * compareTo method) is not consistent with the Equals method. This
+     * means that two values that compare as equal under the compareTo
+     * method might not be equal under the Equals method.</p>
      */
   public final class EDecimal implements Comparable<EDecimal> {
     private static final int MaxSafeInt = 214748363;
@@ -788,10 +807,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         while (true) {
           EInteger bigrem;
           EInteger bigquo;
-{
-EInteger[] divrem = tmpden.DivRem(EInteger.FromInt64(5));
-bigquo = divrem[0];
-bigrem = divrem[1]; }
+          {
+            EInteger[] divrem = tmpden.DivRem(EInteger.FromInt64(5));
+            bigquo = divrem[0];
+            bigrem = divrem[1];
+          }
           if (!bigrem.isZero()) {
             break;
           }
@@ -889,21 +909,23 @@ bigrem = divrem[1]; }
 
     private String ToStringInternal(int mode) {
       boolean negative = (this.flags & BigNumberFlags.FlagNegative) != 0;
-      if ((this.flags & BigNumberFlags.FlagInfinity) != 0) {
-        return negative ? "-Infinity" : "Infinity";
+      if (!this.isFinite()) {
+        if ((this.flags & BigNumberFlags.FlagInfinity) != 0) {
+          return negative ? "-Infinity" : "Infinity";
+        }
+        if ((this.flags & BigNumberFlags.FlagSignalingNaN) != 0) {
+          return this.unsignedMantissa.isZero() ? (negative ? "-sNaN" : "sNaN") :
+            (negative ? "-sNaN" + this.unsignedMantissa :
+             "sNaN" + this.unsignedMantissa);
+        }
+        if ((this.flags & BigNumberFlags.FlagQuietNaN) != 0) {
+          return this.unsignedMantissa.isZero() ? (negative ? "-NaN" : "NaN") :
+            (negative ? "-NaN" + this.unsignedMantissa : "NaN" +
+             this.unsignedMantissa);
+        }
       }
-      if ((this.flags & BigNumberFlags.FlagSignalingNaN) != 0) {
-        return this.unsignedMantissa.isZero() ? (negative ? "-sNaN" : "sNaN") :
-          (negative ? "-sNaN" + this.unsignedMantissa.Abs() :
-           "sNaN" + this.unsignedMantissa.Abs());
-      }
-      if ((this.flags & BigNumberFlags.FlagQuietNaN) != 0) {
-        return this.unsignedMantissa.isZero() ? (negative ? "-NaN" : "NaN") :
-          (negative ? "-NaN" + this.unsignedMantissa.Abs() : "NaN" +
-           this.unsignedMantissa.Abs());
-      }
-      String mantissaString = this.unsignedMantissa.Abs().toString();
       int scaleSign = -this.exponent.signum();
+      String mantissaString = this.unsignedMantissa.toString();
       if (scaleSign == 0) {
         return negative ? "-" + mantissaString : mantissaString;
       }
@@ -912,8 +934,54 @@ bigrem = divrem[1]; }
         // special case for zero in plain
         return negative ? "-" + mantissaString : mantissaString;
       }
-      FastInteger builderLength = new FastInteger(mantissaString.length());
+      StringBuilder builder = null;
+      if (mode == 0 && mantissaString.length() < 100 &&
+        this.exponent.CanFitInInt32()) {
+        int intExp = this.exponent.AsInt32Unchecked();
+        if (intExp > -100 && intExp < 100) {
+          int adj = (intExp + mantissaString.length()) - 1;
+          if (scaleSign >= 0 && adj >= -6) {
+            if (scaleSign > 0) {
+              int dp = intExp + mantissaString.length();
+              if (dp < 0) {
+                builder = new StringBuilder(mantissaString.length() + 6);
+                if (negative) {
+ builder.append("-0.");
+} else {
+ builder.append("0.");
+}
+                dp = -dp;
+                for (int j = 0; j < dp; ++j) {
+                  builder.append('0');
+                }
+                builder.append(mantissaString);
+                return builder.toString();
+              } else if (dp == 0) {
+                builder = new StringBuilder(mantissaString.length() + 6);
+                if (negative) {
+ builder.append("-0.");
+} else {
+ builder.append("0.");
+}
+                builder.append(mantissaString);
+                return builder.toString();
+              } else if (dp > 0 && dp <= mantissaString.length()) {
+                builder = new StringBuilder(mantissaString.length() + 6);
+                if (negative) {
+ builder.append('-');
+}
+                builder.append(mantissaString, 0, (0)+(dp));
+                builder.append('.');
+                builder.append(
+                  mantissaString, dp, (dp)+(mantissaString.length() - dp));
+                return builder.toString();
+              }
+            }
+          }
+        }
+      }
       FastInteger adjustedExponent = FastInteger.FromBig(this.exponent);
+      FastInteger builderLength = new FastInteger(mantissaString.length());
       FastInteger thisExponent = FastInteger.Copy(adjustedExponent);
       adjustedExponent.Add(builderLength).Decrement();
       FastInteger decimalPointAdjust = new FastInteger(1);
@@ -971,7 +1039,7 @@ bigrem = divrem[1]; }
           FastInteger decimalPoint =
             FastInteger.Copy(thisExponent).Add(builderLength);
           int cmp = decimalPoint.CompareToInt(0);
-          StringBuilder builder = null;
+          builder = null;
           if (cmp < 0) {
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
@@ -983,23 +1051,14 @@ bigrem = divrem[1]; }
             AppendString(builder, '0', FastInteger.Copy(decimalPoint).Negate());
             builder.append(mantissaString);
           } else if (cmp == 0) {
-            if (!decimalPoint.CanFitInInt32()) {
-              throw new UnsupportedOperationException();
-            }
-            int tmpInt = decimalPoint.AsInt32();
-            if (tmpInt < 0) {
-              tmpInt = 0;
-            }
             FastInteger tmpFast = new FastInteger(mantissaString.length()).AddInt(6);
             builder = new StringBuilder(tmpFast.CompareToInt(Integer.MAX_VALUE) >
                     0 ? Integer.MAX_VALUE : tmpFast.AsInt32());
             if (negative) {
               builder.append('-');
             }
-            builder.append(mantissaString, 0, (0)+(tmpInt));
             builder.append("0.");
-            builder.append(
-              mantissaString, tmpInt, (tmpInt)+(mantissaString.length() - tmpInt));
+            builder.append(mantissaString);
           } else if (decimalPoint.CompareToInt(mantissaString.length()) > 0) {
             FastInteger insertionPoint = builderLength;
             if (!insertionPoint.CanFitInInt32()) {
@@ -1046,7 +1105,7 @@ bigrem = divrem[1]; }
         }
         if (mode == 2 && scaleSign < 0) {
           FastInteger negscale = FastInteger.Copy(thisExponent);
-          StringBuilder builder = new StringBuilder();
+          builder = new StringBuilder();
           if (negative) {
             builder.append('-');
           }
@@ -1056,7 +1115,6 @@ bigrem = divrem[1]; }
         }
         return (!negative) ? mantissaString : ("-" + mantissaString);
       } else {
-        StringBuilder builder = null;
         if (mode == 1 && iszero && decimalPointAdjust.CompareToInt(1) > 0) {
           builder = new StringBuilder();
           if (negative) {
@@ -1200,8 +1258,8 @@ bigrem = divrem[1]; }
           // have a greater value in decimal than in binary
           return (signA > 0) ? 1 : -1;
         }
-      if (thisAdjExp.signum() > 0 && thisAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0 &&
-              otherAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0) {
+        if (thisAdjExp.signum() > 0 && thisAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0 &&
+                otherAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0) {
           thisAdjExp = thisAdjExp.Add(EInteger.FromInt64(1));
           otherAdjExp = otherAdjExp.Add(EInteger.FromInt64(1));
           EInteger ratio = otherAdjExp.Divide(thisAdjExp);
@@ -1338,10 +1396,11 @@ bigrem = divrem[1]; }
           DecimalUtility.FindPowerOfFiveFromBig(negscale.AsBigInteger());
         while (true) {
           EInteger quotient;
-{
-EInteger[] divrem = bigmantissa.DivRem(divisor);
-quotient = divrem[0];
-remainder = divrem[1]; }
+          {
+            EInteger[] divrem = bigmantissa.DivRem(divisor);
+            quotient = divrem[0];
+            remainder = divrem[1];
+          }
           // Ensure that the quotient has enough precision
           // to be converted accurately to a single or double
           if (!remainder.isZero() && quotient.compareTo(ValueOneShift62) < 0) {
@@ -1601,7 +1660,7 @@ remainder = divrem[1]; }
     /**
      * Creates a decimal number from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
-     * @return An arbitrary-precision decimal number.
+     * @return An arbitrary-precision decimal number with the exponent set to 0.
      */
     public static EDecimal FromInt32(int valueSmaller) {
       EInteger bigint = EInteger.FromInt64(valueSmaller);
@@ -2311,8 +2370,8 @@ remainder = divrem[1]; }
 
     private static IRadixMath<EDecimal> GetMathValue(EContext ctx) {
       if (ctx == null || ctx == EContext.Unlimited) {
- return ExtendedMathValue;
-}
+        return ExtendedMathValue;
+      }
       return (!ctx.isSimplified() && ctx.getTraps() == 0) ? ExtendedMathValue :
         MathValue;
     }
@@ -2896,6 +2955,13 @@ remainder = divrem[1]; }
       return this.RoundToExponentExact(EInteger.FromInt64(exponentSmall), ctx);
     }
 
+    private static final int[] ValueTenPowers = {
+      1, 10, 100, 1000, 10000, 100000,
+      1000000, 10000000, 100000000
+    };
+
+    private static int eligible, used, total;
+
     /**
      * Returns a decimal number with the same value as this object but rounded to a
      * new exponent if necessary.
@@ -2921,7 +2987,66 @@ remainder = divrem[1]; }
     public EDecimal RoundToExponent(
       int exponentSmall,
       EContext ctx) {
+      if (this.isFinite() && (ctx == null ||
+         (!ctx.getHasExponentRange() && !ctx.getHasFlags() && ctx.getTraps() == 0 &&
+          !ctx.getHasMaxPrecision() && !ctx.isSimplified()))) {
+  if (this.exponent.CanFitInInt32() && this.unsignedMantissa.CanFitInInt32()) {
+          int thisExponentSmall = this.exponent.AsInt32Unchecked();
+          if (thisExponentSmall == exponentSmall) {
+            return this;
+          }
+          int thisMantissaSmall = this.unsignedMantissa.AsInt32Unchecked();
+          ERounding rounding = ctx.getRounding();
+          if (thisExponentSmall >= -100 && thisExponentSmall <= 100 &&
+            exponentSmall >= -100 && exponentSmall <= 100) {
+            if (rounding == ERounding.Down) {
+              int diff = exponentSmall - thisExponentSmall;
+              if (diff >= 1 && diff <= 8) {
+                thisMantissaSmall /= ValueTenPowers[diff];
+                return CreateWithFlags(
+                  EInteger.FromInt32(thisMantissaSmall),
+                  EInteger.FromInt32(exponentSmall),
+                  this.flags);
+              }
+            } else if (rounding == ERounding.HalfEven &&
+                thisMantissaSmall != Integer.MAX_VALUE) {
+              int diff = exponentSmall - thisExponentSmall;
+              if (diff >= 1 && diff <= 8) {
+                int pwr = ValueTenPowers[diff - 1];
+                int div = thisMantissaSmall / pwr;
+                int div2 = div / 10;
+                int rem = div - (div2 * 10);
+                if (rem > 5) {
+                  ++div2;
+                } else if (rem == 5 && (thisMantissaSmall - (div * pwr)) != 0) {
+                  ++div2;
+                } else if (rem == 5 && (div2 & 1) == 1) {
+                  ++div2;
+                }
+                return CreateWithFlags(
+                  EInteger.FromInt32(div2),
+                  EInteger.FromInt32(exponentSmall),
+                  this.flags);
+              }
+            }
+          }
+        }
+      }
       return this.RoundToExponent(EInteger.FromInt64(exponentSmall), ctx);
+    }
+
+    public EDecimal RoundToExponentExact(
+      int exponentSmall,
+      ERounding rounding) {
+      return this.RoundToExponentExact(exponentSmall,
+        EContext.ForRounding(rounding));
+    }
+
+    public EDecimal RoundToExponent(
+      int exponentSmall,
+      ERounding rounding) {
+      return this.RoundToExponent(exponentSmall,
+        EContext.ForRounding(rounding));
     }
 
     /**
@@ -3366,11 +3491,11 @@ EContext ctx) {
      */
     public EInteger Precision() {
       if (!this.isFinite()) {
- return EInteger.FromInt64(0);
-}
+        return EInteger.FromInt64(0);
+      }
       if (this.isZero()) {
- return EInteger.FromInt64(1);
-}
+        return EInteger.FromInt64(1);
+      }
       int digcount = this.unsignedMantissa.getDigitCount();
       return EInteger.FromInt64(digcount);
     }

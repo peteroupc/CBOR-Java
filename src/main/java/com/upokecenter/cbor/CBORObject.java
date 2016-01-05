@@ -47,40 +47,41 @@ import com.upokecenter.util.*;
      * compareTo method might not be equal under the Equals method. This is
      * important to consider especially if an application wants to compare
      * numbers, since the CBOR number type supports numbers of different
-     * formats, such as big integers, rational numbers, and decimal
-     * fractions.</p> <p>Another consideration is that two values that are
-     * otherwise equal may have different tags. To strip the tags from a
-     * CBOR object before comparing, use the <code>Untag</code> method.</p> <p>To
-     * compare two numbers, the CompareToIgnoreTags or compareTo method
-     * should be used. Which method to use depends on whether two equal
-     * values should still be considered equal if they have different
-     * tags.</p> <p>Although this class is inconsistent with the Equals
-     * method, it is safe to use CBORObject instances as hash keys as long
-     * as all of the keys are untagged text strings (which means GetTags
-     * returns an empty array and the Type property, or "getType()" in Java,
-     * returns TextString). This is because the natural ordering of these
-     * instances is consistent with the Equals method.</p> <p><b>Thread
-     * Safety:</b></p> <p>CBOR objects that are numbers, "simple values",
-     * and text strings are immutable (their values can't be changed), so
-     * they are inherently safe for use by multiple threads.</p> <p>CBOR
-     * objects that are arrays, maps, and byte strings are mutable, but this
-     * class doesn't attempt to synchronize reads and writes to those
-     * objects by multiple threads, so those objects are not thread safe
-     * without such synchronization.</p> <p>One kind of CBOR object is
-     * called a map, or a list of key-value pairs. Keys can be any kind of
-     * CBOR object, including numbers, strings, arrays, and maps. However,
-     * text strings are the most suitable to use as keys; other kinds of
-     * CBOR object are much better used as map values instead, keeping in
-     * mind that some of them are not thread safe without synchronizing
-     * reads and writes to them.</p> <p>To find the type of a CBOR object,
-     * call its Type property (or "getType()" in Java). The return value can
-     * be Number, Boolean, SimpleValue, or TextString for immutable CBOR
-     * objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
-     * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and Read methods
-     * can only read objects with a limited maximum depth of arrays and maps
-     * nested within other arrays and maps. The code sets this maximum depth
-     * to 500 (allowing more than enough nesting for most purposes), but
-     * it's possible that stack overflows in some runtimes might lower the
+     * formats, such as big integers, rational numbers, and
+     * arbitrary-precision decimal numbers.</p> <p>Another consideration is
+     * that two values that are otherwise equal may have different tags. To
+     * strip the tags from a CBOR object before comparing, use the
+     * <code>Untag</code> method.</p> <p>To compare two numbers, the
+     * CompareToIgnoreTags or compareTo method should be used. Which method
+     * to use depends on whether two equal values should still be considered
+     * equal if they have different tags.</p> <p>Although this class is
+     * inconsistent with the Equals method, it is safe to use CBORObject
+     * instances as hash keys as long as all of the keys are untagged text
+     * strings (which means GetTags returns an empty array and the Type
+     * property, or "getType()" in Java, returns TextString). This is
+     * because the natural ordering of these instances is consistent with
+     * the Equals method.</p> <p><b>Thread Safety:</b></p> <p>CBOR objects
+     * that are numbers, "simple values", and text strings are immutable
+     * (their values can't be changed), so they are inherently safe for use
+     * by multiple threads.</p> <p>CBOR objects that are arrays, maps, and
+     * byte strings are mutable, but this class doesn't attempt to
+     * synchronize reads and writes to those objects by multiple threads, so
+     * those objects are not thread safe without such synchronization.</p>
+     * <p>One kind of CBOR object is called a map, or a list of key-value
+     * pairs. Keys can be any kind of CBOR object, including numbers,
+     * strings, arrays, and maps. However, text strings are the most
+     * suitable to use as keys; other kinds of CBOR object are much better
+     * used as map values instead, keeping in mind that some of them are not
+     * thread safe without synchronizing reads and writes to them.</p> <p>To
+     * find the type of a CBOR object, call its Type property (or
+     * "getType()" in Java). The return value can be Number, Boolean,
+     * SimpleValue, or TextString for immutable CBOR objects, and Array,
+     * Map, or ByteString for mutable CBOR objects.</p> <p><b>Nesting
+     * Depth:</b></p> <p>The DecodeFromBytes and Read methods can only read
+     * objects with a limited maximum depth of arrays and maps nested within
+     * other arrays and maps. The code sets this maximum depth to 500
+     * (allowing more than enough nesting for most purposes), but it's
+     * possible that stack overflows in some runtimes might lower the
      * effective maximum nesting depth. When the nesting depth goes above
      * 500, the DecodeFromBytes and Read methods throw a CBORException.</p>
      * <p>The ReadJSON and FromJSONString methods currently have nesting
@@ -825,11 +826,16 @@ nextchar);
       if ((Object)bigValue == (Object)null) {
         return CBORObject.Null;
       }
-      if (bigValue.IsNaN() || bigValue.IsInfinity()) {
-        return new CBORObject(CBORObjectTypeExtendedFloat, bigValue);
+      if (bigValue.IsInfinity()) {
+        return CBORObject.FromObject(bigValue.ToDouble());
+      }
+      if (bigValue.IsNaN()) {
+        return new CBORObject(
+          CBORObjectTypeExtendedFloat,
+          bigValue);
       }
       BigInteger bigintExponent = bigValue.getExponent();
-      return (bigintExponent.signum() == 0 && !(bigValue.signum() == 0 &&
+      return (bigintExponent.isZero() && !(bigValue.isZero() &&
                     bigValue.isNegative())) ? FromObject(bigValue.getMantissa()) :
         new CBORObject(
           CBORObjectTypeExtendedFloat,
@@ -842,8 +848,19 @@ nextchar);
      * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedRational bigValue) {
-      return ((Object)bigValue == (Object)null) ? CBORObject.Null :
-        ((bigValue.isFinite() && bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
+      if ((Object)bigValue == (Object)null) {
+        return CBORObject.Null;
+      }
+      if (bigValue.IsInfinity()) {
+        return CBORObject.FromObject(bigValue.ToDouble());
+      }
+      if (bigValue.IsNaN()) {
+        return new CBORObject(
+          CBORObjectTypeExtendedRational,
+          bigValue);
+      }
+   return ((bigValue.isFinite() &&
+        bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
          FromObject(bigValue.getNumerator()) : (new CBORObject(
            CBORObjectTypeExtendedRational,
            bigValue)));
@@ -858,11 +875,16 @@ nextchar);
       if ((Object)otherValue == (Object)null) {
         return CBORObject.Null;
       }
-      if (otherValue.IsNaN() || otherValue.IsInfinity()) {
-        return new CBORObject(CBORObjectTypeExtendedDecimal, otherValue);
+      if (otherValue.IsInfinity()) {
+        return CBORObject.FromObject(otherValue.ToDouble());
+      }
+      if (otherValue.IsNaN()) {
+        return new CBORObject(
+          CBORObjectTypeExtendedDecimal,
+          otherValue);
       }
       BigInteger bigintExponent = otherValue.getExponent();
-      return (bigintExponent.signum() == 0 && !(otherValue.signum() == 0 &&
+      return (bigintExponent.isZero() && !(otherValue.isZero() &&
                     otherValue.isNegative())) ? FromObject(otherValue.getMantissa()) :
         new CBORObject(
           CBORObjectTypeExtendedDecimal,
@@ -1574,13 +1596,13 @@ nextchar);
         stream.write(0xf6);
         return;
       }
-      if ((bignum.signum() == 0 && bignum.isNegative()) || bignum.IsInfinity() ||
+      if ((bignum.isZero() && bignum.isNegative()) || bignum.IsInfinity() ||
           bignum.IsNaN()) {
         Write(bignum.ToDouble(), stream);
         return;
       }
       BigInteger exponent = bignum.getExponent();
-      if (exponent.signum() == 0) {
+      if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
         if (!BigIntFits(exponent)) {
@@ -1637,7 +1659,7 @@ nextchar);
      * writes the value as an unsigned integer or signed integer if the
      * number can fit either type or as a big integer otherwise.</li> <li>In
      * all other cases, writes the value as a decimal number.</li></ul>
-     * @param bignum Decimal fraction to write. Can be null.
+     * @param bignum The arbitrary-precision decimal number to write. Can be null.
      * @param stream InputStream to write to.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
@@ -1650,13 +1672,13 @@ nextchar);
         stream.write(0xf6);
         return;
       }
-      if ((bignum.signum() == 0 && bignum.isNegative()) || bignum.IsInfinity() ||
+      if ((bignum.isZero() && bignum.isNegative()) || bignum.IsInfinity() ||
           bignum.IsNaN()) {
         Write(bignum.ToDouble(), stream);
         return;
       }
       BigInteger exponent = bignum.getExponent();
-      if (exponent.signum() == 0) {
+      if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
         if (!BigIntFits(exponent)) {
@@ -3134,15 +3156,16 @@ public boolean equals(CBORObject other) {
      * integers, strings, byte arrays, and other JSON data types. Notes:
      * <ul> <li>If this object contains maps with non-string keys, the keys
      * are converted to JSON strings before writing the map as a JSON
-     * string.</li> <li>If a number in the form of a big float has a very
-     * high binary exponent, it will be converted to a double before being
-     * converted to a JSON string. (The resulting double could overflow to
-     * infinity, in which case the big float is converted to null.)</li>
-     * <li>The string will not begin with a byte-order mark (U + FEFF); RFC
-     * 7159 (the JSON specification) forbids placing a byte-order mark at
-     * the beginning of a JSON string.</li> <li>Byte strings are converted
-     * to Base64 URL by default.</li> <li>Rational numbers will be converted
-     * to their exact form, if possible, otherwise to a high-precision
+     * string.</li> <li>If a number in the form of an arbitrary-precision
+     * binary float has a very high binary exponent, it will be converted to
+     * a double before being converted to a JSON string. (The resulting
+     * double could overflow to infinity, in which case the
+     * arbitrary-precision binary float is converted to null.)</li> <li>The
+     * string will not begin with a byte-order mark (U + FEFF); RFC 7159 (the
+     * JSON specification) forbids placing a byte-order mark at the
+     * beginning of a JSON string.</li> <li>Byte strings are converted to
+     * Base64 URL by default.</li> <li>Rational numbers will be converted to
+     * their exact form, if possible, otherwise to a high-precision
      * approximation. (The resulting approximation could overflow to
      * infinity, in which case the rational number is converted to
      * null.)</li> <li>Simple values other than true and false will be
