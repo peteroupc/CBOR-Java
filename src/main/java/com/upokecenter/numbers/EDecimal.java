@@ -2960,8 +2960,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       1000000, 10000000, 100000000
     };
 
-    private static int eligible, used, total;
-
     /**
      * Returns a decimal number with the same value as this object but rounded to a
      * new exponent if necessary.
