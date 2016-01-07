@@ -9,6 +9,17 @@ import com.upokecenter.util.*;
     public void TestAbs() {
       // not implemented yet
     }
+
+    private static void AssertAddSubtract(String a, String b) {
+      ExtendedDecimal decA = ExtendedDecimal.FromString(a);
+      ExtendedDecimal decB = ExtendedDecimal.FromString(b);
+      ExtendedDecimal decC = decA.Add(decB);
+      ExtendedDecimal decD = decC.Subtract(decA);
+      TestCommon.CompareTestEqual(decD, decB);
+      decD = decC.Subtract(decB);
+      TestCommon.CompareTestEqual(decD, decA);
+    }
+
     @Test
     public void TestAdd() {
       try {
@@ -20,7 +31,9 @@ import com.upokecenter.util.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      AssertAddSubtract("617862143", "1528127703");
     }
+
     @Test
     public void TestCompareTo() {
       FastRandom r = new FastRandom();
@@ -31,6 +44,18 @@ import com.upokecenter.util.*;
         TestCommon.CompareTestRelations(bigintA, bigintB, bigintC);
       }
       TestCommon.CompareTestLess(ExtendedDecimal.Zero, ExtendedDecimal.NaN);
+      TestCommon.CompareTestLess(
+ExtendedDecimal.FromString("-4328117878201602191937590091183.9810549"),
+ExtendedDecimal.FromString("-14"));
+      TestCommon.CompareTestGreater(
+ExtendedDecimal.FromString("937125319376706291597172.99"),
+ExtendedDecimal.FromString("9755.2823"));
+      TestCommon.CompareTestLess(
+ExtendedDecimal.FromString("95"),
+ExtendedDecimal.FromString("1.41189247453434859259019E+26"));
+      TestCommon.CompareTestGreater(
+ExtendedDecimal.FromString("379351600076111561037"),
+ExtendedDecimal.FromString("8451910"));
     }
     @Test
     public void TestCompareToBinary() {

@@ -111,6 +111,16 @@ private TestCommon() {
       }
     }
 
+    public static <T extends Comparable<T>> void CompareTestEqual(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) != 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Not equal: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
+    }
+
     public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(T o1, T o2) {
       CompareTestEqualAndConsistent(o1, o2, null);
     }
@@ -157,8 +167,9 @@ String msg) {
       if (o2 == null) {
         throw new NullPointerException("o2");
       }
-      int cmp = ((o1.compareTo(o2) == 0) ? 0 : ((o1.compareTo(o2)< 0) ? -1 : 1));
-      int cmp2 = ((o2.compareTo(o1) == 0) ? 0 : ((o2.compareTo(o1)< 0) ? -1 : 1));
+      int cmp, cmp2;
+      cmp = ((o1.compareTo(o2) == 0) ? 0 : ((o1.compareTo(o2)< 0) ? -1 : 1));
+      cmp2 = ((o2.compareTo(o1) == 0) ? 0 : ((o2.compareTo(o1)< 0) ? -1 : 1));
       if (-cmp2 != cmp) {
         Assert.assertEquals(ObjectMessages(o1, o2, "Not reciprocal"),cmp,-cmp2);
       }

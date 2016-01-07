@@ -207,7 +207,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         ExtendedDecimal cmpCobj = CBORObject.Addition(
           o1,
           o2).AsExtendedDecimal();
-        TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
+        TestCommon.CompareTestEqual(
+cmpDecFrac,
+cmpCobj,
+TestCommon.ObjectMessages(o1, o2, ""));
         TestCommon.AssertRoundTrip(o1);
         TestCommon.AssertRoundTrip(o2);
       }
@@ -1824,38 +1827,40 @@ CBORObject.FromObject(0.1f));
       CBORObject.FromObject(ExtendedDecimal.NegativeInfinity),
       CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
-CBORObject objectTemp2 =
-  CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+        CBORObject objectTemp2 =
+          CBORObject.FromObject(ExtendedRational.NegativeInfinity)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+ CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp =
-  CBORObject.FromObject(ExtendedRational.NegativeInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedRational.NegativeInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
-CBORObject objectTemp2 =
-  CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+ CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
+        CBORObject objectTemp2 =
+          CBORObject.FromObject(ExtendedRational.NegativeInfinity)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
     }
 
     @Test
@@ -1864,38 +1869,40 @@ TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       CBORObject.FromObject(ExtendedDecimal.PositiveInfinity),
       CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
-CBORObject objectTemp2 =
-  CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+        CBORObject objectTemp2 =
+          CBORObject.FromObject(ExtendedRational.PositiveInfinity)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+ CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp =
-  CBORObject.FromObject(ExtendedRational.PositiveInfinity);
-CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
+        CBORObject objectTemp =
+          CBORObject.FromObject(ExtendedRational.PositiveInfinity);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
       {
-CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
-CBORObject objectTemp2 =
-  CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+ CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
+        CBORObject objectTemp2 =
+          CBORObject.FromObject(ExtendedRational.PositiveInfinity)
 ;
-TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
     }
 
     @Test
@@ -2614,17 +2621,17 @@ TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
     public void TestNegativeTenDigitLong() {
       CBORObject obj = CBORObject.FromJSONString("-1000000000");
       {
-String stringTemp = obj.ToJSONString();
-Assert.assertEquals(
-"-1000000000",
-stringTemp);
-}
+        String stringTemp = obj.ToJSONString();
+        Assert.assertEquals(
+        "-1000000000",
+        stringTemp);
+      }
       {
-String stringTemp = obj.toString();
-Assert.assertEquals(
-"-1000000000",
-stringTemp);
-}
+        String stringTemp = obj.toString();
+        Assert.assertEquals(
+        "-1000000000",
+        stringTemp);
+      }
     }
 
     @Test
@@ -4280,6 +4287,13 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
         stringTemp);
       }
     }
+
+    @Test
+    public void TestTrue() {
+      TestCommon.AssertSer(CBORObject.True, "true");
+      Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
+    }
+
     @Test
     public void TestType() {
       // not implemented yet
@@ -4299,16 +4313,161 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     public void TestValues() {
       // not implemented yet
     }
-    // @Test
+
+    @Test
     public void TestWrite() {
-      for (int i = 0; i < 100; ++i) {
+      for (int i = 0; i < 20; ++i) {
         this.TestWrite2();
       }
     }
 
-    // @Test
+    public void TestWrite3() {
+      ExtendedFloat ef;
+      ExtendedDecimal ed;
+      FastRandom fr = new FastRandom();
+      try {
+        for (int i = 0; i < 50; ++i) {
+          ef = RandomObjects.RandomExtendedFloat(fr);
+          if (!ef.IsNaN()) {
+            CBORObject cborTemp1 = CBORObject.FromObject(ef);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ef, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ef, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ef, ef);
+          }
+
+          ef = ExtendedFloat.Create(
+           RandomObjects.RandomBigInteger(fr),
+           RandomObjects.RandomBigInteger(fr));
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(ef);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ef, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ef, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              if (ef.isNegative() && ef.isZero()) {
+                AssertReadThree(ms.toByteArray());
+              } else {
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
+              }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ef, ef);
+          }
+        }
+        for (int i = 0; i < 50; ++i) {
+          ed = RandomObjects.RandomExtendedDecimal(fr);
+          if (!ed.IsNaN()) {
+            CBORObject cborTemp1 = CBORObject.FromObject(ed);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ed, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ed, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              if (ed.isNegative() && ed.isZero()) {
+                AssertReadThree(ms.toByteArray());
+              } else {
+                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
+              }
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ed, ed);
+          }
+
+          ed = ExtendedDecimal.Create(
+           RandomObjects.RandomBigInteger(fr),
+           RandomObjects.RandomBigInteger(fr));
+          {
+            CBORObject cborTemp1 = CBORObject.FromObject(ed);
+            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
+            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
+            try {
+              CBORObject.Write(ed, null);
+              Assert.fail("Should have failed");
+            } catch (NullPointerException ex) {
+              System.out.print("");
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            AssertWriteThrow(cborTemp1);
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.Write(ed, ms);
+              CBORObject.Write(cborTemp1, ms);
+              cborTemp1.WriteTo(ms);
+              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+            TestWriteObj((Object)ed, ed);
+          }
+        }
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
+    }
+
+    @Test
     public void TestWrite2() {
-      // TODO: Currently fails with negative zero
       try {
         String str = null;
         FastRandom fr = new FastRandom();
@@ -4460,73 +4619,6 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           TestWriteObj((Object)ef, ef);
         }
 
-        for (int i = 0; i < 50; ++i) {
-          ef = RandomObjects.RandomExtendedFloat(fr);
-          if (!ef.IsNaN()) {
-            CBORObject cborTemp1 = CBORObject.FromObject(ef);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
-              CBORObject.Write(ef, null);
-              Assert.fail("Should have failed");
-            } catch (NullPointerException ex) {
-              System.out.print("");
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ef, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ef, ef);
-          }
-
-          ef = ExtendedFloat.Create(
-           RandomObjects.RandomBigInteger(fr),
-           RandomObjects.RandomBigInteger(fr));
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(ef);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ef);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
-              CBORObject.Write(ef, null);
-              Assert.fail("Should have failed");
-            } catch (NullPointerException ex) {
-              System.out.print("");
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ef, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              if (ef.isNegative() && ef.isZero()) {
-                AssertReadThree(ms.toByteArray());
-              } else {
-                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ef));
-              }
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ef, ef);
-          }
-        }
         ExtendedRational er = null;
         {
           CBORObject cborTemp1 = CBORObject.FromObject(er);
@@ -4621,74 +4713,6 @@ finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
           TestWriteObj((Object)ed, null);
-        }
-
-        for (int i = 0; i < 50; ++i) {
-          ed = RandomObjects.RandomExtendedDecimal(fr);
-          if (!ed.IsNaN()) {
-            CBORObject cborTemp1 = CBORObject.FromObject(ed);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
-              CBORObject.Write(ed, null);
-              Assert.fail("Should have failed");
-            } catch (NullPointerException ex) {
-              System.out.print("");
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ed, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              if (ed.isNegative() && ed.isZero()) {
-                AssertReadThree(ms.toByteArray());
-              } else {
-                AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
-              }
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ed, ed);
-          }
-
-          ed = ExtendedDecimal.Create(
-           RandomObjects.RandomBigInteger(fr),
-           RandomObjects.RandomBigInteger(fr));
-          {
-            CBORObject cborTemp1 = CBORObject.FromObject(ed);
-            CBORObject cborTemp2 = CBORObject.FromObject((Object)ed);
-            TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
-            try {
-              CBORObject.Write(ed, null);
-              Assert.fail("Should have failed");
-            } catch (NullPointerException ex) {
-              System.out.print("");
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-              CBORObject.Write(ed, ms);
-              CBORObject.Write(cborTemp1, ms);
-              cborTemp1.WriteTo(ms);
-              AssertReadThree(ms.toByteArray(), CBORObject.FromObject(ed));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-            TestWriteObj((Object)ed, ed);
-          }
         }
 
         BigInteger bigint = null;

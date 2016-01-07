@@ -390,14 +390,11 @@ private DecimalUtility() {
       if (precision < 0) {
         return EInteger.FromInt64(0);
       }
-      if (precision == 0) {
-        return EInteger.FromInt64(1);
-      }
-      EInteger bigpow;
-      EInteger ret;
       if (precision <= 27) {
         return ValueBigIntPowersOfFive[(int)precision];
       }
+      EInteger bigpow;
+      EInteger ret;
       if (precision == 40) {
         return ValueFivePower40;
       }
@@ -493,14 +490,11 @@ private DecimalUtility() {
       if (precision < 0) {
         return EInteger.FromInt64(0);
       }
-      if (precision == 0) {
-        return EInteger.FromInt64(1);
-      }
-      EInteger bigpow;
-      EInteger ret;
       if (precision <= 18) {
         return ValueBigIntPowersOfTen[(int)precision];
       }
+      EInteger bigpow;
+      EInteger ret;
       int startPrecision = precision;
       bigpow = ValuePowerOfTenCache.GetCachedPowerInt(precision);
       if (bigpow != null) {

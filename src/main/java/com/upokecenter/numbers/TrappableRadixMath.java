@@ -9,16 +9,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import com.upokecenter.util.*;
 
-    // <summary>Implements arithmetic methods that support
-    // traps.</summary>
-    // <typeparam name='T'>Data type for a numeric value in a particular
-    // radix.</typeparam>
-  public class TrappableRadixMath<T> implements IRadixMath<T>
-  {
-private static void ThrowTrapException(
-int flag,
-EContext ctx,
-Object result) {
+  // <summary>Implements arithmetic methods that support
+  // traps.</summary>
+  // <typeparam name='T'>Data type for a numeric value in a particular
+  // radix.</typeparam>
+  public class TrappableRadixMath<T> implements IRadixMath<T> {
+    private static void ThrowTrapException(
+    int flag,
+    EContext ctx,
+    Object result) {
       throw new ETrapException(flag, ctx, result);
     }
 
@@ -372,11 +371,11 @@ EContext ctx) {
       return this.TriggerTraps(result, tctx, ctx);
     }
 
-public T AddEx(
-T thisValue,
-T other,
-EContext ctx,
-boolean roundToOperandPrecision) {
+    public T AddEx(
+    T thisValue,
+    T other,
+    EContext ctx,
+    boolean roundToOperandPrecision) {
       EContext tctx = GetTrappableContext(ctx);
       T result = this.math.AddEx(
 thisValue,

@@ -597,7 +597,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       if ((!this.negative) == (!bigintAugend.negative)) {
         // both nonnegative or both negative
-        if (bigintAugend.wordCount <= 2 && this.wordCount <= 2 &&
+        int addendCount = this.wordCount;
+        int augendCount = bigintAugend.wordCount;
+        if (augendCount <= 2 && addendCount <= 2 &&
            (this.wordCount < 2 || (this.words[1] >> 15) == 0) &&
            (bigintAugend.wordCount < 2 || (bigintAugend.words[1] >> 15) == 0)) {
           int a = ((int)this.words[0]) & 0xffff;
@@ -616,8 +618,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
                     this.words.length,
                     bigintAugend.words.length)];
         int carry;
-        int addendCount = this.wordCount;
-        int augendCount = bigintAugend.wordCount;
         int desiredLength = Math.max(addendCount, augendCount);
         if (addendCount == augendCount) {
           carry = AddOneByOne(
@@ -1605,7 +1605,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       int productwordCount;
       boolean needShorten = true;
       if (this.wordCount == 1) {
-        int wc = bigintMult.wordCount;
+        int wc;
+        if (bigintMult.wordCount == 1) {
+          // NOTE: Result can't be 0 here, since checks
+          // for 0 were already made earlier in this function
+          productreg = new short[2];
+          int ba=((int)this.words[0]) & 0xffff;
+          int bb=((int)bigintMult.words[0]) & 0xffff;
+          ba = (ba*bb);
+          productreg[0]=((short)(ba & 0xffff));
+          productreg[1]=((short)((ba >> 16) & 0xffff));
+          wc=(productreg[1]==0) ? 1 : 2;
+          return new EInteger(wc, productreg,
+            this.negative ^ bigintMult.negative);
+        }
+        wc = bigintMult.wordCount;
         int regLength = RoundupSize(wc + 1);
         productreg = new short[regLength];
         productreg[wc] = LinearMultiply(

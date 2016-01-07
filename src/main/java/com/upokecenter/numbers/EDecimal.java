@@ -14,77 +14,81 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * involving such real-world data as prices, tax rates, and
      * measurements. These calculations often involve multiplying or
      * dividing one decimal with another decimal, or performing other
-     * operations on decimal numbers. </p> <p>On the other hand, most
-     * implementations of <code>float</code> and <code>double</code>, including in C#
-     * and Java, store numbers in a binary (base-2) floating-point format
-     * and use binary floating-point arithmetic. Many decimal numbers can't
-     * be represented exactly in binary floating-point format (regardless of
-     * its length). Applying binary arithmetic to numbers intended to be
-     * decimals can sometimes lead to unintuitive results, as is shown in
-     * the description for the FromDouble() method of this class.</p>
-     * <p><b>About EDecimal instances</b></p> <p> Each instance of this
-     * class consists of an integer mantissa and an integer exponent, both
-     * arbitrary-precision. The value of the number equals mantissa *
-     * 10^exponent.</p> <p>The mantissa is the value of the digits that make
-     * up a number, ignoring the decimal point and exponent. For example, in
-     * the number 2356.78, the mantissa is 235678. The exponent is where the
-     * "floating" decimal point of the number is located. A positive
-     * exponent means "move it to the right", and a negative exponent means
-     * "move it to the left." In the example 2, 356.78, the exponent is -2,
-     * since it has 2 decimal places and the decimal point is "moved to the
-     * left by 2." Therefore, in the arbitrary-precision decimal
-     * representation, this number would be stored as 235678 * 10^-2.</p>
-     * <p>The mantissa and exponent format preserves trailing zeros in the
-     * number's value. This may give rise to multiple ways to store the same
-     * value. For example, 1.00 and 1 would be stored differently, even
-     * though they have the same value. In the first case, 100 * 10^-2 (100
-     * with decimal point moved left by 2), and in the second case, 1 * 10^0
-     * (1 with decimal point moved 0).</p> <p>This class also supports
-     * values for negative zero, not-a-number (NaN) values, and infinity.
-     * <b>Negative zero</b> is generally used when a negative number is
-     * rounded to 0; it has the same mathematical value as positive zero.
-     * <b>Infinity</b> is generally used when a non-zero number is divided
-     * by zero, or when a very high number can't be represented in a given
-     * exponent range. <b>Not-a-number</b> is generally used to signal
-     * errors.</p> <p>This class implements the General Decimal Arithmetic
-     * Specification version 1.70 (except part of chapter 6):
-     * <code>http://speleotrove.com/decimal/decarith.html</code></p> <p><b>Errors
-     * and Exceptions</b></p> <p>Passing a signaling NaN to any arithmetic
-     * operation shown here will signal the flag FlagInvalid and return a
-     * quiet NaN, even if another operand to that operation is a quiet NaN,
-     * unless noted otherwise.</p> <p>Passing a quiet NaN to any arithmetic
-     * operation shown here will return a quiet NaN, unless noted otherwise.
-     * Invalid operations will also return a quiet NaN, as stated in the
-     * individual methods.</p> <p>Unless noted otherwise, passing a null
-     * arbitrary-precision decimal argument to any method here will throw an
-     * exception.</p> <p>When an arithmetic operation signals the flag
-     * FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not throw an
-     * exception too, unless the flag's trap is enabled in the precision
-     * context (see EContext's Traps property).</p> <p>If an operation
-     * requires creating an intermediate value that might be too big to fit
-     * in memory (or might require more than 2 gigabytes of memory to store
-     * -- due to the current use of a 32-bit integer internally as a
-     * length), the operation may signal an invalid-operation flag and
-     * return not-a-number (NaN). In certain rare cases, the compareTo
-     * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Serialization</b></p>
-     * <p>An arbitrary-precision decimal value can be serialized (converted
-     * to a stable format) in one of the following ways:</p> <ul> <li>By
-     * calling the toString() method, which will always return distinct
-     * strings for distinct arbitrary-precision decimal values.</li> <li>By
-     * calling the UnsignedMantissa, Exponent, and IsNegative properties,
-     * and calling the IsInfinity, IsQuietNaN, and IsSignalingNaN methods.
-     * The return values combined will uniquely identify a particular
-     * arbitrary-precision decimal value.</li></ul> <p><b>Thread
-     * safety</b></p> <p>Instances of this class are immutable, so they are
-     * inherently safe for use by multiple threads. Multiple instances of
-     * this object with the same properties are interchangeable, so they
-     * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p> <p><b>Comparison
-     * considerations</b></p> <p>This class's natural ordering (under the
-     * compareTo method) is not consistent with the Equals method. This
-     * means that two values that compare as equal under the compareTo
-     * method might not be equal under the Equals method.</p>
+     * operations on decimal numbers. Many of these calculations also rely
+     * on rounding behavior in which the result after rounding is a decimal
+     * number (for example, multiplying a price by a premium rate, then
+     * rounding, should result in a decimal amount of money). </p> <p>On the
+     * other hand, most implementations of <code>float</code> and <code>double</code>,
+     * including in C# and Java, store numbers in a binary (base-2)
+     * floating-point format and use binary floating-point arithmetic. Many
+     * decimal numbers can't be represented exactly in binary floating-point
+     * format (regardless of its length). Applying binary arithmetic to
+     * numbers intended to be decimals can sometimes lead to unintuitive
+     * results, as is shown in the description for the FromDouble() method
+     * of this class.</p> <p><b>About EDecimal instances</b></p> <p> Each
+     * instance of this class consists of an integer mantissa and an integer
+     * exponent, both arbitrary-precision. The value of the number equals
+     * mantissa * 10^exponent.</p> <p>The mantissa is the value of the
+     * digits that make up a number, ignoring the decimal point and
+     * exponent. For example, in the number 2356.78, the mantissa is 235678.
+     * The exponent is where the "floating" decimal point of the number is
+     * located. A positive exponent means "move it to the right", and a
+     * negative exponent means "move it to the left." In the example 2,
+     * 356.78, the exponent is -2, since it has 2 decimal places and the
+     * decimal point is "moved to the left by 2." Therefore, in the
+     * arbitrary-precision decimal representation, this number would be
+     * stored as 235678 * 10^-2.</p> <p>The mantissa and exponent format
+     * preserves trailing zeros in the number's value. This may give rise to
+     * multiple ways to store the same value. For example, 1.00 and 1 would
+     * be stored differently, even though they have the same value. In the
+     * first case, 100 * 10^-2 (100 with decimal point moved left by 2), and
+     * in the second case, 1 * 10^0 (1 with decimal point moved 0).</p>
+     * <p>This class also supports values for negative zero, not-a-number
+     * (NaN) values, and infinity. <b>Negative zero</b> is generally used
+     * when a negative number is rounded to 0; it has the same mathematical
+     * value as positive zero. <b>Infinity</b> is generally used when a
+     * non-zero number is divided by zero, or when a very high number can't
+     * be represented in a given exponent range. <b>Not-a-number</b> is
+     * generally used to signal errors.</p> <p>This class implements the
+     * General Decimal Arithmetic Specification version 1.70 (except part of
+     * chapter 6): <code>http://speleotrove.com/decimal/decarith.html</code></p>
+     * <p><b>Errors and Exceptions</b></p> <p>Passing a signaling NaN to any
+     * arithmetic operation shown here will signal the flag FlagInvalid and
+     * return a quiet NaN, even if another operand to that operation is a
+     * quiet NaN, unless noted otherwise.</p> <p>Passing a quiet NaN to any
+     * arithmetic operation shown here will return a quiet NaN, unless noted
+     * otherwise. Invalid operations will also return a quiet NaN, as stated
+     * in the individual methods.</p> <p>Unless noted otherwise, passing a
+     * null arbitrary-precision decimal argument to any method here will
+     * throw an exception.</p> <p>When an arithmetic operation signals the
+     * flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
+     * throw an exception too, unless the flag's trap is enabled in the
+     * precision context (see EContext's Traps property).</p> <p>If an
+     * operation requires creating an intermediate value that might be too
+     * big to fit in memory (or might require more than 2 gigabytes of
+     * memory to store -- due to the current use of a 32-bit integer
+     * internally as a length), the operation may signal an
+     * invalid-operation flag and return not-a-number (NaN). In certain rare
+     * cases, the compareTo method may throw OutOfMemoryError (called
+     * OutOfMemoryError in Java) in the same circumstances.</p>
+     * <p><b>Serialization</b></p> <p>An arbitrary-precision decimal value
+     * can be serialized (converted to a stable format) in one of the
+     * following ways:</p> <ul> <li>By calling the toString() method, which
+     * will always return distinct strings for distinct arbitrary-precision
+     * decimal values.</li> <li>By calling the UnsignedMantissa, Exponent,
+     * and IsNegative properties, and calling the IsInfinity, IsQuietNaN,
+     * and IsSignalingNaN methods. The return values combined will uniquely
+     * identify a particular arbitrary-precision decimal value.</li></ul>
+     * <p><b>Thread safety</b></p> <p>Instances of this class are immutable,
+     * so they are inherently safe for use by multiple threads. Multiple
+     * instances of this object with the same properties are
+     * interchangeable, so they should not be compared using the "=="
+     * operator (which only checks if each side of the operator is the same
+     * instance).</p> <p><b>Comparison considerations</b></p> <p>This
+     * class's natural ordering (under the compareTo method) is not
+     * consistent with the Equals method. This means that two values that
+     * compare as equal under the compareTo method might not be equal under
+     * the Equals method.</p>
      */
   public final class EDecimal implements Comparable<EDecimal> {
     private static final int MaxSafeInt = 214748363;
@@ -830,16 +834,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
         EInteger bigint,
         FastInteger power) {
         EInteger tmpbigint = bigint;
-        if (power.signum() <= 0) {
+        if (tmpbigint.isZero()) {
           return tmpbigint;
         }
-        if (tmpbigint.isZero()) {
+        boolean fitsInInt32 = power.CanFitInInt32();
+        int powerInt=(fitsInInt32) ? power.AsInt32() : 0;
+        if (fitsInInt32 && powerInt == 0) {
           return tmpbigint;
         }
         EInteger bigtmp = null;
         if (tmpbigint.compareTo(EInteger.FromInt64(1)) != 0) {
-          if (power.CanFitInInt32()) {
-            bigtmp = DecimalUtility.FindPowerOfTen(power.AsInt32());
+          if (fitsInInt32) {
+            bigtmp = DecimalUtility.FindPowerOfTen(powerInt);
             tmpbigint = tmpbigint.Multiply(bigtmp);
           } else {
             bigtmp = DecimalUtility.FindPowerOfTenFromBig(power.AsBigInteger());
@@ -847,8 +853,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           }
           return tmpbigint;
         }
-        return power.CanFitInInt32() ?
-          DecimalUtility.FindPowerOfTen(power.AsInt32()) :
+        return fitsInInt32 ? DecimalUtility.FindPowerOfTen(powerInt) :
           DecimalUtility.FindPowerOfTenFromBig(power.AsBigInteger());
       }
 
@@ -2957,7 +2962,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     private static final int[] ValueTenPowers = {
       1, 10, 100, 1000, 10000, 100000,
-      1000000, 10000000, 100000000
+      1000000, 10000000, 100000000,
+      1000000000
     };
 
     /**
@@ -2999,7 +3005,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             exponentSmall >= -100 && exponentSmall <= 100) {
             if (rounding == ERounding.Down) {
               int diff = exponentSmall - thisExponentSmall;
-              if (diff >= 1 && diff <= 8) {
+              if (diff >= 1 && diff <= 9) {
                 thisMantissaSmall /= ValueTenPowers[diff];
                 return CreateWithFlags(
                   EInteger.FromInt32(thisMantissaSmall),
@@ -3009,7 +3015,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
             } else if (rounding == ERounding.HalfEven &&
                 thisMantissaSmall != Integer.MAX_VALUE) {
               int diff = exponentSmall - thisExponentSmall;
-              if (diff >= 1 && diff <= 8) {
+              if (diff >= 1 && diff <= 9) {
                 int pwr = ValueTenPowers[diff - 1];
                 int div = thisMantissaSmall / pwr;
                 int div2 = div / 10;

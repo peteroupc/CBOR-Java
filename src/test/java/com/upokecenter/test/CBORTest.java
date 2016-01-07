@@ -145,20 +145,18 @@ import com.upokecenter.cbor.*;
     }
 
     @Test
-    public void TestBoolean() {
-      TestCommon.AssertSer(CBORObject.True, "true");
-      TestCommon.AssertSer(CBORObject.False, "false");
-      Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
-      Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
-    }
-
-    @Test
     public void TestByte() {
       for (int i = 0; i <= 255; ++i) {
         TestCommon.AssertSer(
           CBORObject.FromObject((byte)i),
-          "" + i);
+          TestCommon.IntToString(i));
       }
+    }
+
+    @Test
+    public void TestFalse() {
+      TestCommon.AssertSer(CBORObject.False, "false");
+      Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
     }
 
     @Test

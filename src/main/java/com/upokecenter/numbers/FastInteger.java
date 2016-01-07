@@ -474,7 +474,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     FastInteger Abs() {
-      return (this.signum() < 0) ? this.Negate() : this;
+      switch (this.integerMode) {
+        case 0:
+          if (this.smallValue == Integer.MIN_VALUE) {
+            return this.Negate();
+          }
+          this.smallValue = Math.abs(this.smallValue);
+          return this;
+        default:
+          return (this.signum() < 0) ? this.Negate() : this;
+      }
     }
 
     public static EInteger WordsToBigInteger(int[] words) {

@@ -859,8 +859,7 @@ nextchar);
           CBORObjectTypeExtendedRational,
           bigValue);
       }
-   return ((bigValue.isFinite() &&
-        bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
+   return ((bigValue.isFinite() && bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
          FromObject(bigValue.getNumerator()) : (new CBORObject(
            CBORObjectTypeExtendedRational,
            bigValue)));
@@ -4074,12 +4073,10 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       if (listBCount == 0) {
         return 1;
       }
-      Map<CBORObject, CBORObject> sortedA =
-        new TreeMap<CBORObject, CBORObject>(mapA);
-      Map<CBORObject, CBORObject> sortedB =
-        new TreeMap<CBORObject, CBORObject>(mapB);
-      List<CBORObject> sortedASet = new ArrayList<CBORObject>(sortedA.keySet());
-      List<CBORObject> sortedBSet = new ArrayList<CBORObject>(sortedB.keySet());
+      ArrayList<CBORObject> sortedASet = new ArrayList<CBORObject>(mapA.keySet());
+      ArrayList<CBORObject> sortedBSet = new ArrayList<CBORObject>(mapB.keySet());
+      java.util.Collections.sort(sortedASet);
+      java.util.Collections.sort(sortedBSet);
       listACount = sortedASet.size();
       listBCount = sortedBSet.size();
       int minCount = Math.min(listACount, listBCount);
