@@ -1906,6 +1906,12 @@ CBORObject.FromObject(0.1f));
     }
 
     @Test
+    public void TestFalse() {
+      TestCommon.AssertSer(CBORObject.False, "false");
+      Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
+    }
+
+    @Test
     public void TestFromJSONString() {
       char[] charbuf = new char[4];
       CBORObject cbor;

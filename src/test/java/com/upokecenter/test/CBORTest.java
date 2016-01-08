@@ -154,12 +154,6 @@ import com.upokecenter.cbor.*;
     }
 
     @Test
-    public void TestFalse() {
-      TestCommon.AssertSer(CBORObject.False, "false");
-      Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
-    }
-
-    @Test
     public void TestByteArray() {
       TestCommon.AssertSer(
         CBORObject.FromObject(new byte[] { 0x20, 0x78  }),
@@ -920,7 +914,6 @@ AddSubCompare(objectTemp, objectTemp2);
 
     @Test
     public void TestExtendedMiscellaneous() {
-      Assert.assertEquals(ExtendedDecimal.Zero, ExtendedDecimal.FromInt32(0));
       Assert.assertEquals(ExtendedDecimal.One, ExtendedDecimal.FromInt32(1));
 
       Assert.assertEquals(
@@ -929,12 +922,6 @@ AddSubCompare(objectTemp, objectTemp2);
       Assert.assertEquals(
         ExtendedFloat.NegativeZero,
         ExtendedDecimal.NegativeZero.ToExtendedFloat());
-      if (0.0 != ExtendedDecimal.Zero.ToSingle()) {
-        Assert.fail("Failed " + ExtendedDecimal.Zero.ToSingle());
-      }
-      if (0.0 != ExtendedDecimal.Zero.ToDouble()) {
-        Assert.fail("Failed " + ExtendedDecimal.Zero.ToDouble());
-      }
       if (0.0f != ExtendedFloat.Zero.ToSingle()) {
         Assert.fail("Failed " + ExtendedFloat.Zero.ToDouble());
       }

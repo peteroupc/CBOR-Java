@@ -38,12 +38,20 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * length), the operation may signal an invalid-operation flag and
      * return not-a-number (NaN). In certain rare cases, the compareTo
      * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Thread
-     * safety:</b>Instances of this class are immutable, so they are
-     * inherently safe for use by multiple threads. Multiple instances of
-     * this object with the same properties are interchangeable, so they
-     * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p>
+     * Java) in the same circumstances.</p> <p><b>Thread safety</b></p>
+     * <p>Instances of this class are immutable, so they are inherently safe
+     * for use by multiple threads. Multiple instances of this object with
+     * the same properties are interchangeable, so they should not be
+     * compared using the "==" operator (which only checks if each side of
+     * the operator is the same instance).</p> <p><b>Comparison
+     * considerations</b></p> <p>This class's natural ordering (under the
+     * compareTo method) is not consistent with the Equals method. This
+     * means that two values that compare as equal under the compareTo
+     * method might not be equal under the Equals method. The compareTo
+     * method compares the mathematical values of the two instances passed
+     * to it (and considers two different NaN values as equal), while two
+     * instances with the same mathematical value, but different exponents,
+     * will be considered unequal under the Equals method.</p>
      */
   public final class EFloat implements Comparable<EFloat> {
     private final EInteger exponent;
@@ -879,7 +887,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Converts a 64-bit integer to the same value as a binary float.
      * @param valueSmall A 64-bit signed integer.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float with the exponent set to 0.
      */
     public static EFloat FromInt64(long valueSmall) {
       EInteger bigint = EInteger.FromInt64(valueSmall);
@@ -889,7 +897,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * Creates a binary float from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float with the exponent set to 0.
      */
     public static EFloat FromInt32(int valueSmaller) {
       EInteger bigint = EInteger.FromInt64(valueSmaller);
@@ -1208,7 +1216,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.000
+     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.00
      * becomes 1. <p>If this object's value is 0, changes the exponent to
      * 0.</p>
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -2151,39 +2159,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Rounds this object&#x27;s value to a given maximum bit length, using the
-     * given rounding mode and range of exponent.
-     * @param ctx A context for controlling the precision, rounding mode, and
-     * exponent range. The precision is interpreted as the maximum bit
-     * length of the mantissa. Can be null.
-     * @return The closest value to this object's value, rounded to the specified
-     * precision. Returns the same value as this object if {@code ctx} is
-     * null or the precision and exponent range are unlimited.
-     * @deprecated Instead of this method use RoundToPrecision and pass a precision context
-* with the IsPrecisionInBits property set.
- */
-@Deprecated
-    public EFloat RoundToBinaryPrecision(
-      EContext ctx) {
-      if (ctx == null) {
-        return this;
-      }
-      EContext ctx2 = ctx.Copy().WithPrecisionInBits(true);
-      EFloat ret = MathValue.RoundToPrecision(this, ctx2);
-      if (ctx2.getHasFlags()) {
-        ctx.setFlags(ctx2.getFlags());
-      }
-      return ret;
-    }
-
-    /**
      * Finds the square root of this object's value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the square root function's results are generally not exact for
-     * many inputs.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the square root function's results are generally not exact
+     * for many inputs.</i>
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN).
@@ -2200,8 +2182,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the exponential function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the exponential function's results are generally not
+     * exact.</i>
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
@@ -2218,8 +2201,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2238,8 +2221,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2290,13 +2273,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the constant pi.
+     * Finds the constant &#x3c0;.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as pi can never be represented exactly.--.
-     * @return Pi rounded to the given precision.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as &#x3c0; can never be represented exactly.</i>
+     * @return π rounded to the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */

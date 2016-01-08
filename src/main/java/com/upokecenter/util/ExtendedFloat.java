@@ -33,7 +33,19 @@ import com.upokecenter.numbers.*;
      * UnsignedMantissa, Exponent, and IsNegative properties, and calling
      * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
      * values combined will uniquely identify a particular
-     * arbitrary-precision binary float value.</li></ul>
+     * arbitrary-precision binary float value.</li></ul> <p>If an operation
+     * requires creating an intermediate value that might be too big to fit
+     * in memory (or might require more than 2 gigabytes of memory to store
+     * -- due to the current use of a 32-bit integer internally as a
+     * length), the operation may signal an invalid-operation flag and
+     * return not-a-number (NaN). In certain rare cases, the compareTo
+     * method may throw OutOfMemoryError (called OutOfMemoryError in
+     * Java) in the same circumstances.</p> <p><b>Thread
+     * safety:</b>Instances of this class are immutable, so they are
+     * inherently safe for use by multiple threads. Multiple instances of
+     * this object with the same properties are interchangeable, so they
+     * should not be compared using the "==" operator (which only checks if
+     * each side of the operator is the same instance).</p>
      */
   public final class ExtendedFloat implements Comparable<ExtendedFloat> {
     private final EFloat ef;
@@ -102,7 +114,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object and that other object is a decimal fraction.
+     * those of another object and that other object is an
+     * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
      * @return True if the objects are equal; otherwise, false.
      */
@@ -369,7 +382,7 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Converts a 64-bit integer to the same value as a binary float.
      * @param valueSmall A 64-bit signed integer.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float with the exponent set to 0.
      */
     public static ExtendedFloat FromInt64(long valueSmall) {
       return new ExtendedFloat(EFloat.FromInt64(valueSmall));
@@ -378,7 +391,7 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Creates a binary float from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
-     * @return An arbitrary-precision binary float.
+     * @return An arbitrary-precision binary float with the exponent set to 0.
      */
     public static ExtendedFloat FromInt32(int valueSmaller) {
       return new ExtendedFloat(EFloat.FromInt32(valueSmaller));
@@ -570,7 +583,7 @@ ctx == null ? null : ctx.getEc()));
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-        return this.getEf().signum() == 0;
+        return this.getEf().isZero();
       }
 
     final EFloat getEf() {
@@ -658,7 +671,7 @@ ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
-     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.000
+     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.00
      * becomes 1. <p>If this object's value is 0, changes the exponent to
      * 0.</p>
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -1738,9 +1751,9 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Returns a binary number with the same value as this object but rounded to an
-     * integer, and signals an invalid operation if the result would be
-     * inexact.
+     * Returns a binary number with the same value as this object but rounded to
+     * the given exponent, and signals an invalid operation if the result
+     * would be inexact.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -1775,8 +1788,8 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Returns a binary number with the same value as this object, and rounds it to
-     * a new exponent if necessary.
+     * Returns a binary number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -1815,9 +1828,9 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Returns a binary number with the same value as this object but rounded to an
-     * integer, and signals an invalid operation if the result would be
-     * inexact.
+     * Returns a binary number with the same value as this object but rounded to
+     * the given exponent, and signals an invalid operation if the result
+     * would be inexact.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -1847,8 +1860,8 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Returns a binary number with the same value as this object, and rounds it to
-     * a new exponent if necessary.
+     * Returns a binary number with the same value as this object but rounded to a
+     * new exponent if necessary.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -2029,12 +2042,15 @@ ctx == null ? null : ctx.getEc()));
  */
 @Deprecated
     public ExtendedFloat RoundToBinaryPrecision(PrecisionContext ctx) {
-      try {
-        return new ExtendedFloat(this.getEf().RoundToBinaryPrecision(ctx == null ?
-          null : ctx.getEc()));
-      } catch (ETrapException ex) {
-        throw TrapException.Create(ex);
+      if (ctx == null) {
+        return this;
       }
+      PrecisionContext ctx2 = ctx.Copy().WithPrecisionInBits(true);
+      ExtendedFloat ret = this.RoundToPrecision(ctx2);
+      if (ctx2.getHasFlags()) {
+        ctx.setFlags(ctx2.getFlags());
+      }
+      return ret;
     }
 
     /**
@@ -2042,9 +2058,9 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the square root function's results are generally not exact for
-     * many inputs.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the square root function's results are generally not exact
+     * for many inputs.</i>
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN).
@@ -2066,8 +2082,9 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the exponential function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the exponential function's results are generally not
+     * exact.</i>
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
@@ -2088,8 +2105,8 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2112,8 +2129,8 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2186,13 +2203,13 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Finds the constant pi.
+     * Finds the constant &#x3c0;.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as pi can never be represented exactly.--.
-     * @return Pi rounded to the given precision.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as &#x3c0; can never be represented exactly.</i>
+     * @return π rounded to the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */
@@ -2443,8 +2460,7 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
-     * and the formula in RemainderNaturalScale. This is meant to be similar
-     * to the divideAndRemainder method in Java's BigDecimal.
+     * and the formula in RemainderNaturalScale.
      * @param divisor The number to divide by.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
@@ -2460,8 +2476,7 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * Calculates the quotient and remainder using the DivideToIntegerNaturalScale
-     * and the formula in RemainderNaturalScale. This is meant to be similar
-     * to the divideAndRemainder method in Java's BigDecimal.
+     * and the formula in RemainderNaturalScale.
      * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the result. This context will be used only in

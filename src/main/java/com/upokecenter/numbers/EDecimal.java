@@ -11,9 +11,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * Represents an arbitrary-precision decimal floating-point number. <p><b>About
      * decimal arithmetic</b></p> <p> Decimal (base-10) arithmetic, such as
      * that provided by this class, is appropriate for calculations
-     * involving such real-world data as prices, tax rates, and
-     * measurements. These calculations often involve multiplying or
-     * dividing one decimal with another decimal, or performing other
+     * involving such real-world data as prices and other sums of money, tax
+     * rates, and measurements. These calculations often involve multiplying
+     * or dividing one decimal with another decimal, or performing other
      * operations on decimal numbers. Many of these calculations also rely
      * on rounding behavior in which the result after rounding is a decimal
      * number (for example, multiplying a price by a premium rate, then
@@ -88,7 +88,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * class's natural ordering (under the compareTo method) is not
      * consistent with the Equals method. This means that two values that
      * compare as equal under the compareTo method might not be equal under
-     * the Equals method.</p>
+     * the Equals method. The compareTo method compares the mathematical
+     * values of the two instances passed to it (and considers two different
+     * NaN values as equal), while two instances with the same mathematical
+     * value, but different exponents, will be considered unequal under the
+     * Equals method.</p>
      */
   public final class EDecimal implements Comparable<EDecimal> {
     private static final int MaxSafeInt = 214748363;
@@ -2075,7 +2079,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.000
+     * Removes trailing zeros from this object&#x27;s mantissa. For example, 1.00
      * becomes 1. <p>If this object's value is 0, changes the exponent to
      * 0.</p>
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -2735,8 +2739,24 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value's exponent and the desired exponent is too big, depending on
      * the maximum precision. If rounding to a number of decimal places is
      * desired, it's better to use the RoundToExponent and RoundToIntegral
-     * methods instead.</p>
-     * @param desiredExponent An arbitrary-precision integer.
+     * methods instead.</p> <p><b>Remark:</b> This method can be used to
+     * implement fixed-point decimal arithmetic, in which each decimal
+     * number has a fixed number of digits after the decimal point. The
+     * following code example returns a fixed-point number with up to 20
+     * digits before and exactly 5 digits after the decimal point:</p>
+     * <code>  // After performing arithmetic operations, adjust  // the
+     * number to 5 digits after the decimal point number = number.Quantize(
+     * EInteger.FromInt32(-5),  // five digits after the decimal point
+     * PrecisionContext.ForPrecision(25)  // 25-digit precision); </code><p>
+     * A fixed-point decimal arithmetic in which no digits come after the
+     * decimal point (a desired exponent of 0) is considered an "integer
+     * arithmetic". </p>
+     * @param desiredExponent The desired exponent for the result. The exponent is
+     * the number of fractional digits in the result, expressed as a
+     * negative number. Can also be positive, which eliminates lower-order
+     * places from the number. For example, -3 means round to the thousandth
+     * (10^-3, 0.0001), and 3 means round to the thousand (10^3, 1000). A
+     * value of 0 rounds the number to an integer.
      * @param ctx A precision context to control precision and rounding of the
      * result. If HasFlags of the context is true, will also store the flags
      * resulting from the operation (the flags are in addition to the
@@ -2744,9 +2764,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * mode is HalfEven.
      * @return A decimal number with the same value as this object but with the
      * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
-     * if the rounded result can't fit the given precision, or if the
-     * context defines an exponent range and the given exponent is outside
-     * that range.
+     * if this object is infinity, if the rounded result can't fit the given
+     * precision, or if the context defines an exponent range and the given
+     * exponent is outside that range.
      */
     public EDecimal Quantize(
       EInteger desiredExponent,
@@ -2757,12 +2777,24 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Returns a decimal number with the same value as this one but a new exponent.
-     * @param desiredExponentSmall A 32-bit signed integer.
-     * @param rounding The parameter {@code rounding} is not documented yet.
+     * Returns a decimal number with the same value as this one but a new
+     * exponent.<p><b>Remark:</b> This method can be used to implement
+     * fixed-point decimal arithmetic, in which a fixed number of digits
+     * come after the decimal point. A fixed-point decimal arithmetic in
+     * which no digits come after the decimal point (a desired exponent of
+     * 0) is considered an "integer arithmetic".</p>
+     * @param desiredExponentSmall The desired exponent for the result. The
+     * exponent is the number of fractional digits in the result, expressed
+     * as a negative number. Can also be positive, which eliminates
+     * lower-order places from the number. For example, -3 means round to
+     * the thousandth (10^-3, 0.0001), and 3 means round to the thousand
+     * (10^3, 1000). A value of 0 rounds the number to an integer.
+     * @param rounding A rounding mode to use in case the result needs to be
+     * rounded to fit the given exponent.
      * @return A decimal number with the same value as this object but with the
-     * exponent changed. Returns not-a-number (NaN) if the rounding mode is
-     * Rounding.Unnecessary and the result is not exact.
+     * exponent changed. Returns not-a-number (NaN) if this object is
+     * infinity, or if the rounding mode is ERounding.None and the result is
+     * not exact.
      */
     public EDecimal Quantize(
       int desiredExponentSmall,
@@ -2779,7 +2811,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * value's exponent and the desired exponent is too big, depending on
      * the maximum precision. If rounding to a number of decimal places is
      * desired, it's better to use the RoundToExponent and RoundToIntegral
-     * methods instead.</p>
+     * methods instead.</p> <p><b>Remark:</b> This method can be used to
+     * implement fixed-point decimal arithmetic, in which each decimal
+     * number has a fixed number of digits after the decimal point. The
+     * following code example returns a fixed-point number with up to 20
+     * digits before and exactly 5 digits after the decimal point:</p>
+     * <code>  // After performing arithmetic operations, adjust  // the
+     * number to 5 digits after the decimal point number = number.Quantize(
+     * -5,  // five digits after the decimal point
+     * PrecisionContext.ForPrecision(25)  // 25-digit precision); </code><p>
+     * A fixed-point decimal arithmetic in which no digits come after the
+     * decimal point (a desired exponent of 0) is considered an "integer
+     * arithmetic". </p>
      * @param desiredExponentSmall The desired exponent for the result. The
      * exponent is the number of fractional digits in the result, expressed
      * as a negative number. Can also be positive, which eliminates
@@ -2793,9 +2836,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * mode is HalfEven.
      * @return A decimal number with the same value as this object but with the
      * exponent changed. Signals FlagInvalid and returns not-a-number (NaN)
-     * if the rounded result can't fit the given precision, or if the
-     * context defines an exponent range and the given exponent is outside
-     * that range.
+     * if this object is infinity, if the rounded result can't fit the given
+     * precision, or if the context defines an exponent range and the given
+     * exponent is outside that range.
      */
     public EDecimal Quantize(
       int desiredExponentSmall,
@@ -2813,6 +2856,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * the desired exponent is too big, depending on the maximum precision.
      * If rounding to a number of decimal places is desired, it's better to
      * use the RoundToExponent and RoundToIntegral methods instead.</p>
+     * <p><b>Remark:</b> This method can be used to implement fixed-point
+     * decimal arithmetic, in which a fixed number of digits come after the
+     * decimal point. A fixed-point decimal arithmetic in which no digits
+     * come after the decimal point (a desired exponent of 0) is considered
+     * an "integer arithmetic".</p>
      * @param otherValue A decimal number containing the desired exponent of the
      * result. The mantissa is ignored. The exponent is the number of
      * fractional digits in the result, expressed as a negative number. Can
@@ -3148,38 +3196,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Rounds this object&#x27;s value to a given maximum bit length, using the
-     * given rounding mode and range of exponent.
-     * @param ctx A context for controlling the precision, rounding mode, and
-     * exponent range. The precision is interpreted as the maximum bit
-     * length of the mantissa. Can be null.
-     * @return The closest value to this object's value, rounded to the specified
-     * precision. Returns the same value as this object if {@code ctx} is
-     * null or the precision and exponent range are unlimited.
-     * @deprecated Instead of this method use RoundToPrecision and pass a precision context
-* with the IsPrecisionInBits property set.
- */
-@Deprecated
-    public EDecimal RoundToBinaryPrecision(EContext ctx) {
-      if (ctx == null) {
-        return this;
-      }
-      EContext ctx2 = ctx.Copy().WithPrecisionInBits(true);
-      EDecimal ret = GetMathValue(ctx).RoundToPrecision(this, ctx2);
-      if (ctx2.getHasFlags()) {
-        ctx.setFlags(ctx2.getFlags());
-      }
-      return ret;
-    }
-
-    /**
      * Finds the square root of this object&#x27;s value.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the square root function's results are generally not exact for
-     * many inputs.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the square root function's results are generally not exact
+     * for many inputs.</i>
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN). Signals FlagInvalid and
@@ -3196,8 +3219,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the exponential function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the exponential function's results are generally not
+     * exact.</i>
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -3215,8 +3239,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -3237,8 +3261,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as the ln function's results are generally not exact.--.
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as the ln function's results are generally not exact.</i>
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -3292,13 +3316,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Finds the constant pi.
+     * Finds the constant &#x3c0;.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). --This parameter cannot be null,
-     * as pi can never be represented exactly.--.
-     * @return Pi rounded to the given precision. Signals FlagInvalid and returns
+     * addition to the pre-existing flags). <i>This parameter cannot be
+     * null, as &#x3c0; can never be represented exactly.</i>
+     * @return π rounded to the given precision. Signals FlagInvalid and returns
      * not-a-number (NaN) if the parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      */

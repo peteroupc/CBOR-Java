@@ -522,7 +522,8 @@ boolean roundToOperandPrecision) {
         int e1int = 0;
         int e2int = 0;
         int result = 0;
-        //DebugUtility.Log("e1=" + op1Exponent + "," + op2Exponent + ",cmp=" + (expcmp));
+        //DebugUtility.Log("e1=" + op1Exponent + "," + op2Exponent + ",cmp="
+        // + expcmp);
         if (expcmp != 0) {
           e1int = op1Exponent.AsInt32Unchecked();
           e2int = op2Exponent.AsInt32Unchecked();
@@ -2489,7 +2490,7 @@ null) : this.ValueOf(-1, null));
       return null;
     }
 
-    private int CompareToHandleSpecialReturnInt(T thisValue, T other) {
+    private int CompareToHandleSpecial(T thisValue, T other) {
       int thisFlags = this.helper.GetFlags(thisValue);
       int otherFlags = this.helper.GetFlags(other);
       if (((thisFlags | otherFlags) & BigNumberFlags.FlagSpecial) != 0) {
@@ -2604,7 +2605,7 @@ null) : this.ValueOf(-1, null));
       if (otherValue == null) {
         return 1;
       }
-      int signA = this.CompareToHandleSpecialReturnInt(thisValue, otherValue);
+      int signA = this.CompareToHandleSpecial(thisValue, otherValue);
       if (signA <= 1) {
         return signA;
       }
