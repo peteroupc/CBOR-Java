@@ -308,7 +308,7 @@ ctx == null ? null : ctx.getEc()));
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-      return new BigInteger(this.getEf().ToBigInteger());
+      return new BigInteger(this.getEf().ToEInteger());
     }
 
     /**
@@ -319,7 +319,7 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-      return new BigInteger(this.getEf().ToBigIntegerExact());
+      return new BigInteger(this.getEf().ToEIntegerExact());
     }
 
     /**
@@ -376,7 +376,7 @@ ctx == null ? null : ctx.getEc()));
       if (bigint == null) {
         throw new NullPointerException("bigint");
       }
-      return new ExtendedFloat(EFloat.FromBigInteger(bigint.getEi()));
+      return new ExtendedFloat(EFloat.FromEInteger(bigint.getEi()));
     }
 
     /**

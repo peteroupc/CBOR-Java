@@ -363,7 +363,7 @@ ctx == null ? null : ctx.getEc()));
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-      return new BigInteger(this.getEd().ToBigInteger());
+      return new BigInteger(this.getEd().ToEInteger());
     }
 
     static ERounding ToERounding(Rounding r) {
@@ -432,7 +432,7 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-      return new BigInteger(this.getEd().ToBigIntegerExact());
+      return new BigInteger(this.getEd().ToEIntegerExact());
     }
 
     private static final BigInteger ValueOneShift62 = BigInteger.valueOf(1).shiftLeft(62);
@@ -513,7 +513,7 @@ ctx == null ? null : ctx.getEc()));
       if (bigint == null) {
         throw new NullPointerException("bigint");
       }
-      return new ExtendedDecimal(EDecimal.FromBigInteger(bigint.getEi()));
+      return new ExtendedDecimal(EDecimal.FromEInteger(bigint.getEi()));
     }
 
     /**

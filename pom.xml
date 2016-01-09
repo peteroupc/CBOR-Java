@@ -118,5 +118,10 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+    <dependency>
+	    <groupId>com.github.peteroupc</groupId>
+	    <artifactId>numbers</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

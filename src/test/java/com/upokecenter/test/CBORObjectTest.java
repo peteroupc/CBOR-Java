@@ -125,7 +125,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
           TestCommon.CompareTestEqualAndConsistent(
             obj,
             CBORObject.FromJSONString(str));
-          TestCommon.AssertRoundTrip(obj);
+          CBORTestCommon.AssertRoundTrip(obj);
           return obj;
 }
 finally {
@@ -200,8 +200,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public void TestAddition() {
       FastRandom r = new FastRandom();
       for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
         ExtendedDecimal cmpDecFrac =
           o1.AsExtendedDecimal().Add(o2.AsExtendedDecimal());
         ExtendedDecimal cmpCobj = CBORObject.Addition(
@@ -211,8 +211,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 cmpDecFrac,
 cmpCobj,
 TestCommon.ObjectMessages(o1, o2, ""));
-        TestCommon.AssertRoundTrip(o1);
-        TestCommon.AssertRoundTrip(o2);
+        CBORTestCommon.AssertRoundTrip(o1);
+        CBORTestCommon.AssertRoundTrip(o2);
       }
       try {
         CBORObject.Addition(null, CBORObject.FromObject(2));
@@ -586,6 +586,29 @@ TestCommon.ObjectMessages(o1, o2, ""));
             Assert.fail(ex.toString() + cbornumber);
             throw new IllegalStateException("", ex);
           }
+        }
+      }
+      for (int i = 0; i < 255; ++i) {
+        Assert.assertEquals((byte)i, CBORObject.FromObject(i).AsByte());
+      }
+      for (int i = -200; i < 0; ++i) {
+        try {
+          CBORObject.FromObject(i).AsByte();
+        } catch (ArithmeticException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString()); throw new
+            IllegalStateException("", ex);
+        }
+      }
+      for (int i = 256; i < 512; ++i) {
+        try {
+          CBORObject.FromObject(i).AsByte();
+        } catch (ArithmeticException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString()); throw new
+            IllegalStateException("", ex);
         }
       }
     }
@@ -1247,6 +1270,16 @@ cbornumber.AsSingle());
           if (cbornumber.CanFitInDouble())Assert.fail();
         }
       }
+      FastRandom rand = new FastRandom();
+      for (int i = 0; i < 2047; ++i) {
+        // Try a random double with a given
+        // exponent
+        if (!(
+CBORObject.FromObject(
+RandomObjects.RandomDouble(
+rand,
+i)).CanFitInDouble()))Assert.fail();
+      }
     }
     @Test
     public void TestCanFitInInt32() {
@@ -1321,6 +1354,17 @@ cbornumber.AsSingle());
         } else {
           if (cbornumber.CanFitInSingle())Assert.fail();
         }
+      }
+
+      FastRandom rand = new FastRandom();
+      for (int i = 0; i < 255; ++i) {
+        // Try a random float with a given
+        // exponent
+        if (!(
+CBORObject.FromObject(
+RandomObjects.RandomSingle(
+rand,
+i)).CanFitInSingle()))Assert.fail();
       }
     }
     @Test
@@ -1454,14 +1498,14 @@ cbornumber.AsSingle());
       FastRandom r = new FastRandom();
       int CompareCount = 500;
       for (int i = 0; i < CompareCount; ++i) {
-        CBORObject o1 = RandomObjects.RandomCBORObject(r);
-        CBORObject o2 = RandomObjects.RandomCBORObject(r);
-        CBORObject o3 = RandomObjects.RandomCBORObject(r);
+        CBORObject o1 = CBORTestCommon.RandomCBORObject(r);
+        CBORObject o2 = CBORTestCommon.RandomCBORObject(r);
+        CBORObject o3 = CBORTestCommon.RandomCBORObject(r);
         TestCommon.CompareTestRelations(o1, o2, o3);
       }
       for (int i = 0; i < 5000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
         CompareDecimals(o1, o2);
       }
       TestCommon.CompareTestEqual(
@@ -1472,7 +1516,7 @@ CBORObject.FromObject(0.1f),
 CBORObject.FromObject(0.1f));
       for (int i = 0; i < 50; ++i) {
         CBORObject o1 = CBORObject.FromObject(Float.NEGATIVE_INFINITY);
-        CBORObject o2 = RandomObjects.RandomNumberOrRational(r);
+        CBORObject o2 = CBORTestCommon.RandomNumberOrRational(r);
         if (o2.IsInfinity() || o2.IsNaN()) {
           continue;
         }
@@ -1907,7 +1951,7 @@ CBORObject.FromObject(0.1f));
 
     @Test
     public void TestFalse() {
-      TestCommon.AssertSer(CBORObject.False, "false");
+      CBORTestCommon.AssertSer(CBORObject.False, "false");
       Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
     }
 
@@ -2001,14 +2045,14 @@ CBORObject.FromObject(0.1f));
       Assert.assertEquals(2, cbor.size());
       Assert.assertEquals(CBORObject.False, cbor.get(0));
       Assert.assertEquals(CBORObject.True, cbor.get(1));
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       Assert.assertEquals(CBORObject.Null, CBORObject.FromObject((int[])null));
       long[] longarray = { 2, 3 };
       cbor = CBORObject.FromObject(longarray);
       Assert.assertEquals(2, cbor.size());
       if (!(CBORObject.FromObject(2).compareTo(cbor.get(0)) == 0))Assert.fail();
       if (!(CBORObject.FromObject(3).compareTo(cbor.get(1)) == 0))Assert.fail();
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       Assert.assertEquals(
         CBORObject.Null,
         CBORObject.FromObject((ExtendedRational)null));
@@ -2563,8 +2607,8 @@ CBORObject.FromObject(0.1f));
 
       FastRandom r = new FastRandom();
       for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
         ExtendedDecimal cmpDecFrac =
           o1.AsExtendedDecimal().Multiply(o2.AsExtendedDecimal());
         ExtendedDecimal cmpCobj = CBORObject.Multiply(
@@ -2573,8 +2617,8 @@ CBORObject.FromObject(0.1f));
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Results don't match"),0,cmpDecFrac.compareTo(cmpCobj));
         }
-        TestCommon.AssertRoundTrip(o1);
-        TestCommon.AssertRoundTrip(o2);
+        CBORTestCommon.AssertRoundTrip(o1);
+        CBORTestCommon.AssertRoundTrip(o2);
       }
     }
     @Test
@@ -2644,7 +2688,7 @@ CBORObject.FromObject(0.1f));
     public void TestNegativeZero() {
       CBORObject negzero = CBORObject.FromObject(
         ExtendedDecimal.FromString("-0"));
-      TestCommon.AssertRoundTrip(negzero);
+      CBORTestCommon.AssertRoundTrip(negzero);
     }
     @Test
     public void TestNewArray() {
@@ -4296,7 +4340,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestTrue() {
-      TestCommon.AssertSer(CBORObject.True, "true");
+      CBORTestCommon.AssertSer(CBORObject.True, "true");
       Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
     }
 
@@ -5055,8 +5099,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       if (cmpDecFrac != cmpCobj) {
         Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Compare: Results don't match"),cmpDecFrac,cmpCobj);
       }
-      TestCommon.AssertRoundTrip(o1);
-      TestCommon.AssertRoundTrip(o2);
+      CBORTestCommon.AssertRoundTrip(o1);
+      CBORTestCommon.AssertRoundTrip(o2);
     }
 
     private static void AreEqualExact(double a, double b) {

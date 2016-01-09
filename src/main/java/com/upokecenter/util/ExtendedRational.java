@@ -12,7 +12,12 @@ import com.upokecenter.numbers.*;
     /**
      * Arbitrary-precision rational number. This class cannot be inherited; this is
      * a change in version 2.0 from previous versions, where the class was
-     * inadvertently left inheritable.
+     * inadvertently left inheritable. <p><b>Thread safety:</b>Instances of
+     * this class are immutable, so they are inherently safe for use by
+     * multiple threads. Multiple instances of this object with the same
+     * properties are interchangeable, so they should not be compared using
+     * the "==" operator (which only checks if each side of the operator is
+     * the same instance).</p>
      */
   public final class ExtendedRational implements Comparable<ExtendedRational> {
     /**
@@ -93,7 +98,7 @@ return new ExtendedRational(ERational.Create(numerator.getEi(), denominator.getE
 }
 
     /**
-     * Initializes a new instance of the ExtendedRational/> class.
+     * Initializes a new instance of the <see cref='ExtendedRational'/> class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
@@ -122,13 +127,33 @@ return this.getEr().toString();
       this.er = er;
     }
 
+    private ExtendedRational Simplify() {
+      // TODO: Don't simplify automatically in version 3.0
+      if (this.isFinite()) {
+        BigInteger num = (this.getNumerator()).abs();
+        BigInteger den = (this.getDenominator()).abs();
+        boolean neg = this.isNegative();
+        int lowBit = num.getLowBit();
+        lowBit = Math.min(lowBit, den.getLowBit());
+        if (lowBit > 0) {
+          num = num.shiftRight(lowBit);
+          den = den.shiftRight(lowBit);
+          if (neg) {
+            num = num.negate();
+          }
+          return Create(num, den);
+        }
+      }
+      return this;
+    }
+
     /**
      * Converts a big integer to a rational number.
      * @param bigint An arbitrary-precision integer.
      * @return The exact value of the integer as a rational number.
      */
     public static ExtendedRational FromBigInteger(BigInteger bigint) {
-      return new ExtendedRational(ERational.FromBigInteger(bigint.getEi()));
+      return new ExtendedRational(ERational.FromEInteger(bigint.getEi()));
  }
 
     /**
@@ -312,7 +337,7 @@ return this.getEr().isFinite();
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      */
     public BigInteger ToBigInteger() {
-return new BigInteger(this.getEr().ToBigInteger());
+return new BigInteger(this.getEr().ToEInteger());
 }
 
     /**
@@ -323,7 +348,7 @@ return new BigInteger(this.getEr().ToBigInteger());
      * @throws ArithmeticException This object's value is not an exact integer.
      */
     public BigInteger ToBigIntegerExact() {
-return new BigInteger(this.getEr().ToBigIntegerExact());
+return new BigInteger(this.getEr().ToEIntegerExact());
 }
 
     /**
@@ -388,7 +413,7 @@ return new ExtendedRational(this.getEr().Negate());
      * @return True if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
-return this.getEr().signum() == 0;
+return this.getEr().isZero();
 }
 
     /**
@@ -556,7 +581,7 @@ return this.getEr().IsSignalingNaN();
   if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.getEr().Add(otherValue.getEr()));
+return new ExtendedRational(this.getEr().Add(otherValue.getEr())).Simplify();
 }
 
     /**
@@ -570,7 +595,7 @@ return new ExtendedRational(this.getEr().Add(otherValue.getEr()));
   if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.getEr().Subtract(otherValue.getEr()));
+return new ExtendedRational(this.getEr().Subtract(otherValue.getEr())).Simplify();
 }
 
     /**
@@ -585,7 +610,7 @@ return new ExtendedRational(this.getEr().Subtract(otherValue.getEr()));
   if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.getEr().Multiply(otherValue.getEr()));
+return new ExtendedRational(this.getEr().Multiply(otherValue.getEr())).Simplify();
 }
 
     /**
@@ -600,7 +625,7 @@ return new ExtendedRational(this.getEr().Multiply(otherValue.getEr()));
   if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.getEr().Divide(otherValue.getEr()));
+return new ExtendedRational(this.getEr().Divide(otherValue.getEr())).Simplify();
 }
 
     /**
@@ -615,7 +640,7 @@ return new ExtendedRational(this.getEr().Divide(otherValue.getEr()));
   if (otherValue == null) {
   throw new NullPointerException("otherValue");
 }
-return new ExtendedRational(this.getEr().Remainder(otherValue.getEr()));
+return new ExtendedRational(this.getEr().Remainder(otherValue.getEr())).Simplify();
 }
 
     /**

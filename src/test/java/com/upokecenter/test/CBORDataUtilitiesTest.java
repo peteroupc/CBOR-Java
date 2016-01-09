@@ -9,7 +9,7 @@ import com.upokecenter.cbor.*;
     private void AssertNegative(CBORObject obj) {
       ExtendedDecimal ed = obj.AsExtendedDecimal();
       if (!(ed.isNegative()))Assert.fail();
-      TestCommon.AssertRoundTrip(obj);
+      CBORTestCommon.AssertRoundTrip(obj);
     }
     @Test
     public void TestPreserveNegativeZero() {
@@ -328,7 +328,7 @@ false) != null) {
  Assert.fail();
  }
       CBORObject cbor = CBORDataUtilities.ParseJSONNumber("2e-2147483648");
-      TestCommon.AssertSer(cbor, "2E-2147483648");
+      CBORTestCommon.AssertSer(cbor, "2E-2147483648");
     if (
 CBORDataUtilities.ParseJSONNumber(
 "0.5e+xyz",
@@ -407,6 +407,6 @@ false,
 false);
       if (!(cbor != null))Assert.fail();
       if (cbor.CanFitInDouble())Assert.fail();
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
     }
   }

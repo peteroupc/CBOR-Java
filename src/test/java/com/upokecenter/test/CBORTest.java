@@ -51,7 +51,7 @@ import com.upokecenter.cbor.*;
         bytes);
       cbor = CBORObject.FromObject(new String[] { "a", "b", "c", "d", "e" });
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0x9f, 0, 1, 2, 3, 4, 5,
                     6, 7, (byte)0xff  });
       {
@@ -63,44 +63,17 @@ import com.upokecenter.cbor.*;
     }
 
     @Test
-    public void TestAsByte() {
-      for (int i = 0; i < 255; ++i) {
-        Assert.assertEquals((byte)i, CBORObject.FromObject(i).AsByte());
-      }
-      for (int i = -200; i < 0; ++i) {
-        try {
-          CBORObject.FromObject(i).AsByte();
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail(ex.toString()); throw new
-            IllegalStateException("", ex);
-        }
-      }
-      for (int i = 256; i < 512; ++i) {
-        try {
-          CBORObject.FromObject(i).AsByte();
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail(ex.toString()); throw new
-            IllegalStateException("", ex);
-        }
-      }
-    }
-
-    @Test
     public void TestBigInteger() {
       BigInteger bi = BigInteger.valueOf(3);
       BigInteger negseven = BigInteger.valueOf(-7);
       for (int i = 0; i < 500; ++i) {
-        TestCommon.AssertSer(
+        CBORTestCommon.AssertSer(
           CBORObject.FromObject(bi),
           bi.toString());
         if (!(CBORObject.FromObject(bi).isIntegral()))Assert.fail();
-        TestCommon.AssertRoundTrip(CBORObject.FromObject(bi));
+        CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(bi));
 
-        TestCommon.AssertRoundTrip(CBORObject.FromObject(
+        CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(
           ExtendedDecimal.Create(
             bi,
             BigInteger.valueOf(1))));
@@ -118,7 +91,7 @@ import com.upokecenter.cbor.*;
       for (int i = 0; i < ranges.length; i += 2) {
         BigInteger bigintTemp = ranges[i];
         while (true) {
-          TestCommon.AssertSer(
+          CBORTestCommon.AssertSer(
             CBORObject.FromObject(bigintTemp),
             bigintTemp.toString());
           if (bigintTemp.equals(ranges[i + 1])) {
@@ -132,14 +105,16 @@ import com.upokecenter.cbor.*;
     @Test
     public void TestBigNumBytes() {
       CBORObject o = null;
-      o = TestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x41, (byte)0x88  });
+      o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x41, (byte)0x88  });
       Assert.assertEquals(BigInteger.valueOf(0x88L), o.AsBigInteger());
-      o = TestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x42, (byte)0x88, 0x77  });
+      o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x42, (byte)0x88, 0x77  });
       Assert.assertEquals(BigInteger.valueOf(0x8877L), o.AsBigInteger());
-      o = TestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x44, (byte)0x88, 0x77, 0x66,
+  o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x44, (byte)0x88, 0x77,
+        0x66,
         0x55  });
       Assert.assertEquals(BigInteger.valueOf(0x88776655L), o.AsBigInteger());
-      o = TestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x47, (byte)0x88, 0x77, 0x66,
+  o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x47, (byte)0x88, 0x77,
+        0x66,
         0x55, 0x44, 0x33, 0x22  });
       Assert.assertEquals(BigInteger.valueOf(0x88776655443322L), o.AsBigInteger());
     }
@@ -147,7 +122,7 @@ import com.upokecenter.cbor.*;
     @Test
     public void TestByte() {
       for (int i = 0; i <= 255; ++i) {
-        TestCommon.AssertSer(
+        CBORTestCommon.AssertSer(
           CBORObject.FromObject((byte)i),
           TestCommon.IntToString(i));
       }
@@ -155,74 +130,74 @@ import com.upokecenter.cbor.*;
 
     @Test
     public void TestByteArray() {
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(new byte[] { 0x20, 0x78  }),
         "h'2078'");
     }
 
     @Test
     public void TestByteStringStream() {
-      TestCommon.FromBytesTestAB(
+      CBORTestCommon.FromBytesTestAB(
         new byte[] { 0x5f, 0x41, 0x20, 0x41, 0x20, (byte)0xff  });
     }
     @Test(expected = CBORException.class)
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
-      TestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, 0x5f, 0x41,
+      CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, 0x5f, 0x41,
         0x20, (byte)0xff, (byte)0xff  });
     }
     @Test(expected = CBORException.class)
     public void TestByteStringStreamNoTagsBeforeDefinite() {
-      TestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, (byte)0xc2, 0x41,
+      CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, (byte)0xc2, 0x41,
         0x20, (byte)0xff  });
+    }
+
+    private static String ObjectMessage(CBORObject obj) {
+      return new StringBuilder()
+        .append("CBORObject.DecodeFromBytes(")
+           .append(TestCommon.ToByteArrayString(obj.EncodeToBytes()))
+           .append("); /").append("/ ").append(obj.ToJSONString()).toString();
     }
 
     @Test
     public void TestCanFitIn() {
       FastRandom r = new FastRandom();
       for (int i = 0; i < 5000; ++i) {
-        CBORObject ed = RandomObjects.RandomNumber(r);
+        CBORObject ed = CBORTestCommon.RandomNumber(r);
         ExtendedDecimal ed2;
         ed2 = ExtendedDecimal.FromDouble(ed.AsExtendedDecimal().ToDouble());
         if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) !=
             ed.CanFitInDouble()) {
-          Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-            ed.ToJSONString());
+          Assert.fail(ObjectMessage(ed));
         }
         ed2 = ExtendedDecimal.FromSingle(ed.AsExtendedDecimal().ToSingle());
         if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) !=
             ed.CanFitInSingle()) {
-          Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-            ed.ToJSONString());
+          Assert.fail(ObjectMessage(ed));
         }
         if (!ed.IsInfinity() && !ed.IsNaN()) {
           ed2 = ExtendedDecimal.FromBigInteger(ed.AsExtendedDecimal()
                     .ToBigInteger());
           if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) != ed.isIntegral()) {
-            Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-                    ed.ToJSONString());
+            Assert.fail(ObjectMessage(ed));
           }
         }
         if (!ed.IsInfinity() && !ed.IsNaN()) {
           BigInteger bi = ed.AsBigInteger();
           if (ed.isIntegral()) {
             if (bi.canFitInInt() != ed.CanFitInInt32()) {
-              Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-                    ed.ToJSONString());
+              Assert.fail(ObjectMessage(ed));
             }
           }
           if (bi.canFitInInt() != ed.CanTruncatedIntFitInInt32()) {
-            Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-                    ed.ToJSONString());
+            Assert.fail(ObjectMessage(ed));
           }
           if (ed.isIntegral()) {
             if ((bi.bitLength() <= 63) != ed.CanFitInInt64()) {
-              Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-                    ed.ToJSONString());
+              Assert.fail(ObjectMessage(ed));
             }
           }
           if ((bi.bitLength() <= 63) != ed.CanTruncatedIntFitInInt64()) {
-            Assert.fail(TestCommon.ToByteArrayString(ed) + "; /" + "/ " +
-                    ed.ToJSONString());
+            Assert.fail(ObjectMessage(ed));
           }
         }
       }
@@ -233,7 +208,7 @@ import com.upokecenter.cbor.*;
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
         0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a  });  // 2217361768.63373
       Assert.assertEquals(
-BigIntegerTest.BigFromString("2217361768"),
+BigInteger.fromString("2217361768"),
 cbor.AsBigInteger());
       if (cbor.AsBigInteger().canFitInInt())Assert.fail();
       if (cbor.CanTruncatedIntFitInInt32())Assert.fail();
@@ -256,7 +231,7 @@ cbor.AsBigInteger());
       CBORObject o = CBORObject.DecodeFromBytes(new byte[] { 0x3b, (byte)0xce,
         (byte)0xe2, 0x5a, 0x57, (byte)0xd8, 0x21, (byte)0xb9, (byte)0xa7  });
       Assert.assertEquals(
-        BigIntegerTest.BigFromString("-14907577049884506536"),
+        BigInteger.fromString("-14907577049884506536"),
         o.AsBigInteger());
     }
 
@@ -385,7 +360,7 @@ cbor.AsBigInteger());
       Assert.assertEquals(1, o.get(0).AsInt32());
       Assert.assertEquals(2, o.get(1).AsInt32());
       Assert.assertEquals(3, o.get(2).AsInt32());
-      TestCommon.AssertRoundTrip(o);
+      CBORTestCommon.AssertRoundTrip(o);
     }
 
     @Test
@@ -405,9 +380,9 @@ cbor.AsBigInteger());
         stringTemp);
       }
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.NegativeInfinity));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.PositiveInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.PositiveInfinity));
       if (!(CBORObject.FromObject(ExtendedRational.NegativeInfinity)
                     .IsInfinity()))Assert.fail();
       if (!(CBORObject.FromObject(ExtendedRational.PositiveInfinity)
@@ -422,21 +397,21 @@ cbor.AsBigInteger());
       if (!(CBORObject.NegativeInfinity.IsNegativeInfinity()))Assert.fail();
       if (!(CBORObject.NaN.IsNaN()))Assert.fail();
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.NegativeInfinity));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(Double.NEGATIVE_INFINITY));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Double.NEGATIVE_INFINITY));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(Float.NEGATIVE_INFINITY));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Float.NEGATIVE_INFINITY));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.PositiveInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.PositiveInfinity));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(Double.POSITIVE_INFINITY));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Double.POSITIVE_INFINITY));
 
-  TestCommon.AssertRoundTrip(CBORObject.FromObject(Float.POSITIVE_INFINITY));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Float.POSITIVE_INFINITY));
     }
 
     @Test
@@ -462,31 +437,31 @@ AddSubCompare(objectTemp, objectTemp2);
       CBORObject cbor = CBORObject.FromObjectAndTag(
         Double.NEGATIVE_INFINITY,
         1956611);
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
           CBORObject.FromObject(Double.NEGATIVE_INFINITY),
           1956611);
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
           CBORObject.FromObject(ExtendedFloat.NegativeInfinity),
           1956611);
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
           CBORObject.FromObject(ExtendedDecimal.NegativeInfinity),
           1956611);
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
           CBORObject.FromObject(ExtendedRational.NegativeInfinity),
           1956611);
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
     }
 
     @Test
@@ -504,138 +479,27 @@ AddSubCompare(objectTemp, objectTemp2);
 
     @Test
     public void TestDecimalFrac() {
-      TestCommon.FromBytesTestAB(
+      CBORTestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, 0x1a, 1, 2, 3, 4  });
     }
     @Test(expected = CBORException.class)
     public void TestDecimalFracExactlyTwoElements() {
-      TestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1  });
+      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1  });
     }
     @Test(expected = CBORException.class)
     public void TestDecimalFracExponentMustNotBeBignum() {
-      TestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1, 0x1a,
+   CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
+        0x1a,
         1, 2, 3, 4  });
     }
 
     @Test
     public void TestDecimalFracMantissaMayBeBignum() {
-      CBORObject o = TestCommon.FromBytesTestAB(
+      CBORObject o = CBORTestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1  });
       Assert.assertEquals(
         ExtendedDecimal.Create(BigInteger.valueOf(1), BigInteger.valueOf(3)),
         o.AsExtendedDecimal());
-    }
-
-    private static void AssertDecimalsEquivalent(String a, String b) {
-      CBORObject ca = CBORDataUtilities.ParseJSONNumber(a);
-      CBORObject cb = CBORDataUtilities.ParseJSONNumber(b);
-      TestCommon.CompareTestEqual(ca, cb);
-      TestCommon.AssertRoundTrip(ca);
-      TestCommon.AssertRoundTrip(cb);
-    }
-
-    @Test
-    public void TestDecimalsEquivalent() {
-      AssertDecimalsEquivalent("1.310E-7", "131.0E-9");
-      AssertDecimalsEquivalent("0.001231", "123.1E-5");
-      AssertDecimalsEquivalent("3.0324E+6", "303.24E4");
-      AssertDecimalsEquivalent("3.726E+8", "372.6E6");
-      AssertDecimalsEquivalent("2663.6", "266.36E1");
-      AssertDecimalsEquivalent("34.24", "342.4E-1");
-      AssertDecimalsEquivalent("3492.5", "349.25E1");
-      AssertDecimalsEquivalent("0.31919", "319.19E-3");
-      AssertDecimalsEquivalent("2.936E-7", "293.6E-9");
-      AssertDecimalsEquivalent("6.735E+10", "67.35E9");
-      AssertDecimalsEquivalent("7.39E+10", "7.39E10");
-      AssertDecimalsEquivalent("0.0020239", "202.39E-5");
-      AssertDecimalsEquivalent("1.6717E+6", "167.17E4");
-      AssertDecimalsEquivalent("1.7632E+9", "176.32E7");
-      AssertDecimalsEquivalent("39.526", "395.26E-1");
-      AssertDecimalsEquivalent("0.002939", "29.39E-4");
-      AssertDecimalsEquivalent("0.3165", "316.5E-3");
-      AssertDecimalsEquivalent("3.7910E-7", "379.10E-9");
-      AssertDecimalsEquivalent("0.000016035", "160.35E-7");
-      AssertDecimalsEquivalent("0.001417", "141.7E-5");
-      AssertDecimalsEquivalent("7.337E+5", "73.37E4");
-      AssertDecimalsEquivalent("3.4232E+12", "342.32E10");
-      AssertDecimalsEquivalent("2.828E+8", "282.8E6");
-      AssertDecimalsEquivalent("4.822E-7", "48.22E-8");
-      AssertDecimalsEquivalent("2.6328E+9", "263.28E7");
-      AssertDecimalsEquivalent("2.9911E+8", "299.11E6");
-      AssertDecimalsEquivalent("3.636E+9", "36.36E8");
-      AssertDecimalsEquivalent("0.20031", "200.31E-3");
-      AssertDecimalsEquivalent("1.922E+7", "19.22E6");
-      AssertDecimalsEquivalent("3.0924E+8", "309.24E6");
-      AssertDecimalsEquivalent("2.7236E+7", "272.36E5");
-      AssertDecimalsEquivalent("0.01645", "164.5E-4");
-      AssertDecimalsEquivalent("0.000292", "29.2E-5");
-      AssertDecimalsEquivalent("1.9939", "199.39E-2");
-      AssertDecimalsEquivalent("2.7929E+9", "279.29E7");
-      AssertDecimalsEquivalent("1.213E+7", "121.3E5");
-      AssertDecimalsEquivalent("2.765E+6", "276.5E4");
-      AssertDecimalsEquivalent("270.11", "270.11E0");
-      AssertDecimalsEquivalent("0.017718", "177.18E-4");
-      AssertDecimalsEquivalent("0.003607", "360.7E-5");
-      AssertDecimalsEquivalent("0.00038618", "386.18E-6");
-      AssertDecimalsEquivalent("0.0004230", "42.30E-5");
-      AssertDecimalsEquivalent("1.8410E+5", "184.10E3");
-      AssertDecimalsEquivalent("0.00030427", "304.27E-6");
-      AssertDecimalsEquivalent("6.513E+6", "65.13E5");
-      AssertDecimalsEquivalent("0.06717", "67.17E-3");
-      AssertDecimalsEquivalent("0.00031123", "311.23E-6");
-      AssertDecimalsEquivalent("0.0031639", "316.39E-5");
-      AssertDecimalsEquivalent("1.146E+5", "114.6E3");
-      AssertDecimalsEquivalent("0.00039937", "399.37E-6");
-      AssertDecimalsEquivalent("3.3817", "338.17E-2");
-      AssertDecimalsEquivalent("0.00011128", "111.28E-6");
-      AssertDecimalsEquivalent("7.818E+7", "78.18E6");
-      AssertDecimalsEquivalent("2.6417E-7", "264.17E-9");
-      AssertDecimalsEquivalent("1.852E+9", "185.2E7");
-      AssertDecimalsEquivalent("0.0016216", "162.16E-5");
-      AssertDecimalsEquivalent("2.2813E+6", "228.13E4");
-      AssertDecimalsEquivalent("3.078E+12", "307.8E10");
-      AssertDecimalsEquivalent("0.00002235", "22.35E-6");
-      AssertDecimalsEquivalent("0.0032827", "328.27E-5");
-      AssertDecimalsEquivalent("1.334E+9", "133.4E7");
-      AssertDecimalsEquivalent("34.022", "340.22E-1");
-      AssertDecimalsEquivalent("7.19E+6", "7.19E6");
-      AssertDecimalsEquivalent("35.311", "353.11E-1");
-      AssertDecimalsEquivalent("3.4330E+6", "343.30E4");
-      AssertDecimalsEquivalent("0.000022923", "229.23E-7");
-      AssertDecimalsEquivalent("2.899E+4", "289.9E2");
-      AssertDecimalsEquivalent("0.00031", "3.1E-4");
-      AssertDecimalsEquivalent("2.0418E+5", "204.18E3");
-      AssertDecimalsEquivalent("3.3412E+11", "334.12E9");
-      AssertDecimalsEquivalent("1.717E+10", "171.7E8");
-      AssertDecimalsEquivalent("2.7024E+10", "270.24E8");
-      AssertDecimalsEquivalent("1.0219E+9", "102.19E7");
-      AssertDecimalsEquivalent("15.13", "151.3E-1");
-      AssertDecimalsEquivalent("91.23", "91.23E0");
-      AssertDecimalsEquivalent("3.4114E+6", "341.14E4");
-      AssertDecimalsEquivalent("33.832", "338.32E-1");
-      AssertDecimalsEquivalent("0.19234", "192.34E-3");
-      AssertDecimalsEquivalent("16835", "168.35E2");
-      AssertDecimalsEquivalent("0.00038610", "386.10E-6");
-      AssertDecimalsEquivalent("1.6624E+9", "166.24E7");
-      AssertDecimalsEquivalent("2.351E+9", "235.1E7");
-      AssertDecimalsEquivalent("0.03084", "308.4E-4");
-      AssertDecimalsEquivalent("0.00429", "42.9E-4");
-      AssertDecimalsEquivalent("9.718E-8", "97.18E-9");
-      AssertDecimalsEquivalent("0.00003121", "312.1E-7");
-      AssertDecimalsEquivalent("3.175E+4", "317.5E2");
-      AssertDecimalsEquivalent("376.6", "376.6E0");
-      AssertDecimalsEquivalent("0.0000026110", "261.10E-8");
-      AssertDecimalsEquivalent("7.020E+11", "70.20E10");
-      AssertDecimalsEquivalent("2.1533E+9", "215.33E7");
-      AssertDecimalsEquivalent("3.8113E+7", "381.13E5");
-      AssertDecimalsEquivalent("7.531", "75.31E-1");
-      AssertDecimalsEquivalent("991.0", "99.10E1");
-      AssertDecimalsEquivalent("2.897E+8", "289.7E6");
-      AssertDecimalsEquivalent("0.0000033211", "332.11E-8");
-      AssertDecimalsEquivalent("0.03169", "316.9E-4");
-      AssertDecimalsEquivalent("2.7321E+12", "273.21E10");
-      AssertDecimalsEquivalent("394.38", "394.38E0");
-      AssertDecimalsEquivalent("5.912E+7", "59.12E6");
     }
 
     @Test
@@ -654,8 +518,8 @@ AddSubCompare(objectTemp, objectTemp2);
         }
       }
       for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
         ExtendedRational er =
           o1.AsExtendedRational().Divide(o2.AsExtendedRational());
         if (er.compareTo(CBORObject.Divide(o1, o2).AsExtendedRational()) != 0) {
@@ -676,13 +540,13 @@ AddSubCompare(objectTemp, objectTemp2);
         (!CBORObject.FromObject(Double.POSITIVE_INFINITY).IsPositiveInfinity()) {
         Assert.fail("Not positive infinity");
       }
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Double.POSITIVE_INFINITY),
         "Infinity");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Double.NEGATIVE_INFINITY),
         "-Infinity");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Double.NaN),
         "NaN");
       CBORObject oldobj = null;
@@ -691,7 +555,7 @@ AddSubCompare(objectTemp, objectTemp2);
         if (!(o.CanFitInDouble()))Assert.fail();
         if (!(o.CanFitInInt32()))Assert.fail();
         if (!(o.isIntegral()))Assert.fail();
-        TestCommon.AssertSer(
+        CBORTestCommon.AssertSer(
           o,
           TestCommon.IntToString(i));
         if (oldobj != null) {
@@ -723,13 +587,13 @@ AddSubCompare(objectTemp, objectTemp2);
       CBORObject obj;
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82,
      0x3a, 0x00, 0x1c, 0x2d, 0x0d, 0x1a, 0x13, 0x6c, (byte)0xa1, (byte)0x97  });
-      TestCommon.AssertRoundTrip(obj);
+      CBORTestCommon.AssertRoundTrip(obj);
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00, 0x14,
         0x57, (byte)0xce, (byte)0xc5, (byte)0x82, 0x1a, 0x46, 0x5a, 0x37,
         (byte)0x87, (byte)0xc3, 0x50, 0x5e, (byte)0xec, (byte)0xfd, 0x73,
           0x50, 0x64, (byte)0xa1, 0x1f, 0x10, (byte)0xc4, (byte)0xff,
           (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12  });
-      TestCommon.AssertRoundTrip(obj);
+      CBORTestCommon.AssertRoundTrip(obj);
       int actual = CBORObject.FromObject(
         ExtendedDecimal.Create(BigInteger.valueOf(333333), BigInteger.valueOf(-2)))
         .compareTo(CBORObject.FromObject(ExtendedFloat.Create(
@@ -739,218 +603,18 @@ AddSubCompare(objectTemp, objectTemp2);
     }
 
     @Test
-    public void TestExtendedFloatDouble() {
-      TestExtendedFloatDoubleCore(3.5, "3.5");
-      TestExtendedFloatDoubleCore(7, "7");
-      TestExtendedFloatDoubleCore(1.75, "1.75");
-      TestExtendedFloatDoubleCore(3.5, "3.5");
-      TestExtendedFloatDoubleCore((double)Integer.MIN_VALUE, "-2147483648");
-      TestExtendedFloatDoubleCore(
-        (double)Long.MIN_VALUE,
-        "-9223372036854775808");
-      FastRandom rand = new FastRandom();
-      for (int i = 0; i < 2047; ++i) {
-        // Try a random double with a given
-        // exponent
-        TestExtendedFloatDoubleCore(RandomObjects.RandomDouble(rand, i), null);
-        TestExtendedFloatDoubleCore(RandomObjects.RandomDouble(rand, i), null);
-        TestExtendedFloatDoubleCore(RandomObjects.RandomDouble(rand, i), null);
-        TestExtendedFloatDoubleCore(RandomObjects.RandomDouble(rand, i), null);
-      }
-    }
-
-    @Test
-    public void TestExtendedFloatSingle() {
-      FastRandom rand = new FastRandom();
-      for (int i = 0; i < 255; ++i) {
-        // Try a random float with a given
-        // exponent
-        TestExtendedFloatSingleCore(RandomObjects.RandomSingle(rand, i), null);
-        TestExtendedFloatSingleCore(RandomObjects.RandomSingle(rand, i), null);
-        TestExtendedFloatSingleCore(RandomObjects.RandomSingle(rand, i), null);
-        TestExtendedFloatSingleCore(RandomObjects.RandomSingle(rand, i), null);
-      }
-    }
-
-    @Test
-    public void TestExtendedInfinity() {
-      if (!(ExtendedDecimal.PositiveInfinity.IsPositiveInfinity()))Assert.fail();
-      if (ExtendedDecimal.PositiveInfinity.IsNegativeInfinity())Assert.fail();
-      if (ExtendedDecimal.PositiveInfinity.isNegative())Assert.fail();
-      if (ExtendedDecimal.NegativeInfinity.IsPositiveInfinity())Assert.fail();
-      if (!(ExtendedDecimal.NegativeInfinity.IsNegativeInfinity()))Assert.fail();
-      if (!(ExtendedDecimal.NegativeInfinity.isNegative()))Assert.fail();
-      if (!(ExtendedFloat.PositiveInfinity.IsInfinity()))Assert.fail();
-      if (!(ExtendedFloat.PositiveInfinity.IsPositiveInfinity()))Assert.fail();
-      if (ExtendedFloat.PositiveInfinity.IsNegativeInfinity())Assert.fail();
-      if (ExtendedFloat.PositiveInfinity.isNegative())Assert.fail();
-      if (!(ExtendedFloat.NegativeInfinity.IsInfinity()))Assert.fail();
-      if (ExtendedFloat.NegativeInfinity.IsPositiveInfinity())Assert.fail();
-      if (!(ExtendedFloat.NegativeInfinity.IsNegativeInfinity()))Assert.fail();
-      if (!(ExtendedFloat.NegativeInfinity.isNegative()))Assert.fail();
-      if (!(ExtendedRational.PositiveInfinity.IsInfinity()))Assert.fail();
-      if (!(ExtendedRational.PositiveInfinity.IsPositiveInfinity()))Assert.fail();
-      if (ExtendedRational.PositiveInfinity.IsNegativeInfinity())Assert.fail();
-      if (ExtendedRational.PositiveInfinity.isNegative())Assert.fail();
-      if (!(ExtendedRational.NegativeInfinity.IsInfinity()))Assert.fail();
-      if (ExtendedRational.NegativeInfinity.IsPositiveInfinity())Assert.fail();
-      if (!(ExtendedRational.NegativeInfinity.IsNegativeInfinity()))Assert.fail();
-      if (!(ExtendedRational.NegativeInfinity.isNegative()))Assert.fail();
-
-      Assert.assertEquals(
-        ExtendedDecimal.PositiveInfinity,
-        ExtendedDecimal.FromDouble(Double.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedDecimal.NegativeInfinity,
-        ExtendedDecimal.FromDouble(Double.NEGATIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedDecimal.PositiveInfinity,
-        ExtendedDecimal.FromSingle(Float.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedDecimal.NegativeInfinity,
-        ExtendedDecimal.FromSingle(Float.NEGATIVE_INFINITY));
-
-      Assert.assertEquals(
-        ExtendedFloat.PositiveInfinity,
-        ExtendedFloat.FromDouble(Double.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedFloat.NegativeInfinity,
-        ExtendedFloat.FromDouble(Double.NEGATIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedFloat.PositiveInfinity,
-        ExtendedFloat.FromSingle(Float.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedFloat.NegativeInfinity,
-        ExtendedFloat.FromSingle(Float.NEGATIVE_INFINITY));
-
-      Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
-        ExtendedRational.FromDouble(Double.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
-        ExtendedRational.FromDouble(Double.NEGATIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
-        ExtendedRational.FromSingle(Float.POSITIVE_INFINITY));
-      Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
-        ExtendedRational.FromSingle(Float.NEGATIVE_INFINITY));
-
-      Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
-        ExtendedRational.FromExtendedDecimal(ExtendedDecimal.PositiveInfinity));
-      Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
-        ExtendedRational.FromExtendedDecimal(ExtendedDecimal.NegativeInfinity));
-      Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
-        ExtendedRational.FromExtendedFloat(ExtendedFloat.PositiveInfinity));
-      Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
-        ExtendedRational.FromExtendedFloat(ExtendedFloat.NegativeInfinity));
-
-  if (!(((ExtendedRational.PositiveInfinity.ToDouble()) == Double.POSITIVE_INFINITY)))Assert.fail();
-
-  if (!(((ExtendedRational.NegativeInfinity.ToDouble()) == Double.NEGATIVE_INFINITY)))Assert.fail();
-
-  if (!(((ExtendedRational.PositiveInfinity.ToSingle()) == Float.POSITIVE_INFINITY)))Assert.fail();
-
-  if (!(((ExtendedRational.NegativeInfinity.ToSingle()) == Float.NEGATIVE_INFINITY)))Assert.fail();
-      try {
-        ExtendedDecimal.PositiveInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.NegativeInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.PositiveInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.NegativeInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedRational.PositiveInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedRational.NegativeInfinity.ToBigInteger();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-        System.out.print("");
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-    }
-
-    @Test
-    public void TestExtendedMiscellaneous() {
-      Assert.assertEquals(ExtendedDecimal.One, ExtendedDecimal.FromInt32(1));
-
-      Assert.assertEquals(
-        ExtendedFloat.Zero,
-        ExtendedDecimal.Zero.ToExtendedFloat());
-      Assert.assertEquals(
-        ExtendedFloat.NegativeZero,
-        ExtendedDecimal.NegativeZero.ToExtendedFloat());
-      if (0.0f != ExtendedFloat.Zero.ToSingle()) {
-        Assert.fail("Failed " + ExtendedFloat.Zero.ToDouble());
-      }
-      if (0.0f != ExtendedFloat.Zero.ToDouble()) {
-        Assert.fail("Failed " + ExtendedFloat.Zero.ToDouble());
-      }
-      Assert.assertEquals(
-        CBORObject.FromObject(0.1),
-        CBORObject.FromObjectAndTag(0.1, 999999).Untag());
-      Assert.assertEquals(-1, CBORObject.NewArray().getSimpleValue());
-      Assert.assertEquals(
-        CBORObject.FromObject(2),
-        CBORObject.FromObject(-2).Abs());
-      Assert.assertEquals(CBORObject.FromObject(2), CBORObject.FromObject(2).Abs());
-    }
-
-    @Test
     public void TestFloat() {
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Float.POSITIVE_INFINITY),
         "Infinity");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Float.NEGATIVE_INFINITY),
         "-Infinity");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(Float.NaN),
         "NaN");
       for (int i = -65539; i <= 65539; ++i) {
-        TestCommon.AssertSer(
+        CBORTestCommon.AssertSer(
           CBORObject.FromObject((float)i),
           TestCommon.IntToString(i));
       }
@@ -1108,7 +772,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
         "[\"\\r\\n\\u0006\\u000E\\u001A\\\\\\\"\"]",
         stringTemp);
       }
-      TestCommon.AssertRoundTrip(o);
+      CBORTestCommon.AssertRoundTrip(o);
     }
 
     @Test
@@ -1123,7 +787,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
           if (!(CBORObject.FromObject(j).isIntegral()))Assert.fail();
           if (!(CBORObject.FromObject(j).CanFitInInt64()))Assert.fail();
           if (!(CBORObject.FromObject(j).CanTruncatedIntFitInInt64()))Assert.fail();
-          TestCommon.AssertSer(
+          CBORTestCommon.AssertSer(
             CBORObject.FromObject(j),
             String.format(java.util.Locale.US,"%s", j));
           Assert.assertEquals(
@@ -1131,7 +795,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
             CBORObject.FromObject(BigInteger.valueOf(j)));
           CBORObject obj = CBORObject.FromJSONString(
             String.format(java.util.Locale.US,"[%s]", j));
-          TestCommon.AssertSer(
+          CBORTestCommon.AssertSer(
             obj,
             String.format(java.util.Locale.US,"[%s]", j));
           if (j == ranges[i + 1]) {
@@ -1175,7 +839,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
                     .Add(
                     new ExtendedRational(BigInteger.valueOf(1), BigInteger.valueOf(2)),
                     3).Add(4, false)).Add(true);
-      TestCommon.AssertRoundTrip(oo);
+      CBORTestCommon.AssertRoundTrip(oo);
       oo = CBORObject.NewArray();
       oo.Add(CBORObject.FromObject(0));
       CBORObject oo2 = CBORObject.NewMap();
@@ -1186,7 +850,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
       oo4.Add(oo2, CBORObject.True);
       oo4.Add(oo3, CBORObject.True);
       oo.Add(oo4);
-      TestCommon.AssertRoundTrip(oo);
+      CBORTestCommon.AssertRoundTrip(oo);
     }
 
     @Test
@@ -1203,8 +867,8 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
       FastRandom rand = new FastRandom();
       CBORObject obj;
       for (int i = 0; i < 1000; ++i) {
-        obj = RandomObjects.RandomCBORObject(rand);
-        TestCommon.AssertRoundTrip(obj);
+        obj = CBORTestCommon.RandomCBORObject(rand);
+        CBORTestCommon.AssertRoundTrip(obj);
         TestWriteToJSON(obj);
       }
     }
@@ -1272,7 +936,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       FastRandom rand = new FastRandom();
       // Test slightly modified objects
       for (int i = 0; i < 200; ++i) {
-        CBORObject originalObject = RandomObjects.RandomCBORObject(rand);
+        CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
         // System.out.println(originalObject);
         int count2 = rand.NextValue(10) + 1;
@@ -1384,7 +1048,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestShort() {
       for (int i = Short.MIN_VALUE; i <= Short.MAX_VALUE; ++i) {
-        TestCommon.AssertSer(
+        CBORTestCommon.AssertSer(
           CBORObject.FromObject((short)i),
           TestCommon.IntToString(i));
       }
@@ -1392,13 +1056,13 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestSimpleValues() {
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(true),
         "true");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject(false),
         "false");
-      TestCommon.AssertSer(
+      CBORTestCommon.AssertSer(
         CBORObject.FromObject((Object)null),
         "null");
     }
@@ -1407,8 +1071,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public void TestSubtract() {
       FastRandom r = new FastRandom();
       for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = RandomObjects.RandomNumber(r);
-        CBORObject o2 = RandomObjects.RandomNumber(r);
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
         ExtendedDecimal cmpDecFrac =
           o1.AsExtendedDecimal().Subtract(o2.AsExtendedDecimal());
         ExtendedDecimal cmpCobj = CBORObject.Subtract(
@@ -1417,8 +1081,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Results don't match"),0,cmpDecFrac.compareTo(cmpCobj));
         }
-        TestCommon.AssertRoundTrip(o1);
-        TestCommon.AssertRoundTrip(o2);
+        CBORTestCommon.AssertRoundTrip(o1);
+        CBORTestCommon.AssertRoundTrip(o2);
       }
     }
 
@@ -1530,7 +1194,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                 obj);
             Assert.assertEquals(errmsg, bigintTemp, obj.getInnermostTag());
           }
-          TestCommon.AssertSer(
+          CBORTestCommon.AssertSer(
             obj,
             String.format(java.util.Locale.US,"%s(0)", bigintTemp));
           if (!bigintTemp.equals(maxuint)) {
@@ -1575,7 +1239,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
             String str = String.format(java.util.Locale.US,"%s(%s(0))",
               bigintTemp.add(BigInteger.valueOf(1)),
               bigintTemp);
-            TestCommon.AssertSer(
+            CBORTestCommon.AssertSer(
               obj2,
               str);
           }
@@ -1593,20 +1257,20 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       // Tag 264
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xd9, 0x01, 0x08, (byte)0x82,
         (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2  });
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
       // Tag 265
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xd9, 0x01, 0x09, (byte)0x82,
         (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2  });
-      TestCommon.AssertRoundTrip(cbor);
+      CBORTestCommon.AssertRoundTrip(cbor);
     }
     @Test(expected = CBORException.class)
     public void TestTagThenBreak() {
-      TestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff  });
+      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff  });
     }
 
     @Test
     public void TestTextStringStream() {
-      CBORObject cbor = TestCommon.FromBytesTestAB(
+      CBORObject cbor = CBORTestCommon.FromBytesTestAB(
         new byte[] { 0x7f, 0x61, 0x2e, 0x61, 0x2e, (byte)0xff  });
       {
 String stringTemp = cbor.AsString();
@@ -1621,12 +1285,12 @@ stringTemp);
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
-      TestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, 0x7f, 0x61,
+      CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, 0x7f, 0x61,
         0x20, (byte)0xff, (byte)0xff  });
     }
     @Test(expected = CBORException.class)
     public void TestTextStringStreamNoTagsBeforeDefinite() {
-      TestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
+      CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
         0x20, (byte)0xff  });
     }
 
@@ -1647,36 +1311,10 @@ stringTemp);
       TestCommon.CompareTestEqual(o, o2);
     }
 
-    private static void TestExtendedFloatDoubleCore(double d, String s) {
-      double oldd = d;
-      ExtendedFloat bf = ExtendedFloat.FromDouble(d);
-      if (s != null) {
-        Assert.assertEquals(s, bf.toString());
-      }
-      d = bf.ToDouble();
-      Assert.assertEquals((double)oldd, d, 0);
-      if (!(CBORObject.FromObject(bf).CanFitInDouble()))Assert.fail();
-      TestCommon.AssertRoundTrip(CBORObject.FromObject(bf));
-      TestCommon.AssertRoundTrip(CBORObject.FromObject(d));
-    }
-
-    private static void TestExtendedFloatSingleCore(float d, String s) {
-      float oldd = d;
-      ExtendedFloat bf = ExtendedFloat.FromSingle(d);
-      if (s != null) {
-        Assert.assertEquals(s, bf.toString());
-      }
-      d = bf.ToSingle();
-      Assert.assertEquals((float)oldd, d, 0f);
-      if (!(CBORObject.FromObject(bf).CanFitInSingle()))Assert.fail();
-      TestCommon.AssertRoundTrip(CBORObject.FromObject(bf));
-      TestCommon.AssertRoundTrip(CBORObject.FromObject(d));
-    }
-
     private static void TestTextStringStreamOne(String longString) {
       CBORObject cbor, cbor2;
       cbor = CBORObject.FromObject(longString);
-      cbor2 = TestCommon.FromBytesTestAB(cbor.EncodeToBytes());
+      cbor2 = CBORTestCommon.FromBytesTestAB(cbor.EncodeToBytes());
       Assert.assertEquals(
         longString,
         CBORObject.DecodeFromBytes(cbor.EncodeToBytes()).AsString());

@@ -1,18 +1,13 @@
 package com.upokecenter.test;
 /*
-Written in 2013 by Peter O.
+Written in 2013-2016 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import java.util.*;
-
 import org.junit.Assert;
-
-import com.upokecenter.util.*;
-import com.upokecenter.cbor.*;
 
   public final class TestCommon {
 private TestCommon() {
@@ -59,26 +54,6 @@ private TestCommon() {
           throw new IllegalStateException("", ex);
         }
       }
-    }
-
-    public static void AssertRoundTrip(CBORObject o) {
-      CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
-      CompareTestEqual(o, o2);
-      TestNumber(o);
-      AssertEqualsHashCode(o, o2);
-    }
-
-    public static void AssertSer(CBORObject o, String s) {
-      if (!s.equals(o.toString())) {
-        Assert.assertEquals("o is not equal to s",s,o.toString());
-      }
-      // Test round-tripping
-      CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
-      if (!s.equals(o2.toString())) {
-        Assert.assertEquals("o2 is not equal to s",s,o2.toString());
-      }
-      TestNumber(o);
-      AssertEqualsHashCode(o, o2);
     }
 
     public static <T extends Comparable<T>> void CompareTestConsistency(T o1, T o2, T o3) {
@@ -223,15 +198,6 @@ String msg) {
         }
       }
     }
-    // Tests the equivalence of the FromBytes and Read methods.
-    public static CBORObject FromBytesTestAB(byte[] b) {
-      CBORObject oa = FromBytesA(b);
-      CBORObject ob = FromBytesB(b);
-      if (!oa.equals(ob)) {
-        Assert.assertEquals(oa, ob);
-      }
-      return oa;
-    }
 
     public static String IntToString(int value) {
       if (value == Integer.MIN_VALUE) {
@@ -316,24 +282,7 @@ String msg) {
       Object o1,
       Object o2,
       String s) {
-      CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
-      CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
-      return (co1 != null) ? TestCommon.ObjectMessages(co1, co2, s) : (s +
-        ":\n" + o1 + " and\n" + o2);
-    }
-
-    public static String ObjectMessages(
-      CBORObject o1,
-      CBORObject o2,
-      String s) {
-      if (o1.getType() == CBORType.Number && o2.getType() == CBORType.Number) {
-        return s + ":\n" + o1 + " and\n" + o2 + "\nOR\n" +
-          o1.AsExtendedDecimal() + " and\n" + o2.AsExtendedDecimal() +
-       "\nOR\n" + "AddSubCompare(" + TestCommon.ToByteArrayString(o1) + ",\n" +
-          TestCommon.ToByteArrayString(o2) + ");";
-      }
-      return s + ":\n" + o1 + " and\n" + o2 + "\nOR\n" +
-TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2);
+      return s + ":\n" + o1 + " and\n" + o2;
     }
 
     public static String ObjectMessages(
@@ -341,21 +290,7 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2);
       Object o2,
       Object o3,
       String s) {
-      CBORObject co1 = ((o1 instanceof CBORObject) ? (CBORObject)o1 : null);
-      CBORObject co2 = ((o2 instanceof CBORObject) ? (CBORObject)o2 : null);
-      CBORObject co3 = ((o3 instanceof CBORObject) ? (CBORObject)o3 : null);
-      return (co1 != null) ? TestCommon.ObjectMessages(co1, co2, co3, s) :
-        (s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3);
-    }
-
-    public static String ObjectMessages(
-      CBORObject o1,
-      CBORObject o2,
-      CBORObject o3,
-      String s) {
-      return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3 + "\nOR\n" +
-TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
- " and\n" + TestCommon.ToByteArrayString(o3);
+      return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3;
     }
 
     public static String Repeat(char c, int num) {
@@ -372,85 +307,6 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
         sb.append(c);
       }
       return sb.toString();
-    }
-
-    public static void TestNumber(CBORObject o) {
-      if (o.getType() != CBORType.Number) {
-        return;
-      }
-      if (o.IsPositiveInfinity() || o.IsNegativeInfinity() ||
-          o.IsNaN()) {
-        try {
-          o.AsByte();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt16();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt32();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt64();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
-        }
-        try {
-          o.AsSingle();
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsDouble();
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsBigInteger();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          System.out.print("");
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
-        }
-        return;
-      }
-      try {
-        o.AsSingle();
-      } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
-          IllegalStateException("", ex);
-      }
-      try {
-        o.AsDouble();
-      } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
-          IllegalStateException("", ex);
-      }
     }
 
     public static String ToByteArrayString(byte[] bytes) {
@@ -475,13 +331,6 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
       return sb.toString();
     }
 
-    public static String ToByteArrayString(CBORObject obj) {
-      return new StringBuilder()
-        .append("CBORObject.DecodeFromBytes(")
-           .append(ToByteArrayString(obj.EncodeToBytes()))
-           .append(")").toString();
-    }
-
     private static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {
       if (arr1 == null) {
         return arr2 == null;
@@ -498,29 +347,6 @@ TestCommon.ToByteArrayString(o1) + " and\n" + TestCommon.ToByteArrayString(o2) +
         }
       }
       return true;
-    }
-
-    private static CBORObject FromBytesA(byte[] b) {
-      return CBORObject.DecodeFromBytes(b);
-    }
-
-    private static CBORObject FromBytesB(byte[] b) {
-      {
-java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(b);
-int startingAvailable = ms.available();
-
-        CBORObject o = CBORObject.Read(ms);
-        if ((startingAvailable-ms.available()) != startingAvailable) {
-          throw new CBORException("not at EOF");
-        }
-        return o;
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-}
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
