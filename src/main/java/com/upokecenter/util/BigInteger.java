@@ -93,9 +93,20 @@ import com.upokecenter.numbers.*;
 
     /**
      * Initializes an arbitrary-precision integer from an array of bytes.
-     * @param bytes A byte array.
-     * @param littleEndian A Boolean object.
-     * @return An arbitrary-precision integer.
+     * @param bytes A byte array consisting of the two's-complement integer
+     * representation of the arbitrary-precision integer to create. The last
+     * byte contains the lowest 8-bits, the next-to-last contains the next
+     * lowest 8 bits, and so on. To encode negative numbers, take the
+     * absolute value of the number, subtract by 1, encode the number into
+     * bytes, XOR each byte, and if the most-significant bit of the first
+     * byte isn't set, add an additional byte at the start with the value
+     * 255. For little-endian, the byte order is reversed from the byte
+     * order just discussed.
+     * @param littleEndian If true, the byte order is little-endian, or
+     * least-significant-byte first. If false, the byte order is big-endian,
+     * or most-significant-byte first.
+     * @return An arbitrary-precision integer. Returns 0 if the byte array's length
+     * is 0.
      * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
     public static BigInteger fromBytes(byte[] bytes, boolean littleEndian) {
@@ -173,7 +184,7 @@ endIndex));
      * format.
      */
     public static BigInteger fromString(String str) {
-return new BigInteger(EInteger.fromString(str));
+return new BigInteger(EInteger.FromString(str));
 }
 
     /**
@@ -243,7 +254,7 @@ return new BigInteger(this.getEi().Add(bigintAugend.getEi()));
      * object's value is 0 or negative 1.
      */
     public int bitLength() {
-return this.getEi().bitLength();
+return this.getEi().GetSignedBitLength();
  }
 
     /**
@@ -326,7 +337,7 @@ return this.getEi().CanFitInInt32();
   if (bigintSecond == null) {
   throw new NullPointerException("bigintSecond");
 }
-return new BigInteger(this.getEi().gcd(bigintSecond.getEi()));
+return new BigInteger(this.getEi().Gcd(bigintSecond.getEi()));
 }
 
     /**
@@ -335,7 +346,7 @@ return new BigInteger(this.getEi().gcd(bigintSecond.getEi()));
      * 0.
      */
     public int getDigitCount() {
-      return this.getEi().getDigitCount();
+      return this.getEi().GetDigitCount();
  }
 
     /**
@@ -353,7 +364,7 @@ return new BigInteger(this.getEi().gcd(bigintSecond.getEi()));
      * if this value is 0.).
      */
     public int getLowBit() {
-      return this.getEi().getLowBit();
+      return (this.isZero()) ? (0) : (this.getEi().GetLowBit());
  }
 
     /**
@@ -460,7 +471,7 @@ return this.getEi().AsInt64Checked();
   if (divisor == null) {
   throw new NullPointerException("divisor");
 }
-return new BigInteger(this.getEi().mod(divisor.getEi()));
+return new BigInteger(this.getEi().Mod(divisor.getEi()));
 }
 
     /**
@@ -513,7 +524,7 @@ return new BigInteger(this.getEi().ModPow(pow.getEi(), mod.getEi()));
      * than 0.
      */
     public BigInteger pow(int powerSmall) {
-return new BigInteger(this.getEi().pow(powerSmall));
+return new BigInteger(this.getEi().Pow(powerSmall));
 }
 
     /**
@@ -619,7 +630,7 @@ return new BigInteger(this.getEi().Remainder(divisor.getEi()));
      * object's value; otherwise, false.
      */
     public boolean testBit(int index) {
-return this.getEi().testBit(index);
+return this.getEi().GetSignedBit(index);
 }
 
     /**
