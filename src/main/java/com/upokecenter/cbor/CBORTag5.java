@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORTag5 implements ICBORTag
   {
@@ -53,19 +53,19 @@ CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
       if (!o.get(1).isIntegral()) {
         throw new CBORException("Mantissa is not an integer");
       }
-      BigInteger exponent = o.get(0).AsBigInteger();
-      BigInteger mantissa = o.get(1).AsBigInteger();
-      if (exponent.bitLength() > 64 && !extended) {
+      EInteger exponent = o.get(0).AsEInteger();
+      EInteger mantissa = o.get(1).AsEInteger();
+      if (exponent.GetSignedBitLength() > 64 && !extended) {
         throw new CBORException("Exponent is too big");
       }
-      if (exponent.signum() == 0) {
+      if (exponent.isZero()) {
         // Exponent is 0, so return mantissa instead
         return CBORObject.FromObject(mantissa);
       }
       // NOTE: Discards tags. See comment in CBORTag2.
       return isDecimal ?
-      CBORObject.FromObject(ExtendedDecimal.Create(mantissa, exponent)) :
-      CBORObject.FromObject(ExtendedFloat.Create(mantissa, exponent));
+      CBORObject.FromObject(EDecimal.Create(mantissa, exponent)) :
+      CBORObject.FromObject(EFloat.Create(mantissa, exponent));
     }
 
     public CBORObject ValidateObject(CBORObject obj) {

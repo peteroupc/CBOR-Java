@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORDouble implements ICBORNumber
   {
@@ -31,19 +31,19 @@ import com.upokecenter.util.*;
       return ((Double)obj).doubleValue();
     }
 
-    public ExtendedDecimal AsExtendedDecimal(Object obj) {
-      return ExtendedDecimal.FromDouble(((Double)obj).doubleValue());
+    public EDecimal AsExtendedDecimal(Object obj) {
+      return EDecimal.FromDouble(((Double)obj).doubleValue());
     }
 
-    public ExtendedFloat AsExtendedFloat(Object obj) {
-      return ExtendedFloat.FromDouble(((Double)obj).doubleValue());
+    public EFloat AsExtendedFloat(Object obj) {
+      return EFloat.FromDouble(((Double)obj).doubleValue());
     }
 
     public float AsSingle(Object obj) {
       return ((Double)obj).floatValue();
     }
 
-    public BigInteger AsBigInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       return CBORUtilities.BigIntegerFromDouble(((Double)obj).doubleValue());
     }
 
@@ -145,7 +145,7 @@ import com.upokecenter.util.*;
       return (val < 0) ? -val : obj;
     }
 
-    public ExtendedRational AsExtendedRational(Object obj) {
-      return ExtendedRational.FromDouble(((Double)obj).doubleValue());
+    public ERational AsExtendedRational(Object obj) {
+      return ERational.FromDouble(((Double)obj).doubleValue());
     }
   }

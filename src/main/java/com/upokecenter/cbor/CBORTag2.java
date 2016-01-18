@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORTag2 implements ICBORTag
   {
@@ -52,7 +52,7 @@ CBORObject objectWithTags) {
       }
       int neededLength = data.length;
       byte[] bytes;
-      BigInteger bi;
+      EInteger bi;
       boolean extended = false;
       if (((data[0] >> 7) & 1) != 0) {
         // Increase the needed length
@@ -72,7 +72,7 @@ CBORObject objectWithTags) {
       if (extended) {
           bytes[bytes.length - 1] = negative ? (byte)0xff : (byte)0;
       }
-      bi = BigInteger.fromBytes(bytes, true);
+      bi = EInteger.FromBytes(bytes, true);
       // NOTE: Here, any tags are discarded; when called from
       // the Read method, "o" will have no tags anyway (beyond tag 2),
       // and when called from FromObjectAndTag, we prefer

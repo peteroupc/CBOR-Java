@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     /**
      * Specifies what kinds of CBOR objects a tag can be. This class is used when a
@@ -23,7 +23,7 @@ import com.upokecenter.util.*;
     private boolean anyArrayLength;
     private boolean arrayMinLength;
     private CBORTypeFilter[] elements;
-    private BigInteger[] tags;
+    private EInteger[] tags;
 
     private CBORTypeFilter Copy() {
       CBORTypeFilter filter = new CBORTypeFilter();
@@ -111,15 +111,15 @@ import com.upokecenter.util.*;
       filter.types |= 1 << 6;  // Always include the "tag" major type
       int startIndex = 0;
       if (filter.tags != null) {
-        BigInteger[] newTags = new BigInteger[tags.length + filter.tags.length];
+        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
         System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
         startIndex = filter.tags.length;
         filter.tags = newTags;
       } else {
-        filter.tags = new BigInteger[tags.length];
+        filter.tags = new EInteger[tags.length];
       }
       for (int i = 0; i < tags.length; ++i) {
-        filter.tags[startIndex + i] = BigInteger.valueOf(tags[i]);
+        filter.tags[startIndex + i] = EInteger.FromInt64(tags[i]);
       }
       return filter;
     }
@@ -130,7 +130,7 @@ import com.upokecenter.util.*;
      * @return A CBORTypeFilter object.
      * @throws java.lang.NullPointerException The parameter "tags[i]" is null.
      */
-    public CBORTypeFilter WithTags(BigInteger... tags) {
+    public CBORTypeFilter WithTags(EInteger... tags) {
       if (this.any) {
         return this;
       }
@@ -143,12 +143,12 @@ import com.upokecenter.util.*;
       filter.types |= 1 << 6;  // Always include the "tag" major type
       int startIndex = 0;
       if (filter.tags != null) {
-        BigInteger[] newTags = new BigInteger[tags.length + filter.tags.length];
+        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
         System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
         startIndex = filter.tags.length;
         filter.tags = newTags;
       } else {
-        filter.tags = new BigInteger[tags.length];
+        filter.tags = new EInteger[tags.length];
       }
       System.arraycopy(tags, 0, filter.tags, startIndex, tags.length);
       return filter;
@@ -309,15 +309,15 @@ CBORTypeFilter... elements) {
      * @throws java.lang.NullPointerException The parameter {@code bigLength} is
      * null.
      */
-    public boolean ArrayLengthMatches(BigInteger bigLength) {
+    public boolean ArrayLengthMatches(EInteger bigLength) {
       if (bigLength == null) {
         throw new NullPointerException("bigLength");
       }
       return ((this.types & (1 << 4)) == 0) && (this.anyArrayLength ||
         ((!this.arrayMinLength &&
-        bigLength.compareTo(BigInteger.valueOf(this.arrayLength)) == 0) ||
+        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) == 0) ||
         (this.arrayMinLength &&
-        bigLength.compareTo(BigInteger.valueOf(this.arrayLength)) >= 0)));
+        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) >= 0)));
     }
 
     /**
@@ -327,17 +327,17 @@ CBORTypeFilter... elements) {
      * false.
      */
     public boolean TagAllowed(int tag) {
-      return this.any || this.TagAllowed(BigInteger.valueOf(tag));
+      return this.any || this.TagAllowed(EInteger.FromInt32(tag));
     }
 
     /**
      * Gets a value indicating whether CBOR objects can have the given tag number.
-     * @param tag A tag number. Returns false if this is less than 0.
+     * @param longTag A tag number. Returns false if this is less than 0.
      * @return True if CBOR objects can have the given tag number; otherwise,
      * false.
      */
-    public boolean TagAllowed(long tag) {
-      return this.any || this.TagAllowed(BigInteger.valueOf(tag));
+    public boolean TagAllowed(long longTag) {
+      return this.any || this.TagAllowed(EInteger.FromInt64(longTag));
     }
 
     /**
@@ -347,7 +347,7 @@ CBORTypeFilter... elements) {
      * false.
      * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
      */
-    public boolean TagAllowed(BigInteger bigTag) {
+    public boolean TagAllowed(EInteger bigTag) {
       if (bigTag == null) {
         throw new NullPointerException("bigTag");
       }
@@ -363,7 +363,7 @@ CBORTypeFilter... elements) {
       if (this.tags == null) {
         return true;
       }
-      for (BigInteger tag : this.tags) {
+      for (EInteger tag : this.tags) {
         if (bigTag.equals(tag)) {
           return true;
         }

@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
+
 /**
  * Description of PropertyMap.
  */
@@ -138,6 +141,69 @@ class PropertyMap {
       return null;
     }
   }
+
+  private static Object methodSync=new Object();
+  private static Method[] legacyMethods=new Method[8];
+  private static boolean haveMethods=false;
+  private static Method getLegacyMethod(int method){
+    synchronized(methodSync){
+      if(!haveMethods){
+        try {
+          legacyMethods[0]=BigInteger.class.getDeclaredMethod("ToLegacy",EInteger.class);
+          legacyMethods[1]=BigInteger.class.getDeclaredMethod("FromLegacy",BigInteger.class);
+          legacyMethods[2]=ExtendedDecimal.class.getDeclaredMethod("ToLegacy",EDecimal.class);
+          legacyMethods[3]=ExtendedDecimal.class.getDeclaredMethod("FromLegacy",ExtendedDecimal.class);
+          legacyMethods[4]=ExtendedFloat.class.getDeclaredMethod("ToLegacy",EFloat.class);
+          legacyMethods[5]=ExtendedFloat.class.getDeclaredMethod("FromLegacy",ExtendedFloat.class);
+          legacyMethods[6]=ExtendedRational.class.getDeclaredMethod("ToLegacy",ERational.class);
+          legacyMethods[7]=ExtendedRational.class.getDeclaredMethod("FromLegacy",ExtendedRational.class);
+          for(int i=0;i<legacyMethods.length;i++){
+            legacyMethods[i].setAccessible(true);
+          }
+        } catch (SecurityException e) {
+          throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+          throw new RuntimeException(e);
+        }
+        haveMethods=true;
+      }
+    }
+    return legacyMethods[method];
+  }
+
+    public static BigInteger ToLegacy(EInteger ei){
+      return (BigInteger)InvokeOneArgumentMethod(
+        getLegacyMethod(0), null, ei);
+    }
+    public static ExtendedDecimal ToLegacy(EDecimal ed){
+      return (ExtendedDecimal)InvokeOneArgumentMethod(
+        getLegacyMethod(2), null, ed);
+    }
+    public static ExtendedFloat ToLegacy(EFloat ef){
+      return (ExtendedFloat)InvokeOneArgumentMethod(
+        getLegacyMethod(4), null, ef);
+    }
+    public static ExtendedRational ToLegacy(ERational er){
+      return (ExtendedRational)InvokeOneArgumentMethod(
+        getLegacyMethod(6), null, er);
+    }
+
+    public static EInteger FromLegacy(BigInteger ei){
+      return (EInteger)InvokeOneArgumentMethod(
+        getLegacyMethod(1), null, ei);
+    }
+    public static EDecimal FromLegacy(ExtendedDecimal ed){
+      return (EDecimal)InvokeOneArgumentMethod(
+        getLegacyMethod(3), null, ed);
+    }
+    public static EFloat FromLegacy(ExtendedFloat ef){
+      return (EFloat)InvokeOneArgumentMethod(
+        getLegacyMethod(5), null, ef);
+    }
+    public static ERational FromLegacy(ExtendedRational er){
+      return (ERational)InvokeOneArgumentMethod(
+        getLegacyMethod(7), null, er);
+    }
 
   /**
    * <p>InvokeOneArgumentMethod.</p>

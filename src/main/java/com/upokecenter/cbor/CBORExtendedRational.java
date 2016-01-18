@@ -7,76 +7,76 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORExtendedRational implements ICBORNumber
   {
     public boolean IsPositiveInfinity(Object obj) {
-      return ((ExtendedRational)obj).IsPositiveInfinity();
+      return ((ERational)obj).IsPositiveInfinity();
     }
 
     public boolean IsInfinity(Object obj) {
-      return ((ExtendedRational)obj).IsInfinity();
+      return ((ERational)obj).IsInfinity();
     }
 
     public boolean IsNegativeInfinity(Object obj) {
-      return ((ExtendedRational)obj).IsNegativeInfinity();
+      return ((ERational)obj).IsNegativeInfinity();
     }
 
     public boolean IsNaN(Object obj) {
-      return ((ExtendedRational)obj).IsNaN();
+      return ((ERational)obj).IsNaN();
     }
 
     public double AsDouble(Object obj) {
-      ExtendedRational er = (ExtendedRational)obj;
+      ERational er = (ERational)obj;
       return er.ToDouble();
     }
 
-    public ExtendedDecimal AsExtendedDecimal(Object obj) {
-      ExtendedRational er = (ExtendedRational)obj;
+    public EDecimal AsExtendedDecimal(Object obj) {
+      ERational er = (ERational)obj;
       return
 
-  er.ToExtendedDecimalExactIfPossible(PrecisionContext.Decimal128.WithUnlimitedExponents());
+  er.ToExtendedDecimalExactIfPossible(EContext.Decimal128.WithUnlimitedExponents());
     }
 
-    public ExtendedFloat AsExtendedFloat(Object obj) {
-      ExtendedRational er = (ExtendedRational)obj;
+    public EFloat AsExtendedFloat(Object obj) {
+      ERational er = (ERational)obj;
       return
 
-  er.ToExtendedFloatExactIfPossible(PrecisionContext.Binary128.WithUnlimitedExponents());
+  er.ToExtendedFloatExactIfPossible(EContext.Binary128.WithUnlimitedExponents());
     }
 
     public float AsSingle(Object obj) {
-      ExtendedRational er = (ExtendedRational)obj;
+      ERational er = (ERational)obj;
       return er.ToSingle();
     }
 
-    public BigInteger AsBigInteger(Object obj) {
-      ExtendedRational er = (ExtendedRational)obj;
-      return er.ToBigInteger();
+    public EInteger AsBigInteger(Object obj) {
+      ERational er = (ERational)obj;
+      return er.ToEInteger();
     }
 
     public long AsInt64(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       if (ef.isFinite()) {
-        BigInteger bi = ef.ToBigInteger();
-        if (bi.bitLength() <= 63) {
-          return bi.longValueChecked();
+        EInteger bi = ef.ToEInteger();
+        if (bi.GetSignedBitLength() <= 63) {
+          return bi.AsInt64Checked();
         }
       }
       throw new ArithmeticException("This Object's value is out of range");
     }
 
     public boolean CanFitInSingle(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       return (!ef.isFinite()) ||
-      (ef.compareTo(ExtendedRational.FromSingle(ef.ToSingle())) == 0);
+      (ef.compareTo(ERational.FromSingle(ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       return (!ef.isFinite()) ||
-      (ef.compareTo(ExtendedRational.FromDouble(ef.ToDouble())) == 0);
+      (ef.compareTo(ERational.FromDouble(ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {
@@ -88,54 +88,54 @@ import com.upokecenter.util.*;
     }
 
     public boolean CanTruncatedIntFitInInt64(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       if (!ef.isFinite()) {
         return false;
       }
-      BigInteger bi = ef.ToBigInteger();
-      return bi.bitLength() <= 63;
+      EInteger bi = ef.ToEInteger();
+      return bi.GetSignedBitLength() <= 63;
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       if (!ef.isFinite()) {
         return false;
       }
-      BigInteger bi = ef.ToBigInteger();
-      return bi.canFitInInt();
+      EInteger bi = ef.ToEInteger();
+      return bi.CanFitInInt32();
     }
 
     public boolean IsZero(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
-      return ef.signum() == 0;
+      ERational ef = (ERational)obj;
+      return ef.isZero();
     }
 
     public int Sign(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       return ef.signum();
     }
 
     public boolean IsIntegral(Object obj) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       if (!ef.isFinite()) {
         return false;
       }
-      if (ef.getDenominator().equals(BigInteger.valueOf(1))) {
+      if (ef.getDenominator().equals(EInteger.FromInt32(1))) {
         return true;
       }
       // A rational number is integral if the remainder
       // of the numerator divided by the denominator is 0
-      BigInteger denom = ef.getDenominator();
-      BigInteger rem = ef.getNumerator().remainder(denom);
-      return rem.signum() == 0;
+      EInteger denom = ef.getDenominator();
+      EInteger rem = ef.getNumerator().Remainder(denom);
+      return rem.isZero();
     }
 
     public int AsInt32(Object obj, int minValue, int maxValue) {
-      ExtendedRational ef = (ExtendedRational)obj;
+      ERational ef = (ERational)obj;
       if (ef.isFinite()) {
-        BigInteger bi = ef.ToBigInteger();
-        if (bi.canFitInInt()) {
-          int ret = bi.intValueChecked();
+        EInteger bi = ef.ToEInteger();
+        if (bi.CanFitInInt32()) {
+          int ret = bi.AsInt32Checked();
           if (ret >= minValue && ret <= maxValue) {
             return ret;
           }
@@ -145,16 +145,16 @@ import com.upokecenter.util.*;
     }
 
     public Object Negate(Object obj) {
-      ExtendedRational ed = (ExtendedRational)obj;
+      ERational ed = (ERational)obj;
       return ed.Negate();
     }
 
     public Object Abs(Object obj) {
-      ExtendedRational ed = (ExtendedRational)obj;
+      ERational ed = (ERational)obj;
       return ed.Abs();
     }
 
-    public ExtendedRational AsExtendedRational(Object obj) {
-      return (ExtendedRational)obj;
+    public ERational AsExtendedRational(Object obj) {
+      return (ERational)obj;
     }
   }

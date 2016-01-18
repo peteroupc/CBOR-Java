@@ -11,7 +11,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Exception thrown for arithmetic trap errors.
-     */
+     * @deprecated Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
   public class TrapException extends ArithmeticException {
 private static final long serialVersionUID = 1L;
     private ETrapException ete;

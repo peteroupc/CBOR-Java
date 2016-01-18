@@ -9,7 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.util.*;
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   final class CBORJson {
     // JSON parsing methods
@@ -557,11 +557,11 @@ import com.upokecenter.util.*;
           }
           case CBORObject.CBORObjectTypeBigInteger: {
             writer.WriteString(
-              CBORUtilities.BigIntToString((BigInteger)thisItem));
+              CBORUtilities.BigIntToString((EInteger)thisItem));
             return;
           }
           case CBORObject.CBORObjectTypeExtendedDecimal: {
-            ExtendedDecimal dec = (ExtendedDecimal)thisItem;
+            EDecimal dec = (EDecimal)thisItem;
             if (dec.IsInfinity() || dec.IsNaN()) {
               writer.WriteString("null");
             } else {
@@ -570,13 +570,13 @@ import com.upokecenter.util.*;
             return;
           }
           case CBORObject.CBORObjectTypeExtendedFloat: {
-            ExtendedFloat flo = (ExtendedFloat)thisItem;
+            EFloat flo = (EFloat)thisItem;
             if (flo.IsInfinity() || flo.IsNaN()) {
               writer.WriteString("null");
               return;
             }
             if (flo.isFinite() &&
-                (flo.getExponent()).abs().compareTo(BigInteger.valueOf(2500)) > 0) {
+                (flo.getExponent()).Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
               // Too inefficient to convert to a decimal number
               // from a bigfloat with a very high exponent,
               // so convert to double instead
@@ -651,9 +651,9 @@ import com.upokecenter.util.*;
             break;
           }
           case CBORObject.CBORObjectTypeExtendedRational: {
-            ExtendedRational dec = (ExtendedRational)thisItem;
-            ExtendedDecimal f = dec.ToExtendedDecimalExactIfPossible(
-              PrecisionContext.Decimal128.WithUnlimitedExponents());
+            ERational dec = (ERational)thisItem;
+            EDecimal f = dec.ToExtendedDecimalExactIfPossible(
+              EContext.Decimal128.WithUnlimitedExponents());
             if (!f.isFinite()) {
               writer.WriteString("null");
             } else {

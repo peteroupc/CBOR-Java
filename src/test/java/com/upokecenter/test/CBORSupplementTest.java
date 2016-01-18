@@ -345,146 +345,6 @@ System.out.print("");
     @Test
     public void TestExtendedDecimalArgValidation() {
       try {
-        ExtendedDecimal.FromString(null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      Assert.assertEquals(ExtendedDecimal.Zero, ExtendedDecimal.FromString("0"));
-      Assert.assertEquals(
-        ExtendedDecimal.Zero,
-        ExtendedDecimal.FromString("0", null));
-      try {
-        ExtendedDecimal.FromString(null, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString(null, 0, 1);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", -1, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 2, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 0, -1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 0, 2);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 1, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString(null, 0, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", -1, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 2, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 0, -1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 0, 2, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("x", 1, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-
-      try {
         ExtendedFloat.Create(null, BigInteger.valueOf(1));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
@@ -511,329 +371,17 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      try {
-        ExtendedFloat.FromString(null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      Assert.assertEquals(ExtendedFloat.Zero, ExtendedFloat.FromString("0"));
-      Assert.assertEquals(ExtendedFloat.Zero, ExtendedFloat.FromString("0", null));
-      try {
-        ExtendedFloat.FromString(null, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(null, 0, 1);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", -1, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 2, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 0, -1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 0, 2);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 1, 1);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(null, 0, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", -1, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 2, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 0, -1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 0, 2, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("x", 1, 1, null);
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "Infinity",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "-Infinity",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "NaN",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "sNaN",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "Infinity",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "-Infinity",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "NaN",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString(
-          "sNaN",
-          PrecisionContext.Unlimited.WithSimplified(true));
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-
-      try {
-        ExtendedDecimal.FromString("0..1");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("0.1x+222");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedDecimal.FromString("0.1g-222");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("0..1");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("0.1x+222");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        ExtendedFloat.FromString("0.1g-222");
-        Assert.fail("Should have failed");
-      } catch (NumberFormatException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
     }
 
     @Test
     public void TestExtendedToInteger() {
-      ExtendedDecimal dec = ExtendedDecimal.Create(999, -1);
-      ExtendedFloat flo = ExtendedFloat.Create(999, -1);
       ExtendedRational rat = ExtendedRational.Create(8, 5);
-      try {
-        dec.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        flo.ToBigIntegerExact();
-        Assert.fail("Should have failed");
-      } catch (ArithmeticException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
       try {
         rat.ToBigIntegerExact();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 System.out.print("");
 } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        dec.ToBigInteger();
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        flo.ToBigInteger();
-      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -989,11 +537,11 @@ System.out.print("");
     @Test
     public void TestEquivalentInfinities() {
       CBORObject co, co2;
-      co = CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+      co = CBORObject.FromObject(CBORTestCommon.DecPosInf);
       co2 = CBORObject.FromObject(Double.POSITIVE_INFINITY);
       TestCommon.CompareTestEqual(co, co2);
       co = CBORObject.NewMap().Add(
-        ExtendedDecimal.PositiveInfinity,
+        CBORTestCommon.DecPosInf,
         CBORObject.Undefined);
       co2 = CBORObject.NewMap().Add(
         Double.POSITIVE_INFINITY,
@@ -1023,25 +571,6 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
       Assert.assertEquals(2, cbor.size());
       // Checks if both objects are the same reference, not just equal
       if (!(cbor == cbor.get(1)))Assert.fail("objects not the same");
-    }
-
-    @Test
-    public void TestRationalCompareDecimal() {
-      FastRandom fr = new FastRandom();
-       for (int i = 0; i < 100; ++i) {
-        ExtendedRational er = RandomObjects.RandomRational(fr);
-        int exp = -100000 + fr.NextValue(200000);
-        ExtendedDecimal ed = ExtendedDecimal.Create(
-          RandomObjects.RandomBigInteger(fr),
-          BigInteger.valueOf(exp));
-        ExtendedRational er2 = ExtendedRational.FromExtendedDecimal(ed);
-        // sw1.Start();
-        int c2r = er.compareTo(er2);
-        // sw1.Stop();sw2.Start();
-        int c2d = er.CompareToDecimal(ed);
-        // sw2.Stop();
-        Assert.assertEquals(c2r, c2d);
-      }
     }
 
     @Test
@@ -1378,10 +907,10 @@ System.out.print("");
         BigInteger.valueOf(0),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x40  }).AsBigInteger());
       Assert.assertEquals(
-        BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)),
+        BigInteger.valueOf(-1),
    CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x41, 0x00  }).AsBigInteger());
       Assert.assertEquals(
-        BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)),
+        BigInteger.valueOf(-1),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x40  }).AsBigInteger());
     }
 
@@ -1593,7 +1122,7 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestNegativeBigInts() {
-      BigInteger minusone = BigInteger.valueOf(0).subtract(BigInteger.valueOf(1));
+      BigInteger minusone = BigInteger.valueOf(-1);
       Assert.assertEquals(
         minusone .subtract(BigInteger.valueOf(1).shiftLeft(8)),
    CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsBigInteger());

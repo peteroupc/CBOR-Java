@@ -196,10 +196,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public void TestAddConverter() {
       // not implemented yet
     }
+
     @Test
     public void TestAddition() {
       FastRandom r = new FastRandom();
-      for (int i = 0; i < 3000; ++i) {
+      for (int i = 0; i < 1000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         ExtendedDecimal cmpDecFrac =
@@ -207,10 +208,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         ExtendedDecimal cmpCobj = CBORObject.Addition(
           o1,
           o2).AsExtendedDecimal();
+        if (cmpDecFrac.compareTo(cmpCobj) != 0) {
         TestCommon.CompareTestEqual(
 cmpDecFrac,
 cmpCobj,
-TestCommon.ObjectMessages(o1, o2, ""));
+TestCommon.ObjectMessages(o1, o2,
+          TestCommon.ToByteArrayString(o1.EncodeToBytes())+"\r\n"+
+          TestCommon.ToByteArrayString(o2.EncodeToBytes())));
+          }
         CBORTestCommon.AssertRoundTrip(o1);
         CBORTestCommon.AssertRoundTrip(o2);
       }
@@ -684,18 +689,18 @@ cbornumber.AsDouble());
     @Test
     public void TestAsExtendedDecimal() {
       Assert.assertEquals(
-        ExtendedDecimal.PositiveInfinity,
+        CBORTestCommon.DecPosInf,
         CBORObject.FromObject(Float.POSITIVE_INFINITY).AsExtendedDecimal());
       Assert.assertEquals(
-        ExtendedDecimal.NegativeInfinity,
+        CBORTestCommon.DecNegInf,
         CBORObject.FromObject(Float.NEGATIVE_INFINITY).AsExtendedDecimal());
       if (!(CBORObject.FromObject(Float.NaN).AsExtendedDecimal()
                     .IsNaN()))Assert.fail();
       Assert.assertEquals(
-        ExtendedDecimal.PositiveInfinity,
+        CBORTestCommon.DecPosInf,
         CBORObject.FromObject(Double.POSITIVE_INFINITY).AsExtendedDecimal());
       Assert.assertEquals(
-        ExtendedDecimal.NegativeInfinity,
+        CBORTestCommon.DecNegInf,
         CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedDecimal());
       if (!(CBORObject.FromObject(Double.NaN).AsExtendedDecimal()
                     .IsNaN()))Assert.fail();
@@ -757,18 +762,18 @@ cbornumber.AsDouble());
     @Test
     public void TestAsExtendedFloat() {
       Assert.assertEquals(
-        ExtendedFloat.PositiveInfinity,
+        CBORTestCommon.FloatPosInf,
         CBORObject.FromObject(Float.POSITIVE_INFINITY).AsExtendedFloat());
       Assert.assertEquals(
-        ExtendedFloat.NegativeInfinity,
+        CBORTestCommon.FloatNegInf,
         CBORObject.FromObject(Float.NEGATIVE_INFINITY).AsExtendedFloat());
       if (!(CBORObject.FromObject(Float.NaN).AsExtendedFloat()
                     .IsNaN()))Assert.fail();
       Assert.assertEquals(
-        ExtendedFloat.PositiveInfinity,
+        CBORTestCommon.FloatPosInf,
         CBORObject.FromObject(Double.POSITIVE_INFINITY).AsExtendedFloat());
       Assert.assertEquals(
-        ExtendedFloat.NegativeInfinity,
+        CBORTestCommon.FloatNegInf,
         CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedFloat());
       if (!(CBORObject.FromObject(Double.NaN).AsExtendedFloat()
                     .IsNaN()))Assert.fail();
@@ -776,18 +781,18 @@ cbornumber.AsDouble());
     @Test
     public void TestAsExtendedRational() {
       Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
+        CBORTestCommon.RatPosInf,
         CBORObject.FromObject(Float.POSITIVE_INFINITY).AsExtendedRational());
       Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
+        CBORTestCommon.RatNegInf,
         CBORObject.FromObject(Float.NEGATIVE_INFINITY).AsExtendedRational());
       if (!(CBORObject.FromObject(Float.NaN).AsExtendedRational()
                     .IsNaN()))Assert.fail();
       Assert.assertEquals(
-        ExtendedRational.PositiveInfinity,
+        CBORTestCommon.RatPosInf,
         CBORObject.FromObject(Double.POSITIVE_INFINITY).AsExtendedRational());
       Assert.assertEquals(
-        ExtendedRational.NegativeInfinity,
+        CBORTestCommon.RatNegInf,
         CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedRational());
       if (!(CBORObject.FromObject(Double.NaN).AsExtendedRational()
                     .IsNaN()))Assert.fail();
@@ -1434,9 +1439,9 @@ i)).CanFitInSingle()))Assert.fail();
                     .CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.FromObject(Double.NaN)
                     .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(ExtendedDecimal.PositiveInfinity)
+      if (CBORObject.FromObject(CBORTestCommon.DecPosInf)
                     .CanTruncatedIntFitInInt32())Assert.fail();
-      if (CBORObject.FromObject(ExtendedDecimal.NegativeInfinity)
+      if (CBORObject.FromObject(CBORTestCommon.DecNegInf)
                     .CanTruncatedIntFitInInt32())Assert.fail();
       if (CBORObject.FromObject(ExtendedDecimal.NaN)
                     .CanTruncatedIntFitInInt32())Assert.fail();
@@ -1868,40 +1873,39 @@ CBORObject.FromObject(0.1f));
     @Test
     public void TestEquivalentNegativeInfinity() {
       TestCommon.CompareTestEqualAndConsistent(
-      CBORObject.FromObject(ExtendedDecimal.NegativeInfinity),
-      CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
+      CBORObject.FromObject(CBORTestCommon.DecNegInf),
+      CBORObject.FromObject(CBORTestCommon.FloatNegInf));
       {
         CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+          CBORObject.FromObject(CBORTestCommon.DecNegInf);
         CBORObject objectTemp2 =
-          CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf)
+;
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
+      {
+        CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.DecNegInf);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
+;
+        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+      }
+      {
+ CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatNegInf);
+        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedDecimal.NegativeInfinity);
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
- CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
-        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
-;
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-      }
-      {
-        CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedRational.NegativeInfinity);
-        CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY)
-;
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
-      }
-      {
- CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.NegativeInfinity);
+ CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 =
-          CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
@@ -1910,40 +1914,36 @@ CBORObject.FromObject(0.1f));
     @Test
     public void TestEquivalentPositiveInfinity() {
       TestCommon.CompareTestEqualAndConsistent(
-      CBORObject.FromObject(ExtendedDecimal.PositiveInfinity),
-      CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
+      CBORObject.FromObject(CBORTestCommon.DecPosInf),
+      CBORObject.FromObject(CBORTestCommon.FloatPosInf));
       {
         CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
-        CBORObject objectTemp2 =
-          CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+          CBORObject.FromObject(CBORTestCommon.DecPosInf);
+        CBORObject objectTemp2 = CBORObject.FromObject(CBORTestCommon.RatPosInf)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-        CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedDecimal.PositiveInfinity);
+        CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.DecPosInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
- CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
+ CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatPosInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-        CBORObject objectTemp =
-          CBORObject.FromObject(ExtendedRational.PositiveInfinity);
+        CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.RatPosInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
- CBORObject objectTemp = CBORObject.FromObject(ExtendedFloat.PositiveInfinity);
-        CBORObject objectTemp2 =
-          CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+ CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatPosInf);
+        CBORObject objectTemp2 = CBORObject.FromObject(CBORTestCommon.RatPosInf)
 ;
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
@@ -2181,7 +2181,7 @@ CBORObject.FromObject(0.1f));
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(2, BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)));
+        CBORObject.FromObjectAndTag(2, BigInteger.valueOf(-1));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         System.out.print("");
@@ -2359,9 +2359,9 @@ CBORObject.FromObject(0.1f));
       if (CBORObject.FromObject(Double.NEGATIVE_INFINITY).isFinite())Assert.fail();
       if (CBORObject.FromObject(Double.NaN).isFinite())Assert.fail();
       if (CBORObject.FromObject(
-        ExtendedDecimal.PositiveInfinity).isFinite())Assert.fail();
+        CBORTestCommon.DecPosInf).isFinite())Assert.fail();
       if (CBORObject.FromObject(
-        ExtendedDecimal.NegativeInfinity).isFinite())Assert.fail();
+        CBORTestCommon.DecNegInf).isFinite())Assert.fail();
       if (CBORObject.FromObject(ExtendedDecimal.NaN).isFinite())Assert.fail();
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
@@ -2378,6 +2378,8 @@ CBORObject.FromObject(0.1f));
     }
     @Test
     public void TestIsInfinity() {
+      if (!(CBORObject.PositiveInfinity.IsInfinity()))Assert.fail();
+      if (!(CBORObject.NegativeInfinity.IsInfinity()))Assert.fail();
       if (!(CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
         (byte)0x80, 0x00, 0x00  }).IsInfinity()))Assert.fail();
     }
@@ -2403,9 +2405,9 @@ CBORObject.FromObject(0.1f));
       if (CBORObject.FromObject(Double.NEGATIVE_INFINITY).isIntegral())Assert.fail();
       if (CBORObject.FromObject(Double.NaN).isIntegral())Assert.fail();
       if (CBORObject.FromObject(
-        ExtendedDecimal.PositiveInfinity).isIntegral())Assert.fail();
+        CBORTestCommon.DecPosInf).isIntegral())Assert.fail();
       if (CBORObject.FromObject(
-        ExtendedDecimal.NegativeInfinity).isIntegral())Assert.fail();
+        CBORTestCommon.DecNegInf).isIntegral())Assert.fail();
       if (CBORObject.FromObject(ExtendedDecimal.NaN).isIntegral())Assert.fail();
       cbor = CBORObject.True;
       if (cbor.isIntegral())Assert.fail();

@@ -8,7 +8,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.util.*;
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     /**
      * Implements CBOR string references, described at
@@ -71,15 +71,15 @@ import com.upokecenter.util.*;
         CBORObject.FromObject(ret.GetByteString()) : ret;
     }
 
-    public CBORObject GetString(BigInteger bigIndex) {
+    public CBORObject GetString(EInteger bigIndex) {
       if (bigIndex.signum() < 0) {
         throw new CBORException("Unexpected index");
       }
-      if (!bigIndex.canFitInInt()) {
+      if (!bigIndex.CanFitInInt32()) {
     throw new CBORException("Index " + bigIndex +
           " is bigger than supported ");
       }
-      int index = bigIndex.intValueChecked();
+      int index = bigIndex.AsInt32Checked();
       ArrayList<CBORObject> lastList = this.stack.get(this.stack.size() - 1);
       if (index >= lastList.size()) {
         throw new CBORException("Index " + index + " is not valid");

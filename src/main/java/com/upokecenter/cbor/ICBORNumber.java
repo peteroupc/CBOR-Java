@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   interface ICBORNumber
   {
@@ -25,15 +25,15 @@ import com.upokecenter.util.*;
 
     Object Abs(Object obj);
 
-    ExtendedDecimal AsExtendedDecimal(Object obj);
+    EDecimal AsExtendedDecimal(Object obj);
 
-    ExtendedFloat AsExtendedFloat(Object obj);
+    EFloat AsExtendedFloat(Object obj);
 
-    ExtendedRational AsExtendedRational(Object obj);
+    ERational AsExtendedRational(Object obj);
 
     float AsSingle(Object obj);
 
-    BigInteger AsBigInteger(Object obj);
+    EInteger AsBigInteger(Object obj);
 
     long AsInt64(Object obj);
 

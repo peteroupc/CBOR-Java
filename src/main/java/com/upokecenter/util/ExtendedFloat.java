@@ -59,7 +59,9 @@ import com.upokecenter.numbers.*;
      * integer if the exponent is positive or zero.
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getExponent() {
         return new BigInteger(this.getEf().getExponent());
       }
@@ -67,7 +69,9 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the absolute value of this object&#x27;s un-scaled value.
      * @return The absolute value of this object's un-scaled value.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getUnsignedMantissa() {
         return new BigInteger(this.getEf().getUnsignedMantissa());
       }
@@ -76,10 +80,19 @@ import com.upokecenter.numbers.*;
      * Gets this object&#x27;s un-scaled value.
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getMantissa() {
         return new BigInteger(this.getEf().getMantissa());
       }
+
+    static ExtendedFloat ToLegacy(EFloat ei) {
+      return new ExtendedFloat(ei);
+    }
+    static EFloat FromLegacy(ExtendedFloat bei) {
+      return bei.getEf();
+    }
 
     /**
      * Determines whether this object's mantissa and exponent are equal to those of
@@ -89,7 +102,9 @@ import com.upokecenter.numbers.*;
      * another object; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean EqualsInternal(ExtendedFloat otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -104,7 +119,9 @@ import com.upokecenter.numbers.*;
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean equals(ExtendedFloat other) {
       if (other == null) {
         throw new NullPointerException("other");
@@ -139,7 +156,9 @@ import com.upokecenter.numbers.*;
      * @return A quiet not-a-number.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat CreateNaN(BigInteger diag) {
       if (diag == null) {
         throw new NullPointerException("diag");
@@ -158,7 +177,9 @@ import com.upokecenter.numbers.*;
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null.
      * @throws IllegalArgumentException The parameter {@code diag} is less than 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat CreateNaN(
 BigInteger diag,
 boolean signaling,
@@ -181,7 +202,9 @@ ctx == null ? null : ctx.getEc()));
      * @param mantissaSmall The un-scaled value.
      * @param exponentSmall The binary exponent.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Create(int mantissaSmall, int exponentSmall) {
       return new ExtendedFloat(EFloat.Create(mantissaSmall, exponentSmall));
     }
@@ -193,7 +216,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Create(
 BigInteger mantissa,
 BigInteger exponent) {
@@ -237,23 +262,25 @@ BigInteger exponent) {
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromString(
 String str,
 int offset,
 int length,
 PrecisionContext ctx) {
-try {
-      return new ExtendedFloat(
-EFloat.FromString(
-str,
-offset,
-length,
-ctx == null ? null : ctx.getEc()));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+      try {
+        return new ExtendedFloat(
+  EFloat.FromString(
+  str,
+  offset,
+  length,
+  ctx == null ? null : ctx.getEc()));
+      } catch (ETrapException ex) {
+        throw TrapException.Create(ex);
+      }
+    }
 
     /**
      * Creates a binary float from a string that represents a number. See the
@@ -272,17 +299,19 @@ ctx == null ? null : ctx.getEc()));
      * exponent range to apply to the parsed number. Can be null.
      * @return The parsed number, converted to arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromString(String str, PrecisionContext ctx) {
-try {
-      return new ExtendedFloat(
-EFloat.FromString(
-str,
-ctx == null ? null : ctx.getEc()));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+      try {
+        return new ExtendedFloat(
+  EFloat.FromString(
+  str,
+  ctx == null ? null : ctx.getEc()));
+      } catch (ETrapException ex) {
+        throw TrapException.Create(ex);
+      }
+    }
 
     /**
      * Not documented yet.
@@ -296,7 +325,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code str} 's length, or {@code str} ' s
      * length minus {@code offset} is less than {@code length}.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromString(String str, int offset, int length) {
       return new ExtendedFloat(EFloat.FromString(str, offset, length));
     }
@@ -306,7 +337,9 @@ ctx == null ? null : ctx.getEc()));
      * of this value will be discarded when converting to a big integer.
      * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger ToBigInteger() {
       return new BigInteger(this.getEf().ToEInteger());
     }
@@ -317,7 +350,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      * @throws ArithmeticException This object's value is not an exact integer.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger ToBigIntegerExact() {
       return new BigInteger(this.getEf().ToEIntegerExact());
     }
@@ -333,7 +368,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest 32-bit floating-point number to this value. The return
      * value can be positive infinity or negative infinity if this value
      * exceeds the range of a 32-bit floating point number.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public float ToSingle() {
       return this.getEf().ToSingle();
     }
@@ -349,7 +386,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest 64-bit floating-point number to this value. The return
      * value can be positive infinity or negative infinity if this value
      * exceeds the range of a 64-bit floating point number.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public double ToDouble() {
       return this.getEf().ToDouble();
     }
@@ -361,7 +400,9 @@ ctx == null ? null : ctx.getEc()));
      * number to a string first.
      * @param flt A 32-bit floating-point number.
      * @return A binary float with the same value as {@code flt}.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromSingle(float flt) {
       return new ExtendedFloat(EFloat.FromSingle(flt));
     }
@@ -371,7 +412,9 @@ ctx == null ? null : ctx.getEc()));
      * @param bigint An arbitrary-precision integer.
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code bigint} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromBigInteger(BigInteger bigint) {
       if (bigint == null) {
         throw new NullPointerException("bigint");
@@ -383,7 +426,9 @@ ctx == null ? null : ctx.getEc()));
      * Converts a 64-bit integer to the same value as a binary float.
      * @param valueSmall A 64-bit signed integer.
      * @return An arbitrary-precision binary float with the exponent set to 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromInt64(long valueSmall) {
       return new ExtendedFloat(EFloat.FromInt64(valueSmall));
     }
@@ -392,7 +437,9 @@ ctx == null ? null : ctx.getEc()));
      * Creates a binary float from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
      * @return An arbitrary-precision binary float with the exponent set to 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromInt32(int valueSmaller) {
       return new ExtendedFloat(EFloat.FromInt32(valueSmaller));
     }
@@ -404,7 +451,9 @@ ctx == null ? null : ctx.getEc()));
      * number to a string first.
      * @param dbl A 64-bit floating-point number.
      * @return A binary float with the same value as {@code dbl}.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat FromDouble(double dbl) {
       return new ExtendedFloat(EFloat.FromDouble(dbl));
     }
@@ -412,7 +461,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Converts this value to an extended decimal.
      * @return An extended decimal with the same value as this extended float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal ToExtendedDecimal() {
       return new ExtendedDecimal(this.getEf().ToExtendedDecimal());
     }
@@ -430,7 +481,9 @@ ctx == null ? null : ctx.getEc()));
      * Converts this value to an extended decimal, then returns the value of that
      * decimal's ToEngineeringString method.
      * @return A text string.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public String ToEngineeringString() {
       return this.getEf().ToEngineeringString();
     }
@@ -438,71 +491,87 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Converts this value to a string, but without exponential notation.
      * @return A text string.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public String ToPlainString() {
       return this.getEf().ToPlainString();
     }
 
     /**
      * Represents the number 1.
-     */
-
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat One =
-      new ExtendedFloat(EFloat.One);
+     new ExtendedFloat(EFloat.One);
 
     /**
      * Represents the number 0.
-     */
-
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat Zero =
-      new ExtendedFloat(EFloat.Zero);
+     new ExtendedFloat(EFloat.Zero);
 
     /**
      * Represents the number negative zero.
-     */
-
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat NegativeZero =
-      new ExtendedFloat(EFloat.NegativeZero);
+     new ExtendedFloat(EFloat.NegativeZero);
 
     /**
      * Represents the number 10.
-     */
-
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat Ten =
-      new ExtendedFloat(EFloat.Ten);
+     new ExtendedFloat(EFloat.Ten);
 
     //----------------------------------------------------------------
 
     /**
      * A not-a-number value.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat NaN =
-      new ExtendedFloat(EFloat.NaN);
+     new ExtendedFloat(EFloat.NaN);
 
     /**
      * A not-a-number value that signals an invalid operation flag when it&#x27;s
      * passed as an argument to any arithmetic operation in
      * arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat SignalingNaN =
-      new ExtendedFloat(EFloat.SignalingNaN);
+     new ExtendedFloat(EFloat.SignalingNaN);
 
     /**
      * Positive infinity, greater than any other number.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat PositiveInfinity =
-      new ExtendedFloat(EFloat.PositiveInfinity);
+     new ExtendedFloat(EFloat.PositiveInfinity);
 
     /**
      * Negative infinity, less than any other number.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedFloat NegativeInfinity =
-      new ExtendedFloat(EFloat.NegativeInfinity);
+     new ExtendedFloat(EFloat.NegativeInfinity);
 
     /**
      * Returns whether this object is negative infinity.
      * @return True if this object is negative infinity; otherwise, false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsNegativeInfinity() {
       return this.getEf().IsNegativeInfinity();
     }
@@ -510,7 +579,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Returns whether this object is positive infinity.
      * @return True if this object is positive infinity; otherwise, false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsPositiveInfinity() {
       return this.getEf().IsPositiveInfinity();
     }
@@ -518,7 +589,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Returns whether this object is a not-a-number value.
      * @return True if this object is a not-a-number value; otherwise, false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsNaN() {
       return this.getEf().IsNaN();
     }
@@ -528,7 +601,9 @@ ctx == null ? null : ctx.getEc()));
      * infinity.
      * @return True if this object is positive or negative infinity; otherwise,
      * false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsInfinity() {
       return this.getEf().IsInfinity();
     }
@@ -537,7 +612,9 @@ ctx == null ? null : ctx.getEc()));
      * Gets a value indicating whether this object is finite (not infinity or NaN).
      * @return True if this object is finite (not infinity or NaN); otherwise,
      * false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isFinite() {
         return this.getEf().isFinite();
       }
@@ -547,7 +624,9 @@ ctx == null ? null : ctx.getEc()));
      * zero.
      * @return True if this object is negative, including negative zero; otherwise,
      * false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isNegative() {
         return this.getEf().isNegative();
       }
@@ -555,7 +634,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
      * @return True if this object is a quiet not-a-number value; otherwise, false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsQuietNaN() {
       return this.getEf().IsQuietNaN();
     }
@@ -565,7 +646,9 @@ ctx == null ? null : ctx.getEc()));
      * value.
      * @return True if this object is a signaling not-a-number value; otherwise,
      * false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsSignalingNaN() {
       return this.getEf().IsSignalingNaN();
     }
@@ -573,7 +656,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final int signum() {
         return this.getEf().signum();
       }
@@ -581,7 +666,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
      * @return True if this object's value equals 0; otherwise, false.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isZero() {
         return this.getEf().isZero();
       }
@@ -593,18 +680,22 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets the absolute value of this object.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Abs() {
-      return new ExtendedFloat(this.getEf().Abs());
+      return new ExtendedFloat(this.getEf().Abs(null));
     }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
      * @return An arbitrary-precision binary float. If this value is positive zero,
      * returns positive zero.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Negate() {
-      return new ExtendedFloat(this.getEf().Negate());
+      return new ExtendedFloat(this.getEf().Negate(null));
     }
 
     /**
@@ -618,7 +709,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException The result can't be exact because it would have
      * a nonterminating binary expansion.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Divide(ExtendedFloat divisor) {
       if (divisor == null) {
         throw new NullPointerException("divisor");
@@ -639,7 +732,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToSameExponent(
 ExtendedFloat divisor,
 Rounding rounding) {
@@ -662,7 +757,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
      * (NaN) if the divisor and the dividend are 0.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToIntegerNaturalScale(ExtendedFloat divisor) {
       if (divisor == null) {
         throw new NullPointerException("divisor");
@@ -681,7 +778,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return This value with trailing zeros removed. Note that if the result has
      * a very high exponent and the context says to clamp high exponents,
      * there may still be some trailing zeros in the mantissa.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Reduce(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().Reduce(ctx == null ? null : ctx.getEc()));
@@ -695,7 +794,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @param divisor Another arbitrary-precision binary float.
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RemainderNaturalScale(ExtendedFloat divisor) {
       if (divisor == null) {
         throw new NullPointerException("divisor");
@@ -716,7 +817,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * result doesn't fit the precision and exponent range without rounding.
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RemainderNaturalScale(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -760,7 +863,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToExponent(
 ExtendedFloat divisor,
 long desiredExponentSmall,
@@ -798,7 +903,9 @@ ctx == null ? null : ctx.getEc()));
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Divide(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -832,7 +939,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToExponent(
 ExtendedFloat divisor,
 long desiredExponentSmall,
@@ -873,7 +982,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
      * exponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToExponent(
 ExtendedFloat divisor,
 BigInteger exponent,
@@ -886,11 +997,11 @@ PrecisionContext ctx) {
           throw new NullPointerException("exponent");
         }
 
-     return new ExtendedFloat(
-this.getEf().DivideToExponent(
-divisor.getEf(),
-exponent.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedFloat(
+   this.getEf().DivideToExponent(
+   divisor.getEf(),
+   exponent.getEi(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -914,7 +1025,9 @@ ctx == null ? null : ctx.getEc()));
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
      * desiredExponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToExponent(
 ExtendedFloat divisor,
 BigInteger desiredExponent,
@@ -940,7 +1053,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
      * @return The absolute value of this object.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Abs(PrecisionContext context) {
       try {
         return new ExtendedFloat(this.getEf().Abs(context == null ? null :
@@ -960,7 +1075,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return An arbitrary-precision binary float. If this value is positive zero,
      * returns positive zero.
      * @throws java.lang.NullPointerException The parameter {@code context} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Negate(PrecisionContext context) {
       try {
         if (context == null) {
@@ -979,7 +1096,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The sum of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Add(ExtendedFloat otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -994,7 +1113,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The difference of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Subtract(ExtendedFloat otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -1012,7 +1133,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The difference of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Subtract(
 ExtendedFloat otherValue,
 PrecisionContext ctx) {
@@ -1037,7 +1160,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The product of the two binary floats.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Multiply(ExtendedFloat otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -1052,7 +1177,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result this * multiplicand + augend.
      * @throws java.lang.NullPointerException The parameter {@code multiplicand} or
      * {@code augend} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MultiplyAndAdd(
 ExtendedFloat multiplicand,
 ExtendedFloat augend) {
@@ -1089,7 +1216,9 @@ augend.getEf()));
      * @throws ArithmeticException The rounding mode is Rounding.Unnecessary and
      * the integer part of the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToIntegerNaturalScale(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -1122,7 +1251,9 @@ ctx == null ? null : ctx.getEc()));
      * returns not-a-number (NaN) if the divisor and the dividend are 0, or
      * if the result doesn't fit the given precision.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat DivideToIntegerZeroScale(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -1147,7 +1278,9 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A PrecisionContext object.
      * @return The remainder of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Remainder(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -1192,7 +1325,9 @@ ctx == null ? null : ctx.getEc()));
      * of integer division (the quotient) or the remainder wouldn't fit the
      * given precision.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RemainderNear(
 ExtendedFloat divisor,
 PrecisionContext ctx) {
@@ -1221,11 +1356,13 @@ ctx == null ? null : ctx.getEc()));
      * negative infinity if the result is negative infinity.
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat NextMinus(PrecisionContext ctx) {
       try {
-      return new ExtendedFloat(this.getEf().NextMinus(ctx == null ? null :
-          ctx.getEc()));
+        return new ExtendedFloat(this.getEf().NextMinus(ctx == null ? null :
+            ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1241,7 +1378,9 @@ ctx == null ? null : ctx.getEc()));
      * @return Returns the smallest value that's greater than the given value.
      * @throws IllegalArgumentException The parameter {@code ctx} is null, the
      * precision is 0, or {@code ctx} has an unlimited exponent range.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat NextPlus(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().NextPlus(ctx == null ? null : ctx.getEc()));
@@ -1265,7 +1404,9 @@ ctx == null ? null : ctx.getEc()));
      * precision is 0, or {@code ctx} has an unlimited exponent range.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat NextToward(
 ExtendedFloat otherValue,
 PrecisionContext ctx) {
@@ -1294,7 +1435,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The larger value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Max(
 ExtendedFloat first,
 ExtendedFloat second,
@@ -1324,7 +1467,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The smaller value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Min(
 ExtendedFloat first,
 ExtendedFloat second,
@@ -1355,7 +1500,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat MaxMagnitude(
 ExtendedFloat first,
 ExtendedFloat second,
@@ -1386,7 +1533,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat MinMagnitude(
 ExtendedFloat first,
 ExtendedFloat second,
@@ -1412,7 +1561,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The larger value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Max(
 ExtendedFloat first,
 ExtendedFloat second) {
@@ -1432,7 +1583,9 @@ ExtendedFloat second) {
      * @return The smaller value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat Min(
 ExtendedFloat first,
 ExtendedFloat second) {
@@ -1453,7 +1606,9 @@ ExtendedFloat second) {
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat MaxMagnitude(
 ExtendedFloat first,
 ExtendedFloat second) {
@@ -1474,7 +1629,9 @@ ExtendedFloat second) {
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat MinMagnitude(
 ExtendedFloat first,
 ExtendedFloat second) {
@@ -1502,7 +1659,9 @@ ExtendedFloat second) {
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public int compareTo(ExtendedFloat other) {
       if (other == null) {
         throw new NullPointerException("other");
@@ -1525,7 +1684,9 @@ ExtendedFloat second) {
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat CompareToWithContext(
 ExtendedFloat other,
 PrecisionContext ctx) {
@@ -1558,7 +1719,9 @@ ctx == null ? null : ctx.getEc()));
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat CompareToSignal(
 ExtendedFloat other,
 PrecisionContext ctx) {
@@ -1587,7 +1750,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The sum of thisValue and the other object.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Add(
 ExtendedFloat otherValue,
 PrecisionContext ctx) {
@@ -1616,7 +1781,9 @@ ctx == null ? null : ctx.getEc()));
      * given exponent is outside that range.
      * @throws java.lang.NullPointerException The parameter {@code desiredExponent}
      * is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Quantize(
 BigInteger desiredExponent,
 PrecisionContext ctx) {
@@ -1643,7 +1810,9 @@ ctx == null ? null : ctx.getEc()));
      * if an overflow error occurred, or the rounded result can't fit the
      * given precision, or if the context defines an exponent range and the
      * given exponent is outside that range.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Quantize(
 int desiredExponentSmall,
 PrecisionContext ctx) {
@@ -1680,7 +1849,9 @@ ctx == null ? null : ctx.getEc()));
      * of the precision context, if it defines an exponent range.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Quantize(
 ExtendedFloat otherValue,
 PrecisionContext ctx) {
@@ -1713,11 +1884,13 @@ ctx == null ? null : ctx.getEc()));
      * defines an exponent range, the new exponent must be changed to 0 when
      * rounding, and 0 is outside of the valid range of the precision
      * context.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToIntegralExact(PrecisionContext ctx) {
       try {
-     return new ExtendedFloat(this.getEf().RoundToIntegralExact(ctx == null ?
-          null : ctx.getEc()));
+        return new ExtendedFloat(this.getEf().RoundToIntegralExact(ctx == null ?
+             null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1739,7 +1912,9 @@ ctx == null ? null : ctx.getEc()));
      * and returns not-a-number (NaN) if the precision context defines an
      * exponent range, the new exponent must be changed to 0 when rounding,
      * and 0 is outside of the valid range of the precision context.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
       try {
         return new
@@ -1769,7 +1944,9 @@ ctx == null ? null : ctx.getEc()));
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToExponentExact(
 BigInteger exponent,
 PrecisionContext ctx) {
@@ -1809,7 +1986,9 @@ ctx == null ? null : ctx.getEc()));
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToExponent(
 BigInteger exponent,
 PrecisionContext ctx) {
@@ -1845,7 +2024,9 @@ ctx == null ? null : ctx.getEc()));
      * defines an exponent range, the new exponent must be changed to the
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToExponentExact(
 int exponentSmall,
 PrecisionContext ctx) {
@@ -1880,7 +2061,9 @@ ctx == null ? null : ctx.getEc()));
      * exponent range, the new exponent must be changed to the given
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToExponent(
 int exponentSmall,
 PrecisionContext ctx) {
@@ -1906,7 +2089,9 @@ ctx == null ? null : ctx.getEc()));
      * addition to the pre-existing flags). Can be null.
      * @return The product of the two binary floats.
      * @throws java.lang.NullPointerException The parameter {@code op} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Multiply(
 ExtendedFloat op,
 PrecisionContext ctx) {
@@ -1935,7 +2120,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result thisValue * multiplicand + augend.
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * augend} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MultiplyAndAdd(
 ExtendedFloat op,
 ExtendedFloat augend,
@@ -1969,7 +2156,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result thisValue * multiplicand - subtrahend.
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * subtrahend} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MultiplyAndSubtract(
 ExtendedFloat op,
 ExtendedFloat subtrahend,
@@ -1982,11 +2171,11 @@ PrecisionContext ctx) {
           throw new NullPointerException("subtrahend");
         }
 
-     return new ExtendedFloat(
-this.getEf().MultiplyAndSubtract(
-op.getEf(),
-subtrahend.getEf(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedFloat(
+   this.getEf().MultiplyAndSubtract(
+   op.getEf(),
+   subtrahend.getEf(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2000,7 +2189,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat RoundToPrecision(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().RoundToPrecision(ctx == null ? null :
@@ -2019,7 +2210,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Plus(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().Plus(ctx == null ? null : ctx.getEc()));
@@ -2037,8 +2230,7 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     * @deprecated Instead of this method use RoundToPrecision and pass a precision context
-* with the IsPrecisionInBits property set.
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
     public ExtendedFloat RoundToBinaryPrecision(PrecisionContext ctx) {
@@ -2066,11 +2258,13 @@ ctx == null ? null : ctx.getEc()));
      * number, but the return value is still NaN).
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat SquareRoot(PrecisionContext ctx) {
       try {
-     return new ExtendedFloat(this.getEf().SquareRoot(ctx == null ? null :
-          ctx.getEc()));
+        return new ExtendedFloat(this.getEf().SquareRoot(ctx == null ? null :
+             ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2089,7 +2283,9 @@ ctx == null ? null : ctx.getEc()));
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Exp(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().Exp(ctx == null ? null : ctx.getEc()));
@@ -2113,7 +2309,9 @@ ctx == null ? null : ctx.getEc()));
      * imaginary part equal to pi, but the return value is still NaN.).
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Log(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().Log(ctx == null ? null : ctx.getEc()));
@@ -2136,7 +2334,9 @@ ctx == null ? null : ctx.getEc()));
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
      * or the precision is unlimited (the context's Precision property is
      * 0).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Log10(PrecisionContext ctx) {
       try {
         return new ExtendedFloat(this.getEf().Log10(ctx == null ? null : ctx.getEc()));
@@ -2156,7 +2356,9 @@ ctx == null ? null : ctx.getEc()));
      * precision is unlimited (the context's Precision property is 0), and
      * the exponent has a fractional part.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Pow(ExtendedFloat exponent, PrecisionContext ctx) {
       try {
         if (exponent == null) {
@@ -2180,7 +2382,9 @@ ctx == null ? null : ctx.getEc()));
      * addition to the pre-existing flags).
      * @return This^exponent. Signals the flag FlagInvalid and returns NaN if this
      * object and exponent are both 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Pow(int exponentSmall, PrecisionContext ctx) {
       try {
         return new ExtendedFloat(
@@ -2197,7 +2401,9 @@ ctx == null ? null : ctx.getEc()));
      * @param exponentSmall A 32-bit signed integer.
      * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Pow(int exponentSmall) {
       return new ExtendedFloat(this.getEf().Pow(exponentSmall));
     }
@@ -2212,7 +2418,9 @@ ctx == null ? null : ctx.getEc()));
      * @return π rounded to the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedFloat PI(PrecisionContext ctx) {
       return new ExtendedFloat(EFloat.PI(ctx == null ? null : ctx.getEc()));
     }
@@ -2222,7 +2430,9 @@ ctx == null ? null : ctx.getEc()));
      * the left.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointLeft(int places) {
       return new ExtendedFloat(this.getEf().MovePointLeft(places));
     }
@@ -2236,7 +2446,9 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointLeft(int places, PrecisionContext ctx) {
       try {
         return new ExtendedFloat(
@@ -2255,7 +2467,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointLeft(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2274,7 +2488,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointLeft(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2283,10 +2499,10 @@ PrecisionContext ctx) {
           throw new NullPointerException("bigPlaces");
         }
 
-     return new ExtendedFloat(
-this.getEf().MovePointLeft(
-bigPlaces.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedFloat(
+   this.getEf().MovePointLeft(
+   bigPlaces.getEi(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2297,7 +2513,9 @@ ctx == null ? null : ctx.getEc()));
      * the right.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointRight(int places) {
       return new ExtendedFloat(this.getEf().MovePointRight(places));
     }
@@ -2311,7 +2529,9 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointRight(int places, PrecisionContext ctx) {
       try {
         return new ExtendedFloat(
@@ -2330,7 +2550,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointRight(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2350,7 +2572,9 @@ ctx == null ? null : ctx.getEc()));
      * more than 0.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat MovePointRight(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2372,7 +2596,9 @@ ctx == null ? null : ctx.getEc()));
      * Returns a number similar to this number but with the scale adjusted.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat ScaleByPowerOfTwo(int places) {
       return new ExtendedFloat(this.getEf().ScaleByPowerOfTwo(places));
     }
@@ -2385,7 +2611,9 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat ScaleByPowerOfTwo(int places, PrecisionContext ctx) {
       try {
         return new ExtendedFloat(
@@ -2403,7 +2631,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat ScaleByPowerOfTwo(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2421,7 +2651,9 @@ ctx == null ? null : ctx.getEc()));
      * @return A number whose scale is increased by {@code bigPlaces}.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat ScaleByPowerOfTwo(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2443,7 +2675,9 @@ ctx == null ? null : ctx.getEc()));
      * Finds the number of digits in this number's mantissa. Returns 1 if this
      * value is 0, and 0 if this value is infinity or NaN.
      * @return An arbitrary-precision integer.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger Precision() {
       return new BigInteger(this.getEf().Precision());
     }
@@ -2453,7 +2687,9 @@ ctx == null ? null : ctx.getEc()));
      * will be this number's exponent. Returns 1 with an exponent of 0 if
      * this number is infinity or NaN.
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat Ulp() {
       return new ExtendedFloat(this.getEf().Ulp());
     }
@@ -2464,9 +2700,11 @@ ctx == null ? null : ctx.getEc()));
      * @param divisor The number to divide by.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat[] DivideAndRemainderNaturalScale(ExtendedFloat
-         divisor) {
+        divisor) {
       EFloat[] edec = this.getEf().DivideAndRemainderNaturalScale(divisor == null ?
         null : divisor.getEf());
       return new ExtendedFloat[] {
@@ -2487,10 +2725,12 @@ ctx == null ? null : ctx.getEc()));
      * result doesn't fit the precision and exponent range without rounding.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
-     */
+     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat[] DivideAndRemainderNaturalScale(
-      ExtendedFloat divisor,
-      PrecisionContext ctx) {
+     ExtendedFloat divisor,
+     PrecisionContext ctx) {
       try {
         EFloat[] edec = this.getEf().DivideAndRemainderNaturalScale(
 divisor == null ? null : divisor.getEf(),

@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     /**
      * Contains utility methods that may have use outside of the CBORObject class.
@@ -80,17 +80,17 @@ private CBORUtilities() {
       return Double.toString((double)dbl);
       // TODO: Use this version in version 3, and preserve
       // TODO: negative zeros in that version
-      // return ExtendedFloat.FromDouble(dbl).toString();
+      // return EFloat.FromDouble(dbl).toString();
     }
 
     public static String SingleToString(float sing) {
       return Float.toString((float)sing);
       // TODO: Use this version in version 3, and preserve
       // TODO: negative zeros in that version
-      // return ExtendedFloat.FromSingle(dbl).toString();
+      // return EFloat.FromSingle(dbl).toString();
     }
 
-    public static BigInteger BigIntegerFromSingle(float flt) {
+    public static EInteger BigIntegerFromSingle(float flt) {
       int value = Float.floatToRawIntBits(flt);
       int fpexponent = (int)((value >> 23) & 0xff);
       if (fpexponent == 255) {
@@ -103,7 +103,7 @@ private CBORUtilities() {
         mantissa |= 1 << 23;
       }
       if (mantissa == 0) {
-        return BigInteger.valueOf(0);
+        return EInteger.FromInt32(0);
       }
       fpexponent -= 150;
       while ((mantissa & 1) == 0) {
@@ -115,14 +115,14 @@ private CBORUtilities() {
         if (neg) {
           mantissa = -mantissa;
         }
-        return BigInteger.valueOf(mantissa);
+        return EInteger.FromInt32(mantissa);
       }
       if (fpexponent > 0) {
         // Value is an integer
-        BigInteger bigmantissa = BigInteger.valueOf(mantissa);
-        bigmantissa = bigmantissa.shiftLeft(fpexponent);
+        EInteger bigmantissa = EInteger.FromInt32(mantissa);
+        bigmantissa = bigmantissa.ShiftLeft(fpexponent);
         if (neg) {
-          bigmantissa=(bigmantissa).negate();
+          bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       } else {
@@ -131,7 +131,7 @@ private CBORUtilities() {
         for (int i = 0; i < exp && mantissa != 0; ++i) {
           mantissa >>= 1;
         }
-        return BigInteger.valueOf(mantissa);
+        return EInteger.FromInt32(mantissa);
       }
     }
 
@@ -194,11 +194,11 @@ private CBORUtilities() {
       return new String(chars, 0, count);
     }
 
-    public static String BigIntToString(BigInteger bigint) {
+    public static String BigIntToString(EInteger bigint) {
       return bigint.toString();
     }
 
-    public static BigInteger BigIntegerFromDouble(double dbl) {
+    public static EInteger BigIntegerFromDouble(double dbl) {
       long lvalue = Double.doubleToRawLongBits(dbl);
       int value0 = ((int)(lvalue & 0xFFFFFFFFL));
       int value1 = ((int)((lvalue >> 32) & 0xFFFFFFFFL));
@@ -224,7 +224,7 @@ private CBORUtilities() {
       }
       floatExponent -= 1075;
       byte[] bytes = new byte[9];
-      BigInteger bigmantissa;
+      EInteger bigmantissa;
       bytes[0] = (byte)(value0 & 0xff);
       bytes[1] = (byte)((value0 >> 8) & 0xff);
       bytes[2] = (byte)((value0 >> 16) & 0xff);
@@ -234,26 +234,26 @@ private CBORUtilities() {
       bytes[6] = (byte)((value1 >> 16) & 0xff);
       bytes[7] = (byte)((value1 >> 24) & 0xff);
       bytes[8] = (byte)0;
-      bigmantissa = BigInteger.fromBytes(bytes, true);
+      bigmantissa = EInteger.FromBytes(bytes, true);
       if (floatExponent == 0) {
         if (neg) {
-          bigmantissa = bigmantissa.negate();
+          bigmantissa = bigmantissa.Negate();
         }
         return bigmantissa;
       }
       if (floatExponent > 0) {
         // Value is an integer
-        bigmantissa = bigmantissa.shiftLeft(floatExponent);
+        bigmantissa = bigmantissa.ShiftLeft(floatExponent);
         if (neg) {
-          bigmantissa=(bigmantissa).negate();
+          bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       } else {
         // Value has a fractional part
         int exp = -floatExponent;
-        bigmantissa = bigmantissa.shiftRight(exp);
+        bigmantissa = bigmantissa.ShiftRight(exp);
         if (neg) {
-          bigmantissa=(bigmantissa).negate();
+          bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       }

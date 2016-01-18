@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   final class FastInteger2 {
     private static final class MutableNumber {
@@ -23,9 +23,9 @@ import com.upokecenter.util.*;
         this.data[0] = val;
       }
 
-      BigInteger ToBigInteger() {
+      EInteger ToEInteger() {
         if (this.wordCount == 1 && (this.data[0] >> 31) == 0) {
-          return BigInteger.valueOf((int)this.data[0]);
+          return EInteger.FromInt64((int)this.data[0]);
         }
         byte[] bytes = new byte[(this.wordCount * 4) + 1];
         for (int i = 0; i < this.wordCount; ++i) {
@@ -35,7 +35,7 @@ import com.upokecenter.util.*;
           bytes[(i * 4) + 3] = (byte)((this.data[i] >> 24) & 0xff);
         }
         bytes[bytes.length - 1] = (byte)0;
-        return BigInteger.fromBytes(bytes, true);
+        return EInteger.FromBytes(bytes, true);
       }
 
       int[] GetLastWordsInternal(int numWords32Bit) {
@@ -303,15 +303,15 @@ import com.upokecenter.util.*;
 
     private int smallValue;  // if integerMode is 0
     private MutableNumber mnum;  // if integerMode is 1
-    private BigInteger largeValue;  // if integerMode is 2
+    private EInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static final BigInteger ValueInt32MinValue =
-      BigInteger.valueOf(Integer.MIN_VALUE);
+    private static final EInteger ValueInt32MinValue =
+      EInteger.FromInt64(Integer.MIN_VALUE);
 
-    private static final BigInteger ValueInt32MaxValue =
-      BigInteger.valueOf(Integer.MAX_VALUE);
+    private static final EInteger ValueInt32MaxValue =
+      EInteger.FromInt64(Integer.MAX_VALUE);
 
-    private static final BigInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).negate();
+    private static final EInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).Negate();
 
     FastInteger2(int value) {
       this.smallValue = value;
@@ -324,15 +324,15 @@ import com.upokecenter.util.*;
         case 1:
           return this.mnum.ToInt32();
         case 2:
-          return this.largeValue.intValueChecked();
+          return this.largeValue.AsInt32Checked();
         default: throw new IllegalStateException();
       }
     }
 
-    static BigInteger WordsToBigInteger(int[] words) {
+    static EInteger WordsToEInteger(int[] words) {
       int wordCount = words.length;
       if (wordCount == 1 && (words[0] >> 31) == 0) {
-        return BigInteger.valueOf((int)words[0]);
+        return EInteger.FromInt64((int)words[0]);
       }
       byte[] bytes = new byte[(wordCount * 4) + 1];
       for (int i = 0; i < wordCount; ++i) {
@@ -342,7 +342,7 @@ import com.upokecenter.util.*;
         bytes[(i * 4) + 3] = (byte)((words[i] >> 24) & 0xff);
       }
       bytes[bytes.length - 1] = (byte)0;
-      return BigInteger.fromBytes(bytes, true);
+      return EInteger.FromBytes(bytes, true);
     }
 
     FastInteger2 SetInt(int val) {
@@ -382,8 +382,8 @@ import com.upokecenter.util.*;
                 // if either operand is negative
                 // convert to big integer
                 this.integerMode = 2;
-                this.largeValue = BigInteger.valueOf(this.smallValue);
-                this.largeValue = this.largeValue.multiply(BigInteger.valueOf(val));
+                this.largeValue = EInteger.FromInt32(this.smallValue);
+                this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
               }
             } else {
               smallValue *= val;
@@ -392,14 +392,14 @@ import com.upokecenter.util.*;
           case 1:
             if (val < 0) {
               this.integerMode = 2;
-              this.largeValue = this.mnum.ToBigInteger();
-              this.largeValue = this.largeValue.multiply(BigInteger.valueOf(val));
+              this.largeValue = this.mnum.ToEInteger();
+              this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
             } else {
               mnum.Multiply(val);
             }
             break;
           case 2:
-            this.largeValue = this.largeValue.multiply(BigInteger.valueOf(val));
+            this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
             break;
           default: throw new IllegalStateException();
         }
@@ -414,7 +414,7 @@ import com.upokecenter.util.*;
      * @return This instance.
      */
     FastInteger2 Subtract(FastInteger2 val) {
-      BigInteger valValue;
+      EInteger valValue;
       switch (this.integerMode) {
         case 0:
           if (val.integerMode == 0) {
@@ -423,16 +423,16 @@ import com.upokecenter.util.*;
                 (vsv > 0 && Integer.MIN_VALUE + vsv > this.smallValue)) {
               // would overflow, convert to large
               this.integerMode = 2;
-              this.largeValue = BigInteger.valueOf(this.smallValue);
-              this.largeValue = this.largeValue.subtract(BigInteger.valueOf(vsv));
+              this.largeValue = EInteger.FromInt32(this.smallValue);
+              this.largeValue = this.largeValue.Subtract(EInteger.FromInt32(vsv));
             } else {
               this.smallValue -= vsv;
             }
           } else {
             integerMode = 2;
-            largeValue = BigInteger.valueOf(smallValue);
+            largeValue = EInteger.FromInt32(smallValue);
             valValue = val.AsBigInteger();
-            largeValue = largeValue.subtract(valValue);
+            largeValue = largeValue.Subtract(valValue);
           }
           break;
         case 1:
@@ -444,14 +444,14 @@ import com.upokecenter.util.*;
             mnum.SubtractInt(val.smallValue);
           } else {
             integerMode = 2;
-            largeValue = mnum.ToBigInteger();
+            largeValue = mnum.ToEInteger();
             valValue = val.AsBigInteger();
-            largeValue = largeValue.subtract(valValue);
+            largeValue = largeValue.Subtract(valValue);
           }
           break;
         case 2:
           valValue = val.AsBigInteger();
-          this.largeValue = this.largeValue.subtract(valValue);
+          this.largeValue = this.largeValue.Subtract(valValue);
           break;
         default: throw new IllegalStateException();
       }
@@ -472,8 +472,8 @@ import com.upokecenter.util.*;
                 (val > 0 && Integer.MIN_VALUE + val > this.smallValue)) {
           // would overflow, convert to large
           this.integerMode = 2;
-          this.largeValue = BigInteger.valueOf(this.smallValue);
-          this.largeValue = this.largeValue.subtract(BigInteger.valueOf(val));
+          this.largeValue = EInteger.FromInt32(this.smallValue);
+          this.largeValue = this.largeValue.Subtract(EInteger.FromInt32(val));
         } else {
           this.smallValue -= val;
         }
@@ -483,7 +483,7 @@ import com.upokecenter.util.*;
     }
 
     FastInteger2 Add(FastInteger2 val) {
-      BigInteger valValue;
+      EInteger valValue;
       switch (this.integerMode) {
         case 0:
           if (val.integerMode == 0) {
@@ -498,17 +498,17 @@ import com.upokecenter.util.*;
                 this.mnum.Add(val.smallValue);
               } else {
                 this.integerMode = 2;
-                this.largeValue = BigInteger.valueOf(this.smallValue);
-                this.largeValue = this.largeValue.add(BigInteger.valueOf(val.smallValue));
+                this.largeValue = EInteger.FromInt32(this.smallValue);
+                this.largeValue = this.largeValue.Add(EInteger.FromInt64(val.smallValue));
               }
             } else {
               this.smallValue += val.smallValue;
             }
           } else {
             integerMode = 2;
-            largeValue = BigInteger.valueOf(smallValue);
+            largeValue = EInteger.FromInt32(smallValue);
             valValue = val.AsBigInteger();
-            largeValue = largeValue.add(valValue);
+            largeValue = largeValue.Add(valValue);
           }
           break;
         case 1:
@@ -516,14 +516,14 @@ import com.upokecenter.util.*;
             this.mnum.Add(val.smallValue);
           } else {
             integerMode = 2;
-            largeValue = mnum.ToBigInteger();
+            largeValue = mnum.ToEInteger();
             valValue = val.AsBigInteger();
-            largeValue = largeValue.add(valValue);
+            largeValue = largeValue.Add(valValue);
           }
           break;
         case 2:
           valValue = val.AsBigInteger();
-          this.largeValue = this.largeValue.add(valValue);
+          this.largeValue = this.largeValue.Add(valValue);
           break;
         default: throw new IllegalStateException();
       }
@@ -531,7 +531,7 @@ import com.upokecenter.util.*;
     }
 
     FastInteger2 AddInt(int val) {
-      BigInteger valValue;
+      EInteger valValue;
       switch (this.integerMode) {
         case 0:
           if ((this.smallValue < 0 && (int)val < Integer.MIN_VALUE -
@@ -544,8 +544,8 @@ import com.upokecenter.util.*;
               this.mnum.Add(val);
             } else {
               this.integerMode = 2;
-              this.largeValue = BigInteger.valueOf(this.smallValue);
-              this.largeValue = this.largeValue.add(BigInteger.valueOf(val));
+              this.largeValue = EInteger.FromInt32(this.smallValue);
+              this.largeValue = this.largeValue.Add(EInteger.FromInt32(val));
             }
           } else {
             smallValue += val;
@@ -556,14 +556,14 @@ import com.upokecenter.util.*;
             this.mnum.Add(val);
           } else {
             integerMode = 2;
-            largeValue = mnum.ToBigInteger();
-            valValue = BigInteger.valueOf(val);
-            largeValue = largeValue.add(valValue);
+            largeValue = mnum.ToEInteger();
+            valValue = EInteger.FromInt32(val);
+            largeValue = largeValue.Add(valValue);
           }
           break;
         case 2:
-          valValue = BigInteger.valueOf(val);
-          this.largeValue = this.largeValue.add(valValue);
+          valValue = EInteger.FromInt32(val);
+          this.largeValue = this.largeValue.Add(valValue);
           break;
         default: throw new IllegalStateException();
       }
@@ -577,7 +577,7 @@ import com.upokecenter.util.*;
         case 1:
           return this.mnum.CanFitInInt32();
           case 2: {
-            return this.largeValue.canFitInInt();
+            return this.largeValue.CanFitInInt32();
           }
         default:
           throw new IllegalStateException();
@@ -601,12 +601,12 @@ import com.upokecenter.util.*;
         }
       }
 
-    BigInteger AsBigInteger() {
+    EInteger AsBigInteger() {
       switch (this.integerMode) {
         case 0:
-          return BigInteger.valueOf(this.smallValue);
+          return EInteger.FromInt32(this.smallValue);
         case 1:
-          return this.mnum.ToBigInteger();
+          return this.mnum.ToEInteger();
         case 2:
           return this.largeValue;
         default: throw new IllegalStateException();

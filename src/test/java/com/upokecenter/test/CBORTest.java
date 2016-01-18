@@ -367,47 +367,45 @@ cbor.AsBigInteger());
     public void TestCBORInfinity() {
       {
         String stringTemp =
-          CBORObject.FromObject(ExtendedRational.NegativeInfinity).toString();
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf).toString();
         Assert.assertEquals(
         "-Infinity",
         stringTemp);
       }
       {
         String stringTemp =
-          CBORObject.FromObject(ExtendedRational.PositiveInfinity).toString();
+          CBORObject.FromObject(CBORTestCommon.RatPosInf).toString();
         Assert.assertEquals(
         "Infinity",
         stringTemp);
       }
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.FloatNegInf));
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedRational.PositiveInfinity));
-      if (!(CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.RatPosInf));
+      if (!(CBORObject.FromObject(CBORTestCommon.FloatNegInf)
                     .IsInfinity()))Assert.fail();
-      if (!(CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+      if (!(CBORObject.FromObject(CBORTestCommon.RatPosInf)
                     .IsInfinity()))Assert.fail();
-      if (!(CBORObject.FromObject(ExtendedRational.NegativeInfinity)
+      if (!(CBORObject.FromObject(CBORTestCommon.FloatNegInf)
                     .IsNegativeInfinity()))Assert.fail();
-      if (!(CBORObject.FromObject(ExtendedRational.PositiveInfinity)
+      if (!(CBORObject.FromObject(CBORTestCommon.RatPosInf)
                     .IsPositiveInfinity()))Assert.fail();
-      if (!(CBORObject.PositiveInfinity.IsInfinity()))Assert.fail();
       if (!(CBORObject.PositiveInfinity.IsPositiveInfinity()))Assert.fail();
-      if (!(CBORObject.NegativeInfinity.IsInfinity()))Assert.fail();
       if (!(CBORObject.NegativeInfinity.IsNegativeInfinity()))Assert.fail();
       if (!(CBORObject.NaN.IsNaN()))Assert.fail();
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.DecNegInf));
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.NegativeInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.FloatNegInf));
 
   CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Double.NEGATIVE_INFINITY));
 
   CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Float.NEGATIVE_INFINITY));
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedDecimal.PositiveInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.DecPosInf));
 
-  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(ExtendedFloat.PositiveInfinity));
+  CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(CBORTestCommon.FloatPosInf));
 
   CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(Double.POSITIVE_INFINITY));
 
@@ -447,19 +445,19 @@ AddSubCompare(objectTemp, objectTemp2);
       cbor =
 
         CBORObject.FromObjectAndTag(
-          CBORObject.FromObject(ExtendedFloat.NegativeInfinity),
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
-          CBORObject.FromObject(ExtendedDecimal.NegativeInfinity),
+          CBORObject.FromObject(CBORTestCommon.DecNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
         CBORObject.FromObjectAndTag(
-          CBORObject.FromObject(ExtendedRational.NegativeInfinity),
+          CBORObject.FromObject(CBORTestCommon.FloatNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
     }
@@ -1167,7 +1165,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         maxuint };
       if (CBORObject.True.isTagged())Assert.fail();
       Assert.assertEquals(
-        BigInteger.valueOf(0).subtract(BigInteger.valueOf(1)),
+        BigInteger.valueOf(-1),
         CBORObject.True.getInnermostTag());
       BigInteger[] tagstmp = CBORObject.True.GetTags();
       Assert.assertEquals(0, tagstmp.length);
@@ -1222,14 +1220,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                 Assert.assertEquals(stringTemp, bigintTemp.add(BigInteger.valueOf(1)), bi[0]);
               }
             }
-            if (!bi[1].equals(bigintTemp)) {
+            if (!bi[1].equals((Object)bigintTemp)) {
               {
                 String stringTemp = String.format(java.util.Locale.US,"Inner tag doesn't match: %s",
                     obj2);
                 Assert.assertEquals(stringTemp, bigintTemp, bi[1]);
               }
             }
-            if (!obj2.getInnermostTag().equals(bigintTemp)) {
+            if (!obj2.getInnermostTag().equals((Object)bigintTemp)) {
               {
                 String stringTemp = String.format(java.util.Locale.US,"Innermost tag doesn't match: %s",
                     obj2);

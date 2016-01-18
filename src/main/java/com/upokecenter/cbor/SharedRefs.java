@@ -8,7 +8,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.util.*;
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class SharedRefs {
     private final List<CBORObject> sharedObjects;
@@ -36,15 +36,15 @@ import com.upokecenter.util.*;
       return this.sharedObjects.get(index);
     }
 
-    public CBORObject GetObject(BigInteger bigIndex) {
+    public CBORObject GetObject(EInteger bigIndex) {
       if (bigIndex.signum() < 0) {
         throw new CBORException("Unexpected index");
       }
-      if (!bigIndex.canFitInInt()) {
+      if (!bigIndex.CanFitInInt32()) {
         throw new CBORException("Index " + bigIndex +
                     " is bigger than supported ");
       }
-      int index = bigIndex.intValueChecked();
+      int index = bigIndex.AsInt32Checked();
       if (index >= this.sharedObjects.size()) {
         throw new CBORException("Index " + index + " is not valid");
       }

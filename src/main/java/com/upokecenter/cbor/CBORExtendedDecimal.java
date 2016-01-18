@@ -7,74 +7,74 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORExtendedDecimal implements ICBORNumber
   {
     public boolean IsPositiveInfinity(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.IsPositiveInfinity();
     }
 
     public boolean IsInfinity(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.IsInfinity();
     }
 
     public boolean IsNegativeInfinity(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.IsNegativeInfinity();
     }
 
     public boolean IsNaN(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.IsNaN();
     }
 
     public double AsDouble(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.ToDouble();
     }
 
-    public ExtendedDecimal AsExtendedDecimal(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+    public EDecimal AsExtendedDecimal(Object obj) {
+      EDecimal ed = (EDecimal)obj;
       return ed;
     }
 
-    public ExtendedFloat AsExtendedFloat(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+    public EFloat AsExtendedFloat(Object obj) {
+      EDecimal ed = (EDecimal)obj;
       return ed.ToExtendedFloat();
     }
 
     public float AsSingle(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.ToSingle();
     }
 
-    public BigInteger AsBigInteger(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
-      return ed.ToBigInteger();
+    public EInteger AsBigInteger(Object obj) {
+      EDecimal ed = (EDecimal)obj;
+      return ed.ToEInteger();
     }
 
     public long AsInt64(Object obj) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       if (this.CanTruncatedIntFitInInt64(obj)) {
-        BigInteger bi = ef.ToBigInteger();
-        return bi.longValueChecked();
+        EInteger bi = ef.ToEInteger();
+        return bi.AsInt64Checked();
       }
       throw new ArithmeticException("This Object's value is out of range");
     }
 
     public boolean CanFitInSingle(Object obj) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       return (!ef.isFinite()) ||
-      (ef.compareTo(ExtendedDecimal.FromSingle(ef.ToSingle())) == 0);
+      (ef.compareTo(EDecimal.FromSingle(ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       return (!ef.isFinite()) ||
-      (ef.compareTo(ExtendedDecimal.FromDouble(ef.ToDouble())) == 0);
+      (ef.compareTo(EDecimal.FromDouble(ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {
@@ -86,57 +86,57 @@ import com.upokecenter.util.*;
     }
 
     public boolean CanTruncatedIntFitInInt64(Object obj) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       if (!ef.isFinite()) {
         return false;
       }
-      if (ef.signum() == 0) {
+      if (ef.isZero()) {
         return true;
       }
-      if (ef.getExponent().compareTo(BigInteger.valueOf(21)) >= 0) {
+      if (ef.getExponent().compareTo(EInteger.FromInt64(21)) >= 0) {
         return false;
       }
-      BigInteger bi = ef.ToBigInteger();
-      return bi.bitLength() <= 63;
+      EInteger bi = ef.ToEInteger();
+      return bi.GetSignedBitLength() <= 63;
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       if (!ef.isFinite()) {
         return false;
       }
-      if (ef.signum() == 0) {
+      if (ef.isZero()) {
         return true;
       }
-      if (ef.getExponent().compareTo(BigInteger.valueOf(11)) >= 0) {
+      if (ef.getExponent().compareTo(EInteger.FromInt64(11)) >= 0) {
         return false;
       }
-      BigInteger bi = ef.ToBigInteger();
-      return bi.canFitInInt();
+      EInteger bi = ef.ToEInteger();
+      return bi.CanFitInInt32();
     }
 
     public boolean IsZero(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
-      return ed.signum() == 0;
+      EDecimal ed = (EDecimal)obj;
+      return ed.isZero();
     }
 
     public int Sign(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.IsNaN() ? 2 : ed.signum();
     }
 
     public boolean IsIntegral(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.isFinite() && ((ed.getExponent().signum() >= 0) ||
-      (ed.compareTo(ExtendedDecimal.FromBigInteger(ed.ToBigInteger())) ==
+      (ed.compareTo(EDecimal.FromEInteger(ed.ToEInteger())) ==
       0));
     }
 
     public int AsInt32(Object obj, int minValue, int maxValue) {
-      ExtendedDecimal ef = (ExtendedDecimal)obj;
+      EDecimal ef = (EDecimal)obj;
       if (this.CanTruncatedIntFitInInt32(obj)) {
-        BigInteger bi = ef.ToBigInteger();
-        int ret = bi.intValueChecked();
+        EInteger bi = ef.ToEInteger();
+        int ret = bi.AsInt32Checked();
         if (ret >= minValue && ret <= maxValue) {
           return ret;
         }
@@ -145,16 +145,16 @@ import com.upokecenter.util.*;
     }
 
     public Object Negate(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.Negate();
     }
 
     public Object Abs(Object obj) {
-      ExtendedDecimal ed = (ExtendedDecimal)obj;
+      EDecimal ed = (EDecimal)obj;
       return ed.Abs();
     }
 
-    public ExtendedRational AsExtendedRational(Object obj) {
-      return ExtendedRational.FromExtendedDecimal((ExtendedDecimal)obj);
+    public ERational AsExtendedRational(Object obj) {
+      return ERational.FromExtendedDecimal((EDecimal)obj);
     }
   }

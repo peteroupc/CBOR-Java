@@ -9,7 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   final class StringOutput {
     private final StringBuilder builder;

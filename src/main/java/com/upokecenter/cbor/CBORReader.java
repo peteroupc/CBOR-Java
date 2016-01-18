@@ -9,7 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORReader {
     private final SharedRefs sharedRefs;
@@ -106,7 +106,7 @@ CBORTypeFilter filter) throws java.io.IOException {
         return cbor;
       }
       long uadditional = (long)additional;
-      BigInteger bigintAdditional = BigInteger.valueOf(0);
+      EInteger bigintAdditional = EInteger.FromInt32(0);
       boolean hasBigAdditional = false;
       data = new byte[8];
       int lowAdditional = 0;
@@ -156,7 +156,7 @@ CBORTypeFilter filter) throws java.io.IOException {
               uabytes[7] = data[0];
               uabytes[8] = 0;
               hasBigAdditional = true;
-              bigintAdditional = BigInteger.fromBytes(uabytes, true);
+              bigintAdditional = EInteger.FromBytes(uabytes, true);
             } else {
               uadditional = ((long)(data[0] & (long)0xff)) << 56;
               uadditional |= ((long)(data[1] & (long)0xff)) << 48;
@@ -471,7 +471,7 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
               break;
             case 25:
               // stringref tag
-              return this.stringRefs.GetString(o.AsBigInteger());
+              return this.stringRefs.GetString(o.AsEInteger());
             case 28:
               // shareable Object
               this.addSharedRef = false;
@@ -486,7 +486,7 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
               break;
             case 29:
               // shared Object reference
-              return this.sharedRefs.GetObject(o.AsBigInteger());
+              return this.sharedRefs.GetObject(o.AsEInteger());
           }
 
           return CBORObject.FromObjectAndTag(
@@ -495,7 +495,7 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
         }
         return CBORObject.FromObjectAndTag(
           o,
-          BigInteger.valueOf(uadditional));
+          EInteger.FromInt64(uadditional));
       }
       throw new CBORException("Unexpected data encountered");
     }
@@ -619,11 +619,11 @@ int expectedType) throws java.io.IOException {
       }
     }
 
-    private static BigInteger ToUnsignedBigInteger(long val) {
-      BigInteger lval = BigInteger.valueOf(val & ~(1L << 63));
+    private static EInteger ToUnsignedBigInteger(long val) {
+      EInteger lval = EInteger.FromInt64(val & ~(1L << 63));
       if ((val >> 63) != 0) {
-        BigInteger bigintAdd = BigInteger.valueOf(1).shiftLeft(63);
-        lval = lval.add(bigintAdd);
+        EInteger bigintAdd = EInteger.FromInt32(1).ShiftLeft(63);
+        lval = lval.Add(bigintAdd);
       }
       return lval;
     }

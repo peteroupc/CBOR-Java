@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
   class CBORInteger implements ICBORNumber
   {
@@ -31,20 +31,20 @@ import com.upokecenter.util.*;
       return ((Long)obj).doubleValue();
     }
 
-    public ExtendedDecimal AsExtendedDecimal(Object obj) {
-      return ExtendedDecimal.FromInt64((((Long)obj).longValue()));
+    public EDecimal AsExtendedDecimal(Object obj) {
+      return EDecimal.FromInt64((((Long)obj).longValue()));
     }
 
-    public ExtendedFloat AsExtendedFloat(Object obj) {
-      return ExtendedFloat.FromInt64((((Long)obj).longValue()));
+    public EFloat AsExtendedFloat(Object obj) {
+      return EFloat.FromInt64((((Long)obj).longValue()));
     }
 
     public float AsSingle(Object obj) {
       return ((Long)obj).floatValue();
     }
 
-    public BigInteger AsBigInteger(Object obj) {
-      return BigInteger.valueOf((((Long)obj).longValue()));
+    public EInteger AsBigInteger(Object obj) {
+      return EInteger.FromInt64((((Long)obj).longValue()));
     }
 
     public long AsInt64(Object obj) {
@@ -85,7 +85,7 @@ import com.upokecenter.util.*;
     }
 
     public Object Negate(Object obj) {
-      return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (BigInteger.valueOf(1).shiftLeft(63)) :
+      return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) :
       (-((((Long)obj).longValue())));
     }
 
@@ -121,11 +121,11 @@ import com.upokecenter.util.*;
 
     public Object Abs(Object obj) {
       long val = (((Long)obj).longValue());
-      return (val == Integer.MIN_VALUE) ? (BigInteger.valueOf(1).shiftLeft(63)) : ((val < 0) ?
+      return (val == Integer.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) : ((val < 0) ?
       -val : obj);
     }
 
-public ExtendedRational AsExtendedRational(Object obj) {
-      return ExtendedRational.FromInt64((((Long)obj).longValue()));
+public ERational AsExtendedRational(Object obj) {
+      return ERational.FromInt64((((Long)obj).longValue()));
     }
   }

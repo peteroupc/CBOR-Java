@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*;
+import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     /**
      * Contains methods useful for reading and writing data, with a focus on CBOR.
@@ -110,7 +110,7 @@ private CBORDataUtilities() {
         if (i == str.length()) {
           if (preserveNegativeZero && negative) {
             return CBORObject.FromObject(
-             ExtendedDecimal.NegativeZero);
+             EDecimal.NegativeZero);
           }
           return CBORObject.FromObject(0);
         }
@@ -269,31 +269,31 @@ private CBORDataUtilities() {
             mantInt = -mantInt;
             if (preserveNegativeZero && mantInt == 0) {
               return CBORObject.FromObject(
-                ExtendedDecimal.NegativeZero);
+                EDecimal.NegativeZero);
             }
           }
           return CBORObject.FromObject(mantInt);
         } else {
-          BigInteger bigmant2 = mant.AsBigInteger();
+          EInteger bigmant2 = mant.AsBigInteger();
           if (negative) {
-            bigmant2=(bigmant2).negate();
+            bigmant2=(bigmant2).Negate();
           }
           return CBORObject.FromObject(bigmant2);
         }
       } else {
-        BigInteger bigmant = (mant == null) ? (BigInteger.valueOf(mantInt)) :
+        EInteger bigmant = (mant == null) ? (EInteger.FromInt32(mantInt)) :
           mant.AsBigInteger();
-        BigInteger bigexp = (newScale == null) ? (BigInteger.valueOf(newScaleInt)) :
+        EInteger bigexp = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) :
           newScale.AsBigInteger();
         if (negative) {
-          bigmant=(bigmant).negate();
+          bigmant=(bigmant).Negate();
         }
-        ExtendedDecimal edec;
-        edec = ExtendedDecimal.Create(
+        EDecimal edec;
+        edec = EDecimal.Create(
           bigmant,
           bigexp);
         if (negative && preserveNegativeZero && bigmant.isZero()) {
-          ExtendedDecimal negzero = ExtendedDecimal.NegativeZero;
+          EDecimal negzero = EDecimal.NegativeZero;
           negzero = negzero.Quantize(bigexp, null);
           edec = negzero.Subtract(edec);
         }

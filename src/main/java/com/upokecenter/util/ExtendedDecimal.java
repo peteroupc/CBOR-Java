@@ -102,7 +102,9 @@ import com.upokecenter.numbers.*;
      * integer if the exponent is positive or zero.
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getExponent() {
         return new BigInteger(this.getEd().getExponent());
       }
@@ -110,7 +112,9 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the absolute value of this object&#x27;s un-scaled value.
      * @return The absolute value of this object's un-scaled value.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getUnsignedMantissa() {
         return new BigInteger(this.getEd().getUnsignedMantissa());
       }
@@ -119,10 +123,19 @@ import com.upokecenter.numbers.*;
      * Gets this object&#x27;s un-scaled value.
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final BigInteger getMantissa() {
         return new BigInteger(this.getEd().getMantissa());
       }
+
+    static ExtendedDecimal ToLegacy(EDecimal ei) {
+      return new ExtendedDecimal(ei);
+    }
+    static EDecimal FromLegacy(ExtendedDecimal bei) {
+      return bei.getEd();
+    }
 
     /**
      * Determines whether this object&#x27;s mantissa and exponent are equal to
@@ -130,7 +143,9 @@ import com.upokecenter.numbers.*;
      * @param other An arbitrary-precision decimal number.
      * @return True if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean equals(ExtendedDecimal other) {
       return (other == null) ? false : this.getEd().equals(other.getEd());
     }
@@ -160,7 +175,9 @@ import com.upokecenter.numbers.*;
      * @param mantissaSmall The un-scaled value.
      * @param exponentSmall The decimal exponent.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Create(int mantissaSmall, int exponentSmall) {
       return new ExtendedDecimal(EDecimal.Create(mantissaSmall, exponentSmall));
     }
@@ -181,7 +198,9 @@ import com.upokecenter.numbers.*;
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Create(
       BigInteger mantissa,
       BigInteger exponent) {
@@ -201,7 +220,9 @@ import com.upokecenter.numbers.*;
      * @return A quiet not-a-number.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null or
      * is less than 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal CreateNaN(BigInteger diag) {
       if (diag == null) {
         throw new NullPointerException("diag");
@@ -220,7 +241,9 @@ import com.upokecenter.numbers.*;
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code diag} is null or
      * is less than 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal CreateNaN(
 BigInteger diag,
 boolean signaling,
@@ -229,12 +252,12 @@ PrecisionContext ctx) {
       if (diag == null) {
         throw new NullPointerException("diag");
       }
-    return new ExtendedDecimal(
-EDecimal.CreateNaN(
-diag.getEi(),
-signaling,
-negative,
-ctx == null ? null : ctx.getEc()));
+      return new ExtendedDecimal(
+  EDecimal.CreateNaN(
+  diag.getEi(),
+  signaling,
+  negative,
+  ctx == null ? null : ctx.getEc()));
     }
 
     /**
@@ -264,17 +287,19 @@ ctx == null ? null : ctx.getEc()));
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws java.lang.NumberFormatException The parameter {@code str} is not a correctly
      * formatted number string.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromString(String str, PrecisionContext ctx) {
-try {
-      return new ExtendedDecimal(
-EDecimal.FromString(
-str,
-ctx == null ? null : ctx.getEc()));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+      try {
+        return new ExtendedDecimal(
+  EDecimal.FromString(
+  str,
+  ctx == null ? null : ctx.getEc()));
+      } catch (ETrapException ex) {
+        throw TrapException.Create(ex);
+      }
+    }
 
     /**
      * Creates a decimal number from a string that represents a number. See
@@ -289,7 +314,9 @@ ctx == null ? null : ctx.getEc()));
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws java.lang.NumberFormatException The parameter {@code str} is not a correctly
      * formatted number string.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromString(
 String str,
 int offset,
@@ -325,23 +352,25 @@ int length) {
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws java.lang.NumberFormatException The parameter {@code str} is not a correctly
      * formatted number string.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromString(
 String str,
 int offset,
 int length,
 PrecisionContext ctx) {
-try {
-      return new ExtendedDecimal(
-EDecimal.FromString(
-str,
-offset,
-length,
-ctx == null ? null : ctx.getEc()));
-    } catch (ETrapException ex) {
- throw TrapException.Create(ex);
-}
- }
+      try {
+        return new ExtendedDecimal(
+  EDecimal.FromString(
+  str,
+  offset,
+  length,
+  ctx == null ? null : ctx.getEc()));
+      } catch (ETrapException ex) {
+        throw TrapException.Create(ex);
+      }
+    }
 
     /**
      * Compares an arbitrary-precision binary float with this instance.
@@ -351,7 +380,9 @@ ctx == null ? null : ctx.getEc()));
      * both values are NaN (even signaling NaN) and 1 if this value is NaN
      * (even signaling NaN) and the other isn't, or if the other value is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public int CompareToBinary(ExtendedFloat other) {
       return (other == null) ? 1 : this.getEd().CompareToBinary(other.getEf());
     }
@@ -361,7 +392,9 @@ ctx == null ? null : ctx.getEc()));
      * in this value will be discarded when converting to a big integer.
      * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger ToBigInteger() {
       return new BigInteger(this.getEd().ToEInteger());
     }
@@ -430,12 +463,12 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision integer.
      * @throws java.lang.ArithmeticException This object's value is infinity or NaN.
      * @throws ArithmeticException This object's value is not an exact integer.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger ToBigIntegerExact() {
       return new BigInteger(this.getEd().ToEIntegerExact());
     }
-
-    private static final BigInteger ValueOneShift62 = BigInteger.valueOf(1).shiftLeft(62);
 
     /**
      * Creates a binary floating-point number from this object&#x27;s value. Note
@@ -445,7 +478,9 @@ ctx == null ? null : ctx.getEc()));
      * convert it to a 32-bit or 64-bit floating point number (float or
      * double).
      * @return An arbitrary-precision binary float.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedFloat ToExtendedFloat() {
       return new ExtendedFloat(this.getEd().ToExtendedFloat());
     }
@@ -461,7 +496,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest 32-bit floating-point number to this value. The return
      * value can be positive infinity or negative infinity if this value
      * exceeds the range of a 32-bit floating point number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public float ToSingle() {
       return this.getEd().ToSingle();
     }
@@ -477,7 +514,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest 64-bit floating-point number to this value. The return
      * value can be positive infinity or negative infinity if this value
      * exceeds the range of a 64-bit floating point number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public double ToDouble() {
       return this.getEd().ToDouble();
     }
@@ -498,7 +537,9 @@ ctx == null ? null : ctx.getEc()));
      * <code>ExtendedDecimal.FromString("0.1")</code>).
      * @param flt A 32-bit floating-point number.
      * @return A decimal number with the same value as {@code flt}.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromSingle(float flt) {
       return new ExtendedDecimal(EDecimal.FromSingle(flt));
     }
@@ -508,7 +549,9 @@ ctx == null ? null : ctx.getEc()));
      * @param bigint An arbitrary-precision integer.
      * @return An arbitrary-precision decimal number with the exponent set to 0.
      * @throws java.lang.NullPointerException The parameter {@code bigint} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromBigInteger(BigInteger bigint) {
       if (bigint == null) {
         throw new NullPointerException("bigint");
@@ -520,7 +563,9 @@ ctx == null ? null : ctx.getEc()));
      * Creates a decimal number from a 64-bit signed integer.
      * @param valueSmall A 64-bit signed integer.
      * @return An arbitrary-precision decimal number with the exponent set to 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromInt64(long valueSmall) {
       return new ExtendedDecimal(EDecimal.FromInt64(valueSmall));
     }
@@ -529,7 +574,9 @@ ctx == null ? null : ctx.getEc()));
      * Creates a decimal number from a 32-bit signed integer.
      * @param valueSmaller A 32-bit signed integer.
      * @return An arbitrary-precision decimal number with the exponent set to 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromInt32(int valueSmaller) {
       return new ExtendedDecimal(EDecimal.FromInt32(valueSmaller));
     }
@@ -550,7 +597,9 @@ ctx == null ? null : ctx.getEc()));
      * <code>ExtendedDecimal.FromString("0.1")</code>).
      * @param dbl A 64-bit floating-point number.
      * @return A decimal number with the same value as {@code dbl}.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromDouble(double dbl) {
       return new ExtendedDecimal(EDecimal.FromDouble(dbl));
     }
@@ -561,7 +610,9 @@ ctx == null ? null : ctx.getEc()));
      * @param bigfloat An arbitrary-precision binary floating-point number.
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigfloat} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal FromExtendedFloat(ExtendedFloat bigfloat) {
       if (bigfloat == null) {
         throw new NullPointerException("bigfloat");
@@ -582,7 +633,9 @@ ctx == null ? null : ctx.getEc()));
      * Same as toString(), except that when an exponent is used it will be a
      * multiple of 3.
      * @return A text string.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public String ToEngineeringString() {
       return this.getEd().ToEngineeringString();
     }
@@ -590,36 +643,42 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Converts this value to a string, but without using exponential notation.
      * @return A text string.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public String ToPlainString() {
       return this.getEd().ToPlainString();
     }
 
     /**
      * Represents the number 1.
-     */
-
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal One =
       ExtendedDecimal.Create(BigInteger.valueOf(1), BigInteger.valueOf(0));
 
     /**
      * Represents the number 0.
-     */
-
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal Zero =
       ExtendedDecimal.Create(BigInteger.valueOf(0), BigInteger.valueOf(0));
 
     /**
      * Represents the number negative zero.
-     */
-
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal NegativeZero =
       new ExtendedDecimal(EDecimal.NegativeZero);
 
     /**
      * Represents the number 10.
-     */
-
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal Ten =
       ExtendedDecimal.Create(BigInteger.valueOf(10), BigInteger.valueOf(0));
 
@@ -627,7 +686,9 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * A not-a-number value.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal NaN =
       new ExtendedDecimal(EDecimal.NaN);
 
@@ -635,26 +696,34 @@ ctx == null ? null : ctx.getEc()));
      * A not-a-number value that signals an invalid operation flag when it&#x27;s
      * passed as an argument to any arithmetic operation in
      * arbitrary-precision decimal.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal SignalingNaN =
       new ExtendedDecimal(EDecimal.SignalingNaN);
 
     /**
      * Positive infinity, greater than any other number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal PositiveInfinity =
       new ExtendedDecimal(EDecimal.PositiveInfinity);
 
     /**
      * Negative infinity, less than any other number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static final ExtendedDecimal NegativeInfinity =
       new ExtendedDecimal(EDecimal.NegativeInfinity);
 
     /**
      * Returns whether this object is negative infinity.
      * @return True if this object is negative infinity; otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsNegativeInfinity() {
       return this.getEd().IsNegativeInfinity();
     }
@@ -662,7 +731,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Returns whether this object is positive infinity.
      * @return True if this object is positive infinity; otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsPositiveInfinity() {
       return this.getEd().IsPositiveInfinity();
     }
@@ -670,7 +741,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets a value indicating whether this object is not a number (NaN).
      * @return True if this object is not a number (NaN); otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsNaN() {
       return this.getEd().IsNaN();
     }
@@ -680,7 +753,9 @@ ctx == null ? null : ctx.getEc()));
      * infinity.
      * @return True if this object is positive or negative infinity; otherwise,
      * false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsInfinity() {
       return this.getEd().IsInfinity();
     }
@@ -689,7 +764,9 @@ ctx == null ? null : ctx.getEc()));
      * Gets a value indicating whether this object is finite (not infinity or NaN).
      * @return True if this object is finite (not infinity or NaN); otherwise,
      * false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isFinite() {
         return this.getEd().isFinite();
       }
@@ -699,7 +776,9 @@ ctx == null ? null : ctx.getEc()));
      * zero.
      * @return True if this object is negative, including negative zero; otherwise,
      * false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isNegative() {
         return this.getEd().isNegative();
       }
@@ -707,7 +786,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
      * @return True if this object is a quiet not-a-number value; otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsQuietNaN() {
       return this.getEd().IsQuietNaN();
     }
@@ -717,7 +798,9 @@ ctx == null ? null : ctx.getEc()));
      * value.
      * @return True if this object is a signaling not-a-number value; otherwise,
      * false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public boolean IsSignalingNaN() {
       return this.getEd().IsSignalingNaN();
     }
@@ -725,7 +808,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final int signum() {
         return this.getEd().signum();
       }
@@ -733,7 +818,9 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
      * @return True if this object's value equals 0; otherwise, false.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public final boolean isZero() {
         return this.getEd().isZero();
       }
@@ -745,18 +832,22 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Gets the absolute value of this object.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Abs() {
-      return new ExtendedDecimal(this.getEd().Abs());
+      return new ExtendedDecimal(this.getEd().Abs(null));
     }
 
     /**
      * Gets an object with the same value as this one, but with the sign reversed.
      * @return An arbitrary-precision decimal number. If this value is positive
      * zero, returns positive zero.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Negate() {
-      return new ExtendedDecimal(this.getEd().Negate());
+      return new ExtendedDecimal(this.getEd().Negate(null));
     }
 
     /**
@@ -769,7 +860,9 @@ ctx == null ? null : ctx.getEc()));
      * Returns NaN if the result can't be exact because it would have a
      * nonterminating decimal expansion.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Divide(ExtendedDecimal divisor) {
       if (divisor == null) {
         throw new NullPointerException("divisor");
@@ -790,7 +883,9 @@ ctx == null ? null : ctx.getEc()));
      * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
      * not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToSameExponent(
 ExtendedDecimal divisor,
 Rounding rounding) {
@@ -813,7 +908,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
      * (NaN) if the divisor and the dividend are 0.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToIntegerNaturalScale(ExtendedDecimal
                     divisor) {
       if (divisor == null) {
@@ -833,7 +930,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return This value with trailing zeros removed. Note that if the result has
      * a very high exponent and the context says to clamp high exponents,
      * there may still be some trailing zeros in the mantissa.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Reduce(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().Reduce(ctx == null ? null : ctx.getEc()));
@@ -848,7 +947,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @param divisor The number to divide by.
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RemainderNaturalScale(ExtendedDecimal divisor) {
       if (divisor == null) {
         throw new NullPointerException("divisor");
@@ -869,7 +970,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * result doesn't fit the precision and exponent range without rounding.
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RemainderNaturalScale(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -912,7 +1015,9 @@ ctx == null ? null : ctx.getEc()));
      * not-a-number (NaN) if the rounding mode is Rounding.Unnecessary and
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToExponent(
 ExtendedDecimal divisor,
 long desiredExponentSmall,
@@ -948,7 +1053,9 @@ ctx == null ? null : ctx.getEc()));
      * expansion; or, the rounding mode is Rounding.Unnecessary and the
      * result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Divide(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -956,10 +1063,10 @@ PrecisionContext ctx) {
         if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(
-this.getEd().Divide(
-divisor.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().Divide(
+   divisor.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -982,7 +1089,9 @@ ctx == null ? null : ctx.getEc()));
      * (NaN) if the rounding mode is Rounding.Unnecessary and the result is
      * not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToExponent(
 ExtendedDecimal divisor,
 long desiredExponentSmall,
@@ -1023,7 +1132,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * the result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
      * exponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToExponent(
 ExtendedDecimal divisor,
 BigInteger exponent,
@@ -1035,11 +1146,11 @@ PrecisionContext ctx) {
         if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-   return new ExtendedDecimal(
-this.getEd().DivideToExponent(
-divisor.getEd(),
-exponent.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+     this.getEd().DivideToExponent(
+     divisor.getEd(),
+     exponent.getEi(),
+     ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1062,7 +1173,9 @@ ctx == null ? null : ctx.getEc()));
      * result is not exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} or {@code
      * desiredExponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToExponent(
 ExtendedDecimal divisor,
 BigInteger desiredExponent,
@@ -1088,11 +1201,13 @@ ExtendedDecimal.ToERounding(rounding)));
      * will also store the flags resulting from the operation (the flags are
      * in addition to the pre-existing flags). Can be null.
      * @return The absolute value of this object.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Abs(PrecisionContext context) {
       try {
-  return new ExtendedDecimal(this.getEd().Abs(context == null ? null :
-          context.getEc()));
+        return new ExtendedDecimal(this.getEd().Abs(context == null ? null :
+                context.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1108,7 +1223,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return An arbitrary-precision decimal number. If this value is positive
      * zero, returns positive zero.
      * @throws java.lang.NullPointerException The parameter {@code context} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Negate(PrecisionContext context) {
       try {
         if (context == null) {
@@ -1127,7 +1244,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The sum of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Add(ExtendedDecimal otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -1142,7 +1261,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The difference of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Subtract(ExtendedDecimal otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -1160,7 +1281,9 @@ ExtendedDecimal.ToERounding(rounding)));
      * @return The difference of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Subtract(
 ExtendedDecimal otherValue,
 PrecisionContext ctx) {
@@ -1168,10 +1291,10 @@ PrecisionContext ctx) {
         if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-return new ExtendedDecimal(
-this.getEd().Subtract(
-otherValue.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+        this.getEd().Subtract(
+        otherValue.getEd(),
+        ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1184,7 +1307,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The product of the two decimal numbers.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Multiply(ExtendedDecimal otherValue) {
       if (otherValue == null) {
         throw new NullPointerException("otherValue");
@@ -1199,7 +1324,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result this * {@code multiplicand} + {@code augend}.
      * @throws java.lang.NullPointerException The parameter {@code multiplicand} or
      * {@code augend} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MultiplyAndAdd(
 ExtendedDecimal multiplicand,
 ExtendedDecimal augend) {
@@ -1209,10 +1336,10 @@ ExtendedDecimal augend) {
       if (augend == null) {
         throw new NullPointerException("augend");
       }
-return new ExtendedDecimal(
-this.getEd().MultiplyAndAdd(
-multiplicand.getEd(),
-augend.getEd()));
+      return new ExtendedDecimal(
+      this.getEd().MultiplyAndAdd(
+      multiplicand.getEd(),
+      augend.getEd()));
     }
 
     /**
@@ -1234,7 +1361,9 @@ augend.getEd()));
      * the rounding mode is Rounding.Unnecessary and the result is not
      * exact.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToIntegerNaturalScale(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -1242,10 +1371,10 @@ PrecisionContext ctx) {
         if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(
-this.getEd().DivideToIntegerNaturalScale(
-divisor.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().DivideToIntegerNaturalScale(
+   divisor.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1266,7 +1395,9 @@ ctx == null ? null : ctx.getEc()));
      * returns not-a-number (NaN) if the divisor and the dividend are 0, or
      * if the result doesn't fit the given precision.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal DivideToIntegerZeroScale(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -1290,7 +1421,9 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx The parameter {@code ctx} is not documented yet.
      * @return The remainder of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Remainder(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -1298,10 +1431,10 @@ PrecisionContext ctx) {
         if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-  return new ExtendedDecimal(
-this.getEd().Remainder(
-divisor.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+      this.getEd().Remainder(
+      divisor.getEd(),
+      ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1334,7 +1467,9 @@ ctx == null ? null : ctx.getEc()));
      * of integer division (the quotient) or the remainder wouldn't fit the
      * given precision.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RemainderNear(
 ExtendedDecimal divisor,
 PrecisionContext ctx) {
@@ -1342,10 +1477,10 @@ PrecisionContext ctx) {
         if (divisor == null) {
           throw new NullPointerException("divisor");
         }
-     return new ExtendedDecimal(
-this.getEd().RemainderNear(
-divisor.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().RemainderNear(
+   divisor.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1363,11 +1498,13 @@ ctx == null ? null : ctx.getEc()));
      * FlagInvalid and returns not-a-number (NaN) if the parameter {@code
      * ctx} is null, the precision is 0, or {@code ctx} has an unlimited
      * exponent range.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal NextMinus(PrecisionContext ctx) {
       try {
-    return new ExtendedDecimal(this.getEd().NextMinus(ctx == null ? null :
-          ctx.getEc()));
+        return new ExtendedDecimal(this.getEd().NextMinus(ctx == null ? null :
+              ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1384,11 +1521,13 @@ ctx == null ? null : ctx.getEc()));
      * value.Signals FlagInvalid and returns not-a-number (NaN) if the
      * parameter {@code ctx} is null, the precision is 0, or {@code ctx} has
      * an unlimited exponent range.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal NextPlus(PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(this.getEd().NextPlus(ctx == null ? null :
-          ctx.getEc()));
+        return new ExtendedDecimal(this.getEd().NextPlus(ctx == null ? null :
+             ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1410,7 +1549,9 @@ ctx == null ? null : ctx.getEc()));
      * an unlimited exponent range.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal NextToward(
 ExtendedDecimal otherValue,
 PrecisionContext ctx) {
@@ -1418,10 +1559,10 @@ PrecisionContext ctx) {
         if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-     return new ExtendedDecimal(
-this.getEd().NextToward(
-otherValue.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().NextToward(
+   otherValue.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1438,7 +1579,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The larger value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Max(
 ExtendedDecimal first,
 ExtendedDecimal second,
@@ -1467,7 +1610,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The smaller value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Min(
 ExtendedDecimal first,
 ExtendedDecimal second,
@@ -1497,7 +1642,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal MaxMagnitude(
 ExtendedDecimal first,
 ExtendedDecimal second,
@@ -1527,7 +1674,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal MinMagnitude(
 ExtendedDecimal first,
 ExtendedDecimal second,
@@ -1552,7 +1701,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The larger value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Max(
 ExtendedDecimal first,
 ExtendedDecimal second) {
@@ -1572,7 +1723,9 @@ ExtendedDecimal second) {
      * @return The smaller value of the two objects.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal Min(
 ExtendedDecimal first,
 ExtendedDecimal second) {
@@ -1593,7 +1746,9 @@ ExtendedDecimal second) {
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal MaxMagnitude(
 ExtendedDecimal first,
 ExtendedDecimal second) {
@@ -1614,7 +1769,9 @@ ExtendedDecimal second) {
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal MinMagnitude(
 ExtendedDecimal first,
 ExtendedDecimal second) {
@@ -1642,7 +1799,9 @@ ExtendedDecimal second) {
      * greater than 0 if this object's value is greater than the other value
      * or if {@code other} is null, or 0 if both values are equal.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public int compareTo(ExtendedDecimal other) {
       if (other == null) {
         throw new NullPointerException("other");
@@ -1665,7 +1824,9 @@ ExtendedDecimal second) {
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal CompareToWithContext(
 ExtendedDecimal other,
 PrecisionContext ctx) {
@@ -1673,10 +1834,10 @@ PrecisionContext ctx) {
         if (other == null) {
           throw new NullPointerException("other");
         }
-return new ExtendedDecimal(
-this.getEd().CompareToWithContext(
-other.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+        this.getEd().CompareToWithContext(
+        other.getEd(),
+        ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1697,7 +1858,9 @@ ctx == null ? null : ctx.getEc()));
      * objects have the same value, or -1 if this object is less than the
      * other value, or 1 if this object is greater.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal CompareToSignal(
 ExtendedDecimal other,
 PrecisionContext ctx) {
@@ -1705,10 +1868,10 @@ PrecisionContext ctx) {
         if (other == null) {
           throw new NullPointerException("other");
         }
-     return new ExtendedDecimal(
-this.getEd().CompareToSignal(
-other.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().CompareToSignal(
+   other.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1725,7 +1888,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The sum of thisValue and the other object.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Add(
 ExtendedDecimal otherValue,
 PrecisionContext ctx) {
@@ -1733,10 +1898,10 @@ PrecisionContext ctx) {
         if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-     return new ExtendedDecimal(
-this.getEd().Add(
-otherValue.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().Add(
+   otherValue.getEd(),
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1763,7 +1928,9 @@ ctx == null ? null : ctx.getEc()));
      * that range.
      * @throws java.lang.NullPointerException The parameter {@code desiredExponent}
      * is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Quantize(
 BigInteger desiredExponent,
 PrecisionContext ctx) {
@@ -1771,10 +1938,10 @@ PrecisionContext ctx) {
         if (desiredExponent == null) {
           throw new NullPointerException("desiredExponent");
         }
-  return new ExtendedDecimal(
-this.getEd().Quantize(
-desiredExponent.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+      this.getEd().Quantize(
+      desiredExponent.getEi(),
+      ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1787,7 +1954,9 @@ ctx == null ? null : ctx.getEc()));
      * @return A decimal number with the same value as this object but with the
      * exponent changed. Returns not-a-number (NaN) if the rounding mode is
      * Rounding.Unnecessary and the result is not exact.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Quantize(
 int desiredExponentSmall,
 Rounding rounding) {
@@ -1821,15 +1990,17 @@ ExtendedDecimal.ToERounding(rounding)));
      * if the rounded result can't fit the given precision, or if the
      * context defines an exponent range and the given exponent is outside
      * that range.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Quantize(
 int desiredExponentSmall,
 PrecisionContext ctx) {
       try {
-return new ExtendedDecimal(
-this.getEd().Quantize(
-desiredExponentSmall,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+        this.getEd().Quantize(
+        desiredExponentSmall,
+        ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1862,7 +2033,9 @@ ctx == null ? null : ctx.getEc()));
      * exponent is outside that range.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Quantize(
 ExtendedDecimal otherValue,
 PrecisionContext ctx) {
@@ -1870,10 +2043,10 @@ PrecisionContext ctx) {
         if (otherValue == null) {
           throw new NullPointerException("otherValue");
         }
-return new ExtendedDecimal(
-this.getEd().Quantize(
-otherValue.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+        this.getEd().Quantize(
+        otherValue.getEd(),
+        ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1895,11 +2068,13 @@ ctx == null ? null : ctx.getEc()));
      * defines an exponent range, the new exponent must be changed to 0 when
      * rounding, and 0 is outside of the valid range of the precision
      * context.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToIntegralExact(PrecisionContext ctx) {
       try {
-   return new ExtendedDecimal(this.getEd().RoundToIntegralExact(ctx == null ?
-          null : ctx.getEc()));
+        return new ExtendedDecimal(this.getEd().RoundToIntegralExact(ctx == null ?
+               null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1921,11 +2096,13 @@ ctx == null ? null : ctx.getEc()));
      * and returns not-a-number (NaN) if the precision context defines an
      * exponent range, the new exponent must be changed to 0 when rounding,
      * and 0 is outside of the valid range of the precision context.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToIntegralNoRoundedFlag(PrecisionContext ctx) {
       try {
-  return new ExtendedDecimal(this.getEd().RoundToIntegralNoRoundedFlag(ctx ==
-          null ? null : ctx.getEc()));
+        return new ExtendedDecimal(this.getEd().RoundToIntegralNoRoundedFlag(ctx ==
+                null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -1950,7 +2127,9 @@ ctx == null ? null : ctx.getEc()));
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToExponentExact(
 BigInteger exponent,
 PrecisionContext ctx) {
@@ -1989,7 +2168,9 @@ ctx == null ? null : ctx.getEc()));
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToExponent(
 BigInteger exponent,
 PrecisionContext ctx) {
@@ -1997,10 +2178,10 @@ PrecisionContext ctx) {
         if (exponent == null) {
           throw new NullPointerException("exponent");
         }
-  return new ExtendedDecimal(
-this.getEd().RoundToExponent(
-exponent.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+      this.getEd().RoundToExponent(
+      exponent.getEi(),
+      ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2024,7 +2205,9 @@ ctx == null ? null : ctx.getEc()));
      * defines an exponent range, the new exponent must be changed to the
      * given exponent when rounding, and the given exponent is outside of
      * the valid range of the precision context.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToExponentExact(
 int exponentSmall,
 PrecisionContext ctx) {
@@ -2059,15 +2242,17 @@ ctx == null ? null : ctx.getEc()));
      * exponent range, the new exponent must be changed to the given
      * exponent when rounding, and the given exponent is outside of the
      * valid range of the precision context.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToExponent(
 int exponentSmall,
 PrecisionContext ctx) {
       try {
-return new ExtendedDecimal(
-this.getEd().RoundToExponent(
-exponentSmall,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+        this.getEd().RoundToExponent(
+        exponentSmall,
+        ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2085,7 +2270,9 @@ ctx == null ? null : ctx.getEc()));
      * addition to the pre-existing flags). Can be null.
      * @return The product of the two decimal numbers.
      * @throws java.lang.NullPointerException The parameter {@code op} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Multiply(ExtendedDecimal op, PrecisionContext ctx) {
       try {
         if (op == null) {
@@ -2111,7 +2298,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result thisValue * multiplicand + augend.
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * augend} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MultiplyAndAdd(
 ExtendedDecimal op,
 ExtendedDecimal augend,
@@ -2144,7 +2333,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The result thisValue * multiplicand - subtrahend.
      * @throws java.lang.NullPointerException The parameter {@code op} or {@code
      * subtrahend} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MultiplyAndSubtract(
 ExtendedDecimal op,
 ExtendedDecimal subtrahend,
@@ -2156,11 +2347,11 @@ PrecisionContext ctx) {
         if (subtrahend == null) {
           throw new NullPointerException("subtrahend");
         }
-   return new ExtendedDecimal(
-this.getEd().MultiplyAndSubtract(
-op.getEd(),
-subtrahend.getEd(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+     this.getEd().MultiplyAndSubtract(
+     op.getEd(),
+     subtrahend.getEd(),
+     ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2174,7 +2365,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal RoundToPrecision(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().RoundToPrecision(ctx == null ? null :
@@ -2193,7 +2386,9 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Plus(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().Plus(ctx == null ? null : ctx.getEc()));
@@ -2211,8 +2406,7 @@ ctx == null ? null : ctx.getEc()));
      * @return The closest value to this object's value, rounded to the specified
      * precision. Returns the same value as this object if {@code ctx} is
      * null or the precision and exponent range are unlimited.
-     * @deprecated Instead of this method use RoundToPrecision and pass a precision context
-* with the IsPrecisionInBits property set.
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
     public ExtendedDecimal RoundToBinaryPrecision(PrecisionContext ctx) {
@@ -2240,11 +2434,13 @@ ctx == null ? null : ctx.getEc()));
      * number, but the return value is still NaN). Signals FlagInvalid and
      * returns not-a-number (NaN) if the parameter {@code ctx} is null or
      * the precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal SquareRoot(PrecisionContext ctx) {
       try {
-   return new ExtendedDecimal(this.getEd().SquareRoot(ctx == null ? null :
-          ctx.getEc()));
+        return new ExtendedDecimal(this.getEd().SquareRoot(ctx == null ? null :
+               ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2264,7 +2460,9 @@ ctx == null ? null : ctx.getEc()));
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
      * or the precision is unlimited (the context's Precision property is
      * 0).
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Exp(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().Exp(ctx == null ? null : ctx.getEc()));
@@ -2290,7 +2488,9 @@ ctx == null ? null : ctx.getEc()));
      * {@code ctx} is null or the precision is unlimited (the context's
      * Precision property is 0). Signals no flags and returns negative
      * infinity if this object's value is 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Log(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().Log(ctx == null ? null : ctx.getEc()));
@@ -2313,7 +2513,9 @@ ctx == null ? null : ctx.getEc()));
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
      * or the precision is unlimited (the context's Precision property is
      * 0).
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Log10(PrecisionContext ctx) {
       try {
         return new ExtendedDecimal(this.getEd().Log10(ctx == null ? null : ctx.getEc()));
@@ -2336,7 +2538,9 @@ ctx == null ? null : ctx.getEc()));
      * ctx} is null or the precision is unlimited (the context's Precision
      * property is 0), and the exponent has a fractional part.
      * @throws java.lang.NullPointerException The parameter {@code exponent} is null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Pow(ExtendedDecimal exponent, PrecisionContext ctx) {
       try {
         if (exponent == null) {
@@ -2360,13 +2564,15 @@ ctx == null ? null : ctx.getEc()));
      * addition to the pre-existing flags).
      * @return This^exponent. Signals the flag FlagInvalid and returns NaN if this
      * object and exponent are both 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Pow(int exponentSmall, PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(
-this.getEd().Pow(
-exponentSmall,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().Pow(
+   exponentSmall,
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2377,7 +2583,9 @@ ctx == null ? null : ctx.getEc()));
      * @param exponentSmall A 32-bit signed integer.
      * @return This^exponent. Returns not-a-number (NaN) if this object and
      * exponent are both 0.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Pow(int exponentSmall) {
       return new ExtendedDecimal(this.getEd().Pow(exponentSmall));
     }
@@ -2392,7 +2600,9 @@ ctx == null ? null : ctx.getEc()));
      * @return π rounded to the given precision. Signals FlagInvalid and returns
      * not-a-number (NaN) if the parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public static ExtendedDecimal PI(PrecisionContext ctx) {
       return new ExtendedDecimal(EDecimal.PI(ctx == null ? null : ctx.getEc()));
     }
@@ -2402,7 +2612,9 @@ ctx == null ? null : ctx.getEc()));
      * the left.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointLeft(int places) {
       return new ExtendedDecimal(this.getEd().MovePointLeft(places));
     }
@@ -2416,13 +2628,15 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointLeft(int places, PrecisionContext ctx) {
       try {
-  return new ExtendedDecimal(
-this.getEd().MovePointLeft(
-places,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+      this.getEd().MovePointLeft(
+      places,
+      ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2435,7 +2649,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointLeft(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2454,7 +2670,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointLeft(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2476,7 +2694,9 @@ ctx == null ? null : ctx.getEc()));
      * the right.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointRight(int places) {
       return new ExtendedDecimal(this.getEd().MovePointRight(places));
     }
@@ -2490,13 +2710,15 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointRight(int places, PrecisionContext ctx) {
       try {
- return new ExtendedDecimal(
-this.getEd().MovePointRight(
-places,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+       this.getEd().MovePointRight(
+       places,
+       ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2509,7 +2731,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointRight(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2529,7 +2753,9 @@ ctx == null ? null : ctx.getEc()));
      * more than 0.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal MovePointRight(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2538,10 +2764,10 @@ PrecisionContext ctx) {
           throw new NullPointerException("bigPlaces");
         }
 
-  return new ExtendedDecimal(
-this.getEd().MovePointRight(
-bigPlaces.getEi(),
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+      this.getEd().MovePointRight(
+      bigPlaces.getEi(),
+      ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2551,7 +2777,9 @@ ctx == null ? null : ctx.getEc()));
      * Returns a number similar to this number but with the scale adjusted.
      * @param places A 32-bit signed integer.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal ScaleByPowerOfTen(int places) {
       return new ExtendedDecimal(this.getEd().ScaleByPowerOfTen(places));
     }
@@ -2564,13 +2792,15 @@ ctx == null ? null : ctx.getEc()));
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal ScaleByPowerOfTen(int places, PrecisionContext ctx) {
       try {
-     return new ExtendedDecimal(
-this.getEd().ScaleByPowerOfTen(
-places,
-ctx == null ? null : ctx.getEc()));
+        return new ExtendedDecimal(
+   this.getEd().ScaleByPowerOfTen(
+   places,
+   ctx == null ? null : ctx.getEc()));
       } catch (ETrapException ex) {
         throw TrapException.Create(ex);
       }
@@ -2582,7 +2812,9 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision decimal number.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal ScaleByPowerOfTen(BigInteger bigPlaces) {
       if (bigPlaces == null) {
         throw new NullPointerException("bigPlaces");
@@ -2600,7 +2832,9 @@ ctx == null ? null : ctx.getEc()));
      * @return A number whose scale is increased by {@code bigPlaces}.
      * @throws java.lang.NullPointerException The parameter {@code bigPlaces} is
      * null.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal ScaleByPowerOfTen(
 BigInteger bigPlaces,
 PrecisionContext ctx) {
@@ -2622,7 +2856,9 @@ ctx == null ? null : ctx.getEc()));
      * Finds the number of digits in this number's mantissa. Returns 1 if this
      * value is 0, and 0 if this value is infinity or NaN.
      * @return An arbitrary-precision integer.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public BigInteger Precision() {
       return new BigInteger(this.getEd().Precision());
     }
@@ -2632,7 +2868,9 @@ ctx == null ? null : ctx.getEc()));
      * will be this number's exponent. Returns 1 with an exponent of 0 if
      * this number is infinity or NaN.
      * @return An arbitrary-precision decimal number.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal Ulp() {
       return new ExtendedDecimal(this.getEd().Ulp());
     }
@@ -2643,7 +2881,9 @@ ctx == null ? null : ctx.getEc()));
      * @param divisor The number to divide by.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal[] DivideAndRemainderNaturalScale(ExtendedDecimal
       divisor) {
       EDecimal[] edec = this.getEd().DivideAndRemainderNaturalScale(divisor ==
@@ -2666,7 +2906,9 @@ ctx == null ? null : ctx.getEc()));
      * result doesn't fit the precision and exponent range without rounding.
      * @return A 2 element array consisting of the quotient and remainder in that
      * order.
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
+ */
+@Deprecated
     public ExtendedDecimal[] DivideAndRemainderNaturalScale(
       ExtendedDecimal divisor,
       PrecisionContext ctx) {

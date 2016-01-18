@@ -11,6 +11,7 @@ import java.util.*;
 import java.io.*;
 
 import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
     /**
      * Represents an object in Concise Binary Object Representation (CBOR) and
@@ -150,11 +151,11 @@ import com.upokecenter.util.*;
     static final int CBORObjectTypeSingle = 7;
     static final int CBORObjectTypeTagged = 10;
     static final int CBORObjectTypeTextString = 3;
-    static final BigInteger Int64MaxValue =
-      BigInteger.valueOf(Long.MAX_VALUE);
+    static final EInteger Int64MaxValue =
+      EInteger.FromInt64(Long.MAX_VALUE);
 
-    static final BigInteger Int64MinValue =
-      BigInteger.valueOf(Long.MIN_VALUE);
+    static final EInteger Int64MinValue =
+      EInteger.FromInt64(Long.MIN_VALUE);
 
     private static final int StreamedStringBufferLength = 4096;
 
@@ -162,19 +163,19 @@ import com.upokecenter.util.*;
       ValueConverters = new HashMap<Object, ConverterInfo>();
 
     private static final ICBORNumber[] NumberInterfaces = {
-      new CBORInteger(), new CBORBigInteger(), null, null,
+      new CBORInteger(), new CBOREInteger(), null, null,
       null, null, null, new CBORSingle(),
       new CBORDouble(), new CBORExtendedDecimal(),
       null, new CBORExtendedFloat(), new CBORExtendedRational()
     };
 
-    private static final Map<BigInteger, ICBORTag>
-      ValueTagHandlers = new HashMap<BigInteger, ICBORTag>();
+    private static final Map<EInteger, ICBORTag>
+      ValueTagHandlers = new HashMap<EInteger, ICBORTag>();
 
-    private static final BigInteger UInt64MaxValue =
-      (BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1));
+    private static final EInteger UInt64MaxValue =
+      (EInteger.FromInt32(1).ShiftLeft(64)).Subtract(EInteger.FromInt64(1));
 
-    private static final BigInteger[] ValueEmptyTags = new BigInteger[0];
+    private static final EInteger[] ValueEmptyTags = new EInteger[0];
     // Expected lengths for each head byte.
     // 0 means length varies. -1 means invalid.
     private static final int[] ValueExpectedLengths = { 1, 1, 1, 1, 1, 1,
@@ -244,7 +245,7 @@ import com.upokecenter.util.*;
      */
     public final BigInteger getInnermostTag() {
         if (!this.isTagged()) {
-          return BigInteger.valueOf(0).subtract(BigInteger.valueOf(1));
+          return PropertyMap.ToLegacy(EInteger.FromInt32(-1));
         }
         CBORObject previtem = this;
         CBORObject curitem = (CBORObject)this.itemValue;
@@ -254,11 +255,11 @@ import com.upokecenter.util.*;
         }
         if (previtem.tagHigh == 0 && previtem.tagLow >= 0 &&
             previtem.tagLow < 0x10000) {
-          return BigInteger.valueOf(previtem.tagLow);
+          return PropertyMap.ToLegacy(EInteger.FromInt64(previtem.tagLow));
         }
-        return LowHighToBigInteger(
+        return PropertyMap.ToLegacy(LowHighToEInteger(
           previtem.tagLow,
-          previtem.tagHigh);
+          previtem.tagHigh));
       }
 
     /**
@@ -357,15 +358,15 @@ import com.upokecenter.util.*;
      */
     public final BigInteger getOutermostTag() {
         if (!this.isTagged()) {
-          return BigInteger.valueOf(0).subtract(BigInteger.valueOf(1));
+          return PropertyMap.ToLegacy(EInteger.FromInt32(-1));
         }
         if (this.tagHigh == 0 &&
             this.tagLow >= 0 && this.tagLow < 0x10000) {
-          return BigInteger.valueOf(this.tagLow);
+          return PropertyMap.ToLegacy(EInteger.FromInt32(this.tagLow));
         }
-        return LowHighToBigInteger(
+        return PropertyMap.ToLegacy(LowHighToEInteger(
           this.tagLow,
-          this.tagHigh);
+          this.tagHigh));
       }
 
     /**
@@ -624,13 +625,26 @@ import com.upokecenter.util.*;
       if (handler == null) {
         throw new NullPointerException("handler");
       }
+      AddTagHandler(PropertyMap.FromLegacy(bigintTag), handler);
+    }
+
+    /**
+     *
+     */
+    static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
+      if (bigintTag == null) {
+        throw new NullPointerException("bigintTag");
+      }
+      if (handler == null) {
+        throw new NullPointerException("handler");
+      }
       if (bigintTag.signum() < 0) {
         throw new IllegalArgumentException("bigintTag.signum() (" +
                     bigintTag.signum() + ") is less than 0");
       }
-      if (bigintTag.bitLength() > 64) {
+      if (bigintTag.GetSignedBitLength() > 64) {
         throw new IllegalArgumentException("bigintTag.bitLength (" +
-                    (long)bigintTag.bitLength() + ") is more than " +
+                    (long)bigintTag.GetSignedBitLength() + ") is more than " +
                     "64");
       }
       synchronized (ValueTagHandlers) {
@@ -673,8 +687,8 @@ CBOREncodeOptions options) {
         throw new CBORException("data is empty.");
       }
       if (options == null) {
-  throw new NullPointerException("options");
-}
+        throw new NullPointerException("options");
+      }
       int firstbyte = (int)(data[0] & (int)0xff);
       int expectedLength = ValueExpectedLengths[firstbyte];
       // if invalid
@@ -758,8 +772,8 @@ CBOREncodeOptions options) {
         throw new NullPointerException("str");
       }
       if (options == null) {
-  throw new NullPointerException("options");
-}
+        throw new NullPointerException("options");
+      }
       if (str.length() > 0 && str.charAt(0) == 0xfeff) {
         throw new CBORException(
           "JSON Object began with a byte order mark (U+FEFF) (offset 0)");
@@ -768,11 +782,11 @@ CBOREncodeOptions options) {
         new CharacterReader(str, false, true));
       CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
       int[] nextchar = new int[1];
-CBORObject obj = CBORJson.ParseJSONValue(
-reader,
-opt.getValue() != 0,
-false,
-nextchar);
+      CBORObject obj = CBORJson.ParseJSONValue(
+      reader,
+      opt.getValue() != 0,
+      false,
+      nextchar);
       if (nextchar[0] != -1) {
         reader.RaiseError("End of String not reached");
       }
@@ -804,6 +818,10 @@ nextchar);
      * @return A CBOR number.
      */
     public static CBORObject FromObject(BigInteger bigintValue) {
+      return ((Object)bigintValue == (Object)null) ? (CBORObject.Null) :
+        (FromObject(PropertyMap.FromLegacy(bigintValue)));
+    }
+    static CBORObject FromObject(EInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -811,7 +829,7 @@ nextchar);
               bigintValue.compareTo(Int64MaxValue) <= 0) ?
         new CBORObject(
           CBORObjectTypeInteger,
-          bigintValue.longValueChecked()) : (new CBORObject(
+          bigintValue.AsInt64Checked()) : (new CBORObject(
         CBORObjectTypeBigInteger,
         bigintValue));
     }
@@ -823,6 +841,14 @@ nextchar);
      * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedFloat bigValue) {
+      return ((Object)bigValue == (Object)null) ? (CBORObject.Null) :
+        (FromObject(PropertyMap.FromLegacy(bigValue)));
+    }
+
+    /**
+     *
+     */
+    static CBORObject FromObject(EFloat bigValue) {
       if ((Object)bigValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -834,7 +860,7 @@ nextchar);
           CBORObjectTypeExtendedFloat,
           bigValue);
       }
-      BigInteger bigintExponent = bigValue.getExponent();
+      EInteger bigintExponent = bigValue.getExponent();
       return (bigintExponent.isZero() && !(bigValue.isZero() &&
                     bigValue.isNegative())) ? FromObject(bigValue.getMantissa()) :
         new CBORObject(
@@ -843,11 +869,19 @@ nextchar);
     }
 
     /**
+     *
+     */
+    public static CBORObject FromObject(ExtendedRational bigValue) {
+      return ((Object)bigValue == (Object)null) ? (CBORObject.Null) :
+        (FromObject(PropertyMap.FromLegacy(bigValue)));
+    }
+
+    /**
      * Generates a CBOR object from a rational number.
      * @param bigValue A rational number.
      * @return A CBOR number.
      */
-    public static CBORObject FromObject(ExtendedRational bigValue) {
+    static CBORObject FromObject(ERational bigValue) {
       if ((Object)bigValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -859,10 +893,10 @@ nextchar);
           CBORObjectTypeExtendedRational,
           bigValue);
       }
-   return ((bigValue.isFinite() && bigValue.getDenominator().equals(BigInteger.valueOf(1))) ?
-         FromObject(bigValue.getNumerator()) : (new CBORObject(
-           CBORObjectTypeExtendedRational,
-           bigValue)));
+      return ((bigValue.isFinite() && bigValue.getDenominator().equals(EInteger.FromInt32(1))) ?
+            FromObject(bigValue.getNumerator()) : (new CBORObject(
+              CBORObjectTypeExtendedRational,
+              bigValue)));
     }
 
     /**
@@ -870,7 +904,7 @@ nextchar);
      * @param otherValue An arbitrary-precision decimal number.
      * @return A CBOR number.
      */
-    public static CBORObject FromObject(ExtendedDecimal otherValue) {
+    static CBORObject FromObject(EDecimal otherValue) {
       if ((Object)otherValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -882,12 +916,22 @@ nextchar);
           CBORObjectTypeExtendedDecimal,
           otherValue);
       }
-      BigInteger bigintExponent = otherValue.getExponent();
+      EInteger bigintExponent = otherValue.getExponent();
       return (bigintExponent.isZero() && !(otherValue.isZero() &&
                     otherValue.isNegative())) ? FromObject(otherValue.getMantissa()) :
         new CBORObject(
           CBORObjectTypeExtendedDecimal,
           otherValue);
+    }
+
+    /**
+     * Generates a CBOR object from a decimal number.
+     * @param otherValue An arbitrary-precision decimal number.
+     * @return A CBOR number.
+     */
+    public static CBORObject FromObject(ExtendedDecimal otherValue) {
+      return ((Object)otherValue == (Object)null) ? (CBORObject.Null) :
+        (FromObject(PropertyMap.FromLegacy(otherValue)));
     }
 
     /**
@@ -1256,22 +1300,30 @@ nextchar);
       if (bigintTag == null) {
         throw new NullPointerException("bigintTag");
       }
-      if (bigintTag.signum() < 0) {
-        throw new IllegalArgumentException("bigintTag's sign (" + bigintTag.signum() +
+      return FromObjectAndTag(valueOb, PropertyMap.FromLegacy(bigintTag));
+    }
+    static CBORObject FromObjectAndTag(
+      Object valueOb,
+      EInteger tagEInt) {
+      if (tagEInt == null) {
+        throw new NullPointerException("tagEInt");
+      }
+      if (tagEInt.signum() < 0) {
+        throw new IllegalArgumentException("tagEInt's sign (" + tagEInt.signum() +
                     ") is less than 0");
       }
-      if (bigintTag.compareTo(UInt64MaxValue) > 0) {
+      if (tagEInt.compareTo(UInt64MaxValue) > 0) {
         throw new IllegalArgumentException(
-          "tag more than 18446744073709551615 (" + bigintTag + ")");
+          "tag more than 18446744073709551615 (" + tagEInt + ")");
       }
       CBORObject c = FromObject(valueOb);
-      if (bigintTag.bitLength() <= 16) {
+      if (tagEInt.GetSignedBitLength() <= 16) {
         // Low-numbered, commonly used tags
-        return FromObjectAndTag(c, bigintTag.intValueChecked());
+        return FromObjectAndTag(c, tagEInt.AsInt32Checked());
       } else {
         int tagLow = 0;
         int tagHigh = 0;
-        byte[] bytes = bigintTag.toBytes(true);
+        byte[] bytes = tagEInt.ToBytes(true);
         for (int i = 0; i < Math.min(4, bytes.length); ++i) {
           int b = ((int)bytes[i]) & 0xff;
           tagLow = (tagLow | (((int)b) << (i * 8)));
@@ -1281,7 +1333,7 @@ nextchar);
           tagHigh = (tagHigh | (((int)b) << (i * 8)));
         }
         CBORObject c2 = new CBORObject(c, tagLow, tagHigh);
-        ICBORTag tagconv = FindTagConverter(bigintTag);
+        ICBORTag tagconv = FindTagConverter(tagEInt);
         if (tagconv != null) {
           c2 = tagconv.ValidateObject(c2);
         }
@@ -1387,8 +1439,8 @@ nextchar);
      */
     public static CBORObject Read(InputStream stream) {
       if (stream == null) {
-  throw new NullPointerException("stream");
-}
+        throw new NullPointerException("stream");
+      }
       try {
         return new CBORReader(stream).Read(null);
       } catch (IOException ex) {
@@ -1409,8 +1461,8 @@ nextchar);
      */
     public static CBORObject Read(InputStream stream, CBOREncodeOptions options) {
       if (options == null) {
-  throw new NullPointerException("options");
-}
+        throw new NullPointerException("options");
+      }
       try {
         CBORReader reader = new CBORReader(stream);
         CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
@@ -1464,25 +1516,25 @@ nextchar);
      * @throws com.upokecenter.cbor.CBORException The data stream contains invalid
      * encoding or is not in JSON format.
      */
-  public static CBORObject ReadJSON(
-InputStream stream,
-CBOREncodeOptions options) throws java.io.IOException {
+    public static CBORObject ReadJSON(
+  InputStream stream,
+  CBOREncodeOptions options) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
       if (options == null) {
-  throw new NullPointerException("options");
-}
+        throw new NullPointerException("options");
+      }
       CharacterInputWithCount reader = new CharacterInputWithCount(
         new CharacterReader(stream, 2, true));
       try {
         CBOREncodeOptions opt = options.And(CBOREncodeOptions.NoDuplicateKeys);
         int[] nextchar = new int[1];
-   CBORObject obj = CBORJson.ParseJSONValue(
-reader,
-opt.getValue() != 0,
-false,
-nextchar);
+        CBORObject obj = CBORJson.ParseJSONValue(
+     reader,
+     opt.getValue() != 0,
+     false,
+     nextchar);
         if (nextchar[0] != -1) {
           reader.RaiseError("End of data stream not reached");
         }
@@ -1595,12 +1647,26 @@ nextchar);
         stream.write(0xf6);
         return;
       }
+      Write(PropertyMap.FromLegacy(bignum), stream);
+    }
+
+    /**
+     *
+     */
+    static void Write(EFloat bignum, OutputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if (bignum == null) {
+        stream.write(0xf6);
+        return;
+      }
       if ((bignum.isZero() && bignum.isNegative()) || bignum.IsInfinity() ||
           bignum.IsNaN()) {
         Write(bignum.ToDouble(), stream);
         return;
       }
-      BigInteger exponent = bignum.getExponent();
+      EInteger exponent = bignum.getExponent();
       if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
@@ -1633,11 +1699,25 @@ nextchar);
         stream.write(0xf6);
         return;
       }
+      Write(PropertyMap.FromLegacy(rational), stream);
+    }
+
+    /**
+     *
+     */
+    static void Write(ERational rational, OutputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if (rational == null) {
+        stream.write(0xf6);
+        return;
+      }
       if (!rational.isFinite()) {
         Write(rational.ToDouble(), stream);
         return;
       }
-      if (rational.getDenominator().equals(BigInteger.valueOf(1))) {
+      if (rational.getDenominator().equals(EInteger.FromInt32(1))) {
         Write(rational.getNumerator(), stream);
         return;
       }
@@ -1671,12 +1751,26 @@ nextchar);
         stream.write(0xf6);
         return;
       }
+      Write(PropertyMap.FromLegacy(bignum), stream);
+    }
+
+    /**
+     *
+     */
+    static void Write(EDecimal bignum, OutputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if (bignum == null) {
+        stream.write(0xf6);
+        return;
+      }
       if ((bignum.isZero() && bignum.isNegative()) || bignum.IsInfinity() ||
           bignum.IsNaN()) {
         Write(bignum.ToDouble(), stream);
         return;
       }
-      BigInteger exponent = bignum.getExponent();
+      EInteger exponent = bignum.getExponent();
       if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
@@ -1709,23 +1803,37 @@ nextchar);
         stream.write(0xf6);
         return;
       }
+      Write(PropertyMap.FromLegacy(bigint), stream);
+    }
+
+    /**
+     *
+     */
+    static void Write(EInteger bigint, OutputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if ((Object)bigint == (Object)null) {
+        stream.write(0xf6);
+        return;
+      }
       int datatype = 0;
       if (bigint.signum() < 0) {
         datatype = 1;
-        bigint = bigint.add(BigInteger.valueOf(1));
-        bigint=(bigint).negate();
+        bigint = bigint.Add(EInteger.FromInt32(1));
+        bigint=(bigint).Negate();
       }
       if (bigint.compareTo(Int64MaxValue) <= 0) {
         // If the big integer is representable as a long and in
         // major type 0 or 1, write that major type
         // instead of as a bignum
-        long ui = bigint.longValueChecked();
+        long ui = bigint.AsInt64Checked();
         WritePositiveInt64(datatype, ui, stream);
       } else {
         // Get a byte array of the big integer's value,
         // since shifting and doing AND operations is
         // slow with large BigIntegers
-        byte[] bytes = bigint.toBytes(true);
+        byte[] bytes = bigint.ToBytes(true);
         int byteCount = bytes.length;
         while (byteCount > 0 && bytes[byteCount - 1] == 0) {
           // Ignore trailing zero bytes
@@ -1783,7 +1891,7 @@ nextchar);
             stream.write(bytes, 0, byteCount);
             break;
           default: stream.write((datatype == 0) ?
-    (byte)0xc2 : (byte)0xc3);
+(byte)0xc2 : (byte)0xc3);
             WritePositiveInt(2, byteCount, stream);
             stream.write(bytes, 0, byteCount);
             break;
@@ -2063,7 +2171,22 @@ public static void Write(
       }
       Object oldItem = this.getThisItem();
       Object newItem = cn.Abs(oldItem);
-      return (oldItem == newItem) ? this : CBORObject.FromObject(newItem);
+      if (oldItem == newItem) {
+        return this;
+      }
+      if (newItem instanceof EDecimal) {
+        return CBORObject.FromObject((EDecimal)newItem);
+      }
+      if (newItem instanceof EInteger) {
+        return CBORObject.FromObject((EInteger)newItem);
+      }
+      if (newItem instanceof EFloat) {
+        return CBORObject.FromObject((EFloat)newItem);
+      }
+      ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
+      return (rat != null) ?
+        (CBORObject.FromObject(rat)) : ((oldItem == newItem)?
+        this : CBORObject.FromObject(newItem));
     }
 
     /**
@@ -2157,6 +2280,16 @@ public static void Write(
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
       }
+      return BigInteger.fromBytes(
+        cn.AsBigInteger(this.getThisItem()).ToBytes(true),
+        true);
+    }
+
+    EInteger AsEInteger() {
+      ICBORNumber cn = NumberInterfaces[this.getItemType()];
+      if (cn == null) {
+        throw new IllegalStateException("Not a number type");
+      }
       return cn.AsBigInteger(this.getThisItem());
     }
 
@@ -2205,6 +2338,10 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedDecimal AsExtendedDecimal() {
+      return ExtendedDecimal.FromString(AsEDecimal().toString());
+    }
+
+    EDecimal AsEDecimal() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2224,6 +2361,9 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedFloat AsExtendedFloat() {
+      return ExtendedFloat.FromString(AsEFloat().toString());
+    }
+    EFloat AsEFloat() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2238,6 +2378,9 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedRational AsExtendedRational() {
+      return PropertyMap.ToLegacy(AsERational());
+    }
+    ERational AsERational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2486,8 +2629,8 @@ public int compareTo(CBORObject other) {
               break;
             }
           case CBORObjectTypeBigInteger: {
-              BigInteger bigintA = (BigInteger)objA;
-              BigInteger bigintB = (BigInteger)objB;
+              EInteger bigintA = (EInteger)objA;
+              EInteger bigintB = (EInteger)objB;
               cmp = bigintA.compareTo(bigintB);
               break;
             }
@@ -2501,17 +2644,17 @@ public int compareTo(CBORObject other) {
               break;
             }
           case CBORObjectTypeExtendedDecimal: {
-              cmp = ((ExtendedDecimal)objA).compareTo((ExtendedDecimal)objB);
+              cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
               break;
             }
           case CBORObjectTypeExtendedFloat: {
-              cmp = ((ExtendedFloat)objA).compareTo(
-                (ExtendedFloat)objB);
+              cmp = ((EFloat)objA).compareTo(
+                (EFloat)objB);
               break;
             }
           case CBORObjectTypeExtendedRational: {
-              cmp = ((ExtendedRational)objA).compareTo(
-                (ExtendedRational)objB);
+              cmp = ((ERational)objA).compareTo(
+                (ERational)objB);
               break;
             }
           case CBORObjectTypeByteString: {
@@ -2573,37 +2716,37 @@ public int compareTo(CBORObject other) {
         } else {
           // DebugUtility.Log("a=" + this + " b=" + other);
           if (typeA == CBORObjectTypeExtendedRational) {
-        ExtendedRational e1 = NumberInterfaces[typeA].AsExtendedRational(objA);
+            ERational e1 = NumberInterfaces[typeA].AsExtendedRational(objA);
             if (typeB == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
+              EDecimal e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
               cmp = e1.CompareToDecimal(e2);
             } else {
-              ExtendedFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
+              EFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
               cmp = e1.CompareToBinary(e2);
             }
           } else if (typeB == CBORObjectTypeExtendedRational) {
-        ExtendedRational e2 = NumberInterfaces[typeB].AsExtendedRational(objB);
+            ERational e2 = NumberInterfaces[typeB].AsExtendedRational(objB);
             if (typeA == CBORObjectTypeExtendedDecimal) {
-          ExtendedDecimal e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
+              EDecimal e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
               cmp = e2.CompareToDecimal(e1);
               cmp = -cmp;
             } else {
-              ExtendedFloat e1 = NumberInterfaces[typeA].AsExtendedFloat(objA);
+              EFloat e1 = NumberInterfaces[typeA].AsExtendedFloat(objA);
               cmp = e2.CompareToBinary(e1);
               cmp = -cmp;
             }
           } else if (typeA == CBORObjectTypeExtendedDecimal ||
                     typeB == CBORObjectTypeExtendedDecimal) {
-            ExtendedDecimal e1 = null;
-            ExtendedDecimal e2 = null;
+            EDecimal e1 = null;
+            EDecimal e2 = null;
             if (typeA == CBORObjectTypeExtendedFloat) {
-              ExtendedFloat ef1 = (ExtendedFloat)objA;
-              e2 = (ExtendedDecimal)objB;
+              EFloat ef1 = (EFloat)objA;
+              e2 = (EDecimal)objB;
               cmp = e2.CompareToBinary(ef1);
               cmp = -cmp;
             } else if (typeB == CBORObjectTypeExtendedFloat) {
-              ExtendedFloat ef1 = (ExtendedFloat)objB;
-              e2 = (ExtendedDecimal)objA;
+              EFloat ef1 = (EFloat)objB;
+              e2 = (EDecimal)objA;
               cmp = e2.CompareToBinary(ef1);
             } else {
               e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
@@ -2616,18 +2759,19 @@ public int compareTo(CBORObject other) {
                     CBORObjectTypeDouble ||
                     typeA == CBORObjectTypeSingle || typeB ==
                     CBORObjectTypeSingle) {
-            ExtendedFloat e1 = NumberInterfaces[typeA].AsExtendedFloat(objA);
-            ExtendedFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
+            EFloat e1 = NumberInterfaces[typeA].AsExtendedFloat(objA);
+            EFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
             cmp = e1.compareTo(e2);
           } else {
-            BigInteger b1 = NumberInterfaces[typeA].AsBigInteger(objA);
-            BigInteger b2 = NumberInterfaces[typeB].AsBigInteger(objB);
+            EInteger b1 = NumberInterfaces[typeA].AsBigInteger(objA);
+            EInteger b2 = NumberInterfaces[typeB].AsBigInteger(objB);
             cmp = b1.compareTo(b2);
           }
         }
       }
       return (cmp == 0) ? ((!this.isTagged() && !other.isTagged()) ? 0 :
-                    TagsCompare(this.GetTags(), other.GetTags())) : cmp;
+           TagsCompare(this.GetTagsEInteger(), other.GetTagsEInteger())) :
+                    cmp;
     }
 
     /**
@@ -2697,8 +2841,8 @@ public int compareTo(CBORObject other) {
      */
     public byte[] EncodeToBytes(CBOREncodeOptions options) {
       if (options == null) {
-  throw new NullPointerException("options");
-}
+        throw new NullPointerException("options");
+      }
 
       // For some types, a memory stream is a lot of
       // overhead since the amount of memory the types
@@ -2923,22 +3067,33 @@ public boolean equals(CBORObject other) {
      * @return An array of tags, or the empty string if this object is untagged.
      */
     public BigInteger[] GetTags() {
+      EInteger[] etags = GetTagsEInteger();
+      if (etags.length == 0) {
+        return new BigInteger[0];
+      }
+      BigInteger[] bigret = new BigInteger[etags.length];
+      for (int i = 0; i < bigret.length; ++i) {
+        bigret[i] = PropertyMap.ToLegacy(etags[i]);
+      }
+      return bigret;
+    }
+    private EInteger[] GetTagsEInteger() {
       if (!this.isTagged()) {
         return ValueEmptyTags;
       }
       CBORObject curitem = this;
       if (curitem.isTagged()) {
-        ArrayList<BigInteger> list = new ArrayList<BigInteger>();
+        ArrayList<EInteger> list = new ArrayList<EInteger>();
         while (curitem.isTagged()) {
           list.add(
-            LowHighToBigInteger(
+            LowHighToEInteger(
               curitem.tagLow,
               curitem.tagHigh));
           curitem = (CBORObject)curitem.itemValue;
         }
-        return list.toArray(new BigInteger[] { });
+        return list.toArray(new EInteger[] { });
       }
-      return new BigInteger[] { LowHighToBigInteger(this.tagLow, this.tagHigh) };
+      return new EInteger[] { LowHighToEInteger(this.tagLow, this.tagHigh) };
     }
 
     /**
@@ -2976,11 +3131,20 @@ public boolean equals(CBORObject other) {
       if (bigTagValue == null) {
         throw new NullPointerException("bigTagValue");
       }
+      return HasTag(EInteger.FromBytes(
+        bigTagValue.toBytes(true),
+        true));
+    }
+
+    boolean HasTag(EInteger bigTagValue) {
+      if (bigTagValue == null) {
+        throw new NullPointerException("bigTagValue");
+      }
       if (bigTagValue.signum() < 0) {
         throw new IllegalArgumentException("doesn't satisfy bigTagValue.signum()>= 0");
       }
-      BigInteger[] bigTags = this.GetTags();
-      for (BigInteger bigTag : bigTags) {
+      EInteger[] bigTags = this.GetTagsEInteger();
+      for (EInteger bigTag : bigTags) {
         if (bigTagValue.equals(bigTag)) {
           return true;
         }
@@ -3074,7 +3238,19 @@ public boolean equals(CBORObject other) {
       if (cn == null) {
         throw new IllegalStateException("This Object is not a number.");
       }
-      return CBORObject.FromObject(cn.Negate(this.getThisItem()));
+      Object newItem = cn.Negate(this.getThisItem());
+      if (newItem instanceof EDecimal) {
+        return CBORObject.FromObject((EDecimal)newItem);
+      }
+      if (newItem instanceof EInteger) {
+        return CBORObject.FromObject((EInteger)newItem);
+      }
+      if (newItem instanceof EFloat) {
+        return CBORObject.FromObject((EFloat)newItem);
+      }
+      ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
+      return (rat != null) ? (CBORObject.FromObject(rat)) :
+        (CBORObject.FromObject(newItem));
     }
 
     /**
@@ -3280,7 +3456,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeExtendedFloat: {
-            simvalue = ExtendedToString((ExtendedFloat)this.getThisItem());
+            simvalue = ExtendedToString((EFloat)this.getThisItem());
             if (sb == null) {
               return simvalue;
             }
@@ -3297,7 +3473,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeBigInteger: {
-            simvalue = CBORUtilities.BigIntToString((BigInteger)this.getThisItem());
+            simvalue = CBORUtilities.BigIntToString((EInteger)this.getThisItem());
             if (sb == null) {
               return simvalue;
             }
@@ -3441,7 +3617,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeBigInteger: {
-            Write((BigInteger)this.getThisItem(), stream);
+            Write((EInteger)this.getThisItem(), stream);
             break;
           }
         case CBORObjectTypeByteString: {
@@ -3462,17 +3638,17 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeExtendedDecimal: {
-            ExtendedDecimal dec = (ExtendedDecimal)this.getThisItem();
+            EDecimal dec = (EDecimal)this.getThisItem();
             Write(dec, stream);
             break;
           }
         case CBORObjectTypeExtendedFloat: {
-            ExtendedFloat flo = (ExtendedFloat)this.getThisItem();
+            EFloat flo = (EFloat)this.getThisItem();
             Write(flo, stream);
             break;
           }
         case CBORObjectTypeExtendedRational: {
-            ExtendedRational flo = (ExtendedRational)this.getThisItem();
+            ERational flo = (ERational)this.getThisItem();
             Write(flo, stream);
             break;
           }
@@ -3505,26 +3681,26 @@ public boolean equals(CBORObject other) {
       }
     }
 
-    static ICBORTag FindTagConverter(BigInteger bigintTag) {
+    static ICBORTag FindTagConverter(EInteger bigintTag) {
       if (TagHandlersEmpty()) {
-        AddTagHandler(BigInteger.valueOf(2), new CBORTag2());
-        AddTagHandler(BigInteger.valueOf(3), new CBORTag3());
-        AddTagHandler(BigInteger.valueOf(4), new CBORTag4());
-        AddTagHandler(BigInteger.valueOf(5), new CBORTag5());
-        AddTagHandler(BigInteger.valueOf(264), new CBORTag4(true));
-        AddTagHandler(BigInteger.valueOf(265), new CBORTag5(true));
-        AddTagHandler(BigInteger.valueOf(25), new CBORTagUnsigned());
-        AddTagHandler(BigInteger.valueOf(28), new CBORTag28());
-        AddTagHandler(BigInteger.valueOf(29), new CBORTagUnsigned());
-        AddTagHandler(BigInteger.valueOf(256), new CBORTagAny());
-        AddTagHandler(BigInteger.valueOf(0), new CBORTag0());
-        AddTagHandler(BigInteger.valueOf(32), new CBORTag32());
-        AddTagHandler(BigInteger.valueOf(33), new CBORTagGenericString());
-        AddTagHandler(BigInteger.valueOf(34), new CBORTagGenericString());
-        AddTagHandler(BigInteger.valueOf(35), new CBORTagGenericString());
-        AddTagHandler(BigInteger.valueOf(36), new CBORTagGenericString());
-        AddTagHandler(BigInteger.valueOf(37), new CBORTag37());
-        AddTagHandler(BigInteger.valueOf(30), new CBORTag30());
+        AddTagHandler(EInteger.FromInt64(2), new CBORTag2());
+        AddTagHandler(EInteger.FromInt64(3), new CBORTag3());
+        AddTagHandler(EInteger.FromInt64(4), new CBORTag4());
+        AddTagHandler(EInteger.FromInt64(5), new CBORTag5());
+        AddTagHandler(EInteger.FromInt64(264), new CBORTag4(true));
+        AddTagHandler(EInteger.FromInt64(265), new CBORTag5(true));
+        AddTagHandler(EInteger.FromInt64(25), new CBORTagUnsigned());
+        AddTagHandler(EInteger.FromInt64(28), new CBORTag28());
+        AddTagHandler(EInteger.FromInt64(29), new CBORTagUnsigned());
+        AddTagHandler(EInteger.FromInt64(256), new CBORTagAny());
+        AddTagHandler(EInteger.FromInt32(0), new CBORTag0());
+        AddTagHandler(EInteger.FromInt64(32), new CBORTag32());
+        AddTagHandler(EInteger.FromInt64(33), new CBORTagGenericString());
+        AddTagHandler(EInteger.FromInt64(34), new CBORTagGenericString());
+        AddTagHandler(EInteger.FromInt64(35), new CBORTagGenericString());
+        AddTagHandler(EInteger.FromInt64(36), new CBORTagGenericString());
+        AddTagHandler(EInteger.FromInt64(37), new CBORTag37());
+        AddTagHandler(EInteger.FromInt64(30), new CBORTag30());
       }
       synchronized (ValueTagHandlers) {
         if (ValueTagHandlers.containsKey(bigintTag)) {
@@ -3535,8 +3711,8 @@ public boolean equals(CBORObject other) {
       }
     }
 
-    static ICBORTag FindTagConverterLong(long tag) {
-      return FindTagConverter(BigInteger.valueOf(tag));
+    static ICBORTag FindTagConverterLong(long tagLong) {
+      return FindTagConverter(EInteger.FromInt64(tagLong));
     }
 
     static CBORObject FromRaw(String str) {
@@ -3613,7 +3789,7 @@ public boolean equals(CBORObject other) {
             } else {
               int low = ((int)((uadditional) & 0xFFFFFFFFL));
               int high = ((int)((uadditional >> 32) & 0xFFFFFFFFL));
-              return FromObject(LowHighToBigInteger(low, high));
+              return FromObject(LowHighToEInteger(low, high));
             }
           case 1:
             if ((uadditional >> 63) == 0) {
@@ -3623,9 +3799,9 @@ public boolean equals(CBORObject other) {
             } else {
               int low = ((int)((uadditional) & 0xFFFFFFFFL));
               int high = ((int)((uadditional >> 32) & 0xFFFFFFFFL));
-              BigInteger bigintAdditional = LowHighToBigInteger(low, high);
-              BigInteger minusOne = BigInteger.valueOf(-1);
-              bigintAdditional = minusOne.subtract(bigintAdditional);
+              EInteger bigintAdditional = LowHighToEInteger(low, high);
+              EInteger minusOne = EInteger.FromInt64(-1);
+              bigintAdditional = minusOne.Subtract(bigintAdditional);
               return FromObject(bigintAdditional);
             }
           case 7:
@@ -3710,8 +3886,8 @@ Map<CBORObject, CBORObject> AsMap() {
       this.itemValue = cbor.itemValue;
     }
 
-    private static boolean BigIntFits(BigInteger bigint) {
-      return bigint.bitLength() <= 64;
+    private static boolean BigIntFits(EInteger bigint) {
+      return bigint.GetSignedBitLength() <= 64;
     }
 
     private static boolean CBORArrayEquals(
@@ -3836,9 +4012,9 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         obj);
     }
 
-    private static String ExtendedToString(ExtendedFloat ef) {
-      if (ef.isFinite() && (ef.getExponent().compareTo(BigInteger.valueOf(2500)) > 0 ||
-                    ef.getExponent().compareTo(BigInteger.valueOf(-2500)) < 0)) {
+    private static String ExtendedToString(EFloat ef) {
+      if (ef.isFinite() && (ef.getExponent().compareTo(EInteger.FromInt64(2500)) > 0 ||
+                    ef.getExponent().compareTo(EInteger.FromInt64(-2500)) < 0)) {
         // It can take very long to convert a number with a very high
         // or very low exponent to a decimal String, so do this instead
         return ef.getMantissa() + "p" + ef.getExponent();
@@ -3847,7 +4023,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
     }
 
     private static ICBORTag FindTagConverter(int tag) {
-      return FindTagConverter(BigInteger.valueOf(tag));
+      return FindTagConverter(EInteger.FromInt32(tag));
     }
 
     private static byte[] GetOptimizedBytesIfShortAscii(
@@ -4023,7 +4199,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         0;
     }
 
-    private static BigInteger LowHighToBigInteger(int tagLow, int tagHigh) {
+    private static EInteger LowHighToEInteger(int tagLow, int tagHigh) {
       byte[] uabytes = null;
       if (tagHigh != 0) {
         uabytes = new byte[9];
@@ -4036,7 +4212,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         uabytes[1] = (byte)((tagLow >> 8) & 0xff);
         uabytes[0] = (byte)(tagLow & 0xff);
         uabytes[8] = 0;
-        return BigInteger.fromBytes(uabytes, true);
+        return EInteger.FromBytes(uabytes, true);
       }
       if (tagLow != 0) {
         uabytes = new byte[5];
@@ -4045,9 +4221,9 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         uabytes[1] = (byte)((tagLow >> 8) & 0xff);
         uabytes[0] = (byte)(tagLow & 0xff);
         uabytes[4] = 0;
-        return BigInteger.fromBytes(uabytes, true);
+        return EInteger.FromBytes(uabytes, true);
       }
-      return BigInteger.valueOf(0);
+      return EInteger.FromInt32(0);
     }
 
     private static int MapCompare(
@@ -4130,7 +4306,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       }
     }
 
-    private static int TagsCompare(BigInteger[] tagsA, BigInteger[] tagsB) {
+    private static int TagsCompare(EInteger[] tagsA, EInteger[] tagsB) {
       if (tagsA == null) {
         return (tagsB == null) ? 0 : -1;
       }
@@ -4347,7 +4523,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         if (high == 0 && (low >> 16) == 0) {
           sb.append(CBORUtilities.LongToString(low));
         } else {
-          BigInteger bi = LowHighToBigInteger(low, high);
+          EInteger bi = LowHighToEInteger(low, high);
           sb.append(CBORUtilities.BigIntToString(bi));
         }
         sb.append('(');
