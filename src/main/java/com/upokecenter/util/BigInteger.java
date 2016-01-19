@@ -15,11 +15,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.numbers.*;
 
     /**
-     * An arbitrary-precision integer. <p><b>Thread safety:</b>Instances of this
-     * class are immutable, so they are inherently safe for use by multiple
-     * threads. Multiple instances of this object with the same value are
-     * interchangeable, but they should be compared using the "Equals"
-     * method rather than the "==" operator.</p>
+     * <p><b>This class is largely obsolete. It will be replaced by a new version
+     * of this class in a different namespace/package and library, called
+     * <code>PeterO.Numbers.EInteger</code> in the <code>PeterO.Numbers</code> library
+     * (in .NET), or <code>com.upokecenter.numbers.getEInteger()</code> in the
+     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
+     * class can be used in the <code>CBORObject.FromObject(Object)</code> method,
+     * among other things, but for method, among other things (by including
+     * the new library in your code), but for this versionof the CBOR
+     * library doesn't include any methods that explicitly take an
+     * <code>EInteger</code> as a parameter or return value.</b></p> An
+     * arbitrary-precision integer. <p><b>Thread safety:</b>Instances of
+     * this class are immutable, so they are inherently safe for use by
+     * multiple threads. Multiple instances of this object with the same
+     * value are interchangeable, but they should be compared using the
+     * "Equals" method rather than the "==" operator.</p>
      */
   public final class BigInteger implements Comparable<BigInteger> {
     /**
@@ -202,9 +212,7 @@ endIndex));
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws java.lang.NumberFormatException The parameter {@code str} is in an invalid
      * format.
-     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
   public static BigInteger fromString(String str) {
 return new BigInteger(EInteger.FromString(str));
 }

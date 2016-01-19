@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   public class CBORObjectTest {
     private static String[] jsonFails = { "\"\\uxxxx\"",
@@ -2035,6 +2036,41 @@ CBORObject.FromObject(0.1f));
      "]",
      2000);
       TestFailingJSON(jsonTemp);
+    }
+    @Test
+    public void TestEI() {
+      CBORObject cbor = CBORObject.FromObject(EInteger.FromString("100"));
+      Assert.assertEquals(CBORType.Number, cbor.getType());
+      {
+String stringTemp = cbor.toString();
+Assert.assertEquals(
+"100",
+stringTemp);
+}
+      cbor = CBORObject.FromObject(EDecimal.FromString("200"));
+      Assert.assertEquals(CBORType.Number, cbor.getType());
+      {
+String stringTemp = cbor.toString();
+Assert.assertEquals(
+"200",
+stringTemp);
+}
+      cbor = CBORObject.FromObject(EFloat.FromString("300"));
+      Assert.assertEquals(CBORType.Number, cbor.getType());
+      {
+String stringTemp = cbor.toString();
+Assert.assertEquals(
+"300",
+stringTemp);
+}
+      cbor = CBORObject.FromObject(ERational.Create(1, 2));
+      Assert.assertEquals(CBORType.Number, cbor.getType());
+      {
+String stringTemp = cbor.toString();
+Assert.assertEquals(
+"1/2",
+stringTemp);
+}
     }
     @Test
     public void TestFromObject() {
