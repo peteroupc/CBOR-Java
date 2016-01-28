@@ -10,7 +10,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.numbers.*;
 
     /**
-     * Exception thrown for arithmetic trap errors.
+     * <p><b>This class is obsolete. It will be replaced by a new version of this
+     * class in a different namespace/package and library, called
+     * <code>PeterO.Numbers.ETrapException</code> in the <code>PeterO.Numbers</code>
+     * library (in .NET), or <code>com.upokecenter.numbers.getETrapException()</code>
+     * in the <code>com.github.peteroupc/numbers</code> artifact (in
+     * Java).</b></p> Exception thrown for arithmetic trap errors.
      * @deprecated Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

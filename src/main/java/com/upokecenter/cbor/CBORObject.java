@@ -629,7 +629,13 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
+     * Registers an object that validates CBOR objects with new tags.
+     * @param bigintTag An arbitrary-precision integer.
+     * @param handler An ICBORTag object.
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
+     * {@code handler} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
+     * than 0 or greater than (2^64-1).
      */
     static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
@@ -846,7 +852,10 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Generates a CBOR object from an arbitrary-precision binary floating-point
+     * number.
+     * @param bigValue An arbitrary-precision binary floating-point number.
+     * @return A CBOR number.
      */
     static CBORObject FromObject(EFloat bigValue) {
       if ((Object)bigValue == (Object)null) {
@@ -869,7 +878,10 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Generates a CBOR object from an arbitrary-precision binary floating-point
+     * number.
+     * @param bigValue An arbitrary-precision binary floating-point number.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedRational bigValue) {
       return ((Object)bigValue == (Object)null) ? (CBORObject.Null) :
@@ -1670,7 +1682,19 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a binary floating-point number in CBOR format to a data stream as
+     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+     * <li>If the value is negative zero, infinity, or NaN, converts the
+     * number to a <code>double</code> and writes that <code>double</code>. If negative
+     * zero should not be written this way, use the Plus method to convert
+     * the value beforehand.</li> <li>If the value has an exponent of zero,
+     * writes the value as an unsigned integer or signed integer if the
+     * number can fit either type or as a big integer otherwise.</li> <li>In
+     * all other cases, writes the value as a big float.</li></ul>
+     * @param bignum An arbitrary-precision binary float.
+     * @param stream A writable data stream.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     static void Write(EFloat bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1722,7 +1746,11 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a rational number in CBOR format to a data stream.
+     * @param rational An arbitrary-precision rational number.
+     * @param stream A writable data stream.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     static void Write(ERational rational, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1774,7 +1802,19 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a decimal floating-point number in CBOR format to a data stream, as
+     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+     * <li>If the value is negative zero, infinity, or NaN, converts the
+     * number to a <code>double</code> and writes that <code>double</code>. If negative
+     * zero should not be written this way, use the Plus method to convert
+     * the value beforehand.</li> <li>If the value has an exponent of zero,
+     * writes the value as an unsigned integer or signed integer if the
+     * number can fit either type or as a big integer otherwise.</li> <li>In
+     * all other cases, writes the value as a decimal number.</li></ul>
+     * @param bignum The arbitrary-precision decimal number to write. Can be null.
+     * @param stream InputStream to write to.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     static void Write(EDecimal bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1826,7 +1866,11 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a big integer in CBOR format to a data stream.
+     * @param bigint Big integer to write. Can be null.
+     * @param stream A writable data stream.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     static void Write(EInteger bigint, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
