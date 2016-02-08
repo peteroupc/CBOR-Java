@@ -10,8 +10,13 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.numbers.*;
 
     /**
-     * Contains parameters for controlling the precision, rounding, and exponent
-     * range of arbitrary-precision numbers.
+     * <p><b>This class is largely obsolete. It will be replaced by a new version
+     * of this class in a different namespace/package and library, called
+     * <code>PeterO.Numbers.EContext</code> in the <code>PeterO.EContext</code> library
+     * (in .NET), or <code>com.upokecenter.numbers.getEFloat()</code> in the
+     * <code>com.github.peteroupc/numbers</code> artifact (in
+     * Java).</b></p>Contains parameters for controlling the precision,
+     * rounding, and exponent range of arbitrary-precision numbers.
      */
   public class PrecisionContext {
     /**

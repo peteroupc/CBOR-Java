@@ -24,11 +24,10 @@ import com.upokecenter.util.*;
       BigInteger bv = BigInteger.valueOf(0);
       StringAndBigInt sabi = new StringAndBigInt();
       int numDigits = 1 + rand.NextValue(100);
-      boolean negative = false;
+      boolean negative = rand.NextValue(2) == 0;
       StringBuilder builder = new StringBuilder();
-      if (rand.NextValue(2) == 0) {
+      if (negative) {
         builder.append('-');
-        negative = true;
       }
       for (int i = 0; i < numDigits; ++i) {
         int digit = rand.NextValue(radix);
@@ -37,14 +36,15 @@ import com.upokecenter.util.*;
         } else {
           builder.append(ValueDigitsLower.charAt(digit));
         }
-        BigInteger bigintTmp = BigInteger.valueOf(radix);
-        bv = bv.multiply(bigintTmp);
-        bigintTmp = BigInteger.valueOf(digit);
-        bv = bv.add(bigintTmp);
+        // BigInteger bigintTmp = BigInteger.valueOf(radix);
+        // bv = bv.multiply(bigintTmp);
+        // bigintTmp = BigInteger.valueOf(digit);
+        // bv = bv.add(bigintTmp);
       }
-      if (negative) {
-        bv = bv.negate();
-      }
+      // if (negative) {
+      //  bv = bv.negate();
+      // }
+      bv = BigInteger.fromRadixString(builder.toString(), radix);
       sabi.bigintValue = bv;
       sabi.stringValue = builder.toString();
       return sabi;

@@ -7,8 +7,7 @@ import com.upokecenter.cbor.*;
 
   public class CBORDataUtilitiesTest {
     private void AssertNegative(CBORObject obj) {
-      ExtendedDecimal ed = obj.AsExtendedDecimal();
-      if (!(ed.isNegative()))Assert.fail();
+      if (!(obj.isNegative()))Assert.fail();
       CBORTestCommon.AssertRoundTrip(obj);
     }
     @Test

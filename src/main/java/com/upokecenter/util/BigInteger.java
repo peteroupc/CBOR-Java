@@ -17,13 +17,15 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.EInteger</code> in the <code>PeterO.Numbers</code> library
-     * (in .NET), or <code>com.upokecenter.numbers.getEInteger()</code> in the
-     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(Object)</code> method,
-     * among other things, but for method, among other things (by including
-     * the new library in your code), but for this versionof the CBOR
-     * library doesn't include any methods that explicitly take an
+     * <code>PeterO.Numbers.EInteger</code> in the <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET), or <code>com.upokecenter.numbers.EInteger</code> in the
+     * <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java). This new class can be used in the
+     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * library in your code, among other things), but this version of the
+     * CBOR library doesn't include any methods that explicitly take an
      * <code>EInteger</code> as a parameter or return value.</b></p> An
      * arbitrary-precision integer. <p><b>Thread safety:</b>Instances of
      * this class are immutable, so they are inherently safe for use by
@@ -37,8 +39,9 @@ import com.upokecenter.numbers.*;
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
-  public static final BigInteger ONE = new BigInteger(EInteger.FromInt32(1));
+    public static final BigInteger ONE = new BigInteger(EInteger.FromInt32(1));
 
+    private static final BigInteger oneValue = new BigInteger(EInteger.FromInt32(1));
     private final EInteger ei;
 
     BigInteger(EInteger ei) {
@@ -67,7 +70,11 @@ import com.upokecenter.numbers.*;
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
-  public static final BigInteger ZERO = new BigInteger(EInteger.FromInt32(0));
+    public static final BigInteger ZERO = new
+      BigInteger(EInteger.FromInt32(0));
+
+  private static final BigInteger zeroValue = new
+      BigInteger(EInteger.FromInt32(0));
 
     /**
      * Gets a value indicating whether this value is even.
@@ -155,9 +162,7 @@ import com.upokecenter.numbers.*;
      * @throws IllegalArgumentException The parameter {@code radix} is less than 2
      * or greater than 36.
      * @throws java.lang.NumberFormatException The string is empty or in an invalid format.
-     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
   public static BigInteger fromRadixString(String str, int radix) {
       return new BigInteger(EInteger.FromRadixString(str, radix));
     }
@@ -250,9 +255,7 @@ return new BigInteger(EInteger.FromSubstring(str, index, endIndex));
      * @param longerValue A 64-bit signed integer.
      * @return An arbitrary-precision integer with the same value as the 64-bit
      * number.
-     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
   public static BigInteger valueOf(long longerValue) {
       return new BigInteger(EInteger.FromInt64(longerValue));
  }
@@ -290,9 +293,7 @@ return new BigInteger(this.getEi().Add(bigintAugend.getEi()));
      * 1.
      * @return The number of bits in this object's value. Returns 0 if this
      * object's value is 0 or negative 1.
-     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
   public int bitLength() {
 return this.getEi().GetSignedBitLength();
  }
@@ -761,9 +762,7 @@ return this.getEi().GetSignedBit(index);
      * "endIndex" is less than 0, or either is greater than the string's
      * length, or "endIndex" is less than "index" ; or radix is less than 2
      * or greater than 36.
-     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
   public String toRadixString(int radix) {
       return this.getEi().ToRadixString(radix);
  }

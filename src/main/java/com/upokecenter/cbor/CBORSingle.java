@@ -151,4 +151,10 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     public ERational AsExtendedRational(Object obj) {
       return ERational.FromSingle(((Float)obj).floatValue());
     }
+
+    public boolean IsNegative(Object obj) {
+      float val = ((Float)obj).floatValue();
+      int ivalue = Float.floatToRawIntBits(val);
+      return (ivalue >> 31) != 0;
+    }
   }

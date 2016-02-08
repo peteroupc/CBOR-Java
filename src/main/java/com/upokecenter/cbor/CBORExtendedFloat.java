@@ -162,4 +162,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     public ERational AsExtendedRational(Object obj) {
       return ERational.FromExtendedFloat((EFloat)obj);
     }
+
+    public boolean IsNegative(Object obj) {
+      return ((EFloat)obj).isNegative();
+    }
   }

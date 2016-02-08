@@ -124,4 +124,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     public ERational AsExtendedRational(Object obj) {
       return ERational.FromEInteger((EInteger)obj);
     }
+
+    public boolean IsNegative(Object obj) {
+      return ((EInteger)obj).signum() < 0;
+    }
   }

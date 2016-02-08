@@ -145,6 +145,38 @@ boolean lenientLineBreaks) {
       if (str == null) {
         throw new NullPointerException("str");
       }
+      if (!lenientLineBreaks && str.length() == 1) {
+        int c = str.charAt(0);
+        if ((c & 0xf800) == 0xd800) {
+          if (replace) {
+ c = 0xfffd;
+} else {
+ throw new IllegalArgumentException("Unpaired surrogate code point");
+}
+        }
+        if (c<0x80) {
+          return new byte[] { (byte)c  };
+        } else if (c <= 0x7ff) {
+          return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
+            (byte)(0x80 | (c & 0x3f))  };
+        } else {
+          return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
+            (byte)(0x80 | ((c >> 6) & 0x3f)),
+            (byte)(0x80 | (c & 0x3f))  };
+        }
+      } else if (str.length() == 2) {
+        int c = str.charAt(0);
+        int c2 = str.charAt(1);
+        if ((c & 0xfc00) == 0xd800 && (c2 & 0xfc00) == 0xdc00) {
+          c = 0x10000 + ((c - 0xd800) << 10) + (c2 - 0xdc00);
+          return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
+            (byte)(0x80 | ((c >> 12) & 0x3f)),
+            (byte)(0x80 | ((c >> 6) & 0x3f)),
+            (byte)(0x80 | (c & 0x3f))  };
+        } else if (!lenientLineBreaks && c<0x80 && c2<0x80) {
+          return new byte[] { (byte)c, (byte)c2  };
+        }
+      }
       try {
         java.io.ByteArrayOutputStream ms = null;
 try {

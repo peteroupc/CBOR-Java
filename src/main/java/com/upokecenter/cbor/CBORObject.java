@@ -92,6 +92,9 @@ import com.upokecenter.numbers.*;
     private static CBORObject ConstructSimpleValue(int v) {
       return new CBORObject(CBORObjectTypeSimpleValue, v);
     }
+    private static CBORObject ConstructIntegerValue(int v) {
+      return new CBORObject(CBORObjectTypeInteger, (long)v);
+    }
 
     /**
      * Represents the value false.
@@ -137,6 +140,12 @@ import com.upokecenter.numbers.*;
 
     public static final CBORObject Undefined =
       CBORObject.ConstructSimpleValue(23);
+
+    /**
+     * Gets a CBOR object for the number zero.
+     */
+    public static final CBORObject Zero =
+      CBORObject.ConstructIntegerValue(0);
 
     static final int CBORObjectTypeArray = 4;
     static final int CBORObjectTypeBigInteger = 1;  // all other integers
@@ -348,6 +357,15 @@ import com.upokecenter.numbers.*;
           return dict.keySet();
         }
         throw new IllegalStateException("Not a map");
+      }
+
+    /**
+     * Gets a value indicating whether this object is a negative number.
+     * @return True if this object is a negative number; otherwise, false.
+     */
+    public final boolean isNegative() {
+        ICBORNumber cn = NumberInterfaces[this.getItemType()];
+        return (cn != null) && cn.IsNegative(this.getThisItem());
       }
 
     /**
@@ -1172,31 +1190,33 @@ CBOREncodeOptions options) {
      * Generates a CBORObject from an arbitrary object. The following types are
      * specially handled by this method: null; primitive types; string;
      * CBORObject; the <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>, and
-     * <code>ERational</code> classes in the new <code>PeterO.Numbers</code> library (in
-     * .NET) or the <code>com.github.peteroupc/numbers</code> artifact (in Java);
-     * the legacy <code>ExtendedDecimal</code>, <code>ExtendedFloat</code>,
-     * <code>ExtendedInteger</code>, and <code>ExtendedRational</code> classes in this
-     * library; arrays; enumerations (<code>Enum</code> objects); and maps. <p>In
-     * the .NET version, if the object is a type not specially handled by
-     * this method, returns a CBOR map with the values of each of its
-     * read/write properties (or all properties in the case of an anonymous
-     * type). Properties are converted to their camel-case names (meaning if
-     * a name starts with A to Z, that letter is lower-cased). If the
-     * property name begins with the word "Is", that word is deleted from
-     * the name. Also, .NET <code>Enum</code> objects will be converted to their
-     * integer values, and a multidimensional array is converted to an array
-     * of arrays.</p> <p>In the Java version, if the object is a type not
-     * specially handled by this method, this method checks the CBOR object
-     * for methods starting with the word "get" or "is" that take no
-     * parameters, and returns a CBOR map with one entry for each such
-     * method found. For each method found, the starting word "get" or "is"
-     * is deleted from its name, and the name is converted to camel case
-     * (meaning if a name starts with A to Z, that letter is lower-cased).
-     * Also, Java <code>Enum</code> objects will be converted to the result of
-     * their name method.</p> <p>If the input is a byte array, the byte
-     * array is copied to a new byte array. (This method can't be used to
-     * decode CBOR data from a byte array; for that, use the DecodeFromBytes
-     * method instead.).</p>
+     * <code>ERational</code> classes in the new <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET) or the <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java); the legacy <code>ExtendedDecimal</code>,
+     * <code>ExtendedFloat</code>, <code>ExtendedInteger</code>, and
+     * <code>ExtendedRational</code> classes in this library; arrays; enumerations
+     * (<code>Enum</code> objects); and maps. <p>In the .NET version, if the
+     * object is a type not specially handled by this method, returns a CBOR
+     * map with the values of each of its read/write properties (or all
+     * properties in the case of an anonymous type). Properties are
+     * converted to their camel-case names (meaning if a name starts with A
+     * to Z, that letter is lower-cased). If the property name begins with
+     * the word "Is", that word is deleted from the name. Also, .NET
+     * <code>Enum</code> objects will be converted to their integer values, and a
+     * multidimensional array is converted to an array of arrays.</p> <p>In
+     * the Java version, if the object is a type not specially handled by
+     * this method, this method checks the CBOR object for methods starting
+     * with the word "get" or "is" that take no parameters, and returns a
+     * CBOR map with one entry for each such method found. For each method
+     * found, the starting word "get" or "is" is deleted from its name, and
+     * the name is converted to camel case (meaning if a name starts with A
+     * to Z, that letter is lower-cased). Also, Java <code>Enum</code> objects
+     * will be converted to the result of their name method.</p> <p>If the
+     * input is a byte array, the byte array is copied to a new byte array.
+     * (This method can't be used to decode CBOR data from a byte array; for
+     * that, use the DecodeFromBytes method instead.).</p>
      * @param obj An arbitrary object.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.

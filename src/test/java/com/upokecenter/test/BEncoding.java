@@ -12,6 +12,7 @@ import java.util.*;
 import java.io.*;
 
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
     /**
      * Contains methods for reading and writing objects represented in BEncode, a
@@ -106,6 +107,68 @@ private BEncoding() {
       throw new CBORException("Object expected");
     }
 
+    private static final String ValueDigits = "0123456789";
+
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (int i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    public static String LongToString(long longValue) {
+      if (longValue == Long.MIN_VALUE) {
+        return "-9223372036854775808";
+      }
+      if (longValue == 0L) {
+        return "0";
+      }
+      if (longValue == (long)Integer.MIN_VALUE) {
+        return "-2147483648";
+      }
+      boolean neg = longValue < 0;
+      int count = 0;
+      char[] chars;
+      int intlongValue = ((int)longValue);
+      if ((long)intlongValue == longValue) {
+        chars = new char[12];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          intlongValue = -intlongValue;
+        }
+        while (intlongValue != 0) {
+          int intdivlongValue = intlongValue / 10;
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivlongValue *
+              10)));
+          chars[count++] = digit;
+          intlongValue = intdivlongValue;
+        }
+      } else {
+        chars = new char[24];
+        if (neg) {
+          chars[0] = '-';
+          ++count;
+          longValue = -longValue;
+        }
+        while (longValue != 0) {
+          long divlongValue = longValue / 10;
+          char digit = ValueDigits.charAt((int)(longValue - (divlongValue * 10)));
+          chars[count++] = digit;
+          longValue = divlongValue;
+        }
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
     private static CBORObject readString(InputStream stream, char firstChar) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       if (firstChar < (int)'0' && firstChar > (int)'9') {
@@ -156,7 +219,7 @@ private BEncoding() {
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        BigInteger bigLength = BigInteger.valueOf(length);
+        EInteger bigLength = EInteger.FromInt64(length);
         writeUtf8(
 bigLength.toString(),
 stream);
@@ -189,9 +252,7 @@ stream);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            BigInteger bigLength = BigInteger.valueOf(length);
-            writeUtf8(
-bigLength.toString(),
+            writeUtf8(LongToString(length),
 stream);
             stream.write(((byte)((byte)':')));
             writeUtf8(key, stream);
@@ -206,7 +267,7 @@ stream);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            BigInteger bigLength = BigInteger.valueOf(length);
+            EInteger bigLength = EInteger.FromInt64(length);
             writeUtf8(
 bigLength.toString(),
 stream);
@@ -228,7 +289,7 @@ stream);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        BigInteger bigLength = BigInteger.valueOf(length);
+        EInteger bigLength = EInteger.FromInt64(length);
         writeUtf8(
 bigLength.toString(),
 stream);

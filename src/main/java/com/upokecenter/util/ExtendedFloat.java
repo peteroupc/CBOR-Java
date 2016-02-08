@@ -10,37 +10,46 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.numbers.*;
 
     /**
-     * Represents an arbitrary-precision binary floating-point number. Consists of
-     * an integer mantissa and an integer exponent, both
-     * arbitrary-precision. The value of the number equals mantissa *
-     * 2^exponent. This class also supports values for negative zero,
-     * not-a-number (NaN) values, and infinity. <p>Passing a signaling NaN
-     * to any arithmetic operation shown here will signal the flag
-     * FlagInvalid and return a quiet NaN, even if another operand to that
-     * operation is a quiet NaN, unless noted otherwise.</p> <p>Passing a
-     * quiet NaN to any arithmetic operation shown here will return a quiet
-     * NaN, unless noted otherwise.</p> <p>Unless noted otherwise, passing a
-     * null arbitrary-precision binary float argument to any method here
-     * will throw an exception.</p> <p>When an arithmetic operation signals
-     * the flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
-     * throw an exception too, unless the operation's trap is enabled in the
-     * precision context (see PrecisionContext's Traps property).</p> <p>An
-     * arbitrary-precision binary float value can be serialized in one of
-     * the following ways:</p> <ul> <li>By calling the toString() method.
-     * However, not all strings can be converted back to an
-     * arbitrary-precision binary float without loss, especially if the
-     * string has a fractional part.</li> <li>By calling the
-     * UnsignedMantissa, Exponent, and IsNegative properties, and calling
-     * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
-     * values combined will uniquely identify a particular
-     * arbitrary-precision binary float value.</li></ul> <p>If an operation
-     * requires creating an intermediate value that might be too big to fit
-     * in memory (or might require more than 2 gigabytes of memory to store
-     * -- due to the current use of a 32-bit integer internally as a
-     * length), the operation may signal an invalid-operation flag and
-     * return not-a-number (NaN). In certain rare cases, the compareTo
-     * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Thread
+     * <p><b>This class is largely obsolete. It will be replaced by a new version
+     * of this class in a different namespace/package and library, called
+     * <code>PeterO.Numbers.EFloat</code> in the <code>PeterO.Numbers</code> library (in
+     * .NET), or <code>com.upokecenter.numbers.getEFloat()</code> in the
+     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
+     * class can be used in the <code>CBORObject.FromObject(Object)</code> method
+     * (by including the new library in your code, among other things), but
+     * this version of the CBOR library doesn't include any methods that
+     * explicitly take an <code>EFloat</code> as a parameter or return
+     * value.</b></p> <p> Represents an arbitrary-precision binary
+     * floating-point number. Consists of an integer mantissa and an integer
+     * exponent, both arbitrary-precision. The value of the number equals
+     * mantissa * 2^exponent. This class also supports values for negative
+     * zero, not-a-number (NaN) values, and infinity.</p> <p>Passing a
+     * signaling NaN to any arithmetic operation shown here will signal the
+     * flag FlagInvalid and return a quiet NaN, even if another operand to
+     * that operation is a quiet NaN, unless noted otherwise.</p> <p>Passing
+     * a quiet NaN to any arithmetic operation shown here will return a
+     * quiet NaN, unless noted otherwise.</p> <p>Unless noted otherwise,
+     * passing a null arbitrary-precision binary float argument to any
+     * method here will throw an exception.</p> <p>When an arithmetic
+     * operation signals the flag FlagInvalid, FlagOverflow, or
+     * FlagDivideByZero, it will not throw an exception too, unless the
+     * operation's trap is enabled in the precision context (see
+     * PrecisionContext's Traps property).</p> <p>An arbitrary-precision
+     * binary float value can be serialized in one of the following
+     * ways:</p> <ul> <li>By calling the toString() method. However, not all
+     * strings can be converted back to an arbitrary-precision binary float
+     * without loss, especially if the string has a fractional part.</li>
+     * <li>By calling the UnsignedMantissa, Exponent, and IsNegative
+     * properties, and calling the IsInfinity, IsQuietNaN, and
+     * IsSignalingNaN methods. The return values combined will uniquely
+     * identify a particular arbitrary-precision binary float
+     * value.</li></ul> <p>If an operation requires creating an intermediate
+     * value that might be too big to fit in memory (or might require more
+     * than 2 gigabytes of memory to store -- due to the current use of a
+     * 32-bit integer internally as a length), the operation may signal an
+     * invalid-operation flag and return not-a-number (NaN). In certain rare
+     * cases, the compareTo method may throw OutOfMemoryError (called
+     * OutOfMemoryError in Java) in the same circumstances.</p> <p><b>Thread
      * safety:</b>Instances of this class are immutable, so they are
      * inherently safe for use by multiple threads. Multiple instances of
      * this object with the same properties are interchangeable, so they
@@ -59,9 +68,7 @@ import com.upokecenter.numbers.*;
      * integer if the exponent is positive or zero.
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public final BigInteger getExponent() {
         return new BigInteger(this.getEf().getExponent());
       }
@@ -69,9 +76,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the absolute value of this object&#x27;s un-scaled value.
      * @return The absolute value of this object's un-scaled value.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public final BigInteger getUnsignedMantissa() {
         return new BigInteger(this.getEf().getUnsignedMantissa());
       }
@@ -80,9 +85,7 @@ import com.upokecenter.numbers.*;
      * Gets this object&#x27;s un-scaled value.
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public final BigInteger getMantissa() {
         return new BigInteger(this.getEf().getMantissa());
       }
@@ -202,9 +205,7 @@ ctx == null ? null : ctx.getEc()));
      * @param mantissaSmall The un-scaled value.
      * @param exponentSmall The binary exponent.
      * @return An arbitrary-precision binary float.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static ExtendedFloat Create(int mantissaSmall, int exponentSmall) {
       return new ExtendedFloat(EFloat.Create(mantissaSmall, exponentSmall));
     }
@@ -216,9 +217,7 @@ ctx == null ? null : ctx.getEc()));
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code mantissa} or
      * {@code exponent} is null.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static ExtendedFloat Create(
 BigInteger mantissa,
 BigInteger exponent) {
@@ -234,22 +233,27 @@ BigInteger exponent) {
     /**
      * Creates a binary float from a string that represents a number. Note that if
      * the string contains a negative exponent, the resulting value might
-     * not be exact. However, the resulting binary float will contain enough
+     * not be exact, in which case the resulting binary float will be an
+     * approximation of this decimal number's value. (NOTE: This
+     * documentation previously said the binary float will contain enough
      * precision to accurately convert it to a 32-bit or 64-bit floating
-     * point number (float or double). <p>The format of the string generally
-     * consists of:</p> <ul> <li>An optional plus sign ("+" , U+002B) or
-     * minus sign ("-", U+002D) (if '-' , the value is negative.)</li>
-     * <li>One or more digits, with a single optional decimal point after
-     * the first digit and before the last digit.</li> <li>Optionally,
-     * "E+"/"e+" (positive exponent) or "E-"/"e-" (negative exponent) plus
-     * one or more digits specifying the exponent.</li></ul> <p>The string
-     * can also be "-INF", "-Infinity", "Infinity", "INF", quiet NaN ("NaN")
-     * followed by any number of digits, or signaling NaN ("sNaN") followed
-     * by any number of digits, all in any combination of upper and lower
-     * case.</p> <p>All characters mentioned above are the corresponding
-     * characters in the Basic Latin range. In particular, the digits must
-     * be the basic digits 0 to 9 (U + 0030 to U + 0039). The string is not
-     * allowed to contain white space characters, including spaces.</p>
+     * point number. Due to double rounding, this will generally not be the
+     * case for certain numbers converted from decimal to ExtendedFloat via
+     * this method and in turn converted to <code>double</code> or <code>float</code>.)
+     * <p>The format of the string generally consists of:</p> <ul> <li>An
+     * optional plus sign ("+" , U+002B) or minus sign ("-", U+002D) (if '-'
+     * , the value is negative.)</li> <li>One or more digits, with a single
+     * optional decimal point after the first digit and before the last
+     * digit.</li> <li>Optionally, "E+"/"e+" (positive exponent) or
+     * "E-"/"e-" (negative exponent) plus one or more digits specifying the
+     * exponent.</li></ul> <p>The string can also be "-INF", "-Infinity",
+     * "Infinity", "INF", quiet NaN ("NaN") followed by any number of
+     * digits, or signaling NaN ("sNaN") followed by any number of digits,
+     * all in any combination of upper and lower case.</p> <p>All characters
+     * mentioned above are the corresponding characters in the Basic Latin
+     * range. In particular, the digits must be the basic digits 0 to 9
+     * (U + 0030 to U + 0039). The string is not allowed to contain white space
+     * characters, including spaces.</p>
      * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
@@ -534,9 +538,7 @@ PrecisionContext ctx) {
 
     /**
      * A not-a-number value.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static final ExtendedFloat NaN =
      new ExtendedFloat(EFloat.NaN);
 
@@ -544,25 +546,19 @@ PrecisionContext ctx) {
      * A not-a-number value that signals an invalid operation flag when it&#x27;s
      * passed as an argument to any arithmetic operation in
      * arbitrary-precision binary float.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static final ExtendedFloat SignalingNaN =
      new ExtendedFloat(EFloat.SignalingNaN);
 
     /**
      * Positive infinity, greater than any other number.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static final ExtendedFloat PositiveInfinity =
      new ExtendedFloat(EFloat.PositiveInfinity);
 
     /**
      * Negative infinity, less than any other number.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public static final ExtendedFloat NegativeInfinity =
      new ExtendedFloat(EFloat.NegativeInfinity);
 
@@ -589,9 +585,7 @@ PrecisionContext ctx) {
     /**
      * Returns whether this object is a not-a-number value.
      * @return True if this object is a not-a-number value; otherwise, false.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public boolean IsNaN() {
       return this.getEf().IsNaN();
     }
@@ -601,9 +595,7 @@ PrecisionContext ctx) {
      * infinity.
      * @return True if this object is positive or negative infinity; otherwise,
      * false.
-     * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
- */
-@Deprecated
+     */
     public boolean IsInfinity() {
       return this.getEf().IsInfinity();
     }

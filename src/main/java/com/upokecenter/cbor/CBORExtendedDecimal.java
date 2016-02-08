@@ -157,4 +157,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     public ERational AsExtendedRational(Object obj) {
       return ERational.FromExtendedDecimal((EDecimal)obj);
     }
+
+    public boolean IsNegative(Object obj) {
+      return ((EDecimal)obj).isNegative();
+    }
   }

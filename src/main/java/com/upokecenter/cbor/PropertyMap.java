@@ -167,8 +167,8 @@ class PropertyMap {
         }
         haveMethods=true;
       }
+      return legacyMethods[method];
     }
-    return legacyMethods[method];
   }
 
     public static BigInteger ToLegacy(EInteger ei){

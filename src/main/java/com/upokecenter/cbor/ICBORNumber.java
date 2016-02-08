@@ -19,6 +19,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     boolean IsNaN(Object obj);
 
+    boolean IsNegative(Object obj);
+
     double AsDouble(Object obj);
 
     Object Negate(Object obj);

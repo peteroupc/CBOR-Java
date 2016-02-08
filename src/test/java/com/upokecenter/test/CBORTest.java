@@ -8,16 +8,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
 import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
-
-    /**
-     * Contains CBOR tests.
-     * @return Not documented yet.
-     */
+import com.upokecenter.numbers.*;
 
   public class CBORTest {
     public static void TestCBORMapAdd() {
@@ -64,32 +59,29 @@ import com.upokecenter.cbor.*;
 
     @Test
     public void TestBigInteger() {
-      BigInteger bi = BigInteger.valueOf(3);
-      BigInteger negseven = BigInteger.valueOf(-7);
+      FastRandom r = new FastRandom();
       for (int i = 0; i < 500; ++i) {
+        BigInteger bi = RandomObjects.RandomBigInteger(r);
         CBORTestCommon.AssertSer(
           CBORObject.FromObject(bi),
           bi.toString());
         if (!(CBORObject.FromObject(bi).isIntegral()))Assert.fail();
         CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(bi));
-
         CBORTestCommon.AssertRoundTrip(CBORObject.FromObject(
-          ExtendedDecimal.Create(
-            bi,
-            BigInteger.valueOf(1))));
-        bi = bi.multiply(negseven);
+          ExtendedDecimal.FromString(bi.toString()+"e1")));
       }
-      BigInteger[] ranges = {
-        BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.valueOf(512)),
-        BigInteger.valueOf(Long.MIN_VALUE).add(BigInteger.valueOf(512)),
-        BigInteger.valueOf(0).subtract(BigInteger.valueOf(512)), BigInteger.valueOf(0).add(BigInteger.valueOf(512)),
-        BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(512)),
-        BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(512)),
-        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).subtract(BigInteger.valueOf(512)),
-        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).add(BigInteger.valueOf(512)),
+      EInteger[] ranges = {
+       EInteger.FromString("-9223372036854776320"),
+EInteger.FromString("-9223372036854775296"),
+EInteger.FromString("-512"),
+EInteger.FromString("512"),
+EInteger.FromString("9223372036854775295"),
+EInteger.FromString("9223372036854776319"),
+EInteger.FromString("18446744073709551103"),
+EInteger.FromString("18446744073709552127")
       };
       for (int i = 0; i < ranges.length; i += 2) {
-        BigInteger bigintTemp = ranges[i];
+        EInteger bigintTemp = ranges[i];
         while (true) {
           CBORTestCommon.AssertSer(
             CBORObject.FromObject(bigintTemp),
@@ -97,7 +89,7 @@ import com.upokecenter.cbor.*;
           if (bigintTemp.equals(ranges[i + 1])) {
             break;
           }
-          bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
+          bigintTemp = bigintTemp.Add(EInteger.FromInt32(1));
         }
       }
     }
@@ -106,17 +98,19 @@ import com.upokecenter.cbor.*;
     public void TestBigNumBytes() {
       CBORObject o = null;
       o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x41, (byte)0x88  });
-      Assert.assertEquals(BigInteger.valueOf(0x88L), o.AsBigInteger());
+      Assert.assertEquals(BigInteger.fromRadixString("88",16), o.AsBigInteger());
       o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x42, (byte)0x88, 0x77  });
-      Assert.assertEquals(BigInteger.valueOf(0x8877L), o.AsBigInteger());
+      Assert.assertEquals(BigInteger.fromRadixString("8877", 16), o.AsBigInteger());
   o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x44, (byte)0x88, 0x77,
         0x66,
         0x55  });
-      Assert.assertEquals(BigInteger.valueOf(0x88776655L), o.AsBigInteger());
+ Assert.assertEquals(BigInteger.fromRadixString("88776655", 16),
+        o.AsBigInteger());
   o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x47, (byte)0x88, 0x77,
         0x66,
         0x55, 0x44, 0x33, 0x22  });
-      Assert.assertEquals(BigInteger.valueOf(0x88776655443322L), o.AsBigInteger());
+      Assert.assertEquals(BigInteger.fromRadixString("88776655443322",16),
+        o.AsBigInteger());
     }
 
     @Test
@@ -163,32 +157,31 @@ import com.upokecenter.cbor.*;
       FastRandom r = new FastRandom();
       for (int i = 0; i < 5000; ++i) {
         CBORObject ed = CBORTestCommon.RandomNumber(r);
-        ExtendedDecimal ed2;
-        ed2 = ExtendedDecimal.FromDouble(ed.AsExtendedDecimal().ToDouble());
-        if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) !=
-            ed.CanFitInDouble()) {
+        EDecimal ed2;
+
+        ed2 = EDecimal.FromDouble(AsED(ed).ToDouble());
+        if ((AsED(ed).compareTo(ed2) == 0) != ed.CanFitInDouble()) {
           Assert.fail(ObjectMessage(ed));
         }
-        ed2 = ExtendedDecimal.FromSingle(ed.AsExtendedDecimal().ToSingle());
-        if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) !=
-            ed.CanFitInSingle()) {
+        ed2 = EDecimal.FromSingle(AsED(ed).ToSingle());
+        if ((AsED(ed).compareTo(ed2) == 0) != ed.CanFitInSingle()) {
           Assert.fail(ObjectMessage(ed));
         }
         if (!ed.IsInfinity() && !ed.IsNaN()) {
-          ed2 = ExtendedDecimal.FromBigInteger(ed.AsExtendedDecimal()
-                    .ToBigInteger());
-          if ((ed.AsExtendedDecimal().compareTo(ed2) == 0) != ed.isIntegral()) {
+          ed2 = EDecimal.FromEInteger(AsED(ed)
+                    .ToEInteger());
+          if ((AsED(ed).compareTo(ed2) == 0) != ed.isIntegral()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
         if (!ed.IsInfinity() && !ed.IsNaN()) {
           BigInteger bi = ed.AsBigInteger();
           if (ed.isIntegral()) {
-            if (bi.canFitInInt() != ed.CanFitInInt32()) {
+            if ((bi.bitLength() <= 31) != ed.CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
-          if (bi.canFitInInt() != ed.CanTruncatedIntFitInInt32()) {
+          if ((bi.bitLength() <= 31) != ed.CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
           if (ed.isIntegral()) {
@@ -210,7 +203,7 @@ import com.upokecenter.cbor.*;
       Assert.assertEquals(
 BigInteger.fromString("2217361768"),
 cbor.AsBigInteger());
-      if (cbor.AsBigInteger().canFitInInt())Assert.fail();
+      if (cbor.AsBigInteger().bitLength() <= 31)Assert.fail();
       if (cbor.CanTruncatedIntFitInInt32())Assert.fail();
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
         0x18, 0x2f, 0x32  });  // -2674012278751232
@@ -219,10 +212,8 @@ cbor.AsBigInteger());
       if (CBORObject.FromObject(2554895343L).CanFitInSingle())Assert.fail();
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
         0x10, 0x38, 0x64  });  // -6619136
-      Assert.assertEquals(BigInteger.valueOf(-6619136), cbor.AsBigInteger());
-      Assert.assertEquals(-6619136, cbor.AsBigInteger().intValueChecked());
+      Assert.assertEquals(BigInteger.fromString("-6619136"), cbor.AsBigInteger());
       Assert.assertEquals(-6619136, cbor.AsInt32());
-      if (!(cbor.AsBigInteger().canFitInInt()))Assert.fail();
       if (!(cbor.CanTruncatedIntFitInInt32()))Assert.fail();
     }
 
@@ -414,8 +405,13 @@ cbor.AsBigInteger());
 
     @Test
     public void TestCompareB() {
-      if (!(CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
-        (byte)0x80, 0x00, 0x00  }).AsExtendedRational().IsInfinity()))Assert.fail();
+      {
+String stringTemp = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
+        (byte)0x80, 0x00, 0x00  }).AsExtendedRational().toString();
+Assert.assertEquals(
+"Infinity",
+stringTemp);
+}
       {
     CBORObject objectTemp = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
   (byte)0x82, 0x38, (byte)0xc7, 0x3b, 0x00, 0x00, 0x08, (byte)0xbf,
@@ -496,7 +492,7 @@ AddSubCompare(objectTemp, objectTemp2);
       CBORObject o = CBORTestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1  });
       Assert.assertEquals(
-        ExtendedDecimal.Create(BigInteger.valueOf(1), BigInteger.valueOf(3)),
+        ExtendedDecimal.FromString("1e3"),
         o.AsExtendedDecimal());
     }
 
@@ -511,24 +507,12 @@ AddSubCompare(objectTemp, objectTemp2);
           continue;
         }
         ExtendedRational er = new ExtendedRational(o1.AsBigInteger(), o2.AsBigInteger());
-        if (er.compareTo(CBORObject.Divide(o1, o2).AsExtendedRational()) != 0) {
-          Assert.fail(TestCommon.ObjectMessages(o1, o2, "Results don't match"));
-        }
-      }
-      for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = CBORTestCommon.RandomNumber(r);
-        CBORObject o2 = CBORTestCommon.RandomNumber(r);
-        ExtendedRational er =
-          o1.AsExtendedRational().Divide(o2.AsExtendedRational());
-        if (er.compareTo(CBORObject.Divide(o1, o2).AsExtendedRational()) != 0) {
-          Assert.fail(TestCommon.ObjectMessages(o1, o2, "Results don't match"));
-        }
-      }
-      try {
- ExtendedDecimal.FromString("1").Divide(ExtendedDecimal.FromString("3"), null);
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        {
+          ExtendedRational objectTemp = er;
+  ExtendedRational objectTemp2 = CBORObject.Divide(o1,
+            o2).AsExtendedRational() ;
+TestCommon.CompareTestEqual(objectTemp, objectTemp2);
+}
       }
     }
 
@@ -593,10 +577,10 @@ AddSubCompare(objectTemp, objectTemp2);
           (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12  });
       CBORTestCommon.AssertRoundTrip(obj);
       int actual = CBORObject.FromObject(
-        ExtendedDecimal.Create(BigInteger.valueOf(333333), BigInteger.valueOf(-2)))
+        ExtendedDecimal.FromString("333333e-2"))
         .compareTo(CBORObject.FromObject(ExtendedFloat.Create(
-          BigInteger.valueOf(5234222),
-          BigInteger.valueOf(-24936668661488L))));
+          BigInteger.fromString("5234222"),
+          BigInteger.fromString("-24936668661488"))));
       Assert.assertEquals(1, actual);
     }
 
@@ -787,15 +771,15 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
           if (!(CBORObject.FromObject(j).CanTruncatedIntFitInInt64()))Assert.fail();
           CBORTestCommon.AssertSer(
             CBORObject.FromObject(j),
-            String.format(java.util.Locale.US,"%s", j));
+            TestCommon.LongToString(j));
           Assert.assertEquals(
             CBORObject.FromObject(j),
             CBORObject.FromObject(BigInteger.valueOf(j)));
           CBORObject obj = CBORObject.FromJSONString(
-            String.format(java.util.Locale.US,"[%s]", j));
+            ("[" + TestCommon.LongToString(j) + "]"));
           CBORTestCommon.AssertSer(
             obj,
-            String.format(java.util.Locale.US,"[%s]", j));
+            ("[" + TestCommon.LongToString(j) + "]"));
           if (j == ranges[i + 1]) {
             break;
           }
@@ -835,8 +819,8 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
       CBORObject oo;
       oo = CBORObject.NewArray().Add(CBORObject.NewMap()
                     .Add(
-                    new ExtendedRational(BigInteger.valueOf(1), BigInteger.valueOf(2)),
-                    3).Add(4, false)).Add(true);
+              new ExtendedRational(BigInteger.valueOf(1), BigInteger.fromString("2")),
+              3).Add(4, false)).Add(true);
       CBORTestCommon.AssertRoundTrip(oo);
       oo = CBORObject.NewArray();
       oo.Add(CBORObject.FromObject(0));
@@ -1071,14 +1055,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
-        ExtendedDecimal cmpDecFrac =
-          o1.AsExtendedDecimal().Subtract(o2.AsExtendedDecimal());
-        ExtendedDecimal cmpCobj = CBORObject.Subtract(
-          o1,
-          o2).AsExtendedDecimal();
-        if (cmpDecFrac.compareTo(cmpCobj) != 0) {
-          Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Results don't match"),0,cmpDecFrac.compareTo(cmpCobj));
-        }
+        EDecimal cmpDecFrac = AsED(o1).Subtract(AsED(o2));
+        EDecimal cmpCobj = AsED(CBORObject.Subtract(o1, o2));
+        TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
         CBORTestCommon.AssertRoundTrip(o1);
         CBORTestCommon.AssertRoundTrip(o2);
       }
@@ -1098,7 +1077,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.FromObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObject(BigInteger.valueOf(1).shiftLeft(100));
+        o =
+  CBORObject.FromObject(BigInteger.fromString(
+"999999999999999999999999999999999"));
         o2 = CBORObject.FromObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.FromObjectAndTag(o, i + 1);
@@ -1154,33 +1135,38 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestTags() {
-      BigInteger maxuint = (BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1));
+      BigInteger maxuint = BigInteger.fromString("18446744073709551615");
       BigInteger[] ranges = {
-        BigInteger.valueOf(37),
-        BigInteger.valueOf(65539), BigInteger.valueOf(Integer.MAX_VALUE).subtract(BigInteger.valueOf(500)),
-        BigInteger.valueOf(Integer.MAX_VALUE).add(BigInteger.valueOf(500)),
-        BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(500)),
-        BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(500)),
-        ((BigInteger.valueOf(1).shiftLeft(64)).subtract(BigInteger.valueOf(1))).subtract(BigInteger.valueOf(500)),
-        maxuint };
+        BigInteger.fromString("37"),
+        BigInteger.fromString("65539"),
+       BigInteger.fromString("2147483147"),
+BigInteger.fromString("2147484147"),
+BigInteger.fromString("9223372036854775307"),
+BigInteger.fromString("9223372036854776307"),
+BigInteger.fromString("18446744073709551115"),
+BigInteger.fromString("18446744073709551615") };
       if (CBORObject.True.isTagged())Assert.fail();
       Assert.assertEquals(
-        BigInteger.valueOf(-1),
+        BigInteger.fromString("-1"),
         CBORObject.True.getInnermostTag());
       BigInteger[] tagstmp = CBORObject.True.GetTags();
       Assert.assertEquals(0, tagstmp.length);
       for (int i = 0; i < ranges.length; i += 2) {
         BigInteger bigintTemp = ranges[i];
         while (true) {
-          if (bigintTemp.compareTo(BigInteger.valueOf(-1)) >= 0 &&
-              bigintTemp.compareTo(BigInteger.valueOf(37)) <= 0) {
-            bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
-            continue;
-          }
-          if (bigintTemp.compareTo(BigInteger.valueOf(264)) == 0 ||
-              bigintTemp.compareTo(BigInteger.valueOf(265)) == 0) {
-            bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
-            continue;
+          EInteger ei = EInteger.FromBytes(bigintTemp.toBytes(true), true);
+          BigInteger bigintNext =
+            BigInteger.fromBytes(ei.Add(EInteger.FromInt32(1)).ToBytes(true), true);
+          if (bigintTemp.bitLength() <= 31) {
+            int bc = ei.ToInt32Checked();
+            if (bc>=-1 && bc <= 37) {
+              bigintTemp = bigintNext;
+              continue;
+            }
+            if (bc == 264 || bc == 265) {
+              bigintTemp = bigintNext;
+              continue;
+            }
           }
           CBORObject obj = CBORObject.FromObjectAndTag(0, bigintTemp);
           if (!(obj.isTagged()))Assert.fail("obj not tagged");
@@ -1188,18 +1174,17 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           Assert.assertEquals(1, tags.length);
           Assert.assertEquals(bigintTemp, tags[0]);
           if (!obj.getInnermostTag().equals(bigintTemp)) {
-            String errmsg = String.format(java.util.Locale.US,"obj tag doesn't match: %s",
-                obj);
+            String errmsg = ("obj tag doesn't match: " + obj);
             Assert.assertEquals(errmsg, bigintTemp, obj.getInnermostTag());
           }
           CBORTestCommon.AssertSer(
             obj,
-            String.format(java.util.Locale.US,"%s(0)", bigintTemp));
+            bigintTemp.toString() + "(0)");
           if (!bigintTemp.equals(maxuint)) {
-            BigInteger bigintNew = bigintTemp.add(BigInteger.valueOf(1));
-            if (bigintNew.equals(BigInteger.valueOf(264)) ||
-                bigintNew.equals(BigInteger.valueOf(265))) {
-              bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
+            BigInteger bigintNew = bigintNext;
+            if (bigintNew.equals(BigInteger.fromString("264")) ||
+                bigintNew.equals(BigInteger.fromString("265"))) {
+              bigintTemp = bigintNext;
               continue;
             }
             // Test multiple tags
@@ -1207,36 +1192,22 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
             BigInteger[] bi = obj2.GetTags();
             if (bi.length != 2) {
               {
-                String stringTemp = String.format(java.util.Locale.US,"Expected 2 tags: %s",
-                    obj2);
+                String stringTemp = ("Expected 2 tags: " + obj2);
                 Assert.assertEquals(stringTemp, 2, bi.length);
               }
             }
-            bigintNew = bigintTemp.add(BigInteger.valueOf(1));
-            if (!bi[0].equals(bigintNew)) {
-              {
-                String stringTemp = String.format(java.util.Locale.US,"Outer tag doesn't match: %s",
-                    obj2);
-                Assert.assertEquals(stringTemp, bigintTemp.add(BigInteger.valueOf(1)), bi[0]);
-              }
-            }
-            if (!bi[1].equals((Object)bigintTemp)) {
-              {
-                String stringTemp = String.format(java.util.Locale.US,"Inner tag doesn't match: %s",
-                    obj2);
-                Assert.assertEquals(stringTemp, bigintTemp, bi[1]);
-              }
-            }
+            bigintNew = bigintNext;
+            TestCommon.CompareTestEqualAndConsistent(bi[0], bigintNew,
+               "Outer tag doesn't match");
+            TestCommon.CompareTestEqualAndConsistent(bi[1], bigintTemp,
+               "Inner tag doesn't match");
             if (!obj2.getInnermostTag().equals((Object)bigintTemp)) {
               {
-                String stringTemp = String.format(java.util.Locale.US,"Innermost tag doesn't match: %s",
-                    obj2);
+                String stringTemp = ("Innermost tag doesn't match: " + obj2);
                 Assert.assertEquals(stringTemp, bigintTemp, obj2.getInnermostTag());
               }
             }
-            String str = String.format(java.util.Locale.US,"%s(%s(0))",
-              bigintTemp.add(BigInteger.valueOf(1)),
-              bigintTemp);
+            String str = ("" + bigintNext + "(" + bigintTemp + "(0))");
             CBORTestCommon.AssertSer(
               obj2,
               str);
@@ -1244,7 +1215,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           if (bigintTemp.equals(ranges[i + 1])) {
             break;
           }
-          bigintTemp = bigintTemp.add(BigInteger.valueOf(1));
+          bigintTemp = bigintNext;
         }
       }
     }
@@ -1291,14 +1262,16 @@ stringTemp);
       CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
         0x20, (byte)0xff  });
     }
-
+    private static EDecimal AsED(CBORObject obj) {
+      return EDecimal.FromString(
+        obj.AsExtendedDecimal().toString());
+    }
     private static void AddSubCompare(CBORObject o1, CBORObject o2) {
-      ExtendedDecimal cmpDecFrac =
-        o1.AsExtendedDecimal().Add(o2.AsExtendedDecimal());
-      ExtendedDecimal cmpCobj = CBORObject.Addition(o1, o2).AsExtendedDecimal();
+      EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
+      EDecimal cmpCobj = AsED(CBORObject.Addition(o1, o2));
       TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
-      cmpDecFrac = o1.AsExtendedDecimal().Subtract(o2.AsExtendedDecimal());
-      cmpCobj = CBORObject.Subtract(o1, o2).AsExtendedDecimal();
+      cmpDecFrac = AsED(o1).Subtract(AsED(o2));
+      cmpCobj = AsED(CBORObject.Subtract(o1, o2));
       TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       CBORObjectTest.CompareDecimals(o1, o2);
     }

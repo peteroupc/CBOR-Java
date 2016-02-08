@@ -148,4 +148,10 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     public ERational AsExtendedRational(Object obj) {
       return ERational.FromDouble(((Double)obj).doubleValue());
     }
+
+    public boolean IsNegative(Object obj) {
+      double dbl = ((Double)obj).doubleValue();
+      long lvalue = Double.doubleToRawLongBits(dbl);
+      return (lvalue >> 63) != 0;
+    }
   }
