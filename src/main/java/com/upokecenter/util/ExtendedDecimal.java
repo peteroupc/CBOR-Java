@@ -12,98 +12,101 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.EDecimal</code> in the <code>PeterO.Numbers</code> library
-     * (in .NET), or <code>com.upokecenter.numbers.getEDecimal()</code> in the
-     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(Object)</code> method
-     * (by including the new library in your code, among other things), but
-     * this version of the CBOR library doesn't include any methods that
-     * explicitly take an <code>EDecimal</code> as a parameter or return
-     * value.</b></p> Represents an arbitrary-precision decimal
-     * floating-point number. <p><b>About decimal arithmetic</b></p> <p>
-     * Decimal (base-10) arithmetic, such as that provided by this class, is
-     * appropriate for calculations involving such real-world data as prices
-     * and other sums of money, tax rates, and measurements. These
-     * calculations often involve multiplying or dividing one decimal with
-     * another decimal, or performing other operations on decimal numbers.
-     * Many of these calculations also rely on rounding behavior in which
-     * the result after rounding is a decimal number (for example,
-     * multiplying a price by a premium rate, then rounding, should result
-     * in a decimal amount of money). </p> <p>On the other hand, most
-     * implementations of <code>float</code> and <code>double</code>, including in C#
-     * and Java, store numbers in a binary (base-2) floating-point format
-     * and use binary floating-point arithmetic. Many decimal numbers can't
-     * be represented exactly in binary floating-point format (regardless of
-     * its length). Applying binary arithmetic to numbers intended to be
-     * decimals can sometimes lead to unintuitive results, as is shown in
-     * the description for the FromDouble() method of this class.</p>
-     * <p><b>About ExtendedDecimal instances</b></p> <p> Each instance of
-     * this class consists of an integer mantissa and an integer exponent,
-     * both arbitrary-precision. The value of the number equals mantissa *
-     * 10^exponent.</p> <p>The mantissa is the value of the digits that make
-     * up a number, ignoring the decimal point and exponent. For example, in
-     * the number 2356.78, the mantissa is 235678. The exponent is where the
-     * "floating" decimal point of the number is located. A positive
-     * exponent means "move it to the right", and a negative exponent means
-     * "move it to the left." In the example 2, 356.78, the exponent is -2,
-     * since it has 2 decimal places and the decimal point is "moved to the
-     * left by 2." Therefore, in the arbitrary-precision decimal
-     * representation, this number would be stored as 235678 * 10^-2.</p>
-     * <p>The mantissa and exponent format preserves trailing zeros in the
-     * number's value. This may give rise to multiple ways to store the same
-     * value. For example, 1.00 and 1 would be stored differently, even
-     * though they have the same value. In the first case, 100 * 10^-2 (100
-     * with decimal point moved left by 2), and in the second case, 1 * 10^0
-     * (1 with decimal point moved 0).</p> <p>This class also supports
-     * values for negative zero, not-a-number (NaN) values, and infinity.
-     * <b>Negative zero</b> is generally used when a negative number is
-     * rounded to 0; it has the same mathematical value as positive zero.
-     * <b>Infinity</b> is generally used when a non-zero number is divided
-     * by zero, or when a very high number can't be represented in a given
-     * exponent range. <b>Not-a-number</b> is generally used to signal
-     * errors.</p> <p>This class implements the General Decimal Arithmetic
-     * Specification version 1.70 (except part of chapter 6):
-     * <code>http://speleotrove.com/decimal/decarith.html</code></p> <p><b>Errors
-     * and Exceptions</b></p> <p>Passing a signaling NaN to any arithmetic
-     * operation shown here will signal the flag FlagInvalid and return a
-     * quiet NaN, even if another operand to that operation is a quiet NaN,
-     * unless noted otherwise.</p> <p>Passing a quiet NaN to any arithmetic
-     * operation shown here will return a quiet NaN, unless noted otherwise.
-     * Invalid operations will also return a quiet NaN, as stated in the
-     * individual methods.</p> <p>Unless noted otherwise, passing a null
-     * arbitrary-precision decimal argument to any method here will throw an
-     * exception.</p> <p>When an arithmetic operation signals the flag
-     * FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not throw an
-     * exception too, unless the flag's trap is enabled in the precision
-     * context (see EContext's Traps property).</p> <p>If an operation
-     * requires creating an intermediate value that might be too big to fit
-     * in memory (or might require more than 2 gigabytes of memory to store
-     * -- due to the current use of a 32-bit integer internally as a
-     * length), the operation may signal an invalid-operation flag and
-     * return not-a-number (NaN). In certain rare cases, the compareTo
-     * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Serialization</b></p>
-     * <p>An arbitrary-precision decimal value can be serialized (converted
-     * to a stable format) in one of the following ways:</p> <ul> <li>By
-     * calling the toString() method, which will always return distinct
-     * strings for distinct arbitrary-precision decimal values.</li> <li>By
-     * calling the UnsignedMantissa, Exponent, and IsNegative properties,
-     * and calling the IsInfinity, IsQuietNaN, and IsSignalingNaN methods.
-     * The return values combined will uniquely identify a particular
-     * arbitrary-precision decimal value.</li></ul> <p><b>Thread
-     * safety</b></p> <p>Instances of this class are immutable, so they are
-     * inherently safe for use by multiple threads. Multiple instances of
-     * this object with the same properties are interchangeable, so they
-     * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p> <p><b>Comparison
-     * considerations</b></p> <p>This class's natural ordering (under the
-     * compareTo method) is not consistent with the Equals method. This
-     * means that two values that compare as equal under the compareTo
-     * method might not be equal under the Equals method. The compareTo
-     * method compares the mathematical values of the two instances passed
-     * to it (and considers two different NaN values as equal), while two
-     * instances with the same mathematical value, but different exponents,
-     * will be considered unequal under the Equals method.</p>
+     * <code>PeterO.Numbers.EDecimal</code> in the <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET), or <code>com.upokecenter.numbers.EDecimal</code> in the
+     * <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java). This new class can be used in the
+     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * library in your code, among other things), but this version of the
+     * CBOR library doesn't include any methods that explicitly take an
+     * <code>EDecimal</code> as a parameter or return value.</b></p> Represents an
+     * arbitrary-precision decimal floating-point number. <p><b>About
+     * decimal arithmetic</b></p> <p> Decimal (base-10) arithmetic, such as
+     * that provided by this class, is appropriate for calculations
+     * involving such real-world data as prices and other sums of money, tax
+     * rates, and measurements. These calculations often involve multiplying
+     * or dividing one decimal with another decimal, or performing other
+     * operations on decimal numbers. Many of these calculations also rely
+     * on rounding behavior in which the result after rounding is a decimal
+     * number (for example, multiplying a price by a premium rate, then
+     * rounding, should result in a decimal amount of money). </p> <p>On the
+     * other hand, most implementations of <code>float</code> and <code>double</code>,
+     * including in C# and Java, store numbers in a binary (base-2)
+     * floating-point format and use binary floating-point arithmetic. Many
+     * decimal numbers can't be represented exactly in binary floating-point
+     * format (regardless of its length). Applying binary arithmetic to
+     * numbers intended to be decimals can sometimes lead to unintuitive
+     * results, as is shown in the description for the FromDouble() method
+     * of this class.</p> <p><b>About ExtendedDecimal instances</b></p> <p>
+     * Each instance of this class consists of an integer mantissa and an
+     * integer exponent, both arbitrary-precision. The value of the number
+     * equals mantissa * 10^exponent.</p> <p>The mantissa is the value of
+     * the digits that make up a number, ignoring the decimal point and
+     * exponent. For example, in the number 2356.78, the mantissa is 235678.
+     * The exponent is where the "floating" decimal point of the number is
+     * located. A positive exponent means "move it to the right", and a
+     * negative exponent means "move it to the left." In the example 2,
+     * 356.78, the exponent is -2, since it has 2 decimal places and the
+     * decimal point is "moved to the left by 2." Therefore, in the
+     * arbitrary-precision decimal representation, this number would be
+     * stored as 235678 * 10^-2.</p> <p>The mantissa and exponent format
+     * preserves trailing zeros in the number's value. This may give rise to
+     * multiple ways to store the same value. For example, 1.00 and 1 would
+     * be stored differently, even though they have the same value. In the
+     * first case, 100 * 10^-2 (100 with decimal point moved left by 2), and
+     * in the second case, 1 * 10^0 (1 with decimal point moved 0).</p>
+     * <p>This class also supports values for negative zero, not-a-number
+     * (NaN) values, and infinity. <b>Negative zero</b> is generally used
+     * when a negative number is rounded to 0; it has the same mathematical
+     * value as positive zero. <b>Infinity</b> is generally used when a
+     * non-zero number is divided by zero, or when a very high number can't
+     * be represented in a given exponent range. <b>Not-a-number</b> is
+     * generally used to signal errors.</p> <p>This class implements the
+     * General Decimal Arithmetic Specification version 1.70 (except part of
+     * chapter 6): <code>http://speleotrove.com/decimal/decarith.html</code></p>
+     * <p><b>Errors and Exceptions</b></p> <p>Passing a signaling NaN to any
+     * arithmetic operation shown here will signal the flag FlagInvalid and
+     * return a quiet NaN, even if another operand to that operation is a
+     * quiet NaN, unless noted otherwise.</p> <p>Passing a quiet NaN to any
+     * arithmetic operation shown here will return a quiet NaN, unless noted
+     * otherwise. Invalid operations will also return a quiet NaN, as stated
+     * in the individual methods.</p> <p>Unless noted otherwise, passing a
+     * null arbitrary-precision decimal argument to any method here will
+     * throw an exception.</p> <p>When an arithmetic operation signals the
+     * flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
+     * throw an exception too, unless the flag's trap is enabled in the
+     * precision context (see EContext's Traps property).</p> <p>If an
+     * operation requires creating an intermediate value that might be too
+     * big to fit in memory (or might require more than 2 gigabytes of
+     * memory to store -- due to the current use of a 32-bit integer
+     * internally as a length), the operation may signal an
+     * invalid-operation flag and return not-a-number (NaN). In certain rare
+     * cases, the compareTo method may throw OutOfMemoryError (called
+     * OutOfMemoryError in Java) in the same circumstances.</p>
+     * <p><b>Serialization</b></p> <p>An arbitrary-precision decimal value
+     * can be serialized (converted to a stable format) in one of the
+     * following ways:</p> <ul> <li>By calling the toString() method, which
+     * will always return distinct strings for distinct arbitrary-precision
+     * decimal values.</li> <li>By calling the UnsignedMantissa, Exponent,
+     * and IsNegative properties, and calling the IsInfinity, IsQuietNaN,
+     * and IsSignalingNaN methods. The return values combined will uniquely
+     * identify a particular arbitrary-precision decimal value.</li></ul>
+     * <p><b>Thread safety</b></p> <p>Instances of this class are immutable,
+     * so they are inherently safe for use by multiple threads. Multiple
+     * instances of this object with the same properties are
+     * interchangeable, so they should not be compared using the "=="
+     * operator (which only checks if each side of the operator is the same
+     * instance).</p> <p><b>Comparison considerations</b></p> <p>This
+     * class's natural ordering (under the compareTo method) is not
+     * consistent with the Equals method. This means that two values that
+     * compare as equal under the compareTo method might not be equal under
+     * the Equals method. The compareTo method compares the mathematical
+     * values of the two instances passed to it (and considers two different
+     * NaN values as equal), while two instances with the same mathematical
+     * value, but different exponents, will be considered unequal under the
+     * Equals method.</p>
      */
   public final class ExtendedDecimal implements Comparable<ExtendedDecimal> {
     /**
@@ -144,7 +147,7 @@ import com.upokecenter.numbers.*;
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
      * @param other An arbitrary-precision decimal number.
-     * @return True if this object's mantissa and exponent are equal to those of
+     * @return true if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -158,7 +161,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       ExtendedDecimal bi = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
@@ -715,7 +718,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return True if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity, otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -725,7 +728,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return True if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity, otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -735,7 +738,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is not a number (NaN).
-     * @return True if this object is not a number (NaN); otherwise, false.
+     * @return true if this object is not a number (NaN), otherwise, false.
      */
     public boolean IsNaN() {
       return this.getEd().IsNaN();
@@ -744,7 +747,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is positive or negative
      * infinity.
-     * @return True if this object is positive or negative infinity; otherwise,
+     * @return true if this object is positive or negative infinity; otherwise,
      * false.
      */
     public boolean IsInfinity() {
@@ -753,7 +756,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return True if this object is finite (not infinity or NaN); otherwise,
+     * @return true if this object is finite (not infinity or NaN); otherwise,
      * false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -765,7 +768,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return True if this object is negative, including negative zero; otherwise,
+     * @return true if this object is negative, including negative zero; otherwise,
      * false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -776,7 +779,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
-     * @return True if this object is a quiet not-a-number value; otherwise, false.
+     * @return true if this object is a quiet not-a-number value; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -787,7 +790,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is a signaling not-a-number
      * value.
-     * @return True if this object is a signaling not-a-number value; otherwise,
+     * @return true if this object is a signaling not-a-number value; otherwise,
      * false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -808,7 +811,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return True if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0, otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -844,7 +847,7 @@ PrecisionContext ctx) {
     /**
      * Divides this object by another decimal number and returns the result. When
      * possible, the result will be exact.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
      * Returns not-a-number (NaN) if the divisor and the dividend are 0.
@@ -864,7 +867,7 @@ PrecisionContext ctx) {
     /**
      * Divides this object by another decimal number and returns a result with the
      * same exponent as this object (the dividend).
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param rounding The rounding mode to use if the result must be scaled down
      * to have the same exponent as this value.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
@@ -893,7 +896,7 @@ ExtendedDecimal.ToERounding(rounding)));
      * Divides two arbitrary-precision decimal numbers, and returns the integer
      * part of the result, rounded down, with the preferred exponent set to
      * this value's exponent minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
@@ -1031,7 +1034,7 @@ ctx == null ? null : ctx.getEc()));
      * Divides this arbitrary-precision decimal number by another
      * arbitrary-precision decimal number. The preferred exponent for the
      * result is this object's exponent minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -1337,7 +1340,7 @@ ExtendedDecimal augend) {
      * Divides this object by another object, and returns the integer part of the
      * result, with the preferred exponent set to this value's exponent
      * minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. Flags will be
      * set on the given context only if the context's HasFlags is true and
@@ -1374,7 +1377,7 @@ PrecisionContext ctx) {
     /**
      * Divides this object by another object, and returns the integer part of the
      * result, with the exponent set to 0.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored. If HasFlags
      * of the context is true, will also store the flags resulting from the
@@ -1447,7 +1450,7 @@ PrecisionContext ctx) {
      * if the quotient, rounded down, is even, and the result's absolute
      * value is half of the divisor's absolute value.</li></ul> This
      * function is also known as the "IEEE Remainder" function.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
      * mode is always treated as HalfEven). If HasFlags of the context is
@@ -1940,8 +1943,14 @@ PrecisionContext ctx) {
 
     /**
      * Returns a decimal number with the same value as this one but a new exponent.
-     * @param desiredExponentSmall A 32-bit signed integer.
-     * @param rounding The parameter {@code rounding} is not documented yet.
+     * @param desiredExponentSmall The desired exponent for the result. The
+     * exponent is the number of fractional digits in the result, expressed
+     * as a negative number. Can also be positive, which eliminates
+     * lower-order places from the number. For example, -3 means round to
+     * the thousandth (10^-3, 0.0001), and 3 means round to the thousand
+     * (10^3, 1000). A value of 0 rounds the number to an integer.
+     * @param rounding The mode to use when the result needs to be rounded in order
+     * to have the given exponent.
      * @return A decimal number with the same value as this object but with the
      * exponent changed. Returns not-a-number (NaN) if the rounding mode is
      * Rounding.Unnecessary and the result is not exact.
@@ -2045,7 +2054,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a decimal number with the same value as this object but rounded to
-     * an integer, and signals an invalid operation if the result would be
+     * an integer, and signals an inexact flag if the result would be
      * inexact.
      * @param ctx A precision context to control precision and rounding of the
      * result. If HasFlags of the context is true, will also store the flags
@@ -2101,7 +2110,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a decimal number with the same value as this object but rounded to
-     * an integer, and signals an invalid operation if the result would be
+     * an integer, and signals an inexact flag if the result would be
      * inexact.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
@@ -2180,7 +2189,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns a decimal number with the same value as this object but rounded to
-     * an integer, and signals an invalid operation if the result would be
+     * an integer, and signals an inexact flag if the result would be
      * inexact.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a

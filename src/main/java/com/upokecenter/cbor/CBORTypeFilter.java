@@ -7,7 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
     /**
      * Specifies what kinds of CBOR objects a tag can be. This class is used when a
@@ -16,141 +17,252 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
      * where the class was inadvertently left inheritable.
      */
   public final class CBORTypeFilter {
+    /**
+     * A filter that allows any CBOR object.
+     */
+    public static final CBORTypeFilter Any = new CBORTypeFilter().WithAny();
+
+    /**
+     * A filter that allows byte strings.
+     */
+    public static final CBORTypeFilter ByteString = new
+      CBORTypeFilter().WithByteString();
+
+    /**
+     * A filter that allows negative integers.
+     */
+    public static final CBORTypeFilter NegativeInteger = new
+      CBORTypeFilter().WithNegativeInteger();
+
+    /**
+     * A filter that allows no CBOR types.
+     */
+    public static final CBORTypeFilter None = new CBORTypeFilter();
+
+    /**
+     * A filter that allows text strings.
+     */
+    public static final CBORTypeFilter TextString = new
+      CBORTypeFilter().WithTextString();
+
+    /**
+     * A filter that allows unsigned integers.
+     */
+    public static final CBORTypeFilter UnsignedInteger = new
+      CBORTypeFilter().WithUnsignedInteger();
     private boolean any;
-    private int types;
-    private boolean floatingpoint;
-    private int arrayLength;
     private boolean anyArrayLength;
+    private int arrayLength;
     private boolean arrayMinLength;
     private CBORTypeFilter[] elements;
+    private boolean floatingpoint;
     private EInteger[] tags;
+    private int types;
 
-    private CBORTypeFilter Copy() {
-      CBORTypeFilter filter = new CBORTypeFilter();
-      filter.any = this.any;
-      filter.types = this.types;
-      filter.floatingpoint = this.floatingpoint;
-      filter.arrayLength = this.arrayLength;
-      filter.anyArrayLength = this.anyArrayLength;
-      filter.arrayMinLength = this.arrayMinLength;
-      filter.elements = this.elements;
-      filter.tags = this.tags;
-      return filter;
+    /**
+     * Determines whether this type filter allows CBOR arrays and the given array
+     * index is allowed under this type filter.
+     * @param index An array index, starting from 0.
+     * @return true if this type filter allows CBOR arrays and the given array
+     * index is allowed under this type filter, otherwise, false.
+     */
+    public boolean ArrayIndexAllowed(int index) {
+   return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength
+        ||
+           ((this.arrayMinLength || index < this.arrayLength) && index >=
+                    0));
     }
 
-    private CBORTypeFilter WithAny() {
-      if (this.any) {
-        return this;
+    /**
+     * Returns whether an array's length is allowed under this filter.
+     * @param length The length of a CBOR array.
+     * @return true if this filter allows CBOR arrays and an array's length is
+     * allowed under this filter; otherwise, false.
+     */
+    public boolean ArrayLengthMatches(int length) {
+      return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
+                (this.arrayMinLength ? this.arrayLength >= length :
+                this.arrayLength == length));
+    }
+
+    /**
+     * Returns whether an array's length is allowed under a filter.
+     * @param length The length of a CBOR array.
+     * @return true if this filter allows CBOR arrays and an array's length is
+     * allowed under a filter; otherwise, false.
+     */
+    public boolean ArrayLengthMatches(long length) {
+      return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
+                (this.arrayMinLength ? this.arrayLength >= length :
+                this.arrayLength == length));
+    }
+
+    /**
+     * Returns whether an array's length is allowed under a filter.
+     * @param bigLength An arbitrary-precision integer.
+     * @return true if this filter allows CBOR arrays and an array's length is
+     * allowed under a filter; otherwise, false.
+     * @throws java.lang.NullPointerException The parameter {@code bigLength} is
+     * null.
+     */
+    public boolean ArrayLengthMatches(EInteger bigLength) {
+      if (bigLength == null) {
+        throw new NullPointerException("bigLength");
       }
-      CBORTypeFilter filter = this.Copy();
-      filter.any = true;
-      filter.anyArrayLength = true;
-      filter.types = 0xff;
-      return filter;
-    }
-
-    private CBORTypeFilter WithType(int type) {
-      if (this.any) {
-        return this;
-      }
-      CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << type;
-      return filter;
-    }
-
-    /**
-     * Copies this filter and includes unsigned integers in the new filter.
-     * @return A CBORTypeFilter object.
-     */
-    public CBORTypeFilter WithUnsignedInteger() {
-      return this.WithType(0);
-    }
-
-    /**
-     * Copies this filter and includes negative integers in the new filter.
-     * @return A CBORTypeFilter object.
-     */
-    public CBORTypeFilter WithNegativeInteger() {
-      return this.WithType(1);
-    }
-
-    /**
-     * Copies this filter and includes byte strings in the new filter.
-     * @return A CBORTypeFilter object.
-     */
-    public CBORTypeFilter WithByteString() {
-      return this.WithType(2).WithTags(25);
-    }
-
-    /**
-     * Copies this filter and includes maps in the new filter.
-     * @return A CBORTypeFilter object.
-     */
-    public CBORTypeFilter WithMap() {
-      return this.WithType(5);
-    }
-
-    /**
-     * Copies this filter and includes text strings in the new filter.
-     * @return A CBORTypeFilter object.
-     */
-    public CBORTypeFilter WithTextString() {
-      return this.WithType(3).WithTags(25);
+      return ((this.types & (1 << 4)) == 0) && (this.anyArrayLength ||
+        ((!this.arrayMinLength &&
+        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) == 0) ||
+        (this.arrayMinLength &&
+        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) >= 0)));
     }
 
     /**
      * Not documented yet.
-     * @param tags An integer array of tags allowed.
+     * @param index A 32-bit signed integer.
      * @return A CBORTypeFilter object.
      */
-    public CBORTypeFilter WithTags(int... tags) {
-      if (this.any) {
-        return this;
+    public CBORTypeFilter GetSubFilter(int index) {
+      if (this.anyArrayLength || this.any) {
+        return Any;
       }
-      CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << 6;  // Always include the "tag" major type
-      int startIndex = 0;
-      if (filter.tags != null) {
-        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
-        System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
-        startIndex = filter.tags.length;
-        filter.tags = newTags;
-      } else {
-        filter.tags = new EInteger[tags.length];
+      if (index < 0) {
+        return None;
       }
-      for (int i = 0; i < tags.length; ++i) {
-        filter.tags[startIndex + i] = EInteger.FromInt64(tags[i]);
+      if (index >= this.arrayLength) {
+        // Index is out of bounds
+        return this.arrayMinLength ? Any : None;
       }
-      return filter;
+      if (this.elements == null) {
+        return Any;
+      }
+      if (index >= this.elements.length) {
+        // Index is greater than the number of elements for
+        // which a type is defined
+        return Any;
+      }
+      return this.elements[index];
     }
 
     /**
      * Not documented yet.
-     * @param tags An arbitrary-precision integer[] object.
+     * @param index A 64-bit signed integer.
      * @return A CBORTypeFilter object.
-     * @throws java.lang.NullPointerException The parameter "tags[i]" is null.
      */
-    public CBORTypeFilter WithTags(EInteger... tags) {
-      if (this.any) {
-        return this;
+    public CBORTypeFilter GetSubFilter(long index) {
+      if (this.anyArrayLength || this.any) {
+        return Any;
       }
-      for (int i = 0; i < tags.length; ++i) {
-        if (tags[i] == null) {
-          throw new NullPointerException("tags");
+      if (index < 0) {
+        return None;
+      }
+      if (index >= this.arrayLength) {
+        // Index is out of bounds
+        return this.arrayMinLength ? Any : None;
+      }
+      if (this.elements == null) {
+        return Any;
+      }
+      // NOTE: Index shouldn't be greater than Integer.MAX_VALUE,
+      // since the length is an int
+      if (index >= this.elements.length) {
+        // Index is greater than the number of elements for
+        // which a type is defined
+        return Any;
+      }
+      return this.elements[(int)index];
+    }
+
+    /**
+     * Returns whether the given CBOR major type matches a major type allowed by
+     * this filter.
+     * @param type A CBOR major type from 0 to 7.
+     * @return true if the given CBOR major type matches a major type allowed by
+     * this filter; otherwise, false.
+     */
+    public boolean MajorTypeMatches(int type) {
+      return type >= 0 && type <= 7 && (this.types & (1 << type)) != 0;
+    }
+
+    /**
+     * Returns whether this filter allows simple values that are not floating-point
+     * numbers.
+     * @return true if this filter allows simple values that are not floating-point
+     * numbers; otherwise, false.
+     */
+    public boolean NonFPSimpleValueAllowed() {
+      return this.MajorTypeMatches(7) && !this.floatingpoint;
+    }
+
+    /**
+     * Gets a value indicating whether CBOR objects can have the given tag number.
+     * @param tag A tag number. Returns false if this is less than 0.
+     * @return true if CBOR objects can have the given tag number; otherwise,
+     * false.
+     */
+    public boolean TagAllowed(int tag) {
+      return this.any || this.TagAllowed(EInteger.FromInt32(tag));
+    }
+
+    /**
+     * Gets a value indicating whether CBOR objects can have the given tag number.
+     * @param longTag A tag number. Returns false if this is less than 0.
+     * @return true if CBOR objects can have the given tag number; otherwise,
+     * false.
+     */
+    public boolean TagAllowed(long longTag) {
+      return this.any || this.TagAllowed(EInteger.FromInt64(longTag));
+    }
+
+    /**
+     * Gets a value indicating whether CBOR objects can have the given tag number.
+     * @param bigTag A tag number. Returns false if this is less than 0.
+     * @return true if CBOR objects can have the given tag number; otherwise,
+     * false.
+     * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
+     */
+    public boolean TagAllowed(EInteger bigTag) {
+      if (bigTag == null) {
+        throw new NullPointerException("bigTag");
+      }
+      if (bigTag.signum() < 0) {
+        return false;
+      }
+      if (this.any) {
+        return true;
+      }
+      if ((this.types & (1 << 6)) == 0) {
+        return false;
+      }
+      if (this.tags == null) {
+        return true;
+      }
+      for (EInteger tag : this.tags) {
+        if (bigTag.equals(tag)) {
+          return true;
         }
       }
-      CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << 6;  // Always include the "tag" major type
-      int startIndex = 0;
-      if (filter.tags != null) {
-        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
-        System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
-        startIndex = filter.tags.length;
-        filter.tags = newTags;
-      } else {
-        filter.tags = new EInteger[tags.length];
+      return false;
+    }
+
+    /**
+     * Copies this filter and includes arrays of any length in the new filter.
+     * @return A CBORTypeFilter object.
+     */
+    public CBORTypeFilter WithArrayAnyLength() {
+      if (this.any) {
+        return this;
       }
-      System.arraycopy(tags, 0, filter.tags, startIndex, tags.length);
+      if (this.arrayLength < 0) {
+        throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
+          ") is less than 0");
+      }
+      if (this.arrayLength < this.elements.length) {
+        throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
+          ") is less than " + this.elements.length);
+      }
+      CBORTypeFilter filter = this.Copy();
+      filter.types |= 1 << 4;
+      filter.anyArrayLength = true;
       return filter;
     }
 
@@ -233,25 +345,11 @@ CBORTypeFilter... elements) {
     }
 
     /**
-     * Copies this filter and includes arrays of any length in the new filter.
+     * Copies this filter and includes byte strings in the new filter.
      * @return A CBORTypeFilter object.
      */
-    public CBORTypeFilter WithArrayAnyLength() {
-      if (this.any) {
-        return this;
-      }
-      if (this.arrayLength < 0) {
-        throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
-          ") is less than 0");
-      }
-      if (this.arrayLength < this.elements.length) {
-        throw new IllegalArgumentException("this.arrayLength (" + this.arrayLength +
-          ") is less than " + this.elements.length);
-      }
-      CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << 4;
-      filter.anyArrayLength = true;
-      return filter;
+    public CBORTypeFilter WithByteString() {
+      return this.WithType(2).WithTags(25);
     }
 
     /**
@@ -269,218 +367,117 @@ CBORTypeFilter... elements) {
     }
 
     /**
-     * Not documented yet.
-     * @param type A 32-bit signed integer.
-     * @return A Boolean object.
+     * Copies this filter and includes maps in the new filter.
+     * @return A CBORTypeFilter object.
      */
-    public boolean MajorTypeMatches(int type) {
-      return type >= 0 && type <= 7 && (this.types & (1 << type)) != 0;
+    public CBORTypeFilter WithMap() {
+      return this.WithType(5);
     }
 
     /**
-     * Returns whether an array's length is allowed under this filter.
-     * @param length The length of a CBOR array.
-     * @return True if this filter allows CBOR arrays and an array's length is
-     * allowed under this filter; otherwise, false.
+     * Copies this filter and includes negative integers in the new filter.
+     * @return A CBORTypeFilter object.
      */
-    public boolean ArrayLengthMatches(int length) {
-      return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
-                (this.arrayMinLength ? this.arrayLength >= length :
-                this.arrayLength == length));
+    public CBORTypeFilter WithNegativeInteger() {
+      return this.WithType(1);
     }
 
     /**
-     * Returns whether an array's length is allowed under a filter.
-     * @param length The length of a CBOR array.
-     * @return True if this filter allows CBOR arrays and an array's length is
-     * allowed under a filter; otherwise, false.
+     * Copies this filter and includes a set of valid CBOR tags in the new filter.
+     * @param tags An array of the CBOR tags to add to the new filter.
+     * @return A CBORTypeFilter object.
      */
-    public boolean ArrayLengthMatches(long length) {
-      return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
-                (this.arrayMinLength ? this.arrayLength >= length :
-                this.arrayLength == length));
-    }
-
-    /**
-     * Returns whether an array's length is allowed under a filter.
-     * @param bigLength An arbitrary-precision integer.
-     * @return True if this filter allows CBOR arrays and an array's length is
-     * allowed under a filter; otherwise, false.
-     * @throws java.lang.NullPointerException The parameter {@code bigLength} is
-     * null.
-     */
-    public boolean ArrayLengthMatches(EInteger bigLength) {
-      if (bigLength == null) {
-        throw new NullPointerException("bigLength");
-      }
-      return ((this.types & (1 << 4)) == 0) && (this.anyArrayLength ||
-        ((!this.arrayMinLength &&
-        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) == 0) ||
-        (this.arrayMinLength &&
-        bigLength.compareTo(EInteger.FromInt32(this.arrayLength)) >= 0)));
-    }
-
-    /**
-     * Gets a value indicating whether CBOR objects can have the given tag number.
-     * @param tag A tag number. Returns false if this is less than 0.
-     * @return True if CBOR objects can have the given tag number; otherwise,
-     * false.
-     */
-    public boolean TagAllowed(int tag) {
-      return this.any || this.TagAllowed(EInteger.FromInt32(tag));
-    }
-
-    /**
-     * Gets a value indicating whether CBOR objects can have the given tag number.
-     * @param longTag A tag number. Returns false if this is less than 0.
-     * @return True if CBOR objects can have the given tag number; otherwise,
-     * false.
-     */
-    public boolean TagAllowed(long longTag) {
-      return this.any || this.TagAllowed(EInteger.FromInt64(longTag));
-    }
-
-    /**
-     * Gets a value indicating whether CBOR objects can have the given tag number.
-     * @param bigTag A tag number. Returns false if this is less than 0.
-     * @return True if CBOR objects can have the given tag number; otherwise,
-     * false.
-     * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
-     */
-    public boolean TagAllowed(EInteger bigTag) {
-      if (bigTag == null) {
-        throw new NullPointerException("bigTag");
-      }
-      if (bigTag.signum() < 0) {
-        return false;
-      }
+    public CBORTypeFilter WithTags(int... tags) {
       if (this.any) {
-        return true;
+        return this;
       }
-      if ((this.types & (1 << 6)) == 0) {
-        return false;
+      CBORTypeFilter filter = this.Copy();
+      filter.types |= 1 << 6;  // Always include the "tag" major type
+      int startIndex = 0;
+      if (filter.tags != null) {
+        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
+        System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
+        startIndex = filter.tags.length;
+        filter.tags = newTags;
+      } else {
+        filter.tags = new EInteger[tags.length];
       }
-      if (this.tags == null) {
-        return true;
+      for (int i = 0; i < tags.length; ++i) {
+        filter.tags[startIndex + i] = EInteger.FromInt64(tags[i]);
       }
-      for (EInteger tag : this.tags) {
-        if (bigTag.equals(tag)) {
-          return true;
+      return filter;
+    }
+
+    CBORTypeFilter WithTags(EInteger... tags) {
+      if (this.any) {
+        return this;
+      }
+      for (int i = 0; i < tags.length; ++i) {
+        if (tags[i] == null) {
+          throw new NullPointerException("tags");
         }
       }
-      return false;
+      CBORTypeFilter filter = this.Copy();
+      filter.types |= 1 << 6;  // Always include the "tag" major type
+      int startIndex = 0;
+      if (filter.tags != null) {
+        EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
+        System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
+        startIndex = filter.tags.length;
+        filter.tags = newTags;
+      } else {
+        filter.tags = new EInteger[tags.length];
+      }
+      System.arraycopy(tags, 0, filter.tags, startIndex, tags.length);
+      return filter;
     }
 
     /**
-     * Determines whether this type filter allows CBOR arrays and the given array
-     * index is allowed under this type filter.
-     * @param index An array index, starting from 0.
-     * @return True if this type filter allows CBOR arrays and the given array
-     * index is allowed under this type filter; otherwise, false.
-     */
-    public boolean ArrayIndexAllowed(int index) {
-   return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength ||
-        ((this.arrayMinLength || index < this.arrayLength) && index >=
-                    0));
-    }
-
-    /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
+     * Copies this filter and includes text strings in the new filter.
      * @return A CBORTypeFilter object.
      */
-    public CBORTypeFilter GetSubFilter(int index) {
-      if (this.anyArrayLength || this.any) {
-        return Any;
-      }
-      if (index < 0) {
-        return None;
-      }
-      if (index >= this.arrayLength) {
-        // Index is out of bounds
-        return this.arrayMinLength ? Any : None;
-      }
-      if (this.elements == null) {
-        return Any;
-      }
-      if (index >= this.elements.length) {
-        // Index is greater than the number of elements for
-        // which a type is defined
-        return Any;
-      }
-      return this.elements[index];
+    public CBORTypeFilter WithTextString() {
+      return this.WithType(3).WithTags(25);
     }
 
     /**
-     * Not documented yet.
-     * @param index A 64-bit signed integer.
+     * Copies this filter and includes unsigned integers in the new filter.
      * @return A CBORTypeFilter object.
      */
-    public CBORTypeFilter GetSubFilter(long index) {
-      if (this.anyArrayLength || this.any) {
-        return Any;
-      }
-      if (index < 0) {
-        return None;
-      }
-      if (index >= this.arrayLength) {
-        // Index is out of bounds
-        return this.arrayMinLength ? Any : None;
-      }
-      if (this.elements == null) {
-        return Any;
-      }
-      // NOTE: Index shouldn't be greater than Integer.MAX_VALUE,
-      // since the length is an int
-      if (index >= this.elements.length) {
-        // Index is greater than the number of elements for
-        // which a type is defined
-        return Any;
-      }
-      return this.elements[(int)index];
+    public CBORTypeFilter WithUnsignedInteger() {
+      return this.WithType(0);
     }
 
-    /**
-     * Returns whether this filter allows simple values that are not floating-point
-     * numbers.
-     * @return True if this filter allows simple values that are not floating-point
-     * numbers; otherwise, false.
-     */
-    public boolean NonFPSimpleValueAllowed() {
-      return this.MajorTypeMatches(7) && !this.floatingpoint;
+    private CBORTypeFilter Copy() {
+      CBORTypeFilter filter = new CBORTypeFilter();
+      filter.any = this.any;
+      filter.types = this.types;
+      filter.floatingpoint = this.floatingpoint;
+      filter.arrayLength = this.arrayLength;
+      filter.anyArrayLength = this.anyArrayLength;
+      filter.arrayMinLength = this.arrayMinLength;
+      filter.elements = this.elements;
+      filter.tags = this.tags;
+      return filter;
     }
 
-    /**
-     * A filter that allows no CBOR types.
-     */
-    public static final CBORTypeFilter None = new CBORTypeFilter();
+    private CBORTypeFilter WithAny() {
+      if (this.any) {
+        return this;
+      }
+      CBORTypeFilter filter = this.Copy();
+      filter.any = true;
+      filter.anyArrayLength = true;
+      filter.types = 0xff;
+      return filter;
+    }
 
-    /**
-     * A filter that allows unsigned integers.
-     */
-    public static final CBORTypeFilter UnsignedInteger = new
-      CBORTypeFilter().WithUnsignedInteger();
-
-    /**
-     * A filter that allows negative integers.
-     */
-    public static final CBORTypeFilter NegativeInteger = new
-      CBORTypeFilter().WithNegativeInteger();
-
-    /**
-     * A filter that allows any CBOR object.
-     */
-    public static final CBORTypeFilter Any = new CBORTypeFilter().WithAny();
-
-    /**
-     * A filter that allows byte strings.
-     */
-    public static final CBORTypeFilter ByteString = new
-      CBORTypeFilter().WithByteString();
-
-    /**
-     * A filter that allows text strings.
-     */
-    public static final CBORTypeFilter TextString = new
-      CBORTypeFilter().WithTextString();
+    private CBORTypeFilter WithType(int type) {
+      if (this.any) {
+        return this;
+      }
+      CBORTypeFilter filter = this.Copy();
+      filter.types |= 1 << type;
+      return filter;
+    }
   }
