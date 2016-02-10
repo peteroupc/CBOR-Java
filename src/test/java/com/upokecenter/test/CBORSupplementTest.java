@@ -1070,9 +1070,11 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestNegativeBigInts() {
       BigInteger minusone = BigInteger.fromString("-1");
-      Assert.assertEquals(BigInteger.fromString("-257"),
+      Assert.assertEquals(
+BigInteger.fromString("-257"),
    CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsBigInteger());
-      Assert.assertEquals(BigInteger.fromString("-65537"),
+      Assert.assertEquals(
+BigInteger.fromString("-65537"),
 CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteger());
       {
 Object objectTemp = BigInteger.fromString("-16777217");

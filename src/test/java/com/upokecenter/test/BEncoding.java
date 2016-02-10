@@ -219,10 +219,7 @@ private BEncoding() {
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        EInteger bigLength = EInteger.FromInt64(length);
-        writeUtf8(
-bigLength.toString(),
-stream);
+        writeUtf8(LongToString(length), stream);
         stream.write(((byte)((byte)':')));
         writeUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
@@ -252,7 +249,8 @@ stream);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            writeUtf8(LongToString(length),
+            writeUtf8(
+LongToString(length),
 stream);
             stream.write(((byte)((byte)':')));
             writeUtf8(key, stream);
@@ -267,10 +265,7 @@ stream);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            EInteger bigLength = EInteger.FromInt64(length);
-            writeUtf8(
-bigLength.toString(),
-stream);
+            writeUtf8(LongToString(length), stream);
             stream.write(((byte)((byte)':')));
             writeUtf8(str, stream);
             Write(obj.get(key), stream);
@@ -289,10 +284,7 @@ stream);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        EInteger bigLength = EInteger.FromInt64(length);
-        writeUtf8(
-bigLength.toString(),
-stream);
+        writeUtf8(LongToString(length), stream);
         stream.write(((byte)((byte)':')));
         writeUtf8(str, stream);
       }

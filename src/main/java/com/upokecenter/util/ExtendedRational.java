@@ -12,13 +12,16 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.ERational</code> in the <code>PeterO.Numbers</code> library
-     * (in .NET), or <code>com.upokecenter.numbers.getERational()</code> in the
-     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(Object)</code> method
-     * (by including the new library in your code, among other things), but
-     * this version of the CBOR library doesn't include any methods that
-     * explicitly take an <code>ERational</code> as a parameter or return
+     * <code>PeterO.Numbers.ERational</code> in the <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET), or <code>com.upokecenter.numbers.ERational</code> in the
+     * <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java). This new class can be used in the
+     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * library in your code, among other things), but this version of the
+     * CBOR library doesn't include any methods that explicitly take an
+     * <code>ERational</code> as a parameter or return
      * value.</b></p>Arbitrary-precision rational number. This class cannot
      * be inherited; this is a change in version 2.0 from previous versions,
      * where the class was inadvertently left inheritable. <p><b>Thread
@@ -112,7 +115,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return True if this object is finite (not infinity or NaN); otherwise,
+     * @return true if this object is finite (not infinity or NaN); otherwise,
      * false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -124,7 +127,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return True if this object's value is negative; otherwise, false.
+     * @return true if this object's value is negative, otherwise, false.
      */
     public final boolean isNegative() {
         return this.getEr().isNegative();
@@ -132,7 +135,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return True if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0, otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -290,7 +293,7 @@ boolean negative) {
     }
 
     /**
-     * Not documented yet.
+     * Converts an arbitrary-precision binary float to a rational number.
      * @param ef An arbitrary-precision binary float.
      * @return An arbitrary-precision rational number.
      * @throws java.lang.NullPointerException The parameter {@code ef} is null.
@@ -305,7 +308,7 @@ boolean negative) {
     }
 
     /**
-     * Not documented yet.
+     * Converts a 32-bit signed integer to a rational number.
      * @param smallint A 32-bit signed integer.
      * @return An arbitrary-precision rational number.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
@@ -316,7 +319,7 @@ boolean negative) {
     }
 
     /**
-     * Not documented yet.
+     * Converts a 64-bit signed integer to a rational number.
      * @param longInt A 64-bit signed integer.
      * @return An arbitrary-precision rational number.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
@@ -435,7 +438,7 @@ boolean negative) {
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational bi = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);
@@ -443,9 +446,11 @@ boolean negative) {
     }
 
     /**
-     * Not documented yet.
-     * @param other An arbitrary-precision rational number.
-     * @return A Boolean object.
+     * Returns whether this object's properties are equal to the properties of
+     * another rational number object.
+     * @param other Another arbitrary-precision rational number.
+     * @return true if this object's properties are equal to the properties of
+     * another rational number object; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -467,7 +472,7 @@ boolean negative) {
 
     /**
      * Gets a value indicating whether this object's value is infinity.
-     * @return True if this object's value is infinity; otherwise, false.
+     * @return true if this object's value is infinity, otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -477,7 +482,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is a not-a-number value.
-     * @return True if this object is a not-a-number value; otherwise, false.
+     * @return true if this object is a not-a-number value, otherwise, false.
      */
     public boolean IsNaN() {
       return this.getEr().IsNaN();
@@ -485,7 +490,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return True if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity, otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -495,7 +500,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return True if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity, otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -505,7 +510,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is a quiet not-a-number value.
-     * @return True if this object is a quiet not-a-number value; otherwise, false.
+     * @return true if this object is a quiet not-a-number value; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -517,7 +522,7 @@ boolean negative) {
      * Returns whether this object is a signaling not-a-number value (which causes
      * an error if the value is passed to any arithmetic operation in this
      * class).
-     * @return True if this object is a signaling not-a-number value (which causes
+     * @return true if this object is a signaling not-a-number value (which causes
      * an error if the value is passed to any arithmetic operation in this
      * class); otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.

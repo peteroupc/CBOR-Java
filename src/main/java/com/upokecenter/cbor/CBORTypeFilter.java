@@ -67,9 +67,8 @@ import com.upokecenter.numbers.*;
      * index is allowed under this type filter, otherwise, false.
      */
     public boolean ArrayIndexAllowed(int index) {
-   return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength
-        ||
-           ((this.arrayMinLength || index < this.arrayLength) && index >=
+   return (this.types & (1 << 4)) != 0 && index >= 0 && (this.anyArrayLength||
+        ((this.arrayMinLength || index < this.arrayLength) && index >=
                     0));
     }
 
@@ -117,9 +116,11 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @return A CBORTypeFilter object.
+     * Gets the type filter for this array filter by its index.
+     * @param index A zero-based index of the filter to retrieve.
+     * @return Returns None if the index is out of range, or Any if this filter
+     * doesn't filter an array. Returns the appropriate filter for the array
+     * index otherwise.
      */
     public CBORTypeFilter GetSubFilter(int index) {
       if (this.anyArrayLength || this.any) {
@@ -144,9 +145,11 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
-     * @param index A 64-bit signed integer.
-     * @return A CBORTypeFilter object.
+     * Gets the type filter for this array filter by its index.
+     * @param index A zero-based index of the filter to retrieve.
+     * @return Returns None if the index is out of range, or Any if this filter
+     * doesn't filter an array. Returns the appropriate filter for the array
+     * index otherwise.
      */
     public CBORTypeFilter GetSubFilter(long index) {
       if (this.anyArrayLength || this.any) {

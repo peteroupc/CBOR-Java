@@ -13,10 +13,11 @@ import com.upokecenter.numbers.*;
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
      * <code>PeterO.Numbers.EContext</code> in the <code>PeterO.EContext</code> library
-     * (in .NET), or <code>com.upokecenter.numbers.getEFloat()</code> in the
-     * <code>com.github.peteroupc/numbers</code> artifact (in
-     * Java).</b></p>Contains parameters for controlling the precision,
-     * rounding, and exponent range of arbitrary-precision numbers.
+     * (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java).</b></p>Contains parameters for controlling the
+     * precision, rounding, and exponent range of arbitrary-precision
+     * numbers.
      */
   public class PrecisionContext {
     /**
@@ -205,14 +206,15 @@ import com.upokecenter.numbers.*;
     /**
      * Initializes a new instance of the <see cref='T:PeterO.PrecisionContext'/>
      * class. HasFlags will be set to false.
-     * @param precision The parameter {@code precision} is not documented yet.
-     * @param rounding The parameter {@code rounding} is not documented yet.
-     * @param exponentMinSmall The parameter {@code exponentMinSmall} is not
-     * documented yet.
-     * @param exponentMaxSmall The parameter {@code exponentMaxSmall} is not
-     * documented yet.
-     * @param clampNormalExponents The parameter {@code clampNormalExponents} is
-     * not documented yet.
+     * @param precision The maximum number of digits a number can have, or 0 for an
+     * unlimited number of digits.
+     * @param rounding The rounding mode to use when a number can't fit the given
+     * precision.
+     * @param exponentMinSmall The minimum exponent.
+     * @param exponentMaxSmall The maximum exponent.
+     * @param clampNormalExponents Whether to clamp a number's significand to the
+     * given maximum precision (if it isn't zero) while remaining within the
+     * exponent range.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -238,7 +240,7 @@ precision,
      * this value to false (using WithAdjustExponent) is useful for modeling
      * floating point representations with an integer mantissa and an
      * integer exponent, such as Java's BigDecimal.
-     * @return True if the EMax and EMin properties refer to the number's Exponent
+     * @return true if the EMax and EMin properties refer to the number's Exponent
      * property adjusted to the number's precision, or false if they refer
      * to just the number's Exponent property.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
@@ -306,7 +308,7 @@ return new BigInteger(this.getEc().getEMin());
      * value is a combination of bit fields. To retrieve a particular flag,
      * use the AND operation on the return value of this method. For
      * example: <code>(this.getFlags() &amp; PrecisionContext.FlagInexact) != 0</code>
-     * returns TRUE if the Inexact flag is set.
+     * returns <code>true</code> if the Inexact flag is set.
      * @return The flags that are set from converting numbers according to this
      * precision context. If HasFlags is false, this value will be 0.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
@@ -323,7 +325,7 @@ public final void setFlags(int value) {
      * Gets a value indicating whether this context defines a minimum and maximum
      * exponent. If false, converted exponents can have any exponent and
      * operations can't cause overflow or underflow.
-     * @return True if this context defines a minimum and maximum exponent;
+     * @return true if this context defines a minimum and maximum exponent;
      * otherwise, false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -334,7 +336,7 @@ return this.getEc().getHasExponentRange();
 
     /**
      * Gets a value indicating whether this context has a mutable Flags field.
-     * @return True if this context has a mutable Flags field; otherwise, false.
+     * @return true if this context has a mutable Flags field, otherwise, false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -344,7 +346,7 @@ return this.getEc().getHasFlags();
 
     /**
      * Gets a value indicating whether this context defines a maximum precision.
-     * @return True if this context defines a maximum precision; otherwise, false.
+     * @return true if this context defines a maximum precision, otherwise, false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -355,7 +357,7 @@ return this.getEc().getHasMaxPrecision();
     /**
      * Gets a value indicating whether this context's Precision property is in
      * bits, rather than digits. The default is false.
-     * @return True if this context's Precision property is in bits, rather than
+     * @return true if this context's Precision property is in bits, rather than
      * digits; otherwise, false. The default is false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -368,9 +370,9 @@ return this.getEc().isPrecisionInBits();
      * Gets a value indicating whether to use a "simplified" arithmetic. In the
      * simplified arithmetic, infinity, not-a-number, and subnormal numbers
      * are not allowed, and negative zero is treated the same as positive
-     * zero. For further details, see
-     * <code>http://speleotrove.com/decimal/dax3274.html</code>
-     * @return True if a "simplified" arithmetic will be used; otherwise, false.
+     * zero. For further details, see <a
+  * href='http://speleotrove.com/decimal/dax3274.html'>http://speleotrove.com/decimal/dax3274.html</a>
+     * @return true if a "simplified" arithmetic will be used; otherwise, false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -483,7 +485,7 @@ return new PrecisionContext(this.getEc().Copy());
      * precision context.
      * @param exponent An arbitrary-precision integer indicating the desired
      * exponent.
-     * @return True if a number can have the given Exponent property under this
+     * @return true if a number can have the given Exponent property under this
      * precision context; otherwise, false. If this context allows unlimited
      * precision, returns true for the exponent EMax and any exponent less
      * than EMax.
@@ -510,8 +512,8 @@ return this.getEc().toString();
     /**
      * Copies this PrecisionContext and sets the copy's "AdjustExponent" property
      * to the given value.
-     * @param adjustExponent The parameter {@code adjustExponent} is not documented
-     * yet.
+     * @param adjustExponent The new value of the "AdjustExponent" property for the
+     * copy.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -549,8 +551,8 @@ exponentMax.getEi()));
 
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
-     * @param bigintPrecision The parameter {@code bigintPrecision} is not
-     * documented yet.
+     * @param bigintPrecision Desired maximum number of digits a number can have.
+     * If 0, the number of digits is unlimited.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @throws java.lang.NullPointerException The parameter {@code bigintPrecision}
      * is null.
@@ -578,7 +580,7 @@ return new PrecisionContext(this.getEc().WithBlankFlags());
     /**
      * Copies this precision context and sets the copy&#x27;s
      * &#x22;ClampNormalExponents&#x22; flag to the given value.
-     * @param clamp The parameter {@code clamp} is not documented yet.
+     * @param clamp Desired value for ClampNormalExponents.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -617,7 +619,8 @@ return new PrecisionContext(this.getEc().WithNoFlags());
 
     /**
      * Copies this PrecisionContext and gives it a particular precision value.
-     * @param precision Desired precision. 0 means unlimited precision.
+     * @param precision Desired maximum number of digits a number can have. If 0,
+     * the number of digits is unlimited.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -629,8 +632,8 @@ return new PrecisionContext(this.getEc().WithPrecision(precision));
     /**
      * Copies this PrecisionContext and sets the copy's "IsPrecisionInBits"
      * property to the given value.
-     * @param isPrecisionBits The parameter {@code isPrecisionBits} is not
-     * documented yet.
+     * @param isPrecisionBits The new value of the "IsPrecisionInBits" property for
+     * the copy.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -641,7 +644,7 @@ return new PrecisionContext(this.getEc().WithPrecisionInBits(isPrecisionBits));
 
     /**
      * Copies this PrecisionContext with the specified rounding mode.
-     * @param rounding The parameter {@code rounding} is not documented yet.
+     * @param rounding Desired value of the Rounding property.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -654,7 +657,7 @@ return new
     /**
      * Copies this PrecisionContext and sets the copy's "IsSimplified" property to
      * the given value.
-     * @param simplified The parameter {@code simplified} is not documented yet.
+     * @param simplified The new value of the "IsSimplified" property for the copy.
      * @return A context object for arbitrary-precision arithmetic settings.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */

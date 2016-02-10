@@ -265,7 +265,7 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Creates a decimal number from a string that represents a number. See
+     * Creates a decimal number from a text string that represents a number. See
      * <code>FromString(String, int, int, EContext)</code> for more information.
      * @param str A string that represents a number.
      * @return An arbitrary-precision decimal number with the same value as the
@@ -279,7 +279,7 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Creates a decimal number from a string that represents a number. See
+     * Creates a decimal number from a text string that represents a number. See
      * <code>FromString(String, int, int, EContext)</code> for more information.
      * @param str A string that represents a number.
      * @param ctx A precision context to control precision, rounding, and exponent
@@ -306,7 +306,7 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Creates a decimal number from a string that represents a number. See
+     * Creates a decimal number from a text string that represents a number. See
      * <code>FromString(String, int, int, EContext)</code> for more information.
      * @param str A string that represents a number.
      * @param offset A zero-based index showing where the desired portion of {@code
@@ -329,7 +329,7 @@ int length) {
     }
 
     /**
-     * <p>Creates a decimal number from a string that represents a number.</p>
+     * <p>Creates a decimal number from a text string that represents a number.</p>
      * <p>The format of the string generally consists of:</p> <ul> <li>An
      * optional plus sign ("+" , U+002B) or minus sign ("-", U+002D) (if '-'
      * , the value is negative.)</li> <li>One or more digits, with a single
