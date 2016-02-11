@@ -229,7 +229,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         return new String(charbuf, 0, index);
       } else {
         cp -= 0x10000;
-        charbuf[index++] = (char)((cp / 0x400) + 0xd800);
+        charbuf[index++] = (char)((cp >> 10) + 0xd800);
         charbuf[index++] = (char)((cp & 0x3ff) + 0xdc00);
         if (quoted) {
           charbuf[index++] = (char)0x22;
@@ -777,8 +777,7 @@ cbornumber.AsDouble());
         CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsExtendedDecimal());
       {
         Object objectTemp = "NaN";
-     Object objectTemp2 =
-          CBORObject.FromObject(Double.NaN).AsExtendedDecimal()
+     Object objectTemp2 = CBORObject.FromObject(Double.NaN).AsExtendedDecimal()
                     .toString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
@@ -1832,8 +1831,7 @@ CBORObject.FromObject(0.1f));
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03
-         };
+   bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03  };
       try {
         CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
         Assert.fail("Should have failed");
@@ -1969,8 +1967,7 @@ CBORObject.FromObject(0.1f));
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-     CBORObject objectTemp =
-          CBORObject.FromObject(CBORTestCommon.FloatNegInf);
+     CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.NEGATIVE_INFINITY);
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
@@ -1981,8 +1978,7 @@ CBORObject.FromObject(0.1f));
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-     CBORObject objectTemp =
-          CBORObject.FromObject(CBORTestCommon.FloatNegInf);
+     CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 =
           CBORObject.FromObject(CBORTestCommon.FloatNegInf);
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
@@ -1997,8 +1993,7 @@ CBORObject.FromObject(0.1f));
       {
         CBORObject objectTemp =
           CBORObject.FromObject(CBORTestCommon.DecPosInf);
-      CBORObject objectTemp2 =
-          CBORObject.FromObject(CBORTestCommon.RatPosInf);
+      CBORObject objectTemp2 = CBORObject.FromObject(CBORTestCommon.RatPosInf);
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
@@ -2007,8 +2002,7 @@ CBORObject.FromObject(0.1f));
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-     CBORObject objectTemp =
-          CBORObject.FromObject(CBORTestCommon.FloatPosInf);
+     CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatPosInf);
         CBORObject objectTemp2 = CBORObject.FromObject(Double.POSITIVE_INFINITY);
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
@@ -2018,10 +2012,8 @@ CBORObject.FromObject(0.1f));
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
       {
-     CBORObject objectTemp =
-          CBORObject.FromObject(CBORTestCommon.FloatPosInf);
-      CBORObject objectTemp2 =
-          CBORObject.FromObject(CBORTestCommon.RatPosInf);
+     CBORObject objectTemp = CBORObject.FromObject(CBORTestCommon.FloatPosInf);
+      CBORObject objectTemp2 = CBORObject.FromObject(CBORTestCommon.RatPosInf);
         TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
       }
     }
@@ -2249,8 +2241,7 @@ CBORObject.FromObject(0.1f));
     }
     @Test
     public void TestFromObjectAndTag() {
-  BigInteger bigvalue =
-        BigInteger.fromString("99999999999999999999999999999");
+  BigInteger bigvalue = BigInteger.fromString("99999999999999999999999999999");
       try {
         CBORObject.FromObjectAndTag(2, bigvalue);
         Assert.fail("Should have failed");
@@ -3131,8 +3122,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0x72, 0x75, 0x65
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { 0x74, 0x72, 0x75, 0x65  });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -3216,8 +3206,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
    {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x22,
-          (byte)0xd8,
+msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, 0, 0x22, (byte)0xd8,
         0,
                     (byte)0xdc, 0, 0, 0x22  });
 
@@ -3536,8 +3525,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xd8, 0x00
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xd8, 0x00  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -3556,8 +3544,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfe, (byte)0xff, (byte)0xdc, 0x00  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -3697,8 +3684,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xd8
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xd8  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -3717,8 +3703,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xff, (byte)0xfe, 0x00, (byte)0xdc  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -3878,8 +3863,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -3898,8 +3882,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0, 0
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0, 0, 0  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -4018,8 +4001,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0  });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -4038,8 +4020,7 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
  {
 java.io.ByteArrayInputStream msjson = null;
 try {
-msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0
-           });
+msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, (byte)0xfe, (byte)0xff, 0, 0  });
 
           try {
             CBORObject.ReadJSON(msjson);

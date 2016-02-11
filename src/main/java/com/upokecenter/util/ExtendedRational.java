@@ -127,7 +127,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return true if this object's value is negative, otherwise, false.
+     * @return true if this object's value is negative; otherwise, false.
      */
     public final boolean isNegative() {
         return this.getEr().isNegative();
@@ -135,7 +135,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return true if this object's value equals 0, otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -186,8 +186,10 @@ import com.upokecenter.numbers.*;
     public static ExtendedRational Create(
 int numeratorSmall,
 int denominatorSmall) {
-      return new ExtendedRational(ERational.Create(numeratorSmall,
-        denominatorSmall));
+      return new ExtendedRational(
+ERational.Create(
+numeratorSmall,
+denominatorSmall));
     }
 
     /**
@@ -207,8 +209,10 @@ BigInteger denominator) {
       if (denominator == null) {
         throw new NullPointerException("denominator");
       }
-      return new ExtendedRational(ERational.Create(numerator.getEi(),
-           denominator.getEi()));
+      return new ExtendedRational(
+ERational.Create(
+numerator.getEi(),
+denominator.getEi()));
     }
 
     /**
@@ -248,8 +252,11 @@ boolean negative) {
       if (diag == null) {
         throw new NullPointerException("diag");
       }
-      return new ExtendedRational(ERational.CreateNaN(diag.getEi(), signaling,
-              negative));
+      return new ExtendedRational(
+ERational.CreateNaN(
+diag.getEi(),
+signaling,
+negative));
     }
 
     /**
@@ -472,7 +479,7 @@ boolean negative) {
 
     /**
      * Gets a value indicating whether this object's value is infinity.
-     * @return true if this object's value is infinity, otherwise, false.
+     * @return true if this object's value is infinity; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -482,7 +489,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is a not-a-number value.
-     * @return true if this object is a not-a-number value, otherwise, false.
+     * @return true if this object is a not-a-number value; otherwise, false.
      */
     public boolean IsNaN() {
       return this.getEr().IsNaN();
@@ -490,7 +497,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return true if this object is negative infinity, otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -500,7 +507,7 @@ boolean negative) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return true if this object is positive infinity, otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -745,6 +752,7 @@ boolean negative) {
     @Override public String toString() {
       return this.getEr().toString();
     }
+
     static ERational FromLegacy(ExtendedRational bei) {
       return bei.getEr();
     }

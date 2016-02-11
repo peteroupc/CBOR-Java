@@ -139,6 +139,7 @@ import com.upokecenter.numbers.*;
     static ExtendedDecimal ToLegacy(EDecimal ei) {
       return new ExtendedDecimal(ei);
     }
+
     static EDecimal FromLegacy(ExtendedDecimal bei) {
       return bei.getEd();
     }
@@ -718,7 +719,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return true if this object is negative infinity, otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -728,7 +729,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return true if this object is positive infinity, otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -738,7 +739,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is not a number (NaN).
-     * @return true if this object is not a number (NaN), otherwise, false.
+     * @return true if this object is not a number (NaN); otherwise, false.
      */
     public boolean IsNaN() {
       return this.getEd().IsNaN();
@@ -811,7 +812,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return true if this object's value equals 0, otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

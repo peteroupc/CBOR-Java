@@ -41,7 +41,9 @@ import com.upokecenter.numbers.*;
 @Deprecated
     public static final BigInteger ONE = new BigInteger(EInteger.FromInt32(1));
 
-    private static final BigInteger oneValue = new BigInteger(EInteger.FromInt32(1));
+    private static final BigInteger ValueOneValue = new
+      BigInteger(EInteger.FromInt32(1));
+
     private final EInteger ei;
 
     BigInteger(EInteger ei) {
@@ -54,6 +56,7 @@ import com.upokecenter.numbers.*;
     static BigInteger ToLegacy(EInteger ei) {
       return new BigInteger(ei);
     }
+
     static EInteger FromLegacy(BigInteger bei) {
       return bei.getEi();
     }
@@ -73,12 +76,12 @@ import com.upokecenter.numbers.*;
     public static final BigInteger ZERO = new
       BigInteger(EInteger.FromInt32(0));
 
-  private static final BigInteger zeroValue = new
+  private static final BigInteger ValueZeroValue = new
       BigInteger(EInteger.FromInt32(0));
 
     /**
      * Gets a value indicating whether this value is even.
-     * @return True if this value is even; otherwise, false.
+     * @return true if this value is even; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -88,7 +91,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is 0.
-     * @return True if this value is 0; otherwise, false.
+     * @return true if this value is 0; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -300,7 +303,7 @@ return this.getEi().GetSignedBitLength();
 
     /**
      * Returns whether this object's value can fit in a 32-bit signed integer.
-     * @return True if this object's value is MinValue or greater, and MaxValue or
+     * @return true if this object's value is MinValue or greater, and MaxValue or
      * less; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -367,7 +370,7 @@ return this.getEi().CanFitInInt32();
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if this object and another object are equal; otherwise, false.
+     * @return true if this object and another object are equal; otherwise, false.
      */
   @Override public boolean equals(Object obj) {
       BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
@@ -419,7 +422,7 @@ return new BigInteger(this.getEi().Gcd(bigintSecond.getEi()));
  */
 @Deprecated
   public int getLowBit() {
-      return (this.isZero()) ? (0) : (this.getEi().GetLowBit());
+      return this.isZero() ? 0 : this.getEi().GetLowBit();
  }
 
     /**
@@ -713,7 +716,7 @@ return new BigInteger(this.getEi().Remainder(divisor.getEi()));
      * object's value.
      * @param index Zero based index of the bit to test. 0 means the least
      * significant bit.
-     * @return True if a bit is set in the two's-complement representation of this
+     * @return true if a bit is set in the two's-complement representation of this
      * object's value; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */

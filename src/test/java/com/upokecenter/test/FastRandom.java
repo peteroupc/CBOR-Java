@@ -1,6 +1,6 @@
 package com.upokecenter.test;
 /*
-Written by Peter O. in 2013.
+Written by Peter O. in 2013-2016.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -13,7 +13,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * class.
      */
   public class FastRandom {
-    private static final int ReseedCount = 500;
+    private static final int ReseedCount = 495;
 
     private final java.util.Random rand;
     private final java.util.Random rand2;
@@ -21,6 +21,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     private int w = 521288629;
     private int z = 362436069;
+    private long s0, s1;
+    private int lastRand = 0;
+    private boolean haveLastRand = false;
     private static final int[] ValueSeeds = new int[32];
 
     private static void AddSeed(int seed) {
@@ -65,13 +68,33 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return ret;
     }
 
-    private int NextValueInternal() {
-      int w = this.w, z = this.z;
-      // Use George Marsaglia's multiply-with-carry
-      // algorithm.
-      this.z = z = ((36969 * (z & 65535)) + ((z >> 16) & 0xffff));
-      this.w = w = ((18000 * (w & 65535)) + ((z >> 16) & 0xffff));
-      return ((z << 16) | (w & 65535)) & 0x7fffffff;
+    private int NextValueInternal(int mask) {
+      if (this.haveLastRand) {
+        this.haveLastRand = false;
+        return this.lastRand & mask;
+      } else if ((this.count & 7) == 0) {
+        int w = this.w, z = this.z;
+        // Use George Marsaglia's multiply-with-carry
+        // algorithm.
+        this.z = z = ((36969 * (z & 65535)) + ((z >> 16) & 0xffff));
+        this.w = w = ((18000 * (w & 65535)) + ((z >> 16) & 0xffff));
+        return ((z << 16) | (w & 65535)) & mask;
+      } else {
+        // Adapted from public domain code from Sebastiano
+        // Vigna's xorshift128plus at:
+        // http://xorshift.di.unimi.it/xorshift128plus.c
+        long z1 = this.s0;
+        long z0 = this.s1;
+        z1 = (z1 ^ (z1 << 23));
+        long a = (z1 >> 18) & 0x3fffffffffffL;
+        long b = (z0 >> 5) & 0x7ffffffffffffffL;
+        this.s0 = z0;
+        this.s1 = z1 ^ z0 ^ a ^ b;
+        b = (this.s1 + z0);
+        this.lastRand = ((int)(b >> 32));
+        this.haveLastRand = true;
+        return ((int)b) & mask;
+      }
     }
 
     /**
@@ -80,18 +103,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * @return A 32-bit signed integer.
      */
     public int NextValue(int v) {
-      if (v <= 0) {
+      if (v <= 1) {
+        if (v == 1) {
+          return 0;
+        }
         throw new IllegalArgumentException(
           "v (" + v + ") is not greater than 0");
-      }
-      if (v <= 1) {
-        return 0;
       }
       if (this.count >= ReseedCount) {
         // Call the default random number generator
         // every once in a while, to reseed
         this.count = 0;
         if (this.rand != null) {
+          // System.out.println("reseed");
           int seed = SysRandNext(this.rand, this.rand2);
           this.z ^= seed;
           seed = SysRandNext(this.rand2, this.rand);
@@ -102,6 +126,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           if (this.w == 0) {
             this.w = 521288629;
           }
+          this.s0 ^= this.z;
+          this.s1 ^= this.w;
+          if ((this.s0 | this.s1) == 0) {
+            this.s0 = this.z;
+          }
           seed = SysRandNext(this.rand, this.rand2);
           AddSeed(seed);
           return this.rand.nextInt(v);
@@ -109,17 +138,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       }
       ++this.count;
       if (v == 0x1000000) {
-        return this.NextValueInternal() & 0xffffff;
+        return this.NextValueInternal(0xffffff);
       }
       if (v == 0x10000) {
-        return this.NextValueInternal() & 0xffff;
+        return this.NextValueInternal(0xffff);
       }
       if (v == 0x100) {
-        return this.NextValueInternal() & 0xff;
+        return this.NextValueInternal(0xff);
       }
       int maxExclusive = (Integer.MAX_VALUE / v) * v;
       while (true) {
-        int vi = this.NextValueInternal();
+        int vi = this.NextValueInternal(0x7fffffff);
         if (vi < maxExclusive) {
           return vi % v;
         }

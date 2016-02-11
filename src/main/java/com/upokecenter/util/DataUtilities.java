@@ -154,7 +154,7 @@ boolean lenientLineBreaks) {
  throw new IllegalArgumentException("Unpaired surrogate code point");
 }
         }
-        if (c<0x80) {
+        if (c <= 0x80) {
           return new byte[] { (byte)c  };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
@@ -173,7 +173,7 @@ boolean lenientLineBreaks) {
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
             (byte)(0x80 | (c & 0x3f))  };
-        } else if (!lenientLineBreaks && c<0x80 && c2<0x80) {
+        } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
           return new byte[] { (byte)c, (byte)c2  };
         }
       }
@@ -767,7 +767,7 @@ boolean replace) {
             builder.append((char)ret);
           } else {
              ch = ret - 0x10000;
-             lead = (ch / 0x400) + 0xd800;
+             lead = (ch >> 10) + 0xd800;
              trail = (ch & 0x3ff) + 0xdc00;
             builder.append((char)lead);
             builder.append((char)trail);
@@ -951,7 +951,7 @@ boolean replace) throws java.io.IOException {
             builder.append((char)ret);
           } else {
              ch = ret - 0x10000;
-             lead = (ch / 0x400) + 0xd800;
+             lead = (ch >> 10) + 0xd800;
              trail = (ch & 0x3ff) + 0xdc00;
             builder.append((char)lead);
             builder.append((char)trail);

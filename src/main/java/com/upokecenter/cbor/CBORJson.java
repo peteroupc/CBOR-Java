@@ -576,7 +576,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
               return;
             }
             if (flo.isFinite() &&
-                (flo.getExponent()).Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
+                flo.getExponent().Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
               // Too inefficient to convert to a decimal number
               // from a bigfloat with a very high exponent,
               // so convert to double instead

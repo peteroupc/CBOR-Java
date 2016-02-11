@@ -312,7 +312,7 @@ EInteger.FromInt64(valueB)));
         EInteger bigrem;
         EInteger bigquo;
 {
-EInteger[] divrem = (b1).DivRem(b2);
+EInteger[] divrem = b1.DivRem(b2);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         return bigrem.isZero() ? CBORObject.FromObject(bigquo) :

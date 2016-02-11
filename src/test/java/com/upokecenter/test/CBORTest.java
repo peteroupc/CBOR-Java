@@ -880,7 +880,9 @@ try {
 ms = new java.io.ByteArrayInputStream(array);
 int startingAvailable = ms.available();
 
-          while ((startingAvailable-ms.available()) != startingAvailable) {
+          int iobj = 0;
+          while (iobj < 25 && (startingAvailable-ms.available()) != startingAvailable) {
+            ++iobj;
             try {
               CBORObject o = CBORObject.Read(ms);
               try {

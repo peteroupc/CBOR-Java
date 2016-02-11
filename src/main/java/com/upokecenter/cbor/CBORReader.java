@@ -19,8 +19,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     private CBORDuplicatePolicy policy;
     private StringRefs stringRefs;
 
-    public CBORReader(InputStream stream) {
-      this.stream = stream;
+    public CBORReader(InputStream inStream) {
+      this.stream = inStream;
       this.sharedRefs = new SharedRefs();
       this.policy = CBORDuplicatePolicy.Overwrite;
     }
@@ -244,6 +244,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                 " is bigger than supported");
             }
             if (nextByte != 0x60) {  // NOTE: 0x60 means the empty String
+              if (PropertyMap.ExceedsKnownLength(this.stream, len)) {
+                // TODO: Remove following line in version 3.0
+                PropertyMap.SkipStreamToEnd(this.stream);
+                throw new CBORException("Premature end of data");
+              }
               switch (
 DataUtilities.ReadUtf8(
 this.stream,
@@ -269,6 +274,11 @@ false)) {
             throw new CBORException("Length of " +
               CBORUtilities.LongToString(uadditional) +
               " is bigger than supported");
+          }
+          if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
+            // TODO: Remove following line in version 3.0
+            PropertyMap.SkipStreamToEnd(this.stream);
+            throw new CBORException("Premature end of data");
           }
           StringBuilder builder = new StringBuilder();
           switch (
@@ -336,6 +346,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
         if (filter != null && !filter.ArrayLengthMatches(uadditional)) {
           throw new CBORException("Array is too long");
         }
+        if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
+          // TODO: Remove following line in version 3.0
+          PropertyMap.SkipStreamToEnd(this.stream);
+          throw new CBORException("Remaining data too small for array length");
+        }
         ++this.depth;
         for (long i = 0; i < uadditional; ++i) {
           cbor.Add(
@@ -382,6 +397,11 @@ filter == null ? null : filter.GetSubFilter(vtindex));
           throw new CBORException("Length of " +
             CBORUtilities.LongToString(uadditional) +
             " is bigger than supported");
+        }
+        if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
+            // TODO: Remove following line in version 3.0
+            PropertyMap.SkipStreamToEnd(this.stream);
+            throw new CBORException("Remaining data too small for map length");
         }
         for (long i = 0; i < uadditional; ++i) {
           ++this.depth;
@@ -508,6 +528,11 @@ OutputStream outputStream) throws java.io.IOException {
         throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
           " is bigger than supported ");
       }
+      if (PropertyMap.ExceedsKnownLength(stream, uadditional)) {
+        // TODO: Remove following line in version 3.0
+        PropertyMap.SkipStreamToEnd(stream);
+        throw new CBORException("Premature end of stream");
+      }
       if (uadditional <= 0x10000) {
         // Simple case: small size
         byte[] data = new byte[(int)uadditional];
@@ -535,7 +560,7 @@ OutputStream outputStream) throws java.io.IOException {
         }
         java.io.ByteArrayOutputStream ms = null;
 try {
-ms = new java.io.ByteArrayOutputStream();
+ms = new java.io.ByteArrayOutputStream(0x10000);
 
           while (total > 0) {
             int bufsize = Math.min(tmpdata.length, total);

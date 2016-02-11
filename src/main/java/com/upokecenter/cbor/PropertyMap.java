@@ -7,6 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/CBOR/
  */
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Array;
@@ -170,6 +171,13 @@ class PropertyMap {
       return legacyMethods[method];
     }
   }
+
+    public static boolean ExceedsKnownLength(InputStream inStream, long size) {
+      return false;
+    }
+
+    public static void SkipStreamToEnd(InputStream inStream) {
+    }
 
     public static BigInteger ToLegacy(EInteger ei){
       return (BigInteger)InvokeOneArgumentMethod(

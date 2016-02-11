@@ -114,6 +114,7 @@ import com.upokecenter.numbers.*;
     public boolean IsNegativeInfinity(Object obj) {
       return false;
     }
+
     public boolean IsPositiveInfinity(Object obj) {
       return false;
     }

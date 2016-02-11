@@ -92,6 +92,7 @@ import com.upokecenter.numbers.*;
     private static CBORObject ConstructSimpleValue(int v) {
       return new CBORObject(CBORObjectTypeSimpleValue, v);
     }
+
     private static CBORObject ConstructIntegerValue(int v) {
       return new CBORObject(CBORObjectTypeInteger, (long)v);
     }
@@ -273,7 +274,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR false value.
-     * @return True if this value is a CBOR false value; otherwise, false.
+     * @return true if this value is a CBOR false value; otherwise, false.
      */
     public final boolean isFalse() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -282,7 +283,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return True if this CBOR object represents a finite number; otherwise,
+     * @return true if this CBOR object represents a finite number; otherwise,
      * false.
      */
     public final boolean isFinite() {
@@ -294,7 +295,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integral number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integral.
-     * @return True if this object represents an integral number, that is, a number
+     * @return true if this object represents an integral number, that is, a number
      * without a fractional part; otherwise, false.
      */
     public final boolean isIntegral() {
@@ -304,7 +305,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return True if this value is a CBOR null value; otherwise, false.
+     * @return true if this value is a CBOR null value; otherwise, false.
      */
     public final boolean isNull() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -313,7 +314,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return True if this data item has at least one tag; otherwise, false.
+     * @return true if this data item has at least one tag; otherwise, false.
      */
     public final boolean isTagged() {
         return this.itemtypeValue == CBORObjectTypeTagged;
@@ -321,7 +322,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR true value.
-     * @return True if this value is a CBOR true value; otherwise, false.
+     * @return true if this value is a CBOR true value; otherwise, false.
      */
     public final boolean isTrue() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -330,7 +331,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return True if this value is a CBOR undefined value; otherwise, false.
+     * @return true if this value is a CBOR undefined value; otherwise, false.
      */
     public final boolean isUndefined() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -339,7 +340,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return True if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -361,7 +362,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return True if this object is a negative number; otherwise, false.
+     * @return true if this object is a negative number; otherwise, false.
      */
     public final boolean isNegative() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -763,9 +764,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
-     * format. <p>If a JSON object has the same key, only the last given
-     * value will be used for each duplicated key.</p>
+     * Generates a CBOR object from a text string in JavaScript Object Notation
+     * (JSON) format. <p>If a JSON object has the same key, only the last
+     * given value will be used for each duplicated key.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
@@ -778,9 +779,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Generates a CBOR object from a string in JavaScript Object Notation (JSON)
-     * format. <p>By default, if a JSON object has the same key, only the
-     * last given value will be used for each duplicated key.</p>
+     * Generates a CBOR object from a text string in JavaScript Object Notation
+     * (JSON) format. <p>By default, if a JSON object has the same key, only
+     * the last given value will be used for each duplicated key.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
@@ -842,9 +843,10 @@ CBOREncodeOptions options) {
      * @return A CBOR number.
      */
     public static CBORObject FromObject(BigInteger bigintValue) {
-      return ((Object)bigintValue == (Object)null) ? (CBORObject.Null) :
-        (FromObject(PropertyMap.FromLegacy(bigintValue)));
+      return ((Object)bigintValue == (Object)null) ? CBORObject.Null :
+        FromObject(PropertyMap.FromLegacy(bigintValue));
     }
+
     static CBORObject FromObject(EInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
         return CBORObject.Null;
@@ -865,8 +867,8 @@ CBOREncodeOptions options) {
      * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedFloat bigValue) {
-      return ((Object)bigValue == (Object)null) ? (CBORObject.Null) :
-        (FromObject(PropertyMap.FromLegacy(bigValue)));
+      return ((Object)bigValue == (Object)null) ? CBORObject.Null :
+        FromObject(PropertyMap.FromLegacy(bigValue));
     }
 
     /**
@@ -902,8 +904,8 @@ CBOREncodeOptions options) {
      * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedRational bigValue) {
-      return ((Object)bigValue == (Object)null) ? (CBORObject.Null) :
-        (FromObject(PropertyMap.FromLegacy(bigValue)));
+      return ((Object)bigValue == (Object)null) ? CBORObject.Null :
+        FromObject(PropertyMap.FromLegacy(bigValue));
     }
 
     /**
@@ -923,10 +925,10 @@ CBOREncodeOptions options) {
           CBORObjectTypeExtendedRational,
           bigValue);
       }
-      return ((bigValue.isFinite() && bigValue.getDenominator().equals(EInteger.FromInt32(1))) ?
+      return (bigValue.isFinite() && bigValue.getDenominator().equals(EInteger.FromInt32(1))) ?
             FromObject(bigValue.getNumerator()) : (new CBORObject(
               CBORObjectTypeExtendedRational,
-              bigValue)));
+              bigValue));
     }
 
     /**
@@ -960,12 +962,12 @@ CBOREncodeOptions options) {
      * @return A CBOR number.
      */
     public static CBORObject FromObject(ExtendedDecimal otherValue) {
-      return ((Object)otherValue == (Object)null) ? (CBORObject.Null) :
-        (FromObject(PropertyMap.FromLegacy(otherValue)));
+      return ((Object)otherValue == (Object)null) ? CBORObject.Null :
+        FromObject(PropertyMap.FromLegacy(otherValue));
     }
 
     /**
-     * Generates a CBOR object from a string.
+     * Generates a CBOR object from a text string.
      * @param strValue A string value. Can be null.
      * @return A CBOR object representing the string, or CBORObject.Null if
      * stringValue is null.
@@ -1353,6 +1355,7 @@ CBOREncodeOptions options) {
       }
       return FromObjectAndTag(valueOb, PropertyMap.FromLegacy(bigintTag));
     }
+
     static CBORObject FromObjectAndTag(
       Object valueOb,
       EInteger tagEInt) {
@@ -2267,8 +2270,7 @@ public static void Write(
         return CBORObject.FromObject((EFloat)newItem);
       }
       ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
-      return (rat != null) ?
-        (CBORObject.FromObject(rat)) : ((oldItem == newItem)?
+     return (rat != null) ? CBORObject.FromObject(rat) : ((oldItem == newItem) ?
         this : CBORObject.FromObject(newItem));
     }
 
@@ -2421,7 +2423,7 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedDecimal AsExtendedDecimal() {
-      return ExtendedDecimal.FromString(AsEDecimal().toString());
+      return ExtendedDecimal.FromString(this.AsEDecimal().toString());
     }
 
     EDecimal AsEDecimal() {
@@ -2444,8 +2446,9 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedFloat AsExtendedFloat() {
-      return ExtendedFloat.FromString(AsEFloat().toString());
+      return ExtendedFloat.FromString(this.AsEFloat().toString());
     }
+
     EFloat AsEFloat() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
@@ -2461,8 +2464,9 @@ public static void Write(
      * including if this object is CBORObject.Null.
      */
     public ExtendedRational AsExtendedRational() {
-      return PropertyMap.ToLegacy(AsERational());
+      return PropertyMap.ToLegacy(this.AsERational());
     }
+
     ERational AsERational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
@@ -2558,7 +2562,7 @@ public static void Write(
     /**
      * Returns whether this object's value is an integral value, is -(2^31) or
      * greater, and is less than 2^31.
-     * @return True if this object's value is an integral value, is -(2^31) or
+     * @return true if this object's value is an integral value, is -(2^31) or
      * greater, and is less than 2^31; otherwise, false.
      */
     public boolean CanFitInInt32() {
@@ -2572,7 +2576,7 @@ public static void Write(
     /**
      * Returns whether this object's value is an integral value, is -(2^63) or
      * greater, and is less than 2^63.
-     * @return True if this object's value is an integral value, is -(2^63) or
+     * @return true if this object's value is an integral value, is -(2^63) or
      * greater, and is less than 2^63; otherwise, false.
      */
     public boolean CanFitInInt64() {
@@ -2596,7 +2600,7 @@ public static void Write(
     /**
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^31) or greater, and less than 2^31.
-     * @return True if this object's value, truncated to an integer, would be
+     * @return true if this object's value, truncated to an integer, would be
      * -(2^31) or greater, and less than 2^31; otherwise, false.
      */
     public boolean CanTruncatedIntFitInInt32() {
@@ -2607,7 +2611,7 @@ public static void Write(
     /**
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^63) or greater, and less than 2^63.
-     * @return True if this object's value, truncated to an integer, would be
+     * @return true if this object's value, truncated to an integer, would be
      * -(2^63) or greater, and less than 2^63; otherwise, false.
      */
     public boolean CanTruncatedIntFitInInt64() {
@@ -2874,7 +2878,7 @@ public int compareTo(CBORObject other) {
     /**
      * Determines whether a value of the given key exists in this object.
      * @param key An object that serves as the key.
-     * @return True if the given key is found, or false if the given key is not
+     * @return true if the given key is found, or false if the given key is not
      * found or this object is not a map.
      * @throws java.lang.NullPointerException Key is null (as opposed to
      * CBORObject.Null).
@@ -2893,7 +2897,7 @@ public int compareTo(CBORObject other) {
     /**
      * Determines whether a value of the given key exists in this object.
      * @param key A string that serves as the key.
-     * @return True if the given key (as a CBOR object) is found, or false if the
+     * @return true if the given key (as a CBOR object) is found, or false if the
      * given key is not found or this object is not a map.
      * @throws java.lang.NullPointerException Key is null.
      */
@@ -3045,7 +3049,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       return this.equals(((obj instanceof CBORObject) ? (CBORObject)obj : null));
@@ -3054,7 +3058,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Compares the equality of two CBOR objects.
      * @param other The object to compare.
-     * @return True if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false.
      */
     @SuppressWarnings("unchecked")
 public boolean equals(CBORObject other) {
@@ -3150,7 +3154,7 @@ public boolean equals(CBORObject other) {
      * @return An array of tags, or the empty string if this object is untagged.
      */
     public BigInteger[] GetTags() {
-      EInteger[] etags = GetTagsEInteger();
+      EInteger[] etags = this.GetTagsEInteger();
       if (etags.length == 0) {
         return new BigInteger[0];
       }
@@ -3160,6 +3164,7 @@ public boolean equals(CBORObject other) {
       }
       return bigret;
     }
+
     private EInteger[] GetTagsEInteger() {
       if (!this.isTagged()) {
         return ValueEmptyTags;
@@ -3182,7 +3187,7 @@ public boolean equals(CBORObject other) {
     /**
      * Returns whether this object has a tag of the given number.
      * @param tagValue The tag value to search for.
-     * @return True if this object has a tag of the given number; otherwise, false.
+     * @return true if this object has a tag of the given number; otherwise, false.
      * @throws IllegalArgumentException TagValue is less than 0.
      * @throws java.lang.NullPointerException The parameter "obj" is null.
      */
@@ -3206,7 +3211,7 @@ public boolean equals(CBORObject other) {
     /**
      * Returns whether this object has a tag of the given number.
      * @param bigTagValue The tag value to search for.
-     * @return True if this object has a tag of the given number; otherwise, false.
+     * @return true if this object has a tag of the given number; otherwise, false.
      * @throws java.lang.NullPointerException BigTagValue is null.
      * @throws IllegalArgumentException BigTagValue is less than 0.
      */
@@ -3214,7 +3219,7 @@ public boolean equals(CBORObject other) {
       if (bigTagValue == null) {
         throw new NullPointerException("bigTagValue");
       }
-      return HasTag(EInteger.FromBytes(
+      return this.HasTag(EInteger.FromBytes(
         bigTagValue.toBytes(true),
         true));
     }
@@ -3269,7 +3274,7 @@ public boolean equals(CBORObject other) {
 
     /**
      * Gets a value indicating whether this CBOR object represents infinity.
-     * @return True if this CBOR object represents infinity; otherwise, false.
+     * @return true if this CBOR object represents infinity; otherwise, false.
      */
     public boolean IsInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3280,7 +3285,7 @@ public boolean equals(CBORObject other) {
      * Gets a value indicating whether this CBOR object represents a not-a-number
      * value (as opposed to whether this object&#x27;s type is not a number
      * type).
-     * @return True if this CBOR object represents a not-a-number value (as opposed
+     * @return true if this CBOR object represents a not-a-number value (as opposed
      * to whether this object's type is not a number type); otherwise,
      * false.
      */
@@ -3292,7 +3297,7 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a value indicating whether this CBOR object represents negative
      * infinity.
-     * @return True if this CBOR object represents negative infinity; otherwise,
+     * @return true if this CBOR object represents negative infinity; otherwise,
      * false.
      */
     public boolean IsNegativeInfinity() {
@@ -3303,7 +3308,7 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a value indicating whether this CBOR object represents positive
      * infinity.
-     * @return True if this CBOR object represents positive infinity; otherwise,
+     * @return true if this CBOR object represents positive infinity; otherwise,
      * false.
      */
     public boolean IsPositiveInfinity() {
@@ -3332,8 +3337,8 @@ public boolean equals(CBORObject other) {
         return CBORObject.FromObject((EFloat)newItem);
       }
       ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
-      return (rat != null) ? (CBORObject.FromObject(rat)) :
-        (CBORObject.FromObject(newItem));
+      return (rat != null) ? CBORObject.FromObject(rat) :
+        CBORObject.FromObject(newItem);
     }
 
     /**
@@ -3341,7 +3346,7 @@ public boolean equals(CBORObject other) {
      * from the array. If this object is a map, removes the item with the
      * given key from the map.
      * @param obj The item or key to remove.
-     * @return True if the item was removed; otherwise, false.
+     * @return true if the item was removed; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code obj} is null (as
      * opposed to CBORObject.Null).
      * @throws IllegalStateException The object is not an array or map.

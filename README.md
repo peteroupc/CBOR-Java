@@ -25,7 +25,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 <dependency>
   <groupId>com.upokecenter</groupId>
   <artifactId>cbor</artifactId>
-  <version>2.3.0</version>
+  <version>2.4.0</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ Source code is available in the [project page](https://github.com/peteroupc/CBOR
 About
 -----------
 
-Written in 2013-2014 by Peter O.
+Written in 2013-2016 by Peter O.
 
 Any copyright is dedicated to the Public Domain.
 [http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)

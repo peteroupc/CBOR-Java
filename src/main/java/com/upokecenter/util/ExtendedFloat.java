@@ -12,44 +12,46 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.EFloat</code> in the <code>PeterO.Numbers</code> library (in
-     * .NET), or <code>com.upokecenter.numbers.getEFloat()</code> in the
-     * <code>com.github.peteroupc/numbers</code> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(Object)</code> method
-     * (by including the new library in your code, among other things), but
-     * this version of the CBOR library doesn't include any methods that
-     * explicitly take an <code>EFloat</code> as a parameter or return
-     * value.</b></p> <p> Represents an arbitrary-precision binary
-     * floating-point number. Consists of an integer mantissa and an integer
-     * exponent, both arbitrary-precision. The value of the number equals
-     * mantissa * 2^exponent. This class also supports values for negative
-     * zero, not-a-number (NaN) values, and infinity.</p> <p>Passing a
-     * signaling NaN to any arithmetic operation shown here will signal the
-     * flag FlagInvalid and return a quiet NaN, even if another operand to
-     * that operation is a quiet NaN, unless noted otherwise.</p> <p>Passing
-     * a quiet NaN to any arithmetic operation shown here will return a
-     * quiet NaN, unless noted otherwise.</p> <p>Unless noted otherwise,
-     * passing a null arbitrary-precision binary float argument to any
-     * method here will throw an exception.</p> <p>When an arithmetic
-     * operation signals the flag FlagInvalid, FlagOverflow, or
-     * FlagDivideByZero, it will not throw an exception too, unless the
-     * operation's trap is enabled in the precision context (see
-     * PrecisionContext's Traps property).</p> <p>An arbitrary-precision
-     * binary float value can be serialized in one of the following
-     * ways:</p> <ul> <li>By calling the toString() method. However, not all
-     * strings can be converted back to an arbitrary-precision binary float
-     * without loss, especially if the string has a fractional part.</li>
-     * <li>By calling the UnsignedMantissa, Exponent, and IsNegative
-     * properties, and calling the IsInfinity, IsQuietNaN, and
-     * IsSignalingNaN methods. The return values combined will uniquely
-     * identify a particular arbitrary-precision binary float
-     * value.</li></ul> <p>If an operation requires creating an intermediate
-     * value that might be too big to fit in memory (or might require more
-     * than 2 gigabytes of memory to store -- due to the current use of a
-     * 32-bit integer internally as a length), the operation may signal an
-     * invalid-operation flag and return not-a-number (NaN). In certain rare
-     * cases, the compareTo method may throw OutOfMemoryError (called
-     * OutOfMemoryError in Java) in the same circumstances.</p> <p><b>Thread
+     * <code>PeterO.Numbers.EFloat</code> in the <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java). This new class can be used in the
+     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * library in your code, among other things), but this version of the
+     * CBOR library doesn't include any methods that explicitly take an
+     * <code>EFloat</code> as a parameter or return value.</b></p> <p> Represents
+     * an arbitrary-precision binary floating-point number. Consists of an
+     * integer mantissa and an integer exponent, both arbitrary-precision.
+     * The value of the number equals mantissa * 2^exponent. This class also
+     * supports values for negative zero, not-a-number (NaN) values, and
+     * infinity.</p> <p>Passing a signaling NaN to any arithmetic operation
+     * shown here will signal the flag FlagInvalid and return a quiet NaN,
+     * even if another operand to that operation is a quiet NaN, unless
+     * noted otherwise.</p> <p>Passing a quiet NaN to any arithmetic
+     * operation shown here will return a quiet NaN, unless noted
+     * otherwise.</p> <p>Unless noted otherwise, passing a null
+     * arbitrary-precision binary float argument to any method here will
+     * throw an exception.</p> <p>When an arithmetic operation signals the
+     * flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
+     * throw an exception too, unless the operation's trap is enabled in the
+     * precision context (see PrecisionContext's Traps property).</p> <p>An
+     * arbitrary-precision binary float value can be serialized in one of
+     * the following ways:</p> <ul> <li>By calling the toString() method.
+     * However, not all strings can be converted back to an
+     * arbitrary-precision binary float without loss, especially if the
+     * string has a fractional part.</li> <li>By calling the
+     * UnsignedMantissa, Exponent, and IsNegative properties, and calling
+     * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
+     * values combined will uniquely identify a particular
+     * arbitrary-precision binary float value.</li></ul> <p>If an operation
+     * requires creating an intermediate value that might be too big to fit
+     * in memory (or might require more than 2 gigabytes of memory to store
+     * -- due to the current use of a 32-bit integer internally as a
+     * length), the operation may signal an invalid-operation flag and
+     * return not-a-number (NaN). In certain rare cases, the compareTo
+     * method may throw OutOfMemoryError (called OutOfMemoryError in
+     * Java) in the same circumstances.</p> <p><b>Thread
      * safety:</b>Instances of this class are immutable, so they are
      * inherently safe for use by multiple threads. Multiple instances of
      * this object with the same properties are interchangeable, so they
@@ -93,6 +95,7 @@ import com.upokecenter.numbers.*;
     static ExtendedFloat ToLegacy(EFloat ei) {
       return new ExtendedFloat(ei);
     }
+
     static EFloat FromLegacy(ExtendedFloat bei) {
       return bei.getEf();
     }
@@ -101,7 +104,7 @@ import com.upokecenter.numbers.*;
      * Determines whether this object's mantissa and exponent are equal to those of
      * another object.
      * @param otherValue An arbitrary-precision binary float.
-     * @return True if this object's mantissa and exponent are equal to those of
+     * @return true if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
@@ -119,7 +122,7 @@ import com.upokecenter.numbers.*;
      * Determines whether this object's mantissa and exponent are equal to those of
      * another object.
      * @param other An arbitrary-precision binary float.
-     * @return True if this object's mantissa and exponent are equal to those of
+     * @return true if this object's mantissa and exponent are equal to those of
      * another object; otherwise, false.
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -137,7 +140,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
@@ -231,10 +234,10 @@ BigInteger exponent) {
     }
 
     /**
-     * Creates a binary float from a string that represents a number. Note that if
-     * the string contains a negative exponent, the resulting value might
-     * not be exact, in which case the resulting binary float will be an
-     * approximation of this decimal number's value. (NOTE: This
+     * Creates a binary float from a text string that represents a number. Note
+     * that if the string contains a negative exponent, the resulting value
+     * might not be exact, in which case the resulting binary float will be
+     * an approximation of this decimal number's value. (NOTE: This
      * documentation previously said the binary float will contain enough
      * precision to accurately convert it to a 32-bit or 64-bit floating
      * point number. Due to double rounding, this will generally not be the
@@ -287,7 +290,7 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Creates a binary float from a string that represents a number. See the
+     * Creates a binary float from a text string that represents a number. See the
      * four-parameter FromString method.
      * @param str The parameter {@code str} is not documented yet.
      * @return The parsed number, converted to arbitrary-precision binary float.
@@ -297,7 +300,10 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Not documented yet.
+     * Creates a binary float from a text string that represents a number. Note
+     * that if the string contains a negative exponent, the resulting value
+     * might not be exact, in which case the resulting binary float will be
+     * an approximation of this decimal number's value.
      * @param str A text string.
      * @param ctx A PrecisionContext object specifying the precision, rounding, and
      * exponent range to apply to the parsed number. Can be null.
@@ -318,7 +324,10 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Not documented yet.
+     * Creates a binary float from a text string that represents a number. Note
+     * that if the string contains a negative exponent, the resulting value
+     * might not be exact, in which case the resulting binary float will be
+     * an approximation of this decimal number's value.
      * @param str A text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
@@ -564,7 +573,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return True if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -574,7 +583,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return True if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -584,7 +593,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is a not-a-number value.
-     * @return True if this object is a not-a-number value; otherwise, false.
+     * @return true if this object is a not-a-number value; otherwise, false.
      */
     public boolean IsNaN() {
       return this.getEf().IsNaN();
@@ -593,7 +602,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is positive or negative
      * infinity.
-     * @return True if this object is positive or negative infinity; otherwise,
+     * @return true if this object is positive or negative infinity; otherwise,
      * false.
      */
     public boolean IsInfinity() {
@@ -602,7 +611,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return True if this object is finite (not infinity or NaN); otherwise,
+     * @return true if this object is finite (not infinity or NaN); otherwise,
      * false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -614,7 +623,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return True if this object is negative, including negative zero; otherwise,
+     * @return true if this object is negative, including negative zero; otherwise,
      * false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -625,7 +634,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
-     * @return True if this object is a quiet not-a-number value; otherwise, false.
+     * @return true if this object is a quiet not-a-number value; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -636,7 +645,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is a signaling not-a-number
      * value.
-     * @return True if this object is a signaling not-a-number value; otherwise,
+     * @return true if this object is a signaling not-a-number value; otherwise,
      * false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -657,7 +666,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return True if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -693,7 +702,7 @@ PrecisionContext ctx) {
     /**
      * Divides this object by another binary float and returns the result. When
      * possible, the result will be exact.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
      * returns infinity if the divisor is 0 and the dividend is nonzero.
      * Signals FlagInvalid and returns not-a-number (NaN) if the divisor and
@@ -714,7 +723,7 @@ PrecisionContext ctx) {
     /**
      * Divides this object by another binary float and returns a result with the
      * same exponent as this object (the dividend).
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param rounding The rounding mode to use if the result must be scaled down
      * to have the same exponent as this value.
      * @return The quotient of the two numbers. Signals FlagDivideByZero and
@@ -743,7 +752,7 @@ ExtendedDecimal.ToERounding(rounding)));
      * Divides two arbitrary-precision binary floats, and returns the integer part
      * of the result, rounded down, with the preferred exponent set to this
      * value's exponent minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @return The integer part of the quotient of the two objects. Signals
      * FlagDivideByZero and returns infinity if the divisor is 0 and the
      * dividend is nonzero. Signals FlagInvalid and returns not-a-number
@@ -782,8 +791,9 @@ ExtendedDecimal.ToERounding(rounding)));
     }
 
     /**
-     * Not documented yet.
-     * @param divisor Another arbitrary-precision binary float.
+     * Calculates the remainder of a number by the formula this - ((this / divisor)
+     * * divisor).
+     * @param divisor The number to divide by.
      * @return An arbitrary-precision binary float.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -798,9 +808,8 @@ ExtendedDecimal.ToERounding(rounding)));
 
     /**
      * Calculates the remainder of a number by the formula this - ((this / divisor)
-     * * divisor). This is meant to be similar to the remainder operation in
-     * Java's BigDecimal.
-     * @param divisor Another arbitrary-precision binary float.
+     * * divisor).
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. This context
      * will be used only in the division portion of the remainder
@@ -881,7 +890,7 @@ ctx == null ? null : ctx.getEc()));
      * Divides this arbitrary-precision binary float by another arbitrary-precision
      * binary float object. The preferred exponent for the result is this
      * object's exponent minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
@@ -1191,7 +1200,7 @@ augend.getEf()));
      * Divides this object by another object, and returns the integer part of the
      * result, with the preferred exponent set to this value's exponent
      * minus the divisor's exponent.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision, rounding,
      * and exponent range of the integer part of the result. Flags will be
      * set on the given context only if the context's HasFlags is true and
@@ -1231,7 +1240,7 @@ ctx == null ? null : ctx.getEc()));
     /**
      * Divides this object by another object, and returns the integer part of the
      * result, with the exponent set to 0.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored. If HasFlags
      * of the context is true, will also store the flags resulting from the
@@ -1306,7 +1315,7 @@ ctx == null ? null : ctx.getEc()));
      * if the quotient, rounded down, is even, and the result's absolute
      * value is half of the divisor's absolute value.</li></ul> This
      * function is also known as the "IEEE Remainder" function.
-     * @param divisor The divisor.
+     * @param divisor The number to divide by.
      * @param ctx A precision context object to control the precision. The rounding
      * and exponent range settings of this context are ignored (the rounding
      * mode is always treated as HalfEven). If HasFlags of the context is
@@ -1862,8 +1871,7 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * Returns a binary number with the same value as this object but rounded to an
-     * integer, and signals an invalid operation if the result would be
-     * inexact.
+     * integer, and signals an inexact flag if the result would be inexact.
      * @param ctx A precision context to control precision and rounding of the
      * result. If HasFlags of the context is true, will also store the flags
      * resulting from the operation (the flags are in addition to the
@@ -1919,8 +1927,8 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * Returns a binary number with the same value as this object but rounded to
-     * the given exponent, and signals an invalid operation if the result
-     * would be inexact.
+     * the given exponent, and signals an inexact flag if the result would
+     * be inexact.
      * @param exponent The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
@@ -2000,14 +2008,14 @@ ctx == null ? null : ctx.getEc()));
 
     /**
      * Returns a binary number with the same value as this object but rounded to
-     * the given exponent, and signals an invalid operation if the result
-     * would be inexact.
+     * the given exponent, and signals an inexact flag if the result would
+     * be inexact.
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
-     * places number. For example, -3 means round to the sixteenth (10b^-3,
-     * 0.0001b), and 3 means round to the sixteen-place (10b^3, 1000b). A
-     * value of 0 rounds the number to an integer.
+     * places in the number. For example, -3 means round to the sixteenth
+     * (10b^-3, 0.0001b), and 3 means round to the sixteen-place (10b^3,
+     * 1000b). A value of 0 rounds the number to an integer.
      * @param ctx A PrecisionContext object.
      * @return A binary number rounded to the closest value representable in the
      * given precision. Signals FlagInvalid and returns not-a-number (NaN)
@@ -2038,9 +2046,9 @@ ctx == null ? null : ctx.getEc()));
      * @param exponentSmall The minimum exponent the result can have. This is the
      * maximum number of fractional digits in the result, expressed as a
      * negative number. Can also be positive, which eliminates lower-order
-     * places number. For example, -3 means round to the sixteenth (10b^-3,
-     * 0.0001b), and 3 means round to the sixteen-place (10b^3, 1000b). A
-     * value of 0 rounds the number to an integer.
+     * places in the number. For example, -3 means round to the sixteenth
+     * (10b^-3, 0.0001b), and 3 means round to the sixteen-place (10b^3,
+     * 1000b). A value of 0 rounds the number to an integer.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
