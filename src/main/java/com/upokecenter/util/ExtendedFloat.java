@@ -606,9 +606,8 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return <code>true</code> if this object is finite (not infinity or NaN);
-     * otherwise, <code>false</code>. true if this object is finite (not infinity
-     * or NaN); otherwise, false.
+     * @return true if this object is finite (not infinity or NaN); otherwise,
+     * false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -619,9 +618,8 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return <code>true</code> if this object is negative, including negative zero;
-     * otherwise, <code>false</code>. true if this object is negative, including
-     * negative zero; otherwise, false.
+     * @return true if this object is negative, including negative zero; otherwise,
+     * false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -663,8 +661,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return <code>true</code> if this object&#x27;s value equals 0; otherwise,
-     * <code>false</code>. true if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -2248,9 +2245,9 @@ PrecisionContext ctx) {
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the square root function's results are generally not exact
-     * for many inputs.</i>.
+     * addition to the pre-existing flags). <i>This parameter can't be null,
+     * as the square root function's results are generally not exact for
+     * many inputs.</i>.
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN).
@@ -2274,9 +2271,8 @@ PrecisionContext ctx) {
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the exponential function's results are generally not
-     * exact.</i>.
+     * addition to the pre-existing flags). <i>This parameter can't be null,
+     * as the exponential function's results are generally not exact.</i>.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
@@ -2299,8 +2295,8 @@ PrecisionContext ctx) {
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>.
+     * addition to the pre-existing flags). <i>This parameter can't be null,
+     * as the ln function's results are generally not exact.</i>.
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2325,8 +2321,8 @@ PrecisionContext ctx) {
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>.
+     * addition to the pre-existing flags). <i>This parameter can't be null,
+     * as the ln function's results are generally not exact.</i>.
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2412,8 +2408,8 @@ ctx == null ? null : ctx.getEc()));
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
-     * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as &#x3c0; can never be represented exactly.</i>.
+     * addition to the pre-existing flags). <i>This parameter can't be null,
+     * as &#x3c0; can never be represented exactly.</i>.
      * @return The constant π rounded to the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
