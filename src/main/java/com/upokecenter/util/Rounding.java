@@ -13,7 +13,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * <code>PeterO.Numbers.ERounding</code> in the <code>PeterO.ERounding</code>
      * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java).</b></p>Specifies the mode to use when
+     * artifact (in Java).</b></p> Specifies the mode to use when
      * &#x22;shortening&#x22; numbers that otherwise can&#x27;t fit a given
      * number of digits, so that the shortened number has about the same
      * value. This &#x22;shortening&#x22; is known as rounding.

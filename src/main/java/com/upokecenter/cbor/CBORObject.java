@@ -274,7 +274,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR false value.
-     * @return true if this value is a CBOR false value; otherwise, false.
+     * @return <code>true</code> if this value is a CBOR false value; otherwise,
+     * <code>false</code>. true if this value is a CBOR false value; otherwise,
+     * false.
      */
     public final boolean isFalse() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -283,8 +285,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return true if this CBOR object represents a finite number; otherwise,
-     * false.
+     * @return <code>true</code> if this CBOR object represents a finite number;
+     * otherwise, <code>false</code>. true if this CBOR object represents a finite
+     * number; otherwise, false.
      */
     public final boolean isFinite() {
         return this.getType() == CBORType.Number && !this.IsInfinity() &&
@@ -295,8 +298,11 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integral number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integral.
-     * @return true if this object represents an integral number, that is, a number
-     * without a fractional part; otherwise, false.
+     * @return <code>true</code> if this object represents an integral number, that is, a
+     * number without a fractional part; otherwise, <code>false</code>.. Infinity
+     * and not-a-number are not considered integral. true if this object
+     * represents an integral number, that is, a number without a fractional
+     * part; otherwise, false.
      */
     public final boolean isIntegral() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -305,7 +311,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return true if this value is a CBOR null value; otherwise, false.
+     * @return <code>true</code> if this value is a CBOR null value; otherwise,
+     * <code>false</code>. true if this value is a CBOR null value; otherwise,
+     * false.
      */
     public final boolean isNull() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -314,7 +322,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return true if this data item has at least one tag; otherwise, false.
+     * @return <code>true</code> if this data item has at least one tag; otherwise,
+     * <code>false</code>. true if this data item has at least one tag; otherwise,
+     * false.
      */
     public final boolean isTagged() {
         return this.itemtypeValue == CBORObjectTypeTagged;
@@ -322,7 +332,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR true value.
-     * @return true if this value is a CBOR true value; otherwise, false.
+     * @return <code>true</code> if this value is a CBOR true value; otherwise,
+     * <code>false</code>. true if this value is a CBOR true value; otherwise,
+     * false.
      */
     public final boolean isTrue() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -331,7 +343,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return true if this value is a CBOR undefined value; otherwise, false.
+     * @return <code>true</code> if this value is a CBOR undefined value; otherwise,
+     * <code>false</code>. true if this value is a CBOR undefined value;
+     * otherwise, false.
      */
     public final boolean isUndefined() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -340,7 +354,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return <code>true</code> if this object&#x27;s value equals 0; otherwise,
+     * <code>false</code>. true if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -362,7 +377,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return true if this object is a negative number; otherwise, false.
+     * @return <code>true</code> if this object is a negative number; otherwise,
+     * <code>false</code>. true if this object is a negative number; otherwise,
+     * false.
      */
     public final boolean isNegative() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -1607,7 +1624,7 @@ CBOREncodeOptions options) {
      * value of a CBORObject object.
      * @param first A CBORObject object.
      * @param second Another CBOR object.
-     * @return The remainder of the two objects.
+     * @return The remainder of the two numbers.
      */
     public static CBORObject Remainder(CBORObject first, CBORObject second) {
       return CBORObjectMath.Remainder(first, second);
@@ -2563,7 +2580,7 @@ public static void Write(
      * Returns whether this object's value is an integral value, is -(2^31) or
      * greater, and is less than 2^31.
      * @return true if this object's value is an integral value, is -(2^31) or
-     * greater, and is less than 2^31; otherwise, false.
+     * greater, and is less than 2^31; otherwise, false .
      */
     public boolean CanFitInInt32() {
       if (!this.CanFitInInt64()) {
@@ -2577,7 +2594,7 @@ public static void Write(
      * Returns whether this object's value is an integral value, is -(2^63) or
      * greater, and is less than 2^63.
      * @return true if this object's value is an integral value, is -(2^63) or
-     * greater, and is less than 2^63; otherwise, false.
+     * greater, and is less than 2^63; otherwise, false .
      */
     public boolean CanFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2601,7 +2618,7 @@ public static void Write(
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^31) or greater, and less than 2^31.
      * @return true if this object's value, truncated to an integer, would be
-     * -(2^31) or greater, and less than 2^31; otherwise, false.
+     * -(2^31) or greater, and less than 2^31; otherwise, false .
      */
     public boolean CanTruncatedIntFitInInt32() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2612,7 +2629,7 @@ public static void Write(
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^63) or greater, and less than 2^63.
      * @return true if this object's value, truncated to an integer, would be
-     * -(2^63) or greater, and less than 2^63; otherwise, false.
+     * -(2^63) or greater, and less than 2^63; otherwise, false .
      */
     public boolean CanTruncatedIntFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3049,7 +3066,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       return this.equals(((obj instanceof CBORObject) ? (CBORObject)obj : null));
@@ -3058,7 +3075,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Compares the equality of two CBOR objects.
      * @param other The object to compare.
-     * @return true if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false .
      */
     @SuppressWarnings("unchecked")
 public boolean equals(CBORObject other) {
@@ -3274,7 +3291,7 @@ public boolean equals(CBORObject other) {
 
     /**
      * Gets a value indicating whether this CBOR object represents infinity.
-     * @return true if this CBOR object represents infinity; otherwise, false.
+     * @return true if this CBOR object represents infinity; otherwise, false .
      */
     public boolean IsInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];

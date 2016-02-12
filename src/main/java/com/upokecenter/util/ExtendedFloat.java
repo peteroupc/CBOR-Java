@@ -17,10 +17,10 @@ import com.upokecenter.numbers.*;
      * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * <code>CBORObject.FromObject(object)</code> method (by including the new
      * library in your code, among other things), but this version of the
      * CBOR library doesn't include any methods that explicitly take an
-     * <code>EFloat</code> as a parameter or return value.</b></p> <p> Represents
+     * <code>EFloat</code> as a parameter or return value.</b></p> <p>Represents
      * an arbitrary-precision binary floating-point number. Consists of an
      * integer mantissa and an integer exponent, both arbitrary-precision.
      * The value of the number equals mantissa * 2^exponent. This class also
@@ -51,12 +51,12 @@ import com.upokecenter.numbers.*;
      * length), the operation may signal an invalid-operation flag and
      * return not-a-number (NaN). In certain rare cases, the compareTo
      * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Thread
-     * safety:</b>Instances of this class are immutable, so they are
-     * inherently safe for use by multiple threads. Multiple instances of
-     * this object with the same properties are interchangeable, so they
-     * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p>
+     * Java) in the same circumstances.</p> <p><b>Thread safety:</b>
+     * Instances of this class are immutable, so they are inherently safe
+     * for use by multiple threads. Multiple instances of this object with
+     * the same properties are interchangeable, so they should not be
+     * compared using the "==" operator (which only checks if each side of
+     * the operator is the same instance).</p>
      */
   public final class ExtendedFloat implements Comparable<ExtendedFloat> {
     private final EFloat ef;
@@ -140,7 +140,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
@@ -290,10 +290,9 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Creates a binary float from a text string that represents a number. See the
-     * four-parameter FromString method.
+     * Not documented yet.
      * @param str The parameter {@code str} is not documented yet.
-     * @return The parsed number, converted to arbitrary-precision binary float.
+     * @return An ExtendedFloat object.
      */
     public static ExtendedFloat FromString(String str) {
       return new ExtendedFloat(EFloat.FromString(str));
@@ -389,19 +388,15 @@ PrecisionContext ctx) {
     }
 
     /**
-     * Converts this value to a 64-bit floating-point number. The half-even
-     * rounding mode is used. <p>If this value is a NaN, sets the high bit
-     * of the 64-bit floating point number's mantissa for a quiet NaN, and
-     * clears it for a signaling NaN. Then the next highest bit of the
-     * mantissa is cleared for a quiet NaN, and set for a signaling NaN.
-     * Then the other bits of the mantissa are set to the lowest bits of
-     * this object's unsigned mantissa.</p>
-     * @return The closest 64-bit floating-point number to this value. The return
-     * value can be positive infinity or negative infinity if this value
-     * exceeds the range of a 64-bit floating point number.
+     *
+     * @return A 64-bit floating-point number.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
+    /**
+     * Not documented yet.
+     * @return A 64-bit floating-point number.
+     */
     public double ToDouble() {
       return this.getEf().ToDouble();
     }
@@ -573,7 +568,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return true if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -583,7 +578,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return true if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -593,7 +588,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is a not-a-number value.
-     * @return true if this object is a not-a-number value; otherwise, false.
+     * @return true if this object is a not-a-number value; otherwise, false .
      */
     public boolean IsNaN() {
       return this.getEf().IsNaN();
@@ -611,8 +606,9 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return true if this object is finite (not infinity or NaN); otherwise,
-     * false.
+     * @return <code>true</code> if this object is finite (not infinity or NaN);
+     * otherwise, <code>false</code>. true if this object is finite (not infinity
+     * or NaN); otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -623,8 +619,9 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return true if this object is negative, including negative zero; otherwise,
-     * false.
+     * @return <code>true</code> if this object is negative, including negative zero;
+     * otherwise, <code>false</code>. true if this object is negative, including
+     * negative zero; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -666,7 +663,8 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return <code>true</code> if this object&#x27;s value equals 0; otherwise,
+     * <code>false</code>. true if this object's value equals 0; otherwise, false.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -1277,7 +1275,7 @@ ctx == null ? null : ctx.getEc()));
      * binary floats.
      * @param divisor An arbitrary-precision binary float.
      * @param ctx A PrecisionContext object.
-     * @return The remainder of the two objects.
+     * @return The remainder of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -1433,7 +1431,7 @@ ctx == null ? null : ctx.getEc()));
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return The larger value of the two objects.
+     * @return The larger value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -1465,7 +1463,7 @@ ctx == null ? null : ctx.getEc()));
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return The smaller value of the two objects.
+     * @return The smaller value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -1559,7 +1557,7 @@ ctx == null ? null : ctx.getEc()));
      * Gets the greater value between two binary floats.
      * @param first An arbitrary-precision binary float.
      * @param second Another arbitrary-precision binary float.
-     * @return The larger value of the two objects.
+     * @return The larger value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -1581,7 +1579,7 @@ ExtendedFloat second) {
      * Gets the lesser value between two binary floats.
      * @param first An arbitrary-precision binary float.
      * @param second Another arbitrary-precision binary float.
-     * @return The smaller value of the two objects.
+     * @return The smaller value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -2252,7 +2250,7 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
      * null, as the square root function's results are generally not exact
-     * for many inputs.</i>
+     * for many inputs.</i>.
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN).
@@ -2278,7 +2276,7 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
      * null, as the exponential function's results are generally not
-     * exact.</i>
+     * exact.</i>.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
@@ -2302,7 +2300,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>
+     * null, as the ln function's results are generally not exact.</i>.
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2328,7 +2326,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>
+     * null, as the ln function's results are generally not exact.</i>.
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2409,13 +2407,14 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Finds the constant &#x3c0;.
+     * Finds the constant &#x3c0;, the circumference of a circle divided by its
+     * diameter.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as &#x3c0; can never be represented exactly.</i>
-     * @return π rounded to the given precision.
+     * null, as &#x3c0; can never be represented exactly.</i>.
+     * @return The constant π rounded to the given precision.
      * @throws IllegalArgumentException The parameter {@code ctx} is null or the
      * precision is unlimited (the context's Precision property is 0).
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.

@@ -12,10 +12,13 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is obsolete. It will be replaced by a new version of this
      * class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.ETrapException</code> in the <code>PeterO.Numbers</code>
-     * library (in .NET), or <code>com.upokecenter.numbers.getETrapException()</code>
-     * in the <code>com.github.peteroupc/numbers</code> artifact (in
-     * Java).</b></p> Exception thrown for arithmetic trap errors.
+     * <code>PeterO.Numbers.ETrapException</code> in the <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET), or <code>com.upokecenter.numbers.ETrapException</code>
+     * in the <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java).</b></p> Exception thrown for arithmetic trap
+     * errors.
      * @deprecated Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

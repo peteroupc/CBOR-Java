@@ -65,7 +65,7 @@ import com.upokecenter.numbers.*;
      * index is allowed under this type filter.
      * @param index An array index, starting from 0.
      * @return true if this type filter allows CBOR arrays and the given array
-     * index is allowed under this type filter; otherwise, false.
+     * index is allowed under this type filter; otherwise, false .
      */
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 &&

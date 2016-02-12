@@ -18,12 +18,12 @@ import com.upokecenter.numbers.*;
      * <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * <code>CBORObject.FromObject(object)</code> method (by including the new
      * library in your code, among other things), but this version of the
      * CBOR library doesn't include any methods that explicitly take an
      * <code>EDecimal</code> as a parameter or return value.</b></p> Represents an
      * arbitrary-precision decimal floating-point number. <p><b>About
-     * decimal arithmetic</b></p> <p> Decimal (base-10) arithmetic, such as
+     * decimal arithmetic</b></p> <p>Decimal (base-10) arithmetic, such as
      * that provided by this class, is appropriate for calculations
      * involving such real-world data as prices and other sums of money, tax
      * rates, and measurements. These calculations often involve multiplying
@@ -31,7 +31,7 @@ import com.upokecenter.numbers.*;
      * operations on decimal numbers. Many of these calculations also rely
      * on rounding behavior in which the result after rounding is a decimal
      * number (for example, multiplying a price by a premium rate, then
-     * rounding, should result in a decimal amount of money). </p> <p>On the
+     * rounding, should result in a decimal amount of money).</p> <p>On the
      * other hand, most implementations of <code>float</code> and <code>double</code>,
      * including in C# and Java, store numbers in a binary (base-2)
      * floating-point format and use binary floating-point arithmetic. Many
@@ -39,8 +39,8 @@ import com.upokecenter.numbers.*;
      * format (regardless of its length). Applying binary arithmetic to
      * numbers intended to be decimals can sometimes lead to unintuitive
      * results, as is shown in the description for the FromDouble() method
-     * of this class.</p> <p><b>About ExtendedDecimal instances</b></p> <p>
-     * Each instance of this class consists of an integer mantissa and an
+     * of this class.</p> <p><b>About ExtendedDecimal instances</b></p>
+     * <p>Each instance of this class consists of an integer mantissa and an
      * integer exponent, both arbitrary-precision. The value of the number
      * equals mantissa * 10^exponent.</p> <p>The mantissa is the value of
      * the digits that make up a number, ignoring the decimal point and
@@ -162,7 +162,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       ExtendedDecimal bi = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
@@ -338,7 +338,7 @@ int length) {
      * digit.</li> <li>Optionally, "E+"/"e+" (positive exponent) or
      * "E-"/"e-" (negative exponent) plus one or more digits specifying the
      * exponent.</li></ul> <p>The string can also be "-INF", "-Infinity",
-     * "Infinity", "INF" , quiet NaN ("NaN" /"-NaN") followed by any number
+     * "Infinity", "INF", quiet NaN ("NaN" /"-NaN") followed by any number
      * of digits, or signaling NaN ("sNaN" /"-sNaN") followed by any number
      * of digits, all in any combination of upper and lower case.</p> <p>All
      * characters mentioned above are the corresponding characters in the
@@ -489,7 +489,7 @@ PrecisionContext ctx) {
      * 32-bit or 64-bit floating point number. Due to double rounding, this
      * will generally not be the case for certain numbers converted from
      * decimal to ExtendedFloat via this method and in turn converted to
-     * <code>double</code> or <code>float</code>.)
+     * <code>double</code> or <code>float</code>.).
      * @return An arbitrary-precision binary float.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -719,7 +719,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return true if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false .
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -729,7 +729,7 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return true if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false .
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -739,7 +739,7 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is not a number (NaN).
-     * @return true if this object is not a number (NaN); otherwise, false.
+     * @return true if this object is not a number (NaN); otherwise, false .
      */
     public boolean IsNaN() {
       return this.getEd().IsNaN();
@@ -757,8 +757,9 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return true if this object is finite (not infinity or NaN); otherwise,
-     * false.
+     * @return <code>true</code> if this object is finite (not infinity or NaN);
+     * otherwise, <code>false</code>. true if this object is finite (not infinity
+     * or NaN); otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -769,8 +770,9 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return true if this object is negative, including negative zero; otherwise,
-     * false.
+     * @return <code>true</code> if this object is negative, including negative zero;
+     * otherwise, <code>false</code>. true if this object is negative, including
+     * negative zero; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -812,7 +814,8 @@ PrecisionContext ctx) {
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return <code>true</code> if this object&#x27;s value equals 0; otherwise,
+     * <code>false</code>. true if this object's value equals 0; otherwise, false.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -1414,7 +1417,7 @@ ctx == null ? null : ctx.getEc()));
      * decimal numbers.
      * @param divisor An arbitrary-precision decimal number.
      * @param ctx The parameter {@code ctx} is not documented yet.
-     * @return The remainder of the two objects.
+     * @return The remainder of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -1571,7 +1574,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return The larger value of the two objects.
+     * @return The larger value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
@@ -1602,7 +1605,7 @@ ctx == null ? null : ctx.getEc()));
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). Can be null.
-     * @return The smaller value of the two objects.
+     * @return The smaller value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
@@ -1693,7 +1696,7 @@ ctx == null ? null : ctx.getEc()));
      * Gets the greater value between two decimal numbers.
      * @param first An arbitrary-precision decimal number.
      * @param second Another arbitrary-precision decimal number.
-     * @return The larger value of the two objects.
+     * @return The larger value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
@@ -1715,7 +1718,7 @@ ExtendedDecimal second) {
      * Gets the lesser value between two decimal numbers.
      * @param first The first value to compare.
      * @param second The second value to compare.
-     * @return The smaller value of the two objects.
+     * @return The smaller value of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code first} or {@code
      * second} is null.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
@@ -2429,7 +2432,7 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
      * null, as the square root function's results are generally not exact
-     * for many inputs.</i>
+     * for many inputs.</i>.
      * @return The square root. Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the square root would be a complex
      * number, but the return value is still NaN). Signals FlagInvalid and
@@ -2455,7 +2458,7 @@ PrecisionContext ctx) {
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
      * null, as the exponential function's results are generally not
-     * exact.</i>
+     * exact.</i>.
      * @return Exponential of this object. If this object's value is 1, returns an
      * approximation to " e" within the given precision. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2480,7 +2483,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>
+     * null, as the ln function's results are generally not exact.</i>.
      * @return Ln(this object). Signals the flag FlagInvalid and returns NaN if
      * this object is less than 0 (the result would be a complex number with
      * a real part equal to Ln of this object's absolute value and an
@@ -2508,7 +2511,7 @@ PrecisionContext ctx) {
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as the ln function's results are generally not exact.</i>
+     * null, as the ln function's results are generally not exact.</i>.
      * @return Ln(this object)/Ln(10). Signals the flag FlagInvalid and returns
      * not-a-number (NaN) if this object is less than 0. Signals FlagInvalid
      * and returns not-a-number (NaN) if the parameter {@code ctx} is null
@@ -2592,15 +2595,17 @@ ctx == null ? null : ctx.getEc()));
     }
 
     /**
-     * Finds the constant &#x3c0;.
+     * Finds the constant &#x3c0;, the circumference of a circle divided by its
+     * diameter.
      * @param ctx A precision context to control precision, rounding, and exponent
      * range of the result. If HasFlags of the context is true, will also
      * store the flags resulting from the operation (the flags are in
      * addition to the pre-existing flags). <i>This parameter cannot be
-     * null, as &#x3c0; can never be represented exactly.</i>
-     * @return π rounded to the given precision. Signals FlagInvalid and returns
-     * not-a-number (NaN) if the parameter {@code ctx} is null or the
-     * precision is unlimited (the context's Precision property is 0).
+     * null, as &#x3c0; can never be represented exactly.</i>.
+     * @return The constant π rounded to the given precision. Signals FlagInvalid
+     * and returns not-a-number (NaN) if the parameter {@code ctx} is null
+     * or the precision is unlimited (the context's Precision property is
+     * 0).
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

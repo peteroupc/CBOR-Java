@@ -262,7 +262,7 @@ ParseMode.IRISurrogateLenient);
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
      * @param refValue A string representing an IRI to check.
-     * @return True if the string is a valid IRI with a scheme component;
+     * @return true if the string is a valid IRI with a scheme component;
      * otherwise, false.
      */
     public static boolean hasScheme(String refValue) {
@@ -281,7 +281,7 @@ ParseMode.IRISurrogateLenient);
      * following cases return false: <code> x@y:/z /x/y/z example.xyz
      * </code>
      * @param refValue A string representing an IRI to check.
-     * @return True if the string is a valid URI with a scheme component;
+     * @return true if the string is a valid URI with a scheme component;
      * otherwise, false.
      */
     public static boolean hasSchemeForURI(String refValue) {
@@ -356,7 +356,7 @@ ParseMode.IRISurrogateLenient);
      * begins.
      * @param length The number of elements in the desired portion of "s" (but not
      * more than "s" 's length).
-     * @return True if the substring is a valid CURIE reference under RDFA 1;
+     * @return true if the substring is a valid CURIE reference under RDFA 1;
      * otherwise, false. Returns false if {@code s} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
@@ -848,7 +848,7 @@ int endIndex) {
      * {@code http://example.com/my/path/}.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
      * valid IRI. If base is null or is not a valid IRI, returns refValue.
-     * Example: http://example.com/my/path/dir/file.txt.
+     * Example: http://example.com/my/path/dir/file.txt .
      */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);

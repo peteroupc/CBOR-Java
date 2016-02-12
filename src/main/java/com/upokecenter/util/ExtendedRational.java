@@ -18,18 +18,18 @@ import com.upokecenter.numbers.*;
      * <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * <code>CBORObject.FromObject(object)</code> method (by including the new
      * library in your code, among other things), but this version of the
      * CBOR library doesn't include any methods that explicitly take an
-     * <code>ERational</code> as a parameter or return
-     * value.</b></p>Arbitrary-precision rational number. This class cannot
-     * be inherited; this is a change in version 2.0 from previous versions,
-     * where the class was inadvertently left inheritable. <p><b>Thread
-     * safety:</b>Instances of this class are immutable, so they are
-     * inherently safe for use by multiple threads. Multiple instances of
-     * this object with the same properties are interchangeable, so they
-     * should not be compared using the "==" operator (which only checks if
-     * each side of the operator is the same instance).</p>
+     * <code>ERational</code> as a parameter or return value.</b></p>
+     * Arbitrary-precision rational number. This class cannot be inherited;
+     * this is a change in version 2.0 from previous versions, where the
+     * class was inadvertently left inheritable. <p><b>Thread safety:</b>
+     * Instances of this class are immutable, so they are inherently safe
+     * for use by multiple threads. Multiple instances of this object with
+     * the same properties are interchangeable, so they should not be
+     * compared using the "==" operator (which only checks if each side of
+     * the operator is the same instance).</p>
      */
   public final class ExtendedRational implements Comparable<ExtendedRational> {
     /**
@@ -115,8 +115,9 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return true if this object is finite (not infinity or NaN); otherwise,
-     * false.
+     * @return <code>true</code> if this object is finite (not infinity or NaN);
+     * otherwise, <code>false</code>. true if this object is finite (not infinity
+     * or NaN); otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -127,7 +128,9 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return true if this object's value is negative; otherwise, false.
+     * @return <code>true</code> if this object's value is negative (including negative
+     * zero); otherwise, <code>false</code>. true if this object's value is
+     * negative; otherwise, false.
      */
     public final boolean isNegative() {
         return this.getEr().isNegative();
@@ -135,7 +138,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return <code>true</code> if this object's value equals 0; otherwise,
+     * <code>false</code>. true if this object's value equals 0; otherwise, false.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -445,7 +449,7 @@ negative));
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false.
+     * @return true if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational bi = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);
@@ -457,7 +461,7 @@ negative));
      * another rational number object.
      * @param other Another arbitrary-precision rational number.
      * @return true if this object's properties are equal to the properties of
-     * another rational number object; otherwise, false.
+     * another rational number object; otherwise, false .
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -479,7 +483,7 @@ negative));
 
     /**
      * Gets a value indicating whether this object's value is infinity.
-     * @return true if this object's value is infinity; otherwise, false.
+     * @return true if this object's value is infinity; otherwise, false .
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -489,7 +493,7 @@ negative));
 
     /**
      * Returns whether this object is a not-a-number value.
-     * @return true if this object is a not-a-number value; otherwise, false.
+     * @return true if this object is a not-a-number value; otherwise, false .
      */
     public boolean IsNaN() {
       return this.getEr().IsNaN();
@@ -497,7 +501,7 @@ negative));
 
     /**
      * Returns whether this object is negative infinity.
-     * @return true if this object is negative infinity; otherwise, false.
+     * @return true if this object is negative infinity; otherwise, false .
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -507,7 +511,7 @@ negative));
 
     /**
      * Returns whether this object is positive infinity.
-     * @return true if this object is positive infinity; otherwise, false.
+     * @return true if this object is positive infinity; otherwise, false .
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -571,7 +575,7 @@ negative));
      * Finds the remainder that results when this instance is divided by the value
      * of an arbitrary-precision rational number.
      * @param otherValue An arbitrary-precision rational number.
-     * @return The remainder of the two objects.
+     * @return The remainder of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.

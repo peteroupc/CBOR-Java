@@ -22,12 +22,12 @@ import com.upokecenter.numbers.*;
      * library (in .NET), or <code>com.upokecenter.numbers.EInteger</code> in the
      * <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(Object)</code> method (by including the new
+     * cartifact (in Java). This new class can be used in the
+     * <code>CBORObject.FromObject(object)</code> method (by including the new
      * library in your code, among other things), but this version of the
      * CBOR library doesn't include any methods that explicitly take an
      * <code>EInteger</code> as a parameter or return value.</b></p> An
-     * arbitrary-precision integer. <p><b>Thread safety:</b>Instances of
+     * arbitrary-precision integer. <p><b>Thread safety:</b> Instances of
      * this class are immutable, so they are inherently safe for use by
      * multiple threads. Multiple instances of this object with the same
      * value are interchangeable, but they should be compared using the
@@ -81,7 +81,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is even.
-     * @return true if this value is even; otherwise, false.
+     * @return <code>true</code> if this value is even; otherwise, <code>false</code>. true if
+     * this value is even; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -91,7 +92,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is 0.
-     * @return true if this value is 0; otherwise, false.
+     * @return <code>true</code> if this value is 0; otherwise, <code>false</code>. true if
+     * this value is 0; otherwise, false.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -626,7 +628,7 @@ return new BigInteger(this.getEi().PowBigIntVar(power.getEi()));
      * absolute value of the other object; the remainder has the same sign
      * (positive or negative) as this object.
      * @param divisor Another arbitrary-precision integer.
-     * @return The remainder of the two objects.
+     * @return The remainder of the two numbers.
      * @throws java.lang.NullPointerException The parameter {@code divisor} is null.
      * @throws ArithmeticException Attempted to divide by zero.
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers.

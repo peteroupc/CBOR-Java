@@ -15,7 +15,7 @@ import com.upokecenter.numbers.*;
      * <code>PeterO.Numbers.EContext</code> in the <code>PeterO.EContext</code> library
      * (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java).</b></p>Contains parameters for controlling the
+     * artifact (in Java).</b></p> Contains parameters for controlling the
      * precision, rounding, and exponent range of arbitrary-precision
      * numbers.
      */
@@ -240,9 +240,16 @@ precision,
      * this value to false (using WithAdjustExponent) is useful for modeling
      * floating point representations with an integer mantissa and an
      * integer exponent, such as Java's BigDecimal.
-     * @return true if the EMax and EMin properties refer to the number's Exponent
-     * property adjusted to the number's precision, or false if they refer
-     * to just the number's Exponent property.
+     * @return <code>true</code> if the EMax and EMin properties refer to the number's
+     * Exponent property adjusted to the number's precision, or just the
+     * number's Exponent property; otherwise, <code>false</code>.. The default
+     * value is true, meaning that EMax and EMin refer to the adjusted
+     * exponent. Setting this value to false (using WithAdjustExponent) is
+     * useful for modeling floating point representations with an integer
+     * mantissa and an integer exponent, such as Java's BigDecimal. true if
+     * the EMax and EMin properties refer to the number's Exponent property
+     * adjusted to the number's precision, or false if they refer to just
+     * the number's Exponent property.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -325,8 +332,9 @@ public final void setFlags(int value) {
      * Gets a value indicating whether this context defines a minimum and maximum
      * exponent. If false, converted exponents can have any exponent and
      * operations can't cause overflow or underflow.
-     * @return true if this context defines a minimum and maximum exponent;
-     * otherwise, false.
+     * @return <code>true</code> if this context defines a minimum and maximum exponent;
+     * otherwise, <code>false</code>.. If false, converted exponents can have any
+     * exponent and operations can't cause overflow or underflow. .
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -336,7 +344,7 @@ return this.getEc().getHasExponentRange();
 
     /**
      * Gets a value indicating whether this context has a mutable Flags field.
-     * @return true if this context has a mutable Flags field, otherwise, false.
+     * @return true if this context has a mutable Flags field; otherwise, false .
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -346,7 +354,9 @@ return this.getEc().getHasFlags();
 
     /**
      * Gets a value indicating whether this context defines a maximum precision.
-     * @return true if this context defines a maximum precision, otherwise, false.
+     * @return <code>true</code> if this context defines a maximum precision; otherwise,
+     * <code>false</code>. true if this context defines a maximum precision;
+     * otherwise, false .
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -357,8 +367,10 @@ return this.getEc().getHasMaxPrecision();
     /**
      * Gets a value indicating whether this context's Precision property is in
      * bits, rather than digits. The default is false.
-     * @return true if this context's Precision property is in bits, rather than
-     * digits; otherwise, false. The default is false.
+     * @return <code>true</code> if this context's Precision property is in bits, rather
+     * than digits; otherwise, <code>false</code>.. The default is false. true if
+     * this context's Precision property is in bits, rather than digits;
+     * otherwise, false. The default is false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -371,7 +383,7 @@ return this.getEc().isPrecisionInBits();
      * simplified arithmetic, infinity, not-a-number, and subnormal numbers
      * are not allowed, and negative zero is treated the same as positive
      * zero. For further details, see <a
-  * href='http://speleotrove.com/decimal/dax3274.html'>http://speleotrove.com/decimal/dax3274.html</a>
+  * href='http://speleotrove.com/decimal/dax3274.html'><code>http://speleotrove.com/decimal/dax3274.html</code></a>
      * @return true if a "simplified" arithmetic will be used; otherwise, false.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
