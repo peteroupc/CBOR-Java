@@ -36,14 +36,14 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       ERational er = (ERational)obj;
       return
 
-  er.ToExtendedDecimalExactIfPossible(EContext.Decimal128.WithUnlimitedExponents());
+  er.ToEDecimalExactIfPossible(EContext.Decimal128.WithUnlimitedExponents());
     }
 
     public EFloat AsExtendedFloat(Object obj) {
       ERational er = (ERational)obj;
       return
 
-  er.ToExtendedFloatExactIfPossible(EContext.Binary128.WithUnlimitedExponents());
+  er.ToEFloatExactIfPossible(EContext.Binary128.WithUnlimitedExponents());
     }
 
     public float AsSingle(Object obj) {
@@ -51,7 +51,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       return er.ToSingle();
     }
 
-    public EInteger AsBigInteger(Object obj) {
+    public EInteger AsEInteger(Object obj) {
       ERational er = (ERational)obj;
       return er.ToEInteger();
     }

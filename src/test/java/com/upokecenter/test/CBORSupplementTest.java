@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   public class CBORSupplementTest {
     @Test
@@ -191,7 +192,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.AddTagHandler(null, null);
+        CBORObject.AddTagHandler(EInteger.FromInt64(null), null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -236,7 +237,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsExtendedRational();
+        CBORObject.True.AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
 System.out.print("");
@@ -245,7 +246,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsExtendedRational();
+        CBORObject.False.AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
 System.out.print("");
@@ -254,7 +255,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewArray().AsExtendedRational();
+        CBORObject.NewArray().AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
 System.out.print("");
@@ -263,7 +264,7 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsExtendedRational();
+        CBORObject.NewMap().AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
 System.out.print("");
@@ -430,8 +431,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     @Test
-    public void TestCBORBigInteger() {
-      BigInteger bi = BigInteger.fromString("9223372036854775808");
+    public void TestCBOREInteger() {
+      EInteger bi = EInteger.FromString("9223372036854775808");
       try {
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
@@ -450,7 +451,7 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bi = BigInteger.fromString("-9223372036854775809");
+      bi = EInteger.FromString("-9223372036854775809");
       try {
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
@@ -469,7 +470,7 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bi = BigInteger.fromString("-9223372036854775808");
+      bi = EInteger.FromString("-9223372036854775808");
       try {
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
@@ -851,14 +852,14 @@ System.out.print("");
       }
 
       Assert.assertEquals(
-        BigInteger.valueOf(0),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x40  }).AsBigInteger());
+        EInteger.FromInt32(0),
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x40  }).AsEInteger());
       Assert.assertEquals(
-        BigInteger.fromString("-1"),
-   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x41, 0x00  }).AsBigInteger());
+        EInteger.FromString("-1"),
+   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x41, 0x00  }).AsEInteger());
       Assert.assertEquals(
-        BigInteger.fromString("-1"),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x40  }).AsBigInteger());
+        EInteger.FromString("-1"),
+        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x40  }).AsEInteger());
     }
 
     @Test
@@ -867,7 +868,7 @@ System.out.print("");
         CBORObject.FromObject(java.util.UUID.fromString(
           "00112233-4455-6677-8899-AABBCCDDEEFF"));
       Assert.assertEquals(CBORType.ByteString, obj.getType());
-      Assert.assertEquals(BigInteger.fromString("37"), obj.getInnermostTag());
+      Assert.assertEquals(EInteger.FromString("37"), obj.getInnermostTag());
       byte[] bytes = obj.GetByteString();
       Assert.assertEquals(16, bytes.length);
       Assert.assertEquals(0x00, bytes[0]);
@@ -1069,57 +1070,57 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestNegativeBigInts() {
-      BigInteger minusone = BigInteger.fromString("-1");
+      EInteger minusone = EInteger.FromString("-1");
       Assert.assertEquals(
-BigInteger.fromString("-257"),
-   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsBigInteger());
+EInteger.FromString("-257"),
+   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsEInteger());
       Assert.assertEquals(
-BigInteger.fromString("-65537"),
-CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsBigInteger());
+EInteger.FromString("-65537"),
+CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsEInteger());
       {
-Object objectTemp = BigInteger.fromString("-16777217");
+Object objectTemp = EInteger.FromString("-16777217");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1,
-  0, 0, 0  }).AsBigInteger();
+  0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-4294967297");
+Object objectTemp = EInteger.FromString("-4294967297");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x45, 1,
-  0, 0, 0, 0  }).AsBigInteger();
+  0, 0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-1099511627777");
+Object objectTemp = EInteger.FromString("-1099511627777");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x46, 1,
-  0, 0, 0, 0, 0  }).AsBigInteger();
+  0, 0, 0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-281474976710657");
+Object objectTemp = EInteger.FromString("-281474976710657");
     Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x47,
           1,
   0, 0, 0, 0,
-                    0, 0  }).AsBigInteger();
+                    0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-72057594037927937");
+Object objectTemp = EInteger.FromString("-72057594037927937");
     Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x48,
           1,
   0, 0, 0, 0,
-                    0, 0, 0  }).AsBigInteger();
+                    0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-18446744073709551617");
+Object objectTemp = EInteger.FromString("-18446744073709551617");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x49, 1,
-  0, 0, 0, 0, 0, 0, 0, 0  }).AsBigInteger();
+  0, 0, 0, 0, 0, 0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-Object objectTemp = BigInteger.fromString("-4722366482869645213697");
+Object objectTemp = EInteger.FromString("-4722366482869645213697");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x4a, 1,
-  0, 0, 0, 0, 0, 0, 0, 0, 0  }).AsBigInteger();
+  0, 0, 0, 0, 0, 0, 0, 0, 0  }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
     }

@@ -51,7 +51,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       return ef.ToSingle();
     }
 
-    public EInteger AsBigInteger(Object obj) {
+    public EInteger AsEInteger(Object obj) {
       EFloat ef = (EFloat)obj;
       return ef.ToEInteger();
     }

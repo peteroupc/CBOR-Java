@@ -247,15 +247,39 @@ import com.upokecenter.numbers.*;
           ((this.getItemType() == CBORObjectTypeMap) ? this.AsMap().size() : 0);
       }
 
+/**
+ * @deprecated Use the EInteger version of this method.
+ */
+@Deprecated
+    /**
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
+     */
+    public final BigInteger getInnermostTag() {
+        throw new UnsupportedOperationException();
+      }
+
+/**
+ * @deprecated Use the EInteger version of this method.
+ */
+@Deprecated
+    /**
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
+     */
+    public final BigInteger getOutermostTag() {
+        throw new UnsupportedOperationException();
+      }
+
     /**
      * Gets the last defined tag for this CBOR data item, or -1 if the item is
      * untagged.
      * @return The last defined tag for this CBOR data item, or -1 if the item is
      * untagged.
      */
-    public final BigInteger getInnermostTag() {
+    public final EInteger getEInnermostTag() {
         if (!this.isTagged()) {
-          return PropertyMap.ToLegacy(EInteger.FromInt32(-1));
+          return EInteger.FromInt32(-1);
         }
         CBORObject previtem = this;
         CBORObject curitem = (CBORObject)this.itemValue;
@@ -265,18 +289,16 @@ import com.upokecenter.numbers.*;
         }
         if (previtem.tagHigh == 0 && previtem.tagLow >= 0 &&
             previtem.tagLow < 0x10000) {
-          return PropertyMap.ToLegacy(EInteger.FromInt64(previtem.tagLow));
+          return EInteger.FromInt64(previtem.tagLow);
         }
-        return PropertyMap.ToLegacy(LowHighToEInteger(
+        return (LowHighToEInteger(
           previtem.tagLow,
           previtem.tagHigh));
       }
 
     /**
      * Gets a value indicating whether this value is a CBOR false value.
-     * @return <code>true</code> if this value is a CBOR false value; otherwise,
-     * <code>false</code>. true if this value is a CBOR false value; otherwise,
-     * false.
+     * @return true if this value is a CBOR false value; otherwise, false.
      */
     public final boolean isFalse() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -285,9 +307,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return <code>true</code> if this CBOR object represents a finite number;
-     * otherwise, <code>false</code>. true if this CBOR object represents a finite
-     * number; otherwise, false.
+     * @return true if this CBOR object represents a finite number; otherwise,
+     * false.
      */
     public final boolean isFinite() {
         return this.getType() == CBORType.Number && !this.IsInfinity() &&
@@ -298,11 +319,8 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integral number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integral.
-     * @return <code>true</code> if this object represents an integral number, that is, a
-     * number without a fractional part; otherwise, <code>false</code>.. Infinity
-     * and not-a-number are not considered integral. true if this object
-     * represents an integral number, that is, a number without a fractional
-     * part; otherwise, false.
+     * @return true if this object represents an integral number, that is, a number
+     * without a fractional part; otherwise, false.
      */
     public final boolean isIntegral() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -311,9 +329,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return <code>true</code> if this value is a CBOR null value; otherwise,
-     * <code>false</code>. true if this value is a CBOR null value; otherwise,
-     * false.
+     * @return true if this value is a CBOR null value; otherwise, false.
      */
     public final boolean isNull() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -322,9 +338,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return <code>true</code> if this data item has at least one tag; otherwise,
-     * <code>false</code>. true if this data item has at least one tag; otherwise,
-     * false.
+     * @return true if this data item has at least one tag; otherwise, false.
      */
     public final boolean isTagged() {
         return this.itemtypeValue == CBORObjectTypeTagged;
@@ -332,9 +346,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR true value.
-     * @return <code>true</code> if this value is a CBOR true value; otherwise,
-     * <code>false</code>. true if this value is a CBOR true value; otherwise,
-     * false.
+     * @return true if this value is a CBOR true value; otherwise, false.
      */
     public final boolean isTrue() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -343,9 +355,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return <code>true</code> if this value is a CBOR undefined value; otherwise,
-     * <code>false</code>. true if this value is a CBOR undefined value;
-     * otherwise, false.
+     * @return true if this value is a CBOR undefined value; otherwise, false.
      */
     public final boolean isUndefined() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -354,8 +364,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return <code>true</code> if this object&#x27;s value equals 0; otherwise,
-     * <code>false</code>. true if this object's value equals 0; otherwise, false.
+     * @return true if this object's value equals 0; otherwise, false.
      */
     public final boolean isZero() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -377,9 +386,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return <code>true</code> if this object is a negative number; otherwise,
-     * <code>false</code>. true if this object is a negative number; otherwise,
-     * false.
+     * @return true if this object is a negative number; otherwise, false.
      */
     public final boolean isNegative() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -392,15 +399,15 @@ import com.upokecenter.numbers.*;
      * @return The outermost tag for this CBOR data item, or -1 if the item is
      * untagged.
      */
-    public final BigInteger getOutermostTag() {
+    public final EInteger getEOutermostTag() {
         if (!this.isTagged()) {
-          return PropertyMap.ToLegacy(EInteger.FromInt32(-1));
+          return EInteger.FromInt32(-1);
         }
         if (this.tagHigh == 0 &&
             this.tagLow >= 0 && this.tagLow < 0x10000) {
-          return PropertyMap.ToLegacy(EInteger.FromInt32(this.tagLow));
+          return EInteger.FromInt32(this.tagLow);
         }
-        return PropertyMap.ToLegacy(LowHighToEInteger(
+        return (LowHighToEInteger(
           this.tagLow,
           this.tagHigh));
       }
@@ -653,7 +660,9 @@ import com.upokecenter.numbers.*;
      * {@code handler} is null.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
-     */
+     * @deprecated Use the EInteger version of this method.
+ */
+@Deprecated
     public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
         throw new NullPointerException("bigintTag");
@@ -673,7 +682,7 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
      */
-    static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
+    public static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
         throw new NullPointerException("bigintTag");
       }
@@ -858,13 +867,20 @@ CBOREncodeOptions options) {
      * Generates a CBOR object from an arbitrary-precision integer.
      * @param bigintValue An arbitrary-precision value.
      * @return A CBOR number.
-     */
+     * @deprecated Use the EInteger version of this method.
+ */
+@Deprecated
     public static CBORObject FromObject(BigInteger bigintValue) {
       return ((Object)bigintValue == (Object)null) ? CBORObject.Null :
         FromObject(PropertyMap.FromLegacy(bigintValue));
     }
 
-    static CBORObject FromObject(EInteger bigintValue) {
+    /**
+     * Not documented yet.
+     * @param bigintValue Not documented yet.
+     * @return A CBORObject object.
+     */
+    public static CBORObject FromObject(EInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -1363,7 +1379,9 @@ CBOREncodeOptions options) {
      * unsupported.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} is
      * null.
-     */
+     * @deprecated Use the EInteger version instead.
+ */
+@Deprecated
     public static CBORObject FromObjectAndTag(
       Object valueOb,
       BigInteger bigintTag) {
@@ -1373,7 +1391,10 @@ CBOREncodeOptions options) {
       return FromObjectAndTag(valueOb, PropertyMap.FromLegacy(bigintTag));
     }
 
-    static CBORObject FromObjectAndTag(
+    /**
+     *
+     */
+    public static CBORObject FromObjectAndTag(
       Object valueOb,
       EInteger tagEInt) {
       if (tagEInt == null) {
@@ -1829,7 +1850,9 @@ CBOREncodeOptions options) {
      * @param stream InputStream to write to.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
-     */
+     * @deprecated Use the EDecimal version of this method.
+ */
+@Deprecated
     public static void Write(ExtendedDecimal bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
@@ -1856,7 +1879,7 @@ CBOREncodeOptions options) {
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
      */
-    static void Write(EDecimal bignum, OutputStream stream) throws java.io.IOException {
+    public static void Write(EDecimal bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -2376,23 +2399,28 @@ public static void Write(
      * including if this object is CBORObject.Null.
      * @throws java.lang.ArithmeticException This object's value is infinity or
      * not-a-number (NaN).
-     */
+     * @deprecated Use the AsEInteger method instead.
+ */
+@Deprecated
     public BigInteger AsBigInteger() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
       }
       return BigInteger.fromBytes(
-        cn.AsBigInteger(this.getThisItem()).ToBytes(true),
+        cn.AsEInteger(this.getThisItem()).ToBytes(true),
         true);
     }
 
-    EInteger AsEInteger() {
+    /**
+     *
+     */
+    public EInteger AsEInteger() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
       }
-      return cn.AsBigInteger(this.getThisItem());
+      return cn.AsEInteger(this.getThisItem());
     }
 
     /**
@@ -2438,12 +2466,17 @@ public static void Write(
      * decimal number rounded to 34 digits.
      * @throws IllegalStateException This object's type is not a number type,
      * including if this object is CBORObject.Null.
-     */
+     * @deprecated Use AsEDecimal instead.
+ */
+@Deprecated
     public ExtendedDecimal AsExtendedDecimal() {
       return ExtendedDecimal.FromString(this.AsEDecimal().toString());
     }
 
-    EDecimal AsEDecimal() {
+    /**
+     *
+     */
+    public EDecimal AsEDecimal() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2461,12 +2494,17 @@ public static void Write(
      * 113 bits.
      * @throws IllegalStateException This object's type is not a number type,
      * including if this object is CBORObject.Null.
-     */
+     * @deprecated Use AsEFloat instead.
+ */
+@Deprecated
     public ExtendedFloat AsExtendedFloat() {
       return ExtendedFloat.FromString(this.AsEFloat().toString());
     }
 
-    EFloat AsEFloat() {
+    /**
+     *
+     */
+    public EFloat AsEFloat() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2479,12 +2517,17 @@ public static void Write(
      * @return A rational number for this object's value.
      * @throws IllegalStateException This object's type is not a number type,
      * including if this object is CBORObject.Null.
-     */
+     * @deprecated Use AsERational instead.
+ */
+@Deprecated
     public ExtendedRational AsExtendedRational() {
       return PropertyMap.ToLegacy(this.AsERational());
     }
 
-    ERational AsERational() {
+    /**
+     *
+     */
+    public ERational AsERational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2867,8 +2910,8 @@ public int compareTo(CBORObject other) {
             EFloat e2 = NumberInterfaces[typeB].AsExtendedFloat(objB);
             cmp = e1.compareTo(e2);
           } else {
-            EInteger b1 = NumberInterfaces[typeA].AsBigInteger(objA);
-            EInteger b2 = NumberInterfaces[typeB].AsBigInteger(objB);
+            EInteger b1 = NumberInterfaces[typeA].AsEInteger(objA);
+            EInteger b2 = NumberInterfaces[typeB].AsEInteger(objB);
             cmp = b1.compareTo(b2);
           }
         }
@@ -3231,7 +3274,9 @@ public boolean equals(CBORObject other) {
      * @return true if this object has a tag of the given number; otherwise, false.
      * @throws java.lang.NullPointerException BigTagValue is null.
      * @throws IllegalArgumentException BigTagValue is less than 0.
-     */
+     * @deprecated Use the EInteger version of this method.
+ */
+@Deprecated
     public boolean HasTag(BigInteger bigTagValue) {
       if (bigTagValue == null) {
         throw new NullPointerException("bigTagValue");
@@ -3241,7 +3286,10 @@ public boolean equals(CBORObject other) {
         true));
     }
 
-    boolean HasTag(EInteger bigTagValue) {
+    /**
+     *
+     */
+    public boolean HasTag(EInteger bigTagValue) {
       if (bigTagValue == null) {
         throw new NullPointerException("bigTagValue");
       }
