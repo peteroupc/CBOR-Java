@@ -1,22 +1,10 @@
 # com.upokecenter.util.BigInteger
 
-    public final class BigInteger extends Object implements Comparable<BigInteger>
+    @Deprecated public final class BigInteger extends Object implements Comparable<BigInteger>
 
-<p><b>This class is largely obsolete. It will be replaced by a new version
- of this class in a different namespace/package and library, called
- <code>PeterO.Numbers.EInteger</code> in the <code>PeterO.Numbers</code>
- library (in .NET), or <code>com.upokecenter.numbers.EInteger</code> in the
- <code>com.github.peteroupc/numbers</code>
- artifact (in Java). This new class can be used in the
- <code>CBORObject.FromObject(object)</code> method (by including the new
- library in your code, among other things), but this version of the
- CBOR library doesn't include any methods that explicitly take an
- <code>EInteger</code> as a parameter or return value.</b></p> An
- arbitrary-precision integer. <p><b>Thread safety:</b> Instances of
- this class are immutable, so they are inherently safe for use by
- multiple threads. Multiple instances of this object with the same
- value are interchangeable, but they should be compared using the
- "Equals" method rather than the "==" operator.</p>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</i></div>
 
 ## Fields
 
@@ -28,42 +16,42 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int bitLength()`<br>
- Finds the minimum number of bits needed to represent this object's
+ Deprecated.  Finds the minimum number of bits needed to represent this object's
  value, except for its sign.
 * `int compareTo(BigInteger other)`<br>
- Not documented yet.
+ Deprecated.  Not documented yet.
 * `boolean equals(Object obj)`<br>
- Determines whether this object and another object are equal.
+ Deprecated.  Determines whether this object and another object are equal.
 * `static BigInteger fromBytes(byte[] bytes,
          boolean littleEndian)`<br>
- Initializes an arbitrary-precision integer from an array of bytes.
+ Deprecated.  Initializes an arbitrary-precision integer from an array of bytes.
 * `static BigInteger fromRadixString(String str,
                int radix)`<br>
- Converts a string to an arbitrary-precision integer.
+ Deprecated.  Converts a string to an arbitrary-precision integer.
 * `static BigInteger fromString(String str)`<br>
- Converts a string to an arbitrary-precision integer.
+ Deprecated.  Converts a string to an arbitrary-precision integer.
 * `int hashCode()`<br>
- Returns the hash code for this instance.
+ Deprecated.  Returns the hash code for this instance.
 * `byte[] toBytes(boolean littleEndian)`<br>
- Returns a byte array of this object's value.
+ Deprecated.  Returns a byte array of this object's value.
 * `String toRadixString(int radix)`<br>
- Generates a string representing the value of this object, in the given
+ Deprecated.  Generates a string representing the value of this object, in the given
  radix.
 * `String toString()`<br>
- Converts this object to a text string in base 10.
+ Deprecated.  Converts this object to a text string in base 10.
 * `static BigInteger valueOf(long longerValue)`<br>
- Converts a 64-bit signed integer to a big integer.
+ Deprecated.  Converts a 64-bit signed integer to a big integer.
 
 ## Field Details
 
 ### ONE
     @Deprecated public static final BigInteger ONE
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use EInteger from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use EInteger from PeterO.Numbers/com.upokecenter.numbers.</i>
 ## Method Details
 
 ### fromBytes
     public static BigInteger fromBytes(byte[] bytes, boolean littleEndian)
-Initializes an arbitrary-precision integer from an array of bytes.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -92,7 +80,7 @@ Initializes an arbitrary-precision integer from an array of bytes.
 
 ### fromRadixString
     public static BigInteger fromRadixString(String str, int radix)
-Converts a string to an arbitrary-precision integer.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -122,7 +110,7 @@ Converts a string to an arbitrary-precision integer.
 
 ### fromString
     public static BigInteger fromString(String str)
-Converts a string to an arbitrary-precision integer.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -145,7 +133,7 @@ Converts a string to an arbitrary-precision integer.
 
 ### valueOf
     public static BigInteger valueOf(long longerValue)
-Converts a 64-bit signed integer to a big integer.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -158,10 +146,7 @@ Converts a 64-bit signed integer to a big integer.
 
 ### bitLength
     public int bitLength()
-Finds the minimum number of bits needed to represent this object&#x27;s
- value, except for its sign. If the value is negative, finds the
- number of bits in a value equal to this object's absolute value minus
- 1.
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -170,7 +155,7 @@ Finds the minimum number of bits needed to represent this object&#x27;s
 
 ### equals
     public boolean equals(Object obj)
-Determines whether this object and another object are equal.
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -186,7 +171,7 @@ Determines whether this object and another object are equal.
 
 ### hashCode
     public int hashCode()
-Returns the hash code for this instance.
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -198,11 +183,7 @@ Returns the hash code for this instance.
 
 ### toBytes
     public byte[] toBytes(boolean littleEndian)
-Returns a byte array of this object&#x27;s value. The byte array will take
- the form of the number's two' s-complement representation, using the
- fewest bytes necessary to represent its value unambiguously. If this
- value is negative, the bits that appear "before" the most significant
- bit of the number will be all ones.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -215,8 +196,7 @@ Returns a byte array of this object&#x27;s value. The byte array will take
 
 ### toRadixString
     public String toRadixString(int radix)
-Generates a string representing the value of this object, in the given
- radix.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -241,7 +221,7 @@ Generates a string representing the value of this object, in the given
 
 ### toString
     public String toString()
-Converts this object to a text string in base 10.
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -255,7 +235,7 @@ Converts this object to a text string in base 10.
 
 ### compareTo
     public int compareTo(BigInteger other)
-Not documented yet.
+Deprecated.&nbsp;
 
 **Specified by:**
 

@@ -2,8 +2,8 @@
 
     @Deprecated public class TrapException extends ArithmeticException
 
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
-<div class='block'><span class='deprecationComment'>Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.</span></div>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.</i></div>
 
 ## Methods
 
@@ -32,7 +32,7 @@
 
 ### TrapException
     public TrapException(int flag, PrecisionContext ctx, Object result)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -47,7 +47,7 @@
 
 ### TrapException
     public TrapException(int flag, PrecisionContext ctx, Object result)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -62,7 +62,7 @@
 
 ### getContext
     public final PrecisionContext getContext()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -71,7 +71,7 @@
 
 ### getResult
     public final Object getResult()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -79,7 +79,7 @@
 
 ### getError
     public final int getError()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Returns:**
 

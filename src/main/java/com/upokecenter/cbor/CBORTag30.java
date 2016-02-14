@@ -39,7 +39,7 @@ throw new CBORException("Rational number requires denominator greater than 0");
       EInteger denom = second.AsEInteger();
       // NOTE: Discards tags. See comment in CBORTag2.
       return denom.equals(EInteger.FromInt32(1)) ?
-      CBORObject.FromObject(first.AsBigInteger()) :
+      CBORObject.FromObject(first.AsEInteger()) :
       CBORObject.FromObject(
 new ERational(
 first.AsEInteger(),

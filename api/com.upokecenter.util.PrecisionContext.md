@@ -2,8 +2,8 @@
 
     @Deprecated public class PrecisionContext extends Object
 
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
-<div class='block'><span class='deprecationComment'>Use EContext from PeterO.Numbers/com.upokecenter.numbers.</span></div>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use EContext from PeterO.Numbers/com.upokecenter.numbers.</i></div>
 
 ## Methods
 
@@ -31,7 +31,7 @@
 
 ### PrecisionContext
     public PrecisionContext(int precision, Rounding rounding, int exponentMinSmall, int exponentMaxSmall, boolean clampNormalExponents)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -51,7 +51,7 @@
 
 ### PrecisionContext
     public PrecisionContext(int precision, Rounding rounding, int exponentMinSmall, int exponentMaxSmall, boolean clampNormalExponents)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -71,7 +71,7 @@
 
 ### toString
     public String toString()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -83,7 +83,7 @@
 
 ### toString
     public String toString()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Overrides:**
 

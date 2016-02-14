@@ -32,7 +32,10 @@ import com.upokecenter.numbers.*;
      * multiple threads. Multiple instances of this object with the same
      * value are interchangeable, but they should be compared using the
      * "Equals" method rather than the "==" operator.</p>
-     */
+     * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
+ *this class's toString method.
+ */
+@Deprecated
   public final class BigInteger implements Comparable<BigInteger> {
     /**
      * BigInteger for the number one.

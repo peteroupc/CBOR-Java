@@ -1139,8 +1139,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         TestCommon.AssertEqualsHashCode(o, o2);
       }
     }
-    /*
-    TODO
+
     @Test
     public void TestTags() {
       EInteger maxuint = EInteger.FromString("18446744073709551615");
@@ -1154,10 +1153,11 @@ EInteger.FromString("9223372036854776307"),
 EInteger.FromString("18446744073709551115"),
 EInteger.FromString("18446744073709551615") };
       if (CBORObject.True.isTagged())Assert.fail();
+      CBORObject trueObj = CBORObject.True;
       Assert.assertEquals(
         EInteger.FromString("-1"),
-        CBORObject.True.getInnermostTag());
-      EInteger[] tagstmp = CBORObject.True.GetTags();
+        trueObj.getMostInnerTag());
+      EInteger[] tagstmp = CBORObject.True.GetAllTags();
       Assert.assertEquals(0, tagstmp.length);
       for (int i = 0; i < ranges.length; i += 2) {
         EInteger bigintTemp = ranges[i];
@@ -1177,12 +1177,12 @@ EInteger.FromString("18446744073709551615") };
           }
           CBORObject obj = CBORObject.FromObjectAndTag(0, bigintTemp);
           if (!(obj.isTagged()))Assert.fail("obj not tagged");
-          EInteger[] tags = obj.GetTags();
+          EInteger[] tags = obj.GetAllTags();
           Assert.assertEquals(1, tags.length);
           Assert.assertEquals(bigintTemp, tags[0]);
-          if (!obj.getInnermostTag().equals(bigintTemp)) {
+          if (!obj.getMostInnerTag().equals(bigintTemp)) {
             String errmsg = "obj tag doesn't match: " + obj;
-            Assert.assertEquals(errmsg, bigintTemp, obj.getInnermostTag());
+            Assert.assertEquals(errmsg, bigintTemp, obj.getMostInnerTag());
           }
           CBORTestCommon.AssertSer(
             obj,
@@ -1196,7 +1196,7 @@ EInteger.FromString("18446744073709551615") };
             }
             // Test multiple tags
             CBORObject obj2 = CBORObject.FromObjectAndTag(obj, bigintNew);
-            EInteger[] bi = obj2.GetTags();
+            EInteger[] bi = obj2.GetAllTags();
             if (bi.length != 2) {
               {
                 String stringTemp = "Expected 2 tags: " + obj2;
@@ -1212,10 +1212,10 @@ bigintNew,
 bi[1],
 bigintTemp,
 "Inner tag doesn't match");
-            if (!obj2.getInnermostTag().equals((Object)bigintTemp)) {
+            if (!obj2.getMostInnerTag().equals((Object)bigintTemp)) {
               {
                 String stringTemp = "Innermost tag doesn't match: " + obj2;
-                Assert.assertEquals(stringTemp, bigintTemp, obj2.getInnermostTag());
+                Assert.assertEquals(stringTemp, bigintTemp, obj2.getMostInnerTag());
               }
             }
             String str = bigintNext.toString() + "(" +
@@ -1231,7 +1231,7 @@ bigintTemp,
         }
       }
     }
-    */
+
     @Test
     public void TestTags264And265() {
       CBORObject cbor;

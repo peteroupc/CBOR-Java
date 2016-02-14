@@ -30,7 +30,10 @@ import com.upokecenter.numbers.*;
      * the same properties are interchangeable, so they should not be
      * compared using the "==" operator (which only checks if each side of
      * the operator is the same instance).</p>
-     */
+     * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
+ *this class's toString method.
+ */
+@Deprecated
   public final class ExtendedRational implements Comparable<ExtendedRational> {
     /**
      * A not-a-number value.

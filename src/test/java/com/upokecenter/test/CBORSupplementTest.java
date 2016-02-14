@@ -191,8 +191,9 @@ System.out.print("");
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      EInteger eintNull = null;
       try {
-        CBORObject.AddTagHandler(EInteger.FromInt64(null), null);
+        CBORObject.AddTagHandler(eintNull, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
 System.out.print("");
@@ -868,7 +869,7 @@ System.out.print("");
         CBORObject.FromObject(java.util.UUID.fromString(
           "00112233-4455-6677-8899-AABBCCDDEEFF"));
       Assert.assertEquals(CBORType.ByteString, obj.getType());
-      Assert.assertEquals(EInteger.FromString("37"), obj.getInnermostTag());
+      Assert.assertEquals(EInteger.FromString("37"), obj.getMostInnerTag());
       byte[] bytes = obj.GetByteString();
       Assert.assertEquals(16, bytes.length);
       Assert.assertEquals(0x00, bytes[0]);

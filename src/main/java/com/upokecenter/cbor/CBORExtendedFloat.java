@@ -38,7 +38,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     public EDecimal AsExtendedDecimal(Object obj) {
       EFloat ef = (EFloat)obj;
-      return ef.ToExtendedDecimal();
+      return ef.ToEDecimal();
     }
 
     public EFloat AsExtendedFloat(Object obj) {
@@ -160,7 +160,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     }
 
     public ERational AsExtendedRational(Object obj) {
-      return ERational.FromExtendedFloat((EFloat)obj);
+      return ERational.FromEFloat((EFloat)obj);
     }
 
     public boolean IsNegative(Object obj) {

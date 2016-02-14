@@ -2,8 +2,8 @@
 
     @Deprecated public enum Rounding extends Enum<Rounding>
 
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
-<div class='block'><span class='deprecationComment'>Use ERounding from PeterO.Numbers/com.upokecenter.numbers.</span></div>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use ERounding from PeterO.Numbers/com.upokecenter.numbers.</i></div>
 
 ## Enum Constants
 
@@ -79,34 +79,34 @@ the order they are declared.
 
 ### Up
     public static final Rounding Up
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### Down
     public static final Rounding Down
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### Ceiling
     public static final Rounding Ceiling
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### Floor
     public static final Rounding Floor
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### HalfUp
     public static final Rounding HalfUp
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### HalfDown
     public static final Rounding HalfDown
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### HalfEven
     public static final Rounding HalfEven
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### Unnecessary
     public static final Rounding Unnecessary
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### ZeroFiveUp
     public static final Rounding ZeroFiveUp
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### Odd
     public static final Rounding Odd
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 ### OddOrZeroFiveUp
     public static final Rounding OddOrZeroFiveUp
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;

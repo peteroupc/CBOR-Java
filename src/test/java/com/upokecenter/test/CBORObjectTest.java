@@ -2275,8 +2275,9 @@ CBORObject.FromObject(0.1f));
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+      EInteger eintNull = null;
       try {
-        CBORObject.FromObjectAndTag(2, EInteger.FromInt64(null));
+        CBORObject.FromObjectAndTag(2, eintNull);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         System.out.print("");
@@ -2430,7 +2431,7 @@ CBORObject.FromObject(0.1f));
       if (CBORObject.True.HasTag(EInteger.FromInt32(0)))Assert.fail();
     }
     @Test
-    public void TestInnermostTag() {
+    public void TestMostInnerTag() {
       // not implemented yet
     }
     @Test
@@ -2836,12 +2837,12 @@ EInteger.FromRadixString(
       // not implemented yet
     }
     @Test
-    public void TestOutermostTag() {
+    public void TestMostOuterTag() {
       CBORObject cbor = CBORObject.FromObjectAndTag(CBORObject.True, 999);
       cbor = CBORObject.FromObjectAndTag(CBORObject.True, 1000);
-      Assert.assertEquals(EInteger.FromString("1000"), cbor.getOutermostTag());
+      Assert.assertEquals(EInteger.FromString("1000"), cbor.getMostOuterTag());
       cbor = CBORObject.True;
-      Assert.assertEquals(EInteger.FromString("-1"), cbor.getOutermostTag());
+      Assert.assertEquals(EInteger.FromString("-1"), cbor.getMostOuterTag());
     }
     @Test
     public void TestRead() {
@@ -4468,9 +4469,9 @@ try { if (msjson != null)msjson.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestUntag() {
       CBORObject o = CBORObject.FromObjectAndTag("test", 999);
-      Assert.assertEquals(EInteger.FromString("999"), o.getInnermostTag());
+      Assert.assertEquals(EInteger.FromString("999"), o.getMostInnerTag());
       o = o.Untag();
-      Assert.assertEquals(EInteger.FromString("-1"), o.getInnermostTag());
+      Assert.assertEquals(EInteger.FromString("-1"), o.getMostInnerTag());
     }
     @Test
     public void TestUntagOne() {

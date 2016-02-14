@@ -1,25 +1,10 @@
 # com.upokecenter.util.ExtendedRational
 
-    public final class ExtendedRational extends Object implements Comparable<ExtendedRational>
+    @Deprecated public final class ExtendedRational extends Object implements Comparable<ExtendedRational>
 
-<p><b>This class is largely obsolete. It will be replaced by a new version
- of this class in a different namespace/package and library, called
- <code>PeterO.Numbers.ERational</code> in the <code>PeterO.Numbers</code>
- library (in .NET), or <code>com.upokecenter.numbers.ERational</code> in the
- <code>com.github.peteroupc/numbers</code>
- artifact (in Java). This new class can be used in the
- <code>CBORObject.FromObject(object)</code> method (by including the new
- library in your code, among other things), but this version of the
- CBOR library doesn't include any methods that explicitly take an
- <code>ERational</code> as a parameter or return value.</b></p>
- Arbitrary-precision rational number. This class can't be inherited;
- this is a change in version 2.0 from previous versions, where the
- class was inadvertently left inheritable. <p><b>Thread safety:</b>
- Instances of this class are immutable, so they are inherently safe
- for use by multiple threads. Multiple instances of this object with
- the same properties are interchangeable, so they should not be
- compared using the "==" operator (which only checks if each side of
- the operator is the same instance).</p>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</i></div>
 
 ## Fields
 
@@ -28,55 +13,57 @@
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `static ExtendedRational NegativeInfinity`<br>
- Negative infinity, less than any other number.
+ Deprecated.  Negative infinity, less than any other number.
 * `static ExtendedRational NegativeZero`<br>
- A rational number for negative zero.
+ Deprecated.  A rational number for negative zero.
 * `static ExtendedRational One`<br>
- The rational number one.
+ Deprecated.  The rational number one.
 * `static ExtendedRational PositiveInfinity`<br>
- Positive infinity, greater than any other number.
+ Deprecated.  Positive infinity, greater than any other number.
 * `static ExtendedRational SignalingNaN`<br>
  Deprecated.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `static ExtendedRational Ten`<br>
- The rational number ten.
+ Deprecated.  The rational number ten.
 * `static ExtendedRational Zero`<br>
- A rational number for zero.
+ Deprecated.  A rational number for zero.
 
 ## Constructors
 
 * `ExtendedRational(BigInteger numerator,
                 BigInteger denominator)`<br>
- Initializes a new instance of the
+ Deprecated.  Initializes a new instance of the
  class.
 
 ## Methods
 
 * `int compareTo(ExtendedRational other)`<br>
- Not documented yet.
+ Deprecated.  Not documented yet.
 * `static ExtendedRational Create(BigInteger numerator,
       BigInteger denominator)`<br>
- Creates a rational number with the given numerator and denominator.
+ Deprecated.  Creates a rational number with the given numerator and denominator.
 * `static ExtendedRational Create(int numeratorSmall,
       int denominatorSmall)`<br>
- Creates a rational number with the given numerator and denominator.
+ Deprecated.  Creates a rational number with the given numerator and denominator.
 * `boolean equals(ExtendedRational other)`<br>
- Not documented yet.
+ Deprecated.  Not documented yet.
 * `boolean equals(Object obj)`<br>
+ Deprecated.
 * `BigInteger getDenominator()`<br>
- Gets this object's denominator.
+ Deprecated.  Gets this object's denominator.
 * `BigInteger getNumerator()`<br>
- Gets this object's numerator.
+ Deprecated.  Gets this object's numerator.
 * `BigInteger getUnsignedNumerator()`<br>
- Gets this object's numerator with the sign removed.
+ Deprecated.  Gets this object's numerator with the sign removed.
 * `int hashCode()`<br>
+ Deprecated.
 * `boolean isFinite()`<br>
  Deprecated.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `boolean isNegative()`<br>
- Gets a value indicating whether this object's value is negative (including
+ Deprecated.  Gets a value indicating whether this object's value is negative (including
  negative zero).
 * `boolean isZero()`<br>
  Deprecated.
@@ -87,39 +74,39 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `String toString()`<br>
- Converts this object to a text string.
+ Deprecated.  Converts this object to a text string.
 
 ## Field Details
 
 ### NaN
     @Deprecated public static final ExtendedRational NaN
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
 ### NegativeInfinity
     public static final ExtendedRational NegativeInfinity
-Negative infinity, less than any other number.
+Deprecated.&nbsp;
 ### NegativeZero
     public static final ExtendedRational NegativeZero
-A rational number for negative zero.
+Deprecated.&nbsp;
 ### One
     public static final ExtendedRational One
-The rational number one.
+Deprecated.&nbsp;
 ### PositiveInfinity
     public static final ExtendedRational PositiveInfinity
-Positive infinity, greater than any other number.
+Deprecated.&nbsp;
 ### SignalingNaN
     @Deprecated public static final ExtendedRational SignalingNaN
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
 ### Ten
     public static final ExtendedRational Ten
-The rational number ten.
+Deprecated.&nbsp;
 ### Zero
     public static final ExtendedRational Zero
-A rational number for zero.
+Deprecated.&nbsp;
 ## Method Details
 
 ### getDenominator
     public final BigInteger getDenominator()
-Gets this object's denominator.
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -127,7 +114,7 @@ Gets this object's denominator.
 
 ### isFinite
     @Deprecated public final boolean isFinite()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
@@ -136,8 +123,7 @@ Gets this object's denominator.
 
 ### isNegative
     public final boolean isNegative()
-Gets a value indicating whether this object's value is negative (including
- negative zero).
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -145,7 +131,7 @@ Gets a value indicating whether this object's value is negative (including
 
 ### isZero
     @Deprecated public final boolean isZero()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
@@ -153,7 +139,7 @@ Gets a value indicating whether this object's value is negative (including
 
 ### getNumerator
     public final BigInteger getNumerator()
-Gets this object's numerator.
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -163,7 +149,7 @@ Gets this object's numerator.
 
 ### signum
     @Deprecated public final int signum()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</span>
+Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
@@ -172,7 +158,7 @@ Gets this object's numerator.
 
 ### getUnsignedNumerator
     public final BigInteger getUnsignedNumerator()
-Gets this object's numerator with the sign removed.
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -181,7 +167,7 @@ Gets this object's numerator with the sign removed.
 
 ### Create
     public static ExtendedRational Create(int numeratorSmall, int denominatorSmall)
-Creates a rational number with the given numerator and denominator.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -195,7 +181,7 @@ Creates a rational number with the given numerator and denominator.
 
 ### Create
     public static ExtendedRational Create(BigInteger numerator, BigInteger denominator)
-Creates a rational number with the given numerator and denominator.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -214,7 +200,7 @@ Creates a rational number with the given numerator and denominator.
 
 ### toString
     public String toString()
-Converts this object to a text string.
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -228,7 +214,7 @@ Converts this object to a text string.
 
 ### compareTo
     public int compareTo(ExtendedRational other)
-Not documented yet.
+Deprecated.&nbsp;
 
 **Specified by:**
 
@@ -244,7 +230,7 @@ Not documented yet.
 
 ### equals
     public boolean equals(ExtendedRational other)
-Not documented yet.
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -256,6 +242,7 @@ Not documented yet.
 
 ### equals
     public boolean equals(Object obj)
+Deprecated.&nbsp;
 
 **Overrides:**
 
@@ -267,6 +254,7 @@ Not documented yet.
 
 ### hashCode
     public int hashCode()
+Deprecated.&nbsp;
 
 **Overrides:**
 

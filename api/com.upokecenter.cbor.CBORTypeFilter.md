@@ -31,7 +31,7 @@ Specifies what kinds of CBOR objects a tag can be. This class is used when a
 * `boolean ArrayIndexAllowed(int index)`<br>
  Determines whether this type filter allows CBOR arrays and the given array
  index is allowed under this type filter.
-* `boolean ArrayLengthMatches(EInteger bigLength)`<br>
+* `boolean ArrayLengthMatches(com.upokecenter.numbers.EInteger bigLength)`<br>
  Returns whether an array's length is allowed under a filter.
 * `boolean ArrayLengthMatches(int length)`<br>
  Returns whether an array's length is allowed under this filter.
@@ -47,7 +47,7 @@ Specifies what kinds of CBOR objects a tag can be. This class is used when a
 * `boolean NonFPSimpleValueAllowed()`<br>
  Returns whether this filter allows simple values that are not floating-point
  numbers.
-* `boolean TagAllowed(EInteger bigTag)`<br>
+* `boolean TagAllowed(com.upokecenter.numbers.EInteger bigTag)`<br>
  Gets a value indicating whether CBOR objects can have the given tag number.
 * `boolean TagAllowed(int tag)`<br>
  Gets a value indicating whether CBOR objects can have the given tag number.
@@ -141,7 +141,7 @@ Returns whether an array's length is allowed under a filter.
  allowed under a filter; otherwise, false.
 
 ### ArrayLengthMatches
-    public boolean ArrayLengthMatches(EInteger bigLength)
+    public boolean ArrayLengthMatches(com.upokecenter.numbers.EInteger bigLength)
 Returns whether an array's length is allowed under a filter.
 
 **Parameters:**
@@ -237,7 +237,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
  false.
 
 ### TagAllowed
-    public boolean TagAllowed(EInteger bigTag)
+    public boolean TagAllowed(com.upokecenter.numbers.EInteger bigTag)
 Gets a value indicating whether CBOR objects can have the given tag number.
 
 **Parameters:**

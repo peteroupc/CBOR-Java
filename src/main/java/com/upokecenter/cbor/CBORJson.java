@@ -652,7 +652,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
           }
           case CBORObject.CBORObjectTypeExtendedRational: {
             ERational dec = (ERational)thisItem;
-            EDecimal f = dec.ToExtendedDecimalExactIfPossible(
+            EDecimal f = dec.ToEDecimalExactIfPossible(
               EContext.Decimal128.WithUnlimitedExponents());
             if (!f.isFinite()) {
               writer.WriteString("null");

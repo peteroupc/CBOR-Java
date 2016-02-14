@@ -107,7 +107,10 @@ import com.upokecenter.numbers.*;
      * NaN values as equal), while two instances with the same mathematical
      * value, but different exponents, will be considered unequal under the
      * Equals method.</p>
-     */
+     * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
+ *this class's toString method.
+ */
+@Deprecated
   public final class ExtendedDecimal implements Comparable<ExtendedDecimal> {
     /**
      * Gets this object&#x27;s exponent. This object&#x27;s value will be an
