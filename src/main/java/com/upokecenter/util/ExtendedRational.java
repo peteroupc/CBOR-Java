@@ -19,9 +19,7 @@ import com.upokecenter.numbers.*;
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
      * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things), but this version of the
-     * CBOR library doesn't include any methods that explicitly take an
-     * <code>ERational</code> as a parameter or return value.</b></p>
+     * library in your code, among other things).</b></p>
      * Arbitrary-precision rational number. This class can't be inherited;
      * this is a change in version 2.0 from previous versions, where the
      * class was inadvertently left inheritable. <p><b>Thread safety:</b>

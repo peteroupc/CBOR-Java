@@ -19,9 +19,7 @@ import com.upokecenter.numbers.*;
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
      * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things), but this version of the
-     * CBOR library doesn't include any methods that explicitly take an
-     * <code>EDecimal</code> as a parameter or return value.</b></p> Represents an
+     * library in your code, among other things).</b></p> Represents an
      * arbitrary-precision decimal floating-point number. <p><b>About
      * decimal arithmetic</b></p> <p>Decimal (base-10) arithmetic, such as
      * that provided by this class, is appropriate for calculations

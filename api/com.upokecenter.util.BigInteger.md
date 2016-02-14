@@ -55,15 +55,14 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>bytes</code> - A byte array consisting of the two's-complement integer
- representation of the arbitrary-precision integer to create. The last
- byte contains the lowest 8-bits, the next-to-last contains the next
- lowest 8 bits, and so on. To encode negative numbers, take the
- absolute value of the number, subtract by 1, encode the number into
- bytes, XOR each byte, and if the most-significant bit of the first
- byte isn't set, add an additional byte at the start with the value
- 255. For little-endian, the byte order is reversed from the byte
- order just discussed.
+* <code>bytes</code> - A byte array consisting of the two's-complement form of the
+ arbitrary-precision integer to create. The last byte contains the
+ lowest 8-bits, the next-to-last contains the next lowest 8 bits, and
+ so on. To encode negative numbers, take the absolute value of the
+ number, subtract by 1, encode the number into bytes, XOR each byte,
+ and if the most-significant bit of the first byte isn't set, add an
+ additional byte at the start with the value 255. For little-endian,
+ the byte order is reversed from the byte order just discussed.
 
 * <code>littleEndian</code> - If true, the byte order is little-endian, or
  least-significant-byte first. If false, the byte order is big-endian,

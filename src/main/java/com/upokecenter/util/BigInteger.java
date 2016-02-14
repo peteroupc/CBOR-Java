@@ -24,9 +24,7 @@ import com.upokecenter.numbers.*;
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
      * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things), but this version of the
-     * CBOR library doesn't include any methods that explicitly take an
-     * <code>EInteger</code> as a parameter or return value.</b></p> An
+     * library in your code, among other things).</b></p> An
      * arbitrary-precision integer. <p><b>Thread safety:</b> Instances of
      * this class are immutable, so they are inherently safe for use by
      * multiple threads. Multiple instances of this object with the same
@@ -73,15 +71,14 @@ import com.upokecenter.numbers.*;
 
     /**
      * Initializes an arbitrary-precision integer from an array of bytes.
-     * @param bytes A byte array consisting of the two's-complement integer
-     * representation of the arbitrary-precision integer to create. The last
-     * byte contains the lowest 8-bits, the next-to-last contains the next
-     * lowest 8 bits, and so on. To encode negative numbers, take the
-     * absolute value of the number, subtract by 1, encode the number into
-     * bytes, XOR each byte, and if the most-significant bit of the first
-     * byte isn't set, add an additional byte at the start with the value
-     * 255. For little-endian, the byte order is reversed from the byte
-     * order just discussed.
+     * @param bytes A byte array consisting of the two's-complement form of the
+     * arbitrary-precision integer to create. The last byte contains the
+     * lowest 8-bits, the next-to-last contains the next lowest 8 bits, and
+     * so on. To encode negative numbers, take the absolute value of the
+     * number, subtract by 1, encode the number into bytes, XOR each byte,
+     * and if the most-significant bit of the first byte isn't set, add an
+     * additional byte at the start with the value 255. For little-endian,
+     * the byte order is reversed from the byte order just discussed.
      * @param littleEndian If true, the byte order is little-endian, or
      * least-significant-byte first. If false, the byte order is big-endian,
      * or most-significant-byte first.

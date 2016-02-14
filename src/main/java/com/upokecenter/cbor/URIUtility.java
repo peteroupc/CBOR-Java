@@ -136,7 +136,7 @@ segments[0])+(segments[1] - segments[0])));
     }
 
     /**
-     * Escapes characters that cannot appear in URIs or IRIs. The function is
+     * Escapes characters that can't appear in URIs or IRIs. The function is
      * idempotent; that is, calling the function again on the result with
      * the same mode doesn't change the result.
      * @param s A string to escape.
@@ -847,8 +847,8 @@ int endIndex) {
      * @param baseURI A string representing an absolute URI reference. Example:
      * {@code http://example.com/my/path/}.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If base is null or is not a valid IRI, returns refValue.
-     * Example: http://example.com/my/path/dir/file.txt .
+     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
+     * refValue. Example: http://example.com/my/path/dir/file.txt.
      */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
@@ -863,7 +863,8 @@ int endIndex) {
      * @param parseMode Parse mode that specifies whether certain characters are
      * allowed when parsing IRIs and URIs.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If base is null or is not a valid IRI, returns refValue.
+     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
+     * refValue.
      */
     public static String relativeResolve(
 String refValue,

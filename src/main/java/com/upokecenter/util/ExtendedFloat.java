@@ -18,10 +18,8 @@ import com.upokecenter.numbers.*;
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java). This new class can be used in the
      * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things), but this version of the
-     * CBOR library doesn't include any methods that explicitly take an
-     * <code>EFloat</code> as a parameter or return value.</b></p> <p>Represents
-     * an arbitrary-precision binary floating-point number. Consists of an
+     * library in your code, among other things).</b></p> <p>Represents an
+     * arbitrary-precision binary floating-point number. Consists of an
      * integer mantissa and an integer exponent, both arbitrary-precision.
      * The value of the number equals mantissa * 2^exponent. This class also
      * supports values for negative zero, not-a-number (NaN) values, and
