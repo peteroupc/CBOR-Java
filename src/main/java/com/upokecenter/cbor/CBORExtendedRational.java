@@ -51,7 +51,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       return er.ToSingle();
     }
 
-    public EInteger AsEInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       ERational er = (ERational)obj;
       return er.ToEInteger();
     }

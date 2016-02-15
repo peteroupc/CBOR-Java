@@ -1,13 +1,13 @@
 package com.upokecenter.test;
 /*
-Written by Peter O. in 2014-2016.
+Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
 
     /**
      * Description of RandomObjects.
@@ -15,33 +15,6 @@ import com.upokecenter.numbers.*;
   public final class RandomObjects {
 private RandomObjects() {
 }
-    public static byte[] RandomByteString(FastRandom rand) {
-      int x = rand.NextValue(0x2000);
-      byte[] bytes = new byte[x];
-      for (int i = 0; i < x; ++i) {
-        bytes[i] = ((byte)rand.NextValue(256));
-      }
-      return bytes;
-    }
-
-    public static byte[] RandomByteStringShort(FastRandom rand) {
-      int x = rand.NextValue(50);
-      byte[] bytes = new byte[x];
-      for (int i = 0; i < x; ++i) {
-        bytes[i] = ((byte)rand.NextValue(256));
-      }
-      return bytes;
-    }
-
-    public static ERational RandomRational(FastRandom rand) {
-      EInteger bigintA = RandomEInteger(rand);
-      EInteger bigintB = RandomEInteger(rand);
-      if (bigintB.isZero()) {
-        bigintB = EInteger.FromInt32(1);
-      }
-      return new ERational(bigintA, bigintB);
-    }
-
     public static String RandomTextString(FastRandom rand) {
       int length = rand.NextValue(0x2000);
       StringBuilder sb = new StringBuilder();
@@ -67,6 +40,15 @@ private RandomObjects() {
         }
       }
       return sb.toString();
+    }
+
+    public static ExtendedRational RandomRational(FastRandom rand) {
+      BigInteger bigintA = RandomBigInteger(rand);
+      BigInteger bigintB = RandomBigInteger(rand);
+      if (bigintB.equals(BigInteger.valueOf(0))) {
+        bigintB = BigInteger.valueOf(1);
+      }
+      return new ExtendedRational(bigintA, bigintB);
     }
 
     public static long RandomInt64(FastRandom rand) {
@@ -111,26 +93,26 @@ private RandomObjects() {
       return Float.intBitsToFloat(r);
     }
 
-    public static EDecimal RandomEDecimal(FastRandom r) {
+    public static ExtendedDecimal RandomExtendedDecimal(FastRandom r) {
       if (r.NextValue(100) == 0) {
         int x = r.NextValue(3);
         if (x == 0) {
-          return EDecimal.PositiveInfinity;
+          return CBORTestCommon.DecPosInf;
         }
         if (x == 1) {
-          return EDecimal.NegativeInfinity;
+          return CBORTestCommon.DecNegInf;
         }
         if (x == 2) {
-          return EDecimal.NaN;
+          return ExtendedDecimal.NaN;
         }
         // Signaling NaN currently not generated because
         // it doesn't round-trip as well
       }
       String str = RandomDecimalString(r);
-      return EDecimal.FromString(str);
+      return ExtendedDecimal.FromString(str);
     }
 
-    public static EInteger RandomEInteger(FastRandom r) {
+    public static BigInteger RandomBigInteger(FastRandom r) {
       int selection = r.NextValue(100);
       if (selection < 40) {
         StringAndBigInt sabi = StringAndBigInt.Generate(r, 16);
@@ -145,26 +127,44 @@ private RandomObjects() {
         for (int i = 0; i < count; ++i) {
           bytes[i] = (byte)((int)r.NextValue(256));
         }
-        return EInteger.FromBytes(bytes, true);
+        return BigInteger.fromBytes(bytes, true);
       }
     }
 
-    public static EFloat RandomEFloat(FastRandom r) {
+    public static ExtendedFloat RandomExtendedFloat(FastRandom r) {
       if (r.NextValue(100) == 0) {
         int x = r.NextValue(3);
         if (x == 0) {
-          return EFloat.PositiveInfinity;
+          return CBORTestCommon.FloatPosInf;
         }
         if (x == 1) {
-          return EFloat.NegativeInfinity;
+          return CBORTestCommon.FloatNegInf;
         }
         if (x == 2) {
-          return EFloat.NaN;
+          return ExtendedFloat.NaN;
         }
       }
-      return EFloat.Create(
-RandomEInteger(r),
-EInteger.FromInt64(r.NextValue(400) - 200));
+      return ExtendedFloat.Create(
+RandomBigInteger(r),
+BigInteger.valueOf(r.NextValue(400) - 200));
+    }
+
+    public static byte[] RandomByteString(FastRandom rand) {
+      int x = rand.NextValue(0x2000);
+      byte[] bytes = new byte[x];
+      for (int i = 0; i < x; ++i) {
+        bytes[i] = ((byte)rand.NextValue(256));
+      }
+      return bytes;
+    }
+
+    public static byte[] RandomByteStringShort(FastRandom rand) {
+      int x = rand.NextValue(50);
+      byte[] bytes = new byte[x];
+      for (int i = 0; i < x; ++i) {
+        bytes[i] = ((byte)rand.NextValue(256));
+      }
+      return bytes;
     }
 
     public static String RandomBigIntString(FastRandom r) {
@@ -183,7 +183,7 @@ EInteger.FromInt64(r.NextValue(400) - 200));
       return sb.toString();
     }
 
-    public static EInteger RandomSmallIntegral(FastRandom r) {
+    public static BigInteger RandomSmallIntegral(FastRandom r) {
       int count = r.NextValue(20) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.NextValue(2) == 0) {
@@ -196,7 +196,7 @@ EInteger.FromInt64(r.NextValue(400) - 200));
           sb.append((char)('0' + r.NextValue(10)));
         }
       }
-      return EInteger.FromString(sb.toString());
+      return BigInteger.fromString(sb.toString());
     }
 
     public static String RandomDecimalString(FastRandom r) {

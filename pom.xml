@@ -121,7 +121,7 @@
     <dependency>
 	    <groupId>com.github.peteroupc</groupId>
 	    <artifactId>numbers</artifactId>
-			<version>0.2.0</version>
+			<version>0.2.1</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -78,13 +78,15 @@ private CBORUtilities() {
 
     public static String DoubleToString(double dbl) {
       return Double.toString((double)dbl);
-      // TODO
+      // TODO: Use this version in version 3, and preserve
+      // TODO: negative zeros in that version
       // return EFloat.FromDouble(dbl).ToShortestString(EContext.Binary32);
     }
 
     public static String SingleToString(float sing) {
       return Float.toString((float)sing);
-      // TODO
+      // TODO: Use this version in version 3, and preserve
+      // TODO: negative zeros in that version
       // return EFloat.FromSingle(sing).ToShortestString(EContext.Binary64);
     }
 
