@@ -39,7 +39,8 @@ This library defines one class, called CBORObject, that allows you to read and
 write CBOR objects to and from data streams and byte arrays, and to convert JSON
 text to CBOR objects and back.
 
-See the [Wiki](https://github.com/peteroupc/CBOR-Java/wiki) for Java API documentation.
+**See the [Java API documentation](https://peteroupc.github.io/CBOR/api/).**
+
 Examples
 ----------
 

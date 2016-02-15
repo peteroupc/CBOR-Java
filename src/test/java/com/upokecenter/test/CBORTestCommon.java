@@ -6,27 +6,28 @@ import org.junit.Assert;
 
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   final class CBORTestCommon {
 private CBORTestCommon() {
 }
-    static final ExtendedDecimal DecPosInf =
-  ExtendedDecimal.PositiveInfinity;
+    static final EDecimal DecPosInf =
+  EDecimal.PositiveInfinity;
 
-    static final ExtendedDecimal DecNegInf =
-      ExtendedDecimal.NegativeInfinity;
+    static final EDecimal DecNegInf =
+      EDecimal.NegativeInfinity;
 
-    static final ExtendedFloat FloatPosInf =
-      ExtendedFloat.PositiveInfinity;
+    static final EFloat FloatPosInf =
+      EFloat.PositiveInfinity;
 
-    static final ExtendedFloat FloatNegInf =
-      ExtendedFloat.NegativeInfinity;
+    static final EFloat FloatNegInf =
+      EFloat.NegativeInfinity;
 
-    static final ExtendedRational RatPosInf =
-      ExtendedRational.PositiveInfinity;
+    static final ERational RatPosInf =
+      ERational.PositiveInfinity;
 
-    static final ExtendedRational RatNegInf =
-      ExtendedRational.NegativeInfinity;
+    static final ERational RatNegInf =
+      ERational.NegativeInfinity;
 
     public static CBORObject RandomNumber(FastRandom rand) {
       switch (rand.NextValue(6)) {
@@ -41,12 +42,12 @@ RandomObjects.RandomSingle(
 rand,
 Integer.MAX_VALUE));
         case 2:
-          return CBORObject.FromObject(RandomObjects.RandomBigInteger(rand));
+          return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
         case 3:
-          return CBORObject.FromObject(RandomObjects.RandomExtendedFloat(rand));
+          return CBORObject.FromObject(RandomObjects.RandomEFloat(rand));
         case 4:
        return
-  CBORObject.FromObject(RandomObjects.RandomExtendedDecimal(rand));
+  CBORObject.FromObject(RandomObjects.RandomEDecimal(rand));
         case 5:
           return CBORObject.FromObject(RandomObjects.RandomInt64(rand));
         default: throw new IllegalArgumentException();
@@ -66,12 +67,12 @@ RandomObjects.RandomSingle(
 rand,
 Integer.MAX_VALUE));
         case 2:
-          return CBORObject.FromObject(RandomObjects.RandomBigInteger(rand));
+          return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
         case 3:
-          return CBORObject.FromObject(RandomObjects.RandomExtendedFloat(rand));
+          return CBORObject.FromObject(RandomObjects.RandomEFloat(rand));
         case 4:
        return
-  CBORObject.FromObject(RandomObjects.RandomExtendedDecimal(rand));
+  CBORObject.FromObject(RandomObjects.RandomEDecimal(rand));
         case 5:
           return CBORObject.FromObject(RandomObjects.RandomInt64(rand));
         case 6:
@@ -120,11 +121,11 @@ Integer.MAX_VALUE));
         } else if (tag == 4 || tag == 5) {
           o = CBORObject.NewArray();
           o.Add(CBORObject.FromObject(RandomObjects.RandomSmallIntegral(rand)));
-          o.Add(CBORObject.FromObject(RandomObjects.RandomBigInteger(rand)));
+          o.Add(CBORObject.FromObject(RandomObjects.RandomEInteger(rand)));
         } else if (tag == 30) {
           o = CBORObject.NewArray();
           o.Add(CBORObject.FromObject(RandomObjects.RandomSmallIntegral(rand)));
-          o.Add(CBORObject.FromObject(RandomObjects.RandomBigInteger(rand)));
+          o.Add(CBORObject.FromObject(RandomObjects.RandomEInteger(rand)));
         } else {
           o = RandomCBORObject(rand, depth + 1);
         }
@@ -236,7 +237,7 @@ Integer.MAX_VALUE));
           throw new IllegalStateException("", ex);
         }
         try {
-          o.AsBigInteger();
+          o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
           System.out.print("");
