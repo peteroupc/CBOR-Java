@@ -26,8 +26,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Initializes a new instance of the <see cref='T:PeterO.PrecisionContext'/>
-     * class. HasFlags will be set to false.
+     * Initializes a new instance of the {@link PeterO.PrecisionContext} class.
+     * HasFlags will be set to false.
      * @param precision The maximum number of digits a number can have, or 0 for an
      * unlimited number of digits.
      * @param rounding The rounding mode to use when a number can't fit the given

@@ -29,14 +29,14 @@ Represents an object in Concise Binary Object Representation (CBOR) and
  <p><b>Comparison Considerations:</b></p> <p>Instances of CBORObject
  should not be compared for equality using the "==" operator; it's
  possible to create two CBOR objects with the same value but not the
- same reference. (The "==" operator only checks if each side of the
- operator is the same instance.)</p> <p>This class's natural ordering
- (under the compareTo method) is not consistent with the Equals
- method. This means that two values that compare as equal under the
- compareTo method might not be equal under the Equals method. This is
- important to consider especially if an application wants to compare
- numbers, since the CBOR number type supports numbers of different
- formats, such as big integers, rational numbers, and
+ same reference. (The "==" operator might only check if each side of
+ the operator is the same instance.)</p> <p>This class's natural
+ ordering (under the compareTo method) is not consistent with the
+ Equals method. This means that two values that compare as equal under
+ the compareTo method might not be equal under the Equals method. This
+ is important to consider especially if an application wants to
+ compare numbers, since the CBOR number type supports numbers of
+ different formats, such as big integers, rational numbers, and
  arbitrary-precision decimal numbers.</p> <p>Another consideration is
  that two values that are otherwise equal may have different tags. To
  strip the tags from a CBOR object before comparing, use the

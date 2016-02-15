@@ -6,26 +6,26 @@ Exception thrown for errors involving CBOR data.
 
 ## Methods
 
-* `CBORException()`<br>
- Initializes a new instance of the
+* `CBORException() com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.
-* `CBORException(String message)`<br>
- Initializes a new instance of the
+* `CBORException(String message) com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.
 * `CBORException(String message,
-             Throwable innerException)`<br>
- Initializes a new instance of the
+             Throwable innerException) com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.
 
 ## Constructors
 
-* `CBORException()`<br>
- Initializes a new instance of the
+* `CBORException() com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.
-* `CBORException(String message)`<br>
- Initializes a new instance of the
+* `CBORException(String message) com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.
 * `CBORException(String message,
-             Throwable innerException)`<br>
- Initializes a new instance of the
+             Throwable innerException) com.upokecenter.cbor.getCBORException()`<br>
+ Initializes a new instance of the com.upokecenter.cbor.getCBORException()
  class.

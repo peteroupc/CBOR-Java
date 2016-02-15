@@ -388,8 +388,8 @@ int surrogateBehavior) {
     }
 
     /**
-     * Compares two strings in Unicode code point order. Unpaired surrogates are
-     * treated as individual code points.
+     * Compares two strings in Unicode code point order. Unpaired surrogate code
+     * points are treated as individual code points.
      * @param strA The first string. Can be null.
      * @param strB The second string. Can be null.
      * @return A value indicating which string is " less" or " greater" . 0: Both

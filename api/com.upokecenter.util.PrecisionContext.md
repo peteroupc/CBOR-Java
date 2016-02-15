@@ -11,9 +11,8 @@
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents)`<br>
- Deprecated.  Initializes a new instance of the
- class.
+                boolean clampNormalExponents) PeterO.PrecisionContext`<br>
+ Deprecated.  Initializes a new instance of the PeterO.PrecisionContext class.
 * `String toString()`<br>
  Deprecated.  Gets a string representation of this object.
 
@@ -23,9 +22,8 @@
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents)`<br>
- Deprecated.  Initializes a new instance of the
- class.
+                boolean clampNormalExponents) PeterO.PrecisionContext`<br>
+ Deprecated.  Initializes a new instance of the PeterO.PrecisionContext class.
 
 ## Method Details
 

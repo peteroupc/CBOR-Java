@@ -95,8 +95,8 @@ import com.upokecenter.numbers.*;
      * so they are inherently safe for use by multiple threads. Multiple
      * instances of this object with the same properties are
      * interchangeable, so they should not be compared using the "=="
-     * operator (which only checks if each side of the operator is the same
-     * instance).</p> <p><b>Comparison considerations</b></p> <p>This
+     * operator (which might only check if each side of the operator is the
+     * same instance).</p> <p><b>Comparison considerations</b></p> <p>This
      * class's natural ordering (under the compareTo method) is not
      * consistent with the Equals method. This means that two values that
      * compare as equal under the compareTo method might not be equal under

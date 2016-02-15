@@ -9,9 +9,8 @@
 
 * `TrapException(int flag,
              PrecisionContext ctx,
-             Object result)`<br>
- Deprecated.  Initializes a new instance of the
- class.
+             Object result) PeterO.TrapException`<br>
+ Deprecated.  Initializes a new instance of the PeterO.TrapException class.
 * `PrecisionContext getContext()`<br>
  Deprecated.  Gets the precision context used during the operation that triggered the
  trap.
@@ -24,9 +23,8 @@
 
 * `TrapException(int flag,
              PrecisionContext ctx,
-             Object result)`<br>
- Deprecated.  Initializes a new instance of the
- class.
+             Object result) PeterO.TrapException`<br>
+ Deprecated.  Initializes a new instance of the PeterO.TrapException class.
 
 ## Method Details
 

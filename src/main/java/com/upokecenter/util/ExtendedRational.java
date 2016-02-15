@@ -26,8 +26,8 @@ import com.upokecenter.numbers.*;
      * Instances of this class are immutable, so they are inherently safe
      * for use by multiple threads. Multiple instances of this object with
      * the same properties are interchangeable, so they should not be
-     * compared using the "==" operator (which only checks if each side of
-     * the operator is the same instance).</p>
+     * compared using the "==" operator (which might only check if each side
+     * of the operator is the same instance).</p>
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
  *this class's toString method.
  */
@@ -88,8 +88,7 @@ import com.upokecenter.numbers.*;
     private final ERational er;
 
     /**
-     * Initializes a new instance of the <see cref='T:PeterO.ExtendedRational'/>
-     * class.
+     * Initializes a new instance of the {@link PeterO.ExtendedRational} class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or

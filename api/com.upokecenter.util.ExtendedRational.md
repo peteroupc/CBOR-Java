@@ -32,9 +32,8 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ## Constructors
 
 * `ExtendedRational(BigInteger numerator,
-                BigInteger denominator)`<br>
- Deprecated.  Initializes a new instance of the
- class.
+                BigInteger denominator) PeterO.ExtendedRational`<br>
+ Deprecated.  Initializes a new instance of the PeterO.ExtendedRational class.
 
 ## Methods
 

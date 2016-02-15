@@ -331,8 +331,8 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 
 ### CodePointCompare
     public static int CodePointCompare(String strA, String strB)
-Compares two strings in Unicode code point order. Unpaired surrogates are
- treated as individual code points.
+Compares two strings in Unicode code point order. Unpaired surrogate code
+ points are treated as individual code points.
 
 **Parameters:**
 
