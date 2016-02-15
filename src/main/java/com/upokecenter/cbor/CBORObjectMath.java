@@ -72,8 +72,8 @@ private CBORObjectMath() {
         EFloat e2 = CBORObject.GetNumberInterface(typeB).AsExtendedFloat(objB);
         return CBORObject.FromObject(e1.Add(e2));
       } else {
-        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsBigInteger(objA);
-        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsBigInteger(objB);
+        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsEInteger(objA);
+        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsEInteger(objB);
         return CBORObject.FromObject(b1.Add(b2));
       }
     }
@@ -135,8 +135,8 @@ private CBORObjectMath() {
         EFloat e2 = CBORObject.GetNumberInterface(typeB).AsExtendedFloat(objB);
         return CBORObject.FromObject(e1.Subtract(e2));
       } else {
-        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsBigInteger(objA);
-        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsBigInteger(objB);
+        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsEInteger(objA);
+        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsEInteger(objB);
         return CBORObject.FromObject(b1.Subtract(b2));
       }
     }
@@ -206,8 +206,8 @@ private CBORObjectMath() {
         EFloat e2 = CBORObject.GetNumberInterface(typeB).AsExtendedFloat(objB);
         return CBORObject.FromObject(e1.Multiply(e2));
       } else {
-        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsBigInteger(objA);
-        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsBigInteger(objB);
+        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsEInteger(objA);
+        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsEInteger(objB);
         return CBORObject.FromObject(b1.Multiply(b2));
       }
     }
@@ -303,8 +303,8 @@ EInteger.FromInt64(valueB)));
         CBORObject.GetNumberInterface(typeB).AsExtendedRational(objB);
         return CBORObject.FromObject(er1.Divide(er2));
       } else {
-        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsBigInteger(objA);
-        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsBigInteger(objB);
+        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsEInteger(objA);
+        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsEInteger(objB);
         if (b2.isZero()) {
           return b1.isZero() ? CBORObject.NaN : ((b1.signum() < 0) ?
             CBORObject.NegativeInfinity : CBORObject.PositiveInfinity);
@@ -373,8 +373,8 @@ bigrem = divrem[1]; }
         EFloat e2 = CBORObject.GetNumberInterface(typeB).AsExtendedFloat(objB);
         return CBORObject.FromObject(e1.Remainder(e2, null));
       } else {
-        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsBigInteger(objA);
-        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsBigInteger(objB);
+        EInteger b1 = CBORObject.GetNumberInterface(typeA).AsEInteger(objA);
+        EInteger b2 = CBORObject.GetNumberInterface(typeB).AsEInteger(objB);
         return CBORObject.FromObject(b1.Remainder(b2));
       }
     }

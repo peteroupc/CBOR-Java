@@ -18,6 +18,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private final java.util.Random rand;
     private final java.util.Random rand2;
     private int count;
+    private static final Object ValueSeedsLock = new Object();
 
     private int w = 521288629;
     private int z = 362436069;
@@ -27,7 +28,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private static final int[] ValueSeeds = new int[32];
 
     private static void AddSeed(int seed) {
-      synchronized (ValueSeeds) {
+      synchronized (ValueSeedsLock) {
         if (seedIndex == -1) {
           seedIndex = 0;
         }
@@ -39,7 +40,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     private static int GetSeed() {
-      synchronized (ValueSeeds) {
+      synchronized (ValueSeedsLock) {
         if (seedCount == 0) {
           return 0;
         }

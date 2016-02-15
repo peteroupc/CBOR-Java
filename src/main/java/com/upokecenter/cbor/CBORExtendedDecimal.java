@@ -43,7 +43,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
 
     public EFloat AsExtendedFloat(Object obj) {
       EDecimal ed = (EDecimal)obj;
-      return ed.ToExtendedFloat();
+      return ed.ToEFloat();
     }
 
     public float AsSingle(Object obj) {
@@ -51,7 +51,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       return ed.ToSingle();
     }
 
-    public EInteger AsBigInteger(Object obj) {
+    public EInteger AsEInteger(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.ToEInteger();
     }
@@ -155,7 +155,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     }
 
     public ERational AsExtendedRational(Object obj) {
-      return ERational.FromExtendedDecimal((EDecimal)obj);
+      return ERational.FromEDecimal((EDecimal)obj);
     }
 
     public boolean IsNegative(Object obj) {
