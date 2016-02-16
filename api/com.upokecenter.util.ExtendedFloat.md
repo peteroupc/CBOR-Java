@@ -170,8 +170,8 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object's mantissa and exponent are equal to those of
- another object; otherwise, false.
+* <code>true</code> if this object's mantissa and exponent are equal to
+ those of another object; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -188,8 +188,8 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object's mantissa and exponent are equal to those of
- another object; otherwise, false.
+* <code>true</code> if this object's mantissa and exponent are equal to
+ those of another object; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -209,7 +209,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* true if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, false .
 
 ### hashCode
     public int hashCode()
@@ -314,7 +314,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object is negative infinity; otherwise, false .
+* <code>true</code> if this object is negative infinity; otherwise, false .
 
 ### IsPositiveInfinity
     @Deprecated public boolean IsPositiveInfinity()
@@ -322,7 +322,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object is positive infinity; otherwise, false .
+* <code>true</code> if this object is positive infinity; otherwise, false .
 
 ### IsNaN
     public boolean IsNaN()
@@ -330,7 +330,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* true if this object is a not-a-number value; otherwise, false .
+* <code>true</code> if this object is a not-a-number value; otherwise,
+ false .
 
 ### IsInfinity
     public boolean IsInfinity()
@@ -338,8 +339,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* true if this object is positive or negative infinity; otherwise,
- false.
+* <code>true</code> if this object is positive or negative infinity;
+ otherwise, <code>false</code>.
 
 ### isNegative
     @Deprecated public final boolean isNegative()
@@ -347,8 +348,8 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object is negative, including negative zero; otherwise,
- false.
+* <code>true</code> if this object is negative, including negative zero;
+ otherwise, <code>false</code>.
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
@@ -356,7 +357,8 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object is a quiet not-a-number value; otherwise, false.
+* <code>true</code> if this object is a quiet not-a-number value;
+ otherwise, <code>false</code>.
 
 ### IsSignalingNaN
     @Deprecated public boolean IsSignalingNaN()
@@ -364,8 +366,8 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* true if this object is a signaling not-a-number value; otherwise,
- false.
+* <code>true</code> if this object is a signaling not-a-number value;
+ otherwise, <code>false</code>.
 
 ### compareTo
     public int compareTo(ExtendedFloat other)

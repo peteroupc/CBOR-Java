@@ -166,7 +166,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* true if this object and another object are equal; otherwise, false.
+* <code>true</code> if this object and another object are equal; otherwise,
+ <code>false</code>.
 
 ### hashCode
     public int hashCode()

@@ -152,7 +152,8 @@ return this.getEi().GetSignedBitLength();
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return true if this object and another object are equal; otherwise, false.
+     * @return {@code true} if this object and another object are equal; otherwise,
+     * {@code false}.
      */
   @Override public boolean equals(Object obj) {
       BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);

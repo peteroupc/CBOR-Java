@@ -117,8 +117,8 @@ Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</
 
 **Returns:**
 
-* true if this object is finite (not infinity or NaN); otherwise,
- false.
+* <code>true</code> if this object is finite (not infinity or NaN);
+ otherwise, <code>false</code>.
 
 ### isNegative
     public final boolean isNegative()
@@ -126,7 +126,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* true if this object's value is negative; otherwise, false.
+* <code>true</code> if this object's value is negative; otherwise, <code>false</code>.
 
 ### isZero
     @Deprecated public final boolean isZero()
@@ -134,7 +134,7 @@ Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</
 
 **Returns:**
 
-* true if this object's value equals 0; otherwise, false.
+* <code>true</code> if this object's value equals 0; otherwise, <code>false</code>.
 
 ### getNumerator
     public final BigInteger getNumerator()

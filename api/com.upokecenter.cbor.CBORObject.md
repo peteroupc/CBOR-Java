@@ -557,7 +557,7 @@ Gets a value indicating whether this value is a CBOR false value.
 
 **Returns:**
 
-* true if this value is a CBOR false value; otherwise, false.
+* <code>true</code> if this value is a CBOR false value; otherwise, <code>false</code>.
 
 ### isFinite
     public final boolean isFinite()
@@ -565,8 +565,8 @@ Gets a value indicating whether this CBOR object represents a finite number.
 
 **Returns:**
 
-* true if this CBOR object represents a finite number; otherwise,
- false.
+* <code>true</code> if this CBOR object represents a finite number;
+ otherwise, <code>false</code>.
 
 ### isIntegral
     public final boolean isIntegral()
@@ -576,8 +576,8 @@ Gets a value indicating whether this object represents an integral number,
 
 **Returns:**
 
-* true if this object represents an integral number, that is, a number
- without a fractional part; otherwise, false.
+* <code>true</code> if this object represents an integral number, that is,
+ a number without a fractional part; otherwise, <code>false</code>.
 
 ### isNull
     public final boolean isNull()
@@ -585,7 +585,7 @@ Gets a value indicating whether this value is a CBOR null value.
 
 **Returns:**
 
-* true if this value is a CBOR null value; otherwise, false.
+* <code>true</code> if this value is a CBOR null value; otherwise, <code>false</code>.
 
 ### isTagged
     public final boolean isTagged()
@@ -593,7 +593,8 @@ Gets a value indicating whether this data item has at least one tag.
 
 **Returns:**
 
-* true if this data item has at least one tag; otherwise, false.
+* <code>true</code> if this data item has at least one tag; otherwise,
+ <code>false</code>.
 
 ### isTrue
     public final boolean isTrue()
@@ -601,7 +602,7 @@ Gets a value indicating whether this value is a CBOR true value.
 
 **Returns:**
 
-* true if this value is a CBOR true value; otherwise, false.
+* <code>true</code> if this value is a CBOR true value; otherwise, <code>false</code>.
 
 ### isUndefined
     public final boolean isUndefined()
@@ -609,7 +610,8 @@ Gets a value indicating whether this value is a CBOR undefined value.
 
 **Returns:**
 
-* true if this value is a CBOR undefined value; otherwise, false.
+* <code>true</code> if this value is a CBOR undefined value; otherwise,
+ <code>false</code>.
 
 ### isZero
     public final boolean isZero()
@@ -617,7 +619,7 @@ Gets a value indicating whether this object&#x27;s value equals 0.
 
 **Returns:**
 
-* true if this object's value equals 0; otherwise, false.
+* <code>true</code> if this object's value equals 0; otherwise, <code>false</code>.
 
 ### getKeys
     public final Collection<CBORObject> getKeys()
@@ -637,7 +639,7 @@ Gets a value indicating whether this object is a negative number.
 
 **Returns:**
 
-* true if this object is a negative number; otherwise, false.
+* <code>true</code> if this object is a negative number; otherwise, <code>false</code>.
 
 ### getMostOuterTag
     public final com.upokecenter.numbers.EInteger getMostOuterTag()
@@ -2147,8 +2149,8 @@ Returns whether this object's value is an integral value, is -(2^31) or
 
 **Returns:**
 
-* true if this object's value is an integral value, is -(2^31) or
- greater, and is less than 2^31; otherwise, false .
+* <code>true</code> if this object's value is an integral value, is -(2^31)
+ or greater, and is less than 2^31; otherwise, false .
 
 ### CanFitInInt64
     public boolean CanFitInInt64()
@@ -2157,8 +2159,8 @@ Returns whether this object's value is an integral value, is -(2^63) or
 
 **Returns:**
 
-* true if this object's value is an integral value, is -(2^63) or
- greater, and is less than 2^63; otherwise, false .
+* <code>true</code> if this object's value is an integral value, is -(2^63)
+ or greater, and is less than 2^63; otherwise, false .
 
 ### CanFitInSingle
     public boolean CanFitInSingle()
@@ -2179,8 +2181,8 @@ Returns whether this object's value, truncated to an integer, would be
 
 **Returns:**
 
-* true if this object's value, truncated to an integer, would be
- -(2^31) or greater, and less than 2^31; otherwise, false .
+* <code>true</code> if this object's value, truncated to an integer, would
+ be -(2^31) or greater, and less than 2^31; otherwise, false .
 
 ### CanTruncatedIntFitInInt64
     public boolean CanTruncatedIntFitInInt64()
@@ -2189,8 +2191,8 @@ Returns whether this object's value, truncated to an integer, would be
 
 **Returns:**
 
-* true if this object's value, truncated to an integer, would be
- -(2^63) or greater, and less than 2^63; otherwise, false .
+* <code>true</code> if this object's value, truncated to an integer, would
+ be -(2^63) or greater, and less than 2^63; otherwise, false .
 
 ### compareTo
     public int compareTo(CBORObject other)
@@ -2262,8 +2264,8 @@ Determines whether a value of the given key exists in this object.
 
 **Returns:**
 
-* true if the given key is found, or false if the given key is not
- found or this object is not a map.
+* <code>true</code> if the given key is found, or false if the given key is
+ not found or this object is not a map.
 
 **Throws:**
 
@@ -2280,8 +2282,8 @@ Determines whether a value of the given key exists in this object.
 
 **Returns:**
 
-* true if the given key (as a CBOR object) is found, or false if the
- given key is not found or this object is not a map.
+* <code>true</code> if the given key (as a CBOR object) is found, or false
+ if the given key is not found or this object is not a map.
 
 **Throws:**
 
@@ -2325,7 +2327,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* true if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, false .
 
 ### equals
     public boolean equals(CBORObject other)
@@ -2337,7 +2339,7 @@ Compares the equality of two CBOR objects.
 
 **Returns:**
 
-* true if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, false .
 
 ### GetByteString
     public byte[] GetByteString()
@@ -2386,7 +2388,8 @@ Returns whether this object has a tag of the given number.
 
 **Returns:**
 
-* true if this object has a tag of the given number; otherwise, false.
+* <code>true</code> if this object has a tag of the given number;
+ otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -2404,7 +2407,8 @@ Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
 
 **Returns:**
 
-* true if this object has a tag of the given number; otherwise, false.
+* <code>true</code> if this object has a tag of the given number;
+ otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -2444,7 +2448,8 @@ Gets a value indicating whether this CBOR object represents infinity.
 
 **Returns:**
 
-* true if this CBOR object represents infinity; otherwise, false .
+* <code>true</code> if this CBOR object represents infinity; otherwise,
+ false .
 
 ### IsNaN
     public boolean IsNaN()
@@ -2454,9 +2459,9 @@ Gets a value indicating whether this CBOR object represents a not-a-number
 
 **Returns:**
 
-* true if this CBOR object represents a not-a-number value (as opposed
- to whether this object's type is not a number type); otherwise,
- false.
+* <code>true</code> if this CBOR object represents a not-a-number value (as
+ opposed to whether this object's type is not a number type);
+ otherwise, <code>false</code>.
 
 ### IsNegativeInfinity
     public boolean IsNegativeInfinity()
@@ -2465,8 +2470,8 @@ Gets a value indicating whether this CBOR object represents negative
 
 **Returns:**
 
-* true if this CBOR object represents negative infinity; otherwise,
- false.
+* <code>true</code> if this CBOR object represents negative infinity;
+ otherwise, <code>false</code>.
 
 ### IsPositiveInfinity
     public boolean IsPositiveInfinity()
@@ -2475,8 +2480,8 @@ Gets a value indicating whether this CBOR object represents positive
 
 **Returns:**
 
-* true if this CBOR object represents positive infinity; otherwise,
- false.
+* <code>true</code> if this CBOR object represents positive infinity;
+ otherwise, <code>false</code>.
 
 ### Negate
     public CBORObject Negate()
@@ -2502,7 +2507,7 @@ If this object is an array, removes the first instance of the specified item
 
 **Returns:**
 
-* true if the item was removed; otherwise, false.
+* <code>true</code> if the item was removed; otherwise, <code>false</code>.
 
 **Throws:**
 

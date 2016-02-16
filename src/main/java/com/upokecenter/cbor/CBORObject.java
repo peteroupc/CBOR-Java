@@ -295,7 +295,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR false value.
-     * @return true if this value is a CBOR false value; otherwise, false.
+     * @return {@code true} if this value is a CBOR false value; otherwise, {@code
+     * false}.
      */
     public final boolean isFalse() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -304,8 +305,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return true if this CBOR object represents a finite number; otherwise,
-     * false.
+     * @return {@code true} if this CBOR object represents a finite number;
+     * otherwise, {@code false}.
      */
     public final boolean isFinite() {
         return this.getType() == CBORType.Number && !this.IsInfinity() &&
@@ -316,8 +317,8 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integral number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integral.
-     * @return true if this object represents an integral number, that is, a number
-     * without a fractional part; otherwise, false.
+     * @return {@code true} if this object represents an integral number, that is,
+     * a number without a fractional part; otherwise, {@code false}.
      */
     public final boolean isIntegral() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -326,7 +327,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return true if this value is a CBOR null value; otherwise, false.
+     * @return {@code true} if this value is a CBOR null value; otherwise, {@code
+     * false}.
      */
     public final boolean isNull() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -335,7 +337,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return true if this data item has at least one tag; otherwise, false.
+     * @return {@code true} if this data item has at least one tag; otherwise,
+     * {@code false}.
      */
     public final boolean isTagged() {
         return this.itemtypeValue == CBORObjectTypeTagged;
@@ -343,7 +346,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR true value.
-     * @return true if this value is a CBOR true value; otherwise, false.
+     * @return {@code true} if this value is a CBOR true value; otherwise, {@code
+     * false}.
      */
     public final boolean isTrue() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -352,7 +356,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return true if this value is a CBOR undefined value; otherwise, false.
+     * @return {@code true} if this value is a CBOR undefined value; otherwise,
+     * {@code false}.
      */
     public final boolean isUndefined() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -361,7 +366,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * false}.
      */
     public final boolean isZero() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -383,7 +389,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return true if this object is a negative number; otherwise, false.
+     * @return {@code true} if this object is a negative number; otherwise, {@code
+     * false}.
      */
     public final boolean isNegative() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2606,8 +2613,8 @@ public static void Write(
     /**
      * Returns whether this object's value is an integral value, is -(2^31) or
      * greater, and is less than 2^31.
-     * @return true if this object's value is an integral value, is -(2^31) or
-     * greater, and is less than 2^31; otherwise, false .
+     * @return {@code true} if this object's value is an integral value, is -(2^31)
+     * or greater, and is less than 2^31; otherwise, false .
      */
     public boolean CanFitInInt32() {
       if (!this.CanFitInInt64()) {
@@ -2620,8 +2627,8 @@ public static void Write(
     /**
      * Returns whether this object's value is an integral value, is -(2^63) or
      * greater, and is less than 2^63.
-     * @return true if this object's value is an integral value, is -(2^63) or
-     * greater, and is less than 2^63; otherwise, false .
+     * @return {@code true} if this object's value is an integral value, is -(2^63)
+     * or greater, and is less than 2^63; otherwise, false .
      */
     public boolean CanFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2644,8 +2651,8 @@ public static void Write(
     /**
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^31) or greater, and less than 2^31.
-     * @return true if this object's value, truncated to an integer, would be
-     * -(2^31) or greater, and less than 2^31; otherwise, false .
+     * @return {@code true} if this object's value, truncated to an integer, would
+     * be -(2^31) or greater, and less than 2^31; otherwise, false .
      */
     public boolean CanTruncatedIntFitInInt32() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2655,8 +2662,8 @@ public static void Write(
     /**
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^63) or greater, and less than 2^63.
-     * @return true if this object's value, truncated to an integer, would be
-     * -(2^63) or greater, and less than 2^63; otherwise, false .
+     * @return {@code true} if this object's value, truncated to an integer, would
+     * be -(2^63) or greater, and less than 2^63; otherwise, false .
      */
     public boolean CanTruncatedIntFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2922,8 +2929,8 @@ public int compareTo(CBORObject other) {
     /**
      * Determines whether a value of the given key exists in this object.
      * @param key An object that serves as the key.
-     * @return true if the given key is found, or false if the given key is not
-     * found or this object is not a map.
+     * @return {@code true} if the given key is found, or false if the given key is
+     * not found or this object is not a map.
      * @throws java.lang.NullPointerException Key is null (as opposed to
      * CBORObject.Null).
      */
@@ -2941,8 +2948,8 @@ public int compareTo(CBORObject other) {
     /**
      * Determines whether a value of the given key exists in this object.
      * @param key A string that serves as the key.
-     * @return true if the given key (as a CBOR object) is found, or false if the
-     * given key is not found or this object is not a map.
+     * @return {@code true} if the given key (as a CBOR object) is found, or false
+     * if the given key is not found or this object is not a map.
      * @throws java.lang.NullPointerException Key is null.
      */
     public boolean ContainsKey(String key) {
@@ -3093,7 +3100,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       return this.equals(((obj instanceof CBORObject) ? (CBORObject)obj : null));
@@ -3102,7 +3109,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Compares the equality of two CBOR objects.
      * @param other The object to compare.
-     * @return true if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, false .
      */
     @SuppressWarnings("unchecked")
 public boolean equals(CBORObject other) {
@@ -3236,7 +3243,8 @@ public boolean equals(CBORObject other) {
     /**
      * Returns whether this object has a tag of the given number.
      * @param tagValue The tag value to search for.
-     * @return true if this object has a tag of the given number; otherwise, false.
+     * @return {@code true} if this object has a tag of the given number;
+     * otherwise, {@code false}.
      * @throws IllegalArgumentException TagValue is less than 0.
      * @throws java.lang.NullPointerException The parameter "obj" is null.
      */
@@ -3260,7 +3268,8 @@ public boolean equals(CBORObject other) {
     /**
      * Returns whether this object has a tag of the given number.
      * @param bigTagValue The tag value to search for.
-     * @return true if this object has a tag of the given number; otherwise, false.
+     * @return {@code true} if this object has a tag of the given number;
+     * otherwise, {@code false}.
      * @throws java.lang.NullPointerException BigTagValue is null.
      * @throws IllegalArgumentException BigTagValue is less than 0.
      * @deprecated Use the EInteger version of this method.
@@ -3328,7 +3337,8 @@ public boolean equals(CBORObject other) {
 
     /**
      * Gets a value indicating whether this CBOR object represents infinity.
-     * @return true if this CBOR object represents infinity; otherwise, false .
+     * @return {@code true} if this CBOR object represents infinity; otherwise,
+     * false .
      */
     public boolean IsInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3339,9 +3349,9 @@ public boolean equals(CBORObject other) {
      * Gets a value indicating whether this CBOR object represents a not-a-number
      * value (as opposed to whether this object&#x27;s type is not a number
      * type).
-     * @return true if this CBOR object represents a not-a-number value (as opposed
-     * to whether this object's type is not a number type); otherwise,
-     * false.
+     * @return {@code true} if this CBOR object represents a not-a-number value (as
+     * opposed to whether this object's type is not a number type);
+     * otherwise, {@code false}.
      */
     public boolean IsNaN() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3351,8 +3361,8 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a value indicating whether this CBOR object represents negative
      * infinity.
-     * @return true if this CBOR object represents negative infinity; otherwise,
-     * false.
+     * @return {@code true} if this CBOR object represents negative infinity;
+     * otherwise, {@code false}.
      */
     public boolean IsNegativeInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3362,8 +3372,8 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a value indicating whether this CBOR object represents positive
      * infinity.
-     * @return true if this CBOR object represents positive infinity; otherwise,
-     * false.
+     * @return {@code true} if this CBOR object represents positive infinity;
+     * otherwise, {@code false}.
      */
     public boolean IsPositiveInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3400,7 +3410,7 @@ public boolean equals(CBORObject other) {
      * from the array. If this object is a map, removes the item with the
      * given key from the map.
      * @param obj The item or key to remove.
-     * @return true if the item was removed; otherwise, false.
+     * @return {@code true} if the item was removed; otherwise, {@code false}.
      * @throws java.lang.NullPointerException The parameter {@code obj} is null (as
      * opposed to CBORObject.Null).
      * @throws IllegalStateException The object is not an array or map.

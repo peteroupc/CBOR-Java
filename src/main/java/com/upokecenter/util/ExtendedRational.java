@@ -115,8 +115,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return true if this object is finite (not infinity or NaN); otherwise,
-     * false.
+     * @return {@code true} if this object is finite (not infinity or NaN);
+     * otherwise, {@code false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -127,7 +127,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return true if this object's value is negative; otherwise, false.
+     * @return {@code true} if this object's value is negative; otherwise, {@code
+     * false}.
      */
     public final boolean isNegative() {
         return this.getEr().isNegative();
@@ -135,7 +136,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return true if this object's value equals 0; otherwise, false.
+     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

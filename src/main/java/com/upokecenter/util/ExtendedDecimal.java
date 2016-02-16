@@ -149,8 +149,8 @@ import com.upokecenter.numbers.*;
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object.
      * @param other An arbitrary-precision decimal number.
-     * @return true if this object's mantissa and exponent are equal to those of
-     * another object; otherwise, false.
+     * @return {@code true} if this object's mantissa and exponent are equal to
+     * those of another object; otherwise, {@code false}.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -163,7 +163,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return true if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, false .
      */
     @Override public boolean equals(Object obj) {
       ExtendedDecimal bi = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
@@ -322,7 +322,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is not a number (NaN).
-     * @return true if this object is not a number (NaN); otherwise, false .
+     * @return {@code true} if this object is not a number (NaN); otherwise, false
+     * .
      */
     public boolean IsNaN() {
       return this.getEd().IsNaN();
@@ -331,8 +332,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object is positive or negative
      * infinity.
-     * @return true if this object is positive or negative infinity; otherwise,
-     * false.
+     * @return {@code true} if this object is positive or negative infinity;
+     * otherwise, {@code false}.
      */
     public boolean IsInfinity() {
       return this.getEd().IsInfinity();
@@ -341,8 +342,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return true if this object is negative, including negative zero; otherwise,
-     * false.
+     * @return {@code true} if this object is negative, including negative zero;
+     * otherwise, {@code false}.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -352,7 +353,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
-     * @return true if this object is a quiet not-a-number value; otherwise, false.
+     * @return {@code true} if this object is a quiet not-a-number value;
+     * otherwise, {@code false}.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
