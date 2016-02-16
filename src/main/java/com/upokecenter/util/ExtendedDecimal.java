@@ -150,7 +150,7 @@ import com.upokecenter.numbers.*;
      * those of another object.
      * @param other An arbitrary-precision decimal number.
      * @return {@code true} if this object's mantissa and exponent are equal to
-     * those of another object; otherwise, {@code false}.
+     * those of another object; otherwise, {@code false} .
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -163,7 +163,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ExtendedDecimal bi = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
@@ -322,8 +322,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is not a number (NaN).
-     * @return {@code true} if this object is not a number (NaN); otherwise, false
-     * .
+     * @return {@code true} if this object is not a number (NaN); otherwise, {@code
+     * false}.
      */
     public boolean IsNaN() {
       return this.getEd().IsNaN();
@@ -342,7 +342,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return {@code true} if this object is negative, including negative zero;
+     * @return {@code true} If this object is negative, including negative zero;
      * otherwise, {@code false}.
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -363,8 +363,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
-     * @param other
+     * Not documented yet.
+     * @param other An ExtendedDecimal object.
+     * @return A 32-bit signed integer.
      */
     public int compareTo(ExtendedDecimal other) {
       return this.getEd().compareTo(other == null ? null : other.getEd());

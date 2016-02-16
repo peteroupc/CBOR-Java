@@ -65,7 +65,8 @@ import com.upokecenter.numbers.*;
      * index is allowed under this type filter.
      * @param index An array index, starting from 0.
      * @return {@code true} if this type filter allows CBOR arrays and the given
-     * array index is allowed under this type filter; otherwise, false .
+     * array index is allowed under this type filter; otherwise, {@code
+     * false}.
      */
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 &&
@@ -90,7 +91,7 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under a filter.
      * @param length The length of a CBOR array.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under a filter; otherwise, {@code false}.
+     * is allowed under a filter; otherwise, {@code false} .
      */
     public boolean ArrayLengthMatches(long length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
@@ -102,7 +103,7 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under a filter.
      * @param bigLength An arbitrary-precision integer.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under a filter; otherwise, {@code false}.
+     * is allowed under a filter; otherwise, {@code false} .
      * @throws java.lang.NullPointerException The parameter {@code bigLength} is
      * null.
      */

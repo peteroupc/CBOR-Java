@@ -9,8 +9,9 @@
 
 * `TrapException(int flag,
              PrecisionContext ctx,
-             Object result) PeterO.TrapException`<br>
- Deprecated.  Initializes a new instance of the PeterO.TrapException class.
+             Object result) com.upokecenter.TrapException`<br>
+ Deprecated.  Initializes a new instance of the com.upokecenter.TrapException
+ class.
 * `PrecisionContext getContext()`<br>
  Deprecated.  Gets the precision context used during the operation that triggered the
  trap.
@@ -23,8 +24,9 @@
 
 * `TrapException(int flag,
              PrecisionContext ctx,
-             Object result) PeterO.TrapException`<br>
- Deprecated.  Initializes a new instance of the PeterO.TrapException class.
+             Object result) com.upokecenter.TrapException`<br>
+ Deprecated.  Initializes a new instance of the com.upokecenter.TrapException
+ class.
 
 ## Method Details
 

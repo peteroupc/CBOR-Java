@@ -112,7 +112,7 @@ Determines whether this type filter allows CBOR arrays and the given array
 **Returns:**
 
 * <code>true</code> if this type filter allows CBOR arrays and the given
- array index is allowed under this type filter; otherwise, false .
+ array index is allowed under this type filter; otherwise, <code>false</code>.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches(int length)
@@ -138,7 +138,7 @@ Returns whether an array's length is allowed under a filter.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under a filter; otherwise, <code>false</code>.
+ is allowed under a filter; otherwise, <code>false</code> .
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches(com.upokecenter.numbers.EInteger bigLength)
@@ -151,7 +151,7 @@ Returns whether an array's length is allowed under a filter.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under a filter; otherwise, <code>false</code>.
+ is allowed under a filter; otherwise, <code>false</code> .
 
 **Throws:**
 

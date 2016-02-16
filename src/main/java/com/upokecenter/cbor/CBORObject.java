@@ -272,7 +272,10 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     *
+     * Gets the last defined tag for this CBOR data item, or -1 if the item is
+     * untagged.
+     * @return The last defined tag for this CBOR data item, or -1 if the item is
+     * untagged.
      */
     public final EInteger getMostInnerTag() {
         if (!this.isTagged()) {
@@ -295,8 +298,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR false value.
-     * @return {@code true} if this value is a CBOR false value; otherwise, {@code
-     * false}.
+     * @return {@code true} If this value is a CBOR false value; otherwise, .
+     * {@code false}.
      */
     public final boolean isFalse() {
         return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
@@ -305,7 +308,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return {@code true} if this CBOR object represents a finite number;
+     * @return {@code true} If this CBOR object represents a finite number;
      * otherwise, {@code false}.
      */
     public final boolean isFinite() {
@@ -317,7 +320,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integral number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integral.
-     * @return {@code true} if this object represents an integral number, that is,
+     * @return {@code true} If this object represents an integral number, that is,
      * a number without a fractional part; otherwise, {@code false}.
      */
     public final boolean isIntegral() {
@@ -327,7 +330,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return {@code true} if this value is a CBOR null value; otherwise, {@code
+     * @return {@code true} If this value is a CBOR null value; otherwise, {@code
      * false}.
      */
     public final boolean isNull() {
@@ -337,7 +340,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return {@code true} if this data item has at least one tag; otherwise,
+     * @return {@code true} If this data item has at least one tag; otherwise,
      * {@code false}.
      */
     public final boolean isTagged() {
@@ -346,7 +349,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR true value.
-     * @return {@code true} if this value is a CBOR true value; otherwise, {@code
+     * @return {@code true} If this value is a CBOR true value; otherwise, {@code
      * false}.
      */
     public final boolean isTrue() {
@@ -356,7 +359,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return {@code true} if this value is a CBOR undefined value; otherwise,
+     * @return {@code true} If this value is a CBOR undefined value; otherwise,
      * {@code false}.
      */
     public final boolean isUndefined() {
@@ -366,7 +369,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object&#x27;s value equals 0.
-     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * @return {@code true} If this object's value equals 0; otherwise, . {@code
      * false}.
      */
     public final boolean isZero() {
@@ -389,8 +392,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return {@code true} if this object is a negative number; otherwise, {@code
-     * false}.
+     * @return {@code true} If this object is a negative number; otherwise, .
+     * {@code false}.
      */
     public final boolean isNegative() {
         ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -398,7 +401,10 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     *
+     * Gets the outermost tag for this CBOR data item, or -1 if the item is
+     * untagged.
+     * @return The outermost tag for this CBOR data item, or -1 if the item is
+     * untagged.
      */
     public final EInteger getMostOuterTag() {
         if (!this.isTagged()) {
@@ -877,7 +883,9 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Generates a CBOR object from an arbitrary-precision integer.
+     * @param bigintValue An arbitrary-precision value.
+     * @return A CBOR number.
      */
     public static CBORObject FromObject(EInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
@@ -1400,7 +1408,23 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Generates a CBOR object from an arbitrary object and gives the resulting
+     * object a tag.
+     * @param valueOb An arbitrary object. If the tag number is 2 or 3, this must
+     * be a byte string whose bytes represent an integer in little-endian
+     * byte order, and the value of the number is 1 minus the integer's
+     * value for tag 3. If the tag number is 4 or 5, this must be an array
+     * with two elements: the first must be an integer representing the
+     * exponent, and the second must be an integer representing a mantissa.
+     * @param bigintTag Tag number. The tag number 55799 can be used to mark a
+     * "self-described CBOR" object.
+     * @return A CBOR object where the object {@code valueOb} is converted to a
+     * CBOR object and given the tag {@code bigintTag}.
+     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
+     * than 0 or greater than 2^64-1, or {@code valueOb} 's type is
+     * unsupported.
+     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is
+     * null.
      */
     public static CBORObject FromObjectAndTag(
       Object valueOb,
@@ -1754,7 +1778,19 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a binary floating-point number in CBOR format to a data stream as
+     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+     * <li>If the value is negative zero, infinity, or NaN, converts the
+     * number to a <code>double</code> and writes that <code>double</code>. If negative
+     * zero should not be written this way, use the Plus method to convert
+     * the value beforehand.</li> <li>If the value has an exponent of zero,
+     * writes the value as an unsigned integer or signed integer if the
+     * number can fit either type or as a big integer otherwise.</li> <li>In
+     * all other cases, writes the value as a big float.</li></ul>
+     * @param bignum An arbitrary-precision binary float.
+     * @param stream A writable data stream.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(EFloat bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -1866,7 +1902,19 @@ CBOREncodeOptions options) {
     }
 
     /**
-     *
+     * Writes a decimal floating-point number in CBOR format to a data stream, as
+     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+     * <li>If the value is negative zero, infinity, or NaN, converts the
+     * number to a <code>double</code> and writes that <code>double</code>. If negative
+     * zero should not be written this way, use the Plus method to convert
+     * the value beforehand.</li> <li>If the value has an exponent of zero,
+     * writes the value as an unsigned integer or signed integer if the
+     * number can fit either type or as a big integer otherwise.</li> <li>In
+     * all other cases, writes the value as a decimal number.</li></ul>
+     * @param bignum The arbitrary-precision decimal number to write. Can be null.
+     * @param stream InputStream to write to.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(EDecimal bignum, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -2404,7 +2452,13 @@ public static void Write(
     }
 
     /**
-     *
+     * Converts this object to an arbitrary-precision integer. Fractional values
+     * are truncated to an integer.
+     * @return The closest big integer to this object.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
+     * @throws java.lang.ArithmeticException This object's value is infinity or
+     * not-a-number (NaN).
      */
     public EInteger AsEInteger() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2465,7 +2519,12 @@ public static void Write(
     }
 
     /**
-     *
+     * Converts this object to a decimal number.
+     * @return A decimal number for this object's value. If this object is a
+     * rational number with a nonterminating decimal expansion, returns a
+     * decimal number rounded to 34 digits.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public EDecimal AsEDecimal() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2493,7 +2552,15 @@ public static void Write(
     }
 
     /**
-     *
+     * Converts this object to an arbitrary-precision binary floating point number.
+     * @return An arbitrary-precision binary floating point number for this
+     * object's value. Note that if this object is a decimal number with a
+     * fractional part, the conversion may lose information depending on the
+     * number. If this object is a rational number with a nonterminating
+     * binary expansion, returns a binary floating-point number rounded to
+     * 113 bits.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public EFloat AsEFloat() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2516,7 +2583,10 @@ public static void Write(
     }
 
     /**
-     *
+     * Converts this object to a rational number.
+     * @return A rational number for this object's value.
+     * @throws IllegalStateException This object's type is not a number type,
+     * including if this object is CBORObject.Null.
      */
     public ERational AsERational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2614,7 +2684,7 @@ public static void Write(
      * Returns whether this object's value is an integral value, is -(2^31) or
      * greater, and is less than 2^31.
      * @return {@code true} if this object's value is an integral value, is -(2^31)
-     * or greater, and is less than 2^31; otherwise, false .
+     * or greater, and is less than 2^31; otherwise, {@code false}.
      */
     public boolean CanFitInInt32() {
       if (!this.CanFitInInt64()) {
@@ -2628,7 +2698,7 @@ public static void Write(
      * Returns whether this object's value is an integral value, is -(2^63) or
      * greater, and is less than 2^63.
      * @return {@code true} if this object's value is an integral value, is -(2^63)
-     * or greater, and is less than 2^63; otherwise, false .
+     * or greater, and is less than 2^63; otherwise, {@code false}.
      */
     public boolean CanFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2652,7 +2722,7 @@ public static void Write(
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^31) or greater, and less than 2^31.
      * @return {@code true} if this object's value, truncated to an integer, would
-     * be -(2^31) or greater, and less than 2^31; otherwise, false .
+     * be -(2^31) or greater, and less than 2^31; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt32() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2663,7 +2733,7 @@ public static void Write(
      * Returns whether this object's value, truncated to an integer, would be
      * -(2^63) or greater, and less than 2^63.
      * @return {@code true} if this object's value, truncated to an integer, would
-     * be -(2^63) or greater, and less than 2^63; otherwise, false .
+     * be -(2^63) or greater, and less than 2^63; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3100,7 +3170,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       return this.equals(((obj instanceof CBORObject) ? (CBORObject)obj : null));
@@ -3109,7 +3179,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Compares the equality of two CBOR objects.
      * @param other The object to compare.
-     * @return {@code true} if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @SuppressWarnings("unchecked")
 public boolean equals(CBORObject other) {
@@ -3219,7 +3289,8 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     *
+     * Gets a list of all tags, from outermost to innermost.
+     * @return An array of tags, or the empty string if this object is untagged.
      */
     public EInteger[] GetAllTags() {
       if (!this.isTagged()) {
@@ -3285,7 +3356,12 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     *
+     * Returns whether this object has a tag of the given number.
+     * @param bigTagValue The tag value to search for.
+     * @return {@code true} if this object has a tag of the given number;
+     * otherwise, {@code false}.
+     * @throws java.lang.NullPointerException BigTagValue is null.
+     * @throws IllegalArgumentException BigTagValue is less than 0.
      */
     public boolean HasTag(EInteger bigTagValue) {
       if (bigTagValue == null) {
@@ -3338,7 +3414,7 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a value indicating whether this CBOR object represents infinity.
      * @return {@code true} if this CBOR object represents infinity; otherwise,
-     * false .
+     * {@code false}.
      */
     public boolean IsInfinity() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];

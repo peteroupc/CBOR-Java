@@ -34,7 +34,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int compareTo(ExtendedDecimal other)`<br>
- Deprecated.
+ Deprecated.  Not documented yet.
 * `static ExtendedDecimal Create(BigInteger mantissa,
       BigInteger exponent)`<br>
  Deprecated.  Creates a number with the value exponent*10^mantissa.
@@ -145,7 +145,7 @@ Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code>.
+ those of another object; otherwise, <code>false</code> .
 
 ### equals
     public boolean equals(Object obj)
@@ -161,7 +161,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -252,8 +252,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* <code>true</code> if this object is not a number (NaN); otherwise, false
- .
+* <code>true</code> if this object is not a number (NaN); otherwise, <code>false</code>.
 
 ### IsInfinity
     public boolean IsInfinity()
@@ -270,7 +269,7 @@ Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i
 
 **Returns:**
 
-* <code>true</code> if this object is negative, including negative zero;
+* <code>true</code> If this object is negative, including negative zero;
  otherwise, <code>false</code>.
 
 ### IsQuietNaN
@@ -292,7 +291,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> -
+* <code>other</code> - An ExtendedDecimal object.
+
+**Returns:**
+
+* A 32-bit signed integer.
 
 ### signum
     @Deprecated public final int signum()

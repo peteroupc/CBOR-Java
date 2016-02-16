@@ -133,9 +133,13 @@ Use the AsEInteger method instead.
 * `double AsDouble()`<br>
  Converts this object to a 64-bit floating point number.
 * `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
+ Converts this object to a decimal number.
 * `com.upokecenter.numbers.EFloat AsEFloat()`<br>
+ Converts this object to an arbitrary-precision binary floating point number.
 * `com.upokecenter.numbers.EInteger AsEInteger()`<br>
+ Converts this object to an arbitrary-precision integer.
 * `com.upokecenter.numbers.ERational AsERational()`<br>
+ Converts this object to a rational number.
 * `ExtendedDecimal AsExtendedDecimal()`<br>
  Deprecated.
 Use AsEDecimal instead.
@@ -227,6 +231,7 @@ Use the EInteger version of this method.
 * `static CBORObject FromObject(double value)`<br>
  Generates a CBOR object from a 64-bit floating-point number.
 * `static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)`<br>
+ Generates a CBOR object from an arbitrary-precision integer.
 * `static CBORObject FromObject(ExtendedDecimal otherValue)`<br>
  Deprecated.
 Use the EDecimal version of this method instead.
@@ -268,6 +273,8 @@ Use the EInteger version instead.
  Use the EInteger version instead.
 * `static CBORObject FromObjectAndTag(Object valueOb,
                 com.upokecenter.numbers.EInteger bigintTag)`<br>
+ Generates a CBOR object from an arbitrary object and gives the resulting
+ object a tag.
 * `static CBORObject FromObjectAndTag(Object valueObValue,
                 int smallTag)`<br>
  Generates a CBOR object from an arbitrary object and gives the resulting
@@ -281,6 +288,7 @@ Use the EInteger version instead.
 * `CBORObject get(String key)`<br>
  Gets the value of a CBOR object in this map, using a string as the key.
 * `com.upokecenter.numbers.EInteger[] GetAllTags()`<br>
+ Gets a list of all tags, from outermost to innermost.
 * `byte[] GetByteString()`<br>
  Gets the byte array used in this object, if this object is a byte string,
  without copying the data to a new one.
@@ -291,7 +299,11 @@ Use MostInnerTag instead.
 * `Collection<CBORObject> getKeys()`<br>
  Gets a collection of the keys of this CBOR object in an undefined order.
 * `com.upokecenter.numbers.EInteger getMostInnerTag()`<br>
+ Gets the last defined tag for this CBOR data item, or -1 if the item is
+ untagged.
 * `com.upokecenter.numbers.EInteger getMostOuterTag()`<br>
+ Gets the outermost tag for this CBOR data item, or -1 if the item is
+ untagged.
 * `BigInteger getOutermostTag()`<br>
  Deprecated.
 Use MostOuterTag instead.
@@ -314,6 +326,7 @@ Use the GetAllTags method instead.
 Use the EInteger version of this method.
  Use the EInteger version of this method.
 * `boolean HasTag(com.upokecenter.numbers.EInteger bigTagValue)`<br>
+ Returns whether this object has a tag of the given number.
 * `boolean HasTag(int tagValue)`<br>
  Returns whether this object has a tag of the given number.
 * `CBORObject Insert(int index,
@@ -428,9 +441,17 @@ Pass an EInteger to this method instead.
      OutputStream stream)`<br>
  Writes a 64-bit floating-point number in CBOR format to a data stream.
 * `static void Write(com.upokecenter.numbers.EDecimal bignum,
-     OutputStream stream)`<br>
+     OutputStream stream) double double`<br>
+ Writes a decimal floating-point number in CBOR format to a data stream, as
+ follows:  If the value is null, writes the byte 0xF6.
+ If the value is negative zero, infinity, or NaN, converts the
+ number to a double and writes that double.
 * `static void Write(com.upokecenter.numbers.EFloat bignum,
-     OutputStream stream)`<br>
+     OutputStream stream) double double`<br>
+ Writes a binary floating-point number in CBOR format to a data stream as
+ follows:  If the value is null, writes the byte 0xF6.
+ If the value is negative zero, infinity, or NaN, converts the
+ number to a double and writes that double.
 * `static void Write(com.upokecenter.numbers.EInteger bigint,
      OutputStream stream)`<br>
  Writes a big integer in CBOR format to a data stream.
@@ -551,13 +572,22 @@ Deprecated.&nbsp;<i>Use MostOuterTag instead.</i>
 
 ### getMostInnerTag
     public final com.upokecenter.numbers.EInteger getMostInnerTag()
+Gets the last defined tag for this CBOR data item, or -1 if the item is
+ untagged.
+
+**Returns:**
+
+* The last defined tag for this CBOR data item, or -1 if the item is
+ untagged.
+
 ### isFalse
     public final boolean isFalse()
 Gets a value indicating whether this value is a CBOR false value.
 
 **Returns:**
 
-* <code>true</code> if this value is a CBOR false value; otherwise, <code>false</code>.
+* <code>true</code> If this value is a CBOR false value; otherwise, .
+ <code>false</code>.
 
 ### isFinite
     public final boolean isFinite()
@@ -565,7 +595,7 @@ Gets a value indicating whether this CBOR object represents a finite number.
 
 **Returns:**
 
-* <code>true</code> if this CBOR object represents a finite number;
+* <code>true</code> If this CBOR object represents a finite number;
  otherwise, <code>false</code>.
 
 ### isIntegral
@@ -576,7 +606,7 @@ Gets a value indicating whether this object represents an integral number,
 
 **Returns:**
 
-* <code>true</code> if this object represents an integral number, that is,
+* <code>true</code> If this object represents an integral number, that is,
  a number without a fractional part; otherwise, <code>false</code>.
 
 ### isNull
@@ -585,7 +615,7 @@ Gets a value indicating whether this value is a CBOR null value.
 
 **Returns:**
 
-* <code>true</code> if this value is a CBOR null value; otherwise, <code>false</code>.
+* <code>true</code> If this value is a CBOR null value; otherwise, <code>false</code>.
 
 ### isTagged
     public final boolean isTagged()
@@ -593,7 +623,7 @@ Gets a value indicating whether this data item has at least one tag.
 
 **Returns:**
 
-* <code>true</code> if this data item has at least one tag; otherwise,
+* <code>true</code> If this data item has at least one tag; otherwise,
  <code>false</code>.
 
 ### isTrue
@@ -602,7 +632,7 @@ Gets a value indicating whether this value is a CBOR true value.
 
 **Returns:**
 
-* <code>true</code> if this value is a CBOR true value; otherwise, <code>false</code>.
+* <code>true</code> If this value is a CBOR true value; otherwise, <code>false</code>.
 
 ### isUndefined
     public final boolean isUndefined()
@@ -610,7 +640,7 @@ Gets a value indicating whether this value is a CBOR undefined value.
 
 **Returns:**
 
-* <code>true</code> if this value is a CBOR undefined value; otherwise,
+* <code>true</code> If this value is a CBOR undefined value; otherwise,
  <code>false</code>.
 
 ### isZero
@@ -619,7 +649,7 @@ Gets a value indicating whether this object&#x27;s value equals 0.
 
 **Returns:**
 
-* <code>true</code> if this object's value equals 0; otherwise, <code>false</code>.
+* <code>true</code> If this object's value equals 0; otherwise, . <code>false</code>.
 
 ### getKeys
     public final Collection<CBORObject> getKeys()
@@ -639,10 +669,19 @@ Gets a value indicating whether this object is a negative number.
 
 **Returns:**
 
-* <code>true</code> if this object is a negative number; otherwise, <code>false</code>.
+* <code>true</code> If this object is a negative number; otherwise, .
+ <code>false</code>.
 
 ### getMostOuterTag
     public final com.upokecenter.numbers.EInteger getMostOuterTag()
+Gets the outermost tag for this CBOR data item, or -1 if the item is
+ untagged.
+
+**Returns:**
+
+* The outermost tag for this CBOR data item, or -1 if the item is
+ untagged.
+
 ### signum
     public final int signum()
 Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
@@ -968,6 +1007,16 @@ Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
 
 ### FromObject
     public static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)
+Generates a CBOR object from an arbitrary-precision integer.
+
+**Parameters:**
+
+* <code>bigintValue</code> - An arbitrary-precision value.
+
+**Returns:**
+
+* A CBOR number.
+
 ### FromObject
     @Deprecated public static CBORObject FromObject(ExtendedFloat bigValue)
 Deprecated.&nbsp;<i>Use the EFloat version of this method instead.</i>
@@ -1295,6 +1344,35 @@ Deprecated.&nbsp;<i>Use the EInteger version instead.</i>
 
 ### FromObjectAndTag
     public static CBORObject FromObjectAndTag(Object valueOb, com.upokecenter.numbers.EInteger bigintTag)
+Generates a CBOR object from an arbitrary object and gives the resulting
+ object a tag.
+
+**Parameters:**
+
+* <code>valueOb</code> - An arbitrary object. If the tag number is 2 or 3, this must
+ be a byte string whose bytes represent an integer in little-endian
+ byte order, and the value of the number is 1 minus the integer's
+ value for tag 3. If the tag number is 4 or 5, this must be an array
+ with two elements: the first must be an integer representing the
+ exponent, and the second must be an integer representing a mantissa.
+
+* <code>bigintTag</code> - Tag number. The tag number 55799 can be used to mark a
+ "self-described CBOR" object.
+
+**Returns:**
+
+* A CBOR object where the object <code>valueOb</code> is converted to a
+ CBOR object and given the tag <code>bigintTag</code>.
+
+**Throws:**
+
+* <code>IllegalArgumentException</code> - The parameter <code>bigintTag</code> is less
+ than 0 or greater than 2^64-1, or <code>valueOb</code> 's type is
+ unsupported.
+
+* <code>NullPointerException</code> - The parameter <code>bigintTag</code> is
+ null.
+
 ### FromObjectAndTag
     public static CBORObject FromObjectAndTag(Object valueObValue, int smallTag)
 Generates a CBOR object from an arbitrary object and gives the resulting
@@ -1570,10 +1648,27 @@ Deprecated.&nbsp;<i>Pass an EFloat to the Write method instead.</i>
 
 ### Write
     public static void Write(com.upokecenter.numbers.EFloat bignum, OutputStream stream) throws IOException
+Writes a binary floating-point number in CBOR format to a data stream as
+ follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+ <li>If the value is negative zero, infinity, or NaN, converts the
+ number to a <code>double</code> and writes that <code>double</code>. If negative
+ zero should not be written this way, use the Plus method to convert
+ the value beforehand.</li> <li>If the value has an exponent of zero,
+ writes the value as an unsigned integer or signed integer if the
+ number can fit either type or as a big integer otherwise.</li> <li>In
+ all other cases, writes the value as a big float.</li></ul>
+
+**Parameters:**
+
+* <code>bignum</code> - An arbitrary-precision binary float.
+
+* <code>stream</code> - A writable data stream.
 
 **Throws:**
 
-* <code>IOException</code>
+* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+
+* <code>IOException</code> - An I/O error occurred.
 
 ### Write
     @Deprecated public static void Write(ExtendedRational rational, OutputStream stream) throws IOException
@@ -1625,10 +1720,27 @@ Deprecated.&nbsp;<i>Pass an EDecimal to the Write method instead.</i>
 
 ### Write
     public static void Write(com.upokecenter.numbers.EDecimal bignum, OutputStream stream) throws IOException
+Writes a decimal floating-point number in CBOR format to a data stream, as
+ follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
+ <li>If the value is negative zero, infinity, or NaN, converts the
+ number to a <code>double</code> and writes that <code>double</code>. If negative
+ zero should not be written this way, use the Plus method to convert
+ the value beforehand.</li> <li>If the value has an exponent of zero,
+ writes the value as an unsigned integer or signed integer if the
+ number can fit either type or as a big integer otherwise.</li> <li>In
+ all other cases, writes the value as a decimal number.</li></ul>
+
+**Parameters:**
+
+* <code>bignum</code> - The arbitrary-precision decimal number to write. Can be null.
+
+* <code>stream</code> - InputStream to write to.
 
 **Throws:**
 
-* <code>IOException</code>
+* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+
+* <code>IOException</code> - An I/O error occurred.
 
 ### Write
     @Deprecated public static void Write(BigInteger bigint, OutputStream stream) throws IOException
@@ -1964,6 +2076,21 @@ Deprecated.&nbsp;<i>Use the AsEInteger method instead.</i>
 
 ### AsEInteger
     public com.upokecenter.numbers.EInteger AsEInteger()
+Converts this object to an arbitrary-precision integer. Fractional values
+ are truncated to an integer.
+
+**Returns:**
+
+* The closest big integer to this object.
+
+**Throws:**
+
+* <code>IllegalStateException</code> - This object's type is not a number type,
+ including if this object is CBORObject.Null.
+
+* <code>ArithmeticException</code> - This object's value is infinity or
+ not-a-number (NaN).
+
 ### AsBoolean
     public boolean AsBoolean()
 Returns false if this object is False, Null, or Undefined; otherwise, true.
@@ -2020,6 +2147,19 @@ Deprecated.&nbsp;<i>Use AsEDecimal instead.</i>
 
 ### AsEDecimal
     public com.upokecenter.numbers.EDecimal AsEDecimal()
+Converts this object to a decimal number.
+
+**Returns:**
+
+* A decimal number for this object's value. If this object is a
+ rational number with a nonterminating decimal expansion, returns a
+ decimal number rounded to 34 digits.
+
+**Throws:**
+
+* <code>IllegalStateException</code> - This object's type is not a number type,
+ including if this object is CBORObject.Null.
+
 ### AsExtendedFloat
     @Deprecated public ExtendedFloat AsExtendedFloat()
 Deprecated.&nbsp;<i>Use AsEFloat instead.</i>
@@ -2040,6 +2180,22 @@ Deprecated.&nbsp;<i>Use AsEFloat instead.</i>
 
 ### AsEFloat
     public com.upokecenter.numbers.EFloat AsEFloat()
+Converts this object to an arbitrary-precision binary floating point number.
+
+**Returns:**
+
+* An arbitrary-precision binary floating point number for this
+ object's value. Note that if this object is a decimal number with a
+ fractional part, the conversion may lose information depending on the
+ number. If this object is a rational number with a nonterminating
+ binary expansion, returns a binary floating-point number rounded to
+ 113 bits.
+
+**Throws:**
+
+* <code>IllegalStateException</code> - This object's type is not a number type,
+ including if this object is CBORObject.Null.
+
 ### AsExtendedRational
     @Deprecated public ExtendedRational AsExtendedRational()
 Deprecated.&nbsp;<i>Use AsERational instead.</i>
@@ -2055,6 +2211,17 @@ Deprecated.&nbsp;<i>Use AsERational instead.</i>
 
 ### AsERational
     public com.upokecenter.numbers.ERational AsERational()
+Converts this object to a rational number.
+
+**Returns:**
+
+* A rational number for this object's value.
+
+**Throws:**
+
+* <code>IllegalStateException</code> - This object's type is not a number type,
+ including if this object is CBORObject.Null.
+
 ### AsInt16
     public short AsInt16()
 Converts this object to a 16-bit signed integer. Floating point values are
@@ -2150,7 +2317,7 @@ Returns whether this object's value is an integral value, is -(2^31) or
 **Returns:**
 
 * <code>true</code> if this object's value is an integral value, is -(2^31)
- or greater, and is less than 2^31; otherwise, false .
+ or greater, and is less than 2^31; otherwise, <code>false</code>.
 
 ### CanFitInInt64
     public boolean CanFitInInt64()
@@ -2160,7 +2327,7 @@ Returns whether this object's value is an integral value, is -(2^63) or
 **Returns:**
 
 * <code>true</code> if this object's value is an integral value, is -(2^63)
- or greater, and is less than 2^63; otherwise, false .
+ or greater, and is less than 2^63; otherwise, <code>false</code>.
 
 ### CanFitInSingle
     public boolean CanFitInSingle()
@@ -2182,7 +2349,7 @@ Returns whether this object's value, truncated to an integer, would be
 **Returns:**
 
 * <code>true</code> if this object's value, truncated to an integer, would
- be -(2^31) or greater, and less than 2^31; otherwise, false .
+ be -(2^31) or greater, and less than 2^31; otherwise, <code>false</code>.
 
 ### CanTruncatedIntFitInInt64
     public boolean CanTruncatedIntFitInInt64()
@@ -2192,7 +2359,7 @@ Returns whether this object's value, truncated to an integer, would be
 **Returns:**
 
 * <code>true</code> if this object's value, truncated to an integer, would
- be -(2^63) or greater, and less than 2^63; otherwise, false .
+ be -(2^63) or greater, and less than 2^63; otherwise, <code>false</code>.
 
 ### compareTo
     public int compareTo(CBORObject other)
@@ -2327,7 +2494,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### equals
     public boolean equals(CBORObject other)
@@ -2339,7 +2506,7 @@ Compares the equality of two CBOR objects.
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### GetByteString
     public byte[] GetByteString()
@@ -2378,6 +2545,12 @@ Deprecated.&nbsp;<i>Use the GetAllTags method instead.</i>
 
 ### GetAllTags
     public com.upokecenter.numbers.EInteger[] GetAllTags()
+Gets a list of all tags, from outermost to innermost.
+
+**Returns:**
+
+* An array of tags, or the empty string if this object is untagged.
+
 ### HasTag
     public boolean HasTag(int tagValue)
 Returns whether this object has a tag of the given number.
@@ -2418,6 +2591,23 @@ Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
 
 ### HasTag
     public boolean HasTag(com.upokecenter.numbers.EInteger bigTagValue)
+Returns whether this object has a tag of the given number.
+
+**Parameters:**
+
+* <code>bigTagValue</code> - The tag value to search for.
+
+**Returns:**
+
+* <code>true</code> if this object has a tag of the given number;
+ otherwise, <code>false</code>.
+
+**Throws:**
+
+* <code>NullPointerException</code> - BigTagValue is null.
+
+* <code>IllegalArgumentException</code> - BigTagValue is less than 0.
+
 ### Insert
     public CBORObject Insert(int index, Object valueOb)
 Inserts an object at the specified position in this CBOR array.
@@ -2449,7 +2639,7 @@ Gets a value indicating whether this CBOR object represents infinity.
 **Returns:**
 
 * <code>true</code> if this CBOR object represents infinity; otherwise,
- false .
+ <code>false</code>.
 
 ### IsNaN
     public boolean IsNaN()

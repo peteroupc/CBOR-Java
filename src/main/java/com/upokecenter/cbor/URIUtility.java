@@ -263,7 +263,7 @@ ParseMode.IRISurrogateLenient);
      * </code>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid IRI with a scheme component;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public static boolean hasScheme(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
@@ -282,7 +282,7 @@ ParseMode.IRISurrogateLenient);
      * </code>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid URI with a scheme component;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public static boolean hasSchemeForURI(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(

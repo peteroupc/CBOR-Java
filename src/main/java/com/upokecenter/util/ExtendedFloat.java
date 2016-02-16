@@ -106,7 +106,7 @@ import com.upokecenter.numbers.*;
      * another object.
      * @param otherValue An arbitrary-precision binary float.
      * @return {@code true} if this object's mantissa and exponent are equal to
-     * those of another object; otherwise, {@code false}.
+     * those of another object; otherwise, {@code false} .
      * @throws java.lang.NullPointerException The parameter {@code otherValue} is
      * null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -124,7 +124,7 @@ import com.upokecenter.numbers.*;
      * another object.
      * @param other An arbitrary-precision binary float.
      * @return {@code true} if this object's mantissa and exponent are equal to
-     * those of another object; otherwise, {@code false}.
+     * those of another object; otherwise, {@code false} .
      * @throws java.lang.NullPointerException The parameter {@code other} is null.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -141,7 +141,7 @@ import com.upokecenter.numbers.*;
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
      * @param obj An arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, false .
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
@@ -322,7 +322,8 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is negative infinity.
-     * @return {@code true} if this object is negative infinity; otherwise, false .
+     * @return {@code true} if this object is negative infinity; otherwise, {@code
+     * false}.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -332,7 +333,8 @@ PrecisionContext ctx) {
 
     /**
      * Returns whether this object is positive infinity.
-     * @return {@code true} if this object is positive infinity; otherwise, false .
+     * @return {@code true} if this object is positive infinity; otherwise, {@code
+     * false}.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -343,7 +345,7 @@ PrecisionContext ctx) {
     /**
      * Returns whether this object is a not-a-number value.
      * @return {@code true} if this object is a not-a-number value; otherwise,
-     * false .
+     * {@code false}.
      */
     public boolean IsNaN() {
       return this.getEf().IsNaN();
@@ -362,7 +364,7 @@ PrecisionContext ctx) {
     /**
      * Gets a value indicating whether this object is negative, including negative
      * zero.
-     * @return {@code true} if this object is negative, including negative zero;
+     * @return {@code true} If this object is negative, including negative zero;
      * otherwise, {@code false}.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */

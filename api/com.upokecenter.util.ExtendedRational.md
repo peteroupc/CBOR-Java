@@ -32,8 +32,9 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ## Constructors
 
 * `ExtendedRational(BigInteger numerator,
-                BigInteger denominator) PeterO.ExtendedRational`<br>
- Deprecated.  Initializes a new instance of the PeterO.ExtendedRational class.
+                BigInteger denominator) com.upokecenter.ExtendedRational`<br>
+ Deprecated.  Initializes a new instance of the com.upokecenter.ExtendedRational
+ class.
 
 ## Methods
 
@@ -48,7 +49,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `boolean equals(ExtendedRational other)`<br>
  Deprecated.  Not documented yet.
 * `boolean equals(Object obj)`<br>
- Deprecated.
+ Deprecated.  Not documented yet.
 * `BigInteger getDenominator()`<br>
  Deprecated.  Gets this object's denominator.
 * `BigInteger getNumerator()`<br>
@@ -56,7 +57,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `BigInteger getUnsignedNumerator()`<br>
  Deprecated.  Gets this object's numerator with the sign removed.
 * `int hashCode()`<br>
- Deprecated.
+ Deprecated.  Not documented yet.
 * `boolean isFinite()`<br>
  Deprecated.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
@@ -117,7 +118,7 @@ Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</
 
 **Returns:**
 
-* <code>true</code> if this object is finite (not infinity or NaN);
+* <code>true</code> If this object is finite (not infinity or NaN);
  otherwise, <code>false</code>.
 
 ### isNegative
@@ -126,7 +127,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* <code>true</code> if this object's value is negative; otherwise, <code>false</code>.
+* <code>true</code> If this object's value is negative; otherwise, <code>false</code>.
 
 ### isZero
     @Deprecated public final boolean isZero()
@@ -134,7 +135,7 @@ Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</
 
 **Returns:**
 
-* <code>true</code> if this object's value equals 0; otherwise, <code>false</code>.
+* <code>true</code> If this object's value equals 0; otherwise, . <code>false</code>.
 
 ### getNumerator
     public final BigInteger getNumerator()
@@ -249,7 +250,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>obj</code> -
+* <code>obj</code> - An arbitrary object.
+
+**Returns:**
+
+* A Boolean object.
 
 ### hashCode
     public int hashCode()
@@ -258,3 +263,7 @@ Deprecated.&nbsp;
 **Overrides:**
 
 * <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+
+**Returns:**
+
+* A 32-bit signed integer.

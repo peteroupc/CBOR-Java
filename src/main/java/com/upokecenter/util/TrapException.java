@@ -66,7 +66,8 @@ private static final long serialVersionUID = 1L;
     }
 
     /**
-     * Initializes a new instance of the {@link PeterO.TrapException} class.
+     * Initializes a new instance of the {@link com.upokecenter.TrapException}
+     * class.
      * @param flag A flag that specifies the kind of error
      * (PrecisionContext.FlagXXX). This will only be one flag, such as
      * FlagInexact or FlagSubnormal.

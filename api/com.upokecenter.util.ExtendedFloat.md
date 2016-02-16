@@ -171,7 +171,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code>.
+ those of another object; otherwise, <code>false</code> .
 
 **Throws:**
 
@@ -189,7 +189,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code>.
+ those of another object; otherwise, <code>false</code> .
 
 **Throws:**
 
@@ -209,7 +209,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, false .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -314,7 +314,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* <code>true</code> if this object is negative infinity; otherwise, false .
+* <code>true</code> if this object is negative infinity; otherwise, <code>false</code>.
 
 ### IsPositiveInfinity
     @Deprecated public boolean IsPositiveInfinity()
@@ -322,7 +322,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* <code>true</code> if this object is positive infinity; otherwise, false .
+* <code>true</code> if this object is positive infinity; otherwise, <code>false</code>.
 
 ### IsNaN
     public boolean IsNaN()
@@ -331,7 +331,7 @@ Deprecated.&nbsp;
 **Returns:**
 
 * <code>true</code> if this object is a not-a-number value; otherwise,
- false .
+ <code>false</code>.
 
 ### IsInfinity
     public boolean IsInfinity()
@@ -348,7 +348,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 **Returns:**
 
-* <code>true</code> if this object is negative, including negative zero;
+* <code>true</code> If this object is negative, including negative zero;
  otherwise, <code>false</code>.
 
 ### IsQuietNaN

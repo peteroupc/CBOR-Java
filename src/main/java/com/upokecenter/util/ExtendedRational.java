@@ -88,7 +88,8 @@ import com.upokecenter.numbers.*;
     private final ERational er;
 
     /**
-     * Initializes a new instance of the {@link PeterO.ExtendedRational} class.
+     * Initializes a new instance of the {@link com.upokecenter.ExtendedRational}
+     * class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or
@@ -115,7 +116,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
-     * @return {@code true} if this object is finite (not infinity or NaN);
+     * @return {@code true} If this object is finite (not infinity or NaN);
      * otherwise, {@code false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -127,7 +128,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return {@code true} if this object's value is negative; otherwise, {@code
+     * @return {@code true} If this object's value is negative; otherwise, {@code
      * false}.
      */
     public final boolean isNegative() {
@@ -136,7 +137,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * @return {@code true} If this object's value equals 0; otherwise, . {@code
      * false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -258,8 +259,9 @@ denominator.getEi()));
     }
 
     /**
-     *
-     * @param obj
+     * Not documented yet.
+     * @param obj An arbitrary object.
+     * @return A Boolean object.
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational other = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);
@@ -267,7 +269,8 @@ denominator.getEi()));
     }
 
     /**
-     *
+     * Not documented yet.
+     * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {
       return this.getEr().hashCode();
