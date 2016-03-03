@@ -24,7 +24,7 @@ import com.upokecenter.numbers.*;
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -35,7 +35,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -45,7 +45,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -55,7 +55,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -65,7 +65,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -75,7 +75,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -91,7 +91,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -102,7 +102,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -112,7 +112,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -122,7 +122,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -132,7 +132,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -142,7 +142,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -161,7 +161,7 @@ System.out.print("");
         CBORObject.FromObject('\udddd');
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -177,7 +177,7 @@ System.out.print("");
         CBORObject.AddConverter(null, new FakeConverter());
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -186,7 +186,7 @@ System.out.print("");
         CBORObject.AddConverter(String.class, new FakeConverter());
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -196,7 +196,7 @@ System.out.print("");
         CBORObject.AddTagHandler(eintNull, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -205,7 +205,7 @@ System.out.print("");
         CBORObject.True.Abs();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -214,7 +214,7 @@ System.out.print("");
         CBORObject.False.Abs();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -223,7 +223,7 @@ System.out.print("");
         CBORObject.NewArray().Abs();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -232,7 +232,7 @@ System.out.print("");
         CBORObject.NewMap().Abs();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -241,7 +241,7 @@ System.out.print("");
         CBORObject.True.AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -250,7 +250,7 @@ System.out.print("");
         CBORObject.False.AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -259,7 +259,7 @@ System.out.print("");
         CBORObject.NewArray().AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -268,7 +268,7 @@ System.out.print("");
         CBORObject.NewMap().AsERational();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -282,7 +282,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -297,7 +297,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -319,7 +319,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -330,7 +330,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -362,7 +362,7 @@ try { if (memoryStream != null)memoryStream.close(); } catch (java.io.IOExceptio
 }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -391,7 +391,7 @@ ms = new java.io.ByteArrayOutputStream();
             CBORObject.DecodeFromBytes(ms.toByteArray());
             Assert.fail("Should have failed");
           } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -438,7 +438,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -447,7 +447,7 @@ System.out.print("");
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -457,7 +457,7 @@ System.out.print("");
         CBORObject.FromObject(bi).AsInt64();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -466,7 +466,7 @@ System.out.print("");
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -476,7 +476,7 @@ System.out.print("");
         CBORObject.FromObject(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -528,7 +528,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -537,7 +537,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x20  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -546,7 +546,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x60  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -555,7 +555,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0x80  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -564,7 +564,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0xa0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -573,7 +573,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, (byte)0xe0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -583,7 +583,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -592,7 +592,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x20  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -601,7 +601,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x60  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -610,7 +610,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0x80  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -619,7 +619,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0xa0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -628,7 +628,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, (byte)0xe0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -638,7 +638,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -647,7 +647,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x20  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -656,7 +656,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x40  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -665,7 +665,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, 0x60  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -674,7 +674,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x80  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -689,7 +689,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, 0x01, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -698,7 +698,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -719,7 +719,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x9f, 0x00, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -728,7 +728,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x9f, 0x00, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -737,7 +737,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -746,7 +746,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x9f, (byte)0xff  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -755,7 +755,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x81, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -764,7 +764,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0xa0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -773,7 +773,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0xe0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -783,7 +783,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -792,7 +792,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x20  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -801,7 +801,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x40  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -810,7 +810,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, 0x60  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -819,7 +819,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x80  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -828,7 +828,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x81, 0x00  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -837,7 +837,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0xa0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -846,7 +846,7 @@ System.out.print("");
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0xe0  });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -908,7 +908,7 @@ try { if (memoryStream != null)memoryStream.close(); } catch (java.io.IOExceptio
 }
         Assert.fail("Should have failed");
       } catch (IOException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -928,7 +928,7 @@ try { if (memoryStream != null)memoryStream.close(); } catch (java.io.IOExceptio
 }
         Assert.fail("Should have failed");
       } catch (IOException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -948,7 +948,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
         Assert.fail("Should have failed");
       } catch (IOException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -968,7 +968,7 @@ try { if (memoryStream != null)memoryStream.close(); } catch (java.io.IOExceptio
 }
         Assert.fail("Should have failed");
       } catch (IOException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

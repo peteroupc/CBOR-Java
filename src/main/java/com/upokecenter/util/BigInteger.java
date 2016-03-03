@@ -152,8 +152,8 @@ return this.getEi().GetSignedBitLength();
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return {@code true} if this object and another object are equal;
-     * otherwise, {@code false}.
+     * @return {@code true} if this object and another object are equal; otherwise,
+     * {@code false}.
      */
   @Override public boolean equals(Object obj) {
       BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
@@ -161,7 +161,8 @@ return this.getEi().GetSignedBitLength();
 }
 
     /**
-     * Returns the hash code for this instance.
+     * Returns the hash code for this instance. No application or process IDs are
+     * used in the hash code calculation.
      * @return A 32-bit signed integer.
      */
   @Override public int hashCode() {

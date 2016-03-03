@@ -3168,7 +3168,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Determines whether this object and another object are equal.
+     * Determines whether this object and another object are equal and have the
+     * same type. Not-a-number values can be considered equal by this
+     * method.
      * @param obj An arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
@@ -3177,7 +3179,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Compares the equality of two CBOR objects.
+     * Compares the equality of two CBOR objects. Not-a-number values can be
+     * considered equal by this method.
      * @param other The object to compare.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
@@ -3239,7 +3242,8 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     * Calculates the hash code of this object.
+     * Calculates the hash code of this object. No application or process IDs are
+     * used in the hash code calculation.
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
@@ -3247,6 +3251,7 @@ public boolean equals(CBORObject other) {
       {
         if (this.itemValue != null) {
           int itemHashCode = 0;
+          long longValue = 0L;
           switch (this.itemtypeValue) {
             case CBORObjectTypeByteString:
               itemHashCode =
@@ -3258,7 +3263,29 @@ public boolean equals(CBORObject other) {
             case CBORObjectTypeArray:
               itemHashCode = CBORArrayHashCode(this.AsList());
               break;
+            case CBORObjectTypeTextString:
+              itemHashCode = StringHashCode((String)this.itemValue);
+              break;
+            case CBORObjectTypeSimpleValue:
+              itemHashCode = ((Integer)this.itemValue).intValue();
+              break;
+            case CBORObjectTypeSingle:
+              itemHashCode =
+  Float.floatToRawIntBits(((Float)this.itemValue).floatValue());
+              break;
+            case CBORObjectTypeDouble:
+              longValue =
+  Double.doubleToRawLongBits(((Double)this.itemValue).doubleValue());
+              longValue |= longValue >> 32;
+              itemHashCode = ((int)longValue);
+              break;
+            case CBORObjectTypeInteger:
+              longValue = (((Long)this.itemValue).longValue());
+              longValue |= longValue >> 32;
+              itemHashCode = ((int)longValue);
+              break;
             default:
+              // EInteger, EFloat, EDecimal, ERational, CBORObject
               itemHashCode = this.itemValue.hashCode();
               break;
           }
@@ -4015,8 +4042,8 @@ public boolean equals(CBORObject other) {
               // (additional is a signed long)
               return new CBORObject(CBORObjectTypeInteger, uadditional);
             } else {
-              int low = ((int)((uadditional) & 0xFFFFFFFFL));
-              int high = ((int)((uadditional >> 32) & 0xFFFFFFFFL));
+              int low = ((int)((uadditional) & 0xffffffffL));
+              int high = ((int)((uadditional >> 32) & 0xffffffffL));
               return FromObject(LowHighToEInteger(low, high));
             }
           case 1:
@@ -4025,8 +4052,8 @@ public boolean equals(CBORObject other) {
               // (additional is a signed long)
               return new CBORObject(CBORObjectTypeInteger, -1 - uadditional);
             } else {
-              int low = ((int)((uadditional) & 0xFFFFFFFFL));
-              int high = ((int)((uadditional >> 32) & 0xFFFFFFFFL));
+              int low = ((int)((uadditional) & 0xffffffffL));
+              int high = ((int)((uadditional >> 32) & 0xffffffffL));
               EInteger bigintAdditional = LowHighToEInteger(low, high);
               EInteger minusOne = EInteger.FromInt64(-1);
               bigintAdditional = minusOne.Subtract(bigintAdditional);
@@ -4152,6 +4179,21 @@ Map<CBORObject, CBORObject> AsMap() {
         ret = (ret * 31) + count;
         for (int i = 0; i < count; ++i) {
           ret = (ret * 31) + list.get(i).hashCode();
+        }
+      }
+      return ret;
+    }
+
+    private static int StringHashCode(String str) {
+      if (str == null) {
+        return 0;
+      }
+      int ret = 19;
+      int count = str.length();
+      {
+        ret = (ret * 31) + count;
+        for (int i = 0; i < count; ++i) {
+          ret = (ret * 31) + (int)str.charAt(i);
         }
       }
       return ret;
@@ -4334,16 +4376,16 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       if (value < 24) {
         return new byte[] { (byte)((byte)value | (byte)(type << 5))  };
       }
-      if (value <= 0xFFL) {
+      if (value <= 0xffL) {
         return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff)
          };
       }
-      if (value <= 0xFFFFL) {
+      if (value <= 0xffffL) {
         return new byte[] { (byte)(25 | (type << 5)),
           (byte)((value >> 8) & 0xff), (byte)(value & 0xff)
          };
       }
-      if (value <= 0xFFFFFFFFL) {
+      if (value <= 0xffffffffL) {
         return new byte[] { (byte)(26 | (type << 5)),
           (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
           (byte)((value >> 8) & 0xff), (byte)(value & 0xff)
@@ -4775,11 +4817,11 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         if (high == 0 && (low >> 16) == 0) {
           WritePositiveInt(6, low, s);
         } else if (high == 0) {
-          long value = ((long)low) & 0xFFFFFFFFL;
+          long value = ((long)low) & 0xffffffffL;
           WritePositiveInt64(6, value, s);
         } else if ((high >> 16) == 0) {
-          long value = ((long)low) & 0xFFFFFFFFL;
-          long highValue = ((long)high) & 0xFFFFFFFFL;
+          long value = ((long)low) & 0xffffffffL;
+          long highValue = ((long)high) & 0xffffffffL;
           value |= highValue << 32;
           WritePositiveInt64(6, value, s);
         } else {

@@ -57,7 +57,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 * `BigInteger getUnsignedNumerator()`<br>
  Deprecated.  Gets this object's numerator with the sign removed.
 * `int hashCode()`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Calculates the hash code for this object.
 * `boolean isFinite()`<br>
  Deprecated.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.

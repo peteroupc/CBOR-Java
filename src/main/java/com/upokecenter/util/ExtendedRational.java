@@ -269,7 +269,8 @@ denominator.getEi()));
     }
 
     /**
-     * Not documented yet.
+     * Calculates the hash code for this object. No application or process IDs are
+     * used in the hash code calculation.
      * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {

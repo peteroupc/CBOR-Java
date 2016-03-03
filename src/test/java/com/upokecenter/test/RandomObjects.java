@@ -93,7 +93,7 @@ private RandomObjects() {
           r |= ((long)rand.NextValue(0x10000)) << 48;
         }
       }
-      r &= ~0x7FF0000000000000L;  // clear exponent
+      r &= ~0x7ff0000000000000L;  // clear exponent
       r |= ((long)exponent) << 52;  // set exponent
       return Double.longBitsToDouble(r);
     }

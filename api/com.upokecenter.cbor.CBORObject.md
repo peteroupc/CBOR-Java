@@ -204,7 +204,8 @@ Use AsERational instead.
 * `boolean equals(CBORObject other)`<br>
  Compares the equality of two CBOR objects.
 * `boolean equals(Object obj)`<br>
- Determines whether this object and another object are equal.
+ Determines whether this object and another object are equal and have the
+ same type.
 * `static CBORObject FromJSONString(String str)`<br>
  Generates a CBOR object from a text string in JavaScript Object Notation
  (JSON) format.
@@ -2482,7 +2483,9 @@ Gets the binary representation of this data item.
 
 ### equals
     public boolean equals(Object obj)
-Determines whether this object and another object are equal.
+Determines whether this object and another object are equal and have the
+ same type. Not-a-number values can be considered equal by this
+ method.
 
 **Overrides:**
 
@@ -2498,7 +2501,8 @@ Determines whether this object and another object are equal.
 
 ### equals
     public boolean equals(CBORObject other)
-Compares the equality of two CBOR objects.
+Compares the equality of two CBOR objects. Not-a-number values can be
+ considered equal by this method.
 
 **Parameters:**
 
@@ -2525,7 +2529,8 @@ Gets the byte array used in this object, if this object is a byte string,
 
 ### hashCode
     public int hashCode()
-Calculates the hash code of this object.
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 

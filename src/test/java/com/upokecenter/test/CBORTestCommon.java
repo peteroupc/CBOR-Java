@@ -192,7 +192,7 @@ Integer.MAX_VALUE));
           o.AsByte();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -201,7 +201,7 @@ Integer.MAX_VALUE));
           o.AsInt16();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -210,7 +210,7 @@ Integer.MAX_VALUE));
           o.AsInt32();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -219,7 +219,7 @@ Integer.MAX_VALUE));
           o.AsInt64();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -240,7 +240,7 @@ Integer.MAX_VALUE));
           o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);

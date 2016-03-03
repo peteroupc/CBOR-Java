@@ -68,7 +68,7 @@ import com.upokecenter.util.*;
         DataUtilities.CodePointAt(null, 0);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -144,7 +144,7 @@ Assert.assertEquals(-1, numberTemp);
         DataUtilities.CodePointBefore(null, 0);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -283,7 +283,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -292,7 +292,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -301,7 +301,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -310,7 +310,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -319,7 +319,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -328,7 +328,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes(null, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -337,7 +337,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -346,7 +346,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -355,7 +355,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800X", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -364,7 +364,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00X", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -373,7 +373,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -382,7 +382,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -391,7 +391,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00\ud800\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -400,7 +400,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\ud800\ud800\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -409,7 +409,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -454,7 +454,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Length(null, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -464,7 +464,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
       try {
         DataUtilities.GetUtf8Length(null, true);
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -472,7 +472,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
       try {
         DataUtilities.GetUtf8Length(null, false);
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -583,7 +583,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(null, 0, 1, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -592,7 +592,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(null, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -601,7 +601,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(null, 0, 1, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -610,7 +610,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(new byte[] { 0  }, -1, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -619,7 +619,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(new byte[] { 0  }, 2, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -628,7 +628,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(new byte[] { 0  }, 0, -1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -637,7 +637,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(new byte[] { 0  }, 0, 2, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -646,7 +646,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8String(new byte[] { 0  }, 1, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -677,7 +677,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
           false);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -688,7 +688,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
           DataUtilities.GetUtf8String(seq, false);
           Assert.fail("Should have failed");
         } catch (IllegalArgumentException ex) {
-          System.out.print("");
+          new Object();
 } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -700,7 +700,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
           DataUtilities.GetUtf8String(seq, 0, seq.length, false);
           Assert.fail("Should have failed");
         } catch (IllegalArgumentException ex) {
-          System.out.print("");
+          new Object();
 } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -792,7 +792,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.ReadUtf8(null, 1, null, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -807,7 +807,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
             DataUtilities.ReadUtf8(ms, 1, null, true);
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
-            System.out.print("");
+            new Object();
 } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -828,7 +828,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
             DataUtilities.ReadUtf8(ms, 1, null, false);
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
-            System.out.print("");
+            new Object();
 } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -972,7 +972,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.WriteUtf8("x", 0, 1, null, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -981,7 +981,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.ReadUtf8FromBytes(null, 0, 1, new StringBuilder(), true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -995,7 +995,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1009,7 +1009,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1023,7 +1023,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1037,7 +1037,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1051,7 +1051,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1060,7 +1060,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.ReadUtf8FromBytes(new byte[] { 0  }, 0, 1, null, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1099,7 +1099,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.ReadUtf8ToString(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1108,7 +1108,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         DataUtilities.ReadUtf8ToString(null, 1, true);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1124,7 +1124,7 @@ ms = new java.io.ByteArrayInputStream(seq);
             DataUtilities.ReadUtf8ToString(ms, -1, false);
             Assert.fail("Should have failed");
           } catch (IOException ex) {
-            System.out.print("");
+            new Object();
 } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -1180,7 +1180,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
           DataUtilities.WriteUtf8(null, 0, 1, null, false);
           Assert.fail("Should have failed");
         } catch (NullPointerException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -1189,7 +1189,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
           DataUtilities.WriteUtf8("xyz", 0, 1, null, false);
           Assert.fail("Should have failed");
         } catch (NullPointerException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -1198,7 +1198,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
           DataUtilities.WriteUtf8(null, null, false);
           Assert.fail("Should have failed");
         } catch (NullPointerException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -1207,7 +1207,7 @@ try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
           DataUtilities.WriteUtf8("xyz", null, false);
           Assert.fail("Should have failed");
         } catch (NullPointerException ex) {
-          System.out.print("");
+          new Object();
         } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
@@ -1221,7 +1221,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", null, true);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1230,7 +1230,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, 1, null, true);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1239,7 +1239,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, 1, null, true, true);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1248,7 +1248,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8(null, 0, 1, ms, true);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1257,7 +1257,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", -1, 1, ms, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1266,7 +1266,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 2, 1, ms, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1275,7 +1275,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, -1, ms, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1284,7 +1284,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, 2, ms, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1293,7 +1293,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 1, 1, ms, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1302,7 +1302,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8(null, 0, 1, ms, true, true);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1311,7 +1311,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", -1, 1, ms, true, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1320,7 +1320,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 2, 1, ms, true, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1329,7 +1329,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, -1, ms, true, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1338,7 +1338,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 0, 2, ms, true, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1347,7 +1347,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8("x", 1, 1, ms, true, true);
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1356,7 +1356,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8(null, null, false);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -1365,7 +1365,7 @@ ms = new java.io.ByteArrayOutputStream();
               DataUtilities.WriteUtf8(null, ms, false);
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
-              System.out.print("");
+              new Object();
 } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
