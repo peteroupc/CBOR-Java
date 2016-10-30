@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.util.*; import com.upokecenter.numbers.*;
@@ -305,13 +305,6 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     private MutableNumber mnum;  // if integerMode is 1
     private EInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static final EInteger ValueInt32MinValue =
-      EInteger.FromInt64(Integer.MIN_VALUE);
-
-    private static final EInteger ValueInt32MaxValue =
-      EInteger.FromInt64(Integer.MAX_VALUE);
-
-    private static final EInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).Negate();
 
     FastInteger2(int value) {
       this.smallValue = value;
@@ -324,7 +317,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
         case 1:
           return this.mnum.ToInt32();
         case 2:
-          return this.largeValue.AsInt32Checked();
+          return this.largeValue.ToInt32Checked();
         default: throw new IllegalStateException();
       }
     }

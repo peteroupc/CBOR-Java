@@ -4,7 +4,7 @@ Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.util.*; import com.upokecenter.numbers.*;
@@ -13,15 +13,15 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
   {
     static final CBORTypeFilter Filter = new
     CBORTypeFilter().WithArrayExactLength(
-2,
-CBORTypeFilter.UnsignedInteger.WithNegativeInteger(),
-CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
+  2,
+  CBORTypeFilter.UnsignedInteger.WithNegativeInteger(),
+  CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
 
     static final CBORTypeFilter ExtendedFilter = new
     CBORTypeFilter().WithArrayExactLength(
-2,
-CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3),
-CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
+  2,
+  CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3),
+  CBORTypeFilter.UnsignedInteger.WithNegativeInteger().WithTags(2, 3));
 
     public CBORTag5() {
  this(false);

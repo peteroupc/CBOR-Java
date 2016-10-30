@@ -4,7 +4,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
   final class Base64 {
@@ -17,30 +17,30 @@ private Base64() {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     public static void WriteBase64(
-StringOutput writer,
-byte[] data,
-int offset,
-int count,
-boolean padding) throws java.io.IOException {
+  StringOutput writer,
+  byte[] data,
+  int offset,
+  int count,
+  boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, Base64Classic, padding);
     }
 
     public static void WriteBase64URL(
-StringOutput writer,
-byte[] data,
-int offset,
-int count,
-boolean padding) throws java.io.IOException {
+  StringOutput writer,
+  byte[] data,
+  int offset,
+  int count,
+  boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, Base64URL, padding);
     }
 
     private static void WriteBase64(
-StringOutput writer,
-byte[] data,
-int offset,
-int count,
-String alphabet,
-boolean padding) throws java.io.IOException {
+  StringOutput writer,
+  byte[] data,
+  int offset,
+  int count,
+  String alphabet,
+  boolean padding) throws java.io.IOException {
       if (writer == null) {
         throw new NullPointerException("writer");
       }

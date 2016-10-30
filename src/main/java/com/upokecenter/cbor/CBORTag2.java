@@ -4,7 +4,7 @@ Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.util.*; import com.upokecenter.numbers.*;
@@ -16,8 +16,8 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
     }
 
     private static CBORObject FromObjectAndInnerTags(
-Object objectValue,
-CBORObject objectWithTags) {
+  Object objectValue,
+  CBORObject objectWithTags) {
       CBORObject newObject = CBORObject.FromObject(objectValue);
       if (!objectWithTags.isTagged()) {
         return newObject;

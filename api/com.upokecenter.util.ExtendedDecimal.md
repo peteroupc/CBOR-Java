@@ -2,9 +2,9 @@
 
     @Deprecated public final class ExtendedDecimal extends Object implements Comparable<ExtendedDecimal>
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</div>
 
 ## Fields
 
@@ -84,10 +84,10 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 ### One
     @Deprecated public static final ExtendedDecimal One
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 ### Zero
     @Deprecated public static final ExtendedDecimal Zero
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 ### NegativeZero
     public static final ExtendedDecimal NegativeZero
 Deprecated.&nbsp;
@@ -136,7 +136,7 @@ Deprecated.&nbsp;
 
 ### equals
     @Deprecated public boolean equals(ExtendedDecimal other)
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -265,7 +265,7 @@ Deprecated.&nbsp;
 
 ### isNegative
     @Deprecated public final boolean isNegative()
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -274,7 +274,7 @@ Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -299,7 +299,7 @@ Deprecated.&nbsp;
 
 ### signum
     @Deprecated public final int signum()
-Deprecated.&nbsp;<i>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 

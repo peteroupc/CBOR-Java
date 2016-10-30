@@ -2,8 +2,8 @@
 
     @Deprecated public class PrecisionContext extends Object
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use EContext from PeterO.Numbers/com.upokecenter.numbers.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use EContext from PeterO.Numbers/com.upokecenter.numbers.</div>
 
 ## Methods
 

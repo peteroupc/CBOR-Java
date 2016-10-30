@@ -2,9 +2,9 @@
 
     @Deprecated public final class ExtendedFloat extends Object implements Comparable<ExtendedFloat>
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</div>
 
 ## Fields
 
@@ -110,16 +110,16 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ### One
     @Deprecated public static final ExtendedFloat One
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ### Zero
     @Deprecated public static final ExtendedFloat Zero
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ### NegativeZero
     @Deprecated public static final ExtendedFloat NegativeZero
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ### Ten
     @Deprecated public static final ExtendedFloat Ten
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ### NaN
     public static final ExtendedFloat NaN
 Deprecated.&nbsp;
@@ -162,7 +162,7 @@ Deprecated.&nbsp;
 
 ### EqualsInternal
     @Deprecated public boolean EqualsInternal(ExtendedFloat otherValue)
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -180,7 +180,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 ### equals
     @Deprecated public boolean equals(ExtendedFloat other)
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -258,7 +258,7 @@ Deprecated.&nbsp;
 
 ### FromString
     @Deprecated public static ExtendedFloat FromString(String str, int offset, int length, PrecisionContext ctx)
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -310,7 +310,7 @@ Deprecated.&nbsp;
 
 ### IsNegativeInfinity
     @Deprecated public boolean IsNegativeInfinity()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -318,7 +318,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 ### IsPositiveInfinity
     @Deprecated public boolean IsPositiveInfinity()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -344,7 +344,7 @@ Deprecated.&nbsp;
 
 ### isNegative
     @Deprecated public final boolean isNegative()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -353,7 +353,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -362,7 +362,7 @@ Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
 
 ### IsSignalingNaN
     @Deprecated public boolean IsSignalingNaN()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -387,7 +387,7 @@ Deprecated.&nbsp;
 
 ### signum
     @Deprecated public final int signum()
-Deprecated.&nbsp;<i>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 

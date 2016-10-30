@@ -4,7 +4,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -1071,13 +1071,12 @@ try { if (ms6 != null)ms6.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestNegativeBigInts() {
-      EInteger minusone = EInteger.FromString("-1");
       Assert.assertEquals(
-EInteger.FromString("-257"),
+  EInteger.FromString("-257"),
    CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0  }).AsEInteger());
       Assert.assertEquals(
-EInteger.FromString("-65537"),
-CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsEInteger());
+  EInteger.FromString("-65537"),
+  CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0  }).AsEInteger());
       {
 Object objectTemp = EInteger.FromString("-16777217");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1,

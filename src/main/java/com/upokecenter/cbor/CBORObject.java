@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.util.*;
@@ -256,7 +256,9 @@ import com.upokecenter.numbers.*;
  */
 @Deprecated
     public final BigInteger getInnermostTag() {
-        throw new UnsupportedOperationException();
+        EInteger ei = this.getMostInnerTag();
+        String eis = ei.toString();
+        return BigInteger.fromString(eis);
       }
 
     /**
@@ -268,7 +270,8 @@ import com.upokecenter.numbers.*;
  */
 @Deprecated
     public final BigInteger getOutermostTag() {
-        throw new UnsupportedOperationException();
+        EInteger ei = this.getMostOuterTag();
+        return BigInteger.fromString(this.getMostOuterTag().toString());
       }
 
     /**
@@ -736,8 +739,8 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code data} is null.
      */
     public static CBORObject DecodeFromBytes(
-byte[] data,
-CBOREncodeOptions options) {
+  byte[] data,
+  CBOREncodeOptions options) {
       if (data == null) {
         throw new NullPointerException("data");
       }
@@ -824,8 +827,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
      */
     public static CBORObject FromJSONString(
-String str,
-CBOREncodeOptions options) {
+  String str,
+  CBOREncodeOptions options) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -895,7 +898,7 @@ CBOREncodeOptions options) {
               bigintValue.compareTo(Int64MaxValue) <= 0) ?
         new CBORObject(
           CBORObjectTypeInteger,
-          bigintValue.AsInt64Checked()) : (new CBORObject(
+          bigintValue.ToInt64Checked()) : (new CBORObject(
         CBORObjectTypeBigInteger,
         bigintValue));
     }
@@ -957,7 +960,7 @@ CBOREncodeOptions options) {
      * @param bigValue A rational number.
      * @return A CBOR number.
      */
-    static CBORObject FromObject(ERational bigValue) {
+    public static CBORObject FromObject(ERational bigValue) {
       if ((Object)bigValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -1858,7 +1861,7 @@ CBOREncodeOptions options) {
         stream.write(0xf6);
         return;
       }
-      if (!rational.isFinite()) {
+      if (!rational.isFinite() || (rational.isNegative() && rational.isZero())) {
         Write(rational.ToDouble(), stream);
         return;
       }
@@ -1992,7 +1995,7 @@ CBOREncodeOptions options) {
         // If the big integer is representable as a long and in
         // major type 0 or 1, write that major type
         // instead of as a bignum
-        long ui = bigint.AsInt64Checked();
+        long ui = bigint.ToInt64Checked();
         WritePositiveInt64(datatype, ui, stream);
       } else {
         // Get a byte array of the big integer's value,

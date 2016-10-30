@@ -4,7 +4,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -50,12 +50,12 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
           this.WriteCodePoint((int)str.charAt(index));
         } else {
           if (
-DataUtilities.WriteUtf8(
-str,
-index,
-length,
-this.outputStream,
-false) < 0) {
+  DataUtilities.WriteUtf8(
+  str,
+  index,
+  length,
+  this.outputStream,
+  false) < 0) {
             throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
@@ -67,7 +67,7 @@ false) < 0) {
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
       if (codePoint < 0) {
         throw new IllegalArgumentException("codePoint (" + codePoint +
-                ") is less than " + 0);
+                ") is less than 0");
       }
       if (codePoint > 0x10ffff) {
         throw new IllegalArgumentException("codePoint (" + codePoint +

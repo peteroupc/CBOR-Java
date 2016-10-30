@@ -69,7 +69,7 @@ import com.upokecenter.util.*;
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -83,12 +83,12 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00X", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0));
-   Assert.assertEquals(
-0xfffd,
-DataUtilities.CodePointAt("\ud800\ud800\udc00", 0));
-   Assert.assertEquals(
-0xfffd,
-DataUtilities.CodePointAt("\udc00\ud800\udc00", 0));
+      Assert.assertEquals(
+     0xfffd,
+     DataUtilities.CodePointAt("\ud800\ud800\udc00", 0));
+      Assert.assertEquals(
+     0xfffd,
+     DataUtilities.CodePointAt("\udc00\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800", 0, 0));
@@ -97,12 +97,12 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00", 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00X", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0, 0));
-Assert.assertEquals(
-0xfffd,
-DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 0));
-Assert.assertEquals(
-0xfffd,
-DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 0));
+      Assert.assertEquals(
+        0xfffd,
+        DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 0));
+      Assert.assertEquals(
+        0xfffd,
+        DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 0));
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0, 0));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 0));
 
@@ -111,13 +111,13 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 0));
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800X", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00X", 0, 1));
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800\ud800", 0, 1));
-Assert.assertEquals(
-0xd800,
-DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 1));
+      Assert.assertEquals(
+        0xd800,
+        DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\ud800", 0, 1));
-Assert.assertEquals(
-0xdc00,
-DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 1));
+      Assert.assertEquals(
+        0xdc00,
+        DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00\udc00", 0, 1));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 1));
 
@@ -126,15 +126,15 @@ DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 1));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
-    {
-long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 2);
-Assert.assertEquals(-1, numberTemp);
-}
+      {
+        long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 2);
+        Assert.assertEquals(-1, numberTemp);
+      }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
-    {
-long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 2);
-Assert.assertEquals(-1, numberTemp);
-}
+      {
+        long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 2);
+        Assert.assertEquals(-1, numberTemp);
+      }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
       Assert.assertEquals(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 2));
     }
@@ -145,7 +145,7 @@ Assert.assertEquals(-1, numberTemp);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -153,25 +153,25 @@ Assert.assertEquals(-1, numberTemp);
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", -1));
       Assert.assertEquals((int)'A', DataUtilities.CodePointBefore("A", 1));
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A", 2));
- Assert.assertEquals(
-(int)'A',
-DataUtilities.CodePointBefore("A\ud800\udc00B", 1));
-  Assert.assertEquals(
-0x10000,
-DataUtilities.CodePointBefore("A\ud800\udc00B", 3));
-   Assert.assertEquals(
-0xfffd,
-DataUtilities.CodePointBefore("A\ud800\udc00B", 2));
- Assert.assertEquals(
-0xd800,
-DataUtilities.CodePointBefore("A\ud800\udc00B", 2, 1));
-    {
-long numberTemp = DataUtilities.CodePointBefore(
-  "A\ud800\udc00B",
-  2,
-  2);
-Assert.assertEquals(-1, numberTemp);
-}
+      Assert.assertEquals(
+       (int)'A',
+       DataUtilities.CodePointBefore("A\ud800\udc00B", 1));
+      Assert.assertEquals(
+      0x10000,
+      DataUtilities.CodePointBefore("A\ud800\udc00B", 3));
+      Assert.assertEquals(
+     0xfffd,
+     DataUtilities.CodePointBefore("A\ud800\udc00B", 2));
+      Assert.assertEquals(
+       0xd800,
+       DataUtilities.CodePointBefore("A\ud800\udc00B", 2, 1));
+      {
+        long numberTemp = DataUtilities.CodePointBefore(
+          "A\ud800\udc00B",
+          2,
+          2);
+        Assert.assertEquals(-1, numberTemp);
+      }
       Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("\udc00B", 1));
       Assert.assertEquals(0xdc00, DataUtilities.CodePointBefore("\udc00B", 1, 1));
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("\udc00B", 1, 2));
@@ -193,41 +193,41 @@ Assert.assertEquals(-1, numberTemp);
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-"\ud800\udc00",
-"\ud800\udc00")==0) ? 0 : ((
+  "\ud800\udc00",
+  "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-"\ud800\udc00",
-"\ud800\udc00")< 0) ? -1 : 1));
+  "\ud800\udc00",
+  "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(0, numberTemp);
       }
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-"abc",
-"\ud800\udc00")==0) ? 0 : ((
+  "abc",
+  "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-"abc",
-"\ud800\udc00")< 0) ? -1 : 1));
+  "abc",
+  "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-"\uf000",
-"\ud800\udc00")==0) ? 0 : ((
+  "\uf000",
+  "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-"\uf000",
-"\ud800\udc00")< 0) ? -1 : 1));
+  "\uf000",
+  "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
         long numberTemp = ((
-DataUtilities.CodePointCompare(
-"\uf000",
-"\ud800")==0) ? 0 : ((
-DataUtilities.CodePointCompare(
-"\uf000",
-"\ud800")< 0) ? -1 : 1));
+  DataUtilities.CodePointCompare(
+  "\uf000",
+  "\ud800")==0) ? 0 : ((
+  DataUtilities.CodePointCompare(
+  "\uf000",
+  "\ud800")< 0) ? -1 : 1));
         Assert.assertEquals(1, numberTemp);
       }
       if (!(DataUtilities.CodePointCompare("abc", "def") < 0))Assert.fail();
@@ -273,8 +273,8 @@ DataUtilities.CodePointCompare(
 
     private void TestUtf8RoundTrip(String str) {
       Assert.assertEquals(
-str,
-DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
+  str,
+  DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
     }
 
     @Test
@@ -329,7 +329,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -338,7 +338,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -347,7 +347,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -356,7 +356,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -365,7 +365,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -374,7 +374,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -383,7 +383,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -392,7 +392,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -401,7 +401,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -410,7 +410,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -455,7 +455,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -465,7 +465,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Length(null, true);
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
       }
@@ -473,7 +473,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         DataUtilities.GetUtf8Length(null, false);
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
       }
@@ -593,7 +593,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -602,7 +602,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -611,7 +611,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -620,7 +620,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -629,7 +629,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -638,7 +638,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -647,7 +647,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -678,7 +678,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -689,7 +689,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
           Assert.fail("Should have failed");
         } catch (IllegalArgumentException ex) {
           new Object();
-} catch (Exception ex) {
+        } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
@@ -701,7 +701,7 @@ DataUtilities.GetUtf8String(DataUtilities.GetUtf8Bytes(str, true), true));
           Assert.fail("Should have failed");
         } catch (IllegalArgumentException ex) {
           new Object();
-} catch (Exception ex) {
+        } catch (Exception ex) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
@@ -793,7 +793,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -808,7 +808,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
             new Object();
-} catch (Exception ex) {
+          } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
@@ -829,7 +829,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
             new Object();
-} catch (Exception ex) {
+          } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
@@ -973,7 +973,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -982,7 +982,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -996,7 +996,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1010,7 +1010,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1024,7 +1024,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1038,7 +1038,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1052,7 +1052,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1061,7 +1061,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1100,7 +1100,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1109,7 +1109,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
-} catch (Exception ex) {
+      } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1125,7 +1125,7 @@ ms = new java.io.ByteArrayInputStream(seq);
             Assert.fail("Should have failed");
           } catch (IOException ex) {
             new Object();
-} catch (Exception ex) {
+          } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
@@ -1222,7 +1222,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1231,7 +1231,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1240,7 +1240,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1249,7 +1249,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1258,7 +1258,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1267,7 +1267,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1276,7 +1276,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1285,7 +1285,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1294,7 +1294,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1303,7 +1303,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1312,7 +1312,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1321,7 +1321,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1330,7 +1330,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1339,7 +1339,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1348,7 +1348,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (IllegalArgumentException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1357,7 +1357,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }
@@ -1366,7 +1366,7 @@ ms = new java.io.ByteArrayOutputStream();
               Assert.fail("Should have failed");
             } catch (NullPointerException ex) {
               new Object();
-} catch (Exception ex) {
+            } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
             }

@@ -24,7 +24,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       }
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index +
-          ") is less than " + 0);
+          ") is less than 0");
       }
       if (index > chars.length) {
         throw new IllegalArgumentException("index (" + index +
@@ -32,7 +32,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       }
       if (length < 0) {
         throw new IllegalArgumentException("length (" + length +
-          ") is less than " + 0);
+          ") is less than 0");
       }
       if (length > chars.length) {
         throw new IllegalArgumentException("length (" + length +
@@ -56,12 +56,12 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
       } catch (IllegalStateException ex) {
         if (ex.getCause() == null) {
           throw new CBORException(
-this.NewErrorString(ex.getMessage()),
-ex);
+  this.NewErrorString(ex.getMessage()),
+  ex);
         } else {
           throw new CBORException(
-this.NewErrorString(ex.getMessage()),
-ex.getCause());
+  this.NewErrorString(ex.getMessage()),
+  ex.getCause());
         }
       }
       if (c >= 0) {

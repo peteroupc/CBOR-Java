@@ -4,7 +4,7 @@ Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.numbers.*;
@@ -91,8 +91,8 @@ private static final long serialVersionUID = 1L;
  wrappedResult = new ExtendedFloat(ef);
 }
       this.ete = new ETrapException(
-flag,
-ctx == null ? null : ctx.getEc(),
-wrappedResult);
+  flag,
+  ctx == null ? null : ctx.getEc(),
+  wrappedResult);
     }
   }

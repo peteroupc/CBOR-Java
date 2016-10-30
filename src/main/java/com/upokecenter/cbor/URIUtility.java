@@ -4,7 +4,7 @@ Written in 2013 by Peter Occil.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
     /**
@@ -63,28 +63,28 @@ private URIUtility() {
     private static final String HexChars = "0123456789ABCDEF";
 
     private static void appendAuthority(
-StringBuilder builder,
-String refValue,
-int[] segments) {
+  StringBuilder builder,
+  String refValue,
+  int[] segments) {
       if (segments[2] >= 0) {
         builder.append("//");
         builder.append(
-refValue.substring(
-segments[2], (
-segments[2])+(segments[3] - segments[2])));
+  refValue.substring(
+  segments[2], (
+  segments[2])+(segments[3] - segments[2])));
       }
     }
 
     private static void appendFragment(
-StringBuilder builder,
-String refValue,
-int[] segments) {
+  StringBuilder builder,
+  String refValue,
+  int[] segments) {
       if (segments[8] >= 0) {
         builder.append('#');
         builder.append(
-refValue.substring(
-segments[8], (
-segments[8])+(segments[9] - segments[8])));
+  refValue.substring(
+  segments[8], (
+  segments[8])+(segments[9] - segments[8])));
       }
     }
 
@@ -94,43 +94,43 @@ segments[8])+(segments[9] - segments[8])));
       int[] segments) {
       builder.append(
         normalizePath(
-refValue.substring(
-segments[4], (
-segments[4])+(segments[5] - segments[4]))));
+  refValue.substring(
+  segments[4], (
+  segments[4])+(segments[5] - segments[4]))));
     }
 
     private static void appendPath(
-StringBuilder builder,
-String refValue,
-int[] segments) {
+  StringBuilder builder,
+  String refValue,
+  int[] segments) {
       builder.append(
-refValue.substring(
-segments[4], (
-segments[4])+(segments[5] - segments[4])));
+  refValue.substring(
+  segments[4], (
+  segments[4])+(segments[5] - segments[4])));
     }
 
     private static void appendQuery(
-StringBuilder builder,
-String refValue,
-int[] segments) {
+  StringBuilder builder,
+  String refValue,
+  int[] segments) {
       if (segments[6] >= 0) {
         builder.append('?');
         builder.append(
-refValue.substring(
-segments[6], (
-segments[6])+(segments[7] - segments[6])));
+  refValue.substring(
+  segments[6], (
+  segments[6])+(segments[7] - segments[6])));
       }
     }
 
     private static void appendScheme(
-StringBuilder builder,
-String refValue,
-int[] segments) {
+  StringBuilder builder,
+  String refValue,
+  int[] segments) {
       if (segments[0] >= 0) {
         builder.append(
           refValue.substring(
-segments[0], (
-segments[0])+(segments[1] - segments[0])));
+  segments[0], (
+  segments[0])+(segments[1] - segments[0])));
         builder.append(':');
       }
     }
@@ -152,19 +152,19 @@ segments[0])+(segments[1] - segments[0])));
       if (mode == 1) {
         components = (
           s == null) ? null : splitIRI(
-s,
-0,
-s.length(),
-ParseMode.IRIStrict);
+  s,
+  0,
+  s.length(),
+  ParseMode.IRIStrict);
         if (components == null) {
           return null;
         }
       } else {
         components = (s == null) ? null : splitIRI(
-s,
-0,
-s.length(),
-ParseMode.IRISurrogateLenient);
+  s,
+  0,
+  s.length(),
+  ParseMode.IRISurrogateLenient);
       }
       int index = 0;
       int valueSLength = s.length();
@@ -448,12 +448,12 @@ ParseMode.IRISurrogateLenient);
 
     public static boolean isValidIRI(String s) {
       return (
-(
-s == null) ? null : splitIRI(
-s,
-0,
-s.length(),
-ParseMode.IRIStrict)) != null;
+  (
+  s == null) ? null : splitIRI(
+  s,
+  0,
+  s.length(),
+  ParseMode.IRIStrict)) != null;
     }
 
     private static final String ValueDotSlash = "." + "/";
@@ -466,7 +466,7 @@ ParseMode.IRIStrict)) != null;
       }
       if (path.indexOf(ValueSlashDot) < 0 &&
           path.indexOf(
-ValueDotSlash) < 0) {
+  ValueDotSlash) < 0) {
         return path;
       }
       StringBuilder builder = new StringBuilder();
@@ -555,11 +555,11 @@ ValueDotSlash) < 0) {
     }
 
     private static int parseDecOctet(
-String s,
-int index,
-int endOffset,
-int c,
-int delim) {
+  String s,
+  int index,
+  int endOffset,
+  int c,
+  int delim) {
       if (c >= '1' && c <= '9' && index + 2 < endOffset &&
           s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9' &&
           s.charAt(index + 2) == delim) {
@@ -680,11 +680,11 @@ int delim) {
                 }
                 char tmpc = (index < endOffset) ? s.charAt(index) : '\0';
                 decOctet = parseDecOctet(
-s,
-index,
-endOffset,
-tmpc,
-'.');
+  s,
+  index,
+  endOffset,
+  tmpc,
+  '.');
                 if (decOctet >= 100) {
                   index += 4;
                 } else if (decOctet >= 10) {
@@ -798,9 +798,9 @@ tmpc,
     }
 
     private static String pathParent(
-String refValue,
-int startIndex,
-int endIndex) {
+  String refValue,
+  int startIndex,
+  int endIndex) {
       if (startIndex > endIndex) {
         return "";
       }
@@ -867,9 +867,9 @@ int endIndex) {
      * refValue.
      */
     public static String relativeResolve(
-String refValue,
-String baseURI,
-ParseMode parseMode) {
+  String refValue,
+  String baseURI,
+  ParseMode parseMode) {
       int[] segments = (refValue == null) ? null : splitIRI(
         refValue,
         0,
@@ -880,10 +880,10 @@ ParseMode parseMode) {
       }
       int[] segmentsBase = (
         baseURI == null) ? null : splitIRI(
-baseURI,
-0,
-baseURI.length(),
-parseMode);
+  baseURI,
+  0,
+  baseURI.length(),
+  parseMode);
       if (segmentsBase == null) {
         return refValue;
       }
@@ -924,9 +924,9 @@ parseMode);
           } else {
             merged.append(
               pathParent(
-baseURI,
-segmentsBase[4],
-segmentsBase[5]));
+  baseURI,
+  segmentsBase[4],
+  segmentsBase[5]));
             appendPath(merged, refValue, segments);
             builder.append(normalizePath(merged.toString()));
           }
@@ -978,10 +978,10 @@ segmentsBase[5]));
      * @throws java.lang.NullPointerException The parameter {@code s} is null.
      */
     public static int[] splitIRI(
-String s,
-int offset,
-int length,
-ParseMode parseMode) {
+  String s,
+  int offset,
+  int length,
+  ParseMode parseMode) {
       if (s == null) {
         return null;
       }
@@ -990,7 +990,7 @@ ParseMode parseMode) {
 }
 if (offset < 0) {
   throw new IllegalArgumentException("offset (" + offset +
-    ") is less than " + 0);
+    ") is less than 0");
 }
 if (offset > s.length()) {
   throw new IllegalArgumentException("offset (" + offset +
@@ -998,7 +998,7 @@ if (offset > s.length()) {
 }
 if (length < 0) {
   throw new IllegalArgumentException("length (" + length +
-    ") is less than " + 0);
+    ") is less than 0");
 }
 if (length > s.length()) {
   throw new IllegalArgumentException("length (" + length +

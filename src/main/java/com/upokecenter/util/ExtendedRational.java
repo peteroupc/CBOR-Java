@@ -4,7 +4,7 @@ Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.numbers.*;
@@ -187,12 +187,12 @@ import com.upokecenter.numbers.*;
      * @return An arbitrary-precision rational number.
      */
     public static ExtendedRational Create(
-int numeratorSmall,
-int denominatorSmall) {
+  int numeratorSmall,
+  int denominatorSmall) {
       return new ExtendedRational(
-ERational.Create(
-numeratorSmall,
-denominatorSmall));
+  ERational.Create(
+  numeratorSmall,
+  denominatorSmall));
     }
 
     /**
@@ -204,8 +204,8 @@ denominatorSmall));
      * {@code denominator} is null.
      */
     public static ExtendedRational Create(
-BigInteger numerator,
-BigInteger denominator) {
+  BigInteger numerator,
+  BigInteger denominator) {
       if (numerator == null) {
         throw new NullPointerException("numerator");
       }
@@ -213,9 +213,9 @@ BigInteger denominator) {
         throw new NullPointerException("denominator");
       }
       return new ExtendedRational(
-ERational.Create(
-numerator.getEi(),
-denominator.getEi()));
+  ERational.Create(
+  numerator.getEi(),
+  denominator.getEi()));
     }
 
     /**

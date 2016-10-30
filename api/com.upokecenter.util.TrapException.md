@@ -2,8 +2,8 @@
 
     @Deprecated public class TrapException extends ArithmeticException
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.</div>
 
 ## Methods
 

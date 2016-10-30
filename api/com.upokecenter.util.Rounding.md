@@ -2,8 +2,8 @@
 
     @Deprecated public enum Rounding extends Enum<Rounding>
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use ERounding from PeterO.Numbers/com.upokecenter.numbers.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use ERounding from PeterO.Numbers/com.upokecenter.numbers.</div>
 
 ## Enum Constants
 

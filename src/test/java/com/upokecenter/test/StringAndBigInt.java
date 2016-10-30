@@ -1,6 +1,7 @@
 package com.upokecenter.test;
 
 import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
 
   final class StringAndBigInt {
     private static final String ValueDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -20,21 +21,21 @@ import com.upokecenter.numbers.*;
         return this.bigintValue;
       }
 
-    public static StringAndBigInt Generate(FastRandom rand, int radix) {
+    public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
       if (radix < 2) {
   throw new IllegalArgumentException("radix (" + radix +
-    ") is less than " + 2);
+    ") is less than 2");
 }
 if (radix > 36) {
   throw new IllegalArgumentException("radix (" + radix +
-    ") is more than " + 36);
+    ") is more than 36");
 }
       EInteger bv = EInteger.FromInt32(0);
       StringAndBigInt sabi = new StringAndBigInt();
-      int numDigits = 1 + rand.NextValue(100);
+      int numDigits = 1 + rand.UniformInt(100);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
-      if (rand.NextValue(2) == 0) {
+      if (rand.UniformInt(2) == 0) {
         builder.append('-');
         negative = true;
       }
@@ -43,7 +44,7 @@ if (radix > 36) {
       EInteger radixpow1 = EInteger.FromInt32(radix);
       int count = 0;
       for (int i = 0; i < numDigits - 4; i += 4) {
-        int digitvalues = rand.NextValue(radixpowint);
+        int digitvalues = rand.UniformInt(radixpowint);
         int digit = digitvalues % radix;
         digitvalues /= radix;
         int digit2 = digitvalues % radix;
@@ -53,7 +54,7 @@ if (radix > 36) {
         int digit4 = digitvalues % radix;
         digitvalues /= radix;
         count += 4;
-        int bits = rand.NextValue(16);
+        int bits = rand.UniformInt(16);
         if ((bits & 0x01) == 0) {
           builder.append(ValueDigits.charAt(digit));
         } else {
@@ -81,8 +82,8 @@ if (radix > 36) {
         bv = bv.Add(bigintTmp);
       }
       for (int i = count; i < numDigits; ++i) {
-        int digit = rand.NextValue(radix);
-        if (rand.NextValue(2) == 0) {
+        int digit = rand.UniformInt(radix);
+        if (rand.UniformInt(2) == 0) {
           builder.append(ValueDigits.charAt(digit));
         } else {
           builder.append(ValueDigitsLower.charAt(digit));

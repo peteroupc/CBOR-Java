@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -59,7 +59,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestEInteger() {
-      FastRandom r = new FastRandom();
+      RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
         EInteger bi = RandomObjects.RandomEInteger(r);
         CBORTestCommon.AssertSer(
@@ -72,13 +72,13 @@ import com.upokecenter.numbers.*;
       }
       EInteger[] ranges = {
        EInteger.FromString("-9223372036854776320"),
-EInteger.FromString("-9223372036854775296"),
-EInteger.FromString("-512"),
-EInteger.FromString("512"),
-EInteger.FromString("9223372036854775295"),
-EInteger.FromString("9223372036854776319"),
-EInteger.FromString("18446744073709551103"),
-EInteger.FromString("18446744073709552127")
+  EInteger.FromString("-9223372036854775296"),
+  EInteger.FromString("-512"),
+  EInteger.FromString("512"),
+  EInteger.FromString("9223372036854775295"),
+  EInteger.FromString("9223372036854776319"),
+  EInteger.FromString("18446744073709551103"),
+  EInteger.FromString("18446744073709552127")
       };
       for (int i = 0; i < ranges.length; i += 2) {
         EInteger bigintTemp = ranges[i];
@@ -105,14 +105,14 @@ EInteger.FromString("18446744073709552127")
         0x66,
         0x55  });
       Assert.assertEquals(
-EInteger.FromRadixString("88776655", 16),
-o.AsEInteger());
+  EInteger.FromRadixString("88776655", 16),
+  o.AsEInteger());
       o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x47, (byte)0x88, 0x77,
         0x66,
         0x55, 0x44, 0x33, 0x22  });
       Assert.assertEquals(
-EInteger.FromRadixString("88776655443322", 16),
-o.AsEInteger());
+  EInteger.FromRadixString("88776655443322", 16),
+  o.AsEInteger());
     }
 
     @Test
@@ -156,7 +156,7 @@ o.AsEInteger());
 
     @Test
     public void TestCanFitIn() {
-      FastRandom r = new FastRandom();
+      RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
         CBORObject ed = CBORTestCommon.RandomNumber(r);
         EDecimal ed2;
@@ -205,8 +205,8 @@ o.AsEInteger());
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
         0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a  });  // 2217361768.63373
       Assert.assertEquals(
-EInteger.FromString("2217361768"),
-cbor.AsEInteger());
+  EInteger.FromString("2217361768"),
+  cbor.AsEInteger());
       if (cbor.AsEInteger().GetSignedBitLength() <= 31)Assert.fail();
       if (cbor.CanTruncatedIntFitInInt32())Assert.fail();
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
@@ -502,7 +502,7 @@ cbor.AsEInteger());
 
     @Test
     public void TestDivide() {
-      FastRandom r = new FastRandom();
+      RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 =
           CBORObject.FromObject(RandomObjects.RandomEInteger(r));
@@ -514,8 +514,8 @@ cbor.AsEInteger());
         {
           ERational objectTemp = er;
           ERational objectTemp2 = CBORObject.Divide(
-o1,
-o2).AsERational();
+  o1,
+  o2).AsERational();
           TestCommon.CompareTestEqual(objectTemp, objectTemp2);
         }
       }
@@ -561,9 +561,9 @@ o2).AsERational();
         .Add("array", CBORObject.NewArray().Add(999f).Add("xyz"))
         .Add("bytes", new byte[] { 0, 1, 2  });
       // The following converts the map to CBOR
-      byte[] bytes = cbor.EncodeToBytes();
+      cbor.EncodeToBytes();
       // The following converts the map to JSON
-      String json = cbor.ToJSONString();
+      cbor.ToJSONString();
     }
 
     @Test(timeout = 5000)
@@ -842,7 +842,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestParseDecimalStrings() {
-      FastRandom rand = new FastRandom();
+      RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
         String r = RandomObjects.RandomDecimalString(rand);
         TestDecimalString(r);
@@ -851,7 +851,7 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
 
     @Test(timeout = 50000)
     public void TestRandomData() {
-      FastRandom rand = new FastRandom();
+      RandomGenerator rand = new RandomGenerator();
       CBORObject obj;
       for (int i = 0; i < 1000; ++i) {
         obj = CBORTestCommon.RandomCBORObject(rand);
@@ -862,18 +862,18 @@ try { if (ms2b != null)ms2b.close(); } catch (java.io.IOException ex) {}
 
     @Test(timeout = 50000)
     public void TestRandomNonsense() {
-      FastRandom rand = new FastRandom();
+      RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 200; ++i) {
-        byte[] array = new byte[rand.NextValue(1000000) + 1];
+        byte[] array = new byte[rand.UniformInt(1000000) + 1];
         for (int j = 0; j < array.length; ++j) {
           if (j + 3 <= array.length) {
-            int r = rand.NextValue(0x1000000);
+            int r = rand.UniformInt(0x1000000);
             array[j] = (byte)(r & 0xff);
             array[j + 1] = (byte)((r >> 8) & 0xff);
             array[j + 2] = (byte)((r >> 16) & 0xff);
             j += 2;
           } else {
-            array[j] = (byte)rand.NextValue(256);
+            array[j] = (byte)rand.UniformInt(256);
           }
         }
         {
@@ -922,16 +922,16 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test(timeout = 20000)
     public void TestRandomSlightlyModified() {
-      FastRandom rand = new FastRandom();
+      RandomGenerator rand = new RandomGenerator();
       // Test slightly modified objects
       for (int i = 0; i < 200; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
         // System.out.println(originalObject);
-        int count2 = rand.NextValue(10) + 1;
+        int count2 = rand.UniformInt(10) + 1;
         for (int j = 0; j < count2; ++j) {
-          int index = rand.NextValue(array.length);
-          array[index] = ((byte)rand.NextValue(256));
+          int index = rand.UniformInt(array.length);
+          array[index] = ((byte)rand.UniformInt(256));
         }
         {
 java.io.ByteArrayInputStream inputStream = null;
@@ -980,7 +980,7 @@ try { if (inputStream != null)inputStream.close(); } catch (java.io.IOException 
 
     @Test
     public void TestReadWriteInt() {
-      FastRandom r = new FastRandom();
+      RandomGenerator r = new RandomGenerator();
       try {
         for (int i = 0; i < 100000; ++i) {
           int val = ((int)RandomObjects.RandomInt64(r));
@@ -1058,7 +1058,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestSubtract() {
-      FastRandom r = new FastRandom();
+      RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
@@ -1086,7 +1086,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         TestCommon.AssertEqualsHashCode(o, o2);
         o =
   CBORObject.FromObject(EInteger.FromString(
-"999999999999999999999999999999999"));
+  "999999999999999999999999999999999"));
         o2 = CBORObject.FromObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.FromObjectAndTag(o, i + 1);
@@ -1147,11 +1147,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         EInteger.FromString("37"),
         EInteger.FromString("65539"),
        EInteger.FromString("2147483147"),
-EInteger.FromString("2147484147"),
-EInteger.FromString("9223372036854775307"),
-EInteger.FromString("9223372036854776307"),
-EInteger.FromString("18446744073709551115"),
-EInteger.FromString("18446744073709551615") };
+  EInteger.FromString("2147484147"),
+  EInteger.FromString("9223372036854775307"),
+  EInteger.FromString("9223372036854776307"),
+  EInteger.FromString("18446744073709551115"),
+  EInteger.FromString("18446744073709551615") };
       if (CBORObject.True.isTagged())Assert.fail();
       CBORObject trueObj = CBORObject.True;
       Assert.assertEquals(
@@ -1205,13 +1205,13 @@ EInteger.FromString("18446744073709551615") };
             }
             bigintNew = bigintNext;
             TestCommon.CompareTestEqualAndConsistent(
-bi[0],
-bigintNew,
-"Outer tag doesn't match");
+  bi[0],
+  bigintNew,
+  "Outer tag doesn't match");
             TestCommon.CompareTestEqualAndConsistent(
-bi[1],
-bigintTemp,
-"Inner tag doesn't match");
+  bi[1],
+  bigintTemp,
+  "Inner tag doesn't match");
             if (!obj2.getMostInnerTag().equals((Object)bigintTemp)) {
               {
                 String stringTemp = "Innermost tag doesn't match: " + obj2;

@@ -81,15 +81,15 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       {
 String stringTemp = beo.get(1).AsString();
 Assert.assertEquals(
-"two",
-stringTemp);
+  "two",
+  stringTemp);
 }
       Assert.assertEquals(3, beo.get(2).AsInt64());
       {
 String stringTemp = beo.get(3).AsString();
 Assert.assertEquals(
-"four",
-stringTemp);
+  "four",
+  stringTemp);
 }
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
@@ -98,15 +98,15 @@ stringTemp);
       {
 String stringTemp = beo.get(1).AsString();
 Assert.assertEquals(
-"two",
-stringTemp);
+  "two",
+  stringTemp);
 }
       Assert.assertEquals(3, beo.get(2).AsInt64());
       {
 String stringTemp = beo.get(3).AsString();
 Assert.assertEquals(
-"four",
-stringTemp);
+  "four",
+  stringTemp);
 }
     }
 
@@ -122,15 +122,15 @@ stringTemp);
       {
 String stringTemp = beo.get("one").AsString();
 Assert.assertEquals(
-"two",
-stringTemp);
+  "two",
+  stringTemp);
 }
       Assert.assertEquals(3, beo.get("two").AsInt64());
       {
 String stringTemp = beo.get("three").AsString();
 Assert.assertEquals(
-"four",
-stringTemp);
+  "four",
+  stringTemp);
 }
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
@@ -139,15 +139,15 @@ stringTemp);
       {
 String stringTemp = beo.get("one").AsString();
 Assert.assertEquals(
-"two",
-stringTemp);
+  "two",
+  stringTemp);
 }
       Assert.assertEquals(3, beo.get("two").AsInt64());
       {
 String stringTemp = beo.get("three").AsString();
 Assert.assertEquals(
-"four",
-stringTemp);
+  "four",
+  stringTemp);
 }
     }
 

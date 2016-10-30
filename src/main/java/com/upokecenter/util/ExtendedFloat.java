@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import com.upokecenter.numbers.*;
@@ -176,8 +176,8 @@ import com.upokecenter.numbers.*;
      * {@code exponent} is null.
      */
     public static ExtendedFloat Create(
-BigInteger mantissa,
-BigInteger exponent) {
+  BigInteger mantissa,
+  BigInteger exponent) {
       if (mantissa == null) {
         throw new NullPointerException("mantissa");
       }
@@ -227,10 +227,10 @@ BigInteger exponent) {
  */
 @Deprecated
     public static ExtendedFloat FromString(
-String str,
-int offset,
-int length,
-PrecisionContext ctx) {
+  String str,
+  int offset,
+  int length,
+  PrecisionContext ctx) {
       try {
         return new ExtendedFloat(
   EFloat.FromString(

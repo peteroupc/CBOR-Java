@@ -4,7 +4,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -48,8 +48,8 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
     }
 
     public CBORObject ReadForFirstByte(
-int firstbyte,
-CBORTypeFilter filter) throws java.io.IOException {
+  int firstbyte,
+  CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -202,8 +202,8 @@ ms = new java.io.ByteArrayOutputStream();
             }
             data = ms.toByteArray();
             return new CBORObject(
-CBORObject.CBORObjectTypeByteString,
-data);
+  CBORObject.CBORObjectTypeByteString,
+  data);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
@@ -250,11 +250,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                 throw new CBORException("Premature end of data");
               }
               switch (
-DataUtilities.ReadUtf8(
-this.stream,
-(int)len,
-builder,
-false)) {
+  DataUtilities.ReadUtf8(
+  this.stream,
+  (int)len,
+  builder,
+  false)) {
                 case -1:
                   throw new CBORException("Invalid UTF-8");
                 case -2:
@@ -282,19 +282,19 @@ false)) {
           }
           StringBuilder builder = new StringBuilder();
           switch (
-DataUtilities.ReadUtf8(
-this.stream,
-(int)uadditional,
-builder,
-false)) {
+  DataUtilities.ReadUtf8(
+  this.stream,
+  (int)uadditional,
+  builder,
+  false)) {
             case -1:
               throw new CBORException("Invalid UTF-8");
             case -2:
               throw new CBORException("Premature end of data");
           }
           CBORObject cbor = new CBORObject(
-CBORObject.CBORObjectTypeTextString,
-builder.toString());
+  CBORObject.CBORObjectTypeTextString,
+  builder.toString());
           if (this.stringRefs != null) {
             int hint = (uadditional > Integer.MAX_VALUE || hasBigAdditional) ?
             Integer.MAX_VALUE : (int)uadditional;
@@ -326,8 +326,8 @@ builder.toString());
             }
             ++this.depth;
             CBORObject o = this.ReadForFirstByte(
-headByte,
-filter == null ? null : filter.GetSubFilter(vtindex));
+  headByte,
+  filter == null ? null : filter.GetSubFilter(vtindex));
             --this.depth;
             cbor.Add(o);
             ++vtindex;
@@ -474,8 +474,8 @@ filter == null ? null : filter.GetSubFilter(vtindex));
         }
         ++this.depth;
         CBORObject o = haveFirstByte ? this.ReadForFirstByte(
-newFirstByte,
-taginfo == null ? null : taginfo.GetTypeFilter()) :
+  newFirstByte,
+  taginfo == null ? null : taginfo.GetTypeFilter()) :
         this.Read(taginfo == null ? null : taginfo.GetTypeFilter());
         --this.depth;
         if (hasBigAdditional) {
@@ -521,9 +521,9 @@ taginfo == null ? null : taginfo.GetTypeFilter()) :
     }
 
     private static byte[] ReadByteData(
-InputStream stream,
-long uadditional,
-OutputStream outputStream) throws java.io.IOException {
+  InputStream stream,
+  long uadditional,
+  OutputStream outputStream) throws java.io.IOException {
       if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
         throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
           " is bigger than supported ");
@@ -579,9 +579,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     private static long ReadDataLength(
-InputStream stream,
-int headByte,
-int expectedType) throws java.io.IOException {
+  InputStream stream,
+  int headByte,
+  int expectedType) throws java.io.IOException {
       if (headByte < 0) {
         throw new CBORException("Unexpected data encountered");
       }

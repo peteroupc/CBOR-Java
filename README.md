@@ -3,7 +3,7 @@ CBOR
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.upokecenter/cbor.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22cbor%22)
 
-If you like this software, consider donating to me at this link: [http://upokecenter.dreamhosters.com/articles/donate-now-2/](http://upokecenter.dreamhosters.com/articles/donate-now-2/)
+If you like this software, consider donating to me at this link: [http://peteroupc.github.io/](http://peteroupc.github.io/)
 
 ----
 

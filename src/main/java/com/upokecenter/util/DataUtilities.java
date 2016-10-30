@@ -4,7 +4,7 @@ Written in 2013 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -74,10 +74,10 @@ private DataUtilities() {
      * greater than the length of "data" .
      */
     public static String GetUtf8String(
-byte[] bytes,
-int offset,
-int bytesCount,
-boolean replace) {
+  byte[] bytes,
+  int offset,
+  int bytesCount,
+  boolean replace) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
@@ -139,9 +139,9 @@ boolean replace) {
      * occurred.
      */
     public static byte[] GetUtf8Bytes(
-String str,
-boolean replace,
-boolean lenientLineBreaks) {
+  String str,
+  boolean replace,
+  boolean lenientLineBreaks) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -271,9 +271,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(
-String str,
-int index,
-int surrogateBehavior) {
+  String str,
+  int index,
+  int surrogateBehavior) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -326,9 +326,9 @@ int surrogateBehavior) {
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(
-String str,
-int index,
-int surrogateBehavior) {
+  String str,
+  int index,
+  int surrogateBehavior) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -473,11 +473,11 @@ int surrogateBehavior) {
      * @throws java.io.IOException An I/O error occurred.
      */
     public static int WriteUtf8(
-String str,
-int offset,
-int length,
-OutputStream stream,
-boolean replace) throws java.io.IOException {
+  String str,
+  int offset,
+  int length,
+  OutputStream stream,
+  boolean replace) throws java.io.IOException {
       return WriteUtf8(str, offset, length, stream, replace, false);
     }
 
@@ -503,12 +503,12 @@ boolean replace) throws java.io.IOException {
      * @throws java.io.IOException An I/O error occurred.
      */
     public static int WriteUtf8(
-String str,
-int offset,
-int length,
-OutputStream stream,
-boolean replace,
-boolean lenientLineBreaks) throws java.io.IOException {
+  String str,
+  int offset,
+  int length,
+  OutputStream stream,
+  boolean replace,
+  boolean lenientLineBreaks) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -673,11 +673,11 @@ boolean lenientLineBreaks) throws java.io.IOException {
      * greater than the length of {@code data}.
      */
     public static int ReadUtf8FromBytes(
-byte[] data,
-int offset,
-int bytesCount,
-StringBuilder builder,
-boolean replace) {
+  byte[] data,
+  int offset,
+  int bytesCount,
+  StringBuilder builder,
+  boolean replace) {
       if (data == null) {
         throw new NullPointerException("data");
       }
@@ -811,9 +811,9 @@ boolean replace) {
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
     public static String ReadUtf8ToString(
-InputStream stream,
-int bytesCount,
-boolean replace) throws java.io.IOException {
+  InputStream stream,
+  int bytesCount,
+  boolean replace) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
         throw new IOException(
@@ -842,10 +842,10 @@ boolean replace) throws java.io.IOException {
      * {@code builder} is null.
      */
     public static int ReadUtf8(
-InputStream stream,
-int bytesCount,
-StringBuilder builder,
-boolean replace) throws java.io.IOException {
+  InputStream stream,
+  int bytesCount,
+  StringBuilder builder,
+  boolean replace) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }

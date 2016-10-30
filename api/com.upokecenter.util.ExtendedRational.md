@@ -2,9 +2,9 @@
 
     @Deprecated public final class ExtendedRational extends Object implements Comparable<ExtendedRational>
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</div>
 
 ## Fields
 
@@ -80,7 +80,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 ### NaN
     @Deprecated public static final ExtendedRational NaN
-Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ### NegativeInfinity
     public static final ExtendedRational NegativeInfinity
 Deprecated.&nbsp;
@@ -95,7 +95,7 @@ Deprecated.&nbsp;
 Deprecated.&nbsp;
 ### SignalingNaN
     @Deprecated public static final ExtendedRational SignalingNaN
-Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ### Ten
     public static final ExtendedRational Ten
 Deprecated.&nbsp;
@@ -114,7 +114,7 @@ Deprecated.&nbsp;
 
 ### isFinite
     @Deprecated public final boolean isFinite()
-Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -131,7 +131,7 @@ Deprecated.&nbsp;
 
 ### isZero
     @Deprecated public final boolean isZero()
-Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -149,7 +149,7 @@ Deprecated.&nbsp;
 
 ### signum
     @Deprecated public final int signum()
-Deprecated.&nbsp;<i>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 

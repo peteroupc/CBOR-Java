@@ -4,7 +4,7 @@ Written in 2014 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import java.io.*;
@@ -37,9 +37,9 @@ import java.io.*;
     // <include file='../../docs.xml'
     // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean,System.Boolean)"]/*'/>
   public CharacterReader(
-String str,
-boolean skipByteOrderMark,
-boolean errorThrow) {
+  String str,
+  boolean skipByteOrderMark,
+  boolean errorThrow) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -62,17 +62,17 @@ boolean errorThrow) {
     // <include file='../../docs.xml'
     // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)"]/*'/>
     public CharacterReader(
-String str,
-int offset,
-int length,
-boolean skipByteOrderMark,
-boolean errorThrow) {
+  String str,
+  int offset,
+  int length,
+  boolean skipByteOrderMark,
+  boolean errorThrow) {
       if (str == null) {
   throw new NullPointerException("str");
 }
 if (offset < 0) {
   throw new IllegalArgumentException("offset (" + offset +
-    ") is less than " + 0);
+    ") is less than 0");
 }
 if (offset > str.length()) {
   throw new IllegalArgumentException("offset (" + offset +
@@ -80,7 +80,7 @@ if (offset > str.length()) {
 }
 if (length < 0) {
   throw new IllegalArgumentException("length (" + length +
-    ") is less than " + 0);
+    ") is less than 0");
 }
 if (length > str.length()) {
   throw new IllegalArgumentException("length (" + length +
@@ -121,10 +121,10 @@ if (str.length() - offset < length) {
     // <include file='../../docs.xml'
     // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean,System.Boolean)"]/*'/>
     public CharacterReader(
-InputStream stream,
-int mode,
-boolean errorThrow,
-boolean dontSkipUtf8Bom) {
+  InputStream stream,
+  int mode,
+  boolean errorThrow,
+  boolean dontSkipUtf8Bom) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -148,7 +148,7 @@ boolean dontSkipUtf8Bom) {
       }
       if (index < 0) {
         throw new IllegalArgumentException("index (" + index +
-          ") is less than " + 0);
+          ") is less than 0");
       }
       if (index > chars.length) {
         throw new IllegalArgumentException("index (" + index +
@@ -156,7 +156,7 @@ boolean dontSkipUtf8Bom) {
       }
       if (length < 0) {
         throw new IllegalArgumentException("length (" + length +
-          ") is less than " + 0);
+          ") is less than 0");
       }
       if (length > chars.length) {
         throw new IllegalArgumentException("length (" + length +
@@ -226,9 +226,9 @@ boolean dontSkipUtf8Bom) {
             return this.reader.ReadChar();
           } else {
       Utf16Reader newReader = new Utf16Reader(
-this.stream,
-bigEndian,
-this.errorThrow);
+  this.stream,
+  bigEndian,
+  this.errorThrow);
             newReader.Unget(c3, c4);
             this.reader = newReader;
             return newReader.ReadChar();
@@ -272,15 +272,15 @@ this.errorThrow);
             c4 = this.stream.read();
             if (c3 == 0 && c4 == 0) {
             this.reader = new Utf32Reader(
-this.stream,
-false,
-this.errorThrow);
+  this.stream,
+  false,
+  this.errorThrow);
               return c1;
             } else {
           Utf16Reader newReader = new Utf16Reader(
-this.stream,
-false,
-this.errorThrow);
+  this.stream,
+  false,
+  this.errorThrow);
               newReader.Unget(c3, c4);
               this.reader = newReader;
               return c1;
@@ -341,9 +341,9 @@ this.errorThrow);
         int otherbyte = bigEndian ? 0xff : 0xfe;
         if (c2 == otherbyte) {
       Utf16Reader newReader = new Utf16Reader(
-this.stream,
-bigEndian,
-this.errorThrow);
+  this.stream,
+  bigEndian,
+  this.errorThrow);
           this.reader = newReader;
           return newReader.ReadChar();
         }
@@ -363,9 +363,9 @@ this.errorThrow);
           if (c2 == 0) {
             // NZA 0, so UTF-16LE
           Utf16Reader newReader = new Utf16Reader(
-this.stream,
-false,
-this.errorThrow);
+  this.stream,
+  false,
+  this.errorThrow);
             this.reader = newReader;
           } else {
             // NZA NZ

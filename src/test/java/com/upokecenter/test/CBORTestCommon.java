@@ -29,18 +29,18 @@ private CBORTestCommon() {
     static final ERational RatNegInf =
       ERational.NegativeInfinity;
 
-    public static CBORObject RandomNumber(FastRandom rand) {
-      switch (rand.NextValue(6)) {
+    public static CBORObject RandomNumber(RandomGenerator rand) {
+      switch (rand.UniformInt(6)) {
         case 0:
 return CBORObject.FromObject(
-RandomObjects.RandomDouble(
-rand,
-Integer.MAX_VALUE));
+  RandomObjects.RandomDouble(
+  rand,
+  Integer.MAX_VALUE));
         case 1:
 return CBORObject.FromObject(
-RandomObjects.RandomSingle(
-rand,
-Integer.MAX_VALUE));
+  RandomObjects.RandomSingle(
+  rand,
+  Integer.MAX_VALUE));
         case 2:
           return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
         case 3:
@@ -54,18 +54,18 @@ Integer.MAX_VALUE));
       }
     }
 
-    public static CBORObject RandomNumberOrRational(FastRandom rand) {
-      switch (rand.NextValue(7)) {
+    public static CBORObject RandomNumberOrRational(RandomGenerator rand) {
+      switch (rand.UniformInt(7)) {
         case 0:
 return CBORObject.FromObject(
-RandomObjects.RandomDouble(
-rand,
-Integer.MAX_VALUE));
+  RandomObjects.RandomDouble(
+  rand,
+  Integer.MAX_VALUE));
         case 1:
 return CBORObject.FromObject(
-RandomObjects.RandomSingle(
-rand,
-Integer.MAX_VALUE));
+  RandomObjects.RandomSingle(
+  rand,
+  Integer.MAX_VALUE));
         case 2:
           return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
         case 3:
@@ -76,13 +76,13 @@ Integer.MAX_VALUE));
         case 5:
           return CBORObject.FromObject(RandomObjects.RandomInt64(rand));
         case 6:
-          return CBORObject.FromObject(RandomObjects.RandomRational(rand));
+          return CBORObject.FromObject(RandomObjects.RandomERational(rand));
         default: throw new IllegalArgumentException();
       }
     }
 
-    public static CBORObject RandomCBORMap(FastRandom rand, int depth) {
-      int x = rand.NextValue(100);
+    public static CBORObject RandomCBORMap(RandomGenerator rand, int depth) {
+      int x = rand.UniformInt(100);
       int count = (x < 80) ? 2 : ((x < 93) ? 1 : ((x < 98) ? 0 : 10));
       CBORObject cborRet = CBORObject.NewMap();
       for (int i = 0; i < count; ++i) {
@@ -94,15 +94,15 @@ Integer.MAX_VALUE));
     }
 
     public static CBORObject RandomCBORTaggedObject(
-      FastRandom rand,
+      RandomGenerator rand,
       int depth) {
       int tag = 0;
-      if (rand.NextValue(2) == 0) {
+      if (rand.UniformInt(2) == 0) {
         int[] tagselection = { 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
           30, 0, 1, 25, 26, 27 };
-        tag = tagselection[rand.NextValue(tagselection.length)];
+        tag = tagselection[rand.UniformInt(tagselection.length)];
       } else {
-        tag = rand.NextValue(0x1000000);
+        tag = rand.UniformInt(0x1000000);
       }
       if (tag == 25) {
         tag = 0;
@@ -141,8 +141,8 @@ Integer.MAX_VALUE));
       return CBORObject.Null;
     }
 
-    public static CBORObject RandomCBORArray(FastRandom rand, int depth) {
-      int x = rand.NextValue(100);
+    public static CBORObject RandomCBORArray(RandomGenerator rand, int depth) {
+      int x = rand.UniformInt(100);
       int count = (x < 80) ? 2 : ((x < 93) ? 1 : ((x < 98) ? 0 : 10));
       CBORObject cborRet = CBORObject.NewArray();
       for (int i = 0; i < count; ++i) {
@@ -151,12 +151,12 @@ Integer.MAX_VALUE));
       return cborRet;
     }
 
-    public static CBORObject RandomCBORObject(FastRandom rand) {
+    public static CBORObject RandomCBORObject(RandomGenerator rand) {
       return RandomCBORObject(rand, 0);
     }
 
-    public static CBORObject RandomCBORObject(FastRandom rand, int depth) {
-      int nextval = rand.NextValue(11);
+    public static CBORObject RandomCBORObject(RandomGenerator rand, int depth) {
+      int nextval = rand.UniformInt(11);
       switch (nextval) {
         case 0:
         case 1:
@@ -164,9 +164,9 @@ Integer.MAX_VALUE));
         case 3:
           return RandomNumberOrRational(rand);
         case 4:
-          return rand.NextValue(2) == 0 ? CBORObject.True : CBORObject.False;
+          return rand.UniformInt(2) == 0 ? CBORObject.True : CBORObject.False;
         case 5:
-          return rand.NextValue(2) == 0 ? CBORObject.Null :
+          return rand.UniformInt(2) == 0 ? CBORObject.Null :
             CBORObject.Undefined;
         case 6:
           return CBORObject.FromObject(RandomObjects.RandomTextString(rand));

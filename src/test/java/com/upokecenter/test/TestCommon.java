@@ -4,7 +4,7 @@ Written in 2013-2016 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
+at: http://peteroupc.github.io/
  */
 
 import org.junit.Assert;
@@ -31,7 +31,7 @@ private TestCommon() {
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
           Assert.fail(
-"" + o + " equals " + o2 + " but not vice versa");
+  "" + o + " equals " + o2 + " but not vice versa");
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -39,7 +39,7 @@ private TestCommon() {
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
           Assert.fail(
-"" + o + " and " + o2 + " don't have equal hash codes");
+  "" + o + " and " + o2 + " don't have equal hash codes");
         }
       } else {
         if (o2.equals(o)) {
@@ -107,9 +107,9 @@ private TestCommon() {
     }
 
     public static <T extends Comparable<T>> void CompareTestEqualAndConsistent(
-T o1,
-T o2,
-String msg) {
+  T o1,
+  T o2,
+  String msg) {
       if (CompareTestReciprocal(o1, o2) != 0) {
         msg = (msg == null ? "" : (msg + "\r\n")) +
           "Not equal: " + CompareTestReciprocal(o1, o2);

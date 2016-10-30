@@ -233,6 +233,8 @@ Use the EInteger version of this method.
  Generates a CBOR object from a 64-bit floating-point number.
 * `static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)`<br>
  Generates a CBOR object from an arbitrary-precision integer.
+* `static CBORObject FromObject(com.upokecenter.numbers.ERational bigValue)`<br>
+ Generates a CBOR object from a rational number.
 * `static CBORObject FromObject(ExtendedDecimal otherValue)`<br>
  Deprecated.
 Use the EDecimal version of this method instead.
@@ -259,7 +261,7 @@ Use the ERational version of this method instead.
  Generates a CBOR object from a 64-bit signed integer.
 * `static CBORObject FromObject(long[] array)`<br>
  Generates a CBOR object from an array of 64-bit integers.
-* `static <TKey,TValue> CBORObject FromObject(Map<TKey,TValue> dic)`<br>
+* `static <TKey,TValue>CBORObject FromObject(Map<TKey,TValue> dic)`<br>
  Generates a CBOR object from a map of objects.
 * `static CBORObject FromObject(Object obj)`<br>
  Generates a CBORObject from an arbitrary object.
@@ -555,7 +557,7 @@ Gets the number of keys in this map, or the number of items in this array,
 
 ### getInnermostTag
     @Deprecated public final BigInteger getInnermostTag()
-Deprecated.&nbsp;<i>Use MostInnerTag instead.</i>
+Deprecated.&nbsp;Use MostInnerTag instead.
 
 **Returns:**
 
@@ -564,7 +566,7 @@ Deprecated.&nbsp;<i>Use MostInnerTag instead.</i>
 
 ### getOutermostTag
     @Deprecated public final BigInteger getOutermostTag()
-Deprecated.&nbsp;<i>Use MostOuterTag instead.</i>
+Deprecated.&nbsp;Use MostOuterTag instead.
 
 **Returns:**
 
@@ -832,7 +834,7 @@ Finds the sum of two CBOR numbers.
 
 ### AddTagHandler
     @Deprecated public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler)
-Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
+Deprecated.&nbsp;Use the EInteger version of this method.
 
 **Parameters:**
 
@@ -996,7 +998,7 @@ Generates a CBOR object from a CBOR object.
 
 ### FromObject
     @Deprecated public static CBORObject FromObject(BigInteger bigintValue)
-Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
+Deprecated.&nbsp;Use the EInteger version of this method.
 
 **Parameters:**
 
@@ -1020,7 +1022,7 @@ Generates a CBOR object from an arbitrary-precision integer.
 
 ### FromObject
     @Deprecated public static CBORObject FromObject(ExtendedFloat bigValue)
-Deprecated.&nbsp;<i>Use the EFloat version of this method instead.</i>
+Deprecated.&nbsp;Use the EFloat version of this method instead.
 
 **Parameters:**
 
@@ -1032,7 +1034,7 @@ Deprecated.&nbsp;<i>Use the EFloat version of this method instead.</i>
 
 ### FromObject
     @Deprecated public static CBORObject FromObject(ExtendedRational bigValue)
-Deprecated.&nbsp;<i>Use the ERational version of this method instead.</i>
+Deprecated.&nbsp;Use the ERational version of this method instead.
 
 **Parameters:**
 
@@ -1043,8 +1045,20 @@ Deprecated.&nbsp;<i>Use the ERational version of this method instead.</i>
 * A CBOR number.
 
 ### FromObject
+    public static CBORObject FromObject(com.upokecenter.numbers.ERational bigValue)
+Generates a CBOR object from a rational number.
+
+**Parameters:**
+
+* <code>bigValue</code> - A rational number.
+
+**Returns:**
+
+* A CBOR number.
+
+### FromObject
     @Deprecated public static CBORObject FromObject(ExtendedDecimal otherValue)
-Deprecated.&nbsp;<i>Use the EDecimal version of this method instead.</i>
+Deprecated.&nbsp;Use the EDecimal version of this method instead.
 
 **Parameters:**
 
@@ -1315,7 +1329,7 @@ Generates a CBORObject from an arbitrary object. The following types are
 
 ### FromObjectAndTag
     @Deprecated public static CBORObject FromObjectAndTag(Object valueOb, BigInteger bigintTag)
-Deprecated.&nbsp;<i>Use the EInteger version instead.</i>
+Deprecated.&nbsp;Use the EInteger version instead.
 
 **Parameters:**
 
@@ -1633,7 +1647,7 @@ Writes a string in CBOR format to a data stream.
 
 ### Write
     @Deprecated public static void Write(ExtendedFloat bignum, OutputStream stream) throws IOException
-Deprecated.&nbsp;<i>Pass an EFloat to the Write method instead.</i>
+Deprecated.&nbsp;Pass an EFloat to the Write method instead.
 
 **Parameters:**
 
@@ -1673,7 +1687,7 @@ Writes a binary floating-point number in CBOR format to a data stream as
 
 ### Write
     @Deprecated public static void Write(ExtendedRational rational, OutputStream stream) throws IOException
-Deprecated.&nbsp;<i>Pass an ERational to the Write method instead.</i>
+Deprecated.&nbsp;Pass an ERational to the Write method instead.
 
 **Parameters:**
 
@@ -1705,7 +1719,7 @@ Writes a rational number in CBOR format to a data stream.
 
 ### Write
     @Deprecated public static void Write(ExtendedDecimal bignum, OutputStream stream) throws IOException
-Deprecated.&nbsp;<i>Pass an EDecimal to the Write method instead.</i>
+Deprecated.&nbsp;Pass an EDecimal to the Write method instead.
 
 **Parameters:**
 
@@ -1745,7 +1759,7 @@ Writes a decimal floating-point number in CBOR format to a data stream, as
 
 ### Write
     @Deprecated public static void Write(BigInteger bigint, OutputStream stream) throws IOException
-Deprecated.&nbsp;<i>Pass an EInteger to this method instead.</i>
+Deprecated.&nbsp;Pass an EInteger to this method instead.
 
 **Parameters:**
 
@@ -2061,7 +2075,7 @@ Converts an object to a CBOR object and adds it to the end of this array.
 
 ### AsBigInteger
     @Deprecated public BigInteger AsBigInteger()
-Deprecated.&nbsp;<i>Use the AsEInteger method instead.</i>
+Deprecated.&nbsp;Use the AsEInteger method instead.
 
 **Returns:**
 
@@ -2133,7 +2147,7 @@ Converts this object to a 64-bit floating point number.
 
 ### AsExtendedDecimal
     @Deprecated public ExtendedDecimal AsExtendedDecimal()
-Deprecated.&nbsp;<i>Use AsEDecimal instead.</i>
+Deprecated.&nbsp;Use AsEDecimal instead.
 
 **Returns:**
 
@@ -2163,7 +2177,7 @@ Converts this object to a decimal number.
 
 ### AsExtendedFloat
     @Deprecated public ExtendedFloat AsExtendedFloat()
-Deprecated.&nbsp;<i>Use AsEFloat instead.</i>
+Deprecated.&nbsp;Use AsEFloat instead.
 
 **Returns:**
 
@@ -2199,7 +2213,7 @@ Converts this object to an arbitrary-precision binary floating point number.
 
 ### AsExtendedRational
     @Deprecated public ExtendedRational AsExtendedRational()
-Deprecated.&nbsp;<i>Use AsERational instead.</i>
+Deprecated.&nbsp;Use AsERational instead.
 
 **Returns:**
 
@@ -2542,7 +2556,7 @@ Calculates the hash code of this object. No application or process IDs are
 
 ### GetTags
     @Deprecated public BigInteger[] GetTags()
-Deprecated.&nbsp;<i>Use the GetAllTags method instead.</i>
+Deprecated.&nbsp;Use the GetAllTags method instead.
 
 **Returns:**
 
@@ -2577,7 +2591,7 @@ Returns whether this object has a tag of the given number.
 
 ### HasTag
     @Deprecated public boolean HasTag(BigInteger bigTagValue)
-Deprecated.&nbsp;<i>Use the EInteger version of this method.</i>
+Deprecated.&nbsp;Use the EInteger version of this method.
 
 **Parameters:**
 

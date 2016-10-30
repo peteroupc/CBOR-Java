@@ -2,9 +2,9 @@
 
     @Deprecated public final class BigInteger extends Object implements Comparable<BigInteger>
 
-<strong>Deprecated.</strong>&nbsp;
-<div class='block'><i>Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</i></div>
+Deprecated.&nbsp;
+<div class='block'>Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.</div>
 
 ## Fields
 
@@ -46,7 +46,7 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 
 ### ONE
     @Deprecated public static final BigInteger ONE
-Deprecated.&nbsp;<i>Use EInteger from PeterO.Numbers/com.upokecenter.numbers.</i>
+Deprecated.&nbsp;Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 ## Method Details
 
 ### fromBytes
