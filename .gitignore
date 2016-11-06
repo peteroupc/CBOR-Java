@@ -2,6 +2,7 @@
 *.Settings
 *.bat
 *.class
+*.jar
 *.log
 *.nupkg
 *.sdsettings
