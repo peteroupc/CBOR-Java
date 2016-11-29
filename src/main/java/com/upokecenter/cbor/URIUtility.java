@@ -361,7 +361,6 @@ private URIUtility() {
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
      * length minus {@code offset} is less than {@code length}.
-     * @throws java.lang.NullPointerException --.
      */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
@@ -447,9 +446,8 @@ private URIUtility() {
     }
 
     public static boolean isValidIRI(String s) {
-      return (
-  (
-  s == null) ? null : splitIRI(
+      return ((s == null) ?
+  null : splitIRI(
   s,
   0,
   s.length(),
