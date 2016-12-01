@@ -25,6 +25,7 @@ Help/
 ProfilingSessions/
 TestResults/
 bin/
+encoding/
 js/*.ht*
 js/DecTest.*
 obj/
