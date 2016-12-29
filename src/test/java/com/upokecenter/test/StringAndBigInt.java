@@ -1,7 +1,7 @@
 package com.upokecenter.test;
 
-import com.upokecenter.numbers.*;
 import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   final class StringAndBigInt {
     private static final String ValueDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -32,7 +32,7 @@ if (radix > 36) {
 }
       EInteger bv = EInteger.FromInt32(0);
       StringAndBigInt sabi = new StringAndBigInt();
-      int numDigits = 1 + rand.UniformInt(100);
+      int numDigits = 1 + rand.UniformInt(400);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
       if (rand.UniformInt(2) == 0) {

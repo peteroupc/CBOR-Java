@@ -499,8 +499,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                 this.sharedRefs.AddObject(o);
               }
               if (tagObject != null) {
-                tagObject.Redefine(o);
-                o = tagObject;
+              // TODO: Somehow implement sharable objects
+              // without relying on Redefine method
+              // tagObject.Redefine(o);
+              // o = tagObject;
               }
 
               break;

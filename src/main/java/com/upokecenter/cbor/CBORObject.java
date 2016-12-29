@@ -220,13 +220,14 @@ import com.upokecenter.numbers.*;
 
     private static CBORObject[] valueFixedObjects = InitializeFixedObjects();
 
-    private int itemtypeValue;
-    private Object itemValue;
-    private int tagHigh;
-    private int tagLow;
+    private final int itemtypeValue;
+    private final Object itemValue;
+    private final int tagHigh;
+    private final int tagLow;
 
     CBORObject(CBORObject obj, int tagLow, int tagHigh) {
- this(CBORObjectTypeTagged, obj);
+      this.itemtypeValue = CBORObjectTypeTagged;
+      this.itemValue = obj;
       this.tagLow = tagLow;
       this.tagHigh = tagHigh;
     }
@@ -234,6 +235,8 @@ import com.upokecenter.numbers.*;
     CBORObject(int type, Object item) {
       this.itemtypeValue = type;
       this.itemValue = item;
+      this.tagLow = 0;
+      this.tagHigh = 0;
     }
 
     /**
@@ -784,7 +787,9 @@ int startingAvailable = ms.available();
         return o;
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
     }
@@ -2380,13 +2385,13 @@ public static void Write(
           mapKey = CBORObject.Null;
         } else {
           mapKey = ((key instanceof CBORObject) ? (CBORObject)key : null);
-          mapKey = (mapKey == null) ? (CBORObject.FromObject(key)) : mapKey;
+mapKey = (mapKey == null) ? (CBORObject.FromObject(key)) : mapKey;
         }
         if (valueOb == null) {
           mapValue = CBORObject.Null;
         } else {
           mapValue = ((valueOb instanceof CBORObject) ? (CBORObject)valueOb : null);
-          mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
+mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
         }
         Map<CBORObject, CBORObject> map = this.AsMap();
         if (map.containsKey(mapKey)) {
@@ -3163,7 +3168,9 @@ ms = new java.io.ByteArrayOutputStream(16);
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new CBORException("I/O Error occurred", ex);
@@ -3432,7 +3439,7 @@ public boolean equals(CBORObject other) {
           mapValue = CBORObject.Null;
         } else {
           mapValue = ((valueOb instanceof CBORObject) ? (CBORObject)valueOb : null);
-          mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
+mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
         }
         list.add(index, mapValue);
       } else {
@@ -3563,13 +3570,13 @@ public boolean equals(CBORObject other) {
           mapKey = CBORObject.Null;
         } else {
           mapKey = ((key instanceof CBORObject) ? (CBORObject)key : null);
-          mapKey = (mapKey == null) ? (CBORObject.FromObject(key)) : mapKey;
+mapKey = (mapKey == null) ? (CBORObject.FromObject(key)) : mapKey;
         }
         if (valueOb == null) {
           mapValue = CBORObject.Null;
         } else {
           mapValue = ((valueOb instanceof CBORObject) ? (CBORObject)valueOb : null);
-          mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
+mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
         }
         Map<CBORObject, CBORObject> map = this.AsMap();
         if (map.containsKey(mapKey)) {
@@ -3681,7 +3688,7 @@ public boolean equals(CBORObject other) {
               }
               sb.append(simvalue);
             } else {
-              sb = (sb == null) ? ((new StringBuilder())) : sb;
+sb = (sb == null) ? ((new StringBuilder())) : sb;
               sb.append("simple(");
               int thisItemInt = ((Integer)this.getThisItem()).intValue();
               sb.append(
@@ -3739,7 +3746,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeByteString: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+sb = (sb == null) ? ((new StringBuilder())) : sb;
             sb.append("h'");
             CBORUtilities.ToBase16(sb, (byte[])this.getThisItem());
             sb.append("'");
@@ -3755,7 +3762,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeArray: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+sb = (sb == null) ? ((new StringBuilder())) : sb;
             boolean first = true;
             sb.append("[");
             for (CBORObject i : this.AsList()) {
@@ -3769,7 +3776,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeMap: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+sb = (sb == null) ? ((new StringBuilder())) : sb;
             boolean first = true;
             sb.append("{");
             Map<CBORObject, CBORObject> map = this.AsMap();
@@ -4136,13 +4143,13 @@ List<CBORObject> AsList() {
 Map<CBORObject, CBORObject> AsMap() {
       return (Map<CBORObject, CBORObject>)this.getThisItem();
     }
-
+    /*
     void Redefine(CBORObject cbor) {
       this.itemtypeValue = cbor.itemtypeValue;
       this.tagLow = cbor.tagLow;
       this.tagHigh = cbor.tagHigh;
       this.itemValue = cbor.itemValue;
-    }
+    } */
 
     private static boolean BigIntFits(EInteger bigint) {
       return bigint.GetSignedBitLength() <= 64;
@@ -4238,7 +4245,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       // how CBORObjects ought to be compared (since a stable
       // sort order is necessary for two equal maps to have the
       // same hash code), which is much too difficult to do.
-      return (a.size() * 19);
+      return a.size() * 19;
     }
 
     private static void CheckCBORLength(

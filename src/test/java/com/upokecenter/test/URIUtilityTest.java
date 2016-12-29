@@ -73,8 +73,7 @@ import com.upokecenter.cbor.*;
     }
 
     private static void assertIdempotencyNeg(String s) {
-      if (!(!(
-    (boolean)(Boolean)Reflect.InvokeStatic(
+      if (!(!((boolean)(Boolean)Reflect.InvokeStatic(
     URIUtilityName,
     "isValidIRI",
     s))))Assert.fail();

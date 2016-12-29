@@ -40,7 +40,9 @@ import com.upokecenter.numbers.*;
             }
           }
           ret += x;
-        }
+        } else {
+              throw new NumberFormatException();
+}
       }
       return neg ? -ret : ret;
     }
@@ -77,7 +79,9 @@ import com.upokecenter.numbers.*;
             }
           }
           ret += x;
-        }
+        } else {
+              throw new NumberFormatException();
+}
       }
       return neg ? -ret : ret;
     }
