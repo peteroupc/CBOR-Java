@@ -13,50 +13,50 @@ import com.upokecenter.util.*;
       // Generate illegal single bytes
       for (int i = 0x80; i <= 0xff; ++i) {
         if (i < 0xc2 || i > 0xf4) {
-          list.add(new byte[] { (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)i, (byte)0x80 });
         }
-        list.add(new byte[] { (byte)i  });
+        list.add(new byte[] { (byte)i });
       }
-      list.add(new byte[] { (byte)0xe0, (byte)0xa0  });
-      list.add(new byte[] { (byte)0xe1, (byte)0x80  });
-      list.add(new byte[] { (byte)0xef, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf0, (byte)0x90  });
-      list.add(new byte[] { (byte)0xf1, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf3, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf4, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80  });
-      list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80  });
+      list.add(new byte[] { (byte)0xe0, (byte)0xa0 });
+      list.add(new byte[] { (byte)0xe1, (byte)0x80 });
+      list.add(new byte[] { (byte)0xef, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf0, (byte)0x90 });
+      list.add(new byte[] { (byte)0xf1, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf3, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf4, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80 });
+      list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80 });
       // Generate illegal multibyte sequences
       for (int i = 0x00; i <= 0xff; ++i) {
         if (i < 0x80 || i > 0xbf) {
-          list.add(new byte[] { (byte)0xc2, (byte)i  });
-          list.add(new byte[] { (byte)0xdf, (byte)i  });
-          list.add(new byte[] { (byte)0xe1, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xef, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf1, (byte)i, (byte)0x80, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf3, (byte)i, (byte)0x80, (byte)0x80  });
-          list.add(new byte[] { (byte)0xe0, (byte)0xa0, (byte)i  });
-          list.add(new byte[] { (byte)0xe1, (byte)0x80, (byte)i  });
-          list.add(new byte[] { (byte)0xef, (byte)0x80, (byte)i  });
-          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)i, (byte)0x80  });
-          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)i  });
-          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80, (byte)i  });
-          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80, (byte)i  });
-          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80, (byte)i  });
+          list.add(new byte[] { (byte)0xc2, (byte)i });
+          list.add(new byte[] { (byte)0xdf, (byte)i });
+          list.add(new byte[] { (byte)0xe1, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xef, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf1, (byte)i, (byte)0x80, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf3, (byte)i, (byte)0x80, (byte)0x80 });
+          list.add(new byte[] { (byte)0xe0, (byte)0xa0, (byte)i });
+          list.add(new byte[] { (byte)0xe1, (byte)0x80, (byte)i });
+          list.add(new byte[] { (byte)0xef, (byte)0x80, (byte)i });
+          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)i, (byte)0x80 });
+          list.add(new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)i });
+          list.add(new byte[] { (byte)0xf1, (byte)0x80, (byte)0x80, (byte)i });
+          list.add(new byte[] { (byte)0xf3, (byte)0x80, (byte)0x80, (byte)i });
+          list.add(new byte[] { (byte)0xf4, (byte)0x80, (byte)0x80, (byte)i });
         }
         if (i < 0xa0 || i > 0xbf) {
-          list.add(new byte[] { (byte)0xe0, (byte)i, (byte)0x80  });
+          list.add(new byte[] { (byte)0xe0, (byte)i, (byte)0x80 });
         }
         if (i < 0x90 || i > 0xbf) {
-          list.add(new byte[] { (byte)0xf0, (byte)i, (byte)0x80, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf0, (byte)i, (byte)0x80, (byte)0x80 });
         }
         if (i < 0x80 || i > 0x8f) {
-          list.add(new byte[] { (byte)0xf4, (byte)i, (byte)0x80, (byte)0x80  });
+          list.add(new byte[] { (byte)0xf4, (byte)i, (byte)0x80, (byte)0x80 });
         }
       }
       return list;
@@ -230,37 +230,57 @@ import com.upokecenter.util.*;
   "\ud800")< 0) ? -1 : 1));
         Assert.assertEquals(1, numberTemp);
       }
-      if (!(DataUtilities.CodePointCompare("abc", "def") < 0))Assert.fail();
+      if (!(DataUtilities.CodePointCompare("abc", "def") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud800\udc00",
-          "a\ud900\udc00") < 0))Assert.fail();
+          "a\ud900\udc00") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud800\udc00",
-          "a\ud800\udc00") == 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0))Assert.fail();
+          "a\ud800\udc00") == 0)) {
+ Assert.fail();
+ }
+      if (!(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0)) {
+ Assert.fail();
+ }
+      if (!(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud800\udc00",
-          "a\ud800\udd00") < 0))Assert.fail();
+          "a\ud800\udd00") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud800\ufffd",
-          "a\ud800\udc00") < 0))Assert.fail();
+          "a\ud800\udc00") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud800\ud7ff",
-          "a\ud800\udc00") < 0))Assert.fail();
+          "a\ud800\udc00") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ufffd\udc00",
-          "a\ud800\udc00") < 0))Assert.fail();
+          "a\ud800\udc00") < 0)) {
+ Assert.fail();
+ }
       if (!(
         DataUtilities.CodePointCompare(
           "a\ud7ff\udc00",
-          "a\ud800\udc00") < 0))Assert.fail();
+          "a\ud800\udc00") < 0)) {
+ Assert.fail();
+ }
     }
 
     public static String Repeat(String c, int num) {
@@ -415,37 +435,37 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         DataUtilities.GetUtf8Bytes("\ud800\udc00", false));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd },
         DataUtilities.GetUtf8Bytes("\ud800", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd },
         DataUtilities.GetUtf8Bytes("\udc00", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, 88  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, 88 },
         DataUtilities.GetUtf8Bytes("\ud800X", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, 88  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, 88 },
         DataUtilities.GetUtf8Bytes("\udc00X", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd },
         DataUtilities.GetUtf8Bytes("\ud800\ud800", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd },
         DataUtilities.GetUtf8Bytes("\udc00\ud800", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         DataUtilities.GetUtf8Bytes("\udc00\ud800\udc00", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         DataUtilities.GetUtf8Bytes("\ud800\ud800\udc00", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd  },
+        new byte[] { (byte)0xef, (byte)0xbf, (byte)0xbd, (byte)0xef, (byte)0xbf, (byte)0xbd },
         DataUtilities.GetUtf8Bytes("\udc00\udc00", true));
       TestCommon.AssertByteArraysEqual(
-        new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         DataUtilities.GetUtf8Bytes("\ud800\udc00", false));
     }
     @Test
@@ -607,7 +627,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.GetUtf8String(new byte[] { 0  }, -1, 1, true);
+        DataUtilities.GetUtf8String(new byte[] { 0 }, -1, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -616,7 +636,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.GetUtf8String(new byte[] { 0  }, 2, 1, true);
+        DataUtilities.GetUtf8String(new byte[] { 0 }, 2, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -625,7 +645,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.GetUtf8String(new byte[] { 0  }, 0, -1, true);
+        DataUtilities.GetUtf8String(new byte[] { 0 }, 0, -1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -634,7 +654,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.GetUtf8String(new byte[] { 0  }, 0, 2, true);
+        DataUtilities.GetUtf8String(new byte[] { 0 }, 0, 2, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -643,7 +663,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.GetUtf8String(new byte[] { 0  }, 1, 1, true);
+        DataUtilities.GetUtf8String(new byte[] { 0 }, 1, 1, true);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -652,7 +672,7 @@ import com.upokecenter.util.*;
         throw new IllegalStateException("", ex);
       }
       String strtemp = DataUtilities.GetUtf8String(
-        new byte[] { 0x41, 0x42, 0x43  },
+        new byte[] { 0x41, 0x42, 0x43 },
         0,
         3,
         true);
@@ -661,7 +681,7 @@ import com.upokecenter.util.*;
         strtemp);
       {
         String stringTemp = DataUtilities.GetUtf8String(
-          new byte[] { 0x41, 0x42, 0x43, (byte)0x80  },
+          new byte[] { 0x41, 0x42, 0x43, (byte)0x80 },
           0,
           4,
           true);
@@ -671,7 +691,7 @@ import com.upokecenter.util.*;
       }
       try {
         DataUtilities.GetUtf8String(
-          new byte[] { 0x41, 0x42, 0x43, (byte)0x80  },
+          new byte[] { 0x41, 0x42, 0x43, (byte)0x80 },
           0,
           4,
           false);
@@ -694,7 +714,9 @@ import com.upokecenter.util.*;
           throw new IllegalStateException("", ex);
         }
         String strret = DataUtilities.GetUtf8String(seq, true);
-        if (!(strret.length() > 0))Assert.fail();
+        if (!(strret.length() > 0)) {
+ Assert.fail();
+ }
         Assert.assertEquals('\ufffd', strret.charAt(0));
         try {
           DataUtilities.GetUtf8String(seq, 0, seq.length, false);
@@ -706,7 +728,9 @@ import com.upokecenter.util.*;
           throw new IllegalStateException("", ex);
         }
         strret = DataUtilities.GetUtf8String(seq, 0, seq.length, true);
-        if (!(strret.length() > 0))Assert.fail();
+        if (!(strret.length() > 0)) {
+ Assert.fail();
+ }
         Assert.assertEquals('\ufffd', strret.charAt(0));
       }
     }
@@ -755,7 +779,9 @@ ms = new java.io.ByteArrayInputStream(bytes);
           }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
         if (bytes.length >= length) {
@@ -801,7 +827,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         {
 java.io.ByteArrayInputStream ms = null;
 try {
-ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
+ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
 
           try {
             DataUtilities.ReadUtf8(ms, 1, null, true);
@@ -814,7 +840,9 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
           }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -822,7 +850,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         {
 java.io.ByteArrayInputStream ms = null;
 try {
-ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
+ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
 
           try {
             DataUtilities.ReadUtf8(ms, 1, null, false);
@@ -835,48 +863,50 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0  });
           }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
       }
       DoTestReadUtf8(
-  new byte[] { 0x21, 0x21, 0x21  },
+  new byte[] { 0x21, 0x21, 0x21 },
   0,
  "!!!",
  0,
  "!!!");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80  },
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80 },
         0,
  " \u0080",
  0,
  " \u0080");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20  },
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80, 0x20 },
         0,
  " \u0080 ",
  0,
  " \u0080 ");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0x80, (byte)0xc2  },
+        new byte[] { 0x20, (byte)0xc2, (byte)0x80, (byte)0xc2 },
         0,
  " \u0080\ufffd",
  -1,
  null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, 0x21, 0x21  },
+        new byte[] { 0x20, (byte)0xc2, 0x21, 0x21 },
         0,
  " \ufffd!!",
  -1,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xc2, (byte)0xff, 0x20  },
+        new byte[] { 0x20, (byte)0xc2, (byte)0xff, 0x20 },
         0,
  " \ufffd\ufffd ",
  -1,
  null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80  },
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80 },
         0,
  " \u0800",
  0,
@@ -884,82 +914,82 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       DoTestReadUtf8(
     new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0x80, 0x20  }, 0, " \u0800 ", 0, " \u0800 ");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
  0,
  " \ud800\udc00",
  0,
           " \ud800\udc00");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         3,
         0,
  " \ufffd",
  -1,
  null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90 },
         5,
         -2,
         null,
         -1,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, 0x20, 0x20  },
+        new byte[] { 0x20, 0x20, 0x20 },
         5,
         -2,
         null,
         -2,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80, 0x20 },
  0,
  " \ud800\udc00 ",
           0,
  " \ud800\udc00 ");
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, 0x20 },
  0,
  " \ufffd ",
  -1,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, 0x20  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, 0x20 },
         0,
  " \ufffd ",
  -1,
  null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0xff  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0xff },
         0,
  " \ufffd\ufffd",
  -1,
  null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff  },
-        0,
- " \ufffd\ufffd",
- -1,
-        null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, 0x20  },
-        0,
- " \ufffd ",
- -1,
- null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, 0x20  },
-        0,
- " \ufffd ",
- -1,
- null);
-      DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff  },
+        new byte[] { 0x20, (byte)0xf0, (byte)0x90, (byte)0xff },
         0,
  " \ufffd\ufffd",
  -1,
         null);
       DoTestReadUtf8(
-        new byte[] { 0x20, (byte)0xe0, (byte)0xff  },
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, 0x20 },
+        0,
+ " \ufffd ",
+ -1,
+ null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, 0x20 },
+        0,
+ " \ufffd ",
+ -1,
+ null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xa0, (byte)0xff },
+        0,
+ " \ufffd\ufffd",
+ -1,
+        null);
+      DoTestReadUtf8(
+        new byte[] { 0x20, (byte)0xe0, (byte)0xff },
  0,
  " \ufffd\ufffd",
  -1,
@@ -988,7 +1018,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       try {
         DataUtilities.ReadUtf8FromBytes(
-          new byte[] { 0  },
+          new byte[] { 0 },
           -1,
           1,
           new StringBuilder(),
@@ -1002,7 +1032,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       try {
         DataUtilities.ReadUtf8FromBytes(
-          new byte[] { 0  },
+          new byte[] { 0 },
           2,
           1,
           new StringBuilder(),
@@ -1016,7 +1046,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       try {
         DataUtilities.ReadUtf8FromBytes(
-          new byte[] { 0  },
+          new byte[] { 0 },
           0,
           -1,
           new StringBuilder(),
@@ -1030,7 +1060,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       try {
         DataUtilities.ReadUtf8FromBytes(
-          new byte[] { 0  },
+          new byte[] { 0 },
           0,
           2,
           new StringBuilder(),
@@ -1044,7 +1074,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
       try {
         DataUtilities.ReadUtf8FromBytes(
-          new byte[] { 0  },
+          new byte[] { 0 },
           1,
           1,
           new StringBuilder(),
@@ -1057,7 +1087,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        DataUtilities.ReadUtf8FromBytes(new byte[] { 0  }, 0, 1, null, false);
+        DataUtilities.ReadUtf8FromBytes(new byte[] { 0 }, 0, 1, null, false);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();
@@ -1068,7 +1098,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       builder = new StringBuilder();
       {
         long numberTemp = DataUtilities.ReadUtf8FromBytes(
-          new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80  },
+          new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
           0,
           4,
           builder,
@@ -1131,7 +1161,9 @@ ms = new java.io.ByteArrayInputStream(seq);
           }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
         {
@@ -1146,11 +1178,15 @@ ms2 = new java.io.ByteArrayInputStream(seq);
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-          if (!(strret.length() > 0))Assert.fail();
+          if (!(strret.length() > 0)) {
+ Assert.fail();
+ }
           Assert.assertEquals('\ufffd', strret.charAt(0));
 }
 finally {
-try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
+try { if (ms2 != null) {
+ ms2.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -1372,7 +1408,9 @@ ms = new java.io.ByteArrayOutputStream();
             }
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
         }
         {
@@ -1383,11 +1421,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1397,11 +1437,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1411,11 +1453,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1425,11 +1469,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1439,11 +1485,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1453,11 +1501,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1467,11 +1517,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1481,11 +1533,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
           {
@@ -1495,11 +1549,13 @@ ms = new java.io.ByteArrayOutputStream();
 
               DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true, true);
               TestCommon.AssertByteArraysEqual(
-                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
           }
         }

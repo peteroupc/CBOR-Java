@@ -9,7 +9,8 @@ at: http://peteroupc.github.io/
 
 import java.util.*;
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   final class CBORJson {
     // JSON parsing methods
@@ -123,7 +124,7 @@ import com.upokecenter.util.*; import com.upokecenter.numbers.*;
                 }
             }
             break;
-          case 0x22:  // double quote
+          case 0x22: // double quote
             return this.sb.toString();
           default: {
               // NOTE: Assumes the character reader

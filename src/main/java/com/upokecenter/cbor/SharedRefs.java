@@ -8,7 +8,8 @@ at: http://peteroupc.github.io/
  */
 
 import java.util.*;
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   class SharedRefs {
     private final List<CBORObject> sharedObjects;

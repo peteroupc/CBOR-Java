@@ -155,14 +155,14 @@ private DataUtilities() {
 }
         }
         if (c <= 0x80) {
-          return new byte[] { (byte)c  };
+          return new byte[] { (byte)c };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         } else {
           return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         }
       } else if (str.length() == 2) {
         int c = str.charAt(0);
@@ -172,9 +172,9 @@ private DataUtilities() {
           return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
-          return new byte[] { (byte)c, (byte)c2  };
+          return new byte[] { (byte)c, (byte)c2 };
         }
       }
       try {
@@ -189,7 +189,9 @@ ms = new java.io.ByteArrayOutputStream();
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new IllegalArgumentException("I/O error occurred", ex);
@@ -219,7 +221,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           size += 2;
         } else if (c <= 0xd7ff || c >= 0xe000) {
           size += 3;
-        } else if (c <= 0xdbff) {  // UTF-16 leading surrogate
+        } else if (c <= 0xdbff) { // UTF-16 leading surrogate
           ++i;
           if (i >= str.length() || str.charAt(i) < 0xdc00 || str.charAt(i) > 0xdfff) {
             if (replace) {
@@ -604,7 +606,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
             // unpaired surrogate
             if (!replace) {
               retval = -1;
-              break;  // write bytes read so far
+              break; // write bytes read so far
             }
             c = 0xfffd;
           }
@@ -869,14 +871,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
               if (bytesCount >= 0) {
                 return -2;
               }
-              break;  // end of stream
+              break; // end of stream
             }
             return -1;
           }
           if (bytesCount >= 0) {
             return -2;
           }
-          break;  // end of stream
+          break; // end of stream
         }
         if (bytesCount > 0) {
           ++pointer;

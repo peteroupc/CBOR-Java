@@ -46,7 +46,7 @@ import com.upokecenter.numbers.*;
     }
 
     public long AsInt64(Object obj) {
-      return (((Long)obj).longValue());
+      return ((Long)obj).longValue();
     }
 
     public float AsSingle(Object obj) {

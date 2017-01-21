@@ -9,7 +9,8 @@ at: http://peteroupc.github.io/
 
 import java.io.*;
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   final class StringOutput {
     private final StringBuilder builder;

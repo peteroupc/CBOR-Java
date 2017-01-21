@@ -309,7 +309,9 @@ int startingAvailable = ms.available();
         return o;
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
     }

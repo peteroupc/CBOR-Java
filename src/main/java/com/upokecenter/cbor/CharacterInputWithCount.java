@@ -1,6 +1,7 @@
 package com.upokecenter.cbor;
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   class CharacterInputWithCount implements ICharacterInput {
     private final ICharacterInput ci;

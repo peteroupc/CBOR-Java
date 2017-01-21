@@ -18,7 +18,9 @@ s = new java.io.ByteArrayInputStream(b);
           return BEncoding.Read(s);
 }
 finally {
-try { if (s != null)s.close(); } catch (java.io.IOException ex) {}
+try { if (s != null) {
+ s.close();
+ } } catch (java.io.IOException ex) {}
 }
 }
       } catch (IOException ex) {
@@ -36,7 +38,9 @@ ms = new java.io.ByteArrayOutputStream();
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new CBORException("", ex);

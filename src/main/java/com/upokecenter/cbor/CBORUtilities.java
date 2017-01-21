@@ -7,7 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
     /**
      * Contains utility methods that may have use outside of the CBORObject class.
@@ -213,7 +214,7 @@ private CBORUtilities() {
       if (floatExponent == 2047) {
         throw new ArithmeticException("Value is infinity or NaN");
       }
-      value1 &= 0xfffff;  // Mask out the exponent and sign
+      value1 &= 0xfffff; // Mask out the exponent and sign
       if (floatExponent == 0) {
         ++floatExponent;
       } else {

@@ -17,7 +17,9 @@ import com.upokecenter.cbor.*;
     URIUtilityName,
     "isValidIRI",
     s);
-      if (!(cond))Assert.fail();
+      if (!(cond)) {
+ Assert.fail();
+ }
       {
         String stringTemp = (String)Reflect.InvokeStatic(
           URIUtilityName,

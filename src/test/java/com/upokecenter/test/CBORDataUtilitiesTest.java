@@ -7,7 +7,9 @@ import com.upokecenter.cbor.*;
 
   public class CBORDataUtilitiesTest {
     private void AssertNegative(CBORObject obj) {
-      if (!(obj.isNegative()))Assert.fail();
+      if (!(obj.isNegative())) {
+ Assert.fail();
+ }
       CBORTestCommon.AssertRoundTrip(obj);
     }
     @Test
@@ -404,8 +406,12 @@ Assert.assertEquals(
   "1e+99999999999999999999999999",
   false,
   false);
-      if (!(cbor != null))Assert.fail();
-      if (cbor.CanFitInDouble())Assert.fail();
+      if (!(cbor != null)) {
+ Assert.fail();
+ }
+      if (cbor.CanFitInDouble()) {
+ Assert.fail();
+ }
       CBORTestCommon.AssertRoundTrip(cbor);
     }
   }

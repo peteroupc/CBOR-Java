@@ -103,16 +103,16 @@ private MiniCBOR() {
       if (value < 24) {
         stream.write((byte)(value | type));
       } else if (value <= 0xff) {
-        bytes = new byte[] { (byte)(24 | type), (byte)(value & 0xff)  };
+        bytes = new byte[] { (byte)(24 | type), (byte)(value & 0xff) };
         stream.write(bytes, 0, 2);
       } else if (value <= 0xffff) {
         bytes = new byte[] { (byte)(25 | type), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff)  };
+          (byte)(value & 0xff) };
         stream.write(bytes, 0, 3);
       } else {
         bytes = new byte[] { (byte)(26 | type), (byte)((value >> 24) & 0xff),
           (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff)  };
+          (byte)(value & 0xff) };
         stream.write(bytes, 0, 5);
       }
     }
@@ -290,7 +290,7 @@ private static long ReadInteger(
         return ReadFP(stream, b);
       }
       if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
-          b == 0x39 || b == 0x3a) {  // covers headbytes 0x18-0x1a and 0x38-0x3A
+          b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
         return (double)ReadInteger(stream, b, false);
       }
       throw new IOException("Not a double");
@@ -350,7 +350,7 @@ private static long ReadInteger(
         }
         return (int)dbl;
       }
-      if ((b & 0xdc) == 0x18) {  // covers headbytes 0x18-0x1b and 0x38-0x3B
+      if ((b & 0xdc) == 0x18) { // covers headbytes 0x18-0x1b and 0x38-0x3B
         return (int)ReadInteger(stream, b, true);
       }
       throw new IOException("Not a 32-bit integer");

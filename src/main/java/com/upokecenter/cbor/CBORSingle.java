@@ -7,7 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-import com.upokecenter.util.*; import com.upokecenter.numbers.*;
+import com.upokecenter.util.*;
+import com.upokecenter.numbers.*;
 
   final class CBORSingle implements ICBORNumber
   {

@@ -84,7 +84,7 @@ package com.upokecenter.util;
            long t0 = s0 >> 5;
            t0 &= 0x7ffffffffffffffL;
            this.s[1] = s1 ^ s0 ^ t1 ^ t0;
-           return (this.s[1] + s0);
+           return this.s[1] + s0;
     }
 
     private void Seed() {
