@@ -94,8 +94,8 @@ private RandomObjects() {
           r |= ((long)rand.UniformInt(0x10000)) << 48;
         }
       }
-      r &= ~0x7ff0000000000000L; // clear exponent
-      r |= ((long)exponent) << 52; // set exponent
+      r &= ~0x7ff0000000000000L;  // clear exponent
+      r |= ((long)exponent) << 52;  // set exponent
       return Double.longBitsToDouble(r);
     }
 
@@ -107,8 +107,8 @@ private RandomObjects() {
       if (rand.UniformInt(2) == 0) {
         r |= ((int)rand.UniformInt(0x10000)) << 16;
       }
-      r &= ~0x7f800000; // clear exponent
-      r |= ((int)exponent) << 23; // set exponent
+      r &= ~0x7f800000;  // clear exponent
+      r |= ((int)exponent) << 23;  // set exponent
       return Float.intBitsToFloat(r);
     }
 

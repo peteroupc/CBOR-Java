@@ -174,7 +174,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
       // The following doesn't check for major types 0 and 1,
       // since all of them are fixed-length types and are
       // handled in the call to GetFixedLengthObject.
-      if (type == 2) { // Byte String
+      if (type == 2) {  // Byte String
         if (additional == 31) {
           // Streaming byte String
           java.io.ByteArrayOutputStream ms = null;
@@ -193,7 +193,7 @@ ms = new java.io.ByteArrayOutputStream();
                 throw new CBORException("Length" + ToUnsignedBigInteger(len) +
                   " is bigger than supported ");
               }
-              if (nextByte != 0x40) { // NOTE: 0x40 means the empty byte String
+              if (nextByte != 0x40) {  // NOTE: 0x40 means the empty byte String
                 ReadByteData(this.stream, len, ms);
               }
             }
@@ -231,7 +231,7 @@ try { if (ms != null) {
           return cbor;
         }
       }
-      if (type == 3) { // Text String
+      if (type == 3) {  // Text String
         if (additional == 31) {
           // Streaming text String
           StringBuilder builder = new StringBuilder();
@@ -246,7 +246,7 @@ try { if (ms != null) {
               throw new CBORException("Length" + ToUnsignedBigInteger(len) +
                 " is bigger than supported");
             }
-            if (nextByte != 0x60) { // NOTE: 0x60 means the empty String
+            if (nextByte != 0x60) {  // NOTE: 0x60 means the empty String
               if (PropertyMap.ExceedsKnownLength(this.stream, len)) {
                 // TODO: Remove following line in version 3.0
                 PropertyMap.SkipStreamToEnd(this.stream);
@@ -306,7 +306,7 @@ try { if (ms != null) {
           return cbor;
         }
       }
-      if (type == 4) { // Array
+      if (type == 4) {  // Array
         CBORObject cbor = CBORObject.NewArray();
         if (this.addSharedRef) {
           this.sharedRefs.AddObject(cbor);
@@ -362,7 +362,7 @@ try { if (ms != null) {
         --this.depth;
         return cbor;
       }
-      if (type == 5) { // Map, type 5
+      if (type == 5) {  // Map, type 5
         CBORObject cbor = CBORObject.NewMap();
         if (this.addSharedRef) {
           this.sharedRefs.AddObject(cbor);
@@ -420,7 +420,7 @@ try { if (ms != null) {
         }
         return cbor;
       }
-      if (type == 6) { // Tagged item
+      if (type == 6) {  // Tagged item
         ICBORTag taginfo = null;
         boolean haveFirstByte = false;
         int newFirstByte = -1;

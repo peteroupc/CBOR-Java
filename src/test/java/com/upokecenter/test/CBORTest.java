@@ -207,7 +207,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCanFitInSpecificCases() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
-        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a }); // 2217361768.63373
+        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a });  // 2217361768.63373
       Assert.assertEquals(
   EInteger.FromString("2217361768"),
   cbor.AsEInteger());
@@ -218,7 +218,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x18, 0x2f, 0x32 }); // -2674012278751232
+        0x18, 0x2f, 0x32 });  // -2674012278751232
       Assert.assertEquals(52, cbor.AsEInteger().GetSignedBitLength());
       if (!(cbor.CanFitInInt64())) {
  Assert.fail();
@@ -227,7 +227,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x10, 0x38, 0x64 }); // -6619136
+        0x10, 0x38, 0x64 });  // -6619136
       Assert.assertEquals(EInteger.FromString("-6619136"), cbor.AsEInteger());
       Assert.assertEquals(-6619136, cbor.AsInt32());
       if (!(cbor.CanTruncatedIntFitInInt32())) {
@@ -953,7 +953,7 @@ int startingAvailable = ms.available();
                 throw new IllegalStateException("", ex);
               }
             } catch (CBORException ex) {
-              new Object(); // Expected exception
+              new Object();  // Expected exception
             }
           }
 }

@@ -290,7 +290,7 @@ private static long ReadInteger(
         return ReadFP(stream, b);
       }
       if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
-          b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
+          b == 0x39 || b == 0x3a) {  // covers headbytes 0x18-0x1a and 0x38-0x3A
         return (double)ReadInteger(stream, b, false);
       }
       throw new IOException("Not a double");
@@ -350,7 +350,7 @@ private static long ReadInteger(
         }
         return (int)dbl;
       }
-      if ((b & 0xdc) == 0x18) { // covers headbytes 0x18-0x1b and 0x38-0x3B
+      if ((b & 0xdc) == 0x18) {  // covers headbytes 0x18-0x1b and 0x38-0x3B
         return (int)ReadInteger(stream, b, true);
       }
       throw new IOException("Not a 32-bit integer");

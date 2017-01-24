@@ -64,7 +64,7 @@ import com.upokecenter.numbers.*;
               case 't':
                 this.sb.append('\t');
                 break;
-                case 'u': { // Unicode escape
+                case 'u': {  // Unicode escape
                   c = 0;
                   // Consists of 4 hex digits
                   for (int i = 0; i < 4; ++i) {
@@ -124,7 +124,7 @@ import com.upokecenter.numbers.*;
                 }
             }
             break;
-          case 0x22: // double quote
+          case 0x22:  // double quote
             return this.sb.toString();
           default: {
               // NOTE: Assumes the character reader
