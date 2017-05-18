@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written in 2013 by Peter O.
+Written by Peter O. in 2013.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -3604,11 +3604,13 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
      * string will not begin with a byte-order mark (U + FEFF); RFC 7159 (the
      * JSON specification) forbids placing a byte-order mark at the
      * beginning of a JSON string.</li> <li>Byte strings are converted to
-     * Base64 URL by default.</li> <li>Rational numbers will be converted to
-     * their exact form, if possible, otherwise to a high-precision
-     * approximation. (The resulting approximation could overflow to
-     * infinity, in which case the rational number is converted to
-     * null.)</li> <li>Simple values other than true and false will be
+     * Base64 URL without whitespace or padding by default. (A byte string
+     * will instead be converted to traditional base64 without whitespace or
+     * padding if it has tag 22, or base16 for tag 23.)</li> <li>Rational
+     * numbers will be converted to their exact form, if possible, otherwise
+     * to a high-precision approximation. (The resulting approximation could
+     * overflow to infinity, in which case the rational number is converted
+     * to null.)</li> <li>Simple values other than true and false will be
      * converted to null. (This doesn't include floating-point
      * numbers.)</li> <li>Infinity and not-a-number will be converted to
      * null.</li></ul>
