@@ -52,7 +52,7 @@ import com.upokecenter.numbers.*;
       return ef.ToSingle();
     }
 
-    public EInteger AsEInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       EFloat ef = (EFloat)obj;
       return ef.ToEInteger();
     }

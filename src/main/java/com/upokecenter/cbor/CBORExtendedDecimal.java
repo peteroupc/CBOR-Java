@@ -52,7 +52,7 @@ import com.upokecenter.numbers.*;
       return ed.ToSingle();
     }
 
-    public EInteger AsEInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.ToEInteger();
     }

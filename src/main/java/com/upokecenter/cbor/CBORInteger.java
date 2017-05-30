@@ -17,7 +17,7 @@ import com.upokecenter.numbers.*;
       -val : obj);
     }
 
-    public EInteger AsEInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       return EInteger.FromInt64((((Long)obj).longValue()));
     }
 

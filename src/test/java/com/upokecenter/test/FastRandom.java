@@ -18,7 +18,6 @@ at: http://peteroupc.github.io/
     private final java.util.Random rand;
     private final java.util.Random rand2;
     private int count;
-    private static final Object ValueSeedsLock = new Object();
 
     private int w = 521288629;
     private int z = 362436069;
@@ -28,7 +27,7 @@ at: http://peteroupc.github.io/
     private static final int[] ValueSeeds = new int[32];
 
     private static void AddSeed(int seed) {
-      synchronized (ValueSeedsLock) {
+      synchronized (ValueSeeds) {
         if (seedIndex == -1) {
           seedIndex = 0;
         }
@@ -40,7 +39,7 @@ at: http://peteroupc.github.io/
     }
 
     private static int GetSeed() {
-      synchronized (ValueSeedsLock) {
+      synchronized (ValueSeeds) {
         if (seedCount == 0) {
           return 0;
         }
@@ -147,8 +146,7 @@ at: http://peteroupc.github.io/
       if (v == 0x100) {
         return this.NextValueInternal(0xff);
       }
-      int maxExclusive;
-      maxExclusive = (v <= 100) ? 2147483600 : ((Integer.MAX_VALUE / v) * v);
+      int maxExclusive = (Integer.MAX_VALUE / v) * v;
       while (true) {
         int vi = this.NextValueInternal(0x7fffffff);
         if (vi < maxExclusive) {

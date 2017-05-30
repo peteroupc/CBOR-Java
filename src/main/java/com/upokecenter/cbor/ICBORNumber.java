@@ -36,7 +36,7 @@ import com.upokecenter.numbers.*;
 
     float AsSingle(Object obj);
 
-    EInteger AsEInteger(Object obj);
+    EInteger AsBigInteger(Object obj);
 
     long AsInt64(Object obj);
 

@@ -44,7 +44,7 @@ import com.upokecenter.numbers.*;
       return EFloat.FromEInteger((EInteger)obj).ToSingle();
     }
 
-    public EInteger AsEInteger(Object obj) {
+    public EInteger AsBigInteger(Object obj) {
       return (EInteger)obj;
     }
 
