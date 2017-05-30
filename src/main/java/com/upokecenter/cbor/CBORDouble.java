@@ -44,7 +44,7 @@ import com.upokecenter.numbers.*;
       return ((Double)obj).floatValue();
     }
 
-    public EInteger AsBigInteger(Object obj) {
+    public EInteger AsEInteger(Object obj) {
       return CBORUtilities.BigIntegerFromDouble(((Double)obj).doubleValue());
     }
 

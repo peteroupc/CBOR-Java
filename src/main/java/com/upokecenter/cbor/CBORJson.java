@@ -547,8 +547,9 @@ import com.upokecenter.numbers.*;
               writer.WriteString("null");
               return;
             }
-            writer.WriteString(CBORObject.TrimDotZero(
-              CBORUtilities.DoubleToString(f)));
+            String dblString = CBORUtilities.DoubleToString(f);
+            writer.WriteString(
+              CBORObject.TrimDotZero(dblString));
             return;
           }
           case CBORObject.CBORObjectTypeInteger: {
@@ -587,9 +588,10 @@ import com.upokecenter.numbers.*;
                 writer.WriteString("null");
                 return;
               }
+              String dblString =
+                  CBORUtilities.DoubleToString(f);
               writer.WriteString(
-                CBORObject.TrimDotZero(
-                  CBORUtilities.DoubleToString(f)));
+                CBORObject.TrimDotZero(dblString));
               return;
             }
             writer.WriteString(flo.toString());

@@ -306,13 +306,6 @@ import com.upokecenter.numbers.*;
     private MutableNumber mnum;  // if integerMode is 1
     private EInteger largeValue;  // if integerMode is 2
     private int integerMode;
-    private static final EInteger ValueInt32MinValue =
-      EInteger.FromInt64(Integer.MIN_VALUE);
-
-    private static final EInteger ValueInt32MaxValue =
-      EInteger.FromInt64(Integer.MAX_VALUE);
-
-    private static final EInteger ValueNegativeInt32MinValue=(ValueInt32MinValue).Negate();
 
     FastInteger2(int value) {
       this.smallValue = value;

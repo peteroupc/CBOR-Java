@@ -78,17 +78,11 @@ private CBORUtilities() {
     }
 
     public static String DoubleToString(double dbl) {
-      return Double.toString((double)dbl);
-      // TODO: Use this version in version 3, and preserve
-      // TODO: negative zeros in that version
-      // return EFloat.FromDouble(dbl).ToShortestString(EContext.Binary32);
+      return EFloat.FromDouble(dbl).ToShortestString(EContext.Binary64);
     }
 
     public static String SingleToString(float sing) {
-      return Float.toString((float)sing);
-      // TODO: Use this version in version 3, and preserve
-      // TODO: negative zeros in that version
-      // return EFloat.FromSingle(sing).ToShortestString(EContext.Binary64);
+      return EFloat.FromSingle(sing).ToShortestString(EContext.Binary32);
     }
 
     public static EInteger BigIntegerFromSingle(float flt) {
@@ -136,63 +130,75 @@ private CBORUtilities() {
       }
     }
 
-    private static void ReverseChars(char[] chars, int offset, int length) {
-      int half = length >> 1;
-      int right = offset + length - 1;
-      for (int i = 0; i < half; i++, right--) {
-        char value = chars[offset + i];
-        chars[offset + i] = chars[right];
-        chars[right] = value;
-      }
-    }
-
-    public static String LongToString(long value) {
-      if (value == Long.MIN_VALUE) {
+    public static String LongToString(long longValue) {
+      if (longValue == Long.MIN_VALUE) {
         return "-9223372036854775808";
       }
-      if (value == 0) {
+      if (longValue == 0L) {
         return "0";
       }
-      if (value == (long)Integer.MIN_VALUE) {
+      if (longValue == (long)Integer.MIN_VALUE) {
         return "-2147483648";
       }
-      boolean neg = value < 0;
+      boolean neg = longValue < 0;
       int count = 0;
       char[] chars;
-      int intvalue = ((int)value);
-      if ((long)intvalue == value) {
+      int intlongValue = ((int)longValue);
+      if ((long)intlongValue == longValue) {
         chars = new char[12];
+        count = 11;
         if (neg) {
-          chars[0] = '-';
-          ++count;
-          intvalue = -intvalue;
+          intlongValue = -intlongValue;
         }
-        while (intvalue != 0) {
-          int intdivvalue = intvalue / 10;
-          char digit = HexAlphabet.charAt((int)(intvalue - (intdivvalue * 10)));
-          chars[count++] = digit;
-          intvalue = intdivvalue;
-        }
-      } else {
-        chars = new char[24];
-        if (neg) {
-          chars[0] = '-';
-          ++count;
-          value = -value;
-        }
-        while (value != 0) {
-          long divvalue = value / 10;
-          char digit = HexAlphabet.charAt((int)(value - (divvalue * 10)));
-          chars[count++] = digit;
-          value = divvalue;
-        }
+        while (intlongValue > 43698) {
+          int intdivValue = intlongValue / 10;
+        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
+        chars[count--] = digit;
+        intlongValue = intdivValue;
+      }
+      while (intlongValue > 9) {
+        int intdivValue = (intlongValue * 26215) >> 18;
+        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
+        chars[count--] = digit;
+        intlongValue = intdivValue;
+      }
+      if (intlongValue != 0) {
+        chars[count--] = HexAlphabet.charAt((int)intlongValue);
       }
       if (neg) {
-        ReverseChars(chars, 1, count - 1);
+        chars[count] = '-';
       } else {
-        ReverseChars(chars, 0, count);
+        ++count;
       }
-      return new String(chars, 0, count);
+      return new String(chars, count, 12 - count);
+      } else {
+        chars = new char[24];
+        count = 23;
+        if (neg) {
+          longValue = -longValue;
+        }
+        while (longValue > 43698) {
+          long divValue = longValue / 10;
+        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+        chars[count--] = digit;
+        longValue = divValue;
+      }
+      while (longValue > 9) {
+        long divValue = (longValue * 26215) >> 18;
+        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+        chars[count--] = digit;
+        longValue = divValue;
+      }
+      if (longValue != 0) {
+        chars[count--] = HexAlphabet.charAt((int)longValue);
+      }
+      if (neg) {
+        chars[count] = '-';
+      } else {
+        ++count;
+      }
+      return new String(chars, count, 24 - count);
+      }
     }
 
     public static String BigIntToString(EInteger bigint) {

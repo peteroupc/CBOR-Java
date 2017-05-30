@@ -27,7 +27,7 @@ import com.upokecenter.numbers.*;
       if (!objectWithTags.isTagged()) {
         return newObject;
       }
-      BigInteger[] tags = objectWithTags.GetTags();
+      EInteger[] tags = objectWithTags.GetAllTags();
       for (int i = tags.length - 1; i >= 0; --i) {
         newObject = CBORObject.FromObjectAndTag(newObject, tags[i]);
       }

@@ -136,7 +136,7 @@ private URIUtility() {
     }
 
     /**
-     * Escapes characters that cannot appear in URIs or IRIs. The function is
+     * Escapes characters that can't appear in URIs or IRIs. The function is
      * idempotent; that is, calling the function again on the result with
      * the same mode doesn't change the result.
      * @param s A string to escape.
@@ -263,7 +263,7 @@ private URIUtility() {
      * </code>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid IRI with a scheme component;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public static boolean hasScheme(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
@@ -282,7 +282,7 @@ private URIUtility() {
      * </code>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid URI with a scheme component;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public static boolean hasSchemeForURI(String refValue) {
       int[] segments = (refValue == null) ? null : splitIRI(
@@ -361,7 +361,6 @@ private URIUtility() {
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
      * length minus {@code offset} is less than {@code length}.
-     * @throws java.lang.NullPointerException --.
      */
     public static boolean isValidCurieReference(String s, int offset, int length) {
       if (s == null) {
@@ -447,8 +446,8 @@ private URIUtility() {
     }
 
     public static boolean isValidIRI(String s) {
-       return ((
-  s == null) ? null : splitIRI(
+      return ((s == null) ?
+  null : splitIRI(
   s,
   0,
   s.length(),
@@ -846,8 +845,8 @@ private URIUtility() {
      * @param baseURI A string representing an absolute URI reference. Example:
      * {@code http://example.com/my/path/}.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If base is null or is not a valid IRI, returns refValue.
-     * Example: {@code http://example.com/my/path/dir/file.txt}.
+     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
+     * refValue. Example: {@code http://example.com/my/path/dir/file.txt}.
      */
     public static String relativeResolve(String refValue, String baseURI) {
       return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
@@ -862,7 +861,8 @@ private URIUtility() {
      * @param parseMode Parse mode that specifies whether certain characters are
      * allowed when parsing IRIs and URIs.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
-     * valid IRI. If base is null or is not a valid IRI, returns refValue.
+     * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
+     * refValue.
      */
     public static String relativeResolve(
   String refValue,

@@ -211,7 +211,7 @@ private BEncoding() {
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
       if (obj.getType() == CBORType.Number) {
         stream.write(((byte)((byte)'i')));
-        writeUtf8(obj.AsBigInteger().toString(), stream);
+        writeUtf8(obj.AsEInteger().toString(), stream);
         stream.write(((byte)((byte)'e')));
       } else if (obj.getType() == CBORType.TextString) {
         String s = obj.AsString();

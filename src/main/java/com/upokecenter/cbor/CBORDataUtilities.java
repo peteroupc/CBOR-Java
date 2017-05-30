@@ -37,7 +37,7 @@ private CBORDataUtilities() {
      * Parses a number whose format follows the JSON specification (RFC 7159).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
-     * is 0), an optional decimal point ("." , full stop) with one or more
+     * is 0), an optional decimal point (".", full stop) with one or more
      * basic digits, and an optional letter E or e with an optional plus or
      * minus sign and one or more basic digits (the exponent).
      * @param str A string to parse. The string is not allowed to contain white
@@ -62,7 +62,7 @@ private CBORDataUtilities() {
      * Parses a number whose format follows the JSON specification (RFC 7159).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
-     * is 0), an optional decimal point ("." , full stop) with one or more
+     * is 0), an optional decimal point (".", full stop) with one or more
      * basic digits, and an optional letter E or e with an optional plus or
      * minus sign and one or more basic digits (the exponent).
      * @param str A string to parse. The string is not allowed to contain white
@@ -155,7 +155,7 @@ private CBORDataUtilities() {
           if (haveDecimalPoint) {
             haveDigitsAfterDecimal = true;
             if (newScaleInt == Integer.MIN_VALUE) {
-              newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
+newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
               newScale.AddInt(-1);
             } else {
               --newScaleInt;
@@ -233,18 +233,17 @@ private CBORDataUtilities() {
         if (exp != null && (expBufferMult != 1 || expBuffer != 0)) {
           exp.Multiply(expBufferMult).AddInt(expBuffer);
         }
-        if (offset >= 0 && newScaleInt == 0 && newScale == null && exp ==
-            null) {
+      if (offset >= 0 && newScaleInt == 0 && newScale == null && exp == null) {
           newScaleInt = expInt;
         } else if (exp == null) {
-          newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
+newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
           if (offset < 0) {
             newScale.SubtractInt(expInt);
           } else if (expInt != 0) {
             newScale.AddInt(expInt);
           }
         } else {
-          newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
+newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
           if (offset < 0) {
             newScale.Subtract(exp);
           } else {

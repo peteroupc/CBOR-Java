@@ -52,7 +52,7 @@ import com.upokecenter.numbers.*;
       return er.ToSingle();
     }
 
-    public EInteger AsBigInteger(Object obj) {
+    public EInteger AsEInteger(Object obj) {
       ERational er = (ERational)obj;
       return er.ToEInteger();
     }
