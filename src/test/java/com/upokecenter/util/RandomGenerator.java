@@ -409,32 +409,16 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double Uniform() {
-      byte[] b = new byte[7];
-      this.valueIrg.GetBytes(b, 0, 7);
-      long lb = (long)b[0] & 0xffL;
-      lb |= ((long)b[1] & 0xffL) << 8;
-      lb |= ((long)b[2] & 0xffL) << 16;
-      lb |= ((long)b[3] & 0xffL) << 24;
-      lb |= ((long)b[4] & 0xffL) << 32;
-      lb |= ((long)b[5] & 0xffL) << 40;
-      lb |= ((long)b[6] & 0xfL) << 48;
-      lb |= 0x3ffL << 52;
-      return Double.longBitsToDouble(lb) - 1.0;
+  return this.UniformLong(9007199254740992L)/9007199254740992.0;
     }
 
     /**
      * Returns a uniformly-distributed 32-bit floating-point number from 0 and up,
      * but less than 1.
-     * @return A 64-bit floating-point number.
+     * @return A 32-bit floating-point number.
      */
     public double UniformSingle() {
-      byte[] b = new byte[3];
-      this.valueIrg.GetBytes(b, 0, 3);
-      int lb = (int)b[0] & 0xff;
-      lb |= ((int)b[1] & 0xff) << 8;
-      lb |= ((int)b[2] & 0x7f) << 16;
-      lb |= 0x7f << 23;
-      return Float.intBitsToFloat(lb) - 1.0;
+  return this.UniformInt(16777216)/16777216.0f;
     }
 
     /**
