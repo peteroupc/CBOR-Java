@@ -140,7 +140,7 @@ private URIUtility() {
      * idempotent; that is, calling the function again on the result with
      * the same mode doesn't change the result.
      * @param s A string to escape.
-     * @param mode A 32-bit signed integer.
+     * @param mode The parameter {@code mode} is a 32-bit signed integer.
      * @return A string possibly containing escaped characters, or null if s is
      * null.
      */
@@ -1233,7 +1233,7 @@ if (s.length() - offset < length) {
      * its components and returns an array containing the indices into the
      * components.
      * @param s A string representing an IRI. Can be null.
-     * @param parseMode A ParseMode object.
+     * @param parseMode The parameter {@code parseMode} is a ParseMode object.
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment

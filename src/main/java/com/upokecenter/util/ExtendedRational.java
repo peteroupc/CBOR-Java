@@ -182,8 +182,10 @@ import com.upokecenter.numbers.*;
 
     /**
      * Creates a rational number with the given numerator and denominator.
-     * @param numeratorSmall A 32-bit signed integer.
-     * @param denominatorSmall A 32-bit signed integer. (2).
+     * @param numeratorSmall The parameter {@code numeratorSmall} is a 32-bit
+     * signed integer.
+     * @param denominatorSmall The parameter {@code denominatorSmall} is a 32-bit
+     * signed integer.
      * @return An arbitrary-precision rational number.
      */
     public static ExtendedRational Create(
@@ -242,7 +244,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param other An ExtendedRational object.
+     * @param other The parameter {@code other} is an ExtendedRational object.
      * @return A 32-bit signed integer.
      */
     public int compareTo(ExtendedRational other) {
@@ -251,8 +253,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param other An ExtendedRational object.
-     * @return A Boolean object.
+     * @param other The parameter {@code other} is an ExtendedRational object.
+     * @return either {@code true} or {@code false}.
      */
     public boolean equals(ExtendedRational other) {
       return this.getEr().equals(other == null ? null : other.getEr());
@@ -260,8 +262,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param obj An arbitrary object.
-     * @return A Boolean object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @return either {@code true} or {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational other = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);

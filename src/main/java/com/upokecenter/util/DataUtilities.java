@@ -110,7 +110,7 @@ private DataUtilities() {
 
     /**
      * Encodes a string in UTF-8 as a byte array.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
      * unpaired surrogate code point is seen.
@@ -126,7 +126,7 @@ private DataUtilities() {
 
     /**
      * Encodes a string in UTF-8 as a byte array.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
      * unpaired surrogate code point is seen.
@@ -200,7 +200,7 @@ try { if (ms != null) {
 
     /**
      * Calculates the number of bytes needed to encode a string in UTF-8.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param replace If true, treats unpaired surrogate code points as having 3
      * UTF-8 bytes (the UTF-8 length of the replacement character U + FFFD).
      * @return The number of bytes needed to encode the given string in UTF-8, or
@@ -246,7 +246,7 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
@@ -260,7 +260,7 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point just before the given index of the string.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -301,7 +301,7 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point at the given index of the string.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
@@ -315,7 +315,7 @@ try { if (ms != null) {
 
     /**
      * Gets the Unicode code point at the given index of the string.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
      * previous character is an unpaired surrogate code point: if 0, return
@@ -357,7 +357,7 @@ try { if (ms != null) {
     /**
      * Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
      * converted to lower-case. Other characters remain unchanged.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @return The converted string, or null if {@code str} is null.
      */
     public static String ToLowerCaseAscii(String str) {

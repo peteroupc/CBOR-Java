@@ -149,8 +149,8 @@ import com.upokecenter.numbers.*;
         } catch (CBORException ex) {
           new Object();
         } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
+  Assert.fail(ex.toString());
+  throw new IllegalStateException("", ex);
         }
         return;
       }
@@ -2303,6 +2303,24 @@ try { if (ms != null) {
      "]",
      2000);
       TestFailingJSON(jsonTemp);
+    }
+
+    @Test
+    public void TestTagArray() {
+        CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
+        {
+String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
+Assert.assertEquals(
+  "[999]",
+  stringTemp);
+}
+      obj = CBORObject.FromObject("test");
+        {
+String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
+Assert.assertEquals(
+  "[]",
+  stringTemp);
+}
     }
     @Test
     public void TestEI() {

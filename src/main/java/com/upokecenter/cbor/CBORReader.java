@@ -13,16 +13,14 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   class CBORReader {
-    private final SharedRefs sharedRefs;
     private final InputStream stream;
-    private boolean addSharedRef;
     private int depth;
     private CBORDuplicatePolicy policy;
     private StringRefs stringRefs;
+    private boolean hasSharableObjects;
 
     public CBORReader(InputStream inStream) {
       this.stream = inStream;
-      this.sharedRefs = new SharedRefs();
       this.policy = CBORDuplicatePolicy.Overwrite;
     }
 
@@ -36,6 +34,43 @@ import com.upokecenter.numbers.*;
 public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
         this.policy = value;
       }
+
+    public CBORObject ResolveSharedRefsIfNeeded(CBORObject obj) {
+      if (this.hasSharableObjects) {
+        SharedRefs sharedRefs = new SharedRefs();
+        return ResolveSharedRefs(obj, sharedRefs);
+      }
+      return obj;
+    }
+
+    private static CBORObject ResolveSharedRefs(
+  CBORObject obj,
+  SharedRefs sharedRefs) {
+  int type = obj.getItemType();
+  boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
+  if (hasTag) {
+    return sharedRefs.GetObject(obj.AsEInteger());
+  }
+  hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(28));
+  if (hasTag) {
+      obj = obj.Untag();
+      sharedRefs.AddObject(obj);
+  }
+  if (type == CBORObject.CBORObjectTypeMap) {
+    for (CBORObject key : obj.getKeys()) {
+      CBORObject value = obj.get(key);
+      CBORObject newvalue = ResolveSharedRefs(value, sharedRefs);
+      if (value != newvalue) {
+        obj.set(key, newvalue);
+      }
+    }
+  } else if (type == CBORObject.CBORObjectTypeArray) {
+    for (int i = 0; i < obj.size(); ++i) {
+      obj.set(i, ResolveSharedRefs(obj.get(i), sharedRefs));
+    }
+  }
+  return obj;
+    }
 
     public CBORObject Read(CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
@@ -100,9 +135,6 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
         CBORObject cbor = CBORObject.GetFixedLengthObject(firstbyte, data);
         if (this.stringRefs != null && (type == 2 || type == 3)) {
           this.stringRefs.AddStringIfNeeded(cbor, expectedLength - 1);
-        }
-        if (this.addSharedRef && (type == 4 || type == 5)) {
-          this.sharedRefs.AddObject(cbor);
         }
         return cbor;
       }
@@ -248,8 +280,6 @@ try { if (ms != null) {
             }
             if (nextByte != 0x60) {  // NOTE: 0x60 means the empty String
               if (PropertyMap.ExceedsKnownLength(this.stream, len)) {
-                // TODO: Remove following line in version 3.0
-                PropertyMap.SkipStreamToEnd(this.stream);
                 throw new CBORException("Premature end of data");
               }
               switch (
@@ -279,8 +309,6 @@ try { if (ms != null) {
               " is bigger than supported");
           }
           if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
-            // TODO: Remove following line in version 3.0
-            PropertyMap.SkipStreamToEnd(this.stream);
             throw new CBORException("Premature end of data");
           }
           StringBuilder builder = new StringBuilder();
@@ -308,10 +336,6 @@ try { if (ms != null) {
       }
       if (type == 4) {  // Array
         CBORObject cbor = CBORObject.NewArray();
-        if (this.addSharedRef) {
-          this.sharedRefs.AddObject(cbor);
-          this.addSharedRef = false;
-        }
         if (additional == 31) {
           int vtindex = 0;
           // Indefinite-length array
@@ -350,8 +374,6 @@ try { if (ms != null) {
           throw new CBORException("Array is too long");
         }
         if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
-          // TODO: Remove following line in version 3.0
-          PropertyMap.SkipStreamToEnd(this.stream);
           throw new CBORException("Remaining data too small for array length");
         }
         ++this.depth;
@@ -364,10 +386,6 @@ try { if (ms != null) {
       }
       if (type == 5) {  // Map, type 5
         CBORObject cbor = CBORObject.NewMap();
-        if (this.addSharedRef) {
-          this.sharedRefs.AddObject(cbor);
-          this.addSharedRef = false;
-        }
         if (additional == 31) {
           // Indefinite-length map
           while (true) {
@@ -402,8 +420,6 @@ try { if (ms != null) {
             " is bigger than supported");
         }
         if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
-            // TODO: Remove following line in version 3.0
-            PropertyMap.SkipStreamToEnd(this.stream);
             throw new CBORException("Remaining data too small for map length");
         }
         for (long i = 0; i < uadditional; ++i) {
@@ -424,8 +440,6 @@ try { if (ms != null) {
         ICBORTag taginfo = null;
         boolean haveFirstByte = false;
         int newFirstByte = -1;
-        boolean unnestedObject = false;
-        CBORObject tagObject = null;
         if (!hasBigAdditional) {
           if (filter != null && !filter.TagAllowed(uadditional)) {
             throw new CBORException("Unexpected tag encountered: " +
@@ -433,7 +447,7 @@ try { if (ms != null) {
           }
           int uad = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
             (int)uadditional);
-          switch (uad) {
+    switch (uad) {
             case 256:
               // Tag 256: String namespace
               this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
@@ -444,27 +458,11 @@ try { if (ms != null) {
               if (this.stringRefs == null) {
                 throw new CBORException("No stringref namespace");
               }
-
               break;
-            case 28:
-              // Shareable Object
-              newFirstByte = this.stream.read();
-              if (newFirstByte < 0) {
-                throw new CBORException("Premature end of data");
-              }
-              if (newFirstByte >= 0x80 && newFirstByte < 0xc0) {
-                // Major types 4 and 5 (array and map)
-                this.addSharedRef = true;
-              } else if ((newFirstByte & 0xe0) == 0xc0) {
-                // Major type 6 (tagged Object)
-                tagObject = new CBORObject(CBORObject.Undefined, 28, 0);
-                this.sharedRefs.AddObject(tagObject);
-              } else {
-                // All other major types
-                unnestedObject = true;
-              }
-              haveFirstByte = true;
-              break;
+     case 28:
+     case 29:
+          this.hasSharableObjects = true;
+       break;
           }
 
           taginfo = CBORObject.FindTagConverterLong(uadditional);
@@ -495,23 +493,6 @@ try { if (ms != null) {
             case 25:
               // stringref tag
               return this.stringRefs.GetString(o.AsEInteger());
-            case 28:
-              // shareable Object
-              this.addSharedRef = false;
-              if (unnestedObject) {
-                this.sharedRefs.AddObject(o);
-              }
-              if (tagObject != null) {
-              // TODO: Somehow implement sharable objects
-              // without relying on Redefine method
-              // tagObject.Redefine(o);
-              // o = tagObject;
-              }
-
-              break;
-            case 29:
-              // shared Object reference
-              return this.sharedRefs.GetObject(o.AsEInteger());
           }
 
           return CBORObject.FromObjectAndTag(
@@ -534,8 +515,6 @@ try { if (ms != null) {
           " is bigger than supported ");
       }
       if (PropertyMap.ExceedsKnownLength(stream, uadditional)) {
-        // TODO: Remove following line in version 3.0
-        PropertyMap.SkipStreamToEnd(stream);
         throw new CBORException("Premature end of stream");
       }
       if (uadditional <= 0x10000) {

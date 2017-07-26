@@ -52,7 +52,7 @@ Combines the flags of this options object with another options object.
 
 **Parameters:**
 
-* <code>o</code> - Another CBOREncodeOptions object.
+* <code>o</code> - The parameter <code>o</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
@@ -65,7 +65,7 @@ Returns an options object whose flags are shared by this and another options
 
 **Parameters:**
 
-* <code>o</code> - Another CBOREncodeOptions object.
+* <code>o</code> - The parameter <code>o</code> is a CBOREncodeOptions object.
 
 **Returns:**
 

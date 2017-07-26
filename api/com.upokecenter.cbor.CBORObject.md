@@ -231,6 +231,11 @@ Use the EInteger version of this method.
  Generates a CBOR string object from a Unicode character.
 * `static CBORObject FromObject(double value)`<br>
  Generates a CBOR object from a 64-bit floating-point number.
+* `static CBORObject FromObject(com.upokecenter.numbers.EDecimal otherValue)`<br>
+ Generates a CBOR object from a decimal number.
+* `static CBORObject FromObject(com.upokecenter.numbers.EFloat bigValue)`<br>
+ Generates a CBOR object from an arbitrary-precision binary floating-point
+ number.
 * `static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)`<br>
  Generates a CBOR object from an arbitrary-precision integer.
 * `static CBORObject FromObject(com.upokecenter.numbers.ERational bigValue)`<br>
@@ -758,7 +763,7 @@ Gets the value of a CBOR object in this map, using a CBOR object as the key.
 
 **Parameters:**
 
-* <code>key</code> - Another CBOR object.
+* <code>key</code> - The parameter <code>key</code> is a CBOR object.
 
 **Returns:**
 
@@ -807,7 +812,8 @@ Registers an object that converts objects of a given type to CBOR objects
 * <code>type</code> - A Type object specifying the type that the converter converts to
  CBOR objects.
 
-* <code>converter</code> - An ICBORConverter object.
+* <code>converter</code> - The parameter <code>converter</code> is an ICBORConverter
+ object.
 
 **Throws:**
 
@@ -819,9 +825,9 @@ Finds the sum of two CBOR numbers.
 
 **Parameters:**
 
-* <code>first</code> - Another CBOR object.
+* <code>first</code> - The parameter <code>first</code> is a CBOR object.
 
-* <code>second</code> - A CBORObject object. (3).
+* <code>second</code> - The parameter <code>second</code> is a CBORObject object.
 
 **Returns:**
 
@@ -840,7 +846,7 @@ Deprecated.&nbsp;Use the EInteger version of this method.
 
 * <code>bigintTag</code> - An arbitrary-precision integer.
 
-* <code>handler</code> - An ICBORTag object.
+* <code>handler</code> - The parameter <code>handler</code> is an ICBORTag object.
 
 **Throws:**
 
@@ -858,7 +864,7 @@ Registers an object that validates CBOR objects with new tags.
 
 * <code>bigintTag</code> - An arbitrary-precision integer.
 
-* <code>handler</code> - An ICBORTag object.
+* <code>handler</code> - The parameter <code>handler</code> is an ICBORTag object.
 
 **Throws:**
 
@@ -897,7 +903,7 @@ Generates a CBOR object from an array of CBOR-encoded bytes.
 
 * <code>data</code> - A byte array.
 
-* <code>options</code> - A CBOREncodeOptions object.
+* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
@@ -918,9 +924,9 @@ Divides a CBORObject object by the value of a CBORObject object.
 
 **Parameters:**
 
-* <code>first</code> - A CBORObject object.
+* <code>first</code> - The parameter <code>first</code> is a CBORObject object.
 
-* <code>second</code> - Another CBOR object.
+* <code>second</code> - The parameter <code>second</code> is a CBOR object.
 
 **Returns:**
 
@@ -960,7 +966,7 @@ Generates a CBOR object from a text string in JavaScript Object Notation
  JSON object and not multiple objects. The string may not begin with a
  byte-order mark (U + FEFF).
 
-* <code>options</code> - A CBOREncodeOptions object.
+* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
@@ -978,7 +984,7 @@ Generates a CBOR object from a 64-bit signed integer.
 
 **Parameters:**
 
-* <code>value</code> - A 64-bit signed integer.
+* <code>value</code> - The parameter <code>value</code> is a 64-bit signed integer.
 
 **Returns:**
 
@@ -990,7 +996,7 @@ Generates a CBOR object from a CBOR object.
 
 **Parameters:**
 
-* <code>value</code> - A CBOR object.
+* <code>value</code> - The parameter <code>value</code> is a CBOR object.
 
 **Returns:**
 
@@ -1033,6 +1039,19 @@ Deprecated.&nbsp;Use the EFloat version of this method instead.
 * A CBOR number.
 
 ### FromObject
+    public static CBORObject FromObject(com.upokecenter.numbers.EFloat bigValue)
+Generates a CBOR object from an arbitrary-precision binary floating-point
+ number.
+
+**Parameters:**
+
+* <code>bigValue</code> - An arbitrary-precision binary floating-point number.
+
+**Returns:**
+
+* A CBOR number.
+
+### FromObject
     @Deprecated public static CBORObject FromObject(ExtendedRational bigValue)
 Deprecated.&nbsp;Use the ERational version of this method instead.
 
@@ -1051,6 +1070,18 @@ Generates a CBOR object from a rational number.
 **Parameters:**
 
 * <code>bigValue</code> - A rational number.
+
+**Returns:**
+
+* A CBOR number.
+
+### FromObject
+    public static CBORObject FromObject(com.upokecenter.numbers.EDecimal otherValue)
+Generates a CBOR object from a decimal number.
+
+**Parameters:**
+
+* <code>otherValue</code> - An arbitrary-precision decimal number.
 
 **Returns:**
 
@@ -1092,7 +1123,7 @@ Generates a CBOR object from a 32-bit signed integer.
 
 **Parameters:**
 
-* <code>value</code> - A 32-bit signed integer.
+* <code>value</code> - The parameter <code>value</code> is a 32-bit signed integer.
 
 **Returns:**
 
@@ -1104,7 +1135,7 @@ Generates a CBOR object from a 16-bit signed integer.
 
 **Parameters:**
 
-* <code>value</code> - A 16-bit signed integer.
+* <code>value</code> - The parameter <code>value</code> is a 16-bit signed integer.
 
 **Returns:**
 
@@ -1116,7 +1147,7 @@ Generates a CBOR string object from a Unicode character.
 
 **Parameters:**
 
-* <code>value</code> - A char object.
+* <code>value</code> - The parameter <code>value</code> is a char object.
 
 **Returns:**
 
@@ -1145,7 +1176,7 @@ Generates a CBOR object from a byte (0 to 255).
 
 **Parameters:**
 
-* <code>value</code> - A Byte object.
+* <code>value</code> - The parameter <code>value</code> is a byte (from 0 to 255).
 
 **Returns:**
 
@@ -1157,7 +1188,7 @@ Generates a CBOR object from a 32-bit floating-point number.
 
 **Parameters:**
 
-* <code>value</code> - A 32-bit floating-point number.
+* <code>value</code> - The parameter <code>value</code> is a 32-bit floating-point number.
 
 **Returns:**
 
@@ -1169,7 +1200,7 @@ Generates a CBOR object from a 64-bit floating-point number.
 
 **Parameters:**
 
-* <code>value</code> - A 64-bit floating-point number.
+* <code>value</code> - The parameter <code>value</code> is a 64-bit floating-point number.
 
 **Returns:**
 
@@ -1320,7 +1351,7 @@ Generates a CBORObject from an arbitrary object. The following types are
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
@@ -1422,7 +1453,8 @@ Creates a CBOR object from a simple value number.
 
 **Parameters:**
 
-* <code>simpleValue</code> - A 32-bit signed integer.
+* <code>simpleValue</code> - The parameter <code>simpleValue</code> is a 32-bit signed
+ integer.
 
 **Returns:**
 
@@ -1439,9 +1471,9 @@ Multiplies two CBOR numbers.
 
 **Parameters:**
 
-* <code>first</code> - A CBORObject object.
+* <code>first</code> - The parameter <code>first</code> is a CBORObject object.
 
-* <code>second</code> - Another CBOR object.
+* <code>second</code> - The parameter <code>second</code> is a CBOR object.
 
 **Returns:**
 
@@ -1499,7 +1531,7 @@ Reads an object in CBOR format from a data stream. This method will read
 
 * <code>stream</code> - A readable data stream.
 
-* <code>options</code> - A CBOREncodeOptions object.
+* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
@@ -1559,7 +1591,7 @@ Generates a CBOR object from a data stream in JavaScript Object Notation
  data stream must contain a single JSON object and not multiple
  objects.
 
-* <code>options</code> - A CBOREncodeOptions object.
+* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
@@ -1581,9 +1613,9 @@ Finds the remainder that results when a CBORObject object is divided by the
 
 **Parameters:**
 
-* <code>first</code> - A CBORObject object.
+* <code>first</code> - The parameter <code>first</code> is a CBORObject object.
 
-* <code>second</code> - Another CBOR object.
+* <code>second</code> - The parameter <code>second</code> is a CBOR object.
 
 **Returns:**
 
@@ -1595,9 +1627,9 @@ Finds the difference between two CBOR number objects.
 
 **Parameters:**
 
-* <code>first</code> - A CBORObject object.
+* <code>first</code> - The parameter <code>first</code> is a CBORObject object.
 
-* <code>second</code> - Another CBOR object.
+* <code>second</code> - The parameter <code>second</code> is a CBOR object.
 
 **Returns:**
 
@@ -1945,7 +1977,7 @@ Writes a CBOR object to a CBOR data stream. See the three-parameter Write
 
 **Parameters:**
 
-* <code>objValue</code> - An arbitrary object.
+* <code>objValue</code> - The parameter <code>objValue</code> is an arbitrary object.
 
 * <code>stream</code> - A writable data stream.
 
@@ -1988,7 +2020,7 @@ Converts an arbitrary object to a string in JavaScript Object Notation
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 * <code>outputStream</code> - A writable data stream.
 
@@ -2045,7 +2077,7 @@ Adds a new object to the end of this array. (Used to throw
 
 **Parameters:**
 
-* <code>obj</code> - A CBOR object.
+* <code>obj</code> - The parameter <code>obj</code> is a CBOR object.
 
 **Returns:**
 
@@ -2061,7 +2093,7 @@ Converts an object to a CBOR object and adds it to the end of this array.
 
 **Parameters:**
 
-* <code>obj</code> - A CBOR object.
+* <code>obj</code> - The parameter <code>obj</code> is a CBOR object.
 
 **Returns:**
 
@@ -2507,7 +2539,7 @@ Determines whether this object and another object are equal and have the
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 

@@ -552,7 +552,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key Another CBOR object.
+     * @param key The parameter {@code key} is a CBOR object.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
@@ -626,7 +626,8 @@ import com.upokecenter.numbers.*;
      * (called a CBOR converter).
      * @param type A Type object specifying the type that the converter converts to
      * CBOR objects.
-     * @param converter An ICBORConverter object.
+     * @param converter The parameter {@code converter} is an ICBORConverter
+     * object.
      * @param <T> Must be the same as the "type" parameter.
      * @throws java.lang.NullPointerException The parameter {@code type} or {@code
      * converter} is null.
@@ -655,8 +656,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Finds the sum of two CBOR numbers.
-     * @param first Another CBOR object.
-     * @param second A CBORObject object. (3).
+     * @param first The parameter {@code first} is a CBOR object.
+     * @param second The parameter {@code second} is a CBORObject object.
      * @return A CBORObject object.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -668,7 +669,7 @@ import com.upokecenter.numbers.*;
     /**
      * Registers an object that validates CBOR objects with new tags.
      * @param bigintTag An arbitrary-precision integer.
-     * @param handler An ICBORTag object.
+     * @param handler The parameter {@code handler} is an ICBORTag object.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
      * {@code handler} is null.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
@@ -689,7 +690,7 @@ import com.upokecenter.numbers.*;
     /**
      * Registers an object that validates CBOR objects with new tags.
      * @param bigintTag An arbitrary-precision integer.
-     * @param handler An ICBORTag object.
+     * @param handler The parameter {@code handler} is an ICBORTag object.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
      * {@code handler} is null.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
@@ -733,7 +734,7 @@ import com.upokecenter.numbers.*;
     /**
      * Generates a CBOR object from an array of CBOR-encoded bytes.
      * @param data A byte array.
-     * @param options A CBOREncodeOptions object.
+     * @param options The parameter {@code options} is a CBOREncodeOptions object.
      * @return A CBOR object corresponding to the data.
      * @throws com.upokecenter.cbor.CBORException There was an error in reading or
      * parsing the data. This includes cases where not all of the byte array
@@ -796,8 +797,8 @@ try { if (ms != null) {
 
     /**
      * Divides a CBORObject object by the value of a CBORObject object.
-     * @param first A CBORObject object.
-     * @param second Another CBOR object.
+     * @param first The parameter {@code first} is a CBORObject object.
+     * @param second The parameter {@code second} is a CBOR object.
      * @return The quotient of the two objects.
      */
     public static CBORObject Divide(CBORObject first, CBORObject second) {
@@ -826,7 +827,7 @@ try { if (ms != null) {
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
-     * @param options A CBOREncodeOptions object.
+     * @param options The parameter {@code options} is a CBOREncodeOptions object.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
@@ -861,7 +862,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a 64-bit signed integer.
-     * @param value A 64-bit signed integer.
+     * @param value The parameter {@code value} is a 64-bit signed integer.
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(long value) {
@@ -871,7 +872,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a CBOR object.
-     * @param value A CBOR object.
+     * @param value The parameter {@code value} is a CBOR object.
      * @return Same as.
      */
     public static CBORObject FromObject(CBORObject value) {
@@ -927,7 +928,7 @@ try { if (ms != null) {
      * @param bigValue An arbitrary-precision binary floating-point number.
      * @return A CBOR number.
      */
-    static CBORObject FromObject(EFloat bigValue) {
+    public static CBORObject FromObject(EFloat bigValue) {
       if ((Object)bigValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -988,7 +989,7 @@ try { if (ms != null) {
      * @param otherValue An arbitrary-precision decimal number.
      * @return A CBOR number.
      */
-    static CBORObject FromObject(EDecimal otherValue) {
+    public static CBORObject FromObject(EDecimal otherValue) {
       if ((Object)otherValue == (Object)null) {
         return CBORObject.Null;
       }
@@ -1041,7 +1042,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a 32-bit signed integer.
-     * @param value A 32-bit signed integer.
+     * @param value The parameter {@code value} is a 32-bit signed integer.
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(int value) {
@@ -1051,7 +1052,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a 16-bit signed integer.
-     * @param value A 16-bit signed integer.
+     * @param value The parameter {@code value} is a 16-bit signed integer.
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(short value) {
@@ -1061,7 +1062,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR string object from a Unicode character.
-     * @param value A char object.
+     * @param value The parameter {@code value} is a char object.
      * @return A CBORObject object.
      * @throws IllegalArgumentException The parameter {@code value} is a surrogate
      * code point.
@@ -1082,7 +1083,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a byte (0 to 255).
-     * @param value A Byte object.
+     * @param value The parameter {@code value} is a byte (from 0 to 255).
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(byte value) {
@@ -1091,7 +1092,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a 32-bit floating-point number.
-     * @param value A 32-bit floating-point number.
+     * @param value The parameter {@code value} is a 32-bit floating-point number.
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(float value) {
@@ -1100,7 +1101,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBOR object from a 64-bit floating-point number.
-     * @param value A 64-bit floating-point number.
+     * @param value The parameter {@code value} is a 64-bit floating-point number.
      * @return A CBORObject object.
      */
     public static CBORObject FromObject(double value) {
@@ -1188,9 +1189,6 @@ try { if (ms != null) {
       if (value == null) {
         return CBORObject.Null;
       }
-      if (value.size() == 0) {
-        return new CBORObject(CBORObjectTypeArray, new ArrayList<T>());
-      }
       CBORObject retCbor = CBORObject.NewArray();
       for (T i : (List<T>)value) {
         retCbor.Add(CBORObject.FromObject(i));
@@ -1273,7 +1271,7 @@ try { if (ms != null) {
      * input is a byte array, the byte array is copied to a new byte array.
      * (This method can't be used to decode CBOR data from a byte array; for
      * that, use the DecodeFromBytes method instead.).</p>
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      */
@@ -1505,7 +1503,8 @@ try { if (ms != null) {
 
     /**
      * Creates a CBOR object from a simple value number.
-     * @param simpleValue A 32-bit signed integer.
+     * @param simpleValue The parameter {@code simpleValue} is a 32-bit signed
+     * integer.
      * @return A CBORObject object.
      * @throws IllegalArgumentException The parameter {@code simpleValue} is less
      * than 0, greater than 255, or from 24 through 31.
@@ -1533,8 +1532,8 @@ try { if (ms != null) {
 
     /**
      * Multiplies two CBOR numbers.
-     * @param first A CBORObject object.
-     * @param second Another CBOR object.
+     * @param first The parameter {@code first} is a CBORObject object.
+     * @param second The parameter {@code second} is a CBOR object.
      * @return The product of the two numbers.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -1574,7 +1573,8 @@ try { if (ms != null) {
         throw new NullPointerException("stream");
       }
       try {
-        return new CBORReader(stream).Read(null);
+       CBORReader reader = new CBORReader(stream);
+        return reader.ResolveSharedRefsIfNeeded(reader.Read(null));
       } catch (IOException ex) {
         throw new CBORException("I/O error occurred.", ex);
       }
@@ -1585,7 +1585,7 @@ try { if (ms != null) {
      * from the stream until the end of the CBOR object is reached or an
      * error occurs, whichever happens first.
      * @param stream A readable data stream.
-     * @param options A CBOREncodeOptions object.
+     * @param options The parameter {@code options} is a CBOREncodeOptions object.
      * @return A CBOR object that was read.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws com.upokecenter.cbor.CBORException There was an error in reading or
@@ -1601,7 +1601,7 @@ try { if (ms != null) {
         if (opt.getValue() != 0) {
           reader.setDuplicatePolicy(CBORReader.CBORDuplicatePolicy.Disallow);
         }
-        return reader.Read(null);
+        return reader.ResolveSharedRefsIfNeeded(reader.Read(null));
       } catch (IOException ex) {
         throw new CBORException("I/O error occurred.", ex);
       }
@@ -1641,7 +1641,7 @@ try { if (ms != null) {
      * @param stream A readable data stream. The sequence of bytes read from the
      * data stream must contain a single JSON object and not multiple
      * objects.
-     * @param options A CBOREncodeOptions object.
+     * @param options The parameter {@code options} is a CBOREncodeOptions object.
      * @return A CBORObject object.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
@@ -1683,8 +1683,8 @@ try { if (ms != null) {
     /**
      * Finds the remainder that results when a CBORObject object is divided by the
      * value of a CBORObject object.
-     * @param first A CBORObject object.
-     * @param second Another CBOR object.
+     * @param first The parameter {@code first} is a CBORObject object.
+     * @param second The parameter {@code second} is a CBOR object.
      * @return The remainder of the two numbers.
      */
     public static CBORObject Remainder(CBORObject first, CBORObject second) {
@@ -1693,8 +1693,8 @@ try { if (ms != null) {
 
     /**
      * Finds the difference between two CBOR number objects.
-     * @param first A CBORObject object.
-     * @param second Another CBOR object.
+     * @param first The parameter {@code first} is a CBORObject object.
+     * @param second The parameter {@code second} is a CBOR object.
      * @return The difference of the two objects.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -1717,12 +1717,7 @@ try { if (ms != null) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
-      if (str == null) {
-        stream.write(0xf6);  // Write null instead of String
-      } else {
-        // TODO: Maybe change to unstreamed String in 3.0
-        WriteStreamedString(str, stream);
-      }
+      Write(str, stream, CBOREncodeOptions.None);
     }
 
     /**
@@ -2248,7 +2243,7 @@ try { if (ms != null) {
     /**
      * Writes a CBOR object to a CBOR data stream. See the three-parameter Write
      * method that takes a CBOREncodeOptions.
-     * @param objValue An arbitrary object.
+     * @param objValue The parameter {@code objValue} is an arbitrary object.
      * @param stream A writable data stream.
      */
     public static void Write(Object objValue, OutputStream stream) throws java.io.IOException {
@@ -2313,7 +2308,7 @@ public static void Write(
      * Converts an arbitrary object to a string in JavaScript Object Notation
      * (JSON) format, as in the ToJSONString method, and writes that string
      * to a data stream in UTF-8.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @param outputStream A writable data stream.
      */
     public static void WriteJSON(Object obj, OutputStream outputStream) throws java.io.IOException {
@@ -2409,7 +2404,7 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
      * NullPointerException on a null reference, but now converts the null
      * reference to CBORObject.Null, for convenience with the Object
      * overload of this method.).
-     * @param obj A CBOR object.
+     * @param obj The parameter {@code obj} is a CBOR object.
      * @return This instance.
      * @throws IllegalStateException This object is not an array.
      */
@@ -2424,7 +2419,7 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
 
     /**
      * Converts an object to a CBOR object and adds it to the end of this array.
-     * @param obj A CBOR object.
+     * @param obj The parameter {@code obj} is a CBOR object.
      * @return This instance.
      * @throws IllegalStateException This object is not an array.
      * @throws IllegalArgumentException The type of {@code obj} is not supported.
@@ -3181,7 +3176,7 @@ try { if (ms != null) {
      * Determines whether this object and another object are equal and have the
      * same type. Not-a-number values can be considered equal by this
      * method.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
@@ -3957,7 +3952,6 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
         AddTagHandler(EInteger.FromInt64(264), new CBORTag4(true));
         AddTagHandler(EInteger.FromInt64(265), new CBORTag5(true));
         AddTagHandler(EInteger.FromInt64(25), new CBORTagUnsigned());
-        AddTagHandler(EInteger.FromInt64(28), new CBORTag28());
         AddTagHandler(EInteger.FromInt64(29), new CBORTagUnsigned());
         AddTagHandler(EInteger.FromInt64(256), new CBORTagAny());
         AddTagHandler(EInteger.FromInt32(0), new CBORTag0());

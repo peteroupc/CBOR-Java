@@ -157,7 +157,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
@@ -291,7 +291,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> - An ExtendedDecimal object.
+* <code>other</code> - The parameter <code>other</code> is an ExtendedDecimal object.
 
 **Returns:**
 

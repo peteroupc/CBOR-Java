@@ -151,7 +151,7 @@ import com.upokecenter.numbers.*;
         0x20, (byte)0xff });
     }
 
-    private static String ObjectMessage(CBORObject obj) {
+    public static String ObjectMessage(CBORObject obj) {
       return new StringBuilder()
         .append("CBORObject.DecodeFromBytes(")
            .append(TestCommon.ToByteArrayString(obj.EncodeToBytes()))
@@ -538,7 +538,7 @@ import com.upokecenter.numbers.*;
         if (o2.isZero()) {
           continue;
         }
-        ERational er = new ERational(o1.AsEInteger(), o2.AsEInteger());
+        ERational er = ERational.Create(o1.AsEInteger(), o2.AsEInteger());
         {
           ERational objectTemp = er;
           ERational objectTemp2 = CBORObject.Divide(
@@ -868,7 +868,7 @@ try { if (ms2b != null) {
       CBORObject oo;
       oo = CBORObject.NewArray().Add(CBORObject.NewMap()
                     .Add(
-              new ERational(EInteger.FromInt32(1), EInteger.FromString("2")),
+              ERational.Create(EInteger.FromInt32(1), EInteger.FromString("2")),
               3).Add(4, false)).Add(true);
       CBORTestCommon.AssertRoundTrip(oo);
       oo = CBORObject.NewArray();

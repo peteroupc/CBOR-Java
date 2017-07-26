@@ -40,7 +40,7 @@ private RandomObjects() {
       if (bigintB.isZero()) {
         bigintB = EInteger.FromInt32(1);
       }
-      return new ERational(bigintA, bigintB);
+      return ERational.Create(bigintA, bigintB);
     }
 
     public static String RandomTextString(RandomGenerator rand) {

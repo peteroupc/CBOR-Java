@@ -159,7 +159,7 @@ Encodes a string in UTF-8 as a byte array.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -183,7 +183,7 @@ Encodes a string in UTF-8 as a byte array.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -210,7 +210,7 @@ Calculates the number of bytes needed to encode a string in UTF-8.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>replace</code> - If true, treats unpaired surrogate code points as having 3
  UTF-8 bytes (the UTF-8 length of the replacement character U + FFFD).
@@ -230,7 +230,7 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -251,7 +251,7 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -277,7 +277,7 @@ Gets the Unicode code point at the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -297,7 +297,7 @@ Gets the Unicode code point at the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -323,7 +323,7 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 **Returns:**
 

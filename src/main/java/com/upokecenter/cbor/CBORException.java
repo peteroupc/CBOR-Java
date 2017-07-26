@@ -21,7 +21,7 @@ private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.CBORException}
      * class.
-     * @param message A text string.
+     * @param message The parameter {@code message} is a text string.
      */
     public CBORException(String message) {
  super(message);
@@ -30,8 +30,9 @@ private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.CBORException}
      * class. Uses the given message and inner exception.
-     * @param message A text string.
-     * @param innerException An Exception object.
+     * @param message The parameter {@code message} is a text string.
+     * @param innerException The parameter {@code innerException} is an Exception
+     * object.
      */
     public CBORException(String message, Throwable innerException) {
  super(message, innerException);

@@ -171,9 +171,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>numeratorSmall</code> - A 32-bit signed integer.
+* <code>numeratorSmall</code> - The parameter <code>numeratorSmall</code> is a 32-bit
+ signed integer.
 
-* <code>denominatorSmall</code> - A 32-bit signed integer. (2).
+* <code>denominatorSmall</code> - The parameter <code>denominatorSmall</code> is a 32-bit
+ signed integer.
 
 **Returns:**
 
@@ -222,7 +224,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> - An ExtendedRational object.
+* <code>other</code> - The parameter <code>other</code> is an ExtendedRational object.
 
 **Returns:**
 
@@ -234,11 +236,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> - An ExtendedRational object.
+* <code>other</code> - The parameter <code>other</code> is an ExtendedRational object.
 
 **Returns:**
 
-* A Boolean object.
+* either <code>true</code> or <code>false</code>.
 
 ### equals
     public boolean equals(Object obj)
@@ -250,11 +252,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
-* A Boolean object.
+* either <code>true</code> or <code>false</code>.
 
 ### hashCode
     public int hashCode()

@@ -205,7 +205,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
@@ -262,7 +262,7 @@ Deprecated.&nbsp;Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>offset</code> - A zero-based index showing where the desired portion of <code>str</code> begins.
 

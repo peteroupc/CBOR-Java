@@ -247,7 +247,7 @@ private CBORObjectMath() {
         long rem = valueA - (quo * valueB);
         return (rem == 0) ? CBORObject.FromObject(quo) :
         CBORObject.FromObject(
-  new ERational(
+  ERational.Create(
   EInteger.FromInt64(valueA),
   EInteger.FromInt64(valueB)));
       }
@@ -317,7 +317,7 @@ EInteger[] divrem = b1.DivRem(b2);
 bigquo = divrem[0];
 bigrem = divrem[1]; }
         return bigrem.isZero() ? CBORObject.FromObject(bigquo) :
-        CBORObject.FromObject(new ERational(b1, b2));
+        CBORObject.FromObject(ERational.Create(b1, b2));
       }
     }
 

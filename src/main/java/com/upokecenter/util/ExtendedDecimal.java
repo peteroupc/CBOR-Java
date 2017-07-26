@@ -162,7 +162,7 @@ import com.upokecenter.numbers.*;
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
@@ -365,7 +365,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param other An ExtendedDecimal object.
+     * @param other The parameter {@code other} is an ExtendedDecimal object.
      * @return A 32-bit signed integer.
      */
     public int compareTo(ExtendedDecimal other) {

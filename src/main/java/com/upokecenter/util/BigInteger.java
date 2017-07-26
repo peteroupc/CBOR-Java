@@ -125,7 +125,8 @@ return new BigInteger(EInteger.FromString(str));
 
     /**
      * Converts a 64-bit signed integer to a big integer.
-     * @param longerValue A 64-bit signed integer.
+     * @param longerValue The parameter {@code longerValue} is a 64-bit signed
+     * integer.
      * @return An arbitrary-precision integer with the same value as the 64-bit
      * number.
      */
@@ -147,7 +148,7 @@ return this.getEi().GetSignedBitLength();
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
      * {@code false}.
      */
@@ -211,7 +212,7 @@ return this.getEi().GetSignedBitLength();
 
     /**
      * Not documented yet.
-     * @param other A BigInteger object.
+     * @param other The parameter {@code other} is a BigInteger object.
      * @return A 32-bit signed integer.
      */
     public int compareTo(BigInteger other) {

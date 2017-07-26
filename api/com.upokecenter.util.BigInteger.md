@@ -136,7 +136,8 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>longerValue</code> - A 64-bit signed integer.
+* <code>longerValue</code> - The parameter <code>longerValue</code> is a 64-bit signed
+ integer.
 
 **Returns:**
 
@@ -162,7 +163,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
@@ -243,7 +244,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> - A BigInteger object.
+* <code>other</code> - The parameter <code>other</code> is a BigInteger object.
 
 **Returns:**
 

@@ -140,7 +140,7 @@ import com.upokecenter.numbers.*;
      * Determines whether this object&#x27;s mantissa and exponent are equal to
      * those of another object and that other object is an
      * arbitrary-precision decimal number.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
@@ -211,7 +211,7 @@ import com.upokecenter.numbers.*;
      * range. In particular, the digits must be the basic digits 0 to 9
      * (U + 0030 to U + 0039). The string is not allowed to contain white space
      * characters, including spaces.</p>
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param offset A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The length, in code units, of the desired portion of {@code

@@ -42,7 +42,7 @@ throw new CBORException("Rational number requires denominator greater than 0");
       return denom.equals(EInteger.FromInt32(1)) ?
       CBORObject.FromObject(first.AsEInteger()) :
       CBORObject.FromObject(
-  new ERational(
+  ERational.Create(
   first.AsEInteger(),
   denom));
     }
