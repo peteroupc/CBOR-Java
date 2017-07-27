@@ -1254,7 +1254,7 @@ try { if (ms != null) {
      * (<code>Enum</code> objects); and maps. <p>In the .NET version, if the
      * object is a type not specially handled by this method, returns a CBOR
      * map with the values of each of its read/write properties (or all
-     * properties in the case of an anonymous type). Properties are
+     * properties in the case of a compiler-generated type). Properties are
      * converted to their camel-case names (meaning if a name starts with A
      * to Z, that letter is lower-cased). If the property name begins with
      * the word "Is", that word is deleted from the name. Also, .NET
@@ -1267,10 +1267,10 @@ try { if (ms != null) {
      * found, the starting word "get" or "is" is deleted from its name, and
      * the name is converted to camel case (meaning if a name starts with A
      * to Z, that letter is lower-cased). Also, Java <code>Enum</code> objects
-     * will be converted to the result of their name method.</p> <p>If the
-     * input is a byte array, the byte array is copied to a new byte array.
-     * (This method can't be used to decode CBOR data from a byte array; for
-     * that, use the DecodeFromBytes method instead.).</p>
+     * will be converted to the result of their <code>name</code> method.</p>
+     * <p>If the input is a byte array, the byte array is copied to a new
+     * byte array. (This method can't be used to decode CBOR data from a
+     * byte array; for that, use the DecodeFromBytes method instead.).</p>
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
@@ -1956,7 +1956,7 @@ try { if (ms != null) {
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
-     * @deprecated Pass an EInteger to this method instead.
+     * @deprecated Pass an EInteger to the Write method instead.
  */
 @Deprecated
     public static void Write(BigInteger bigint, OutputStream stream) throws java.io.IOException {
