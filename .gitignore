@@ -26,6 +26,7 @@ ProfilingSessions/
 TestResults/
 bin/
 encoding/
+encodingfldr/
 js/*.ht*
 js/DecTest.*
 obj/
