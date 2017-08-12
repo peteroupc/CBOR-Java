@@ -25,7 +25,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 <dependency>
   <groupId>com.upokecenter</groupId>
   <artifactId>cbor</artifactId>
-  <version>2.5</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 
