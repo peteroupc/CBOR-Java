@@ -192,7 +192,7 @@ return CBORObject.FromObject(
           o.AsByte();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          new Object();
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -201,7 +201,7 @@ return CBORObject.FromObject(
           o.AsInt16();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          new Object();
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -210,7 +210,7 @@ return CBORObject.FromObject(
           o.AsInt32();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          new Object();
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -219,7 +219,7 @@ return CBORObject.FromObject(
           o.AsInt64();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          new Object();
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -240,7 +240,7 @@ return CBORObject.FromObject(
           o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          new Object();
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
