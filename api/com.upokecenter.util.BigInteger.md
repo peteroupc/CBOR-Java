@@ -19,7 +19,7 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.  Finds the minimum number of bits needed to represent this object's
  value, except for its sign.
 * `int compareTo(BigInteger other)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Compares this value to another.
 * `boolean equals(Object obj)`<br>
  Deprecated.  Determines whether this object and another object are equal.
 * `static BigInteger fromBytes(byte[] bytes,
@@ -244,8 +244,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>other</code> - The parameter <code>other</code> is a BigInteger object.
+* <code>other</code> - The parameter <code>other</code> is an arbitrary-precision integer.
 
 **Returns:**
 
-* A 32-bit signed integer.
+* Less than 0 if this value is less than, 0 if equal to, or greater
+ than 0 if greater than the other value.

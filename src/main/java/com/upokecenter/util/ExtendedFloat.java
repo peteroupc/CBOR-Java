@@ -244,9 +244,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
-     * @param str The parameter {@code str} is not documented yet.
-     * @return An ExtendedFloat object.
+     * Creates a binary float from a text string that represents a number.
+     * @param str A text string containing the number to convert.
+     * @return The parsed number, converted to arbitrary-precision binary float.
      */
     public static ExtendedFloat FromString(String str) {
       return new ExtendedFloat(EFloat.FromString(str));
@@ -398,9 +398,10 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
+     * Compares this extended float to another.
      * @param other The parameter {@code other} is not documented yet.
-     * @return A 32-bit signed integer.
+     * @return Less than 0 if this value is less than, 0 if equal to, or greater
+     * than 0 if greater than the other value.
      */
     public int compareTo(ExtendedFloat other) {
       return this.getEf().compareTo(other == null ? null : other.getEf());

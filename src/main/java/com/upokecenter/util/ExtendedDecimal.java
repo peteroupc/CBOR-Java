@@ -364,9 +364,10 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
+     * Compares this extended decimal to another.
      * @param other The parameter {@code other} is an ExtendedDecimal object.
-     * @return A 32-bit signed integer.
+     * @return Less than 0 if this value is less than, 0 if equal to, or greater
+     * than 0 if greater than the other extended decimal.
      */
     public int compareTo(ExtendedDecimal other) {
       return this.getEd().compareTo(other == null ? null : other.getEd());

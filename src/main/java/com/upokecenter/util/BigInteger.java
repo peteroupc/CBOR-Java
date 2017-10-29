@@ -211,9 +211,10 @@ return this.getEi().GetSignedBitLength();
     }
 
     /**
-     * Not documented yet.
-     * @param other The parameter {@code other} is a BigInteger object.
-     * @return A 32-bit signed integer.
+     * Compares this value to another.
+     * @param other The parameter {@code other} is an arbitrary-precision integer.
+     * @return Less than 0 if this value is less than, 0 if equal to, or greater
+     * than 0 if greater than the other value.
      */
     public int compareTo(BigInteger other) {
       return this.getEi().compareTo(other == null ? null : other.getEi());

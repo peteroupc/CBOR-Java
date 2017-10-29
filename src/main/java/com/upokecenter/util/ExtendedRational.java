@@ -243,27 +243,28 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
+     * Compares this value to another.
      * @param other The parameter {@code other} is an ExtendedRational object.
-     * @return A 32-bit signed integer.
+     * @return Less than 0 if this value is less than, 0 if equal to, or greater
+     * than 0 if greater than the other value.
      */
     public int compareTo(ExtendedRational other) {
       return this.getEr().compareTo(other == null ? null : other.getEr());
     }
 
     /**
-     * Not documented yet.
+     * Checks whether this and another value are equal.
      * @param other The parameter {@code other} is an ExtendedRational object.
-     * @return either {@code true} or {@code false}.
+     * @return Either {@code true} or {@code false}.
      */
     public boolean equals(ExtendedRational other) {
       return this.getEr().equals(other == null ? null : other.getEr());
     }
 
     /**
-     * Not documented yet.
+     * Checks whether this and another value are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return either {@code true} or {@code false}.
+     * @return Either {@code true} or {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational other = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);

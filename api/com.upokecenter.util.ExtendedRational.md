@@ -39,7 +39,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int compareTo(ExtendedRational other)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Compares this value to another.
 * `static ExtendedRational Create(BigInteger numerator,
       BigInteger denominator)`<br>
  Deprecated.  Creates a rational number with the given numerator and denominator.
@@ -47,9 +47,9 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
       int denominatorSmall)`<br>
  Deprecated.  Creates a rational number with the given numerator and denominator.
 * `boolean equals(ExtendedRational other)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Checks whether this and another value are equal.
 * `boolean equals(Object obj)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Checks whether this and another value are equal.
 * `BigInteger getDenominator()`<br>
  Deprecated.  Gets this object's denominator.
 * `BigInteger getNumerator()`<br>
@@ -228,7 +228,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* A 32-bit signed integer.
+* Less than 0 if this value is less than, 0 if equal to, or greater
+ than 0 if greater than the other value.
 
 ### equals
     public boolean equals(ExtendedRational other)
@@ -240,7 +241,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* either <code>true</code> or <code>false</code>.
+* Either <code>true</code> or <code>false</code>.
 
 ### equals
     public boolean equals(Object obj)
@@ -256,7 +257,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* either <code>true</code> or <code>false</code>.
+* Either <code>true</code> or <code>false</code>.
 
 ### hashCode
     public int hashCode()

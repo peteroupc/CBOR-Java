@@ -34,7 +34,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int compareTo(ExtendedDecimal other)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Compares this extended decimal to another.
 * `static ExtendedDecimal Create(BigInteger mantissa,
       BigInteger exponent)`<br>
  Deprecated.  Creates a number with the value exponent*10^mantissa.
@@ -295,7 +295,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* A 32-bit signed integer.
+* Less than 0 if this value is less than, 0 if equal to, or greater
+ than 0 if greater than the other extended decimal.
 
 ### signum
     @Deprecated public final int signum()

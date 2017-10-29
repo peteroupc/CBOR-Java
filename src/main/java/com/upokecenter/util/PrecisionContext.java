@@ -10,7 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.numbers.*;
 
     /**
-     * Not documented yet.
+     * A precision context.
      * @deprecated Use EContext from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

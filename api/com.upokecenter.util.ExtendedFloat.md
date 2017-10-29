@@ -38,7 +38,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int compareTo(ExtendedFloat other)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Compares this extended float to another.
 * `static ExtendedFloat Create(BigInteger mantissa,
       BigInteger exponent)`<br>
  Deprecated.  Creates a number with the value exponent*2^mantissa.
@@ -58,7 +58,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 * `static ExtendedFloat FromString(String str)`<br>
- Deprecated.  Not documented yet.
+ Deprecated.  Creates a binary float from a text string that represents a number.
 * `static ExtendedFloat FromString(String str,
           int offset,
           int length,
@@ -289,11 +289,11 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is not documented yet.
+* <code>str</code> - A text string containing the number to convert.
 
 **Returns:**
 
-* An ExtendedFloat object.
+* The parsed number, converted to arbitrary-precision binary float.
 
 ### toString
     public String toString()
@@ -383,7 +383,8 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* A 32-bit signed integer.
+* Less than 0 if this value is less than, 0 if equal to, or greater
+ than 0 if greater than the other value.
 
 ### signum
     @Deprecated public final int signum()

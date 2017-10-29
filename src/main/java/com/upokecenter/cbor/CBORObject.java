@@ -4623,7 +4623,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
           WriteObjectMap(child.AsMap(), outputStream, stack, options);
           stack.remove(stack.size() - 1);
         } else {
-          child.WriteTo(outputStream);
+          child.WriteTo(outputStream, options);
         }
       }
       return stack;
