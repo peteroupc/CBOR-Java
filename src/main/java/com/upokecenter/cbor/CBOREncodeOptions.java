@@ -31,25 +31,26 @@ package com.upokecenter.cbor;
      * @return This options object's value.
      */
     public final int getValue() {
- return this.value;
-}
+        return this.value;
+      }
 
     private CBOREncodeOptions(int value) {
       this.value = value;
     }
 
     /**
-     * Combines the flags of this options object with another options object.
+     * Returns an options object containing the combined flags of this and another
+     * options object.
      * @param o The parameter {@code o} is a CBOREncodeOptions object.
-     * @return A CBOREncodeOptions object.
+     * @return A new CBOREncodeOptions object.
      */
     public CBOREncodeOptions Or(CBOREncodeOptions o) {
       return new CBOREncodeOptions(this.value | o.value);
     }
 
     /**
-     * Returns an options object whose flags are shared by this and another options
-     * object.
+     * Returns an options object containing the flags shared by this and another
+     * options object.
      * @param o The parameter {@code o} is a CBOREncodeOptions object.
      * @return A CBOREncodeOptions object.
      */

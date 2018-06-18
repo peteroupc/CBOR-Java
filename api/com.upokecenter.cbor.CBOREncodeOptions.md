@@ -16,12 +16,13 @@ Specifies options for encoding and decoding CBOR objects.
 ## Methods
 
 * `CBOREncodeOptions And​(CBOREncodeOptions o)`<br>
- Returns an options object whose flags are shared by this and another options
- object.
+ Returns an options object containing the flags shared by this and another
+ options object.
 * `int getValue()`<br>
  Gets this options object's value.
 * `CBOREncodeOptions Or​(CBOREncodeOptions o)`<br>
- Combines the flags of this options object with another options object.
+ Returns an options object containing the combined flags of this and another
+ options object.
 
 ## Field Details
 
@@ -48,7 +49,8 @@ Gets this options object's value.
 
 ### Or
     public CBOREncodeOptions Or​(CBOREncodeOptions o)
-Combines the flags of this options object with another options object.
+Returns an options object containing the combined flags of this and another
+ options object.
 
 **Parameters:**
 
@@ -56,12 +58,12 @@ Combines the flags of this options object with another options object.
 
 **Returns:**
 
-* A CBOREncodeOptions object.
+* A new CBOREncodeOptions object.
 
 ### And
     public CBOREncodeOptions And​(CBOREncodeOptions o)
-Returns an options object whose flags are shared by this and another options
- object.
+Returns an options object containing the flags shared by this and another
+ options object.
 
 **Parameters:**
 
