@@ -28,6 +28,30 @@ class PropertyMap {
   private static class MethodData {
     public String name;
     public Method method;
+    public static boolean IsGetMethod(String methodName){
+          return (methodName.startsWith("get") && methodName.length() > 3 &&
+              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z' &&
+              !methodName.equals("getClass"));
+    }
+    public static boolean IsIsMethod(String methodName){
+          return (methodName.startsWith("is") && methodName.length() > 2 &&
+              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
+    }
+    public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
+          String methodName = this.name;
+          if(MethodData.IsGetMethod(methodName)) {
+            methodName = methodName.substring(3);
+          } else if(removeIsPrefix && MethodData.IsIsMethod(methodName)) {
+            methodName = methodName.substring(2);
+          }
+          if(useCamelCase && methodName.charAt(0) >= 'A' && methodName.charAt(0) <= 'Z') {
+              StringBuilder sb = new StringBuilder();
+              sb.append((char)(methodName.charAt(0) + 0x20));
+              sb.append(methodName.substring(1));
+              methodName = sb.toString();
+          }
+          return methodName;
+    }
   }
 
   private static Map<Class<?>, List<MethodData>> propertyLists =
@@ -44,30 +68,9 @@ class PropertyMap {
       for(Method pi : t.getMethods()) {
         if(pi.getParameterTypes().length == 0) {
           String methodName = pi.getName();
-          if(methodName.startsWith("get") && methodName.length() > 3 &&
-              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z' &&
-              !methodName.equals("getClass")
-              ) {
+          if(MethodData.IsGetMethod(methodName) || MethodData.IsIsMethod(methodName)){
             MethodData md = new MethodData();
-            md.name = methodName.substring(3);
-            if(md.name.charAt(0) >= 'A' && md.name.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(md.name.charAt(0) + 0x20));
-              sb.append(md.name.substring(1));
-              md.name = sb.toString();
-            }
-            md.method = pi;
-            ret.add(md);
-          } else if(methodName.startsWith("is") && methodName.length() > 2 &&
-              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z') {
-            MethodData md = new MethodData();
-            md.name = methodName.substring(2);
-            if(md.name.charAt(0) >= 'A' && md.name.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(md.name.charAt(0) + 0x20));
-              sb.append(md.name.substring(1));
-              md.name = sb.toString();
-            }
+            md.name = methodName;
             md.method = pi;
             ret.add(md);
           }
@@ -103,18 +106,25 @@ class PropertyMap {
     return value.name();
   }
 
+  public static Iterable<Map.Entry<String, Object>> GetProperties(
+       final Object o){
+     return GetProperties(o, true, true);
+  }
+
   /**
    * <p>GetProperties.</p>
    *
    * @param o a {@link java.lang.Object} object.
    * @return a {@link java.lang.Iterable} object.
    */
-  public static Iterable<Map.Entry<String, Object>> GetProperties(final Object o) {
+  public static Iterable<Map.Entry<String, Object>> GetProperties(
+       final Object o, boolean removeIsPrefix, boolean useCamelCase) {
     List<Map.Entry<String, Object>> ret =
         new ArrayList<Map.Entry<String, Object>>();
     try {
       for(MethodData key : GetPropertyList(o.getClass())) {
-        ret.add(new AbstractMap.SimpleEntry<String, Object>(key.name,
+        ret.add(new AbstractMap.SimpleEntry<String, Object>(
+            key.GetAdjustedName(removeIsPrefix, useCamelCase),
             key.method.invoke(o)));
       }
       return ret;
