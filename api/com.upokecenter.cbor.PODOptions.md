@@ -20,7 +20,11 @@ Options for converting "plain old data" objects to CBOR objects.
 ## Methods
 
 * `boolean getRemoveIsPrefix()`<br>
+ Gets a value indicating whether the "Is" prefix in property names is removed
+ before they are used as keys.
 * `boolean getUseCamelCase()`<br>
+ Gets a value indicating whether property names are converted to camel case
+ before they are used as keys.
 
 ## Field Details
 
@@ -31,5 +35,19 @@ The default settings for "plain old data" options.
 
 ### getRemoveIsPrefix
     public final boolean getRemoveIsPrefix()
+Gets a value indicating whether the "Is" prefix in property names is removed
+ before they are used as keys.
+
+**Returns:**
+
+* <code>true</code> if the prefix is removed; otherwise, <code>false</code>.
+
 ### getUseCamelCase
     public final boolean getUseCamelCase()
+Gets a value indicating whether property names are converted to camel case
+ before they are used as keys.
+
+**Returns:**
+
+* <code>true</code> if the names are converted to camel case; otherwise,
+ <code>false</code>.

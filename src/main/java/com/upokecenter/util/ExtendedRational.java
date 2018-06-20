@@ -88,8 +88,8 @@ import com.upokecenter.numbers.*;
     private final ERational er;
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.ExtendedRational}
-     * class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.util.ExtendedRational} class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @throws java.lang.NullPointerException The parameter {@code numerator} or

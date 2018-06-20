@@ -11,9 +11,8 @@ Deprecated.
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents) com.upokecenter.PrecisionContext`<br>
- Deprecated. Initializes a new instance of the com.upokecenter.PrecisionContext
- class.
+                boolean clampNormalExponents) PrecisionContext`<br>
+ Deprecated. Initializes a new instance of the PrecisionContext class.
 * `String toString()`<br>
  Deprecated. Gets a string representation of this object.
 
@@ -23,9 +22,8 @@ Deprecated.
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents) com.upokecenter.PrecisionContext`<br>
- Deprecated. Initializes a new instance of the com.upokecenter.PrecisionContext
- class.
+                boolean clampNormalExponents) PrecisionContext`<br>
+ Deprecated. Initializes a new instance of the PrecisionContext class.
 
 ## Method Details
 

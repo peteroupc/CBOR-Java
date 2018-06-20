@@ -30,9 +30,9 @@ package com.upokecenter.cbor;
      * before they are used as keys.
      * @return {@code true} if the prefix is removed; otherwise, {@code false}.
      */
-        private boolean propVarremoveisprefix;
-public final boolean getRemoveIsPrefix() { return propVarremoveisprefix; }
+        public final boolean getRemoveIsPrefix() { return propVarremoveisprefix; }
 private final void setRemoveIsPrefix(boolean value) { propVarremoveisprefix = value; }
+private boolean propVarremoveisprefix;
 
     /**
      * Gets a value indicating whether property names are converted to camel case
@@ -40,7 +40,7 @@ private final void setRemoveIsPrefix(boolean value) { propVarremoveisprefix = va
      * @return {@code true} if the names are converted to camel case; otherwise,
      * {@code false}.
      */
-    private boolean propVarusecamelcase;
-public final boolean getUseCamelCase() { return propVarusecamelcase; }
+    public final boolean getUseCamelCase() { return propVarusecamelcase; }
 private final void setUseCamelCase(boolean value) { propVarusecamelcase = value; }
+private boolean propVarusecamelcase;
     }

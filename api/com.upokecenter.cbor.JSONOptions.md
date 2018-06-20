@@ -21,6 +21,8 @@ Includes options to control how CBOR objects are converted to JSON.
 ## Methods
 
 * `boolean getBase64Padding()`<br>
+ If true, include padding when writing data in base64url or
+ traditional base64 format to JSON.
 
 ## Field Details
 
@@ -31,3 +33,10 @@ The default options for converting CBOR objects to JSON.
 
 ### getBase64Padding
     public final boolean getBase64Padding()
+If <b>true</b>, include padding when writing data in base64url or
+ traditional base64 format to JSON.<p> The padding character is '='.
+ </p>
+
+**Returns:**
+
+* The default is false, no padding.

@@ -34,7 +34,7 @@ import java.util.*;
      * </p>
      * @return The default is false, no padding.
      */
-    private boolean propVarbase64padding;
-public final boolean getBase64Padding() { return propVarbase64padding; }
+    public final boolean getBase64Padding() { return propVarbase64padding; }
 private final void setBase64Padding(boolean value) { propVarbase64padding = value; }
+private boolean propVarbase64padding;
    }
