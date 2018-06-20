@@ -511,7 +511,8 @@ import com.upokecenter.numbers.*;
 
     static void WriteJSONToInternal(
       CBORObject obj,
-      StringOutput writer) throws java.io.IOException {
+      StringOutput writer,
+      JSONOptions options) throws java.io.IOException {
       int type = obj.getItemType();
       Object thisItem = obj.getThisItem();
       switch (type) {
@@ -610,7 +611,7 @@ import com.upokecenter.numbers.*;
                 byteArray,
                 0,
                 byteArray.length,
-                false);
+                options.getBase64Padding());
             } else if (obj.HasTag(23)) {
               // Write as base16
               for (int i = 0; i < byteArray.length; ++i) {
@@ -623,7 +624,7 @@ import com.upokecenter.numbers.*;
                 byteArray,
                 0,
                 byteArray.length,
-                false);
+                options.getBase64Padding());
             }
             writer.WriteCodePoint((int)'\"');
             break;
@@ -646,7 +647,7 @@ import com.upokecenter.numbers.*;
               if (!first) {
                 writer.WriteCodePoint((int)',');
               }
-              WriteJSONToInternal(i, writer);
+              WriteJSONToInternal(i, writer, options);
               first = false;
             }
             writer.WriteCodePoint((int)']');
@@ -686,7 +687,7 @@ import com.upokecenter.numbers.*;
                 WriteJSONStringUnquoted((String)key.getThisItem(), writer);
                 writer.WriteCodePoint((int)'\"');
                 writer.WriteCodePoint((int)':');
-                WriteJSONToInternal(value, writer);
+                WriteJSONToInternal(value, writer, options);
                 first = false;
               }
               writer.WriteCodePoint((int)'}');
@@ -716,15 +717,14 @@ import com.upokecenter.numbers.*;
                 WriteJSONStringUnquoted((String)key, writer);
                 writer.WriteCodePoint((int)'\"');
                 writer.WriteCodePoint((int)':');
-                WriteJSONToInternal(value, writer);
+                WriteJSONToInternal(value, writer, options);
                 first = false;
               }
               writer.WriteCodePoint((int)'}');
             }
             break;
           }
-        default:
-          throw new IllegalStateException("Unexpected item type");
+        default: throw new IllegalStateException("Unexpected item type");
       }
     }
   }

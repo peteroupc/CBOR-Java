@@ -5023,6 +5023,55 @@ cbor = CBORObject.NewArray();
 cbor.Add(CBORObject.FromObjectAndTag(b64bytes, 22));
 TestSucceedingJSON(cbor.ToJSONString());
     }
+
+    @Test
+    public void TestToJSONString_ByteArray_Padding() {
+      CBORObject o;
+      JSONOptions options = new JSONOptions(true);  // base64 padding enabled
+      o = CBORObject.FromObjectAndTag(
+        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }, 22);
+      {
+        String stringTemp = o.ToJSONString(options);
+        Assert.assertEquals(
+        "\"mtbw6A==\"",
+        stringTemp);
+      }
+      o = CBORObject.FromObject(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 });
+      {
+        String stringTemp = o.ToJSONString(options);
+        Assert.assertEquals(
+        "\"mtbw6A==\"",
+        stringTemp);
+      }
+      o = CBORObject.FromObjectAndTag(
+        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 },
+        23);
+      {
+        String stringTemp = o.ToJSONString(options);
+        Assert.assertEquals(
+        "\"9AD6F0E8\"",
+        stringTemp);
+      }
+      o = CBORObject.FromObject(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 });
+      // Encode with Base64URL by default
+      {
+        String stringTemp = o.ToJSONString(options);
+        Assert.assertEquals(
+        "\"mtb_6A==\"",
+        stringTemp);
+      }
+      o = CBORObject.FromObjectAndTag(
+        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 },
+        22);
+      // Encode with Base64
+      {
+        String stringTemp = o.ToJSONString(options);
+        Assert.assertEquals(
+        "\"mtb/6A==\"",
+        stringTemp);
+      }
+    }
+
     @Test
     public void TestToString() {
       {

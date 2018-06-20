@@ -657,7 +657,7 @@ import com.upokecenter.numbers.*;
     /**
      * Finds the sum of two CBOR numbers.
      * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBORObject object.
+     * @param second The parameter {@code second} is a CBOR object.
      * @return A CBORObject object.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
      * opposed to Not-a-Number, NaN).
@@ -797,7 +797,7 @@ try { if (ms != null) {
 
     /**
      * Divides a CBORObject object by the value of a CBORObject object.
-     * @param first The parameter {@code first} is a CBORObject object.
+     * @param first The parameter {@code first} is a CBOR object.
      * @param second The parameter {@code second} is a CBOR object.
      * @return The quotient of the two objects.
      */
@@ -1241,10 +1241,22 @@ try { if (ms != null) {
     }
 
     /**
-     * Generates a CBORObject from an arbitrary object. The following types are
-     * specially handled by this method: null; primitive types; string;
-     * CBORObject; the <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>, and
-     * <code>ERational</code> classes in the new <a
+     * Generates a CBORObject from an arbitrary object. See the overload of this
+     * method that takes a PODOptions argument.
+     * @param obj The parameter {@code obj} is an arbitrary object.
+     * @return A CBOR object corresponding to the given object. Returns
+     * CBORObject.Null if the object is null.
+     */
+    public static CBORObject FromObject(Object obj) {
+      return FromObject(obj, PODOptions.Default);
+    }
+
+    /**
+     * Generates a CBORObject from an arbitrary object, using the given options to
+     * control how certain objects are converted to CBOR objects. The
+     * following types are specially handled by this method: null; primitive
+     * types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
+     * <code>EInteger</code>, and <code>ERational</code> classes in the new <a
   * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
      * library (in .NET) or the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
@@ -1257,25 +1269,36 @@ try { if (ms != null) {
      * properties in the case of a compiler-generated type). Properties are
      * converted to their camel-case names (meaning if a name starts with A
      * to Z, that letter is lower-cased). If the property name begins with
-     * the word "Is", that word is deleted from the name. Also, .NET
-     * <code>Enum</code> objects will be converted to their integer values, and a
-     * multidimensional array is converted to an array of arrays.</p> <p>In
-     * the Java version, if the object is a type not specially handled by
-     * this method, this method checks the CBOR object for methods starting
-     * with the word "get" or "is" that take no parameters, and returns a
-     * CBOR map with one entry for each such method found. For each method
-     * found, the starting word "get" or "is" is deleted from its name, and
-     * the name is converted to camel case (meaning if a name starts with A
-     * to Z, that letter is lower-cased). Also, Java <code>Enum</code> objects
-     * will be converted to the result of their <code>name</code> method.</p>
-     * <p>If the input is a byte array, the byte array is copied to a new
-     * byte array. (This method can't be used to decode CBOR data from a
-     * byte array; for that, use the DecodeFromBytes method instead.).</p>
+     * the word "Is", that word is deleted from the name. (Passing the
+     * appropriate "options" parameter can be done to control whether the
+     * "Is" prefix is removed and whether a camel-case conversion happens.)
+     * Also, .NET <code>Enum</code> objects will be converted to their integer
+     * values, and a multidimensional array is converted to an array of
+     * arrays.</p> <p>In the Java version, if the object is a type not
+     * specially handled by this method, this method checks the CBOR object
+     * for methods starting with the word "get" or "is" that take no
+     * parameters, and returns a CBOR map with one entry for each such
+     * method found. For each method found, the starting word "get" or "is"
+     * is deleted from its name, and the name is converted to camel case
+     * (meaning if a name starts with A to Z, that letter is lower-cased).
+     * (Passing the appropriate "options" parameter can be done to control
+     * whether the "is" prefix is removed and whether a camel-case
+     * conversion happens.) Also, Java <code>Enum</code> objects will be converted
+     * to the result of their <code>name</code> method.</p> <p>If the input is a
+     * byte array, the byte array is copied to a new byte array. (This
+     * method can't be used to decode CBOR data from a byte array; for that,
+     * use the DecodeFromBytes method instead.).</p>
      * @param obj The parameter {@code obj} is an arbitrary object.
+     * @param options An object containing options to control how certain objects
+     * are converted to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      */
-    public static CBORObject FromObject(Object obj) {
+          public static CBORObject FromObject(Object obj, PODOptions
+              options) {
+      if ((options) == null) {
+  throw new NullPointerException("options");
+}
       if (obj == null) {
         return CBORObject.Null;
       }
@@ -1377,7 +1400,10 @@ try { if (ms != null) {
         return objret;
       }
       objret = CBORObject.NewMap();
-      for (Map.Entry<String, Object> key : PropertyMap.GetProperties(obj)) {
+      for (Map.Entry<String, Object> key : PropertyMap.GetProperties(
+                 obj,
+                 options.getRemoveIsPrefix(),
+                 options.getUseCamelCase())) {
         objret.set(key.getKey(), CBORObject.FromObject(key.getValue()));
       }
       return objret;
@@ -1532,7 +1558,7 @@ try { if (ms != null) {
 
     /**
      * Multiplies two CBOR numbers.
-     * @param first The parameter {@code first} is a CBORObject object.
+     * @param first The parameter {@code first} is a CBOR object.
      * @param second The parameter {@code second} is a CBOR object.
      * @return The product of the two numbers.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
@@ -1683,7 +1709,7 @@ try { if (ms != null) {
     /**
      * Finds the remainder that results when a CBORObject object is divided by the
      * value of a CBORObject object.
-     * @param first The parameter {@code first} is a CBORObject object.
+     * @param first The parameter {@code first} is a CBOR object.
      * @param second The parameter {@code second} is a CBOR object.
      * @return The remainder of the two numbers.
      */
@@ -1693,7 +1719,7 @@ try { if (ms != null) {
 
     /**
      * Finds the difference between two CBOR number objects.
-     * @param first The parameter {@code first} is a CBORObject object.
+     * @param first The parameter {@code first} is a CBOR object.
      * @param second The parameter {@code second} is a CBOR object.
      * @return The difference of the two objects.
      * @throws IllegalArgumentException Either or both operands are not numbers (as
@@ -2251,13 +2277,18 @@ try { if (ms != null) {
     }
 
     /**
-     * Writes an arbitrary object to a CBOR data stream. Currently, the following
+     * Writes an arbitrary object to a CBOR data stream, using the specified
+     * options for controlling how the object is encoded to CBOR data
+     * format. If the object is convertible to a CBOR map or a CBOR object
+     * that contains CBOR maps, the keys to those maps are written out to
+     * the data stream in an undefined order. Currently, the following
      * objects are supported: <ul> <li>Lists of CBORObject.</li> <li>Maps of
-     * CBORObject.</li> <li>Null.</li> <li>Byte arrays, which will always be
-     * written as definite-length byte strings.</li> <li>String objects,
-     * which will be written as indefinite-length text strings if their size
-     * exceeds a certain threshold (this behavior may change in future
-     * versions of this library).</li> <li>Any object accepted by the
+     * CBORObject. The keys to the map are written out to the data stream in
+     * an undefined order.</li> <li>Null.</li> <li>Byte arrays, which will
+     * always be written as definite-length byte strings.</li> <li>String
+     * objects, which will be written as indefinite-length text strings if
+     * their size exceeds a certain threshold (this behavior may change in
+     * future versions of this library).</li> <li>Any object accepted by the
      * FromObject static methods.</li></ul>
      * @param objValue The arbitrary object to be serialized. Can be null.
      * @param output A writable data stream.
@@ -2307,7 +2338,9 @@ public static void Write(
     /**
      * Converts an arbitrary object to a string in JavaScript Object Notation
      * (JSON) format, as in the ToJSONString method, and writes that string
-     * to a data stream in UTF-8.
+     * to a data stream in UTF-8. If the object is convertible to a CBOR
+     * map, or to a CBOR object that contains CBOR maps, the keys to those
+     * maps are written out to the JSON string in an undefined order.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @param outputStream A writable data stream.
      */
@@ -3037,7 +3070,10 @@ public int compareTo(CBORObject other) {
     }
 
     /**
-     * Gets the binary representation of this data item.
+     * Writes the binary representation of this CBOR object and returns a byte
+     * array of that representation. If the CBOR object contains CBOR maps,
+     * or is a CBOR map itself, the keys to the map are written out to the
+     * byte array in an undefined order.
      * @return A byte array in CBOR format.
      */
     public byte[] EncodeToBytes() {
@@ -3045,7 +3081,11 @@ public int compareTo(CBORObject other) {
     }
 
     /**
-     * Gets the binary representation of this data item.
+     * Writes the binary representation of this CBOR object and returns a byte
+     * array of that representation, using the specified options for
+     * encoding the object to CBOR format. If the CBOR object contains CBOR
+     * maps, or is a CBOR map itself, the keys to the map are written out to
+     * the byte array in an undefined order.
      * @param options Options for encoding the data to CBOR.
      * @return A byte array in CBOR format.
      * @throws java.lang.NullPointerException The parameter {@code options} is null.
@@ -3587,31 +3627,53 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
 
     /**
      * Converts this object to a string in JavaScript Object Notation (JSON)
-     * format. This function works not only with arrays and maps, but also
-     * integers, strings, byte arrays, and other JSON data types. Notes:
-     * <ul> <li>If this object contains maps with non-string keys, the keys
-     * are converted to JSON strings before writing the map as a JSON
-     * string.</li> <li>If a number in the form of an arbitrary-precision
-     * binary float has a very high binary exponent, it will be converted to
-     * a double before being converted to a JSON string. (The resulting
-     * double could overflow to infinity, in which case the
-     * arbitrary-precision binary float is converted to null.)</li> <li>The
-     * string will not begin with a byte-order mark (U + FEFF); RFC 7159 (the
-     * JSON specification) forbids placing a byte-order mark at the
-     * beginning of a JSON string.</li> <li>Byte strings are converted to
-     * Base64 URL without whitespace or padding by default (see section 4.1
-     * of RFC 7049). (A byte string will instead be converted to traditional
-     * base64 without whitespace or padding if it has tag 22, or base16 for
-     * tag 23.)</li> <li>Rational numbers will be converted to their exact
-     * form, if possible, otherwise to a high-precision approximation. (The
-     * resulting approximation could overflow to infinity, in which case the
-     * rational number is converted to null.)</li> <li>Simple values other
-     * than true and false will be converted to null. (This doesn't include
-     * floating-point numbers.)</li> <li>Infinity and not-a-number will be
-     * converted to null.</li></ul>
+     * format, using the specified options to control the encoding process.
+     * See the overload to JSONString taking a JSONOptions argument.
+     * <returns>A text string containing the converted object.</returns>
      * @return A text string containing the converted object.
      */
     public String ToJSONString() {
+      return ToJSONString(JSONOptions.Default);
+    }
+
+    /**
+     * Converts this object to a string in JavaScript Object Notation (JSON)
+     * format, using the specified options to control the encoding process.
+     * This function works not only with arrays and maps, but also integers,
+     * strings, byte arrays, and other JSON data types. Notes: <ul> <li>If
+     * this object contains maps with non-string keys, the keys are
+     * converted to JSON strings before writing the map as a JSON
+     * string.</li> <li>If the CBOR object contains CBOR maps, or is a CBOR
+     * map itself, the keys to the map are written out to the JSON string in
+     * an undefined order.</li> <li>If a number in the form of an
+     * arbitrary-precision binary float has a very high binary exponent, it
+     * will be converted to a double before being converted to a JSON
+     * string. (The resulting double could overflow to infinity, in which
+     * case the arbitrary-precision binary float is converted to null.)</li>
+     * <li>The string will not begin with a byte-order mark (U + FEFF); RFC
+     * 7159 (the JSON specification) forbids placing a byte-order mark at
+     * the beginning of a JSON string.</li> <li>Byte strings are converted
+     * to Base64 URL without whitespace or padding by default (see section
+     * 4.1 of RFC 7049). A byte string will instead be converted to
+     * traditional base64 without whitespace or padding by default if it has
+     * tag 22, or base16 for tag 23. Padding will be included in the Base64
+     * URL or traditional base64 form if <b>Base64Padding</b> in the JSON
+     * options is set to <b>true</b>.</li> <li>Rational numbers will be
+     * converted to their exact form, if possible, otherwise to a
+     * high-precision approximation. (The resulting approximation could
+     * overflow to infinity, in which case the rational number is converted
+     * to null.)</li> <li>Simple values other than true and false will be
+     * converted to null. (This doesn't include floating-point
+     * numbers.)</li> <li>Infinity and not-a-number will be converted to
+     * null.</li></ul>
+     * @param options An object containing the options to control writing the CBOR
+     * object to JSON.
+     * @return A text string containing the converted object.
+     */
+        public String ToJSONString(JSONOptions options) {
+      if (options == null) {
+ throw new NullPointerException("options");
+}
       int type = this.getItemType();
       switch (type) {
         case CBORObjectTypeSimpleValue: {
@@ -3624,7 +3686,7 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
           {
             StringBuilder sb = new StringBuilder();
             try {
-              CBORJson.WriteJSONToInternal(this, new StringOutput(sb));
+              CBORJson.WriteJSONToInternal(this, new StringOutput(sb), options);
             } catch (IOException ex) {
               // This is truly exceptional
               throw new IllegalStateException("Internal error", ex);
@@ -3636,8 +3698,8 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
 
     /**
      * Returns this CBOR object in string form. The format is intended to be
-     * human-readable, not machine-readable, and the format may change at
-     * any time.
+     * human-readable, not machine-readable, the format is not intended to
+     * be parsed, and the format may change at any time.
      * @return A text representation of this object.
      */
     @Override public String toString() {
@@ -3837,7 +3899,9 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
     /**
      * Converts this object to a string in JavaScript Object Notation (JSON)
      * format, as in the ToJSONString method, and writes that string to a
-     * data stream in UTF-8.
+     * data stream in UTF-8. If the CBOR object contains CBOR maps, or is a
+     * CBOR map, the keys to the map are written out to the JSON string in
+     * an undefined order.
      * @param outputStream A writable data stream.
      * @throws java.io.IOException An I/O error occurred.
      * @throws java.lang.NullPointerException The parameter {@code outputStream} is
@@ -3847,11 +3911,39 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
       if (outputStream == null) {
         throw new NullPointerException("outputStream");
       }
-      CBORJson.WriteJSONToInternal(this, new StringOutput(outputStream));
+      CBORJson.WriteJSONToInternal(this, new StringOutput(outputStream),
+        JSONOptions.Default);
     }
 
     /**
-     * Writes this CBOR object to a data stream.
+     * Converts this object to a string in JavaScript Object Notation (JSON)
+     * format, as in the ToJSONString method, and writes that string to a
+     * data stream in UTF-8, using the given JSON options to control the
+     * encoding process. If the CBOR object contains CBOR maps, or is a CBOR
+     * map, the keys to the map are written out to the JSON string in an
+     * undefined order.
+     * @param outputStream A writable data stream.
+     * @param options An object containing the options to control writing the CBOR
+     * object to JSON.
+     * @throws java.io.IOException An I/O error occurred.
+     * @throws java.lang.NullPointerException The parameter {@code outputStream} is
+     * null.
+     */
+        public void WriteJSONTo(OutputStream outputStream, JSONOptions options) throws java.io.IOException {
+      if (outputStream == null) {
+        throw new NullPointerException("outputStream");
+      }
+            if (options == null) {
+ throw new NullPointerException("options");
+}
+            CBORJson.WriteJSONToInternal(this, new StringOutput(outputStream),
+        options);
+    }
+
+    /**
+     * Writes this CBOR object to a data stream. If the CBOR object contains CBOR
+     * maps, or is a CBOR map, the keys to the map are written out to the
+     * data stream in an undefined order.
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
@@ -3861,7 +3953,10 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
     }
 
     /**
-     * Writes this CBOR object to a data stream.
+     * Writes this CBOR object to a data stream, using the specified options for
+     * encoding the data to CBOR format. If the CBOR object contains CBOR
+     * maps, or is a CBOR map, the keys to the map are written out to the
+     * data stream in an undefined order.
      * @param stream A writable data stream.
      * @param options Options for encoding the data to CBOR.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.

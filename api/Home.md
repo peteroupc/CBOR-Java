@@ -21,6 +21,12 @@ Represents an object in Concise Binary Object Representation (CBOR) and
 * [com.upokecenter.cbor.CBORTypeFilter](com.upokecenter.cbor.CBORTypeFilter.md) -
 Specifies what kinds of CBOR objects a tag can be.
 
+* [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -
+Includes options to control how CBOR objects are converted to JSON.
+
+* [com.upokecenter.cbor.PODOptions](com.upokecenter.cbor.PODOptions.md) -
+Options for converting "plain old data" objects to CBOR objects.
+
 * [com.upokecenter.cbor.CBORType](com.upokecenter.cbor.CBORType.md) -
 Represents a type that a CBOR object can have.
 
