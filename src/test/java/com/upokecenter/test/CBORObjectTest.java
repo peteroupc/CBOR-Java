@@ -1,5 +1,6 @@
 package com.upokecenter.test;
 
+import java.util.*;
 import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -84,6 +85,115 @@ import com.upokecenter.numbers.*;
 }
       }
       return neg ? -ret : ret;
+    }
+
+    static void CheckPropertyNames(
+  Object ao,
+  PODOptions cc,
+  String p1,
+  String p2,
+  String p3) {
+       CBORObjectTest.CheckPropertyNames(
+  CBORObject.FromObject(ao, cc),
+  p1,
+  p2,
+  p3);
+    }
+
+    static void CheckArrayPropertyNames(
+  CBORObject co,
+  int expectedCount,
+  String p1,
+  String p2,
+  String p3) {
+            Assert.assertEquals(CBORType.Array, co.getType());
+            Assert.assertEquals(expectedCount, co.size());
+            for (int i = 0; i < co.size(); ++i) {
+             CBORObjectTest.CheckPropertyNames(co.get(i), p1, p2, p3);
+            }
+            CBORTestCommon.AssertRoundTrip(co);
+    }
+
+    static void CheckPODPropertyNames(
+  CBORObject co,
+  PODOptions cc,
+  String p1,
+  String p2,
+  String p3) {
+            Assert.assertEquals(CBORType.Map, co.getType());
+            String keyName = cc.getUseCamelCase() ? "propValue" : "PropValue";
+            if (!co.ContainsKey(keyName)) {
+ Assert.fail("Expected " + keyName + " to exist: " + co.toString());
+}
+            CBORObjectTest.CheckPropertyNames(co.get(keyName), p1, p2, p3);
+    }
+
+    static void CheckPODInDictPropertyNames(
+  CBORObject co,
+  String p1,
+  String p2,
+  String p3) {
+            Assert.assertEquals(CBORType.Map, co.getType());
+            if (!co.ContainsKey("PropValue")) {
+ Assert.fail("Expected PropValue to exist: " + co.toString());
+}
+            CBORObjectTest.CheckPropertyNames(co.get("PropValue"), p1, p2, p3);
+    }
+
+static void CheckPropertyNames(
+  CBORObject o,
+  String p1,
+  String p2,
+  String p3) {
+            Assert.assertEquals(CBORType.Map, o.getType());
+            if (!o.ContainsKey(p1)) {
+ Assert.fail("Expected " + p1 + " to exist: " + o.toString());
+}
+            if (!o.ContainsKey(p2)) {
+ Assert.fail("Expected " + p2 + " to exist: " + o.toString());
+}
+            if (!o.ContainsKey(p3)) {
+ Assert.fail("Expected " + p3 + " to exist: " + o.toString());
+}
+            CBORTestCommon.AssertRoundTrip(o);
+    }
+
+    static void CheckPropertyNames(Object ao) {
+            PODOptions valueCcTF = new PODOptions(true, false);
+            PODOptions valueCcFF = new PODOptions(false, false);
+            PODOptions valueCcFT = new PODOptions(false, true);
+            PODOptions valueCcTT = new PODOptions(true, true);
+    CBORObjectTest.CheckPropertyNames(
+  ao,
+  valueCcTF,
+  "PropA",
+  "PropB",
+  "PropC");
+         /*
+   TODO: The following case conflicts with the Java version
+  of the CBOR library. Resolving this conflict may result in the
+  Java version being backward-incompatible and so require
+  a major version change.
+   //--
+          CBORObjectTest.CheckPropertyNames(
+  ao,
+  valueCcFF,
+  "PropA",
+  "PropB",
+  "IsPropC");
+        */
+          CBORObjectTest.CheckPropertyNames(
+  ao,
+  valueCcFT,
+  "propA",
+  "propB",
+  "isPropC");
+    CBORObjectTest.CheckPropertyNames(
+  ao,
+  valueCcTT,
+  "propA",
+  "propB",
+  "propC");
     }
 
     private static String[] jsonFails = { "\"\\uxxxx\"",
@@ -2456,7 +2566,148 @@ Assert.assertEquals(
         throw new IllegalStateException("", ex);
       }
     }
-    @Test
+
+        private void CheckKeyValue(CBORObject o, String key, Object value) {
+            if (!o.ContainsKey(key)) {
+                Assert.fail("Expected " + key + " to exist: " + o.toString());
+            }
+            TestCommon.AssertEqualsHashCode(o.get(key), value);
+        }
+
+        @Test
+public void TestFromObject_Dictionary() {
+          Map<String, Object> dict = new HashMap<String, Object>();
+            dict.put("TestKey","TestValue");
+            dict.put("TestKey2","TestValue2");
+            CBORObject c = CBORObject.FromObject(dict);
+            this.CheckKeyValue(c, "TestKey", "TestValue");
+            this.CheckKeyValue(c, "TestKey2", "TestValue2");
+            c = CBORObject.FromObject((Object)dict);
+            this.CheckKeyValue(c, "TestKey", "TestValue");
+            this.CheckKeyValue(c, "TestKey2", "TestValue2");
+        }
+
+    public final class PODClass {
+        public PODClass() {
+            this.setPropA(0);
+            this.setPropB(1);
+        }
+
+        public final int getPropA() { return propVarpropa; }
+private final void setPropA(int value) { propVarpropa = value; }
+private int propVarpropa;
+
+        public final int getPropB() { return propVarpropb; }
+private final void setPropB(int value) { propVarpropb = value; }
+private int propVarpropb;
+
+        public final boolean isPropC() { return propVarispropc; }
+private final void setIsPropC(boolean value) { propVarispropc = value; }
+private boolean propVarispropc;
+    }
+
+    public final class NestedPODClass {
+        public NestedPODClass() {
+            this.setPropValue(new PODClass());
+        }
+
+        public final PODClass getPropValue() { return propVarpropvalue; }
+private final void setPropValue(PODClass value) { propVarpropvalue = value; }
+private PODClass propVarpropvalue;
+    }
+
+        @Test(timeout = 5000) public void TestFromObject_PODOptions() {
+            PODClass ao = new PODClass();
+            PODOptions valueCcTF = new PODOptions(true, false);
+            PODOptions valueCcFF = new PODOptions(false, false);
+            PODOptions valueCcFT = new PODOptions(false, true);
+            PODOptions valueCcTT = new PODOptions(true, true);
+            CBORObject co;
+            CBORObjectTest.CheckPropertyNames(ao);
+            PODClass[] arrao = new PODClass[] { ao, ao };
+            co = CBORObject.FromObject(arrao, valueCcTF);
+            CBORObjectTest.CheckArrayPropertyNames(
+  CBORObject.FromObject(arrao, valueCcTF),
+                 2,
+  "PropA",
+  "PropB",
+  "PropC");
+            CBORObjectTest.CheckArrayPropertyNames(
+  CBORObject.FromObject(arrao, valueCcFT),
+                 2,
+  "propA",
+  "propB",
+  "isPropC");
+            CBORObjectTest.CheckArrayPropertyNames(
+  CBORObject.FromObject(arrao, valueCcTT),
+                 2,
+  "propA",
+  "propB",
+  "propC");
+   NestedPODClass ao2 = new NestedPODClass();
+            CBORObjectTest.CheckPODPropertyNames(
+  CBORObject.FromObject(ao2, valueCcTF),
+ valueCcTF,
+                 "PropA",
+  "PropB",
+  "PropC");
+            CBORObjectTest.CheckPODPropertyNames(
+  CBORObject.FromObject(ao2, valueCcFT),
+ valueCcFT,
+                 "propA",
+  "propB",
+  "isPropC");
+            CBORObjectTest.CheckPODPropertyNames(
+  CBORObject.FromObject(ao2, valueCcTT),
+ valueCcTT,
+                 "propA",
+  "propB",
+  "propC");
+            HashMap<String, Object> aodict = new HashMap<String, Object>();
+            aodict.put("PropValue",new PODClass());
+
+            CBORObjectTest.CheckPODInDictPropertyNames(
+  CBORObject.FromObject(aodict, valueCcTF),
+  "PropA",
+  "PropB",
+  "PropC");
+            CBORObjectTest.CheckPODInDictPropertyNames(
+  CBORObject.FromObject(aodict, valueCcFT),
+  "propA",
+  "propB",
+  "isPropC");
+            CBORObjectTest.CheckPODInDictPropertyNames(
+  CBORObject.FromObject(aodict, valueCcTT),
+  "propA",
+  "propB",
+  "propC");
+         /*
+   TODO: The following cases conflict with the Java version
+  of the CBOR library. Resolving this conflict may result in the
+  Java version being backward-incompatible and so require
+  a major version change.
+   // ----
+            CBORObjectTest.CheckArrayPropertyNames(
+  CBORObject.FromObject(arrao, valueCcFF),
+                 2,
+  "PropA",
+  "PropB",
+  "IsPropC");
+            CBORObjectTest.CheckPODPropertyNames(
+  CBORObject.FromObject(ao2, valueCcFF),
+ valueCcFF,
+                 "PropA",
+  "PropB",
+  "IsPropC");
+            CBORObjectTest.CheckPODInDictPropertyNames(
+  CBORObject.FromObject(aodict, valueCcFF),
+  "PropA",
+  "PropB",
+  "IsPropC");
+          */
+        }
+
+        @Test
     public void TestFromObjectAndTag() {
       EInteger bigvalue = EInteger.FromString("99999999999999999999999999999");
       try {

@@ -87,11 +87,11 @@ class PropertyMap {
    * @param arr a {@link java.lang.Object} object.
    * @return a {@link com.upokecenter.cbor.CBORObject} object.
    */
-  public static CBORObject FromArray(final Object arr) {
+  public static CBORObject FromArray(final Object arr, PODOptions options) {
    int length = Array.getLength(arr);
    CBORObject obj = CBORObject.NewArray();
    for(int i = 0;i < length;i++) {
-    obj.Add(CBORObject.FromObject(Array.get(arr,i)));
+    obj.Add(CBORObject.FromObject(Array.get(arr,i), options));
    }
    return obj;
   }

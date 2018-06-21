@@ -273,8 +273,8 @@ Use the ERational version of this method instead.
  Generates a CBORObject from an arbitrary object.
 * `static CBORObject FromObject​(Object obj,
           PODOptions options)`<br>
- Generates a CBORObject from an arbitrary object, using the given options to
- control how certain objects are converted to CBOR objects.
+ Generates a CBORObject from an arbitrary object, using the given options
+ to control how certain objects are converted to CBOR objects.
 * `static CBORObject FromObject​(String strValue)`<br>
  Generates a CBOR object from a text string.
 * `static <T> CBORObject FromObject​(List<T> value)`<br>
@@ -1364,8 +1364,8 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 
 ### FromObject
     public static CBORObject FromObject​(Object obj, PODOptions options)
-Generates a CBORObject from an arbitrary object, using the given options to
- control how certain objects are converted to CBOR objects. The
+<p>Generates a CBORObject from an arbitrary object, using the given options
+ to control how certain objects are converted to CBOR objects. The
  following types are specially handled by this method: null; primitive
  types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
  <code>EInteger</code>, and <code>ERational</code> classes in the new <code>PeterO.Numbers</code>
@@ -1373,20 +1373,22 @@ Generates a CBORObject from an arbitrary object, using the given options to
  artifact (in Java); the legacy <code>ExtendedDecimal</code>,
  <code>ExtendedFloat</code>, <code>ExtendedInteger</code>, and
  <code>ExtendedRational</code> classes in this library; arrays; enumerations
- (<code>Enum</code> objects); and maps. <p>In the .NET version, if the
- object is a type not specially handled by this method, returns a CBOR
- map with the values of each of its read/write properties (or all
- properties in the case of a compiler-generated type). Properties are
- converted to their camel-case names (meaning if a name starts with A
- to Z, that letter is lower-cased). If the property name begins with
- the word "Is", that word is deleted from the name. (Passing the
- appropriate "options" parameter can be done to control whether the
- "Is" prefix is removed and whether a camel-case conversion happens.)
- Also, .NET <code>Enum</code> objects will be converted to their integer
- values, and a multidimensional array is converted to an array of
- arrays.</p> <p>In the Java version, if the object is a type not
- specially handled by this method, this method checks the CBOR object
- for methods starting with the word "get" or "is" that take no
+ (<code>Enum</code> objects); and maps. (See also the other overloads to
+ the FromObject method.)</p> <p>In the .NET version, if the object is
+ a type not specially handled by this method, returns a CBOR map with
+ the values of each of its read/write properties (or all properties in
+ the case of a compiler-generated type). Properties are converted to
+ their camel-case names (meaning if a name starts with A to Z, that
+ letter is lower-cased). If the property name begins with the word
+ "Is" followed by an upper-case A to Z, the "Is" prefix is deleted
+ from the name. (Passing the appropriate "options" parameter can be
+ done to control whether the "Is" prefix is removed and whether a
+ camel-case conversion happens.) Also, .NET <code>Enum</code> objects will
+ be converted to their integer values, and a multidimensional array is
+ converted to an array of arrays.</p> <p>In the Java version, if the
+ object is a type not specially handled by this method, this method
+ checks the CBOR object for methods starting with the word "get" or
+ "is" (either word followed by an upper-case A to Z) that take no
  parameters, and returns a CBOR map with one entry for each such
  method found. For each method found, the starting word "get" or "is"
  is deleted from its name, and the name is converted to camel case
