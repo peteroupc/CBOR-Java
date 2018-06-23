@@ -53,9 +53,11 @@ import com.upokecenter.numbers.*;
                     6, 7, (byte)0xff });
       {
         String stringTemp = cbor.ToJSONString();
+String str1817 = "[0,1,2,3,4,5,6,7]";
+
         Assert.assertEquals(
-        "[0,1,2,3,4,5,6,7]",
-        stringTemp);
+  str1817,
+  stringTemp);
       }
     }
 
