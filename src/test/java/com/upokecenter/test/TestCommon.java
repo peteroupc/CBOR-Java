@@ -1,6 +1,6 @@
 package com.upokecenter.test;
 /*
-Written in 2013-2016 by Peter O.
+Written in 2013-2018 by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -16,7 +16,7 @@ private TestCommon() {
 
     public static void AssertByteArraysEqual(byte[] arr1, byte[] arr2) {
       if (!ByteArraysEqual(arr1, arr2)) {
-        Assert.fail("Expected " + ToByteArrayString(arr1) + ", got " +
+        Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
           ToByteArrayString(arr2));
       }
     }
