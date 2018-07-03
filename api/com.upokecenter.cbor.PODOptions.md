@@ -11,11 +11,13 @@ Options for converting "plain old data" objects to CBOR objects.
 
 ## Constructors
 
-* `PODOptions() CBOR.PeterO.Cbor.PODOptions`<br>
- Initializes a new instance of the CBOR.PeterO.Cbor.PODOptions class.
+* `PODOptions() PODOptions`<br>
+ Initializes a new instance of the PODOptions
+ class.
 * `PODOptions​(boolean removeIsPrefix,
-          boolean useCamelCase) CBOR.PeterO.Cbor.PODOptions`<br>
- Initializes a new instance of the CBOR.PeterO.Cbor.PODOptions class.
+          boolean useCamelCase) PODOptions`<br>
+ Initializes a new instance of the PODOptions
+ class.
 
 ## Methods
 
