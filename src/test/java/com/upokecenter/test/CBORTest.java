@@ -1368,7 +1368,7 @@ try { if (ms != null) {
       {
         Object objectTemp = longString;
         Object objectTemp2 = CBORObject.DecodeFromBytes(cbor.EncodeToBytes(
-                  CBOREncodeOptions.NoIndefLengthStrings)).AsString();
+                  new CBOREncodeOptions(false, true))).AsString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       TestCommon.AssertEqualsHashCode(cbor, cbor2);

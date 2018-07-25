@@ -9,6 +9,9 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORObjectTest {
+    private static CBOREncodeOptions noDuplicateKeys = new
+      CBOREncodeOptions(true, false);
+
     private static int StringToInt(String str) {
       boolean neg = false;
       int i = 0;
@@ -239,7 +242,7 @@ static void CheckPropertyNames(
     }
 
     public static void TestFailingJSON(String str) {
-      TestFailingJSON(str, CBOREncodeOptions.None);
+      TestFailingJSON(str, new CBOREncodeOptions(true, true));
     }
 
     public static void TestFailingJSON(String str, CBOREncodeOptions opt) {
@@ -250,11 +253,7 @@ static void CheckPropertyNames(
         System.out.println(ex2.getMessage());
         // Check only FromJSONString
         try {
-          if (opt.getValue() == 0) {
-            CBORObject.FromJSONString(str);
-          } else {
             CBORObject.FromJSONString(str, opt);
-          }
           Assert.fail("Should have failed");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
@@ -270,11 +269,7 @@ try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
         try {
-          if (opt.getValue() == 0) {
-            CBORObject.ReadJSON(ms);
-          } else {
             CBORObject.ReadJSON(ms, opt);
-          }
           Assert.fail("Should have failed");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
@@ -290,11 +285,7 @@ try { if (ms != null) {
 }
 }
       try {
-        if (opt.getValue() == 0) {
-          CBORObject.FromJSONString(str);
-        } else {
           CBORObject.FromJSONString(str, opt);
-        }
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2085,14 +2076,14 @@ try { if (ms != null) {
       byte[] bytes;
       bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x02, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        CBORObject.DecodeFromBytes(bytes, noDuplicateKeys);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        CBORObject.DecodeFromBytes(bytes, noDuplicateKeys);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2102,14 +2093,14 @@ try { if (ms != null) {
       }
       bytes = new byte[] { (byte)0xa2, 0x01, 0x00, 0x01, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.None);
+        CBORObject.DecodeFromBytes(bytes, new CBOREncodeOptions(true, true));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       bytes = new byte[] { (byte)0xa2, 0x60, 0x00, 0x60, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        CBORObject.DecodeFromBytes(bytes, noDuplicateKeys);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2119,7 +2110,7 @@ try { if (ms != null) {
       }
    bytes = new byte[] { (byte)0xa3, 0x60, 0x00, 0x62, 0x41, 0x41, 0x00, 0x60, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        CBORObject.DecodeFromBytes(bytes, noDuplicateKeys);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2129,7 +2120,7 @@ try { if (ms != null) {
       }
       bytes = new byte[] { (byte)0xa2, 0x61, 0x41, 0x00, 0x61, 0x41, 0x03 };
       try {
-        CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.NoDuplicateKeys);
+        CBORObject.DecodeFromBytes(bytes, noDuplicateKeys);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2377,9 +2368,9 @@ try { if (ms != null) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      TestFailingJSON("{\"a\":1,\"a\":2}", CBOREncodeOptions.NoDuplicateKeys);
+      TestFailingJSON("{\"a\":1,\"a\":2}", noDuplicateKeys);
       String aba = "{\"a\":1,\"b\":3,\"a\":2}";
-      TestFailingJSON(aba, CBOREncodeOptions.NoDuplicateKeys);
+      TestFailingJSON(aba, noDuplicateKeys);
       cbor = TestSucceedingJSON(aba);
       Assert.assertEquals(CBORObject.FromObject(2), cbor.get("a"));
       cbor = TestSucceedingJSON("{\"a\":1,\"a\":4}");
