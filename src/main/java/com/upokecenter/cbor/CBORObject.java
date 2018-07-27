@@ -718,12 +718,13 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p> <p>Generates a CBOR
-     * object from an array of CBOR-encoded bytes.</p>
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p> <p>Generates a CBOR object from an array of
+     * CBOR-encoded bytes.</p>
      * @param data A byte array.
      * @return A CBOR object corresponding to the data.
      * @throws com.upokecenter.cbor.CBORException There was an error in reading or
@@ -812,14 +813,15 @@ try { if (ms != null) {
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Generates a CBOR
-     * object from a text string in JavaScript Object Notation (JSON)
-     * format.</p> <p>If a JSON object has the same key, only the last given
-     * value will be used for each duplicated key.</p>
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Generates a CBOR object from a text string in
+     * JavaScript Object Notation (JSON) format.</p> <p>If a JSON object has
+     * the same key, only the last given value will be used for each
+     * duplicated key.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
@@ -1601,14 +1603,14 @@ try { if (ms != null) {
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Reads an object in
-     * CBOR format from a data stream. This method will read from the stream
-     * until the end of the CBOR object is reached or an error occurs,
-     * whichever happens first.</p>
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Reads an object in CBOR format from a data stream.
+     * This method will read from the stream until the end of the CBOR
+     * object is reached or an error occurs, whichever happens first.</p>
      * @param stream A readable data stream.
      * @return A CBOR object that was read.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
@@ -1751,14 +1753,15 @@ try { if (ms != null) {
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Writes a string in
-     * CBOR format to a data stream. The string will be encoded using
-     * indefinite-length encoding if its length exceeds a certain threshold
-     * (this behavior may change in future versions of this library).</p>
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Writes a string in CBOR format to a data stream.
+     * The string will be encoded using indefinite-length encoding if its
+     * length exceeds a certain threshold (this behavior may change in
+     * future versions of this library).</p>
      * @param str The string to write. Can be null.
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
@@ -2292,13 +2295,13 @@ try { if (ms != null) {
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Writes a CBOR object
-     * to a CBOR data stream. See the three-parameter Write method that
-     * takes a CBOREncodeOptions.</p>
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Writes a CBOR object to a CBOR data stream. See
+     * the three-parameter Write method that takes a CBOREncodeOptions.</p>
      * @param objValue The parameter {@code objValue} is an arbitrary object.
      * @param stream A writable data stream.
      */
@@ -3108,15 +3111,16 @@ public int compareTo(CBORObject other) {
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Writes the binary
-     * representation of this CBOR object and returns a byte array of that
-     * representation. If the CBOR object contains CBOR maps, or is a CBOR
-     * map itself, the keys to the map are written out to the byte array in
-     * an undefined order. The example code given in <see
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Writes the binary representation of this CBOR
+     * object and returns a byte array of that representation. If the CBOR
+     * object contains CBOR maps, or is a CBOR map itself, the keys to the
+     * map are written out to the byte array in an undefined order. The
+     * example code given in <see
      * cref='M:PeterO.Cbor.CBORObject.WriteTo(System.IO.InputStream)'/> can be
      * used to write out certain keys of a CBOR map in a given order.</p>
      * @return A byte array in CBOR format.
@@ -4022,28 +4026,27 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
     }
 
     /**
-     * <p><b>At the moment, use the overload of this method that takes a
-     * CBOREncodeOptions object. The object <code>CBOREncodeOptions.Default</code>
-     * contains recommended settings for CBOREncodeOptions, and those
-     * settings may be adopted by this overload (without a CBOREncodeOptions
-     * argument) in the next major version.</b></p><p>Writes this CBOR
-     * object to a data stream. If the CBOR object contains CBOR maps, or is
-     * a CBOR map, the keys to the map are written out to the data stream in
-     * an undefined order. The example method given below (written in C# for
-     * the .NET version) can be used to write out certain keys of a CBOR map
-     * in a given order:</p> <code>  // Writes each key of 'mapObj' to
-     * 'outputStream'in the order given in 'keys'. Only keys  // found in
-     * 'keys' will be written if they exist in 'mapObj'. private static void
-     * WriteKeysToIndefMap(CBORObject mapObj, IList&lt;CBORObject&gt; keys,
-     * InputStream outputStream) { if (mapObj == null) {
- throw new
-     * NullPointerException("mapObj");
+     * <p><b>At the moment, use the overload of this method that takes a {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} object. The object
+     * <code>CBOREncodeOptions.Default</code> contains recommended settings for
+     * CBOREncodeOptions, and those settings may be adopted by this overload
+     * (without a CBOREncodeOptions argument) in the next major
+     * version.</b></p><p>Writes this CBOR object to a data stream. If the
+     * CBOR object contains CBOR maps, or is a CBOR map, the keys to the map
+     * are written out to the data stream in an undefined order. The example
+     * method given below (written in C# for the .NET version) can be used
+     * to write out certain keys of a CBOR map in a given order:</p> <code>
+     *  // Writes each key of 'mapObj' to 'outputStream'in the order given in
+     * 'keys'. Only keys  // found in 'keys' will be written if they exist in
+     * 'mapObj'. private static void WriteKeysToIndefMap(CBORObject mapObj,
+     * IList&lt;CBORObject&gt; keys, OutputStream outputStream) throws java.io.IOException { if (mapObj == null) {
+ * throw new NullPointerException("mapObj");
  } if (keys==null) {
- throw new
-     * NullPointerException("keys");
+ throw
+     * new NullPointerException("keys");
  } if (outputStream==null) {
- throw new
-     * NullPointerException("outputStream");
+ throw
+     * new NullPointerException("outputStream");
  }
      * if (obj.getType()!=CBORType.Map) { throw new IllegalArgumentException("'obj' is not
      * a map."); } outputStream.write((byte)0xBF); for (CBORObject key in
