@@ -199,7 +199,7 @@ static void CheckPropertyNames(
   "propC");
     }
 
-    private static String[] jsonFails = { "\"\\uxxxx\"",
+    private static final String[] ValueJsonFails = { "\"\\uxxxx\"",
       "\"\\ud800\udc00\"",
       "\"\ud800\\udc00\"", "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
       "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
@@ -2344,7 +2344,7 @@ try { if (ms != null) {
           }
         }
       }
-      for (String str : jsonFails) {
+      for (String str : ValueJsonFails) {
         TestFailingJSON(str);
       }
       for (String str : ValueJsonSucceeds) {

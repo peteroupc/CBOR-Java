@@ -9,10 +9,21 @@ package com.upokecenter.cbor;
      * @deprecated Use 'new CBOREncodeOptions(true,true)' instead. Option classes in this
 * library will follow the form seen in JSONOptions in a later version; the
 * approach used in this class is too complicated.
+ *'CBOREncodeOptions.Default' contains recommended default options that may
+* be adopted by certain CBORObject methods in the next major version.
  */
 @Deprecated
     public static final CBOREncodeOptions None =
       new CBOREncodeOptions(0);
+
+    /**
+     * Default options for CBOR objects. Disallow duplicate keys, and always encode
+     * strings using definite-length encoding. These are recommended
+     * settings for the options that may be adopted by certain CBORObject
+     * methods in the next major version.
+     */
+    public static final CBOREncodeOptions Default =
+      new CBOREncodeOptions(false, false);
 
     /**
      * Always encode strings with a definite-length encoding. Used only when
@@ -39,41 +50,47 @@ package com.upokecenter.cbor;
     private final int value;
 
     /**
-     * Initializes a new instance of the CBOREncodeOptions class.
+     * Initializes a new instance of the {@link CBOREncodeOptions} class.
      */
     public CBOREncodeOptions() {
  this(false, false);}
 
     /**
-     * Initializes a new instance of the CBOREncodeOptions class.
-     * @param useIndefLengthStrings A Boolean object.
-     * @param useDuplicateKeys Another Boolean object.
+     * Initializes a new instance of the {@link CBOREncodeOptions} class.
+     * @param useIndefLengthStrings A value indicating whether to always encode
+     * strings with a definite-length encoding.
+     * @param allowDuplicateKeys A value indicating whether to disallow duplicate
+     * keys when reading CBOR objects from a data stream.
      */
     public CBOREncodeOptions(boolean useIndefLengthStrings, boolean
-      useDuplicateKeys) {
+      allowDuplicateKeys) {
       int val = 0;
       if (!useIndefLengthStrings) {
  val|=1;
 }
-      if (!useDuplicateKeys) {
+      if (!allowDuplicateKeys) {
  val|=2;
 }
       this.value = val;
     }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether to always encode strings with a
+     * definite-length encoding.
+     * @return A value indicating whether to always encode strings with a
+     * definite-length encoding.
      */
     public final boolean getUseIndefLengthStrings() {
         return (this.value & 1) == 0;
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether to disallow duplicate keys when reading CBOR
+     * objects from a data stream. Used only when decoding CBOR objects.
+     * @return A value indicating whether to disallow duplicate keys when reading
+     * CBOR objects from a data stream.
      */
-    public final boolean getUseDuplicateKeys() {
+    public final boolean getAllowDuplicateKeys() {
         return (this.value & 2) == 0;
       }
 
