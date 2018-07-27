@@ -672,7 +672,7 @@ import com.upokecenter.numbers.*;
      * @param handler The parameter {@code handler} is an ICBORTag object.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
      * {@code handler} is null.
-     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
+     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
      * @deprecated Use the EInteger version of this method.
  */
@@ -693,7 +693,7 @@ import com.upokecenter.numbers.*;
      * @param handler The parameter {@code handler} is an ICBORTag object.
      * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
      * {@code handler} is null.
-     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is less
+     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
      */
     public static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
