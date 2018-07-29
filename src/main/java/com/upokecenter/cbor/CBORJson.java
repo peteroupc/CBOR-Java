@@ -43,7 +43,7 @@ import com.upokecenter.numbers.*;
                 this.sb.append('\\');
                 break;
               case '/':
-                // Now allowed to be escaped under RFC 7159
+                // Now allowed to be escaped under RFC 8259
                 this.sb.append('/');
                 break;
               case '\"':
