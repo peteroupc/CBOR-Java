@@ -1309,9 +1309,10 @@ try { if (ms != null) {
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      */
-          public static CBORObject FromObject(Object obj, PODOptions
-              options) {
-      if ((options) == null) {
+          public static CBORObject FromObject(
+  Object obj,
+  PODOptions options) {
+      if (options == null) {
   throw new NullPointerException("options");
 }
       if (obj == null) {
@@ -1397,7 +1398,7 @@ try { if (ms != null) {
           (Map<?, ?>)obj;
         for (Object keyPair : objdic.entrySet()) {
           Map.Entry<?, ?>
-            kvp=(Map.Entry<?, ?>)keyPair;
+            kvp = (Map.Entry<?, ?>)keyPair;
             CBORObject objKey = CBORObject.FromObject(kvp.getKey(), options);
             objret.set(objKey, CBORObject.FromObject(kvp.getValue(), options));
         }
@@ -3687,10 +3688,10 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.</p> <returns>A text string containing the converted
      * object.</returns>
-     * @return A text string containing the converted object.
+     * @return Not documented yet.
      */
     public String ToJSONString() {
-      return ToJSONString(JSONOptions.Default);
+      return this.ToJSONString(JSONOptions.Default);
     }
 
     /**
@@ -3708,7 +3709,7 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
      * string. (The resulting double could overflow to infinity, in which
      * case the arbitrary-precision binary float is converted to null.)</li>
      * <li>The string will not begin with a byte-order mark (U + FEFF); RFC
-     * 7159 (the JSON specification) forbids placing a byte-order mark at
+     * 8259 (the JSON specification) forbids placing a byte-order mark at
      * the beginning of a JSON string.</li> <li>Byte strings are converted
      * to Base64 URL without whitespace or padding by default (see section
      * 4.1 of RFC 7049). A byte string will instead be converted to
@@ -3724,7 +3725,7 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
      * numbers.)</li> <li>Infinity and not-a-number will be converted to
      * null.</li></ul> The example code given below (written in in C# for
      * the .NET version) can be used to write out certain keys of a CBOR map
-     * in a given order to a JSON string. <code>  // Generates a JSON string
+     * in a given order to a JSON string. <pre>  // Generates a JSON string
      * of 'mapObj' whose keys are in the order given in 'keys'. Only keys //
      * found in 'keys' will be written if they exist in 'mapObj'. private
      * static string KeysToJSONMap(CBORObject mapObj,
@@ -3737,14 +3738,14 @@ mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
  } if (obj.getType()!=CBORType.Map) {
      * throw new IllegalArgumentException("'obj' is not a map."); } var builder=new
      * StringBuilder(); var first=true; builder.Append("{"); for (CBORObject
-     * key in keys)[ if (mapObj.ContainsKey(key)) {
+     * key in keys) { if (mapObj.ContainsKey(key)) {
      * if (!first) {
  builder.Append(", ");
  } var
      * keyString=(key.getCBORType() == CBORType.String) ? key.AsString() :
      * key.ToJSONString(); builder.Append(CBORObject.FromObject(keyString)
      * .ToJSONString()) .Append(":").Append(mapObj.get(key).ToJSONString());
-     * first=false; } } return builder.Append("}").toString(); } </code>
+     * first=false; } } return builder.Append("}").toString(); } </pre>
      * @param options An object containing the options to control writing the CBOR
      * object to JSON.
      * @return A text string containing the converted object.
@@ -3993,8 +3994,10 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
       if (outputStream == null) {
         throw new NullPointerException("outputStream");
       }
-      CBORJson.WriteJSONToInternal(this, new StringOutput(outputStream),
-        JSONOptions.Default);
+      CBORJson.WriteJSONToInternal(
+  this,
+  new StringOutput(outputStream),
+  JSONOptions.Default);
     }
 
     /**
@@ -4021,8 +4024,10 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
             if (options == null) {
  throw new NullPointerException("options");
 }
-            CBORJson.WriteJSONToInternal(this, new StringOutput(outputStream),
-        options);
+            CBORJson.WriteJSONToInternal(
+  this,
+  new StringOutput(outputStream),
+  options);
     }
 
     /**
@@ -4035,7 +4040,7 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
      * CBOR object contains CBOR maps, or is a CBOR map, the keys to the map
      * are written out to the data stream in an undefined order. The example
      * method given below (written in C# for the .NET version) can be used
-     * to write out certain keys of a CBOR map in a given order:</p> <code>
+     * to write out certain keys of a CBOR map in a given order:</p> <pre>
      *  // Writes each key of 'mapObj' to 'outputStream'in the order given in
      * 'keys'. Only keys  // found in 'keys' will be written if they exist in
      * 'mapObj'. private static void WriteKeysToIndefMap(CBORObject mapObj,
@@ -4052,7 +4057,7 @@ sb = (sb == null) ? ((new StringBuilder())) : sb;
      * a map."); } outputStream.write((byte)0xBF); for (CBORObject key in
      * keys)[ if (mapObj.ContainsKey(key)) { key.WriteTo(outputStream);
      * mapObj.get(key).WriteTo(outputStream); } }
-     * outputStream.write((byte)0xbf); } </code>
+     * outputStream.write((byte)0xbf); } </pre>
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.

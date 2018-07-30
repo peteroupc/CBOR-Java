@@ -2582,31 +2582,28 @@ public void TestFromObject_Dictionary() {
 
     public final class PODClass {
         public PODClass() {
-            this.setPropA(0);
-            this.setPropB(1);
+            this.propVarpropa = 0;
+            this.propVarpropb = 1;
+            this.propVarispropc = false;
         }
 
         public final int getPropA() { return propVarpropa; }
-private final void setPropA(int value) { propVarpropa = value; }
-private int propVarpropa;
+private final int propVarpropa;
 
         public final int getPropB() { return propVarpropb; }
-private final void setPropB(int value) { propVarpropb = value; }
-private int propVarpropb;
+private final int propVarpropb;
 
         public final boolean isPropC() { return propVarispropc; }
-private final void setIsPropC(boolean value) { propVarispropc = value; }
-private boolean propVarispropc;
+private final boolean propVarispropc;
     }
 
     public final class NestedPODClass {
         public NestedPODClass() {
-            this.setPropValue(new PODClass());
+            this.propVarpropvalue = new PODClass();
         }
 
         public final PODClass getPropValue() { return propVarpropvalue; }
-private final void setPropValue(PODClass value) { propVarpropvalue = value; }
-private PODClass propVarpropvalue;
+private final PODClass propVarpropvalue;
     }
 
         @Test(timeout = 5000) public void TestFromObject_PODOptions() {

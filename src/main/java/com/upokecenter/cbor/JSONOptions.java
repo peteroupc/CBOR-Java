@@ -11,7 +11,8 @@ import java.util.*;
      * options.
      */
     public JSONOptions() {
- this(false);}
+ this(false);
+}
 
     /**
      * Initializes a new instance of the {@link JSONOptions} class with the given
@@ -20,7 +21,7 @@ import java.util.*;
      * base64url or traditional base64 format to JSON.
      */
     public JSONOptions(boolean base64Padding) {
-        this.setBase64Padding(base64Padding);
+        this.propVarbase64padding = base64Padding;
     }
 
     /**
@@ -35,6 +36,5 @@ import java.util.*;
      * @return The default is false, no padding.
      */
     public final boolean getBase64Padding() { return propVarbase64padding; }
-private final void setBase64Padding(boolean value) { propVarbase64padding = value; }
-private boolean propVarbase64padding;
+private final boolean propVarbase64padding;
    }

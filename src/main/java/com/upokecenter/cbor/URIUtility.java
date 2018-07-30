@@ -258,9 +258,9 @@ private URIUtility() {
     /**
      * Determines whether the string is a valid IRI with a scheme component. This
      * can be used to check for relative IRI references. <p>The following
-     * cases return true:</p> <code> xx-x:mm example:/ww </code> The
-     * following cases return false: <code> x@y:/z /x/y/z example.xyz
-     * </code>
+     * cases return true:</p> <pre> xx-x:mm example:/ww </pre> The
+     * following cases return false: <pre> x@y:/z /x/y/z example.xyz
+     * </pre>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid IRI with a scheme component;
      * otherwise, {@code false} .
@@ -277,9 +277,9 @@ private URIUtility() {
     /**
      * Determines whether the string is a valid URI with a scheme component. This
      * can be used to check for relative URI references. The following cases
-     * return true: <code> http://example/z xx-x:mm example:/ww </code> The
-     * following cases return false: <code> x@y:/z /x/y/z example.xyz
-     * </code>
+     * return true: <pre> http://example/z xx-x:mm example:/ww </pre> The
+     * following cases return false: <pre> x@y:/z /x/y/z example.xyz
+     * </pre>
      * @param refValue A string representing an IRI to check.
      * @return {@code true} if the string is a valid URI with a scheme component;
      * otherwise, {@code false} .

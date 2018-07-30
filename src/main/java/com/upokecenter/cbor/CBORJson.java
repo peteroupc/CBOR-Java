@@ -29,7 +29,7 @@ import com.upokecenter.numbers.*;
     private String NextJSONString() {
       int c;
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb.setLength(0);
+      this.sb.delete(0, (0)+(this.sb.length()));
       while (true) {
         c = this.reader.ReadChar();
         if (c == -1 || c < 0x20) {

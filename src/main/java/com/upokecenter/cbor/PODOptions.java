@@ -9,7 +9,8 @@ package com.upokecenter.cbor;
      * class.
      */
     public PODOptions() {
- this(true, true); }
+ this(true, true);
+}
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
@@ -18,8 +19,8 @@ package com.upokecenter.cbor;
      * @param useCamelCase If set to {@code true} use camel case.
      */
     public PODOptions(boolean removeIsPrefix, boolean useCamelCase) {
-      this.setRemoveIsPrefix(removeIsPrefix);
-      this.setUseCamelCase(useCamelCase);
+      this.propVarremoveisprefix = removeIsPrefix;
+      this.propVarusecamelcase = useCamelCase;
     }
 
     /**
@@ -33,8 +34,7 @@ package com.upokecenter.cbor;
      * @return {@code true} if the prefix is removed; otherwise, {@code false}.
      */
         public final boolean getRemoveIsPrefix() { return propVarremoveisprefix; }
-private final void setRemoveIsPrefix(boolean value) { propVarremoveisprefix = value; }
-private boolean propVarremoveisprefix;
+private final boolean propVarremoveisprefix;
 
     /**
      * Gets a value indicating whether property names are converted to camel case
@@ -43,6 +43,5 @@ private boolean propVarremoveisprefix;
      * {@code false}.
      */
     public final boolean getUseCamelCase() { return propVarusecamelcase; }
-private final void setUseCamelCase(boolean value) { propVarusecamelcase = value; }
-private boolean propVarusecamelcase;
+private final boolean propVarusecamelcase;
     }

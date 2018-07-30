@@ -53,7 +53,8 @@ package com.upokecenter.cbor;
      * Initializes a new instance of the {@link CBOREncodeOptions} class.
      */
     public CBOREncodeOptions() {
- this(false, false);}
+ this(false, false);
+}
 
     /**
      * Initializes a new instance of the {@link CBOREncodeOptions} class.
@@ -62,14 +63,15 @@ package com.upokecenter.cbor;
      * @param allowDuplicateKeys A value indicating whether to disallow duplicate
      * keys when reading CBOR objects from a data stream.
      */
-    public CBOREncodeOptions(boolean useIndefLengthStrings, boolean
-      allowDuplicateKeys) {
+    public CBOREncodeOptions(
+  boolean useIndefLengthStrings,
+  boolean allowDuplicateKeys) {
       int val = 0;
       if (!useIndefLengthStrings) {
- val|=1;
+ val |= 1;
 }
       if (!allowDuplicateKeys) {
- val|=2;
+ val |= 2;
 }
       this.value = val;
     }

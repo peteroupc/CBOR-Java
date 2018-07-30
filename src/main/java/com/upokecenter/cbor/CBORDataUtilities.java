@@ -34,7 +34,7 @@ private CBORDataUtilities() {
     }
 
     /**
-     * Parses a number whose format follows the JSON specification (RFC 7159).
+     * Parses a number whose format follows the JSON specification (RFC 8259).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
      * is 0), an optional decimal point (".", full stop) with one or more
@@ -59,7 +59,7 @@ private CBORDataUtilities() {
     }
 
     /**
-     * Parses a number whose format follows the JSON specification (RFC 7159).
+     * Parses a number whose format follows the JSON specification (RFC 8259).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
      * is 0), an optional decimal point (".", full stop) with one or more
