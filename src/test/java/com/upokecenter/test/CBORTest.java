@@ -1294,6 +1294,22 @@ try { if (ms != null) {
       }
     }
 
+@Test
+public void TestOverlongSimpleValues() {
+ for (int i = 0; i <= 0x1f; ++i) {
+  byte[] bytes = new byte[] { (byte)0xf8, (byte)i };
+  try {
+ CBORObject.DecodeFromBytes(bytes);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+ }
+}
+
     @Test
     public void TestTags264And265() {
       CBORObject cbor;
