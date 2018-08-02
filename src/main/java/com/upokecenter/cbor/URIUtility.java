@@ -305,7 +305,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+          0xfffe) != 0xfffe);
     }
 
     private static boolean isIpchar(int c) {
@@ -315,7 +316,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+          0xfffe) != 0xfffe);
     }
 
     private static boolean isIqueryChar(int c) {
@@ -325,7 +327,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xe000 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0x10000 && c <= 0x10fffd && (c & 0xfffe) != 0xfffe);
+        (c >= 0x10000 && c <= 0x10fffd && (c & 0xfffe) != 0xfffe &&
+           !(c >= 0xe0000 && c <= 0xe0fff));
     }
 
     private static boolean isIRegNameChar(int c) {
@@ -335,7 +338,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+          0xfffe) != 0xfffe);
     }
 
     private static boolean isIUserInfoChar(int c) {
@@ -345,7 +349,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0x10000 && c <= 0xefffd && (c & 0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+          0xfffe) != 0xfffe);
     }
 
     /**
