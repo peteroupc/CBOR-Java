@@ -99,7 +99,7 @@ private URIUtility() {
   segments[4])+(segments[5] - segments[4]))));
     }
 
-    private static void appendPath(
+    private static void AppendPath(
   StringBuilder builder,
   String refValue,
   int[] segments) {
@@ -305,7 +305,7 @@ private URIUtility() {
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
@@ -316,7 +316,7 @@ private URIUtility() {
         ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
@@ -338,7 +338,7 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
@@ -349,7 +349,7 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c&
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
           0xfffe) != 0xfffe);
     }
 
@@ -906,7 +906,7 @@ private URIUtility() {
       } else if (segments[4] == segments[5]) {
         appendScheme(builder, baseURI, segmentsBase);
         appendAuthority(builder, baseURI, segmentsBase);
-        appendPath(builder, baseURI, segmentsBase);
+        AppendPath(builder, baseURI, segmentsBase);
         if (segments[6] >= 0) {
           appendQuery(builder, refValue, segments);
         } else {
@@ -922,7 +922,7 @@ private URIUtility() {
           StringBuilder merged = new StringBuilder();
           if (segmentsBase[2] >= 0 && segmentsBase[4] == segmentsBase[5]) {
             merged.append('/');
-            appendPath(merged, refValue, segments);
+            AppendPath(merged, refValue, segments);
             builder.append(normalizePath(merged.toString()));
           } else {
             merged.append(
@@ -930,7 +930,7 @@ private URIUtility() {
   baseURI,
   segmentsBase[4],
   segmentsBase[5]));
-            appendPath(merged, refValue, segments);
+            AppendPath(merged, refValue, segments);
             builder.append(normalizePath(merged.toString()));
           }
         }
@@ -949,9 +949,12 @@ private URIUtility() {
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
-     * component, respectively. If a component is absent, both indices in
-     * that pair will be -1. If the string is null or is not a valid IRI,
-     * returns null.
+     * component, respectively. The scheme, authority, query, and fragment
+     * components, if present, will each be given without the ending colon,
+     * the starting "//", the starting "?", and the starting "#",
+     * respectively. If a component is absent, both indices in that pair
+     * will be -1. If the string is null or is not a valid IRI, returns
+     * null.
      */
     public static int[] splitIRI(String s) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), ParseMode.IRIStrict);
@@ -972,9 +975,12 @@ private URIUtility() {
      * @return If the string is a valid IRI, returns an array of 10 integers. Each
      * of the five pairs corresponds to the start and end index of the IRI's
      * scheme, authority, path, query, or fragment component, respectively.
-     * If a component is absent, both indices in that pair will be -1 (an
-     * index won't be less than 0 in any other case). If the string is null
-     * or is not a valid IRI, returns null.
+     * The scheme, authority, query, and fragment components, if present,
+     * will each be given without the ending colon, the starting "//", the
+     * starting "?", and the starting "#", respectively. If a component is
+     * absent, both indices in that pair will be -1 (an index won't be less
+     * than 0 in any other case). If the string is null or is not a valid
+     * IRI, returns null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
      * length minus {@code offset} is less than {@code length}.
@@ -1242,9 +1248,12 @@ if (s.length() - offset < length) {
      * @return If the string is a valid IRI reference, returns an array of 10
      * integers. Each of the five pairs corresponds to the start and end
      * index of the IRI's scheme, authority, path, query, or fragment
-     * component, respectively. If a component is absent, both indices in
-     * that pair will be -1. If the string is null or is not a valid IRI,
-     * returns null.
+     * component, respectively. The scheme, authority, query, and fragment
+     * components, if present, will each be given without the ending colon,
+     * the starting "//", the starting "?", and the starting "#",
+     * respectively. If a component is absent, both indices in that pair
+     * will be -1. If the string is null or is not a valid IRI, returns
+     * null.
      */
     public static int[] splitIRI(String s, ParseMode parseMode) {
       return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
