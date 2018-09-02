@@ -123,7 +123,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> If this object is finite (not infinity or NaN);
- otherwise, <code>false</code>.
+ otherwise, . <code>false</code>.
 
 ### isNegative
     public final boolean isNegative()
@@ -131,7 +131,7 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> If this object's value is negative; otherwise, <code>
+* <code>true</code> If this object's value is negative; otherwise, . <code>
  false</code>.
 
 ### isZero
@@ -249,7 +249,7 @@ Deprecated.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* Either <code>true</code> or <code>false</code> .
 
 ### equals
     public boolean equals​(Object obj)
@@ -265,7 +265,7 @@ Deprecated.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* Either <code>true</code> or <code>false</code> .
 
 ### hashCode
     public int hashCode()

@@ -13,48 +13,50 @@ import com.upokecenter.numbers.*;
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
      * <code>PeterO.Numbers.EFloat</code> in the <a
-  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
-     * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things).</b></p> <p>Represents an
-     * arbitrary-precision binary floating-point number. Consists of an
-     * integer mantissa and an integer exponent, both arbitrary-precision.
-     * The value of the number equals mantissa * 2^exponent. This class also
-     * supports values for negative zero, not-a-number (NaN) values, and
-     * infinity.</p> <p>Passing a signaling NaN to any arithmetic operation
-     * shown here will signal the flag FlagInvalid and return a quiet NaN,
-     * even if another operand to that operation is a quiet NaN, unless
-     * noted otherwise.</p> <p>Passing a quiet NaN to any arithmetic
-     * operation shown here will return a quiet NaN, unless noted
-     * otherwise.</p> <p>Unless noted otherwise, passing a null
-     * arbitrary-precision binary float argument to any method here will
-     * throw an exception.</p> <p>When an arithmetic operation signals the
-     * flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
+     * href='https://www.nuget.org/packages/PeterO.Numbers'>
+     * <code>PeterO.Numbers</code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.EFloat</code> in the <a
+     * href='https://github.com/peteroupc/numbers-java'>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java). This new
+     * class can be used in the <code>CBORObject.FromObject(object)</code> method
+     * (by including the new library in your code, among other things).</b>
+     * </p> <p>Represents an arbitrary-precision binary floating-point
+     * number. Consists of an integer mantissa and an integer exponent, both
+     * arbitrary-precision. The value of the number equals mantissa *
+     * 2^exponent. This class also supports values for negative zero,
+     * not-a-number (NaN) values, and infinity. </p> <p>Passing a signaling
+     * NaN to any arithmetic operation shown here will signal the flag
+     * FlagInvalid and return a quiet NaN, even if another operand to that
+     * operation is a quiet NaN, unless noted otherwise. </p> <p>Passing a
+     * quiet NaN to any arithmetic operation shown here will return a quiet
+     * NaN, unless noted otherwise. </p> <p>Unless noted otherwise, passing a
+     * null arbitrary-precision binary float argument to any method here
+     * will throw an exception. </p> <p>When an arithmetic operation signals
+     * the flag FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not
      * throw an exception too, unless the operation's trap is enabled in the
-     * precision context (see PrecisionContext's Traps property).</p> <p>An
+     * precision context (see PrecisionContext's Traps property). </p> <p>An
      * arbitrary-precision binary float value can be serialized in one of
-     * the following ways:</p> <ul> <li>By calling the toString() method.
+     * the following ways: </p> <ul> <li>By calling the toString() method.
      * However, not all strings can be converted back to an
      * arbitrary-precision binary float without loss, especially if the
-     * string has a fractional part.</li> <li>By calling the
+     * string has a fractional part. </li> <li>By calling the
      * UnsignedMantissa, Exponent, and IsNegative properties, and calling
      * the IsInfinity, IsQuietNaN, and IsSignalingNaN methods. The return
      * values combined will uniquely identify a particular
-     * arbitrary-precision binary float value.</li></ul> <p>If an operation
-     * requires creating an intermediate value that might be too big to fit
-     * in memory (or might require more than 2 gigabytes of memory to store
-     * -- due to the current use of a 32-bit integer internally as a
-     * length), the operation may signal an invalid-operation flag and
-     * return not-a-number (NaN). In certain rare cases, the compareTo
-     * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances.</p> <p><b>Thread safety:</b>
-     * Instances of this class are immutable, so they are inherently safe
-     * for use by multiple threads. Multiple instances of this object with
-     * the same properties are interchangeable, so they should not be
-     * compared using the "==" operator (which might only check if each side
-     * of the operator is the same instance).</p>
+     * arbitrary-precision binary float value. </li> </ul> <p>If an
+     * operation requires creating an intermediate value that might be too
+     * big to fit in memory (or might require more than 2 gigabytes of
+     * memory to store -- due to the current use of a 32-bit integer
+     * internally as a length), the operation may signal an
+     * invalid-operation flag and return not-a-number (NaN). In certain rare
+     * cases, the compareTo method may throw OutOfMemoryError (called
+     * OutOfMemoryError in Java) in the same circumstances. </p>
+     * <p><b>Thread safety:</b> Instances of this class are immutable, so
+     * they are inherently safe for use by multiple threads. Multiple
+     * instances of this object with the same properties are
+     * interchangeable, so they should not be compared using the "=="
+     * operator (which might only check if each side of the operator is the
+     * same instance). </p>
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
  *this class's toString method.
  */
@@ -67,8 +69,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Gets this object&#x27;s exponent. This object&#x27;s value will be an
-     * integer if the exponent is positive or zero.
+     * Gets this object's exponent. This object's value will be an integer if the
+     * exponent is positive or zero.
      * @return This object's exponent. This object's value will be an integer if
      * the exponent is positive or zero.
      */
@@ -77,7 +79,7 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets the absolute value of this object&#x27;s un-scaled value.
+     * Gets the absolute value of this object's un-scaled value.
      * @return The absolute value of this object's un-scaled value.
      */
     public final BigInteger getUnsignedMantissa() {
@@ -85,7 +87,7 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets this object&#x27;s un-scaled value.
+     * Gets this object's un-scaled value.
      * @return This object's un-scaled value. Will be negative if this object's
      * value is negative (including a negative NaN).
      */
@@ -137,11 +139,11 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Determines whether this object&#x27;s mantissa and exponent are equal to
-     * those of another object and that other object is an
-     * arbitrary-precision decimal number.
+     * Determines whether this object's mantissa and exponent are equal to those of
+     * another object and that other object is an arbitrary-precision
+     * decimal number.
      * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return {@code true} if the objects are equal; otherwise, {@code false}.
+     * @return {@code true} if the objects are equal; otherwise, {@code false} .
      */
     @Override public boolean equals(Object obj) {
       ExtendedFloat bi = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
@@ -149,8 +151,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Calculates this object&#x27;s hash code. No application or process IDs are
-     * used in the hash code calculation.
+     * Calculates this object's hash code. No application or process IDs are used
+     * in the hash code calculation.
      * @return This object's hash code.
      */
     @Override public int hashCode() {
@@ -302,9 +304,9 @@ import com.upokecenter.numbers.*;
      new ExtendedFloat(EFloat.NaN);
 
     /**
-     * A not-a-number value that signals an invalid operation flag when it&#x27;s
-     * passed as an argument to any arithmetic operation in
-     * arbitrary-precision binary float.
+     * A not-a-number value that signals an invalid operation flag when it's passed
+     * as an argument to any arithmetic operation in arbitrary-precision
+     * binary float.
      */
     public static final ExtendedFloat SignalingNaN =
      new ExtendedFloat(EFloat.SignalingNaN);
@@ -324,7 +326,7 @@ import com.upokecenter.numbers.*;
     /**
      * Returns whether this object is negative infinity.
      * @return {@code true} if this object is negative infinity; otherwise, {@code
-     * false}.
+     * false} .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -335,7 +337,7 @@ import com.upokecenter.numbers.*;
     /**
      * Returns whether this object is positive infinity.
      * @return {@code true} if this object is positive infinity; otherwise, {@code
-     * false}.
+     * false} .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -346,7 +348,7 @@ import com.upokecenter.numbers.*;
     /**
      * Returns whether this object is a not-a-number value.
      * @return {@code true} if this object is a not-a-number value; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
     public boolean IsNaN() {
       return this.getEf().IsNaN();
@@ -356,7 +358,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object is positive or negative
      * infinity.
      * @return {@code true} if this object is positive or negative infinity;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public boolean IsInfinity() {
       return this.getEf().IsInfinity();
@@ -366,7 +368,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object is negative, including negative
      * zero.
      * @return {@code true} If this object is negative, including negative zero;
-     * otherwise, {@code false}.
+     * otherwise, . {@code false}.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -377,7 +379,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object is a quiet not-a-number value.
      * @return {@code true} if this object is a quiet not-a-number value;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -389,7 +391,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object is a signaling not-a-number
      * value.
      * @return {@code true} if this object is a signaling not-a-number value;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -399,7 +401,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Compares this extended float to another.
-     * @param other The parameter {@code other} is not documented yet.
+     * @param other An extended float to compare this one with.
      * @return Less than 0 if this value is less than, 0 if equal to, or greater
      * than 0 if greater than the other value.
      */
@@ -408,7 +410,7 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Gets this value&#x27;s sign: -1 if negative; 1 if positive; 0 if zero.
+     * Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      * @deprecated Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  */

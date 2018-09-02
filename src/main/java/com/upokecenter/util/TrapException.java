@@ -13,12 +13,12 @@ import com.upokecenter.numbers.*;
      * <p><b>This class is obsolete. It will be replaced by a new version of this
      * class in a different namespace/package and library, called
      * <code>PeterO.Numbers.ETrapException</code> in the <a
-  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
-     * library (in .NET), or <code>com.upokecenter.numbers.ETrapException</code>
-     * in the <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java).</b></p> Exception thrown for arithmetic trap
-     * errors.
+     * href='https://www.nuget.org/packages/PeterO.Numbers'>
+     * <code>PeterO.Numbers</code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.ETrapException</code> in the <a
+     * href='https://github.com/peteroupc/numbers-java'>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java).</b> </p>
+     * Exception thrown for arithmetic trap errors.
      * @deprecated Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -73,7 +73,7 @@ private static final long serialVersionUID = 1L;
      * FlagInexact or FlagSubnormal.
      * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @param result The desired result of the operation that caused the trap, such
-     * as an {@code ExtendedDecimal} or {@code ExtendedFloat}.
+     * as an {@code ExtendedDecimal} or {@code ExtendedFloat} .
      */
     public TrapException(int flag, PrecisionContext ctx, Object result) {
  super("");

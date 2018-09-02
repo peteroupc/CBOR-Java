@@ -8,7 +8,7 @@ Contains methods useful for reading and writing strings. It is designed to
  form of the Unicode Standard which uses one byte to encode the most
  basic characters and two to four bytes to encode other characters.
  For example, the <code>GetUtf8</code> method converts a text string to an
- array of bytes in UTF-8.</p> <p>In C# and Java, text strings are
+ array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
  represented as sequences of 16-bit values called <code>char</code> s. These
  sequences are well-formed under UTF-16, a 16-bit encoding form of
  Unicode, except if they contain unpaired surrogate code points. (A
@@ -19,8 +19,8 @@ Contains methods useful for reading and writing strings. It is designed to
  not appearing in a surrogate pair.) Many of the methods in this class
  allow setting the behavior to follow when unpaired surrogate code
  points are found in text strings, such as throwing an error or
- treating the unpaired surrogate as a replacement character
- (U + FFFD).</p>
+ treating the unpaired surrogate as a replacement character (U + FFFD).
+ </p>
 
 ## Methods
 
@@ -41,6 +41,8 @@ Contains methods useful for reading and writing strings. It is designed to
 * `static int CodePointCompare​(String strA,
                 String strB)`<br>
  Compares two strings in Unicode code point order.
+* `static int CodePointLength​(String str)`<br>
+ Finds the number of Unicode code points in the given text string.
 * `static byte[] GetUtf8Bytes​(String str,
             boolean replace)`<br>
  Encodes a string in UTF-8 as a byte array.
@@ -80,6 +82,9 @@ Contains methods useful for reading and writing strings. It is designed to
 * `static String ToLowerCaseAscii​(String str)`<br>
  Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
  converted to lower-case.
+* `static String ToUpperCaseAscii​(String str)`<br>
+ Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
+ converted to upper-case.
 * `static int WriteUtf8​(String str,
          int offset,
          int length,
@@ -123,6 +128,24 @@ Generates a text string from a UTF-8 byte array.
 * <code>IllegalArgumentException</code> - The string is not valid UTF-8 and <code>
  replace</code> is false.
 
+### CodePointLength
+    public static int CodePointLength​(String str)
+Finds the number of Unicode code points in the given text string. Unpaired
+ surrogate code points increase this number by 1. This is not
+ necessarily the length of the string in "char" s.
+
+**Parameters:**
+
+* <code>str</code> - The parameter <code>str</code> is a text string.
+
+**Returns:**
+
+* The number of Unicode code points in the given string.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
 ### GetUtf8String
     public static String GetUtf8String​(byte[] bytes, int offset, int bytesCount, boolean replace)
 Generates a text string from a portion of a UTF-8 byte array.
@@ -133,7 +156,7 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 * <code>offset</code> - Offset into the byte array to start reading.
 
-* <code>bytesCount</code> - Length, in bytes, of the UTF-8 string.
+* <code>bytesCount</code> - Length, in bytes, of the UTF-8 text string.
 
 * <code>replace</code> - If true, replaces invalid encoding with the replacement
  character (U + FFFD). If false, stops processing when invalid UTF-8 is
@@ -333,6 +356,19 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 
 * The converted string, or null if <code>str</code> is null.
 
+### ToUpperCaseAscii
+    public static String ToUpperCaseAscii​(String str)
+Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
+ converted to upper-case. Other characters remain unchanged.
+
+**Parameters:**
+
+* <code>str</code> - The parameter <code>str</code> is a text string.
+
+**Returns:**
+
+* The converted string, or null if <code>str</code> is null.
+
 ### CodePointCompare
     public static int CodePointCompare​(String strA, String strB)
 Compares two strings in Unicode code point order. Unpaired surrogate code
@@ -458,11 +494,11 @@ Reads a string in UTF-8 encoding from a byte array.
 
 **Parameters:**
 
-* <code>data</code> - A byte array containing a UTF-8 string.
+* <code>data</code> - A byte array containing a UTF-8 text string.
 
 * <code>offset</code> - Offset into the byte array to start reading.
 
-* <code>bytesCount</code> - Length, in bytes, of the UTF-8 string.
+* <code>bytesCount</code> - Length, in bytes, of the UTF-8 text string.
 
 * <code>builder</code> - A string builder object where the resulting string will be
  stored.
@@ -483,7 +519,7 @@ Reads a string in UTF-8 encoding from a byte array.
 
 * <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
- greater than the length of <code>data</code>.
+ greater than the length of <code>data</code> .
 
 ### ReadUtf8ToString
     public static String ReadUtf8ToString​(InputStream stream) throws IOException

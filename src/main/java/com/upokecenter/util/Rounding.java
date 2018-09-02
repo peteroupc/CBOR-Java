@@ -12,11 +12,11 @@ at: http://peteroupc.github.io/
      * class in a different namespace/package and library, called
      * <code>PeterO.Numbers.ERounding</code> in the <code>PeterO.ERounding</code>
      * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java).</b></p> Specifies the mode to use when
-     * &#x22;shortening&#x22; numbers that otherwise can&#x27;t fit a given
-     * number of digits, so that the shortened number has about the same
-     * value. This &#x22;shortening&#x22; is known as rounding.
+     * href='https://github.com/peteroupc/numbers-java'>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java).</b> </p>
+     * Specifies the mode to use when "shortening" numbers that otherwise
+     * can't fit a given number of digits, so that the shortened number has
+     * about the same value. This "shortening" is known as rounding.
      * @deprecated Use ERounding from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -34,13 +34,13 @@ at: http://peteroupc.github.io/
 
     /**
      * If there is a fractional part, the number is rounded to the highest
-     * representable number that&#x27;s closest to it.
+     * representable number that's closest to it.
      */
     Ceiling,
 
     /**
      * If there is a fractional part, the number is rounded to the lowest
-     * representable number that&#x27;s closest to it.
+     * representable number that's closest to it.
      */
     Floor,
 
@@ -60,7 +60,7 @@ at: http://peteroupc.github.io/
     /**
      * Rounded to the nearest number; if the fractional part is exactly half, the
      * number is rounded to the closest representable number that is even.
-     * This is sometimes also known as &#x22;banker&#x27;s rounding&#x22;.
+     * This is sometimes also known as "banker's rounding".
      */
     HalfEven,
 

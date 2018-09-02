@@ -7,8 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  // TODO: Uses java.net.URI class which requires the System
-  // assembly for .NET Framework 2.0.
   class CBORTag32 implements ICBORTag, ICBORConverter<java.net.URI>
   {
     public CBORTypeFilter GetTypeFilter() {

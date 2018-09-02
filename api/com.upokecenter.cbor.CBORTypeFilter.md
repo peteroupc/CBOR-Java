@@ -113,7 +113,7 @@ Determines whether this type filter allows CBOR arrays and the given array
 
 * <code>true</code> if this type filter allows CBOR arrays and the given
  array index is allowed under this type filter; otherwise, <code>
- false</code>.
+ false</code> .
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(int length)
@@ -126,7 +126,7 @@ Returns whether an array's length is allowed under this filter.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under this filter; otherwise, <code>false</code>.
+ is allowed under this filter; otherwise, <code>false</code> .
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(long length)
@@ -199,7 +199,7 @@ Returns whether the given CBOR major type matches a major type allowed by
 **Returns:**
 
 * <code>true</code> if the given CBOR major type matches a major type
- allowed by this filter; otherwise, <code>false</code>.
+ allowed by this filter; otherwise, <code>false</code> .
 
 ### NonFPSimpleValueAllowed
     public boolean NonFPSimpleValueAllowed()
@@ -209,7 +209,7 @@ Returns whether this filter allows simple values that are not floating-point
 **Returns:**
 
 * <code>true</code> if this filter allows simple values that are not
- floating-point numbers; otherwise, <code>false</code>.
+ floating-point numbers; otherwise, <code>false</code> .
 
 ### TagAllowed
     public boolean TagAllowed​(int tag)
@@ -222,7 +222,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code>.
+ otherwise, <code>false</code> .
 
 ### TagAllowed
     public boolean TagAllowed​(long longTag)
@@ -235,7 +235,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code>.
+ otherwise, <code>false</code> .
 
 ### TagAllowed
     public boolean TagAllowed​(com.upokecenter.numbers.EInteger bigTag)
@@ -248,7 +248,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code>.
+ otherwise, <code>false</code> .
 
 **Throws:**
 

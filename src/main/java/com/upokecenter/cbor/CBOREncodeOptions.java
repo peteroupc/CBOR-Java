@@ -50,14 +50,16 @@ package com.upokecenter.cbor;
     private final int value;
 
     /**
-     * Initializes a new instance of the {@link CBOREncodeOptions} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} class.
      */
     public CBOREncodeOptions() {
  this(false, false);
 }
 
     /**
-     * Initializes a new instance of the {@link CBOREncodeOptions} class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} class.
      * @param useIndefLengthStrings A value indicating whether to always encode
      * strings with a definite-length encoding.
      * @param allowDuplicateKeys A value indicating whether to disallow duplicate

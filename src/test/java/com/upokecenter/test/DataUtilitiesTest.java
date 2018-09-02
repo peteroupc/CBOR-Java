@@ -1210,6 +1210,24 @@ try { if (ms2 != null) {
       }
     }
     @Test
+    public void TestToUpperCaseAscii() {
+      if (DataUtilities.ToUpperCaseAscii(null) != null) {
+        Assert.fail();
+      }
+      {
+        String stringTemp = DataUtilities.ToUpperCaseAscii("abc012-=?");
+        Assert.assertEquals(
+          "ABC012-=?",
+          stringTemp);
+      }
+      {
+        String stringTemp = DataUtilities.ToUpperCaseAscii("ABC012-=?");
+        Assert.assertEquals(
+          "ABC012-=?",
+          stringTemp);
+      }
+    }
+    @Test
     public void TestWriteUtf8() {
       try {
         try {

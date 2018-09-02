@@ -346,7 +346,7 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object&#x27;s value to the current value times another integer.
+     * Sets this object's value to the current value times another integer.
      * @param val The integer to multiply by.
      * @return This instance.
      */
@@ -402,8 +402,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object&#x27;s value to the current value minus the given
-     * FastInteger value.
+     * Sets this object's value to the current value minus the given FastInteger
+     * value.
      * @param val The subtrahend.
      * @return This instance.
      */
@@ -453,7 +453,7 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object&#x27;s value to the current value minus the given integer.
+     * Sets this object's value to the current value minus the given integer.
      * @param val The subtrahend.
      * @return This instance.
      */
@@ -579,7 +579,7 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Gets the sign of this object&#x27;s value.
+     * Gets the sign of this object's value.
      * @return 1 if positive, -1 if negative, 0 if zero.
      */
     final int signum() {

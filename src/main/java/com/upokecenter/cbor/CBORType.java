@@ -24,8 +24,7 @@ at: http://peteroupc.github.io/
     Boolean,
 
     /**
-     * A &#x22;simple value&#x22; other than floating point values, true, and
-     * false.
+     * A "simple value" other than floating point values, true, and false.
      */
     SimpleValue,
 

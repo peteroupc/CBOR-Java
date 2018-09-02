@@ -42,7 +42,7 @@ Gets a value indicating whether the "Is" prefix in property names is removed
 
 **Returns:**
 
-* <code>true</code> if the prefix is removed; otherwise, <code>false</code>.
+* <code>true</code> If the prefix is removed; otherwise, . <code>false</code>.
 
 ### getUseCamelCase
     public final boolean getUseCamelCase()
@@ -51,5 +51,5 @@ Gets a value indicating whether property names are converted to camel case
 
 **Returns:**
 
-* <code>true</code> if the names are converted to camel case; otherwise,
+* <code>true</code> If the names are converted to camel case; otherwise, .
  <code>false</code>.

@@ -66,7 +66,7 @@ import com.upokecenter.numbers.*;
      * @param index An array index, starting from 0.
      * @return {@code true} if this type filter allows CBOR arrays and the given
      * array index is allowed under this type filter; otherwise, {@code
-     * false}.
+     * false} .
      */
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 &&
@@ -79,7 +79,7 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under this filter.
      * @param length The length of a CBOR array.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under this filter; otherwise, {@code false}.
+     * is allowed under this filter; otherwise, {@code false} .
      */
     public boolean ArrayLengthMatches(int length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
@@ -183,7 +183,7 @@ import com.upokecenter.numbers.*;
      * this filter.
      * @param type A CBOR major type from 0 to 7.
      * @return {@code true} if the given CBOR major type matches a major type
-     * allowed by this filter; otherwise, {@code false}.
+     * allowed by this filter; otherwise, {@code false} .
      */
     public boolean MajorTypeMatches(int type) {
       return type >= 0 && type <= 7 && (this.types & (1 << type)) != 0;
@@ -193,7 +193,7 @@ import com.upokecenter.numbers.*;
      * Returns whether this filter allows simple values that are not floating-point
      * numbers.
      * @return {@code true} if this filter allows simple values that are not
-     * floating-point numbers; otherwise, {@code false}.
+     * floating-point numbers; otherwise, {@code false} .
      */
     public boolean NonFPSimpleValueAllowed() {
       return this.MajorTypeMatches(7) && !this.floatingpoint;
@@ -203,7 +203,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param tag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public boolean TagAllowed(int tag) {
       return this.any || this.TagAllowed(EInteger.FromInt32(tag));
@@ -213,7 +213,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param longTag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      */
     public boolean TagAllowed(long longTag) {
       return this.any || this.TagAllowed(EInteger.FromInt64(longTag));
@@ -223,7 +223,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param bigTag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
      */
     public boolean TagAllowed(EInteger bigTag) {

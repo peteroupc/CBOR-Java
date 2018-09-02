@@ -31,7 +31,7 @@ package com.upokecenter.cbor;
     /**
      * Gets a value indicating whether the "Is" prefix in property names is removed
      * before they are used as keys.
-     * @return {@code true} if the prefix is removed; otherwise, {@code false}.
+     * @return {@code true} If the prefix is removed; otherwise, . {@code false}.
      */
         public final boolean getRemoveIsPrefix() { return propVarremoveisprefix; }
 private final boolean propVarremoveisprefix;
@@ -39,7 +39,7 @@ private final boolean propVarremoveisprefix;
     /**
      * Gets a value indicating whether property names are converted to camel case
      * before they are used as keys.
-     * @return {@code true} if the names are converted to camel case; otherwise,
+     * @return {@code true} If the names are converted to camel case; otherwise, .
      * {@code false}.
      */
     public final boolean getUseCamelCase() { return propVarusecamelcase; }

@@ -14,18 +14,18 @@ import com.upokecenter.numbers.*;
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
      * <code>PeterO.Numbers.EInteger</code> in the <a
-  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
-     * library (in .NET), or <code>com.upokecenter.numbers.EInteger</code> in the
-     * <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java). This new class can be used in the
-     * <code>CBORObject.FromObject(object)</code> method (by including the new
-     * library in your code, among other things).</b></p> An
-     * arbitrary-precision integer. <p><b>Thread safety:</b> Instances of
-     * this class are immutable, so they are inherently safe for use by
-     * multiple threads. Multiple instances of this object with the same
-     * value are interchangeable, but they should be compared using the
-     * "Equals" method rather than the "==" operator.</p>
+     * href='https://www.nuget.org/packages/PeterO.Numbers'>
+     * <code>PeterO.Numbers</code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.EInteger</code> in the <a
+     * href='https://github.com/peteroupc/numbers-java'>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java). This new
+     * class can be used in the <code>CBORObject.FromObject(object)</code> method
+     * (by including the new library in your code, among other things).</b>
+     * </p> An arbitrary-precision integer. <p><b>Thread safety:</b>
+     * Instances of this class are immutable, so they are inherently safe
+     * for use by multiple threads. Multiple instances of this object with
+     * the same value are interchangeable, but they should be compared using
+     * the "Equals" method rather than the "==" operator. </p>
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
  *this class's toString method.
  */
@@ -135,10 +135,9 @@ return new BigInteger(EInteger.FromString(str));
  }
 
     /**
-     * Finds the minimum number of bits needed to represent this object&#x27;s
-     * value, except for its sign. If the value is negative, finds the
-     * number of bits in a value equal to this object's absolute value minus
-     * 1.
+     * Finds the minimum number of bits needed to represent this object's value,
+     * except for its sign. If the value is negative, finds the number of
+     * bits in a value equal to this object's absolute value minus 1.
      * @return The number of bits in this object's value. Returns 0 if this
      * object's value is 0 or negative 1.
      */
@@ -150,7 +149,7 @@ return this.getEi().GetSignedBitLength();
      * Determines whether this object and another object are equal.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
-     * {@code false}.
+     * {@code false} .
      */
   @Override public boolean equals(Object obj) {
       BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
@@ -167,8 +166,8 @@ return this.getEi().GetSignedBitLength();
  }
 
     /**
-     * Returns a byte array of this object&#x27;s value. The byte array will take
-     * the form of the number's two' s-complement representation, using the
+     * Returns a byte array of this object's value. The byte array will take the
+     * form of the number's two' s-complement representation, using the
      * fewest bytes necessary to represent its value unambiguously. If this
      * value is negative, the bits that appear "before" the most significant
      * bit of the number will be all ones.

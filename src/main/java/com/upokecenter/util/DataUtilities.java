@@ -16,7 +16,7 @@ import java.io.*;
      * form of the Unicode Standard which uses one byte to encode the most
      * basic characters and two to four bytes to encode other characters.
      * For example, the <code>GetUtf8</code> method converts a text string to an
-     * array of bytes in UTF-8.</p> <p>In C# and Java, text strings are
+     * array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
      * represented as sequences of 16-bit values called <code>char</code> s. These
      * sequences are well-formed under UTF-16, a 16-bit encoding form of
      * Unicode, except if they contain unpaired surrogate code points. (A
@@ -27,8 +27,8 @@ import java.io.*;
      * not appearing in a surrogate pair.) Many of the methods in this class
      * allow setting the behavior to follow when unpaired surrogate code
      * points are found in text strings, such as throwing an error or
-     * treating the unpaired surrogate as a replacement character
-     * (U + FFFD).</p>
+     * treating the unpaired surrogate as a replacement character (U + FFFD).
+     * </p>
      */
   public final class DataUtilities {
 private DataUtilities() {
@@ -58,10 +58,32 @@ private DataUtilities() {
     }
 
     /**
+     * Finds the number of Unicode code points in the given text string. Unpaired
+     * surrogate code points increase this number by 1. This is not
+     * necessarily the length of the string in "char" s.
+     * @param str The parameter {@code str} is a text string.
+     * @return The number of Unicode code points in the given string.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     */
+    public static int CodePointLength(String str) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      int i = 0;
+      int count = 0;
+     while (i < str.length()) {
+       int c = CodePointAt(str, i);
+       ++count;
+       i += (c >= 0x10000) ? 2 : 1;
+     }
+     return count;
+}
+
+    /**
      * Generates a text string from a portion of a UTF-8 byte array.
      * @param bytes A byte array containing text encoded in UTF-8.
      * @param offset Offset into the byte array to start reading.
-     * @param bytesCount Length, in bytes, of the UTF-8 string.
+     * @param bytesCount Length, in bytes, of the UTF-8 text string.
      * @param replace If true, replaces invalid encoding with the replacement
      * character (U + FFFD). If false, stops processing when invalid UTF-8 is
      * seen.
@@ -287,7 +309,7 @@ try { if (ms != null) {
       }
       int c = str.charAt(index - 1);
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-          str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
+          (str.charAt(index - 2) & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
       }
@@ -342,7 +364,7 @@ try { if (ms != null) {
       }
       int c = str.charAt(index);
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-          str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+          (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
         c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
         ++index;
@@ -390,6 +412,41 @@ try { if (ms != null) {
     }
 
     /**
+     * Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
+     * converted to upper-case. Other characters remain unchanged.
+     * @param str The parameter {@code str} is a text string.
+     * @return The converted string, or null if {@code str} is null.
+     */
+    public static String ToUpperCaseAscii(String str) {
+      if (str == null) {
+        return null;
+      }
+      int len = str.length();
+      char c = (char)0;
+      boolean hasLowerCase = false;
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'a' && c <= 'z') {
+          hasLowerCase = true;
+          break;
+        }
+      }
+      if (!hasLowerCase) {
+        return str;
+      }
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'a' && c <= 'z') {
+          builder.append((char)(c - 0x20));
+        } else {
+          builder.append(c);
+        }
+      }
+      return builder.toString();
+    }
+
+    /**
      * Compares two strings in Unicode code point order. Unpaired surrogate code
      * points are treated as individual code points.
      * @param strA The first string. Can be null.
@@ -420,13 +477,11 @@ try { if (ms != null) {
             continue;
           }
           boolean incindex = false;
-          if (i + 1 < strA.length() && strA.charAt(i + 1) >= 0xdc00 && strA.charAt(i + 1) <=
-              0xdfff) {
+          if (i + 1 < strA.length() && (strA.charAt(i + 1) & 0xfc00) == 0xdc00) {
             ca = 0x10000 + ((ca - 0xd800) << 10) + (strA.charAt(i + 1) - 0xdc00);
             incindex = true;
           }
-          if (i + 1 < strB.length() && strB.charAt(i + 1) >= 0xdc00 && strB.charAt(i + 1) <=
-              0xdfff) {
+          if (i + 1 < strB.length() && (strB.charAt(i + 1) & 0xfc00) == 0xdc00) {
             cb = 0x10000 + ((cb - 0xd800) << 10) + (strB.charAt(i + 1) - 0xdc00);
             incindex = true;
           }
@@ -441,11 +496,11 @@ try { if (ms != null) {
             return ca - cb;
           }
           if ((ca & 0xfc00) == 0xd800 && i + 1 < strA.length() &&
-              strA.charAt(i + 1) >= 0xdc00 && strA.charAt(i + 1) <= 0xdfff) {
+              (strA.charAt(i + 1) & 0xfc00) == 0xdc00) {
             ca = 0x10000 + ((ca - 0xd800) << 10) + (strA.charAt(i + 1) - 0xdc00);
           }
           if ((cb & 0xfc00) == 0xd800 && i + 1 < strB.length() &&
-              strB.charAt(i + 1) >= 0xdc00 && strB.charAt(i + 1) <= 0xdfff) {
+              (strB.charAt(i + 1) & 0xfc00) == 0xdc00) {
             cb = 0x10000 + ((cb - 0xd800) << 10) + (strB.charAt(i + 1) - 0xdc00);
           }
           return ca - cb;
@@ -598,7 +653,7 @@ try { if (ms != null) {
           bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
         } else {
           if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
-              str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+              (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
             ++index;
@@ -658,9 +713,9 @@ try { if (ms != null) {
 
     /**
      * Reads a string in UTF-8 encoding from a byte array.
-     * @param data A byte array containing a UTF-8 string.
+     * @param data A byte array containing a UTF-8 text string.
      * @param offset Offset into the byte array to start reading.
-     * @param bytesCount Length, in bytes, of the UTF-8 string.
+     * @param bytesCount Length, in bytes, of the UTF-8 text string.
      * @param builder A string builder object where the resulting string will be
      * stored.
      * @param replace If true, replaces invalid encoding with the replacement
@@ -672,7 +727,7 @@ try { if (ms != null) {
      * {@code builder} is null.
      * @throws IllegalArgumentException The parameter {@code offset} is less than
      * 0, {@code bytesCount} is less than 0, or offset plus bytesCount is
-     * greater than the length of {@code data}.
+     * greater than the length of {@code data} .
      */
     public static int ReadUtf8FromBytes(
   byte[] data,

@@ -85,8 +85,8 @@ import com.upokecenter.numbers.*;
           }
           ret += x;
         } else {
-              throw new NumberFormatException();
-}
+          throw new NumberFormatException();
+        }
       }
       return neg ? -ret : ret;
     }
@@ -124,8 +124,8 @@ import com.upokecenter.numbers.*;
           }
           ret += x;
         } else {
-              throw new NumberFormatException();
-}
+          throw new NumberFormatException();
+        }
       }
       return neg ? -ret : ret;
     }
@@ -136,11 +136,11 @@ import com.upokecenter.numbers.*;
   String p1,
   String p2,
   String p3) {
-       CBORObjectTest.CheckPropertyNames(
-  CBORObject.FromObject(ao, cc),
-  p1,
-  p2,
-  p3);
+      CBORObjectTest.CheckPropertyNames(
+ CBORObject.FromObject(ao, cc),
+ p1,
+ p2,
+ p3);
     }
 
     static void CheckArrayPropertyNames(
@@ -149,12 +149,12 @@ import com.upokecenter.numbers.*;
   String p1,
   String p2,
   String p3) {
-            Assert.assertEquals(CBORType.Array, co.getType());
-            Assert.assertEquals(expectedCount, co.size());
-            for (int i = 0; i < co.size(); ++i) {
-             CBORObjectTest.CheckPropertyNames(co.get(i), p1, p2, p3);
-            }
-            CBORTestCommon.AssertRoundTrip(co);
+      Assert.assertEquals(CBORType.Array, co.getType());
+      Assert.assertEquals(expectedCount, co.size());
+      for (int i = 0; i < co.size(); ++i) {
+        CBORObjectTest.CheckPropertyNames(co.get(i), p1, p2, p3);
+      }
+      CBORTestCommon.AssertRoundTrip(co);
     }
 
     static void CheckPODPropertyNames(
@@ -163,12 +163,12 @@ import com.upokecenter.numbers.*;
   String p1,
   String p2,
   String p3) {
-            Assert.assertEquals(CBORType.Map, co.getType());
-            String keyName = cc.getUseCamelCase() ? "propValue" : "PropValue";
-            if (!co.ContainsKey(keyName)) {
- Assert.fail("Expected " + keyName + " to exist: " + co.toString());
-}
-            CBORObjectTest.CheckPropertyNames(co.get(keyName), p1, p2, p3);
+      Assert.assertEquals(CBORType.Map, co.getType());
+      String keyName = cc.getUseCamelCase() ? "propValue" : "PropValue";
+      if (!co.ContainsKey(keyName)) {
+        Assert.fail("Expected " + keyName + " to exist: " + co.toString());
+      }
+      CBORObjectTest.CheckPropertyNames(co.get(keyName), p1, p2, p3);
     }
 
     static void CheckPODInDictPropertyNames(
@@ -176,67 +176,66 @@ import com.upokecenter.numbers.*;
   String p1,
   String p2,
   String p3) {
-            Assert.assertEquals(CBORType.Map, co.getType());
-            if (!co.ContainsKey("PropValue")) {
- Assert.fail("Expected PropValue to exist: " + co.toString());
-}
-            CBORObjectTest.CheckPropertyNames(co.get("PropValue"), p1, p2, p3);
+      Assert.assertEquals(CBORType.Map, co.getType());
+      if (!co.ContainsKey("PropValue")) {
+        Assert.fail("Expected PropValue to exist: " + co.toString());
+      }
+      CBORObjectTest.CheckPropertyNames(co.get("PropValue"), p1, p2, p3);
     }
 
-static void CheckPropertyNames(
-  CBORObject o,
-  String p1,
-  String p2,
-  String p3) {
-            Assert.assertEquals(CBORType.Map, o.getType());
-            if (!o.ContainsKey(p1)) {
- Assert.fail("Expected " + p1 + " to exist: " + o.toString());
-}
-            if (!o.ContainsKey(p2)) {
- Assert.fail("Expected " + p2 + " to exist: " + o.toString());
-}
-            if (!o.ContainsKey(p3)) {
- Assert.fail("Expected " + p3 + " to exist: " + o.toString());
-}
-            CBORTestCommon.AssertRoundTrip(o);
+    static void CheckPropertyNames(
+      CBORObject o,
+      String p1,
+      String p2,
+      String p3) {
+      Assert.assertEquals(CBORType.Map, o.getType());
+      if (!o.ContainsKey(p1)) {
+        Assert.fail("Expected " + p1 + " to exist: " + o.toString());
+      }
+      if (!o.ContainsKey(p2)) {
+        Assert.fail("Expected " + p2 + " to exist: " + o.toString());
+      }
+      if (!o.ContainsKey(p3)) {
+        Assert.fail("Expected " + p3 + " to exist: " + o.toString());
+      }
+      CBORTestCommon.AssertRoundTrip(o);
     }
 
     static void CheckPropertyNames(Object ao) {
-            PODOptions valueCcTF = new PODOptions(true, false);
-            PODOptions valueCcFF = new PODOptions(false, false);
-            PODOptions valueCcFT = new PODOptions(false, true);
-            PODOptions valueCcTT = new PODOptions(true, true);
-    CBORObjectTest.CheckPropertyNames(
-  ao,
-  valueCcTF,
-  "PropA",
-  "PropB",
-  "PropC");
-         /*
-   TODO: The following case conflicts with the Java version
-  of the CBOR library. Resolving this conflict may result in the
-  Java version being backward-incompatible and so require
-  a major version change.
-   //--
-          CBORObjectTest.CheckPropertyNames(
+      PODOptions valueCcTF = new PODOptions(true, false);
+      PODOptions valueCcFF = new PODOptions(false, false);
+      PODOptions valueCcFT = new PODOptions(false, true);
+      PODOptions valueCcTT = new PODOptions(true, true);
+      CBORObjectTest.CheckPropertyNames(
+    ao,
+    valueCcTF,
+    "PropA",
+    "PropB",
+    "PropC");
+      /*
+TODO: The following case conflicts with the Java version
+of the CBOR library. Resolving this conflict may result in the
+Java version being backward-incompatible and so require
+a major version change.
+//--
+       CBORObjectTest.CheckPropertyNames(
   ao,
   valueCcFF,
   "PropA",
   "PropB",
   "IsPropC");
-        */
-          CBORObjectTest.CheckPropertyNames(
+     */ CBORObjectTest.CheckPropertyNames(
   ao,
   valueCcFT,
   "propA",
   "propB",
   "isPropC");
-    CBORObjectTest.CheckPropertyNames(
-  ao,
-  valueCcTT,
-  "propA",
-  "propB",
-  "propC");
+      CBORObjectTest.CheckPropertyNames(
+    ao,
+    valueCcTT,
+    "propA",
+    "propB",
+    "propC");
     }
 
     public static CBORObject GetNumberData() {
@@ -255,13 +254,13 @@ static void CheckPropertyNames(
         System.out.println(ex2.getMessage());
         // Check only FromJSONString
         try {
-            CBORObject.FromJSONString(str, opt);
+          CBORObject.FromJSONString(str, opt);
           Assert.fail("Should have failed");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
-  Assert.fail(ex.toString());
-  throw new IllegalStateException("", ex);
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
         }
         return;
       }
@@ -271,7 +270,7 @@ try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
         try {
-            CBORObject.ReadJSON(ms, opt);
+          CBORObject.ReadJSON(ms, opt);
           Assert.fail("Should have failed");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
@@ -287,7 +286,7 @@ try { if (ms != null) {
 }
 }
       try {
-          CBORObject.FromJSONString(str, opt);
+        CBORObject.FromJSONString(str, opt);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -2410,20 +2409,20 @@ try { if (ms != null) {
 
     @Test
     public void TestTagArray() {
-        CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
-        {
-String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
-Assert.assertEquals(
-  "[999]",
-  stringTemp);
-}
+      CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
+      {
+    String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
+        Assert.assertEquals(
+          "[999]",
+          stringTemp);
+      }
       obj = CBORObject.FromObject("test");
-        {
-String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
-Assert.assertEquals(
-  "[]",
-  stringTemp);
-}
+      {
+    String stringTemp = CBORObject.FromObject(obj.GetAllTags()).ToJSONString();
+        Assert.assertEquals(
+          "[]",
+          stringTemp);
+      }
     }
     @Test
     public void TestEI() {
@@ -2560,144 +2559,145 @@ Assert.assertEquals(
       }
     }
 
-        private void CheckKeyValue(CBORObject o, String key, Object value) {
-            if (!o.ContainsKey(key)) {
-                Assert.fail("Expected " + key + " to exist: " + o.toString());
-            }
-            TestCommon.AssertEqualsHashCode(o.get(key), value);
-        }
+    private void CheckKeyValue(CBORObject o, String key, Object value) {
+      if (!o.ContainsKey(key)) {
+        Assert.fail("Expected " + key + " to exist: " + o.toString());
+      }
+      TestCommon.AssertEqualsHashCode(o.get(key), value);
+    }
 
-        @Test
-public void TestFromObject_Dictionary() {
-          Map<String, Object> dict = new HashMap<String, Object>();
-            dict.put("TestKey","TestValue");
-            dict.put("TestKey2","TestValue2");
-            CBORObject c = CBORObject.FromObject(dict);
-            this.CheckKeyValue(c, "TestKey", "TestValue");
-            this.CheckKeyValue(c, "TestKey2", "TestValue2");
-            c = CBORObject.FromObject((Object)dict);
-            this.CheckKeyValue(c, "TestKey", "TestValue");
-            this.CheckKeyValue(c, "TestKey2", "TestValue2");
-        }
+    @Test
+    public void TestFromObject_Dictionary() {
+      Map<String, Object> dict = new HashMap<String, Object>();
+      dict.put("TestKey","TestValue");
+      dict.put("TestKey2","TestValue2");
+      CBORObject c = CBORObject.FromObject(dict);
+      this.CheckKeyValue(c, "TestKey", "TestValue");
+      this.CheckKeyValue(c, "TestKey2", "TestValue2");
+      c = CBORObject.FromObject((Object)dict);
+      this.CheckKeyValue(c, "TestKey", "TestValue");
+      this.CheckKeyValue(c, "TestKey2", "TestValue2");
+    }
 
     public final class PODClass {
-        public PODClass() {
-            this.propVarpropa = 0;
-            this.propVarpropb = 1;
-            this.propVarispropc = false;
-        }
+      public PODClass() {
+        this.propVarpropa = 0;
+        this.propVarpropb = 1;
+        this.propVarispropc = false;
+      }
 
-        public final int getPropA() { return propVarpropa; }
+      public final int getPropA() { return propVarpropa; }
 private final int propVarpropa;
 
-        public final int getPropB() { return propVarpropb; }
+      public final int getPropB() { return propVarpropb; }
 private final int propVarpropb;
 
-        public final boolean isPropC() { return propVarispropc; }
+      public final boolean isPropC() { return propVarispropc; }
 private final boolean propVarispropc;
     }
 
     public final class NestedPODClass {
-        public NestedPODClass() {
-            this.propVarpropvalue = new PODClass();
-        }
+      public NestedPODClass() {
+        this.propVarpropvalue = new PODClass();
+      }
 
-        public final PODClass getPropValue() { return propVarpropvalue; }
+      public final PODClass getPropValue() { return propVarpropvalue; }
 private final PODClass propVarpropvalue;
     }
 
-        @Test(timeout = 5000) public void TestFromObject_PODOptions() {
-            PODClass ao = new PODClass();
-            PODOptions valueCcTF = new PODOptions(true, false);
-            PODOptions valueCcFF = new PODOptions(false, false);
-            PODOptions valueCcFT = new PODOptions(false, true);
-            PODOptions valueCcTT = new PODOptions(true, true);
-            CBORObject co;
-            CBORObjectTest.CheckPropertyNames(ao);
-            PODClass[] arrao = new PODClass[] { ao, ao };
-            co = CBORObject.FromObject(arrao, valueCcTF);
-            CBORObjectTest.CheckArrayPropertyNames(
+    @Test(timeout = 5000)
+    public void TestFromObject_PODOptions() {
+      PODClass ao = new PODClass();
+      PODOptions valueCcTF = new PODOptions(true, false);
+      PODOptions valueCcFF = new PODOptions(false, false);
+      PODOptions valueCcFT = new PODOptions(false, true);
+      PODOptions valueCcTT = new PODOptions(true, true);
+      CBORObject co;
+      CBORObjectTest.CheckPropertyNames(ao);
+      PODClass[] arrao = new PODClass[] { ao, ao };
+      co = CBORObject.FromObject(arrao, valueCcTF);
+      CBORObjectTest.CheckArrayPropertyNames(
   CBORObject.FromObject(arrao, valueCcTF),
-                 2,
+           2,
   "PropA",
   "PropB",
   "PropC");
-            CBORObjectTest.CheckArrayPropertyNames(
+      CBORObjectTest.CheckArrayPropertyNames(
   CBORObject.FromObject(arrao, valueCcFT),
-                 2,
+           2,
   "propA",
   "propB",
   "isPropC");
-            CBORObjectTest.CheckArrayPropertyNames(
+      CBORObjectTest.CheckArrayPropertyNames(
   CBORObject.FromObject(arrao, valueCcTT),
-                 2,
+           2,
   "propA",
   "propB",
   "propC");
-   NestedPODClass ao2 = new NestedPODClass();
-            CBORObjectTest.CheckPODPropertyNames(
+      NestedPODClass ao2 = new NestedPODClass();
+      CBORObjectTest.CheckPODPropertyNames(
   CBORObject.FromObject(ao2, valueCcTF),
- valueCcTF,
-                 "PropA",
+  valueCcTF,
+           "PropA",
   "PropB",
   "PropC");
-            CBORObjectTest.CheckPODPropertyNames(
+      CBORObjectTest.CheckPODPropertyNames(
   CBORObject.FromObject(ao2, valueCcFT),
- valueCcFT,
-                 "propA",
+  valueCcFT,
+           "propA",
   "propB",
   "isPropC");
-            CBORObjectTest.CheckPODPropertyNames(
+      CBORObjectTest.CheckPODPropertyNames(
   CBORObject.FromObject(ao2, valueCcTT),
- valueCcTT,
-                 "propA",
+  valueCcTT,
+           "propA",
   "propB",
   "propC");
-            HashMap<String, Object> aodict = new HashMap<String, Object>();
-            aodict.put("PropValue",new PODClass());
+      HashMap<String, Object> aodict = new HashMap<String, Object>();
+      aodict.put("PropValue",new PODClass());
 
-            CBORObjectTest.CheckPODInDictPropertyNames(
+      CBORObjectTest.CheckPODInDictPropertyNames(
   CBORObject.FromObject(aodict, valueCcTF),
   "PropA",
   "PropB",
   "PropC");
-            CBORObjectTest.CheckPODInDictPropertyNames(
+      CBORObjectTest.CheckPODInDictPropertyNames(
   CBORObject.FromObject(aodict, valueCcFT),
   "propA",
   "propB",
   "isPropC");
-            CBORObjectTest.CheckPODInDictPropertyNames(
+      CBORObjectTest.CheckPODInDictPropertyNames(
   CBORObject.FromObject(aodict, valueCcTT),
   "propA",
   "propB",
   "propC");
-         /*
-   TODO: The following cases conflict with the Java version
-  of the CBOR library. Resolving this conflict may result in the
-  Java version being backward-incompatible and so require
-  a major version change.
-   // ----
-            CBORObjectTest.CheckArrayPropertyNames(
+      /*
+TODO: The following cases conflict with the Java version
+of the CBOR library. Resolving this conflict may result in the
+Java version being backward-incompatible and so require
+a major version change.
+// ----
+         CBORObjectTest.CheckArrayPropertyNames(
   CBORObject.FromObject(arrao, valueCcFF),
-                 2,
+              2,
   "PropA",
   "PropB",
   "IsPropC");
-            CBORObjectTest.CheckPODPropertyNames(
+         CBORObjectTest.CheckPODPropertyNames(
   CBORObject.FromObject(ao2, valueCcFF),
- valueCcFF,
-                 "PropA",
+  valueCcFF,
+              "PropA",
   "PropB",
   "IsPropC");
-            CBORObjectTest.CheckPODInDictPropertyNames(
+         CBORObjectTest.CheckPODInDictPropertyNames(
   CBORObject.FromObject(aodict, valueCcFF),
   "PropA",
   "PropB",
   "IsPropC");
-          */
-        }
+       */
+    }
 
-        @Test
+    @Test
     public void TestFromObjectAndTag() {
       EInteger bigvalue = EInteger.FromString("99999999999999999999999999999");
       try {
@@ -4994,9 +4994,227 @@ try { if (msjson != null) {
         throw new IllegalStateException("", ex);
       }
     }
+
+    @Test
+    public void TestClear() {
+      CBORObject cbor;
+      cbor = CBORObject.NewArray().Add("a").Add("b").Add("c");
+      Assert.assertEquals(3, cbor.size());
+      cbor.Clear();
+      Assert.assertEquals(0, cbor.size());
+      cbor = CBORObject.NewMap()
+        .Add("a", 0).Add("b", 1).Add("c", 2);
+      Assert.assertEquals(3, cbor.size());
+      cbor.Clear();
+      Assert.assertEquals(0, cbor.size());
+      try {
+        CBORObject.FromObject(1).Clear();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.False.Clear();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.Null.Clear();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
     @Test
     public void TestRemove() {
-      // not implemented yet
+      CBORObject cbor;
+      cbor = CBORObject.NewArray().Add("a").Add("b").Add("c");
+      Assert.assertEquals(3, cbor.size());
+      if (!(cbor.Remove(CBORObject.FromObject("b"))))Assert.fail();
+      if (cbor.Remove(CBORObject.FromObject("x"))) {
+ Assert.fail();
+ }
+      try {
+        cbor.Remove((CBORObject)null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      Assert.assertEquals(2, cbor.size());
+      Assert.assertEquals(CBORObject.FromObject("a"), cbor.get(0));
+      Assert.assertEquals(CBORObject.FromObject("c"), cbor.get(1));
+      cbor = CBORObject.NewArray().Add("a").Add("b").Add("c");
+      Assert.assertEquals(3, cbor.size());
+
+      if (!(cbor.Remove("b"))) {
+ Assert.fail();
+ }
+      if (cbor.Remove("x")) {
+ Assert.fail();
+ }
+      Assert.assertEquals(2, cbor.size());
+      Assert.assertEquals(CBORObject.FromObject("a"), cbor.get(0));
+      Assert.assertEquals(CBORObject.FromObject("c"), cbor.get(1));
+      cbor = CBORObject.NewMap().Add("a", 0).Add("b", 1).Add("c", 2);
+      Assert.assertEquals(3, cbor.size());
+
+      if (!(cbor.Remove(CBORObject.FromObject("b"))))Assert.fail();
+      if (cbor.Remove(CBORObject.FromObject("x"))) {
+ Assert.fail();
+ }
+      try {
+        cbor.Remove((CBORObject)null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      Assert.assertEquals(2, cbor.size());
+      if (!(cbor.ContainsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(cbor.ContainsKey("c"))) {
+ Assert.fail();
+ }
+      cbor = CBORObject.NewMap().Add("a", 0).Add("b", 1).Add("c", 2);
+      Assert.assertEquals(3, cbor.size());
+
+      if (!(cbor.Remove("b"))) {
+ Assert.fail();
+ }
+      if (cbor.Remove("x")) {
+ Assert.fail();
+ }
+      Assert.assertEquals(2, cbor.size());
+      if (!(cbor.ContainsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(cbor.ContainsKey("c"))) {
+ Assert.fail();
+ }
+      try {
+        CBORObject.FromObject(1).Remove("x");
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.False.Remove("x");
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.Null.Remove("x");
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.FromObject(1).Remove(CBORObject.FromObject("b"));
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.False.Remove(CBORObject.FromObject("b"));
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.Null.Remove(CBORObject.FromObject("b"));
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestRemoveAt() {
+      CBORObject cbor;
+      cbor = CBORObject.NewArray().Add("a").Add("b").Add("c");
+      if (!(cbor.RemoveAt(1))) {
+ Assert.fail();
+ }
+      if (cbor.RemoveAt(2)) {
+ Assert.fail();
+ }
+      if (cbor.RemoveAt(-1)) {
+ Assert.fail();
+ }
+      Assert.assertEquals(2, cbor.size());
+      Assert.assertEquals(CBORObject.FromObject("a"), cbor.get(0));
+      Assert.assertEquals(CBORObject.FromObject("c"), cbor.get(1));
+      try {
+        CBORObject.NewMap().RemoveAt(0);
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.FromObject(1).RemoveAt(0);
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.False.RemoveAt(0);
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.Null.RemoveAt(0);
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestSet() {
@@ -5234,7 +5452,7 @@ try { if (msjson != null) {
       }
 
       CBORObject cbor = CBORObject.NewArray();
-byte[] b64bytes = new byte[] { 0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc,
+      byte[] b64bytes = new byte[] { 0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc,
   0x01, (byte)0xff, (byte)0xdd, (byte)0xfd, (byte)0xdc,
   0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc,
   0x01, (byte)0xff, (byte)0xdd, (byte)0xfd, (byte)0xdc,
@@ -5258,11 +5476,11 @@ byte[] b64bytes = new byte[] { 0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0
   0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc,
   0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc,
   0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc };
-cbor.Add(b64bytes);
-TestSucceedingJSON(cbor.ToJSONString());
-cbor = CBORObject.NewArray();
-cbor.Add(CBORObject.FromObjectAndTag(b64bytes, 22));
-TestSucceedingJSON(cbor.ToJSONString());
+      cbor.Add(b64bytes);
+      TestSucceedingJSON(cbor.ToJSONString());
+      cbor = CBORObject.NewArray();
+      cbor.Add(CBORObject.FromObjectAndTag(b64bytes, 22));
+      TestSucceedingJSON(cbor.ToJSONString());
     }
 
     @Test
@@ -6336,4 +6554,204 @@ try { if (ms != null) {
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
+
+@Test
+public void TestWriteValue() {
+ try {
+try {
+ CBORObject.WriteValue(null, 0, 0);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(null, 1, 0);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(null, 2, 0);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(null, 3, 0);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(null, 4, 0);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+try {
+ CBORObject.WriteValue(ms, -1, 0);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, 8, 0);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, 7, 256);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, 7, Integer.MAX_VALUE);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, 7, Long.MAX_VALUE);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+for (int i = 0; i <= 7; ++i) {
+try {
+ CBORObject.WriteValue(ms, i, -1);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, i, Integer.MIN_VALUE);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, i, (long)-1);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, i, Long.MIN_VALUE);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+}
+for (int i = 0; i <= 6; ++i) {
+try {
+ CBORObject.WriteValue(ms, i, Integer.MAX_VALUE);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ CBORObject.WriteValue(ms, i, Long.MAX_VALUE);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+}
+      // Test minimum data length
+      int[] ranges = {
+        0, 23, 1,
+        24, 255, 2,
+        256, 266, 3,
+        65525, 65535, 3,
+        65536, 65546, 5,
+      };
+      String[] bigRanges = {
+        "4294967285", "4294967295",
+        "4294967296", "4294967306",
+        "18446744073709551604", "18446744073709551615"
+      };
+      int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
+      for (int i = 0; i < ranges.length; i += 3) {
+        for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
+for (int k = 0; k <= 6; ++k) {
+  int count;
+  count = CBORObject.WriteValue(ms, k, j);
+  Assert.assertEquals(ranges[i + 2], count);
+  count = CBORObject.WriteValue(ms, k, (long)j);
+  Assert.assertEquals(ranges[i + 2], count);
+  count = CBORObject.WriteValue(ms, k, EInteger.FromInt32(j));
+  Assert.assertEquals(ranges[i + 2], count);
+}
+        }
+      }
+      for (int i = 0; i < bigRanges.length; i += 2) {
+        EInteger bj = EInteger.FromString(bigRanges[i]);
+        EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
+        while (bj.compareTo(valueBjEnd)< 0) {
+for (int k = 0; k <= 6; ++k) {
+  int count;
+  count = CBORObject.WriteValue(ms, k, bj);
+  Assert.assertEquals(bigSizes[i / 2], count);
+}
+          bj = bj.Add(EInteger.FromInt32(1));
+        }
+      }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
+}
   }

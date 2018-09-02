@@ -16,8 +16,8 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 ## Methods
 
 * `int bitLength()`<br>
- Deprecated. Finds the minimum number of bits needed to represent this object's
- value, except for its sign.
+ Deprecated. Finds the minimum number of bits needed to represent this object's value,
+ except for its sign.
 * `int compareTo​(BigInteger other)`<br>
  Deprecated. Compares this value to another.
 * `boolean equals​(Object obj)`<br>
@@ -170,7 +170,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code>.
+ <code>false</code> .
 
 ### hashCode
     public int hashCode()

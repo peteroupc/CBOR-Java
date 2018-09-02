@@ -1,6 +1,6 @@
 # API Documentation
 
-* [com.upokecenter.cbor.ICBORConverter&lt;T>](com.upokecenter.cbor.ICBORConverter.md) -
+* [com.upokecenter.cbor.ICBORConverter&amp;lt;T&amp;gt;](com.upokecenter.cbor.ICBORConverter.md) -
 Interface implemented by classes that convert objects of arbitrary types to
  CBOR objects.
 

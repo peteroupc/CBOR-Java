@@ -18,8 +18,7 @@ Represents a type that a CBOR object can have.
  A number of any kind, including integers, big integers, floating point
  numbers, and decimal numbers.
 * `SimpleValue`<br>
- A "simple value" other than floating point values, true, and
- false.
+ A "simple value" other than floating point values, true, and false.
 * `TextString`<br>
  A text string.
 
@@ -63,8 +62,7 @@ A number of any kind, including integers, big integers, floating point
 The simple values true and false.
 ### SimpleValue
     public static final CBORType SimpleValue
-A &#x22;simple value&#x22; other than floating point values, true, and
- false.
+A "simple value" other than floating point values, true, and false.
 ### ByteString
     public static final CBORType ByteString
 An array of bytes.
