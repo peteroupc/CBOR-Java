@@ -8,9 +8,7 @@ at: http://peteroupc.github.io/CBOR/
  */
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
+import java.lang.reflect.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,9 +141,10 @@ class PropertyMap {
    * @param argtype a {@link java.lang.Class} object.
    * @return a {@link java.lang.Object} object.
    */
-  public static Object FindOneArgumentMethod(final Object obj, final String name, final Class<?> argtype) {
+  public static Object FindOneArgumentMethod(final Object obj, final String name, final Type argtype) {
+    if(!(argtype instanceof Class<?>))return null;
     try {
-      return obj.getClass().getMethod(name, argtype);
+      return obj.getClass().getMethod(name, (Class<?>)argtype);
     } catch (SecurityException e) {
       return null;
     } catch (NoSuchMethodException e) {
@@ -245,4 +244,93 @@ class PropertyMap {
       throw new RuntimeException(e);
     }
   }
+
+  public static Object TypeToObject(CBORObject objThis, Type t) {
+      //if (t.Equals(typeof(DateTime))) {
+      //  return new CBORTag0().FromCBORObject(objThis);
+      //}
+      if (objThis.getType() == CBORType.ByteString) {
+        if (t.equals(byte[].class)) {
+          byte[] bytes = objThis.GetByteString();
+          byte[] byteret = new byte[bytes.length];
+          System.arraycopy(bytes, 0, byteret, 0, byteret.length);
+          return byteret;
+        }
+      }
+ParameterizedType pt=(t instanceof ParameterizedType) ?
+   ((ParameterizedType)t) : null;
+Type rawType=(pt==null) ? t : pt.getRawType();
+Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
+if(objThis.getType()==CBORType.Array){
+ if(rawType!=null &&
+    rawType.equals(List.class) || rawType.equals(Iterable.class) ||
+    rawType.equals(java.util.Collection.class) || rawType.equals(ArrayList.class)){
+  if(typeArguments==null || typeArguments.length==0){
+   ArrayList alist=new ArrayList();
+   for(CBORObject cbor : objThis.getValues()){
+    alist.add(cbor.ToObject(Object.class));
+   }
+   return alist;
+  } else {
+   ArrayList alist=new ArrayList();
+   for(CBORObject cbor : objThis.getValues()){
+    alist.add(cbor.ToObject(typeArguments[0]));
+   }
+   return alist;
+  }
+ }
+}
+if(objThis.getType()==CBORType.Map){
+ if(rawType!=null &&
+    rawType.equals(HashMap.class) || rawType.equals(Map.class)){
+  if(typeArguments==null || typeArguments.length<2){
+   HashMap alist=new HashMap();
+   for(CBORObject cbor : objThis.getKeys()){
+    CBORObject cborValue=objThis.get(cbor);
+    alist.put(cbor.ToObject(Object.class),
+      cborValue.ToObject(Object.class));
+   }
+   return alist;
+  } else {
+   HashMap alist=new HashMap();
+   for(CBORObject cbor : objThis.getValues()){
+    CBORObject cborValue=objThis.get(cbor);
+    alist.put(cbor.ToObject(typeArguments[0]),
+      cborValue.ToObject(typeArguments[1]));
+   }
+   return alist;
+  }
+ }
+}
+
+/*
+      if (objThis.Type == CBORType.Map) {
+        var isDict = false;
+        Type keyType = null;
+        Type valueType = null;
+        object dictObject = null;
+        var values = new List<KeyValuePair<string, CBORObject>>();
+        foreach (string key in PropertyMap.GetPropertyNames(
+                   t,
+                   true,
+                   true)) {
+          if (objThis.ContainsKey(key)) {
+            CBORObject cborValue = objThis[key];
+            var dict = new KeyValuePair<string, CBORObject>(
+              key,
+              cborValue);
+            values.Add(dict);
+          }
+        }
+        return PropertyMap.ObjectWithProperties(
+    t,
+    values,
+    true,
+    true);
+      } else
+*/    {
+        throw new UnsupportedOperationException();
+      }
+    }
+
 }

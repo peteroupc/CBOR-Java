@@ -52,84 +52,6 @@ import com.upokecenter.numbers.*;
     private static final CBOREncodeOptions ValueNoDuplicateKeys = new
       CBOREncodeOptions(true, false);
 
-    private static int StringToInt(String str) {
-      boolean neg = false;
-      int i = 0;
-      if (str.length() > 0 && str.charAt(0) == '-') {
-        neg = true;
-        ++i;
-      }
-      if (i == str.length()) {
-        throw new NumberFormatException();
-      }
-      int ret = 0;
-      while (i < str.length()) {
-        int c = str.charAt(i);
-        ++i;
-        if (c >= '0' && c <= '9') {
-          int x = c - '0';
-          if (ret > 214748364) {
-            throw new NumberFormatException();
-          }
-          ret *= 10;
-          if (ret == 2147483640) {
-            if (neg && x == 8) {
-              if (i != str.length()) {
-                throw new NumberFormatException();
-              }
-              return Integer.MIN_VALUE;
-            }
-            if (x > 7) {
-              throw new NumberFormatException();
-            }
-          }
-          ret += x;
-        } else {
-          throw new NumberFormatException();
-        }
-      }
-      return neg ? -ret : ret;
-    }
-
-    private static long StringToLong(String str) {
-      boolean neg = false;
-      int i = 0;
-      if (str.length() > 0 && str.charAt(0) == '-') {
-        neg = true;
-        ++i;
-      }
-      if (i == str.length()) {
-        throw new NumberFormatException();
-      }
-      long ret = 0;
-      while (i < str.length()) {
-        int c = str.charAt(i);
-        ++i;
-        if (c >= '0' && c <= '9') {
-          int x = c - '0';
-          if ((long)ret > 922337203685477580L) {
-            throw new NumberFormatException();
-          }
-          ret *= 10;
-          if ((long)ret == 9223372036854775800L) {
-            if (neg && x == 8) {
-              if (i != str.length()) {
-                throw new NumberFormatException();
-              }
-              return Long.MIN_VALUE;
-            }
-            if (x > 7) {
-              throw new NumberFormatException();
-            }
-          }
-          ret += x;
-        } else {
-          throw new NumberFormatException();
-        }
-      }
-      return neg ? -ret : ret;
-    }
-
     static void CheckPropertyNames(
   Object ao,
   PODOptions cc,
@@ -773,7 +695,7 @@ try { if (ms != null) {
   numberinfo.get("number").AsString()));
         if (numberinfo.get("byte").AsBoolean()) {
           Assert.assertEquals(
-    StringToInt(numberinfo.get("integer").AsString()),
+    TestCommon.StringToInt(numberinfo.get("integer").AsString()),
     ((int)cbornumber.AsByte()) & 0xff);
         } else {
           try {
@@ -1069,7 +991,7 @@ try { if (ms != null) {
             EDecimal.FromString(numberinfo.get("number").AsString()));
         if (numberinfo.get("int16").AsBoolean()) {
           Assert.assertEquals(
-    StringToInt(numberinfo.get("integer").AsString()),
+    TestCommon.StringToInt(numberinfo.get("integer").AsString()),
     cbornumber.AsInt16());
         } else {
           try {
@@ -1153,16 +1075,16 @@ try { if (ms != null) {
         CBORObject cbornumbersingle = CBORObject.FromObject(edec.ToSingle());
         if (numberinfo.get("int32").AsBoolean()) {
           Assert.assertEquals(
-    StringToInt(numberinfo.get("integer").AsString()),
+    TestCommon.StringToInt(numberinfo.get("integer").AsString()),
     cbornumber.AsInt32());
           if (isdouble) {
             Assert.assertEquals(
-    StringToInt(numberinfo.get("integer").AsString()),
+    TestCommon.StringToInt(numberinfo.get("integer").AsString()),
     cbornumberdouble.AsInt32());
           }
           if (issingle) {
             Assert.assertEquals(
-    StringToInt(numberinfo.get("integer").AsString()),
+    TestCommon.StringToInt(numberinfo.get("integer").AsString()),
     cbornumbersingle.AsInt32());
           }
         } else {
@@ -1268,16 +1190,16 @@ try { if (ms != null) {
         CBORObject cbornumbersingle = CBORObject.FromObject(edec.ToSingle());
         if (numberinfo.get("int64").AsBoolean()) {
           Assert.assertEquals(
-   StringToLong(numberinfo.get("integer").AsString()),
+   TestCommon.StringToLong(numberinfo.get("integer").AsString()),
    cbornumber.AsInt64());
           if (isdouble) {
             Assert.assertEquals(
-   StringToLong(numberinfo.get("integer").AsString()),
+   TestCommon.StringToLong(numberinfo.get("integer").AsString()),
    cbornumberdouble.AsInt64());
           }
           if (issingle) {
             Assert.assertEquals(
-   StringToLong(numberinfo.get("integer").AsString()),
+   TestCommon.StringToLong(numberinfo.get("integer").AsString()),
    cbornumbersingle.AsInt64());
           }
         } else {
@@ -2199,13 +2121,31 @@ try { if (ms != null) {
           if (bytes.length != ranges[i + 2]) {
             Assert.assertEquals(TestCommon.IntToString(j), ranges[i + 2], bytes.length);
           }
+bytes = CBORObject.FromObject(j).EncodeToBytes(new
+  CBOREncodeOptions(false, false, true));
+          if (bytes.length != ranges[i + 2]) {
+            Assert.assertEquals(TestCommon.IntToString(j), ranges[i + 2], bytes.length);
+          }
         }
       }
+String veryLongString = TestCommon.Repeat("x", 10000);
+byte[] stringBytes = CBORObject.FromObject(veryLongString)
+.EncodeToBytes(new CBOREncodeOptions(false, false, true));
+Assert.assertEquals(10003, stringBytes.length);
+stringBytes = CBORObject.FromObject(veryLongString)
+.EncodeToBytes(new CBOREncodeOptions(false, true));
+Assert.assertEquals(10003, stringBytes.length);
+
       for (int i = 0; i < bigRanges.length; i += 2) {
         EInteger bj = EInteger.FromString(bigRanges[i]);
         EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
         while (bj.compareTo(valueBjEnd)< 0) {
           byte[] bytes = CBORObject.FromObject(bj).EncodeToBytes();
+          if (bytes.length != bigSizes[i / 2]) {
+            Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
+          }
+bytes = CBORObject.FromObject(bj)
+.EncodeToBytes(new CBOREncodeOptions(false, false, true));
           if (bytes.length != bigSizes[i / 2]) {
             Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
           }
@@ -2581,19 +2521,22 @@ try { if (ms != null) {
 
     public final class PODClass {
       public PODClass() {
-        this.propVarpropa = 0;
-        this.propVarpropb = 1;
-        this.propVarispropc = false;
+        this.setPropA(0);
+        this.setPropB(1);
+        this.setIsPropC(false);
       }
 
       public final int getPropA() { return propVarpropa; }
-private final int propVarpropa;
+public final void setPropA(int value) { propVarpropa = value; }
+private int propVarpropa;
 
       public final int getPropB() { return propVarpropb; }
-private final int propVarpropb;
+public final void setPropB(int value) { propVarpropb = value; }
+private int propVarpropb;
 
       public final boolean isPropC() { return propVarispropc; }
-private final boolean propVarispropc;
+public final void setIsPropC(boolean value) { propVarispropc = value; }
+private boolean propVarispropc;
     }
 
     public final class NestedPODClass {
@@ -2603,6 +2546,75 @@ private final boolean propVarispropc;
 
       public final PODClass getPropValue() { return propVarpropvalue; }
 private final PODClass propVarpropvalue;
+    }
+
+    @Test(timeout = 5000)
+    public void TestToObject() {
+      PODClass ao = new PODClass();
+      CBORObject co = CBORObject.FromObject(ao);
+      co.set("propA",CBORObject.FromObject(999));
+      ao = (PODClass)co.ToObject(PODClass.class);
+      Assert.assertEquals(999, ao.getPropA());
+      co = CBORObject.True;
+      Assert.assertEquals(true, co.ToObject(boolean.class));
+      co = CBORObject.False;
+      Assert.assertEquals(false, co.ToObject(boolean.class));
+      co = CBORObject.FromObject("hello world");
+String stringTemp = (String)co.ToObject(String.class);
+Assert.assertEquals(
+  "hello world",
+  stringTemp);
+      co = CBORObject.NewArray();
+      co.Add("hello");
+      co.Add("world");
+      ArrayList<String> stringList = (ArrayList<String>)
+        co.ToObject((new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class };}public java.lang.reflect.Type getRawType() { return ArrayList.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, stringList.size());
+      Assert.assertEquals("hello", stringList.get(0));
+      Assert.assertEquals("world", stringList.get(1));
+      List<String> istringList = (List<String>)
+        co.ToObject((new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class };}public java.lang.reflect.Type getRawType() { return List.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, istringList.size());
+      Assert.assertEquals("hello", istringList.get(0));
+      Assert.assertEquals("world", istringList.get(1));
+      co = CBORObject.NewMap();
+      co.Add("a", 1);
+      co.Add("b", 2);
+      HashMap<String, Integer> intDict =
+        (HashMap<String, Integer>)co.ToObject(
+          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, intDict.size());
+      if (!(intDict.containsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(intDict.containsKey("b"))) {
+ Assert.fail();
+ }
+if (intDict.get("a") != 1) {
+  { Assert.fail();
+}
+}
+if (intDict.get("b") != 2) {
+  { Assert.fail();
+}
+}
+      Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
+          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, iintDict.size());
+      if (!(iintDict.containsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(iintDict.containsKey("b"))) {
+ Assert.fail();
+ }
+if (iintDict.get("a") != 1) {
+  { Assert.fail();
+}
+}
+if (iintDict.get("b") != 2) {
+  { Assert.fail();
+}
+}
     }
 
     @Test(timeout = 5000)
@@ -6520,6 +6532,13 @@ try { if (ms != null) {
       }
     }
 
+    @Test
+    public void TestEMap() {
+      CBORObject cbor = CBORObject.NewMap()
+                    .Add("name", "Example");
+      byte[] bytes = cbor.EncodeToBytes();
+    }
+
     private void TestWriteObj(Object obj, Object objTest) {
       try {
         {
@@ -6555,194 +6574,194 @@ try { if (ms != null) {
       }
     }
 
-@Test
-public void TestWriteValue() {
- try {
-try {
- CBORObject.WriteValue(null, 0, 0);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(null, 1, 0);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(null, 2, 0);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(null, 3, 0);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(null, 4, 0);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-          java.io.ByteArrayOutputStream ms = null;
+    @Test
+    public void TestWriteValue() {
+      try {
+        try {
+          CBORObject.WriteValue(null, 0, 0);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(null, 1, 0);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(null, 2, 0);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(null, 3, 0);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(null, 4, 0);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-try {
- CBORObject.WriteValue(ms, -1, 0);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, 8, 0);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, 7, 256);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, 7, Integer.MAX_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, 7, Long.MAX_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-for (int i = 0; i <= 7; ++i) {
-try {
- CBORObject.WriteValue(ms, i, -1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, i, Integer.MIN_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, i, (long)-1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, i, Long.MIN_VALUE);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-}
-for (int i = 0; i <= 6; ++i) {
-try {
- CBORObject.WriteValue(ms, i, Integer.MAX_VALUE);
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-try {
- CBORObject.WriteValue(ms, i, Long.MAX_VALUE);
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-}
-      // Test minimum data length
-      int[] ranges = {
+          try {
+            CBORObject.WriteValue(ms, -1, 0);
+            Assert.fail("Should have failed");
+          } catch (IllegalArgumentException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.WriteValue(ms, 8, 0);
+            Assert.fail("Should have failed");
+          } catch (IllegalArgumentException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.WriteValue(ms, 7, 256);
+            Assert.fail("Should have failed");
+          } catch (IllegalArgumentException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.WriteValue(ms, 7, Integer.MAX_VALUE);
+            Assert.fail("Should have failed");
+          } catch (IllegalArgumentException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.WriteValue(ms, 7, Long.MAX_VALUE);
+            Assert.fail("Should have failed");
+          } catch (IllegalArgumentException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          for (int i = 0; i <= 7; ++i) {
+            try {
+              CBORObject.WriteValue(ms, i, -1);
+              Assert.fail("Should have failed");
+            } catch (IllegalArgumentException ex) {
+              // NOTE: Intentionally empty
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            try {
+              CBORObject.WriteValue(ms, i, Integer.MIN_VALUE);
+              Assert.fail("Should have failed");
+            } catch (IllegalArgumentException ex) {
+              // NOTE: Intentionally empty
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            try {
+              CBORObject.WriteValue(ms, i, (long)-1);
+              Assert.fail("Should have failed");
+            } catch (IllegalArgumentException ex) {
+              // NOTE: Intentionally empty
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            try {
+              CBORObject.WriteValue(ms, i, Long.MIN_VALUE);
+              Assert.fail("Should have failed");
+            } catch (IllegalArgumentException ex) {
+              // NOTE: Intentionally empty
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+          }
+          for (int i = 0; i <= 6; ++i) {
+            try {
+              CBORObject.WriteValue(ms, i, Integer.MAX_VALUE);
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+            try {
+              CBORObject.WriteValue(ms, i, Long.MAX_VALUE);
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
+          }
+          // Test minimum data length
+          int[] ranges = {
         0, 23, 1,
         24, 255, 2,
         256, 266, 3,
         65525, 65535, 3,
         65536, 65546, 5,
       };
-      String[] bigRanges = {
+          String[] bigRanges = {
         "4294967285", "4294967295",
         "4294967296", "4294967306",
         "18446744073709551604", "18446744073709551615"
       };
-      int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
-      for (int i = 0; i < ranges.length; i += 3) {
-        for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
-for (int k = 0; k <= 6; ++k) {
-  int count;
-  count = CBORObject.WriteValue(ms, k, j);
-  Assert.assertEquals(ranges[i + 2], count);
-  count = CBORObject.WriteValue(ms, k, (long)j);
-  Assert.assertEquals(ranges[i + 2], count);
-  count = CBORObject.WriteValue(ms, k, EInteger.FromInt32(j));
-  Assert.assertEquals(ranges[i + 2], count);
-}
-        }
-      }
-      for (int i = 0; i < bigRanges.length; i += 2) {
-        EInteger bj = EInteger.FromString(bigRanges[i]);
-        EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
-        while (bj.compareTo(valueBjEnd)< 0) {
-for (int k = 0; k <= 6; ++k) {
-  int count;
-  count = CBORObject.WriteValue(ms, k, bj);
-  Assert.assertEquals(bigSizes[i / 2], count);
-}
-          bj = bj.Add(EInteger.FromInt32(1));
-        }
-      }
+          int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
+          for (int i = 0; i < ranges.length; i += 3) {
+            for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
+              for (int k = 0; k <= 6; ++k) {
+                int count;
+                count = CBORObject.WriteValue(ms, k, j);
+                Assert.assertEquals(ranges[i + 2], count);
+                count = CBORObject.WriteValue(ms, k, (long)j);
+                Assert.assertEquals(ranges[i + 2], count);
+                count = CBORObject.WriteValue(ms, k, EInteger.FromInt32(j));
+                Assert.assertEquals(ranges[i + 2], count);
+              }
+            }
+          }
+          for (int i = 0; i < bigRanges.length; i += 2) {
+            EInteger bj = EInteger.FromString(bigRanges[i]);
+            EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
+            while (bj.compareTo(valueBjEnd)< 0) {
+              for (int k = 0; k <= 6; ++k) {
+                int count;
+                count = CBORObject.WriteValue(ms, k, bj);
+                Assert.assertEquals(bigSizes[i / 2], count);
+              }
+              bj = bj.Add(EInteger.FromInt32(1));
+            }
+          }
 }
 finally {
 try { if (ms != null) {
@@ -6753,5 +6772,5 @@ try { if (ms != null) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
       }
-}
+    }
   }

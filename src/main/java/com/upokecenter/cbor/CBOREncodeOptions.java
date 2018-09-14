@@ -68,14 +68,31 @@ package com.upokecenter.cbor;
     public CBOREncodeOptions(
   boolean useIndefLengthStrings,
   boolean allowDuplicateKeys) {
+ this(useIndefLengthStrings, allowDuplicateKeys, false);
+    }
+
+    /**
+     * Initializes a new instance of the {@link
+     * com.upokecenter.cbor.CBOREncodeOptions} class.
+     * @param useIndefLengthStrings A value indicating whether to always encode
+     * strings with a definite-length encoding.
+     * @param allowDuplicateKeys A value indicating whether to disallow duplicate
+     * keys when reading CBOR objects from a data stream.
+     * @param ctap2Canonical Either {@code true} or {@code false} .
+     */
+    public CBOREncodeOptions(
+  boolean useIndefLengthStrings,
+  boolean allowDuplicateKeys,
+  boolean ctap2Canonical) {
       int val = 0;
       if (!useIndefLengthStrings) {
- val |= 1;
-}
+        val |= 1;
+      }
       if (!allowDuplicateKeys) {
- val |= 2;
-}
+        val |= 2;
+      }
       this.value = val;
+      this.propVarctap2canonical = ctap2Canonical;
     }
 
     /**
@@ -99,6 +116,21 @@ package com.upokecenter.cbor;
       }
 
     /**
+     * Gets a value indicating whether CBOR objects are written out using the CTAP2
+     * canonical CBOR encoding form. In this form, CBOR tags are not used,
+     * map keys are written out in a canonical order, and non-integer
+     * numbers and integers 2^63 or greater are written as 64-bit binary
+     * floating-point numbers.
+     * @return {@code true} if CBOR objects are written out using the CTAP2
+     * canonical CBOR encoding form; otherwise, {@code false}.. In this
+     * form, CBOR tags are not used, map keys are written out in a canonical
+     * order, and non-integer numbers and integers 2^63 or greater are
+     * written as 64-bit binary floating-point numbers.
+     */
+    public final boolean getCtap2Canonical() { return propVarctap2canonical; }
+private final boolean propVarctap2canonical;
+
+    /**
      * Gets this options object's value.
      * @return This options object's value.
      * @deprecated Option classes in this library will follow the form seen in JSONOptions in a
@@ -110,7 +142,7 @@ package com.upokecenter.cbor;
       }
 
     private CBOREncodeOptions(int value) {
-      this.value = value;
+ this((value & 1) == 0, (value & 2) == 0);
     }
 
     /**

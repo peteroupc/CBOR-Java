@@ -28,6 +28,10 @@ Use 'new CBOREncodeOptions(true,true)' instead.
 * `CBOREncodeOptions​(boolean useIndefLengthStrings,
                  boolean allowDuplicateKeys) CBOREncodeOptions`<br>
  Initializes a new instance of the CBOREncodeOptions class.
+* `CBOREncodeOptions​(boolean useIndefLengthStrings,
+                 boolean allowDuplicateKeys,
+                 boolean ctap2Canonical) CBOREncodeOptions`<br>
+ Initializes a new instance of the CBOREncodeOptions class.
 
 ## Methods
 
@@ -38,6 +42,9 @@ May be removed in a later version.
 * `boolean getAllowDuplicateKeys()`<br>
  Gets a value indicating whether to disallow duplicate keys when reading CBOR
  objects from a data stream.
+* `boolean getCtap2Canonical()`<br>
+ Gets a value indicating whether CBOR objects are written out using the CTAP2
+ canonical CBOR encoding form.
 * `boolean getUseIndefLengthStrings()`<br>
  Gets a value indicating whether to always encode strings with a
  definite-length encoding.
@@ -104,6 +111,22 @@ Gets a value indicating whether to disallow duplicate keys when reading CBOR
 
 * A value indicating whether to disallow duplicate keys when reading
  CBOR objects from a data stream.
+
+### getCtap2Canonical
+    public final boolean getCtap2Canonical()
+Gets a value indicating whether CBOR objects are written out using the CTAP2
+ canonical CBOR encoding form. In this form, CBOR tags are not used,
+ map keys are written out in a canonical order, and non-integer
+ numbers and integers 2^63 or greater are written as 64-bit binary
+ floating-point numbers.
+
+**Returns:**
+
+* <code>true</code> if CBOR objects are written out using the CTAP2
+ canonical CBOR encoding form; otherwise, <code>false</code>.. In this
+ form, CBOR tags are not used, map keys are written out in a canonical
+ order, and non-integer numbers and integers 2^63 or greater are
+ written as 64-bit binary floating-point numbers.
 
 ### getValue
     @Deprecated public final int getValue()

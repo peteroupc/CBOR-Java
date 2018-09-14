@@ -14,6 +14,84 @@ private TestCommon() {
 }
     private static final String ValueDigits = "0123456789";
 
+    public static int StringToInt(String str) {
+      boolean neg = false;
+      int i = 0;
+      if (str.length() > 0 && str.charAt(0) == '-') {
+        neg = true;
+        ++i;
+      }
+      if (i == str.length()) {
+        throw new NumberFormatException();
+      }
+      int ret = 0;
+      while (i < str.length()) {
+        int c = str.charAt(i);
+        ++i;
+        if (c >= '0' && c <= '9') {
+          int x = c - '0';
+          if (ret > 214748364) {
+            throw new NumberFormatException();
+          }
+          ret *= 10;
+          if (ret == 2147483640) {
+            if (neg && x == 8) {
+              if (i != str.length()) {
+                throw new NumberFormatException();
+              }
+              return Integer.MIN_VALUE;
+            }
+            if (x > 7) {
+              throw new NumberFormatException();
+            }
+          }
+          ret += x;
+        } else {
+          throw new NumberFormatException();
+        }
+      }
+      return neg ? -ret : ret;
+    }
+
+    public static long StringToLong(String str) {
+      boolean neg = false;
+      int i = 0;
+      if (str.length() > 0 && str.charAt(0) == '-') {
+        neg = true;
+        ++i;
+      }
+      if (i == str.length()) {
+        throw new NumberFormatException();
+      }
+      long ret = 0;
+      while (i < str.length()) {
+        int c = str.charAt(i);
+        ++i;
+        if (c >= '0' && c <= '9') {
+          int x = c - '0';
+          if ((long)ret > 922337203685477580L) {
+            throw new NumberFormatException();
+          }
+          ret *= 10;
+          if ((long)ret == 9223372036854775800L) {
+            if (neg && x == 8) {
+              if (i != str.length()) {
+                throw new NumberFormatException();
+              }
+              return Long.MIN_VALUE;
+            }
+            if (x > 7) {
+              throw new NumberFormatException();
+            }
+          }
+          ret += x;
+        } else {
+          throw new NumberFormatException();
+        }
+      }
+      return neg ? -ret : ret;
+    }
+
     public static void AssertByteArraysEqual(byte[] arr1, byte[] arr2) {
       if (!ByteArraysEqual(arr1, arr2)) {
         Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +

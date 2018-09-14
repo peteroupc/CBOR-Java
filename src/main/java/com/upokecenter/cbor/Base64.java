@@ -22,7 +22,7 @@ private Base64() {
   int offset,
   int count,
   boolean padding) throws java.io.IOException {
-      WriteBase64(writer, data, offset, count, Base64Classic, padding);
+      WriteBase64(writer, data, offset, count, true, padding);
     }
 
     public static void WriteBase64URL(
@@ -31,7 +31,7 @@ private Base64() {
   int offset,
   int count,
   boolean padding) throws java.io.IOException {
-      WriteBase64(writer, data, offset, count, Base64URL, padding);
+      WriteBase64(writer, data, offset, count, false, padding);
     }
 
     private static void WriteBase64(
@@ -39,7 +39,7 @@ private Base64() {
   byte[] data,
   int offset,
   int count,
-  String alphabet,
+  boolean classic,
   boolean padding) throws java.io.IOException {
       if (writer == null) {
         throw new NullPointerException("writer");
@@ -64,6 +64,7 @@ private Base64() {
         throw new IllegalArgumentException("data's length minus " + offset + " (" +
                 (data.length - offset) + ") is less than " + count);
       }
+      String alphabet = classic ? Base64Classic : Base64URL;
       int length = offset + count;
       int i = offset;
       char[] buffer = new char[4];
