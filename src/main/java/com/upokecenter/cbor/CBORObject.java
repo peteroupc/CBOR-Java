@@ -905,10 +905,10 @@ try { if (ms != null) {
      * IDictionary (or HashMap or Map in Java), and if this CBOR object is a
      * map, returns an object conforming to the type, class, or interface
      * passed to this method, where the object will contain all keys and
-     * values in this CBOR map.</p> <p>If the type "T" is <code>int</code>,
+     * values in this CBOR map.</p> <p>If the type "T" is <code>int</code> ,
      * returns the result of the AsInt32 method.</p> <p>If the type "T" is
-     * <code>long</code>, returns the result of the AsInt64 method.</p> <p>If the
-     * type "T" is <code>double</code>, returns the result of the AsDouble
+     * <code>long</code> , returns the result of the AsInt64 method.</p> <p>If the
+     * type "T" is <code>double</code> , returns the result of the AsDouble
      * method.</p> <p>If the type "T" is String, returns the result of the
      * AsString method.</p> <p>If the type "T" is <code>byte[]</code> and this
      * CBOR object is a byte array, returns a byte array which this CBOR
@@ -921,24 +921,23 @@ try { if (ms != null) {
      * an object of the given type, and, for each key matching the name of a
      * property in that object (using the rules given in
      * CBORObject.FromObject), sets that property's value to the
-     * corresponding value for that key.</p><p> <p>Java offers no easy way
-     * to express a generic type, at least none as easy as C#'s
-     * <code>typeof</code> operator. The following example, written in Java, is a
-     * way to specify that the return value will be an ArrayList of String
-     * objects.</p> <pre> Type arrayListString = new ParameterizedType() {
-     * public Type[] getActualTypeArguments() { /* Contains one type
-     * parameter, String &#x2a;&#x2f; return new Type[] { String.class }; } public Type
-     * getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; }
-     * public Type getOwnerType() { return null; } }; ArrayList&lt;String&gt;
-     * array = (ArrayList&lt;String&gt;)
-     * cborArray.ToObject(arrayListString); </pre> <p>By comparison, the C#
-     * version is much shorter.</p> <pre> var&#x20;array =
-     * (ArrayList&lt;String&gt;)cborArray.ToObject(
-     * typeof&#x28;ArrayList&lt;String&gt;)); </pre> </p>
+     * corresponding value for that key.</p><p><p>Java offers no easy way to
+     * express a generic type, at least none as easy as C#'s <code>typeof</code>
+     * operator. The following example, written in Java, is a way to specify
+     * that the return value will be an ArrayList of String objects.</p>
+     * <pre>Type arrayListString = new ParameterizedType() { public Type[]
+     * getActualTypeArguments() { /* Contains one type parameter, String &#x2a;&#x2f;
+     * return new Type[] { String.class }; } public Type getRawType() { /* Raw
+     * type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
+     * getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
+     * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
+     * </pre> <p>By comparison, the C# version is much shorter.</p>
+     * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
+     * typeof&#x28;List&lt;String&gt;)); </pre> </p>
      * @param t The type, class, or interface that this method's return value will
      * belong to. To express a generic type in Java, see the example.
      * @return The converted object.
-     * @throws UnsupportedOperationException The given type {@code t}, or this
+     * @throws UnsupportedOperationException The given type {@code t} , or this
      * object's CBOR type, is not supported.
      * @throws java.lang.NullPointerException The parameter {@code t} is null.
      */
@@ -955,19 +954,7 @@ try { if (ms != null) {
       if (t.equals(Object.class)) {
         return this;
       }
-      if (t.equals(String.class)) {
-        return this.AsString();
-      }
-      if (t.equals(int.class)) {
-        return this.AsInt32();
-      }
-      if (t.equals(long.class)) {
-        return this.AsInt64();
-      }
-      if (t.equals(double.class)) {
-        return this.AsDouble();
-      }
-      return t.equals(boolean.class) ? this.isTrue() :
+      return t.equals(String.class) ? this.AsString() :
         PropertyMap.TypeToObject(this, t);
     }
 

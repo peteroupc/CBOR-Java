@@ -2523,7 +2523,7 @@ bytes = CBORObject.FromObject(bj)
       public PODClass() {
         this.setPropA(0);
         this.setPropB(1);
-        this.setIsPropC(false);
+        this.setPropC(false);
       }
 
       public final int getPropA() { return propVarpropa; }
@@ -2535,7 +2535,7 @@ public final void setPropB(int value) { propVarpropb = value; }
 private int propVarpropb;
 
       public final boolean isPropC() { return propVarispropc; }
-public final void setIsPropC(boolean value) { propVarispropc = value; }
+public final void setPropC(boolean value) { propVarispropc = value; }
 private boolean propVarispropc;
     }
 

@@ -31,13 +31,18 @@ class PropertyMap {
               methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z' &&
               !methodName.equals("getClass"));
     }
+    public static boolean IsSetMethod(String methodName){
+          return (methodName.startsWith("set") && methodName.length() > 3 &&
+              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z');
+    }
     public static boolean IsIsMethod(String methodName){
           return (methodName.startsWith("is") && methodName.length() > 2 &&
               methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
     }
     public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
           String methodName = this.name;
-          if(MethodData.IsGetMethod(methodName)) {
+          if(MethodData.IsGetMethod(methodName) ||
+             MethodData.IsSetMethod(methodName)) {
             methodName = methodName.substring(3);
           } else if(removeIsPrefix && MethodData.IsIsMethod(methodName)) {
             methodName = methodName.substring(2);
@@ -55,18 +60,29 @@ class PropertyMap {
   private static Map<Class<?>, List<MethodData>> propertyLists =
       new HashMap<Class<?>, List<MethodData>>();
 
+  private static Map<Class<?>, List<MethodData>> setterPropertyList =
+      new HashMap<Class<?>, List<MethodData>>();
+
   private static List<MethodData> GetPropertyList(final Class<?> t) {
-    synchronized(propertyLists) {
+    return GetPropertyList(t,false);
+  }
+
+  private static List<MethodData> GetPropertyList(final Class<?> t, boolean setters) {
+    synchronized(setters ? setterPropertyList : propertyLists) {
       List<MethodData> ret;
-      ret = propertyLists.get(t);
+      ret = (setters ? setterPropertyList : propertyLists).get(t);
       if (ret != null) {
         return ret;
       }
       ret = new ArrayList<MethodData>();
       for(Method pi : t.getMethods()) {
-        if(pi.getParameterTypes().length == 0) {
+        if(pi.getParameterTypes().length == (setters ? 1 : 0)) {
           String methodName = pi.getName();
-          if(MethodData.IsGetMethod(methodName) || MethodData.IsIsMethod(methodName)){
+          boolean includeMethod=false;
+          if(setters)includeMethod=MethodData.IsSetMethod(methodName);
+          else includeMethod=MethodData.IsGetMethod(methodName) ||
+                 MethodData.IsIsMethod(methodName);
+          if(includeMethod){
             MethodData md = new MethodData();
             md.name = methodName;
             md.method = pi;
@@ -74,7 +90,7 @@ class PropertyMap {
           }
         }
       }
-      propertyLists.put(t, ret);
+      (setters ? setterPropertyList : propertyLists).put(t, ret);
       return ret;
     }
   }
@@ -109,12 +125,43 @@ class PropertyMap {
      return GetProperties(o, true, true);
   }
 
-  /**
-   * <p>GetProperties.</p>
-   *
-   * @param o a {@link java.lang.Object} object.
-   * @return a {@link java.lang.Iterable} object.
-   */
+  public static Object ObjectWithProperties(
+         Class<?> t,
+         Iterable<Map.Entry<String, CBORObject>> keysValues,
+         boolean removeIsPrefix,
+         boolean useCamelCase) {
+      try {
+      Object o = null;
+      for (Constructor ci : t.getConstructors()) {
+          int nump = ci.getParameterCount();
+          o = ci.newInstance(new Object[nump]);
+          break;
+      }
+      if(o==null){ return t.newInstance(); }
+      Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
+      for (Map.Entry<String, CBORObject> kv : keysValues) {
+        String name = kv.getKey();
+        dict.put(name,kv.getValue());
+      }
+      for (MethodData key : GetPropertyList(o.getClass(),true)) {
+        String name = key.GetAdjustedName(removeIsPrefix, useCamelCase);
+        if (dict.containsKey(name)) {
+          CBORObject dget=dict.get(name);
+          Object dobj = dget.ToObject(
+             key.method.getGenericParameterTypes()[0]);
+          key.method.invoke(o, dobj);
+        }
+      }
+      return o;
+    } catch(InvocationTargetException ex) {
+      throw (RuntimeException)new RuntimeException("").initCause(ex);
+    } catch(InstantiationException ex) {
+      throw (RuntimeException)new RuntimeException("").initCause(ex);
+    } catch (IllegalAccessException ex) {
+      throw (RuntimeException)new RuntimeException("").initCause(ex);
+    }
+    }
+
   public static Iterable<Map.Entry<String, Object>> GetProperties(
        final Object o, boolean removeIsPrefix, boolean useCamelCase) {
     List<Map.Entry<String, Object>> ret =
@@ -246,9 +293,22 @@ class PropertyMap {
   }
 
   public static Object TypeToObject(CBORObject objThis, Type t) {
-      //if (t.Equals(typeof(DateTime))) {
+      //if (t.Equals(typeof(DateTime))) { // TODO
       //  return new CBORTag0().FromCBORObject(objThis);
       //}
+
+      if (t.equals(Integer.class) || t.equals(int.class)) {
+        return objThis.AsInt32();
+      }
+      if (t.equals(Long.class) || t.equals(long.class)) {
+        return objThis.AsInt64();
+      }
+      if (t.equals(Double.class) || t.equals(double.class)) {
+        return objThis.AsDouble();
+      }
+      if (t.equals(Boolean.class) || t.equals(boolean.class)) {
+        return objThis.isTrue();
+      }
       if (objThis.getType() == CBORType.ByteString) {
         if (t.equals(byte[].class)) {
           byte[] bytes = objThis.GetByteString();
@@ -293,7 +353,7 @@ if(objThis.getType()==CBORType.Map){
    return alist;
   } else {
    HashMap alist=new HashMap();
-   for(CBORObject cbor : objThis.getValues()){
+   for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
     alist.put(cbor.ToObject(typeArguments[0]),
       cborValue.ToObject(typeArguments[1]));
@@ -301,36 +361,29 @@ if(objThis.getType()==CBORType.Map){
    return alist;
   }
  }
+if(rawType==null || !(rawType instanceof Class<?>)){
+  throw new UnsupportedOperationException();
 }
-
-/*
-      if (objThis.Type == CBORType.Map) {
-        var isDict = false;
-        Type keyType = null;
-        Type valueType = null;
-        object dictObject = null;
-        var values = new List<KeyValuePair<string, CBORObject>>();
-        foreach (string key in PropertyMap.GetPropertyNames(
-                   t,
-                   true,
-                   true)) {
+        ArrayList<Map.Entry<String, CBORObject>> values =
+          new ArrayList<Map.Entry<String, CBORObject>>();
+        for (MethodData method : GetPropertyList((Class<?>)rawType,true)) {
+          String key = method.GetAdjustedName(true,true);
           if (objThis.ContainsKey(key)) {
-            CBORObject cborValue = objThis[key];
-            var dict = new KeyValuePair<string, CBORObject>(
+            CBORObject cborValue = objThis.get(key);
+            Map.Entry<String, CBORObject> dict =
+                new AbstractMap.SimpleEntry<String, CBORObject>(
               key,
               cborValue);
-            values.Add(dict);
+            values.add(dict);
           }
         }
         return PropertyMap.ObjectWithProperties(
-    t,
+    (Class<?>)rawType,
     values,
     true,
     true);
-      } else
-*/    {
-        throw new UnsupportedOperationException();
-      }
+}
+       throw new UnsupportedOperationException();
     }
 
 }
