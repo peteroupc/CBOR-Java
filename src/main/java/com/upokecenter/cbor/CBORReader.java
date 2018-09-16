@@ -247,7 +247,7 @@ try { if (ms != null) {
         } else {
           if (hasBigAdditional) {
             throw new CBORException("Length of " +
-  CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
+                    bigintAdditional.toString() + " is bigger than supported");
           }
           if (uadditional > Integer.MAX_VALUE) {
             throw new CBORException("Length of " +
@@ -303,7 +303,7 @@ try { if (ms != null) {
         } else {
           if (hasBigAdditional) {
             throw new CBORException("Length of " +
-  CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
+                    bigintAdditional.toString() + " is bigger than supported");
           }
           if (uadditional > Integer.MAX_VALUE) {
             throw new CBORException("Length of " +
@@ -365,7 +365,7 @@ try { if (ms != null) {
         }
         if (hasBigAdditional) {
           throw new CBORException("Length of " +
-  CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
+  bigintAdditional.toString() + " is bigger than supported");
         }
         if (uadditional > Integer.MAX_VALUE) {
           throw new CBORException("Length of " +
@@ -414,7 +414,7 @@ try { if (ms != null) {
         }
         if (hasBigAdditional) {
           throw new CBORException("Length of " +
-  CBORUtilities.BigIntToString(bigintAdditional) + " is bigger than supported");
+  bigintAdditional.toString() + " is bigger than supported");
         }
         if (uadditional > Integer.MAX_VALUE) {
           throw new CBORException("Length of " +

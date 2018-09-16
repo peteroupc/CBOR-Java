@@ -558,8 +558,7 @@ import com.upokecenter.numbers.*;
             return;
           }
           case CBORObject.CBORObjectTypeBigInteger: {
-            writer.WriteString(
-              CBORUtilities.BigIntToString((EInteger)thisItem));
+            writer.WriteString(((EInteger)thisItem).toString());
             return;
           }
           case CBORObject.CBORObjectTypeExtendedDecimal: {

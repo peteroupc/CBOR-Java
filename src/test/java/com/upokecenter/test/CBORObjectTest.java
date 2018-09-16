@@ -2555,6 +2555,14 @@ private final PODClass propVarpropvalue;
       co.set("propA",CBORObject.FromObject(999));
       ao = (PODClass)co.ToObject(PODClass.class);
       Assert.assertEquals(999, ao.getPropA());
+      if (ao.isPropC()) {
+ Assert.fail();
+ }
+      co.set("propC",CBORObject.True);
+      ao = (PODClass)co.ToObject(PODClass.class);
+      if (!(ao.isPropC())) {
+ Assert.fail();
+ }
       co = CBORObject.True;
       Assert.assertEquals(true, co.ToObject(boolean.class));
       co = CBORObject.False;
@@ -2608,12 +2616,19 @@ if (intDict.get("b") != 2) {
  Assert.fail();
  }
 if (iintDict.get("a") != 1) {
-  { Assert.fail();
-}
+  Assert.fail();
 }
 if (iintDict.get("b") != 2) {
-  { Assert.fail();
+  Assert.fail();
 }
+      co = CBORObject.FromObjectAndTag(
+       "2000-01-01T00:00:00Z",
+       0);
+      try {
+ co.ToObject(java.util.Date.class);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
 }
     }
 
