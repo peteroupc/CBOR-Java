@@ -305,7 +305,7 @@ try { if (ms != null) {
     }
 
     private static EDecimal AsED(CBORObject obj) {
-      return EDecimal.FromString(obj.AsEDecimal().toString());
+      return obj.AsEDecimal();
     }
     @Test
     public void TestAddition() {
