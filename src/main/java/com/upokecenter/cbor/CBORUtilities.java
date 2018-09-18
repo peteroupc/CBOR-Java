@@ -201,6 +201,187 @@ private CBORUtilities() {
       }
     }
 
+    private static EInteger FloorDiv(EInteger a, EInteger n) {
+      return a.signum() >= 0 ? a.Divide(n) : EInteger.FromInt32(-1).Subtract(
+                EInteger.FromInt32(-1).Subtract(a).Divide(n));
+    }
+
+    private static EInteger FloorMod(EInteger a, EInteger n) {
+      return a.Subtract(FloorDiv(a, n).Multiply(n));
+    }
+
+    private static final int[] ValueNormalDays = { 0, 31, 28, 31, 30, 31, 30,
+      31, 31, 30,
+      31, 30, 31 };
+
+    private static final int[] ValueLeapDays = { 0, 31, 29, 31, 30, 31, 30,
+      31, 31, 30,
+      31, 30, 31 };
+
+    private static final int[] ValueNormalToMonth = { 0, 0x1f, 0x3b, 90, 120,
+      0x97, 0xb5,
+      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d };
+
+    private static final int[] ValueLeapToMonth = { 0, 0x1f, 60, 0x5b, 0x79,
+      0x98, 0xb6,
+      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e };
+
+    public static void GetNormalizedPartProlepticGregorian(
+          EInteger year,
+          int month,
+          EInteger day,
+          EInteger[] dest) {
+      // NOTE: This method assumes month is 1 to 12
+      if (month <= 0 || month > 12) {
+        throw new java.lang.IllegalArgumentException("month");
+      }
+      EInteger num4 = EInteger.FromInt32(4);
+      EInteger num100 = EInteger.FromInt32(100);
+      EInteger num101 = EInteger.FromInt32(101);
+      EInteger num146097 = EInteger.FromInt32(146097);
+      EInteger num400 = EInteger.FromInt32(400);
+      int[] dayArray = (year.Remainder(num4).signum() != 0 || (
+                    year.Remainder(num100).signum() == 0 &&
+                    year.Remainder(num400).signum() != 0)) ?
+         ValueNormalDays : ValueLeapDays;
+      if (day.compareTo(num101) > 0) {
+        EInteger count = day.Subtract(num100).Divide(num146097);
+        day = day.Subtract(count.Multiply(num146097));
+        year = year.Add(count.Multiply(num400));
+      }
+      while (true) {
+        EInteger days = EInteger.FromInt32(dayArray[month]);
+        if (day.signum() > 0 && day.compareTo(days) <= 0) {
+          break;
+        }
+        if (day.compareTo(days) > 0) {
+          day = day.Subtract(days);
+          if (month == 12) {
+            month = 1;
+            year = year.Add(EInteger.FromInt32(1));
+            dayArray = (year.Remainder(num4).signum() != 0 || (
+                    year.Remainder(num100).signum() == 0 &&
+                    year.Remainder(num400).signum() != 0)) ? ValueNormalDays :
+              ValueLeapDays;
+          } else {
+            ++month;
+          }
+        }
+        if (day.signum() <= 0) {
+          int divResult = (month - 2) / 12;
+          year = year.Add(EInteger.FromInt32(divResult));
+          month = ((month - 2) - 12 * divResult) + 1;
+          dayArray = (year.Remainder(num4).signum() != 0 || (
+                    year.Remainder(num100).signum() == 0 &&
+             year.Remainder(num400).signum() != 0)) ? ValueNormalDays :
+                    ValueLeapDays;
+          day = day.Add(EInteger.FromInt32(dayArray[month]));
+        }
+      }
+      dest[0] = year;
+      dest[1] = EInteger.FromInt32(month);
+      dest[2] = day;
+    }
+
+    public static EInteger GetNumberOfDaysProlepticGregorian(
+         EInteger year,
+         int month,
+         int mday) {
+      // NOTE: month = 1 is January, year = 1 is year 1
+      if (month <= 0 || month > 12) {
+ throw new IllegalArgumentException();
+}
+      if (mday <= 0 || mday > 31) {
+ throw new IllegalArgumentException();
+}
+      EInteger num4 = EInteger.FromInt32(4);
+      EInteger num100 = EInteger.FromInt32(100);
+      EInteger num400 = EInteger.FromInt32(400);
+      EInteger numDays = EInteger.FromInt32(0);
+      int startYear = 1970;
+      if (year.compareTo(EInteger.FromInt32(startYear)) < 0) {
+        for (EInteger ei = EInteger.FromInt32(startYear - 1);
+             ei.compareTo(year) > 0;
+             ei = ei.Subtract(EInteger.FromInt32(1))) {
+          numDays = numDays.Subtract(EInteger.FromInt32(365));
+          if (!(ei.Remainder(num4).signum() != 0 || (
+                    ei.Remainder(num100).signum() == 0 &&
+                    ei.Remainder(num400).signum() != 0))) {
+            numDays = numDays.Subtract(EInteger.FromInt32(1));
+          }
+        }
+        if (year.Remainder(num4).signum() != 0 || (
+                    year.Remainder(num100).signum() == 0 &&
+                    year.Remainder(num400).signum() != 0)) {
+          numDays = numDays.Subtract(
+             EInteger.FromInt32(365 - ValueNormalToMonth[month]));
+          numDays = numDays.Subtract(
+             EInteger.FromInt32(ValueNormalDays[month] - mday + 1));
+        } else {
+          numDays = numDays.Subtract(
+             EInteger.FromInt32(366 - ValueLeapToMonth[month]));
+          numDays = numDays.Subtract(
+             EInteger.FromInt32(ValueLeapDays[month] - mday + 1));
+        }
+      } else {
+        boolean isNormalYear = year.Remainder(num4).signum() != 0 ||
+        (year.Remainder(num100).signum() == 0 && year.Remainder(num400).signum() !=
+            0);
+        EInteger ei = EInteger.FromInt32(startYear);
+        EInteger num401 = EInteger.FromInt32(401);
+        EInteger num146097 = EInteger.FromInt32(146097);
+        for (; ei.Add(num401).compareTo(year) < 0;
+            ei = ei.Add(num400)) {
+          numDays = numDays.Add(num146097);
+        }
+        for (; ei.compareTo(year) < 0;
+            ei = ei.Add(EInteger.FromInt32(1))) {
+          numDays = numDays.Add(EInteger.FromInt32(365));
+          if (!(ei.Remainder(num4).signum() != 0 || (
+                    ei.Remainder(num100).signum() == 0 &&
+                    ei.Remainder(num400).signum() != 0))) {
+            numDays = numDays.Add(EInteger.FromInt32(1));
+          }
+        }
+        int yearToMonth = isNormalYear ? ValueNormalToMonth[month - 1] :
+          ValueLeapToMonth[month - 1];
+        numDays = numDays.Add(EInteger.FromInt32(yearToMonth))
+             .Add(EInteger.FromInt32(mday - 1));
+      }
+      return numDays;
+    }
+
+    public static void BreakDownSecondsSinceEpoch(
+      EDecimal edec,
+      EInteger[] year,
+      int[] lesserFields) {
+      EInteger integerPart = edec.ToEInteger();
+      EDecimal fractionalPart = edec.Abs()
+        .Subtract(EDecimal.FromEInteger(integerPart).Abs());
+      int nanoseconds = fractionalPart .Multiply(EDecimal.FromInt32(1000000000))
+       .ToInt32Checked();
+      EInteger[] normPart = new EInteger[3];
+      EInteger days = FloorDiv(
+  integerPart,
+  EInteger.FromInt32(86400)).Add(EInteger.FromInt32(1));
+      int secondsInDay = FloorMod(
+  integerPart,
+  EInteger.FromInt32(86400)).ToInt32Checked();
+      GetNormalizedPartProlepticGregorian(
+     EInteger.FromInt32(1970),
+     1,
+     days,
+     normPart);
+      lesserFields[0] = normPart[1].ToInt32Checked();
+      lesserFields[1] = normPart[2].ToInt32Checked();
+      lesserFields[2] = secondsInDay / 3600;
+      lesserFields[3] = (secondsInDay % 3600) / 60;
+      lesserFields[4] = secondsInDay % 60;
+      lesserFields[5] = nanoseconds / 100;
+      lesserFields[6] = 0;
+      year[0] = normPart[0];
+    }
+
     private static boolean IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.length < 8) {
         return false;
@@ -238,7 +419,16 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       return (((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) == 0);
     }
 
-    public static int[] ParseAtomDateTimeString(String str) {
+    public static void ParseAtomDateTimeString(
+  String str,
+  EInteger[] bigYearArray,
+  int[] lf) {
+  int[] d = ParseAtomDateTimeString(str);
+   bigYearArray[0] = EInteger.FromInt32(d[0]);
+   System.arraycopy(d, 1, lf, 0, 7);
+    }
+
+    private static int[] ParseAtomDateTimeString(String str) {
       boolean bad = false;
       if (str.length() < 19) {
         throw new IllegalArgumentException("Invalid date/time");
@@ -262,34 +452,28 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       int year = (str.charAt(0) - '0') * 1000 + (str.charAt(1) - '0') * 100 +
         (str.charAt(2) - '0') * 10 + (str.charAt(3) - '0');
       int month = (str.charAt(5) - '0') * 10 + (str.charAt(6) - '0');
-      if (month >= 12) {
-        throw new IllegalArgumentException("Invalid date/time");
-      }
       int day = (str.charAt(8) - '0') * 10 + (str.charAt(9) - '0');
       int hour = (str.charAt(11) - '0') * 10 + (str.charAt(12) - '0');
       int minute = (str.charAt(14) - '0') * 10 + (str.charAt(15) - '0');
-      if (minute >= 60) {
-        throw new IllegalArgumentException("Invalid date/time");
-      }
       int second = (str.charAt(17) - '0') * 10 + (str.charAt(18) - '0');
       int index = 19;
       int nanoSeconds = 0;
       if (index <= str.length() && str.charAt(index) == '.') {
-        int count = 0;
+        int icount = 0;
         ++index;
         while (index < str.length()) {
           if (str.charAt(index) < '0' || str.charAt(index) > '9') {
             break;
           }
-          if (count < 9) {
+          if (icount < 9) {
             nanoSeconds = nanoSeconds * 10 + (str.charAt(index) - '0');
-            ++count;
+            ++icount;
           }
           ++index;
         }
-        while (count < 9) {
+        while (icount < 9) {
           nanoSeconds *= 10;
-          ++count;
+          ++icount;
         }
       }
       int utcToLocal = 0;
@@ -330,24 +514,35 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
     }
 
     public static String ToAtomDateTimeString(
-      int[] dateTime,
+      EInteger bigYear,
+      int[] lesserFields,
       boolean fracIsNanoseconds) {
-      if (dateTime[7] != 0) {
+      // TODO: fracIsNanoseconds is a parameter
+      // for compatibility purposes only
+      if (lesserFields[6] != 0) {
         throw new UnsupportedOperationException(
           "Local time offsets not supported");
       }
-      int year = dateTime[0];
-      int month = dateTime[1];
-      int day = dateTime[2];
-      int hour = dateTime[3];
-      int minute = dateTime[4];
-      int second = dateTime[5];
-      int fracSeconds = dateTime[6];
+      int smallYear = bigYear.ToInt32Checked();
+      if (smallYear < 0) {
+  throw new IllegalArgumentException("year (" + smallYear +
+    ") is not greater or equal to 0");
+}
+if (smallYear > 9999) {
+  throw new IllegalArgumentException("year (" + smallYear +
+    ") is not less or equal to 9999");
+}
+      int month = lesserFields[0];
+      int day = lesserFields[1];
+      int hour = lesserFields[2];
+      int minute = lesserFields[3];
+      int second = lesserFields[4];
+      int fracSeconds = lesserFields[5];
       char[] charbuf = new char[32];
-      charbuf[0] = (char)('0' + ((year / 1000) % 10));
-      charbuf[1] = (char)('0' + ((year / 100) % 10));
-      charbuf[2] = (char)('0' + ((year / 10) % 10));
-      charbuf[3] = (char)('0' + (year % 10));
+      charbuf[0] = (char)('0' + ((smallYear / 1000) % 10));
+      charbuf[1] = (char)('0' + ((smallYear / 100) % 10));
+      charbuf[2] = (char)('0' + ((smallYear / 10) % 10));
+      charbuf[3] = (char)('0' + (smallYear % 10));
       charbuf[4] = '-';
       charbuf[5] = (char)('0' + ((month / 10) % 10));
       charbuf[6] = (char)('0' + (month % 10));
@@ -364,17 +559,38 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       charbuf[17] = (char)('0' + ((second / 10) % 10));
       charbuf[18] = (char)('0' + (second % 10));
       int charbufLength = 19;
-      if (fracSeconds > 0) {
-        // TODO: fracIsNanoseconds
-        charbuf[19] = '.';
-        charbuf[20] = (char)('0' + ((fracSeconds / 100) % 10));
-        charbuf[21] = (char)('0' + ((fracSeconds / 10) % 10));
-        charbuf[22] = (char)('0' + (fracSeconds % 10));
-        charbuf[23] = 'Z';
-        charbufLength+=5;
+      if (!fracIsNanoseconds) {
+         int milliseconds = fracSeconds / 1000000;
+         if (milliseconds > 0) {
+          charbuf[19] = '.';
+          charbuf[20] = (char)('0' + ((milliseconds / 100) % 10));
+          charbuf[21] = (char)('0' + ((milliseconds / 10) % 10));
+          charbuf[22] = (char)('0' + (milliseconds % 10));
+          charbuf[23] = 'Z';
+          charbufLength += 5;
+        } else {
+          charbuf[19] = 'Z';
+          ++charbufLength;
+        }
       } else {
-        charbuf[19] = 'Z';
-        ++charbufLength;
+        if (fracSeconds > 0) {
+          charbuf[19] = '.';
+ ++charbufLength;
+int digitdiv = 100000000;
+int index = 20;
+while (digitdiv > 0 && fracSeconds != 0) {
+ int digit = (fracSeconds / digitdiv) % 10;
+ fracSeconds -= digit * digitdiv;
+ charbuf[index++] = (char)('0' + digit);
+ ++charbufLength;
+ digitdiv /= 10;
+}
+          charbuf[index] = 'Z';
+          ++charbufLength;
+        } else {
+          charbuf[19] = 'Z';
+          ++charbufLength;
+        }
       }
       return new String(charbuf, 0, charbufLength);
     }

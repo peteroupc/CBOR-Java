@@ -355,4 +355,43 @@ private static long ReadInteger(
       }
       throw new IOException("Not a 32-bit integer");
     }
+
+    public static int ReadInt32MajorType1Or2(InputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      int b = stream.read();
+      if (b >= 0x00 && b < 0x18) {
+        return b;
+      }
+      if (b >= 0x20 && b < 0x38) {
+        return -1 - b;
+      }
+      if (b == 0x18 || b == 0x38) {
+        int b1 = stream.read();
+        int b2 = stream.read();
+        if (b1 < 0 || b2 < 0) {
+ throw new IOException();
+}
+        int c = (b1 << 8) | b2;
+        return (b == 0x18) ? c : -1 - c;
+      }
+      if (b == 0x19 || b == 0x39 || b == 0x1a || b == 0x3a) {
+        if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
+           stream.read() != 0 || stream.read() != 0 ||
+           stream.read() != 0)) {
+ throw new IOException();
+}
+        int b1 = stream.read();
+        int b2 = stream.read();
+        int b3 = stream.read();
+        int b4 = stream.read();
+        if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0 || b1 >= 0x80) {
+ throw new IOException();
+}
+        int c = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+        return (b < 0x20) ? c : -1 - c;
+      }
+      throw new IOException();
+    }
   }

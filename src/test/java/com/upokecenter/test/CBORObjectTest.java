@@ -3365,9 +3365,65 @@ a major version change.
         throw new IllegalStateException("", ex);
       }
     }
+
+    private void Sink(Object obj) {
+      System.out.println("Sink for " + obj);
+      Assert.fail();
+    }
+
     @Test
     public void TestKeys() {
-      // not implemented yet
+CBORObject co;
+try {
+co = CBORObject.True;
+        this.Sink(co.getKeys());
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+        this.Sink(CBORObject.FromObject(0).getKeys());
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+        this.Sink(CBORObject.FromObject("String").getKeys());
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+        this.Sink(CBORObject.NewArray().getKeys());
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ this.Sink(CBORObject.FromObject(
+          new byte[] { 0 }).getKeys());
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      if (CBORObject.NewMap().getKeys() == null) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestMultiply() {

@@ -286,9 +286,36 @@ static final boolean DateTimeCompatHack = false;
     }
   }
 
+  public static byte[] UUIDToBytes(java.util.UUID obj){
+
+      byte[] bytes2 = new byte[16];
+      long lsb = obj.getLeastSignificantBits();
+      long msb = obj.getMostSignificantBits();
+      bytes2[0] = (byte)((msb >> 56) & 0xFFL);
+      bytes2[1] = (byte)((msb >> 48) & 0xFFL);
+      bytes2[2] = (byte)((msb >> 40) & 0xFFL);
+      bytes2[3] = (byte)((msb >> 32) & 0xFFL);
+      bytes2[4] = (byte)((msb >> 24) & 0xFFL);
+      bytes2[5] = (byte)((msb >> 16) & 0xFFL);
+      bytes2[6] = (byte)((msb >> 8) & 0xFFL);
+      bytes2[7] = (byte)((msb) & 0xFFL);
+      bytes2[8] = (byte)((lsb >> 56) & 0xFFL);
+      bytes2[9] = (byte)((lsb >> 48) & 0xFFL);
+      bytes2[10] = (byte)((lsb >> 40) & 0xFFL);
+      bytes2[11] = (byte)((lsb >> 32) & 0xFFL);
+      bytes2[12] = (byte)((lsb >> 24) & 0xFFL);
+      bytes2[13] = (byte)((lsb >> 16) & 0xFFL);
+      bytes2[14] = (byte)((lsb >> 8) & 0xFFL);
+      bytes2[15] = (byte)((lsb) & 0xFFL);
+      return bytes2;
+  }
+
   public static Object TypeToObject(CBORObject objThis, Type t) {
       if (t.equals(java.util.Date.class)) {
         return new CBORTag0().FromCBORObject(objThis);
+      }
+      if (t.equals(java.util.UUID.class)) {
+        return new CBORTag37().FromCBORObject(objThis);
       }
       if (t.equals(Integer.class) || t.equals(int.class)) {
         return objThis.AsInt32();
@@ -379,144 +406,24 @@ if(rawType==null || !(rawType instanceof Class<?>)){
        throw new UnsupportedOperationException();
     }
 
-    private static final int[] normalDays = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30,
-      31, 30, 31 };
-    private static final int[] leapDays = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30,
-      31, 30, 31 };
-    private static final int[] normalToMonth = { 0, 0x1f, 0x3b, 90, 120, 0x97, 0xb5,
-      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d };
-    private static final int[] leapToMonth = { 0, 0x1f, 60, 0x5b, 0x79, 0x98, 0xb6,
-      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e };
-    private static long GetNumberOfDaysProlepticGregorian(
-         int year, int month, int day) {
-      // NOTE: month=1 is January, year=1 is year 1
-      long numDays = 0;
-      int startYear = 1970;
-      if (year < startYear) {
-        for (int i = startYear - 1; i > year; --i) {
-          if ((i & 3) != 0||
-                    (i % 100 == 0 && i % 400 != 0)) {
-            numDays -= 365;
-          } else {
-            numDays -= 366;
-          }
-        }
-        if ((year & 3) != 0||
-            (year % 100 == 0 && year % 400 != 0)) {
-          numDays -= 365 - normalToMonth[month];
-          numDays -= normalDays[month] - day + 1;
-        } else {
-          numDays -= 366 - leapToMonth[month];
-          numDays -= leapDays[month] - day + 1;
-        }
-      } else {
-        boolean isNormalYear = (year & 3) != 0||
-          (year % 100 == 0 && year % 400 != 0);
-        int i = startYear;
-        for (; i + 401 < year; i += 400) {
-          numDays += 146097;
-        }
-        for (; i < year; ++i) {
-          if ((i & 3) != 0 || (i % 100 == 0 && i % 400 != 0)) {
-            numDays += 365;
-          } else {
-            numDays += 366;
-          }
-        }
-        --day;
-        if (isNormalYear) {
-          numDays += normalToMonth[month - 1];
-        } else {
-          numDays += leapToMonth[month - 1];
-        }
-        numDays += day;
-      }
-      return numDays;
-    }
+   public static void BreakDownDateTime(java.util.Date bi,
+        EInteger[] year, int[] lf) {
+    long time=bi.getTime();
+    EDecimal edec=EDecimal.FromInt64(time).Divide(
+      EDecimal.FromInt32(1000));
+    CBORUtilities.BreakDownSecondsSinceEpoch(edec,year,lf);
+   }
 
-public static java.util.Date BuildUpDateTime(int[] dt){
- long dateMS=GetNumberOfDaysProlepticGregorian(
-   dt[0],dt[1]+1,dt[2]);
- dateMS*=86400000L;
- dateMS+=dt[3]*3600000L; // Hours
- dateMS+=dt[4]*60000L;   // Minutes
- dateMS+=dt[5]*1000L;    // Seconds
- dateMS+=dt[6]/1000000;  // Milliseconds
+public static java.util.Date BuildUpDateTime(EInteger year, int[] dt){
+ EInteger dateMS=CBORUtilities.GetNumberOfDaysProlepticGregorian(
+   year,dt[0],dt[1]);
+ dateMS=dateMS.Multiply(EInteger.FromInt32(86400000));
+ dateMS=dateMS.Add(EInteger.FromInt32(dt[2]*3600000+dt[3]*60000+dt[4]));
+ // Milliseconds
+ dateMS=dateMS.Add(EInteger.FromInt32(dt[5]/1000000));
  // Time zone offset in minutes
- dateMS-=dt[7]*60000L;
- return new java.util.Date(dateMS);
-}
-
-private static int FloorDiv(int a, int n) {
-      return a >= 0 ? a / n : -1 - (-1 - a) / n;
-    }
-
-    private static long FloorDiv(long a, long n) {
-      return a >= 0 ? a / n : -1 - (-1 - a) / n;
-    }
-
-    private static long FloorMod(long a, long n) {
-      return a-FloorDiv(a, n)*n;
-    }
-
-    private static void GetNormalizedPartProlepticGregorian(
-          int year,
-                    int month,
-                    long day,
-                    int[] dest) {
-      int divResult;
-      divResult = FloorDiv((month - 1), 12);
-      year += divResult;
-      month = ((month - 1) - 12 * divResult) + 1;
-      int[] dayArray = ((year & 3) != 0 || (year % 100 == 0 &&
-        year % 400 != 0)) ? normalDays: leapDays;
-      if (day > 101) {
-        long count = (day - 100) / 146097;
-        day -= count * 146097;
-        year = (int)(year + count * 400);
-      }
-      while (true) {
-        int days = dayArray[month];
-        if (day > 0 && day <= days) {
-          break;
-        }
-        if (day > days) {
-          day -= days;
-          if (month == 12) {
-            month = 1;
-            ++year;
-            dayArray = ((year & 3) != 0 || (
-                    year % 100 == 0 && year % 400 != 0)) ? normalDays :
-              leapDays;
-          } else {
-            ++month;
-          }
-        }
-        if (day <= 0) {
-          divResult = FloorDiv((month - 2), 12);
-          year += divResult;
-          month = ((month - 2) - 12 * divResult) + 1;
-          dayArray = ((year & 3) != 0 || (year % 100 == 0 && year
-            % 400 != 0)) ? normalDays: leapDays;
-          day += dayArray[month];
-        }
-      }
-      dest[0]=year;
-      dest[1]=month;
- dest[2]=(int)day;
-    }
-
-public static int[] BreakDownDateTime(java.util.Date jdate){
-      long date=jdate.getTime();
-      long days = FloorDiv(date, 86400000L) + 1;
-      int[] ret = new int[8];
-      GetNormalizedPartProlepticGregorian(1970, 1, days, ret);
-      ret[3]=(int)(FloorMod(date, 86400000L) / 3600000L);
-      ret[4]=(int)(FloorMod(date, 3600000L) / 60000L);
-      ret[5]=(int)(FloorMod(date, 60000L) / 1000L);
-      ret[6]=((int)FloorMod(date, 1000L))*1000000;
-      ret[7]=0;
-      return ret;
+ dateMS=dateMS.Add(EInteger.FromInt32(dt[6]*60000));
+ return new java.util.Date(dateMS.ToInt64Checked());
 }
 
 }

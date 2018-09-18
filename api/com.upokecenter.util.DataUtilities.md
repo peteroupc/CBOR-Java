@@ -179,7 +179,14 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 ### GetUtf8Bytes
     public static byte[] GetUtf8Bytes​(String str, boolean replace)
-Encodes a string in UTF-8 as a byte array.
+<p>Encodes a string in UTF-8 as a byte array. This method does not insert a
+ byte-order mark (U + FEFF) at the beginning of the encoded byte
+ array.</p> <p>REMARK: It is not recommended to use
+ <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+ method in Java to do this. For instance, <code>Encoding.UTF8</code> begins
+ the encoded string with a byte-order mark, and <code>getBytes()</code>
+ encodes text strings in an unspecified character encoding. Both
+ behaviors can be undesirable.</p>
 
 **Parameters:**
 
@@ -203,7 +210,14 @@ Encodes a string in UTF-8 as a byte array.
 
 ### GetUtf8Bytes
     public static byte[] GetUtf8Bytes​(String str, boolean replace, boolean lenientLineBreaks)
-Encodes a string in UTF-8 as a byte array.
+<p>Encodes a string in UTF-8 as a byte array. This method does not insert a
+ byte-order mark (U + FEFF) at the beginning of the encoded byte
+ array.</p> <p>REMARK: It is not recommended to use
+ <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+ method in Java to do this. For instance, <code>Encoding.UTF8</code> begins
+ the encoded string with a byte-order mark, and <code>getBytes()</code>
+ encodes text strings in an unspecified character encoding. Both
+ behaviors can be undesirable.</p>
 
 **Parameters:**
 

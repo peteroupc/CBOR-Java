@@ -7,68 +7,54 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-import java.util.UUID;
-
-    /**
-     * Description of CBORTag37.
-     */
-  class CBORTag37 implements ICBORTag, ICBORConverter<UUID> {
-
-    /**
-     * Not documented yet.
-     *
-     * @return A CBORTypeFilter object.
-     */
+  class CBORTag37 implements ICBORTag, ICBORObjectConverter<java.util.UUID>
+  {
     public CBORTypeFilter GetTypeFilter() {
       return CBORTypeFilter.ByteString;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * Not documented yet.
-     */
-    public CBORObject ValidateObject(final CBORObject obj) {
+    public CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.ByteString) {
-        throw new CBORException("UUID must be a byte string");
+        throw new CBORException("UUID must be a byte String");
       }
-      if (obj.GetByteString().length != 16) {
+      byte[] bytes = obj.GetByteString();
+      if (bytes.length != 16) {
         throw new CBORException("UUID must be 16 bytes long");
       }
       return obj;
     }
 
     static void AddConverter() {
-      CBORObject.AddConverter(UUID.class, new CBORTag37());
+        CBORObject.AddConverter(java.util.UUID.class, new CBORTag37());
     }
 
     /**
-     * <p>ToCBORObject.</p>
-     *
-     * @param obj a {@link java.util.UUID} object.
-     * @return a {@link com.upokecenter.cbor.CBORObject} object.
+     * Converts a UUID to a CBOR object.
+     * @param obj A UUID.
+     * @return A CBORObject object.
      */
-    public CBORObject ToCBORObject(final UUID obj) {
-      byte[] bytes2 = new byte[16];
-      long lsb = obj.getLeastSignificantBits();
-      long msb = obj.getMostSignificantBits();
-      bytes2[0] = (byte)((msb >> 56) & 0xFFL);
-      bytes2[1] = (byte)((msb >> 48) & 0xFFL);
-      bytes2[2] = (byte)((msb >> 40) & 0xFFL);
-      bytes2[3] = (byte)((msb >> 32) & 0xFFL);
-      bytes2[4] = (byte)((msb >> 24) & 0xFFL);
-      bytes2[5] = (byte)((msb >> 16) & 0xFFL);
-      bytes2[6] = (byte)((msb >> 8) & 0xFFL);
-      bytes2[7] = (byte)((msb) & 0xFFL);
-      bytes2[8] = (byte)((lsb >> 56) & 0xFFL);
-      bytes2[9] = (byte)((lsb >> 48) & 0xFFL);
-      bytes2[10] = (byte)((lsb >> 40) & 0xFFL);
-      bytes2[11] = (byte)((lsb >> 32) & 0xFFL);
-      bytes2[12] = (byte)((lsb >> 24) & 0xFFL);
-      bytes2[13] = (byte)((lsb >> 16) & 0xFFL);
-      bytes2[14] = (byte)((lsb >> 8) & 0xFFL);
-      bytes2[15] = (byte)((lsb) & 0xFFL);
-      return CBORObject.FromObjectAndTag(bytes2, 37);
+    public CBORObject ToCBORObject(java.util.UUID obj) {
+      byte[] bytes = PropertyMap.UUIDToBytes(obj);
+      return CBORObject.FromObjectAndTag(bytes, (int)37);
     }
 
+    public java.util.UUID FromCBORObject(CBORObject obj) {
+      if (!obj.HasMostOuterTag(37)) {
+        throw new CBORException("Must have outermost tag 37");
+      }
+      this.ValidateObject(obj);
+      byte[] bytes = obj.GetByteString();
+      char[] guidChars = new char[36];
+      String hex = "0123456789abcdef";
+      int index = 0;
+      for (int i = 0; i < 16; ++i) {
+       if (i == 4 || i == 6 || i == 8 || i == 10) {
+         guidChars[index++] = '-';
+       }
+       guidChars[index++] = hex.charAt((int)(bytes[i] >> 4) & 15);
+       guidChars[index++] = hex.charAt((int)bytes[i] & 15);
+      }
+      String guidString = new String(guidChars);
+      return java.util.UUID.fromString(guidString);
+    }
   }

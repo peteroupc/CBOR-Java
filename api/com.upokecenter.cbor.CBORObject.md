@@ -169,16 +169,18 @@ Use AsERational instead.
  Gets the value of this object as a text string.
 * `boolean CanFitInDouble()`<br>
  Returns whether this object's value can be converted to a 64-bit floating
- point number without loss of its numerical value.
+ point number without its value being rounded to another numerical
+ value.
 * `boolean CanFitInInt32()`<br>
- Returns whether this object's value is an integral value, is -(2^31) or
+ Returns whether this object's numerical value is an integer, is -(2^31) or
  greater, and is less than 2^31.
 * `boolean CanFitInInt64()`<br>
- Returns whether this object's value is an integral value, is -(2^63) or
+ Returns whether this object's numerical value is an integer, is -(2^63) or
  greater, and is less than 2^63.
 * `boolean CanFitInSingle()`<br>
  Returns whether this object's value can be converted to a 32-bit floating
- point number without loss of its numerical value.
+ point number without its value being rounded to another numerical
+ value.
 * `boolean CanTruncatedIntFitInInt32()`<br>
  Returns whether this object's value, truncated to an integer, would be
  -(2^31) or greater, and less than 2^31.
@@ -202,7 +204,8 @@ Use AsERational instead.
 * `static CBORObject DecodeFromBytes​(byte[] data,
                CBOREncodeOptions options) CBOREncodeOptions`<br>
  Generates a CBOR object from an array of CBOR-encoded bytes, using the given
- CBOREncodeOptions object to control the decoding process.
+ CBOREncodeOptions object to control the decoding
+ process.
 * `static CBORObject Divide​(CBORObject first,
       CBORObject second)`<br>
  Divides a CBORObject object by the value of a CBORObject object.
@@ -345,6 +348,10 @@ Use the GetAllTags method instead.
  array.
 * `int hashCode()`<br>
  Calculates the hash code of this object.
+* `boolean HasMostOuterTag​(int tagValue)`<br>
+ Returns whether this object has a tag of the given number.
+* `boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
+ Returns whether this object has a tag of the given number.
 * `boolean HasTag​(int tagValue)`<br>
  Returns whether this object has a tag of the given number.
 * `boolean HasTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
@@ -994,11 +1001,11 @@ Registers an object that validates CBOR objects with new tags.
 
 **Parameters:**
 
-* <code>data</code> - A byte array.
+* <code>data</code> - A byte array in which a single CBOR object is encoded.
 
 **Returns:**
 
-* A CBOR object corresponding to the data.
+* A CBOR object decoded from the given byte array.
 
 **Throws:**
 
@@ -1012,17 +1019,28 @@ Registers an object that validates CBOR objects with new tags.
 ### DecodeFromBytes
     public static CBORObject DecodeFromBytes​(byte[] data, CBOREncodeOptions options)
 Generates a CBOR object from an array of CBOR-encoded bytes, using the given
- <code>CBOREncodeOptions</code> object to control the decoding process.
+ <code>CBOREncodeOptions</code> object to control the decoding
+ process.<p><p>The following example (originally written in C# for the
+ .NET version) implements a method that decodes a text string from a
+ CBOR byte array. It's successful only if the CBOR object contains an
+ untagged text string.</p> <pre>private static String
+ DecodeTextString&#x28;byte[] bytes)&#x7b; if&#x28;bytes ==
+ null)&#x7b; throw new
+ NullPointerException&#x28;nameof(mapObj));&#x7d;
+ if&#x28;bytes.length == 0 || bytes[0]&lt;0x60 ||
+ bytes[0]&gt;0x7f)&#x7b;throw new CBORException&#x28;);&#x7d; return
+ CBORObject.DecodeFromBytes&#x28;bytes,
+ CBOREncodeOptions.Default).getAsString()&#x28;); &#x7d; </pre> </p>
 
 **Parameters:**
 
-* <code>data</code> - A byte array.
+* <code>data</code> - A byte array in which a single CBOR object is encoded.
 
 * <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
 
 **Returns:**
 
-* A CBOR object corresponding to the data.
+* A CBOR object decoded from the given byte array.
 
 **Throws:**
 
@@ -1122,8 +1140,8 @@ Generates a CBOR object from a text string in JavaScript Object Notation
  </p> <p>If the type "T" is <code>byte[]</code> and this CBOR object is a
  byte array, returns a byte array which this CBOR byte string's data
  will be copied to. </p> <p>In the .NET version, if the type "T" is
- <code>DateTime</code> and this CBOR object is a text string with tag 0,
- converts that text string to a DateTime and returns that DateTime.
+ <code>java.util.Date</code> and this CBOR object is a text string with tag 0,
+ converts that text string to a java.util.Date and returns that java.util.Date.
  </p> <p>If the type "T" is Boolean, returns the result of the IsTrue
  method. </p> <p>If this object is a CBOR map, and the type "T" is a
  type not specially handled by the FromObject method, creates an
@@ -2350,12 +2368,12 @@ Gets this object's absolute value.
     public CBORObject Add​(CBORObject obj)
 <p>Adds a new object to the end of this array. (Used to throw
  NullPointerException on a null reference, but now converts the null
- reference to CBORObject.Null, for convenience with the object
+ reference to CBORObject.Null, for convenience with the Object
  overload of this method).</p> <p>NOTE: This method can't be used to
  add a tag to an existing CBOR object. To create a CBOR object with a
  given tag, call the <code>CBORObject.FromObjectAndTag</code> method and
  pass the CBOR object and the desired tag number to that
- method.</p><p> <p>The following example creates a CBOR array and adds
+ method.</p><p><p>The following example creates a CBOR array and adds
  several CBOR objects, one of which has a custom CBOR tag, to that
  array. Note the chaining behavior made possible by this method.</p>
  <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False)
@@ -2380,7 +2398,7 @@ Gets this object's absolute value.
  array.</p> <p>NOTE: This method can't be used to add a tag to an
  existing CBOR object. To create a CBOR object with a given tag, call
  the <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR
- object and the desired tag number to that method.</p><p> <p>The
+ object and the desired tag number to that method.</p><p><p>The
  following example creates a CBOR array and adds several CBOR objects,
  one of which has a custom CBOR tag, to that array. Note the chaining
  behavior made possible by this method.</p> <pre>CBORObject obj =
@@ -2587,8 +2605,18 @@ Converts this object to a 16-bit signed integer. Floating point values are
 
 ### AsInt32
     public int AsInt32()
-Converts this object to a 32-bit signed integer. Floating point values are
- truncated to an integer.
+Converts this object to a 32-bit signed integer. Non-integer number values
+ are truncated to an integer. (NOTE: To determine whether this method
+ call can succeed, call the <b>CanTruncatedIntFitInInt32</b> method
+ before calling this method. Checking whether this object's type is
+ <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+ following example code (originally written in C# for the .NET
+ Framework) shows a way to check whether a given CBOR object stores a
+ 32-bit signed integer before getting its value.</p> <pre>CBORObject
+ obj = CBORObject.FromInt32(99999); if&#x28;obj.isIntegral() &amp;&amp;
+ obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b;  // Not an Int32; handle
+ the error Console.WriteLine("Not a 32-bit integer."); &#x7d; else {
+ Console.WriteLine("The value is " + obj.AsInt32()); } </pre> </p>
 
 **Returns:**
 
@@ -2603,8 +2631,18 @@ Converts this object to a 32-bit signed integer. Floating point values are
 
 ### AsInt64
     public long AsInt64()
-Converts this object to a 64-bit signed integer. Floating point values are
- truncated to an integer.
+Converts this object to a 64-bit signed integer. Non-integer numbers are
+ truncated to an integer. (NOTE: To determine whether this method call
+ can succeed, call the <b>CanTruncatedIntFitInInt64</b> method before
+ calling this method. Checking whether this object's type is
+ <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+ following example code (originally written in C# for the .NET
+ Framework) shows a way to check whether a given CBOR object stores a
+ 64-bit signed integer before getting its value.</p> <pre>CBORObject
+ obj = CBORObject.FromInt64(99999); if&#x28;obj.isIntegral() &amp;&amp;
+ obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b;  // Not an Int64; handle
+ the error Console.WriteLine("Not a 64-bit integer."); &#x7d; else {
+ Console.WriteLine("The value is " + obj.AsInt64()); } </pre> </p>
 
 **Returns:**
 
@@ -2633,7 +2671,12 @@ Converts this object to a 32-bit floating point number.
 
 ### AsString
     public String AsString()
-Gets the value of this object as a text string.
+Gets the value of this object as a text string.<p><p>The following example
+ code (originally written in C# for the .NET Framework) shows an idiom
+ for returning a string value if a CBOR object is a text string, or
+ <code>null</code> if the CBOR object is a CBOR null.</p> <pre>CBORObject
+ obj = CBORObject.FromString("test"); string str = obj.isNull() ? null :
+ obj.AsString(); </pre> </p>
 
 **Returns:**
 
@@ -2647,46 +2690,50 @@ Gets the value of this object as a text string.
 ### CanFitInDouble
     public boolean CanFitInDouble()
 Returns whether this object's value can be converted to a 64-bit floating
- point number without loss of its numerical value.
+ point number without its value being rounded to another numerical
+ value.
 
 **Returns:**
 
 * Whether this object's value can be converted to a 64-bit floating
- point number without loss of its numerical value. Returns true if
- this is a not-a-number value, even if the value's diagnostic
- information can' t fit in a 64-bit floating point number.
+ point number without its value being rounded to another numerical
+ value. Returns true if this is a not-a-number value, even if the
+ value's diagnostic information can' t fit in a 64-bit floating point
+ number.
 
 ### CanFitInInt32
     public boolean CanFitInInt32()
-Returns whether this object's value is an integral value, is -(2^31) or
+Returns whether this object's numerical value is an integer, is -(2^31) or
  greater, and is less than 2^31.
 
 **Returns:**
 
-* <code>true</code> if this object's value is an integral value, is -(2^31)
- or greater, and is less than 2^31; otherwise, <code>false</code> .
+* <code>true</code> if this object's numerical value is an integer, is
+ -(2^31) or greater, and is less than 2^31; otherwise, <code>false</code> .
 
 ### CanFitInInt64
     public boolean CanFitInInt64()
-Returns whether this object's value is an integral value, is -(2^63) or
+Returns whether this object's numerical value is an integer, is -(2^63) or
  greater, and is less than 2^63.
 
 **Returns:**
 
-* <code>true</code> if this object's value is an integral value, is -(2^63)
- or greater, and is less than 2^63; otherwise, <code>false</code> .
+* <code>true</code> if this object's numerical value is an integer, is
+ -(2^63) or greater, and is less than 2^63; otherwise, <code>false</code> .
 
 ### CanFitInSingle
     public boolean CanFitInSingle()
 Returns whether this object's value can be converted to a 32-bit floating
- point number without loss of its numerical value.
+ point number without its value being rounded to another numerical
+ value.
 
 **Returns:**
 
 * Whether this object's value can be converted to a 32-bit floating
- point number without loss of its numerical value. Returns true if
- this is a not-a-number value, even if the value's diagnostic
- information can' t fit in a 32-bit floating point number.
+ point number without its value being rounded to another numerical
+ value. Returns true if this is a not-a-number value, even if the
+ value's diagnostic information can' t fit in a 32-bit floating point
+ number.
 
 ### CanTruncatedIntFitInInt32
     public boolean CanTruncatedIntFitInInt32()
@@ -2920,6 +2967,44 @@ Gets a list of all tags, from outermost to innermost.
 **Returns:**
 
 * An array of tags, or the empty string if this object is untagged.
+
+### HasMostOuterTag
+    public boolean HasMostOuterTag​(int tagValue)
+Returns whether this object has a tag of the given number.
+
+**Parameters:**
+
+* <code>tagValue</code> - The tag value to search for.
+
+**Returns:**
+
+* <code>true</code> if this object has a tag of the given number;
+ otherwise, <code>false</code>.
+
+**Throws:**
+
+* <code>IllegalArgumentException</code> - TagValue is less than 0.
+
+* <code>NullPointerException</code> - The parameter "obj" is null.
+
+### HasMostOuterTag
+    public boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)
+Returns whether this object has a tag of the given number.
+
+**Parameters:**
+
+* <code>bigTagValue</code> - The tag value to search for.
+
+**Returns:**
+
+* <code>true</code> if this object has a tag of the given number;
+ otherwise, <code>false</code>.
+
+**Throws:**
+
+* <code>NullPointerException</code> - BigTagValue is null.
+
+* <code>IllegalArgumentException</code> - BigTagValue is less than 0.
 
 ### HasTag
     public boolean HasTag​(int tagValue)

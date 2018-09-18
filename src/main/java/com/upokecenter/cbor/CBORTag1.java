@@ -7,7 +7,9 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  class CBORTag1 implements ICBORTag
+import com.upokecenter.numbers.*;
+
+  class CBORTag1 implements ICBORTag, ICBORConverter<java.util.Date>
   {
     public CBORTypeFilter GetTypeFilter() {
       return
@@ -19,5 +21,10 @@ at: http://peteroupc.github.io/
         throw new CBORException("Not a valid date");
       }
       return obj;
+    }
+
+    public CBORObject ToCBORObject(java.util.Date obj) {
+       // TODO
+       throw new UnsupportedOperationException();
     }
   }

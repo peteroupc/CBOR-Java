@@ -747,8 +747,8 @@ import com.upokecenter.numbers.*;
      * (without a CBOREncodeOptions argument) in the next major
      * version.</b></p> <p>Generates a CBOR object from an array of
      * CBOR-encoded bytes.</p>
-     * @param data A byte array.
-     * @return A CBOR object corresponding to the data.
+     * @param data A byte array in which a single CBOR object is encoded.
+     * @return A CBOR object decoded from the given byte array.
      * @throws com.upokecenter.cbor.CBORException There was an error in reading or
      * parsing the data. This includes cases where not all of the byte array
      * represents a CBOR object. This exception is also thrown if the
@@ -761,10 +761,21 @@ import com.upokecenter.numbers.*;
 
     /**
      * Generates a CBOR object from an array of CBOR-encoded bytes, using the given
-     * <code>CBOREncodeOptions</code> object to control the decoding process.
-     * @param data A byte array.
+     * <code>CBOREncodeOptions</code> object to control the decoding
+     * process.<p><p>The following example (originally written in C# for the
+     * .NET version) implements a method that decodes a text string from a
+     * CBOR byte array. It's successful only if the CBOR object contains an
+     * untagged text string.</p> <pre>private static String
+     * DecodeTextString&#x28;byte[] bytes)&#x7b; if&#x28;bytes ==
+     * null)&#x7b; throw new
+     * NullPointerException&#x28;nameof(mapObj));&#x7d;
+     * if&#x28;bytes.length == 0 || bytes[0]&lt;0x60 ||
+     * bytes[0]&gt;0x7f)&#x7b;throw new CBORException&#x28;);&#x7d; return
+     * CBORObject.DecodeFromBytes&#x28;bytes,
+     * CBOREncodeOptions.Default).getAsString()&#x28;); &#x7d; </pre> </p>
+     * @param data A byte array in which a single CBOR object is encoded.
      * @param options The parameter {@code options} is a CBOREncodeOptions object.
-     * @return A CBOR object corresponding to the data.
+     * @return A CBOR object decoded from the given byte array.
      * @throws com.upokecenter.cbor.CBORException There was an error in reading or
      * parsing the data. This includes cases where not all of the byte array
      * represents a CBOR object. This exception is also thrown if the
@@ -917,8 +928,8 @@ try { if (ms != null) {
      * </p> <p>If the type "T" is <code>byte[]</code> and this CBOR object is a
      * byte array, returns a byte array which this CBOR byte string's data
      * will be copied to. </p> <p>In the .NET version, if the type "T" is
-     * <code>DateTime</code> and this CBOR object is a text string with tag 0,
-     * converts that text string to a DateTime and returns that DateTime.
+     * <code>java.util.Date</code> and this CBOR object is a text string with tag 0,
+     * converts that text string to a java.util.Date and returns that java.util.Date.
      * </p> <p>If the type "T" is Boolean, returns the result of the IsTrue
      * method. </p> <p>If this object is a CBOR map, and the type "T" is a
      * type not specially handled by the FromObject method, creates an
@@ -2604,12 +2615,12 @@ public static void Write(
     /**
      * <p>Adds a new object to the end of this array. (Used to throw
      * NullPointerException on a null reference, but now converts the null
-     * reference to CBORObject.Null, for convenience with the object
+     * reference to CBORObject.Null, for convenience with the Object
      * overload of this method).</p> <p>NOTE: This method can't be used to
      * add a tag to an existing CBOR object. To create a CBOR object with a
      * given tag, call the <code>CBORObject.FromObjectAndTag</code> method and
      * pass the CBOR object and the desired tag number to that
-     * method.</p><p> <p>The following example creates a CBOR array and adds
+     * method.</p><p><p>The following example creates a CBOR array and adds
      * several CBOR objects, one of which has a custom CBOR tag, to that
      * array. Note the chaining behavior made possible by this method.</p>
      * <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False)
@@ -2633,7 +2644,7 @@ public static void Write(
      * array.</p> <p>NOTE: This method can't be used to add a tag to an
      * existing CBOR object. To create a CBOR object with a given tag, call
      * the <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR
-     * object and the desired tag number to that method.</p><p> <p>The
+     * object and the desired tag number to that method.</p><p><p>The
      * following example creates a CBOR array and adds several CBOR objects,
      * one of which has a custom CBOR tag, to that array. Note the chaining
      * behavior made possible by this method.</p> <pre>CBORObject obj =
@@ -2840,8 +2851,18 @@ public static void Write(
     }
 
     /**
-     * Converts this object to a 32-bit signed integer. Floating point values are
-     * truncated to an integer.
+     * Converts this object to a 32-bit signed integer. Non-integer number values
+     * are truncated to an integer. (NOTE: To determine whether this method
+     * call can succeed, call the <b>CanTruncatedIntFitInInt32</b> method
+     * before calling this method. Checking whether this object's type is
+     * <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+     * following example code (originally written in C# for the .NET
+     * Framework) shows a way to check whether a given CBOR object stores a
+     * 32-bit signed integer before getting its value.</p> <pre>CBORObject
+     * obj = CBORObject.FromInt32(99999); if&#x28;obj.isIntegral() &amp;&amp;
+     * obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b;  // Not an Int32; handle
+     * the error Console.WriteLine("Not a 32-bit integer."); &#x7d; else {
+     * Console.WriteLine("The value is " + obj.AsInt32()); } </pre> </p>
      * @return The closest 32-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
@@ -2852,8 +2873,18 @@ public static void Write(
     }
 
     /**
-     * Converts this object to a 64-bit signed integer. Floating point values are
-     * truncated to an integer.
+     * Converts this object to a 64-bit signed integer. Non-integer numbers are
+     * truncated to an integer. (NOTE: To determine whether this method call
+     * can succeed, call the <b>CanTruncatedIntFitInInt64</b> method before
+     * calling this method. Checking whether this object's type is
+     * <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+     * following example code (originally written in C# for the .NET
+     * Framework) shows a way to check whether a given CBOR object stores a
+     * 64-bit signed integer before getting its value.</p> <pre>CBORObject
+     * obj = CBORObject.FromInt64(99999); if&#x28;obj.isIntegral() &amp;&amp;
+     * obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b;  // Not an Int64; handle
+     * the error Console.WriteLine("Not a 64-bit integer."); &#x7d; else {
+     * Console.WriteLine("The value is " + obj.AsInt64()); } </pre> </p>
      * @return The closest 64-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
@@ -2883,7 +2914,12 @@ public static void Write(
     }
 
     /**
-     * Gets the value of this object as a text string.
+     * Gets the value of this object as a text string.<p><p>The following example
+     * code (originally written in C# for the .NET Framework) shows an idiom
+     * for returning a string value if a CBOR object is a text string, or
+     * <code>null</code> if the CBOR object is a CBOR null.</p> <pre>CBORObject
+     * obj = CBORObject.FromString("test"); string str = obj.isNull() ? null :
+     * obj.AsString(); </pre> </p>
      * @return Gets this object's string.
      * @throws IllegalStateException This object's type is not a string, including
      * if this object is CBORObject.Null.
@@ -2902,11 +2938,13 @@ public static void Write(
 
     /**
      * Returns whether this object's value can be converted to a 64-bit floating
-     * point number without loss of its numerical value.
+     * point number without its value being rounded to another numerical
+     * value.
      * @return Whether this object's value can be converted to a 64-bit floating
-     * point number without loss of its numerical value. Returns true if
-     * this is a not-a-number value, even if the value's diagnostic
-     * information can' t fit in a 64-bit floating point number.
+     * point number without its value being rounded to another numerical
+     * value. Returns true if this is a not-a-number value, even if the
+     * value's diagnostic information can' t fit in a 64-bit floating point
+     * number.
      */
     public boolean CanFitInDouble() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2914,10 +2952,10 @@ public static void Write(
     }
 
     /**
-     * Returns whether this object's value is an integral value, is -(2^31) or
+     * Returns whether this object's numerical value is an integer, is -(2^31) or
      * greater, and is less than 2^31.
-     * @return {@code true} if this object's value is an integral value, is -(2^31)
-     * or greater, and is less than 2^31; otherwise, {@code false} .
+     * @return {@code true} if this object's numerical value is an integer, is
+     * -(2^31) or greater, and is less than 2^31; otherwise, {@code false} .
      */
     public boolean CanFitInInt32() {
       if (!this.CanFitInInt64()) {
@@ -2928,10 +2966,10 @@ public static void Write(
     }
 
     /**
-     * Returns whether this object's value is an integral value, is -(2^63) or
+     * Returns whether this object's numerical value is an integer, is -(2^63) or
      * greater, and is less than 2^63.
-     * @return {@code true} if this object's value is an integral value, is -(2^63)
-     * or greater, and is less than 2^63; otherwise, {@code false} .
+     * @return {@code true} if this object's numerical value is an integer, is
+     * -(2^63) or greater, and is less than 2^63; otherwise, {@code false} .
      */
     public boolean CanFitInInt64() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -2940,11 +2978,13 @@ public static void Write(
 
     /**
      * Returns whether this object's value can be converted to a 32-bit floating
-     * point number without loss of its numerical value.
+     * point number without its value being rounded to another numerical
+     * value.
      * @return Whether this object's value can be converted to a 32-bit floating
-     * point number without loss of its numerical value. Returns true if
-     * this is a not-a-number value, even if the value's diagnostic
-     * information can' t fit in a 32-bit floating point number.
+     * point number without its value being rounded to another numerical
+     * value. Returns true if this is a not-a-number value, even if the
+     * value's diagnostic information can' t fit in a 32-bit floating point
+     * number.
      */
     public boolean CanFitInSingle() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
@@ -3592,6 +3632,41 @@ public boolean equals(CBORObject other) {
       }
       return new EInteger[] { LowHighToEInteger(this.tagLow, this.tagHigh) };
     }
+
+    /**
+     * Returns whether this object has a tag of the given number.
+     * @param tagValue The tag value to search for.
+     * @return {@code true} if this object has a tag of the given number;
+     * otherwise, {@code false}.
+     * @throws IllegalArgumentException TagValue is less than 0.
+     * @throws java.lang.NullPointerException The parameter "obj" is null.
+     */
+ public boolean HasMostOuterTag(int tagValue) {
+      if (tagValue < 0) {
+        throw new IllegalArgumentException("tagValue (" + tagValue +
+                    ") is less than 0");
+      }
+ return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
+ }
+
+    /**
+     * Returns whether this object has a tag of the given number.
+     * @param bigTagValue The tag value to search for.
+     * @return {@code true} if this object has a tag of the given number;
+     * otherwise, {@code false}.
+     * @throws java.lang.NullPointerException BigTagValue is null.
+     * @throws IllegalArgumentException BigTagValue is less than 0.
+     */
+ public boolean HasMostOuterTag(EInteger bigTagValue) {
+    if (bigTagValue == null) {
+  throw new NullPointerException("bigTagValue");
+}
+      if (bigTagValue.signum() < 0) {
+        throw new IllegalArgumentException("bigTagValue (" + bigTagValue +
+                    ") is less than 0");
+      }
+ return (!this.isTagged()) ? false : this.getMostOuterTag().equals(bigTagValue);
+ }
 
     /**
      * Returns whether this object has a tag of the given number.

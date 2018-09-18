@@ -7,11 +7,15 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import com.upokecenter.numbers.*;
+
   class CBORTag0 implements ICBORTag, ICBORObjectConverter<java.util.Date> {
     private static String DateTimeToString(java.util.Date bi) {
-      int[] dt = PropertyMap.BreakDownDateTime(bi);
+      int[] lesserFields = new int[7];
+      EInteger[] year = new EInteger[1];
+      PropertyMap.BreakDownDateTime(bi, year, lesserFields);
       // TODO: Change to true in next major version
-      return CBORUtilities.ToAtomDateTimeString(dt, false);
+      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields, false);
     }
 
     static void AddConverter() {
@@ -20,7 +24,9 @@ at: http://peteroupc.github.io/
       // the next major version for backward compatibility.
       // However, since ToObject is new, we can convert
       // to Date in the .NET and Java versions
-      CBORObject.AddConverter(java.util.Date.class, new CBORTag0());
+      if (PropertyMap.DateTimeCompatHack) {
+        CBORObject.AddConverter(java.util.Date.class, new CBORTag0());
+      }
     }
 
     public CBORTypeFilter GetTypeFilter() {
@@ -35,15 +41,29 @@ at: http://peteroupc.github.io/
     }
 
     public java.util.Date FromCBORObject(CBORObject obj) {
-      if (!obj.HasTag(0)) {
-        throw new CBORException("Not tag 0");
+      if (obj.HasMostOuterTag(0)) {
+        return StringToDateTime(obj.AsString());
+      } else if (obj.HasMostOuterTag(1)) {
+        if (!obj.isFinite()) {
+          throw new CBORException("Not a finite number");
+        }
+          EDecimal dec = obj.AsEDecimal();
+          int[] lesserFields = new int[7];
+          EInteger[] year = new EInteger[1];
+          CBORUtilities.BreakDownSecondsSinceEpoch(
+                  dec,
+                  year,
+                  lesserFields);
+          return PropertyMap.BuildUpDateTime(year[0], lesserFields);
       }
-      return StringToDateTime(obj.AsString());
+      throw new CBORException("Not tag 0 or 1");
     }
 
     public static java.util.Date StringToDateTime(String str) {
-      int[] dt = CBORUtilities.ParseAtomDateTimeString(str);
-      return PropertyMap.BuildUpDateTime(dt);
+      int[] lesserFields = new int[7];
+      EInteger[] year = new EInteger[1];
+      CBORUtilities.ParseAtomDateTimeString(str, year, lesserFields);
+      return PropertyMap.BuildUpDateTime(year[0], lesserFields);
     }
 
     public CBORObject ToCBORObject(java.util.Date obj) {
