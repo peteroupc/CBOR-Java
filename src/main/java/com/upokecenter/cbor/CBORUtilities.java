@@ -270,7 +270,7 @@ private CBORUtilities() {
         if (day.signum() <= 0) {
           int divResult = (month - 2) / 12;
           year = year.Add(EInteger.FromInt32(divResult));
-          month = ((month - 2) - 12 * divResult) + 1;
+          month = ((month - 2) - (12 * divResult)) + 1;
           dayArray = (year.Remainder(num4).signum() != 0 || (
                     year.Remainder(num100).signum() == 0 &&
              year.Remainder(num400).signum() != 0)) ? ValueNormalDays :
