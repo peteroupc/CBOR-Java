@@ -2,35 +2,51 @@
 
     public interface ICBORObjectConverter<T> extends ICBORConverter<T>
 
-Not documented yet.
+Interface implemented by classes that convert objects of arbitrary types to
+ and from CBOR objects.
 
 ## Methods
 
 * `T FromCBORObject​(CBORObject cbor)`<br>
- Not documented yet.
+ Converts a CBOR object to an object of a type supported by the implementing
+ class.
 
 ## Method Details
 
 ### FromCBORObject
     T FromCBORObject​(CBORObject cbor)
-Not documented yet.
+Converts a CBOR object to an object of a type supported by the implementing
+ class.
 
 **Parameters:**
 
-* <code>cbor</code> - The parameter <code>cbor</code> is not documented yet.
+* <code>cbor</code> - A CBOR object to convert.
 
 **Returns:**
 
-* The return value is not documented yet.
+* The converted object.
+
+**Throws:**
+
+* <code>CBORException</code> - An error occurred in the
+ conversion; for example, the conversion doesn't support the given
+ CBOR object.
 
 ### FromCBORObject
     T FromCBORObject​(CBORObject cbor)
-Not documented yet.
+Converts a CBOR object to an object of a type supported by the implementing
+ class.
 
 **Parameters:**
 
-* <code>cbor</code> - The parameter <code>cbor</code> is not documented yet.
+* <code>cbor</code> - A CBOR object to convert.
 
 **Returns:**
 
-* The return value is not documented yet.
+* The converted object.
+
+**Throws:**
+
+* <code>CBORException</code> - An error occurred in the
+ conversion; for example, the conversion doesn't support the given
+ CBOR object.

@@ -5,7 +5,8 @@ Interface implemented by classes that convert objects of arbitrary types to
  CBOR objects.
 
 * [com.upokecenter.cbor.ICBORObjectConverter&amp;lt;T&amp;gt;](com.upokecenter.cbor.ICBORObjectConverter.md) -
-Not documented yet.
+Interface implemented by classes that convert objects of arbitrary types to
+ and from CBOR objects.
 
 * [com.upokecenter.cbor.ICBORTag](com.upokecenter.cbor.ICBORTag.md) -
 Implemented by classes that validate CBOR objects belonging to a specific

@@ -135,10 +135,9 @@ private DataUtilities() {
      * byte-order mark (U + FEFF) at the beginning of the encoded byte
      * array.</p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
-     * method in Java to do this. For instance, <code>Encoding.UTF8</code> begins
-     * the encoded string with a byte-order mark, and <code>getBytes()</code>
-     * encodes text strings in an unspecified character encoding. Both
-     * behaviors can be undesirable.</p>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
+     * text strings in an unspecified character encoding. Both behaviors can
+     * be undesirable.</p>
      * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
@@ -158,10 +157,9 @@ private DataUtilities() {
      * byte-order mark (U + FEFF) at the beginning of the encoded byte
      * array.</p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
-     * method in Java to do this. For instance, <code>Encoding.UTF8</code> begins
-     * the encoded string with a byte-order mark, and <code>getBytes()</code>
-     * encodes text strings in an unspecified character encoding. Both
-     * behaviors can be undesirable.</p>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
+     * text strings in an unspecified character encoding. Both behaviors can
+     * be undesirable.</p>
      * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
