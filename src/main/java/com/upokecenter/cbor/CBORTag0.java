@@ -14,7 +14,8 @@ import com.upokecenter.numbers.*;
       int[] lesserFields = new int[7];
       EInteger[] year = new EInteger[1];
       PropertyMap.BreakDownDateTime(bi, year, lesserFields);
-      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
+      // TODO: Change to true in next major version
+      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields, false);
     }
 
     static void AddConverter() {
