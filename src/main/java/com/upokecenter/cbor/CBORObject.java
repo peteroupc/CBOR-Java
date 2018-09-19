@@ -259,33 +259,6 @@ import com.upokecenter.numbers.*;
      * untagged.
      * @return The last defined tag for this CBOR data item, or -1 if the item is
      * untagged.
-     * @deprecated Use MostInnerTag instead.
- */
-@Deprecated
-    public final BigInteger getInnermostTag() {
-        EInteger ei = this.getMostInnerTag();
-        String eis = ei.toString();
-        return BigInteger.fromString(eis);
-      }
-
-    /**
-     * Gets the outermost tag for this CBOR data item, or -1 if the item is
-     * untagged.
-     * @return The outermost tag for this CBOR data item, or -1 if the item is
-     * untagged.
-     * @deprecated Use MostOuterTag instead.
- */
-@Deprecated
-    public final BigInteger getOutermostTag() {
-        EInteger ei = this.getMostOuterTag();
-        return BigInteger.fromString(this.getMostOuterTag().toString());
-      }
-
-    /**
-     * Gets the last defined tag for this CBOR data item, or -1 if the item is
-     * untagged.
-     * @return The last defined tag for this CBOR data item, or -1 if the item is
-     * untagged.
      */
     public final EInteger getMostInnerTag() {
         if (!this.isTagged()) {
@@ -696,27 +669,6 @@ import com.upokecenter.numbers.*;
      * {@code handler} is null.
      * @throws IllegalArgumentException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
-     * @deprecated Use the EInteger version of this method.
- */
-@Deprecated
-    public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler) {
-      if (bigintTag == null) {
-        throw new NullPointerException("bigintTag");
-      }
-      if (handler == null) {
-        throw new NullPointerException("handler");
-      }
-      AddTagHandler(PropertyMap.FromLegacy(bigintTag), handler);
-    }
-
-    /**
-     * Registers an object that validates CBOR objects with new tags.
-     * @param bigintTag An arbitrary-precision integer.
-     * @param handler The parameter {@code handler} is an ICBORTag object.
-     * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
-     * {@code handler} is null.
-     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
-     * than 0 or greater than (2^64-1).
      */
     public static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
@@ -756,7 +708,7 @@ import com.upokecenter.numbers.*;
      * @throws java.lang.NullPointerException The parameter {@code data} is null.
      */
     public static CBORObject DecodeFromBytes(byte[] data) {
-      return DecodeFromBytes(data, new CBOREncodeOptions(true, true));
+      return DecodeFromBytes(data, CBOREncodeOptions.Default);
     }
 
     /**
@@ -863,7 +815,7 @@ try { if (ms != null) {
      * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
      */
     public static CBORObject FromJSONString(String str) {
-      return FromJSONString(str, new CBOREncodeOptions(true, true));
+      return FromJSONString(str, CBOREncodeOptions.Default);
     }
 
     /**
@@ -1025,18 +977,6 @@ try { if (ms != null) {
      * Generates a CBOR object from an arbitrary-precision integer.
      * @param bigintValue An arbitrary-precision value.
      * @return A CBOR number.
-     * @deprecated Use the EInteger version of this method.
- */
-@Deprecated
-    public static CBORObject FromObject(BigInteger bigintValue) {
-      return ((Object)bigintValue == (Object)null) ? CBORObject.Null :
-        FromObject(PropertyMap.FromLegacy(bigintValue));
-    }
-
-    /**
-     * Generates a CBOR object from an arbitrary-precision integer.
-     * @param bigintValue An arbitrary-precision value.
-     * @return A CBOR number.
      */
     public static CBORObject FromObject(EInteger bigintValue) {
       if ((Object)bigintValue == (Object)null) {
@@ -1049,19 +989,6 @@ try { if (ms != null) {
           bigintValue.ToInt64Checked()) : (new CBORObject(
         CBORObjectTypeBigInteger,
         bigintValue));
-    }
-
-    /**
-     * Generates a CBOR object from an arbitrary-precision binary floating-point
-     * number.
-     * @param bigValue An arbitrary-precision binary floating-point number.
-     * @return A CBOR number.
-     * @deprecated Use the EFloat version of this method instead.
- */
-@Deprecated
-    public static CBORObject FromObject(ExtendedFloat bigValue) {
-      return ((Object)bigValue == (Object)null) ? CBORObject.Null :
-        FromObject(PropertyMap.FromLegacy(bigValue));
     }
 
     /**
@@ -1088,19 +1015,6 @@ try { if (ms != null) {
         new CBORObject(
           CBORObjectTypeExtendedFloat,
           bigValue);
-    }
-
-    /**
-     * Generates a CBOR object from an arbitrary-precision binary floating-point
-     * number.
-     * @param bigValue An arbitrary-precision binary floating-point number.
-     * @return A CBOR number.
-     * @deprecated Use the ERational version of this method instead.
- */
-@Deprecated
-    public static CBORObject FromObject(ExtendedRational bigValue) {
-      return ((Object)bigValue == (Object)null) ? CBORObject.Null :
-        FromObject(PropertyMap.FromLegacy(bigValue));
     }
 
     /**
@@ -1149,18 +1063,6 @@ try { if (ms != null) {
         new CBORObject(
           CBORObjectTypeExtendedDecimal,
           otherValue);
-    }
-
-    /**
-     * Generates a CBOR object from a decimal number.
-     * @param otherValue An arbitrary-precision decimal number.
-     * @return A CBOR number.
-     * @deprecated Use the EDecimal version of this method instead.
- */
-@Deprecated
-    public static CBORObject FromObject(ExtendedDecimal otherValue) {
-      return ((Object)otherValue == (Object)null) ? CBORObject.Null :
-        FromObject(PropertyMap.FromLegacy(otherValue));
     }
 
     /**
@@ -1508,24 +1410,6 @@ try { if (ms != null) {
       if (erf != null) {
         return FromObject(erf);
       }
-
-      BigInteger bi = ((obj instanceof BigInteger) ? (BigInteger)obj : null);
-      if (bi != null) {
-        return FromObject(bi);
-      }
-      ExtendedDecimal df = ((obj instanceof ExtendedDecimal) ? (ExtendedDecimal)obj : null);
-      if (df != null) {
-        return FromObject(df);
-      }
-      ExtendedFloat bf = ((obj instanceof ExtendedFloat) ? (ExtendedFloat)obj : null);
-      if (bf != null) {
-        return FromObject(bf);
-      }
-      ExtendedRational rf = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);
-      if (rf != null) {
-        return FromObject(rf);
-      }
-
       if (obj instanceof Short) {
         return FromObject(((Short)obj).shortValue());
       }
@@ -1588,39 +1472,6 @@ try { if (ms != null) {
         objret.set(key.getKey(), CBORObject.FromObject(key.getValue(), options));
       }
       return objret;
-    }
-
-    /**
-     * Generates a CBOR object from an arbitrary object and gives the resulting
-     * object a tag.
-     * @param valueOb An arbitrary object. If the tag number is 2 or 3, this must
-     * be a byte string whose bytes represent an integer in little-endian
-     * byte order, and the value of the number is 1 minus the integer's
-     * value for tag 3. If the tag number is 4 or 5, this must be an array
-     * with two elements: the first must be an integer representing the
-     * exponent, and the second must be an integer representing a mantissa.
-     * @param bigintTag Tag number. The tag number 55799 can be used to mark a
-     * "self-described CBOR" object. This document does not attempt to list
-     * all CBOR tags and their meanings. An up-to-date list can be found at
-     * the CBOR Tags registry maintained by the Internet Assigned Numbers
-     * Authority (<i>iana.org/assignments/cbor-tags</i>).
-     * @return A CBOR object where the object {@code valueOb} is converted to a
-     * CBOR object and given the tag {@code bigintTag}.
-     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
-     * than 0 or greater than 2^64-1, or {@code valueOb} 's type is
-     * unsupported.
-     * @throws java.lang.NullPointerException The parameter {@code bigintTag} is
-     * null.
-     * @deprecated Use the EInteger version instead.
- */
-@Deprecated
-    public static CBORObject FromObjectAndTag(
-      Object valueOb,
-      BigInteger bigintTag) {
-      if (bigintTag == null) {
-        throw new NullPointerException("bigintTag");
-      }
-      return FromObjectAndTag(valueOb, PropertyMap.FromLegacy(bigintTag));
     }
 
     /**
@@ -1849,7 +1700,7 @@ try { if (ms != null) {
      * encoding or is not in JSON format.
      */
     public static CBORObject ReadJSON(InputStream stream) throws java.io.IOException {
-      return ReadJSON(stream, new CBOREncodeOptions(true, true));
+      return ReadJSON(stream, CBOREncodeOptions.Default);
     }
 
     /**
@@ -1942,11 +1793,7 @@ try { if (ms != null) {
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(String str, OutputStream stream) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      // TODO: Use CBOREncodeOptions.Default in future versions
-      Write(str, stream, new CBOREncodeOptions(true, true));
+      Write(str, stream, CBOREncodeOptions.Default);
     }
 
     /**
@@ -1981,34 +1828,6 @@ try { if (ms != null) {
           WriteStreamedString(str, stream);
         }
       }
-    }
-
-    /**
-     * Writes a binary floating-point number in CBOR format to a data stream as
-     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
-     * <li>If the value is negative zero, infinity, or NaN, converts the
-     * number to a <code>double</code> and writes that <code>double</code>. If negative
-     * zero should not be written this way, use the Plus method to convert
-     * the value beforehand.</li> <li>If the value has an exponent of zero,
-     * writes the value as an unsigned integer or signed integer if the
-     * number can fit either type or as a big integer otherwise.</li> <li>In
-     * all other cases, writes the value as a big float.</li></ul>
-     * @param bignum An arbitrary-precision binary float.
-     * @param stream A writable data stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     * @throws java.io.IOException An I/O error occurred.
-     * @deprecated Pass an EFloat to the Write method instead.
- */
-@Deprecated
-    public static void Write(ExtendedFloat bignum, OutputStream stream) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      if (bignum == null) {
-        stream.write(0xf6);
-        return;
-      }
-      Write(PropertyMap.FromLegacy(bignum), stream);
     }
 
     /**
@@ -2063,26 +1882,6 @@ try { if (ms != null) {
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
-     * @deprecated Pass an ERational to the Write method instead.
- */
-@Deprecated
-    public static void Write(ExtendedRational rational, OutputStream stream) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      if (rational == null) {
-        stream.write(0xf6);
-        return;
-      }
-      Write(PropertyMap.FromLegacy(rational), stream);
-    }
-
-    /**
-     * Writes a rational number in CBOR format to a data stream.
-     * @param rational An arbitrary-precision rational number.
-     * @param stream A writable data stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(ERational rational, OutputStream stream) throws java.io.IOException {
       if (stream == null) {
@@ -2105,34 +1904,6 @@ try { if (ms != null) {
       stream.write(0x82);  // array, length 2
       Write(rational.getNumerator(), stream);
       Write(rational.getDenominator(), stream);
-    }
-
-    /**
-     * Writes a decimal floating-point number in CBOR format to a data stream, as
-     * follows: <ul> <li>If the value is null, writes the byte 0xF6.</li>
-     * <li>If the value is negative zero, infinity, or NaN, converts the
-     * number to a <code>double</code> and writes that <code>double</code>. If negative
-     * zero should not be written this way, use the Plus method to convert
-     * the value beforehand.</li> <li>If the value has an exponent of zero,
-     * writes the value as an unsigned integer or signed integer if the
-     * number can fit either type or as a big integer otherwise.</li> <li>In
-     * all other cases, writes the value as a decimal number.</li></ul>
-     * @param bignum The arbitrary-precision decimal number to write. Can be null.
-     * @param stream InputStream to write to.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     * @throws java.io.IOException An I/O error occurred.
-     * @deprecated Pass an EDecimal to the Write method instead.
- */
-@Deprecated
-    public static void Write(ExtendedDecimal bignum, OutputStream stream) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      if (bignum == null) {
-        stream.write(0xf6);
-        return;
-      }
-      Write(PropertyMap.FromLegacy(bignum), stream);
     }
 
     /**
@@ -2179,26 +1950,6 @@ try { if (ms != null) {
         Write(bignum.getExponent(), stream);
         Write(bignum.getMantissa(), stream);
       }
-    }
-
-    /**
-     * Writes a big integer in CBOR format to a data stream.
-     * @param bigint Big integer to write. Can be null.
-     * @param stream A writable data stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
-     * @throws java.io.IOException An I/O error occurred.
-     * @deprecated Pass an EInteger to the Write method instead.
- */
-@Deprecated
-    public static void Write(BigInteger bigint, OutputStream stream) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      if ((Object)bigint == (Object)null) {
-        stream.write(0xf6);
-        return;
-      }
-      Write(PropertyMap.FromLegacy(bigint), stream);
     }
 
     /**
@@ -2483,8 +2234,7 @@ try { if (ms != null) {
      * @param stream A writable data stream.
      */
     public static void Write(Object objValue, OutputStream stream) throws java.io.IOException {
-      // TODO: Use CBOREncodeOptions.Default in future versions
-      Write(objValue, stream, new CBOREncodeOptions(true, true));
+      Write(objValue, stream, CBOREncodeOptions.Default);
     }
 
     /**
@@ -2717,27 +2467,6 @@ public static void Write(
      * including if this object is CBORObject.Null.
      * @throws java.lang.ArithmeticException This object's value is infinity or
      * not-a-number (NaN).
-     * @deprecated Use the AsEInteger method instead.
- */
-@Deprecated
-    public BigInteger AsBigInteger() {
-      ICBORNumber cn = NumberInterfaces[this.getItemType()];
-      if (cn == null) {
-        throw new IllegalStateException("Not a number type");
-      }
-      return BigInteger.fromBytes(
-        cn.AsEInteger(this.getThisItem()).ToBytes(true),
-        true);
-    }
-
-    /**
-     * Converts this object to an arbitrary-precision integer. Fractional values
-     * are truncated to an integer.
-     * @return The closest big integer to this object.
-     * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
-     * @throws java.lang.ArithmeticException This object's value is infinity or
-     * not-a-number (NaN).
      */
     public EInteger AsEInteger() {
       // TODO: Consider returning null if this object is null
@@ -2792,20 +2521,6 @@ public static void Write(
      * decimal number rounded to 34 digits.
      * @throws IllegalStateException This object's type is not a number type,
      * including if this object is CBORObject.Null.
-     * @deprecated Use AsEDecimal instead.
- */
-@Deprecated
-    public ExtendedDecimal AsExtendedDecimal() {
-      return ExtendedDecimal.FromString(this.AsEDecimal().toString());
-    }
-
-    /**
-     * Converts this object to a decimal number.
-     * @return A decimal number for this object's value. If this object is a
-     * rational number with a nonterminating decimal expansion, returns a
-     * decimal number rounded to 34 digits.
-     * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
      */
     public EDecimal AsEDecimal() {
       // TODO: Consider returning null if this object is null
@@ -2827,23 +2542,6 @@ public static void Write(
      * 113 bits.
      * @throws IllegalStateException This object's type is not a number type,
      * including if this object is CBORObject.Null.
-     * @deprecated Use AsEFloat instead.
- */
-@Deprecated
-    public ExtendedFloat AsExtendedFloat() {
-      return ExtendedFloat.FromString(this.AsEFloat().toString());
-    }
-
-    /**
-     * Converts this object to an arbitrary-precision binary floating point number.
-     * @return An arbitrary-precision binary floating point number for this
-     * object's value. Note that if this object is a decimal number with a
-     * fractional part, the conversion may lose information depending on the
-     * number. If this object is a rational number with a nonterminating
-     * binary expansion, returns a binary floating-point number rounded to
-     * 113 bits.
-     * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
      */
     public EFloat AsEFloat() {
       // TODO: Consider returning null if this object is null
@@ -2853,18 +2551,6 @@ public static void Write(
         throw new IllegalStateException("Not a number type");
       }
       return cn.AsExtendedFloat(this.getThisItem());
-    }
-
-    /**
-     * Converts this object to a rational number.
-     * @return A rational number for this object's value.
-     * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
-     * @deprecated Use AsERational instead.
- */
-@Deprecated
-    public ExtendedRational AsExtendedRational() {
-      return PropertyMap.ToLegacy(this.AsERational());
     }
 
     /**
@@ -3368,7 +3054,7 @@ public int compareTo(CBORObject other) {
      * @return A byte array in CBOR format.
      */
     public byte[] EncodeToBytes() {
-      return this.EncodeToBytes(new CBOREncodeOptions(true, true));
+      return this.EncodeToBytes(CBOREncodeOptions.Default);
     }
 
     /**
@@ -3640,24 +3326,6 @@ public boolean equals(CBORObject other) {
     /**
      * Gets a list of all tags, from outermost to innermost.
      * @return An array of tags, or the empty string if this object is untagged.
-     * @deprecated Use the GetAllTags method instead.
- */
-@Deprecated
-    public BigInteger[] GetTags() {
-      EInteger[] etags = this.GetAllTags();
-      if (etags.length == 0) {
-        return new BigInteger[0];
-      }
-      BigInteger[] bigret = new BigInteger[etags.length];
-      for (int i = 0; i < bigret.length; ++i) {
-        bigret[i] = PropertyMap.ToLegacy(etags[i]);
-      }
-      return bigret;
-    }
-
-    /**
-     * Gets a list of all tags, from outermost to innermost.
-     * @return An array of tags, or the empty string if this object is untagged.
      */
     public EInteger[] GetAllTags() {
       if (!this.isTagged()) {
@@ -3698,7 +3366,7 @@ public boolean equals(CBORObject other) {
      * Returns whether this object has a tag of the given number.
      * @param bigTagValue The tag value to search for.
      * @return {@code true} if this object has a tag of the given number;
-     * otherwise, {@code false}.
+     * otherwise, {@code false} .
      * @throws java.lang.NullPointerException BigTagValue is null.
      * @throws IllegalArgumentException BigTagValue is less than 0.
      */
@@ -3736,25 +3404,6 @@ public boolean equals(CBORObject other) {
         }
         obj = (CBORObject)obj.itemValue;
       }
-    }
-
-    /**
-     * Returns whether this object has a tag of the given number.
-     * @param bigTagValue The tag value to search for.
-     * @return {@code true} if this object has a tag of the given number;
-     * otherwise, {@code false}.
-     * @throws java.lang.NullPointerException BigTagValue is null.
-     * @throws IllegalArgumentException BigTagValue is less than 0.
-     * @deprecated Use the EInteger version of this method.
- */
-@Deprecated
-    public boolean HasTag(BigInteger bigTagValue) {
-      if (bigTagValue == null) {
-        throw new NullPointerException("bigTagValue");
-      }
-      return this.HasTag(EInteger.FromBytes(
-        bigTagValue.toBytes(true),
-        true));
     }
 
     /**
@@ -3913,7 +3562,6 @@ public boolean equals(CBORObject other) {
      * @throws IllegalStateException The object is not an array or map.
      */
     public boolean Remove(Object obj) {
-      // TODO: Convert null to CBORObject.Null in next major version
       return this.Remove(CBORObject.FromObject(obj));
     }
 
@@ -4634,7 +4282,7 @@ public boolean equals(CBORObject other) {
      * @throws java.io.IOException An I/O error occurred.
      */
     public void WriteTo(OutputStream stream) throws java.io.IOException {
-      this.WriteTo(stream, new CBOREncodeOptions(true, true));
+      this.WriteTo(stream, CBOREncodeOptions.Default);
     }
 
     /**

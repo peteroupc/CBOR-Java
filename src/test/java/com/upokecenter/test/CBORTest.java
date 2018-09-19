@@ -66,7 +66,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
         EInteger bi = RandomObjects.RandomEInteger(r);
-        CBORTestCommon.AssertSer(
+        CBORTestCommon.AssertJSONSer(
           CBORObject.FromObject(bi),
           bi.toString());
         if (!(CBORObject.FromObject(bi).isIntegral())) {
@@ -89,7 +89,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
       for (int i = 0; i < ranges.length; i += 2) {
         EInteger bigintTemp = ranges[i];
         while (true) {
-          CBORTestCommon.AssertSer(
+          CBORTestCommon.AssertJSONSer(
             CBORObject.FromObject(bigintTemp),
             bigintTemp.toString());
           if (bigintTemp.equals(ranges[i + 1])) {
@@ -124,7 +124,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
     @Test
     public void TestByte() {
       for (int i = 0; i <= 255; ++i) {
-        CBORTestCommon.AssertSer(
+        CBORTestCommon.AssertJSONSer(
           CBORObject.FromObject((byte)i),
           TestCommon.IntToString(i));
       }
@@ -132,9 +132,14 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
 
     @Test
     public void TestByteArray() {
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(new byte[] { 0x20, 0x78 }),
-        "h'2078'");
+CBORObject co = CBORObject.FromObject(
+        new byte[] { 0x20, 0x78 });
+      EInteger[] tags = co.GetAllTags();
+      Assert.assertEquals(0, tags.length);
+      byte[] bytes = co.GetByteString();
+      Assert.assertEquals(2, bytes.length);
+      Assert.assertEquals(0x20, bytes[0]);
+      Assert.assertEquals(0x78, bytes[1]);
     }
 
     @Test
@@ -557,15 +562,17 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
         (!CBORObject.FromObject(Double.POSITIVE_INFINITY).IsPositiveInfinity()) {
         Assert.fail("Not positive infinity");
       }
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Double.POSITIVE_INFINITY),
-        "Infinity");
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Double.NEGATIVE_INFINITY),
-        "-Infinity");
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Double.NaN),
-        "NaN");
+if (!(CBORObject.FromObject(Double.POSITIVE_INFINITY).AsEDecimal()
+        .IsPositiveInfinity())) {
+ Assert.fail();
+ }
+if (!(CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsEDecimal()
+        .IsNegativeInfinity())) {
+ Assert.fail();
+ }
+      if (!(CBORObject.FromObject(Double.NaN).AsEDecimal().IsNaN())) {
+ Assert.fail();
+ }
       CBORObject oldobj = null;
       for (int i = -65539; i <= 65539; ++i) {
         CBORObject o = CBORObject.FromObject((double)i);
@@ -578,7 +585,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
         if (!(o.isIntegral())) {
  Assert.fail();
  }
-        CBORTestCommon.AssertSer(
+        CBORTestCommon.AssertJSONSer(
           o,
           TestCommon.IntToString(i));
         if (oldobj != null) {
@@ -627,17 +634,19 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
 
     @Test
     public void TestFloat() {
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Float.POSITIVE_INFINITY),
-        "Infinity");
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Float.NEGATIVE_INFINITY),
-        "-Infinity");
-      CBORTestCommon.AssertSer(
-        CBORObject.FromObject(Float.NaN),
-        "NaN");
+if (!(CBORObject.FromObject(Float.POSITIVE_INFINITY).AsEDecimal()
+        .IsPositiveInfinity())) {
+ Assert.fail();
+ }
+if (!(CBORObject.FromObject(Float.NEGATIVE_INFINITY).AsEDecimal()
+        .IsNegativeInfinity())) {
+ Assert.fail();
+ }
+      if (!(CBORObject.FromObject(Float.NaN).AsEDecimal().IsNaN())) {
+ Assert.fail();
+ }
       for (int i = -65539; i <= 65539; ++i) {
-        CBORTestCommon.AssertSer(
+        CBORTestCommon.AssertJSONSer(
           CBORObject.FromObject((float)i),
           TestCommon.IntToString(i));
       }
@@ -820,7 +829,7 @@ try { if (ms2b != null) {
           if (!(CBORObject.FromObject(j).CanTruncatedIntFitInInt64())) {
  Assert.fail();
  }
-          CBORTestCommon.AssertSer(
+          CBORTestCommon.AssertJSONSer(
             CBORObject.FromObject(j),
             TestCommon.LongToString(j));
           Assert.assertEquals(
@@ -828,7 +837,7 @@ try { if (ms2b != null) {
             CBORObject.FromObject(EInteger.FromInt64(j)));
           CBORObject obj = CBORObject.FromJSONString(
             "[" + TestCommon.LongToString(j) + "]");
-          CBORTestCommon.AssertSer(
+          CBORTestCommon.AssertJSONSer(
             obj,
             "[" + TestCommon.LongToString(j) + "]");
           if (j == ranges[i + 1]) {
@@ -1095,7 +1104,7 @@ try { if (ms != null) {
     @Test
     public void TestShort() {
       for (int i = Short.MIN_VALUE; i <= Short.MAX_VALUE; ++i) {
-        CBORTestCommon.AssertSer(
+        CBORTestCommon.AssertJSONSer(
           CBORObject.FromObject((short)i),
           TestCommon.IntToString(i));
       }
@@ -1103,13 +1112,13 @@ try { if (ms != null) {
 
     @Test
     public void TestSimpleValues() {
-      CBORTestCommon.AssertSer(
+      CBORTestCommon.AssertJSONSer(
         CBORObject.FromObject(true),
         "true");
-      CBORTestCommon.AssertSer(
+      CBORTestCommon.AssertJSONSer(
         CBORObject.FromObject(false),
         "false");
-      CBORTestCommon.AssertSer(
+      CBORTestCommon.AssertJSONSer(
         CBORObject.FromObject((Object)null),
         "null");
     }
@@ -1246,10 +1255,11 @@ try { if (ms != null) {
             String errmsg = "obj tag doesn't match: " + obj;
             Assert.assertEquals(errmsg, bigintTemp, obj.getMostInnerTag());
           }
-          CBORTestCommon.AssertSer(
-            obj,
-            bigintTemp.toString() + "(0)");
-          if (!bigintTemp.equals(maxuint)) {
+          tags = obj.GetAllTags();
+          Assert.assertEquals(1, tags.length);
+          Assert.assertEquals(bigintTemp, obj.getMostOuterTag());
+          Assert.assertEquals(bigintTemp, obj.getMostInnerTag());
+ Assert.assertEquals(0, obj.AsInt32()); if (!bigintTemp.equals(maxuint)) {
             EInteger bigintNew = bigintNext;
             if (bigintNew.equals(EInteger.FromString("264")) ||
                 bigintNew.equals(EInteger.FromString("265"))) {
@@ -1280,11 +1290,11 @@ try { if (ms != null) {
                 Assert.assertEquals(stringTemp, bigintTemp, obj2.getMostInnerTag());
               }
             }
-            String str = bigintNext.toString() + "(" +
-              bigintTemp.toString() + "(0))";
-            CBORTestCommon.AssertSer(
-              obj2,
-              str);
+EInteger[] tags2 = obj2.GetAllTags();
+            Assert.assertEquals(2, tags2.length);
+            Assert.assertEquals(bigintNext, obj2.getMostOuterTag());
+            Assert.assertEquals(bigintTemp, obj2.getMostInnerTag());
+            Assert.assertEquals(0, obj2.AsInt32());
           }
           if (bigintTemp.equals(ranges[i + 1])) {
             break;

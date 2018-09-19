@@ -219,6 +219,12 @@ try { if (ms != null) {
     }
 
     public static CBORObject TestSucceedingJSON(String str) {
+      return TestSucceedingJSON(str, null);
+    }
+
+    public static CBORObject TestSucceedingJSON(
+  String str,
+  CBOREncodeOptions options) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
       try {
         {
@@ -226,10 +232,13 @@ java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-          CBORObject obj = CBORObject.ReadJSON(ms);
+          CBORObject obj = options == null ? CBORObject.ReadJSON(ms) :
+                    CBORObject.ReadJSON(ms, options);
+          CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
+                    CBORObject.FromJSONString(str, options);
           TestCommon.CompareTestEqualAndConsistent(
             obj,
-            CBORObject.FromJSONString(str));
+            obj2);
           CBORTestCommon.AssertRoundTrip(obj);
           return obj;
 }
@@ -240,7 +249,7 @@ try { if (ms != null) {
 }
 }
       } catch (Exception ex) {
-        Assert.fail(ex.toString());
+        Assert.fail(ex.toString() + "\n" + str);
         throw new IllegalStateException("", ex);
       }
     }
@@ -2121,20 +2130,20 @@ try { if (ms != null) {
           if (bytes.length != ranges[i + 2]) {
             Assert.assertEquals(TestCommon.IntToString(j), ranges[i + 2], bytes.length);
           }
-bytes = CBORObject.FromObject(j).EncodeToBytes(new
-  CBOREncodeOptions(false, false, true));
+          bytes = CBORObject.FromObject(j).EncodeToBytes(new
+            CBOREncodeOptions(false, false, true));
           if (bytes.length != ranges[i + 2]) {
             Assert.assertEquals(TestCommon.IntToString(j), ranges[i + 2], bytes.length);
           }
         }
       }
-String veryLongString = TestCommon.Repeat("x", 10000);
-byte[] stringBytes = CBORObject.FromObject(veryLongString)
-.EncodeToBytes(new CBOREncodeOptions(false, false, true));
-Assert.assertEquals(10003, stringBytes.length);
-stringBytes = CBORObject.FromObject(veryLongString)
-.EncodeToBytes(new CBOREncodeOptions(false, true));
-Assert.assertEquals(10003, stringBytes.length);
+      String veryLongString = TestCommon.Repeat("x", 10000);
+      byte[] stringBytes = CBORObject.FromObject(veryLongString)
+      .EncodeToBytes(new CBOREncodeOptions(false, false, true));
+      Assert.assertEquals(10003, stringBytes.length);
+      stringBytes = CBORObject.FromObject(veryLongString)
+      .EncodeToBytes(new CBOREncodeOptions(false, true));
+      Assert.assertEquals(10003, stringBytes.length);
 
       for (int i = 0; i < bigRanges.length; i += 2) {
         EInteger bj = EInteger.FromString(bigRanges[i]);
@@ -2144,8 +2153,8 @@ Assert.assertEquals(10003, stringBytes.length);
           if (bytes.length != bigSizes[i / 2]) {
             Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
           }
-bytes = CBORObject.FromObject(bj)
-.EncodeToBytes(new CBOREncodeOptions(false, false, true));
+          bytes = CBORObject.FromObject(bj)
+          .EncodeToBytes(new CBOREncodeOptions(false, false, true));
           if (bytes.length != bigSizes[i / 2]) {
             Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
           }
@@ -2261,7 +2270,7 @@ bytes = CBORObject.FromObject(bj)
 
     @Test
     public void TestFalse() {
-      CBORTestCommon.AssertSer(CBORObject.False, "false");
+      CBORTestCommon.AssertJSONSer(CBORObject.False, "false");
       Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
     }
 
@@ -2312,9 +2321,10 @@ bytes = CBORObject.FromObject(bj)
       TestFailingJSON("{\"a\":1,\"a\":2}", ValueNoDuplicateKeys);
       String aba = "{\"a\":1,\"b\":3,\"a\":2}";
       TestFailingJSON(aba, ValueNoDuplicateKeys);
-      cbor = TestSucceedingJSON(aba);
+      cbor = TestSucceedingJSON(aba, new CBOREncodeOptions(false, true));
       Assert.assertEquals(CBORObject.FromObject(2), cbor.get("a"));
-      cbor = TestSucceedingJSON("{\"a\":1,\"a\":4}");
+      aba = "{\"a\":1,\"a\":4}";
+      cbor = TestSucceedingJSON(aba, new CBOREncodeOptions(false, true));
       Assert.assertEquals(CBORObject.FromObject(4), cbor.get("a"));
       cbor = TestSucceedingJSON("\"\\t\"");
       {
@@ -2568,10 +2578,10 @@ private final PODClass propVarpropvalue;
       co = CBORObject.False;
       Assert.assertEquals(false, co.ToObject(boolean.class));
       co = CBORObject.FromObject("hello world");
-String stringTemp = (String)co.ToObject(String.class);
-Assert.assertEquals(
-  "hello world",
-  stringTemp);
+      String stringTemp = (String)co.ToObject(String.class);
+      Assert.assertEquals(
+        "hello world",
+        stringTemp);
       co = CBORObject.NewArray();
       co.Add("hello");
       co.Add("world");
@@ -2598,14 +2608,16 @@ Assert.assertEquals(
       if (!(intDict.containsKey("b"))) {
  Assert.fail();
  }
-if (intDict.get("a") != 1) {
-  { Assert.fail();
-}
-}
-if (intDict.get("b") != 2) {
-  { Assert.fail();
-}
-}
+      if (intDict.get("a") != 1) {
+        {
+          Assert.fail();
+        }
+      }
+      if (intDict.get("b") != 2) {
+        {
+          Assert.fail();
+        }
+      }
       Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, iintDict.size());
@@ -2615,21 +2627,21 @@ if (intDict.get("b") != 2) {
       if (!(iintDict.containsKey("b"))) {
  Assert.fail();
  }
-if (iintDict.get("a") != 1) {
-  Assert.fail();
-}
-if (iintDict.get("b") != 2) {
-  Assert.fail();
-}
+      if (iintDict.get("a") != 1) {
+        Assert.fail();
+      }
+      if (iintDict.get("b") != 2) {
+        Assert.fail();
+      }
       co = CBORObject.FromObjectAndTag(
        "2000-01-01T00:00:00Z",
        0);
       try {
- co.ToObject(java.util.Date.class);
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        co.ToObject(java.util.Date.class);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     @Test(timeout = 5000)
@@ -3373,57 +3385,57 @@ a major version change.
 
     @Test
     public void TestKeys() {
-CBORObject co;
-try {
-co = CBORObject.True;
+      CBORObject co;
+      try {
+        co = CBORObject.True;
         this.Sink(co.getKeys());
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
         this.Sink(CBORObject.FromObject(0).getKeys());
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
         this.Sink(CBORObject.FromObject("String").getKeys());
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
         this.Sink(CBORObject.NewArray().getKeys());
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- this.Sink(CBORObject.FromObject(
-          new byte[] { 0 }).getKeys());
-Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        this.Sink(CBORObject.FromObject(
+                 new byte[] { 0 }).getKeys());
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       if (CBORObject.NewMap().getKeys() == null) {
- Assert.fail();
- }
+        Assert.fail();
+      }
     }
     @Test
     public void TestMultiply() {
@@ -5632,7 +5644,7 @@ try { if (msjson != null) {
 
     @Test
     public void TestTrue() {
-      CBORTestCommon.AssertSer(CBORObject.True, "true");
+      CBORTestCommon.AssertJSONSer(CBORObject.True, "true");
       Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
     }
 
