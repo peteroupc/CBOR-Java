@@ -3913,6 +3913,9 @@ public boolean equals(CBORObject other) {
      * @throws IllegalStateException The object is not an array or map.
      */
     public boolean Remove(Object obj) {
+      if (obj == null) {
+        throw new NullPointerException("obj");
+      }
       // TODO: Convert null to CBORObject.Null in next major version
       return this.Remove(CBORObject.FromObject(obj));
     }
