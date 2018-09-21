@@ -121,12 +121,14 @@
  Finds the sum of two CBOR numbers.
 * `static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag,
              ICBORTag handler)`<br>
- Registers an object that validates CBOR objects with new tags.
+ Deprecated.
+May be removed in the future without replacement.
+ May be removed in the future without replacement.
 * `static void AddTagHandler​(BigInteger bigintTag,
              ICBORTag handler)`<br>
  Deprecated.
-Use the EInteger version of this method.
- Use the EInteger version of this method.
+May be removed in the future without replacement.
+ May be removed in the future without replacement.
 * `BigInteger AsBigInteger()`<br>
  Deprecated.
 Use the AsEInteger method instead.
@@ -956,7 +958,10 @@ Finds the sum of two CBOR numbers.
 ### AddTagHandler
     @Deprecated public static void AddTagHandler​(BigInteger bigintTag, ICBORTag handler)
 Deprecated.
-<div class='deprecationComment'>Use the EInteger version of this method.</div>
+<div class='deprecationComment'>May be removed in the future without replacement. Not as useful as
+ ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+ Moreover, registering tag handlers as this method does may tie them to the
+ lifetime of the application.</div>
 
 **Parameters:**
 
@@ -973,8 +978,12 @@ Deprecated.
  than 0 or greater than (2^64-1).
 
 ### AddTagHandler
-    public static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag, ICBORTag handler)
-Registers an object that validates CBOR objects with new tags.
+    @Deprecated public static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag, ICBORTag handler)
+Deprecated.
+<div class='deprecationComment'>May be removed in the future without replacement. Not as useful as
+ ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+ Moreover, registering tag handlers as this method does may tie them to the
+ lifetime of the application.</div>
 
 **Parameters:**
 

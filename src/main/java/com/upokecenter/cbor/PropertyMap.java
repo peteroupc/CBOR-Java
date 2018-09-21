@@ -341,6 +341,16 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
    ((ParameterizedType)t) : null;
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
+
+string typeName=rawType.getName();
+if(name!=null &&
+   (name.startsWith("org.springframework.") ||
+   name.startsWith("java.io.") ||
+   name.startsWith("java.util.logging.") ||
+   name.startsWith("com.mchange.v2.c3p0."))){
+  throw new NotSupportedException("Type "+name+" not supported");
+}
+
 if(objThis.getType()==CBORType.Array){
  if(rawType!=null &&
     rawType.equals(List.class) || rawType.equals(Iterable.class) ||

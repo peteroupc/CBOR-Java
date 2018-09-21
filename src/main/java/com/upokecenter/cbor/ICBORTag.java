@@ -10,7 +10,10 @@ at: http://peteroupc.github.io/
     /**
      * Implemented by classes that validate CBOR objects belonging to a specific
      * tag.
-     */
+     * @deprecated May be removed in the future without replacement. Not as useful as
+* ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+ */
+@Deprecated
   public interface ICBORTag
   {
     /**

@@ -183,6 +183,10 @@ import com.upokecenter.numbers.*;
       null, new CBORExtendedFloat(), new CBORExtendedRational()
     };
 
+/**
+ * @deprecated
+ */
+@Deprecated
     private static final Map<EInteger, ICBORTag>
       ValueTagHandlers = new HashMap<EInteger, ICBORTag>();
 
@@ -696,7 +700,10 @@ import com.upokecenter.numbers.*;
      * {@code handler} is null.
      * @throws IllegalArgumentException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
-     * @deprecated Use the EInteger version of this method.
+     * @deprecated May be removed in the future without replacement. Not as useful as
+* ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+* Moreover, registering tag handlers as this method does may tie them to the
+* lifetime of the application.
  */
 @Deprecated
     public static void AddTagHandler(BigInteger bigintTag, ICBORTag handler) {
@@ -717,7 +724,12 @@ import com.upokecenter.numbers.*;
      * {@code handler} is null.
      * @throws IllegalArgumentException The parameter {@code bigintTag} is less
      * than 0 or greater than (2^64-1).
-     */
+     * @deprecated May be removed in the future without replacement. Not as useful as
+* ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+* Moreover, registering tag handlers as this method does may tie them to the
+* lifetime of the application.
+ */
+@Deprecated
     public static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
       if (bigintTag == null) {
         throw new NullPointerException("bigintTag");
@@ -4737,6 +4749,10 @@ public boolean equals(CBORObject other) {
       }
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     static ICBORTag FindTagConverter(EInteger bigintTag) {
       if (TagHandlersEmpty()) {
         AddTagHandler(EInteger.FromInt64(2), new CBORTag2());
@@ -5092,6 +5108,10 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       return ef.toString();
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     private static ICBORTag FindTagConverter(int tag) {
       return FindTagConverter(EInteger.FromInt32(tag));
     }
