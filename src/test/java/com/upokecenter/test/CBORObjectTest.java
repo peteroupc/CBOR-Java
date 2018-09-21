@@ -110,6 +110,18 @@ import com.upokecenter.numbers.*;
       String p1,
       String p2,
       String p3) {
+if (o.ContainsKey("PrivatePropA")) {
+ Assert.fail();
+ }
+if (o.ContainsKey("privatePropA")) {
+ Assert.fail();
+ }
+if (o.ContainsKey("StaticPropA")) {
+ Assert.fail();
+ }
+if (o.ContainsKey("staticPropA")) {
+ Assert.fail();
+ }
       Assert.assertEquals(CBORType.Map, o.getType());
       if (!o.ContainsKey(p1)) {
         Assert.fail("Expected " + p1 + " to exist: " + o.toString());
@@ -2534,7 +2546,13 @@ try { if (ms != null) {
         this.setPropA(0);
         this.setPropB(1);
         this.setPropC(false);
+        this.setPrivatePropA(2);
       }
+      private int getPrivatePropA();
+
+      public static int getStaticPropA() {
+ return 0;
+}
 
       public final int getPropA() { return propVarpropa; }
 public final void setPropA(int value) { propVarpropa = value; }
@@ -2562,6 +2580,18 @@ private final PODClass propVarpropvalue;
     public void TestToObject() {
       PODClass ao = new PODClass();
       CBORObject co = CBORObject.FromObject(ao);
+if (co.ContainsKey("PrivatePropA")) {
+ Assert.fail();
+ }
+if (co.ContainsKey("privatePropA")) {
+ Assert.fail();
+ }
+if (co.ContainsKey("staticPropA")) {
+ Assert.fail();
+ }
+if (co.ContainsKey("StaticPropA")) {
+ Assert.fail();
+ }
       co.set("propA",CBORObject.FromObject(999));
       ao = (PODClass)co.ToObject(PODClass.class);
       Assert.assertEquals(999, ao.getPropA());

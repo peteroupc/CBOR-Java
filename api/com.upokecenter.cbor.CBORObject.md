@@ -199,8 +199,9 @@
 * `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal and have the
  same type.
-* `static CBORObject FromJSONString​(String str) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+* `static CBORObject FromJSONString​(String str)`<br>
+ Generates a CBOR object from a text string in JavaScript Object Notation
+ (JSON) format.
 * `static CBORObject FromJSONString​(String str,
               CBOREncodeOptions options)`<br>
  Generates a CBOR object from a text string in JavaScript Object Notation
@@ -950,14 +951,9 @@ Divides a CBORObject object by the value of a CBORObject object.
 
 ### FromJSONString
     public static CBORObject FromJSONString​(String str)
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major
- version.</b></p> <p>Generates a CBOR object from a text string in
- JavaScript Object Notation (JSON) format.</p> <p>If a JSON object has
- the same key, only the last given value will be used for each
- duplicated key.</p>
+<p>Generates a CBOR object from a text string in JavaScript Object Notation
+ (JSON) format.</p> <p>If a JSON object has duplicate keys, a
+ CBORException is thrown. This is a change in version 4.0.</p>
 
 **Parameters:**
 
@@ -967,7 +963,7 @@ Divides a CBORObject object by the value of a CBORObject object.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 **Throws:**
 
@@ -979,8 +975,7 @@ Divides a CBORObject object by the value of a CBORObject object.
     public static CBORObject FromJSONString​(String str, CBOREncodeOptions options)
 Generates a CBOR object from a text string in JavaScript Object Notation
  (JSON) format, using the specified options to control the decoding
- process. <p>By default, if a JSON object has the same key, only the
- last given value will be used for each duplicated key.</p>
+ process.
 
 **Parameters:**
 
@@ -988,7 +983,7 @@ Generates a CBOR object from a text string in JavaScript Object Notation
  JSON object and not multiple objects. The string may not begin with a
  byte-order mark (U + FEFF).
 
-* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
+* <code>options</code> - Specifies options to control the decoding process.
 
 **Returns:**
 
@@ -996,7 +991,8 @@ Generates a CBOR object from a text string in JavaScript Object Notation
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>NullPointerException</code> - The parameter <code>str</code> or <code>
+ options</code> is null.
 
 * <code>CBORException</code> - The string is not in JSON format.
 
@@ -1031,39 +1027,40 @@ Generates a CBOR object from a text string in JavaScript Object Notation
  the IsTrue method. </p> <p>In the .NET version, if the object is a
  CBOR map and the type "T" is not specially handled by this method, an
  object of the given type is created, then this method checks the CBOR
- object for public writable properties. For each method found, if its
- name (with the "Is" prefix deleted and then converted to camel case)
- matches the name of a key in this CBOR map, that property's setter is
- invoked and the corresponding value is passed to that method. </p>
- <p>In the Java version, if the object is a CBOR map and the type "T"
- is not specially handled by this method, an object of the given type
- is created, then this method checks the CBOR object for public
- methods starting with the word "set" (followed by an upper-case A to
- Z) that take a single parameter. For each method found, if its name
- (with the starting word "set" deleted and then converted to camel
- case) matches the name of a key in this CBOR map, that method is
- invoked and the corresponding value is passed to that method. </p>
- <p>REMARK: The behavior of this method is likely to change in the
- final version 3.4 of this library as well as in the next major
- version (4.0). There are certain inconsistencies between the ToObject
- method and the FromObject method as well as between the .NET and Java
- versions of FromObject. For one thing, java.util.Date/Date objects are
- converted differently between the two versions -- either as CBOR maps
- with their "get" properties (Java) or as tag-0 strings (.NET) -- this
- difference has to remain for backward compatibility with version 3.0.
- For another thing, the treatment of properties/getters starting with
- "Is" is subtly inconsistent between the .NET and Java versions of
- FromObject, especially when using certain PODOptions. A certain
- consistency between .NET and Java and between FromObject and ToObject
- are sought for version 4.0. It is also hoped that-- </p> <ul> <li>the
- ToObject method will support deserializing to objects consisting of
- fields and not getters ("getX()" methods), both in .NET and in Java,
- and </li> <li>both FromObject and ToObject will be better designed,
- in version 4.0, so that backward-compatible improvements are easier
- to make. </li> </ul><p><p>Java offers no easy way to express a
- generic type, at least none as easy as C#'s <code>typeof</code> operator.
- The following example, written in Java, is a way to specify that the
- return value will be an ArrayList of String objects. </p> <pre>Type
+ object for public, nonstatic writable properties. For each method
+ found, if its name (with the "Is" prefix deleted and then converted
+ to camel case) matches the name of a key in this CBOR map, that
+ property's setter is invoked and the corresponding value is passed to
+ that method. </p> <p>In the Java version, if the object is a CBOR map
+ and the type "T" is not specially handled by this method, an object
+ of the given type is created, then this method checks the CBOR object
+ for public, nonstatic methods starting with the word "set" (followed
+ by an upper-case A to Z) that take a single parameter. For each
+ method found, if its name (with the starting word "set" deleted and
+ then converted to camel case) matches the name of a key in this CBOR
+ map, that method is invoked and the corresponding value is passed to
+ that method. </p> <p>REMARK: The behavior of this method is likely to
+ change in the final version 3.4 of this library as well as in the
+ next major version (4.0). There are certain inconsistencies between
+ the ToObject method and the FromObject method as well as between the
+ .NET and Java versions of FromObject. For one thing, java.util.Date/Date
+ objects are converted differently between the two versions -- either
+ as CBOR maps with their "get" properties (Java) or as tag-0 strings
+ (.NET) -- this difference has to remain for backward compatibility
+ with version 3.0. For another thing, the treatment of
+ properties/getters starting with "Is" is subtly inconsistent between
+ the .NET and Java versions of FromObject, especially when using
+ certain PODOptions. A certain consistency between .NET and Java and
+ between FromObject and ToObject are sought for version 4.0. It is
+ also hoped that-- </p> <ul> <li>the ToObject method will support
+ deserializing to objects consisting of fields and not getters
+ ("getX()" methods), both in .NET and in Java, and </li> <li>both
+ FromObject and ToObject will be better designed, in version 4.0, so
+ that backward-compatible improvements are easier to make. </li>
+ </ul><p><p>Java offers no easy way to express a generic type, at
+ least none as easy as C#'s <code>typeof</code> operator. The following
+ example, written in Java, is a way to specify that the return value
+ will be an ArrayList of String objects. </p> <pre>Type
  arrayListString = new ParameterizedType() { public Type[]
  getActualTypeArguments() { /* Contains one type parameter, String &#x2a;&#x2f;
  return new Type[] { String.class }; } public Type getRawType() { /* Raw
@@ -1422,32 +1419,33 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  and maps. (See also the other overloads to the FromObject
  method.)</p> <p>In the .NET version, if the object is a type not
  specially handled by this method, returns a CBOR map with the values
- of each of its read/write properties (or all properties in the case
- of a compiler-generated type). Properties are converted to their
- camel-case names (meaning if a name starts with A to Z, that letter
- is lower-cased). If the property name begins with the word "Is"
- followed by an upper-case A to Z, the "Is" prefix is deleted from the
- name. (Passing the appropriate "options" parameter can be done to
- control whether the "Is" prefix is removed and whether a camel-case
- conversion happens.) Also, .NET <code>Enum</code> objects will be converted
- to their integer values, and a multidimensional array is converted to
- an array of arrays.</p> <p>In the Java version, if the object is a
- type not specially handled by this method, this method checks the
- CBOR object for methods starting with the word "get" or "is" (either
- word followed by an upper-case A to Z) that take no parameters, and
- returns a CBOR map with one entry for each such method found. For
- each method found, the starting word "get" or "is" is deleted from
- its name, and the name is converted to camel case (meaning if a name
- starts with A to Z, that letter is lower-cased). (Passing the
- appropriate "options" parameter can be done to control whether the
- "is" prefix is removed and whether a camel-case conversion happens.)
- Also, Java <code>Enum</code> objects will be converted to the result of
- their <code>name</code> method.</p> <p>If the input is a byte array, the
- byte array is copied to a new byte array. (This method can't be used
- to decode CBOR data from a byte array; for that, use the
- DecodeFromBytes method instead.).</p> <p>If the input is a text
- string, a CBOR text string object will be created. To create a CBOR
- byte string object from a text string, see the example given in <see cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/>.</p>
+ of each of its public, nonstatic properties (limited to read/write
+ properties except in the case of a compiler-generated type).
+ Properties are converted to their camel-case names (meaning if a name
+ starts with A to Z, that letter is lower-cased). If the property name
+ begins with the word "Is" followed by an upper-case A to Z, the "Is"
+ prefix is deleted from the name. (Passing the appropriate "options"
+ parameter can be done to control whether the "Is" prefix is removed
+ and whether a camel-case conversion happens.) Also, .NET <code>Enum</code>
+ objects will be converted to their integer values, and a
+ multidimensional array is converted to an array of arrays.</p> <p>In
+ the Java version, if the object is a type not specially handled by
+ this method, this method checks the CBOR object for public, nonstatic
+ methods starting with the word "get" or "is" (either word followed by
+ an upper-case A to Z) that take no parameters, and returns a CBOR map
+ with one entry for each such method found. For each method found, the
+ starting word "get" or "is" is deleted from its name, and the name is
+ converted to camel case (meaning if a name starts with A to Z, that
+ letter is lower-cased). (Passing the appropriate "options" parameter
+ can be done to control whether the "is" prefix is removed and whether
+ a camel-case conversion happens.) Also, Java <code>Enum</code> objects will
+ be converted to the result of their <code>name</code> method.</p> <p>If the
+ input is a byte array, the byte array is copied to a new byte array.
+ (This method can't be used to decode CBOR data from a byte array; for
+ that, use the DecodeFromBytes method instead.).</p> <p>If the input
+ is a text string, a CBOR text string object will be created. To
+ create a CBOR byte string object from a text string, see the example
+ given in <see cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/>.</p>
  <p>REMARK: The behavior of this method is likely to change in the
  next major version (4.0). There are certain inconsistencies between
  the ToObject method and the FromObject method as well as between the

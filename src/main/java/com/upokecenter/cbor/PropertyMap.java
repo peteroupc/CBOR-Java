@@ -22,9 +22,6 @@ import com.upokecenter.numbers.*;
  * Description of PropertyMap.
  */
 class PropertyMap {
-// TODO: Remove in next major version
-static final boolean DateTimeCompatHack = false;
-
   private static class MethodData {
     public String name;
     public Method method;
@@ -78,7 +75,8 @@ static final boolean DateTimeCompatHack = false;
       }
       ret = new ArrayList<MethodData>();
       for(Method pi : t.getMethods()) {
-        if(pi.getParameterTypes().length == (setters ? 1 : 0)) {
+        if(pi.getParameterTypes().length == (setters ? 1 : 0) &&
+          (pi.getModifiers() & Modifier.STATIC)==0) {
           String methodName = pi.getName();
           boolean includeMethod=false;
           if(setters)includeMethod=MethodData.IsSetMethod(methodName);
@@ -278,6 +276,14 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
    ((ParameterizedType)t) : null;
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
+string typeName=rawType.getName();
+if(name!=null &&
+   (name.startsWith("org.springframework.") ||
+   name.startsWith("java.io.") ||
+   name.startsWith("java.util.logging.") ||
+   name.startsWith("com.mchange.v2.c3p0."))){
+  throw new NotSupportedException("Type "+name+" not supported");
+}
 if(objThis.getType()==CBORType.Array){
  if(rawType!=null &&
     rawType.equals(List.class) || rawType.equals(Iterable.class) ||
