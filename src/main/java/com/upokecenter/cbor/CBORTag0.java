@@ -14,7 +14,8 @@ import com.upokecenter.numbers.*;
       int[] lesserFields = new int[7];
       EInteger[] year = new EInteger[1];
       PropertyMap.BreakDownDateTime(bi, year, lesserFields);
-      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
+      // TODO: Change to true in next major version
+      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields, false);
     }
 
     static void AddConverter() {
@@ -23,7 +24,9 @@ import com.upokecenter.numbers.*;
       // the next major version for backward compatibility.
       // However, since ToObject is new, we can convert
       // to Date in the .NET and Java versions
+      if (PropertyMap.DateTimeCompatHack) {
         CBORObject.AddConverter(java.util.Date.class, new CBORTag0());
+      }
     }
 
     public CBORTypeFilter GetTypeFilter() {

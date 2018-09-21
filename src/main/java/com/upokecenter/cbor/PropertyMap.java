@@ -261,6 +261,9 @@ class PropertyMap {
       if (t.equals(Double.class) || t.equals(double.class)) {
         return objThis.AsDouble();
       }
+      if (t.equals(Float.class) || t.equals(float.class)) {
+        return objThis.AsSingle();
+      }
       if (t.equals(Boolean.class) || t.equals(boolean.class)) {
         return objThis.isTrue();
       }
@@ -282,7 +285,7 @@ if(name!=null &&
    name.startsWith("java.io.") ||
    name.startsWith("java.util.logging.") ||
    name.startsWith("com.mchange.v2.c3p0."))){
-  throw new NotSupportedException("Type "+name+" not supported");
+  throw new UnsupportedOperationException("Type "+name+" not supported");
 }
 if(objThis.getType()==CBORType.Array){
  if(rawType!=null &&
