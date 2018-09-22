@@ -1179,4 +1179,24 @@ Assert.assertEquals(objectTemp, objectTemp2);
      "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
+
+    public final class CPOD {
+      public final String getAa() { return propVaraa; }
+public final void setAa(String value) { propVaraa = value; }
+private String propVaraa;
+
+      private final String getBb() { return propVarbb; }
+private final void setBb(String value) { propVarbb = value; }
+private String propVarbb;
+    }
+    @Test
+    public void TestCPOD() {
+      CPOD m = new CPOD();
+      m.setAa("Test");
+      CBORObject cbor = CBORObject.FromObject(m);
+      if (cbor.ContainsKey("bb")) {
+ Assert.fail(cbor.toString());
+ }
+      Assert.assertEquals(cbor.toString(),"Test",cbor.get("aa"));
+    }
   }

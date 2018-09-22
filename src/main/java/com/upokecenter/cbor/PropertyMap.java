@@ -38,6 +38,16 @@ class PropertyMap {
           return (methodName.startsWith("is") && methodName.length() > 2 &&
               methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
     }
+    public static String GetGetMethod(String methodName){
+      return (IsSetMethod(methodName)) ?
+          "get"+methodName.substring(3) :
+          methodName;
+    }
+    public static String GetIsMethod(String methodName){
+      return (IsSetMethod(methodName)) ?
+          "set"+methodName.substring(3) :
+          methodName;
+    }
     public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
           String methodName = this.name;
           if(MethodData.IsGetMethod(methodName) ||
@@ -74,20 +84,35 @@ class PropertyMap {
         return ret;
       }
       ret = new ArrayList<MethodData>();
+      Map<String,Method> propMap=new HashMap<String,Method>();
       for(Method pi : t.getMethods()) {
-        if(pi.getParameterTypes().length == (setters ? 1 : 0) &&
-          (pi.getModifiers() & Modifier.STATIC)==0) {
+        if((pi.getModifiers() & Modifier.STATIC)==0) {
           String methodName = pi.getName();
-          boolean includeMethod=false;
-          if(setters)includeMethod=MethodData.IsSetMethod(methodName);
-          else includeMethod=MethodData.IsGetMethod(methodName) ||
-                 MethodData.IsIsMethod(methodName);
-          if(includeMethod){
-            MethodData md = new MethodData();
-            md.name = methodName;
-            md.method = pi;
-            ret.add(md);
+          if(MethodData.IsGetMethod(methodName) ||
+                 MethodData.IsIsMethod(methodName) ||
+                 MethodData.IsSetMethod(methodName)){
+            propMap.put(methodName,pi);
           }
+        }
+      }
+      for(String key : propMap.keySet()){
+        if(!setters && (MethodData.IsGetMethod(key) ||
+           MethodData.IsIsMethod(key))){
+            MethodData md = new MethodData();
+            md.name = key;
+            md.method = propMap.get(key);
+            if(md.method.getParameterTypes().length == 0){
+              ret.add(md);
+            }
+        } else if(setters && MethodData.IsSetMethod(key) && (
+            propMap.containsKey(MethodData.GetGetMethod(key)) ||
+            propMap.containsKey(MethodData.GetIsMethod(key)) )){
+            MethodData md = new MethodData();
+            md.name = key;
+            md.method = propMap.get(key);
+            if(md.method.getParameterTypes().length == 1){
+              ret.add(md);
+            }
         }
       }
       (setters ? setterPropertyList : propertyLists).put(t, ret);
@@ -101,11 +126,11 @@ class PropertyMap {
    * @param arr a {@link java.lang.Object} object.
    * @return a {@link com.upokecenter.cbor.CBORObject} object.
    */
-  public static CBORObject FromArray(final Object arr, PODOptions options) {
+  public static CBORObject FromArray(final Object arr, PODOptions options, int depth) {
    int length = Array.getLength(arr);
    CBORObject obj = CBORObject.NewArray();
    for(int i = 0;i < length;i++) {
-    obj.Add(CBORObject.FromObject(Array.get(arr,i), options));
+    obj.Add(CBORObject.FromObject(Array.get(arr,i), options, depth+1));
    }
    return obj;
   }
@@ -131,13 +156,7 @@ class PropertyMap {
          boolean removeIsPrefix,
          boolean useCamelCase) {
       try {
-      Object o = null;
-      for (Constructor ci : t.getConstructors()) {
-          int nump = ci.getParameterCount();
-          o = ci.newInstance(new Object[nump]);
-          break;
-      }
-      if(o==null){ return t.newInstance(); }
+      Object o = t.newInstance();
       Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
       for (Map.Entry<String, CBORObject> kv : keysValues) {
         String name = kv.getKey();
@@ -166,6 +185,9 @@ class PropertyMap {
        final Object o, boolean removeIsPrefix, boolean useCamelCase) {
     List<Map.Entry<String, Object>> ret =
         new ArrayList<Map.Entry<String, Object>>();
+    if(IsProblematicForSerialization(o.getClass())){
+       return ret;
+    }
     try {
       for(MethodData key : GetPropertyList(o.getClass())) {
         ret.add(new AbstractMap.SimpleEntry<String, Object>(
@@ -245,6 +267,47 @@ class PropertyMap {
       return bytes2;
   }
 
+private static boolean IsProblematicForSerialization(Class<?> cls){
+String name=cls.getName();
+if((name.startsWith("java.")||
+    name.startsWith("javax.")||
+    name.startsWith("com.sun."))){
+  boolean serializable = false;
+  for(Class<?> iface : cls.getInterfaces()){
+    if(iface.equals(java.io.Serializable.class)){
+      serializable = true;
+      break;
+    }
+  }
+  if(!serializable){
+    return true;
+  }
+}
+if(Type.class.isAssignableFrom(cls) ||
+       Method.class.isAssignableFrom(cls) ||
+       Field.class.isAssignableFrom(cls) ||
+       Constructor.class.isAssignableFrom(cls)){
+      return true;
+}
+System.err.println(name);
+if((name.startsWith("org.springframework.") ||
+   name.startsWith("java.io.") ||
+   name.startsWith("java.lang.annotation.") ||
+   name.startsWith("java.security.SignedObject") ||
+   name.startsWith("com.sun.rowset") ||
+   name.startsWith("com.sun.org.apache.") ||
+   name.startsWith("org.apache.xalan.") ||
+   name.startsWith("org.apache.xpath.") ||
+   name.startsWith("org.codehaus.groovy.") ||
+   name.startsWith("com.sun.jndi.") ||
+   name.startsWith("groovy.util.Expando") ||
+   name.startsWith("java.util.logging.") ||
+   name.startsWith("com.mchange.v2.c3p0."))){
+   return true;
+}
+return false;
+}
+
   public static Object TypeToObject(CBORObject objThis, Type t) {
       if (t.equals(java.util.Date.class)) {
         return new CBORTag0().FromCBORObject(objThis);
@@ -279,15 +342,8 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
    ((ParameterizedType)t) : null;
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
-string typeName=rawType.getName();
-if(name!=null &&
-   (name.startsWith("org.springframework.") ||
-   name.startsWith("java.io.") ||
-   name.startsWith("java.util.logging.") ||
-   name.startsWith("com.mchange.v2.c3p0."))){
-  throw new UnsupportedOperationException("Type "+name+" not supported");
-}
 if(objThis.getType()==CBORType.Array){
+ //TODO: Support arrays
  if(rawType!=null &&
     rawType.equals(List.class) || rawType.equals(Iterable.class) ||
     rawType.equals(java.util.Collection.class) || rawType.equals(ArrayList.class)){
@@ -330,6 +386,14 @@ if(objThis.getType()==CBORType.Map){
 if(rawType==null || !(rawType instanceof Class<?>)){
   throw new UnsupportedOperationException();
 }
+String name=((Class<?>)rawType).getName();
+if(name==null ){
+  throw new UnsupportedOperationException();
+}
+if(IsProblematicForSerialization((Class<?>)rawType)){
+  throw new UnsupportedOperationException(name);
+}
+
         ArrayList<Map.Entry<String, CBORObject>> values =
           new ArrayList<Map.Entry<String, CBORObject>>();
         for (MethodData method : GetPropertyList((Class<?>)rawType,true)) {
