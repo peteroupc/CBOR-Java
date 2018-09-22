@@ -384,14 +384,14 @@ if(objThis.getType()==CBORType.Map){
   }
  }
 if(rawType==null || !(rawType instanceof Class<?>)){
-  throw new UnsupportedOperationException();
+  throw new CBORException();
 }
 String name=((Class<?>)rawType).getName();
 if(name==null ){
-  throw new UnsupportedOperationException();
+  throw new CBORException();
 }
 if(IsProblematicForSerialization((Class<?>)rawType)){
-  throw new UnsupportedOperationException(name);
+  throw new CBORException(name);
 }
 
         ArrayList<Map.Entry<String, CBORObject>> values =
@@ -413,7 +413,7 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
     true,
     true);
 }
-       throw new UnsupportedOperationException();
+       throw new CBORException();
     }
 
    public static void BreakDownDateTime(java.util.Date bi,

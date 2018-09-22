@@ -112,16 +112,9 @@
    Object valueOb)`<br>
  Adds a new key and its value to this CBOR map, or adds the value if the
  key doesn't exist.
-* `static <T> void AddConverter​(Type type,
-            ICBORConverter<T> converter)`<br>
- Registers an object that converts objects of a given type to CBOR objects
- (called a CBOR converter).
 * `static CBORObject Addition​(CBORObject first,
         CBORObject second)`<br>
  Finds the sum of two CBOR numbers.
-* `static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag,
-             ICBORTag handler)`<br>
- Registers an object that validates CBOR objects with new tags.
 * `boolean AsBoolean()`<br>
  Returns false if this object is False, Null, or Undefined; otherwise, true.
 * `byte AsByte()`<br>
@@ -244,6 +237,11 @@
  Generates a CBOR object from a rational number.
 * `static CBORObject FromObject​(Object obj)`<br>
  Generates a CBORObject from an arbitrary object.
+* `static CBORObject FromObject​(Object obj,
+          CBORTypeMapper mapper,
+          PODOptions options)`<br>
+ Generates a CBORObject from an arbitrary object, using the given options
+ to control how certain objects are converted to CBOR objects.
 * `static CBORObject FromObject​(Object obj,
           PODOptions options)`<br>
  Generates a CBORObject from an arbitrary object, using the given options
@@ -806,31 +804,6 @@ Gets the value of a CBOR object in this map, using a string as the key.
 
 * <code>IllegalStateException</code> - This object is not a map.
 
-### AddConverter
-    public static <T> void AddConverter​(Type type, ICBORConverter<T> converter)
-Registers an object that converts objects of a given type to CBOR objects
- (called a CBOR converter).
-
-**Type Parameters:**
-
-* <code>T</code> - Must be the same as the "type" parameter.
-
-**Parameters:**
-
-* <code>type</code> - A Type object specifying the type that the converter converts to
- CBOR objects.
-
-* <code>converter</code> - The parameter <code>converter</code> is an ICBORConverter
- object.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>type</code> or <code>
- converter</code> is null.
-
-* <code>IllegalArgumentException</code> - "Converter doesn't contain a proper
- ToCBORObject method".
-
 ### Addition
     public static CBORObject Addition​(CBORObject first, CBORObject second)
 Finds the sum of two CBOR numbers.
@@ -849,24 +822,6 @@ Finds the sum of two CBOR numbers.
 
 * <code>IllegalArgumentException</code> - Either or both operands are not numbers (as
  opposed to Not-a-Number, NaN).
-
-### AddTagHandler
-    public static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag, ICBORTag handler)
-Registers an object that validates CBOR objects with new tags.
-
-**Parameters:**
-
-* <code>bigintTag</code> - An arbitrary-precision integer.
-
-* <code>handler</code> - The parameter <code>handler</code> is an ICBORTag object.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>bigintTag</code> or
- <code>handler</code> is null.
-
-* <code>IllegalArgumentException</code> - The parameter <code>bigintTag</code> is less
- than 0 or greater than (2^64-1).
 
 ### DecodeFromBytes
     public static CBORObject DecodeFromBytes​(byte[] data)
@@ -1019,21 +974,25 @@ Generates a CBOR object from a text string in JavaScript Object Notation
  with tag 0, converts that text string to a java.util.Date and returns that
  java.util.Date. </p> <p>If the type "T" is Boolean, returns the result of
  the IsTrue method. </p> <p>In the .NET version, if the object is a
- CBOR map and the type "T" is not specially handled by this method, an
- object of the given type is created, then this method checks the CBOR
- object for public, nonstatic writable properties. For each method
- found, if its name (with the "Is" prefix deleted and then converted
- to camel case) matches the name of a key in this CBOR map, that
- property's setter is invoked and the corresponding value is passed to
- that method. </p> <p>In the Java version, if the object is a CBOR map
- and the type "T" is not specially handled by this method, an object
- of the given type is created, then this method checks the CBOR object
- for public, nonstatic methods starting with the word "set" (followed
- by an upper-case A to Z) that take a single parameter. For each
- method found, if its name (with the starting word "set" deleted and
+ CBOR map, if the type "T" is not specially handled by this method,
+ and if that type has a zero-argument constructor (default or
+ otherwise), an object of the given type is created, then this method
+ checks the CBOR object for public, nonstatic writable properties. For
+ each property found, if its name (with the "Is" prefix deleted and
  then converted to camel case) matches the name of a key in this CBOR
- map, that method is invoked and the corresponding value is passed to
- that method. </p> <p>REMARK: The behavior of this method is likely to
+ map, and if that property has a getter, that property's setter is
+ invoked and the corresponding value is passed to that method. </p>
+ <p>In the Java version, if the object is a CBOR map, if the type "T"
+ is not specially handled by this method, and if that type has a
+ zero-argument constructor (default or otherwise), an object of the
+ given type is created, then this method checks the CBOR object for
+ public, nonstatic methods starting with the word "set" (followed by
+ an upper-case A to Z) that take a single parameter. For each method
+ found, if its name (with the starting word "set" deleted and then
+ converted to camel case) matches the name of a key in this CBOR map,
+ and if it has a corresponding getter method that takes no parameters,
+ that method is invoked and the corresponding value is passed to that
+ method. </p> <p>REMARK: The behavior of this method is likely to
  change in the final version 3.4 of this library as well as in the
  next major version (4.0). There are certain inconsistencies between
  the ToObject method and the FromObject method as well as between the
@@ -1406,6 +1365,82 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 
 * <code>options</code> - An object containing options to control how certain objects
  are converted to CBOR objects.
+
+**Returns:**
+
+* A CBOR object corresponding to the given object. Returns
+ CBORObject.Null if the object is null.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>options</code> is null.
+
+### FromObject
+    public static CBORObject FromObject​(Object obj, CBORTypeMapper mapper, PODOptions options)
+<p>Generates a CBORObject from an arbitrary object, using the given options
+ to control how certain objects are converted to CBOR objects. The
+ following types are specially handled by this method: null; primitive
+ types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
+ <code>EInteger</code>, and <code>ERational</code> classes in the new <code>PeterO.Numbers</code>
+ library (in .NET) or the <code>com.github.peteroupc/numbers</code>
+ artifact (in Java); the legacy <code>ExtendedDecimal</code>,
+ <code>ExtendedFloat</code>, <code>BigInteger</code>, and <code>ExtendedRational</code>
+ classes in this library; arrays; enumerations (<code>Enum</code> objects);
+ and maps. (See also the other overloads to the FromObject
+ method.)</p> <p>In the .NET version, if the object is a type not
+ specially handled by this method, returns a CBOR map with the values
+ of each of its public, nonstatic properties (limited to read/write
+ properties except in the case of a compiler-generated type).
+ Properties are converted to their camel-case names (meaning if a name
+ starts with A to Z, that letter is lower-cased). If the property name
+ begins with the word "Is" followed by an upper-case A to Z, the "Is"
+ prefix is deleted from the name. (Passing the appropriate "options"
+ parameter can be done to control whether the "Is" prefix is removed
+ and whether a camel-case conversion happens.) Also, .NET <code>Enum</code>
+ objects will be converted to their integer values, and a
+ multidimensional array is converted to an array of arrays.</p> <p>In
+ the Java version, if the object is a type not specially handled by
+ this method, this method checks the CBOR object for public, nonstatic
+ methods starting with the word "get" or "is" (either word followed by
+ an upper-case A to Z) that take no parameters, and returns a CBOR map
+ with one entry for each such method found. For each method found, the
+ starting word "get" or "is" is deleted from its name, and the name is
+ converted to camel case (meaning if a name starts with A to Z, that
+ letter is lower-cased). (Passing the appropriate "options" parameter
+ can be done to control whether the "is" prefix is removed and whether
+ a camel-case conversion happens.) Also, Java <code>Enum</code> objects will
+ be converted to the result of their <code>name</code> method.</p> <p>If the
+ input is a byte array, the byte array is copied to a new byte array.
+ (This method can't be used to decode CBOR data from a byte array; for
+ that, use the DecodeFromBytes method instead.).</p> <p>If the input
+ is a text string, a CBOR text string object will be created. To
+ create a CBOR byte string object from a text string, see the example
+ given in <see cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</p>
+ <p>REMARK: The behavior of this method is likely to change in the
+ next major version (4.0). There are certain inconsistencies between
+ the ToObject method and the FromObject method as well as between the
+ .NET and Java versions of FromObject. For one thing, java.util.Date/Date
+ objects are converted differently between the two versions -- either
+ as CBOR maps with their "get" properties (Java) or as tag-0 strings
+ (.NET) -- this difference has to remain for backward compatibility
+ with version 3.0. For another thing, the treatment of
+ properties/getters starting with "Is" is subtly inconsistent between
+ the .NET and Java versions of FromObject, especially when using
+ certain PODOptions. A certain consistency between .NET and Java and
+ between FromObject and ToObject are sought for version 4.0. It is
+ also hoped that--</p> <ul> <li>the ToObject method will support
+ deserializing to objects consisting of fields and not getters
+ ("getX()" methods), both in .NET and in Java, and</li> <li>both
+ FromObject and ToObject will be better designed, in version 4.0, so
+ that backward-compatible improvements are easier to make.</li></ul>
+
+**Parameters:**
+
+* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+
+* <code>mapper</code> - The parameter <code>mapper</code> is not documented yet.
+
+* <code>options</code> - The parameter <code>options</code> is not documented yet.
 
 **Returns:**
 

@@ -173,18 +173,12 @@ import com.upokecenter.numbers.*;
 
     private static final int StreamedStringBufferLength = 4096;
 
-    private static final Map<Object, ConverterInfo>
-      ValueConverters = new HashMap<Object, ConverterInfo>();
-
     private static final ICBORNumber[] NumberInterfaces = {
       new CBORInteger(), new CBOREInteger(), null, null,
       null, null, null, new CBORSingle(),
       new CBORDouble(), new CBORExtendedDecimal(),
       null, new CBORExtendedFloat(), new CBORExtendedRational()
     };
-
-    private static final Map<EInteger, ICBORTag>
-      ValueTagHandlers = new HashMap<EInteger, ICBORTag>();
 
     private static final EInteger UInt64MaxValue =
       (EInteger.FromInt32(1).ShiftLeft(64)).Subtract(EInteger.FromInt64(1));
@@ -615,41 +609,6 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Registers an object that converts objects of a given type to CBOR objects
-     * (called a CBOR converter).
-     * @param type A Type object specifying the type that the converter converts to
-     * CBOR objects.
-     * @param converter The parameter {@code converter} is an ICBORConverter
-     * object.
-     * @param <T> Must be the same as the "type" parameter.
-     * @throws java.lang.NullPointerException The parameter {@code type} or {@code
-     * converter} is null.
-     * @throws IllegalArgumentException "Converter doesn't contain a proper
-     * ToCBORObject method".
-     */
-    public static <T> void AddConverter(java.lang.reflect.Type type, ICBORConverter<T> converter) {
-      if (type == null) {
-        throw new NullPointerException("type");
-      }
-      if (converter == null) {
-        throw new NullPointerException("converter");
-      }
-      ConverterInfo ci = new CBORObject.ConverterInfo();
-      ci.setConverter(converter);
-      ci.setToObject(PropertyMap.FindOneArgumentMethod(
-        converter,
-        "ToCBORObject",
-        type));
-      if (ci.getToObject() == null) {
-        throw new IllegalArgumentException(
-          "Converter doesn't contain a proper ToCBORObject method");
-      }
-      synchronized (ValueConverters) {
-        ValueConverters.put(type, ci);
-      }
-    }
-
-    /**
      * Finds the sum of two CBOR numbers.
      * @param first The parameter {@code first} is a CBOR object.
      * @param second The parameter {@code second} is a CBOR object.
@@ -659,36 +618,6 @@ import com.upokecenter.numbers.*;
      */
     public static CBORObject Addition(CBORObject first, CBORObject second) {
       return CBORObjectMath.Addition(first, second);
-    }
-
-    /**
-     * Registers an object that validates CBOR objects with new tags.
-     * @param bigintTag An arbitrary-precision integer.
-     * @param handler The parameter {@code handler} is an ICBORTag object.
-     * @throws java.lang.NullPointerException The parameter {@code bigintTag} or
-     * {@code handler} is null.
-     * @throws IllegalArgumentException The parameter {@code bigintTag} is less
-     * than 0 or greater than (2^64-1).
-     */
-    public static void AddTagHandler(EInteger bigintTag, ICBORTag handler) {
-      if (bigintTag == null) {
-        throw new NullPointerException("bigintTag");
-      }
-      if (handler == null) {
-        throw new NullPointerException("handler");
-      }
-      if (bigintTag.signum() < 0) {
-        throw new IllegalArgumentException("bigintTag.signum() (" +
-                    bigintTag.signum() + ") is less than 0");
-      }
-      if (bigintTag.GetSignedBitLength() > 64) {
-        throw new IllegalArgumentException("bigintTag.bitLength (" +
-                    (long)bigintTag.GetSignedBitLength() + ") is more than " +
-                    "64");
-      }
-      synchronized (ValueTagHandlers) {
-        ValueTagHandlers.put(bigintTag, handler);
-      }
     }
 
     /**
@@ -880,21 +809,25 @@ try { if (ms != null) {
      * with tag 0, converts that text string to a java.util.Date and returns that
      * java.util.Date. </p> <p>If the type "T" is Boolean, returns the result of
      * the IsTrue method. </p> <p>In the .NET version, if the object is a
-     * CBOR map and the type "T" is not specially handled by this method, an
-     * object of the given type is created, then this method checks the CBOR
-     * object for public, nonstatic writable properties. For each method
-     * found, if its name (with the "Is" prefix deleted and then converted
-     * to camel case) matches the name of a key in this CBOR map, that
-     * property's setter is invoked and the corresponding value is passed to
-     * that method. </p> <p>In the Java version, if the object is a CBOR map
-     * and the type "T" is not specially handled by this method, an object
-     * of the given type is created, then this method checks the CBOR object
-     * for public, nonstatic methods starting with the word "set" (followed
-     * by an upper-case A to Z) that take a single parameter. For each
-     * method found, if its name (with the starting word "set" deleted and
+     * CBOR map, if the type "T" is not specially handled by this method,
+     * and if that type has a zero-argument constructor (default or
+     * otherwise), an object of the given type is created, then this method
+     * checks the CBOR object for public, nonstatic writable properties. For
+     * each property found, if its name (with the "Is" prefix deleted and
      * then converted to camel case) matches the name of a key in this CBOR
-     * map, that method is invoked and the corresponding value is passed to
-     * that method. </p> <p>REMARK: The behavior of this method is likely to
+     * map, and if that property has a getter, that property's setter is
+     * invoked and the corresponding value is passed to that method. </p>
+     * <p>In the Java version, if the object is a CBOR map, if the type "T"
+     * is not specially handled by this method, and if that type has a
+     * zero-argument constructor (default or otherwise), an object of the
+     * given type is created, then this method checks the CBOR object for
+     * public, nonstatic methods starting with the word "set" (followed by
+     * an upper-case A to Z) that take a single parameter. For each method
+     * found, if its name (with the starting word "set" deleted and then
+     * converted to camel case) matches the name of a key in this CBOR map,
+     * and if it has a corresponding getter method that takes no parameters,
+     * that method is invoked and the corresponding value is passed to that
+     * method. </p> <p>REMARK: The behavior of this method is likely to
      * change in the final version 3.4 of this library as well as in the
      * next major version (4.0). There are certain inconsistencies between
      * the ToObject method and the FromObject method as well as between the
@@ -1222,7 +1155,6 @@ try { if (ms != null) {
       }
       List<CBORObject> list = new ArrayList<CBORObject>();
       for (long i : array) {
-        // System.out.println(i);
         list.add(FromObject(i));
       }
       return new CBORObject(CBORObjectTypeArray, list);
@@ -1309,11 +1241,90 @@ try { if (ms != null) {
     public static CBORObject FromObject(
   Object obj,
   PODOptions options) {
-      return FromObject(obj, options, 0);
+      return FromObject(obj, options, null, 0);
     }
+
+    /**
+     * <p>Generates a CBORObject from an arbitrary object, using the given options
+     * to control how certain objects are converted to CBOR objects. The
+     * following types are specially handled by this method: null; primitive
+     * types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
+     * <code>EInteger</code>, and <code>ERational</code> classes in the new <a
+  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
+     * library (in .NET) or the <a
+  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
+     * artifact (in Java); the legacy <code>ExtendedDecimal</code>,
+     * <code>ExtendedFloat</code>, <code>BigInteger</code>, and <code>ExtendedRational</code>
+     * classes in this library; arrays; enumerations (<code>Enum</code> objects);
+     * and maps. (See also the other overloads to the FromObject
+     * method.)</p> <p>In the .NET version, if the object is a type not
+     * specially handled by this method, returns a CBOR map with the values
+     * of each of its public, nonstatic properties (limited to read/write
+     * properties except in the case of a compiler-generated type).
+     * Properties are converted to their camel-case names (meaning if a name
+     * starts with A to Z, that letter is lower-cased). If the property name
+     * begins with the word "Is" followed by an upper-case A to Z, the "Is"
+     * prefix is deleted from the name. (Passing the appropriate "options"
+     * parameter can be done to control whether the "Is" prefix is removed
+     * and whether a camel-case conversion happens.) Also, .NET <code>Enum</code>
+     * objects will be converted to their integer values, and a
+     * multidimensional array is converted to an array of arrays.</p> <p>In
+     * the Java version, if the object is a type not specially handled by
+     * this method, this method checks the CBOR object for public, nonstatic
+     * methods starting with the word "get" or "is" (either word followed by
+     * an upper-case A to Z) that take no parameters, and returns a CBOR map
+     * with one entry for each such method found. For each method found, the
+     * starting word "get" or "is" is deleted from its name, and the name is
+     * converted to camel case (meaning if a name starts with A to Z, that
+     * letter is lower-cased). (Passing the appropriate "options" parameter
+     * can be done to control whether the "is" prefix is removed and whether
+     * a camel-case conversion happens.) Also, Java <code>Enum</code> objects will
+     * be converted to the result of their <code>name</code> method.</p> <p>If the
+     * input is a byte array, the byte array is copied to a new byte array.
+     * (This method can't be used to decode CBOR data from a byte array; for
+     * that, use the DecodeFromBytes method instead.).</p> <p>If the input
+     * is a text string, a CBOR text string object will be created. To
+     * create a CBOR byte string object from a text string, see the example
+     * given in <see
+     * cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</p>
+     * <p>REMARK: The behavior of this method is likely to change in the
+     * next major version (4.0). There are certain inconsistencies between
+     * the ToObject method and the FromObject method as well as between the
+     * .NET and Java versions of FromObject. For one thing, java.util.Date/Date
+     * objects are converted differently between the two versions -- either
+     * as CBOR maps with their "get" properties (Java) or as tag-0 strings
+     * (.NET) -- this difference has to remain for backward compatibility
+     * with version 3.0. For another thing, the treatment of
+     * properties/getters starting with "Is" is subtly inconsistent between
+     * the .NET and Java versions of FromObject, especially when using
+     * certain PODOptions. A certain consistency between .NET and Java and
+     * between FromObject and ToObject are sought for version 4.0. It is
+     * also hoped that--</p> <ul> <li>the ToObject method will support
+     * deserializing to objects consisting of fields and not getters
+     * ("getX()" methods), both in .NET and in Java, and</li> <li>both
+     * FromObject and ToObject will be better designed, in version 4.0, so
+     * that backward-compatible improvements are easier to make.</li></ul>
+     * @param obj The parameter {@code obj} is not documented yet.
+     * @param mapper The parameter {@code mapper} is not documented yet.
+     * @param options The parameter {@code options} is not documented yet.
+     * @return A CBOR object corresponding to the given object. Returns
+     * CBORObject.Null if the object is null.
+     * @throws java.lang.NullPointerException The parameter {@code options} is null.
+     */
+    public static CBORObject FromObject(
+  Object obj,
+  CBORTypeMapper mapper,
+  PODOptions options) {
+      if (mapper == null) {
+  throw new NullPointerException("mapper");
+}
+      return FromObject(obj, options, mapper, 0);
+    }
+
     static CBORObject FromObject(
   Object obj,
   PODOptions options,
+  CBORTypeMapper mapper,
   int depth) {
       if (options == null) {
         throw new NullPointerException("options");
@@ -1387,32 +1398,57 @@ try { if (ms != null) {
         for (Object keyPair : objdic.entrySet()) {
           Map.Entry<?, ?>
             kvp = (Map.Entry<?, ?>)keyPair;
-        CBORObject objKey = CBORObject.FromObject(kvp.getKey(), options, depth +
-            1);
-          objret.set(objKey, CBORObject.FromObject(kvp.getValue(), options, depth + 1));
+    CBORObject objKey = CBORObject.FromObject(
+  kvp.getKey(),
+  options,
+  mapper,
+  depth + 1);
+ objret.set(objKey, CBORObject.FromObject(
+  kvp.getValue(),
+  options,
+  mapper,
+  depth + 1));
         }
         return objret;
       }
       if (obj.getClass().isArray()) {
-        return PropertyMap.FromArray(obj, options, depth);
+        return PropertyMap.FromArray(obj, options, mapper, depth);
       }
       if (obj instanceof Iterable<?>) {
         objret = CBORObject.NewArray();
         for (Object element : (Iterable<?>)obj) {
-          objret.Add(CBORObject.FromObject(element, options, depth + 1));
+        objret.Add(
+  CBORObject.FromObject(
+  element,
+  options,
+  mapper,
+  depth + 1));
         }
         return objret;
       }
-      objret = ConvertWithConverter(obj);
-      if (objret != null) {
-        return objret;
+      if (mapper != null) {
+        objret = mapper.ConvertWithConverter(obj);
+        if (objret != null) {
+          return objret;
+        }
+      }
+
+      if (obj instanceof java.net.URI) {
+        return new CBORUriConverter().ToCBORObject((java.net.URI)obj);
+      }
+      if (obj instanceof java.util.UUID) {
+        return new CBORUuidConverter().ToCBORObject((java.util.UUID)obj);
       }
       objret = CBORObject.NewMap();
       for (Map.Entry<String, Object> key : PropertyMap.GetProperties(
                  obj,
                  options.getRemoveIsPrefix(),
                  options.getUseCamelCase())) {
-        objret.set(key.getKey(), CBORObject.FromObject(key.getValue(), options, depth + 1));
+objret.set(key.getKey(), CBORObject.FromObject(
+  key.getValue(),
+  options,
+  mapper,
+  depth + 1));
       }
       return objret;
     }
@@ -1470,10 +1506,6 @@ try { if (ms != null) {
           tagHigh = (tagHigh | (((int)b) << (i * 8)));
         }
         CBORObject c2 = new CBORObject(c, tagLow, tagHigh);
-        ICBORTag tagconv = FindTagConverter(bigintTag);
-        if (tagconv != null) {
-          c2 = tagconv.ValidateObject(c2);
-        }
         return c2;
       }
     }
@@ -1506,10 +1538,12 @@ try { if (ms != null) {
         throw new IllegalArgumentException("smallTag (" + smallTag +
                     ") is less than 0");
       }
-      ICBORTag tagconv = FindTagConverter(smallTag);
       CBORObject c = FromObject(valueObValue);
       c = new CBORObject(c, smallTag, 0);
-      return (tagconv != null) ? tagconv.ValidateObject(c) : c;
+      if (smallTag <= 264) {
+       c = CBORNativeConvert.ConvertToNativeObject(c);
+      }
+      return c;
     }
 
     /**
@@ -4327,39 +4361,6 @@ public boolean equals(CBORObject other) {
       }
     }
 
-    static ICBORTag FindTagConverter(EInteger bigintTag) {
-      if (TagHandlersEmpty()) {
-        AddTagHandler(EInteger.FromInt64(2), new CBORTag2());
-        AddTagHandler(EInteger.FromInt64(3), new CBORTag3());
-        AddTagHandler(EInteger.FromInt64(4), new CBORTag4());
-        AddTagHandler(EInteger.FromInt64(5), new CBORTag5());
-        AddTagHandler(EInteger.FromInt64(264), new CBORTag4(true));
-        AddTagHandler(EInteger.FromInt64(265), new CBORTag5(true));
-        AddTagHandler(EInteger.FromInt64(25), new CBORTagUnsigned());
-        AddTagHandler(EInteger.FromInt64(29), new CBORTagUnsigned());
-        AddTagHandler(EInteger.FromInt64(256), new CBORTagAny());
-        AddTagHandler(EInteger.FromInt32(0), new CBORTag0());
-        AddTagHandler(EInteger.FromInt64(32), new CBORTag32());
-        AddTagHandler(EInteger.FromInt64(33), new CBORTagGenericString());
-        AddTagHandler(EInteger.FromInt64(34), new CBORTagGenericString());
-        AddTagHandler(EInteger.FromInt64(35), new CBORTagGenericString());
-        AddTagHandler(EInteger.FromInt64(36), new CBORTagGenericString());
-        AddTagHandler(EInteger.FromInt64(37), new CBORTag37());
-        AddTagHandler(EInteger.FromInt64(30), new CBORTag30());
-      }
-      synchronized (ValueTagHandlers) {
-        if (ValueTagHandlers.containsKey(bigintTag)) {
-          return ValueTagHandlers.get(bigintTag);
-        }
-
-        return null;
-      }
-    }
-
-    static ICBORTag FindTagConverterLong(long tagLong) {
-      return FindTagConverter(EInteger.FromInt64(tagLong));
-    }
-
     static CBORObject FromRaw(String str) {
       return new CBORObject(CBORObjectTypeTextString, str);
     }
@@ -4523,13 +4524,6 @@ List<CBORObject> AsList() {
 Map<CBORObject, CBORObject> AsMap() {
       return (Map<CBORObject, CBORObject>)this.getThisItem();
     }
-    /*
-    void Redefine(CBORObject cbor) {
-      this.itemtypeValue = cbor.itemtypeValue;
-      this.tagLow = cbor.tagLow;
-      this.tagHigh = cbor.tagHigh;
-      this.itemValue = cbor.itemValue;
-    } */
 
     private static boolean BigIntFits(EInteger bigint) {
       return bigint.GetSignedBitLength() <= 64;
@@ -4648,30 +4642,6 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       }
     }
 
-    private static CBORObject ConvertWithConverter(Object obj) {
-      Object type = obj.getClass();
-      ConverterInfo convinfo = null;
-      synchronized (ValueConverters) {
-        if (ValueConverters.size() == 0) {
-          CBORTag0.AddConverter();
-          CBORTag37.AddConverter();
-          CBORTag32.AddConverter();
-        }
-        if (ValueConverters.containsKey(type)) {
-          convinfo = ValueConverters.get(type);
-        } else {
-          return null;
-        }
-      }
-      if (convinfo == null) {
-        return null;
-      }
-      return (CBORObject)PropertyMap.InvokeOneArgumentMethod(
-        convinfo.getToObject(),
-        convinfo.getConverter(),
-        obj);
-    }
-
     private static String ExtendedToString(EFloat ef) {
       if (ef.isFinite() && (ef.getExponent().compareTo(EInteger.FromInt64(2500)) > 0 ||
                     ef.getExponent().compareTo(EInteger.FromInt64(-2500)) < 0)) {
@@ -4680,10 +4650,6 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         return ef.getMantissa() + "p" + ef.getExponent();
       }
       return ef.toString();
-    }
-
-    private static ICBORTag FindTagConverter(int tag) {
-      return FindTagConverter(EInteger.FromInt32(tag));
     }
 
     private static byte[] GetOptimizedBytesIfShortAscii(
@@ -4960,12 +4926,6 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       return stack;
     }
 
-    private static boolean TagHandlersEmpty() {
-      synchronized (ValueTagHandlers) {
-        return ValueTagHandlers.size() == 0;
-      }
-    }
-
     private static int TagsCompare(EInteger[] tagsA, EInteger[] tagsB) {
       if (tagsA == null) {
         return (tagsB == null) ? 0 : -1;
@@ -5226,33 +5186,5 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         }
         curobject = (CBORObject)curobject.itemValue;
       }
-    }
-
-    private static final class ConverterInfo {
-      private Object toObject;
-
-    /**
-     * Gets the converter's ToCBORObject method.
-     * @return The converter's ToCBORObject method.
-     */
-      public final Object getToObject() {
-          return this.toObject;
-        }
-public final void setToObject(Object value) {
-          this.toObject = value;
-        }
-
-      private Object converter;
-
-    /**
-     * Gets the ICBORConverter object.
-     * @return The ICBORConverter object.
-     */
-      public final Object getConverter() {
-          return this.converter;
-        }
-public final void setConverter(Object value) {
-          this.converter = value;
-        }
     }
   }

@@ -175,34 +175,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
       Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
       Assert.assertEquals(CBORObject.FromObject(8), CBORObject.FromObject((byte)8));
-      try {
-        CBORObject.AddConverter(null, new FakeConverter());
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.AddConverter(String.class, new FakeConverter());
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      EInteger eintNull = null;
-      try {
-        CBORObject.AddTagHandler(eintNull, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
+
       try {
         CBORObject.True.Abs();
         Assert.fail("Should have failed");
