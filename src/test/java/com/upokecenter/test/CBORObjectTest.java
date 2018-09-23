@@ -6138,12 +6138,28 @@ try { if (ms != null) {
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
-
     public void TestWrite3() {
       EFloat ef = null;
       EDecimal ed = null;
       RandomGenerator fr = new RandomGenerator();
       try {
+for (int i = 0; i < 256; ++i) {
+ byte b=(byte)(i & 0xff);
+ java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+  CBORObject.Write((byte)b, ms);
+  CBORObject cobj = CBORObject.DecodeFromBytes(b.ToArray());
+  Assert.assertEquals(i, cobj.AsInt32());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+
         for (int i = 0; i < 50; ++i) {
           ef = RandomObjects.RandomEFloat(fr);
           if (!ef.IsNaN()) {

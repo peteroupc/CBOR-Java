@@ -1040,6 +1040,7 @@ try { if (ms != null) {
      * code point.
      */
     public static CBORObject FromObject(char value) {
+      // TODO: Consider changing this method's behavior
       char[] valueChar = { value };
       return FromObject(new String(valueChar));
     }
@@ -1162,7 +1163,7 @@ try { if (ms != null) {
 
     /**
      * Generates a CBORObject from an arbitrary object. See the overload of this
-     * method that takes a PODOptions argument.
+     * method that takes CBORTypeMapper and PODOptions arguments.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
@@ -1172,65 +1173,8 @@ try { if (ms != null) {
     }
 
     /**
-     * <p>Generates a CBORObject from an arbitrary object, using the given options
-     * to control how certain objects are converted to CBOR objects. The
-     * following types are specially handled by this method: null; primitive
-     * types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
-     * <code>EInteger</code>, and <code>ERational</code> classes in the new <a
-  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
-     * library (in .NET) or the <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java); the legacy <code>ExtendedDecimal</code>,
-     * <code>ExtendedFloat</code>, <code>BigInteger</code>, and <code>ExtendedRational</code>
-     * classes in this library; arrays; enumerations (<code>Enum</code> objects);
-     * and maps. (See also the other overloads to the FromObject
-     * method.)</p> <p>In the .NET version, if the object is a type not
-     * specially handled by this method, returns a CBOR map with the values
-     * of each of its public, nonstatic properties (limited to read/write
-     * properties except in the case of a compiler-generated type).
-     * Properties are converted to their camel-case names (meaning if a name
-     * starts with A to Z, that letter is lower-cased). If the property name
-     * begins with the word "Is" followed by an upper-case A to Z, the "Is"
-     * prefix is deleted from the name. (Passing the appropriate "options"
-     * parameter can be done to control whether the "Is" prefix is removed
-     * and whether a camel-case conversion happens.) Also, .NET <code>Enum</code>
-     * objects will be converted to their integer values, and a
-     * multidimensional array is converted to an array of arrays.</p> <p>In
-     * the Java version, if the object is a type not specially handled by
-     * this method, this method checks the CBOR object for public, nonstatic
-     * methods starting with the word "get" or "is" (either word followed by
-     * an upper-case A to Z) that take no parameters, and returns a CBOR map
-     * with one entry for each such method found. For each method found, the
-     * starting word "get" or "is" is deleted from its name, and the name is
-     * converted to camel case (meaning if a name starts with A to Z, that
-     * letter is lower-cased). (Passing the appropriate "options" parameter
-     * can be done to control whether the "is" prefix is removed and whether
-     * a camel-case conversion happens.) Also, Java <code>Enum</code> objects will
-     * be converted to the result of their <code>name</code> method.</p> <p>If the
-     * input is a byte array, the byte array is copied to a new byte array.
-     * (This method can't be used to decode CBOR data from a byte array; for
-     * that, use the DecodeFromBytes method instead.).</p> <p>If the input
-     * is a text string, a CBOR text string object will be created. To
-     * create a CBOR byte string object from a text string, see the example
-     * given in <see
-     * cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/>.</p>
-     * <p>REMARK: The behavior of this method is likely to change in the
-     * next major version (4.0). There are certain inconsistencies between
-     * the ToObject method and the FromObject method as well as between the
-     * .NET and Java versions of FromObject. For one thing, java.util.Date/Date
-     * objects are converted differently between the two versions -- either
-     * as CBOR maps with their "get" properties (Java) or as tag-0 strings
-     * (.NET) -- this difference has to remain for backward compatibility
-     * with version 3.0. For another thing, the treatment of
-     * properties/getters starting with "Is" is subtly inconsistent between
-     * the .NET and Java versions of FromObject, especially when using
-     * certain PODOptions. A certain consistency between .NET and Java and
-     * between FromObject and ToObject are sought for version 4.0. It is
-     * also hoped that--</p><ul> <li>the ToObject method will support
-     * deserializing to objects consisting of fields and not getters
-     * ("getX()" methods), both in .NET and in Java, and</li> <li>both
-     * FromObject and ToObject will be better designed, in version 4.0, so
-     * that backward-compatible improvements are easier to make.</li></ul>
+     * Generates a CBORObject from an arbitrary object. See the overload of this
+     * method that takes CBORTypeMapper and PODOptions arguments.
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @param options An object containing options to control how certain objects
      * are converted to CBOR objects.
@@ -1247,66 +1191,88 @@ try { if (ms != null) {
     /**
      * <p>Generates a CBORObject from an arbitrary object, using the given options
      * to control how certain objects are converted to CBOR objects. The
-     * following types are specially handled by this method: null; primitive
-     * types; string; CBORObject; the <code>EDecimal</code>, <code>EFloat</code>,
-     * <code>EInteger</code>, and <code>ERational</code> classes in the new <a
+     * following types are specially handled by this method:</p><ul>
+     * <li><code>null</code> is converted to <code>CBORObject.Null</code>.</li> <li>A
+     * <code>char</code> is TBD.</li> <li>A <code>bool</code> (<code>boolean</code> in Java)
+     * is converted to <code>CBORObject.True</code> or
+     * <code>CBORObject.False</code>.</li> <li>A <code>byte</code> is converted to a
+     * CBOR integer from 0 through 255.</li> <li>A primitive integer type
+     * (<code>int</code>, <code>short</code>, <code>long</code>, as well as <code>sbyte</code>,
+     * <code>ushort</code>, <code>uint</code>, and <code>ulong</code> in .NET) is converted to
+     * the corresponding CBOR integer.</li> <li>A primitive floating-point
+     * type (<code>float</code>, <code>double</code>, as well as <code>decimal</code> in .NET)
+     * is converted to the corresponding CBOR number.</li> <li>A
+     * <code>String</code> is converted to a CBOR text string. To create a CBOR
+     * byte string object from <code>String</code>, see the example given in <see
+     * cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</li>
+     * <li>A number of type <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>,
+     * and <code>ERational</code> in the new <a
   * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
      * library (in .NET) or the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
-     * artifact (in Java); the legacy <code>ExtendedDecimal</code>,
-     * <code>ExtendedFloat</code>, <code>BigInteger</code>, and <code>ExtendedRational</code>
-     * classes in this library; arrays; enumerations (<code>Enum</code> objects);
-     * and maps. (See also the other overloads to the FromObject
-     * method.)</p> <p>In the .NET version, if the object is a type not
-     * specially handled by this method, returns a CBOR map with the values
-     * of each of its public, nonstatic properties (limited to read/write
-     * properties except in the case of a compiler-generated type).
-     * Properties are converted to their camel-case names (meaning if a name
-     * starts with A to Z, that letter is lower-cased). If the property name
-     * begins with the word "Is" followed by an upper-case A to Z, the "Is"
-     * prefix is deleted from the name. (Passing the appropriate "options"
-     * parameter can be done to control whether the "Is" prefix is removed
-     * and whether a camel-case conversion happens.) Also, .NET <code>Enum</code>
-     * objects will be converted to their integer values, and a
-     * multidimensional array is converted to an array of arrays.</p> <p>In
-     * the Java version, if the object is a type not specially handled by
-     * this method, this method checks the CBOR object for public, nonstatic
-     * methods starting with the word "get" or "is" (either word followed by
-     * an upper-case A to Z) that take no parameters, and returns a CBOR map
-     * with one entry for each such method found. For each method found, the
-     * starting word "get" or "is" is deleted from its name, and the name is
-     * converted to camel case (meaning if a name starts with A to Z, that
-     * letter is lower-cased). (Passing the appropriate "options" parameter
-     * can be done to control whether the "is" prefix is removed and whether
-     * a camel-case conversion happens.) Also, Java <code>Enum</code> objects will
+     * artifact (in Java) is converted to the corresponding CBOR
+     * number.</li> <li>An array is converted to a CBOR array. In the .NET
+     * version, a multidimensional array is converted to an array of
+     * arrays.</li> <li>An object implementing IDictionary (Map in Java) is
+     * converted to a CBOR map containing the keys and values
+     * enumerated.</li> <li>An object implementing IEnumerable (Iterable in
+     * Java) is converted to a CBOR array containing the items
+     * enumerated.</li> <li>An enumeration <code>Enum</code> object is converted
+     * to its integer value in the .NET version, or the result of its
+     * "getName" method in the Java version. (TBD)</li> <li>If the object is
+     * of a type corresponding to a type converter mentioned in the
+     * <paramref name='mapper'/> parameter, that converter will be used to
+     * convert the object to a CBOR object.</li> <li>An object of type
+     * <code>java.util.Date</code>, <code>java.net.URI</code>, or <code>java.util.UUID</code> (<code>Date</code>, <code>URI</code>,
+     * or <code>UUID</code>, respectively, in Java) will be converted to a tagged
+     * CBOR object of the appropriate kind. (TBD: Decide whether a custom
+     * CBORTypeMapper can override these behaviors.)</li> </ul> <p>In the
+     * .NET version, if the object is a type not specially handled above,
+     * returns a CBOR map with the values of each of its public, nonstatic
+     * properties (limited to read/write properties except in the case of a
+     * compiler-generated type). Properties are converted to their
+     * camel-case names (meaning if a name starts with A to Z, that letter
+     * is lower-cased). If the property name begins with the word "Is"
+     * followed by an upper-case A to Z, the "Is" prefix is deleted from the
+     * name. (Passing the appropriate "options" parameter can be done to
+     * control whether the "Is" prefix is removed and whether a camel-case
+     * conversion happens.) Also, .NET <code>Enum</code> objects will be converted
+     * to their integer values, and .</p> <p>In the Java version, if the
+     * object is a type not specially handled above, this method checks the
+     * CBOR object for public, nonstatic methods starting with the word
+     * "get" or "is" (either word followed by an upper-case A to Z) that
+     * take no parameters, and returns a CBOR map with one entry for each
+     * such method found. For each method found, the starting word "get" or
+     * "is" is deleted from its name, and the name is converted to camel
+     * case (meaning if a name starts with A to Z, that letter is
+     * lower-cased). (Passing the appropriate "options" parameter can be
+     * done to control whether the "is" prefix is removed and whether a
+     * camel-case conversion happens.) Also, Java <code>Enum</code> objects will
      * be converted to the result of their <code>name</code> method.</p> <p>If the
      * input is a byte array, the byte array is copied to a new byte array.
      * (This method can't be used to decode CBOR data from a byte array; for
-     * that, use the DecodeFromBytes method instead.).</p> <p>If the input
-     * is a text string, a CBOR text string object will be created. To
-     * create a CBOR byte string object from a text string, see the example
-     * given in <see
-     * cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</p>
-     * <p>REMARK: The behavior of this method is likely to change in the
-     * next major version (4.0). There are certain inconsistencies between
-     * the ToObject method and the FromObject method as well as between the
-     * .NET and Java versions of FromObject. For one thing, java.util.Date/Date
-     * objects are converted differently between the two versions -- either
-     * as CBOR maps with their "get" properties (Java) or as tag-0 strings
-     * (.NET) -- this difference has to remain for backward compatibility
-     * with version 3.0. For another thing, the treatment of
-     * properties/getters starting with "Is" is subtly inconsistent between
-     * the .NET and Java versions of FromObject, especially when using
-     * certain PODOptions. A certain consistency between .NET and Java and
-     * between FromObject and ToObject are sought for version 4.0. It is
-     * also hoped that--</p> <ul> <li>the ToObject method will support
-     * deserializing to objects consisting of fields and not getters
-     * ("getX()" methods), both in .NET and in Java, and</li> <li>both
-     * FromObject and ToObject will be better designed, in version 4.0, so
-     * that backward-compatible improvements are easier to make.</li></ul>
-     * @param obj The parameter {@code obj} is not documented yet.
+     * that, use the DecodeFromBytes method instead.).</p> <p>REMARK: The
+     * behavior of this method is likely to change in the next major version
+     * (4.0). There are certain inconsistencies between the ToObject method
+     * and the FromObject method as well as between the .NET and Java
+     * versions of FromObject. For one thing, java.util.Date/Date objects are
+     * converted differently between the two versions -- either as CBOR maps
+     * with their "get" properties (Java) or as tag-0 strings (.NET) -- this
+     * difference has to remain for backward compatibility with version 3.0.
+     * For another thing, the treatment of properties/getters starting with
+     * "Is" is subtly inconsistent between the .NET and Java versions of
+     * FromObject, especially when using certain PODOptions. A certain
+     * consistency between .NET and Java and between FromObject and ToObject
+     * are sought for version 4.0. It is also hoped that--</p> <ul> <li>the
+     * ToObject method will support deserializing to objects consisting of
+     * fields and not getters ("getX()" methods), both in .NET and in Java,
+     * and</li> <li>both FromObject and ToObject will be better designed, in
+     * version 4.0, so that backward-compatible improvements are easier to
+     * make.</li></ul>
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @param mapper The parameter {@code mapper} is not documented yet.
-     * @param options The parameter {@code options} is not documented yet.
+     * @param options An object containing options to control how certain objects
+     * are converted to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      * @throws java.lang.NullPointerException The parameter {@code options} is null.
@@ -1380,6 +1346,8 @@ try { if (ms != null) {
       }
 
       if (obj instanceof Enum<?>) {
+        // TODO: Consider using consistent behavior in .NET
+        // and Java
         return FromObject(PropertyMap.EnumToObject((Enum<?>)obj));
       }
       if (obj instanceof Double) {
@@ -2103,6 +2071,7 @@ objret.set(key.getKey(), CBORObject.FromObject(
      * @throws java.io.IOException An I/O error occurred.
      */
     public static void Write(char value, OutputStream stream) throws java.io.IOException {
+      // TODO: Consider changing this method's behavior
       if (value >= 0xd800 && value < 0xe000) {
         throw new IllegalArgumentException("Value is a surrogate code point.");
       }
