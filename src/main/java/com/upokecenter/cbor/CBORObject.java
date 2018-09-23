@@ -782,43 +782,57 @@ try { if (ms != null) {
     }
 
     /**
-     * <p>Converts this CBOR object to an object of an arbitrary type. </p> <p>If
-     * the type "T" is CBORObject, returns this CBOR object. </p> <p>If this
-     * CBOR object is a null object, returns null, except if "T" is
-     * CBORObject. </p> <p>If the type "T" is Object, returns this CBOR
-     * object. </p> <p>If the type "T" is the generic List, IList,
+     * <p>Converts this CBOR object to an object of an arbitrary type. The
+     * following types are specially handled by this method: </p> <ul>
+     * <li>If the type is <code>CBORObject</code> , return this object. </li>
+     * <li>If the given object is <code>CBORObject.Null</code> (with or without
+     * tags), returns <code>null</code> . </li> <li>If the type is <code>object</code> ,
+     * return this object. </li> <li>If the type is <code>char</code> ... (To be
+     * implemented). </li> <li>If the type is <code>bool</code> (<code>boolean</code>
+     * in Java), returns the result of AsBoolean. </li> <li>If the type is a
+     * primitive integer type (<code>byte</code> , <code>int</code> , <code>short</code> ,
+     * <code>long</code> , as well as <code>sbyte</code> , <code>ushort</code> , <code>uint</code> ,
+     * and <code>ulong</code> in .NET) or a primitive floating-point type (
+     * <code>float</code> , <code>double</code> , as well as <code>decimal</code> in .NET),
+     * returns the result of the corresponding As* method. </li> <li>If the
+     * type is <code>String</code> , returns the result of AsString. </li> <li>If
+     * the type is <code>EDecimal</code> , <code>EFloat</code> , <code>EInteger</code> , or
+     * <code>ERational</code> in the <a
+     * href='https://www.nuget.org/packages/PeterO.Numbers'>
+     * <code>PeterO.Numbers</code> </a> library (in .NET) or the <a
+     * href='https://github.com/peteroupc/numbers-java'>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java), returns
+     * the result of the corresponding As* method. </li> <li>If the type is
+     * <code>byte[]</code> and this CBOR object is a byte array, returns a byte
+     * array which this CBOR byte string's data will be copied to. </li>
+     * <li>If the type is an array type other than a byte array type.... (To
+     * be documented.) </li> <li>If the type is the generic List, IList,
      * ICollection, or IEnumerable (or ArrayList, List, Collection, or
      * Iterable in Java), and if this CBOR object is an array, returns an
      * object conforming to the type, class, or interface passed to this
      * method, where the object will contain all items in this CBOR array.
-     * </p> <p>If the type "T" is the generic Dictionary or IDictionary (or
+     * </li> <li>If the type is the generic Dictionary or IDictionary (or
      * HashMap or Map in Java), and if this CBOR object is a map, returns an
      * object conforming to the type, class, or interface passed to this
      * method, where the object will contain all keys and values in this
-     * CBOR map. </p> <p>If the type "T" is <code>int</code> , returns the result
-     * of the AsInt32 method. </p> <p>If the type "T" is <code>java.util.Date</code> (or
-     * <code>Date</code> in Java) , returns a date/time object if the CBOR
-     * object's outermost tag is 0 or 1. </p> <p>If the type "T" is
-     * <code>long</code> , returns the result of the AsInt64 method. </p> <p>If
-     * the type "T" is <code>double</code> , returns the result of the AsDouble
-     * method. </p> <p>If the type "T" is String, returns the result of the
-     * AsString method. </p> <p>If the type "T" is <code>byte[]</code> and this
-     * CBOR object is a byte array, returns a byte array which this CBOR
-     * byte string's data will be copied to. </p> <p>In the .NET version, if
-     * the type "T" is <code>java.util.Date</code> and this CBOR object is a text string
-     * with tag 0, converts that text string to a java.util.Date and returns that
-     * java.util.Date. </p> <p>If the type "T" is Boolean, returns the result of
-     * the IsTrue method. </p> <p>In the .NET version, if the object is a
-     * CBOR map, if the type "T" is not specially handled by this method,
-     * and if that type has a zero-argument constructor (default or
-     * otherwise), an object of the given type is created, then this method
-     * checks the CBOR object for public, nonstatic writable properties. For
-     * each property found, if its name (with the "Is" prefix deleted and
-     * then converted to camel case) matches the name of a key in this CBOR
-     * map, and if that property has a getter, that property's setter is
-     * invoked and the corresponding value is passed to that method. </p>
-     * <p>In the Java version, if the object is a CBOR map, if the type "T"
-     * is not specially handled by this method, and if that type has a
+     * CBOR map. </li> <li>Enums (To be implemented). </li> <li>Type
+     * converters (To be implemented). </li> <li>If the type is
+     * <code>java.util.Date</code> (or <code>Date</code> in Java) , returns a date/time object
+     * if the CBOR object's outermost tag is 0 or 1. </li> <li>If the type
+     * is <code>java.net.URI</code> (or <code>URI</code> in Java), returns a URI object if
+     * possible. </li> <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in
+     * Java), returns a UUID object if possible. </li> </ul> <p>In the .NET
+     * version, if the object is a CBOR map, if the type "T" is not
+     * specially handled by this method, and if that type has a
+     * zero-argument constructor (default or otherwise), an object of the
+     * given type is created, then this method checks the CBOR object for
+     * public, nonstatic writable properties. For each property found, if
+     * its name (with the "Is" prefix deleted and then converted to camel
+     * case) matches the name of a key in this CBOR map, and if that
+     * property has a getter, that property's setter is invoked and the
+     * corresponding value is passed to that method. </p> <p>In the Java
+     * version, if the object is a CBOR map, if the type "T" is not
+     * specially handled by this method, and if that type has a
      * zero-argument constructor (default or otherwise), an object of the
      * given type is created, then this method checks the CBOR object for
      * public, nonstatic methods starting with the word "set" (followed by
@@ -1206,15 +1220,16 @@ try { if (ms != null) {
      * byte string object from <code>String</code>, see the example given in <see
      * cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</li>
      * <li>A number of type <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>,
-     * and <code>ERational</code> in the new <a
+     * and <code>ERational</code> in the <a
   * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code></a>
      * library (in .NET) or the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code></a>
      * artifact (in Java) is converted to the corresponding CBOR
-     * number.</li> <li>An array is converted to a CBOR array. In the .NET
-     * version, a multidimensional array is converted to an array of
-     * arrays.</li> <li>An object implementing IDictionary (Map in Java) is
-     * converted to a CBOR map containing the keys and values
+     * number.</li> <li>An array (other than a byte array) is converted to a
+     * CBOR array. In the .NET version, a multidimensional array is
+     * converted to an array of arrays. A byte array is converted to a CBOR
+     * byte string.</li> <li>An object implementing IDictionary (Map in
+     * Java) is converted to a CBOR map containing the keys and values
      * enumerated.</li> <li>An object implementing IEnumerable (Iterable in
      * Java) is converted to a CBOR array containing the items
      * enumerated.</li> <li>An enumeration <code>Enum</code> object is converted
@@ -1508,7 +1523,7 @@ objret.set(key.getKey(), CBORObject.FromObject(
       }
       CBORObject c = FromObject(valueObValue);
       c = new CBORObject(c, smallTag, 0);
-      if (smallTag <= 264) {
+      if (smallTag <= 265) {
        c = CBORNativeConvert.ConvertToNativeObject(c);
       }
       return c;

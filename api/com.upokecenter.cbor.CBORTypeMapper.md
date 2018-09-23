@@ -6,7 +6,7 @@ Not documented yet.
 
 ## Methods
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 * `<T> void AddConverter​(Type type,
             ICBORConverter<T> converter)`<br>
@@ -21,17 +21,17 @@ Not documented yet.
 
 ## Constructors
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 
 ## Method Details
 
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
     public <T> void AddConverter​(Type type, ICBORConverter<T> converter)
 Not documented yet.
@@ -60,11 +60,11 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>typeName</code> - Not documented yet.
+* <code>typeName</code> - The parameter <code>typeName</code> is not documented yet.
 
 **Returns:**
 
-* A Boolean object.
+* Either <code>true</code> or <code>false</code>.
 
 ### AddTypePrefix
     public CBORTypeMapper AddTypePrefix​(String prefix)

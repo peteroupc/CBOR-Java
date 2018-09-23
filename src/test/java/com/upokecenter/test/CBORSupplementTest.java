@@ -160,7 +160,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCBORObjectArgumentValidation() {
       try {
-        CBORObject.FromObject('\udddd');
+        ToObjectTest.TestToFromObjectRoundTrip('\udddd');
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -168,13 +168,21 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      Assert.assertEquals(CBORObject.Null, CBORObject.FromObject((byte[])null));
+      Assert.assertEquals(
+  CBORObject.Null,
+  ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
       Assert.assertEquals(
         CBORObject.Null,
-        CBORObject.FromObject((CBORObject[])null));
-      Assert.assertEquals(CBORObject.True, CBORObject.FromObject(true));
-      Assert.assertEquals(CBORObject.False, CBORObject.FromObject(false));
-      Assert.assertEquals(CBORObject.FromObject(8), CBORObject.FromObject((byte)8));
+        ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
+Assert.assertEquals(
+  CBORObject.True,
+  ToObjectTest.TestToFromObjectRoundTrip(true));
+      Assert.assertEquals(
+  CBORObject.False,
+  ToObjectTest.TestToFromObjectRoundTrip(false));
+      Assert.assertEquals(
+  ToObjectTest.TestToFromObjectRoundTrip(8),
+  ToObjectTest.TestToFromObjectRoundTrip((byte)8));
 
       try {
         CBORObject.True.Abs();
@@ -416,7 +424,7 @@ try { if (ms != null) {
     public void TestCBOREInteger() {
       EInteger bi = EInteger.FromString("9223372036854775808");
       try {
-        CBORObject.FromObject(bi).AsInt64();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt64();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 // NOTE: Intentionally empty
@@ -425,7 +433,7 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 // NOTE: Intentionally empty
@@ -435,7 +443,7 @@ try { if (ms != null) {
       }
       bi = EInteger.FromString("-9223372036854775809");
       try {
-        CBORObject.FromObject(bi).AsInt64();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt64();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 // NOTE: Intentionally empty
@@ -444,7 +452,7 @@ try { if (ms != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 // NOTE: Intentionally empty
@@ -454,7 +462,7 @@ try { if (ms != null) {
       }
       bi = EInteger.FromString("-9223372036854775808");
       try {
-        CBORObject.FromObject(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
 // NOTE: Intentionally empty
@@ -467,8 +475,8 @@ try { if (ms != null) {
     @Test
     public void TestEquivalentInfinities() {
       CBORObject co, co2;
-      co = CBORObject.FromObject(CBORTestCommon.DecPosInf);
-      co2 = CBORObject.FromObject(Double.POSITIVE_INFINITY);
+      co = ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
+      co2 = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
       TestCommon.CompareTestEqual(co, co2);
       co = CBORObject.NewMap().Add(
         CBORTestCommon.DecPosInf,
@@ -853,7 +861,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
     @Test
     public void TestUUID() {
       CBORObject obj =
-        CBORObject.FromObject(java.util.UUID.fromString(
+        ToObjectTest.TestToFromObjectRoundTrip(java.util.UUID.fromString(
           "00112233-4455-6677-8899-AABBCCDDEEFF"));
       Assert.assertEquals(CBORType.ByteString, obj.getType());
       Assert.assertEquals(EInteger.FromString("37"), obj.getMostInnerTag());
@@ -1166,7 +1174,7 @@ private String propVarbb;
     public void TestCPOD() {
       CPOD m = new CPOD();
       m.setAa("Test");
-      CBORObject cbor = CBORObject.FromObject(m);
+      CBORObject cbor = ToObjectTest.TestToFromObjectRoundTrip(m);
       if (cbor.ContainsKey("bb")) {
  Assert.fail(cbor.toString());
  }

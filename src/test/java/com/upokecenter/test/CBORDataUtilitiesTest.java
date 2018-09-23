@@ -397,10 +397,10 @@ Assert.assertEquals(
  }
 
       TestCommon.CompareTestEqual(
-  CBORObject.FromObject(230),
+  ToObjectTest.TestToFromObjectRoundTrip(230),
   CBORDataUtilities.ParseJSONNumber("23.0e01"));
       TestCommon.CompareTestEqual(
-  CBORObject.FromObject(23),
+  ToObjectTest.TestToFromObjectRoundTrip(23),
   CBORDataUtilities.ParseJSONNumber("23.0e00"));
       cbor = CBORDataUtilities.ParseJSONNumber(
   "1e+99999999999999999999999999",
