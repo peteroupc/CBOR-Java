@@ -535,7 +535,6 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
     }
     @Test(expected = CBORException.class)
     public void TestDecimalFracExponentMustNotBeBignum() {
-      Assert.Ignore();
       CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,
         1, 2, 3, 4 });
@@ -581,12 +580,12 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       }
 
   if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-  .AsEDecimal() .IsPositiveInfinity())) {
+  .AsEDecimal().IsPositiveInfinity())) {
  Assert.fail();
  }
 
   if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-  .AsEDecimal() .IsNegativeInfinity())) {
+  .AsEDecimal().IsNegativeInfinity())) {
  Assert.fail();
  }
 if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
@@ -655,12 +654,12 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
     @Test
     public void TestFloat() {
   if (!(ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-  .AsEDecimal() .IsPositiveInfinity())) {
+  .AsEDecimal().IsPositiveInfinity())) {
  Assert.fail();
  }
 
   if (!(ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-  .AsEDecimal() .IsNegativeInfinity())) {
+  .AsEDecimal().IsNegativeInfinity())) {
  Assert.fail();
  }
 if (!(ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)

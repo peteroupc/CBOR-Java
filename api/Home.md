@@ -8,10 +8,6 @@ Interface implemented by classes that convert objects of arbitrary types to
 Interface implemented by classes that convert objects of arbitrary types to
  and from CBOR objects.
 
-* [com.upokecenter.cbor.ICBORTag](com.upokecenter.cbor.ICBORTag.md) -
-Implemented by classes that validate CBOR objects belonging to a specific
- tag.
-
 * [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
 Contains methods useful for reading and writing data, with a focus on CBOR.
 
@@ -21,9 +17,6 @@ Specifies options for encoding and decoding CBOR objects.
 * [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -
 Represents an object in Concise Binary Object Representation (CBOR) and
  contains methods for reading and writing CBOR data.
-
-* [com.upokecenter.cbor.CBORTypeFilter](com.upokecenter.cbor.CBORTypeFilter.md) -
-Specifies what kinds of CBOR objects a tag can be.
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Not documented yet.

@@ -146,11 +146,6 @@ if (o.ContainsKey("staticPropA")) {
     "PropA",
     "PropB",
     "PropC");
-      /*
-TODO: The following case conflicts with the Java version
-of the CBOR library. Resolving this conflict may result in the
-Java version being backward-incompatible and so require
-a major version change.
 //--
        CBORObjectTest.CheckPropertyNames(
   ao,
@@ -158,7 +153,7 @@ a major version change.
   "PropA",
   "PropB",
   "IsPropC");
-     */ CBORObjectTest.CheckPropertyNames(
+      CBORObjectTest.CheckPropertyNames(
   ao,
   valueCcFT,
   "propA",
@@ -501,7 +496,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)0.99).AsEInteger()
       {
         String stringTemp =
 ToObjectTest.TestToFromObjectRoundTrip((float)0.0000000000000001)
-            .AsEInteger() .toString();
+            .AsEInteger().toString();
         Assert.assertEquals(
         "0",
         stringTemp);
@@ -557,7 +552,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)0.99).AsEInteger()
       {
         String stringTemp =
 ToObjectTest.TestToFromObjectRoundTrip((double)0.0000000000000001)
-            .AsEInteger() .toString();
+            .AsEInteger().toString();
         Assert.assertEquals(
         "0",
         stringTemp);
@@ -2688,9 +2683,17 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
       CBORObject c = ToObjectTest.TestToFromObjectRoundTrip(dict);
       this.CheckKeyValue(c, "TestKey", "TestValue");
       this.CheckKeyValue(c, "TestKey2", "TestValue2");
-      c = ToObjectTest.TestToFromObjectRoundTrip((Object)dict);
-      this.CheckKeyValue(c, "TestKey", "TestValue");
-      this.CheckKeyValue(c, "TestKey2", "TestValue2");
+      dict = (Map<String, Object>)c.ToObject(
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Object.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, dict.keySet().size());
+      if (!(dict.containsKey("TestKey"))) {
+ Assert.fail();
+ }
+      if (!(dict.containsKey("TestKey2"))) {
+ Assert.fail();
+ }
+      Assert.assertEquals("TestValue", dict.get("TestKey"));
+      Assert.assertEquals("TestValue2", dict.get("TestKey2"));
     }
 
     public final class NestedPODClass {
@@ -2838,30 +2841,23 @@ private final PODClass propVarpropvalue;
         "propA",
         "propB",
         "propC");
-      /*
-TODO: The following cases conflict with the Java version
-of the CBOR library. Resolving this conflict may result in the
-Java version being backward-incompatible and so require
-a major version change.
-// ----
          CBORObjectTest.CheckArrayPropertyNames(
-  ToObjectTest.TestToFromObjectRoundTrip(arrao, valueCcFF),
+        CBORObject.FromObject(arrao, valueCcFF),
               2,
   "PropA",
   "PropB",
   "IsPropC");
          CBORObjectTest.CheckPODPropertyNames(
-  ToObjectTest.TestToFromObjectRoundTrip(ao2, valueCcFF),
+        CBORObject.FromObject(ao2, valueCcFF),
   valueCcFF,
               "PropA",
   "PropB",
   "IsPropC");
          CBORObjectTest.CheckPODInDictPropertyNames(
-  ToObjectTest.TestToFromObjectRoundTrip(aodict, valueCcFF),
-  "PropA",
-  "PropB",
-  "IsPropC");
-       */
+        CBORObject.FromObject(aodict, valueCcFF),
+        "PropA",
+        "PropB",
+        "IsPropC");
     }
 
     @Test
@@ -3177,26 +3173,26 @@ if (ToObjectTest.TestToFromObjectRoundTrip("")
       if (CBORObject.NewMap().isIntegral()) {
  Assert.fail();
  }
-      boolean isint = ToObjectTest.TestToFromObjectRoundTrip(
+      cbor = ToObjectTest.TestToFromObjectRoundTrip(
   EInteger.FromRadixString(
   "8000000000000000",
-  16)).isIntegral();
-      if (!(isint)) {
+  16));
+      if (!(cbor.isIntegral())) {
  Assert.fail();
  }
-      isint = ToObjectTest.TestToFromObjectRoundTrip(
+      cbor = ToObjectTest.TestToFromObjectRoundTrip(
       EInteger.FromRadixString(
       "80000000000000000000",
-      16)).isIntegral();
-      if (!(isint)) {
+      16));
+      if (!(cbor.isIntegral())) {
  Assert.fail();
  }
 
-      isint = ToObjectTest.TestToFromObjectRoundTrip(
+      cbor = ToObjectTest.TestToFromObjectRoundTrip(
     EInteger.FromRadixString(
     "8000000000000000000000000",
-    16)).isIntegral();
-      if (!(isint)) {
+    16));
+      if (!(cbor.isIntegral())) {
  Assert.fail();
  }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
@@ -3212,18 +3208,20 @@ if (ToObjectTest.TestToFromObjectRoundTrip("")
       if (ToObjectTest.TestToFromObjectRoundTrip(999.99).isIntegral()) {
  Assert.fail();
  }
+cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
 
-  if (ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-        .IsIntegral) {
+  if (cbor.isIntegral()) {
  Assert.fail();
  }
 
-  if (ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-        .IsIntegral) {
+cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
+
+  if (cbor.isIntegral()) {
  Assert.fail();
  }
-if (ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-        .IsIntegral) {
+cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.NaN);
+
+  if (cbor.isIntegral()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
@@ -3234,8 +3232,9 @@ if (ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
         CBORTestCommon.DecNegInf).isIntegral()) {
  Assert.fail();
  }
-if (ToObjectTest.TestToFromObjectRoundTrip(EDecimal.NaN)
-        .IsIntegral) {
+cbor = ToObjectTest.TestToFromObjectRoundTrip(EDecimal.NaN);
+
+  if (cbor.isIntegral()) {
  Assert.fail();
  }
       cbor = CBORObject.True;
@@ -5837,10 +5836,9 @@ ms = new java.io.ByteArrayOutputStream();
             CBORObject.Write(cborTemp1, ms);
             cborTemp1.WriteTo(ms);
  {
-Object objectTemp = ms.toByteArray();
-Object objectTemp2 = ToObjectTest.TestToFromObjectRoundTrip(
+CBORObject objectTemp2 = ToObjectTest.TestToFromObjectRoundTrip(
   "test");
-AssertReadThree(objectTemp, objectTemp2);
+              AssertReadThree(ms.toByteArray(), objectTemp2);
 }
 }
 finally {
@@ -7027,6 +7025,64 @@ try { if (ms != null) {
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
+      }
+    }
+
+    private static String DateTimeToString(
+  int year,
+  int month,
+  int day,
+  int hour,
+  int minute,
+  int second,
+  int millisecond) {
+      char[] charbuf = new char[millisecond > 0 ? 24 : 20];
+      charbuf[0] = (char)('0' + ((year / 1000) % 10));
+      charbuf[1] = (char)('0' + ((year / 100) % 10));
+      charbuf[2] = (char)('0' + ((year / 10) % 10));
+      charbuf[3] = (char)('0' + (year % 10));
+      charbuf[4] = '-';
+      charbuf[5] = (char)('0' + ((month / 10) % 10));
+      charbuf[6] = (char)('0' + (month % 10));
+      charbuf[7] = '-';
+      charbuf[8] = (char)('0' + ((day / 10) % 10));
+      charbuf[9] = (char)('0' + (day % 10));
+      charbuf[10] = 'T';
+      charbuf[11] = (char)('0' + ((hour / 10) % 10));
+      charbuf[12] = (char)('0' + (hour % 10));
+      charbuf[13] = ':';
+      charbuf[14] = (char)('0' + ((minute / 10) % 10));
+      charbuf[15] = (char)('0' + (minute % 10));
+      charbuf[16] = ':';
+      charbuf[17] = (char)('0' + ((second / 10) % 10));
+      charbuf[18] = (char)('0' + (second % 10));
+      if (millisecond > 0) {
+        charbuf[19] = '.';
+        charbuf[20] = (char)('0' + ((millisecond / 100) % 10));
+        charbuf[21] = (char)('0' + ((millisecond / 10) % 10));
+        charbuf[22] = (char)('0' + (millisecond % 10));
+        charbuf[23] = 'Z';
+      } else {
+        charbuf[19] = 'Z';
+      }
+      return new String(charbuf);
+    }
+
+    @Test
+    public void TestDateTime() {
+      RandomGenerator rng = new RandomGenerator();
+      for (int i = 0; i < 2000; ++i) {
+        String dtstr = DateTimeToString(
+          rng.UniformInt(9999) + 1,
+          rng.UniformInt(12) + 1,
+          rng.UniformInt(28) + 1,
+          rng.UniformInt(24),
+          rng.UniformInt(60),
+          rng.UniformInt(60),
+          rng.UniformInt(1000));
+        CBORObject cbor = CBORObject.FromObjectAndTag(dtstr, 0);
+        java.util.Date dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
+        ToObjectTest.TestToFromObjectRoundTrip(dt);
       }
     }
   }

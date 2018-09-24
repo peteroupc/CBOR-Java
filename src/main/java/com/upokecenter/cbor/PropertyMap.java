@@ -38,6 +38,10 @@ class PropertyMap {
           return (methodName.startsWith("is") && methodName.length() > 2 &&
               methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
     }
+    private static boolean IsUpperIsMethod(String methodName){
+          return (methodName.startsWith("Is") && methodName.length() > 2 &&
+              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
+    }
     public static String GetGetMethod(String methodName){
       return (IsSetMethod(methodName)) ?
           "get"+methodName.substring(3) :
@@ -53,7 +57,8 @@ class PropertyMap {
           if(MethodData.IsGetMethod(methodName) ||
              MethodData.IsSetMethod(methodName)) {
             methodName = methodName.substring(3);
-          } else if(removeIsPrefix && MethodData.IsIsMethod(methodName)) {
+          } else if(removeIsPrefix && (MethodData.IsIsMethod(methodName) ||
+                MethodData.IsUpperIsMethod(methodName))) {
             methodName = methodName.substring(2);
           }
           if(useCamelCase && methodName.charAt(0) >= 'A' && methodName.charAt(0) <= 'Z') {
@@ -101,7 +106,8 @@ class PropertyMap {
             MethodData md = new MethodData();
             md.name = key;
             md.method = propMap.get(key);
-            if(md.method.getParameterTypes().length == 0){
+            if(md.method.getParameterTypes().length == 0 &&
+              !md.method.getReturnType().equals(Void.class)){
               ret.add(md);
             }
         } else if(setters && MethodData.IsSetMethod(key) && (
@@ -126,11 +132,13 @@ class PropertyMap {
    * @param arr a {@link java.lang.Object} object.
    * @return a {@link com.upokecenter.cbor.CBORObject} object.
    */
-  public static CBORObject FromArray(final Object arr, PODOptions options, int depth) {
+  public static CBORObject FromArray(final Object arr, PODOptions options,
+      CBORTypeMapper mapper, int depth) {
    int length = Array.getLength(arr);
    CBORObject obj = CBORObject.NewArray();
    for(int i = 0;i < length;i++) {
-    obj.Add(CBORObject.FromObject(Array.get(arr,i), options, depth+1));
+    obj.Add(CBORObject.FromObject(Array.get(arr,i), options,
+     mapper, depth+1));
    }
    return obj;
   }
@@ -310,10 +318,19 @@ return false;
 
   public static Object TypeToObject(CBORObject objThis, Type t) {
       if (t.equals(java.util.Date.class)) {
-        return new CBORTag0().FromCBORObject(objThis);
+        return new CBORDateConverter().FromCBORObject(objThis);
       }
       if (t.equals(java.util.UUID.class)) {
-        return new CBORTag37().FromCBORObject(objThis);
+        return new CBORUuidConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(java.net.URI.class)) {
+        return new CBORUriConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(Byte.class) || t.equals(byte.class)) {
+        return objThis.AsByte();
+      }
+      if (t.equals(Short.class) || t.equals(short.class)) {
+        return objThis.AsInt16();
       }
       if (t.equals(Integer.class) || t.equals(int.class)) {
         return objThis.AsInt32();
@@ -328,7 +345,7 @@ return false;
         return objThis.AsSingle();
       }
       if (t.equals(Boolean.class) || t.equals(boolean.class)) {
-        return objThis.isTrue();
+        return objThis.AsBoolean();
       }
       if (objThis.getType() == CBORType.ByteString) {
         if (t.equals(byte[].class)) {

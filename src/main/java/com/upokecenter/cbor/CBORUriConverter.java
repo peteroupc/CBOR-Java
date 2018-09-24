@@ -22,7 +22,11 @@ at: http://peteroupc.github.io/
     public java.net.URI FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(32)) {
         this.ValidateObject(obj);
-        return new java.net.URI(obj.AsString());
+        try {
+         return new java.net.URI(obj.AsString());
+        } catch (Exception ex) {
+         throw new CBORException(ex.getMessage(), ex);
+        }
       }
       throw new CBORException();
     }

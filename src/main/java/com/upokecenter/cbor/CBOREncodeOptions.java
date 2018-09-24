@@ -13,9 +13,6 @@ package com.upokecenter.cbor;
     public static final CBOREncodeOptions Default =
       new CBOREncodeOptions(false, false);
 
-    // TODO: Avoid
-    private final int value;
-
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.cbor.CBOREncodeOptions} class.
@@ -51,14 +48,8 @@ package com.upokecenter.cbor;
   boolean useIndefLengthStrings,
   boolean allowDuplicateKeys,
   boolean ctap2Canonical) {
-      int val = 0;
-      if (!useIndefLengthStrings) {
-        val |= 1;
-      }
-      if (!allowDuplicateKeys) {
-        val |= 2;
-      }
-      this.value = val;
+      this.propVaruseindeflengthstrings = useIndefLengthStrings;
+      this.propVarallowduplicatekeys = allowDuplicateKeys;
       this.propVarctap2canonical = ctap2Canonical;
     }
 
@@ -68,9 +59,8 @@ package com.upokecenter.cbor;
      * @return A value indicating whether to always encode strings with a
      * definite-length encoding.
      */
-    public final boolean getUseIndefLengthStrings() {
-        return (this.value & 1) == 0;
-      }
+    public final boolean getUseIndefLengthStrings() { return propVaruseindeflengthstrings; }
+private final boolean propVaruseindeflengthstrings;
 
     /**
      * Gets a value indicating whether to disallow duplicate keys when reading CBOR
@@ -78,9 +68,8 @@ package com.upokecenter.cbor;
      * @return A value indicating whether to disallow duplicate keys when reading
      * CBOR objects from a data stream.
      */
-    public final boolean getAllowDuplicateKeys() {
-        return (this.value & 2) == 0;
-      }
+    public final boolean getAllowDuplicateKeys() { return propVarallowduplicatekeys; }
+private final boolean propVarallowduplicatekeys;
 
     /**
      * Gets a value indicating whether CBOR objects are written out using the CTAP2
