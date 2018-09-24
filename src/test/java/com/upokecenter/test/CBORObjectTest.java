@@ -3163,8 +3163,8 @@ if (ToObjectTest.TestToFromObjectRoundTrip(EDecimal.NaN)
       if (!(ToObjectTest.TestToFromObjectRoundTrip(0).isIntegral())) {
  Assert.fail();
  }
-if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .IsIntegral) {
+cbor = ToObjectTest.TestToFromObjectRoundTrip("");
+      if (cbor.isIntegral()) {
  Assert.fail();
  }
       if (CBORObject.NewArray().isIntegral()) {
