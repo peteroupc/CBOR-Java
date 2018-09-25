@@ -50,8 +50,11 @@ import com.upokecenter.numbers.*;
       TestCommon.AssertByteArraysEqual(
         new byte[] { (byte)(0x80 | 2), 3, 4 },
         bytes);
-      cbor = ToObjectTest.TestToFromObjectRoundTrip(new String[] { "a", "b", "c",
+      cbor = CBORObject.FromObject(new String[] { "a", "b", "c",
  "d", "e" });
+      Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
+      String[] strArray=(String[])cbor.ToObject(String[].class);
+      cbor = CBORObject.FromObject(strArray);
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0x9f, 0, 1, 2, 3, 4, 5,
@@ -379,7 +382,7 @@ ToObjectTest.TestToFromObjectRoundTrip("")
 
     @Test
     public void TestCBORFromArray() {
-      CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(new int[] { 1, 2, 3 });
+      CBORObject o = CBORObject.FromObject(new int[] { 1, 2, 3 });
       Assert.assertEquals(3, o.size());
       Assert.assertEquals(1, o.get(0).AsInt32());
       Assert.assertEquals(2, o.get(1).AsInt32());
@@ -534,6 +537,7 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1 });
     }
     @Test(expected = CBORException.class)
+    @org.junit.Ignore
     public void TestDecimalFracExponentMustNotBeBignum() {
       CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,

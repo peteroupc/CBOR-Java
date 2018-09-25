@@ -26,48 +26,46 @@ class PropertyMap {
     public String name;
     public Method method;
     public static boolean IsGetMethod(String methodName){
-          return (methodName.startsWith("get") && methodName.length() > 3 &&
-              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z' &&
-              !methodName.equals("getClass"));
+          return (CBORUtilities.NameStartsWithWord(methodName,"get") && !methodName.equals("getClass"));
     }
     public static boolean IsSetMethod(String methodName){
-          return (methodName.startsWith("set") && methodName.length() > 3 &&
-              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z');
+          return (CBORUtilities.NameStartsWithWord(methodName,"set"));
     }
     public static boolean IsIsMethod(String methodName){
-          return (methodName.startsWith("is") && methodName.length() > 2 &&
-              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
-    }
-    private static boolean IsUpperIsMethod(String methodName){
-          return (methodName.startsWith("Is") && methodName.length() > 2 &&
-              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
+          return (CBORUtilities.NameStartsWithWord(methodName,"is"));
     }
     public static String GetGetMethod(String methodName){
       return (IsSetMethod(methodName)) ?
           "get"+methodName.substring(3) :
           methodName;
     }
-    public static String GetIsMethod(String methodName){
+    public static String GetSetMethod(String methodName){
       return (IsSetMethod(methodName)) ?
           "set"+methodName.substring(3) :
           methodName;
     }
+    public static String GetIsMethod(String methodName){
+      return (IsIsMethod(methodName)) ?
+          "is"+methodName.substring(2) :
+          methodName;
+    }
+    private static String RemoveGetSetIs(String name){
+      if(IsSetMethod(name))return name.substring(3);
+      if(IsGetMethod(name))return name.substring(3);
+      if(IsIsMethod(name))return name.substring(2);
+      return name;
+    }
+    private static String RemoveGetSet(String name){
+      if(IsSetMethod(name))return name.substring(3);
+      if(IsGetMethod(name))return name.substring(3);
+      return name;
+    }
     public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
-          String methodName = this.name;
-          if(MethodData.IsGetMethod(methodName) ||
-             MethodData.IsSetMethod(methodName)) {
-            methodName = methodName.substring(3);
-          } else if(removeIsPrefix && (MethodData.IsIsMethod(methodName) ||
-                MethodData.IsUpperIsMethod(methodName))) {
-            methodName = methodName.substring(2);
-          }
-          if(useCamelCase && methodName.charAt(0) >= 'A' && methodName.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(methodName.charAt(0) + 0x20));
-              sb.append(methodName.substring(1));
-              methodName = sb.toString();
-          }
-          return methodName;
+      if(useCamelCase){
+        return CBORUtilities.FirstCharLower(RemoveGetSetIs(this.name));
+      } else {
+        return CBORUtilities.FirstCharUpper(RemoveGetSet(this.name));
+      }
     }
   }
 

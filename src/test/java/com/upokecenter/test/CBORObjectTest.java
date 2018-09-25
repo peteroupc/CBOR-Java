@@ -2511,21 +2511,14 @@ Assert.assertEquals(1, numberTemp);
     @Test
     public void TestTagArray() {
       CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
-      {
-    String stringTemp =
-  ToObjectTest.TestToFromObjectRoundTrip(obj.GetAllTags()).ToJSONString();
-        Assert.assertEquals(
-          "[999]",
-          stringTemp);
-      }
-      obj = ToObjectTest.TestToFromObjectRoundTrip("test");
-      {
-    String stringTemp =
-  ToObjectTest.TestToFromObjectRoundTrip(obj.GetAllTags()).ToJSONString();
-        Assert.assertEquals(
-          "[]",
-          stringTemp);
-      }
+      EInteger[] etags = obj.GetAllTags();
+Assert.assertEquals(1, etags.length);
+if (!(999)) {
+ Assert.fail(etags[0].ToInt32Checked());
+ }
+obj = ToObjectTest.TestToFromObjectRoundTrip("test");
+etags = obj.GetAllTags();
+Assert.assertEquals(0, etags.length);
     }
     @Test
     public void TestEI() {
@@ -2568,40 +2561,40 @@ Assert.assertEquals(1, numberTemp);
       CBORObject[] cborarray = new CBORObject[2];
       cborarray[0] = CBORObject.False;
       cborarray[1] = CBORObject.True;
-      CBORObject cbor = ToObjectTest.TestToFromObjectRoundTrip(cborarray);
+      CBORObject cbor = CBORObject.FromObject(cborarray);
       Assert.assertEquals(2, cbor.size());
       Assert.assertEquals(CBORObject.False, cbor.get(0));
       Assert.assertEquals(CBORObject.True, cbor.get(1));
       CBORTestCommon.AssertRoundTrip(cbor);
       Assert.assertEquals(
   CBORObject.Null,
-  ToObjectTest.TestToFromObjectRoundTrip((int[])null));
+  CBORObject.FromObject((int[])null));
       long[] longarray = { 2, 3 };
-      cbor = ToObjectTest.TestToFromObjectRoundTrip(longarray);
+      cbor = CBORObject.FromObject(longarray);
       Assert.assertEquals(2, cbor.size());
-if (!(ToObjectTest.TestToFromObjectRoundTrip(2).compareTo(cbor.get(0))
+if (!(CBORObject.FromObject(2).compareTo(cbor.get(0))
         == 0))Assert.fail();
-if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
+if (!(CBORObject.FromObject(3).compareTo(cbor.get(1))
         == 0))Assert.fail();
       CBORTestCommon.AssertRoundTrip(cbor);
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip((ERational)null));
+        CBORObject.FromObject((ERational)null));
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip((EDecimal)null));
+        CBORObject.FromObject((EDecimal)null));
       Assert.assertEquals(
-        ToObjectTest.TestToFromObjectRoundTrip(10),
-        ToObjectTest.TestToFromObjectRoundTrip(ERational.Create(10, 1)));
+        CBORObject.FromObject(10),
+        CBORObject.FromObject(ERational.Create(10, 1)));
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(ERational.Create(10, 2));
+        CBORObject.FromObject(ERational.Create(10, 2));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
 
       try {
-  ToObjectTest.TestToFromObjectRoundTrip(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
+  CBORObject.FromObject(CBORObject.FromObject(Double.NaN)
           .signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
@@ -2612,7 +2605,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
       }
       cbor = CBORObject.True;
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(cbor.get(0));
+        CBORObject.FromObject(cbor.get(0));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -2631,7 +2624,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
       }
       try {
         cbor = CBORObject.False;
-        ToObjectTest.TestToFromObjectRoundTrip(cbor.getKeys());
+        CBORObject.FromObject(cbor.getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -2640,7 +2633,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(CBORObject.NewArray().getKeys());
+        CBORObject.FromObject(CBORObject.NewArray().getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -2649,7 +2642,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(CBORObject.NewArray().signum());
+        CBORObject.FromObject(CBORObject.NewArray().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -2658,7 +2651,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(CBORObject.NewMap().signum());
+        CBORObject.FromObject(CBORObject.NewMap().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -2676,6 +2669,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(3).compareTo(cbor.get(1))
     }
 
     @Test
+    @org.junit.Ignore
     public void TestFromObject_Dictionary() {
       Map<String, Object> dict = new HashMap<String, Object>();
       dict.put("TestKey","TestValue");
@@ -2775,7 +2769,8 @@ private final PODClass propVarpropvalue;
               }
     }
 
-    @Test(timeout = 5000)
+    @Test
+    @org.junit.Ignore
     public void TestFromObject_PODOptions() {
       PODClass ao = new PODClass();
       PODOptions valueCcTF = new PODOptions(true, false);
