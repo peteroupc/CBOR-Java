@@ -317,15 +317,6 @@ return false;
 }
 
   public static Object TypeToObject(CBORObject objThis, Type t) {
-      if (t.equals(java.util.Date.class)) {
-        return new CBORDateConverter().FromCBORObject(objThis);
-      }
-      if (t.equals(java.util.UUID.class)) {
-        return new CBORUuidConverter().FromCBORObject(objThis);
-      }
-      if (t.equals(java.net.URI.class)) {
-        return new CBORUriConverter().FromCBORObject(objThis);
-      }
       if (t.equals(Byte.class) || t.equals(byte.class)) {
         return objThis.AsByte();
       }
@@ -346,6 +337,27 @@ return false;
       }
       if (t.equals(Boolean.class) || t.equals(boolean.class)) {
         return objThis.AsBoolean();
+      }
+      if (t.equals(java.util.Date.class)) {
+        return new CBORDateConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(java.util.UUID.class)) {
+        return new CBORUuidConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(java.net.URI.class)) {
+        return new CBORUriConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(EInteger.class)) {
+        return objThis.AsEInteger();
+      }
+      if (t.equals(EDecimal.class)) {
+        return objThis.AsEDecimal();
+      }
+      if (t.equals(EFloat.class)) {
+        return objThis.AsEFloat();
+      }
+      if (t.equals(ERational.class)) {
+        return objThis.AsERational();
       }
       if (objThis.getType() == CBORType.ByteString) {
         if (t.equals(byte[].class)) {
