@@ -448,20 +448,27 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
     long time=bi.getTime();
+    int nanoseconds=((int)(time%1000L));
+    if(nanoseconds<0)nanoseconds=1000+nanoseconds;
+    nanoseconds*=1000000;
+//System.out.println(nanoseconds+","+time);
     EDecimal edec=EDecimal.FromInt64(time).Divide(
       EDecimal.FromInt32(1000));
     CBORUtilities.BreakDownSecondsSinceEpoch(edec,year,lf);
+    lf[5]=nanoseconds;
    }
 
 public static java.util.Date BuildUpDateTime(EInteger year, int[] dt){
  EInteger dateMS=CBORUtilities.GetNumberOfDaysProlepticGregorian(
-   year,dt[0],dt[1]);
- dateMS=dateMS.Multiply(EInteger.FromInt32(86400000));
- dateMS=dateMS.Add(EInteger.FromInt32(dt[2]*3600000+dt[3]*60000+dt[4]));
+   year,dt[0],dt[1]).Multiply(EInteger.FromInt32(86400000));
+ EInteger frac=EInteger.FromInt32(0);
+//System.out.println(dt[2]+","+dt[3]+","+dt[4]+","+dt[5]);
+ frac=frac.Add(EInteger.FromInt32(dt[2]*3600000+dt[3]*60000+dt[4]*1000));
  // Milliseconds
- dateMS=dateMS.Add(EInteger.FromInt32(dt[5]/1000000));
+ frac=frac.Add(EInteger.FromInt32(dt[5]/1000000));
  // Time zone offset in minutes
- dateMS=dateMS.Add(EInteger.FromInt32(dt[6]*60000));
+ frac=frac.Subtract(EInteger.FromInt32(dt[6]*60000));
+ dateMS=dateMS.Add(frac);
  return new java.util.Date(dateMS.ToInt64Checked());
 }
 

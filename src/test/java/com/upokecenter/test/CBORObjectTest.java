@@ -7070,6 +7070,9 @@ try { if (ms != null) {
 
     @Test
     public void TestDateTime() {
+      ArrayList<String> dateList = new ArrayList<String>();
+      dateList.add("0783-08-19T03:10:29.406Z");
+      dateList.add("1954-03-07T16:20:38.256Z");
       RandomGenerator rng = new RandomGenerator();
       for (int i = 0; i < 2000; ++i) {
         String dtstr = DateTimeToString(
@@ -7080,6 +7083,9 @@ try { if (ms != null) {
           rng.UniformInt(60),
           rng.UniformInt(60),
           rng.UniformInt(1000));
+        dateList.add(dtstr);
+      }
+      for (String dtstr : dateList) {
         CBORObject cbor = CBORObject.FromObjectAndTag(dtstr, 0);
         java.util.Date dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
         ToObjectTest.TestToFromObjectRoundTrip(dt);
