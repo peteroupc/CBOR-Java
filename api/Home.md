@@ -21,8 +21,8 @@ Specifies options for encoding and decoding CBOR objects.
 Represents an object in Concise Binary Object Representation (CBOR) and
  contains methods for reading and writing CBOR data.
 
-* [com.upokecenter.cbor.CBORTypeFilter](com.upokecenter.cbor.CBORTypeFilter.md) -
-Specifies what kinds of CBOR objects a tag can be.
+* [com.upokecenter.cbor.CBORTypeFilter](com.upokecenter.cbor.CBORTypeFilter.md) - Deprecated.
+May be removed without replacement.
 
 * [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -
 Includes options to control how CBOR objects are converted to JSON.

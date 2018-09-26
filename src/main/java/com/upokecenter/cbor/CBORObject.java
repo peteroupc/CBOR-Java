@@ -657,7 +657,9 @@ import com.upokecenter.numbers.*;
      * converter} is null.
      * @throws IllegalArgumentException "Converter doesn't contain a proper
      * ToCBORObject method".
-     */
+     * @deprecated To be replaced with the AddConverter method of CBORTypeMapper.
+ */
+@Deprecated
     public static <T> void AddConverter(java.lang.reflect.Type type, ICBORConverter<T> converter) {
       if (type == null) {
         throw new NullPointerException("type");

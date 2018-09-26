@@ -1,109 +1,107 @@
 # com.upokecenter.cbor.CBORTypeFilter
 
-    public final class CBORTypeFilter extends Object
+    @Deprecated public final class CBORTypeFilter extends Object
 
-Specifies what kinds of CBOR objects a tag can be. This class is used when a
- CBOR object is being read from a data stream. This class can't be
- inherited; this is a change in version 2.0 from previous versions,
- where the class was inadvertently left inheritable.
+Deprecated.
+<div class='deprecationComment'>May be removed without replacement.</div>
 
 ## Fields
 
 * `static CBORTypeFilter Any`<br>
- A filter that allows any CBOR object.
+ Deprecated. A filter that allows any CBOR object.
 * `static CBORTypeFilter ByteString`<br>
- A filter that allows byte strings.
+ Deprecated. A filter that allows byte strings.
 * `static CBORTypeFilter NegativeInteger`<br>
- A filter that allows negative integers.
+ Deprecated. A filter that allows negative integers.
 * `static CBORTypeFilter None`<br>
- A filter that allows no CBOR types.
+ Deprecated. A filter that allows no CBOR types.
 * `static CBORTypeFilter TextString`<br>
- A filter that allows text strings.
+ Deprecated. A filter that allows text strings.
 * `static CBORTypeFilter UnsignedInteger`<br>
- A filter that allows unsigned integers.
+ Deprecated. A filter that allows unsigned integers.
 
 ## Constructors
 
 * `CBORTypeFilter()`<br>
+ Deprecated.
 
 ## Methods
 
 * `boolean ArrayIndexAllowed​(int index)`<br>
- Determines whether this type filter allows CBOR arrays and the given array
+ Deprecated. Determines whether this type filter allows CBOR arrays and the given array
  index is allowed under this type filter.
 * `boolean ArrayLengthMatches​(int length)`<br>
- Returns whether an array's length is allowed under this filter.
+ Deprecated. Returns whether an array's length is allowed under this filter.
 * `boolean ArrayLengthMatches​(long length)`<br>
- Returns whether an array's length is allowed under a filter.
+ Deprecated. Returns whether an array's length is allowed under a filter.
 * `boolean ArrayLengthMatches​(com.upokecenter.numbers.EInteger bigLength)`<br>
- Returns whether an array's length is allowed under a filter.
+ Deprecated. Returns whether an array's length is allowed under a filter.
 * `CBORTypeFilter GetSubFilter​(int index)`<br>
- Gets the type filter for this array filter by its index.
+ Deprecated. Gets the type filter for this array filter by its index.
 * `CBORTypeFilter GetSubFilter​(long index)`<br>
- Gets the type filter for this array filter by its index.
+ Deprecated. Gets the type filter for this array filter by its index.
 * `boolean MajorTypeMatches​(int type)`<br>
- Returns whether the given CBOR major type matches a major type allowed by
+ Deprecated. Returns whether the given CBOR major type matches a major type allowed by
  this filter.
 * `boolean NonFPSimpleValueAllowed()`<br>
- Returns whether this filter allows simple values that are not floating-point
+ Deprecated. Returns whether this filter allows simple values that are not floating-point
  numbers.
 * `boolean TagAllowed​(int tag)`<br>
- Gets a value indicating whether CBOR objects can have the given tag number.
+ Deprecated. Gets a value indicating whether CBOR objects can have the given tag number.
 * `boolean TagAllowed​(long longTag)`<br>
- Gets a value indicating whether CBOR objects can have the given tag number.
+ Deprecated. Gets a value indicating whether CBOR objects can have the given tag number.
 * `boolean TagAllowed​(com.upokecenter.numbers.EInteger bigTag)`<br>
- Gets a value indicating whether CBOR objects can have the given tag number.
+ Deprecated. Gets a value indicating whether CBOR objects can have the given tag number.
 * `CBORTypeFilter WithArrayAnyLength()`<br>
- Copies this filter and includes arrays of any length in the new filter.
+ Deprecated. Copies this filter and includes arrays of any length in the new filter.
 * `CBORTypeFilter WithArrayExactLength​(int arrayLength,
                     CBORTypeFilter... elements)`<br>
- Copies this filter and includes CBOR arrays with an exact length to the new
+ Deprecated. Copies this filter and includes CBOR arrays with an exact length to the new
  filter.
 * `CBORTypeFilter WithArrayMinLength​(int arrayLength,
                   CBORTypeFilter... elements)`<br>
- Copies this filter and includes CBOR arrays with at least a given length to
+ Deprecated. Copies this filter and includes CBOR arrays with at least a given length to
  the new filter.
 * `CBORTypeFilter WithByteString()`<br>
- Copies this filter and includes byte strings in the new filter.
+ Deprecated. Copies this filter and includes byte strings in the new filter.
 * `CBORTypeFilter WithFloatingPoint()`<br>
- Copies this filter and includes floating-point numbers in the new filter.
+ Deprecated. Copies this filter and includes floating-point numbers in the new filter.
 * `CBORTypeFilter WithMap()`<br>
- Copies this filter and includes maps in the new filter.
+ Deprecated. Copies this filter and includes maps in the new filter.
 * `CBORTypeFilter WithNegativeInteger()`<br>
- Copies this filter and includes negative integers in the new filter.
+ Deprecated. Copies this filter and includes negative integers in the new filter.
 * `CBORTypeFilter WithTags​(int... tags)`<br>
- Copies this filter and includes a set of valid CBOR tags in the new filter.
+ Deprecated. Copies this filter and includes a set of valid CBOR tags in the new filter.
 * `CBORTypeFilter WithTextString()`<br>
- Copies this filter and includes text strings in the new filter.
+ Deprecated. Copies this filter and includes text strings in the new filter.
 * `CBORTypeFilter WithUnsignedInteger()`<br>
- Copies this filter and includes unsigned integers in the new filter.
+ Deprecated. Copies this filter and includes unsigned integers in the new filter.
 
 ## Field Details
 
 ### Any
     public static final CBORTypeFilter Any
-A filter that allows any CBOR object.
+Deprecated.
 ### ByteString
     public static final CBORTypeFilter ByteString
-A filter that allows byte strings.
+Deprecated.
 ### NegativeInteger
     public static final CBORTypeFilter NegativeInteger
-A filter that allows negative integers.
+Deprecated.
 ### None
     public static final CBORTypeFilter None
-A filter that allows no CBOR types.
+Deprecated.
 ### TextString
     public static final CBORTypeFilter TextString
-A filter that allows text strings.
+Deprecated.
 ### UnsignedInteger
     public static final CBORTypeFilter UnsignedInteger
-A filter that allows unsigned integers.
+Deprecated.
 ## Method Details
 
 ### ArrayIndexAllowed
     public boolean ArrayIndexAllowed​(int index)
-Determines whether this type filter allows CBOR arrays and the given array
- index is allowed under this type filter.
+Deprecated.
 
 **Parameters:**
 
@@ -117,7 +115,7 @@ Determines whether this type filter allows CBOR arrays and the given array
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(int length)
-Returns whether an array's length is allowed under this filter.
+Deprecated.
 
 **Parameters:**
 
@@ -130,7 +128,7 @@ Returns whether an array's length is allowed under this filter.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(long length)
-Returns whether an array's length is allowed under a filter.
+Deprecated.
 
 **Parameters:**
 
@@ -143,7 +141,7 @@ Returns whether an array's length is allowed under a filter.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(com.upokecenter.numbers.EInteger bigLength)
-Returns whether an array's length is allowed under a filter.
+Deprecated.
 
 **Parameters:**
 
@@ -161,7 +159,7 @@ Returns whether an array's length is allowed under a filter.
 
 ### GetSubFilter
     public CBORTypeFilter GetSubFilter​(int index)
-Gets the type filter for this array filter by its index.
+Deprecated.
 
 **Parameters:**
 
@@ -175,7 +173,7 @@ Gets the type filter for this array filter by its index.
 
 ### GetSubFilter
     public CBORTypeFilter GetSubFilter​(long index)
-Gets the type filter for this array filter by its index.
+Deprecated.
 
 **Parameters:**
 
@@ -189,8 +187,7 @@ Gets the type filter for this array filter by its index.
 
 ### MajorTypeMatches
     public boolean MajorTypeMatches​(int type)
-Returns whether the given CBOR major type matches a major type allowed by
- this filter.
+Deprecated.
 
 **Parameters:**
 
@@ -203,8 +200,7 @@ Returns whether the given CBOR major type matches a major type allowed by
 
 ### NonFPSimpleValueAllowed
     public boolean NonFPSimpleValueAllowed()
-Returns whether this filter allows simple values that are not floating-point
- numbers.
+Deprecated.
 
 **Returns:**
 
@@ -213,7 +209,7 @@ Returns whether this filter allows simple values that are not floating-point
 
 ### TagAllowed
     public boolean TagAllowed​(int tag)
-Gets a value indicating whether CBOR objects can have the given tag number.
+Deprecated.
 
 **Parameters:**
 
@@ -226,7 +222,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 
 ### TagAllowed
     public boolean TagAllowed​(long longTag)
-Gets a value indicating whether CBOR objects can have the given tag number.
+Deprecated.
 
 **Parameters:**
 
@@ -239,7 +235,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 
 ### TagAllowed
     public boolean TagAllowed​(com.upokecenter.numbers.EInteger bigTag)
-Gets a value indicating whether CBOR objects can have the given tag number.
+Deprecated.
 
 **Parameters:**
 
@@ -256,7 +252,7 @@ Gets a value indicating whether CBOR objects can have the given tag number.
 
 ### WithArrayAnyLength
     public CBORTypeFilter WithArrayAnyLength()
-Copies this filter and includes arrays of any length in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -264,8 +260,7 @@ Copies this filter and includes arrays of any length in the new filter.
 
 ### WithArrayExactLength
     public CBORTypeFilter WithArrayExactLength​(int arrayLength, CBORTypeFilter... elements)
-Copies this filter and includes CBOR arrays with an exact length to the new
- filter.
+Deprecated.
 
 **Parameters:**
 
@@ -290,8 +285,7 @@ Copies this filter and includes CBOR arrays with an exact length to the new
 
 ### WithArrayMinLength
     public CBORTypeFilter WithArrayMinLength​(int arrayLength, CBORTypeFilter... elements)
-Copies this filter and includes CBOR arrays with at least a given length to
- the new filter.
+Deprecated.
 
 **Parameters:**
 
@@ -316,7 +310,7 @@ Copies this filter and includes CBOR arrays with at least a given length to
 
 ### WithByteString
     public CBORTypeFilter WithByteString()
-Copies this filter and includes byte strings in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -324,7 +318,7 @@ Copies this filter and includes byte strings in the new filter.
 
 ### WithFloatingPoint
     public CBORTypeFilter WithFloatingPoint()
-Copies this filter and includes floating-point numbers in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -332,7 +326,7 @@ Copies this filter and includes floating-point numbers in the new filter.
 
 ### WithMap
     public CBORTypeFilter WithMap()
-Copies this filter and includes maps in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -340,7 +334,7 @@ Copies this filter and includes maps in the new filter.
 
 ### WithNegativeInteger
     public CBORTypeFilter WithNegativeInteger()
-Copies this filter and includes negative integers in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -348,7 +342,7 @@ Copies this filter and includes negative integers in the new filter.
 
 ### WithTags
     public CBORTypeFilter WithTags​(int... tags)
-Copies this filter and includes a set of valid CBOR tags in the new filter.
+Deprecated.
 
 **Parameters:**
 
@@ -360,7 +354,7 @@ Copies this filter and includes a set of valid CBOR tags in the new filter.
 
 ### WithTextString
     public CBORTypeFilter WithTextString()
-Copies this filter and includes text strings in the new filter.
+Deprecated.
 
 **Returns:**
 
@@ -368,7 +362,7 @@ Copies this filter and includes text strings in the new filter.
 
 ### WithUnsignedInteger
     public CBORTypeFilter WithUnsignedInteger()
-Copies this filter and includes unsigned integers in the new filter.
+Deprecated.
 
 **Returns:**
 

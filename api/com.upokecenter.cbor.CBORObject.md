@@ -114,8 +114,9 @@
  key doesn't exist.
 * `static <T> void AddConverter​(Type type,
             ICBORConverter<T> converter)`<br>
- Registers an object that converts objects of a given type to CBOR objects
- (called a CBOR converter).
+ Deprecated.
+To be replaced with the AddConverter method of CBORTypeMapper.
+ To be replaced with the AddConverter method of CBORTypeMapper.
 * `static CBORObject Addition​(CBORObject first,
         CBORObject second)`<br>
  Finds the sum of two CBOR numbers.
@@ -912,9 +913,9 @@ Gets the value of a CBOR object in this map, using a string as the key.
 * <code>IllegalStateException</code> - This object is not a map.
 
 ### AddConverter
-    public static <T> void AddConverter​(Type type, ICBORConverter<T> converter)
-Registers an object that converts objects of a given type to CBOR objects
- (called a CBOR converter).
+    @Deprecated public static <T> void AddConverter​(Type type, ICBORConverter<T> converter)
+Deprecated.
+<div class='deprecationComment'>To be replaced with the AddConverter method of CBORTypeMapper.</div>
 
 **Type Parameters:**
 

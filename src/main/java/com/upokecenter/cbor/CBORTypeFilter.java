@@ -15,7 +15,9 @@ import com.upokecenter.numbers.*;
      * CBOR object is being read from a data stream. This class can't be
      * inherited; this is a change in version 2.0 from previous versions,
      * where the class was inadvertently left inheritable.
-     */
+     * @deprecated May be removed without replacement.
+ */
+@Deprecated
   public final class CBORTypeFilter {
     /**
      * A filter that allows any CBOR object.

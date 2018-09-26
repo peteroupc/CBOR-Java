@@ -32,7 +32,9 @@ package com.upokecenter.cbor;
      * Gets a value indicating whether the "Is" prefix in property names is removed
      * before they are used as keys.
      * @return {@code true} If the prefix is removed; otherwise, . {@code false}.
-     */
+     * @deprecated Property name conversion may change, making this property obsolete.
+ */
+@Deprecated
         public final boolean getRemoveIsPrefix() { return propVarremoveisprefix; }
 private final boolean propVarremoveisprefix;
 
