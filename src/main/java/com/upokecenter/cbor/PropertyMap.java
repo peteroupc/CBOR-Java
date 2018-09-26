@@ -370,7 +370,17 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
 if(objThis.getType()==CBORType.Array){
- //TODO: Support arrays
+ if(rawType instanceof Class<?> && ((Class<?>)rawType).isArray()){
+   Class<?> ct=((Class<?>)rawType).getComponentType();
+   Object objRet=Array.newInstance(ct,
+      objThis.size());
+   int i=0;
+   for(CBORObject cbor : objThis.getValues()){
+    Array.set(objRet,i,cbor.ToObject(ct));
+    i++;
+   }
+   return objRet;
+ }
  if(rawType!=null &&
     rawType.equals(List.class) || rawType.equals(Iterable.class) ||
     rawType.equals(java.util.Collection.class) || rawType.equals(ArrayList.class)){

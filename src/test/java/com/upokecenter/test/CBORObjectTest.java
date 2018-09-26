@@ -2513,9 +2513,7 @@ Assert.assertEquals(1, numberTemp);
       CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
       EInteger[] etags = obj.GetAllTags();
 Assert.assertEquals(1, etags.length);
-if (!(999)) {
- Assert.fail(etags[0].ToInt32Checked());
- }
+Assert.assertEquals(999, etags[0].ToInt32Checked());
 obj = ToObjectTest.TestToFromObjectRoundTrip("test");
 etags = obj.GetAllTags();
 Assert.assertEquals(0, etags.length);

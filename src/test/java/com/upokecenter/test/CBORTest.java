@@ -53,7 +53,7 @@ import com.upokecenter.numbers.*;
       cbor = CBORObject.FromObject(new String[] { "a", "b", "c",
  "d", "e" });
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
-      String[] strArray=(String[])cbor.ToObject(String[].class);
+      String[] strArray = (String[])cbor.ToObject(String[].class);
       cbor = CBORObject.FromObject(strArray);
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
       CBORTestCommon.AssertRoundTrip(cbor);
