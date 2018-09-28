@@ -126,6 +126,7 @@ return
         }
         if (tag == 2 || tag == 3) {
           o =
+
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomByteStringShort(rand));
         } else if (tag == 4 || tag == 5) {
           o = CBORObject.NewArray();

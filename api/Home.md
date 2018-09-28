@@ -8,6 +8,10 @@ Interface implemented by classes that convert objects of arbitrary types to
 Interface implemented by classes that convert objects of arbitrary types to
  and from CBOR objects.
 
+* [com.upokecenter.cbor.ICBORToFromConverter&amp;lt;T&amp;gt;](com.upokecenter.cbor.ICBORToFromConverter.md) -
+Interface implemented by classes that convert objects of arbitrary types to
+ and from CBOR objects.
+
 * [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
 Contains methods useful for reading and writing data, with a focus on CBOR.
 

@@ -8,7 +8,7 @@ Not documented yet.
 
 * `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
-* `<T> void AddConverter​(Type type,
+* `<T> CBORTypeMapper AddConverter​(Type type,
             ICBORConverter<T> converter)`<br>
  Not documented yet.
 * `CBORTypeMapper AddTypeName​(String name)`<br>
@@ -33,7 +33,7 @@ Initializes a new instance of the <code>CBORTypeMapper</code> class.
     public CBORTypeMapper()
 Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
-    public <T> void AddConverter​(Type type, ICBORConverter<T> converter)
+    public <T> CBORTypeMapper AddConverter​(Type type, ICBORConverter<T> converter)
 Not documented yet.
 
 **Type Parameters:**
@@ -45,6 +45,10 @@ Not documented yet.
 * <code>type</code> - The parameter <code>type</code> is not documented yet.
 
 * <code>converter</code> - The parameter <code>converter</code> is not documented yet.
+
+**Returns:**
+
+* A CBORTypeMapper object.
 
 **Throws:**
 

@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  class CBORUriConverter implements ICBORObjectConverter<java.net.URI>
+  class CBORUriConverter implements ICBORToFromConverter<java.net.URI>
   {
     private CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.TextString) {

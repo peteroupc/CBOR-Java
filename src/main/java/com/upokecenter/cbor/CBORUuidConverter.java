@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  class CBORUuidConverter implements ICBORObjectConverter<java.util.UUID>
+  class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID>
   {
     private CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.ByteString) {

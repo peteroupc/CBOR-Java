@@ -9,7 +9,6 @@ import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
-  @org.junit.Ignore
   public class ToObjectTest {
     @Test
     public void TestAsEInteger() {
@@ -349,7 +348,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
   (String)numberinfo.get("number").ToObject(String.class)));
-        if ((Object)true == numberinfo.get("byte").ToObject(boolean.class)) {
+        if ((boolean)numberinfo.get("byte").AsBoolean()) {
           Assert.assertEquals(
   TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(String.class)),
             ((int)(Byte)cbornumber.ToObject(byte.class)) & 0xff);
@@ -703,7 +702,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(
    EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class)));
-        if ((Object)true == numberinfo.get("int16").ToObject(boolean.class)) {
+        if ((boolean)numberinfo.get("int16").AsBoolean()) {
           Assert.assertEquals(
   (short)TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(String.class)),
   cbornumber.ToObject(short.class));
@@ -783,13 +782,13 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         EDecimal edec =
     EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
-        boolean isdouble; isdouble = (Object)true == numberinfo.get("double").ToObject(boolean.class);
+        boolean isdouble; isdouble = (boolean)numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToDouble());
-        boolean issingle; issingle = (Object)true == numberinfo.get("single").ToObject(boolean.class);
+        boolean issingle; issingle = (boolean)numberinfo.get("single").AsBoolean();
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
-        if ((Object)true == numberinfo.get("int32").ToObject(boolean.class)) {
+        if ((boolean)numberinfo.get("int32").AsBoolean()) {
           Assert.assertEquals(
   TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(String.class)),
     cbornumber.ToObject(int.class));
@@ -805,7 +804,8 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
           }
         } else {
           try {
-            cbornumber.ToObject(int.class);
+            System.out.println(cbornumber.ToObject(int.class));
+            System.out.println(cbornumber.ToObject(int.class));
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -901,13 +901,13 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         EDecimal edec =
     EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
-        boolean isdouble; isdouble = (Object)true == numberinfo.get("double").ToObject(boolean.class);
+        boolean isdouble; isdouble = (boolean)numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToDouble());
-        boolean issingle; issingle = (Object)true == numberinfo.get("single").ToObject(boolean.class);
+        boolean issingle; issingle = (boolean)numberinfo.get("single").AsBoolean();
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
-        if ((Object)true == numberinfo.get("int64").ToObject(boolean.class)) {
+        if ((boolean)numberinfo.get("int64").AsBoolean()) {
           Assert.assertEquals(
    TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
    cbornumber.ToObject(long.class));
@@ -961,6 +961,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       // not implemented yet
     }
     @Test
+    @org.junit.Ignore
     public void TestAsSingle() {
       try {
         CBORObject.NewArray().ToObject(float.class);
@@ -1095,7 +1096,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
     @Test(timeout = 5000)
     public void TestToObject() {
       PODClass ao = new PODClass();
-      CBORObject co = ToObjectTest.TestToFromObjectRoundTrip(ao);
+      CBORObject co = CBORObject.FromObject(ao);
       if (co.ContainsKey("PrivatePropA")) {
  Assert.fail();
  }
@@ -1210,6 +1211,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
     }
 
     @Test
+    @org.junit.Ignore
     public void TestCharRoundTrip() {
       for (int i = 0; i < 0x10000; ++i) {
         if ((i & 0xf800) == 0xd800) {

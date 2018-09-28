@@ -15,9 +15,9 @@ import java.util.*;
      * Initializes a new instance of the {@link CBORTypeMapper} class.
      */
     public CBORTypeMapper() {
-this.typePrefixes = new ArrayList<String>();
-this.typeNames = new ArrayList<String>();
-this.converters = new HashMap<Object, ConverterInfo>();
+      this.typePrefixes = new ArrayList<String>();
+      this.typeNames = new ArrayList<String>();
+      this.converters = new HashMap<Object, ConverterInfo>();
     }
 
     /**
@@ -25,12 +25,14 @@ this.converters = new HashMap<Object, ConverterInfo>();
      * @param type The parameter {@code type} is not documented yet.
      * @param converter The parameter {@code converter} is not documented yet.
      * @param <T> Type parameter not documented yet.
+     * @return A CBORTypeMapper object.
      * @throws java.lang.NullPointerException The parameter {@code type} or {@code
      * converter} is null.
      * @throws IllegalArgumentException Converter doesn't contain a proper
      * ToCBORObject method.
      */
-    public <T> void AddConverter(java.lang.reflect.Type type, ICBORConverter<T> converter) {
+    public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
+      ICBORConverter<T> converter) {
       if (type == null) {
         throw new NullPointerException("type");
       }
@@ -47,17 +49,43 @@ this.converters = new HashMap<Object, ConverterInfo>();
         throw new IllegalArgumentException(
           "Converter doesn't contain a proper ToCBORObject method");
       }
+      ci.setFromObject(PropertyMap.FindOneArgumentMethod(
+        converter,
+        "FromCBORObject",
+        CBORObject.class));
       this.converters.put(type, ci);
+      return this;
+    }
+
+    Object ConvertBackWithConverter(
+        CBORObject cbor,
+        java.lang.reflect.Type type) {
+      ConverterInfo convinfo = null;
+      if (this.converters.containsKey(type)) {
+        convinfo = this.converters.get(type);
+      } else {
+        return null;
+      }
+      if (convinfo == null) {
+        return null;
+      }
+      if (convinfo.getFromObject() == null) {
+        return null;
+      }
+      return PropertyMap.InvokeOneArgumentMethod(
+        convinfo.getFromObject(),
+        convinfo.getConverter(),
+        cbor);
     }
 
     CBORObject ConvertWithConverter(Object obj) {
       Object type = obj.getClass();
       ConverterInfo convinfo = null;
-        if (this.converters.containsKey(type)) {
-          convinfo = this.converters.get(type);
-        } else {
-          return null;
-        }
+      if (this.converters.containsKey(type)) {
+        convinfo = this.converters.get(type);
+      } else {
+        return null;
+      }
       if (convinfo == null) {
         return null;
       }
@@ -74,18 +102,18 @@ this.converters = new HashMap<Object, ConverterInfo>();
      */
     public boolean FilterTypeName(String typeName) {
       if (((typeName) == null || (typeName).length() == 0)) {
- return false;
-}
+        return false;
+      }
       for (String prefix : this.typePrefixes) {
-   if (typeName.length() >= prefix.length() &&
-     typeName.substring(0, prefix.length()).equals(prefix)) {
-     return true;
-   }
+        if (typeName.length() >= prefix.length() &&
+          typeName.substring(0, prefix.length()).equals(prefix)) {
+          return true;
+        }
       }
       for (String name : this.typeNames) {
-   if (typeName.equals(name)) {
-     return true;
-   }
+        if (typeName.equals(name)) {
+          return true;
+        }
       }
       return false;
     }
@@ -101,12 +129,12 @@ this.converters = new HashMap<Object, ConverterInfo>();
      */
     public CBORTypeMapper AddTypePrefix(String prefix) {
       if (prefix == null) {
-  throw new NullPointerException("prefix");
-}
-if (prefix.length() == 0) {
-  throw new IllegalArgumentException("prefix" + " is empty.");
-}
-typePrefixes.add(prefix);
+        throw new NullPointerException("prefix");
+      }
+      if (prefix.length() == 0) {
+        throw new IllegalArgumentException("prefix" + " is empty.");
+      }
+      this.typePrefixes.add(prefix);
       return this;
     }
 
@@ -120,40 +148,34 @@ typePrefixes.add(prefix);
      */
     public CBORTypeMapper AddTypeName(String name) {
       if (name == null) {
-  throw new NullPointerException("name");
-}
-if (name.length() == 0) {
-  throw new IllegalArgumentException("name" + " is empty.");
-}
-typeNames.add(name);
+        throw new NullPointerException("name");
+      }
+      if (name.length() == 0) {
+        throw new IllegalArgumentException("name" + " is empty.");
+      }
+      this.typeNames.add(name);
       return this;
     }
 
     static final class ConverterInfo {
-      private Object toObject;
-
     /**
      * Gets the converter's ToCBORObject method.
      * @return The converter's ToCBORObject method.
      */
-      public final Object getToObject() {
-          return this.toObject;
-        }
-public final void setToObject(Object value) {
-          this.toObject = value;
-        }
+      public final Object getToObject() { return propVartoobject; }
+public final void setToObject(Object value) { propVartoobject = value; }
+private Object propVartoobject;
 
-      private Object converter;
+      public final Object getFromObject() { return propVarfromobject; }
+public final void setFromObject(Object value) { propVarfromobject = value; }
+private Object propVarfromobject;
 
     /**
-     * Gets the ICBORConverter object.
-     * @return The ICBORConverter object.
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
-      public final Object getConverter() {
-          return this.converter;
-        }
-public final void setConverter(Object value) {
-          this.converter = value;
-        }
+      public final Object getConverter() { return propVarconverter; }
+public final void setConverter(Object value) { propVarconverter = value; }
+private Object propVarconverter;
     }
   }

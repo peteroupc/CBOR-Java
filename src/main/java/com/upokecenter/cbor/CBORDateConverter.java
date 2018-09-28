@@ -9,7 +9,7 @@ at: http://peteroupc.github.io/
 
 import com.upokecenter.numbers.*;
 
-  class CBORDateConverter implements ICBORObjectConverter<java.util.Date> {
+  class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
     private static String DateTimeToString(java.util.Date bi) {
       int[] lesserFields = new int[7];
       EInteger[] year = new EInteger[1];

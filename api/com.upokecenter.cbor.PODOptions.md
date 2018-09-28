@@ -22,10 +22,6 @@ Options for converting "plain old data" objects (better known as POCOs in
 
 ## Methods
 
-* `boolean getRemoveIsPrefix()`<br>
- Deprecated.
-Property name conversion has changed, making this property obsolete.
- Property name conversion has changed, making this property obsolete.
 * `boolean getUseCamelCase()`<br>
  Gets a value indicating whether property names are converted to camel
  case before they are used as keys.
@@ -36,15 +32,6 @@ Property name conversion has changed, making this property obsolete.
     public static final PODOptions Default
 The default settings for "plain old data" options.
 ## Method Details
-
-### getRemoveIsPrefix
-    @Deprecated public final boolean getRemoveIsPrefix()
-Deprecated.
-<div class='deprecationComment'>Property name conversion has changed, making this property obsolete.</div>
-
-**Returns:**
-
-* <code>true</code> If the prefix is removed; otherwise, . <code>false</code>.
 
 ### getUseCamelCase
     public final boolean getUseCamelCase()

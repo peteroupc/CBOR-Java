@@ -1,24 +1,24 @@
 # com.upokecenter.cbor.ICBORTag
 
-    public interface ICBORTag
+    @Deprecated public interface ICBORTag
 
-Implemented by classes that validate CBOR objects belonging to a specific
- tag.
+Deprecated.
+<div class='deprecationComment'>May be removed in the future without replacement. Not as useful as
+ ICBORConverters and ICBORObjectConverters for FromObject and ToObject.</div>
 
 ## Methods
 
 * `CBORTypeFilter GetTypeFilter()`<br>
- Gets a type filter specifying what kinds of CBOR objects are supported by
+ Deprecated. Gets a type filter specifying what kinds of CBOR objects are supported by
  this tag.
 * `CBORObject ValidateObject​(CBORObject obj)`<br>
- Generates a CBOR object based on the data of another object.
+ Deprecated. Generates a CBOR object based on the data of another object.
 
 ## Method Details
 
 ### GetTypeFilter
     CBORTypeFilter GetTypeFilter()
-Gets a type filter specifying what kinds of CBOR objects are supported by
- this tag.
+Deprecated.
 
 **Returns:**
 
@@ -26,8 +26,7 @@ Gets a type filter specifying what kinds of CBOR objects are supported by
 
 ### ValidateObject
     CBORObject ValidateObject​(CBORObject obj)
-Generates a CBOR object based on the data of another object. If the data is
- not valid, should throw a CBORException.
+Deprecated.
 
 **Parameters:**
 
