@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-  class CBORTag37 implements ICBORTag, ICBORObjectConverter<java.util.UUID>
+  class CBORTag37 implements ICBORTag, ICBORToFromConverter<java.util.UUID>
   {
     public CBORTypeFilter GetTypeFilter() {
       return CBORTypeFilter.ByteString;

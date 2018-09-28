@@ -15,7 +15,8 @@ package com.upokecenter.cbor;
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
      * class.
-     * @param removeIsPrefix If set to {@code true} remove is prefix.
+     * @param removeIsPrefix If set to {@code true} remove is prefix. NOTE: May be
+     * ignored in future versions of this library.
      * @param useCamelCase If set to {@code true} use camel case.
      */
     public PODOptions(boolean removeIsPrefix, boolean useCamelCase) {

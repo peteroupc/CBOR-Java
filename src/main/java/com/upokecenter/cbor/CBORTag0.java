@@ -9,7 +9,7 @@ at: http://peteroupc.github.io/
 
 import com.upokecenter.numbers.*;
 
-  class CBORTag0 implements ICBORTag, ICBORObjectConverter<java.util.Date> {
+  class CBORTag0 implements ICBORTag, ICBORToFromConverter<java.util.Date> {
     private static String DateTimeToString(java.util.Date bi) {
       int[] lesserFields = new int[7];
       EInteger[] year = new EInteger[1];
