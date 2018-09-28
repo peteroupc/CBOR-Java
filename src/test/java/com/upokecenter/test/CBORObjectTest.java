@@ -2688,8 +2688,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
 
       public String FromCBORObject(CBORObject cbor) {
         if (cbor.getType() == CBORType.TextString) {
-          return CBORObject.FromObject(
-          DataUtilities.ToLowerCaseAscii(cbor.AsString()));
+          return DataUtilities.ToLowerCaseAscii(cbor.AsString());
         }
         throw new CBORException();
       }
@@ -7146,28 +7145,28 @@ try { if (ms != null) {
         .AddConverter(String.class, new TestConverter());
       CBORObject cbor = CBORObject.FromObject("UpPeR");
       {
-String stringTemp = cbor.ToObject(String.class, mapper);
+String stringTemp = (String)cbor.ToObject(String.class, mapper);
 Assert.assertEquals(
   "upper",
   stringTemp);
 }
       cbor = CBORObject.FromObject("TRUE");
       {
-String stringTemp = cbor.ToObject(String.class, mapper);
+String stringTemp = (String)cbor.ToObject(String.class, mapper);
 Assert.assertEquals(
   "true",
   stringTemp);
 }
       cbor = CBORObject.FromObject("false");
       {
-String stringTemp = cbor.ToObject(String.class, mapper);
+String stringTemp = (String)cbor.ToObject(String.class, mapper);
 Assert.assertEquals(
   "false",
   stringTemp);
 }
       cbor = CBORObject.FromObject("FALSE");
       {
-String stringTemp = cbor.ToObject(String.class, mapper);
+String stringTemp = (String)cbor.ToObject(String.class, mapper);
 Assert.assertEquals(
   "false",
   stringTemp);

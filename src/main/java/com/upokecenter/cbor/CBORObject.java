@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2013.
+Written by Peter O. in 2013-2018.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -842,14 +842,13 @@ try { if (ms != null) {
      * returns the enumeration constant with the given number or name,
      * respectively. (Enumeration constants made up of multiple enumeration
      * constants, as allowed by .NET, can only be matched by number this
-     * way.) (To be implemented for Java.) </li> <li>Type converters (To be
-     * implemented). </li> <li>If the type is <code>java.util.Date</code> (or
-     * <code>Date</code> in Java) , returns a date/time object if the CBOR
-     * object's outermost tag is 0 or 1. </li> <li>If the type is <code>java.net.URI</code>
-     * (or <code>URI</code> in Java), returns a URI object if possible. </li>
-     * <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a
-     * UUID object if possible. </li> <li>If the object is a type not
-     * specially handled above, the type includes a zero-argument
+     * way.) (To be implemented for Java.) </li> <li>If the type is
+     * <code>java.util.Date</code> (or <code>Date</code> in Java) , returns a date/time object
+     * if the CBOR object's outermost tag is 0 or 1. </li> <li>If the type
+     * is <code>java.net.URI</code> (or <code>URI</code> in Java), returns a URI object if
+     * possible. </li> <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in
+     * Java), returns a UUID object if possible. </li> <li>If the object is
+     * a type not specially handled above, the type includes a zero-argument
      * constructor (default or not), and this CBOR object is a CBOR map.
      * this method checks the given type for eligible setters as follows:
      * </li> <li>(*) In the .NET version, eligible setters are the public,
@@ -1470,40 +1469,41 @@ try { if (ms != null) {
      * as each key, and with the corresponding value returned by that getter
      * as that key's value. Before adding a key-value pair to the map, the
      * key's name is adjusted according to the rules described in the {@link
-     * com.upokecenter.cbor.PODOptions} documentation.</li></ul>
-     * <p><b>Note:</b> For security reasons, an application should, whenever
-     * possible, not base this parameter on user input or other externally
-     * supplied data unless the application limits <paramref name='obj'/>
-     * inputs to types specially handled by this method (such as <code>int</code>
-     * or <code>String</code>) and/or to plain-old-data types (POCO or POJO types)
-     * within the control of the application. If the plain-old-data type
-     * references other data types, those types should likewise meet either
-     * criterion above.</p> <p><b>REMARK:</b> .NET enumeration (<code>Enum</code>)
-     * constants could also have been converted to text strings with
-     * <code>toString()</code>, but that method will return multiple names if the
-     * given Enum object is a combination of Enum objects (e.g. if the
-     * object is <code>FileAccess.Read | FileAccess.Write</code>). More generally,
-     * if Enums are converted to text strings, constants from Enum types
-     * with the <code>Flags</code> attribute, and constants from the same Enum
-     * type that share an underlying value, should not be passed to this
-     * method.</p> <p>REMARK: The behavior of this method is likely to
-     * change in the next major version (4.0). There are certain
-     * inconsistencies between the ToObject method and the FromObject method
-     * as well as between the .NET and Java versions of FromObject. For one
-     * thing, java.util.Date/Date objects in FromObject are converted differently
-     * between the two versions -- either as CBOR maps with their "get"
-     * properties (Java) or as tag-0 strings (.NET) -- this difference has
-     * to remain for backward compatibility with version 3.0. For another
-     * thing, the treatment of properties/getters starting with "Is" is
-     * subtly inconsistent between the .NET and Java versions of FromObject,
-     * especially when using certain PODOptions. A certain consistency
-     * between .NET and Java and between FromObject and ToObject are sought
-     * for version 4.0. It is also hoped that--</p> <ul> <li>the ToObject
-     * method will support deserializing to objects consisting of fields and
-     * not getters ("getX()" methods), both in .NET and in Java, and</li>
-     * <li>both FromObject and ToObject will be better designed, in version
-     * 4.0, so that backward-compatible improvements are easier to
-     * make.</li></ul>
+     * com.upokecenter.cbor.PODOptions} documentation. Note that for
+     * security reasons, certain types are not supported even if they
+     * contain eligible getters.</li></ul> <p><b>Note:</b> For security
+     * reasons, an application should, whenever possible, not base this
+     * parameter on user input or other externally supplied data unless the
+     * application limits <paramref name='obj'/> inputs to types specially
+     * handled by this method (such as <code>int</code> or <code>String</code>) and/or
+     * to plain-old-data types (POCO or POJO types) within the control of
+     * the application. If the plain-old-data type references other data
+     * types, those types should likewise meet either criterion above.</p>
+     * <p><b>REMARK:</b> .NET enumeration (<code>Enum</code>) constants could also
+     * have been converted to text strings with <code>toString()</code>, but that
+     * method will return multiple names if the given Enum object is a
+     * combination of Enum objects (e.g. if the object is <code>FileAccess.Read
+     * | FileAccess.Write</code>). More generally, if Enums are converted to
+     * text strings, constants from Enum types with the <code>Flags</code>
+     * attribute, and constants from the same Enum type that share an
+     * underlying value, should not be passed to this method.</p> <p>REMARK:
+     * The behavior of this method is likely to change in the next major
+     * version (4.0). There are certain inconsistencies between the ToObject
+     * method and the FromObject method as well as between the .NET and Java
+     * versions of FromObject. For one thing, java.util.Date/Date objects in
+     * FromObject are converted differently between the two versions --
+     * either as CBOR maps with their "get" properties (Java) or as tag-0
+     * strings (.NET) -- this difference has to remain for backward
+     * compatibility with version 3.0. For another thing, the treatment of
+     * properties/getters starting with "Is" is subtly inconsistent between
+     * the .NET and Java versions of FromObject, especially when using
+     * certain PODOptions. A certain consistency between .NET and Java and
+     * between FromObject and ToObject are sought for version 4.0. It is
+     * also hoped that--</p> <ul> <li>the ToObject method will support
+     * deserializing to objects consisting of fields and not getters
+     * ("getX()" methods), both in .NET and in Java, and</li> <li>both
+     * FromObject and ToObject will be better designed, in version 4.0, so
+     * that backward-compatible improvements are easier to make.</li></ul>
      * @param obj The parameter {@code obj} is an arbitrary object.
      * @param mapper An object containing optional converters to convert objects of
      * certain types to CBOR objects.
