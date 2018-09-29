@@ -1178,6 +1178,6 @@ private String propVarbb;
       if (cbor.ContainsKey("bb")) {
  Assert.fail(cbor.toString());
  }
-      Assert.assertEquals(cbor.toString(),"Test",cbor.get("aa"));
+      Assert.assertEquals(cbor.toString(),"Test",cbor.get("aa").AsString());
     }
   }

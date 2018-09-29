@@ -2721,7 +2721,8 @@ throw new IllegalStateException("", ex);
       cbor = CBORObject.FromObject(999);
       try {
  cbor.ToObject(EnumClass.class);
-Assert.fail("Should have failed");
+      Assert.fail("Should have failed -- " +
+          cbor.ToObject(EnumClass.class));
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -5609,7 +5610,7 @@ throw new IllegalStateException("", ex);
 cbor.Set(0, 99);
 Assert.assertEquals(99, cbor.get(0).AsInt32());
 cbor.Set(3, 199);
-Assert.assertEquals(199, cbor.get(0).AsInt32());
+Assert.assertEquals(199, cbor.get(3).AsInt32());
     }
     @Test
     public void TestSign() {

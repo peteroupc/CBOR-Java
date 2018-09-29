@@ -782,6 +782,44 @@ try { if (ms != null) {
     }
 
     /**
+     * Converts this CBOR object to an object of an arbitrary type. See the
+     * documentation for the overload of this method taking a CBORTypeMapper
+     * parameter for more information. This method (without a CBORTypeMapper
+     * parameter) allows all data types not otherwise handled to be eligible
+     * for Plain-Old-Data serialization.<p><p>Java offers no easy way to
+     * express a generic type, at least none as easy as C#'s <code>typeof</code>
+     * operator. The following example, written in Java, is a way to specify
+     * that the return value will be an ArrayList of String objects. </p>
+     * <pre>Type arrayListString = new ParameterizedType() { public Type[]
+     * getActualTypeArguments() { /* Contains one type parameter, String &#x2a;&#x2f;
+     * return new Type[] { String.class }; } public Type getRawType() { /* Raw
+     * type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
+     * getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
+     * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
+     * </pre> <p>By comparison, the C# version is much shorter. </p>
+     * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
+     * typeof&#x28;List&lt;String&gt;)); </pre> </p>
+     * @param t The type, class, or interface that this method's return value will
+     * belong to. To express a generic type in Java, see the example.
+     * <b>Note:</b> For security reasons, an application should not base
+     * this parameter on user input or other externally supplied data.
+     * Whenever possible, this parameter should be either a type specially
+     * handled by this method (such as {@code int} or {@code String}) or a
+     * plain-old-data type (POCO or POJO type) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.
+     * @return The converted object.
+     * @throws UnsupportedOperationException The given type {@code t} , or this
+     * object's CBOR type, is not supported.
+     * @throws java.lang.NullPointerException The parameter {@code t} is null.
+     * @throws System.CBORException The given object's nesting is too deep, or
+     * another error occurred when serializing the object.
+     */
+    public Object ToObject(java.lang.reflect.Type t) {
+      return this.ToObjectInternal(t, null);
+    }
+
+    /**
      * <p>Converts this CBOR object to an object of an arbitrary type. The
      * following cases are checked in the logical order given (rather than
      * the strict order in which they are implemented by this library): </p>
@@ -809,10 +847,10 @@ try { if (ms != null) {
      * href='https://github.com/peteroupc/numbers-java'>
      * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java), returns
      * the result of the corresponding As* method. </li> <li>If the type is
-     * an enumeration (<code>Enum</code>) type this CBOR object is a text string
-     * or an integer, returns the appropriate enumerated constant. (For
-     * example, if <code>MyEnum</code> includes an entry for <code>MyValue</code> , this
-     * method will return <code>MyEnum.MyValue</code> if the CBOR object
+     * an enumeration (<code>Enum</code>  // /) type this CBOR object is a text
+     * string or an integer, returns the appropriate enumerated constant.
+     * (For example, if <code>MyEnum</code> includes an entry for <code>MyValue</code> ,
+     * this method will return <code>MyEnum.MyValue</code> if the CBOR object
      * represents <code>"MyValue"</code> or the underlying value for
      * <code>MyEnum.MyValue</code> .) <b>Note:</b> If an integer is converted to a
      * .NET Enum constant, and that integer is shared by more than one
@@ -826,41 +864,46 @@ try { if (ms != null) {
      * returns a byte array which this CBOR byte string's data will be
      * copied to. (This method can't be used to encode CBOR data to a byte
      * array; for that, use the EncodeToBytes method instead.) </li> <li>If
-     * the type is an array type and this CBOR object is an array, returns
-     * an array containing the items in this CBOR object. </li> <li>If the
-     * type is the generic List, IList, ICollection, or IEnumerable (or
-     * ArrayList, List, Collection, or Iterable in Java), and if this CBOR
-     * object is an array, returns an object conforming to the type, class,
-     * or interface passed to this method, where the object will contain all
-     * items in this CBOR array. </li> <li>If the type is the generic
-     * Dictionary or IDictionary (or HashMap or Map in Java), and if this
-     * CBOR object is a map, returns an object conforming to the type,
-     * class, or interface passed to this method, where the object will
-     * contain all keys and values in this CBOR map. </li> <li>If the type
-     * is an enumeration constant ("enum"), and this CBOR object is an
-     * integer or text string, returns the enumeration constant with the
-     * given number or name, respectively. (Enumeration constants made up of
-     * multiple enumeration constants, as allowed by .NET, can only be
-     * matched by number this way.) </li> <li>If the type is <code>java.util.Date</code>
-     * (or <code>Date</code> in Java) , returns a date/time object if the CBOR
+     * the type is a one-dimensional array type and this CBOR object is an
+     * array, returns an array containing the items in this CBOR object.
+     * (Multidimensional arrays to be documented.) </li> <li>If the type is
+     * the generic List, IList, ICollection, or IEnumerable (or ArrayList,
+     * List, Collection, or Iterable in Java), and if this CBOR object is an
+     * array, returns an object conforming to the type, class, or interface
+     * passed to this method, where the object will contain all items in
+     * this CBOR array. </li> <li>If the type is the generic Dictionary or
+     * IDictionary (or HashMap or Map in Java), and if this CBOR object is a
+     * map, returns an object conforming to the type, class, or interface
+     * passed to this method, where the object will contain all keys and
+     * values in this CBOR map. </li> <li>If the type is an enumeration
+     * constant ("enum"), and this CBOR object is an integer or text string,
+     * returns the enumeration constant with the given number or name,
+     * respectively. (Enumeration constants made up of multiple enumeration
+     * constants, as allowed by .NET, can only be matched by number this
+     * way.) (To be implemented for Java.) </li> <li>Type converters (To be
+     * implemented). </li> <li>If the type is <code>java.util.Date</code> (or
+     * <code>Date</code> in Java) , returns a date/time object if the CBOR
      * object's outermost tag is 0 or 1. </li> <li>If the type is <code>java.net.URI</code>
      * (or <code>URI</code> in Java), returns a URI object if possible. </li>
      * <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a
-     * UUID object if possible. </li> <li>If the object is a type not
-     * specially handled above, the type includes a zero-argument
-     * constructor (default or not), and this CBOR object is a CBOR map,
-     * this method checks the given type for eligible setters as follows:
-     * </li> <li>(*) In the .NET version, eligible setters are the public,
-     * nonstatic setters of properties with a public, nonstatic getter
-     * (TODO: To be implemented). </li> <li>(*) In the Java version,
-     * eligible setters are public, nonstatic methods starting with "set"
-     * followed by a character other than a basic digit or lower-case
-     * letter, that is, other than "a" to "z" or "0" to "9", that take one
-     * parameter. The class containing an eligible setter must have a
-     * public, nonstatic method with the same name, but starting with "get"
-     * or "is" rather than "set", that takes no parameters and returns the
-     * setter's parameter type. (For example, if a class has "public void
-     * setValue(String)" and "public String getValue()", "setValue" is an
+     * UUID object if possible. </li> <li>Plain-Old-Data deserialization: If
+     * the object is a type not specially handled above, the type includes a
+     * zero-argument constructor (default or not), this CBOR object is a
+     * CBOR map, and the "mapper" parameter allows this type to be eligible
+     * for Plain-Old-Data deserialization, then this method checks the given
+     * type for eligible setters as follows: </li> <li>(*) In the .NET
+     * version, eligible setters are the public, nonstatic setters of
+     * properties with a public, nonstatic getter. If a class has two
+     * properties of the form "X" and "IsX", where "X" is any name, or has
+     * multiple properties with the same name, those properties are ignored.
+     * </li> <li>(*) In the Java version, eligible setters are public,
+     * nonstatic methods starting with "set" followed by a character other
+     * than a basic digit or lower-case letter, that is, other than "a" to
+     * "z" or "0" to "9", that take one parameter. The class containing an
+     * eligible setter must have a public, nonstatic method with the same
+     * name, but starting with "get" or "is" rather than "set", that takes
+     * no parameters and does not return void. (For example, if a class has
+     * "public setValue(String)" and "public getValue()", "setValue" is an
      * eligible setter. However, "setValue()" and "setValue(String, int)"
      * are not eligible setters.) If a class has two otherwise eligible
      * setters with the same name, but different parameter type, they are
@@ -882,152 +925,12 @@ try { if (ms != null) {
      * The following example, written in Java, is a way to specify that the
      * return value will be an ArrayList of String objects. </p> <pre>Type
      * arrayListString = new ParameterizedType() { public Type[]
-     * getActualTypeArguments() { /* Contains one type parameter, String &#x2a;&#x2f;
-     * return new Type[] { String.class }; } public Type getRawType() { /* Raw
-     * type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
-     * getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
-     * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
-     * </pre> <p>By comparison, the C# version is much shorter. </p>
-     * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
-     * typeof&#x28;List&lt;String&gt;)); </pre> </p>
-     * @param t The type, class, or interface that this method's return value will
-     * belong to. To express a generic type in Java, see the example.
-     * <b>Note:</b> For security reasons, an application should not base
-     * this parameter on user input or other externally supplied data.
-     * Whenever possible, this parameter should be either a type specially
-     * handled by this method (such as {@code int} or {@code String}) or a
-     * plain-old-data type (POCO or POJO type) within the control of the
-     * application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.
-     * @return The converted object.
-     * @throws UnsupportedOperationException The given type {@code t} , or this
-     * object's CBOR type, is not supported.
-     * @throws java.lang.NullPointerException The parameter {@code t} is null.
-     * @throws System.CBORException The given object's nesting is too deep, or
-     * another error occurred when serializing the object.
-     */
-    public Object ToObject(java.lang.reflect.Type t) {
-      return this.ToObject(t, null);
-    }
-
-    /**
-     * <p>Converts this CBOR object to an object of an arbitrary type. The
-     * following cases are checked in the logical order given (rather than
-     * the strict order in which they are implemented by this library):</p>
-     * <ul><li>If the type is <code>CBORObject</code> , return this object.</li>
-     * <li>If the given object is <code>CBORObject.Null</code> (with or without
-     * tags), returns <code>null</code> .</li> <li>If the object is of a type
-     * corresponding to a type converter mentioned in the <paramref
-     * name='mapper'/> parameter, that converter will be used to convert the
-     * CBOR object to an object of the given type. Type converters can be
-     * used to override the default conversion behavior of almost any
-     * object.</li> <li>If the type is <code>object</code> , return this
-     * object.</li> <li>If the type is <code>char</code> ... (To be
-     * implemented).</li> <li>If the type is <code>bool</code> (<code>boolean</code> in
-     * Java), returns the result of AsBoolean.</li> <li>If the type is a
-     * primitive integer type (<code>byte</code> , <code>int</code> , <code>short</code> ,
-     * <code>long</code> , as well as <code>sbyte</code> , <code>ushort</code> , <code>uint</code> ,
-     * and <code>ulong</code> in .NET) or a primitive floating-point type (
-     * <code>float</code> , <code>double</code> , as well as <code>decimal</code> in .NET),
-     * returns the result of the corresponding As* method.</li> <li>If the
-     * type is <code>String</code> , returns the result of AsString.</li> <li>If
-     * the type is <code>EDecimal</code> , <code>EFloat</code> , <code>EInteger</code> , or
-     * <code>ERational</code> in the <a
-  * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code>
-     * </a> library (in .NET) or the <a
-  * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code>
-     * </a> artifact (in Java), returns the result of the corresponding As*
-     * method.</li> <li>If the type is an enumeration (<code>Enum</code>  // /)
-     * type this CBOR object is a text string or an integer, returns the
-     * appropriate enumerated constant. (For example, if <code>MyEnum</code>
-     * includes an entry for <code>MyValue</code> , this method will return
-     * <code>MyEnum.MyValue</code> if the CBOR object represents <code>"MyValue"</code>
-     * or the underlying value for <code>MyEnum.MyValue</code> .) <b>Note:</b> If
-     * an integer is converted to a .NET Enum constant, and that integer is
-     * shared by more than one constant of the same type, it is undefined
-     * which constant from among them is returned. (For example, if
-     * <code>MyEnum.Zero = 0</code> and <code>MyEnum.Null = 0</code> , converting 0 to
-     * <code>MyEnum</code> may return either <code>MyEnum.Zero</code> or
-     * <code>MyEnum.Null</code> .) As a result, .NET Enum types with constants
-     * that share an underlying value should not be passed to this
-     * method.</li> <li>If the type is <code>byte[]</code> (a one-dimensional byte
-     * array) and this CBOR object is a byte string, returns a byte array
-     * which this CBOR byte string's data will be copied to. (This method
-     * can't be used to encode CBOR data to a byte array; for that, use the
-     * EncodeToBytes method instead.)</li> <li>If the type is a
-     * one-dimensional array type and this CBOR object is an array, returns
-     * an array containing the items in this CBOR object. (Multidimensional
-     * arrays to be documented.)</li> <li>If the type is the generic List,
-     * IList, ICollection, or IEnumerable (or ArrayList, List, Collection,
-     * or Iterable in Java), and if this CBOR object is an array, returns an
-     * object conforming to the type, class, or interface passed to this
-     * method, where the object will contain all items in this CBOR
-     * array.</li> <li>If the type is the generic Dictionary or IDictionary
-     * (or HashMap or Map in Java), and if this CBOR object is a map,
-     * returns an object conforming to the type, class, or interface passed
-     * to this method, where the object will contain all keys and values in
-     * this CBOR map.</li> <li>If the type is an enumeration constant
-     * ("enum"), and this CBOR object is an integer or text string, returns
-     * the enumeration constant with the given number or name, respectively.
-     * (Enumeration constants made up of multiple enumeration constants, as
-     * allowed by .NET, can only be matched by number this way.) (To be
-     * implemented for Java.)</li> <li>Type converters (To be
-     * implemented).</li> <li>If the type is <code>java.util.Date</code> (or <code>Date</code>
-     * in Java) , returns a date/time object if the CBOR object's outermost
-     * tag is 0 or 1.</li> <li>If the type is <code>java.net.URI</code> (or <code>URI</code> in
-     * Java), returns a URI object if possible.</li> <li>If the type is
-     * <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a UUID object if
-     * possible.</li> <li>If the object is a type not specially handled
-     * above, the type includes a zero-argument constructor (default or
-     * not), and this CBOR object is a CBOR map. this method checks the
-     * given type for eligible setters as follows:</li> <li>(*) In the .NET
-     * version, eligible setters are the public, nonstatic setters of
-     * properties with a public, nonstatic getter (TODO: To be
-     * implemented).</li> <li>(*) In the Java version, eligible setters are
-     * public, nonstatic methods starting with "set" followed by a character
-     * other than a basic digit or lower-case letter, that is, other than
-     * "a" to "z" or "0" to "9", that take one parameter. The class
-     * containing an eligible setter must have a public, nonstatic method
-     * with the same name, but starting with "get" or "is" rather than
-     * "set", that takes no parameters and does not return void. (For
-     * example, if a class has "public setValue(String)" and "public
-     * getValue()", "setValue" is an eligible setter. However, "setValue()"
-     * and "setValue(String, int)" are not eligible setters.) (TODO: To be
-     * implemented)</li> <li>Then, the method creates an object of the given
-     * type and invokes each eligible setter with the corresponding value in
-     * the CBOR map, if any. Key names in the map are matched to eligible
-     * setters according to the rules described in the {@link
-     * com.upokecenter.cbor.PODOptions} documentation. Note that for
-     * security reasons, certain types are not supported even if they
-     * contain eligible setters.</li> </ul> <p>REMARK: The behavior of this
-     * method is likely to change in the final version 3.4 of this library
-     * as well as in the next major version (4.0). There are certain
-     * inconsistencies between the ToObject method and the FromObject method
-     * as well as between the .NET and Java versions of FromObject. For one
-     * thing, java.util.Date/Date objects in FromObject are converted differently
-     * between the two versions -- either as CBOR maps with their "get"
-     * properties (Java) or as tag-0 strings (.NET) -- this difference has
-     * to remain for backward compatibility with version 3.0. For another
-     * thing, the treatment of properties/getters starting with "Is" is
-     * subtly inconsistent between the .NET and Java versions of FromObject,
-     * especially when using certain PODOptions. A certain consistency
-     * between .NET and Java and between FromObject and ToObject are sought
-     * for version 4.0. It is also hoped that--</p> <ul><li>the ToObject
-     * method will support deserializing to objects consisting of fields and
-     * not getters ("getX()" methods), both in .NET and in Java, and</li>
-     * <li>both FromObject and ToObject will be better designed, in version
-     * 4.0, so that backward-compatible improvements are easier to
-     * make.</li> </ul><p><p>Java offers no easy way to express a generic
-     * type, at least none as easy as C#'s <code>typeof</code> operator. The
-     * following example, written in Java, is a way to specify that the
-     * return value will be an ArrayList of String objects.</p> <pre>Type
-     * arrayListString = new ParameterizedType() { public Type[]
      * getActualTypeArguments() {  // Contains one type parameter, String
      * return new Type[] { String.class }; } public Type getRawType() { /*
      * Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
      * getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
      * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
-     * </pre> <p>By comparison, the C# version is much shorter.</p>
+     * </pre> <p>By comparison, the C# version is much shorter. </p>
      * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
      * typeof&#x28;List&lt;String&gt;)); </pre> </p>
      * @param t The type, class, or interface that this method's return value will
@@ -1039,7 +942,9 @@ try { if (ms != null) {
      * a plain-old-data type (POCO or POJO type) within the control of the
      * application. If the plain-old-data type references other data types,
      * those types should likewise meet either criterion above.
-     * @param mapper The parameter {@code mapper} is a CBORTypeMapper object.
+     * @param mapper This parameter controls which data types are eligible for
+     * Plain-Old-Data deserialization and includes custom converters from
+     * CBOR objects to certain data types.
      * @return The converted object.
      * @throws UnsupportedOperationException The given type {@code t} , or this
      * object's CBOR type, is not supported.
@@ -1048,6 +953,13 @@ try { if (ms != null) {
      * another error occurred when serializing the object.
      */
     public Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
+if (mapper == null) {
+  throw new NullPointerException("mapper");
+}
+return this.ToObjectInternal(t, mapper);
+    }
+
+    private Object ToObjectInternal(java.lang.reflect.Type t, CBORTypeMapper mapper) {
       // TODO: Depth
       if (t == null) {
         throw new NullPointerException("t");
@@ -1278,14 +1190,13 @@ try { if (ms != null) {
      * UTF-8 byte array, then uses the array to create a CBOR byte string
      * object. It is not recommended to use <code>Encoding.UTF8.GetBytes</code> in
      * .NET, or the <code>getBytes()</code> method in Java to do this. For
-     * instance, <code>Encoding.UTF8</code> begins the encoded string with a
-     * byte-order mark, and <code>getBytes()</code> encodes text strings in an
-     * unspecified character encoding. Both behaviors can be undesirable.
-     * Instead, use the <code>DataUtilities.GetUtf8Bytes</code> method to convert
-     * text strings to UTF-8.</p> <pre>/* true does character replacement
-     * of invalid UTF-8; false throws an exception on invalid UTF-8 &#x2a;&#x2f;
-     * byte[] bytes = DataUtilities.GetUtf8Bytes(textString, true);
-     * CBORObject cbor = CBORObject.FromBytes(bytes); </pre> </p>
+     * instance, <code>getBytes()</code> encodes text strings in a default (so not
+     * fixed) character encoding, which can be undesirable. Instead, use the
+     * <code>DataUtilities.GetUtf8Bytes</code> method to convert text strings to
+     * UTF-8.</p> <pre>/* true does character replacement of invalid UTF-8;
+     * false throws an exception on invalid UTF-8 &#x2a;&#x2f; byte[] bytes =
+     * DataUtilities.GetUtf8Bytes(textString, true); CBORObject cbor =
+     * CBORObject.FromBytes(bytes); </pre> </p>
      * @param bytes A byte array. Can be null.
      * @return A CBOR byte string object where each byte of the given byte array is
      * copied to a new array, or CBORObject.Null if the value is null.
@@ -1449,22 +1360,25 @@ try { if (ms != null) {
      * parameter for eligible getters as follows:</li> <li>(*) In the .NET
      * version, eligible getters are the public, nonstatic getters of
      * read/write properties (and also those of read-only properties in the
-     * case of a compiler-generated type).</li> <li>(*) In the Java version,
-     * eligible getters are public, nonstatic methods starting with "get" or
-     * "is" (either word followed by a character other than a basic digit or
-     * lower-case letter, that is, other than "a" to "z" or "0" to "9"),
-     * that take no parameters and do not return void, except that methods
-     * named "getClass" are not eligible getters. If a class has two
-     * otherwise eligible getters of the form "isX" and "getX", where "X" is
-     * the same in both, or two such getters with the same name but
-     * different return type, they are not eligible getters.</li> <li>Then,
-     * the method returns a CBOR map with each eligible getter's name or
-     * property name as each key, and with the corresponding value returned
-     * by that getter as that key's value. Before adding a key-value pair to
-     * the map, the key's name is adjusted according to the rules described
-     * in the {@link com.upokecenter.cbor.PODOptions} documentation. Note
-     * that for security reasons, certain types are not supported even if
-     * they contain eligible getters.</li></ul> <p><b>Note:</b> For security
+     * case of a compiler-generated type). If a class has two properties of
+     * the form "X" and "IsX", where "X" is any name, or has multiple
+     * properties with the same name, those properties are ignored. </li>
+     * <li>(*) In the Java version, eligible getters are public, nonstatic
+     * methods starting with "get" or "is" (either word followed by a
+     * character other than a basic digit or lower-case letter, that is,
+     * other than "a" to "z" or "0" to "9"), that take no parameters and do
+     * not return void, except that methods named "getClass" are not
+     * eligible getters. If a class has two otherwise eligible getters of
+     * the form "isX" and "getX", where "X" is the same in both, or two such
+     * getters with the same name but different return type, they are not
+     * eligible getters.</li> <li>Then, the method returns a CBOR map with
+     * each eligible getter's name or property name as each key, and with
+     * the corresponding value returned by that getter as that key's value.
+     * Before adding a key-value pair to the map, the key's name is adjusted
+     * according to the rules described in the {@link
+     * com.upokecenter.cbor.PODOptions} documentation. Note that for
+     * security reasons, certain types are not supported even if they
+     * contain eligible getters.</li></ul> <p><b>Note:</b> For security
      * reasons, an application should, whenever possible, not base this
      * parameter on user input or other externally supplied data unless the
      * application limits <paramref name='obj'/> inputs to types specially
