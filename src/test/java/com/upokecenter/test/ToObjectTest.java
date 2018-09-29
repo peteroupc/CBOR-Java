@@ -1109,12 +1109,17 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       if (co.ContainsKey("StaticPropA")) {
  Assert.fail();
  }
+      co.set("privatePropA",ToObjectTest.TestToFromObjectRoundTrip(999));
       co.set("propA",ToObjectTest.TestToFromObjectRoundTrip(999));
       co.set("floatProp",ToObjectTest.TestToFromObjectRoundTrip(3.5));
       co.set("doubleProp",ToObjectTest.TestToFromObjectRoundTrip(4.5));
       co.set("stringProp",ToObjectTest.TestToFromObjectRoundTrip("stringProp"));
       co.set("stringArray",CBORObject.NewArray().Add("a").Add("b"));
       ao = (PODClass)co.ToObject(PODClass.class);
+      // Check whether ToObject ignores private setters
+      if (!(ao.HasGoodPrivateProp())) {
+ Assert.fail();
+ }
       Assert.assertEquals(999, ao.getPropA());
       if (ao.getFloatProp() != (float)3.5) {
  Assert.fail();

@@ -228,7 +228,7 @@ if(!setters){
          Class<?> t,
          Iterable<Map.Entry<String, CBORObject>> keysValues,
          CBORTypeMapper mapper,
-         boolean useCamelCase) {
+         boolean useCamelCase,int depth) {
       try {
       Object o = t.newInstance();
       Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
@@ -241,7 +241,7 @@ if(!setters){
         if (dict.containsKey(name)) {
           CBORObject dget=dict.get(name);
           Object dobj = dget.ToObject(
-             key.method.getGenericParameterTypes()[0],mapper);
+             key.method.getGenericParameterTypes()[0],mapper, depth+1);
           key.method.invoke(o, dobj);
         }
       }
@@ -403,7 +403,7 @@ return false;
 }
 
   public static Object TypeToObject(CBORObject objThis, Type t,
-     CBORTypeMapper mapper) {
+     CBORTypeMapper mapper, int depth) {
       if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
         return objThis.AsByte();
       }
@@ -479,7 +479,7 @@ if(objThis.getType()==CBORType.Array){
       objThis.size());
    int i=0;
    for(CBORObject cbor : objThis.getValues()){
-    Array.set(objRet,i,cbor.ToObject(ct,mapper));
+    Array.set(objRet,i,cbor.ToObject(ct,mapper,depth+1));
     i++;
    }
    return objRet;
@@ -490,13 +490,13 @@ if(objThis.getType()==CBORType.Array){
   if(typeArguments==null || typeArguments.length==0){
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(Object.class,mapper));
+    alist.add(cbor.ToObject(Object.class,mapper,depth+1));
    }
    return alist;
   } else {
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(typeArguments[0],mapper));
+    alist.add(cbor.ToObject(typeArguments[0],mapper,depth+1));
    }
    return alist;
   }
@@ -509,16 +509,16 @@ if(objThis.getType()==CBORType.Map){
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(Object.class,mapper),
-      cborValue.ToObject(Object.class,mapper));
+    alist.put(cbor.ToObject(Object.class,mapper,depth+1),
+      cborValue.ToObject(Object.class,mapper,depth+1));
    }
    return alist;
   } else {
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(typeArguments[0],mapper),
-      cborValue.ToObject(typeArguments[1],mapper));
+    alist.put(cbor.ToObject(typeArguments[0],mapper,depth+1),
+      cborValue.ToObject(typeArguments[1],mapper,depth+1));
    }
    return alist;
   }
@@ -551,7 +551,7 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
     (Class<?>)rawType,
     values,
     mapper,
-    true);
+    true,depth);
 }
        throw new CBORException();
     }

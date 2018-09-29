@@ -816,7 +816,7 @@ try { if (ms != null) {
      * another error occurred when serializing the object.
      */
     public Object ToObject(java.lang.reflect.Type t) {
-      return this.ToObjectInternal(t, null);
+      return this.ToObject(t, null, 0);
     }
 
     /**
@@ -867,51 +867,52 @@ try { if (ms != null) {
      * the type is a one-dimensional array type and this CBOR object is an
      * array, returns an array containing the items in this CBOR object.
      * (Multidimensional arrays to be documented.) </li> <li>If the type is
-     * the generic List, IList, ICollection, or IEnumerable (or ArrayList,
-     * List, Collection, or Iterable in Java), and if this CBOR object is an
-     * array, returns an object conforming to the type, class, or interface
-     * passed to this method, where the object will contain all items in
-     * this CBOR array. </li> <li>If the type is the generic Dictionary or
-     * IDictionary (or HashMap or Map in Java), and if this CBOR object is a
-     * map, returns an object conforming to the type, class, or interface
-     * passed to this method, where the object will contain all keys and
-     * values in this CBOR map. </li> <li>If the type is an enumeration
-     * constant ("enum"), and this CBOR object is an integer or text string,
-     * returns the enumeration constant with the given number or name,
-     * respectively. (Enumeration constants made up of multiple enumeration
-     * constants, as allowed by .NET, can only be matched by number this
-     * way.) (To be implemented for Java.) </li> <li>Type converters (To be
-     * implemented). </li> <li>If the type is <code>java.util.Date</code> (or
-     * <code>Date</code> in Java) , returns a date/time object if the CBOR
-     * object's outermost tag is 0 or 1. </li> <li>If the type is <code>java.net.URI</code>
-     * (or <code>URI</code> in Java), returns a URI object if possible. </li>
-     * <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a
-     * UUID object if possible. </li> <li>Plain-Old-Data deserialization: If
-     * the object is a type not specially handled above, the type includes a
-     * zero-argument constructor (default or not), this CBOR object is a
-     * CBOR map, and the "mapper" parameter allows this type to be eligible
-     * for Plain-Old-Data deserialization, then this method checks the given
-     * type for eligible setters as follows: </li> <li>(*) In the .NET
-     * version, eligible setters are the public, nonstatic setters of
-     * properties with a public, nonstatic getter. If a class has two
-     * properties of the form "X" and "IsX", where "X" is any name, or has
-     * multiple properties with the same name, those properties are ignored.
-     * </li> <li>(*) In the Java version, eligible setters are public,
-     * nonstatic methods starting with "set" followed by a character other
-     * than a basic digit or lower-case letter, that is, other than "a" to
-     * "z" or "0" to "9", that take one parameter. The class containing an
-     * eligible setter must have a public, nonstatic method with the same
-     * name, but starting with "get" or "is" rather than "set", that takes
-     * no parameters and does not return void. (For example, if a class has
-     * "public setValue(String)" and "public getValue()", "setValue" is an
-     * eligible setter. However, "setValue()" and "setValue(String, int)"
-     * are not eligible setters.) If a class has two otherwise eligible
-     * setters with the same name, but different parameter type, they are
-     * not eligible setters. </li> <li>Then, the method creates an object of
-     * the given type and invokes each eligible setter with the
-     * corresponding value in the CBOR map, if any. Key names in the map are
-     * matched to eligible setters according to the rules described in the
-     * {@link com.upokecenter.cbor.PODOptions} documentation. Note that for
+     * ArrayList, List, or the generic or non-generic IList, ICollection, or
+     * IEnumerable, (or ArrayList, List, Collection, or Iterable in Java),
+     * and if this CBOR object is an array, returns an object conforming to
+     * the type, class, or interface passed to this method, where the object
+     * will contain all items in this CBOR array. </li> <li>If the type is
+     * the generic or non-generic Dictionary or IDictionary (or HashMap or
+     * Map in Java), and if this CBOR object is a map, returns an object
+     * conforming to the type, class, or interface passed to this method,
+     * where the object will contain all keys and values in this CBOR map.
+     * </li> <li>If the type is an enumeration constant ("enum"), and this
+     * CBOR object is an integer or text string, returns the enumeration
+     * constant with the given number or name, respectively. (Enumeration
+     * constants made up of multiple enumeration constants, as allowed by
+     * .NET, can only be matched by number this way.) (To be implemented for
+     * Java.) </li> <li>Type converters (To be implemented). </li> <li>If
+     * the type is <code>java.util.Date</code> (or <code>Date</code> in Java) , returns a
+     * date/time object if the CBOR object's outermost tag is 0 or 1. </li>
+     * <li>If the type is <code>java.net.URI</code> (or <code>URI</code> in Java), returns a URI
+     * object if possible. </li> <li>If the type is <code>java.util.UUID</code> (or
+     * <code>UUID</code> in Java), returns a UUID object if possible. </li>
+     * <li>Plain-Old-Data deserialization: If the object is a type not
+     * specially handled above, the type includes a zero-argument
+     * constructor (default or not), this CBOR object is a CBOR map, and the
+     * "mapper" parameter allows this type to be eligible for Plain-Old-Data
+     * deserialization, then this method checks the given type for eligible
+     * setters as follows: </li> <li>(*) In the .NET version, eligible
+     * setters are the public, nonstatic setters of properties with a
+     * public, nonstatic getter. If a class has two properties of the form
+     * "X" and "IsX", where "X" is any name, or has multiple properties with
+     * the same name, those properties are ignored. </li> <li>(*) In the
+     * Java version, eligible setters are public, nonstatic methods starting
+     * with "set" followed by a character other than a basic digit or
+     * lower-case letter, that is, other than "a" to "z" or "0" to "9", that
+     * take one parameter. The class containing an eligible setter must have
+     * a public, nonstatic method with the same name, but starting with
+     * "get" or "is" rather than "set", that takes no parameters and does
+     * not return void. (For example, if a class has "public
+     * setValue(String)" and "public getValue()", "setValue" is an eligible
+     * setter. However, "setValue()" and "setValue(String, int)" are not
+     * eligible setters.) If a class has two otherwise eligible setters with
+     * the same name, but different parameter type, they are not eligible
+     * setters. </li> <li>Then, the method creates an object of the given
+     * type and invokes each eligible setter with the corresponding value in
+     * the CBOR map, if any. Key names in the map are matched to eligible
+     * setters according to the rules described in the {@link
+     * com.upokecenter.cbor.PODOptions} documentation. Note that for
      * security reasons, certain types are not supported even if they
      * contain eligible setters. </li> </ul> <p>REMARK: A certain
      * consistency between .NET and Java and between FromObject and ToObject
@@ -956,11 +957,14 @@ try { if (ms != null) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
-return this.ToObjectInternal(t, mapper);
+return this.ToObject(t, mapper, 0);
     }
 
-    private Object ToObjectInternal(java.lang.reflect.Type t, CBORTypeMapper mapper) {
-      // TODO: Depth
+    Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, int depth) {
+depth++;
+if (depth>100) {
+ throw new CBORException("Depth level too high");
+}
       if (t == null) {
         throw new NullPointerException("t");
       }
@@ -980,7 +984,7 @@ return this.ToObjectInternal(t, mapper);
         return this;
       }
       return t.equals(String.class) ? this.AsString() :
-        PropertyMap.TypeToObject(this, t, mapper);
+        PropertyMap.TypeToObject(this, t, mapper, depth);
     }
 
     /**

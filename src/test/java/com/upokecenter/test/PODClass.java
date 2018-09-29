@@ -12,6 +12,10 @@ package com.upokecenter.test;
       this.setStringArray(null);
     }
 
+    public boolean HasGoodPrivateProp() {
+      return this.propVarprivatepropa = = 2;
+    }
+
     private final int getPrivatePropA() { return propVarprivatepropa; }
 private final int propVarprivatepropa;
 
