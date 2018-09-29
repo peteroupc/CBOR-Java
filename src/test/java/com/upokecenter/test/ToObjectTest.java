@@ -1116,8 +1116,12 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       co.set("stringArray",CBORObject.NewArray().Add("a").Add("b"));
       ao = (PODClass)co.ToObject(PODClass.class);
       Assert.assertEquals(999, ao.getPropA());
-      Assert.assertEquals((float)3.5, ao.getFloatProp(), 0f);
-      Assert.assertEquals(4.5, ao.getDoubleProp());
+      if (ao.getFloatProp() != (float)3.5) {
+ Assert.fail();
+}
+      if (ao.getDoubleProp() != 4.5) {
+ Assert.fail();
+}
       Assert.assertEquals("stringProp", ao.getStringProp());
       String[] stringArray = ao.getStringArray();
       Assert.assertEquals(2, stringArray.length);

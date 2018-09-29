@@ -49,7 +49,7 @@ class PropertyMap {
           "is"+methodName.substring(2) :
           methodName;
     }
-    private static String RemoveGetSetIs(String name){
+    public static String RemoveGetSetIs(String name){
       if(IsSetMethod(name))return name.substring(3);
       if(IsGetMethod(name))return name.substring(3);
       if(IsIsMethod(name))return name.substring(2);
@@ -79,6 +79,16 @@ class PropertyMap {
     return GetPropertyList(t,false);
   }
 
+private static Method FindMethod(List<Method> methods, String shortName, Type t){
+ for(Method m : methods){
+   String mn=MethodData.RemoveGetSetIs(m.getName());
+   if(mn.equals(shortName) && m.getReturnType().equals(t)){
+     return m;
+   }
+ }
+ return null;
+}
+
   private static List<MethodData> GetPropertyList(final Class<?> t, boolean setters) {
     synchronized(setters ? setterPropertyList : propertyLists) {
       List<MethodData> ret;
@@ -87,38 +97,93 @@ class PropertyMap {
         return ret;
       }
       ret = new ArrayList<MethodData>();
-      Map<String,Method> propMap=new HashMap<String,Method>();
+      List<Method> getMethods=new ArrayList<Method>();
+      List<Method> setMethods=new ArrayList<Method>();
+      List<Method> isMethods=new ArrayList<Method>();
+      Map<String,Integer> getMethodNames=new
+         HashMap<String,Integer>();
+      Map<String,Integer> setMethodNames=new
+         HashMap<String,Integer>();
+      boolean hasAmbiguousGetName=false;
+      boolean hasAmbiguousSetName=false;
       for(Method pi : t.getMethods()) {
         if((pi.getModifiers() & Modifier.STATIC)==0) {
           String methodName = pi.getName();
-          if(MethodData.IsGetMethod(methodName) ||
-                 MethodData.IsIsMethod(methodName) ||
-                 MethodData.IsSetMethod(methodName)){
-            propMap.put(methodName,pi);
+          String mn=MethodData.RemoveGetSetIs(methodName);
+          if(MethodData.IsGetMethod(methodName)){
+            if(pi.getParameterTypes().length == 0 &&
+              !pi.getReturnType().equals(Void.TYPE)){
+           if(getMethodNames.containsKey(mn)){
+hasAmbiguousGetName=true;
+getMethodNames.put(mn,getMethodNames.get(mn)+1);
+} else {
+getMethodNames.put(mn,1);
+}
+              getMethods.add(pi);
+            }
+          } else if(MethodData.IsIsMethod(methodName)){
+            if(pi.getParameterTypes().length == 0 &&
+              !pi.getReturnType().equals(Void.TYPE)){
+           if(getMethodNames.containsKey(mn)){
+hasAmbiguousGetName=true;
+getMethodNames.put(mn,getMethodNames.get(mn)+1);
+} else {
+getMethodNames.put(mn,1);
+}
+              isMethods.add(pi);
+            }
+          } else if(MethodData.IsSetMethod(methodName)){
+            if(pi.getParameterTypes().length == 1 &&
+              pi.getReturnType().equals(Void.TYPE)){
+           if(setMethodNames.containsKey(mn)){
+hasAmbiguousSetName=true;
+setMethodNames.put(mn,setMethodNames.get(mn)+1);
+} else {
+setMethodNames.put(mn,1);
+}
+              setMethods.add(pi);
+            }
           }
         }
       }
-      for(String key : propMap.keySet()){
-        if(!setters && (MethodData.IsGetMethod(key) ||
-           MethodData.IsIsMethod(key))){
+if(!setters){
+  for(Method m : getMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(getMethodNames.get(mn)>1){ continue;}
             MethodData md = new MethodData();
-            md.name = key;
-            md.method = propMap.get(key);
-            if(md.method.getParameterTypes().length == 0 &&
-              !md.method.getReturnType().equals(Void.class)){
-              ret.add(md);
-            }
-        } else if(setters && MethodData.IsSetMethod(key) && (
-            propMap.containsKey(MethodData.GetGetMethod(key)) ||
-            propMap.containsKey(MethodData.GetIsMethod(key)) )){
+            md.name = m.getName();
+            md.method = m;
+     ret.add(md);
+  }
+  for(Method m : isMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(getMethodNames.get(mn)>1){ continue;}
             MethodData md = new MethodData();
-            md.name = key;
-            md.method = propMap.get(key);
-            if(md.method.getParameterTypes().length == 1){
-              ret.add(md);
-            }
-        }
-      }
+            md.name = m.getName();
+            md.method = m;
+     ret.add(md);
+  }
+} else {
+  for(Method m : setMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(setMethodNames.get(mn)>1){ continue;}
+    // Check for existence of get method
+    if(!getMethodNames.containsKey(mn)){ continue;}
+    Method gm=FindMethod(getMethods,
+      mn,m.getParameterTypes()[0]);
+    if(gm==null)gm=FindMethod(isMethods,
+      mn,m.getParameterTypes()[0]);
+    if(gm!=null){
+     MethodData md = new MethodData();
+     md.name = m.getName();
+     md.method = m;
+     ret.add(md);
+    }
+  }
+}
       (setters ? setterPropertyList : propertyLists).put(t, ret);
       return ret;
     }
@@ -339,25 +404,25 @@ return false;
 
   public static Object TypeToObject(CBORObject objThis, Type t,
      CBORTypeMapper mapper) {
-      if (t.equals(Byte.class) || t.equals(byte.class)) {
+      if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
         return objThis.AsByte();
       }
-      if (t.equals(Short.class) || t.equals(short.class)) {
+      if (t.equals(Short.class) || t.equals(Short.TYPE)) {
         return objThis.AsInt16();
       }
-      if (t.equals(Integer.class) || t.equals(int.class)) {
+      if (t.equals(Integer.class) || t.equals(Integer.TYPE)) {
         return objThis.AsInt32();
       }
-      if (t.equals(Long.class) || t.equals(long.class)) {
+      if (t.equals(Long.class) || t.equals(Long.TYPE)) {
         return objThis.AsInt64();
       }
-      if (t.equals(Double.class) || t.equals(double.class)) {
+      if (t.equals(Double.class) || t.equals(Double.TYPE)) {
         return objThis.AsDouble();
       }
-      if (t.equals(Float.class) || t.equals(float.class)) {
+      if (t.equals(Float.class) || t.equals(Float.TYPE)) {
         return objThis.AsSingle();
       }
-      if (t.equals(Boolean.class) || t.equals(boolean.class)) {
+      if (t.equals(Boolean.class) || t.equals(Boolean.TYPE)) {
         return objThis.AsBoolean();
       }
       if (t.equals(java.util.Date.class)) {

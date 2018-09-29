@@ -2680,6 +2680,56 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
       Assert.assertEquals(2, cbor.AsInt32());
     }
 
+    @Test
+public void TestToObject_Enum() {
+CBORObject cbor;
+EnumClass ec;
+cbor = CBORObject.FromObject("Value1");
+ec = (EnumClass)cbor.ToObject(EnumClass.class);
+Assert.assertEquals(EnumClass.Value1, ec);
+cbor = CBORObject.FromObject("Value2");
+ec = (EnumClass)cbor.ToObject(EnumClass.class);
+Assert.assertEquals(EnumClass.Value2, ec);
+cbor = CBORObject.FromObject("Value3");
+ec = (EnumClass)cbor.ToObject(EnumClass.class);
+Assert.assertEquals(EnumClass.Value3, ec);
+cbor = CBORObject.FromObject("ValueXYZ");
+try {
+ cbor.ToObject(EnumClass.class);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObject(true);
+try {
+ cbor.ToObject(EnumClass.class);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+}
+
+    @Test
+    public void TestToObject_UnknownEnum() {
+      CBORObject cbor;
+      cbor = CBORObject.FromObject(999);
+      try {
+ cbor.ToObject(EnumClass.class);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
     public final class TestConverter implements ICBORToFromConverter<String> {
       public CBORObject ToCBORObject(String strValue) {
         return CBORObject.FromObject(
@@ -2697,7 +2747,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
     @Test
     public void TestFromObject_TypeMapper() {
       CBORTypeMapper mapper = new CBORTypeMapper()
-        .AddConverter(Boolean.class, new TestConverter());
+        .AddConverter(String.class, new TestConverter());
       CBORObject cbor = CBORObject.FromObject("UPPER", mapper);
       Assert.assertEquals(CBORType.TextString, cbor.getType());
       {
@@ -5515,6 +5565,51 @@ try { if (msjson != null) {
       cbor.Set("x", 5).Set("z", 6);
       Assert.assertEquals(5, cbor.get("x").AsInt32());
       Assert.assertEquals(6, cbor.get("z").AsInt32());
+cbor = CBORObject.NewArray().Add(1).Add(2).Add(3).Add(4);
+Assert.assertEquals(1, cbor.get(0).AsInt32());
+Assert.assertEquals(2, cbor.get(1).AsInt32());
+Assert.assertEquals(3, cbor.get(2).AsInt32());
+try {
+ cbor.Set(-1, 0);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ cbor.Set(4, 0);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+try {
+ cbor.Set(999, 0);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+CBORObject cbor2 = CBORObject.True;
+try {
+ cbor2.Set(0, 0);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor.Set(0, 99);
+Assert.assertEquals(99, cbor.get(0).AsInt32());
+cbor.Set(3, 199);
+Assert.assertEquals(199, cbor.get(0).AsInt32());
     }
     @Test
     public void TestSign() {

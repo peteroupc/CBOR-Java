@@ -3,7 +3,9 @@ package com.upokecenter.cbor;
 import java.util.*;
 
     /**
-     * Not documented yet.
+     * Holds converters to customize the serialization and deserialization behavior
+     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
+     * well as type filters for <code>ToObject</code>
      */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
@@ -97,7 +99,9 @@ import java.util.*;
 
     /**
      * Not documented yet.
-     * @param typeName The parameter {@code typeName} is not documented yet.
+     * @param typeName The fully qualified name of a Java or .NET class (e.g.,
+     * {@code java.math.BigInteger} or {@code
+     * System.Globalization.CultureInfo}).
      * @return Either {@code true} or {@code false}.
      */
     public boolean FilterTypeName(String typeName) {

@@ -1171,7 +1171,6 @@ private final void setBb(String value) { propVarbb = value; }
 private String propVarbb;
     }
     @Test
-    @org.junit.Ignore
     public void TestCPOD() {
       CPOD m = new CPOD();
       m.setAa("Test");
