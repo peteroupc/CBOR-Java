@@ -2632,6 +2632,12 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
         throw new IllegalStateException("", ex);
       }
       try {
+ ToObjectTest.TestToFromObjectRoundTrip('\udddd');
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
         CBORObject.FromObject(CBORObject.NewArray().getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {

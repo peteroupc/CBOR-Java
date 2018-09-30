@@ -13,7 +13,8 @@ package com.upokecenter.test;
     }
 
     public boolean HasGoodPrivateProp() {
-      return this.propVarprivatepropa = = 2;
+      int ppa = this.getPrivatePropA();
+      return ppa == 2;
     }
 
     private final int getPrivatePropA() { return propVarprivatepropa; }

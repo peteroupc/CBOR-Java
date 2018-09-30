@@ -957,11 +957,6 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       }
     }
     @Test
-    public void TestAsSByte() {
-      // not implemented yet
-    }
-    @Test
-    @org.junit.Ignore
     public void TestAsSingle() {
       try {
         CBORObject.NewArray().ToObject(float.class);
@@ -1026,9 +1021,8 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
   (String)numberinfo.get("number").ToObject(String.class)));
   float f1 = (float)EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class)).ToSingle();
   Object f2 = cbornumber.ToObject(float.class);
-  if (((Object)f1).equals(f2)) {
-  { Assert.fail();
-}
+  if (!((Object)f1).equals(f2)) {
+   Assert.fail();
 }
       }
     }
@@ -1220,12 +1214,8 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
     }
 
     @Test
-    @org.junit.Ignore
     public void TestCharRoundTrip() {
       for (int i = 0; i < 0x10000; ++i) {
-        if ((i & 0xf800) == 0xd800) {
-          continue;
-        }
         char c = (char)i;
         TestToFromObjectRoundTrip(c);
       }

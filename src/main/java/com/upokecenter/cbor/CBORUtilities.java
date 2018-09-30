@@ -479,13 +479,13 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       if (bad) {
         throw new IllegalArgumentException("Invalid date/time");
       }
-      int year = (str.charAt(0) - '0') * 1000 + (str.charAt(1) - '0') * 100 +
+      int year = ((str.charAt(0) - '0') * 1000) + (str.charAt(1) - '0') * 100 +
         (str.charAt(2) - '0') * 10 + (str.charAt(3) - '0');
-      int month = (str.charAt(5) - '0') * 10 + (str.charAt(6) - '0');
-      int day = (str.charAt(8) - '0') * 10 + (str.charAt(9) - '0');
-      int hour = (str.charAt(11) - '0') * 10 + (str.charAt(12) - '0');
-      int minute = (str.charAt(14) - '0') * 10 + (str.charAt(15) - '0');
-      int second = (str.charAt(17) - '0') * 10 + (str.charAt(18) - '0');
+      int month = ((str.charAt(5) - '0') * 10) + (str.charAt(6) - '0');
+      int day = ((str.charAt(8) - '0') * 10) + (str.charAt(9) - '0');
+      int hour = ((str.charAt(11) - '0') * 10) + (str.charAt(12) - '0');
+      int minute = ((str.charAt(14) - '0') * 10) + (str.charAt(15) - '0');
+      int second = ((str.charAt(17) - '0') * 10) + (str.charAt(18) - '0');
       int index = 19;
       int nanoSeconds = 0;
       if (index <= str.length() && str.charAt(index) == '.') {
@@ -526,8 +526,8 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
           throw new IllegalArgumentException("Invalid date/time");
         }
         boolean neg = str.charAt(index) == '-';
-        int tzhour = (str.charAt(index + 1) - '0') * 10 + (str.charAt(index + 2) - '0');
-        int tzminute = (str.charAt(index + 4) - '0') * 10 + (str.charAt(index + 5) - '0');
+        int tzhour = ((str.charAt(index + 1) - '0') * 10) + (str.charAt(index + 2) - '0');
+        int tzminute = ((str.charAt(index + 4) - '0') * 10) + (str.charAt(index + 5) - '0');
         if (tzminute >= 60) {
           throw new IllegalArgumentException("Invalid date/time");
         }

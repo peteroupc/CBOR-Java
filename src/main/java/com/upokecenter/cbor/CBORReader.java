@@ -72,7 +72,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
   return obj;
     }
 
-    public CBORObject Read(Object filter) throws java.io.IOException {
+    public CBORObject Read() throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -80,12 +80,10 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
       if (firstbyte < 0) {
         throw new CBORException("Premature end of data");
       }
-      return this.ReadForFirstByte(firstbyte, filter);
+      return this.ReadForFirstByte(firstbyte);
     }
 
-    public CBORObject ReadForFirstByte(
-  int firstbyte,
-  Object filter) throws java.io.IOException {
+    public CBORObject ReadForFirstByte(int firstbyte) throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -125,6 +123,32 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
           this.stringRefs.AddStringIfNeeded(cbor, expectedLength - 1);
         }
         return cbor;
+      }
+      // Special check: Decimal fraction or bigfloat
+      if (firstbyte == 0xc4 || firstbyte == 0xc5) {
+        int nextbyte = this.stream.read();
+        if (nextbyte != 0x82 && nextbyte != 0x9f) {
+ throw new CBORException("2-item array expected");
+}
+        boolean indefArray = nextbyte == 0x9f;
+        nextbyte = this.stream.read();
+        if (nextbyte >= 0x40) {
+          throw new CBORException("Major type 0 or 1 or bignum expected");
+        }
+        CBORObject exponent = this.ReadForFirstByte(nextbyte);
+        nextbyte = this.stream.read();
+        if (nextbyte >= 0x40 && nextbyte != 0xc2 && nextbyte != 0xc3) {
+          throw new CBORException("Major type 0 or 1 expected");
+        }
+        CBORObject significand = this.ReadForFirstByte(nextbyte);
+        if (indefArray && this.stream.read() != 0xff) {
+          throw new CBORException("End of array expected");
+        }
+        CBORObject arr = CBORObject.NewArray()
+          .Add(exponent).Add(significand);
+        return CBORObject.FromObjectAndTag(
+          arr,
+          firstbyte == 0xc4 ? 4 : 5);
       }
       long uadditional = (long)additional;
       EInteger bigintAdditional = EInteger.FromInt32(0);
@@ -340,8 +364,7 @@ try { if (ms != null) {
             }
             ++this.depth;
             CBORObject o = this.ReadForFirstByte(
-  headByte,
-  null);
+  headByte);
             --this.depth;
             cbor.Add(o);
             ++vtindex;
@@ -363,7 +386,7 @@ try { if (ms != null) {
         ++this.depth;
         for (long i = 0; i < uadditional; ++i) {
           cbor.Add(
-            this.Read(null));
+            this.Read());
         }
         --this.depth;
         return cbor;
@@ -382,8 +405,8 @@ try { if (ms != null) {
               break;
             }
             ++this.depth;
-            CBORObject key = this.ReadForFirstByte(headByte, null);
-            CBORObject value = this.Read(null);
+            CBORObject key = this.ReadForFirstByte(headByte);
+            CBORObject value = this.Read();
             --this.depth;
             if (this.policy == CBORDuplicatePolicy.Disallow) {
               if (cbor.ContainsKey(key)) {
@@ -408,8 +431,8 @@ try { if (ms != null) {
         }
         for (long i = 0; i < uadditional; ++i) {
           ++this.depth;
-          CBORObject key = this.Read(null);
-          CBORObject value = this.Read(null);
+          CBORObject key = this.Read();
+          CBORObject value = this.Read();
           --this.depth;
           if (this.policy == CBORDuplicatePolicy.Disallow) {
             if (cbor.ContainsKey(key)) {
@@ -446,8 +469,7 @@ try { if (ms != null) {
         }
         ++this.depth;
         CBORObject o = haveFirstByte ? this.ReadForFirstByte(
-  newFirstByte,
-  null) : this.Read(null);
+  newFirstByte) : this.Read();
         --this.depth;
         if (hasBigAdditional) {
           return CBORObject.FromObjectAndTag(o, bigintAdditional);

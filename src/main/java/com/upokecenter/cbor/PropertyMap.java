@@ -60,7 +60,7 @@ class PropertyMap {
       if(IsGetMethod(name))return name.substring(3);
       return name;
     }
-    public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
+    public String GetAdjustedName(boolean useCamelCase){
       if(useCamelCase){
         return CBORUtilities.FirstCharLower(RemoveGetSetIs(this.name));
       } else {
@@ -227,8 +227,8 @@ if(!setters){
   public static Object ObjectWithProperties(
          Class<?> t,
          Iterable<Map.Entry<String, CBORObject>> keysValues,
-         CBORTypeMapper mapper,
-         boolean useCamelCase,int depth) {
+         CBORTypeMapper mapper, PODOptions options,
+         int depth) {
       try {
       Object o = t.newInstance();
       Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
@@ -237,11 +237,12 @@ if(!setters){
         dict.put(name,kv.getValue());
       }
       for (MethodData key : GetPropertyList(o.getClass(),true)) {
-        String name = key.GetAdjustedName(false, useCamelCase);
+        String name = key.GetAdjustedName(
+            options==null ? true : options.getUseCamelCase());
         if (dict.containsKey(name)) {
           CBORObject dget=dict.get(name);
           Object dobj = dget.ToObject(
-             key.method.getGenericParameterTypes()[0],mapper, depth+1);
+             key.method.getGenericParameterTypes()[0],mapper,options, depth+1);
           key.method.invoke(o, dobj);
         }
       }
@@ -265,7 +266,7 @@ if(!setters){
     try {
       for(MethodData key : GetPropertyList(o.getClass())) {
         ret.add(new AbstractMap.SimpleEntry<String, Object>(
-            key.GetAdjustedName(false, useCamelCase),
+            key.GetAdjustedName(useCamelCase),
             key.method.invoke(o)));
       }
       return ret;
@@ -403,7 +404,7 @@ return false;
 }
 
   public static Object TypeToObject(CBORObject objThis, Type t,
-     CBORTypeMapper mapper, int depth) {
+     CBORTypeMapper mapper, PODOptions options, int depth) {
       if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
         return objThis.AsByte();
       }
@@ -424,6 +425,20 @@ return false;
       }
       if (t.equals(Boolean.class) || t.equals(Boolean.TYPE)) {
         return objThis.AsBoolean();
+      }
+      if(t.equals(Character.class) || t.equals(Character.TYPE)){
+if(objThis.getType()==CBORType.TextString){
+  String s=objThis.AsString();
+  if(s.length()!=1)throw new CBORException("Can't convert to char");
+  return s.charAt(0);
+}
+if(objThis.isIntegral() && objThis.CanTruncatedIntFitInInt32()){
+  int c=objThis.AsInt32();
+  if(c<0 || c>=0x10000)
+    throw new CBORException("Can't convert to char");
+  return (char)c;
+}
+throw new CBORException("Can't convert to char");
       }
       if (t.equals(java.util.Date.class)) {
         return new CBORDateConverter().FromCBORObject(objThis);
@@ -448,7 +463,11 @@ return false;
       }
       if(t instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>)t)){
 if(objThis.getType()==CBORType.TextString){
- return Enum.valueOf((Class)t,objThis.AsString());
+ try {
+  return Enum.valueOf((Class)t,objThis.AsString());
+ } catch(Exception ex){
+  throw new CBORException(ex.getMessage(),ex);
+ }
 } else if(objThis.getType()==CBORType.Number && objThis.isIntegral()){
  Object[] enumValues=EnumValues((Class<?>)t);
  int k=objThis.AsInt32();
@@ -479,7 +498,7 @@ if(objThis.getType()==CBORType.Array){
       objThis.size());
    int i=0;
    for(CBORObject cbor : objThis.getValues()){
-    Array.set(objRet,i,cbor.ToObject(ct,mapper,depth+1));
+    Array.set(objRet,i,cbor.ToObject(ct,mapper,options,depth+1));
     i++;
    }
    return objRet;
@@ -490,13 +509,13 @@ if(objThis.getType()==CBORType.Array){
   if(typeArguments==null || typeArguments.length==0){
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(Object.class,mapper,depth+1));
+    alist.add(cbor.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(typeArguments[0],mapper,depth+1));
+    alist.add(cbor.ToObject(typeArguments[0],mapper,options,depth+1));
    }
    return alist;
   }
@@ -509,16 +528,16 @@ if(objThis.getType()==CBORType.Map){
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(Object.class,mapper,depth+1),
-      cborValue.ToObject(Object.class,mapper,depth+1));
+    alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
+      cborValue.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(typeArguments[0],mapper,depth+1),
-      cborValue.ToObject(typeArguments[1],mapper,depth+1));
+    alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),
+      cborValue.ToObject(typeArguments[1],mapper,options,depth+1));
    }
    return alist;
   }
@@ -536,8 +555,10 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
 
         ArrayList<Map.Entry<String, CBORObject>> values =
           new ArrayList<Map.Entry<String, CBORObject>>();
-        for (MethodData method : GetPropertyList((Class<?>)rawType,true)) {
-          String key = method.GetAdjustedName(true,true);
+        for (MethodData method : GetPropertyList(
+             (Class<?>)rawType,true/* getting list of setters*/)) {
+          String key = method.GetAdjustedName(
+             options==null ? true : options.getUseCamelCase());
           if (objThis.ContainsKey(key)) {
             CBORObject cborValue = objThis.get(key);
             Map.Entry<String, CBORObject> dict =
@@ -551,7 +572,7 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
     (Class<?>)rawType,
     values,
     mapper,
-    true,depth);
+    options,depth);
 }
        throw new CBORException();
     }

@@ -206,8 +206,6 @@
  Generates a CBOR object from a byte (0 to 255).
 * `static CBORObject FromObject​(byte[] bytes)`<br>
  Generates a CBOR object from a byte array.
-* `static CBORObject FromObject​(char value)`<br>
- Generates a CBOR string object from a Unicode character.
 * `static CBORObject FromObject​(double value)`<br>
  Generates a CBOR object from a 64-bit floating-point number.
 * `static CBORObject FromObject​(float value)`<br>
@@ -307,7 +305,7 @@
 * `boolean IsInfinity()`<br>
  Gets a value indicating whether this CBOR object represents infinity.
 * `boolean isIntegral()`<br>
- Gets a value indicating whether this object represents an integral number,
+ Gets a value indicating whether this object represents an integer number,
  that is, a number without a fractional part.
 * `boolean IsNaN()`<br>
  Gets a value indicating whether this CBOR object represents a not-a-number
@@ -398,6 +396,13 @@
 * `Object ToObject​(Type t,
         CBORTypeMapper mapper)`<br>
  Converts this CBOR object to an object of an arbitrary type.
+* `Object ToObject​(Type t,
+        CBORTypeMapper mapper,
+        PODOptions options)`<br>
+ Converts this CBOR object to an object of an arbitrary type.
+* `Object ToObject​(Type t,
+        PODOptions options)`<br>
+ Converts this CBOR object to an object of an arbitrary type.
 * `String toString()`<br>
  Returns this CBOR object in string form.
 * `CBORObject Untag()`<br>
@@ -412,9 +417,6 @@
 * `static void Write​(byte value,
      OutputStream stream)`<br>
  Writes a byte (0 to 255) in CBOR format to a data stream.
-* `static void Write​(char value,
-     OutputStream stream)`<br>
- Writes a Unicode character as a string in CBOR format to a data stream.
 * `static void Write​(double value,
      OutputStream stream)`<br>
  Writes a 64-bit floating-point number in CBOR format to a data stream.
@@ -576,14 +578,14 @@ Gets a value indicating whether this CBOR object represents a finite number.
 
 ### isIntegral
     public final boolean isIntegral()
-Gets a value indicating whether this object represents an integral number,
+Gets a value indicating whether this object represents an integer number,
  that is, a number without a fractional part. Infinity and
- not-a-number are not considered integral.
+ not-a-number are not considered integers.
 
 **Returns:**
 
-* <code>true</code> If this object represents an integral number, that is,
- a number without a fractional part; otherwise, . <code>false</code>.
+* <code>true</code> If this object represents an integer number, that is, a
+ number without a fractional part; otherwise, . <code>false</code>.
 
 ### isNull
     public final boolean isNull()
@@ -998,6 +1000,78 @@ Converts this CBOR object to an object of an arbitrary type. See the
 
 ### ToObject
     public Object ToObject​(Type t, CBORTypeMapper mapper)
+Converts this CBOR object to an object of an arbitrary type. See the
+ documentation for the overload of this method taking a CBORTypeMapper
+ and PODOptions parameters parameters for more information.
+
+**Parameters:**
+
+* <code>t</code> - The type, class, or interface that this method's return value will
+ belong to. To express a generic type in Java, see the example.
+ <b>Note:</b> For security reasons, an application should not base
+ this parameter on user input or other externally supplied data.
+ Whenever possible, this parameter should be either a type specially
+ handled by this method (such as <code>int</code> or <code>String</code>  // /) or
+ a plain-old-data type (POCO or POJO type) within the control of the
+ application. If the plain-old-data type references other data types,
+ those types should likewise meet either criterion above.
+
+* <code>mapper</code> - This parameter controls which data types are eligible for
+ Plain-Old-Data deserialization and includes custom converters from
+ CBOR objects to certain data types.
+
+**Returns:**
+
+* The converted object.
+
+**Throws:**
+
+* <code>UnsupportedOperationException</code> - The given type <code>t</code> , or this
+ object's CBOR type, is not supported.
+
+* <code>NullPointerException</code> - The parameter <code>t</code> is null.
+
+* <code>System.CBORException</code> - The given object's nesting is too deep, or
+ another error occurred when serializing the object.
+
+### ToObject
+    public Object ToObject​(Type t, PODOptions options)
+Converts this CBOR object to an object of an arbitrary type. See the
+ documentation for the overload of this method taking a CBORTypeMapper
+ and PODOptions parameters for more information. This method (without
+ a CBORTypeMapper parameter) allows all data types not otherwise
+ handled to be eligible for Plain-Old-Data serialization.
+
+**Parameters:**
+
+* <code>t</code> - The type, class, or interface that this method's return value will
+ belong to. To express a generic type in Java, see the example.
+ <b>Note:</b> For security reasons, an application should not base
+ this parameter on user input or other externally supplied data.
+ Whenever possible, this parameter should be either a type specially
+ handled by this method (such as <code>int</code> or <code>String</code>  // /) or
+ a plain-old-data type (POCO or POJO type) within the control of the
+ application. If the plain-old-data type references other data types,
+ those types should likewise meet either criterion above.
+
+* <code>options</code> - The parameter <code>options</code> is a PODOptions object.
+
+**Returns:**
+
+* The converted object.
+
+**Throws:**
+
+* <code>UnsupportedOperationException</code> - The given type <code>t</code> , or this
+ object's CBOR type, is not supported.
+
+* <code>NullPointerException</code> - The parameter <code>t</code> is null.
+
+* <code>System.CBORException</code> - The given object's nesting is too deep, or
+ another error occurred when serializing the object.
+
+### ToObject
+    public Object ToObject​(Type t, CBORTypeMapper mapper, PODOptions options)
 <p>Converts this CBOR object to an object of an arbitrary type. The
  following cases are checked in the logical order given (rather than
  the strict order in which they are implemented by this library): </p>
@@ -1008,12 +1082,14 @@ Converts this CBOR object to an object of an arbitrary type. See the
  CBOR object to an object of the given type. Type converters can be
  used to override the default conversion behavior of almost any
  object. </li> <li>If the type is <code>object</code> , return this object.
- </li> <li>If the type is <code>char</code> ... (To be implemented). </li>
- <li>If the type is <code>bool</code> (<code>boolean</code> in Java), returns the
- result of AsBoolean. </li> <li>If the type is a primitive integer
- type (<code>byte</code> , <code>int</code> , <code>short</code> , <code>long</code> , as
- well as <code>sbyte</code> , <code>ushort</code> , <code>uint</code> , and <code>ulong</code>
- in .NET) or a primitive floating-point type (<code>float</code> ,
+ </li> <li>If the type is <code>char</code> , converts single-character CBOR
+ text strings and CBOR integers from 0 through 65535 to a <code>char</code>
+ object and returns that <code>char</code> object. </li> <li>If the type is
+ <code>bool</code> (<code>boolean</code> in Java), returns the result of
+ AsBoolean. </li> <li>If the type is a primitive integer type (
+ <code>byte</code> , <code>int</code> , <code>short</code> , <code>long</code> , as well as
+ <code>sbyte</code> , <code>ushort</code> , <code>uint</code> , and <code>ulong</code> in
+ .NET) or a primitive floating-point type (<code>float</code> ,
  <code>double</code> , as well as <code>decimal</code> in .NET), returns the
  result of the corresponding As* method. </li> <li>If the type is
  <code>String</code> , returns the result of AsString. </li> <li>If the type
@@ -1039,54 +1115,53 @@ Converts this CBOR object to an object of an arbitrary type. See the
  returns a byte array which this CBOR byte string's data will be
  copied to. (This method can't be used to encode CBOR data to a byte
  array; for that, use the EncodeToBytes method instead.) </li> <li>If
- the type is a one-dimensional array type and this CBOR object is an
- array, returns an array containing the items in this CBOR object.
- (Multidimensional arrays to be documented.) </li> <li>If the type is
- ArrayList, List, or the generic or non-generic IList, ICollection, or
- IEnumerable, (or ArrayList, List, Collection, or Iterable in Java),
- and if this CBOR object is an array, returns an object conforming to
- the type, class, or interface passed to this method, where the object
- will contain all items in this CBOR array. </li> <li>If the type is
- the generic or non-generic Dictionary or IDictionary (or HashMap or
- Map in Java), and if this CBOR object is a map, returns an object
- conforming to the type, class, or interface passed to this method,
- where the object will contain all keys and values in this CBOR map.
- </li> <li>If the type is an enumeration constant ("enum"), and this
- CBOR object is an integer or text string, returns the enumeration
- constant with the given number or name, respectively. (Enumeration
- constants made up of multiple enumeration constants, as allowed by
- .NET, can only be matched by number this way.) (To be implemented for
- Java.) </li> <li>Type converters (To be implemented). </li> <li>If
- the type is <code>java.util.Date</code> (or <code>Date</code> in Java) , returns a
- date/time object if the CBOR object's outermost tag is 0 or 1. </li>
- <li>If the type is <code>java.net.URI</code> (or <code>URI</code> in Java), returns a URI
- object if possible. </li> <li>If the type is <code>java.util.UUID</code> (or
- <code>UUID</code> in Java), returns a UUID object if possible. </li>
- <li>Plain-Old-Data deserialization: If the object is a type not
- specially handled above, the type includes a zero-argument
- constructor (default or not), this CBOR object is a CBOR map, and the
- "mapper" parameter allows this type to be eligible for Plain-Old-Data
- deserialization, then this method checks the given type for eligible
- setters as follows: </li> <li>(*) In the .NET version, eligible
- setters are the public, nonstatic setters of properties with a
- public, nonstatic getter. If a class has two properties of the form
- "X" and "IsX", where "X" is any name, or has multiple properties with
- the same name, those properties are ignored. </li> <li>(*) In the
- Java version, eligible setters are public, nonstatic methods starting
- with "set" followed by a character other than a basic digit or
- lower-case letter, that is, other than "a" to "z" or "0" to "9", that
- take one parameter. The class containing an eligible setter must have
- a public, nonstatic method with the same name, but starting with
- "get" or "is" rather than "set", that takes no parameters and does
- not return void. (For example, if a class has "public
- setValue(String)" and "public getValue()", "setValue" is an eligible
- setter. However, "setValue()" and "setValue(String, int)" are not
- eligible setters.) If a class has two otherwise eligible setters with
- the same name, but different parameter type, they are not eligible
- setters. </li> <li>Then, the method creates an object of the given
- type and invokes each eligible setter with the corresponding value in
- the CBOR map, if any. Key names in the map are matched to eligible
- setters according to the rules described in the <code>PODOptions</code> documentation. Note that for
+ the type is a one-dimensional or multidimensional array type and this
+ CBOR object is an array, returns an array containing the items in
+ this CBOR object. </li> <li>If the type is List or the generic or
+ non-generic IList, ICollection, or IEnumerable, (or ArrayList, List,
+ Collection, or Iterable in Java), and if this CBOR object is an
+ array, returns an object conforming to the type, class, or interface
+ passed to this method, where the object will contain all items in
+ this CBOR array. </li> <li>If the type is Dictionary or the generic
+ or non-generic IDictionary (or HashMap or Map in Java), and if this
+ CBOR object is a map, returns an object conforming to the type,
+ class, or interface passed to this method, where the object will
+ contain all keys and values in this CBOR map. </li> <li>If the type
+ is an enumeration constant ("enum"), and this CBOR object is an
+ integer or text string, returns the enumeration constant with the
+ given number or name, respectively. (Enumeration constants made up of
+ multiple enumeration constants, as allowed by .NET, can only be
+ matched by number this way.) </li> <li>If the type is <code>java.util.Date</code>
+ (or <code>Date</code> in Java) , returns a date/time object if the CBOR
+ object's outermost tag is 0 or 1. </li> <li>If the type is <code>java.net.URI</code>
+ (or <code>URI</code> in Java), returns a URI object if possible. </li>
+ <li>If the type is <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a
+ UUID object if possible. </li> <li>Plain-Old-Data deserialization: If
+ the object is a type not specially handled above, the type includes a
+ zero-argument constructor (default or not), this CBOR object is a
+ CBOR map, and the "mapper" parameter allows this type to be eligible
+ for Plain-Old-Data deserialization, then this method checks the given
+ type for eligible setters as follows: </li> <li>(*) In the .NET
+ version, eligible setters are the public, nonstatic setters of
+ properties with a public, nonstatic getter. If a class has two
+ properties of the form "X" and "IsX", where "X" is any name, or has
+ multiple properties with the same name, those properties are ignored.
+ </li> <li>(*) In the Java version, eligible setters are public,
+ nonstatic methods starting with "set" followed by a character other
+ than a basic digit or lower-case letter, that is, other than "a" to
+ "z" or "0" to "9", that take one parameter. The class containing an
+ eligible setter must have a public, nonstatic method with the same
+ name, but starting with "get" or "is" rather than "set", that takes
+ no parameters and does not return void. (For example, if a class has
+ "public setValue(String)" and "public getValue()", "setValue" is an
+ eligible setter. However, "setValue()" and "setValue(String, int)"
+ are not eligible setters.) If a class has two otherwise eligible
+ setters with the same name, but different parameter type, they are
+ not eligible setters. </li> <li>Then, the method creates an object of
+ the given type and invokes each eligible setter with the
+ corresponding value in the CBOR map, if any. Key names in the map are
+ matched to eligible setters according to the rules described in the
+ <code>PODOptions</code> documentation. Note that for
  security reasons, certain types are not supported even if they
  contain eligible setters. </li> </ul> <p>REMARK: A certain
  consistency between .NET and Java and between FromObject and ToObject
@@ -1124,6 +1199,8 @@ Converts this CBOR object to an object of an arbitrary type. See the
 * <code>mapper</code> - This parameter controls which data types are eligible for
  Plain-Old-Data deserialization and includes custom converters from
  CBOR objects to certain data types.
+
+* <code>options</code> - The parameter <code>options</code> is a PODOptions object.
 
 **Returns:**
 
@@ -1253,23 +1330,6 @@ Generates a CBOR object from a 16-bit signed integer.
 **Returns:**
 
 * A CBORObject object.
-
-### FromObject
-    public static CBORObject FromObject​(char value)
-Generates a CBOR string object from a Unicode character.
-
-**Parameters:**
-
-* <code>value</code> - The parameter <code>value</code> is a char object.
-
-**Returns:**
-
-* A CBORObject object.
-
-**Throws:**
-
-* <code>IllegalArgumentException</code> - The parameter <code>value</code> is a surrogate
- code point.
 
 ### FromObject
     public static CBORObject FromObject​(boolean value)
@@ -1452,18 +1512,22 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  converter mentioned in the <paramref name='mapper'/> parameter, that
  converter will be used to convert the object to a CBOR object. Type
  converters can be used to override the default conversion behavior of
- almost any object.</li> <li>A <code>char</code> is... (to be
- implemented).</li> <li>A <code>bool</code> (<code>boolean</code> in Java) is
- converted to <code>CBORObject.True</code> or <code>CBORObject.False</code>.</li>
- <li>A <code>byte</code> is converted to a CBOR integer from 0 through
- 255.</li> <li>A primitive integer type (<code>int</code>, <code>short</code>,
- <code>long</code>, as well as <code>sbyte</code>, <code>ushort</code>, <code>uint</code>, and
- <code>ulong</code> in .NET) is converted to the corresponding CBOR
- integer.</li> <li>A primitive floating-point type (<code>float</code>,
- <code>double</code>, as well as <code>decimal</code> in .NET) is converted to the
- corresponding CBOR number.</li> <li>A <code>String</code> is converted to a
- CBOR text string. To create a CBOR byte string object from
- <code>String</code>, see the example given in <see cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</li>
+ almost any object.</li> <li>A <code>char</code> is converted to an integer
+ (from 0 through 65535), and returns a CBOR object of that integer.
+ (This is a change in version 4.0 from previous versions, which
+ converted <code>char</code>, except surrogate code points from 0xd800
+ through 0xdfff, into single-character text strings.)</li> <li>A
+ <code>bool</code> (<code>boolean</code> in Java) is converted to
+ <code>CBORObject.True</code> or <code>CBORObject.False</code>.</li> <li>A
+ <code>byte</code> is converted to a CBOR integer from 0 through 255.</li>
+ <li>A primitive integer type (<code>int</code>, <code>short</code>, <code>long</code>,
+ as well as <code>sbyte</code>, <code>ushort</code>, <code>uint</code>, and <code>ulong</code>
+ in .NET) is converted to the corresponding CBOR integer.</li> <li>A
+ primitive floating-point type (<code>float</code>, <code>double</code>, as well
+ as <code>decimal</code> in .NET) is converted to the corresponding CBOR
+ number.</li> <li>A <code>String</code> is converted to a CBOR text string.
+ To create a CBOR byte string object from <code>String</code>, see the
+ example given in <see cref='M:PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/> .</li>
  <li>A number of type <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>,
  and <code>ERational</code> in the <code>PeterO.Numbers</code>
  library (in .NET) or the <code>com.github.peteroupc/numbers</code>
@@ -1984,25 +2048,6 @@ Writes a 16-bit signed integer in CBOR format to a data stream.
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>stream</code> is null.
-
-* <code>IOException</code> - An I/O error occurred.
-
-### Write
-    public static void Write​(char value, OutputStream stream) throws IOException
-Writes a Unicode character as a string in CBOR format to a data stream.
-
-**Parameters:**
-
-* <code>value</code> - The value to write.
-
-* <code>stream</code> - A writable data stream.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
-
-* <code>IllegalArgumentException</code> - The parameter <code>value</code> is a surrogate
- code point.
 
 * <code>IOException</code> - An I/O error occurred.
 

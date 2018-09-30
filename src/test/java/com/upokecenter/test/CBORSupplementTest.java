@@ -159,15 +159,6 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCBORObjectArgumentValidation() {
-      try {
-        ToObjectTest.TestToFromObjectRoundTrip('\udddd');
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
       Assert.assertEquals(
   CBORObject.Null,
   ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
