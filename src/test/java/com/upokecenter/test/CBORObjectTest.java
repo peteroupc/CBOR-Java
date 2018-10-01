@@ -2673,7 +2673,8 @@ throw new IllegalStateException("", ex);
       TestCommon.AssertEqualsHashCode(o.get(key), value);
     }
 
-    public enum EnumClass { Value1, Value2, Value3 };
+    public enum EnumClass {
+Value1, Value2, Value3 };
 
     @Test
     public void TestFromObject_Enum() {
