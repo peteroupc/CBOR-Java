@@ -479,7 +479,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       if (bad) {
         throw new IllegalArgumentException("Invalid date/time");
       }
-      int year = ((str.charAt(0) - '0') * 1000) + (str.charAt(1) - '0') * 100 +
+      int year = ((str.charAt(0) - '0') * 1000) + ((str.charAt(1) - '0') * 100) +
         (str.charAt(2) - '0') * 10 + (str.charAt(3) - '0');
       int month = ((str.charAt(5) - '0') * 10) + (str.charAt(6) - '0');
       int day = ((str.charAt(8) - '0') * 10) + (str.charAt(9) - '0');
