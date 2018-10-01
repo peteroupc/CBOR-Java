@@ -2674,7 +2674,21 @@ throw new IllegalStateException("", ex);
     }
 
     public enum EnumClass {
-Value1, Value2, Value3 };
+    /**
+     * Internal API.
+     */
+Value1,
+
+    /**
+     * Internal API.
+     */
+Value2,
+
+    /**
+     * Internal API.
+     */
+Value3
+  }
 
     @Test
     public void TestFromObject_Enum() {
