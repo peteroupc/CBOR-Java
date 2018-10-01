@@ -1777,7 +1777,7 @@ try { if (ms != null) {
       }
     }
 
-    @Test
+    @Test(timeout = 100000)
     public void TestCompareTo() {
       RandomGenerator r = new RandomGenerator();
       int CompareCount = 500;
@@ -2517,26 +2517,6 @@ bytes = CBORObject.FromObject(bj)
       c = CBORObject.FromObject((Object)dict);
       this.CheckKeyValue(c, "TestKey", "TestValue");
       this.CheckKeyValue(c, "TestKey2", "TestValue2");
-    }
-
-    public final class PODClass {
-      public PODClass() {
-        this.setPropA(0);
-        this.setPropB(1);
-        this.setPropC(false);
-      }
-
-      public final int getPropA() { return propVarpropa; }
-public final void setPropA(int value) { propVarpropa = value; }
-private int propVarpropa;
-
-      public final int getPropB() { return propVarpropb; }
-public final void setPropB(int value) { propVarpropb = value; }
-private int propVarpropb;
-
-      public final boolean isPropC() { return propVarispropc; }
-public final void setPropC(boolean value) { propVarispropc = value; }
-private boolean propVarispropc;
     }
 
     public final class NestedPODClass {
@@ -6467,7 +6447,7 @@ try { if (ms != null) {
       CBORTestCommon.AssertRoundTrip(o2);
     }
 
-    private static void AreEqualExact(double a, double b) {
+    static void AreEqualExact(double a, double b) {
       if (Double.isNaN(a)) {
         if (!(Double.isNaN(b))) {
  Assert.fail();
@@ -6477,7 +6457,7 @@ try { if (ms != null) {
       }
     }
 
-    private static void AreEqualExact(float a, float b) {
+    static void AreEqualExact(float a, float b) {
       if (Float.isNaN(a)) {
         if (!(Float.isNaN(b))) {
  Assert.fail();

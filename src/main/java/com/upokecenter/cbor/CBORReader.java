@@ -473,6 +473,7 @@ try { if (ms != null) {
             throw new CBORException("Unexpected tag encountered: " +
                  uadditional);
           }
+
           taginfo = CBORObject.FindTagConverter(bigintAdditional);
         }
         ++this.depth;

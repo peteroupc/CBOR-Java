@@ -28,6 +28,9 @@ Represents an object in Concise Binary Object Representation (CBOR) and
 * [com.upokecenter.cbor.CBORTypeFilter](com.upokecenter.cbor.CBORTypeFilter.md) - Deprecated.
 May be removed without replacement.
 
+* [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
+Not documented yet.
+
 * [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -
 Includes options to control how CBOR objects are converted to JSON.
 

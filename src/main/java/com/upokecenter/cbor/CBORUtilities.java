@@ -382,6 +382,33 @@ private CBORUtilities() {
       year[0] = normPart[0];
     }
 
+    public static boolean NameStartsWithWord(String name, String word) {
+      int wl = word.length();
+      return name.length() > wl && name.substring(0, wl).equals(word) &&
+              !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
+              !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
+    }
+
+    public static String FirstCharLower(String name) {
+      if (name.length() > 0 && name.charAt(0) >= 'A' && name.charAt(0) <= 'Z') {
+              StringBuilder sb = new StringBuilder();
+              sb.append((char)(name.charAt(0) + 0x20));
+              sb.append(name.substring(1));
+              return sb.toString();
+      }
+      return name;
+    }
+
+    public static String FirstCharUpper(String name) {
+      if (name.length() > 0 && name.charAt(0) >= 'a' && name.charAt(0) <= 'z') {
+              StringBuilder sb = new StringBuilder();
+              sb.append((char)(name.charAt(0) - 0x20));
+              sb.append(name.substring(1));
+              return sb.toString();
+      }
+      return name;
+    }
+
     private static boolean IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.length < 8) {
         return false;
