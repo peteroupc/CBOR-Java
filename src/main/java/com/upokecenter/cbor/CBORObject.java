@@ -183,10 +183,6 @@ import com.upokecenter.numbers.*;
       null, new CBORExtendedFloat(), new CBORExtendedRational()
     };
 
-/**
- * @deprecated
- */
-@Deprecated
     private static final Map<EInteger, ICBORTag>
       ValueTagHandlers = new HashMap<EInteger, ICBORTag>();
 
@@ -1777,12 +1773,14 @@ if (depth > 100) {
         return objret;
       }
       objret = CBORObject.NewMap();
+
       for (Map.Entry<String, Object> key : PropertyMap.GetProperties(
                  obj,
                  options.getRemoveIsPrefix(),
                  options.getUseCamelCase())) {
         objret.set(key.getKey(), CBORObject.FromObject(key.getValue(), options));
       }
+
       return objret;
     }
 
@@ -1910,9 +1908,7 @@ if (depth > 100) {
         throw new IllegalArgumentException("smallTag (" + smallTag +
                     ") is less than 0");
       }
-
-ICBORTag tagconv = FindTagConverter(smallTag);
-
+      ICBORTag tagconv = FindTagConverter(smallTag);
       CBORObject c = FromObject(valueObValue);
       c = new CBORObject(c, smallTag, 0);
       return (tagconv != null) ? tagconv.ValidateObject(c) : c;
@@ -4940,10 +4936,6 @@ public boolean equals(CBORObject other) {
       }
     }
 
-/**
- * @deprecated
- */
-@Deprecated
     static ICBORTag FindTagConverter(EInteger bigintTag) {
       if (TagHandlersEmpty()) {
         AddTagHandler(EInteger.FromInt64(2), new CBORTag2());

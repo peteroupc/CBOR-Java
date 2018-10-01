@@ -21,6 +21,7 @@ package com.upokecenter.cbor;
      */
     public PODOptions(boolean removeIsPrefix, boolean useCamelCase) {
       this.propVarremoveisprefix = removeIsPrefix;
+
       this.propVarusecamelcase = useCamelCase;
     }
 
