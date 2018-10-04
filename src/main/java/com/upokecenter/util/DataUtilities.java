@@ -136,8 +136,8 @@ private DataUtilities() {
      * array.</p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
-     * text strings in an unspecified character encoding. Both behaviors can
-     * be undesirable.</p>
+     * text strings in a default (so not fixed) character encoding, which
+     * can be undesirable.</p>
      * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an
@@ -158,8 +158,8 @@ private DataUtilities() {
      * array.</p> <p>REMARK: It is not recommended to use
      * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
-     * text strings in an unspecified character encoding. Both behaviors can
-     * be undesirable.</p>
+     * text strings in a default (so not fixed) character encoding, which
+     * can be undesirable.</p>
      * @param str The parameter {@code str} is a text string.
      * @param replace If true, replaces unpaired surrogate code points with the
      * replacement character (U + FFFD). If false, stops processing when an

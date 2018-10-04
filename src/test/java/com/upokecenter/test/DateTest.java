@@ -7,7 +7,6 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class DateTest {
-    @Test
     public void TestDate() {
     }
   }

@@ -59,7 +59,8 @@ import java.util.*;
       return this;
     }
 
-    Object ConvertBackWithConverter(
+    @SuppressWarnings("unchecked")
+internal <T> T ConvertBackWithConverter(
         CBORObject cbor,
         java.lang.reflect.Type type) {
       ConverterInfo convinfo = null;

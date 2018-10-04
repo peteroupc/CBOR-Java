@@ -457,7 +457,7 @@ import com.upokecenter.numbers.*;
      * map in an undefined order. If this is an array, returns all the
      * values of the array in the order they are listed. (This method can't
      * be used to get the bytes in a CBOR byte string; for that, use the
-     * GetByteArray method instead.).
+     * GetByteString method instead.).
      * @return A collection of the values of this CBOR map or array.
      * @throws IllegalStateException This object is not a map or an array.
      */
@@ -815,7 +815,8 @@ try { if (ms != null) {
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t) {
       return this.ToObject(t, null, null, 0);
     }
 
@@ -842,7 +843,8 @@ try { if (ms != null) {
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
@@ -864,7 +866,8 @@ return this.ToObject(t, mapper, null, 0);
      * a plain-old-data type (POCO or POJO type) within the control of the
      * application. If the plain-old-data type references other data types,
      * those types should likewise meet either criterion above.
-     * @param options The parameter {@code options} is a PODOptions object.
+     * @param options Specifies options for controlling deserialization of CBOR
+     * objects.
      * @return The converted object.
      * @throws UnsupportedOperationException The given type {@code t} , or this
      * object's CBOR type, is not supported.
@@ -872,7 +875,8 @@ return this.ToObject(t, mapper, null, 0);
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, PODOptions options) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
 if (options == null) {
   throw new NullPointerException("options");
 }
@@ -1006,7 +1010,8 @@ return this.ToObject(t, null, options, 0);
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from
      * CBOR objects to certain data types.
-     * @param options The parameter {@code options} is a PODOptions object.
+     * @param options Specifies options for controlling deserialization of CBOR
+     * objects.
      * @return The converted object.
      * @throws UnsupportedOperationException The given type {@code t} , or this
      * object's CBOR type, is not supported.
@@ -1014,7 +1019,8 @@ return this.ToObject(t, null, options, 0);
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions options) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions options) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
@@ -1024,7 +1030,8 @@ if (options == null) {
 return this.ToObject(t, mapper, options, 0);
     }
 
-    Object ToObject(java.lang.reflect.Type t,
+    @SuppressWarnings("unchecked")
+internal <T> T ToObject(java.lang.reflect.Type t,
   CBORTypeMapper mapper,
   PODOptions options,
   int depth) {
@@ -3377,10 +3384,10 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     * Gets the byte array used in this object, if this object is a byte string,
-     * without copying the data to a new one. This method's return value can
-     * be used to modify the array's contents. Note, though, that the array'
-     * s length can't be changed.
+     * Gets the backing byte array used in this CBOR object, if this object is a
+     * byte string, without copying the data to a new byte array. Any
+     * changes in the returned array's contents will be reflected in this
+     * CBOR object. Note, though, that the array's length can't be changed.
      * @return The byte array held by this CBOR object.
      * @throws IllegalStateException This object is not a byte string.
      */
@@ -3807,11 +3814,10 @@ if (index < 0 || index >= this.size()) {
 
     /**
      * Converts this object to a string in JavaScript Object Notation (JSON)
-     * format, using the specified options to control the encoding process.
-     * See the overload to JSONString taking a JSONOptions argument. <p>If
-     * the CBOR object contains CBOR maps, or is a CBOR map itself, the keys
-     * to the map are written out to the JSON string in an undefined order.
-     * The example code given in <see
+     * format. See the overload to JSONString taking a JSONOptions argument
+     * for further information. <p>If the CBOR object contains CBOR maps, or
+     * is a CBOR map itself, the keys to the map are written out to the JSON
+     * string in an undefined order. The example code given in <see
   * cref='M:PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.</p>
