@@ -490,10 +490,15 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets the value of a CBOR object by integer index in this array.
-     * @param index Zero-based index of the element.
-     * @return A CBORObject object.
-     * @throws IllegalStateException This object is not an array.
+     * Gets the value of a CBOR object by integer index in this array or by integer
+     * key in this map.
+     * @param index Zero-based index of the element, or the integer key to this
+     * map. (If this is a map, the given index can be any 32-bit signed
+     * integer, even a negative one.).
+     * @return The CBOR object referred to by index or key in this array or map.
+     * @throws IllegalStateException This object is not an array or map.
+     * @throws IllegalArgumentException This object is an array and the index is
+     * less than 0 or equal to or greater than the size of the array.
      * @throws java.lang.NullPointerException The parameter "value" is null (as
      * opposed to CBORObject.Null).
      */
@@ -505,14 +510,23 @@ import com.upokecenter.numbers.*;
           }
           return list.get(index);
         }
-        throw new IllegalStateException("Not an array");
+        if (this.getItemType() == CBORObjectTypeMap) {
+          Map<CBORObject, CBORObject> map = this.AsMap();
+          CBORObject key = CBORObject.FromObject(index);
+          return (!map.containsKey(key)) ? null : map.get(key);
+        }
+        throw new IllegalStateException("Not an array or map");
       }
 
     /**
-     * Gets the value of a CBOR object by integer index in this array.
-     * @param index Zero-based index of the element.
-     * @return A CBORObject object.
-     * @throws IllegalStateException This object is not an array.
+     * Sets the value of a CBOR object by integer index in this array or by integer
+     * key in this map.
+     * @param index Zero-based index of the element, or the integer key to this
+     * map. (If this is a map, the given index can be any 32-bit signed
+     * integer, even a negative one.).
+     * @throws IllegalStateException This object is not an array or map.
+     * @throws IllegalArgumentException This object is an array and the index is
+     * less than 0 or equal to or greater than the size of the array.
      * @throws java.lang.NullPointerException The parameter "value" is null (as
      * opposed to CBORObject.Null).
      */
@@ -522,19 +536,32 @@ import com.upokecenter.numbers.*;
             throw new NullPointerException("value");
           }
           List<CBORObject> list = this.AsList();
+          if (index < 0 || index >= list.size()) {
+            throw new java.lang.IllegalArgumentException("index");
+          }
           list.set(index, value);
+        } else if (this.getItemType() == CBORObjectTypeMap) {
+          Map<CBORObject, CBORObject> map = this.AsMap();
+          CBORObject key = CBORObject.FromObject(index);
+          map.put(key, value);
         } else {
-          throw new IllegalStateException("Not an array");
+          throw new IllegalStateException("Not an array or map");
         }
       }
 
     /**
      * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key The parameter {@code key} is a CBOR object.
-     * @return A CBORObject object.
+     * Or, gets the value of a CBOR object in the specified index in this
+     * CBOR array.
+     * @param key A CBOR object serving as the key to the map or index to the
+     * array. If this is a CBOR array, the key must be an integer 0 or
+     * greater and less than the size of the array.
+     * @return The CBOR object referred to by index or key in this array or map.
      * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
-     * @throws IllegalStateException This object is not a map.
+     * @throws IllegalArgumentException This CBOR object is an array and the key is
+     * not an integer 0 or greater and less than the size of the array.
+     * @throws IllegalStateException This object is not a map or an array.
      */
     public CBORObject get(CBORObject key) {
         if (key == null) {
@@ -544,16 +571,36 @@ import com.upokecenter.numbers.*;
           Map<CBORObject, CBORObject> map = this.AsMap();
           return (!map.containsKey(key)) ? null : map.get(key);
         }
-        throw new IllegalStateException("Not a map");
+        if (this.getItemType() == CBORObjectTypeArray) {
+    if (!key.isIntegral()) {
+ throw new IllegalArgumentException("Not an integer");
+}
+    if (!key.CanTruncatedIntFitInInt32()) {
+ throw new java.lang.IllegalArgumentException("index");
+}
+          List<CBORObject> list = this.AsList();
+          int index = key.AsInt32();
+          if (index < 0 || index >= list.size()) {
+ throw new java.lang.IllegalArgumentException("index");
+}
+          return list.get(index);
+        }
+        throw new IllegalStateException("Not an array or map");
       }
 
     /**
      * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * @param key The parameter {@code key} is a CBOR object.
-     * @return A CBORObject object.
+     * Or, gets the value of a CBOR object in the specified index in this
+     * CBOR array.
+     * @param key A CBOR object serving as the key to the map or index to the
+     * array. If this is a CBOR array, the key must be an integer 0 or
+     * greater and less than the size of the array.
+     * @return The CBOR object referred to by index or key in this array or map.
      * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
-     * @throws IllegalStateException This object is not a map.
+     * @throws IllegalArgumentException This CBOR object is an array and the key is
+     * not an integer 0 or greater and less than the size of the array.
+     * @throws IllegalStateException This object is not a map or an array.
      */
     public void set(CBORObject key, CBORObject value) {
         if (key == null) {
@@ -565,15 +612,30 @@ import com.upokecenter.numbers.*;
         if (this.getItemType() == CBORObjectTypeMap) {
           Map<CBORObject, CBORObject> map = this.AsMap();
           map.put(key, value);
-        } else {
-          throw new IllegalStateException("Not a map");
+          return;
         }
+        if (this.getItemType() == CBORObjectTypeArray) {
+    if (!key.isIntegral()) {
+ throw new IllegalArgumentException("Not an integer");
+}
+    if (!key.CanTruncatedIntFitInInt32()) {
+ throw new java.lang.IllegalArgumentException("index");
+}
+          List<CBORObject> list = this.AsList();
+          int index = key.AsInt32();
+          if (index < 0 || index >= list.size()) {
+ throw new java.lang.IllegalArgumentException("index");
+}
+          list.set(index, value);
+          return;
+        }
+        throw new IllegalStateException("Not an array or map");
       }
 
     /**
      * Gets the value of a CBOR object in this map, using a string as the key.
      * @param key A key that points to the desired value.
-     * @return A CBORObject object.
+     * @return The CBOR object referred to by key in this map.
      * @throws java.lang.NullPointerException The key is null.
      * @throws IllegalStateException This object is not a map.
      */
@@ -588,7 +650,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the value of a CBOR object in this map, using a string as the key.
      * @param key A key that points to the desired value.
-     * @return A CBORObject object.
+     * @return The CBOR object referred to by key in this map.
      * @throws java.lang.NullPointerException The key is null.
      * @throws IllegalStateException This object is not a map.
      */
@@ -817,7 +879,7 @@ try { if (ms != null) {
      */
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t) {
-      return this.ToObject(t, null, null, 0);
+      return (T)(this.ToObject(t, null, null, 0));
     }
 
     /**
@@ -848,7 +910,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
-return this.ToObject(t, mapper, null, 0);
+return (T)(this.ToObject(t, mapper, null, 0));
     }
 
     /**
@@ -880,7 +942,7 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
 if (options == null) {
   throw new NullPointerException("options");
 }
-return this.ToObject(t, null, options, 0);
+return (T)(this.ToObject(t, null, options, 0));
     }
 
     /**
@@ -1027,11 +1089,11 @@ if (mapper == null) {
 if (options == null) {
   throw new NullPointerException("options");
 }
-return this.ToObject(t, mapper, options, 0);
+return (T)(this.ToObject(t, mapper, options, 0));
     }
 
     @SuppressWarnings("unchecked")
-internal <T> T ToObject(java.lang.reflect.Type t,
+ <T> T ToObject(java.lang.reflect.Type t,
   CBORTypeMapper mapper,
   PODOptions options,
   int depth) {
@@ -1043,7 +1105,7 @@ if (depth > 100) {
         throw new NullPointerException("t");
       }
       if (t.equals(CBORObject.class)) {
-        return this;
+        return (T)(this);
       }
       if (this.isNull()) {
         return null;
@@ -1051,14 +1113,14 @@ if (depth > 100) {
       if (mapper != null) {
         Object obj = mapper.ConvertBackWithConverter(this, t);
         if (obj != null) {
-          return obj;
+          return (T)(obj);
         }
       }
       if (t.equals(Object.class)) {
-        return this;
+        return (T)(this);
       }
-      return t.equals(String.class) ? this.AsString() :
-        PropertyMap.TypeToObject(this, t, mapper, options, depth);
+      return (T)(t.equals(String.class) ? this.AsString() :
+        PropertyMap.TypeToObject(this, t, mapper, options, depth));
     }
 
     /**

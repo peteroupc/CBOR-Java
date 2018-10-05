@@ -184,8 +184,8 @@ Generates a text string from a portion of a UTF-8 byte array.
  array.</p> <p>REMARK: It is not recommended to use
  <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
- text strings in an unspecified character encoding. Both behaviors can
- be undesirable.</p>
+ text strings in a default (so not fixed) character encoding, which
+ can be undesirable.</p>
 
 **Parameters:**
 
@@ -214,8 +214,8 @@ Generates a text string from a portion of a UTF-8 byte array.
  array.</p> <p>REMARK: It is not recommended to use
  <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
- text strings in an unspecified character encoding. Both behaviors can
- be undesirable.</p>
+ text strings in a default (so not fixed) character encoding, which
+ can be undesirable.</p>
 
 **Parameters:**
 

@@ -2306,6 +2306,206 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
         throw new IllegalStateException("", ex);
       }
     }
+
+    @Test
+    public void TestItem() {
+      CBORObject cbor;
+      CBORObject dummy = CBORObject.True;
+      cbor = CBORObject.NewArray().Add(1).Add(2);
+      Assert.assertEquals(1, cbor.get(0).AsInt32());
+      Assert.assertEquals(2, cbor.get(1).AsInt32());
+      Assert.assertEquals(1, cbor.get(CBORObject.FromObject(0)).AsInt32());
+      Assert.assertEquals(2, cbor.get(CBORObject.FromObject(1)).AsInt32());
+      try {
+ dummy = cbor.get(-1);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(2);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(CBORObject.FromObject(-1));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor.set(0, CBORObject.FromObject(3));
+      cbor.set(1, CBORObject.FromObject(4));
+      Assert.assertEquals(3, cbor.get(0).AsInt32());
+      Assert.assertEquals(4, cbor.get(1).AsInt32());
+      Assert.assertEquals(3, cbor.get(CBORObject.FromObject(0)).AsInt32());
+      Assert.assertEquals(4, cbor.get(CBORObject.FromObject(1)).AsInt32());
+      try {
+ cbor.set(-1, dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(2, dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(CBORObject.FromObject(-1), dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(CBORObject.FromObject(2), dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+byte[] bytes = new byte[] { 1, 2, 3, 4 };
+      CBORObject[] othercbor = new CBORObject[] {
+  CBORObject.FromObject(9), CBORObject.True,
+        CBORObject.FromObject(bytes),
+  CBORObject.False, CBORObject.Null, CBORObject.FromObject("test"),
+  CBORObject.FromObject(99999), CBORObject.FromObject(-1)
+ };
+      for (CBORObject c2 : othercbor) {
+        try {
+ dummy = c2.get(0);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        try {
+ dummy = c2.get(CBORObject.FromObject(0));
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      }
+      cbor = CBORObject.NewMap().Add(0, 1).Add(-1, 2);
+      Assert.assertEquals(1, cbor.get(0).AsInt32());
+      Assert.assertEquals(2, cbor.get(-1).AsInt32());
+      Assert.assertEquals(1, cbor.get(CBORObject.FromObject(0)).AsInt32());
+      Assert.assertEquals(2, cbor.get(CBORObject.FromObject(-1)).AsInt32());
+      try {
+ dummy = cbor.get(-2);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(2);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(CBORObject.FromObject(-2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ dummy = cbor.get(CBORObject.FromObject(2));
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor.set(0, CBORObject.FromObject(3));
+      cbor.set(-1, CBORObject.FromObject(4));
+      Assert.assertEquals(3, cbor.get(0).AsInt32());
+      Assert.assertEquals(4, cbor.get(-1).AsInt32());
+      Assert.assertEquals(3, cbor.get(CBORObject.FromObject(0)).AsInt32());
+      Assert.assertEquals(4, cbor.get(CBORObject.FromObject(-1)).AsInt32());
+      try {
+ cbor.set(-2, dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(2, dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(CBORObject.FromObject(-2), dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ cbor.set(CBORObject.FromObject(2), dummy);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
     @Test
     public void TestEquals() {
       byte[] cborbytes = new byte[] { (byte)0xd8, 0x1e, (byte)0x82, 0x00, 0x19,
@@ -3584,7 +3784,7 @@ private final PODClass propVarpropvalue;
       // not implemented yet
     }
     @Test
-    public void TestItem() {
+    public void TestItem2() {
       CBORObject cbor = CBORObject.True;
       try {
         CBORObject cbor2 = cbor.get(0);

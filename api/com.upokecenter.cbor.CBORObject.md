@@ -259,7 +259,8 @@
 * `static CBORObject FromSimpleValue​(int simpleValue)`<br>
  Creates a CBOR object from a simple value number.
 * `CBORObject get​(int index)`<br>
- Gets the value of a CBOR object by integer index in this array.
+ Gets the value of a CBOR object by integer index in this array or by integer
+ key in this map.
 * `CBORObject get​(CBORObject key)`<br>
  Gets the value of a CBOR object in this map, using a CBOR object as the key.
 * `CBORObject get​(String key)`<br>
@@ -267,8 +268,8 @@
 * `com.upokecenter.numbers.EInteger[] GetAllTags()`<br>
  Gets a list of all tags, from outermost to innermost.
 * `byte[] GetByteString()`<br>
- Gets the byte array used in this object, if this object is a byte string,
- without copying the data to a new one.
+ Gets the backing byte array used in this CBOR object, if this object is a
+ byte string, without copying the data to a new byte array.
 * `Collection<CBORObject> getKeys()`<br>
  Gets a collection of the keys of this CBOR object in an undefined order.
 * `com.upokecenter.numbers.EInteger getMostInnerTag()`<br>
@@ -366,7 +367,8 @@
  Removes the item at the given index of this CBOR array.
 * `void set​(int index,
    CBORObject value)`<br>
- Gets the value of a CBOR object by integer index in this array.
+ Sets the value of a CBOR object by integer index in this array or by integer
+ key in this map.
 * `void set​(CBORObject key,
    CBORObject value)`<br>
  Gets the value of a CBOR object in this map, using a CBOR object as the key.
@@ -387,20 +389,20 @@
  Finds the difference between two CBOR number objects.
 * `String ToJSONString()`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
- format, using the specified options to control the encoding process.
+ format.
 * `String ToJSONString​(JSONOptions options)`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
  format, using the specified options to control the encoding process.
-* `Object ToObject​(Type t)`<br>
+* `<T> T ToObject​(Type t)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
+* `<T> T ToObject​(Type t,
         CBORTypeMapper mapper)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
+* `<T> T ToObject​(Type t,
         CBORTypeMapper mapper,
         PODOptions options)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
+* `<T> T ToObject​(Type t,
         PODOptions options)`<br>
  Converts this CBOR object to an object of an arbitrary type.
 * `String toString()`<br>
@@ -701,7 +703,7 @@ Gets a collection of the values of this CBOR object, if it's a map or an
  map in an undefined order. If this is an array, returns all the
  values of the array in the order they are listed. (This method can't
  be used to get the bytes in a CBOR byte string; for that, use the
- GetByteArray method instead.).
+ GetByteString method instead.).
 
 **Returns:**
 
@@ -713,34 +715,46 @@ Gets a collection of the values of this CBOR object, if it's a map or an
 
 ### get
     public CBORObject get​(int index)
-Gets the value of a CBOR object by integer index in this array.
+Gets the value of a CBOR object by integer index in this array or by integer
+ key in this map.
 
 **Parameters:**
 
-* <code>index</code> - Zero-based index of the element.
+* <code>index</code> - Zero-based index of the element, or the integer key to this
+ map. (If this is a map, the given index can be any 32-bit signed
+ integer, even a negative one.).
 
 **Returns:**
 
-* A CBORObject object.
+* The CBOR object referred to by index or key in this array or map.
 
 **Throws:**
 
-* <code>IllegalStateException</code> - This object is not an array.
+* <code>IllegalStateException</code> - This object is not an array or map.
+
+* <code>IllegalArgumentException</code> - This object is an array and the index is
+ less than 0 or equal to or greater than the size of the array.
 
 * <code>NullPointerException</code> - The parameter "value" is null (as
  opposed to CBORObject.Null).
 
 ### set
     public void set​(int index, CBORObject value)
-Gets the value of a CBOR object by integer index in this array.
+Sets the value of a CBOR object by integer index in this array or by integer
+ key in this map.
 
 **Parameters:**
 
-* <code>index</code> - Zero-based index of the element.
+* <code>index</code> - Zero-based index of the element, or the integer key to this
+ map. (If this is a map, the given index can be any 32-bit signed
+ integer, even a negative one.).
 
 **Throws:**
 
-* <code>IllegalStateException</code> - This object is not an array.
+* <code>IllegalStateException</code> - This object is not an array or map.
+
+* <code>IllegalArgumentException</code> - This object is an array and the index is
+ less than 0 or equal to or greater than the size of the array.
 
 * <code>NullPointerException</code> - The parameter "value" is null (as
  opposed to CBORObject.Null).
@@ -748,36 +762,50 @@ Gets the value of a CBOR object by integer index in this array.
 ### get
     public CBORObject get​(CBORObject key)
 Gets the value of a CBOR object in this map, using a CBOR object as the key.
+ Or, gets the value of a CBOR object in the specified index in this
+ CBOR array.
 
 **Parameters:**
 
-* <code>key</code> - The parameter <code>key</code> is a CBOR object.
+* <code>key</code> - A CBOR object serving as the key to the map or index to the
+ array. If this is a CBOR array, the key must be an integer 0 or
+ greater and less than the size of the array.
 
 **Returns:**
 
-* A CBORObject object.
+* The CBOR object referred to by index or key in this array or map.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The key is null (as opposed to
  CBORObject.Null); or the set method is called and the value is null.
 
-* <code>IllegalStateException</code> - This object is not a map.
+* <code>IllegalArgumentException</code> - This CBOR object is an array and the key is
+ not an integer 0 or greater and less than the size of the array.
+
+* <code>IllegalStateException</code> - This object is not a map or an array.
 
 ### set
     public void set​(CBORObject key, CBORObject value)
 Gets the value of a CBOR object in this map, using a CBOR object as the key.
+ Or, gets the value of a CBOR object in the specified index in this
+ CBOR array.
 
 **Parameters:**
 
-* <code>key</code> - The parameter <code>key</code> is a CBOR object.
+* <code>key</code> - A CBOR object serving as the key to the map or index to the
+ array. If this is a CBOR array, the key must be an integer 0 or
+ greater and less than the size of the array.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The key is null (as opposed to
  CBORObject.Null); or the set method is called and the value is null.
 
-* <code>IllegalStateException</code> - This object is not a map.
+* <code>IllegalArgumentException</code> - This CBOR object is an array and the key is
+ not an integer 0 or greater and less than the size of the array.
+
+* <code>IllegalStateException</code> - This object is not a map or an array.
 
 ### get
     public CBORObject get​(String key)
@@ -789,7 +817,7 @@ Gets the value of a CBOR object in this map, using a string as the key.
 
 **Returns:**
 
-* A CBORObject object.
+* The CBOR object referred to by key in this map.
 
 **Throws:**
 
@@ -953,7 +981,7 @@ Generates a CBOR object from a text string in JavaScript Object Notation
 * <code>CBORException</code> - The string is not in JSON format.
 
 ### ToObject
-    public Object ToObject​(Type t)
+    public <T> T ToObject​(Type t)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  parameter for more information. This method (without a CBORTypeMapper
@@ -999,7 +1027,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, CBORTypeMapper mapper)
+    public <T> T ToObject​(Type t, CBORTypeMapper mapper)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  and PODOptions parameters parameters for more information.
@@ -1035,7 +1063,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, PODOptions options)
+    public <T> T ToObject​(Type t, PODOptions options)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  and PODOptions parameters for more information. This method (without
@@ -1054,7 +1082,8 @@ Converts this CBOR object to an object of an arbitrary type. See the
  application. If the plain-old-data type references other data types,
  those types should likewise meet either criterion above.
 
-* <code>options</code> - The parameter <code>options</code> is a PODOptions object.
+* <code>options</code> - Specifies options for controlling deserialization of CBOR
+ objects.
 
 **Returns:**
 
@@ -1071,7 +1100,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, CBORTypeMapper mapper, PODOptions options)
+    public <T> T ToObject​(Type t, CBORTypeMapper mapper, PODOptions options)
 <p>Converts this CBOR object to an object of an arbitrary type. The
  following cases are checked in the logical order given (rather than
  the strict order in which they are implemented by this library): </p>
@@ -1200,7 +1229,8 @@ Converts this CBOR object to an object of an arbitrary type. See the
  Plain-Old-Data deserialization and includes custom converters from
  CBOR objects to certain data types.
 
-* <code>options</code> - The parameter <code>options</code> is a PODOptions object.
+* <code>options</code> - Specifies options for controlling deserialization of CBOR
+ objects.
 
 **Returns:**
 
@@ -2747,10 +2777,10 @@ Compares the equality of two CBOR objects. Not-a-number values can be
 
 ### GetByteString
     public byte[] GetByteString()
-Gets the byte array used in this object, if this object is a byte string,
- without copying the data to a new one. This method's return value can
- be used to modify the array's contents. Note, though, that the array'
- s length can't be changed.
+Gets the backing byte array used in this CBOR object, if this object is a
+ byte string, without copying the data to a new byte array. Any
+ changes in the returned array's contents will be reflected in this
+ CBOR object. Note, though, that the array's length can't be changed.
 
 **Returns:**
 
@@ -3040,11 +3070,10 @@ Maps an object to a key in this CBOR map, or adds the value if the key
 ### ToJSONString
     public String ToJSONString()
 Converts this object to a string in JavaScript Object Notation (JSON)
- format, using the specified options to control the encoding process.
- See the overload to JSONString taking a JSONOptions argument. <p>If
- the CBOR object contains CBOR maps, or is a CBOR map itself, the keys
- to the map are written out to the JSON string in an undefined order.
- The example code given in <see cref='M:PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ format. See the overload to JSONString taking a JSONOptions argument
+ for further information. <p>If the CBOR object contains CBOR maps, or
+ is a CBOR map itself, the keys to the map are written out to the JSON
+ string in an undefined order. The example code given in <see cref='M:PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
  can be used to write out certain keys of a CBOR map in a given order
  to a JSON string.</p>
 

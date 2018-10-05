@@ -14,7 +14,7 @@ import java.util.*;
       converters;
 
     /**
-     * Initializes a new instance of the {@link CBORTypeMapper} class.
+     *
      */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();
@@ -23,15 +23,18 @@ import java.util.*;
     }
 
     /**
-     * Not documented yet.
-     * @param type The parameter {@code type} is not documented yet.
-     * @param converter The parameter {@code converter} is not documented yet.
-     * @param <T> Type parameter not documented yet.
-     * @return A CBORTypeMapper object.
+     * Registers an object that converts objects of a given type to CBOR objects
+     * (called a CBOR converter).
+     * @param type A Type object specifying the type that the converter converts to
+     * CBOR objects.
+     * @param converter The parameter {@code converter} is an ICBORConverter
+     * object.
+     * @param <T> Must be the same as the "type" parameter.
+     * @return This object.
      * @throws java.lang.NullPointerException The parameter {@code type} or {@code
      * converter} is null.
-     * @throws IllegalArgumentException Converter doesn't contain a proper
-     * ToCBORObject method.
+     * @throws IllegalArgumentException "Converter doesn't contain a proper
+     * ToCBORObject method".
      */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
@@ -60,7 +63,7 @@ import java.util.*;
     }
 
     @SuppressWarnings("unchecked")
-internal <T> T ConvertBackWithConverter(
+ <T> T ConvertBackWithConverter(
         CBORObject cbor,
         java.lang.reflect.Type type) {
       ConverterInfo convinfo = null;
@@ -75,10 +78,10 @@ internal <T> T ConvertBackWithConverter(
       if (convinfo.getFromObject() == null) {
         return null;
       }
-      return PropertyMap.InvokeOneArgumentMethod(
+      return (T)(PropertyMap.InvokeOneArgumentMethod(
         convinfo.getFromObject(),
         convinfo.getConverter(),
-        cbor);
+        cbor));
     }
 
     CBORObject ConvertWithConverter(Object obj) {
@@ -99,11 +102,13 @@ internal <T> T ConvertBackWithConverter(
     }
 
     /**
-     * Not documented yet.
+     * Returns whether the given Java or .NET type name fits the filters given in
+     * this mapper.
      * @param typeName The fully qualified name of a Java or .NET class (e.g.,
      * {@code java.math.BigInteger} or {@code
      * System.Globalization.CultureInfo}).
-     * @return Either {@code true} or {@code false}.
+     * @return Either {@code true} if the given Java or .NET type name fits the
+     * filters given in this mapper, or {@code false} otherwise.
      */
     public boolean FilterTypeName(String typeName) {
       if (((typeName) == null || (typeName).length() == 0)) {
@@ -127,8 +132,9 @@ internal <T> T ConvertBackWithConverter(
      * Adds a prefix of a Java or .NET type for use in type matching. A type
      * matches a prefix if its fully qualified name is or begins with that
      * prefix, using codepoint-by-codepoint (case-sensitive) matching.
-     * @param prefix The parameter {@code prefix} is not documented yet.
-     * @return A CBORTypeMapper object.
+     * @param prefix The prefix of a Java or .NET type (e.g., `java.math.` or
+     * `System.Globalization`).
+     * @return This object.
      * @throws java.lang.NullPointerException The parameter {@code prefix} is null.
      * @throws IllegalArgumentException The parameter {@code prefix} is empty.
      */
@@ -146,8 +152,9 @@ internal <T> T ConvertBackWithConverter(
     /**
      * Adds the fully qualified name of a Java or .NET type for use in type
      * matching.
-     * @param name The parameter {@code name} is not documented yet.
-     * @return A CBORTypeMapper object.
+     * @param name The fully qualified name of a Java or .NET class (e.g., {@code
+     * java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
+     * @return This object.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.
      */

@@ -8,61 +8,63 @@ Holds converters to customize the serialization and deserialization behavior
 
 ## Methods
 
-* `CBORTypeMapper() CBORTypeMapper`<br>
- Initializes a new instance of the CBORTypeMapper class.
+* `CBORTypeMapper()`<br>
 * `<T> CBORTypeMapper AddConverter​(Type type,
             ICBORConverter<T> converter)`<br>
- Not documented yet.
+ Registers an object that converts objects of a given type to CBOR objects
+ (called a CBOR converter).
 * `CBORTypeMapper AddTypeName​(String name)`<br>
  Adds the fully qualified name of a Java or .NET type for use in type
  matching.
 * `CBORTypeMapper AddTypePrefix​(String prefix)`<br>
  Adds a prefix of a Java or .NET type for use in type matching.
 * `boolean FilterTypeName​(String typeName)`<br>
- Not documented yet.
+ Returns whether the given Java or .NET type name fits the filters given in
+ this mapper.
 
 ## Constructors
 
-* `CBORTypeMapper() CBORTypeMapper`<br>
- Initializes a new instance of the CBORTypeMapper class.
+* `CBORTypeMapper()`<br>
 
 ## Method Details
 
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
     public <T> CBORTypeMapper AddConverter​(Type type, ICBORConverter<T> converter)
-Not documented yet.
+Registers an object that converts objects of a given type to CBOR objects
+ (called a CBOR converter).
 
 **Type Parameters:**
 
-* <code>T</code> - Type parameter not documented yet.
+* <code>T</code> - Must be the same as the "type" parameter.
 
 **Parameters:**
 
-* <code>type</code> - The parameter <code>type</code> is not documented yet.
+* <code>type</code> - A Type object specifying the type that the converter converts to
+ CBOR objects.
 
-* <code>converter</code> - The parameter <code>converter</code> is not documented yet.
+* <code>converter</code> - The parameter <code>converter</code> is an ICBORConverter
+ object.
 
 **Returns:**
 
-* A CBORTypeMapper object.
+* This object.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>type</code> or <code>
  converter</code> is null.
 
-* <code>IllegalArgumentException</code> - Converter doesn't contain a proper
- ToCBORObject method.
+* <code>IllegalArgumentException</code> - "Converter doesn't contain a proper
+ ToCBORObject method".
 
 ### FilterTypeName
     public boolean FilterTypeName​(String typeName)
-Not documented yet.
+Returns whether the given Java or .NET type name fits the filters given in
+ this mapper.
 
 **Parameters:**
 
@@ -72,7 +74,8 @@ Not documented yet.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code>.
+* Either <code>true</code> if the given Java or .NET type name fits the
+ filters given in this mapper, or <code>false</code> otherwise.
 
 ### AddTypePrefix
     public CBORTypeMapper AddTypePrefix​(String prefix)
@@ -82,11 +85,12 @@ Adds a prefix of a Java or .NET type for use in type matching. A type
 
 **Parameters:**
 
-* <code>prefix</code> - The parameter <code>prefix</code> is not documented yet.
+* <code>prefix</code> - The prefix of a Java or .NET type (e.g., `java.math.` or
+ `System.Globalization`).
 
 **Returns:**
 
-* A CBORTypeMapper object.
+* This object.
 
 **Throws:**
 
@@ -101,11 +105,12 @@ Adds the fully qualified name of a Java or .NET type for use in type
 
 **Parameters:**
 
-* <code>name</code> - The parameter <code>name</code> is not documented yet.
+* <code>name</code> - The fully qualified name of a Java or .NET class (e.g., <code>
+ java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
 
 **Returns:**
 
-* A CBORTypeMapper object.
+* This object.
 
 **Throws:**
 
