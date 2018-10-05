@@ -495,7 +495,9 @@ import com.upokecenter.numbers.*;
      * @param index Zero-based index of the element, or the integer key to this
      * map. (If this is a map, the given index can be any 32-bit signed
      * integer, even a negative one.).
-     * @return The CBOR object referred to by index or key in this array or map.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns null if an item with the given key
+     * doesn't exist.
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is
      * less than 0 or equal to or greater than the size of the array.
@@ -550,13 +552,14 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * Or, gets the value of a CBOR object in the specified index in this
-     * CBOR array.
+     * Gets the value of a CBOR object by integer index in this array or by CBOR
+     * object key in this map.
      * @param key A CBOR object serving as the key to the map or index to the
      * array. If this is a CBOR array, the key must be an integer 0 or
      * greater and less than the size of the array.
-     * @return The CBOR object referred to by index or key in this array or map.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns null if an item with the given key
+     * doesn't exist.
      * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
      * @throws IllegalArgumentException This CBOR object is an array and the key is
@@ -589,13 +592,14 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets the value of a CBOR object in this map, using a CBOR object as the key.
-     * Or, gets the value of a CBOR object in the specified index in this
-     * CBOR array.
+     * Gets the value of a CBOR object by integer index in this array or by CBOR
+     * object key in this map.
      * @param key A CBOR object serving as the key to the map or index to the
      * array. If this is a CBOR array, the key must be an integer 0 or
      * greater and less than the size of the array.
-     * @return The CBOR object referred to by index or key in this array or map.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns null if an item with the given key
+     * doesn't exist.
      * @throws java.lang.NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
      * @throws IllegalArgumentException This CBOR object is an array and the key is
@@ -635,7 +639,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the value of a CBOR object in this map, using a string as the key.
      * @param key A key that points to the desired value.
-     * @return The CBOR object referred to by key in this map.
+     * @return The CBOR object referred to by key in this map. Returns {@code null}
+     * if an item with the given key doesn't exist.
      * @throws java.lang.NullPointerException The key is null.
      * @throws IllegalStateException This object is not a map.
      */
@@ -650,7 +655,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the value of a CBOR object in this map, using a string as the key.
      * @param key A key that points to the desired value.
-     * @return The CBOR object referred to by key in this map.
+     * @return The CBOR object referred to by key in this map. Returns {@code null}
+     * if an item with the given key doesn't exist.
      * @throws java.lang.NullPointerException The key is null.
      * @throws IllegalStateException This object is not a map.
      */

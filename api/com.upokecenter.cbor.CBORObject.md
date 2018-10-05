@@ -262,7 +262,8 @@
  Gets the value of a CBOR object by integer index in this array or by integer
  key in this map.
 * `CBORObject get​(CBORObject key)`<br>
- Gets the value of a CBOR object in this map, using a CBOR object as the key.
+ Gets the value of a CBOR object by integer index in this array or by CBOR
+ object key in this map.
 * `CBORObject get​(String key)`<br>
  Gets the value of a CBOR object in this map, using a string as the key.
 * `com.upokecenter.numbers.EInteger[] GetAllTags()`<br>
@@ -371,7 +372,8 @@
  key in this map.
 * `void set​(CBORObject key,
    CBORObject value)`<br>
- Gets the value of a CBOR object in this map, using a CBOR object as the key.
+ Gets the value of a CBOR object by integer index in this array or by CBOR
+ object key in this map.
 * `void set​(String key,
    CBORObject value)`<br>
  Gets the value of a CBOR object in this map, using a string as the key.
@@ -726,7 +728,9 @@ Gets the value of a CBOR object by integer index in this array or by integer
 
 **Returns:**
 
-* The CBOR object referred to by index or key in this array or map.
+* The CBOR object referred to by index or key in this array or map. If
+ this is a CBOR map, returns null if an item with the given key
+ doesn't exist.
 
 **Throws:**
 
@@ -761,9 +765,8 @@ Sets the value of a CBOR object by integer index in this array or by integer
 
 ### get
     public CBORObject get​(CBORObject key)
-Gets the value of a CBOR object in this map, using a CBOR object as the key.
- Or, gets the value of a CBOR object in the specified index in this
- CBOR array.
+Gets the value of a CBOR object by integer index in this array or by CBOR
+ object key in this map.
 
 **Parameters:**
 
@@ -773,7 +776,9 @@ Gets the value of a CBOR object in this map, using a CBOR object as the key.
 
 **Returns:**
 
-* The CBOR object referred to by index or key in this array or map.
+* The CBOR object referred to by index or key in this array or map. If
+ this is a CBOR map, returns null if an item with the given key
+ doesn't exist.
 
 **Throws:**
 
@@ -787,9 +792,8 @@ Gets the value of a CBOR object in this map, using a CBOR object as the key.
 
 ### set
     public void set​(CBORObject key, CBORObject value)
-Gets the value of a CBOR object in this map, using a CBOR object as the key.
- Or, gets the value of a CBOR object in the specified index in this
- CBOR array.
+Gets the value of a CBOR object by integer index in this array or by CBOR
+ object key in this map.
 
 **Parameters:**
 
@@ -817,7 +821,8 @@ Gets the value of a CBOR object in this map, using a string as the key.
 
 **Returns:**
 
-* The CBOR object referred to by key in this map.
+* The CBOR object referred to by key in this map. Returns <code>null</code>
+ if an item with the given key doesn't exist.
 
 **Throws:**
 
