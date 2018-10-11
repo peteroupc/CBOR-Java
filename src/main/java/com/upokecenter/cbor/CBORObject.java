@@ -3202,16 +3202,24 @@ public int compareTo(CBORObject other) {
 
     /**
      * Determines whether a value of the given key exists in this object.
-     * @param key An object that serves as the key.
+     * @param objKey An arbitrary object.
      * @return {@code true} if the given key is found, or false if the given key is
      * not found or this object is not a map.
-     * @throws java.lang.NullPointerException Key is null (as opposed to
-     * CBORObject.Null).
+     */
+    public boolean ContainsKey(Object objKey) {
+      return (this.getItemType() == CBORObjectTypeMap) ?
+        (ContainsKey(CBORObject.FromObject(objKey))) : (false);
+    }
+
+    /**
+     * Determines whether a value of the given key exists in this object.
+     * @param key An object that serves as the key. If this is {@code null}, checks
+     * for {@code CBORObject.Null}.
+     * @return {@code true} if the given key is found, or false if the given key is
+     * not found or this object is not a map.
      */
     public boolean ContainsKey(CBORObject key) {
-      if (key == null) {
-        throw new NullPointerException("key");
-      }
+      key = (key == null) ? ((CBORObject.Null)) : key;
       if (this.getItemType() == CBORObjectTypeMap) {
         Map<CBORObject, CBORObject> map = this.AsMap();
         return map.containsKey(key);
@@ -3221,18 +3229,17 @@ public int compareTo(CBORObject other) {
 
     /**
      * Determines whether a value of the given key exists in this object.
-     * @param key A string that serves as the key.
+     * @param key A string that serves as the key. If this is {@code null}, checks
+     * for {@code CBORObject.Null}.
      * @return {@code true} if the given key (as a CBOR object) is found, or false
      * if the given key is not found or this object is not a map.
-     * @throws java.lang.NullPointerException Key is null.
      */
     public boolean ContainsKey(String key) {
-      if (key == null) {
-        throw new NullPointerException("key");
-      }
       if (this.getItemType() == CBORObjectTypeMap) {
+CBORObject ckey = key == null ? (CBORObject.Null) :
+          CBORObject.FromObject(key);
         Map<CBORObject, CBORObject> map = this.AsMap();
-        return map.containsKey(CBORObject.FromObject(key));
+        return map.containsKey(ckey);
       }
       return false;
     }

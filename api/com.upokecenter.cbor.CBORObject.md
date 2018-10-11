@@ -169,6 +169,8 @@
  if any.
 * `boolean ContainsKey​(CBORObject key)`<br>
  Determines whether a value of the given key exists in this object.
+* `boolean ContainsKey​(Object objKey)`<br>
+ Determines whether a value of the given key exists in this object.
 * `boolean ContainsKey​(String key)`<br>
  Determines whether a value of the given key exists in this object.
 * `static CBORObject DecodeFromBytes​(byte[] data) CBOREncodeOptions`<br>
@@ -2677,22 +2679,31 @@ Compares this object and another CBOR object, ignoring the tags they have,
  the other object or if the other object is null.
 
 ### ContainsKey
-    public boolean ContainsKey​(CBORObject key)
+    public boolean ContainsKey​(Object objKey)
 Determines whether a value of the given key exists in this object.
 
 **Parameters:**
 
-* <code>key</code> - An object that serves as the key.
+* <code>objKey</code> - An arbitrary object.
 
 **Returns:**
 
 * <code>true</code> if the given key is found, or false if the given key is
  not found or this object is not a map.
 
-**Throws:**
+### ContainsKey
+    public boolean ContainsKey​(CBORObject key)
+Determines whether a value of the given key exists in this object.
 
-* <code>NullPointerException</code> - Key is null (as opposed to
- CBORObject.Null).
+**Parameters:**
+
+* <code>key</code> - An object that serves as the key. If this is <code>null</code>, checks
+ for <code>CBORObject.Null</code>.
+
+**Returns:**
+
+* <code>true</code> if the given key is found, or false if the given key is
+ not found or this object is not a map.
 
 ### ContainsKey
     public boolean ContainsKey​(String key)
@@ -2700,16 +2711,13 @@ Determines whether a value of the given key exists in this object.
 
 **Parameters:**
 
-* <code>key</code> - A string that serves as the key.
+* <code>key</code> - A string that serves as the key. If this is <code>null</code>, checks
+ for <code>CBORObject.Null</code>.
 
 **Returns:**
 
 * <code>true</code> if the given key (as a CBOR object) is found, or false
  if the given key is not found or this object is not a map.
-
-**Throws:**
-
-* <code>NullPointerException</code> - Key is null.
 
 ### EncodeToBytes
     public byte[] EncodeToBytes()
