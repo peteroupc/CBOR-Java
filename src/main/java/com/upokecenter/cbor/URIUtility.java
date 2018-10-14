@@ -891,8 +891,8 @@ public static String BuildIRI(
         while (index < endOffset) {
           char c = s.charAt(index);
           if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-              (c >= '0' && c <= '9') ||
-              ((c & 0x7F) == c && ":-._~!$&'()*+,;=".indexOf(c) >= 0)) {
+              (c >= '0' && c <= '9') || ((c & 0x7F) == c &&
+               ":-._~!$&'()*+,;=".indexOf(c) >= 0)) {
             hex = true;
           } else {
             break;
