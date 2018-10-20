@@ -14,7 +14,7 @@ import java.util.*;
       converters;
 
     /**
-     *
+     * Initializes a new instance of the {@link CBORTypeMapper} class.
      */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();
@@ -171,8 +171,8 @@ import java.util.*;
 
     static final class ConverterInfo {
     /**
-     * Gets the converter's ToCBORObject method.
-     * @return The converter's ToCBORObject method.
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
       public final Object getToObject() { return propVartoobject; }
 public final void setToObject(Object value) { propVartoobject = value; }

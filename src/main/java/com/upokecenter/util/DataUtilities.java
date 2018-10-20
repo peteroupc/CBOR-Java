@@ -285,7 +285,8 @@ try { if (ms != null) {
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
      * Returns the replacement character (U + FFFD) if the previous character
-     * is an unpaired surrogate code point.
+     * is an unpaired surrogate code point. If the return value is 65536
+     * (0x10000) or greater, the code point takes up two UTF-16 code units.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(String str, int index) {
@@ -303,7 +304,9 @@ try { if (ms != null) {
      * @return The Unicode code point at the previous position. Returns -1 if
      * {@code index} is 0 or less, or is greater than the string's length.
      * Returns a value as specified under {@code surrogateBehavior} if the
-     * previous character is an unpaired surrogate code point.
+     * previous character is an unpaired surrogate code point. If the return
+     * value is 65536 (0x10000) or greater, the code point takes up two
+     * UTF-16 code units.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointBefore(
@@ -334,13 +337,19 @@ try { if (ms != null) {
     }
 
     /**
-     * Gets the Unicode code point at the given index of the string.
+     * Gets the Unicode code point at the given index of the string.<p><p>The
+     * following example shows how to iterate a text string code point by
+     * code point.</p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
+     * codePoint = DataUtilities.CodePointAt(str, i);
+     * Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
+     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } } </pre></p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
      * the replacement character (U + FFFD) if the current character is an
-     * unpaired surrogate code point.
+     * unpaired surrogate code point. If the return value is 65536 (0x10000)
+     * or greater, the code point takes up two UTF-16 code units.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(String str, int index) {
@@ -348,7 +357,14 @@ try { if (ms != null) {
     }
 
     /**
-     * Gets the Unicode code point at the given index of the string.
+     * Gets the Unicode code point at the given index of the string.<p><p>The
+     * following example shows how to iterate a text string code point by
+     * code point, terminating the loop when an unpaired surrogate is
+     * found.</p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
+     * DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
+     * /* Unpaired surrogate &#x2a;&#x2f; } Console.WriteLine("codePoint:"+codePoint);
+     * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }
+     * </pre></p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
@@ -358,7 +374,9 @@ try { if (ms != null) {
      * @return The Unicode code point at the current position. Returns -1 if {@code
      * index} is less than 0, or is the string's length or greater. Returns
      * a value as specified under {@code surrogateBehavior} if the previous
-     * character is an unpaired surrogate code point.
+     * character is an unpaired surrogate code point. If the return value is
+     * 65536 (0x10000) or greater, the code point takes up two UTF-16 code
+     * units.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static int CodePointAt(

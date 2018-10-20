@@ -3823,6 +3823,66 @@ private final PODClass propVarpropvalue;
       }
     }
 
+@Test
+public void TestGetOrDefault() {
+CBORObject cbor = CBORObject.NewArray().Add(2).Add(3).Add(7);
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(-1, CBORObject.Null));
+{
+Object objectTemp = CBORObject.FromObject(2);
+Object objectTemp2 = cbor.GetOrDefault(
+  0,
+  CBORObject.Null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+Assert.assertEquals(
+  CBORObject.FromObject(2),
+  cbor.GetOrDefault(CBORObject.FromObject(0), CBORObject.Null));
+{
+Object objectTemp = CBORObject.FromObject(3);
+Object objectTemp2 = cbor.GetOrDefault(
+  1,
+  CBORObject.Null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+{
+Object objectTemp = CBORObject.FromObject(7);
+Object objectTemp2 = cbor.GetOrDefault(
+  2,
+  CBORObject.Null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(3, CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault("key", CBORObject.Null));
+cbor = CBORObject.NewMap().Add(1, 2).Add("key", "value");
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(-1, CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(0, CBORObject.Null));
+{
+Object objectTemp = CBORObject.FromObject(2);
+Object objectTemp2 = cbor.GetOrDefault(
+  1,
+  CBORObject.Null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(2, CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(3, CBORObject.Null));
+{
+Object objectTemp = CBORObject.FromObject("value");
+Object objectTemp2 = cbor.GetOrDefault(
+  "key",
+  CBORObject.Null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+Assert.assertEquals(
+  CBORObject.FromObject("value"),
+  cbor.GetOrDefault(CBORObject.FromObject("key"), CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault("key2", CBORObject.Null));
+cbor = CBORObject.False;
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(-1, CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(0, CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault("key", CBORObject.Null));
+Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault("key2", CBORObject.Null));
+}
+
     private void Sink(Object obj) {
       System.out.println("Sink for " + obj);
       Assert.fail();

@@ -346,7 +346,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 Multiply(int val) {
       if (val == 0) {
@@ -400,7 +402,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 Subtract(FastInteger2 val) {
       EInteger valValue;
@@ -448,7 +452,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
@@ -572,7 +578,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     *
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
     final int signum() {
         switch (this.integerMode) {

@@ -276,7 +276,8 @@ Gets the Unicode code point just before the given index of the string.
 * The Unicode code point at the previous position. Returns -1 if
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns the replacement character (U + FFFD) if the previous character
- is an unpaired surrogate code point.
+ is an unpaired surrogate code point. If the return value is 65536
+ (0x10000) or greater, the code point takes up two UTF-16 code units.
 
 **Throws:**
 
@@ -302,7 +303,9 @@ Gets the Unicode code point just before the given index of the string.
 * The Unicode code point at the previous position. Returns -1 if
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns a value as specified under <code>surrogateBehavior</code> if the
- previous character is an unpaired surrogate code point.
+ previous character is an unpaired surrogate code point. If the return
+ value is 65536 (0x10000) or greater, the code point takes up two
+ UTF-16 code units.
 
 **Throws:**
 
@@ -310,7 +313,12 @@ Gets the Unicode code point just before the given index of the string.
 
 ### CodePointAt
     public static int CodePointAt​(String str, int index)
-Gets the Unicode code point at the given index of the string.
+Gets the Unicode code point at the given index of the string.<p><p>The
+ following example shows how to iterate a text string code point by
+ code point.</p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
+ codePoint = DataUtilities.CodePointAt(str, i);
+ Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
+ 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } } </pre></p>
 
 **Parameters:**
 
@@ -323,7 +331,8 @@ Gets the Unicode code point at the given index of the string.
 * The Unicode code point at the given position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  the replacement character (U + FFFD) if the current character is an
- unpaired surrogate code point.
+ unpaired surrogate code point. If the return value is 65536 (0x10000)
+ or greater, the code point takes up two UTF-16 code units.
 
 **Throws:**
 
@@ -331,7 +340,14 @@ Gets the Unicode code point at the given index of the string.
 
 ### CodePointAt
     public static int CodePointAt​(String str, int index, int surrogateBehavior)
-Gets the Unicode code point at the given index of the string.
+Gets the Unicode code point at the given index of the string.<p><p>The
+ following example shows how to iterate a text string code point by
+ code point, terminating the loop when an unpaired surrogate is
+ found.</p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
+ DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
+ /* Unpaired surrogate &#x2a;&#x2f; } Console.WriteLine("codePoint:"+codePoint);
+ if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }
+ </pre></p>
 
 **Parameters:**
 
@@ -349,7 +365,9 @@ Gets the Unicode code point at the given index of the string.
 * The Unicode code point at the current position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  a value as specified under <code>surrogateBehavior</code> if the previous
- character is an unpaired surrogate code point.
+ character is an unpaired surrogate code point. If the return value is
+ 65536 (0x10000) or greater, the code point takes up two UTF-16 code
+ units.
 
 **Throws:**
 

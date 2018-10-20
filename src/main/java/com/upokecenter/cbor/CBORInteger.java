@@ -119,7 +119,7 @@ import com.upokecenter.numbers.*;
       return false;
     }
 
-    public boolean IsZero(Object obj) {
+    public boolean IsNumberZero(Object obj) {
       return ((((Long)obj).longValue())) == 0;
     }
 

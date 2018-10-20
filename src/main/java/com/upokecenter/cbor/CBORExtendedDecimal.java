@@ -116,7 +116,7 @@ import com.upokecenter.numbers.*;
       return bi.CanFitInInt32();
     }
 
-    public boolean IsZero(Object obj) {
+    public boolean IsNumberZero(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.isZero();
     }

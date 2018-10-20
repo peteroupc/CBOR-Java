@@ -89,7 +89,7 @@ import com.upokecenter.numbers.*;
       return this.CanFitInInt32(obj);
     }
 
-    public boolean IsZero(Object obj) {
+    public boolean IsNumberZero(Object obj) {
       return ((EInteger)obj).isZero();
     }
 

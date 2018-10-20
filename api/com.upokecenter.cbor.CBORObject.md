@@ -281,6 +281,9 @@
 * `com.upokecenter.numbers.EInteger getMostOuterTag()`<br>
  Gets the outermost tag for this CBOR data item, or -1 if the item is
  untagged.
+* `CBORObject GetOrDefault​(Object key,
+            CBORObject defaultValue)`<br>
+ Not documented yet.
 * `int getSimpleValue()`<br>
  Gets the simple value ID of this object, or -1 if this object is not a
  simple value (including if the value is a floating-point number).
@@ -292,9 +295,9 @@
 * `int hashCode()`<br>
  Calculates the hash code of this object.
 * `boolean HasMostOuterTag​(int tagValue)`<br>
- Returns whether this object has a tag of the given number.
+ Not documented yet.
 * `boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
- Returns whether this object has a tag of the given number.
+ Not documented yet.
 * `boolean HasTag​(int tagValue)`<br>
  Returns whether this object has a tag of the given number.
 * `boolean HasTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
@@ -332,7 +335,6 @@
 * `boolean isUndefined()`<br>
  Gets a value indicating whether this value is a CBOR undefined value.
 * `boolean isZero()`<br>
- Gets a value indicating whether this object's value equals 0.
 * `static CBORObject Multiply​(CBORObject first,
         CBORObject second)`<br>
  Multiplies two CBOR numbers.
@@ -370,7 +372,7 @@
  Removes the item at the given index of this CBOR array.
 * `void set​(int index,
    CBORObject value)`<br>
- Sets the value of a CBOR object by integer index in this array or by integer
+ Gets the value of a CBOR object by integer index in this array or by integer
  key in this map.
 * `void set​(CBORObject key,
    CBORObject value)`<br>
@@ -631,13 +633,6 @@ Gets a value indicating whether this value is a CBOR undefined value.
 
 ### isZero
     public final boolean isZero()
-Gets a value indicating whether this object's value equals 0.
-
-**Returns:**
-
-* <code>true</code> If this object's value equals 0; otherwise, . <code>
- false</code> .
-
 ### getKeys
     public final Collection<CBORObject> getKeys()
 Gets a collection of the keys of this CBOR object in an undefined order.
@@ -739,14 +734,14 @@ Gets the value of a CBOR object by integer index in this array or by integer
 * <code>IllegalStateException</code> - This object is not an array or map.
 
 * <code>IllegalArgumentException</code> - This object is an array and the index is
- less than 0 or equal to or greater than the size of the array.
+ less than 0 or at least the size of the array.
 
 * <code>NullPointerException</code> - The parameter "value" is null (as
  opposed to CBORObject.Null).
 
 ### set
     public void set​(int index, CBORObject value)
-Sets the value of a CBOR object by integer index in this array or by integer
+Gets the value of a CBOR object by integer index in this array or by integer
  key in this map.
 
 **Parameters:**
@@ -760,10 +755,25 @@ Sets the value of a CBOR object by integer index in this array or by integer
 * <code>IllegalStateException</code> - This object is not an array or map.
 
 * <code>IllegalArgumentException</code> - This object is an array and the index is
- less than 0 or equal to or greater than the size of the array.
+ less than 0 or at least the size of the array.
 
 * <code>NullPointerException</code> - The parameter "value" is null (as
  opposed to CBORObject.Null).
+
+### GetOrDefault
+    public CBORObject GetOrDefault​(Object key, CBORObject defaultValue)
+Not documented yet.
+
+**Parameters:**
+
+* <code>key</code> - The parameter <code>key</code> is not documented yet.
+
+* <code>defaultValue</code> - The parameter <code>defaultValue</code> is not documented
+ yet.
+
+**Returns:**
+
+* A CBORObject object.
 
 ### get
     public CBORObject get​(CBORObject key)
@@ -2684,7 +2694,7 @@ Determines whether a value of the given key exists in this object.
 
 **Parameters:**
 
-* <code>objKey</code> - An arbitrary object.
+* <code>objKey</code> - The parameter <code>objKey</code> is an arbitrary object.
 
 **Returns:**
 
@@ -2826,41 +2836,31 @@ Gets a list of all tags, from outermost to innermost.
 
 ### HasMostOuterTag
     public boolean HasMostOuterTag​(int tagValue)
-Returns whether this object has a tag of the given number.
+Not documented yet.
 
 **Parameters:**
 
-* <code>tagValue</code> - The tag value to search for.
+* <code>tagValue</code> - Not documented yet.
 
 **Returns:**
 
-* <code>true</code> if this object has a tag of the given number;
- otherwise, <code>false</code>.
-
-**Throws:**
-
-* <code>IllegalArgumentException</code> - TagValue is less than 0.
-
-* <code>NullPointerException</code> - The parameter "obj" is null.
+* A Boolean object.
 
 ### HasMostOuterTag
     public boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)
-Returns whether this object has a tag of the given number.
+Not documented yet.
 
 **Parameters:**
 
-* <code>bigTagValue</code> - The tag value to search for.
+* <code>bigTagValue</code> - Not documented yet.
 
 **Returns:**
 
-* <code>true</code> if this object has a tag of the given number;
- otherwise, <code>false</code> .
+* A Boolean object.
 
 **Throws:**
 
-* <code>NullPointerException</code> - BigTagValue is null.
-
-* <code>IllegalArgumentException</code> - BigTagValue is less than 0.
+* <code>NullPointerException</code> - The parameter <code>bigTagValue</code> is null.
 
 ### HasTag
     public boolean HasTag​(int tagValue)

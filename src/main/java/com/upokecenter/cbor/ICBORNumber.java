@@ -54,7 +54,7 @@ import com.upokecenter.numbers.*;
 
     int AsInt32(Object obj, int minValue, int maxValue);
 
-    boolean IsZero(Object obj);
+    boolean IsNumberZero(Object obj);
 
     int Sign(Object obj);
 

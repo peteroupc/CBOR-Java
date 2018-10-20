@@ -21,8 +21,8 @@ at: http://peteroupc.github.io/
     }
 
     /**
-     * Converts a UUID to a CBOR object.
-     * @param obj A UUID.
+     * Not documented yet.
+     * @param obj Not documented yet.
      * @return A CBORObject object.
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {

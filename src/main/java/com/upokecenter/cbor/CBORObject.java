@@ -345,13 +345,11 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} If this object's value equals 0; otherwise, . {@code
-     * false} .
+     *
      */
     public final boolean isZero() {
-        ICBORNumber cn = NumberInterfaces[this.getItemType()];
-        return cn != null && cn.IsZero(this.getThisItem());
+        ICBORNumber cniface = NumberInterfaces[this.getItemType()];
+        return cniface != null && cniface.IsNumberZero(this.getThisItem());
       }
 
     /**
@@ -500,7 +498,7 @@ import com.upokecenter.numbers.*;
      * doesn't exist.
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is
-     * less than 0 or equal to or greater than the size of the array.
+     * less than 0 or at least the size of the array.
      * @throws java.lang.NullPointerException The parameter "value" is null (as
      * opposed to CBORObject.Null).
      */
@@ -521,14 +519,17 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Sets the value of a CBOR object by integer index in this array or by integer
+     * Gets the value of a CBOR object by integer index in this array or by integer
      * key in this map.
      * @param index Zero-based index of the element, or the integer key to this
      * map. (If this is a map, the given index can be any 32-bit signed
      * integer, even a negative one.).
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns null if an item with the given key
+     * doesn't exist.
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is
-     * less than 0 or equal to or greater than the size of the array.
+     * less than 0 or at least the size of the array.
      * @throws java.lang.NullPointerException The parameter "value" is null (as
      * opposed to CBORObject.Null).
      */
@@ -550,6 +551,40 @@ import com.upokecenter.numbers.*;
           throw new IllegalStateException("Not an array or map");
         }
       }
+
+    /**
+     * Not documented yet.
+     * @param key The parameter {@code key} is not documented yet.
+     * @param defaultValue The parameter {@code defaultValue} is not documented
+     * yet.
+     * @return A CBORObject object.
+     */
+    public CBORObject GetOrDefault(Object key, CBORObject defaultValue) {
+        if (this.getItemType() == CBORObjectTypeArray) {
+int index = 0;
+if (key instanceof Integer) {
+  index = ((Integer)key).intValue();
+} else {
+  CBORObject cborkey = CBORObject.FromObject(key);
+    if (!cborkey.isIntegral()) {
+return defaultValue;
+}
+    if (!cborkey.CanTruncatedIntFitInInt32()) {
+return defaultValue;
+}
+          index = cborkey.AsInt32();
+}
+          List<CBORObject> list = this.AsList();
+    return (index < 0 || index >= list.size()) ? defaultValue :
+            list.get(index);
+        }
+        if (this.getItemType() == CBORObjectTypeMap) {
+          Map<CBORObject, CBORObject> map = this.AsMap();
+          CBORObject ckey = CBORObject.FromObject(key);
+          return (!map.containsKey(ckey)) ? defaultValue : map.get(ckey);
+        }
+        return defaultValue;
+    }
 
     /**
      * Gets the value of a CBOR object by integer index in this array or by CBOR
@@ -3202,13 +3237,13 @@ public int compareTo(CBORObject other) {
 
     /**
      * Determines whether a value of the given key exists in this object.
-     * @param objKey An arbitrary object.
+     * @param objKey The parameter {@code objKey} is an arbitrary object.
      * @return {@code true} if the given key is found, or false if the given key is
      * not found or this object is not a map.
      */
     public boolean ContainsKey(Object objKey) {
       return (this.getItemType() == CBORObjectTypeMap) ?
-        (ContainsKey(CBORObject.FromObject(objKey))) : (false);
+        this.ContainsKey(CBORObject.FromObject(objKey)) : false;
     }
 
     /**
@@ -3219,7 +3254,7 @@ public int compareTo(CBORObject other) {
      * not found or this object is not a map.
      */
     public boolean ContainsKey(CBORObject key) {
-      key = (key == null) ? ((CBORObject.Null)) : key;
+      key = (key == null) ? (CBORObject.Null) : key;
       if (this.getItemType() == CBORObjectTypeMap) {
         Map<CBORObject, CBORObject> map = this.AsMap();
         return map.containsKey(key);
@@ -3236,7 +3271,7 @@ public int compareTo(CBORObject other) {
      */
     public boolean ContainsKey(String key) {
       if (this.getItemType() == CBORObjectTypeMap) {
-CBORObject ckey = key == null ? (CBORObject.Null) :
+CBORObject ckey = key == null ? CBORObject.Null :
           CBORObject.FromObject(key);
         Map<CBORObject, CBORObject> map = this.AsMap();
         return map.containsKey(ckey);
@@ -3553,12 +3588,9 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     * Returns whether this object has a tag of the given number.
-     * @param tagValue The tag value to search for.
-     * @return {@code true} if this object has a tag of the given number;
-     * otherwise, {@code false}.
-     * @throws IllegalArgumentException TagValue is less than 0.
-     * @throws java.lang.NullPointerException The parameter "obj" is null.
+     * Not documented yet.
+     * @param tagValue Not documented yet.
+     * @return A Boolean object.
      */
  public boolean HasMostOuterTag(int tagValue) {
       if (tagValue < 0) {
@@ -3569,12 +3601,10 @@ public boolean equals(CBORObject other) {
  }
 
     /**
-     * Returns whether this object has a tag of the given number.
-     * @param bigTagValue The tag value to search for.
-     * @return {@code true} if this object has a tag of the given number;
-     * otherwise, {@code false} .
-     * @throws java.lang.NullPointerException BigTagValue is null.
-     * @throws IllegalArgumentException BigTagValue is less than 0.
+     * Not documented yet.
+     * @param bigTagValue Not documented yet.
+     * @return A Boolean object.
+     * @throws NullPointerException The parameter {@code bigTagValue} is null.
      */
  public boolean HasMostOuterTag(EInteger bigTagValue) {
     if (bigTagValue == null) {
