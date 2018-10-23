@@ -41,7 +41,7 @@ Deprecated.
 
 ## Methods
 
-* `static Rounding valueOf​(String name)`<br>
+* `static Rounding valueOf​(String name)`<br>
  Deprecated. Returns the enum constant of this type with the specified name.
 * `static Rounding[] values()`<br>
  Deprecated. Returns an array containing the constants of this enum type, in

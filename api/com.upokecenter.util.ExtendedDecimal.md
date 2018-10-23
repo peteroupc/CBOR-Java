@@ -33,20 +33,20 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Methods
 
-* `int compareTo​(ExtendedDecimal other)`<br>
+* `int compareTo​(ExtendedDecimal other)`<br>
  Deprecated. Compares this extended decimal to another.
-* `static ExtendedDecimal Create​(BigInteger mantissa,
-      BigInteger exponent)`<br>
+* `static ExtendedDecimal Create​(BigInteger mantissa,
+      BigInteger exponent)`<br>
  Deprecated. Creates a number with the value exponent*10^mantissa.
-* `boolean equals​(ExtendedDecimal other)`<br>
+* `boolean equals​(ExtendedDecimal other)`<br>
  Deprecated.
 Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Deprecated. Determines whether this object's mantissa and exponent are equal to those of
  another object and that other object is an arbitrary-precision
  decimal number.
-* `static ExtendedDecimal FromString​(String str)`<br>
+* `static ExtendedDecimal FromString​(String str)`<br>
  Deprecated. Creates a decimal number from a text string that represents a number.
 * `BigInteger getExponent()`<br>
  Deprecated. Gets this object's exponent.
@@ -158,7 +158,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -174,7 +174,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -245,7 +245,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -295,7 +295,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code>&nbsp;in interface&nbsp;<code>Comparable&lt;ExtendedDecimal&gt;</code>
+* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedDecimal&gt;</code>
 
 **Parameters:**
 

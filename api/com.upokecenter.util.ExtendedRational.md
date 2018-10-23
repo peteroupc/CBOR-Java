@@ -31,23 +31,23 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Constructors
 
-* `ExtendedRational​(BigInteger numerator,
-                BigInteger denominator) ExtendedRational`<br>
+* `ExtendedRational​(BigInteger numerator,
+                BigInteger denominator) ExtendedRational`<br>
  Deprecated. Initializes a new instance of the ExtendedRational class.
 
 ## Methods
 
-* `int compareTo​(ExtendedRational other)`<br>
+* `int compareTo​(ExtendedRational other)`<br>
  Deprecated. Compares this value to another.
-* `static ExtendedRational Create​(int numeratorSmall,
-      int denominatorSmall)`<br>
+* `static ExtendedRational Create​(int numeratorSmall,
+      int denominatorSmall)`<br>
  Deprecated. Creates a rational number with the given numerator and denominator.
-* `static ExtendedRational Create​(BigInteger numerator,
-      BigInteger denominator)`<br>
+* `static ExtendedRational Create​(BigInteger numerator,
+      BigInteger denominator)`<br>
  Deprecated. Creates a rational number with the given numerator and denominator.
-* `boolean equals​(ExtendedRational other)`<br>
+* `boolean equals​(ExtendedRational other)`<br>
  Deprecated. Checks whether this and another value are equal.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Deprecated. Checks whether this and another value are equal.
 * `BigInteger getDenominator()`<br>
  Deprecated. Gets this object's denominator.
@@ -139,11 +139,6 @@ Deprecated.
 Deprecated.
 <div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
 
-**Returns:**
-
-* <code>true</code> If this object's value equals 0; otherwise, . <code>
- false</code>.
-
 ### getNumerator
     public final BigInteger getNumerator()
 Deprecated.
@@ -214,7 +209,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -228,7 +223,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code>&nbsp;in interface&nbsp;<code>Comparable&lt;ExtendedRational&gt;</code>
+* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedRational&gt;</code>
 
 **Parameters:**
 
@@ -257,7 +252,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -273,7 +268,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 

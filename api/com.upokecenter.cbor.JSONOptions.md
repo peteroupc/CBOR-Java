@@ -14,7 +14,7 @@ Includes options to control how CBOR objects are converted to JSON.
 * `JSONOptions() JSONOptions`<br>
  Initializes a new instance of the JSONOptions
  class with default options.
-* `JSONOptions​(boolean base64Padding) JSONOptions`<br>
+* `JSONOptions​(boolean base64Padding) JSONOptions`<br>
  Initializes a new instance of the JSONOptions
  class with the given values for the options.
 

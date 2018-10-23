@@ -10,16 +10,16 @@ Holds converters to customize the serialization and deserialization behavior
 
 * `CBORTypeMapper()`<br>
  Initializes a new instance of the CBORTypeMapper class.
-* `<T> CBORTypeMapper AddConverter​(Type type,
-            ICBORConverter<T> converter)`<br>
+* `<T> CBORTypeMapper AddConverter​(Type type,
+            ICBORConverter<T> converter)`<br>
  Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter).
-* `CBORTypeMapper AddTypeName​(String name)`<br>
+* `CBORTypeMapper AddTypeName​(String name)`<br>
  Adds the fully qualified name of a Java or .NET type for use in type
  matching.
-* `CBORTypeMapper AddTypePrefix​(String prefix)`<br>
+* `CBORTypeMapper AddTypePrefix​(String prefix)`<br>
  Adds a prefix of a Java or .NET type for use in type matching.
-* `boolean FilterTypeName​(String typeName)`<br>
+* `boolean FilterTypeName​(String typeName)`<br>
  Returns whether the given Java or .NET type name fits the filters given in
  this mapper.
 

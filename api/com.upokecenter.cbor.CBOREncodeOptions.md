@@ -25,17 +25,17 @@ Use 'new CBOREncodeOptions(true,true)' instead.
 
 * `CBOREncodeOptions() CBOREncodeOptions`<br>
  Initializes a new instance of the CBOREncodeOptions class.
-* `CBOREncodeOptions​(boolean useIndefLengthStrings,
-                 boolean allowDuplicateKeys) CBOREncodeOptions`<br>
+* `CBOREncodeOptions​(boolean useIndefLengthStrings,
+                 boolean allowDuplicateKeys) CBOREncodeOptions`<br>
  Initializes a new instance of the CBOREncodeOptions class.
-* `CBOREncodeOptions​(boolean useIndefLengthStrings,
-                 boolean allowDuplicateKeys,
-                 boolean ctap2Canonical) CBOREncodeOptions`<br>
+* `CBOREncodeOptions​(boolean useIndefLengthStrings,
+                 boolean allowDuplicateKeys,
+                 boolean ctap2Canonical) CBOREncodeOptions`<br>
  Initializes a new instance of the CBOREncodeOptions class.
 
 ## Methods
 
-* `CBOREncodeOptions And​(CBOREncodeOptions o)`<br>
+* `CBOREncodeOptions And​(CBOREncodeOptions o)`<br>
  Deprecated.
 May be removed in a later version.
  May be removed in a later version.
@@ -54,7 +54,7 @@ Option classes in this library will follow the form seen in JSONOptions in a
  later version; the approach used in this class is too complicated.
  Option classes in this library will follow the form seen in JSONOptions in a
  later version; the approach used in this class is too complicated.
-* `CBOREncodeOptions Or​(CBOREncodeOptions o)`<br>
+* `CBOREncodeOptions Or​(CBOREncodeOptions o)`<br>
  Deprecated.
 May be removed in a later version.
  May be removed in a later version.

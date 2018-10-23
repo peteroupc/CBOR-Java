@@ -37,32 +37,32 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Methods
 
-* `int compareTo​(ExtendedFloat other)`<br>
+* `int compareTo​(ExtendedFloat other)`<br>
  Deprecated. Compares this extended float to another.
-* `static ExtendedFloat Create​(int mantissaSmall,
-      int exponentSmall)`<br>
+* `static ExtendedFloat Create​(int mantissaSmall,
+      int exponentSmall)`<br>
  Deprecated. Creates a number with the value exponent*2^mantissa.
-* `static ExtendedFloat Create​(BigInteger mantissa,
-      BigInteger exponent)`<br>
+* `static ExtendedFloat Create​(BigInteger mantissa,
+      BigInteger exponent)`<br>
  Deprecated. Creates a number with the value exponent*2^mantissa.
-* `boolean equals​(ExtendedFloat other)`<br>
+* `boolean equals​(ExtendedFloat other)`<br>
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Deprecated. Determines whether this object's mantissa and exponent are equal to those of
  another object and that other object is an arbitrary-precision
  decimal number.
-* `boolean EqualsInternal​(ExtendedFloat otherValue)`<br>
+* `boolean EqualsInternal​(ExtendedFloat otherValue)`<br>
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
-* `static ExtendedFloat FromString​(String str)`<br>
+* `static ExtendedFloat FromString​(String str)`<br>
  Deprecated. Creates a binary float from a text string that represents a number.
-* `static ExtendedFloat FromString​(String str,
-          int offset,
-          int length,
-          PrecisionContext ctx)`<br>
+* `static ExtendedFloat FromString​(String str,
+          int offset,
+          int length,
+          PrecisionContext ctx)`<br>
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
@@ -211,7 +211,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -227,7 +227,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -314,7 +314,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -395,7 +395,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code>&nbsp;in interface&nbsp;<code>Comparable&lt;ExtendedFloat&gt;</code>
+* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedFloat&gt;</code>
 
 **Parameters:**
 

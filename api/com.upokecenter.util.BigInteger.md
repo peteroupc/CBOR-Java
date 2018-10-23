@@ -18,28 +18,28 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 * `int bitLength()`<br>
  Deprecated. Finds the minimum number of bits needed to represent this object's value,
  except for its sign.
-* `int compareTo​(BigInteger other)`<br>
+* `int compareTo​(BigInteger other)`<br>
  Deprecated. Compares this value to another.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Deprecated. Determines whether this object and another object are equal.
-* `static BigInteger fromBytes​(byte[] bytes,
-         boolean littleEndian)`<br>
+* `static BigInteger fromBytes​(byte[] bytes,
+         boolean littleEndian)`<br>
  Deprecated. Initializes an arbitrary-precision integer from an array of bytes.
-* `static BigInteger fromRadixString​(String str,
-               int radix)`<br>
+* `static BigInteger fromRadixString​(String str,
+               int radix)`<br>
  Deprecated. Converts a string to an arbitrary-precision integer.
-* `static BigInteger fromString​(String str)`<br>
+* `static BigInteger fromString​(String str)`<br>
  Deprecated. Converts a string to an arbitrary-precision integer.
 * `int hashCode()`<br>
  Deprecated. Returns the hash code for this instance.
-* `byte[] toBytes​(boolean littleEndian)`<br>
+* `byte[] toBytes​(boolean littleEndian)`<br>
  Deprecated. Returns a byte array of this object's value.
-* `String toRadixString​(int radix)`<br>
+* `String toRadixString​(int radix)`<br>
  Deprecated. Generates a string representing the value of this object, in the given
  radix.
 * `String toString()`<br>
  Deprecated. Converts this object to a text string in base 10.
-* `static BigInteger valueOf​(long longerValue)`<br>
+* `static BigInteger valueOf​(long longerValue)`<br>
  Deprecated. Converts a 64-bit signed integer to a big integer.
 
 ## Field Details
@@ -161,7 +161,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -178,7 +178,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -228,7 +228,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -242,7 +242,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code>&nbsp;in interface&nbsp;<code>Comparable&lt;BigInteger&gt;</code>
+* <code>compareTo</code> in interface <code>Comparable&lt;BigInteger&gt;</code>
 
 **Parameters:**
 

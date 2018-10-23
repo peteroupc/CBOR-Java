@@ -136,9 +136,7 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} If this object's value equals 0; otherwise, . {@code
-     * false}.
+     *
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

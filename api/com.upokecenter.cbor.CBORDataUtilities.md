@@ -6,16 +6,16 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
 
 ## Methods
 
-* `static CBORObject ParseJSONNumber​(String str)`<br>
+* `static CBORObject ParseJSONNumber​(String str)`<br>
  Parses a number whose format follows the JSON specification.
-* `static CBORObject ParseJSONNumber​(String str,
-               boolean integersOnly,
-               boolean positiveOnly)`<br>
+* `static CBORObject ParseJSONNumber​(String str,
+               boolean integersOnly,
+               boolean positiveOnly)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259).
-* `static CBORObject ParseJSONNumber​(String str,
-               boolean integersOnly,
-               boolean positiveOnly,
-               boolean preserveNegativeZero)`<br>
+* `static CBORObject ParseJSONNumber​(String str,
+               boolean integersOnly,
+               boolean positiveOnly,
+               boolean preserveNegativeZero)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259).
 
 ## Method Details

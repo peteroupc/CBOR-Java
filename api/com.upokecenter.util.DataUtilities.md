@@ -24,83 +24,83 @@ Contains methods useful for reading and writing strings. It is designed to
 
 ## Methods
 
-* `static int CodePointAt​(String str,
-           int index)`<br>
+* `static int CodePointAt​(String str,
+           int index)`<br>
  Gets the Unicode code point at the given index of the string.
-* `static int CodePointAt​(String str,
-           int index,
-           int surrogateBehavior)`<br>
+* `static int CodePointAt​(String str,
+           int index,
+           int surrogateBehavior)`<br>
  Gets the Unicode code point at the given index of the string.
-* `static int CodePointBefore​(String str,
-               int index)`<br>
+* `static int CodePointBefore​(String str,
+               int index)`<br>
  Gets the Unicode code point just before the given index of the string.
-* `static int CodePointBefore​(String str,
-               int index,
-               int surrogateBehavior)`<br>
+* `static int CodePointBefore​(String str,
+               int index,
+               int surrogateBehavior)`<br>
  Gets the Unicode code point just before the given index of the string.
-* `static int CodePointCompare​(String strA,
-                String strB)`<br>
+* `static int CodePointCompare​(String strA,
+                String strB)`<br>
  Compares two strings in Unicode code point order.
-* `static int CodePointLength​(String str)`<br>
+* `static int CodePointLength​(String str)`<br>
  Finds the number of Unicode code points in the given text string.
-* `static byte[] GetUtf8Bytes​(String str,
-            boolean replace)`<br>
+* `static byte[] GetUtf8Bytes​(String str,
+            boolean replace)`<br>
  Encodes a string in UTF-8 as a byte array.
-* `static byte[] GetUtf8Bytes​(String str,
-            boolean replace,
-            boolean lenientLineBreaks)`<br>
+* `static byte[] GetUtf8Bytes​(String str,
+            boolean replace,
+            boolean lenientLineBreaks)`<br>
  Encodes a string in UTF-8 as a byte array.
-* `static long GetUtf8Length​(String str,
-             boolean replace)`<br>
+* `static long GetUtf8Length​(String str,
+             boolean replace)`<br>
  Calculates the number of bytes needed to encode a string in UTF-8.
-* `static String GetUtf8String​(byte[] bytes,
-             boolean replace)`<br>
+* `static String GetUtf8String​(byte[] bytes,
+             boolean replace)`<br>
  Generates a text string from a UTF-8 byte array.
-* `static String GetUtf8String​(byte[] bytes,
-             int offset,
-             int bytesCount,
-             boolean replace)`<br>
+* `static String GetUtf8String​(byte[] bytes,
+             int offset,
+             int bytesCount,
+             boolean replace)`<br>
  Generates a text string from a portion of a UTF-8 byte array.
-* `static int ReadUtf8​(InputStream stream,
-        int bytesCount,
-        StringBuilder builder,
-        boolean replace)`<br>
+* `static int ReadUtf8​(InputStream stream,
+        int bytesCount,
+        StringBuilder builder,
+        boolean replace)`<br>
  Reads a string in UTF-8 encoding from a data stream.
-* `static int ReadUtf8FromBytes​(byte[] data,
-                 int offset,
-                 int bytesCount,
-                 StringBuilder builder,
-                 boolean replace)`<br>
+* `static int ReadUtf8FromBytes​(byte[] data,
+                 int offset,
+                 int bytesCount,
+                 StringBuilder builder,
+                 boolean replace)`<br>
  Reads a string in UTF-8 encoding from a byte array.
-* `static String ReadUtf8ToString​(InputStream stream)`<br>
+* `static String ReadUtf8ToString​(InputStream stream)`<br>
  Reads a string in UTF-8 encoding from a data stream in full and returns that
  string.
-* `static String ReadUtf8ToString​(InputStream stream,
-                int bytesCount,
-                boolean replace)`<br>
+* `static String ReadUtf8ToString​(InputStream stream,
+                int bytesCount,
+                boolean replace)`<br>
  Reads a string in UTF-8 encoding from a data stream and returns that string.
-* `static String ToLowerCaseAscii​(String str)`<br>
+* `static String ToLowerCaseAscii​(String str)`<br>
  Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
  converted to lower-case.
-* `static String ToUpperCaseAscii​(String str)`<br>
+* `static String ToUpperCaseAscii​(String str)`<br>
  Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
  converted to upper-case.
-* `static int WriteUtf8​(String str,
-         int offset,
-         int length,
-         OutputStream stream,
-         boolean replace)`<br>
+* `static int WriteUtf8​(String str,
+         int offset,
+         int length,
+         OutputStream stream,
+         boolean replace)`<br>
  Writes a portion of a string in UTF-8 encoding to a data stream.
-* `static int WriteUtf8​(String str,
-         int offset,
-         int length,
-         OutputStream stream,
-         boolean replace,
-         boolean lenientLineBreaks)`<br>
+* `static int WriteUtf8​(String str,
+         int offset,
+         int length,
+         OutputStream stream,
+         boolean replace,
+         boolean lenientLineBreaks)`<br>
  Writes a portion of a string in UTF-8 encoding to a data stream.
-* `static int WriteUtf8​(String str,
-         OutputStream stream,
-         boolean replace)`<br>
+* `static int WriteUtf8​(String str,
+         OutputStream stream,
+         boolean replace)`<br>
  Writes a string in UTF-8 encoding to a data stream.
 
 ## Method Details

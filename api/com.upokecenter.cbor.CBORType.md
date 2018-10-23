@@ -24,7 +24,7 @@ Represents a type that a CBOR object can have.
 
 ## Methods
 
-* `static CBORType valueOf​(String name)`<br>
+* `static CBORType valueOf​(String name)`<br>
  Returns the enum constant of this type with the specified name.
 * `static CBORType[] values()`<br>
  Returns an array containing the constants of this enum type, in

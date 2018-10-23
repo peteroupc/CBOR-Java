@@ -103,30 +103,30 @@
 
 * `CBORObject Abs()`<br>
  Gets this object's absolute value.
-* `CBORObject Add​(CBORObject obj)`<br>
+* `CBORObject Add​(CBORObject obj)`<br>
  Adds a new object to the end of this array.
-* `CBORObject Add​(Object obj)`<br>
+* `CBORObject Add​(Object obj)`<br>
  Converts an object to a CBOR object and adds it to the end of this
  array.
-* `CBORObject Add​(Object key,
-   Object valueOb)`<br>
+* `CBORObject Add​(Object key,
+   Object valueOb)`<br>
  Adds a new key and its value to this CBOR map, or adds the value if the
  key doesn't exist.
-* `static <T> void AddConverter​(Type type,
-            ICBORConverter<T> converter)`<br>
+* `static <T> void AddConverter​(Type type,
+            ICBORConverter<T> converter)`<br>
  Deprecated.
 To be replaced with the AddConverter method of CBORTypeMapper.
  To be replaced with the AddConverter method of CBORTypeMapper.
-* `static CBORObject Addition​(CBORObject first,
-        CBORObject second)`<br>
+* `static CBORObject Addition​(CBORObject first,
+        CBORObject second)`<br>
  Finds the sum of two CBOR numbers.
-* `static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag,
-             ICBORTag handler)`<br>
+* `static void AddTagHandler​(com.upokecenter.numbers.EInteger bigintTag,
+             ICBORTag handler)`<br>
  Deprecated.
 May be removed in the future without replacement.
  May be removed in the future without replacement.
-* `static void AddTagHandler​(BigInteger bigintTag,
-             ICBORTag handler)`<br>
+* `static void AddTagHandler​(BigInteger bigintTag,
+             ICBORTag handler)`<br>
  Deprecated.
 May be removed in the future without replacement.
  May be removed in the future without replacement.
@@ -193,128 +193,128 @@ Use AsERational instead.
 * `void Clear()`<br>
  Removes all items from this CBOR array or all keys and values from this CBOR
  map.
-* `int compareTo​(CBORObject other)`<br>
+* `int compareTo​(CBORObject other)`<br>
  Compares two CBOR objects.
-* `int CompareToIgnoreTags​(CBORObject other)`<br>
+* `int CompareToIgnoreTags​(CBORObject other)`<br>
  Compares this object and another CBOR object, ignoring the tags they have,
  if any.
-* `boolean ContainsKey​(CBORObject key)`<br>
+* `boolean ContainsKey​(CBORObject key)`<br>
  Determines whether a value of the given key exists in this object.
-* `boolean ContainsKey​(String key)`<br>
+* `boolean ContainsKey​(String key)`<br>
  Determines whether a value of the given key exists in this object.
-* `static CBORObject DecodeFromBytes​(byte[] data) CBOREncodeOptions`<br>
+* `static CBORObject DecodeFromBytes​(byte[] data) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `static CBORObject DecodeFromBytes​(byte[] data,
-               CBOREncodeOptions options) CBOREncodeOptions`<br>
+* `static CBORObject DecodeFromBytes​(byte[] data,
+               CBOREncodeOptions options) CBOREncodeOptions`<br>
  Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  CBOREncodeOptions object to control the decoding
  process.
-* `static CBORObject Divide​(CBORObject first,
-      CBORObject second)`<br>
+* `static CBORObject Divide​(CBORObject first,
+      CBORObject second)`<br>
  Divides a CBORObject object by the value of a CBORObject object.
 * `byte[] EncodeToBytes() CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `byte[] EncodeToBytes​(CBOREncodeOptions options)`<br>
+* `byte[] EncodeToBytes​(CBOREncodeOptions options)`<br>
  Writes the binary representation of this CBOR object and returns a byte
  array of that representation, using the specified options for
  encoding the object to CBOR format.
-* `boolean equals​(CBORObject other)`<br>
+* `boolean equals​(CBORObject other)`<br>
  Compares the equality of two CBOR objects.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal and have the
  same type.
-* `static CBORObject FromJSONString​(String str) CBOREncodeOptions`<br>
+* `static CBORObject FromJSONString​(String str) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `static CBORObject FromJSONString​(String str,
-              CBOREncodeOptions options)`<br>
+* `static CBORObject FromJSONString​(String str,
+              CBOREncodeOptions options)`<br>
  Generates a CBOR object from a text string in JavaScript Object Notation
  (JSON) format, using the specified options to control the decoding
  process.
-* `static CBORObject FromObject​(boolean value)`<br>
+* `static CBORObject FromObject​(boolean value)`<br>
  Returns the CBOR true value or false value, depending on "value".
-* `static CBORObject FromObject​(byte value)`<br>
+* `static CBORObject FromObject​(byte value)`<br>
  Generates a CBOR object from a byte (0 to 255).
-* `static CBORObject FromObject​(byte[] bytes)`<br>
+* `static CBORObject FromObject​(byte[] bytes)`<br>
  Generates a CBOR object from a byte array.
-* `static CBORObject FromObject​(char value)`<br>
+* `static CBORObject FromObject​(char value)`<br>
  Generates a CBOR string object from a Unicode character.
-* `static CBORObject FromObject​(double value)`<br>
+* `static CBORObject FromObject​(double value)`<br>
  Generates a CBOR object from a 64-bit floating-point number.
-* `static CBORObject FromObject​(float value)`<br>
+* `static CBORObject FromObject​(float value)`<br>
  Generates a CBOR object from a 32-bit floating-point number.
-* `static CBORObject FromObject​(int value)`<br>
+* `static CBORObject FromObject​(int value)`<br>
  Generates a CBOR object from a 32-bit signed integer.
-* `static CBORObject FromObject​(int[] array)`<br>
+* `static CBORObject FromObject​(int[] array)`<br>
  Generates a CBOR object from an array of 32-bit integers.
-* `static CBORObject FromObject​(long value)`<br>
+* `static CBORObject FromObject​(long value)`<br>
  Generates a CBOR object from a 64-bit signed integer.
-* `static CBORObject FromObject​(long[] array)`<br>
+* `static CBORObject FromObject​(long[] array)`<br>
  Generates a CBOR object from an array of 64-bit integers.
-* `static CBORObject FromObject​(short value)`<br>
+* `static CBORObject FromObject​(short value)`<br>
  Generates a CBOR object from a 16-bit signed integer.
-* `static CBORObject FromObject​(CBORObject value)`<br>
+* `static CBORObject FromObject​(CBORObject value)`<br>
  Generates a CBOR object from a CBOR object.
-* `static CBORObject FromObject​(CBORObject[] array)`<br>
+* `static CBORObject FromObject​(CBORObject[] array)`<br>
  Generates a CBOR object from an array of CBOR objects.
-* `static CBORObject FromObject​(com.upokecenter.numbers.EDecimal otherValue)`<br>
+* `static CBORObject FromObject​(com.upokecenter.numbers.EDecimal otherValue)`<br>
  Generates a CBOR object from a decimal number.
-* `static CBORObject FromObject​(com.upokecenter.numbers.EFloat bigValue)`<br>
+* `static CBORObject FromObject​(com.upokecenter.numbers.EFloat bigValue)`<br>
  Generates a CBOR object from an arbitrary-precision binary floating-point
  number.
-* `static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)`<br>
+* `static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)`<br>
  Generates a CBOR object from an arbitrary-precision integer.
-* `static CBORObject FromObject​(com.upokecenter.numbers.ERational bigValue)`<br>
+* `static CBORObject FromObject​(com.upokecenter.numbers.ERational bigValue)`<br>
  Generates a CBOR object from a rational number.
-* `static CBORObject FromObject​(BigInteger bigintValue)`<br>
+* `static CBORObject FromObject​(BigInteger bigintValue)`<br>
  Deprecated.
 Use the EInteger version of this method.
  Use the EInteger version of this method.
-* `static CBORObject FromObject​(ExtendedDecimal otherValue)`<br>
+* `static CBORObject FromObject​(ExtendedDecimal otherValue)`<br>
  Deprecated.
 Use the EDecimal version of this method instead.
  Use the EDecimal version of this method instead.
-* `static CBORObject FromObject​(ExtendedFloat bigValue)`<br>
+* `static CBORObject FromObject​(ExtendedFloat bigValue)`<br>
  Deprecated.
 Use the EFloat version of this method instead.
  Use the EFloat version of this method instead.
-* `static CBORObject FromObject​(ExtendedRational bigValue)`<br>
+* `static CBORObject FromObject​(ExtendedRational bigValue)`<br>
  Deprecated.
 Use the ERational version of this method instead.
  Use the ERational version of this method instead.
-* `static <T> CBORObject FromObject​(Iterable<T> value)`<br>
+* `static <T> CBORObject FromObject​(Iterable<T> value)`<br>
  Generates a CBOR object from an enumerable set of objects.
-* `static CBORObject FromObject​(Object obj)`<br>
+* `static CBORObject FromObject​(Object obj)`<br>
  Generates a CBORObject from an arbitrary object.
-* `static CBORObject FromObject​(Object obj,
-          PODOptions options)`<br>
+* `static CBORObject FromObject​(Object obj,
+          PODOptions options)`<br>
  Generates a CBORObject from an arbitrary object, using the given options
  to control how certain objects are converted to CBOR objects.
-* `static CBORObject FromObject​(String strValue)`<br>
+* `static CBORObject FromObject​(String strValue)`<br>
  Generates a CBOR object from a text string.
-* `static <T> CBORObject FromObject​(List<T> value)`<br>
+* `static <T> CBORObject FromObject​(List<T> value)`<br>
  Generates a CBOR object from a list of objects.
-* `static <TKey,TValue>CBORObject FromObject​(Map<TKey,TValue> dic)`<br>
+* `static <TKey,TValue>CBORObject FromObject​(Map<TKey,TValue> dic)`<br>
  Generates a CBOR object from a map of objects.
-* `static CBORObject FromObjectAndTag​(Object valueObValue,
-                int smallTag)`<br>
+* `static CBORObject FromObjectAndTag​(Object valueObValue,
+                int smallTag)`<br>
  Generates a CBOR object from an arbitrary object and gives the resulting
  object a tag.
-* `static CBORObject FromObjectAndTag​(Object valueOb,
-                com.upokecenter.numbers.EInteger bigintTag)`<br>
+* `static CBORObject FromObjectAndTag​(Object valueOb,
+                com.upokecenter.numbers.EInteger bigintTag)`<br>
  Generates a CBOR object from an arbitrary object and gives the resulting
  object a tag.
-* `static CBORObject FromObjectAndTag​(Object valueOb,
-                BigInteger bigintTag)`<br>
+* `static CBORObject FromObjectAndTag​(Object valueOb,
+                BigInteger bigintTag)`<br>
  Deprecated.
 Use the EInteger version instead.
  Use the EInteger version instead.
-* `static CBORObject FromSimpleValue​(int simpleValue)`<br>
+* `static CBORObject FromSimpleValue​(int simpleValue)`<br>
  Creates a CBOR object from a simple value number.
-* `CBORObject get​(int index)`<br>
+* `CBORObject get​(int index)`<br>
  Gets the value of a CBOR object by integer index in this array.
-* `CBORObject get​(CBORObject key)`<br>
+* `CBORObject get​(CBORObject key)`<br>
  Gets the value of a CBOR object in this map, using a CBOR object as the key.
-* `CBORObject get​(String key)`<br>
+* `CBORObject get​(String key)`<br>
  Gets the value of a CBOR object in this map, using a string as the key.
 * `com.upokecenter.numbers.EInteger[] GetAllTags()`<br>
  Gets a list of all tags, from outermost to innermost.
@@ -351,20 +351,20 @@ Use the GetAllTags method instead.
  array.
 * `int hashCode()`<br>
  Calculates the hash code of this object.
-* `boolean HasMostOuterTag​(int tagValue)`<br>
+* `boolean HasMostOuterTag​(int tagValue)`<br>
  Returns whether this object has a tag of the given number.
-* `boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
+* `boolean HasMostOuterTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
  Returns whether this object has a tag of the given number.
-* `boolean HasTag​(int tagValue)`<br>
+* `boolean HasTag​(int tagValue)`<br>
  Returns whether this object has a tag of the given number.
-* `boolean HasTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
+* `boolean HasTag​(com.upokecenter.numbers.EInteger bigTagValue)`<br>
  Returns whether this object has a tag of the given number.
-* `boolean HasTag​(BigInteger bigTagValue)`<br>
+* `boolean HasTag​(BigInteger bigTagValue)`<br>
  Deprecated.
 Use the EInteger version of this method.
  Use the EInteger version of this method.
-* `CBORObject Insert​(int index,
-      Object valueOb)`<br>
+* `CBORObject Insert​(int index,
+      Object valueOb)`<br>
  Inserts an object at the specified position in this CBOR array.
 * `boolean isFalse()`<br>
  Gets a value indicating whether this value is a CBOR false value.
@@ -397,8 +397,8 @@ Use the EInteger version of this method.
  Gets a value indicating whether this value is a CBOR undefined value.
 * `boolean isZero()`<br>
  Gets a value indicating whether this object's value equals 0.
-* `static CBORObject Multiply​(CBORObject first,
-        CBORObject second)`<br>
+* `static CBORObject Multiply​(CBORObject first,
+        CBORObject second)`<br>
  Multiplies two CBOR numbers.
 * `CBORObject Negate()`<br>
  Gets this object's value with the sign reversed.
@@ -406,43 +406,43 @@ Use the EInteger version of this method.
  Creates a new empty CBOR array.
 * `static CBORObject NewMap()`<br>
  Creates a new empty CBOR map.
-* `static CBORObject Read​(InputStream stream) CBOREncodeOptions`<br>
+* `static CBORObject Read​(InputStream stream) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `static CBORObject Read​(InputStream stream,
-    CBOREncodeOptions options)`<br>
+* `static CBORObject Read​(InputStream stream,
+    CBOREncodeOptions options)`<br>
  Reads an object in CBOR format from a data stream, using the specified
  options to control the decoding process.
-* `static CBORObject ReadJSON​(InputStream stream)`<br>
+* `static CBORObject ReadJSON​(InputStream stream)`<br>
  Generates a CBOR object from a data stream in JavaScript Object Notation
  (JSON) format.
-* `static CBORObject ReadJSON​(InputStream stream,
-        CBOREncodeOptions options)`<br>
+* `static CBORObject ReadJSON​(InputStream stream,
+        CBOREncodeOptions options)`<br>
  Generates a CBOR object from a data stream in JavaScript Object Notation
  (JSON) format, using the specified options to control the decoding
  process.
-* `static CBORObject Remainder​(CBORObject first,
-         CBORObject second)`<br>
+* `static CBORObject Remainder​(CBORObject first,
+         CBORObject second)`<br>
  Finds the remainder that results when a CBORObject object is divided by the
  value of a CBORObject object.
-* `boolean Remove​(CBORObject obj)`<br>
+* `boolean Remove​(CBORObject obj)`<br>
  If this object is an array, removes the first instance of the specified item
  from the array.
-* `boolean Remove​(Object obj)`<br>
+* `boolean Remove​(Object obj)`<br>
  If this object is an array, removes the first instance of the specified item
  (once converted to a CBOR object) from the array.
-* `boolean RemoveAt​(int index)`<br>
+* `boolean RemoveAt​(int index)`<br>
  Removes the item at the given index of this CBOR array.
-* `void set​(int index,
-   CBORObject value)`<br>
+* `void set​(int index,
+   CBORObject value)`<br>
  Gets the value of a CBOR object by integer index in this array.
-* `void set​(CBORObject key,
-   CBORObject value)`<br>
+* `void set​(CBORObject key,
+   CBORObject value)`<br>
  Gets the value of a CBOR object in this map, using a CBOR object as the key.
-* `void set​(String key,
-   CBORObject value)`<br>
+* `void set​(String key,
+   CBORObject value)`<br>
  Gets the value of a CBOR object in this map, using a string as the key.
-* `CBORObject Set​(Object key,
-   Object valueOb)`<br>
+* `CBORObject Set​(Object key,
+   Object valueOb)`<br>
  Maps an object to a key in this CBOR map, or adds the value if the key
  doesn't exist.
 * `int signum()`<br>
@@ -450,26 +450,26 @@ Use the EInteger version of this method.
 * `int size()`<br>
  Gets the number of keys in this map, or the number of items in this array,
  or 0 if this item is neither an array nor a map.
-* `static CBORObject Subtract​(CBORObject first,
-        CBORObject second)`<br>
+* `static CBORObject Subtract​(CBORObject first,
+        CBORObject second)`<br>
  Finds the difference between two CBOR number objects.
 * `String ToJSONString()`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
  format, using the specified options to control the encoding process.
-* `String ToJSONString​(JSONOptions options)`<br>
+* `String ToJSONString​(JSONOptions options)`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
  format, using the specified options to control the encoding process.
-* `Object ToObject​(Type t)`<br>
+* `<T> T ToObject​(Type t)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
-        CBORTypeMapper mapper)`<br>
+* `<T> T ToObject​(Type t,
+        CBORTypeMapper mapper)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
-        CBORTypeMapper mapper,
-        PODOptions options)`<br>
+* `<T> T ToObject​(Type t,
+        CBORTypeMapper mapper,
+        PODOptions options)`<br>
  Converts this CBOR object to an object of an arbitrary type.
-* `Object ToObject​(Type t,
-        PODOptions options)`<br>
+* `<T> T ToObject​(Type t,
+        PODOptions options)`<br>
  Converts this CBOR object to an object of an arbitrary type.
 * `String toString()`<br>
  Returns this CBOR object in string form.
@@ -479,125 +479,125 @@ Use the EInteger version of this method.
 * `CBORObject UntagOne()`<br>
  Gets an object with the same value as this one but without this object's
  outermost tag, if any.
-* `static void Write​(boolean value,
-     OutputStream stream)`<br>
+* `static void Write​(boolean value,
+     OutputStream stream)`<br>
  Writes a Boolean value in CBOR format to a data stream.
-* `static void Write​(byte value,
-     OutputStream stream)`<br>
+* `static void Write​(byte value,
+     OutputStream stream)`<br>
  Writes a byte (0 to 255) in CBOR format to a data stream.
-* `static void Write​(char value,
-     OutputStream stream)`<br>
+* `static void Write​(char value,
+     OutputStream stream)`<br>
  Writes a Unicode character as a string in CBOR format to a data
  stream.
-* `static void Write​(double value,
-     OutputStream stream)`<br>
+* `static void Write​(double value,
+     OutputStream stream)`<br>
  Writes a 64-bit floating-point number in CBOR format to a data stream.
-* `static void Write​(float value,
-     OutputStream s)`<br>
+* `static void Write​(float value,
+     OutputStream s)`<br>
  Writes a 32-bit floating-point number in CBOR format to a data stream.
-* `static void Write​(int value,
-     OutputStream stream)`<br>
+* `static void Write​(int value,
+     OutputStream stream)`<br>
  Writes a 32-bit signed integer in CBOR format to a data stream.
-* `static void Write​(long value,
-     OutputStream stream)`<br>
+* `static void Write​(long value,
+     OutputStream stream)`<br>
  Writes a 64-bit signed integer in CBOR format to a data stream.
-* `static void Write​(short value,
-     OutputStream stream)`<br>
+* `static void Write​(short value,
+     OutputStream stream)`<br>
  Writes a 16-bit signed integer in CBOR format to a data stream.
-* `static void Write​(CBORObject value,
-     OutputStream stream)`<br>
+* `static void Write​(CBORObject value,
+     OutputStream stream)`<br>
  Writes a CBOR object to a CBOR data stream.
-* `static void Write​(com.upokecenter.numbers.EDecimal bignum,
-     OutputStream stream) double double`<br>
+* `static void Write​(com.upokecenter.numbers.EDecimal bignum,
+     OutputStream stream) double double`<br>
  Writes a decimal floating-point number in CBOR format to a data stream, as
  follows:  If the value is null, writes the byte 0xF6.
  If the value is negative zero, infinity, or NaN, converts the
  number to a double and writes that double.
-* `static void Write​(com.upokecenter.numbers.EFloat bignum,
-     OutputStream stream) double double`<br>
+* `static void Write​(com.upokecenter.numbers.EFloat bignum,
+     OutputStream stream) double double`<br>
  Writes a binary floating-point number in CBOR format to a data stream as
  follows:  If the value is null, writes the byte 0xF6.
  If the value is negative zero, infinity, or NaN, converts the
  number to a double and writes that double.
-* `static void Write​(com.upokecenter.numbers.EInteger bigint,
-     OutputStream stream)`<br>
+* `static void Write​(com.upokecenter.numbers.EInteger bigint,
+     OutputStream stream)`<br>
  Writes a big integer in CBOR format to a data stream.
-* `static void Write​(com.upokecenter.numbers.ERational rational,
-     OutputStream stream)`<br>
+* `static void Write​(com.upokecenter.numbers.ERational rational,
+     OutputStream stream)`<br>
  Writes a rational number in CBOR format to a data stream.
-* `static void Write​(BigInteger bigint,
-     OutputStream stream)`<br>
+* `static void Write​(BigInteger bigint,
+     OutputStream stream)`<br>
  Deprecated.
 Pass an EInteger to the Write method instead.
  Pass an EInteger to the Write method instead.
-* `static void Write​(ExtendedDecimal bignum,
-     OutputStream stream)`<br>
+* `static void Write​(ExtendedDecimal bignum,
+     OutputStream stream)`<br>
  Deprecated.
 Pass an EDecimal to the Write method instead.
  Pass an EDecimal to the Write method instead.
-* `static void Write​(ExtendedFloat bignum,
-     OutputStream stream)`<br>
+* `static void Write​(ExtendedFloat bignum,
+     OutputStream stream)`<br>
  Deprecated.
 Pass an EFloat to the Write method instead.
  Pass an EFloat to the Write method instead.
-* `static void Write​(ExtendedRational rational,
-     OutputStream stream)`<br>
+* `static void Write​(ExtendedRational rational,
+     OutputStream stream)`<br>
  Deprecated.
 Pass an ERational to the Write method instead.
  Pass an ERational to the Write method instead.
-* `static void Write​(Object objValue,
-     OutputStream stream) CBOREncodeOptions`<br>
+* `static void Write​(Object objValue,
+     OutputStream stream) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `static void Write​(Object objValue,
-     OutputStream output,
-     CBOREncodeOptions options)`<br>
+* `static void Write​(Object objValue,
+     OutputStream output,
+     CBOREncodeOptions options)`<br>
  Writes an arbitrary object to a CBOR data stream, using the specified
  options for controlling how the object is encoded to CBOR data
  format.
-* `static void Write​(String str,
-     OutputStream stream) CBOREncodeOptions`<br>
+* `static void Write​(String str,
+     OutputStream stream) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `static void Write​(String str,
-     OutputStream stream,
-     CBOREncodeOptions options)`<br>
+* `static void Write​(String str,
+     OutputStream stream,
+     CBOREncodeOptions options)`<br>
  Writes a string in CBOR format to a data stream, using the given options to
  control the encoding process.
-* `static void WriteJSON​(Object obj,
-         OutputStream outputStream)`<br>
+* `static void WriteJSON​(Object obj,
+         OutputStream outputStream)`<br>
  Converts an arbitrary object to a string in JavaScript Object Notation
  (JSON) format, as in the ToJSONString method, and writes that string
  to a data stream in UTF-8.
-* `void WriteJSONTo​(OutputStream outputStream)`<br>
+* `void WriteJSONTo​(OutputStream outputStream)`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8.
-* `void WriteJSONTo​(OutputStream outputStream,
-           JSONOptions options)`<br>
+* `void WriteJSONTo​(OutputStream outputStream,
+           JSONOptions options)`<br>
  Converts this object to a string in JavaScript Object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8, using the given JSON options to control the
  encoding process.
-* `void WriteTo​(OutputStream stream) CBOREncodeOptions`<br>
+* `void WriteTo​(OutputStream stream) CBOREncodeOptions`<br>
  At the moment, use the overload of this method that takes a CBOREncodeOptions object.
-* `void WriteTo​(OutputStream stream,
-       CBOREncodeOptions options)`<br>
+* `void WriteTo​(OutputStream stream,
+       CBOREncodeOptions options)`<br>
  Writes this CBOR object to a data stream, using the specified options for
  encoding the data to CBOR format.
-* `static int WriteValue​(OutputStream outputStream,
-          int majorType,
-          int value)`<br>
+* `static int WriteValue​(OutputStream outputStream,
+          int majorType,
+          int value)`<br>
  Writes a CBOR major type number and an integer 0 or greater associated with
  it to a data stream, where that integer is passed to this method as a
  32-bit signed integer.
-* `static int WriteValue​(OutputStream outputStream,
-          int majorType,
-          long value)`<br>
+* `static int WriteValue​(OutputStream outputStream,
+          int majorType,
+          long value)`<br>
  Writes a CBOR major type number and an integer 0 or greater associated with
  it to a data stream, where that integer is passed to this method as a
  64-bit signed integer.
-* `static int WriteValue​(OutputStream outputStream,
-          int majorType,
-          com.upokecenter.numbers.EInteger bigintValue)`<br>
+* `static int WriteValue​(OutputStream outputStream,
+          int majorType,
+          com.upokecenter.numbers.EInteger bigintValue)`<br>
  Writes a CBOR major type number and an integer 0 or greater associated with
  it to a data stream, where that integer is passed to this method as
  an arbitrary-precision integer.
@@ -1041,17 +1041,17 @@ Deprecated.
     public static CBORObject DecodeFromBytes​(byte[] data, CBOREncodeOptions options)
 Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  <code>CBOREncodeOptions</code> object to control the decoding
- process.<p><p>The following example (originally written in C# for the
+ process.<p/><p>The following example (originally written in C# for the
  .NET version) implements a method that decodes a text string from a
  CBOR byte array. It's successful only if the CBOR object contains an
  untagged text string. </p> <pre>private static String
- DecodeTextString&#x28;byte[] bytes)&#x7b; if&#x28;bytes ==
- null)&#x7b; throw new
- NullPointerException&#x28;nameof(mapObj));&#x7d;
- if&#x28;bytes.length == 0 || bytes[0]&lt;0x60 ||
- bytes[0]&gt;0x7f)&#x7b;throw new CBORException&#x28;);&#x7d; return
- CBORObject.DecodeFromBytes&#x28;bytes,
- CBOREncodeOptions.Default).getAsString()&#x28;); &#x7d; </pre> </p>
+ DecodeTextString(byte[] bytes){ if(bytes ==
+ null){ throw new
+ NullPointerException(nameof(mapObj));}
+ if(bytes.length == 0 || bytes[0]&lt;0x60 ||
+ bytes[0]&gt;0x7f){throw new CBORException();} return
+ CBORObject.DecodeFromBytes(bytes,
+ CBOREncodeOptions.Default).getAsString()(); } </pre>
 
 **Parameters:**
 
@@ -1139,24 +1139,24 @@ Generates a CBOR object from a text string in JavaScript Object Notation
 * <code>CBORException</code> - The string is not in JSON format.
 
 ### ToObject
-    public Object ToObject​(Type t)
+    public <T> T ToObject​(Type t)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  parameter for more information. This method (without a CBORTypeMapper
  parameter) allows all data types not otherwise handled to be eligible
- for Plain-Old-Data serialization.<p><p>Java offers no easy way to
+ for Plain-Old-Data serialization.<p/><p>Java offers no easy way to
  express a generic type, at least none as easy as C#'s <code>typeof</code>
  operator. The following example, written in Java, is a way to specify
  that the return value will be an ArrayList of String objects. </p>
  <pre>Type arrayListString = new ParameterizedType() { public Type[]
- getActualTypeArguments() { /* Contains one type parameter, String &#x2a;&#x2f;
+ getActualTypeArguments() { /* Contains one type parameter, String */
  return new Type[] { String.class }; } public Type getRawType() { /* Raw
- type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
+ type is ArrayList */ return ArrayList.class; } public Type
  getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
  (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
  </pre> <p>By comparison, the C# version is much shorter. </p>
- <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
- typeof&#x28;List&lt;String&gt;)); </pre> </p>
+ <pre>var array = (List&lt;String&gt;)cborArray.ToObject(
+ typeof(List&lt;String&gt;)); </pre>
 
 **Parameters:**
 
@@ -1185,7 +1185,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, CBORTypeMapper mapper)
+    public <T> T ToObject​(Type t, CBORTypeMapper mapper)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  and PODOptions parameters parameters for more information.
@@ -1221,7 +1221,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, PODOptions options)
+    public <T> T ToObject​(Type t, PODOptions options)
 Converts this CBOR object to an object of an arbitrary type. See the
  documentation for the overload of this method taking a CBORTypeMapper
  and PODOptions parameters for more information. This method (without
@@ -1258,7 +1258,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  another error occurred when serializing the object.
 
 ### ToObject
-    public Object ToObject​(Type t, CBORTypeMapper mapper, PODOptions options)
+    public <T> T ToObject​(Type t, CBORTypeMapper mapper, PODOptions options)
 <p>Converts this CBOR object to an object of an arbitrary type. The
  following cases are checked in the logical order given (rather than
  the strict order in which they are implemented by this library): </p>
@@ -1357,19 +1357,19 @@ Converts this CBOR object to an object of an arbitrary type. See the
  fields and not getters ("getX()" methods), both in .NET and in Java,
  and </li> <li>both FromObject and ToObject will be better designed,
  in version 4.0, so that backward-compatible improvements are easier
- to make. </li> </ul><p><p>Java offers no easy way to express a
+ to make. </li> </ul><p/><p>Java offers no easy way to express a
  generic type, at least none as easy as C#'s <code>typeof</code> operator.
  The following example, written in Java, is a way to specify that the
  return value will be an ArrayList of String objects. </p> <pre>Type
  arrayListString = new ParameterizedType() { public Type[]
  getActualTypeArguments() {  // Contains one type parameter, String
  return new Type[] { String.class }; } public Type getRawType() { /*
- Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
+ Raw type is ArrayList */ return ArrayList.class; } public Type
  getOwnerType() { return null; } }; ArrayList&lt;String&gt; array =
  (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);
  </pre> <p>By comparison, the C# version is much shorter. </p>
- <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
- typeof&#x28;List&lt;String&gt;)); </pre> </p>
+ <pre>var array = (List&lt;String&gt;)cborArray.ToObject(
+ typeof(List&lt;String&gt;)); </pre>
 
 **Parameters:**
 
@@ -1644,7 +1644,7 @@ Generates a CBOR object from a 64-bit floating-point number.
 <p>Generates a CBOR object from a byte array. The byte array is copied to a
  new byte array. (This method can't be used to decode CBOR data from a
  byte array; for that, use the DecodeFromBytes method
- instead.).</p><p><p>The following example encodes a text string to a
+ instead.).</p><p/><p>The following example encodes a text string to a
  UTF-8 byte array, then uses the array to create a CBOR byte string
  object. It is not recommended to use <code>Encoding.UTF8.GetBytes</code> in
  .NET, or the <code>getBytes()</code> method in Java to do this. For
@@ -1653,9 +1653,9 @@ Generates a CBOR object from a 64-bit floating-point number.
  unspecified character encoding. Both behaviors can be undesirable.
  Instead, use the <code>DataUtilities.GetUtf8Bytes</code> method to convert
  text strings to UTF-8.</p> <pre>/* true does character replacement
- of invalid UTF-8; false throws an exception on invalid UTF-8 &#x2a;&#x2f;
+ of invalid UTF-8; false throws an exception on invalid UTF-8 */
  byte[] bytes = DataUtilities.GetUtf8Bytes(textString, true);
- CBORObject cbor = CBORObject.FromBytes(bytes); </pre> </p>
+ CBORObject cbor = CBORObject.FromBytes(bytes); </pre>
 
 **Parameters:**
 
@@ -2621,12 +2621,12 @@ Gets this object's absolute value.
  add a tag to an existing CBOR object. To create a CBOR object with a
  given tag, call the <code>CBORObject.FromObjectAndTag</code> method and
  pass the CBOR object and the desired tag number to that
- method.</p><p><p>The following example creates a CBOR array and adds
+ method.</p><p/><p>The following example creates a CBOR array and adds
  several CBOR objects, one of which has a custom CBOR tag, to that
  array. Note the chaining behavior made possible by this method.</p>
  <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False)
  .Add(CBORObject.FromObject(5)) .Add(CBORObject.FromObject("text
- string")) .Add(CBORObject.FromObjectAndTag(9999, 1)); </pre> </p>
+ string")) .Add(CBORObject.FromObjectAndTag(9999, 1)); </pre>
 
 **Parameters:**
 
@@ -2646,12 +2646,12 @@ Gets this object's absolute value.
  array.</p> <p>NOTE: This method can't be used to add a tag to an
  existing CBOR object. To create a CBOR object with a given tag, call
  the <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR
- object and the desired tag number to that method.</p><p><p>The
+ object and the desired tag number to that method.</p><p/><p>The
  following example creates a CBOR array and adds several CBOR objects,
  one of which has a custom CBOR tag, to that array. Note the chaining
  behavior made possible by this method.</p> <pre>CBORObject obj =
  CBORObject.NewArray() .Add(CBORObject.False) .Add(5) .Add("text
- string") .Add(CBORObject.FromObjectAndTag(9999, 1)); </pre> </p>
+ string") .Add(CBORObject.FromObjectAndTag(9999, 1)); </pre>
 
 **Parameters:**
 
@@ -2857,14 +2857,14 @@ Converts this object to a 32-bit signed integer. Non-integer number values
  are truncated to an integer. (NOTE: To determine whether this method
  call can succeed, call the <b>CanTruncatedIntFitInInt32</b> method
  before calling this method. Checking whether this object's type is
- <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+ <code>CBORType.Number</code> is not sufficient. See the example.).<p/><p>The
  following example code (originally written in C# for the .NET
  Framework) shows a way to check whether a given CBOR object stores a
  32-bit signed integer before getting its value. </p> <pre>CBORObject
- obj = CBORObject.FromInt32(99999); if&#x28;obj.isIntegral() &amp;&amp;
- obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b;  // Not an Int32; handle
- the error Console.WriteLine("Not a 32-bit integer."); &#x7d; else {
- Console.WriteLine("The value is " + obj.AsInt32()); } </pre> </p>
+ obj = CBORObject.FromInt32(99999); if(obj.isIntegral() &amp;&amp;
+ obj.getCanTruncatedIntFitInInt32()()) {  // Not an Int32; handle
+ the error Console.WriteLine("Not a 32-bit integer."); } else {
+ Console.WriteLine("The value is " + obj.AsInt32()); } </pre>
 
 **Returns:**
 
@@ -2883,14 +2883,14 @@ Converts this object to a 64-bit signed integer. Non-integer numbers are
  truncated to an integer. (NOTE: To determine whether this method call
  can succeed, call the <b>CanTruncatedIntFitInInt64</b> method before
  calling this method. Checking whether this object's type is
- <code>CBORType.Number</code> is not sufficient. See the example.).<p><p>The
+ <code>CBORType.Number</code> is not sufficient. See the example.).<p/><p>The
  following example code (originally written in C# for the .NET
  Framework) shows a way to check whether a given CBOR object stores a
  64-bit signed integer before getting its value. </p> <pre>CBORObject
- obj = CBORObject.FromInt64(99999); if&#x28;obj.isIntegral() &amp;&amp;
- obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b;  // Not an Int64; handle
- the error Console.WriteLine("Not a 64-bit integer."); &#x7d; else {
- Console.WriteLine("The value is " + obj.AsInt64()); } </pre> </p>
+ obj = CBORObject.FromInt64(99999); if(obj.isIntegral() &amp;&amp;
+ obj.getCanTruncatedIntFitInInt64()()) {  // Not an Int64; handle
+ the error Console.WriteLine("Not a 64-bit integer."); } else {
+ Console.WriteLine("The value is " + obj.AsInt64()); } </pre>
 
 **Returns:**
 
@@ -2919,12 +2919,12 @@ Converts this object to a 32-bit floating point number.
 
 ### AsString
     public String AsString()
-Gets the value of this object as a text string.<p><p>The following example
+Gets the value of this object as a text string.<p/><p>The following example
  code (originally written in C# for the .NET Framework) shows an idiom
  for returning a string value if a CBOR object is a text string, or
  <code>null</code> if the CBOR object is a CBOR null.</p> <pre>CBORObject
  obj = CBORObject.FromString("test"); string str = obj.isNull() ? null :
- obj.AsString(); </pre> </p>
+ obj.AsString(); </pre>
 
 **Returns:**
 
@@ -3035,7 +3035,7 @@ Compares two CBOR objects. <p>In this implementation:</p> <ul> <li>The null
 
 **Specified by:**
 
-* <code>compareTo</code>&nbsp;in interface&nbsp;<code>Comparable&lt;CBORObject&gt;</code>
+* <code>compareTo</code> in interface <code>Comparable&lt;CBORObject&gt;</code>
 
 **Parameters:**
 
@@ -3148,7 +3148,7 @@ Determines whether this object and another object are equal and have the
 
 **Overrides:**
 
-* <code>equals</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>equals</code> in class <code>Object</code>
 
 **Parameters:**
 
@@ -3193,7 +3193,7 @@ Calculates the hash code of this object. No application or process IDs are
 
 **Overrides:**
 
-* <code>hashCode</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>hashCode</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -3538,11 +3538,11 @@ Converts this object to a string in JavaScript Object Notation (JSON)
  out certain keys of a CBOR map in a given order to a JSON string.
  </p> <pre>/* Generates a JSON string of 'mapObj' whose keys are in
  the order given in 'keys' . Only keys found in 'keys' will be written
- if they exist in 'mapObj'. &#x2a;&#x2f; private static string
- KeysToJSONMap&#x28;CBORObject mapObj, IList&lt;CBORObject&gt;
- keys&#x29;&#x7b; if (mapObj == null) { throw new
- NullPointerException&#x29;nameof(mapObj));} if (keys == null) {
- throw new NullPointerException&#x29;nameof(keys));} if (obj.getType() !=
+ if they exist in 'mapObj'. */ private static string
+ KeysToJSONMap(CBORObject mapObj, IList&lt;CBORObject&gt;
+ keys){ if (mapObj == null) { throw new
+ NullPointerException)nameof(mapObj));} if (keys == null) {
+ throw new NullPointerException)nameof(keys));} if (obj.getType() !=
  CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); }
  StringBuilder builder = new StringBuilder(); var first = true;
  builder.Append("{"); for (CBORObject key in keys) { if
@@ -3576,7 +3576,7 @@ Returns this CBOR object in string form. The format is intended to be
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -3696,11 +3696,11 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  32-bit signed integer. This is a low-level method that is useful for
  implementing custom CBOR encoding methodologies. This method encodes
  the given major type and value in the shortest form allowed for the
- major type.<p><p>In the following example, an array of three objects
+ major type.<p/><p>In the following example, an array of three objects
  is written as CBOR to a data stream.</p>
- <pre>CBORObject.WriteValue(stream, 4, 3); /* array, length 3 &#x2a;&#x2f;
- CBORObject.Write("hello world", stream); /* item 1 &#x2a;&#x2f;
- CBORObject.Write(25, stream); /* item 2 &#x2a;&#x2f; CBORObject.Write(false,
+ <pre>CBORObject.WriteValue(stream, 4, 3); /* array, length 3 */
+ CBORObject.Write("hello world", stream); /* item 1 */
+ CBORObject.Write(25, stream); /* item 2 */ CBORObject.Write(false,
  stream);  // item 3 </pre> <p>In the following example, a map
  consisting of two key-value pairs is written as CBOR to a data
  stream.</p> <pre>CBORObject.WriteValue(stream, 5, 2);  // map, 2
@@ -3711,7 +3711,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  .NET Framework version), a text string is written as CBOR to a data
  stream.</p> <pre>string str = "hello world"; byte[] bytes =
  DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream,
- 4, bytes.length); stream.write(bytes, 0, bytes.length); </pre> </p>
+ 4, bytes.length); stream.write(bytes, 0, bytes.length); </pre>
 
 **Parameters:**
 
@@ -3794,51 +3794,51 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  contains CBOR maps, or is a CBOR map, the keys to the map are written
  out to the data stream in an undefined order. See the examples
  (written in C# for the .NET version) for ways to write out certain
- keys of a CBOR map in a given order. </p><p><p>The following example
+ keys of a CBOR map in a given order. </p><p/><p>The following example
  shows a method that writes each key of 'mapObj' to 'outputStream', in
  the order given in 'keys', where 'mapObj' is written out in the form
  of a CBOR <b>definite-length map</b> . Only keys found in 'keys' will
  be written if they exist in 'mapObj'. </p> <pre>private static void
- WriteKeysToMap&#x28;CBORObject mapObj, IList&lt;CBORObject&gt; keys,
- InputStream outputStream)&#x7b; if&#x28;mapObj == null)&#x7b; throw new
- NullPointerException&#x28;nameof(mapObj));&#x7d; if&#x28;keys ==
- null)&#x7b;throw new NullPointerException&#x28;nameof(keys));&#x7d;
- if&#x28;outputStream == null)&#x7b;throw new
- NullPointerException&#x28;nameof(outputStream));&#x7d;
- if&#x28;obj.getType() != CBORType.Map)&#x7b; throw new
- IllegalArgumentException("'obj' is not a map."); &#x7d; int keyCount = 0;
- for (CBORObject key in keys) &#x7b;
- if&#x28;mapObj.ContainsKey(key))&#x7b; keyCount++; &#x7d; &#x7d;
+ WriteKeysToMap(CBORObject mapObj, IList&lt;CBORObject&gt; keys,
+ InputStream outputStream){ if(mapObj == null){ throw new
+ NullPointerException(nameof(mapObj));} if(keys ==
+ null){throw new NullPointerException(nameof(keys));}
+ if(outputStream == null){throw new
+ NullPointerException(nameof(outputStream));}
+ if(obj.getType() != CBORType.Map){ throw new
+ IllegalArgumentException("'obj' is not a map."); } int keyCount = 0;
+ for (CBORObject key in keys) {
+ if(mapObj.ContainsKey(key)){ keyCount++; } }
  CBORObject.WriteValue(outputStream, 5, keyCount); for (CBORObject key
- in keys) &#x7b; if&#x28;mapObj.ContainsKey(key))&#x7b;
- key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); &#x7d;
- &#x7d; &#x7d; </pre> <p>The following example shows a method that
+ in keys) { if(mapObj.ContainsKey(key)){
+ key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); }
+ } } </pre> <p>The following example shows a method that
  writes each key of 'mapObj' to 'outputStream', in the order given in
  'keys', where 'mapObj' is written out in the form of a CBOR
  <b>indefinite-length map</b> . Only keys found in 'keys' will be
  written if they exist in 'mapObj'. </p> <pre>private static void
- WriteKeysToIndefMap&#x28;CBORObject mapObj, IList&lt;CBORObject&gt;
- keys, InputStream outputStream)&#x7b; if&#x28;mapObj == null)&#x7b; throw
- new NullPointerException&#x28;nameof(mapObj));&#x7d; if&#x28;keys ==
- null)&#x7b;throw new NullPointerException&#x28;nameof(keys));&#x7d;
- if&#x28;outputStream == null)&#x7b;throw new
- NullPointerException&#x28;nameof(outputStream));&#x7d;
- if&#x28;obj.getType() != CBORType.Map)&#x7b; throw new
- IllegalArgumentException("'obj' is not a map."); &#x7d;
+ WriteKeysToIndefMap(CBORObject mapObj, IList&lt;CBORObject&gt;
+ keys, InputStream outputStream){ if(mapObj == null){ throw
+ new NullPointerException(nameof(mapObj));} if(keys ==
+ null){throw new NullPointerException(nameof(keys));}
+ if(outputStream == null){throw new
+ NullPointerException(nameof(outputStream));}
+ if(obj.getType() != CBORType.Map){ throw new
+ IllegalArgumentException("'obj' is not a map."); }
  outputStream.write((byte)0xbf); for (CBORObject key in keys)
- &#x7b; if&#x28;mapObj.ContainsKey(key))&#x7b;
- key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); &#x7d;
- &#x7d; outputStream.write((byte)0xff); &#x7d; </pre> <p>The
+ { if(mapObj.ContainsKey(key)){
+ key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); }
+ } outputStream.write((byte)0xff); } </pre> <p>The
  following example shows a method that writes out a list of objects to
  'outputStream' as an <b>indefinite-length CBOR array</b> . </p>
- <pre>private static void WriteToIndefArray&#x28; IList&lt;object&gt;
- list, InputStream outputStream)&#x7b; if&#x28;list == null)&#x7b; throw
- new NullPointerException&#x28;nameof(list));&#x7d;
- if&#x28;outputStream == null)&#x7b;throw new
- NullPointerException&#x28;nameof(outputStream));&#x7d;
- outputStream.write((byte)0x9f); for (object item in list) &#x7b;
- new CBORObject(item).WriteTo(outputStream); &#x7d;
- outputStream.write((byte)0xff); &#x7d; </pre> </p>
+ <pre>private static void WriteToIndefArray( IList&lt;object&gt;
+ list, InputStream outputStream){ if(list == null){ throw
+ new NullPointerException(nameof(list));}
+ if(outputStream == null){throw new
+ NullPointerException(nameof(outputStream));}
+ outputStream.write((byte)0x9f); for (object item in list) {
+ new CBORObject(item).WriteTo(outputStream); }
+ outputStream.write((byte)0xff); } </pre>
 
 **Parameters:**
 

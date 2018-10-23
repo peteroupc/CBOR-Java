@@ -62,7 +62,8 @@ import java.util.*;
       return this;
     }
 
-    Object ConvertBackWithConverter(
+    @SuppressWarnings("unchecked")
+ <T> T ConvertBackWithConverter(
         CBORObject cbor,
         java.lang.reflect.Type type) {
       ConverterInfo convinfo = null;
@@ -77,10 +78,10 @@ import java.util.*;
       if (convinfo.getFromObject() == null) {
         return null;
       }
-      return PropertyMap.InvokeOneArgumentMethod(
+      return (T)(PropertyMap.InvokeOneArgumentMethod(
         convinfo.getFromObject(),
         convinfo.getConverter(),
-        cbor);
+        cbor));
     }
 
     CBORObject ConvertWithConverter(Object obj) {

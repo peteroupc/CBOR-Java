@@ -7,22 +7,22 @@ Deprecated.
 
 ## Methods
 
-* `PrecisionContext​(int precision,
-                Rounding rounding,
-                int exponentMinSmall,
-                int exponentMaxSmall,
-                boolean clampNormalExponents) PrecisionContext`<br>
+* `PrecisionContext​(int precision,
+                Rounding rounding,
+                int exponentMinSmall,
+                int exponentMaxSmall,
+                boolean clampNormalExponents) PrecisionContext`<br>
  Deprecated. Initializes a new instance of the PrecisionContext class.
 * `String toString()`<br>
  Deprecated. Gets a string representation of this object.
 
 ## Constructors
 
-* `PrecisionContext​(int precision,
-                Rounding rounding,
-                int exponentMinSmall,
-                int exponentMaxSmall,
-                boolean clampNormalExponents) PrecisionContext`<br>
+* `PrecisionContext​(int precision,
+                Rounding rounding,
+                int exponentMinSmall,
+                int exponentMaxSmall,
+                boolean clampNormalExponents) PrecisionContext`<br>
  Deprecated. Initializes a new instance of the PrecisionContext class.
 
 ## Method Details
@@ -73,7 +73,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 
@@ -85,7 +85,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>toString</code>&nbsp;in class&nbsp;<code>Object</code>
+* <code>toString</code> in class <code>Object</code>
 
 **Returns:**
 

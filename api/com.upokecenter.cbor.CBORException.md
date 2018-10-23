@@ -9,11 +9,11 @@ Exception thrown for errors involving CBOR data.
 * `CBORException() CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message) CBORException`<br>
+* `CBORException​(String message) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message,
-             Throwable innerException) CBORException`<br>
+* `CBORException​(String message,
+             Throwable innerException) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
 
@@ -22,10 +22,10 @@ Exception thrown for errors involving CBOR data.
 * `CBORException() CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message) CBORException`<br>
+* `CBORException​(String message) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message,
-             Throwable innerException) CBORException`<br>
+* `CBORException​(String message,
+             Throwable innerException) CBORException`<br>
  Initializes a new instance of the CBORException
  class.

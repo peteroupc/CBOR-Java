@@ -14,8 +14,8 @@ Options for converting "plain old data" objects to CBOR objects.
 * `PODOptions() PODOptions`<br>
  Initializes a new instance of the PODOptions
  class.
-* `PODOptions​(boolean removeIsPrefix,
-          boolean useCamelCase) PODOptions`<br>
+* `PODOptions​(boolean removeIsPrefix,
+          boolean useCamelCase) PODOptions`<br>
  Initializes a new instance of the PODOptions
  class.
 

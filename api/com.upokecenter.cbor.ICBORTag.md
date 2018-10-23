@@ -11,7 +11,7 @@ Deprecated.
 * `CBORTypeFilter GetTypeFilter()`<br>
  Deprecated. Gets a type filter specifying what kinds of CBOR objects are supported by
  this tag.
-* `CBORObject ValidateObject​(CBORObject obj)`<br>
+* `CBORObject ValidateObject​(CBORObject obj)`<br>
  Deprecated. Generates a CBOR object based on the data of another object.
 
 ## Method Details

@@ -950,8 +950,9 @@ try { if (ms != null) {
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t) {
-      return this.ToObject(t, null, null, 0);
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t) {
+      return (T)(this.ToObject(t, null, null, 0));
     }
 
     /**
@@ -977,11 +978,12 @@ try { if (ms != null) {
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
-return this.ToObject(t, mapper, null, 0);
+return (T)(this.ToObject(t, mapper, null, 0));
     }
 
     /**
@@ -1008,11 +1010,12 @@ return this.ToObject(t, mapper, null, 0);
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, PODOptions options) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
 if (options == null) {
   throw new NullPointerException("options");
 }
-return this.ToObject(t, null, options, 0);
+return (T)(this.ToObject(t, null, options, 0));
     }
 
     /**
@@ -1151,17 +1154,19 @@ return this.ToObject(t, null, options, 0);
      * @throws System.CBORException The given object's nesting is too deep, or
      * another error occurred when serializing the object.
      */
-    public Object ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions options) {
+    @SuppressWarnings("unchecked")
+public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions options) {
 if (mapper == null) {
   throw new NullPointerException("mapper");
 }
 if (options == null) {
   throw new NullPointerException("options");
 }
-return this.ToObject(t, mapper, options, 0);
+return (T)(this.ToObject(t, mapper, options, 0));
     }
 
-    Object ToObject(java.lang.reflect.Type t,
+    @SuppressWarnings("unchecked")
+ <T> T ToObject(java.lang.reflect.Type t,
   CBORTypeMapper mapper,
   PODOptions options,
   int depth) {
@@ -1173,7 +1178,7 @@ if (depth > 100) {
         throw new NullPointerException("t");
       }
       if (t.equals(CBORObject.class)) {
-        return this;
+        return (T)(this);
       }
       if (this.isNull()) {
         return null;
@@ -1181,14 +1186,14 @@ if (depth > 100) {
       if (mapper != null) {
         Object obj = mapper.ConvertBackWithConverter(this, t);
         if (obj != null) {
-          return obj;
+          return (T)(obj);
         }
       }
       if (t.equals(Object.class)) {
-        return this;
+        return (T)(this);
       }
-      return t.equals(String.class) ? this.AsString() :
-        PropertyMap2.TypeToObject(this, t, mapper, options, depth);
+      return (T)(t.equals(String.class) ? this.AsString() :
+        PropertyMap2.TypeToObject(this, t, mapper, options, depth));
     }
 
     /**
