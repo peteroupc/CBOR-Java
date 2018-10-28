@@ -76,10 +76,10 @@ try { if (ms != null) {
     @Test
     public void testList() {
       CBORObject beo = CBORObject.NewArray();
-      beo.Add(CBORObject.FromObject(1));
-      beo.Add(CBORObject.FromObject("two"));
-      beo.Add(CBORObject.FromObject(3));
-      beo.Add(CBORObject.FromObject("four"));
+      beo.Add(ToObjectTest.TestToFromObjectRoundTrip(1));
+      beo.Add(ToObjectTest.TestToFromObjectRoundTrip("two"));
+      beo.Add(ToObjectTest.TestToFromObjectRoundTrip(3));
+      beo.Add(ToObjectTest.TestToFromObjectRoundTrip("four"));
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get(0).AsInt64());
       {
@@ -117,10 +117,10 @@ Assert.assertEquals(
     @Test
     public void testDictionary() {
       CBORObject beo = CBORObject.NewMap();
-      beo.set("zero",CBORObject.FromObject(1));
-      beo.set("one",CBORObject.FromObject("two"));
-      beo.set("two",CBORObject.FromObject(3));
-      beo.set("three",CBORObject.FromObject("four"));
+      beo.set("zero",ToObjectTest.TestToFromObjectRoundTrip(1));
+      beo.set("one",ToObjectTest.TestToFromObjectRoundTrip("two"));
+      beo.set("two",ToObjectTest.TestToFromObjectRoundTrip(3));
+      beo.set("three",ToObjectTest.TestToFromObjectRoundTrip("four"));
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get("zero").AsInt64());
       {

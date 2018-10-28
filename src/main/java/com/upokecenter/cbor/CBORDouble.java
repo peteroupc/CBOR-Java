@@ -116,7 +116,7 @@ import com.upokecenter.numbers.*;
       throw new ArithmeticException("This Object's value is out of range");
     }
 
-    public boolean IsZero(Object obj) {
+    public boolean IsNumberZero(Object obj) {
       return ((Double)obj).doubleValue() == 0.0;
     }
 

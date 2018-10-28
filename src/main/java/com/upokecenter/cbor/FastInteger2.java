@@ -346,9 +346,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object's value to the current value times another integer.
-     * @param val The integer to multiply by.
-     * @return This instance.
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 Multiply(int val) {
       if (val == 0) {
@@ -402,10 +402,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object's value to the current value minus the given FastInteger
-     * value.
-     * @param val The subtrahend.
-     * @return This instance.
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 Subtract(FastInteger2 val) {
       EInteger valValue;
@@ -453,9 +452,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Sets this object's value to the current value minus the given integer.
-     * @param val The subtrahend.
-     * @return This instance.
+     * Not documented yet.
+     * @param val The parameter {@code val} is not documented yet.
+     * @return A FastInteger2 object.
      */
     FastInteger2 SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
@@ -579,8 +578,8 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Gets the sign of this object's value.
-     * @return 1 if positive, -1 if negative, 0 if zero.
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
      */
     final int signum() {
         switch (this.integerMode) {

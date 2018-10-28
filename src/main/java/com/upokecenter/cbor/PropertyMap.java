@@ -22,40 +22,50 @@ import com.upokecenter.numbers.*;
  * Description of PropertyMap.
  */
 class PropertyMap {
-// TODO: Remove in next major version
-static final boolean DateTimeCompatHack = false;
-
   private static class MethodData {
     public String name;
     public Method method;
     public static boolean IsGetMethod(String methodName){
-          return (methodName.startsWith("get") && methodName.length() > 3 &&
-              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z' &&
-              !methodName.equals("getClass"));
+          return (CBORUtilities.NameStartsWithWord(methodName,"get") && !methodName.equals("getClass"));
     }
     public static boolean IsSetMethod(String methodName){
-          return (methodName.startsWith("set") && methodName.length() > 3 &&
-              methodName.charAt(3) >= 'A' && methodName.charAt(3) <= 'Z');
+          return (CBORUtilities.NameStartsWithWord(methodName,"set"));
     }
     public static boolean IsIsMethod(String methodName){
-          return (methodName.startsWith("is") && methodName.length() > 2 &&
-              methodName.charAt(2) >= 'A' && methodName.charAt(2) <= 'Z');
+          return (CBORUtilities.NameStartsWithWord(methodName,"is"));
     }
-    public String GetAdjustedName(boolean removeIsPrefix, boolean useCamelCase){
-          String methodName = this.name;
-          if(MethodData.IsGetMethod(methodName) ||
-             MethodData.IsSetMethod(methodName)) {
-            methodName = methodName.substring(3);
-          } else if(removeIsPrefix && MethodData.IsIsMethod(methodName)) {
-            methodName = methodName.substring(2);
-          }
-          if(useCamelCase && methodName.charAt(0) >= 'A' && methodName.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(methodName.charAt(0) + 0x20));
-              sb.append(methodName.substring(1));
-              methodName = sb.toString();
-          }
-          return methodName;
+    public static String GetGetMethod(String methodName){
+      return (IsSetMethod(methodName)) ?
+          "get"+methodName.substring(3) :
+          methodName;
+    }
+    public static String GetSetMethod(String methodName){
+      return (IsSetMethod(methodName)) ?
+          "set"+methodName.substring(3) :
+          methodName;
+    }
+    public static String GetIsMethod(String methodName){
+      return (IsIsMethod(methodName)) ?
+          "is"+methodName.substring(2) :
+          methodName;
+    }
+    public static String RemoveGetSetIs(String name){
+      if(IsSetMethod(name))return name.substring(3);
+      if(IsGetMethod(name))return name.substring(3);
+      if(IsIsMethod(name))return name.substring(2);
+      return name;
+    }
+    private static String RemoveGetSet(String name){
+      if(IsSetMethod(name))return name.substring(3);
+      if(IsGetMethod(name))return name.substring(3);
+      return name;
+    }
+    public String GetAdjustedName(boolean useCamelCase){
+      if(useCamelCase){
+        return CBORUtilities.FirstCharLower(RemoveGetSetIs(this.name));
+      } else {
+        return CBORUtilities.FirstCharUpper(RemoveGetSet(this.name));
+      }
     }
   }
 
@@ -69,6 +79,16 @@ static final boolean DateTimeCompatHack = false;
     return GetPropertyList(t,false);
   }
 
+private static Method FindMethod(List<Method> methods, String shortName, Type t){
+ for(Method m : methods){
+   String mn=MethodData.RemoveGetSetIs(m.getName());
+   if(mn.equals(shortName) && m.getReturnType().equals(t)){
+     return m;
+   }
+ }
+ return null;
+}
+
   private static List<MethodData> GetPropertyList(final Class<?> t, boolean setters) {
     synchronized(setters ? setterPropertyList : propertyLists) {
       List<MethodData> ret;
@@ -77,21 +97,93 @@ static final boolean DateTimeCompatHack = false;
         return ret;
       }
       ret = new ArrayList<MethodData>();
+      List<Method> getMethods=new ArrayList<Method>();
+      List<Method> setMethods=new ArrayList<Method>();
+      List<Method> isMethods=new ArrayList<Method>();
+      Map<String,Integer> getMethodNames=new
+         HashMap<String,Integer>();
+      Map<String,Integer> setMethodNames=new
+         HashMap<String,Integer>();
+      boolean hasAmbiguousGetName=false;
+      boolean hasAmbiguousSetName=false;
       for(Method pi : t.getMethods()) {
-        if(pi.getParameterTypes().length == (setters ? 1 : 0)) {
+        if((pi.getModifiers() & Modifier.STATIC)==0) {
           String methodName = pi.getName();
-          boolean includeMethod=false;
-          if(setters)includeMethod=MethodData.IsSetMethod(methodName);
-          else includeMethod=MethodData.IsGetMethod(methodName) ||
-                 MethodData.IsIsMethod(methodName);
-          if(includeMethod){
-            MethodData md = new MethodData();
-            md.name = methodName;
-            md.method = pi;
-            ret.add(md);
+          String mn=MethodData.RemoveGetSetIs(methodName);
+          if(MethodData.IsGetMethod(methodName)){
+            if(pi.getParameterTypes().length == 0 &&
+              !pi.getReturnType().equals(Void.TYPE)){
+           if(getMethodNames.containsKey(mn)){
+hasAmbiguousGetName=true;
+getMethodNames.put(mn,getMethodNames.get(mn)+1);
+} else {
+getMethodNames.put(mn,1);
+}
+              getMethods.add(pi);
+            }
+          } else if(MethodData.IsIsMethod(methodName)){
+            if(pi.getParameterTypes().length == 0 &&
+              !pi.getReturnType().equals(Void.TYPE)){
+           if(getMethodNames.containsKey(mn)){
+hasAmbiguousGetName=true;
+getMethodNames.put(mn,getMethodNames.get(mn)+1);
+} else {
+getMethodNames.put(mn,1);
+}
+              isMethods.add(pi);
+            }
+          } else if(MethodData.IsSetMethod(methodName)){
+            if(pi.getParameterTypes().length == 1 &&
+              pi.getReturnType().equals(Void.TYPE)){
+           if(setMethodNames.containsKey(mn)){
+hasAmbiguousSetName=true;
+setMethodNames.put(mn,setMethodNames.get(mn)+1);
+} else {
+setMethodNames.put(mn,1);
+}
+              setMethods.add(pi);
+            }
           }
         }
       }
+if(!setters){
+  for(Method m : getMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(getMethodNames.get(mn)>1){ continue;}
+            MethodData md = new MethodData();
+            md.name = m.getName();
+            md.method = m;
+     ret.add(md);
+  }
+  for(Method m : isMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(getMethodNames.get(mn)>1){ continue;}
+            MethodData md = new MethodData();
+            md.name = m.getName();
+            md.method = m;
+     ret.add(md);
+  }
+} else {
+  for(Method m : setMethods){
+    String mn=MethodData.RemoveGetSetIs(m.getName());
+    // Don't add ambiguous methods
+    if(setMethodNames.get(mn)>1){ continue;}
+    // Check for existence of get method
+    if(!getMethodNames.containsKey(mn)){ continue;}
+    Method gm=FindMethod(getMethods,
+      mn,m.getParameterTypes()[0]);
+    if(gm==null)gm=FindMethod(isMethods,
+      mn,m.getParameterTypes()[0]);
+    if(gm!=null){
+     MethodData md = new MethodData();
+     md.name = m.getName();
+     md.method = m;
+     ret.add(md);
+    }
+  }
+}
       (setters ? setterPropertyList : propertyLists).put(t, ret);
       return ret;
     }
@@ -103,11 +195,13 @@ static final boolean DateTimeCompatHack = false;
    * @param arr a {@link java.lang.Object} object.
    * @return a {@link com.upokecenter.cbor.CBORObject} object.
    */
-  public static CBORObject FromArray(final Object arr, PODOptions options) {
+  public static CBORObject FromArray(final Object arr, PODOptions options,
+      CBORTypeMapper mapper, int depth) {
    int length = Array.getLength(arr);
    CBORObject obj = CBORObject.NewArray();
    for(int i = 0;i < length;i++) {
-    obj.Add(CBORObject.FromObject(Array.get(arr,i), options));
+    obj.Add(CBORObject.FromObject(Array.get(arr,i), options,
+     mapper, depth+1));
    }
    return obj;
   }
@@ -122,35 +216,33 @@ static final boolean DateTimeCompatHack = false;
     return value.name();
   }
 
+  public static Object EnumToObjectAsInteger(Enum<?> value) {
+    return value.ordinal();
+  }
   public static Iterable<Map.Entry<String, Object>> GetProperties(
        final Object o){
-     return GetProperties(o, true, true);
+     return GetProperties(o, true);
   }
 
   public static Object ObjectWithProperties(
          Class<?> t,
          Iterable<Map.Entry<String, CBORObject>> keysValues,
-         boolean removeIsPrefix,
-         boolean useCamelCase) {
+         CBORTypeMapper mapper, PODOptions options,
+         int depth) {
       try {
-      Object o = null;
-      for (Constructor ci : t.getConstructors()) {
-          int nump = ci.getParameterCount();
-          o = ci.newInstance(new Object[nump]);
-          break;
-      }
-      if(o==null){ return t.newInstance(); }
+      Object o = t.newInstance();
       Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
       for (Map.Entry<String, CBORObject> kv : keysValues) {
         String name = kv.getKey();
         dict.put(name,kv.getValue());
       }
       for (MethodData key : GetPropertyList(o.getClass(),true)) {
-        String name = key.GetAdjustedName(removeIsPrefix, useCamelCase);
+        String name = key.GetAdjustedName(
+            options==null ? true : options.getUseCamelCase());
         if (dict.containsKey(name)) {
           CBORObject dget=dict.get(name);
           Object dobj = dget.ToObject(
-             key.method.getGenericParameterTypes()[0]);
+             key.method.getGenericParameterTypes()[0],mapper,options, depth+1);
           key.method.invoke(o, dobj);
         }
       }
@@ -165,13 +257,16 @@ static final boolean DateTimeCompatHack = false;
     }
 
   public static Iterable<Map.Entry<String, Object>> GetProperties(
-       final Object o, boolean removeIsPrefix, boolean useCamelCase) {
+       final Object o, boolean useCamelCase) {
     List<Map.Entry<String, Object>> ret =
         new ArrayList<Map.Entry<String, Object>>();
+    if(IsProblematicForSerialization(o.getClass())){
+       return ret;
+    }
     try {
       for(MethodData key : GetPropertyList(o.getClass())) {
         ret.add(new AbstractMap.SimpleEntry<String, Object>(
-            key.GetAdjustedName(removeIsPrefix, useCamelCase),
+            key.GetAdjustedName(useCamelCase),
             key.method.invoke(o)));
       }
       return ret;
@@ -201,32 +296,23 @@ static final boolean DateTimeCompatHack = false;
     }
   }
 
-  private static Object methodSync=new Object();
-  private static Method[] legacyMethods=new Method[8];
-  private static boolean haveMethods=false;
-  private static Method getLegacyMethod(int method){
-    synchronized(methodSync){
-      if(!haveMethods){
-        try {
-          legacyMethods[0]=BigInteger.class.getDeclaredMethod("ToLegacy",EInteger.class);
-          legacyMethods[1]=BigInteger.class.getDeclaredMethod("FromLegacy",BigInteger.class);
-          legacyMethods[2]=ExtendedDecimal.class.getDeclaredMethod("ToLegacy",EDecimal.class);
-          legacyMethods[3]=ExtendedDecimal.class.getDeclaredMethod("FromLegacy",ExtendedDecimal.class);
-          legacyMethods[4]=ExtendedFloat.class.getDeclaredMethod("ToLegacy",EFloat.class);
-          legacyMethods[5]=ExtendedFloat.class.getDeclaredMethod("FromLegacy",ExtendedFloat.class);
-          legacyMethods[6]=ExtendedRational.class.getDeclaredMethod("ToLegacy",ERational.class);
-          legacyMethods[7]=ExtendedRational.class.getDeclaredMethod("FromLegacy",ExtendedRational.class);
-          for(int i=0;i<legacyMethods.length;i++){
-            legacyMethods[i].setAccessible(true);
-          }
-        } catch (SecurityException e) {
-          throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-          throw new RuntimeException(e);
-        }
-        haveMethods=true;
+  public static Object[] EnumValues(
+       final Class<?> cls) {
+    try {
+      Method method=cls.getMethod("values");
+      if(method.getParameterCount()==0 &&
+        (method.getModifiers() & Modifier.PUBLIC)!=0){
+        return (Object[])method.invoke(null);
       }
-      return legacyMethods[method];
+      return new Object[0];
+    } catch (SecurityException e) {
+      return new Object[0];
+    } catch (IllegalAccessException e) {
+      return new Object[0];
+    } catch (InvocationTargetException e) {
+      return new Object[0];
+    } catch (NoSuchMethodException e) {
+      return new Object[0];
     }
   }
 
@@ -235,40 +321,6 @@ static final boolean DateTimeCompatHack = false;
     }
 
     public static void SkipStreamToEnd(InputStream inStream) {
-    }
-
-    public static BigInteger ToLegacy(EInteger ei){
-      return (BigInteger)InvokeOneArgumentMethod(
-        getLegacyMethod(0), null, ei);
-    }
-    public static ExtendedDecimal ToLegacy(EDecimal ed){
-      return (ExtendedDecimal)InvokeOneArgumentMethod(
-        getLegacyMethod(2), null, ed);
-    }
-    public static ExtendedFloat ToLegacy(EFloat ef){
-      return (ExtendedFloat)InvokeOneArgumentMethod(
-        getLegacyMethod(4), null, ef);
-    }
-    public static ExtendedRational ToLegacy(ERational er){
-      return (ExtendedRational)InvokeOneArgumentMethod(
-        getLegacyMethod(6), null, er);
-    }
-
-    public static EInteger FromLegacy(BigInteger ei){
-      return (EInteger)InvokeOneArgumentMethod(
-        getLegacyMethod(1), null, ei);
-    }
-    public static EDecimal FromLegacy(ExtendedDecimal ed){
-      return (EDecimal)InvokeOneArgumentMethod(
-        getLegacyMethod(3), null, ed);
-    }
-    public static EFloat FromLegacy(ExtendedFloat ef){
-      return (EFloat)InvokeOneArgumentMethod(
-        getLegacyMethod(5), null, ef);
-    }
-    public static ERational FromLegacy(ExtendedRational er){
-      return (ERational)InvokeOneArgumentMethod(
-        getLegacyMethod(7), null, er);
     }
 
   public static Object InvokeOneArgumentMethod(final Object method,
@@ -310,24 +362,122 @@ static final boolean DateTimeCompatHack = false;
       return bytes2;
   }
 
-  public static Object TypeToObject(CBORObject objThis, Type t) {
-      if (t.equals(java.util.Date.class)) {
-        return new CBORTag0().FromCBORObject(objThis);
+private static boolean IsProblematicForSerialization(Class<?> cls){
+String name=cls.getName();
+if((name.startsWith("java.")||
+    name.startsWith("javax.")||
+    name.startsWith("com.sun."))){
+  boolean serializable = false;
+  for(Class<?> iface : cls.getInterfaces()){
+    if(iface.equals(java.io.Serializable.class)){
+      serializable = true;
+      break;
+    }
+  }
+  if(!serializable){
+    return true;
+  }
+}
+if(Type.class.isAssignableFrom(cls) ||
+       Method.class.isAssignableFrom(cls) ||
+       Field.class.isAssignableFrom(cls) ||
+       Constructor.class.isAssignableFrom(cls)){
+      return true;
+}
+System.err.println(name);
+if((name.startsWith("org.springframework.") ||
+   name.startsWith("java.io.") ||
+   name.startsWith("java.lang.annotation.") ||
+   name.startsWith("java.security.SignedObject") ||
+   name.startsWith("com.sun.rowset") ||
+   name.startsWith("com.sun.org.apache.") ||
+   name.startsWith("org.apache.xalan.") ||
+   name.startsWith("org.apache.xpath.") ||
+   name.startsWith("org.codehaus.groovy.") ||
+   name.startsWith("com.sun.jndi.") ||
+   name.startsWith("groovy.util.Expando") ||
+   name.startsWith("java.util.logging.") ||
+   name.startsWith("com.mchange.v2.c3p0."))){
+   return true;
+}
+return false;
+}
+
+  public static Object TypeToObject(CBORObject objThis, Type t,
+     CBORTypeMapper mapper, PODOptions options, int depth) {
+      if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
+        return objThis.AsByte();
       }
-      if (t.equals(java.util.UUID.class)) {
-        return new CBORTag37().FromCBORObject(objThis);
+      if (t.equals(Short.class) || t.equals(Short.TYPE)) {
+        return objThis.AsInt16();
       }
-      if (t.equals(Integer.class) || t.equals(int.class)) {
+      if (t.equals(Integer.class) || t.equals(Integer.TYPE)) {
         return objThis.AsInt32();
       }
-      if (t.equals(Long.class) || t.equals(long.class)) {
+      if (t.equals(Long.class) || t.equals(Long.TYPE)) {
         return objThis.AsInt64();
       }
-      if (t.equals(Double.class) || t.equals(double.class)) {
+      if (t.equals(Double.class) || t.equals(Double.TYPE)) {
         return objThis.AsDouble();
       }
-      if (t.equals(Boolean.class) || t.equals(boolean.class)) {
-        return objThis.isTrue();
+      if (t.equals(Float.class) || t.equals(Float.TYPE)) {
+        return objThis.AsSingle();
+      }
+      if (t.equals(Boolean.class) || t.equals(Boolean.TYPE)) {
+        return objThis.AsBoolean();
+      }
+      if(t.equals(Character.class) || t.equals(Character.TYPE)){
+if(objThis.getType()==CBORType.TextString){
+  String s=objThis.AsString();
+  if(s.length()!=1)throw new CBORException("Can't convert to char");
+  return s.charAt(0);
+}
+if(objThis.isIntegral() && objThis.CanTruncatedIntFitInInt32()){
+  int c=objThis.AsInt32();
+  if(c<0 || c>=0x10000)
+    throw new CBORException("Can't convert to char");
+  return (char)c;
+}
+throw new CBORException("Can't convert to char");
+      }
+      if (t.equals(java.util.Date.class)) {
+        return new CBORDateConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(java.util.UUID.class)) {
+        return new CBORUuidConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(java.net.URI.class)) {
+        return new CBORUriConverter().FromCBORObject(objThis);
+      }
+      if (t.equals(EInteger.class)) {
+        return objThis.AsEInteger();
+      }
+      if (t.equals(EDecimal.class)) {
+        return objThis.AsEDecimal();
+      }
+      if (t.equals(EFloat.class)) {
+        return objThis.AsEFloat();
+      }
+      if (t.equals(ERational.class)) {
+        return objThis.AsERational();
+      }
+      if(t instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>)t)){
+if(objThis.getType()==CBORType.TextString){
+ try {
+  return Enum.valueOf((Class)t,objThis.AsString());
+ } catch(Exception ex){
+  throw new CBORException(ex.getMessage(),ex);
+ }
+} else if(objThis.getType()==CBORType.Number && objThis.isIntegral()){
+ Object[] enumValues=EnumValues((Class<?>)t);
+ int k=objThis.AsInt32();
+ if(k<0 || k>=enumValues.length){
+   throw new CBORException("Invalid enum: "+objThis.toString());
+ }
+ return enumValues[k];
+} else {
+ throw new CBORException("Invalid enum: "+objThis.toString());
+}
       }
       if (objThis.getType() == CBORType.ByteString) {
         if (t.equals(byte[].class)) {
@@ -341,21 +491,31 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
    ((ParameterizedType)t) : null;
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
-
 if(objThis.getType()==CBORType.Array){
+ if(rawType instanceof Class<?> && ((Class<?>)rawType).isArray()){
+   Class<?> ct=((Class<?>)rawType).getComponentType();
+   Object objRet=Array.newInstance(ct,
+      objThis.size());
+   int i=0;
+   for(CBORObject cbor : objThis.getValues()){
+    Array.set(objRet,i,cbor.ToObject(ct,mapper,options,depth+1));
+    i++;
+   }
+   return objRet;
+ }
  if(rawType!=null &&
     rawType.equals(List.class) || rawType.equals(Iterable.class) ||
     rawType.equals(java.util.Collection.class) || rawType.equals(ArrayList.class)){
   if(typeArguments==null || typeArguments.length==0){
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(Object.class));
+    alist.add(cbor.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    ArrayList alist=new ArrayList();
    for(CBORObject cbor : objThis.getValues()){
-    alist.add(cbor.ToObject(typeArguments[0]));
+    alist.add(cbor.ToObject(typeArguments[0],mapper,options,depth+1));
    }
    return alist;
   }
@@ -368,27 +528,37 @@ if(objThis.getType()==CBORType.Map){
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(Object.class),
-      cborValue.ToObject(Object.class));
+    alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
+      cborValue.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
-    alist.put(cbor.ToObject(typeArguments[0]),
-      cborValue.ToObject(typeArguments[1]));
+    alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),
+      cborValue.ToObject(typeArguments[1],mapper,options,depth+1));
    }
    return alist;
   }
  }
 if(rawType==null || !(rawType instanceof Class<?>)){
-  throw new UnsupportedOperationException();
+  throw new CBORException();
 }
+String name=((Class<?>)rawType).getName();
+if(name==null ){
+  throw new CBORException();
+}
+if(IsProblematicForSerialization((Class<?>)rawType)){
+  throw new CBORException(name);
+}
+
         ArrayList<Map.Entry<String, CBORObject>> values =
           new ArrayList<Map.Entry<String, CBORObject>>();
-        for (MethodData method : GetPropertyList((Class<?>)rawType,true)) {
-          String key = method.GetAdjustedName(true,true);
+        for (MethodData method : GetPropertyList(
+             (Class<?>)rawType,true/* getting list of setters*/)) {
+          String key = method.GetAdjustedName(
+             options==null ? true : options.getUseCamelCase());
           if (objThis.ContainsKey(key)) {
             CBORObject cborValue = objThis.get(key);
             Map.Entry<String, CBORObject> dict =
@@ -401,29 +571,36 @@ if(rawType==null || !(rawType instanceof Class<?>)){
         return PropertyMap.ObjectWithProperties(
     (Class<?>)rawType,
     values,
-    true,
-    true);
+    mapper,
+    options,depth);
 }
-       throw new UnsupportedOperationException();
+       throw new CBORException();
     }
 
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
     long time=bi.getTime();
+    int nanoseconds=((int)(time%1000L));
+    if(nanoseconds<0)nanoseconds=1000+nanoseconds;
+    nanoseconds*=1000000;
+//System.out.println(nanoseconds+","+time);
     EDecimal edec=EDecimal.FromInt64(time).Divide(
       EDecimal.FromInt32(1000));
     CBORUtilities.BreakDownSecondsSinceEpoch(edec,year,lf);
+    lf[5]=nanoseconds;
    }
 
 public static java.util.Date BuildUpDateTime(EInteger year, int[] dt){
  EInteger dateMS=CBORUtilities.GetNumberOfDaysProlepticGregorian(
-   year,dt[0],dt[1]);
- dateMS=dateMS.Multiply(EInteger.FromInt32(86400000));
- dateMS=dateMS.Add(EInteger.FromInt32(dt[2]*3600000+dt[3]*60000+dt[4]));
+   year,dt[0],dt[1]).Multiply(EInteger.FromInt32(86400000));
+ EInteger frac=EInteger.FromInt32(0);
+//System.out.println(dt[2]+","+dt[3]+","+dt[4]+","+dt[5]);
+ frac=frac.Add(EInteger.FromInt32(dt[2]*3600000+dt[3]*60000+dt[4]*1000));
  // Milliseconds
- dateMS=dateMS.Add(EInteger.FromInt32(dt[5]/1000000));
+ frac=frac.Add(EInteger.FromInt32(dt[5]/1000000));
  // Time zone offset in minutes
- dateMS=dateMS.Add(EInteger.FromInt32(dt[6]*60000));
+ frac=frac.Subtract(EInteger.FromInt32(dt[6]*60000));
+ dateMS=dateMS.Add(frac);
  return new java.util.Date(dateMS.ToInt64Checked());
 }
 

@@ -8,7 +8,7 @@ Holds converters to customize the serialization and deserialization behavior
 
 ## Methods
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 * `<T> CBORTypeMapper AddConverter​(Type type,
             ICBORConverter<T> converter)`<br>
@@ -25,17 +25,17 @@ Holds converters to customize the serialization and deserialization behavior
 
 ## Constructors
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 
 ## Method Details
 
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
     public <T> CBORTypeMapper AddConverter​(Type type, ICBORConverter<T> converter)
 Registers an object that converts objects of a given type to CBOR objects

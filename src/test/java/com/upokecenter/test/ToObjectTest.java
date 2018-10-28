@@ -1097,6 +1097,12 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       if (co.ContainsKey("privatePropA")) {
  Assert.fail();
  }
+      if (co.ContainsKey("staticPropA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("StaticPropA")) {
+ Assert.fail();
+ }
       co.set("privatePropA",ToObjectTest.TestToFromObjectRoundTrip(999));
       co.set("propA",ToObjectTest.TestToFromObjectRoundTrip(999));
       co.set("floatProp",ToObjectTest.TestToFromObjectRoundTrip(3.5));
@@ -1210,12 +1216,6 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
     @Test
     public void TestCharRoundTrip() {
       for (int i = 0; i < 0x10000; ++i) {
-        if ((i & 0xf800) == 0xd800) {
-          // Surrogate code point, not currently
-          // handled well by the current version
-          // of FromObject
-          continue;
-        }
         char c = (char)i;
         TestToFromObjectRoundTrip(c);
       }

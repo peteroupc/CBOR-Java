@@ -1,20 +1,22 @@
 package com.upokecenter.cbor;
+/*
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://peteroupc.github.io/
+ */
 
     /**
-     * Interface implemented by classes that convert objects of arbitrary types to
-     * and from CBOR objects.
-     * @param <T> Type of objects that a class implementing this method can convert
-     * to and from CBOR objects.
+     * Not documented yet.
+     * @param <T> Type parameter not documented yet.
      */
-  public interface ICBORToFromConverter<T> extends ICBORConverter<T> {
+  public interface ICBORToFromConverter<T> extends ICBORConverter<T>
+  {
     /**
-     * Converts a CBOR object to an object of a type supported by the implementing
-     * class.
-     * @param cbor A CBOR object to convert.
-     * @return The converted object.
-     * @throws com.upokecenter.cbor.CBORException An error occurred in the
-     * conversion; for example, the conversion doesn't support the given
-     * CBOR object.
+     * Not documented yet.
+     * @param obj Not documented yet.
+     * @return Not documented yet.
      */
-    T FromCBORObject(CBORObject cbor);
+    T FromCBORObject(CBORObject obj);
   }

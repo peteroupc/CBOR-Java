@@ -268,9 +268,11 @@ private CBORUtilities() {
           }
         }
         if (day.signum() <= 0) {
-          int divResult = (month - 2) / 12;
-          year = year.Add(EInteger.FromInt32(divResult));
-          month = ((month - 2) - (12 * divResult)) + 1;
+          --month;
+          if (month <= 0) {
+            year = year.Add(EInteger.FromInt32(-1));
+            month = 12;
+          }
           dayArray = (year.Remainder(num4).signum() != 0 || (
                     year.Remainder(num100).signum() == 0 &&
              year.Remainder(num400).signum() != 0)) ? ValueNormalDays :
@@ -355,7 +357,8 @@ private CBORUtilities() {
       EDecimal edec,
       EInteger[] year,
       int[] lesserFields) {
-      EInteger integerPart = edec.ToEInteger();
+      EInteger integerPart = edec.Quantize(0, ERounding.Floor)
+        .ToEInteger();
       EDecimal fractionalPart = edec.Abs()
         .Subtract(EDecimal.FromEInteger(integerPart).Abs());
       int nanoseconds = fractionalPart .Multiply(EDecimal.FromInt32(1000000000))
@@ -542,10 +545,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
 
     public static String ToAtomDateTimeString(
       EInteger bigYear,
-      int[] lesserFields,
-      boolean fracIsNanoseconds) {
-      // TODO: fracIsNanoseconds is a parameter
-      // for compatibility purposes only
+      int[] lesserFields) {
       if (lesserFields[6] != 0) {
         throw new UnsupportedOperationException(
           "Local time offsets not supported");
@@ -586,20 +586,6 @@ if (smallYear > 9999) {
       charbuf[17] = (char)('0' + ((second / 10) % 10));
       charbuf[18] = (char)('0' + (second % 10));
       int charbufLength = 19;
-      if (!fracIsNanoseconds) {
-         int milliseconds = fracSeconds / 1000000;
-         if (milliseconds > 0) {
-          charbuf[19] = '.';
-          charbuf[20] = (char)('0' + ((milliseconds / 100) % 10));
-          charbuf[21] = (char)('0' + ((milliseconds / 10) % 10));
-          charbuf[22] = (char)('0' + (milliseconds % 10));
-          charbuf[23] = 'Z';
-          charbufLength += 5;
-        } else {
-          charbuf[19] = 'Z';
-          ++charbufLength;
-        }
-      } else {
         if (fracSeconds > 0) {
           charbuf[19] = '.';
  ++charbufLength;
@@ -618,7 +604,6 @@ while (digitdiv > 0 && fracSeconds != 0) {
           charbuf[19] = 'Z';
           ++charbufLength;
         }
-      }
       return new String(charbuf, 0, charbufLength);
     }
 
