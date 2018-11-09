@@ -630,6 +630,15 @@ public static String BuildIRI(
   ParseMode.IRIStrict)) != null;
     }
 
+    public static boolean isValidIRI(String s, ParseMode mode) {
+      return ((s == null) ?
+  null : splitIRI(
+  s,
+  0,
+  s.length(),
+  mode)) != null;
+    }
+
     private static final String ValueDotSlash = "." + "/";
     private static final String ValueSlashDot = "/" + ".";
 
