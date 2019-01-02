@@ -15,8 +15,8 @@ at: http://peteroupc.github.io/
   {
     /**
      * Not documented yet.
-     * @param obj Not documented yet.
-     * @return Not documented yet.
+     * @param obj The parameter {@code obj} is not documented yet.
+     * @return The return value is not documented yet.
      */
     T FromCBORObject(CBORObject obj);
   }

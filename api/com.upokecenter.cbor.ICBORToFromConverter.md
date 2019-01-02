@@ -17,11 +17,11 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - Not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
 
 **Returns:**
 
-* Not documented yet.
+* The return value is not documented yet.
 
 ### FromCBORObject
     T FromCBORObject​(CBORObject obj)
@@ -29,8 +29,8 @@ Not documented yet.
 
 **Parameters:**
 
-* <code>obj</code> - Not documented yet.
+* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
 
 **Returns:**
 
-* Not documented yet.
+* The return value is not documented yet.

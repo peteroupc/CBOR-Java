@@ -6098,6 +6098,150 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
   0x01, (byte)0xfe, (byte)0xdd, (byte)0xfd, (byte)0xdc };
       cbor.Add(b64bytes);
       TestSucceedingJSON(cbor.ToJSONString());
+cbor = CBORObject.NewMap();
+cbor.Add("key", "\ud800\udc00");
+try {
+ cbor.ToJSONString();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("key", "\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("key", "\udc00");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("key", "\ud800\udc00\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("key", "\udc00\udc00\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+cbor.Add("\ud800\udc00", "value");
+try {
+ cbor.ToJSONString();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("\ud800", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("\udc00", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("\ud800\udc00\ud800", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewMap();
+try {
+ cbor.Add("\udc00\udc00\ud800", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewArray();
+cbor.Add("\ud800\udc00");
+try {
+ cbor.ToJSONString();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewArray();
+try {
+ cbor.Add("\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewArray();
+try {
+ cbor.Add("\udc00");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewArray();
+try {
+ cbor.Add("\ud800\udc00\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.NewArray();
+try {
+ cbor.Add("\udc00\udc00\ud800");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
 
     @Test

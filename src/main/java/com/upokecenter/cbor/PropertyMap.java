@@ -230,7 +230,7 @@ if(!setters){
          CBORTypeMapper mapper, PODOptions options,
          int depth) {
       try {
-      Object o = t.newInstance();
+      Object o = t.getDeclaredConstructor().newInstance();
       Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
       for (Map.Entry<String, CBORObject> kv : keysValues) {
         String name = kv.getKey();
@@ -248,6 +248,8 @@ if(!setters){
       }
       return o;
     } catch(InvocationTargetException ex) {
+      throw (RuntimeException)new RuntimeException("").initCause(ex);
+    } catch(NoSuchMethodException ex) {
       throw (RuntimeException)new RuntimeException("").initCause(ex);
     } catch(InstantiationException ex) {
       throw (RuntimeException)new RuntimeException("").initCause(ex);

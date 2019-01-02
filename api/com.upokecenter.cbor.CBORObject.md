@@ -4,8 +4,8 @@
 
 <p>Represents an object in Concise Binary Object Representation (CBOR) and
  contains methods for reading and writing CBOR data. CBOR is defined
- in RFC 7049.</p> <p><b>Converting CBOR objects</b> </p> <p>There are
- many ways to get a CBOR object, including from bytes, objects,
+ in RFC 7049.</p><p> </p><p><b>Converting CBOR objects</b> </p> <p>There
+ are many ways to get a CBOR object, including from bytes, objects,
  streams and JSON, as described below. </p> <p><b>To and from byte
  arrays:</b> The CBORObject.DecodeFromBytes method converts a byte
  array in CBOR format to a CBOR object. The EncodeToBytes method
@@ -173,8 +173,8 @@
  Determines whether a value of the given key exists in this object.
 * `boolean ContainsKey​(String key)`<br>
  Determines whether a value of the given key exists in this object.
-* `static CBORObject DecodeFromBytes​(byte[] data) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+* `static CBORObject DecodeFromBytes​(byte[] data)`<br>
+ Generates a CBOR object from an array of CBOR-encoded bytes.
 * `static CBORObject DecodeFromBytes​(byte[] data,
                CBOREncodeOptions options) CBOREncodeOptions`<br>
  Generates a CBOR object from an array of CBOR-encoded bytes, using the given
@@ -183,8 +183,9 @@
 * `static CBORObject Divide​(CBORObject first,
       CBORObject second)`<br>
  Divides a CBORObject object by the value of a CBORObject object.
-* `byte[] EncodeToBytes() CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+* `byte[] EncodeToBytes()`<br>
+ Writes the binary representation of this CBOR object and returns a byte
+ array of that representation.
 * `byte[] EncodeToBytes​(CBOREncodeOptions options)`<br>
  Writes the binary representation of this CBOR object and returns a byte
  array of that representation, using the specified options for
@@ -345,8 +346,8 @@
  Creates a new empty CBOR array.
 * `static CBORObject NewMap()`<br>
  Creates a new empty CBOR map.
-* `static CBORObject Read​(InputStream stream) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+* `static CBORObject Read​(InputStream stream)`<br>
+ Reads an object in CBOR format from a data stream.
 * `static CBORObject Read​(InputStream stream,
     CBOREncodeOptions options)`<br>
  Reads an object in CBOR format from a data stream, using the specified
@@ -463,8 +464,8 @@
      OutputStream stream)`<br>
  Writes a rational number in CBOR format to a data stream.
 * `static void Write​(Object objValue,
-     OutputStream stream) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+     OutputStream stream)`<br>
+ Writes a CBOR object to a CBOR data stream.
 * `static void Write​(Object objValue,
      OutputStream output,
      CBOREncodeOptions options)`<br>
@@ -472,8 +473,8 @@
  options for controlling how the object is encoded to CBOR data
  format.
 * `static void Write​(String str,
-     OutputStream stream) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+     OutputStream stream)`<br>
+ Writes a string in CBOR format to a data stream.
 * `static void Write​(String str,
      OutputStream stream,
      CBOREncodeOptions options)`<br>
@@ -494,8 +495,8 @@
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8, using the given JSON options to control the
  encoding process.
-* `void WriteTo​(OutputStream stream) CBOREncodeOptions`<br>
- At the moment, use the overload of this method that takes a CBOREncodeOptions object.
+* `void WriteTo​(OutputStream stream)`<br>
+ Writes this CBOR object to a data stream.
 * `void WriteTo​(OutputStream stream,
        CBOREncodeOptions options)`<br>
  Writes this CBOR object to a data stream, using the specified options for
@@ -885,12 +886,7 @@ Finds the sum of two CBOR numbers.
 
 ### DecodeFromBytes
     public static CBORObject DecodeFromBytes​(byte[] data)
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major
- version.</b></p> <p>Generates a CBOR object from an array of
- CBOR-encoded bytes.</p>
+<p>Generates a CBOR object from an array of CBOR-encoded bytes.</p>
 
 **Parameters:**
 
@@ -1800,14 +1796,9 @@ Creates a new empty CBOR map.
 
 ### Read
     public static CBORObject Read​(InputStream stream)
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major
- version.</b></p> <p>Reads an object in CBOR format from a data
- stream. This method will read from the stream until the end of the
- CBOR object is reached or an error occurs, whichever happens
- first.</p>
+<p>Reads an object in CBOR format from a data stream. This method will read
+ from the stream until the end of the CBOR object is reached or an
+ error occurs, whichever happens first.</p>
 
 **Parameters:**
 
@@ -1947,14 +1938,10 @@ Finds the difference between two CBOR number objects.
 
 ### Write
     public static void Write​(String str, OutputStream stream) throws IOException
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major
- version.</b></p> <p>Writes a string in CBOR format to a data stream.
- The string will be encoded using indefinite-length encoding if its
- length exceeds a certain threshold (this behavior may change in
- future versions of this library).</p>
+<p>Writes a string in CBOR format to a data stream. The string will be
+ encoded using indefinite-length encoding if its length exceeds a
+ certain threshold (this behavior may change in future versions of
+ this library).</p>
 
 **Parameters:**
 
@@ -2199,12 +2186,8 @@ Writes a CBOR object to a CBOR data stream.
 
 ### Write
     public static void Write​(Object objValue, OutputStream stream) throws IOException
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major version.</b>
- </p> <p>Writes a CBOR object to a CBOR data stream. See the
- three-parameter Write method that takes a CBOREncodeOptions. </p>
+<p>Writes a CBOR object to a CBOR data stream. See the three-parameter Write
+ method that takes a CBOREncodeOptions. </p>
 
 **Parameters:**
 
@@ -2359,7 +2342,8 @@ Gets this object's absolute value.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is a CBOR object.
+* <code>obj</code> - A CBOR object (or an object convertible to a CBOR object) to add
+ to this CBOR array.
 
 **Returns:**
 
@@ -2367,7 +2351,7 @@ Gets this object's absolute value.
 
 **Throws:**
 
-* <code>IllegalStateException</code> - This object is not an array.
+* <code>IllegalStateException</code> - This instance is not an array.
 
 * <code>IllegalArgumentException</code> - The type of <code>obj</code> is not supported.
 
@@ -2748,16 +2732,15 @@ Determines whether a value of the given key exists in this object.
 
 ### EncodeToBytes
     public byte[] EncodeToBytes()
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major version.</b>
- </p> <p>Writes the binary representation of this CBOR object and
- returns a byte array of that representation. If the CBOR object
- contains CBOR maps, or is a CBOR map itself, the keys to the map are
- written out to the byte array in an undefined order. The example code
- given in <see cref='M:PeterO.Cbor.CBORObject.WriteTo(System.IO.InputStream)'/> can be
- used to write out certain keys of a CBOR map in a given order. </p>
+<p>Writes the binary representation of this CBOR object and returns a byte
+ array of that representation. If the CBOR object contains CBOR maps,
+ or is a CBOR map itself, the keys to the map are written out to the
+ byte array in an undefined order. The example code given in <see cref='M:PeterO.Cbor.CBORObject.WriteTo(System.IO.InputStream)'/> can be
+ used to write out certain keys of a CBOR map in a given order. For
+ the CTAP2 canonical ordering, which is useful for implementing Web
+ Authentication, call <code>EncodeToBytes(new
+ CBOREncodeOptions(false, false, true))</code> rather than this method.
+ </p>
 
 **Returns:**
 
@@ -2767,10 +2750,10 @@ Determines whether a value of the given key exists in this object.
     public byte[] EncodeToBytes​(CBOREncodeOptions options)
 Writes the binary representation of this CBOR object and returns a byte
  array of that representation, using the specified options for
- encoding the object to CBOR format. If the CBOR object contains CBOR
- maps, or is a CBOR map itself, the keys to the map are written out to
- the byte array in an undefined order. The example code given in <see cref='M:PeterO.Cbor.CBORObject.WriteTo(System.IO.InputStream)'/> can be
- used to write out certain keys of a CBOR map in a given order.
+ encoding the object to CBOR format. For the CTAP2 canonical ordering,
+ which is useful for implementing Web Authentication, call this method
+ as follows: <code>EncodeToBytes(new CBOREncodeOptions(false, false,
+ true))</code>
 
 **Parameters:**
 
@@ -3397,19 +3380,15 @@ Writes a CBOR major type number and an integer 0 or greater associated with
 
 ### WriteTo
     public void WriteTo​(OutputStream stream) throws IOException
-<p><b>At the moment, use the overload of this method that takes a <code>CBOREncodeOptions</code> object. The object
- <code>CBOREncodeOptions.Default</code> contains recommended settings for
- CBOREncodeOptions, and those settings may be adopted by this overload
- (without a CBOREncodeOptions argument) in the next major version.</b>
- </p> <p>Writes this CBOR object to a data stream. If the CBOR object
- contains CBOR maps, or is a CBOR map, the keys to the map are written
- out to the data stream in an undefined order. See the examples
- (written in C# for the .NET version) for ways to write out certain
- keys of a CBOR map in a given order. </p><p/><p>The following example
- shows a method that writes each key of 'mapObj' to 'outputStream', in
- the order given in 'keys', where 'mapObj' is written out in the form
- of a CBOR <b>definite-length map</b> . Only keys found in 'keys' will
- be written if they exist in 'mapObj'. </p> <pre>private static void
+<p>Writes this CBOR object to a data stream. If the CBOR object contains
+ CBOR maps, or is a CBOR map, the keys to the map are written out to
+ the data stream in an undefined order. See the examples (written in
+ C# for the .NET version) for ways to write out certain keys of a CBOR
+ map in a given order. </p><p/><p>The following example shows a method
+ that writes each key of 'mapObj' to 'outputStream', in the order
+ given in 'keys', where 'mapObj' is written out in the form of a CBOR
+ <b>definite-length map</b> . Only keys found in 'keys' will be
+ written if they exist in 'mapObj'. </p> <pre>private static void
  WriteKeysToMap(CBORObject mapObj, IList&lt;CBORObject&gt; keys,
  InputStream outputStream){ if(mapObj == null){ throw new
  NullPointerException(nameof(mapObj));} if(keys ==

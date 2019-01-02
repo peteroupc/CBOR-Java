@@ -8,6 +8,8 @@ Specifies options for encoding and decoding CBOR objects.
 
 * `static CBOREncodeOptions Default`<br>
  Default options for CBOR objects.
+* `static CBOREncodeOptions DefaultCtap2Canonical`<br>
+ Not documented yet.
 
 ## Constructors
 
@@ -24,14 +26,15 @@ Specifies options for encoding and decoding CBOR objects.
 ## Methods
 
 * `boolean getAllowDuplicateKeys()`<br>
- Gets a value indicating whether to disallow duplicate keys when reading CBOR
+ Gets a value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream.
 * `boolean getCtap2Canonical()`<br>
  Gets a value indicating whether CBOR objects are written out using the CTAP2
- canonical CBOR encoding form.
+ canonical CBOR encoding form, which is useful for implementing Web
+ Authentication.
 * `boolean getUseIndefLengthStrings()`<br>
- Gets a value indicating whether to always encode strings with a
- definite-length encoding.
+ Gets a value indicating whether to encode strings with an indefinite-length
+ encoding under certain circumstances.
 
 ## Field Details
 
@@ -41,40 +44,42 @@ Default options for CBOR objects. Disallow duplicate keys, and always encode
  strings using definite-length encoding. These are recommended
  settings for the options that may be adopted by certain CBORObject
  methods in the next major version.
+### DefaultCtap2Canonical
+    public static final CBOREncodeOptions DefaultCtap2Canonical
+Not documented yet.
 ## Method Details
 
 ### getUseIndefLengthStrings
     public final boolean getUseIndefLengthStrings()
-Gets a value indicating whether to always encode strings with a
- definite-length encoding.
+Gets a value indicating whether to encode strings with an indefinite-length
+ encoding under certain circumstances.
 
 **Returns:**
 
-* A value indicating whether to always encode strings with a
- definite-length encoding.
+* A value indicating whether to encode strings with an
+ indefinite-length encoding under certain circumstances. The default
+ is false.
 
 ### getAllowDuplicateKeys
     public final boolean getAllowDuplicateKeys()
-Gets a value indicating whether to disallow duplicate keys when reading CBOR
+Gets a value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. Used only when decoding CBOR objects.
 
 **Returns:**
 
-* A value indicating whether to disallow duplicate keys when reading
- CBOR objects from a data stream.
+* A value indicating whether to allow duplicate keys when reading CBOR
+ objects from a data stream. The default is false.
 
 ### getCtap2Canonical
     public final boolean getCtap2Canonical()
 Gets a value indicating whether CBOR objects are written out using the CTAP2
- canonical CBOR encoding form. In this form, CBOR tags are not used,
- map keys are written out in a canonical order, and non-integer
- numbers and integers 2^63 or greater are written as 64-bit binary
- floating-point numbers.
+ canonical CBOR encoding form, which is useful for implementing Web
+ Authentication. In this form, CBOR tags are not used, map keys are
+ written out in a canonical order, and non-integer numbers and
+ integers 2^63 or greater are written as 64-bit binary floating-point
+ numbers.
 
 **Returns:**
 
 * <code>true</code> if CBOR objects are written out using the CTAP2
- canonical CBOR encoding form; otherwise, <code>false</code>.. In this
- form, CBOR tags are not used, map keys are written out in a canonical
- order, and non-integer numbers and integers 2^63 or greater are
- written as 64-bit binary floating-point numbers.
+ canonical CBOR encoding form; otherwise, <code>false</code>.

@@ -15,17 +15,22 @@ at: http://peteroupc.github.io/
       }
       boolean isiri = obj.HasMostOuterTag(266);
       boolean isiriref = obj.HasMostOuterTag(267);
-if (isiriref && !URIUtility.isValidIRI(obj.AsString(),
-                    URIUtility.ParseMode.IRIStrict)) {
+if (
+  isiriref && !URIUtility.isValidIRI(
+  obj.AsString(),
+  URIUtility.ParseMode.IRIStrict)) {
   throw new CBORException("String is not a valid IRI Reference");
 }
-if (isiri && (!URIUtility.isValidIRI(obj.AsString(),
-                    URIUtility.ParseMode.IRIStrict) ||
+if (
+  isiri && (!URIUtility.isValidIRI(
+  obj.AsString(),
+  URIUtility.ParseMode.IRIStrict) ||
    !URIUtility.hasScheme(obj.AsString()))) {
   throw new CBORException("String is not a valid IRI");
 }
-      if (!URIUtility.isValidIRI(obj.AsString(),
-      URIUtility.ParseMode.URIStrict) ||
+      if (!URIUtility.isValidIRI(
+  obj.AsString(),
+  URIUtility.ParseMode.URIStrict) ||
    !URIUtility.hasScheme(obj.AsString())) {
   throw new CBORException("String is not a valid URI");
 }
@@ -51,12 +56,12 @@ if (isiri && (!URIUtility.isValidIRI(obj.AsString(),
       }
       String uriString = uri.toString();
       boolean nonascii = false;
-      for (int i = 0;i<uriString.length(); ++i) {
+      for (int i = 0; i < uriString.length(); ++i) {
         if (uriString.charAt(i) >= 0x80) {
  nonascii = true;
 }
       }
-      int tag=(nonascii) ? 266 : 32;
+      int tag = nonascii ? 266 : 32;
 if (!URIUtility.hasScheme(uriString)) {
  tag = 267;
 }

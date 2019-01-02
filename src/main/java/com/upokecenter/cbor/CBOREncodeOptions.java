@@ -14,6 +14,12 @@ package com.upokecenter.cbor;
       new CBOREncodeOptions(false, false);
 
     /**
+     * Not documented yet.
+     */
+    public static final CBOREncodeOptions DefaultCtap2Canonical =
+      new CBOREncodeOptions(false, false, true);
+
+    /**
      * Initializes a new instance of the {@link
      * com.upokecenter.cbor.CBOREncodeOptions} class.
      */
@@ -38,11 +44,13 @@ package com.upokecenter.cbor;
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.cbor.CBOREncodeOptions} class.
-     * @param useIndefLengthStrings A value indicating whether to always encode
-     * strings with a definite-length encoding.
-     * @param allowDuplicateKeys A value indicating whether to disallow duplicate
-     * keys when reading CBOR objects from a data stream.
-     * @param ctap2Canonical Either {@code true} or {@code false} .
+     * @param useIndefLengthStrings A value indicating whether to encode strings
+     * with a definite-length encoding in certain cases.
+     * @param allowDuplicateKeys A value indicating whether to allow duplicate keys
+     * when reading CBOR objects from a data stream.
+     * @param ctap2Canonical A value indicating whether CBOR objects are written
+     * out using the CTAP2 canonical CBOR encoding form, which is useful for
+     * implementing Web Authentication.
      */
     public CBOREncodeOptions(
   boolean useIndefLengthStrings,
@@ -54,34 +62,33 @@ package com.upokecenter.cbor;
     }
 
     /**
-     * Gets a value indicating whether to always encode strings with a
-     * definite-length encoding.
-     * @return A value indicating whether to always encode strings with a
-     * definite-length encoding.
+     * Gets a value indicating whether to encode strings with an indefinite-length
+     * encoding under certain circumstances.
+     * @return A value indicating whether to encode strings with an
+     * indefinite-length encoding under certain circumstances. The default
+     * is false.
      */
     public final boolean getUseIndefLengthStrings() { return propVaruseindeflengthstrings; }
 private final boolean propVaruseindeflengthstrings;
 
     /**
-     * Gets a value indicating whether to disallow duplicate keys when reading CBOR
+     * Gets a value indicating whether to allow duplicate keys when reading CBOR
      * objects from a data stream. Used only when decoding CBOR objects.
-     * @return A value indicating whether to disallow duplicate keys when reading
-     * CBOR objects from a data stream.
+     * @return A value indicating whether to allow duplicate keys when reading CBOR
+     * objects from a data stream. The default is false.
      */
     public final boolean getAllowDuplicateKeys() { return propVarallowduplicatekeys; }
 private final boolean propVarallowduplicatekeys;
 
     /**
      * Gets a value indicating whether CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form. In this form, CBOR tags are not used,
-     * map keys are written out in a canonical order, and non-integer
-     * numbers and integers 2^63 or greater are written as 64-bit binary
-     * floating-point numbers.
+     * canonical CBOR encoding form, which is useful for implementing Web
+     * Authentication. In this form, CBOR tags are not used, map keys are
+     * written out in a canonical order, and non-integer numbers and
+     * integers 2^63 or greater are written as 64-bit binary floating-point
+     * numbers.
      * @return {@code true} if CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form; otherwise, {@code false}.. In this
-     * form, CBOR tags are not used, map keys are written out in a canonical
-     * order, and non-integer numbers and integers 2^63 or greater are
-     * written as 64-bit binary floating-point numbers.
+     * canonical CBOR encoding form; otherwise, {@code false}.
      */
     public final boolean getCtap2Canonical() { return propVarctap2canonical; }
 private final boolean propVarctap2canonical;
