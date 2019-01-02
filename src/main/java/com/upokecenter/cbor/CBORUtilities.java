@@ -318,12 +318,12 @@ private CBORUtilities() {
         boolean isNormalYear = year.Remainder(4).signum() != 0 ||
         (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
         EInteger ei = EInteger.FromInt32(startYear);
-     // TODO: Use faster approach than this loop for
-    // large absolute values of 'ei'
-        for (; ei.Add(401).compareTo(year) < 0;
-            ei = ei.Add(400)) {
-          numDays = numDays.Add(146097);
-        }
+        if (ei.Add(401).compareTo(year)< 0) {
+EInteger y2 = year.Subtract(2);
+EInteger adds = y2.Subtract(startYear).Divide(400);
+ei = y2.Subtract(
+  y2.Subtract(startYear).Remainder(400));
+       }
         for (; ei.compareTo(year) < 0;
             ei = ei.Add(1)) {
           numDays = numDays.Add(365);
