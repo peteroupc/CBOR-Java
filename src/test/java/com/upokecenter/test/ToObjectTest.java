@@ -1221,6 +1221,49 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       }
     }
 
+    private static String RandomDate(RandomGenerator rand) {
+      int year = rand.UniformInt(1, 10000);
+      int month = rand.UniformInt(1, 13);
+      int day = rand.UniformInt(1, 29);
+      int hour = rand.UniformInt(1, 24);
+      int min = rand.UniformInt(1, 60);
+      int sec = rand.UniformInt(1, 60);
+      char[] dt = new char[20];
+      dt[0] = (char)(0x30 + (year / 1000) % 10);
+      dt[1] = (char)(0x30 + (year / 100) % 10);
+      dt[2] = (char)(0x30 + (year / 10) % 10);
+      dt[3] = (char)(0x30 + year % 10);
+      dt[4] = '-';
+      dt[5] = (char)(0x30 + (month / 10) % 10);
+      dt[6] = (char)(0x30 + month % 10);
+      dt[7] = '-';
+      dt[8] = (char)(0x30 + (day / 10) % 10);
+      dt[9] = (char)(0x30 + day % 10);
+      dt[10] = 'T';
+      dt[11] = (char)(0x30 + (hour / 10) % 10);
+      dt[12] = (char)(0x30 + hour % 10);
+      dt[13] = ':';
+      dt[14] = (char)(0x30 + (min / 10) % 10);
+      dt[15] = (char)(0x30 + min % 10);
+      dt[16] = ':';
+      dt[17] = (char)(0x30 + (sec / 10) % 10);
+      dt[18] = (char)(0x30 + sec % 10);
+      dt[19] = 'Z';
+      return new String(dt);
+    }
+    @Test
+    public void TestDateRoundTrip() {
+      RandomGenerator rand = new RandomGenerator();
+      for (int i = 0; i < 5000; ++i) {
+        String s = RandomDate(rand);
+        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
+        CBORObject cbor2 = CBORObject.FromObject(dtime);
+        Assert.assertEquals(s, cbor2.AsString());
+        TestToFromObjectRoundTrip(dtime);
+      }
+    }
+
     @Test
     public void TestUriRoundTrip() {
      try {

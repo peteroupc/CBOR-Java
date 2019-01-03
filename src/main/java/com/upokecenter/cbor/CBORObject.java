@@ -555,11 +555,20 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Not documented yet.
-     * @param key The parameter {@code key} is not documented yet.
-     * @param defaultValue The parameter {@code defaultValue} is not documented
-     * yet.
-     * @return A CBORObject object.
+     * Gets the value of a CBOR object by integer index in this array or by CBOR
+     * object key in this map, or a default value if that value is not
+     * found.
+     * @param key An arbitrary object. If this is a CBOR map, this parameter is
+     * converted to a CBOR object serving as the key to the map or index to
+     * the array, and can be null. If this is a CBOR array, the key must be
+     * an integer 0 or greater and less than the size of the array, and may
+     * be any object convertible to a CBOR integer.
+     * @param defaultValue A value to return if an item with the given key doesn't
+     * exist, or if the CBOR object is an array and the key is not an
+     * integer 0 or greater and less than the size of the array.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns null if an item with the given key
+     * doesn't exist.
      */
     public CBORObject GetOrDefault(Object key, CBORObject defaultValue) {
         if (this.getItemType() == CBORObjectTypeArray) {
@@ -3576,9 +3585,13 @@ public boolean equals(CBORObject other) {
     }
 
     /**
-     * Not documented yet.
-     * @param tagValue The parameter {@code tagValue} is not documented yet.
-     * @return Either {@code true} or {@code false}.
+     * Returns whether this object has an outermost tag and that tag is of the
+     * given number.
+     * @param tagValue The tag number.
+     * @return {@code true} if this object has an outermost tag and that tag is of
+     * the given number; otherwise, {@code false}.
+     * @throws IllegalArgumentException The parameter {@code tagValue} is less than
+     * 0.
      */
  public boolean HasMostOuterTag(int tagValue) {
       if (tagValue < 0) {
@@ -3589,11 +3602,15 @@ public boolean equals(CBORObject other) {
  }
 
     /**
-     * Not documented yet.
-     * @param bigTagValue The parameter {@code bigTagValue} is not documented yet.
-     * @return Either {@code true} or {@code false}.
+     * Returns whether this object has an outermost tag and that tag is of the
+     * given number.
+     * @param bigTagValue The tag number.
+     * @return {@code true} if this object has an outermost tag and that tag is of
+     * the given number; otherwise, {@code false}.
      * @throws java.lang.NullPointerException The parameter {@code bigTagValue} is
      * null.
+     * @throws IllegalArgumentException The parameter {@code bigTagValue} is less
+     * than 0.
      */
  public boolean HasMostOuterTag(EInteger bigTagValue) {
     if (bigTagValue == null) {
@@ -3611,8 +3628,9 @@ public boolean equals(CBORObject other) {
      * @param tagValue The tag value to search for.
      * @return {@code true} if this object has a tag of the given number;
      * otherwise, {@code false}.
-     * @throws IllegalArgumentException TagValue is less than 0.
-     * @throws java.lang.NullPointerException The parameter "obj" is null.
+     * @throws IllegalArgumentException The parameter {@code tagValue} is less than
+     * 0.
+     * @throws NullPointerException The parameter {@code tagValue} is null.
      */
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {
@@ -3636,8 +3654,10 @@ public boolean equals(CBORObject other) {
      * @param bigTagValue The tag value to search for.
      * @return {@code true} if this object has a tag of the given number;
      * otherwise, {@code false}.
-     * @throws java.lang.NullPointerException BigTagValue is null.
-     * @throws IllegalArgumentException BigTagValue is less than 0.
+     * @throws java.lang.NullPointerException The parameter {@code bigTagValue} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code bigTagValue} is less
+     * than 0.
      */
     public boolean HasTag(EInteger bigTagValue) {
       if (bigTagValue == null) {

@@ -318,7 +318,7 @@ private CBORUtilities() {
         boolean isNormalYear = year.Remainder(4).signum() != 0 ||
         (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
         EInteger ei = EInteger.FromInt32(startYear);
-        if (ei.Add(401).compareTo(year)< 0) {
+        if (ei.Add(401).compareTo(year) < 0) {
 EInteger y2 = year.Subtract(2);
 EInteger adds = y2.Subtract(startYear).Divide(400);
 ei = y2.Subtract(
