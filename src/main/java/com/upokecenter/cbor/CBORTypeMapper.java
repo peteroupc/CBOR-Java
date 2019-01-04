@@ -170,10 +170,6 @@ import java.util.*;
     }
 
     static final class ConverterInfo {
-    /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
-     */
       public final Object getToObject() { return propVartoobject; }
 public final void setToObject(Object value) { propVartoobject = value; }
 private Object propVartoobject;
@@ -182,10 +178,6 @@ private Object propVartoobject;
 public final void setFromObject(Object value) { propVarfromobject = value; }
 private Object propVarfromobject;
 
-    /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
-     */
       public final Object getConverter() { return propVarconverter; }
 public final void setConverter(Object value) { propVarconverter = value; }
 private Object propVarconverter;

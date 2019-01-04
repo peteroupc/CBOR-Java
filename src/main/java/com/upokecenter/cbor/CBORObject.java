@@ -3630,7 +3630,7 @@ public boolean equals(CBORObject other) {
      * otherwise, {@code false}.
      * @throws IllegalArgumentException The parameter {@code tagValue} is less than
      * 0.
-     * @throws NullPointerException The parameter {@code tagValue} is null.
+     * @throws java.lang.NullPointerException The parameter {@code tagValue} is null.
      */
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {

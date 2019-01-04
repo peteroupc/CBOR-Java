@@ -343,13 +343,13 @@ EInteger diff = year.Subtract(ei);
 numDays = numDays.Add(diff.Multiply(365));
 EInteger eileap = ei;
 if (ei.Remainder(4).signum() != 0) {
- eileap = eileap.Add(4-eileap.Remainder(4).ToInt32Checked());
+ eileap = eileap.Add(4 - eileap.Remainder(4).ToInt32Checked());
 }
 numDays = numDays.Add(year.Subtract(eileap).Add(3).Divide(4));
 if (ei.Remainder(100).signum() != 0) {
- ei = ei.Add(100-ei.Remainder(100).ToInt32Checked());
+ ei = ei.Add(100 - ei.Remainder(100).ToInt32Checked());
 }
-while (ei.compareTo(year)< 0) {
+while (ei.compareTo(year) < 0) {
  if (ei.Remainder(400).signum() != 0) {
  numDays = numDays.Subtract(1);
 }

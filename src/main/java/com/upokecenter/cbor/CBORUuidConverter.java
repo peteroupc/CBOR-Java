@@ -22,7 +22,7 @@ at: http://peteroupc.github.io/
 
     /**
      * Not documented yet.
-     * @param obj The parameter {@code obj} is not documented yet.
+     * @param obj Not documented yet.
      * @return A CBORObject object.
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {

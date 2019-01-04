@@ -347,7 +347,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param val The parameter {@code val} is not documented yet.
+     * @param val Not documented yet.
      * @return A FastInteger2 object.
      */
     FastInteger2 Multiply(int val) {
@@ -403,7 +403,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param val The parameter {@code val} is not documented yet.
+     * @param val Not documented yet.
      * @return A FastInteger2 object.
      */
     FastInteger2 Subtract(FastInteger2 val) {
@@ -453,7 +453,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Not documented yet.
-     * @param val The parameter {@code val} is not documented yet.
+     * @param val Not documented yet.
      * @return A FastInteger2 object.
      */
     FastInteger2 SubtractInt(int val) {
