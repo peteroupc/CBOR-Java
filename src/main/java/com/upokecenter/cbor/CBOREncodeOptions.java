@@ -6,15 +6,16 @@ package com.upokecenter.cbor;
   public final class CBOREncodeOptions {
     /**
      * Default options for CBOR objects. Disallow duplicate keys, and always encode
-     * strings using definite-length encoding. These are recommended
-     * settings for the options that may be adopted by certain CBORObject
-     * methods in the next major version.
+     * strings using definite-length encoding.
      */
     public static final CBOREncodeOptions Default =
       new CBOREncodeOptions(false, false);
 
     /**
-     * Not documented yet.
+     * Default options for CBOR objects serialized using the CTAP2 canonicalization
+     * (used in Web Authentication, among other specifications). Disallow
+     * duplicate keys, and always encode strings using definite-length
+     * encoding.
      */
     public static final CBOREncodeOptions DefaultCtap2Canonical =
       new CBOREncodeOptions(false, false, true);

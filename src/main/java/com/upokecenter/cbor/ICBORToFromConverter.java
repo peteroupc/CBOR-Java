@@ -8,15 +8,16 @@ at: http://peteroupc.github.io/
  */
 
     /**
-     * Not documented yet.
-     * @param <T> Type parameter not documented yet.
+     * Classes that implement this interface can support conversions from CBOR
+     * objects to a custom type and back.
+     * @param <T> Type of objects to convert to and from CBOR objects.
      */
   public interface ICBORToFromConverter<T> extends ICBORConverter<T>
   {
     /**
-     * Not documented yet.
-     * @param obj The parameter {@code obj} is not documented yet.
-     * @return The return value is not documented yet.
+     * Converts a CBOR object to a custom type.
+     * @param obj A CBOR object to convert to the custom type.
+     * @return An object of the custom type after conversion.
      */
     T FromCBORObject(CBORObject obj);
   }

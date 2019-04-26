@@ -280,6 +280,17 @@ private CBORUtilities() {
       dest[2] = day;
     }
 
+/*
+    // Example: Apple Time is a 32-bit unsigned integer
+    // of the number of seconds since the start of 1904.
+    // EInteger appleTime = GetNumberOfDaysProlepticGregorian(
+    // year,  // month
+    //,
+    day)
+    // .Subtract(GetNumberOfDaysProlepticGregorian(
+    // EInteger.FromInt32(1904),
+    1  // ,
+    s1));*/
     public static EInteger GetNumberOfDaysProlepticGregorian(
          EInteger year,
          int month,
