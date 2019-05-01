@@ -152,25 +152,25 @@ private CBORUtilities() {
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      while (intlongValue > 9) {
-        int intdivValue = (intlongValue * 26215) >> 18;
-        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      if (intlongValue != 0) {
-        chars[count--] = HexAlphabet.charAt((int)intlongValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 12 - count);
+          char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        while (intlongValue > 9) {
+          int intdivValue = (intlongValue * 26215) >> 18;
+          char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        if (intlongValue != 0) {
+          chars[count--] = HexAlphabet.charAt((int)intlongValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 12 - count);
       } else {
         chars = new char[24];
         count = 23;
@@ -179,25 +179,25 @@ private CBORUtilities() {
         }
         while (longValue > 43698) {
           long divValue = longValue / 10;
-        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      while (longValue > 9) {
-        long divValue = (longValue * 26215) >> 18;
-        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      if (longValue != 0) {
-        chars[count--] = HexAlphabet.charAt((int)longValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 24 - count);
+          char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        while (longValue > 9) {
+          long divValue = (longValue * 26215) >> 18;
+          char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        if (longValue != 0) {
+          chars[count--] = HexAlphabet.charAt((int)longValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 24 - count);
       }
     }
 
@@ -280,42 +280,42 @@ private CBORUtilities() {
       dest[2] = day;
     }
 
-/*
-    // Example: Apple Time is a 32-bit unsigned integer
-    // of the number of seconds since the start of 1904.
-    // EInteger appleTime = GetNumberOfDaysProlepticGregorian(
-    // year,  // month
-    //,
-    day)
-    // .Subtract(GetNumberOfDaysProlepticGregorian(
-    // EInteger.FromInt32(1904),
-    1  // ,
-    s1));*/
+    /*
+        // Example: Apple Time is a 32-bit unsigned integer
+        // of the number of seconds since the start of 1904.
+        // EInteger appleTime = GetNumberOfDaysProlepticGregorian(
+        // year,  // month
+        //,
+        day)
+        // .Subtract(GetNumberOfDaysProlepticGregorian(
+        // EInteger.FromInt32(1904),
+        1  // ,
+        s1));*/
     public static EInteger GetNumberOfDaysProlepticGregorian(
          EInteger year,
          int month,
          int mday) {
       // NOTE: month = 1 is January, year = 1 is year 1
       if (month <= 0 || month > 12) {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException();
+      }
       if (mday <= 0 || mday > 31) {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException();
+      }
       EInteger numDays = EInteger.FromInt32(0);
       int startYear = 1970;
       if (year.compareTo(startYear) < 0) {
         EInteger ei = EInteger.FromInt32(startYear - 1);
-EInteger diff = ei.Subtract(year);
+        EInteger diff = ei.Subtract(year);
 
-if (diff.compareTo(401) > 0) {
-EInteger blocks = diff.Subtract(401).Divide(400);
-numDays = numDays.Subtract(blocks.Multiply(146097));
-diff = diff.Subtract(blocks.Multiply(400));
-ei = ei.Subtract(blocks.Multiply(400));
-       }
+        if (diff.compareTo(401) > 0) {
+          EInteger blocks = diff.Subtract(401).Divide(400);
+          numDays = numDays.Subtract(blocks.Multiply(146097));
+          diff = diff.Subtract(blocks.Multiply(400));
+          ei = ei.Subtract(blocks.Multiply(400));
+        }
 
-numDays = numDays.Subtract(diff.Multiply(365));
+        numDays = numDays.Subtract(diff.Multiply(365));
         int decrement = 1;
         for (;
              ei.compareTo(year) > 0;
@@ -331,7 +331,7 @@ numDays = numDays.Subtract(diff.Multiply(365));
         if (year.Remainder(4).signum() != 0 || (
                     year.Remainder(100).signum() == 0 &&
                     year.Remainder(400).signum() != 0)) {
-          numDays = numDays .Subtract(365 - ValueNormalToMonth[month])
+          numDays = numDays.Subtract(365 - ValueNormalToMonth[month])
            .Subtract(ValueNormalDays[month] - mday + 1);
         } else {
           numDays = numDays
@@ -343,29 +343,29 @@ numDays = numDays.Subtract(diff.Multiply(365));
         (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
         EInteger ei = EInteger.FromInt32(startYear);
         if (ei.Add(401).compareTo(year) < 0) {
-EInteger y2 = year.Subtract(2);
-numDays = numDays.Add(
-  y2.Subtract(startYear).Divide(400).Multiply(146097));
-ei = y2.Subtract(
-  y2.Subtract(startYear).Remainder(400));
-       }
+          EInteger y2 = year.Subtract(2);
+          numDays = numDays.Add(
+            y2.Subtract(startYear).Divide(400).Multiply(146097));
+          ei = y2.Subtract(
+            y2.Subtract(startYear).Remainder(400));
+        }
 
-EInteger diff = year.Subtract(ei);
-numDays = numDays.Add(diff.Multiply(365));
-EInteger eileap = ei;
-if (ei.Remainder(4).signum() != 0) {
- eileap = eileap.Add(4 - eileap.Remainder(4).ToInt32Checked());
-}
-numDays = numDays.Add(year.Subtract(eileap).Add(3).Divide(4));
-if (ei.Remainder(100).signum() != 0) {
- ei = ei.Add(100 - ei.Remainder(100).ToInt32Checked());
-}
-while (ei.compareTo(year) < 0) {
- if (ei.Remainder(400).signum() != 0) {
- numDays = numDays.Subtract(1);
-}
- ei = ei.Add(100);
-}
+        EInteger diff = year.Subtract(ei);
+        numDays = numDays.Add(diff.Multiply(365));
+        EInteger eileap = ei;
+        if (ei.Remainder(4).signum() != 0) {
+          eileap = eileap.Add(4 - eileap.Remainder(4).ToInt32Checked());
+        }
+        numDays = numDays.Add(year.Subtract(eileap).Add(3).Divide(4));
+        if (ei.Remainder(100).signum() != 0) {
+          ei = ei.Add(100 - ei.Remainder(100).ToInt32Checked());
+        }
+        while (ei.compareTo(year) < 0) {
+          if (ei.Remainder(400).signum() != 0) {
+            numDays = numDays.Subtract(1);
+          }
+          ei = ei.Add(100);
+        }
         int yearToMonth = isNormalYear ? ValueNormalToMonth[month - 1] :
           ValueLeapToMonth[month - 1];
         numDays = numDays.Add(yearToMonth)
@@ -415,20 +415,20 @@ while (ei.compareTo(year) < 0) {
 
     public static String FirstCharLower(String name) {
       if (name.length() > 0 && name.charAt(0) >= 'A' && name.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(name.charAt(0) + 0x20));
-              sb.append(name.substring(1));
-              return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)(name.charAt(0) + 0x20));
+        sb.append(name.substring(1));
+        return sb.toString();
       }
       return name;
     }
 
     public static String FirstCharUpper(String name) {
       if (name.length() > 0 && name.charAt(0) >= 'a' && name.charAt(0) <= 'z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(name.charAt(0) - 0x20));
-              sb.append(name.substring(1));
-              return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)(name.charAt(0) - 0x20));
+        sb.append(name.substring(1));
+        return sb.toString();
       }
       return name;
     }
@@ -474,9 +474,9 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
   String str,
   EInteger[] bigYearArray,
   int[] lf) {
-  int[] d = ParseAtomDateTimeString(str);
-   bigYearArray[0] = EInteger.FromInt32(d[0]);
-   System.arraycopy(d, 1, lf, 0, 7);
+      int[] d = ParseAtomDateTimeString(str);
+      bigYearArray[0] = EInteger.FromInt32(d[0]);
+      System.arraycopy(d, 1, lf, 0, 7);
     }
 
     private static int[] ParseAtomDateTimeString(String str) {
@@ -573,13 +573,13 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
       int smallYear = bigYear.ToInt32Checked();
       if (smallYear < 0) {
-  throw new IllegalArgumentException("year (" + smallYear +
-    ") is not greater or equal to 0");
-}
-if (smallYear > 9999) {
-  throw new IllegalArgumentException("year (" + smallYear +
-    ") is not less or equal to 9999");
-}
+        throw new IllegalArgumentException("year (" + smallYear +
+          ") is not greater or equal to 0");
+      }
+      if (smallYear > 9999) {
+        throw new IllegalArgumentException("year (" + smallYear +
+          ") is not less or equal to 9999");
+      }
       int month = lesserFields[0];
       int day = lesserFields[1];
       int hour = lesserFields[2];
@@ -607,24 +607,24 @@ if (smallYear > 9999) {
       charbuf[17] = (char)('0' + ((second / 10) % 10));
       charbuf[18] = (char)('0' + (second % 10));
       int charbufLength = 19;
-        if (fracSeconds > 0) {
-          charbuf[19] = '.';
- ++charbufLength;
-int digitdiv = 100000000;
-int index = 20;
-while (digitdiv > 0 && fracSeconds != 0) {
- int digit = (fracSeconds / digitdiv) % 10;
- fracSeconds -= digit * digitdiv;
- charbuf[index++] = (char)('0' + digit);
- ++charbufLength;
- digitdiv /= 10;
-}
-          charbuf[index] = 'Z';
+      if (fracSeconds > 0) {
+        charbuf[19] = '.';
+        ++charbufLength;
+        int digitdiv = 100000000;
+        int index = 20;
+        while (digitdiv > 0 && fracSeconds != 0) {
+          int digit = (fracSeconds / digitdiv) % 10;
+          fracSeconds -= digit * digitdiv;
+          charbuf[index++] = (char)('0' + digit);
           ++charbufLength;
-        } else {
-          charbuf[19] = 'Z';
-          ++charbufLength;
+          digitdiv /= 10;
         }
+        charbuf[index] = 'Z';
+        ++charbufLength;
+      } else {
+        charbuf[19] = 'Z';
+        ++charbufLength;
+      }
       return new String(charbuf, 0, charbufLength);
     }
 
