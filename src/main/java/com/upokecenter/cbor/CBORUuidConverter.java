@@ -21,8 +21,8 @@ at: http://peteroupc.github.io/
     }
 
     /**
-     * Not documented yet.
-     * @param obj Not documented yet.
+     * Internal API.
+     * @param obj The parameter {@code obj} is an internal parameter.
      * @return A CBORObject object.
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {

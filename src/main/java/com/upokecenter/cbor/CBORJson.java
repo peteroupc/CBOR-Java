@@ -678,7 +678,10 @@ import com.upokecenter.numbers.*;
             Map<CBORObject, CBORObject> objMap = obj.AsMap();
             for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
               CBORObject key = entry.getKey();
-              if (key.getItemType() != CBORObject.CBORObjectTypeTextString) {
+              if (key.getItemType() != CBORObject.CBORObjectTypeTextString ||
+              key.isTagged()) {
+                // treat a non-text-String item or a tagged item
+                // as having non-String keys
                 hasNonStringKeys = true;
                 break;
               }
