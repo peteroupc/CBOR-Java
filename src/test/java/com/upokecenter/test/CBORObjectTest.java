@@ -6245,6 +6245,66 @@ throw new IllegalStateException("", ex);
     }
 
     @Test
+    public void TestToJSONString_DuplicateKeys() {
+      CBORObject cbor;
+      cbor = CBORObject.NewMap().Add("true", 1).Add(true, 1);
+      try {
+ cbor.ToJSONString();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewMap().Add("true", 1).Add(false, 1);
+      try {
+ cbor.ToJSONString();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewMap().Add("9999-01-01T00:00:00Z", 1)
+         .Add(CBORObject.FromObjectAndTag("9999-01-01T00:00:00Z", 0), 1);
+      try {
+ cbor.ToJSONString();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewMap().Add("34", 1).Add(34, 1);
+      try {
+ cbor.ToJSONString();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewMap().Add("-34", 1).Add(-34, 1);
+      try {
+ cbor.ToJSONString();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewMap().Add("-34", 1).Add(-35, 1);
+      try {
+ cbor.ToJSONString();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
+    @Test
     public void TestToJSONString_ByteArray_Padding() {
       CBORObject o;
       JSONOptions options = new JSONOptions(true);  // base64 padding enabled

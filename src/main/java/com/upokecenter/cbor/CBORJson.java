@@ -714,7 +714,10 @@ import com.upokecenter.numbers.*;
                 CBORObject value = entry.getValue();
            String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
                   ((String)key.getThisItem()) : key.ToJSONString();
-                // TODO: Consider whether rejecting duplicates is better
+                if (stringMap.containsKey(str)) {
+      throw new
+  CBORException("Duplicate JSON String equivalents of map keys");
+                }
                 stringMap.put(str, value);
               }
               first = true;
