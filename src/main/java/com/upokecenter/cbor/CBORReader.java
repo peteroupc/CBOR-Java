@@ -48,7 +48,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
   SharedRefs sharedRefs) {
   int type = obj.getItemType();
   boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
-  if (hasTag) {
+  if (hasTag && obj.isIntegral()) {
     return sharedRefs.GetObject(obj.AsEInteger());
   }
   hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(28));
