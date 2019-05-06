@@ -1147,7 +1147,7 @@ try { if (ms != null) {
       for (int i = 0; i < 200000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
-if (array.length > 2000) {
+if (array.length > 100000) {
   {i--;
 }continue;
 }
