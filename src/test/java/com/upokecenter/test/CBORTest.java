@@ -1147,7 +1147,9 @@ try { if (ms != null) {
       for (int i = 0; i < 200000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
-if (array.length > 2000) {i--;continue;
+if (array.length > 2000) {
+  {i--;
+}continue;
 }
         // System.out.println(originalObject);
         int count2 = rand.UniformInt(10) + 1;
