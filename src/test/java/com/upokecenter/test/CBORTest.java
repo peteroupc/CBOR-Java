@@ -1100,7 +1100,6 @@ int startingAvailable = ms.available();
               }
               String jsonString = "";
               try {
-                if (o.getType() == CBORType.Array || o.getType() == CBORType.Map) {
 try {
                   jsonString = o.ToJSONString();
 } catch (CBORException ex) {
@@ -1110,7 +1109,6 @@ if (jsonString.length() > 0) {
                   CBORObject.FromJSONString(jsonString);
                   TestWriteToJSON(o);
 }
-                }
               } catch (Exception ex) {
                 String failString = jsonString + "\n" + ex.toString() +
                   (ex.getCause() == null ? "" : "\n" +
@@ -1142,13 +1140,15 @@ try { if (ms != null) {
       }
     }
 
-    @Test(timeout = 20000)
+    @Test
     public void TestRandomSlightlyModified() {
       RandomGenerator rand = new RandomGenerator();
       // Test slightly modified objects
-      for (int i = 0; i < 200; ++i) {
+      for (int i = 0; i < 200000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
+if (array.length > 2000) {i--;continue;
+}
         // System.out.println(originalObject);
         int count2 = rand.UniformInt(10) + 1;
         for (int j = 0; j < count2; ++j) {
@@ -1163,7 +1163,8 @@ int startingAvailable = inputStream.available();
 
           while ((startingAvailable-inputStream.available()) != startingAvailable) {
             try {
-              CBORObject o = CBORObject.Read(inputStream);
+              CBORObject o;
+              o = CBORObject.Read(inputStream);
               byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
               try {
                 CBORObject.DecodeFromBytes(encodedBytes);
@@ -1180,12 +1181,16 @@ int startingAvailable = inputStream.available();
                 if (o == null) {
                   Assert.fail("Object is null");
                 }
-                if (o != null && (o.getType() == CBORType.Array || o.getType() ==
-                    CBORType.Map)) {
+                if (o != null) {
+try {
                   jsonString = o.ToJSONString();
-                  // reread JSON String to test validity
+} catch (CBORException ex) {
+jsonString = "";
+}
+if (jsonString.length() > 0) {
                   CBORObject.FromJSONString(jsonString);
                   TestWriteToJSON(o);
+}
                 }
               } catch (Exception ex) {
                 String failString = jsonString + "\n" + ex +
@@ -1198,7 +1203,7 @@ int startingAvailable = inputStream.available();
             } catch (CBORException ex) {
               // Expected exception
               System.out.print(ex.getMessage().substring(0, 0));
-            } catch (Exception ex) {
+            } catch (IllegalStateException ex) {
               String failString = ex.toString() +
             (ex.getCause() == null ? "" : "\n" +
               ex.getCause().toString());
