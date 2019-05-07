@@ -1144,12 +1144,11 @@ try { if (ms != null) {
     public void TestRandomSlightlyModified() {
       RandomGenerator rand = new RandomGenerator();
       // Test slightly modified objects
-      for (int i = 0; i < 200000; ++i) {
+      for (int i = 0; i < 2000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
-if (array.length > 100000) {
-  {i--;
-}continue;
+if (array.length > 50000) {
+  System.out.println("" + array.length);
 }
         // System.out.println(originalObject);
         int count2 = rand.UniformInt(10) + 1;
@@ -1187,6 +1186,7 @@ int startingAvailable = inputStream.available();
 try {
                   jsonString = o.ToJSONString();
 } catch (CBORException ex) {
+System.out.println(ex.getMessage());
 jsonString = "";
 }
 if (jsonString.length() > 0) {
