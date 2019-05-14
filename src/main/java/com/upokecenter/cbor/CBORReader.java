@@ -50,8 +50,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
   boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
   if (hasTag) {
         if (!obj.isIntegral() || obj.isNegative()) {
-   throw new
-            CBORException("Shared ref index must be an integer 0 or greater");
+   throw new CBORException("Shared ref index must be an integer 0 or greater");
         }
         return sharedRefs.GetObject(obj.AsEInteger());
   }

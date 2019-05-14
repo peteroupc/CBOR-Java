@@ -3931,10 +3931,15 @@ if (index < 0 || index >= this.size()) {
      * format. See the overload to JSONString taking a JSONOptions argument
      * for further information. <p>If the CBOR object contains CBOR maps, or
      * is a CBOR map itself, the keys to the map are written out to the JSON
-     * string in an undefined order. The example code given in <see
+     * string in an undefined order. Map keys other than untagged text
+     * strings are converted to JSON strings before writing them out (for
+     * example, <code>22("Test")</code> is converted to <code>"Test"</code> and
+     * <code>true</code> is converted to <code>"true"</code>). If, after such
+     * conversion, two or more map keys are identical, this method throws a
+     * CBORException. The example code given in <see
   * cref='M:PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
      * can be used to write out certain keys of a CBOR map in a given order
-     * to a JSON string.</p>
+     * to a JSON string. </p>
      * @return A text string.
      */
     public String ToJSONString() {
@@ -3950,37 +3955,41 @@ if (index < 0 || index >= this.size()) {
      * converted to JSON strings before writing the map as a JSON string.
      * </li> <li>If the CBOR object contains CBOR maps, or is a CBOR map
      * itself, the keys to the map are written out to the JSON string in an
-     * undefined order. </li> <li>If a number in the form of an
-     * arbitrary-precision binary float has a very high binary exponent, it
-     * will be converted to a double before being converted to a JSON
-     * string. (The resulting double could overflow to infinity, in which
-     * case the arbitrary-precision binary float is converted to null.)
-     * </li> <li>The string will not begin with a byte-order mark (U + FEFF);
-     * RFC 8259 (the JSON specification) forbids placing a byte-order mark
-     * at the beginning of a JSON string. </li> <li>Byte strings are
-     * converted to Base64 URL without whitespace or padding by default (see
-     * section 4.1 of RFC 7049). A byte string will instead be converted to
-     * traditional base64 without whitespace or padding by default if it has
-     * tag 22, or base16 for tag 23. Padding will be included in the Base64
-     * URL or traditional base64 form if <b>Base64Padding</b> in the JSON
-     * options is set to <b>true</b> . (To create a CBOR object with a given
-     * tag, call the <code>CBORObject.FromObjectAndTag</code> method and pass the
-     * CBOR object and the desired tag number to that method.) </li>
-     * <li>Rational numbers will be converted to their exact form, if
-     * possible, otherwise to a high-precision approximation. (The resulting
-     * approximation could overflow to infinity, in which case the rational
-     * number is converted to null.) </li> <li>Simple values other than true
-     * and false will be converted to null. (This doesn't include
-     * floating-point numbers.) </li> <li>Infinity and not-a-number will be
-     * converted to null. </li> </ul> <p>The example code given below
-     * (originally written in C# for the .NET version) can be used to write
-     * out certain keys of a CBOR map in a given order to a JSON string.
-     * </p> <pre>/* Generates a JSON string of 'mapObj' whose keys are in
-     * the order given in 'keys' . Only keys found in 'keys' will be written
-     * if they exist in 'mapObj'. &#x2a;&#x2f; private static string
-     * KeysToJSONMap&#x28;CBORObject mapObj, IList&lt;CBORObject&gt;
-     * keys&#x29;&#x7b; if (mapObj == null) { throw new
-     * NullPointerException&#x29;nameof(mapObj));} if (keys == null) {
+     * undefined order. Map keys other than untagged text strings are
+     * converted to JSON strings before writing them out (for example,
+     * <code>22("Test")</code> is converted to <code>"Test"</code> and <code>true</code> is
+     * converted to <code>"true"</code>). If, after such conversion, two or more
+     * map keys are identical, this method throws a CBORException. </li>
+     * <li>If a number in the form of an arbitrary-precision binary float
+     * has a very high binary exponent, it will be converted to a double
+     * before being converted to a JSON string. (The resulting double could
+     * overflow to infinity, in which case the arbitrary-precision binary
+     * float is converted to null.) </li> <li>The string will not begin with
+     * a byte-order mark (U + FEFF); RFC 8259 (the JSON specification) forbids
+     * placing a byte-order mark at the beginning of a JSON string. </li>
+     * <li>Byte strings are converted to Base64 URL without whitespace or
+     * padding by default (see section 4.1 of RFC 7049). A byte string will
+     * instead be converted to traditional base64 without whitespace or
+     * padding by default if it has tag 22, or base16 for tag 23. Padding
+     * will be included in the Base64 URL or traditional base64 form if
+     * <b>Base64Padding</b> in the JSON options is set to <b>true</b> . (To
+     * create a CBOR object with a given tag, call the
+     * <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR object
+     * and the desired tag number to that method.) </li> <li>Rational
+     * numbers will be converted to their exact form, if possible, otherwise
+     * to a high-precision approximation. (The resulting approximation could
+     * overflow to infinity, in which case the rational number is converted
+     * to null.) </li> <li>Simple values other than true and false will be
+     * converted to null. (This doesn't include floating-point numbers.)
+     * </li> <li>Infinity and not-a-number will be converted to null. </li>
+     * </ul> <p>The example code given below (originally written in C# for
+     * the .NET version) can be used to write out certain keys of a CBOR map
+     * in a given order to a JSON string. </p> <pre>/* Generates a JSON
+     * string of 'mapObj' whose keys are in the order given in 'keys' . Only
+     * keys found in 'keys' will be written if they exist in 'mapObj'. &#x2a;&#x2f;
+     * private static string KeysToJSONMap&#x28;CBORObject mapObj,
+     * IList&lt;CBORObject&gt; keys&#x29;&#x7b; if (mapObj == null) { throw
+     * new NullPointerException&#x29;nameof(mapObj));} if (keys == null) {
      * throw new NullPointerException&#x29;nameof(keys));} if (obj.getType() !=
      * CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); }
      * StringBuilder builder = new StringBuilder(); var first = true;
