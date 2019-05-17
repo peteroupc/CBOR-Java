@@ -2698,13 +2698,14 @@ public static void Write(
      * are truncated to an integer.
      * @return The closest big integer to this object.
      * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
+     * including if this object is CBORObject.Null. To check the CBOR object
+     * for null before conversion, use the following idiom (originally
+     * written in C# for the .NET version): {@code (cbor == null ||
+     * cbor.isNull()) ? null : cbor.AsEInteger()}.
      * @throws java.lang.ArithmeticException This object's value is infinity or
      * not-a-number (NaN).
      */
     public EInteger AsEInteger() {
-      // TODO: Consider returning null if this object is null
-      // in next major version
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2754,11 +2755,12 @@ public static void Write(
      * rational number with a nonterminating decimal expansion, returns a
      * decimal number rounded to 34 digits.
      * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
+     * including if this object is CBORObject.Null. To check the CBOR object
+     * for null before conversion, use the following idiom (originally
+     * written in C# for the .NET version): {@code (cbor == null ||
+     * cbor.isNull()) ? null : cbor.AsEDecimal()}.
      */
     public EDecimal AsEDecimal() {
-      // TODO: Consider returning null if this object is null
-      // in next major version
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2772,14 +2774,15 @@ public static void Write(
      * object's value. Note that if this object is a decimal number with a
      * fractional part, the conversion may lose information depending on the
      * number. If this object is a rational number with a nonterminating
-     * binary expansion, returns a binary floating-point number rounded to
-     * 113 bits.
+     * binary expansion, returns a binary floating-point number rounded to a
+     * high but limited precision.
      * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
+     * including if this object is CBORObject.Null. To check the CBOR object
+     * for null before conversion, use the following idiom (originally
+     * written in C# for the .NET version): {@code (cbor == null ||
+     * cbor.isNull()) ? null : cbor.AsEFloat()}.
      */
     public EFloat AsEFloat() {
-      // TODO: Consider returning null if this object is null
-      // in next major version
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
         throw new IllegalStateException("Not a number type");
@@ -2791,10 +2794,11 @@ public static void Write(
      * Converts this object to a rational number.
      * @return A rational number for this object's value.
      * @throws IllegalStateException This object's type is not a number type,
-     * including if this object is CBORObject.Null.
+     * including if this object is CBORObject.Null. To check the CBOR object
+     * for null before conversion, use the following idiom (originally
+     * written in C# for the .NET version): {@code (cbor == null ||
+     * cbor.isNull()) ? null : cbor.AsERational()}.
      */
-    // TODO: Consider returning null if this object is null
-    // in next major version
     public ERational AsERational() {
       ICBORNumber cn = NumberInterfaces[this.getItemType()];
       if (cn == null) {
@@ -2879,19 +2883,15 @@ public static void Write(
     }
 
     /**
-     * Gets the value of this object as a text string.<p><p>The following example
-     * code (originally written in C# for the .NET Framework) shows an idiom
-     * for returning a string value if a CBOR object is a text string, or
-     * <code>null</code> if the CBOR object is a CBOR null.</p> <pre>CBORObject
-     * obj = CBORObject.FromString("test"); string str = obj.isNull() ? null :
-     * obj.AsString(); </pre> </p>
+     * Gets the value of this object as a text string.
      * @return Gets this object's string.
      * @throws IllegalStateException This object's type is not a string, including
-     * if this object is CBORObject.Null.
+     * if this object is CBORObject.Null. To check the CBOR object for null
+     * before conversion, use the following idiom (originally written in C#
+     * for the .NET version): {@code (cbor == null || cbor.isNull()) ? null :
+     * cbor.AsString()} .
      */
     public String AsString() {
-      // TODO: Consider returning null if this object is null
-      // in next major version
       int type = this.getItemType();
       switch (type) {
         case CBORObjectTypeTextString: {
