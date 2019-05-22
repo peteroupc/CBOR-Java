@@ -837,7 +837,12 @@ try { if (ms != null) {
     /**
      * <p>Generates a CBOR object from a text string in JavaScript Object Notation
      * (JSON) format.</p> <p>If a JSON object has duplicate keys, a
-     * CBORException is thrown. This is a change in version 4.0.</p>
+     * CBORException is thrown. This is a change in version 4.0.</p> <p>Note
+     * that if a CBOR object is converted to JSON with <code>ToJSONString</code>,
+     * then the JSON is converted back to CBOR with this method, the new
+     * CBOR object will not necessarily be the same as the old CBOR object,
+     * especially if the old CBOR object uses data types not supported in
+     * JSON, such as integers in map keys.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).
@@ -852,7 +857,11 @@ try { if (ms != null) {
     /**
      * Generates a CBOR object from a text string in JavaScript Object Notation
      * (JSON) format, using the specified options to control the decoding
-     * process.
+     * process. <p>Note that if a CBOR object is converted to JSON with
+     * <code>ToJSONString</code>, then the JSON is converted back to CBOR with
+     * this method, the new CBOR object will not necessarily be the same as
+     * the old CBOR object, especially if the old CBOR object uses data
+     * types not supported in JSON, such as integers in map keys.</p>
      * @param str A string in JSON format. The entire string must contain a single
      * JSON object and not multiple objects. The string may not begin with a
      * byte-order mark (U + FEFF).

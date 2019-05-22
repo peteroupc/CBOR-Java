@@ -21,7 +21,17 @@ import java.util.*;
      * base64url or traditional base64 format to JSON.
      */
     public JSONOptions(boolean base64Padding) {
+ this(base64Padding, false);
+    }
+
+    /**
+     * Initializes a new instance of the JSONOptions class.
+     * @param base64Padding A Boolean object.
+     * @param replaceSurrogates Another Boolean object.
+     */
+    public JSONOptions(boolean base64Padding, boolean replaceSurrogates) {
         this.propVarbase64padding = base64Padding;
+        this.propVarreplacesurrogates = replaceSurrogates;
     }
 
     /**
@@ -37,4 +47,11 @@ import java.util.*;
      */
     public final boolean getBase64Padding() { return propVarbase64padding; }
 private final boolean propVarbase64padding;
+
+    /**
+     * Gets a value not documented yet.
+     * @return A value not documented yet.
+     */
+    public final boolean getReplaceSurrogates() { return propVarreplacesurrogates; }
+private final boolean propVarreplacesurrogates;
    }

@@ -448,7 +448,8 @@ import com.upokecenter.numbers.*;
 
     static void WriteJSONStringUnquoted(
       String str,
-      StringOutput sb) throws java.io.IOException {
+      StringOutput sb,
+      JSONOptions options) throws java.io.IOException {
       boolean first = true;
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
@@ -495,12 +496,19 @@ import com.upokecenter.numbers.*;
         } else {
           if ((c & 0xfc00) == 0xd800) {
            if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
-            // TODO: Add JSONOptions for handling of unpaired
-            // surrogates in strings (at least U + FFFD/escape seqs.).
             // NOTE: RFC 8259 doesn't prohibit any particular
             // error-handling behavior when a writer of JSON
             // receives a String with an unpaired surrogate.
+            if (options.getReplaceSurrogates()) {
+          if (first) {
+            first = false;
+            sb.WriteString(str, 0, i);
+          }
+// Replace unpaired surrogate with U + FFFD
+     c = (char)0xfffd;
+} else {
             throw new CBORException("Unpaired surrogate in String");
+}
            }
           }
           if (!first) {
@@ -644,7 +652,7 @@ import com.upokecenter.numbers.*;
               return;
             }
             writer.WriteCodePoint((int)'\"');
-            WriteJSONStringUnquoted(thisString, writer);
+            WriteJSONStringUnquoted(thisString, writer, options);
             writer.WriteCodePoint((int)'\"');
             break;
           }
@@ -695,7 +703,7 @@ import com.upokecenter.numbers.*;
                   writer.WriteCodePoint((int)',');
                 }
                 writer.WriteCodePoint((int)'\"');
-                WriteJSONStringUnquoted((String)key.getThisItem(), writer);
+                WriteJSONStringUnquoted((String)key.getThisItem(), writer, options);
                 writer.WriteCodePoint((int)'\"');
                 writer.WriteCodePoint((int)':');
                 WriteJSONToInternal(value, writer, options);
@@ -729,7 +737,7 @@ import com.upokecenter.numbers.*;
                   writer.WriteCodePoint((int)',');
                 }
                 writer.WriteCodePoint((int)'\"');
-                WriteJSONStringUnquoted((String)key, writer);
+                WriteJSONStringUnquoted((String)key, writer, options);
                 writer.WriteCodePoint((int)'\"');
                 writer.WriteCodePoint((int)':');
                 WriteJSONToInternal(value, writer, options);
