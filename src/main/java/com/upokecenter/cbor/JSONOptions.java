@@ -16,7 +16,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with the given values for the options.
+     * class with the given value for the Base64Padding option.
      * @param base64Padding Whether padding is included when writing data in
      * base64url or traditional base64 format to JSON.
      */
@@ -25,9 +25,15 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the JSONOptions class.
-     * @param base64Padding A Boolean object.
-     * @param replaceSurrogates Another Boolean object.
+     * Initializes a new instance of the {@link JSONOptions} class with the given
+     * values for the options.
+     * @param base64Padding Whether padding is included when writing data in
+     * base64url or traditional base64 format to JSON.
+     * @param replaceSurrogates Whether surrogate code points not part of a
+     * surrogate pair (which consists of two consecutive {@code char}s
+     * forming one Unicode code point) are each replaced with a replacement
+     * character (U + FFFD). The default is false; an exception is thrown when
+     * such code points are encountered.
      */
     public JSONOptions(boolean base64Padding, boolean replaceSurrogates) {
         this.propVarbase64padding = base64Padding;
@@ -49,8 +55,14 @@ import java.util.*;
 private final boolean propVarbase64padding;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a value indicating whether surrogate code points not part of a
+     * surrogate pair (which consists of two consecutive <code>char</code>s
+     * forming one Unicode code point) are each replaced with a replacement
+     * character (U + FFFD). The default is false; an exception is thrown when
+     * such code points are encountered.
+     * @return True, if surrogate code points not part of a surrogate pair are each
+     * replaced with a replacement character, or false if an exception is
+     * thrown when such code points are encountered.
      */
     public final boolean getReplaceSurrogates() { return propVarreplacesurrogates; }
 private final boolean propVarreplacesurrogates;
