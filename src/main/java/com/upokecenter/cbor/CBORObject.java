@@ -3231,18 +3231,54 @@ public int compareTo(CBORObject other) {
     }
 
 private static int CompareEDecimalToEFloat(EDecimal ed, EFloat ef) {
- if (ef.isFinite() && ed.isFinite() &&
-    ef.getExponent().compareTo(EInteger.FromInt32(-60000)) < 0 &&
-    ef.signum() == ef.signum() && !ef.isZero()) {
-   // Float has negative exponent and same ((sign instanceof decimal) ? (decimal)sign : null),
-   // and is nonzero
+      if (ef == null) {
+        return 1;
+      }
+      if (ed.IsNaN()) {
+        return ef.IsNaN() ? 0 : 1;
+      }
+      int signA = ed.signum();
+      int signB = ef.signum();
+      if (signA != signB) {
+        return (signA < signB) ? -1 : 1;
+      }
+      if (signB == 0 || signA == 0) {
+        // Special case: Either operand is zero
+        return 0;
+      }
+      if (ed.IsInfinity()) {
+        if (ef.IsInfinity()) {
+          // if we get here, this only means that
+          // both are positive infinity or both
+          // are negative infinity
+          return 0;
+        }
+        return ed.isNegative() ? -1 : 1;
+      }
+      if (ef.IsInfinity()) {
+        return ef.isNegative() ? 1 : -1;
+      }
+      // At this point, both numbers are finite and
+      // have the same sign
+
+      if (ef.getExponent().compareTo(EInteger.FromInt64(-1000)) < 0) {
+        // For very low exponents, the conversion to decimal can take
+        // very long, so try this approach
+        if (ef.Abs(null).compareTo(EFloat.One) < 0) {
+          // Abs less than 1
+          if (ed.Abs(null).compareTo(EDecimal.One) >= 0) {
+            // Abs 1 or more
+            return (signA > 0) ? 1 : -1;
+          }
+        }
+// DebugUtility.Log("edexp=" + ed.getExponent() + ", efexp=" + (ef.getExponent()));
    EInteger bitCount = ef.getMantissa().GetUnsignedBitLengthAsEInteger();
    EInteger absexp = ef.getExponent().Abs();
    if (absexp.compareTo(bitCount) > 0) {
-     // Float is less than 1, so do a trial comparison
+     // Float's absolute value is less than 1, so do a trial comparison
      // using exponent closer to 0
-     EFloat trial = EFloat.Create(ef.getMantissa(), EInteger.FromInt32(-60000));
-     int trialcmp = ed.CompareToBinary(trial);
+     EFloat trial = EFloat.Create(ef.getMantissa(), EInteger.FromInt32(-1000));
+     int trialcmp = CompareEDecimalToEFloat(ed, trial);
      if (ef.signum() < 0 && trialcmp < 0) {
        // if float and decimal are negative and
        // decimal is less than trial float (which in turn is
@@ -3258,9 +3294,109 @@ private static int CompareEDecimalToEFloat(EDecimal ed, EFloat ef) {
        return 1;
      }
    }
- }
- return ed.CompareToBinary(ef);
+        EInteger thisAdjExp = GetAdjustedExponent(ed);
+        EInteger otherAdjExp = GetAdjustedExponentBinary(ef);
+// DebugUtility.Log("taexp=" + thisAdjExp + ", oaexp=" + otherAdjExp);
+      if (thisAdjExp.signum() < 0 && thisAdjExp.compareTo(EInteger.FromInt64(-1000)) < 0 &&
+          otherAdjExp.compareTo(EInteger.FromInt64(-1000)) < 0) {
+          thisAdjExp = thisAdjExp.Add(EInteger.FromInt32(1)).Abs();
+          otherAdjExp = otherAdjExp.Add(EInteger.FromInt32(1)).Abs();
+          EInteger ratio = otherAdjExp.Multiply(1000).Divide(thisAdjExp);
+// DebugUtility.Log("taexp={0}, oaexp={1} ratio={2}"
+// , thisAdjExp, otherAdjExp, ratio);
+          // Check the ratio of the negative binary exponent to
+          // negative the decimal exponent.
+          // If the ratio times 1000, rounded down, is less than 3321, the
+          // binary's absolute value is
+          // greater. If it's 3322 or greater, the decimal's absolute value is
+          // greater.
+          // (If the two absolute values are equal, the ratio will approach
+          // ln(10)/ln(2), or about 3.32193, as the exponents get higher and
+          // higher.) This check assumes that both exponents are 1000 or
+          // greater, when the ratio between exponents of equal values is
+          // close to ln(10)/ln(2).
+          if (ratio.compareTo(EInteger.FromInt64(3321)) < 0) {
+            // Binary abs. value is greater
+            return (signA > 0) ? -1 : 1;
+          }
+          if (ratio.compareTo(EInteger.FromInt64(3322)) >= 0) {
+            return (signA > 0) ? 1 : -1;
+          }
+        }
+      }
+      if (ef.getExponent().compareTo(EInteger.FromInt64(1000)) > 0) {
+        // Very high exponents
+        EInteger bignum = EInteger.FromInt32(1).ShiftLeft(999);
+        if (ed.Abs(null).compareTo(EDecimal.FromEInteger(bignum)) <=
+            0) {
+          // this object's absolute value is less
+          return (signA > 0) ? -1 : 1;
+        }
+        // NOTE: The following check assumes that both
+        // operands are nonzero
+        EInteger thisAdjExp = GetAdjustedExponent(ed);
+        EInteger otherAdjExp = GetAdjustedExponentBinary(ef);
+        if (thisAdjExp.signum() > 0 && thisAdjExp.compareTo(otherAdjExp) >= 0) {
+          // This Object's adjusted exponent is greater and is positive;
+          // so this object's absolute value is greater, since exponents
+          // have a greater value in decimal than in binary
+          return (signA > 0) ? 1 : -1;
+        }
+        if (thisAdjExp.signum() > 0 && thisAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0 &&
+                otherAdjExp.compareTo(EInteger.FromInt64(1000)) >= 0) {
+          thisAdjExp = thisAdjExp.Add(EInteger.FromInt32(1));
+          otherAdjExp = otherAdjExp.Add(EInteger.FromInt32(1));
+          EInteger ratio = otherAdjExp.Multiply(1000).Divide(thisAdjExp);
+          // Check the ratio of the binary exponent to the decimal exponent.
+          // If the ratio times 1000, rounded down, is less than 3321, the
+          // decimal's absolute value is
+          // greater. If it's 3322 or greater, the binary's absolute value is
+          // greater.
+          // (If the two absolute values are equal, the ratio will approach
+          // ln(10)/ln(2), or about 3.32193, as the exponents get higher and
+          // higher.) This check assumes that both exponents are 1000 or
+          // greater, when the ratio between exponents of equal values is
+          // close to ln(10)/ln(2).
+          if (ratio.compareTo(EInteger.FromInt64(3321)) < 0) {
+            // Decimal abs. value is greater
+            return (signA > 0) ? 1 : -1;
+          }
+          if (ratio.compareTo(EInteger.FromInt64(3322)) >= 0) {
+            return (signA > 0) ? -1 : 1;
+          }
+        }
+      }
+      EDecimal otherDec = EDecimal.FromEFloat(ef);
+      return ed.compareTo(otherDec);
 }
+
+    private static EInteger GetAdjustedExponent(EDecimal ed) {
+      if (!ed.isFinite()) {
+        return EInteger.FromInt32(0);
+      }
+      if (ed.isZero()) {
+        return EInteger.FromInt32(0);
+      }
+      EInteger retEInt = ed.getExponent();
+      EInteger valueEiPrecision = EInteger.FromInt32(
+          ed.getUnsignedMantissa().GetDigitCount());
+      retEInt = retEInt.Add(valueEiPrecision.Subtract(1));
+      return retEInt;
+    }
+
+    private static EInteger GetAdjustedExponentBinary(EFloat ef) {
+      if (!ef.isFinite()) {
+        return EInteger.FromInt32(0);
+      }
+      if (ef.isZero()) {
+        return EInteger.FromInt32(0);
+      }
+      EInteger retEInt = ef.getExponent();
+      EInteger valueEiPrecision = EInteger.FromInt32(
+           ef.getUnsignedMantissa().GetSignedBitLength());
+      retEInt = retEInt.Add(valueEiPrecision.Subtract(1));
+      return retEInt;
+    }
 
     /**
      * Compares this object and another CBOR object, ignoring the tags they have,

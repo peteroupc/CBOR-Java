@@ -1906,7 +1906,7 @@ CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
   0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x00 });
 System.out.println(cbor1);
 System.out.println(cbor2);
-TestCommon.CompareTestReciprocal(cbor1, cbor2);
+TestCommon.CompareTestGreater(cbor1, cbor2);
 }
 
 @Test(timeout = 1000)
