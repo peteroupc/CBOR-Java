@@ -1892,17 +1892,75 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
         }
       }
     }
+@Test(timeout = 1000)
+public void TestSlowCompareTo2() {
+CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+  (byte)0x82, 0x3b, 0x00, 0x00, 0x00, (byte)0xd3, (byte)0xe1, 0x26,
+  (byte)0xf9, 0x3b, (byte)0xc2, 0x4c, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01,
+  0x01, 0x00, 0x00, 0x01, 0x00, 0x00 });
+CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+  (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x56, (byte)0xe9, 0x21, (byte)0xda,
+  (byte)0xe9, (byte)0xc2, 0x58, 0x2a, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+  0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01,
+  0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x00 });
+System.out.println(cbor1);
+System.out.println(cbor2);
+TestCommon.CompareTestReciprocal(cbor1, cbor2);
+}
+
+@Test(timeout = 1000)
+public void TestSlowCompareTo() {
+CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
+  (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x15, (byte)0xfc, (byte)0xa0,
+  (byte)0xd9, (byte)0xf9, (byte)0xc3, 0x58, 0x36, 0x02, (byte)0x83, 0x3b,
+  0x3c, (byte)0x99, (byte)0xdb, (byte)0xe4, (byte)0xfc, 0x2a, 0x69, 0x69,
+  (byte)0xe7, 0x63, (byte)0xb7, 0x5d, 0x48, (byte)0xcf, 0x51, 0x33,
+  (byte)0xd7, (byte)0xc3, 0x59, 0x4d, 0x63, 0x3c, (byte)0xbb, (byte)0x9d,
+  0x43, 0x2d, (byte)0xd1, 0x51, 0x39, 0x1f, 0x03, 0x22, 0x5c, 0x13,
+  (byte)0xed, 0x02, (byte)0xca, (byte)0xda, 0x09, 0x22, 0x07, (byte)0x9f,
+  0x34, (byte)0x84, (byte)0xb4, 0x22, (byte)0xa8, 0x26, (byte)0x9f, 0x35,
+  (byte)0x8d });
+CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4,
+  (byte)0x82, 0x24, 0x26 });
+System.out.println(cbor1);
+System.out.println(cbor2);
+TestCommon.CompareTestGreater(cbor1, cbor2);
+}
 
     @Test(timeout = 100000)
     public void TestCompareTo() {
       RandomGenerator r = new RandomGenerator();
-      int CompareCount = 500;
+      int CompareCount = 1000;
+      ArrayList<CBORObject> list = new ArrayList<CBORObject>();
       for (int i = 0; i < CompareCount; ++i) {
         CBORObject o1 = CBORTestCommon.RandomCBORObject(r);
         CBORObject o2 = CBORTestCommon.RandomCBORObject(r);
         CBORObject o3 = CBORTestCommon.RandomCBORObject(r);
         TestCommon.CompareTestRelations(o1, o2, o3);
+        if (list.size() < 200) {
+           if (o1.getType() == CBORType.Number) {
+ list.add(o1.Untag());
+}
+           if (o2.getType() == CBORType.Number) {
+ list.add(o2.Untag());
+}
+           if (o3.getType() == CBORType.Number) {
+ list.add(o3.Untag());
+}
+        }
       }
+System.out.println("Sorting " + (list.size())+" numbers");
+for (int i = 0; i < list.size(); ++i) {
+ for (var j = i + 1; j < list.size(); ++j) {
+         CBORObject o1 = list.get(i);
+         CBORObject o2 = list.get(j);
+   System.out.println("//--");
+   System.out.println(TestCommon.ToByteArrayString(o1.EncodeToBytes()));
+   System.out.println(TestCommon.ToByteArrayString(o2.EncodeToBytes()));
+   TestCommon.CompareTestReciprocal(o1, o2);
+ }
+}
       for (int i = 0; i < 5000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);

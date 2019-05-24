@@ -3198,12 +3198,12 @@ public int compareTo(CBORObject other) {
             if (typeA == CBORObjectTypeExtendedFloat) {
               EFloat ef1 = (EFloat)objA;
               e2 = (EDecimal)objB;
-              cmp = e2.CompareToBinary(ef1);
+              cmp = CompareEDecimalToEFloat(e2, ef1);
               cmp = -cmp;
             } else if (typeB == CBORObjectTypeExtendedFloat) {
               EFloat ef1 = (EFloat)objB;
               e2 = (EDecimal)objA;
-              cmp = e2.CompareToBinary(ef1);
+              cmp = CompareEDecimalToEFloat(e2, ef1);
             } else {
               e1 = NumberInterfaces[typeA].AsExtendedDecimal(objA);
               e2 = NumberInterfaces[typeB].AsExtendedDecimal(objB);
@@ -3229,6 +3229,38 @@ public int compareTo(CBORObject other) {
            TagsCompare(this.GetAllTags(), other.GetAllTags())) :
                     cmp;
     }
+
+private static int CompareEDecimalToEFloat(EDecimal ed, EFloat ef) {
+ if (ef.isFinite() && ed.isFinite() &&
+    ef.getExponent().compareTo(EInteger.FromInt32(-60000)) < 0 &&
+    ef.signum() == ef.signum() && !ef.isZero()) {
+   // Float has negative exponent and same ((sign instanceof decimal) ? (decimal)sign : null),
+   // and is nonzero
+   EInteger bitCount = ef.getMantissa().GetUnsignedBitLengthAsEInteger();
+   EInteger absexp = ef.getExponent().Abs();
+   if (absexp.compareTo(bitCount) > 0) {
+     // Float is less than 1, so do a trial comparison
+     // using exponent closer to 0
+     EFloat trial = EFloat.Create(ef.getMantissa(), EInteger.FromInt32(-60000));
+     int trialcmp = ed.CompareToBinary(trial);
+     if (ef.signum() < 0 && trialcmp < 0) {
+       // if float and decimal are negative and
+       // decimal is less than trial float (which in turn is
+       // less than the actual float), then the decimal is
+       // less than the actual float
+       return -1;
+     }
+     if (ef.signum() > 0 && trialcmp > 0) {
+       // if float and decimal are positive and
+       // decimal is greater than trial float (which in turn is
+       // greater than the actual float), then the decimal is
+       // greater than the actual float
+       return 1;
+     }
+   }
+ }
+ return ed.CompareToBinary(ef);
+}
 
     /**
      * Compares this object and another CBOR object, ignoring the tags they have,
