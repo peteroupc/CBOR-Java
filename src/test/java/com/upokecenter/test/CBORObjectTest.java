@@ -1928,17 +1928,17 @@ System.out.println(cbor2);
 TestCommon.CompareTestGreater(cbor1, cbor2);
 }
 
-    @Test(timeout = 100000)
+    @Test(timeout = 300000)
     public void TestCompareTo() {
       RandomGenerator r = new RandomGenerator();
-      int CompareCount = 1000;
+      int CompareCount = 3000;
       ArrayList<CBORObject> list = new ArrayList<CBORObject>();
       for (int i = 0; i < CompareCount; ++i) {
         CBORObject o1 = CBORTestCommon.RandomCBORObject(r);
         CBORObject o2 = CBORTestCommon.RandomCBORObject(r);
         CBORObject o3 = CBORTestCommon.RandomCBORObject(r);
         TestCommon.CompareTestRelations(o1, o2, o3);
-        if (list.size() < 200) {
+        if (list.size() < 400) {
            if (o1.getType() == CBORType.Number) {
  list.add(o1.Untag());
 }
@@ -1950,16 +1950,24 @@ TestCommon.CompareTestGreater(cbor1, cbor2);
 }
         }
       }
-System.out.println("Sorting " + (list.size())+" numbers");
+System.out.println("Check compare");
 for (int i = 0; i < list.size(); ++i) {
  for (var j = i + 1; j < list.size(); ++j) {
          CBORObject o1 = list.get(i);
          CBORObject o2 = list.get(j);
-   System.out.println("//--");
-   System.out.println(TestCommon.ToByteArrayString(o1.EncodeToBytes()));
-   System.out.println(TestCommon.ToByteArrayString(o2.EncodeToBytes()));
+   // System.out.println("// --");
+   // System.out.println(TestCommon.ToByteArrayString(o1.EncodeToBytes()));
+   // System.out.println(TestCommon.ToByteArrayString(o2.EncodeToBytes()));
    TestCommon.CompareTestReciprocal(o1, o2);
  }
+}
+System.out.println("Sorting");
+java.util.Collections.sort(list);
+System.out.println("Check compare 2");
+for (int i = 0; i < list.size() - 1; ++i) {
+         CBORObject o1 = list.get(i);
+         CBORObject o2 = list.get(i + 1);
+  TestCommon.CompareTestLessEqual(o1, o2);
 }
       for (int i = 0; i < 5000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
