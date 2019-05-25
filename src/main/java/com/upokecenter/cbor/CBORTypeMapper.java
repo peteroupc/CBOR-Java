@@ -4,8 +4,8 @@ import java.util.*;
 
     /**
      * Holds converters to customize the serialization and deserialization behavior
-     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
-     * well as type filters for <code>ToObject</code>
+     * of <code> CBORObject.FromObject </code> and <code> CBORObject#ToObject </code> ,
+     * as well as type filters for <code> ToObject </code>
      */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
@@ -14,7 +14,7 @@ import java.util.*;
       converters;
 
     /**
-     * Initializes a new instance of the {@link CBORTypeMapper} class.
+     * Initializes a new instance of the CBORTypeMapper class.
      */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();
@@ -33,7 +33,7 @@ import java.util.*;
      * @return This object.
      * @throws java.lang.NullPointerException The parameter {@code type} or {@code
      * converter} is null.
-     * @throws IllegalArgumentException "Converter doesn't contain a proper
+     * @throws IllegalArgumentException Converter doesn't contain a proper
      * ToCBORObject method".
      */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
@@ -105,8 +105,8 @@ import java.util.*;
      * Returns whether the given Java or .NET type name fits the filters given in
      * this mapper.
      * @param typeName The fully qualified name of a Java or .NET class (e.g.,
-     * {@code java.math.BigInteger} or {@code
-     * System.Globalization.CultureInfo}).
+     * {@code java.math.BigInteger } or {@code
+     * System.Globalization.CultureInfo }).
      * @return Either {@code true} if the given Java or .NET type name fits the
      * filters given in this mapper, or {@code false} otherwise.
      */
@@ -153,7 +153,8 @@ import java.util.*;
      * Adds the fully qualified name of a Java or .NET type for use in type
      * matching.
      * @param name The fully qualified name of a Java or .NET class (e.g., {@code
-     * java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
+     * java.math.BigInteger } or {@code System.Globalization.CultureInfo }
+     *).
      * @return This object.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.
