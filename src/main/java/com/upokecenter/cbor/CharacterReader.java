@@ -28,26 +28,14 @@ import java.io.*;
  this(str, false, false);
     }
 
-    // <summary>Initializes a new instance of the
-    // <see cref='T:PeterO.Cbor.CharacterReader'/> class.</summary>
-    // <param name='str'>The parameter <paramref name='str'/> is a text
-    // String.</param>
-    // <param name='skipByteOrderMark'>Either <c>true</c> or <c>false</c>
-    // .</param>
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean)"]/*'/>
     public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
 
-    // <summary>Initializes a new instance of the
-    // <see cref='T:PeterO.Cbor.CharacterReader'/> class.</summary>
-    // <param name='str'>The parameter <paramref name='str'/> is a text
-    // String.</param>
-    // <param name='skipByteOrderMark'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <param name='errorThrow'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <exception cref='T:java.lang.NullPointerException'>The parameter
-    // <paramref name='str'/> is null.</exception>
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean,System.Boolean)"]/*'/>
   public CharacterReader(
   String str,
   boolean skipByteOrderMark,
@@ -71,20 +59,8 @@ import java.io.*;
  this(str, offset, length, false, false);
     }
 
-    // <summary>Initializes a new instance of the
-    // <see cref='T:PeterO.Cbor.CharacterReader'/> class.</summary>
-    // <param name='str'>The parameter <paramref name='str'/> is a text
-    // String.</param>
-    // <param name='offset'>The parameter <paramref name='offset'/> is a
-    // 32-bit signed integer.</param>
-    // <param name='length'>The parameter <paramref name='length'/> is a
-    // 32-bit signed integer.</param>
-    // <param name='skipByteOrderMark'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <param name='errorThrow'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <exception cref='T:java.lang.NullPointerException'>The parameter
-    // <paramref name='str'/> is null.</exception>
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)"]/*'/>
     public CharacterReader(
   String str,
   int offset,
@@ -130,13 +106,8 @@ if (str.length() - offset < length) {
  this(stream, 0, false);
     }
 
-    // <summary>Initializes a new instance of the
-    // <see cref='T:PeterO.Cbor.CharacterReader'/> class.</summary>
-    // <param name='stream'>A readable data stream.</param>
-    // <param name='mode'>The parameter <paramref name='mode'/> is a
-    // 32-bit signed integer.</param>
-    // <param name='errorThrow'>Either <c>true</c> or <c>false</c>
-    // .</param>
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean)"]/*'/>
     public CharacterReader(InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
@@ -147,17 +118,8 @@ if (str.length() - offset < length) {
  this(stream, mode, false, false);
     }
 
-    // <summary>Initializes a new instance of the
-    // <see cref='T:PeterO.Cbor.CharacterReader'/> class.</summary>
-    // <param name='stream'>A readable data stream.</param>
-    // <param name='mode'>The parameter <paramref name='mode'/> is a
-    // 32-bit signed integer.</param>
-    // <param name='errorThrow'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <param name='dontSkipUtf8Bom'>Either <c>true</c> or <c>false</c>
-    // .</param>
-    // <exception cref='T:java.lang.NullPointerException'>The parameter
-    // <paramref name='stream'/> is null.</exception>
+    // <include file='../../docs.xml'
+    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean,System.Boolean)"]/*'/>
     public CharacterReader(
   InputStream stream,
   int mode,
