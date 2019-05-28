@@ -1,6 +1,6 @@
 # com.upokecenter.util.DataUtilities
 
-    public final class DataUtilities extends Object
+    public final class DataUtilities extends java.lang.Object
 
 Contains methods useful for reading and writing strings. It is designed to
  have no dependencies other than the basic runtime class library.
@@ -24,89 +24,89 @@ Contains methods useful for reading and writing strings. It is designed to
 
 ## Methods
 
-* `static int CodePointAt​(String str,
+* `static int CodePointAt​(java.lang.String str,
            int index)`<br>
  Gets the Unicode code point at the given index of the string.
-* `static int CodePointAt​(String str,
+* `static int CodePointAt​(java.lang.String str,
            int index,
            int surrogateBehavior)`<br>
  Gets the Unicode code point at the given index of the string.
-* `static int CodePointBefore​(String str,
+* `static int CodePointBefore​(java.lang.String str,
                int index)`<br>
  Gets the Unicode code point just before the given index of the string.
-* `static int CodePointBefore​(String str,
+* `static int CodePointBefore​(java.lang.String str,
                int index,
                int surrogateBehavior)`<br>
  Gets the Unicode code point just before the given index of the string.
-* `static int CodePointCompare​(String strA,
-                String strB)`<br>
+* `static int CodePointCompare​(java.lang.String strA,
+                java.lang.String strB)`<br>
  Compares two strings in Unicode code point order.
-* `static int CodePointLength​(String str)`<br>
+* `static int CodePointLength​(java.lang.String str)`<br>
  Finds the number of Unicode code points in the given text string.
-* `static byte[] GetUtf8Bytes​(String str,
+* `static byte[] GetUtf8Bytes​(java.lang.String str,
             boolean replace)`<br>
  Encodes a string in UTF-8 as a byte array.
-* `static byte[] GetUtf8Bytes​(String str,
+* `static byte[] GetUtf8Bytes​(java.lang.String str,
             boolean replace,
             boolean lenientLineBreaks)`<br>
  Encodes a string in UTF-8 as a byte array.
-* `static long GetUtf8Length​(String str,
+* `static long GetUtf8Length​(java.lang.String str,
              boolean replace)`<br>
  Calculates the number of bytes needed to encode a string in UTF-8.
-* `static String GetUtf8String​(byte[] bytes,
+* `static java.lang.String GetUtf8String​(byte[] bytes,
              boolean replace)`<br>
  Generates a text string from a UTF-8 byte array.
-* `static String GetUtf8String​(byte[] bytes,
+* `static java.lang.String GetUtf8String​(byte[] bytes,
              int offset,
              int bytesCount,
              boolean replace)`<br>
  Generates a text string from a portion of a UTF-8 byte array.
-* `static int ReadUtf8​(InputStream stream,
+* `static int ReadUtf8​(java.io.InputStream stream,
         int bytesCount,
-        StringBuilder builder,
+        java.lang.StringBuilder builder,
         boolean replace)`<br>
  Reads a string in UTF-8 encoding from a data stream.
 * `static int ReadUtf8FromBytes​(byte[] data,
                  int offset,
                  int bytesCount,
-                 StringBuilder builder,
+                 java.lang.StringBuilder builder,
                  boolean replace)`<br>
  Reads a string in UTF-8 encoding from a byte array.
-* `static String ReadUtf8ToString​(InputStream stream)`<br>
+* `static java.lang.String ReadUtf8ToString​(java.io.InputStream stream)`<br>
  Reads a string in UTF-8 encoding from a data stream in full and returns that
  string.
-* `static String ReadUtf8ToString​(InputStream stream,
+* `static java.lang.String ReadUtf8ToString​(java.io.InputStream stream,
                 int bytesCount,
                 boolean replace)`<br>
  Reads a string in UTF-8 encoding from a data stream and returns that string.
-* `static String ToLowerCaseAscii​(String str)`<br>
+* `static java.lang.String ToLowerCaseAscii​(java.lang.String str)`<br>
  Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
  converted to lower-case.
-* `static String ToUpperCaseAscii​(String str)`<br>
+* `static java.lang.String ToUpperCaseAscii​(java.lang.String str)`<br>
  Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
  converted to upper-case.
-* `static int WriteUtf8​(String str,
+* `static int WriteUtf8​(java.lang.String str,
          int offset,
          int length,
-         OutputStream stream,
+         java.io.OutputStream stream,
          boolean replace)`<br>
  Writes a portion of a string in UTF-8 encoding to a data stream.
-* `static int WriteUtf8​(String str,
+* `static int WriteUtf8​(java.lang.String str,
          int offset,
          int length,
-         OutputStream stream,
+         java.io.OutputStream stream,
          boolean replace,
          boolean lenientLineBreaks)`<br>
  Writes a portion of a string in UTF-8 encoding to a data stream.
-* `static int WriteUtf8​(String str,
-         OutputStream stream,
+* `static int WriteUtf8​(java.lang.String str,
+         java.io.OutputStream stream,
          boolean replace)`<br>
  Writes a string in UTF-8 encoding to a data stream.
 
 ## Method Details
 
 ### GetUtf8String
-    public static String GetUtf8String​(byte[] bytes, boolean replace)
+    public static java.lang.String GetUtf8String​(byte[] bytes, boolean replace)
 Generates a text string from a UTF-8 byte array.
 
 **Parameters:**
@@ -123,13 +123,13 @@ Generates a text string from a UTF-8 byte array.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
-* <code>IllegalArgumentException</code> - The string is not valid UTF-8 and <code>
+* <code>java.lang.IllegalArgumentException</code> - The string is not valid UTF-8 and <code>
  replace</code> is false.
 
 ### CodePointLength
-    public static int CodePointLength​(String str)
+    public static int CodePointLength​(java.lang.String str)
 Finds the number of Unicode code points in the given text string. Unpaired
  surrogate code points increase this number by 1. This is not
  necessarily the length of the string in "char" s.
@@ -144,10 +144,10 @@ Finds the number of Unicode code points in the given text string. Unpaired
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetUtf8String
-    public static String GetUtf8String​(byte[] bytes, int offset, int bytesCount, boolean replace)
+    public static java.lang.String GetUtf8String​(byte[] bytes, int offset, int bytesCount, boolean replace)
 Generates a text string from a portion of a UTF-8 byte array.
 
 **Parameters:**
@@ -168,17 +168,17 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
-* <code>IllegalArgumentException</code> - The portion of the byte array is not valid
+* <code>java.lang.IllegalArgumentException</code> - The portion of the byte array is not valid
  UTF-8 and <code>replace</code> is false.
 
-* <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
  greater than the length of "data" .
 
 ### GetUtf8Bytes
-    public static byte[] GetUtf8Bytes​(String str, boolean replace)
+    public static byte[] GetUtf8Bytes​(java.lang.String str, boolean replace)
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
  byte-order mark (U + FEFF) at the beginning of the encoded byte
  array.</p> <p>REMARK: It is not recommended to use
@@ -201,14 +201,14 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - The string contains an unpaired surrogate
+* <code>java.lang.IllegalArgumentException</code> - The string contains an unpaired surrogate
  code point and <code>replace</code> is false, or an internal error
  occurred.
 
 ### GetUtf8Bytes
-    public static byte[] GetUtf8Bytes​(String str, boolean replace, boolean lenientLineBreaks)
+    public static byte[] GetUtf8Bytes​(java.lang.String str, boolean replace, boolean lenientLineBreaks)
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
  byte-order mark (U + FEFF) at the beginning of the encoded byte
  array.</p> <p>REMARK: It is not recommended to use
@@ -234,14 +234,14 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - The string contains an unpaired surrogate
+* <code>java.lang.IllegalArgumentException</code> - The string contains an unpaired surrogate
  code point and <code>replace</code> is false, or an internal error
  occurred.
 
 ### GetUtf8Length
-    public static long GetUtf8Length​(String str, boolean replace)
+    public static long GetUtf8Length​(java.lang.String str, boolean replace)
 Calculates the number of bytes needed to encode a string in UTF-8.
 
 **Parameters:**
@@ -259,10 +259,10 @@ Calculates the number of bytes needed to encode a string in UTF-8.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### CodePointBefore
-    public static int CodePointBefore​(String str, int index)
+    public static int CodePointBefore​(java.lang.String str, int index)
 Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
@@ -281,10 +281,10 @@ Gets the Unicode code point just before the given index of the string.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### CodePointBefore
-    public static int CodePointBefore​(String str, int index, int surrogateBehavior)
+    public static int CodePointBefore​(java.lang.String str, int index, int surrogateBehavior)
 Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
@@ -309,10 +309,10 @@ Gets the Unicode code point just before the given index of the string.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### CodePointAt
-    public static int CodePointAt​(String str, int index)
+    public static int CodePointAt​(java.lang.String str, int index)
 Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
  code point.</p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
@@ -336,10 +336,10 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### CodePointAt
-    public static int CodePointAt​(String str, int index, int surrogateBehavior)
+    public static int CodePointAt​(java.lang.String str, int index, int surrogateBehavior)
 Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
  code point, terminating the loop when an unpaired surrogate is
@@ -371,10 +371,10 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### ToLowerCaseAscii
-    public static String ToLowerCaseAscii​(String str)
+    public static java.lang.String ToLowerCaseAscii​(java.lang.String str)
 Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
  converted to lower-case. Other characters remain unchanged.
 
@@ -387,7 +387,7 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 * The converted string, or null if <code>str</code> is null.
 
 ### ToUpperCaseAscii
-    public static String ToUpperCaseAscii​(String str)
+    public static java.lang.String ToUpperCaseAscii​(java.lang.String str)
 Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
  converted to upper-case. Other characters remain unchanged.
 
@@ -400,7 +400,7 @@ Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
 * The converted string, or null if <code>str</code> is null.
 
 ### CodePointCompare
-    public static int CodePointCompare​(String strA, String strB)
+    public static int CodePointCompare​(java.lang.String strA, java.lang.String strB)
 Compares two strings in Unicode code point order. Unpaired surrogate code
  points are treated as individual code points.
 
@@ -420,7 +420,7 @@ Compares two strings in Unicode code point order. Unpaired surrogate code
  or a starts with b and is longer than b.
 
 ### WriteUtf8
-    public static int WriteUtf8​(String str, int offset, int length, OutputStream stream, boolean replace) throws IOException
+    public static int WriteUtf8​(java.lang.String str, int offset, int length, java.io.OutputStream stream, boolean replace) throws java.io.IOException
 Writes a portion of a string in UTF-8 encoding to a data stream.
 
 **Parameters:**
@@ -445,17 +445,17 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null or
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null or
  <code>stream</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>length</code> is less than 0, or <code>offset</code> plus <code>
  length</code> is greater than the string's length.
 
-* <code>IOException</code> - An I/O error occurred.
+* <code>java.io.IOException</code> - An I/O error occurred.
 
 ### WriteUtf8
-    public static int WriteUtf8​(String str, int offset, int length, OutputStream stream, boolean replace, boolean lenientLineBreaks) throws IOException
+    public static int WriteUtf8​(java.lang.String str, int offset, int length, java.io.OutputStream stream, boolean replace, boolean lenientLineBreaks) throws java.io.IOException
 Writes a portion of a string in UTF-8 encoding to a data stream.
 
 **Parameters:**
@@ -483,17 +483,17 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null or
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null or
  <code>stream</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>length</code> is less than 0, or <code>offset</code> plus <code>
  length</code> is greater than the string's length.
 
-* <code>IOException</code> - An I/O error occurred.
+* <code>java.io.IOException</code> - An I/O error occurred.
 
 ### WriteUtf8
-    public static int WriteUtf8​(String str, OutputStream stream, boolean replace) throws IOException
+    public static int WriteUtf8​(java.lang.String str, java.io.OutputStream stream, boolean replace) throws java.io.IOException
 Writes a string in UTF-8 encoding to a data stream.
 
 **Parameters:**
@@ -513,13 +513,13 @@ Writes a string in UTF-8 encoding to a data stream.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null or
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null or
  <code>stream</code> is null.
 
-* <code>IOException</code> - An I/O error occurred.
+* <code>java.io.IOException</code> - An I/O error occurred.
 
 ### ReadUtf8FromBytes
-    public static int ReadUtf8FromBytes​(byte[] data, int offset, int bytesCount, StringBuilder builder, boolean replace)
+    public static int ReadUtf8FromBytes​(byte[] data, int offset, int bytesCount, java.lang.StringBuilder builder, boolean replace)
 Reads a string in UTF-8 encoding from a byte array.
 
 **Parameters:**
@@ -544,15 +544,15 @@ Reads a string in UTF-8 encoding from a byte array.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>data</code> is null or
+* <code>java.lang.NullPointerException</code> - The parameter <code>data</code> is null or
  <code>builder</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>offset</code> is less than
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
  greater than the length of <code>data</code> .
 
 ### ReadUtf8ToString
-    public static String ReadUtf8ToString​(InputStream stream) throws IOException
+    public static java.lang.String ReadUtf8ToString​(java.io.InputStream stream) throws java.io.IOException
 Reads a string in UTF-8 encoding from a data stream in full and returns that
  string. Replaces invalid encoding with the replacement character
  (U + FFFD).
@@ -567,12 +567,12 @@ Reads a string in UTF-8 encoding from a data stream in full and returns that
 
 **Throws:**
 
-* <code>IOException</code> - An I/O error occurred.
+* <code>java.io.IOException</code> - An I/O error occurred.
 
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
 
 ### ReadUtf8ToString
-    public static String ReadUtf8ToString​(InputStream stream, int bytesCount, boolean replace) throws IOException
+    public static java.lang.String ReadUtf8ToString​(java.io.InputStream stream, int bytesCount, boolean replace) throws java.io.IOException
 Reads a string in UTF-8 encoding from a data stream and returns that string.
 
 **Parameters:**
@@ -592,13 +592,13 @@ Reads a string in UTF-8 encoding from a data stream and returns that string.
 
 **Throws:**
 
-* <code>IOException</code> - An I/O error occurred; or, the string is not
+* <code>java.io.IOException</code> - An I/O error occurred; or, the string is not
  valid UTF-8 and <code>replace</code> is false.
 
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
 
 ### ReadUtf8
-    public static int ReadUtf8​(InputStream stream, int bytesCount, StringBuilder builder, boolean replace) throws IOException
+    public static int ReadUtf8​(java.io.InputStream stream, int bytesCount, java.lang.StringBuilder builder, boolean replace) throws java.io.IOException
 Reads a string in UTF-8 encoding from a data stream.
 
 **Parameters:**
@@ -624,7 +624,7 @@ Reads a string in UTF-8 encoding from a data stream.
 
 **Throws:**
 
-* <code>IOException</code> - An I/O error occurred.
+* <code>java.io.IOException</code> - An I/O error occurred.
 
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null or
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null or
  <code>builder</code> is null.

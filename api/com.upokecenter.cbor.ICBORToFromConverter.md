@@ -2,35 +2,36 @@
 
     public interface ICBORToFromConverter<T> extends ICBORConverter<T>
 
-Not documented yet.
+Classes that implement this interface can support conversions from CBOR
+ objects to a custom type and back.
 
 ## Methods
 
 * `T FromCBORObject​(CBORObject obj)`<br>
- Not documented yet.
+ Converts a CBOR object to a custom type.
 
 ## Method Details
 
 ### FromCBORObject
     T FromCBORObject​(CBORObject obj)
-Not documented yet.
+Converts a CBOR object to a custom type.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+* <code>obj</code> - A CBOR object to convert to the custom type.
 
 **Returns:**
 
-* The return value is not documented yet.
+* An object of the custom type after conversion.
 
 ### FromCBORObject
     T FromCBORObject​(CBORObject obj)
-Not documented yet.
+Converts a CBOR object to a custom type.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is not documented yet.
+* <code>obj</code> - A CBOR object to convert to the custom type.
 
 **Returns:**
 
-* The return value is not documented yet.
+* An object of the custom type after conversion.

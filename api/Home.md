@@ -5,7 +5,8 @@ Interface implemented by classes that convert objects of arbitrary types to
  CBOR objects.
 
 * [com.upokecenter.cbor.ICBORToFromConverter&amp;lt;T&amp;gt;](com.upokecenter.cbor.ICBORToFromConverter.md) -
-Not documented yet.
+Classes that implement this interface can support conversions from CBOR
+ objects to a custom type and back.
 
 * [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
 Contains methods useful for reading and writing data, with a focus on CBOR.
@@ -19,7 +20,7 @@ Represents an object in Concise Binary Object Representation (CBOR) and
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior
- of CBORObject.FromObject and CBORObject#ToObject, as
+ of CBORObject.FromObject  and CBORObject#ToObject  , as
  well as type filters for ToObject
 
 * [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -

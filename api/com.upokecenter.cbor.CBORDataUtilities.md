@@ -1,18 +1,18 @@
 # com.upokecenter.cbor.CBORDataUtilities
 
-    public final class CBORDataUtilities extends Object
+    public final class CBORDataUtilities extends java.lang.Object
 
 Contains methods useful for reading and writing data, with a focus on CBOR.
 
 ## Methods
 
-* `static CBORObject ParseJSONNumber​(String str)`<br>
+* `static CBORObject ParseJSONNumber​(java.lang.String str)`<br>
  Parses a number whose format follows the JSON specification.
-* `static CBORObject ParseJSONNumber​(String str,
+* `static CBORObject ParseJSONNumber​(java.lang.String str,
                boolean integersOnly,
                boolean positiveOnly)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259).
-* `static CBORObject ParseJSONNumber​(String str,
+* `static CBORObject ParseJSONNumber​(java.lang.String str,
                boolean integersOnly,
                boolean positiveOnly,
                boolean preserveNegativeZero)`<br>
@@ -21,7 +21,7 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
 ## Method Details
 
 ### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(String str)
+    public static CBORObject ParseJSONNumber​(java.lang.String str)
 Parses a number whose format follows the JSON specification. See
  #ParseJSONNumber(String, integersOnly, parseOnly) for more
  information.
@@ -39,7 +39,7 @@ Parses a number whose format follows the JSON specification. See
  string is null or empty.
 
 ### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(String str, boolean integersOnly, boolean positiveOnly)
+    public static CBORObject ParseJSONNumber​(java.lang.String str, boolean integersOnly, boolean positiveOnly)
 Parses a number whose format follows the JSON specification (RFC 8259).
  Roughly speaking, a valid number consists of an optional minus sign,
  one or more basic digits (starting with 1 to 9 unless the only digit
@@ -66,7 +66,7 @@ Parses a number whose format follows the JSON specification (RFC 8259).
  string is null or empty.
 
 ### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(String str, boolean integersOnly, boolean positiveOnly, boolean preserveNegativeZero)
+    public static CBORObject ParseJSONNumber​(java.lang.String str, boolean integersOnly, boolean positiveOnly, boolean preserveNegativeZero)
 Parses a number whose format follows the JSON specification (RFC 8259).
  Roughly speaking, a valid number consists of an optional minus sign,
  one or more basic digits (starting with 1 to 9 unless the only digit

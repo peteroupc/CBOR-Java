@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.CBORException
 
-    public class CBORException extends RuntimeException
+    public class CBORException extends java.lang.RuntimeException
 
 Exception thrown for errors involving CBOR data.
 
@@ -9,11 +9,11 @@ Exception thrown for errors involving CBOR data.
 * `CBORException() CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message) CBORException`<br>
+* `CBORException​(java.lang.String message) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message,
-             Throwable innerException) CBORException`<br>
+* `CBORException​(java.lang.String message,
+             java.lang.Throwable innerException) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
 
@@ -22,10 +22,10 @@ Exception thrown for errors involving CBOR data.
 * `CBORException() CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message) CBORException`<br>
+* `CBORException​(java.lang.String message) CBORException`<br>
  Initializes a new instance of the CBORException
  class.
-* `CBORException​(String message,
-             Throwable innerException) CBORException`<br>
+* `CBORException​(java.lang.String message,
+             java.lang.Throwable innerException) CBORException`<br>
  Initializes a new instance of the CBORException
  class.

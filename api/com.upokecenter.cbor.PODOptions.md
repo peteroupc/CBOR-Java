@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.PODOptions
 
-    public class PODOptions extends Object
+    public class PODOptions extends java.lang.Object
 
 Options for converting "plain old data" objects (better known as POCOs in
  .NET or POJOs in Java) to CBOR objects.
