@@ -27,9 +27,9 @@ Includes options to control how CBOR objects are converted to JSON.
 * `boolean getBase64Padding()`<br>
  Gets a value indicating whether padding is written out when writing
  base64url or traditional base64 to JSON.
-* `boolean getReplaceSurrogates() char`<br>
+* `boolean getReplaceSurrogates() char `<br>
  Gets a value indicating whether surrogate code points not part of a
- surrogate pair (which consists of two consecutive chars
+ surrogate pair (which consists of two consecutive char  s
  forming one Unicode code point) are each replaced with a replacement
  character (U + FFFD).
 
@@ -43,8 +43,8 @@ The default options for converting CBOR objects to JSON.
 ### getBase64Padding
     public final boolean getBase64Padding()
 Gets a value indicating whether padding is written out when writing
- base64url or traditional base64 to JSON.<p>The padding character is
- '='.</p>
+ base64url or traditional base64 to JSON.<p> The padding character is
+ '='. </p>
 
 **Returns:**
 
@@ -53,7 +53,7 @@ Gets a value indicating whether padding is written out when writing
 ### getReplaceSurrogates
     public final boolean getReplaceSurrogates()
 Gets a value indicating whether surrogate code points not part of a
- surrogate pair (which consists of two consecutive <code>char</code>s
+ surrogate pair (which consists of two consecutive <code>char </code> s
  forming one Unicode code point) are each replaced with a replacement
  character (U + FFFD). The default is false; an exception is thrown when
  such code points are encountered.

@@ -30,7 +30,7 @@ import java.util.*;
      * @param base64Padding Whether padding is included when writing data in
      * base64url or traditional base64 format to JSON.
      * @param replaceSurrogates Whether surrogate code points not part of a
-     * surrogate pair (which consists of two consecutive {@code char}s
+     * surrogate pair (which consists of two consecutive {@code char } s
      * forming one Unicode code point) are each replaced with a replacement
      * character (U + FFFD). The default is false; an exception is thrown when
      * such code points are encountered.
@@ -47,8 +47,8 @@ import java.util.*;
 
     /**
      * Gets a value indicating whether padding is written out when writing
-     * base64url or traditional base64 to JSON.<p>The padding character is
-     * '='.</p>
+     * base64url or traditional base64 to JSON.<p> The padding character is
+     * '='. </p>
      * @return The default is false, no padding.
      */
     public final boolean getBase64Padding() { return propVarbase64padding; }
@@ -56,7 +56,7 @@ private final boolean propVarbase64padding;
 
     /**
      * Gets a value indicating whether surrogate code points not part of a
-     * surrogate pair (which consists of two consecutive <code>char</code>s
+     * surrogate pair (which consists of two consecutive <code>char </code> s
      * forming one Unicode code point) are each replaced with a replacement
      * character (U + FFFD). The default is false; an exception is thrown when
      * such code points are encountered.

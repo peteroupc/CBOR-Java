@@ -578,7 +578,7 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Gets a value not documented yet.
+     * This is an internal API.
      * @return Internal API value.
      */
     final int signum() {

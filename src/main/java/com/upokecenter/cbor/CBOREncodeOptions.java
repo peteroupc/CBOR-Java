@@ -89,7 +89,7 @@ private final boolean propVarallowduplicatekeys;
      * integers 2^63 or greater are written as 64-bit binary floating-point
      * numbers.
      * @return {@code true} if CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form; otherwise, {@code false}.
+     * canonical CBOR encoding form; otherwise, {@code false} .
      */
     public final boolean getCtap2Canonical() { return propVarctap2canonical; }
 private final boolean propVarctap2canonical;
