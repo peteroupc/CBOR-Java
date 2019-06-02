@@ -548,7 +548,8 @@ import com.upokecenter.numbers.*;
           case CBORObject.CBORObjectTypeSingle: {
             float f = ((Float)thisItem).floatValue();
             if (((f) == Float.NEGATIVE_INFINITY) ||
-                ((f) == Float.POSITIVE_INFINITY) || Float.isNaN(f)) {
+((f) == Float.POSITIVE_INFINITY) ||
+Float.isNaN(f)) {
               writer.WriteString("null");
               return;
             }
@@ -559,8 +560,9 @@ import com.upokecenter.numbers.*;
           }
           case CBORObject.CBORObjectTypeDouble: {
             double f = ((Double)thisItem).doubleValue();
-            if (((f) == Double.NEGATIVE_INFINITY) || ((f) == Double.POSITIVE_INFINITY) ||
-                Double.isNaN(f)) {
+            if (((f) == Double.NEGATIVE_INFINITY) ||
+((f) == Double.POSITIVE_INFINITY) ||
+Double.isNaN(f)) {
               writer.WriteString("null");
               return;
             }
@@ -600,7 +602,8 @@ import com.upokecenter.numbers.*;
               // so convert to double instead
               double f = flo.ToDouble();
               if (((f) == Double.NEGATIVE_INFINITY) ||
-                  ((f) == Double.POSITIVE_INFINITY) || Double.isNaN(f)) {
+((f) == Double.POSITIVE_INFINITY) ||
+Double.isNaN(f)) {
                 writer.WriteString("null");
                 return;
               }

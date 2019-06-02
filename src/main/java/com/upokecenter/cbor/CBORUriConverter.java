@@ -38,8 +38,9 @@ if (
     }
 
     public java.net.URI FromCBORObject(CBORObject obj) {
-      if (obj.HasMostOuterTag(32) || obj.HasMostOuterTag(266) ||
-          obj.HasMostOuterTag(267)) {
+      if (obj.HasMostOuterTag(32) ||
+obj.HasMostOuterTag(266) ||
+obj.HasMostOuterTag(267)) {
         this.ValidateObject(obj);
         try {
          return new java.net.URI(obj.AsString());
