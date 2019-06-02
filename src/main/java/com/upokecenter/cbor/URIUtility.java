@@ -20,24 +20,25 @@ at: http://peteroupc.github.io/
      * the syntax of fragment identifiers depends on the media type (also
      * known as MIME type) of the resource a URI references (see also RFC
      * 3986 and RFC 7320). As of Aug. 24, 2018, only the following media
-     * types specify a syntax for fragment identifiers:</p> <ul> <li>The
+     * types specify a syntax for fragment identifiers: </p> <ul> <li>The
      * following application/* media types: epub + zip, pdf, senml + cbor,
      * senml + json, senml-exi, sensml + cbor, sensml + json, sensml-exi, smil,
      * vnd.3gpp-v2x-local-service-information, vnd.3gpp.mcdata-signalling,
      * vnd.collection.doc + json, vnd.hc + json, vnd.hyper + json,
      * vnd.hyper-item + json, vnd.mason + json,
      * vnd.microsoft.portable-executable, vnd.oma.bcast.sgdu,
-     * vnd.shootproof + json</li> <li>The following image/* media types: avci,
-     * avcs, heic, heic-sequence, heif, heif-sequence</li> <li>The XML media
-     * types: application/xml, application/xml-external-parsed-entity,
-     * text/xml, text/xml-external-parsed-entity, application/xml-dtd</li>
-     * <li>All media types with subtypes ending in "+xml" (see RFC 7303) use
+     * vnd.shootproof + json </li> <li>The following image/* media types:
+     * avci, avcs, heic, heic-sequence, heif, heif-sequence </li> <li>The
+     * XML media types: application/xml,
+     * application/xml-external-parsed-entity, text/xml,
+     * text/xml-external-parsed-entity, application/xml-dtd </li> <li>All
+     * media types with subtypes ending in "+xml" (see RFC 7303) use
      * XPointer Framework syntax as fragment identifiers, except the
      * following application/* media types: dicom + xml, senml + xml,
-     * sensml + xml, ttml + xml, xliff + xml, yang-data + xml</li>
-     * <li>font/collection</li> <li>multipart/x-mixed-replace</li>
-     * <li>text/plain</li> <li>text/csv</li> <li>text/html</li>
-     * <li>text/markdown</li> <li>text/vnd.a</li></ul>
+     * sensml + xml, ttml + xml, xliff + xml, yang-data + xml </li>
+     * <li>font/collection </li> <li>multipart/x-mixed-replace </li>
+     * <li>text/plain </li> <li>text/csv </li> <li>text/html </li>
+     * <li>text/markdown </li> <li>text/vnd.a </li> </ul>
      */
   final class URIUtility {
 private URIUtility() {
@@ -381,10 +382,10 @@ private URIUtility() {
      * @param length The number of elements in the desired portion of "s" (but not
      * more than "s" 's length).
      * @return {@code true} if the substring is a valid CURIE reference under RDFA
-     * 1; otherwise, {@code false}. Returns false if {@code s} is null.
+     * 1; otherwise, {@code false} . Returns false if {@code s} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
-     * length minus {@code offset} is less than {@code length}.
+     * length minus {@code offset} is less than {@code length} .
      * @throws java.lang.NullPointerException The parameter {@code s} is null.
      */
     public static boolean isValidCurieReference(String s, int offset, int length) {
@@ -866,9 +867,9 @@ private URIUtility() {
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue A string representing a URI or IRI reference. Example:
-     * {@code dir/file.txt} .
+     * {@code dir/file.txt } .
      * @param baseURI A string representing an absolute URI reference. Example:
-     * {@code http://example.com/my/path/} .
+     * {@code http://example.com/my/path/ } .
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
      * valid IRI. If {@code baseURI} is null or is not a valid IRI, returns
      * refValue. Example: {@code http://example.com/my/path/dir/file.txt} .
@@ -880,9 +881,9 @@ private URIUtility() {
     /**
      * Resolves a URI or IRI relative to another URI or IRI.
      * @param refValue A string representing a URI or IRI reference. Example:
-     * {@code dir/file.txt} . Can be null.
+     * {@code dir/file.txt } . Can be null.
      * @param baseURI A string representing an absolute URI reference. Example:
-     * {@code http://example.com/my/path/} .
+     * {@code http://example.com/my/path/ } .
      * @param parseMode Parse mode that specifies whether certain characters are
      * allowed when parsing IRIs and URIs.
      * @return The resolved IRI, or null if {@code refValue} is null or is not a
@@ -1003,7 +1004,7 @@ private URIUtility() {
      * IRI, returns null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is
      * less than 0 or greater than {@code s} 's length, or {@code s} ' s
-     * length minus {@code offset} is less than {@code length}.
+     * length minus {@code offset} is less than {@code length} .
      * @throws java.lang.NullPointerException The parameter {@code s} is null.
      */
     public static int[] splitIRI(

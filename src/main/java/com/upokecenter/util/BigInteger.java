@@ -13,19 +13,20 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.EInteger</code> in the <a
+     * <code>PeterO.Numbers.EInteger </code> in the <a
      * href='https://www.nuget.org/packages/PeterO.Numbers'>
-     * <code>PeterO.Numbers</code> </a> library (in .NET), or
-     * <code>com.upokecenter.numbers.EInteger</code> in the <a
+     * <code>PeterO.Numbers </code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.EInteger </code> in the <a
      * href='https://github.com/peteroupc/numbers-java'>
-     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(object)</code> method
-     * (by including the new library in your code, among other things).</b>
-     * </p> An arbitrary-precision integer. <p><b>Thread safety:</b>
-     * Instances of this class are immutable, so they are inherently safe
-     * for use by multiple threads. Multiple instances of this object with
-     * the same value are interchangeable, but they should be compared using
-     * the "Equals" method rather than the "==" operator. </p>
+     * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java). This
+     * new class can be used in the <code>CBORObject.FromObject(object) </code>
+     * method (by including the new library in your code, among other
+     * things). </b> </p> An arbitrary-precision integer. <p><b>Thread
+     * safety: </b> Instances of this class are immutable, so they are
+     * inherently safe for use by multiple threads. Multiple instances of
+     * this object with the same value are interchangeable, but they should
+     * be compared using the "Equals" method rather than the "==" operator.
+     * </p>
      * @deprecated Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
  *this class's toString method.
  */

@@ -12,35 +12,35 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.EDecimal</code> in the <a
+     * <code>PeterO.Numbers.EDecimal </code> in the <a
      * href='https://www.nuget.org/packages/PeterO.Numbers'>
-     * <code>PeterO.Numbers</code> </a> library (in .NET), or
-     * <code>com.upokecenter.numbers.EDecimal</code> in the <a
+     * <code>PeterO.Numbers </code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.EDecimal </code> in the <a
      * href='https://github.com/peteroupc/numbers-java'>
-     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java). This new
-     * class can be used in the <code>CBORObject.FromObject(object)</code> method
-     * (by including the new library in your code, among other things).</b>
-     * </p> Represents an arbitrary-precision decimal floating-point number.
-     * <p><b>About decimal arithmetic</b> </p> <p>Decimal (base-10)
-     * arithmetic, such as that provided by this class, is appropriate for
-     * calculations involving such real-world data as prices and other sums
-     * of money, tax rates, and measurements. These calculations often
-     * involve multiplying or dividing one decimal with another decimal, or
-     * performing other operations on decimal numbers. Many of these
-     * calculations also rely on rounding behavior in which the result after
-     * rounding is a decimal number (for example, multiplying a price by a
-     * premium rate, then rounding, should result in a decimal amount of
-     * money). </p> <p>On the other hand, most implementations of
-     * <code>float</code> and <code>double</code> , including in C# and Java, store
-     * numbers in a binary (base-2) floating-point format and use binary
-     * floating-point arithmetic. Many decimal numbers can't be represented
-     * exactly in binary floating-point format (regardless of its length).
-     * Applying binary arithmetic to numbers intended to be decimals can
-     * sometimes lead to unintuitive results, as is shown in the description
-     * for the FromDouble() method of this class. </p> <p><b>About
-     * ExtendedDecimal instances</b> </p> <p>Each instance of this class
-     * consists of an integer mantissa and an integer exponent, both
-     * arbitrary-precision. The value of the number equals mantissa *
+     * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java). This
+     * new class can be used in the <code>CBORObject.FromObject(object) </code>
+     * method (by including the new library in your code, among other
+     * things). </b> </p> Represents an arbitrary-precision decimal
+     * floating-point number. <p><b>About decimal arithmetic </b> </p>
+     * <p>Decimal (base-10) arithmetic, such as that provided by this class,
+     * is appropriate for calculations involving such real-world data as
+     * prices and other sums of money, tax rates, and measurements. These
+     * calculations often involve multiplying or dividing one decimal with
+     * another decimal, or performing other operations on decimal numbers.
+     * Many of these calculations also rely on rounding behavior in which
+     * the result after rounding is a decimal number (for example,
+     * multiplying a price by a premium rate, then rounding, should result
+     * in a decimal amount of money). </p> <p>On the other hand, most
+     * implementations of <code>float </code> and <code>double </code> , including in C#
+     * and Java, store numbers in a binary (base-2) floating-point format
+     * and use binary floating-point arithmetic. Many decimal numbers can't
+     * be represented exactly in binary floating-point format (regardless of
+     * its length). Applying binary arithmetic to numbers intended to be
+     * decimals can sometimes lead to unintuitive results, as is shown in
+     * the description for the FromDouble() method of this class. </p>
+     * <p><b>About ExtendedDecimal instances </b> </p> <p>Each instance of
+     * this class consists of an integer mantissa and an integer exponent,
+     * both arbitrary-precision. The value of the number equals mantissa *
      * 10^exponent. </p> <p>The mantissa is the value of the digits that
      * make up a number, ignoring the decimal point and exponent. For
      * example, in the number 2356.78, the mantissa is 235678. The exponent
@@ -57,19 +57,19 @@ import com.upokecenter.numbers.*;
      * 100 * 10^-2 (100 with decimal point moved left by 2), and in the
      * second case, 1 * 10^0 (1 with decimal point moved 0). </p> <p>This
      * class also supports values for negative zero, not-a-number (NaN)
-     * values, and infinity. <b>Negative zero</b> is generally used when a
+     * values, and infinity. <b>Negative zero </b> is generally used when a
      * negative number is rounded to 0; it has the same mathematical value
-     * as positive zero. <b>Infinity</b> is generally used when a non-zero
+     * as positive zero. <b>Infinity </b> is generally used when a non-zero
      * number is divided by zero, or when a very high number can't be
-     * represented in a given exponent range. <b>Not-a-number</b> is
-     * generally used to signal errors. </p> <p><b>Errors and Exceptions</b>
-     * </p> <p>Passing a signaling NaN to any arithmetic operation shown
-     * here will signal the flag FlagInvalid and return a quiet NaN, even if
-     * another operand to that operation is a quiet NaN, unless noted
-     * otherwise. </p> <p>Passing a quiet NaN to any arithmetic operation
-     * shown here will return a quiet NaN, unless noted otherwise. Invalid
-     * operations will also return a quiet NaN, as stated in the individual
-     * methods. </p> <p>Unless noted otherwise, passing a null
+     * represented in a given exponent range. <b>Not-a-number </b> is
+     * generally used to signal errors. </p> <p><b>Errors and Exceptions
+     * </b> </p> <p>Passing a signaling NaN to any arithmetic operation
+     * shown here will signal the flag FlagInvalid and return a quiet NaN,
+     * even if another operand to that operation is a quiet NaN, unless
+     * noted otherwise. </p> <p>Passing a quiet NaN to any arithmetic
+     * operation shown here will return a quiet NaN, unless noted otherwise.
+     * Invalid operations will also return a quiet NaN, as stated in the
+     * individual methods. </p> <p>Unless noted otherwise, passing a null
      * arbitrary-precision decimal argument to any method here will throw an
      * exception. </p> <p>When an arithmetic operation signals the flag
      * FlagInvalid, FlagOverflow, or FlagDivideByZero, it will not throw an
@@ -81,7 +81,7 @@ import com.upokecenter.numbers.*;
      * length), the operation may signal an invalid-operation flag and
      * return not-a-number (NaN). In certain rare cases, the compareTo
      * method may throw OutOfMemoryError (called OutOfMemoryError in
-     * Java) in the same circumstances. </p> <p><b>Serialization</b> </p>
+     * Java) in the same circumstances. </p> <p><b>Serialization </b> </p>
      * <p>An arbitrary-precision decimal value can be serialized (converted
      * to a stable format) in one of the following ways: </p> <ul> <li>By
      * calling the toString() method, which will always return distinct
@@ -89,13 +89,13 @@ import com.upokecenter.numbers.*;
      * calling the UnsignedMantissa, Exponent, and IsNegative properties,
      * and calling the IsInfinity, IsQuietNaN, and IsSignalingNaN methods.
      * The return values combined will uniquely identify a particular
-     * arbitrary-precision decimal value. </li> </ul> <p><b>Thread
-     * safety</b> </p> <p>Instances of this class are immutable, so they are
+     * arbitrary-precision decimal value. </li> </ul> <p><b>Thread safety
+     * </b> </p> <p>Instances of this class are immutable, so they are
      * inherently safe for use by multiple threads. Multiple instances of
      * this object with the same properties are interchangeable, so they
      * should not be compared using the "==" operator (which might only
      * check if each side of the operator is the same instance). </p>
-     * <p><b>Comparison considerations</b> </p> <p>This class's natural
+     * <p><b>Comparison considerations </b> </p> <p>This class's natural
      * ordering (under the compareTo method) is not consistent with the
      * Equals method. This means that two values that compare as equal under
      * the compareTo method might not be equal under the Equals method. The
@@ -209,7 +209,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Creates a decimal number from a text string that represents a number. See
-     * <code>FromString(String, int, int, EContext)</code> for more information.
+     * <code>FromString(String, int, int, EContext) </code> for more information.
      * @param str A string that represents a number.
      * @return An arbitrary-precision decimal number with the same value as the
      * given string.
@@ -343,7 +343,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object is negative, including negative
      * zero.
      * @return {@code true} If this object is negative, including negative zero;
-     * otherwise, . {@code false}.
+     * otherwise, . {@code false} .
      * @deprecated Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated

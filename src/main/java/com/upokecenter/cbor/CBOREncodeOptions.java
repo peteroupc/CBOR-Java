@@ -78,7 +78,7 @@ package com.upokecenter.cbor;
      * strings with a definite-length encoding.
      * @param allowDuplicateKeys A value indicating whether to disallow duplicate
      * keys when reading CBOR objects from a data stream.
-     * @param ctap2Canonical Either {@code true} or {@code false} .
+     * @param ctap2Canonical Either {@code true } or {@code false } .
      */
     public CBOREncodeOptions(
   boolean useIndefLengthStrings,
@@ -122,7 +122,7 @@ package com.upokecenter.cbor;
      * numbers and integers 2^63 or greater are written as 64-bit binary
      * floating-point numbers.
      * @return {@code true} if CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form; otherwise, {@code false}.. In this
+     * canonical CBOR encoding form; otherwise, {@code false} .. In this
      * form, CBOR tags are not used, map keys are written out in a canonical
      * order, and non-integer numbers and integers 2^63 or greater are
      * written as 64-bit binary floating-point numbers.
