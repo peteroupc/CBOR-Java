@@ -185,20 +185,20 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
         if (!ed.IsInfinity() && !ed.IsNaN()) {
           EInteger bi = ed.AsEInteger();
           if (ed.isIntegral()) {
-            if ((bi.GetSignedBitLength() <= 31) != ed.CanFitInInt32()) {
+            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) != ed.CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
-       if ((bi.GetSignedBitLength() <= 31) !=
+       if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
             ed.CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
           if (ed.isIntegral()) {
-            if ((bi.GetSignedBitLength() <= 63) != ed.CanFitInInt64()) {
+            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) != ed.CanFitInInt64()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
-       if ((bi.GetSignedBitLength() <= 63) !=
+       if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
             ed.CanTruncatedIntFitInInt64()) {
             Assert.fail(ObjectMessage(ed));
           }
@@ -213,7 +213,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
       Assert.assertEquals(
   EInteger.FromString("2217361768"),
   cbor.AsEInteger());
-      if (cbor.AsEInteger().GetSignedBitLength() <= 31) {
+      if (cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) {
  Assert.fail();
  }
       if (cbor.CanTruncatedIntFitInInt32()) {
@@ -221,7 +221,7 @@ String str1817 = "[0,1,2,3,4,5,6,7]";
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
         0x18, 0x2f, 0x32 });  // -2674012278751232
-      Assert.assertEquals(52, cbor.AsEInteger().GetSignedBitLength());
+      Assert.assertEquals(52, cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked());
       if (!(cbor.CanFitInInt64())) {
  Assert.fail();
  }
@@ -1224,7 +1224,7 @@ try { if (ms != null) {
         while (true) {
           EInteger ei = bigintTemp;
           EInteger bigintNext = ei.Add(EInteger.FromInt32(1));
-          if (bigintTemp.GetSignedBitLength() <= 31) {
+          if (bigintTemp.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) {
             int bc = ei.ToInt32Checked();
             if (bc >= -1 && bc <= 37) {
               bigintTemp = bigintNext;
