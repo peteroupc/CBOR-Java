@@ -232,6 +232,46 @@ private TestCommon() {
       }
     }
 
+    public static <T extends Comparable<T>> void CompareTestLess(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) >= 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Not less: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
+    }
+
+    public static <T extends Comparable<T>> void CompareTestLessEqual(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) > 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Not less or equal: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
+    }
+
+    public static <T extends Comparable<T>> void CompareTestGreater(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) <= 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Not greater: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
+    }
+
+public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) < 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Not greater or equal: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
+    }
+
     public static <T extends Comparable<T>> int CompareTestReciprocal(T o1, T o2) {
       if (o1 == null) {
         throw new NullPointerException("o1");
