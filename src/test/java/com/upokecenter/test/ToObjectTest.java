@@ -1170,14 +1170,10 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
  Assert.fail();
  }
       if (intDict.get("a") != 1) {
-        {
           Assert.fail();
-        }
       }
       if (intDict.get("b") != 2) {
-        {
           Assert.fail();
-        }
       }
       Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
@@ -1263,6 +1259,81 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         TestToFromObjectRoundTrip(dtime);
       }
     }
+   @Test
+public void TestBadDate() {
+CBORObject cbor = CBORObject.FromObjectAndTag(
+  "2000-1-01T00:00:00Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObjectAndTag(
+  "2000-01-1T00:00:00Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObjectAndTag(
+  "2000-01-01T0:00:00Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObjectAndTag(
+  "2000-01-01T00:0:00Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObjectAndTag(
+  "2000-01-01T00:00:0Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+cbor = CBORObject.FromObjectAndTag(
+  "T01:01:01Z",
+  0);
+try {
+ cbor.ToObject(java.util.Date.class);
+Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+}
 
     @Test
     public void TestUriRoundTrip() {
