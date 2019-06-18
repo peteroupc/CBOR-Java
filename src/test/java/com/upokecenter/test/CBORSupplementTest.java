@@ -7,9 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-import java.util.*;
 import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
