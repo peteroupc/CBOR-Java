@@ -15,11 +15,11 @@ import java.io.*;
      * <p>Many of these methods work with text encoded in UTF-8, an encoding
      * form of the Unicode Standard which uses one byte to encode the most
      * basic characters and two to four bytes to encode other characters.
-     * For example, the <code>GetUtf8 </code> method converts a text string to an
+     * For example, the <code>GetUtf8</code> method converts a text string to an
      * array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
-     * represented as sequences of 16-bit values called <code>char </code> s.
-     * These sequences are well-formed under UTF-16, a 16-bit encoding form
-     * of Unicode, except if they contain unpaired surrogate code points. (A
+     * represented as sequences of 16-bit values called <code>char</code> s. These
+     * sequences are well-formed under UTF-16, a 16-bit encoding form of
+     * Unicode, except if they contain unpaired surrogate code points. (A
      * surrogate code point is used to encode supplementary characters,
      * those with code points U + 10000 or higher, in UTF-16. A surrogate pair
      * is a high surrogate [U + D800 to U + DBFF] followed by a low surrogate
@@ -71,7 +71,7 @@ private DataUtilities() {
       }
       int i = 0;
       int count = 0;
-     while (i < str.length()) {
+      while (i < str.length()) {
        int c = CodePointAt(str, i);
        ++count;
        i += (c >= 0x10000) ? 2 : 1;
@@ -134,8 +134,8 @@ private DataUtilities() {
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
      * </p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes </code> in .NET, or the <code>getBytes() </code>
-     * method in Java to do this. For instance, <code>getBytes() </code> encodes
+     * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable. </p>
      * @param str The parameter {@code str} is a text string.
@@ -148,7 +148,7 @@ private DataUtilities() {
      * code point and {@code replace} is false, or an internal error
      * occurred.
      */
-        public static byte[] GetUtf8Bytes(String str, boolean replace) {
+    public static byte[] GetUtf8Bytes(String str, boolean replace) {
           return GetUtf8Bytes(str, replace, false);
         }
 
@@ -156,8 +156,8 @@ private DataUtilities() {
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U + FEFF) at the beginning of the encoded byte array.
      * </p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes </code> in .NET, or the <code>getBytes() </code>
-     * method in Java to do this. For instance, <code>getBytes() </code> encodes
+     * <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+     * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable. </p>
      * @param str The parameter {@code str} is a text string.
@@ -192,11 +192,11 @@ private DataUtilities() {
           return new byte[] { (byte)c };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else {
           return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         }
       } else if (str.length() == 2) {
         int c = str.charAt(0);
@@ -206,7 +206,7 @@ private DataUtilities() {
           return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f)) };
+            (byte)(0x80 | (c & 0x3f)), };
         } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
           return new byte[] { (byte)c, (byte)c2 };
         }
@@ -342,7 +342,7 @@ try { if (ms != null) {
      * code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
      * codePoint = DataUtilities.CodePointAt(str, i);
      * Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
-     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } } </pre> </p>
+     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
@@ -363,8 +363,8 @@ try { if (ms != null) {
      * </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
      * DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
      * /* Unpaired surrogate &#x2a;&#x2f; } Console.WriteLine("codePoint:"+codePoint);
-     * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }
-     * </pre> </p>
+     * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; }
+     * }</pre> </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the
@@ -500,7 +500,7 @@ try { if (ms != null) {
       for (int i = 0; i < len; ++i) {
          ca = strA.charAt(i);
          cb = strB.charAt(i);
-        if (ca == cb) {
+         if (ca == cb) {
           // normal code units and illegal surrogates
           // are treated as single code points
           if ((ca & 0xf800) != 0xd800) {
@@ -627,10 +627,10 @@ try { if (ms != null) {
       int retval = 0;
       bytes = new byte[StreamedStringBufferLength];
       int byteIndex = 0;
-       endIndex = offset + length;
+      endIndex = offset + length;
       for (int index = offset; index < endIndex; ++index) {
          c = str.charAt(index);
-        if (c <= 0x7f) {
+         if (c <= 0x7f) {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str.charAt(index + 1) !=
                     0x0a)) {
@@ -797,12 +797,12 @@ try { if (ms != null) {
       int lower = 0x80;
       int upper = 0xbf;
       int pointer, endpointer, b;
-       pointer = offset;
-       endpointer = offset + bytesCount;
+      pointer = offset;
+      endpointer = offset + bytesCount;
       while (pointer < endpointer) {
          b = data[pointer] & (int)0xff;
-        ++pointer;
-        if (bytesNeeded == 0) {
+         ++pointer;
+         if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
             builder.append((char)b);
           } else if (b >= 0xc2 && b <= 0xdf) {
@@ -846,7 +846,7 @@ try { if (ms != null) {
             continue;
           }
           int ret, ch, lead, trail;
-           ret = cp;
+          ret = cp;
           cp = 0;
           bytesSeen = 0;
           bytesNeeded = 0;
@@ -856,8 +856,8 @@ try { if (ms != null) {
              ch = ret - 0x10000;
              lead = (ch >> 10) + 0xd800;
              trail = (ch & 0x3ff) + 0xdc00;
-            builder.append((char)lead);
-            builder.append((char)trail);
+             builder.append((char)lead);
+             builder.append((char)trail);
           }
         }
       }
@@ -1040,8 +1040,8 @@ try { if (ms != null) {
              ch = ret - 0x10000;
              lead = (ch >> 10) + 0xd800;
              trail = (ch & 0x3ff) + 0xdc00;
-            builder.append((char)lead);
-            builder.append((char)trail);
+             builder.append((char)lead);
+             builder.append((char)trail);
           }
         }
       }

@@ -50,7 +50,7 @@ private CBORNativeConvert() {
      if (o.HasMostOuterTag(264)) {
  return ConvertToDecimalFrac(o, true, true);
 }
-  return o.HasMostOuterTag(265) ? ConvertToDecimalFrac(o, false, true) :
+return o.HasMostOuterTag(265) ? ConvertToDecimalFrac(o, false, true) :
        o;
     }
 

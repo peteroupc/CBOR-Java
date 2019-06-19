@@ -12,7 +12,7 @@ private URIUtility() {
 
     URILenient,
 
-    IRISurrogateLenient
+    IRISurrogateLenient,
     }
 
     private static final String HexChars = "0123456789ABCDEF";
@@ -343,7 +343,7 @@ private URIUtility() {
  } else {
               retString.append((char)((((ret - 0x10000) >> 10) &
                     0x3ff) + 0xd800));
-                  retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
+                    retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
                 }
                 continue;
               }
@@ -392,7 +392,7 @@ StringBuilder builder = new StringBuilder();
         if (c >= 0x10000) {
  ++index;
 }
-    if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
+if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
         (c >= 'a' && c <= 'z') ||
             (c >= '0' && c <= '9') || "-_.~".indexOf((char)c) >= 0)) {
           builder.append((char)c);
@@ -402,7 +402,7 @@ StringBuilder builder = new StringBuilder();
           ++index;
         }
       }
-return builder.toString();
+      return builder.toString();
     }
 
     private static boolean isIfragmentChar(int c) {
@@ -576,8 +576,8 @@ public static String BuildIRI(
 }
       builder.append('#');
     }
-      int index = 0;
-      while (index < s.length()) {
+    int index = 0;
+    while (index < s.length()) {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
@@ -788,7 +788,7 @@ public static String BuildIRI(
       if (s.charAt(index) == ':' ||
           isHexChar(s.charAt(index))) {
      int startIndex = index;
-while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
+     while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
   (s.charAt(index) >= 97 && s.charAt(index) <= 102) || (s.charAt(index) >= 48 && s.charAt(index)
   <= 58) || (s.charAt(index) == 46))) {
  ++index;
@@ -811,7 +811,7 @@ for (int part = 0; part < 8; ++part) {
   doubleColon = true;
   doubleColonPos = part;
   index += 2;
-            if (index == ipEndIndex) {
+  if (index == ipEndIndex) {
  break;
 }
  }
@@ -863,14 +863,14 @@ if (index < ipEndIndex && s.charAt(index) == '.') {
  return -1;
 }
     }
-if (index + 1 < ipEndIndex && s.charAt(index) == '0' &&
+    if (index + 1 < ipEndIndex && s.charAt(index) == '0' &&
  (s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9')) {
  return -1;
 }
- int dec = 0;
- boolean haveDec = false;
- int curindex = index;
- for (int i = 0; i < 4; ++i) {
+int dec = 0;
+boolean haveDec = false;
+int curindex = index;
+for (int i = 0; i < 4; ++i) {
 if (s.charAt(index) >= '0' && s.charAt(index) <= '9') {
  dec = (dec * 10) + ((int)s.charAt(index) - '0');
  haveDec = true;
@@ -889,14 +889,14 @@ ipparts[part] = dec;
 }
   addressParts[totalParts] = (ipparts[0] << 8) | ipparts[1];
   addressParts[totalParts + 1] = (ipparts[2] << 8) | ipparts[3];
-totalParts += 2;
+  totalParts += 2;
   if (!doubleColon && totalParts != 8) {
  return -1;
 }
  }
  if (doubleColon) {
   int resid = 8 - totalParts;
-            if (resid == 0) {
+  if (resid == 0) {
               // Purported IPv6 address contains
               // 8 parts and a double colon
               return -1;
@@ -918,7 +918,7 @@ totalParts += 2;
   // addressParts[0], addressParts[1], addressParts[2],
   // addressParts[3], addressParts[4], addressParts[5],
   // addressParts[6], addressParts[7]);
-        if (s.charAt(index) == '%') {
+  if (s.charAt(index) == '%') {
           if (index + 2 < endOffset && s.charAt(index + 1) == '2' &&
               s.charAt(index + 2) == '5' && (addressParts[0] & 0xFFC0) == 0xFE80) {
             // Zone identifier in an IPv6 address
@@ -1109,7 +1109,7 @@ totalParts += 2;
 
     public static String[] splitIRIToStrings(String s) {
       int[] indexes = splitIRI(s);
-if (indexes == null) {
+      if (indexes == null) {
  return null;
 }
 return new String[] {
@@ -1120,7 +1120,7 @@ return new String[] {
  indexes[2] < 0 ? null : s.substring(indexes[2], (indexes[2])+(indexes[3] - indexes[2])),
  indexes[4] < 0 ? null : s.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4])),
  indexes[6] < 0 ? null : s.substring(indexes[6], (indexes[6])+(indexes[7] - indexes[6])),
- indexes[8] < 0 ? null : s.substring(indexes[8], (indexes[8])+(indexes[9] - indexes[8]))
+ indexes[8] < 0 ? null : s.substring(indexes[8], (indexes[8])+(indexes[9] - indexes[8])),
 };
     }
 
@@ -1486,8 +1486,8 @@ if (s.length() - offset < length) {
   if (rel == null) {
  return null;
 }
- String relpath = uriPath(refValue, ParseMode.IRIStrict);
- if (pathHasDotComponent(relpath)) {
+String relpath = uriPath(refValue, ParseMode.IRIStrict);
+if (pathHasDotComponent(relpath)) {
   // Resolved path has a dot component in it (usually
   // because that component is percent-encoded)
   return null;

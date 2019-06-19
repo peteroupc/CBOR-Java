@@ -212,19 +212,19 @@ private CBORUtilities() {
 
     private static final int[] ValueNormalDays = { 0, 31, 28, 31, 30, 31, 30,
       31, 31, 30,
-      31, 30, 31 };
+      31, 30, 31, };
 
     private static final int[] ValueLeapDays = { 0, 31, 29, 31, 30, 31, 30,
       31, 31, 30,
-      31, 30, 31 };
+      31, 30, 31, };
 
     private static final int[] ValueNormalToMonth = { 0, 0x1f, 0x3b, 90, 120,
       0x97, 0xb5,
-      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d };
+      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d, };
 
     private static final int[] ValueLeapToMonth = { 0, 0x1f, 60, 0x5b, 0x79,
       0x98, 0xb6,
-      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e };
+      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e, };
 
     public static void GetNormalizedPartProlepticGregorian(
           EInteger year,
@@ -558,7 +558,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
       int[] dt = {
         year, month, day, hour, minute, second,
-        nanoSeconds, utcToLocal
+        nanoSeconds, utcToLocal,
       };
       if (!IsValidDateTime(dt)) {
         throw new IllegalArgumentException("Invalid date/time");

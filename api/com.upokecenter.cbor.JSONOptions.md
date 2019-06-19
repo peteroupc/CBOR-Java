@@ -28,9 +28,9 @@ Includes options to control how CBOR objects are converted to JSON.
  Deprecated.
 This option may have no effect in the future.
  This option may have no effect in the future.
-* `boolean getReplaceSurrogates() char `<br>
+* `boolean getReplaceSurrogates() char`<br>
  Gets a value indicating whether surrogate code points not part of a
- surrogate pair (which consists of two consecutive char  s
+ surrogate pair (which consists of two consecutive char s
  forming one Unicode code point) are each replaced with a replacement
  character (U + FFFD).
 
@@ -56,7 +56,7 @@ This option may have no effect in the future. A future version may, by
 ### getReplaceSurrogates
     public final boolean getReplaceSurrogates()
 Gets a value indicating whether surrogate code points not part of a
- surrogate pair (which consists of two consecutive <code>char </code> s
+ surrogate pair (which consists of two consecutive <code>char</code> s
  forming one Unicode code point) are each replaced with a replacement
  character (U + FFFD). The default is false; an exception is thrown when
  such code points are encountered.

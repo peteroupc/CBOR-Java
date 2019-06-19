@@ -15,7 +15,7 @@ at: http://peteroupc.github.io/
       }
       boolean isiri = obj.HasMostOuterTag(266);
       boolean isiriref = obj.HasMostOuterTag(267);
-if (
+      if (
   isiriref && !URIUtility.isValidIRI(
   obj.AsString(),
   URIUtility.ParseMode.IRIStrict)) {
@@ -63,7 +63,7 @@ obj.HasMostOuterTag(267)) {
 }
       }
       int tag = nonascii ? 266 : 32;
-if (!URIUtility.hasScheme(uriString)) {
+      if (!URIUtility.hasScheme(uriString)) {
  tag = 267;
 }
       return CBORObject.FromObjectAndTag(uriString, (int)tag);

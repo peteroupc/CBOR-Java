@@ -173,7 +173,7 @@ import com.upokecenter.numbers.*;
      throw new IllegalArgumentException("other (" + other + ") is less than " +
             "0 ");
         }
-      if (other != 0) {
+        if (other != 0) {
           {
             // Ensure a length of at least 1
             if (this.wordCount == 0) {
@@ -380,7 +380,7 @@ import com.upokecenter.numbers.*;
                 this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
               }
             } else {
-              smallValue *= val;
+              this.smallValue *= val;
             }
             break;
           case 1:
@@ -389,7 +389,7 @@ import com.upokecenter.numbers.*;
               this.largeValue = this.mnum.ToEInteger();
               this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
             } else {
-              mnum.Multiply(val);
+              this.mnum.Multiply(val);
             }
             break;
           case 2:
@@ -422,10 +422,10 @@ import com.upokecenter.numbers.*;
               this.smallValue -= vsv;
             }
           } else {
-            integerMode = 2;
-            largeValue = EInteger.FromInt32(smallValue);
+            this.integerMode = 2;
+            this.largeValue = EInteger.FromInt32(this.smallValue);
             valValue = val.AsBigInteger();
-            largeValue = largeValue.Subtract(valValue);
+            this.largeValue = this.largeValue.Subtract(valValue);
           }
           break;
         case 1:
@@ -434,12 +434,12 @@ import com.upokecenter.numbers.*;
             // currently always zero or positive
             this.mnum.Subtract(val.mnum);
           } else if (val.integerMode == 0 && val.smallValue >= 0) {
-            mnum.SubtractInt(val.smallValue);
+            this.mnum.SubtractInt(val.smallValue);
           } else {
-            integerMode = 2;
-            largeValue = mnum.ToEInteger();
+            this.integerMode = 2;
+            this.largeValue = this.mnum.ToEInteger();
             valValue = val.AsBigInteger();
-            largeValue = largeValue.Subtract(valValue);
+            this.largeValue = this.largeValue.Subtract(valValue);
           }
           break;
         case 2:
@@ -498,20 +498,20 @@ import com.upokecenter.numbers.*;
               this.smallValue += val.smallValue;
             }
           } else {
-            integerMode = 2;
-            largeValue = EInteger.FromInt32(smallValue);
+            this.integerMode = 2;
+            this.largeValue = EInteger.FromInt32(this.smallValue);
             valValue = val.AsBigInteger();
-            largeValue = largeValue.Add(valValue);
+            this.largeValue = this.largeValue.Add(valValue);
           }
           break;
         case 1:
           if (val.integerMode == 0 && val.smallValue >= 0) {
             this.mnum.Add(val.smallValue);
           } else {
-            integerMode = 2;
-            largeValue = mnum.ToEInteger();
+            this.integerMode = 2;
+            this.largeValue = this.mnum.ToEInteger();
             valValue = val.AsBigInteger();
-            largeValue = largeValue.Add(valValue);
+            this.largeValue = this.largeValue.Add(valValue);
           }
           break;
         case 2:
@@ -541,17 +541,17 @@ import com.upokecenter.numbers.*;
               this.largeValue = this.largeValue.Add(EInteger.FromInt32(val));
             }
           } else {
-            smallValue += val;
+            this.smallValue += val;
           }
           break;
         case 1:
           if (val >= 0) {
             this.mnum.Add(val);
           } else {
-            integerMode = 2;
-            largeValue = mnum.ToEInteger();
+            this.integerMode = 2;
+            this.largeValue = this.mnum.ToEInteger();
             valValue = EInteger.FromInt32(val);
-            largeValue = largeValue.Add(valValue);
+            this.largeValue = this.largeValue.Add(valValue);
           }
           break;
         case 2:
@@ -587,9 +587,9 @@ import com.upokecenter.numbers.*;
           return (this.smallValue == 0) ? 0 : ((this.smallValue < 0) ? -1 :
               1);
           case 1:
-            return this.mnum.signum();
+          return this.mnum.signum();
           case 2:
-            return this.largeValue.signum();
+          return this.largeValue.signum();
           default: return 0;
         }
       }

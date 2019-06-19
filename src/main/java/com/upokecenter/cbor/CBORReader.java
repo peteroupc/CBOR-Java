@@ -25,7 +25,7 @@ import com.upokecenter.numbers.*;
     }
 
     enum CBORDuplicatePolicy {
-      Overwrite, Disallow
+      Overwrite, Disallow,
     }
 
     public final CBORDuplicatePolicy getDuplicatePolicy() {
@@ -181,10 +181,10 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
             if (this.stream.read(data, 0, 4) != 4) {
               throw new CBORException("Premature end of data");
             }
-            uadditional = ((long)(data[0] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
-            uadditional |= (long)(data[3] & (long)0xff);
+            uadditional = ((long)(data[0] & 0xffL)) << 24;
+            uadditional |= ((long)(data[1] & 0xffL)) << 16;
+            uadditional |= ((long)(data[2] & 0xffL)) << 8;
+            uadditional |= (long)(data[3] & 0xffL);
             break;
           }
         case 27: {
@@ -206,14 +206,14 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
               hasBigAdditional = true;
               bigintAdditional = EInteger.FromBytes(uabytes, true);
             } else {
-              uadditional = ((long)(data[0] & (long)0xff)) << 56;
-              uadditional |= ((long)(data[1] & (long)0xff)) << 48;
-              uadditional |= ((long)(data[2] & (long)0xff)) << 40;
-              uadditional |= ((long)(data[3] & (long)0xff)) << 32;
-              uadditional |= ((long)(data[4] & (long)0xff)) << 24;
-              uadditional |= ((long)(data[5] & (long)0xff)) << 16;
-              uadditional |= ((long)(data[6] & (long)0xff)) << 8;
-              uadditional |= (long)(data[7] & (long)0xff);
+              uadditional = ((long)(data[0] & 0xffL)) << 56;
+              uadditional |= ((long)(data[1] & 0xffL)) << 48;
+              uadditional |= ((long)(data[2] & 0xffL)) << 40;
+              uadditional |= ((long)(data[3] & 0xffL)) << 32;
+              uadditional |= ((long)(data[4] & 0xffL)) << 24;
+              uadditional |= ((long)(data[5] & 0xffL)) << 16;
+              uadditional |= ((long)(data[6] & 0xffL)) << 8;
+              uadditional |= (long)(data[7] & 0xffL);
             }
             break;
           }
@@ -452,7 +452,7 @@ try { if (ms != null) {
         if (!hasBigAdditional) {
           int uad = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
             (int)uadditional);
-    switch (uad) {
+            switch (uad) {
             case 256:
               // Tag 256: String namespace
               this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
@@ -464,10 +464,10 @@ try { if (ms != null) {
                 throw new CBORException("No stringref namespace");
               }
               break;
-     case 28:
-     case 29:
-          this.hasSharableObjects = true;
-       break;
+              case 28:
+              case 29:
+              this.hasSharableObjects = true;
+              break;
           }
         }
         ++this.depth;
@@ -594,10 +594,10 @@ try { if (ms != null) {
             if (stream.read(data, 0, 4) != 4) {
               throw new CBORException("Premature end of data");
             }
-            long uadditional = ((long)(data[0] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
-            uadditional |= (long)(data[3] & (long)0xff);
+            long uadditional = ((long)(data[0] & 0xffL)) << 24;
+            uadditional |= ((long)(data[1] & 0xffL)) << 16;
+            uadditional |= ((long)(data[2] & 0xffL)) << 8;
+            uadditional |= (long)(data[3] & 0xffL);
             return uadditional;
           }
         case 27: {
@@ -605,14 +605,14 @@ try { if (ms != null) {
               throw new CBORException("Premature end of data");
             }
             // Treat return value as an unsigned integer
-            long uadditional = ((long)(data[0] & (long)0xff)) << 56;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 48;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 40;
-            uadditional |= ((long)(data[3] & (long)0xff)) << 32;
-            uadditional |= ((long)(data[4] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[5] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[6] & (long)0xff)) << 8;
-            uadditional |= (long)(data[7] & (long)0xff);
+            long uadditional = ((long)(data[0] & 0xffL)) << 56;
+            uadditional |= ((long)(data[1] & 0xffL)) << 48;
+            uadditional |= ((long)(data[2] & 0xffL)) << 40;
+            uadditional |= ((long)(data[3] & 0xffL)) << 32;
+            uadditional |= ((long)(data[4] & 0xffL)) << 24;
+            uadditional |= ((long)(data[5] & 0xffL)) << 16;
+            uadditional |= ((long)(data[6] & 0xffL)) << 8;
+            uadditional |= (long)(data[7] & 0xffL);
             return uadditional;
           }
         case 28:

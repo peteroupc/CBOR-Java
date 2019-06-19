@@ -177,7 +177,7 @@ import com.upokecenter.numbers.*;
       new CBORInteger(), new CBOREInteger(), null, null,
       null, null, null, new CBORSingle(),
       new CBORDouble(), new CBORExtendedDecimal(),
-      null, new CBORExtendedFloat(), new CBORExtendedRational()
+      null, new CBORExtendedFloat(), new CBORExtendedRational(),
     };
 
     private static final EInteger UInt64MaxValue =
@@ -203,16 +203,16 @@ import com.upokecenter.numbers.*;
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // major type 6
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // major type 7
-      1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1 };
+      1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1, };
 
     private static final byte[] ValueFalseBytes = { 0x66, 0x61, 0x6c,
-      0x73, 0x65 };
+      0x73, 0x65, };
 
     private static final byte[] ValueNullBytes = { 0x6e, 0x75, 0x6c, 0x6c };
 
     private static final int[] ValueNumberTypeOrder = { 0, 0, 2, 3, 4, 5,
       1, 0, 0,
-      0, 0, 0, 0 };
+      0, 0, 0, 0, };
 
     private static final byte[] ValueTrueBytes = { 0x74, 0x72, 0x75, 0x65 };
 
@@ -577,16 +577,16 @@ if (key instanceof Integer) {
   index = ((Integer)key).intValue();
 } else {
   CBORObject cborkey = CBORObject.FromObject(key);
-    if (!cborkey.isIntegral()) {
+  if (!cborkey.isIntegral()) {
 return defaultValue;
 }
-    if (!cborkey.CanTruncatedIntFitInInt32()) {
+if (!cborkey.CanTruncatedIntFitInInt32()) {
 return defaultValue;
 }
-          index = cborkey.AsInt32();
+index = cborkey.AsInt32();
 }
-          List<CBORObject> list = this.AsList();
-    return (index < 0 || index >= list.size()) ? defaultValue :
+List<CBORObject> list = this.AsList();
+return (index < 0 || index >= list.size()) ? defaultValue :
             list.get(index);
         }
         if (this.getItemType() == CBORObjectTypeMap) {
@@ -627,12 +627,12 @@ return defaultValue;
     if (!key.CanTruncatedIntFitInInt32()) {
  throw new java.lang.IllegalArgumentException("index");
 }
-          List<CBORObject> list = this.AsList();
-          int index = key.AsInt32();
-          if (index < 0 || index >= list.size()) {
+List<CBORObject> list = this.AsList();
+int index = key.AsInt32();
+if (index < 0 || index >= list.size()) {
  throw new java.lang.IllegalArgumentException("index");
 }
-          return list.get(index);
+return list.get(index);
         }
         throw new IllegalStateException("Not an array or map");
       }
@@ -671,13 +671,13 @@ return defaultValue;
     if (!key.CanTruncatedIntFitInInt32()) {
  throw new java.lang.IllegalArgumentException("index");
 }
-          List<CBORObject> list = this.AsList();
-          int index = key.AsInt32();
-          if (index < 0 || index >= list.size()) {
+List<CBORObject> list = this.AsList();
+int index = key.AsInt32();
+if (index < 0 || index >= list.size()) {
  throw new java.lang.IllegalArgumentException("index");
 }
-          list.set(index, value);
-          return;
+list.set(index, value);
+return;
         }
         throw new IllegalStateException("Not an array or map");
       }
@@ -1166,7 +1166,7 @@ depth++;
 if (depth > 100) {
  throw new CBORException("Depth level too high");
 }
-      if (t == null) {
+if (t == null) {
         throw new NullPointerException("t");
       }
       if (t.equals(CBORObject.class)) {
@@ -1649,7 +1649,7 @@ if (depth > 100) {
       if (options == null) {
         throw new NullPointerException("options");
       }
-   if (depth >= 100) {
+      if (depth >= 100) {
     throw new CBORException("Nesting depth too high");
    }
       if (obj == null) {
@@ -1721,12 +1721,12 @@ if (depth > 100) {
         for (Object keyPair : objdic.entrySet()) {
           Map.Entry<?, ?>
             kvp = (Map.Entry<?, ?>)keyPair;
-    CBORObject objKey = CBORObject.FromObject(
+            CBORObject objKey = CBORObject.FromObject(
   kvp.getKey(),
   options,
   mapper,
   depth + 1);
- objret.set(objKey, CBORObject.FromObject(
+  objret.set(objKey, CBORObject.FromObject(
   kvp.getValue(),
   options,
   mapper,
@@ -2383,12 +2383,12 @@ objret.set(key.getKey(), CBORObject.FromObject(
         stream.write(bytes, 0, 2);
       } else if (value <= 0xffff) {
         byte[] bytes = { (byte)(25 | type), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff) };
+          (byte)(value & 0xff), };
         stream.write(bytes, 0, 3);
       } else {
         byte[] bytes = { (byte)(26 | type), (byte)((value >> 24) & 0xff),
           (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff) };
+          (byte)(value & 0xff), };
         stream.write(bytes, 0, 5);
       }
     }
@@ -2453,7 +2453,7 @@ objret.set(key.getKey(), CBORObject.FromObject(
       int bits = Float.floatToRawIntBits(value);
       byte[] data = { (byte)0xfa, (byte)((bits >> 24) & 0xff),
         (byte)((bits >> 16) & 0xff), (byte)((bits >> 8) & 0xff),
-        (byte)(bits & 0xff) };
+        (byte)(bits & 0xff), };
       s.write(data, 0, 5);
     }
 
@@ -2474,7 +2474,7 @@ objret.set(key.getKey(), CBORObject.FromObject(
         (byte)((bits >> 56) & 0xff), (byte)((bits >> 48) & 0xff),
         (byte)((bits >> 40) & 0xff), (byte)((bits >> 32) & 0xff),
         (byte)((bits >> 24) & 0xff), (byte)((bits >> 16) & 0xff),
-        (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff) };
+        (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff), };
       stream.write(data, 0, 9);
     }
 
@@ -3308,8 +3308,8 @@ public int compareTo(CBORObject other) {
       if (this.getItemType() == CBORObjectTypeMap) {
 CBORObject ckey = key == null ? CBORObject.Null :
           CBORObject.FromObject(key);
-        Map<CBORObject, CBORObject> map = this.AsMap();
-        return map.containsKey(ckey);
+          Map<CBORObject, CBORObject> map = this.AsMap();
+          return map.containsKey(ckey);
       }
       return false;
     }
@@ -3427,10 +3427,10 @@ CBORObject ckey = key == null ? CBORObject.Null :
               int bits = Float.floatToRawIntBits(value);
               return tagged ? new byte[] { tagbyte, (byte)0xfa,
                 (byte)((bits >> 24) & 0xff), (byte)((bits >> 16) & 0xff),
-                (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff) } :
+                (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff), } :
                 new byte[] { (byte)0xfa, (byte)((bits >> 24) & 0xff),
                 (byte)((bits >> 16) & 0xff), (byte)((bits >> 8) & 0xff),
-                (byte)(bits & 0xff) };
+                (byte)(bits & 0xff), };
             }
           case CBORObjectTypeDouble: {
               double value = ((Double)this.getThisItem()).doubleValue();
@@ -3439,12 +3439,12 @@ CBORObject ckey = key == null ? CBORObject.Null :
                 (byte)((bits >> 56) & 0xff), (byte)((bits >> 48) & 0xff),
                 (byte)((bits >> 40) & 0xff), (byte)((bits >> 32) & 0xff),
                 (byte)((bits >> 24) & 0xff), (byte)((bits >> 16) & 0xff),
-                (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff) } :
+                (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff), } :
                 new byte[] { (byte)0xfb, (byte)((bits >> 56) & 0xff),
                 (byte)((bits >> 48) & 0xff), (byte)((bits >> 40) & 0xff),
                 (byte)((bits >> 32) & 0xff), (byte)((bits >> 24) & 0xff),
                 (byte)((bits >> 16) & 0xff), (byte)((bits >> 8) & 0xff),
-                (byte)(bits & 0xff) };
+                (byte)(bits & 0xff), };
             }
         }
       }
@@ -3628,12 +3628,12 @@ public boolean equals(CBORObject other) {
      * @throws IllegalArgumentException The parameter {@code tagValue} is less than
      * 0.
      */
- public boolean HasMostOuterTag(int tagValue) {
+    public boolean HasMostOuterTag(int tagValue) {
       if (tagValue < 0) {
         throw new IllegalArgumentException("tagValue (" + tagValue +
                     ") is less than 0");
       }
- return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
+      return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
  }
 
     /**
@@ -3647,15 +3647,15 @@ public boolean equals(CBORObject other) {
      * @throws IllegalArgumentException The parameter {@code bigTagValue} is less
      * than 0.
      */
- public boolean HasMostOuterTag(EInteger bigTagValue) {
+    public boolean HasMostOuterTag(EInteger bigTagValue) {
     if (bigTagValue == null) {
   throw new NullPointerException("bigTagValue");
 }
-      if (bigTagValue.signum() < 0) {
+if (bigTagValue.signum() < 0) {
         throw new IllegalArgumentException("bigTagValue (" + bigTagValue +
                     ") is less than 0");
       }
- return (!this.isTagged()) ? false : this.getMostOuterTag().equals(bigTagValue);
+      return (!this.isTagged()) ? false : this.getMostOuterTag().equals(bigTagValue);
  }
 
     /**
@@ -3941,7 +3941,7 @@ public boolean equals(CBORObject other) {
         if (key instanceof Integer) {
         List<CBORObject> list = this.AsList();
         int index = ((Integer)key).intValue();
-if (index < 0 || index >= this.size()) {
+        if (index < 0 || index >= this.size()) {
  throw new java.lang.IllegalArgumentException("key");
 }
         CBORObject mapValue;
@@ -4529,7 +4529,7 @@ if (index < 0 || index >= this.size()) {
         (byte)((longVal >> 48) & 0xff), (byte)((longVal >> 40) & 0xff),
         (byte)((longVal >> 32) & 0xff), (byte)((longVal >> 24) & 0xff),
         (byte)((longVal >> 16) & 0xff), (byte)((longVal >> 8) & 0xff),
-        (byte)(longVal & 0xff) };
+        (byte)(longVal & 0xff), };
       outputStream.write(bytes, 0, bytes.length);
       return bytes.length;
     }
@@ -4732,24 +4732,24 @@ if (index < 0 || index >= this.size()) {
             uadditional = (int)(data[1] & (int)0xff);
             break;
           case 25:
-            uadditional = ((long)(data[1] & (long)0xff)) << 8;
-            uadditional |= (long)(data[2] & (long)0xff);
+            uadditional = (data[1] & (0xffL)) << 8;
+            uadditional |= (long)(data[2] & 0xffL);
             break;
           case 26:
-            uadditional = ((long)(data[1] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[3] & (long)0xff)) << 8;
-            uadditional |= (long)(data[4] & (long)0xff);
+            uadditional = (data[1] & (0xffL)) << 24;
+            uadditional |= (data[2] & (0xffL)) << 16;
+            uadditional |= (data[3] & (0xffL)) << 8;
+            uadditional |= (long)(data[4] & 0xffL);
             break;
           case 27:
-            uadditional = ((long)(data[1] & (long)0xff)) << 56;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 48;
-            uadditional |= ((long)(data[3] & (long)0xff)) << 40;
-            uadditional |= ((long)(data[4] & (long)0xff)) << 32;
-            uadditional |= ((long)(data[5] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[6] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[7] & (long)0xff)) << 8;
-            uadditional |= (long)(data[8] & (long)0xff);
+            uadditional = (data[1] & (0xffL)) << 56;
+            uadditional |= (data[2] & (0xffL)) << 48;
+            uadditional |= (data[3] & (0xffL)) << 40;
+            uadditional |= (data[4] & (0xffL)) << 32;
+            uadditional |= (data[5] & (0xffL)) << 24;
+            uadditional |= (data[6] & (0xffL)) << 16;
+            uadditional |= (data[7] & (0xffL)) << 8;
+            uadditional |= (long)(data[8] & 0xffL);
             break;
           default:
             throw new CBORException("Unexpected data encountered");
@@ -4782,7 +4782,7 @@ if (index < 0 || index >= this.size()) {
             if (firstbyte == 0xf9) {
               return new CBORObject(
                 CBORObjectTypeSingle,
-             CBORUtilities.HalfPrecisionToSingle(((int)uadditional)));
+                CBORUtilities.HalfPrecisionToSingle(((int)uadditional)));
             }
             if (firstbyte == 0xfa) {
               float flt = Float.intBitsToFloat(((int)uadditional));
@@ -5061,25 +5061,25 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         return new byte[] { (byte)((byte)value | (byte)(type << 5)) };
       }
       if (value <= 0xffL) {
-        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff)
+        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
          };
       }
       if (value <= 0xffffL) {
         return new byte[] { (byte)(25 | (type << 5)),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff)
+          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
          };
       }
       if (value <= 0xffffffffL) {
         return new byte[] { (byte)(26 | (type << 5)),
           (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff)
+          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
          };
       }
       return new byte[] { (byte)(27 | (type << 5)), (byte)((value >> 56) & 0xff),
         (byte)((value >> 48) & 0xff), (byte)((value >> 40) & 0xff),
         (byte)((value >> 32) & 0xff), (byte)((value >> 24) & 0xff),
         (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff) };
+        (byte)(value & 0xff), };
     }
 
     private static byte[] GetPositiveIntBytes(int type, int value) {
@@ -5091,17 +5091,17 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         return new byte[] { (byte)((byte)value | (byte)(type << 5)) };
       }
       if (value <= 0xff) {
-        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff)
+        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
          };
       }
       if (value <= 0xffff) {
         return new byte[] { (byte)(25 | (type << 5)),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff)
+          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
          };
       }
       return new byte[] { (byte)(26 | (type << 5)), (byte)((value >> 24) & 0xff),
         (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff) };
+        (byte)(value & 0xff), };
     }
 
     private static int GetSignInternal(int type, Object obj) {
@@ -5509,7 +5509,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
             (byte)((high >> 24) & 0xff), (byte)((high >> 16) & 0xff),
             (byte)((high >> 8) & 0xff), (byte)(high & 0xff),
             (byte)((low >> 24) & 0xff), (byte)((low >> 16) & 0xff),
-            (byte)((low >> 8) & 0xff), (byte)(low & 0xff) };
+            (byte)((low >> 8) & 0xff), (byte)(low & 0xff), };
           s.write(arrayToWrite, 0, 9);
         }
         curobject = (CBORObject)curobject.itemValue;

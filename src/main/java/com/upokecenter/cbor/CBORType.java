@@ -46,5 +46,5 @@ at: http://peteroupc.github.io/
     /**
      * A map of CBOR objects.
      */
-    Map
+    Map,
   }

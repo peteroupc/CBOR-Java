@@ -136,7 +136,7 @@ import com.upokecenter.numbers.*;
               } else {
               this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
                   0xd800));
-                this.sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                  this.sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
               break;
             }
@@ -505,7 +505,7 @@ import com.upokecenter.numbers.*;
             sb.WriteString(str, 0, i);
           }
 // Replace unpaired surrogate with U + FFFD
-     c = (char)0xfffd;
+c = (char)0xfffd;
 } else {
             throw new CBORException("Unpaired surrogate in String");
 }
@@ -616,7 +616,7 @@ Double.isNaN(f)) {
             writer.WriteString(flo.toString());
             return;
           }
-        case CBORObject.CBORObjectTypeByteString:
+          case CBORObject.CBORObjectTypeByteString:
           {
             byte[] byteArray = (byte[])thisItem;
             if (byteArray.length == 0) {
@@ -723,7 +723,7 @@ Double.isNaN(f)) {
               for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
-           String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
+                String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
                   ((String)key.getThisItem()) : key.ToJSONString();
                 if (stringMap.containsKey(str)) {
       throw new
@@ -750,7 +750,7 @@ Double.isNaN(f)) {
             }
             break;
           }
-        default: throw new IllegalStateException("Unexpected item type");
+          default: throw new IllegalStateException("Unexpected item type");
       }
     }
   }

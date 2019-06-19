@@ -31,14 +31,14 @@ import com.upokecenter.numbers.*;
         if (!obj.isFinite()) {
           throw new CBORException("Not a finite number");
         }
-          EDecimal dec = obj.AsEDecimal();
-          int[] lesserFields = new int[7];
-          EInteger[] year = new EInteger[1];
-          CBORUtilities.BreakDownSecondsSinceEpoch(
+        EDecimal dec = obj.AsEDecimal();
+        int[] lesserFields = new int[7];
+        EInteger[] year = new EInteger[1];
+        CBORUtilities.BreakDownSecondsSinceEpoch(
                   dec,
                   year,
                   lesserFields);
-          return PropertyMap.BuildUpDateTime(year[0], lesserFields);
+                  return PropertyMap.BuildUpDateTime(year[0], lesserFields);
       }
       throw new CBORException("Not tag 0 or 1");
     }
