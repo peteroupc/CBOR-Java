@@ -25,7 +25,15 @@ import com.upokecenter.numbers.*;
     }
 
     enum CBORDuplicatePolicy {
-      Overwrite, Disallow,
+      /**
+       * Overwrite.
+       */
+      Overwrite,
+
+      /**
+       * Disallow.
+       */
+      Disallow,
     }
 
     public final CBORDuplicatePolicy getDuplicatePolicy() {

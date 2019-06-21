@@ -1802,7 +1802,7 @@ depth + 1);
           "tag more than 18446744073709551615 (" + bigintTag + ")");
       }
       CBORObject c = FromObject(valueOb);
-      if (bigintTag.GetSignedBitLength() <= 16) {
+      if (bigintTag.CanFitInInt32()) {
        // Low-numbered, commonly used tags
         return FromObjectAndTag(c, bigintTag.ToInt32Checked());
       } else {
@@ -2142,7 +2142,7 @@ depth + 1);
       if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
-        if (!BigIntFits(exponent)) {
+        if (exponent.GetUnsignedBitLengthAsEInteger().compareTo(64) > 0) {
           stream.write(0xd9);  // tag 265
           stream.write(0x01);
           stream.write(0x09);
@@ -2218,7 +2218,7 @@ depth + 1);
       if (exponent.isZero()) {
         Write(bignum.getMantissa(), stream);
       } else {
-        if (!BigIntFits(exponent)) {
+        if (exponent.GetUnsignedBitLengthAsEInteger().compareTo(64) > 0) {
           stream.write(0xd9);  // tag 264
           stream.write(0x01);
           stream.write(0x08);
@@ -4839,10 +4839,6 @@ List<CBORObject> AsList() {
     @SuppressWarnings("unchecked")
 Map<CBORObject, CBORObject> AsMap() {
       return (Map<CBORObject, CBORObject>)this.getThisItem();
-    }
-
-    private static boolean BigIntFits(EInteger bigint) {
-      return bigint.GetSignedBitLength() <= 64;
     }
 
     private static boolean CBORArrayEquals(

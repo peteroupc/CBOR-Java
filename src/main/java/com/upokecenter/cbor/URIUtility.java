@@ -4,14 +4,29 @@ package com.upokecenter.cbor;
 private URIUtility() {
 }
     enum ParseMode {
+      /**
+       * The IRIS trict.
+       */
       IRIStrict,
 
+      /**
+       * The URIS trict.
+       */
       URIStrict,
 
+      /**
+       * The IRIL enient.
+       */
       IRILenient,
 
+      /**
+       * The URIL enient.
+       */
       URILenient,
 
+      /**
+       * The IRIS urrogate lenient.
+       */
       IRISurrogateLenient,
     }
 
