@@ -1,12 +1,12 @@
 package com.upokecenter.util;
 
-    /**
-     * A class that implements a statistically-random byte generator, using
-     * Sebastiano Vigna's <a
-     * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-     * RNG as the underlying implementation. This class is safe for
-     * concurrent use among multiple threads.
-     */
+   /**
+    * A class that implements a statistically-random byte generator, using
+    * Sebastiano Vigna's <a
+    * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
+    * RNG as the underlying implementation. This class is safe for
+    * concurrent use among multiple threads.
+    */
   public class XorShift128Plus implements IRandomGen {
     private long[] s = new long[2];
     private Object syncRoot = new Object();
@@ -72,8 +72,8 @@ package com.upokecenter.util;
       return count;
     }
 
-    // xorshift128 + generator
-    // http://xorshift.di.unimi.it/xorshift128plus.c
+   // xorshift128 + generator
+   // http://xorshift.di.unimi.it/xorshift128plus.c
     private long NextValue() {
           long s1 = this.s[0];
           long s0 = this.s[1];

@@ -98,7 +98,7 @@ import com.upokecenter.numbers.*;
         return false;
       }
       EInteger bi = ef.ToEInteger();
-      return bi.GetSignedBitLength() <= 63;
+      return bi.CanFitInInt64();
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {

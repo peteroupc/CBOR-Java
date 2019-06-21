@@ -20,7 +20,7 @@ Represents an object in Concise Binary Object Representation (CBOR) and
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior
- of CBORObject.FromObject  and CBORObject#ToObject  , as
+ of CBORObject.FromObject and CBORObject#ToObject , as
  well as type filters for ToObject
 
 * [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -

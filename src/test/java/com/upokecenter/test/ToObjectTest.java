@@ -19,7 +19,7 @@ import com.upokecenter.numbers.*;
         CBORObject.True.ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -28,7 +28,7 @@ import com.upokecenter.numbers.*;
         CBORObject.False.ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -37,7 +37,7 @@ import com.upokecenter.numbers.*;
         CBORObject.Undefined.ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -46,7 +46,7 @@ import com.upokecenter.numbers.*;
         CBORObject.NewArray().ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -55,7 +55,7 @@ import com.upokecenter.numbers.*;
         CBORObject.NewMap().ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -75,7 +75,7 @@ import com.upokecenter.numbers.*;
             cbornumber.ToObject(EInteger.class);
             Assert.fail("Should have failed");
           } catch (ArithmeticException ex) {
-            // NOTE: Intentionally empty
+           // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
@@ -200,7 +200,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -210,7 +210,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -220,7 +220,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -230,7 +230,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -240,7 +240,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -250,7 +250,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)328323)
                   .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString()); throw new
           IllegalStateException("", ex);
@@ -291,7 +291,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.NewArray().ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -300,7 +300,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.NewMap().ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -309,7 +309,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.True.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -318,7 +318,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.False.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -327,7 +327,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.Undefined.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -337,7 +337,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   .ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -357,7 +357,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
             cbornumber.ToObject(byte.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
-            // NOTE: Intentionally empty
+           // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString() + cbornumber);
             throw new IllegalStateException("", ex);
@@ -373,7 +373,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         try {
           ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail(ex.toString()); throw new
             IllegalStateException("", ex);
@@ -383,7 +383,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         try {
           ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail(ex.toString()); throw new
             IllegalStateException("", ex);
@@ -397,7 +397,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.NewArray().ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -406,7 +406,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.NewMap().ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -415,7 +415,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.True.ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -424,7 +424,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.False.ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -433,7 +433,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         CBORObject.Undefined.ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -443,7 +443,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   .ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -509,7 +509,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewArray().ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -518,7 +518,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewMap().ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -527,7 +527,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.True.ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -536,7 +536,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.False.ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -545,7 +545,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.Undefined.ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -555,7 +555,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
                   .ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -645,7 +645,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewArray().ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -654,7 +654,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewMap().ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -663,7 +663,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.True.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -672,7 +672,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.False.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -681,7 +681,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.Undefined.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -691,7 +691,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
                   .ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -711,7 +711,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
             cbornumber.ToObject(short.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
-            // NOTE: Intentionally empty
+           // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString() + cbornumber);
             throw new IllegalStateException("", ex);
@@ -726,7 +726,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewArray().ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -735,7 +735,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.NewMap().ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -744,7 +744,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.True.ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -753,7 +753,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.False.ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -762,7 +762,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         CBORObject.Undefined.ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -771,7 +771,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
 ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -808,7 +808,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
             System.out.println(cbornumber.ToObject(int.class));
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
-            // NOTE: Intentionally empty
+           // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString() + cbornumber);
             throw new IllegalStateException("", ex);
@@ -818,7 +818,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
               cbornumberdouble.ToObject(int.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
-              // NOTE: Intentionally empty
+             // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -829,7 +829,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
               cbornumbersingle.ToObject(int.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
-              // NOTE: Intentionally empty
+             // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -844,7 +844,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewArray().ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -853,7 +853,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewMap().ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -862,7 +862,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.True.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -871,7 +871,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.False.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -880,7 +880,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.Undefined.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -890,7 +890,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
                   .ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -926,7 +926,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
             cbornumber.ToObject(long.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
-            // NOTE: Intentionally empty
+           // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString() + cbornumber);
             throw new IllegalStateException("", ex);
@@ -936,7 +936,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
               cbornumberdouble.ToObject(long.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
-              // NOTE: Intentionally empty
+             // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -947,7 +947,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
               cbornumbersingle.ToObject(long.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
-              // NOTE: Intentionally empty
+             // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
               throw new IllegalStateException("", ex);
@@ -962,7 +962,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewArray().ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -971,7 +971,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewMap().ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -980,7 +980,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.True.ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -989,7 +989,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.False.ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -998,7 +998,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.Undefined.ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1008,7 +1008,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
                   .ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1044,7 +1044,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         ToObjectTest.TestToFromObjectRoundTrip(true).ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1053,7 +1053,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         ToObjectTest.TestToFromObjectRoundTrip(false).ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1062,7 +1062,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         ToObjectTest.TestToFromObjectRoundTrip(5).ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1071,7 +1071,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewArray().ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1080,7 +1080,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
         CBORObject.NewMap().ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
+       // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1110,7 +1110,7 @@ ToObjectTest.TestToFromObjectRoundTrip("").ToObject(int.class);
       co.set("stringProp",ToObjectTest.TestToFromObjectRoundTrip("stringProp"));
       co.set("stringArray",CBORObject.NewArray().Add("a").Add("b"));
       ao = (PODClass)co.ToObject(PODClass.class);
-      // Check whether ToObject ignores private setters
+     // Check whether ToObject ignores private setters
       if (!(ao.HasGoodPrivateProp())) {
  Assert.fail();
  }

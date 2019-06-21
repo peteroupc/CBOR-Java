@@ -20,11 +20,11 @@ at: http://peteroupc.github.io/
       return obj;
     }
 
-    /**
-     * Internal API.
-     * @param obj The parameter {@code obj} is an internal parameter.
-     * @return A CBORObject object.
-     */
+   /**
+    * Internal API.
+    * @param obj The parameter {@code obj} is an internal parameter.
+    * @return A CBORObject object.
+    */
     public CBORObject ToCBORObject(java.util.UUID obj) {
       byte[] bytes = PropertyMap.UUIDToBytes(obj);
       return CBORObject.FromObjectAndTag(bytes, (int)37);

@@ -3,8 +3,8 @@
     public final class CBORTypeMapper extends java.lang.Object
 
 Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject </code> and <code>CBORObject#ToObject </code> , as
- well as type filters for <code>ToObject </code>
+ of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+ well as type filters for <code>ToObject</code>
 
 ## Methods
 
@@ -73,8 +73,8 @@ Returns whether the given Java or .NET type name fits the filters given in
 **Parameters:**
 
 * <code>typeName</code> - The fully qualified name of a Java or .NET class (e.g.,
- <code>java.math.BigInteger </code> or <code>
- System.Globalization.CultureInfo </code>).
+ <code>java.math.BigInteger</code> or <code>
+ System.Globalization.CultureInfo</code>).
 
 **Returns:**
 
@@ -110,8 +110,7 @@ Adds the fully qualified name of a Java or .NET type for use in type
 **Parameters:**
 
 * <code>name</code> - The fully qualified name of a Java or .NET class (e.g., <code>
- java.math.BigInteger </code> or <code>System.Globalization.CultureInfo </code>
-).
+ java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
 
 **Returns:**
 

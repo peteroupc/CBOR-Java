@@ -10,9 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-    /**
-     * Implements arithmetic operations with CBOR objects.
-     */
+   /**
+    * Implements arithmetic operations with CBOR objects.
+    */
   final class CBORObjectMath {
 private CBORObjectMath() {
 }
@@ -41,7 +41,7 @@ private CBORObjectMath() {
         long valueB = (((Long)objB).longValue());
         if ((valueA < 0 && valueB < Long.MIN_VALUE - valueA) ||
                 (valueA > 0 && valueB > Long.MAX_VALUE - valueA)) {
-          // would overflow, convert to EInteger
+         // would overflow, convert to EInteger
           return CBORObject.FromObject((EInteger.FromInt64(valueA)).Add(EInteger.FromInt64(valueB)));
         }
         return CBORObject.FromObject(valueA + valueB);
@@ -104,7 +104,7 @@ private CBORObjectMath() {
         long valueB = (((Long)objB).longValue());
         if ((valueB < 0 && Long.MAX_VALUE + valueB < valueA) ||
                 (valueB > 0 && Long.MIN_VALUE + valueB > valueA)) {
-          // would overflow, convert to EInteger
+         // would overflow, convert to EInteger
           return CBORObject.FromObject((EInteger.FromInt64(valueA)).Subtract(EInteger.FromInt64(valueB)));
         }
         return CBORObject.FromObject(valueA - valueB);
@@ -173,7 +173,7 @@ private CBORObjectMath() {
           (!apos && ((!bpos && valueA != 0L &&
           (Long.MAX_VALUE / valueA) > valueB) ||
           (bpos && valueA < (Long.MIN_VALUE / valueB))))) {
-          // would overflow, convert to EInteger
+         // would overflow, convert to EInteger
           EInteger bvalueA = EInteger.FromInt64(valueA);
           EInteger bvalueB = EInteger.FromInt64(valueB);
           return CBORObject.FromObject(bvalueA.Multiply(bvalueB));
@@ -269,8 +269,8 @@ private CBORObjectMath() {
           return CBORObject.NaN;
         }
         EDecimal eret = e1.Divide(e2, null);
-        // If either operand is infinity or NaN, the result
-        // is already exact. Likewise if the result is a finite number.
+       // If either operand is infinity or NaN, the result
+       // is already exact. Likewise if the result is a finite number.
         if (!e1.isFinite() || !e2.isFinite() || eret.isFinite()) {
           return CBORObject.FromObject(eret);
         }
@@ -293,8 +293,8 @@ private CBORObjectMath() {
           return CBORObject.NaN;
         }
         EFloat eret = e1.Divide(e2, null);
-        // If either operand is infinity or NaN, the result
-        // is already exact. Likewise if the result is a finite number.
+       // If either operand is infinity or NaN, the result
+       // is already exact. Likewise if the result is a finite number.
         if (!e1.isFinite() || !e2.isFinite() || eret.isFinite()) {
           return CBORObject.FromObject(eret);
         }

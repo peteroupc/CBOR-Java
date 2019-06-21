@@ -101,7 +101,7 @@ private TestCommon() {
 
     public static void AssertEquals(Object o, Object o2) {
       if (!o.equals(o2)) {
-         Assert.assertEquals(o, o2);
+        Assert.assertEquals(o, o2);
       }
     }
 
@@ -262,7 +262,7 @@ private TestCommon() {
       }
     }
 
-public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2, String msg) {
+    public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) < 0) {
         String str = msg + "\r\n" + ObjectMessages(
           o1,
@@ -394,25 +394,25 @@ public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2,
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-        char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      while (intlongValue > 9) {
-        int intdivValue = (intlongValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      if (intlongValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)intlongValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 12 - count);
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        while (intlongValue > 9) {
+          int intdivValue = (intlongValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        if (intlongValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)intlongValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 12 - count);
       } else {
         chars = new char[24];
         count = 23;
@@ -421,25 +421,25 @@ public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2,
         }
         while (longValue > 43698) {
           long divValue = longValue / 10;
-        char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      while (longValue > 9) {
-        long divValue = (longValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      if (longValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)longValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 24 - count);
+          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        while (longValue > 9) {
+          long divValue = (longValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        if (longValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)longValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 24 - count);
       }
     }
 
@@ -483,7 +483,8 @@ public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2,
       sb.append("new byte[] { ");
       for (int i = 0; i < bytes.length; ++i) {
         if (i > 0) {
-          sb.append(","); }
+          sb.append(",");
+         }
         if ((bytes[i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {

@@ -9,9 +9,9 @@ at: http://peteroupc.github.io/
 
 import java.io.*;
 
-    /**
-     * Contains lightweight methods for reading and writing CBOR data.
-     */
+   /**
+    * Contains lightweight methods for reading and writing CBOR data.
+    */
   public final class MiniCBOR {
 private MiniCBOR() {
 }
@@ -35,7 +35,7 @@ private MiniCBOR() {
       if ((value & 0x400) == value) {
         return ToSingle((int)((value == 0) ? 0 : 0x38800000) | negvalue);
       } else {
-        // denormalized
+       // denormalized
         int m = value & 0x3ff;
         value = 0x1c400;
         while ((m >> 10) == 0) {
@@ -59,7 +59,7 @@ private MiniCBOR() {
         return true;
       }
       while ((b >> 5) == 6) {
-        // Skip tags until a tag character is no longer read
+       // Skip tags until a tag character is no longer read
         if (b == 0xd8) {
           stream.read();
         } else if (b == 0xd9) {
@@ -194,7 +194,7 @@ private static long ReadInteger(
     private static double ReadFP(InputStream stream, int headByte) throws java.io.IOException {
       int b;
       if (headByte == 0xf9) {
-        // Half-precision
+       // Half-precision
         byte[] bytes = new byte[2];
         if (stream.read(bytes, 0, bytes.length) != bytes.length) {
           throw new IOException("Premature end of stream");
@@ -244,15 +244,15 @@ private static long ReadInteger(
       throw new IOException("Not a valid headbyte for ReadFP");
     }
 
-    /**
-     * Reads a double-precision floating point number in CBOR format from a data
-     * stream.
-     * @param stream A data stream.
-     * @return A 64-bit floating-point number.
-     * @throws java.io.IOException The end of the stream was reached, or the
-     * object read isn't a number.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     */
+   /**
+    * Reads a double-precision floating point number in CBOR format from a data
+    * stream.
+    * @param stream A data stream.
+    * @return A 64-bit floating-point number.
+    * @throws java.io.IOException The end of the stream was reached, or the
+    * object read isn't a number.
+    * @throws NullPointerException The parameter {@code stream} is null.
+    */
     public static double ReadDouble(InputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
@@ -265,7 +265,7 @@ private static long ReadInteger(
         return (double)(-1 - b);
       }
       while ((b >> 5) == 6) {
-        // Skip tags until a tag character is no longer read
+       // Skip tags until a tag character is no longer read
         if (b == 0xd8) {
           stream.read();
         } else if (b == 0xd9) {
@@ -286,7 +286,7 @@ private static long ReadInteger(
         return (double)(-1 - b);
       }
       if (b == 0xf9 || b == 0xfa || b == 0xfb) {
-        // Read a floating-point number
+       // Read a floating-point number
         return ReadFP(stream, b);
       }
       if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
@@ -296,15 +296,15 @@ private static long ReadInteger(
       throw new IOException("Not a double");
     }
 
-    /**
-     * Reads a 32-bit integer in CBOR format from a data stream. If the object read
-     * is a floating-point number, it is truncated to an integer.
-     * @param stream A data stream.
-     * @return A 32-bit signed integer.
-     * @throws java.io.IOException The end of the stream was reached, or the
-     * object read isn't a number, or can't fit a 32-bit integer.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     */
+   /**
+    * Reads a 32-bit integer in CBOR format from a data stream. If the object read
+    * is a floating-point number, it is truncated to an integer.
+    * @param stream A data stream.
+    * @return A 32-bit signed integer.
+    * @throws java.io.IOException The end of the stream was reached, or the
+    * object read isn't a number, or can't fit a 32-bit integer.
+    * @throws NullPointerException The parameter {@code stream} is null.
+    */
     public static int ReadInt32(InputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
@@ -317,7 +317,7 @@ private static long ReadInteger(
         return -1 - b;
       }
       while ((b >> 5) == 6) {
-        // Skip tags until a tag character is no longer read
+       // Skip tags until a tag character is no longer read
         if (b == 0xd8) {
           stream.read();
         } else if (b == 0xd9) {
@@ -338,9 +338,9 @@ private static long ReadInteger(
         return -1 - b;
       }
       if (b == 0xf9 || b == 0xfa || b == 0xfb) {
-        // Read a floating-point number
+       // Read a floating-point number
         double dbl = ReadFP(stream, b);
-        // Truncate to a 32-bit integer
+       // Truncate to a 32-bit integer
         if (((Double)(dbl)).isInfinite() || Double.isNaN(dbl)) {
           throw new IOException("Not a 32-bit integer");
         }

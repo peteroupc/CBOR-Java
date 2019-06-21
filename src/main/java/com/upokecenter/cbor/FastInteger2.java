@@ -87,13 +87,13 @@ import com.upokecenter.numbers.*;
               result1 &= 65535;
               result3 = (result2 >> 16) & 65535;
               result2 &= 65535;
-              // Add carry
+             // Add carry
               x0 = ((int)(result0 | (result1 << 16)));
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
               Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
-                // Carry in addition
+               // Carry in addition
                 x1 = (x1 + 1);
               }
               this.data[i] = x2;
@@ -129,13 +129,13 @@ import com.upokecenter.numbers.*;
               result2 += temp & 65535;
               result3 += (result2 >> 16) & 65535;
               result2 &= 65535;
-              // Add carry
+             // Add carry
               x0 = ((int)(result0 | (result1 << 16)));
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
               Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
-                // Carry in addition
+               // Carry in addition
                 x1 = (x1 + 1);
               }
               this.data[i] = x2;
@@ -151,7 +151,7 @@ import com.upokecenter.numbers.*;
             this.data[this.wordCount] = carry;
             ++this.wordCount;
           }
-          // Calculate the correct data length
+         // Calculate the correct data length
           while (this.wordCount != 0 && this.data[this.wordCount - 1] == 0) {
             --this.wordCount;
           }
@@ -175,7 +175,7 @@ import com.upokecenter.numbers.*;
         }
         if (other != 0) {
           {
-            // Ensure a length of at least 1
+           // Ensure a length of at least 1
             if (this.wordCount == 0) {
               if (this.data.length == 0) {
                 this.data = new int[4];
@@ -200,7 +200,7 @@ import com.upokecenter.numbers.*;
                 this.data[i] = (int)u;
               }
             }
-            // Calculate the correct data length
+           // Calculate the correct data length
             while (this.wordCount != 0 && this.data[this.wordCount - 1] == 0) {
               --this.wordCount;
             }
@@ -212,8 +212,8 @@ import com.upokecenter.numbers.*;
       MutableNumber Subtract(MutableNumber other) {
         {
           {
-       // System.out.println("" + this.data.length + " " +
-             // (other.data.length));
+      // System.out.println("" + this.data.length + " " +
+            // (other.data.length));
             int neededSize = (this.wordCount > other.wordCount) ?
             this.wordCount : other.wordCount;
             if (this.data.length < neededSize) {
@@ -245,7 +245,7 @@ import com.upokecenter.numbers.*;
                 this.data[i] = (int)u;
               }
             }
-            // Calculate the correct data length
+           // Calculate the correct data length
             while (this.wordCount != 0 && this.data[this.wordCount - 1] == 0) {
               --this.wordCount;
             }
@@ -262,7 +262,7 @@ import com.upokecenter.numbers.*;
         {
         if (augend != 0) {
           int carry = 0;
-          // Ensure a length of at least 1
+         // Ensure a length of at least 1
           if (this.wordCount == 0) {
             if (this.data.length == 0) {
               this.data = new int[4];
@@ -293,7 +293,7 @@ import com.upokecenter.numbers.*;
             ++this.wordCount;
           }
         }
-        // Calculate the correct data length
+       // Calculate the correct data length
         while (this.wordCount != 0 && this.data[this.wordCount - 1] == 0) {
           --this.wordCount;
         }
@@ -345,11 +345,11 @@ import com.upokecenter.numbers.*;
       return this;
     }
 
-    /**
-     * Internal API.
-     * @param val The parameter {@code val} is an internal parameter.
-     * @return A FastInteger2 object.
-     */
+   /**
+    * Internal API.
+    * @param val The parameter {@code val} is an internal parameter.
+    * @return A FastInteger2 object.
+    */
     FastInteger2 Multiply(int val) {
       if (val == 0) {
         this.smallValue = 0;
@@ -365,16 +365,16 @@ import com.upokecenter.numbers.*;
               (!apos && ((!bpos && this.smallValue != 0L &&
                     (Integer.MAX_VALUE / this.smallValue) > val) ||
                     (bpos && this.smallValue < (Integer.MIN_VALUE / val))))) {
-              // would overflow, convert to large
+             // would overflow, convert to large
               if (apos && bpos) {
-                // if both operands are nonnegative
-                // convert to mutable big integer
+               // if both operands are nonnegative
+               // convert to mutable big integer
                 this.integerMode = 1;
                 this.mnum = new MutableNumber(this.smallValue);
                 this.mnum.Multiply(val);
               } else {
-                // if either operand is negative
-                // convert to big integer
+               // if either operand is negative
+               // convert to big integer
                 this.integerMode = 2;
                 this.largeValue = EInteger.FromInt32(this.smallValue);
                 this.largeValue = this.largeValue.Multiply(EInteger.FromInt32(val));
@@ -401,11 +401,11 @@ import com.upokecenter.numbers.*;
       return this;
     }
 
-    /**
-     * Internal API.
-     * @param val The parameter {@code val} is an internal parameter.
-     * @return A FastInteger2 object.
-     */
+   /**
+    * Internal API.
+    * @param val The parameter {@code val} is an internal parameter.
+    * @return A FastInteger2 object.
+    */
     FastInteger2 Subtract(FastInteger2 val) {
       EInteger valValue;
       switch (this.integerMode) {
@@ -414,7 +414,7 @@ import com.upokecenter.numbers.*;
             int vsv = val.smallValue;
             if ((vsv < 0 && Integer.MAX_VALUE + vsv < this.smallValue) ||
                 (vsv > 0 && Integer.MIN_VALUE + vsv > this.smallValue)) {
-              // would overflow, convert to large
+             // would overflow, convert to large
               this.integerMode = 2;
               this.largeValue = EInteger.FromInt32(this.smallValue);
               this.largeValue = this.largeValue.Subtract(EInteger.FromInt32(vsv));
@@ -430,8 +430,8 @@ import com.upokecenter.numbers.*;
           break;
         case 1:
           if (val.integerMode == 1) {
-            // NOTE: Mutable numbers are
-            // currently always zero or positive
+           // NOTE: Mutable numbers are
+           // currently always zero or positive
             this.mnum.Subtract(val.mnum);
           } else if (val.integerMode == 0 && val.smallValue >= 0) {
             this.mnum.SubtractInt(val.smallValue);
@@ -451,11 +451,11 @@ import com.upokecenter.numbers.*;
       return this;
     }
 
-    /**
-     * Internal API.
-     * @param val The parameter {@code val} is an internal parameter.
-     * @return A FastInteger2 object.
-     */
+   /**
+    * Internal API.
+    * @param val The parameter {@code val} is an internal parameter.
+    * @return A FastInteger2 object.
+    */
     FastInteger2 SubtractInt(int val) {
       if (val == Integer.MIN_VALUE) {
         return this.AddInt(Integer.MAX_VALUE).AddInt(1);
@@ -463,7 +463,7 @@ import com.upokecenter.numbers.*;
       if (this.integerMode == 0) {
         if ((val < 0 && Integer.MAX_VALUE + val < this.smallValue) ||
                 (val > 0 && Integer.MIN_VALUE + val > this.smallValue)) {
-          // would overflow, convert to large
+         // would overflow, convert to large
           this.integerMode = 2;
           this.largeValue = EInteger.FromInt32(this.smallValue);
           this.largeValue = this.largeValue.Subtract(EInteger.FromInt32(val));
@@ -484,7 +484,7 @@ import com.upokecenter.numbers.*;
             - this.smallValue) ||
                 (this.smallValue > 0 && (int)val.smallValue > Integer.MAX_VALUE
                 - this.smallValue)) {
-              // would overflow
+             // would overflow
               if (val.smallValue >= 0) {
                 this.integerMode = 1;
                 this.mnum = new MutableNumber(this.smallValue);
@@ -530,7 +530,7 @@ import com.upokecenter.numbers.*;
           if ((this.smallValue < 0 && (int)val < Integer.MIN_VALUE -
         this.smallValue) || (this.smallValue > 0 && (int)val >
             Integer.MAX_VALUE - this.smallValue)) {
-            // would overflow
+           // would overflow
             if (val >= 0) {
               this.integerMode = 1;
               this.mnum = new MutableNumber(this.smallValue);
@@ -577,10 +577,10 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    /**
-     * This is an internal API.
-     * @return Internal API value.
-     */
+   /**
+    * This is an internal API.
+    * @return Internal API value.
+    */
     final int signum() {
         switch (this.integerMode) {
           case 0:

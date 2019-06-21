@@ -61,7 +61,7 @@ import com.upokecenter.numbers.*;
       ERational ef = (ERational)obj;
       if (ef.isFinite()) {
         EInteger bi = ef.ToEInteger();
-        if (bi.GetSignedBitLength() <= 63) {
+        if (bi.CanFitInInt64()) {
           return bi.ToInt64Checked();
         }
       }
@@ -94,7 +94,7 @@ import com.upokecenter.numbers.*;
         return false;
       }
       EInteger bi = ef.ToEInteger();
-      return bi.GetSignedBitLength() <= 63;
+      return bi.CanFitInInt64();
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {
@@ -124,8 +124,8 @@ import com.upokecenter.numbers.*;
       if (ef.getDenominator().equals(EInteger.FromInt32(1))) {
         return true;
       }
-      // A rational number is integral if the remainder
-      // of the numerator divided by the denominator is 0
+     // A rational number is integral if the remainder
+     // of the numerator divided by the denominator is 0
       EInteger denom = ef.getDenominator();
       EInteger rem = ef.getNumerator().Remainder(denom);
       return rem.isZero();

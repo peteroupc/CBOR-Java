@@ -99,22 +99,22 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
       int type = (firstbyte >> 5) & 0x07;
       int additional = firstbyte & 0x1f;
       int expectedLength = CBORObject.GetExpectedLength(firstbyte);
-      // Data checks
+     // Data checks
       if (expectedLength == -1) {
-        // if the head byte is invalid
+       // if the head byte is invalid
         throw new CBORException("Unexpected data encountered");
       }
-      // Check if this represents a fixed Object
+     // Check if this represents a fixed Object
       CBORObject fixedObject = CBORObject.GetFixedObject(firstbyte);
       if (fixedObject != null) {
         return fixedObject;
       }
-      // Read fixed-length data
+     // Read fixed-length data
       byte[] data = null;
       if (expectedLength != 0) {
         data = new byte[expectedLength];
-        // include the first byte because GetFixedLengthObject
-        // will assume it exists for some head bytes
+       // include the first byte because GetFixedLengthObject
+       // will assume it exists for some head bytes
         data[0] = ((byte)firstbyte);
         if (expectedLength > 1 &&
             this.stream.read(data, 1, expectedLength - 1) != expectedLength
@@ -127,7 +127,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
         }
         return cbor;
       }
-      // Special check: Decimal fraction or bigfloat
+     // Special check: Decimal fraction or bigfloat
       if (firstbyte == 0xc4 || firstbyte == 0xc5) {
         int nextbyte = this.stream.read();
         if (nextbyte != 0x82 && nextbyte != 0x9f) {
@@ -192,7 +192,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
               throw new CBORException("Premature end of data");
             }
             if ((((int)data[0]) & 0x80) != 0) {
-              // Won't fit in a signed 64-bit number
+             // Won't fit in a signed 64-bit number
               byte[] uabytes = new byte[9];
               uabytes[0] = data[7];
               uabytes[1] = data[6];
@@ -218,21 +218,21 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
             break;
           }
       }
-      // The following doesn't check for major types 0 and 1,
-      // since all of them are fixed-length types and are
-      // handled in the call to GetFixedLengthObject.
+     // The following doesn't check for major types 0 and 1,
+     // since all of them are fixed-length types and are
+     // handled in the call to GetFixedLengthObject.
       if (type == 2) {  // Byte String
         if (additional == 31) {
-          // Streaming byte String
+         // Streaming byte String
           java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-            // Requires same type as this one
+           // Requires same type as this one
             while (true) {
               int nextByte = this.stream.read();
               if (nextByte == 0xff) {
-                // break if the "break" code was read
+               // break if the "break" code was read
                 break;
               }
               long len = ReadDataLength(this.stream, nextByte, 2);
@@ -241,7 +241,7 @@ ms = new java.io.ByteArrayOutputStream();
                   " is bigger than supported ");
               }
               if (nextByte != 0x40) {
-  // NOTE: 0x40 means the empty byte String
+ // NOTE: 0x40 means the empty byte String
                 ReadByteData(this.stream, len, ms);
               }
             }
@@ -281,12 +281,12 @@ try { if (ms != null) {
       }
       if (type == 3) {  // Text String
         if (additional == 31) {
-          // Streaming text String
+         // Streaming text String
           StringBuilder builder = new StringBuilder();
           while (true) {
             int nextByte = this.stream.read();
             if (nextByte == 0xff) {
-              // break if the "break" code was read
+             // break if the "break" code was read
               break;
             }
             long len = ReadDataLength(this.stream, nextByte, 3);
@@ -295,7 +295,7 @@ try { if (ms != null) {
                 " is bigger than supported");
             }
             if (nextByte != 0x60) {
-  // NOTE: 0x60 means the empty String
+ // NOTE: 0x60 means the empty String
               if (PropertyMap.ExceedsKnownLength(this.stream, len)) {
                 throw new CBORException("Premature end of data");
               }
@@ -355,14 +355,14 @@ try { if (ms != null) {
         CBORObject cbor = CBORObject.NewArray();
         if (additional == 31) {
           int vtindex = 0;
-          // Indefinite-length array
+         // Indefinite-length array
           while (true) {
             int headByte = this.stream.read();
             if (headByte < 0) {
               throw new CBORException("Premature end of data");
             }
             if (headByte == 0xff) {
-              // Break code was read
+             // Break code was read
               break;
             }
             ++this.depth;
@@ -397,14 +397,14 @@ try { if (ms != null) {
       if (type == 5) {  // Map, type 5
         CBORObject cbor = CBORObject.NewMap();
         if (additional == 31) {
-          // Indefinite-length map
+         // Indefinite-length map
           while (true) {
             int headByte = this.stream.read();
             if (headByte < 0) {
               throw new CBORException("Premature end of data");
             }
             if (headByte == 0xff) {
-              // Break code was read
+             // Break code was read
               break;
             }
             ++this.depth;
@@ -454,12 +454,12 @@ try { if (ms != null) {
             (int)uadditional);
             switch (uad) {
             case 256:
-              // Tag 256: String namespace
+             // Tag 256: String namespace
               this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
               this.stringRefs.Push();
               break;
             case 25:
-              // String reference
+             // String reference
               if (this.stringRefs == null) {
                 throw new CBORException("No stringref namespace");
               }
@@ -482,11 +482,11 @@ try { if (ms != null) {
             (int)uadditional);
           switch (uaddl) {
             case 256:
-              // String tag
+             // String tag
               this.stringRefs.Pop();
               break;
             case 25:
-              // stringref tag
+             // stringref tag
               return this.stringRefs.GetString(o.AsEInteger());
           }
 
@@ -513,7 +513,7 @@ try { if (ms != null) {
         throw new CBORException("Premature end of stream");
       }
       if (uadditional <= 0x10000) {
-        // Simple case: small size
+       // Simple case: small size
         byte[] data = new byte[(int)uadditional];
         if (stream.read(data, 0, data.length) != data.length) {
           throw new CBORException("Premature end of stream");
@@ -604,7 +604,7 @@ try { if (ms != null) {
             if (stream.read(data, 0, 8) != 8) {
               throw new CBORException("Premature end of data");
             }
-            // Treat return value as an unsigned integer
+           // Treat return value as an unsigned integer
             long uadditional = ((long)(data[0] & 0xffL)) << 56;
             uadditional |= ((long)(data[1] & 0xffL)) << 48;
             uadditional |= ((long)(data[2] & 0xffL)) << 40;

@@ -49,19 +49,19 @@ import com.upokecenter.cbor.*;
     }
 
     public static CBORObject patch(CBORObject o, CBORObject patch) {
-      // clone the Object in case of failure
+     // clone the Object in case of failure
       o = cloneCbor(o);
       for (int i = 0; i < patch.size(); ++i) {
         CBORObject patchOp = patch.get(i);
-        // NOTE: This algorithm requires "op" to exist
-        // only once; the CBORObject, however, does not
-        // allow duplicates
+       // NOTE: This algorithm requires "op" to exist
+       // only once; the CBORObject, however, does not
+       // allow duplicates
         String valueOpStr = getString(patchOp, "op");
         if (valueOpStr == null) {
           throw new IllegalArgumentException("patch");
         }
         if ("add".equals(valueOpStr)) {
-          // operation
+         // operation
           CBORObject value = null;
           if (!patchOp.ContainsKey("value")) {
 throw new IllegalArgumentException("patch " + valueOpStr + " value");
@@ -69,7 +69,7 @@ throw new IllegalArgumentException("patch " + valueOpStr + " value");
             value = patchOp.get("value");
           o = addOperation(o, valueOpStr, getString(patchOp, "path"), value);
         } else if ("replace".equals(valueOpStr)) {
-          // operation
+         // operation
           CBORObject value = null;
           if (!patchOp.ContainsKey("value")) {
 throw new IllegalArgumentException("patch " + valueOpStr + " value");
@@ -81,7 +81,7 @@ throw new IllegalArgumentException("patch " + valueOpStr + " value");
   getString(patchOp, "path"),
   value);
         } else if ("remove".equals(valueOpStr)) {
-          // Remove operation
+         // Remove operation
           String path = patchOp.get("path").AsString();
           if (path == null) {
             throw new IllegalArgumentException("patch " + valueOpStr + " path");

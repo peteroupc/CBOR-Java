@@ -120,7 +120,7 @@ return
       }
       for (int i = 0; i < 15; ++i) {
         CBORObject o;
-        // System.out.println("tag "+tag+" "+i);
+       // System.out.println("tag "+tag+" "+i);
         if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
           tag = 999;
         }
@@ -145,13 +145,13 @@ return
         }
         try {
           o = CBORObject.FromObjectAndTag(o, tag);
-          // System.out.println("done");
+         // System.out.println("done");
           return o;
         } catch (Exception ex) {
           continue;
         }
       }
-      // System.out.println("Failed "+tag);
+     // System.out.println("Failed "+tag);
       return CBORObject.Null;
     }
 
@@ -208,7 +208,7 @@ return
           o.AsByte();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -217,7 +217,7 @@ return
           o.AsInt16();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -226,7 +226,7 @@ return
           o.AsInt32();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -235,7 +235,7 @@ return
           o.AsInt64();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -256,7 +256,7 @@ return
           o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex); throw new
             IllegalStateException("", ex);
@@ -288,7 +288,7 @@ return
       if (!s.equals(o.ToJSONString())) {
         Assert.assertEquals("o is not equal to s",s,o.ToJSONString());
       }
-      // Test round-tripping
+     // Test round-tripping
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
       if (!s.equals(o2.ToJSONString())) {
         Assert.assertEquals("o2 is not equal to s",s,o2.ToJSONString());
@@ -297,7 +297,7 @@ return
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
-    // Tests the equivalence of the DecodeFromBytes and Read methods.
+   // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
       CBORObject oa = FromBytesA(b);
       CBORObject ob = FromBytesB(b);

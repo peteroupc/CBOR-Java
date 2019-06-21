@@ -97,8 +97,8 @@ import com.upokecenter.numbers.*;
       }
       float fltItem2 = (fltItem < 0) ? (float)Math.ceil(fltItem) :
         (float)Math.floor(fltItem);
-      // Convert float to double to avoid precision loss when
-      // converting Integer.MIN_VALUE/MaxValue to float
+     // Convert float to double to avoid precision loss when
+     // converting Integer.MIN_VALUE/MaxValue to float
       return (double)fltItem2 >= Integer.MIN_VALUE && (double)fltItem2 <=
         Integer.MAX_VALUE;
     }
@@ -110,8 +110,8 @@ import com.upokecenter.numbers.*;
       }
       fltItem = (fltItem < 0) ? (float)Math.ceil(fltItem) :
         (float)Math.floor(fltItem);
-      // Convert float to double to avoid precision loss when
-      // converting Integer.MIN_VALUE/MaxValue to float
+     // Convert float to double to avoid precision loss when
+     // converting Integer.MIN_VALUE/MaxValue to float
       if ((double)fltItem >= Integer.MIN_VALUE && (double)fltItem <=
           Integer.MAX_VALUE) {
         int ret = (int)fltItem;

@@ -11,10 +11,10 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-    /**
-     * Implements CBOR string references, described at
-     * <code>http://cbor.schmorp.de/stringref </code>
-     */
+   /**
+    * Implements CBOR string references, described at
+    * <code>http://cbor.schmorp.de/stringref</code>
+    */
   class StringRefs {
     private final ArrayList<ArrayList<CBORObject>> stack;
 
@@ -43,11 +43,11 @@ import com.upokecenter.numbers.*;
       } else if (lastList.size() < 65536) {
         addStr |= lengthHint >= 5;
       } else {
-        // NOTE: lastList's size can't be higher than (2^64)-1
+       // NOTE: lastList's size can't be higher than (2^64)-1
         addStr |= lengthHint >= 7;
       }
-      // NOTE: An additional branch, with lengthHint >= 11, would
-      // be needed if the size could be higher than (2^64)-1
+     // NOTE: An additional branch, with lengthHint >= 11, would
+     // be needed if the size could be higher than (2^64)-1
       if (addStr) {
         lastList.add(str);
       }
@@ -67,7 +67,7 @@ import com.upokecenter.numbers.*;
         throw new CBORException("Index " + index + " is not valid");
       }
       CBORObject ret = lastList.get(index);
-      // Byte strings are mutable, so make a copy
+     // Byte strings are mutable, so make a copy
       return (ret.getType() == CBORType.ByteString) ?
         CBORObject.FromObject(ret.GetByteString()) : ret;
     }
@@ -86,7 +86,7 @@ import com.upokecenter.numbers.*;
         throw new CBORException("Index " + index + " is not valid");
       }
       CBORObject ret = lastList.get(index);
-      // Byte strings are mutable, so make a copy
+     // Byte strings are mutable, so make a copy
       return (ret.getType() == CBORType.ByteString) ?
         CBORObject.FromObject(ret.GetByteString()) : ret;
     }

@@ -55,8 +55,8 @@ the order they are declared.
 ### Number
     public static final CBORType Number
 A number of any kind, including integers, big integers, floating point
- numbers, and decimal numbers. The floating-point value Not-a-Number
- is also included in the Number type.
+ numbers, and decimal numbers. The floating-point value Not-a-Number is
+ also included in the Number type.
 ### Boolean
     public static final CBORType Boolean
 The simple values true and false.

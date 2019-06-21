@@ -1,23 +1,23 @@
 package com.upokecenter.cbor;
 
-    final class URIUtility {
+  final class URIUtility {
 private URIUtility() {
 }
     enum ParseMode {
-    IRIStrict,
+      IRIStrict,
 
-    URIStrict,
+      URIStrict,
 
-    IRILenient,
+      IRILenient,
 
-    URILenient,
+      URILenient,
 
-    IRISurrogateLenient,
+      IRISurrogateLenient,
     }
 
     private static final String HexChars = "0123456789ABCDEF";
 
-    private static void appendAuthority(
+    private static void AppendAuthority(
   StringBuilder builder,
   String refValue,
   int[] segments) {
@@ -30,7 +30,7 @@ private URIUtility() {
       }
     }
 
-    private static void appendFragment(
+    private static void AppendFragment(
   StringBuilder builder,
   String refValue,
   int[] segments) {
@@ -43,12 +43,12 @@ private URIUtility() {
       }
     }
 
-    private static void appendNormalizedPath(
+    private static void AppendNormalizedPath(
       StringBuilder builder,
       String refValue,
       int[] segments) {
       builder.append(
-        normalizePath(
+        NormalizePath(
   refValue.substring(
   segments[4], (
   segments[4])+(segments[5] - segments[4]))));
@@ -64,7 +64,7 @@ private URIUtility() {
   segments[4])+(segments[5] - segments[4])));
     }
 
-    private static void appendQuery(
+    private static void AppendQuery(
   StringBuilder builder,
   String refValue,
   int[] segments) {
@@ -77,7 +77,7 @@ private URIUtility() {
       }
     }
 
-    private static void appendScheme(
+    private static void AppendScheme(
   StringBuilder builder,
   String refValue,
   int[] segments) {
@@ -90,14 +90,14 @@ private URIUtility() {
       }
     }
 
-    public static String escapeURI(String s, int mode) {
+    public static String EscapeURI(String s, int mode) {
       if (s == null) {
         return null;
       }
       int[] components = null;
       if (mode == 1) {
         components = (
-          s == null) ? null : splitIRI(
+          s == null) ? null : SplitIRI(
   s,
   0,
   s.length(),
@@ -106,7 +106,7 @@ private URIUtility() {
           return null;
         }
       } else {
-        components = (s == null) ? null : splitIRI(
+        components = (s == null) ? null : SplitIRI(
   s,
   0,
   s.length(),
@@ -119,7 +119,7 @@ private URIUtility() {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
+         // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
@@ -127,10 +127,10 @@ private URIUtility() {
         }
         if (mode == 0 || mode == 3) {
           if (c == '%' && mode == 3) {
-            // Check for illegal percent encoding
-            if (index + 2 >= valueSLength || !isHexChar(s.charAt(index + 1)) ||
-                !isHexChar(s.charAt(index + 2))) {
-              percentEncodeUtf8(builder, c);
+           // Check for illegal percent encoding
+            if (index + 2 >= valueSLength || !IsHexChar(s.charAt(index + 1)) ||
+                !IsHexChar(s.charAt(index + 2))) {
+              PercentEncodeUtf8(builder, c);
             } else {
               if (c <= 0xffff) {
                 builder.append((char)c);
@@ -145,11 +145,11 @@ private URIUtility() {
           }
           if (c >= 0x7f || c <= 0x20 ||
               ((c & 0x7f) == c && "{}|^\\`<>\"".indexOf((char)c) >= 0)) {
-            percentEncodeUtf8(builder, c);
+            PercentEncodeUtf8(builder, c);
           } else if (c == '[' || c == ']') {
             if (components != null && index >= components[2] && index <
                 components[3]) {
-              // within the authority component, so don't percent-encode
+             // within the authority component, so don't percent-encode
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
@@ -158,8 +158,8 @@ private URIUtility() {
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
-              // percent encode
-              percentEncodeUtf8(builder, c);
+             // percent encode
+              PercentEncodeUtf8(builder, c);
             }
           } else {
             if (c <= 0xffff) {
@@ -171,11 +171,11 @@ private URIUtility() {
           }
         } else if (mode == 1 || mode == 2) {
           if (c >= 0x80) {
-            percentEncodeUtf8(builder, c);
+            PercentEncodeUtf8(builder, c);
           } else if (c == '[' || c == ']') {
             if (components != null && index >= components[2] && index <
                 components[3]) {
-              // within the authority component, so don't percent-encode
+             // within the authority component, so don't percent-encode
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
@@ -184,8 +184,8 @@ private URIUtility() {
                 builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               }
             } else {
-              // percent encode
-              percentEncodeUtf8(builder, c);
+             // percent encode
+              PercentEncodeUtf8(builder, c);
             }
           } else {
             if (c <= 0xffff) {
@@ -201,8 +201,8 @@ private URIUtility() {
       return builder.toString();
     }
 
-    public static boolean hasScheme(String refValue) {
-      int[] segments = (refValue == null) ? null : splitIRI(
+    public static boolean HasScheme(String refValue) {
+      int[] segments = (refValue == null) ? null : SplitIRI(
         refValue,
         0,
         refValue.length(),
@@ -210,8 +210,8 @@ private URIUtility() {
       return segments != null && segments[0] >= 0;
     }
 
-    public static boolean hasSchemeForURI(String refValue) {
-      int[] segments = (refValue == null) ? null : splitIRI(
+    public static boolean HasSchemeForURI(String refValue) {
+      int[] segments = (refValue == null) ? null : SplitIRI(
         refValue,
         0,
         refValue.length(),
@@ -219,7 +219,7 @@ private URIUtility() {
       return segments != null && segments[0] >= 0;
     }
 
-    private static boolean isHexChar(char c) {
+    private static boolean IsHexChar(char c) {
       return (c >= 'a' && c <= 'f') ||
         (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
     }
@@ -240,9 +240,9 @@ private URIUtility() {
 
     public static String PercentDecode(String str, int index, int endIndex) {
       if (str == null) {
- return null;
-}
-      // Quick check
+        return null;
+      }
+     // Quick check
       boolean quickCheck = true;
       int lastIndex = 0;
       int i = index;
@@ -254,8 +254,8 @@ private URIUtility() {
         }
       }
       if (quickCheck) {
- return str.substring(index, (index)+(endIndex - index));
-}
+        return str.substring(index, (index)+(endIndex - index));
+      }
       StringBuilder retString = new StringBuilder();
       retString.append(str, index, (index)+(lastIndex));
       int cp = 0;
@@ -268,7 +268,7 @@ private URIUtility() {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < endIndex &&
             (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
+         // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
@@ -281,9 +281,9 @@ private URIUtility() {
             if (a >= 0 && b >= 0) {
               b = (a * 16) + b;
               i += 2;
-              // b now contains the byte read
+             // b now contains the byte read
               if (bytesNeeded == 0) {
-                // this is the lead byte
+               // this is the lead byte
                 if (b < 0x80) {
                   retString.append((char)b);
                   continue;
@@ -304,16 +304,16 @@ private URIUtility() {
                   bytesNeeded = 3;
                   cp = b - 0xf0;
                 } else {
-                  // illegal byte in UTF-8
+                 // illegal byte in UTF-8
                   retString.append('\uFFFD');
                   continue;
                 }
                 cp <<= 6 * bytesNeeded;
                 continue;
               } else {
-                // this is a second or further byte
+               // this is a second or further byte
                 if (b < lower || b > upper) {
-                  // illegal trailing byte
+                 // illegal trailing byte
                   cp = bytesNeeded = bytesSeen = 0;
                   lower = 0x80;
                   upper = 0xbf;
@@ -321,29 +321,29 @@ private URIUtility() {
                   retString.append('\uFFFD');
                   continue;
                 }
-                // reset lower and upper for the third
-                // and further bytes
+               // reset lower and upper for the third
+               // and further bytes
                 lower = 0x80;
                 upper = 0xbf;
                 ++bytesSeen;
                 cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
                 markedPos = i;
                 if (bytesSeen != bytesNeeded) {
-                  // continue if not all bytes needed
-                  // were read yet
+                 // continue if not all bytes needed
+                 // were read yet
                   continue;
                 }
                 int ret = cp;
                 cp = 0;
                 bytesSeen = 0;
                 bytesNeeded = 0;
-                // append the Unicode character
+               // append the Unicode character
                 if (ret <= 0xffff) {
-  retString.append((char)ret);
- } else {
-              retString.append((char)((((ret - 0x10000) >> 10) &
-                    0x3ff) + 0xd800));
-                    retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
+                  retString.append((char)ret);
+                } else {
+                  retString.append((char)((((ret - 0x10000) >> 10) &
+                        0x3ff) + 0xd800));
+                  retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
                 }
                 continue;
               }
@@ -351,62 +351,63 @@ private URIUtility() {
           }
         }
         if (bytesNeeded > 0) {
-          // we expected further bytes here,
-          // so emit a replacement character instead
+         // we expected further bytes here,
+         // so emit a replacement character instead
           bytesNeeded = 0;
           retString.append('\uFFFD');
         }
-        // append the code point as is
+       // append the code point as is
         if (c <= 0xffff) {
-  { retString.append((char)c);
-}
-  } else if (c <= 0x10ffff) {
-retString.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
-}
+          {
+            retString.append((char)c);
+          }
+        } else if (c <= 0x10ffff) {
+          retString.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+          retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        }
       }
       if (bytesNeeded > 0) {
-        // we expected further bytes here,
-        // so emit a replacement character instead
+       // we expected further bytes here,
+       // so emit a replacement character instead
         bytesNeeded = 0;
         retString.append('\uFFFD');
       }
       return retString.toString();
-      }
+    }
 
     public static String EncodeStringForURI(String s) {
       if (s == null) {
-  throw new NullPointerException("s");
-}
-int index = 0;
-StringBuilder builder = new StringBuilder();
+        throw new NullPointerException("s");
+      }
+      int index = 0;
+      StringBuilder builder = new StringBuilder();
       while (index < s.length()) {
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
+         // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
         if (c >= 0x10000) {
- ++index;
-}
-if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
-        (c >= 'a' && c <= 'z') ||
-            (c >= '0' && c <= '9') || "-_.~".indexOf((char)c) >= 0)) {
+          ++index;
+        }
+        if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
+                (c >= 'a' && c <= 'z') ||
+                    (c >= '0' && c <= '9') || "-_.~".indexOf((char)c) >= 0)) {
           builder.append((char)c);
           ++index;
         } else {
-          percentEncodeUtf8(builder, c);
+          PercentEncodeUtf8(builder, c);
           ++index;
         }
       }
       return builder.toString();
     }
 
-    private static boolean isIfragmentChar(int c) {
-      // '%' omitted
+    private static boolean IsIfragmentChar(int c) {
+     // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
@@ -416,8 +417,8 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
           0xfffe) != 0xfffe);
     }
 
-    private static boolean isIpchar(int c) {
-      // '%' omitted
+    private static boolean IsIpchar(int c) {
+     // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
@@ -427,8 +428,8 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
           0xfffe) != 0xfffe);
     }
 
-    private static boolean isIqueryChar(int c) {
-      // '%' omitted
+    private static boolean IsIqueryChar(int c) {
+     // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
@@ -438,8 +439,8 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
            !(c >= 0xe0000 && c <= 0xe0fff));
     }
 
-    private static boolean isIRegNameChar(int c) {
-      // '%' omitted
+    private static boolean IsIRegNameChar(int c) {
+     // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
@@ -449,8 +450,8 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
           0xfffe) != 0xfffe);
     }
 
-    private static boolean isIUserInfoChar(int c) {
-      // '%' omitted
+    private static boolean IsIUserInfoChar(int c) {
+     // '%' omitted
       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
         (c >= '0' && c <= '9') ||
         ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
@@ -460,13 +461,13 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
           0xfffe) != 0xfffe);
     }
 
-    public static boolean isValidCurieReference(String s, int offset, int length) {
+    public static boolean IsValidCurieReference(String s, int offset, int length) {
       if (s == null) {
         return false;
       }
       if (offset < 0) {
-   throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-          "0 ");
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+               "0 ");
       }
       if (offset > s.length()) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
@@ -492,26 +493,26 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
       int valueSLength = offset + length;
       int state = 0;
       if (index + 2 <= valueSLength && s.charAt(index) == '/' && s.charAt(index + 1) == '/') {
-        // has an authority, which is not allowed
+       // has an authority, which is not allowed
         return false;
       }
       state = 0;  // IRI Path
       while (index < valueSLength) {
-        // Get the next Unicode character
+       // Get the next Unicode character
         int c = s.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
+         // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
-          // error
+         // error
           return false;
         }
         if (c == '%') {
-          // Percent encoded character
-          if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
-              isHexChar(s.charAt(index + 2))) {
+         // Percent encoded character
+          if (index + 2 < valueSLength && IsHexChar(s.charAt(index + 1)) &&
+              IsHexChar(s.charAt(index + 2))) {
             index += 3;
             continue;
           }
@@ -522,19 +523,19 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
             state = 1;  // move to query state
           } else if (c == '#') {
             state = 2;  // move to fragment state
-          } else if (!isIpchar(c)) {
+          } else if (!IsIpchar(c)) {
             return false;
           }
           ++index;
         } else if (state == 1) {  // Query
           if (c == '#') {
             state = 2;  // move to fragment state
-          } else if (!isIqueryChar(c)) {
+          } else if (!IsIqueryChar(c)) {
             return false;
           }
           ++index;
         } else if (state == 2) {  // Fragment
-          if (!isIfragmentChar(c)) {
+          if (!IsIfragmentChar(c)) {
             return false;
           }
           ++index;
@@ -543,96 +544,96 @@ if ((c & 0x7F) == c && ((c >= 'A' && c <= 'Z') ||
       return true;
     }
 
-public static String BuildIRI(
-  String schemeAndAuthority,
-  String path,
-  String query,
-  String fragment) {
-  StringBuilder builder = new StringBuilder();
-  if (!((schemeAndAuthority) == null || (schemeAndAuthority).length() == 0)) {
-    int[] irisplit = splitIRI(schemeAndAuthority);
-     // NOTE: Path component is always present in URIs;
-     // we check here whether path component is empty
-    if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
-      irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
- throw new IllegalArgumentException("invalid schemeAndAuthority");
-}
-  }
-  if (((path) == null || (path).length() == 0)) {
- path = "";
-}
-  for (int phase = 0; phase < 3; ++phase) {
-    String s = path;
-    if (phase == 1) {
-      s = query;
-      if (query == null) {
- continue;
-}
-      builder.append('?');
-    } else if (phase == 2) {
-      s = fragment;
-      if (fragment == null) {
- continue;
-}
-      builder.append('#');
-    }
-    int index = 0;
-    while (index < s.length()) {
-        int c = s.charAt(index);
-        if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
-            (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
-        } else if ((c & 0xf800) == 0xd800) {
-          c = 0xfffd;
-        }
-        if (c >= 0x10000) {
- ++index;
-}
-        if (c == '%') {
-          if (index + 2 < s.length() && isHexChar(s.charAt(index + 1)) &&
-            isHexChar(s.charAt(index + 2))) {
-            builder.append('%');
-            builder.append(s.charAt(index + 1));
-            builder.append(s.charAt(index + 2));
-            index += 3;
-          } else {
-            builder.append("%25");
-            ++index;
-          }
-        } else if ((c & 0x7f) == c &&
-   ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-            (c >= '0' && c <= '9') ||
-            "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0)) {
-          // NOTE: Question mark will be percent encoded even though
-          // it can appear in query and fragment strings
-          builder.append((char)c);
-          ++index;
-        } else {
-          percentEncodeUtf8(builder, c);
-          ++index;
+    public static String BuildIRI(
+      String schemeAndAuthority,
+      String path,
+      String query,
+      String fragment) {
+      StringBuilder builder = new StringBuilder();
+      if (!((schemeAndAuthority) == null || (schemeAndAuthority).length() == 0)) {
+        int[] irisplit = SplitIRI(schemeAndAuthority);
+       // NOTE: Path component is always present in URIs;
+       // we check here whether path component is empty
+        if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
+          irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
+          throw new IllegalArgumentException("invalid schemeAndAuthority");
         }
       }
-  }
-  String ret = builder.toString();
-  if (splitIRI(ret) == null) {
- throw new IllegalArgumentException();
-}
-  return ret;
-}
+      if (((path) == null || (path).length() == 0)) {
+        path = "";
+      }
+      for (int phase = 0; phase < 3; ++phase) {
+        String s = path;
+        if (phase == 1) {
+          s = query;
+          if (query == null) {
+            continue;
+          }
+          builder.append('?');
+        } else if (phase == 2) {
+          s = fragment;
+          if (fragment == null) {
+            continue;
+          }
+          builder.append('#');
+        }
+        int index = 0;
+        while (index < s.length()) {
+          int c = s.charAt(index);
+          if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
+              (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
+           // Get the Unicode code point for the surrogate pair
+            c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+          } else if ((c & 0xf800) == 0xd800) {
+            c = 0xfffd;
+          }
+          if (c >= 0x10000) {
+            ++index;
+          }
+          if (c == '%') {
+            if (index + 2 < s.length() && IsHexChar(s.charAt(index + 1)) &&
+              IsHexChar(s.charAt(index + 2))) {
+              builder.append('%');
+              builder.append(s.charAt(index + 1));
+              builder.append(s.charAt(index + 2));
+              index += 3;
+            } else {
+              builder.append("%25");
+              ++index;
+            }
+          } else if ((c & 0x7f) == c &&
+     ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+              (c >= '0' && c <= '9') ||
+              "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0)) {
+           // NOTE: Question mark will be percent encoded even though
+           // it can appear in query and fragment strings
+            builder.append((char)c);
+            ++index;
+          } else {
+            PercentEncodeUtf8(builder, c);
+            ++index;
+          }
+        }
+      }
+      String ret = builder.toString();
+      if (SplitIRI(ret) == null) {
+        throw new IllegalArgumentException();
+      }
+      return ret;
+    }
 
-    public static boolean isValidIRI(String s) {
+    public static boolean IsValidIRI(String s) {
       return ((s == null) ?
-  null : splitIRI(
+  null : SplitIRI(
   s,
   0,
   s.length(),
   ParseMode.IRIStrict)) != null;
     }
 
-    public static boolean isValidIRI(String s, ParseMode mode) {
+    public static boolean IsValidIRI(String s, ParseMode mode) {
       return ((s == null) ?
-  null : splitIRI(
+  null : SplitIRI(
   s,
   0,
   s.length(),
@@ -642,7 +643,7 @@ public static String BuildIRI(
     private static final String ValueDotSlash = "." + "/";
     private static final String ValueSlashDot = "/" + ".";
 
-    private static String normalizePath(String path) {
+    private static String NormalizePath(String path) {
       int len = path.length();
       if (len == 0 || path.equals("..") || path.equals(".")) {
         return "";
@@ -659,35 +660,35 @@ public static String BuildIRI(
         if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
              path.charAt(index + 2) == '/') || (index + 2 == len && c == '.' &&
              path.charAt(index + 1) == '.')) {
-          // begins with "/./" or is "..";
-          // move index by 2
+         // begins with "/./" or is "..";
+         // move index by 2
           index += 2;
           continue;
         }
         if (index + 3 <= len && c == '.' &&
             path.charAt(index + 1) == '.' && path.charAt(index + 2) == '/') {
-          // begins with "../";
-          // move index by 3
+         // begins with "../";
+         // move index by 3
           index += 3;
           continue;
         }
         if ((index + 2 <= len && c == '.' &&
              path.charAt(index + 1) == '/') || (index + 1 == len && c == '.')) {
-          // begins with "./" or is ".";
-          // move index by 1
+         // begins with "./" or is ".";
+         // move index by 1
           ++index;
           continue;
         }
         if (index + 2 == len && c == '/' &&
             path.charAt(index + 1) == '.') {
-          // is "/."; append '/' and break
+         // is "/."; append '/' and break
           builder.append('/');
           break;
         }
         if (index + 3 == len && c == '/' &&
             path.charAt(index + 1) == '.' && path.charAt(index + 2) == '.') {
-          // is "/.."; remove last segment,
-          // append "/" and return
+         // is "/.."; remove last segment,
+         // append "/" and return
           int index2 = builder.length() - 1;
           String builderString = builder.toString();
           while (index2 >= 0) {
@@ -705,7 +706,7 @@ public static String BuildIRI(
         }
         if (index + 4 <= len && c == '/' && path.charAt(index + 1) == '.' &&
             path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
-          // begins with "/../"; remove last segment
+         // begins with "/../"; remove last segment
           int index2 = builder.length() - 1;
           String builderString = builder.toString();
           while (index2 >= 0) {
@@ -724,8 +725,8 @@ public static String BuildIRI(
         builder.append(c);
         ++index;
         while (index < len) {
-          // Move the rest of the
-          // path segment until the next '/'
+         // Move the rest of the
+         // path segment until the next '/'
           c = path.charAt(index);
           if (c == '/') {
             break;
@@ -737,20 +738,20 @@ public static String BuildIRI(
       return builder.toString();
     }
 
-    private static int parseIPLiteral(String s, int offset, int endOffset) {
+    private static int ParseIPLiteral(String s, int offset, int endOffset) {
       int index = offset;
       if (offset == endOffset) {
         return -1;
       }
-      // Assumes that the character before offset
-      // is a '['
+     // Assumes that the character before offset
+     // is a '['
       if (s.charAt(index) == 'v') {
-        // IPvFuture
+       // IPvFuture
         ++index;
         boolean hex = false;
         while (index < endOffset) {
           char c = s.charAt(index);
-          if (isHexChar(c)) {
+          if (IsHexChar(c)) {
             hex = true;
           } else {
             break;
@@ -786,144 +787,144 @@ public static String BuildIRI(
         return index;
       }
       if (s.charAt(index) == ':' ||
-          isHexChar(s.charAt(index))) {
-     int startIndex = index;
-     while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
-  (s.charAt(index) >= 97 && s.charAt(index) <= 102) || (s.charAt(index) >= 48 && s.charAt(index)
-  <= 58) || (s.charAt(index) == 46))) {
- ++index;
-}
-if (index >= endOffset || (s.charAt(index) != ']' && s.charAt(index) != '%')) {
- return -1;
-}
-// NOTE: Array is initialized to zeros
-int[] addressParts = new int[8];
-int ipEndIndex = index;
-boolean doubleColon = false;
-int doubleColonPos = 0;
-int totalParts = 0;
-boolean ipv4part = false;
-index = startIndex;
-// DebugUtility.Log(s.substring(startIndex, (startIndex)+(ipEndIndex-startIndex)));
-for (int part = 0; part < 8; ++part) {
- if (!doubleColon && ipEndIndex - index > 1 && s.charAt(index) == ':' && s.charAt(index +
-   1) == ':') {
-  doubleColon = true;
-  doubleColonPos = part;
-  index += 2;
-  if (index == ipEndIndex) {
- break;
-}
- }
- int hex = 0;
- boolean haveHex = false;
- int curindex = index;
- for (int i = 0; i < 4; ++i) {
-if (isHexChar(s.charAt(index))) {
- hex = (hex << 4) | ToHex(s.charAt(index));
- haveHex = true;
- ++index;
-} else {
- break;
-}
- }
- if (!haveHex) {
- return -1;
-}
- if (index < ipEndIndex && s.charAt(index) == '.' && part < 7) {
-  ipv4part = true;
-  index = curindex;
-  break;
- }
- addressParts[part] = hex;
- ++totalParts;
- if (index < ipEndIndex && s.charAt(index) != ':') {
- return -1;
-}
- if (index == ipEndIndex && doubleColon) {
- break;
-}
-  // Skip single colon, but not double colon
- if (index < ipEndIndex &&
-   (index + 1 >= ipEndIndex || s.charAt(index + 1) != ':')) {
- ++index;
-}
-}
-if (index != ipEndIndex && !ipv4part) {
- return -1;
-}
-if (doubleColon || ipv4part) {
- if (ipv4part) {
-  int[] ipparts = new int[4];
-  for (int part = 0; part < 4; ++part) {
-    if (part > 0) {
-if (index < ipEndIndex && s.charAt(index) == '.') {
- ++index;
-} else {
- return -1;
-}
-    }
-    if (index + 1 < ipEndIndex && s.charAt(index) == '0' &&
- (s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9')) {
- return -1;
-}
-int dec = 0;
-boolean haveDec = false;
-int curindex = index;
-for (int i = 0; i < 4; ++i) {
-if (s.charAt(index) >= '0' && s.charAt(index) <= '9') {
- dec = (dec * 10) + ((int)s.charAt(index) - '0');
- haveDec = true;
- ++index;
-} else {
- break;
-}
- }
- if (!haveDec || dec > 255) {
- return -1;
-}
-ipparts[part] = dec;
-  }
-  if (index != ipEndIndex) {
- return -1;
-}
-  addressParts[totalParts] = (ipparts[0] << 8) | ipparts[1];
-  addressParts[totalParts + 1] = (ipparts[2] << 8) | ipparts[3];
-  totalParts += 2;
-  if (!doubleColon && totalParts != 8) {
- return -1;
-}
- }
- if (doubleColon) {
-  int resid = 8 - totalParts;
-  if (resid == 0) {
-              // Purported IPv6 address contains
-              // 8 parts and a double colon
+          IsHexChar(s.charAt(index))) {
+        int startIndex = index;
+        while (index < endOffset && ((s.charAt(index) >= 65 && s.charAt(index) <= 70) ||
+     (s.charAt(index) >= 97 && s.charAt(index) <= 102) || (s.charAt(index) >= 48 && s.charAt(index)
+     <= 58) || (s.charAt(index) == 46))) {
+          ++index;
+        }
+        if (index >= endOffset || (s.charAt(index) != ']' && s.charAt(index) != '%')) {
+          return -1;
+        }
+       // NOTE: Array is initialized to zeros
+        int[] addressParts = new int[8];
+        int ipEndIndex = index;
+        boolean doubleColon = false;
+        int doubleColonPos = 0;
+        int totalParts = 0;
+        boolean ipv4part = false;
+        index = startIndex;
+       // DebugUtility.Log(s.substring(startIndex, (startIndex)+(ipEndIndex-startIndex)));
+        for (int part = 0; part < 8; ++part) {
+          if (!doubleColon && ipEndIndex - index > 1 && s.charAt(index) == ':' && s.charAt(index +
+            1) == ':') {
+            doubleColon = true;
+            doubleColonPos = part;
+            index += 2;
+            if (index == ipEndIndex) {
+              break;
+            }
+          }
+          int hex = 0;
+          boolean haveHex = false;
+          int curindex = index;
+          for (int i = 0; i < 4; ++i) {
+            if (IsHexChar(s.charAt(index))) {
+              hex = (hex << 4) | ToHex(s.charAt(index));
+              haveHex = true;
+              ++index;
+            } else {
+              break;
+            }
+          }
+          if (!haveHex) {
+            return -1;
+          }
+          if (index < ipEndIndex && s.charAt(index) == '.' && part < 7) {
+            ipv4part = true;
+            index = curindex;
+            break;
+          }
+          addressParts[part] = hex;
+          ++totalParts;
+          if (index < ipEndIndex && s.charAt(index) != ':') {
+            return -1;
+          }
+          if (index == ipEndIndex && doubleColon) {
+            break;
+          }
+         // Skip single colon, but not double colon
+          if (index < ipEndIndex &&
+            (index + 1 >= ipEndIndex || s.charAt(index + 1) != ':')) {
+            ++index;
+          }
+        }
+        if (index != ipEndIndex && !ipv4part) {
+          return -1;
+        }
+        if (doubleColon || ipv4part) {
+          if (ipv4part) {
+            int[] ipparts = new int[4];
+            for (int part = 0; part < 4; ++part) {
+              if (part > 0) {
+                if (index < ipEndIndex && s.charAt(index) == '.') {
+                  ++index;
+                } else {
+                  return -1;
+                }
+              }
+              if (index + 1 < ipEndIndex && s.charAt(index) == '0' &&
+           (s.charAt(index + 1) >= '0' && s.charAt(index + 1) <= '9')) {
+                return -1;
+              }
+              int dec = 0;
+              boolean haveDec = false;
+              int curindex = index;
+              for (int i = 0; i < 4; ++i) {
+                if (s.charAt(index) >= '0' && s.charAt(index) <= '9') {
+                  dec = (dec * 10) + ((int)s.charAt(index) - '0');
+                  haveDec = true;
+                  ++index;
+                } else {
+                  break;
+                }
+              }
+              if (!haveDec || dec > 255) {
+                return -1;
+              }
+              ipparts[part] = dec;
+            }
+            if (index != ipEndIndex) {
               return -1;
             }
-  int[] newAddressParts = new int[8];
-  System.arraycopy(addressParts, 0, newAddressParts, 0, doubleColonPos);
-  System.arraycopy(
-  addressParts,
-  doubleColonPos,
-  newAddressParts,
-  doubleColonPos + resid,
-  totalParts - doubleColonPos);
-  System.arraycopy(newAddressParts, 0, addressParts, 0, 8);
- }
-} else if (totalParts != 8) {
- return -1;
-}
-// DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}",
-  // addressParts[0], addressParts[1], addressParts[2],
-  // addressParts[3], addressParts[4], addressParts[5],
-  // addressParts[6], addressParts[7]);
-  if (s.charAt(index) == '%') {
+            addressParts[totalParts] = (ipparts[0] << 8) | ipparts[1];
+            addressParts[totalParts + 1] = (ipparts[2] << 8) | ipparts[3];
+            totalParts += 2;
+            if (!doubleColon && totalParts != 8) {
+              return -1;
+            }
+          }
+          if (doubleColon) {
+            int resid = 8 - totalParts;
+            if (resid == 0) {
+             // Purported IPv6 address contains
+             // 8 parts and a double colon
+              return -1;
+            }
+            int[] newAddressParts = new int[8];
+            System.arraycopy(addressParts, 0, newAddressParts, 0, doubleColonPos);
+            System.arraycopy(
+            addressParts,
+            doubleColonPos,
+            newAddressParts,
+            doubleColonPos + resid,
+            totalParts - doubleColonPos);
+            System.arraycopy(newAddressParts, 0, addressParts, 0, 8);
+          }
+        } else if (totalParts != 8) {
+          return -1;
+        }
+       // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}",
+       // addressParts[0], addressParts[1], addressParts[2],
+       // addressParts[3], addressParts[4], addressParts[5],
+       // addressParts[6], addressParts[7]);
+        if (s.charAt(index) == '%') {
           if (index + 2 < endOffset && s.charAt(index + 1) == '2' &&
               s.charAt(index + 2) == '5' && (addressParts[0] & 0xFFC0) == 0xFE80) {
-            // Zone identifier in an IPv6 address
-            // (see RFC6874)
-            // NOTE: Allowed only if address has prefix fe80::/10
+           // Zone identifier in an IPv6 address
+           // (see RFC6874)
+           // NOTE: Allowed only if address has prefix fe80::/10
             index += 3;
             boolean haveChar = false;
             while (index < endOffset) {
@@ -932,8 +933,8 @@ ipparts[part] = dec;
                 return haveChar ? index + 1 : -1;
               }
               if (c == '%') {
-                if (index + 2 < endOffset && isHexChar(s.charAt(index + 1)) &&
-                    isHexChar(s.charAt(index + 2))) {
+                if (index + 2 < endOffset && IsHexChar(s.charAt(index + 1)) &&
+                    IsHexChar(s.charAt(index + 2))) {
                   index += 3;
                   haveChar = true;
                   continue;
@@ -943,7 +944,7 @@ ipparts[part] = dec;
               if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
              (c >= '0' && c <= '9') || c == '.' || c == '_' || c == '-' ||
                 c == '~') {
-                // unreserved character under RFC3986
+               // unreserved character under RFC3986
                 ++index;
                 haveChar = true;
                 continue;
@@ -960,7 +961,7 @@ ipparts[part] = dec;
       return -1;
     }
 
-    private static String pathParent(
+    private static String PathParent(
   String refValue,
   int startIndex,
   int endIndex) {
@@ -977,41 +978,41 @@ ipparts[part] = dec;
       return "";
     }
 
-    private static void percentEncode(StringBuilder buffer, int b) {
+    private static void PercentEncode(StringBuilder buffer, int b) {
       buffer.append('%');
       buffer.append(HexChars.charAt((b >> 4) & 0x0f));
       buffer.append(HexChars.charAt(b & 0x0f));
     }
 
-    private static void percentEncodeUtf8(StringBuilder buffer, int cp) {
+    private static void PercentEncodeUtf8(StringBuilder buffer, int cp) {
       if (cp <= 0x7f) {
         buffer.append('%');
         buffer.append(HexChars.charAt((cp >> 4) & 0x0f));
         buffer.append(HexChars.charAt(cp & 0x0f));
       } else if (cp <= 0x7ff) {
-        percentEncode(buffer, 0xc0 | ((cp >> 6) & 0x1f));
-        percentEncode(buffer, 0x80 | (cp & 0x3f));
+        PercentEncode(buffer, 0xc0 | ((cp >> 6) & 0x1f));
+        PercentEncode(buffer, 0x80 | (cp & 0x3f));
       } else if (cp <= 0xffff) {
-        percentEncode(buffer, 0xe0 | ((cp >> 12) & 0x0f));
-        percentEncode(buffer, 0x80 | ((cp >> 6) & 0x3f));
-        percentEncode(buffer, 0x80 | (cp & 0x3f));
+        PercentEncode(buffer, 0xe0 | ((cp >> 12) & 0x0f));
+        PercentEncode(buffer, 0x80 | ((cp >> 6) & 0x3f));
+        PercentEncode(buffer, 0x80 | (cp & 0x3f));
       } else {
-        percentEncode(buffer, 0xf0 | ((cp >> 18) & 0x07));
-        percentEncode(buffer, 0x80 | ((cp >> 12) & 0x3f));
-        percentEncode(buffer, 0x80 | ((cp >> 6) & 0x3f));
-        percentEncode(buffer, 0x80 | (cp & 0x3f));
+        PercentEncode(buffer, 0xf0 | ((cp >> 18) & 0x07));
+        PercentEncode(buffer, 0x80 | ((cp >> 12) & 0x3f));
+        PercentEncode(buffer, 0x80 | ((cp >> 6) & 0x3f));
+        PercentEncode(buffer, 0x80 | (cp & 0x3f));
       }
     }
 
-    public static String relativeResolve(String refValue, String baseURI) {
-      return relativeResolve(refValue, baseURI, ParseMode.IRIStrict);
+    public static String RelativeResolve(String refValue, String baseURI) {
+      return RelativeResolve(refValue, baseURI, ParseMode.IRIStrict);
     }
 
-    public static String relativeResolve(
+    public static String RelativeResolve(
   String refValue,
   String baseURI,
   ParseMode parseMode) {
-      int[] segments = (refValue == null) ? null : splitIRI(
+      int[] segments = (refValue == null) ? null : SplitIRI(
         refValue,
         0,
         refValue.length(),
@@ -1020,7 +1021,7 @@ ipparts[part] = dec;
         return null;
       }
       int[] segmentsBase = (
-        baseURI == null) ? null : splitIRI(
+        baseURI == null) ? null : SplitIRI(
   baseURI,
   0,
   baseURI.length(),
@@ -1030,50 +1031,50 @@ ipparts[part] = dec;
       }
       StringBuilder builder = new StringBuilder();
       if (segments[0] >= 0) {  // scheme present
-        appendScheme(builder, refValue, segments);
-        appendAuthority(builder, refValue, segments);
-        appendNormalizedPath(builder, refValue, segments);
-        appendQuery(builder, refValue, segments);
-        appendFragment(builder, refValue, segments);
+        AppendScheme(builder, refValue, segments);
+        AppendAuthority(builder, refValue, segments);
+        AppendNormalizedPath(builder, refValue, segments);
+        AppendQuery(builder, refValue, segments);
+        AppendFragment(builder, refValue, segments);
       } else if (segments[2] >= 0) {  // authority present
-        appendScheme(builder, baseURI, segmentsBase);
-        appendAuthority(builder, refValue, segments);
-        appendNormalizedPath(builder, refValue, segments);
-        appendQuery(builder, refValue, segments);
-        appendFragment(builder, refValue, segments);
+        AppendScheme(builder, baseURI, segmentsBase);
+        AppendAuthority(builder, refValue, segments);
+        AppendNormalizedPath(builder, refValue, segments);
+        AppendQuery(builder, refValue, segments);
+        AppendFragment(builder, refValue, segments);
       } else if (segments[4] == segments[5]) {
-        appendScheme(builder, baseURI, segmentsBase);
-        appendAuthority(builder, baseURI, segmentsBase);
+        AppendScheme(builder, baseURI, segmentsBase);
+        AppendAuthority(builder, baseURI, segmentsBase);
         AppendPath(builder, baseURI, segmentsBase);
         if (segments[6] >= 0) {
-          appendQuery(builder, refValue, segments);
+          AppendQuery(builder, refValue, segments);
         } else {
-          appendQuery(builder, baseURI, segmentsBase);
+          AppendQuery(builder, baseURI, segmentsBase);
         }
-        appendFragment(builder, refValue, segments);
+        AppendFragment(builder, refValue, segments);
       } else {
-        appendScheme(builder, baseURI, segmentsBase);
-        appendAuthority(builder, baseURI, segmentsBase);
+        AppendScheme(builder, baseURI, segmentsBase);
+        AppendAuthority(builder, baseURI, segmentsBase);
         if (segments[4] < segments[5] && refValue.charAt(segments[4]) == '/') {
-          appendNormalizedPath(builder, refValue, segments);
+          AppendNormalizedPath(builder, refValue, segments);
         } else {
           StringBuilder merged = new StringBuilder();
           if (segmentsBase[2] >= 0 && segmentsBase[4] == segmentsBase[5]) {
             merged.append('/');
             AppendPath(merged, refValue, segments);
-            builder.append(normalizePath(merged.toString()));
+            builder.append(NormalizePath(merged.toString()));
           } else {
             merged.append(
-              pathParent(
+              PathParent(
   baseURI,
   segmentsBase[4],
   segmentsBase[5]));
             AppendPath(merged, refValue, segments);
-            builder.append(normalizePath(merged.toString()));
+            builder.append(NormalizePath(merged.toString()));
           }
         }
-        appendQuery(builder, refValue, segments);
-        appendFragment(builder, refValue, segments);
+        AppendQuery(builder, refValue, segments);
+        AppendFragment(builder, refValue, segments);
       }
       return builder.toString();
     }
@@ -1107,12 +1108,12 @@ ipparts[part] = dec;
       return builder.toString();
     }
 
-    public static String[] splitIRIToStrings(String s) {
-      int[] indexes = splitIRI(s);
+    public static String[] SplitIRIToStrings(String s) {
+      int[] indexes = SplitIRI(s);
       if (indexes == null) {
- return null;
-}
-return new String[] {
+        return null;
+      }
+      return new String[] {
  indexes[0] < 0 ? null : ToLowerCaseAscii(
   s.substring(
   indexes[0], (
@@ -1124,11 +1125,11 @@ return new String[] {
 };
     }
 
-    public static int[] splitIRI(String s) {
-      return (s == null) ? null : splitIRI(s, 0, s.length(), ParseMode.IRIStrict);
+    public static int[] SplitIRI(String s) {
+      return (s == null) ? null : SplitIRI(s, 0, s.length(), ParseMode.IRIStrict);
     }
 
-    public static int[] splitIRI(
+    public static int[] SplitIRI(
   String s,
   int offset,
   int length,
@@ -1137,28 +1138,28 @@ return new String[] {
         return null;
       }
       if (s == null) {
-  throw new NullPointerException("s");
-}
-if (offset < 0) {
-  throw new IllegalArgumentException("offset (" + offset +
-    ") is less than 0");
-}
-if (offset > s.length()) {
-  throw new IllegalArgumentException("offset (" + offset +
-    ") is more than " + s.length());
-}
-if (length < 0) {
-  throw new IllegalArgumentException("length (" + length +
-    ") is less than 0");
-}
-if (length > s.length()) {
-  throw new IllegalArgumentException("length (" + length +
-    ") is more than " + s.length());
-}
-if (s.length() - offset < length) {
-  throw new IllegalArgumentException("s's length minus " + offset + " (" +
-    (s.length() - offset) + ") is less than " + length);
-}
+        throw new NullPointerException("s");
+      }
+      if (offset < 0) {
+        throw new IllegalArgumentException("offset (" + offset +
+          ") is less than 0");
+      }
+      if (offset > s.length()) {
+        throw new IllegalArgumentException("offset (" + offset +
+          ") is more than " + s.length());
+      }
+      if (length < 0) {
+        throw new IllegalArgumentException("length (" + length +
+          ") is less than 0");
+      }
+      if (length > s.length()) {
+        throw new IllegalArgumentException("length (" + length +
+          ") is more than " + s.length());
+      }
+      if (s.length() - offset < length) {
+        throw new IllegalArgumentException("s's length minus " + offset + " (" +
+          (s.length() - offset) + ") is less than " + length);
+      }
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
       if (length == 0) {
         retval[4] = 0;
@@ -1172,7 +1173,7 @@ if (s.length() - offset < length) {
       int index = offset;
       int valueSLength = offset + length;
       boolean scheme = false;
-      // scheme
+     // scheme
       while (index < valueSLength) {
         int c = s.charAt(index);
         if (index > offset && c == ':') {
@@ -1201,14 +1202,14 @@ if (s.length() - offset < length) {
       }
       int state = 0;
       if (index + 2 <= valueSLength && s.charAt(index) == '/' && s.charAt(index + 1) == '/') {
-        // authority
-        // (index + 2, valueSLength)
+       // authority
+       // (index + 2, valueSLength)
         index += 2;
         int authorityStart = index;
         retval[2] = authorityStart;
         retval[3] = valueSLength;
         state = 0;  // userinfo
-        // Check for userinfo
+       // Check for userinfo
         while (index < valueSLength) {
           int c = s.charAt(index);
           if (asciiOnly && c >= 0x80) {
@@ -1216,7 +1217,7 @@ if (s.length() - offset < length) {
           }
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
               (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-            // Get the Unicode code point for the surrogate pair
+           // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
             ++index;
           } else if ((c & 0xf800) == 0xd800) {
@@ -1227,9 +1228,9 @@ if (s.length() - offset < length) {
             }
           }
           if (c == '%' && (state == 0 || state == 1) && strict) {
-            // Percent encoded character (except in port)
-            if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
-                isHexChar(s.charAt(index + 2))) {
+           // Percent encoded character (except in port)
+            if (index + 2 < valueSLength && IsHexChar(s.charAt(index + 1)) &&
+                IsHexChar(s.charAt(index + 2))) {
               index += 3;
               continue;
             }
@@ -1237,34 +1238,34 @@ if (s.length() - offset < length) {
           }
           if (state == 0) {  // User info
             if (c == '/' || c == '?' || c == '#') {
-              // not user info
+             // not user info
               state = 1;
               index = authorityStart;
               continue;
             }
             if (strict && c == '@') {
-              // is user info
+             // is user info
               ++index;
               state = 1;
               continue;
             }
-            if (strict && isIUserInfoChar(c)) {
+            if (strict && IsIUserInfoChar(c)) {
               ++index;
               if (index == valueSLength) {
-                // not user info
+               // not user info
                 state = 1;
                 index = authorityStart;
                 continue;
               }
             } else {
-              // not user info
+             // not user info
               state = 1;
               index = authorityStart;
               continue;
             }
           } else if (state == 1) {  // host
             if (c == '/' || c == '?' || c == '#') {
-              // end of authority
+             // end of authority
               retval[3] = index;
               break;
             }
@@ -1272,26 +1273,26 @@ if (s.length() - offset < length) {
               ++index;
             } else if (c == '[') {
               ++index;
-              index = parseIPLiteral(s, index, valueSLength);
+              index = ParseIPLiteral(s, index, valueSLength);
               if (index < 0) {
                 return null;
               }
               continue;
             } else if (c == ':') {
-              // port
+             // port
               state = 2;
               ++index;
-            } else if (isIRegNameChar(c)) {
-              // is valid host name char
-              // (note: IPv4 addresses included
-              // in ireg-name)
+            } else if (IsIRegNameChar(c)) {
+             // is valid host name char
+             // (note: IPv4 addresses included
+             // in ireg-name)
               ++index;
             } else {
               return null;
             }
           } else if (state == 2) {  // Port
             if (c == '/' || c == '?' || c == '#') {
-              // end of authority
+             // end of authority
               retval[3] = index;
               break;
             }
@@ -1310,24 +1311,24 @@ if (s.length() - offset < length) {
       retval[5] = valueSLength;
       state = 0;  // IRI Path
       while (index < valueSLength) {
-        // Get the next Unicode character
+       // Get the next Unicode character
         int c = s.charAt(index);
         if (asciiOnly && c >= 0x80) {
           return null;
         }
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
-          // Get the Unicode code point for the surrogate pair
+         // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
-          // error
+         // error
           return null;
         }
         if (c == '%' && strict) {
-          // Percent encoded character
-          if (index + 2 < valueSLength && isHexChar(s.charAt(index + 1)) &&
-              isHexChar(s.charAt(index + 2))) {
+         // Percent encoded character
+          if (index + 2 < valueSLength && IsHexChar(s.charAt(index + 1)) &&
+              IsHexChar(s.charAt(index + 2))) {
             index += 3;
             continue;
           }
@@ -1337,7 +1338,7 @@ if (s.length() - offset < length) {
           if (c == ':' && fullyRelative) {
             colon = true;
           } else if (c == '/' && fullyRelative && !segment) {
-            // noscheme path can't have colon before slash
+           // noscheme path can't have colon before slash
             if (strict && colon) {
               return null;
             }
@@ -1353,7 +1354,7 @@ if (s.length() - offset < length) {
             retval[8] = index + 1;
             retval[9] = valueSLength;
             state = 2;  // move to fragment state
-          } else if (strict && !isIpchar(c)) {
+          } else if (strict && !IsIpchar(c)) {
             return null;
           }
           ++index;
@@ -1363,12 +1364,12 @@ if (s.length() - offset < length) {
             retval[8] = index + 1;
             retval[9] = valueSLength;
             state = 2;  // move to fragment state
-          } else if (strict && !isIqueryChar(c)) {
+          } else if (strict && !IsIqueryChar(c)) {
             return null;
           }
           ++index;
         } else if (state == 2) {  // Fragment
-          if (strict && !isIfragmentChar(c)) {
+          if (strict && !IsIfragmentChar(c)) {
             return null;
           }
           ++index;
@@ -1380,24 +1381,24 @@ if (s.length() - offset < length) {
       return retval;
     }
 
-    public static int[] splitIRI(String s, ParseMode parseMode) {
-      return (s == null) ? null : splitIRI(s, 0, s.length(), parseMode);
+    public static int[] SplitIRI(String s, ParseMode parseMode) {
+      return (s == null) ? null : SplitIRI(s, 0, s.length(), parseMode);
     }
 
- private static boolean pathHasDotComponent(String path) {
-  if (path == null || path.length() == 0) {
- return false;
-}
-  path = PercentDecode(path);
-  if (path.equals("..")) {
- return true;
-}
-  if (path.equals(".")) {
- return true;
-}
-  if (path.indexOf(ValueSlashDot) < 0 &&
-          path.indexOf(
-  ValueDotSlash) < 0) {
+    private static boolean PathHasDotComponent(String path) {
+      if (path == null || path.length() == 0) {
+        return false;
+      }
+      path = PercentDecode(path);
+      if (path.equals("..")) {
+        return true;
+      }
+      if (path.equals(".")) {
+        return true;
+      }
+      if (path.indexOf(ValueSlashDot) < 0 &&
+              path.indexOf(
+      ValueDotSlash) < 0) {
         return false;
       }
       int index = 0;
@@ -1407,37 +1408,37 @@ if (s.length() - offset < length) {
         if ((index + 3 <= len && c == '/' && path.charAt(index + 1) == '.' &&
              path.charAt(index + 2) == '/') || (index + 2 == len && c == '.' &&
              path.charAt(index + 1) == '.')) {
-          // begins with "/./" or is "..";
+         // begins with "/./" or is "..";
           return true;
         }
         if (index + 3 <= len && c == '.' &&
             path.charAt(index + 1) == '.' && path.charAt(index + 2) == '/') {
-          // begins with "../";
+         // begins with "../";
           return true;
         }
         if ((index + 2 <= len && c == '.' &&
              path.charAt(index + 1) == '/') || (index + 1 == len && c == '.')) {
-          // begins with "./" or is ".";
+         // begins with "./" or is ".";
           return true;
         }
         if (index + 2 == len && c == '/' && path.charAt(index + 1) == '.') {
-          // is "/."
+         // is "/."
           return true;
         }
         if (index + 3 == len && c == '/' &&
             path.charAt(index + 1) == '.' && path.charAt(index + 2) == '.') {
-          // is "/.."
+         // is "/.."
           return true;
         }
         if (index + 4 <= len && c == '/' && path.charAt(index + 1) == '.' &&
             path.charAt(index + 2) == '.' && path.charAt(index + 3) == '/') {
-          // begins with "/../"
+         // begins with "/../"
           return true;
         }
         ++index;
         while (index < len) {
-          // Move the rest of the
-          // path segment until the next '/'
+         // Move the rest of the
+         // path segment until the next '/'
           c = path.charAt(index);
           if (c == '/') {
             break;
@@ -1446,53 +1447,55 @@ if (s.length() - offset < length) {
         }
       }
       return false;
- }
+    }
 
- private static String uriPath(String uri, ParseMode parseMode) {
- int[] indexes = splitIRI(uri, parseMode);
- return (
-  indexes == null) ? null : uri.substring(
-  indexes[4], (
-  indexes[4])+(indexes[5] - indexes[4]));
- }
+    private static String UriPath(String uri, ParseMode parseMode) {
+      int[] indexes = SplitIRI(uri, parseMode);
+      return (
+       indexes == null) ? null : uri.substring(
+       indexes[4], (
+       indexes[4])+(indexes[5] - indexes[4]));
+    }
 
- public static String directoryPath(String uri) {
- return directoryPath(uri, ParseMode.IRIStrict);
-}
+    public static String DirectoryPath(String uri) {
+      return DirectoryPath(uri, ParseMode.IRIStrict);
+    }
 
- public static String directoryPath(String uri, ParseMode parseMode) {
- int[] indexes = splitIRI(uri, parseMode);
- if (indexes == null) {
-  return null;
- }
- String schemeAndAuthority = uri.substring(0, indexes[4]);
- String path = uri.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4]));
- if (path.length() > 0) {
-  for (int i = path.length() - 1; i >= 0; --i) {
-    if (path.charAt(i) == '/') {
-       return schemeAndAuthority + path.substring(0, i + 1);
+    public static String DirectoryPath(String uri, ParseMode parseMode) {
+      int[] indexes = SplitIRI(uri, parseMode);
+      if (indexes == null) {
+        return null;
+      }
+      String schemeAndAuthority = uri.substring(0, indexes[4]);
+      String path = uri.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4]));
+      if (path.length() > 0) {
+        for (int i = path.length() - 1; i >= 0; --i) {
+          if (path.charAt(i) == '/') {
+            return schemeAndAuthority + path.substring(0, i + 1);
+          }
+        }
+        return schemeAndAuthority + path;
+      } else {
+        return schemeAndAuthority;
+      }
+    }
+
+    public static String RelativeResolveWithinBaseURI(
+     String refValue,
+     String absoluteBaseURI) {
+      String rel = RelativeResolve(refValue, absoluteBaseURI);
+      if (rel == null) {
+        return null;
+      }
+      String relpath = UriPath(refValue, ParseMode.IRIStrict);
+      if (PathHasDotComponent(relpath)) {
+       // Resolved path has a dot component in it (usually
+       // because that component is percent-encoded)
+        return null;
+      }
+      String absuri = DirectoryPath(absoluteBaseURI);
+      String reluri = DirectoryPath(rel);
+      return (absuri == null || reluri == null ||
+         !absuri.equals(reluri)) ? null : rel;
     }
   }
-  return schemeAndAuthority + path;
- } else {
-  return schemeAndAuthority;
- }
-}
-
- public static String relativeResolveWithinBaseURI(
-  String refValue,
-  String absoluteBaseURI) {
-  String rel = relativeResolve(refValue, absoluteBaseURI);
-  if (rel == null) {
- return null;
-}
-String relpath = uriPath(refValue, ParseMode.IRIStrict);
-if (pathHasDotComponent(relpath)) {
-  // Resolved path has a dot component in it (usually
-  // because that component is percent-encoded)
-  return null;
- }
-  String absuri = directoryPath(absoluteBaseURI);
-  String reluri = directoryPath(rel);
-  return (absuri == null || reluri == null ||
-     !absuri.equals(reluri)) ? null : rel; } }

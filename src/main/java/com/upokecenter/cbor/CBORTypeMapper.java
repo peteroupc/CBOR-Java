@@ -2,40 +2,40 @@ package com.upokecenter.cbor;
 
 import java.util.*;
 
-    /**
-     * Holds converters to customize the serialization and deserialization behavior
-     * of <code>CBORObject.FromObject </code> and <code>CBORObject#ToObject </code> , as
-     * well as type filters for <code>ToObject </code>
-     */
+   /**
+    * Holds converters to customize the serialization and deserialization behavior
+    * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+    * well as type filters for <code>ToObject</code>
+    */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
     private final List<String> typeNames;
     private final Map<Object, ConverterInfo>
       converters;
 
-    /**
-     * Initializes a new instance of the {@link CBORTypeMapper} class.
-     */
+   /**
+    * Initializes a new instance of the {@link CBORTypeMapper} class.
+    */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();
       this.typeNames = new ArrayList<String>();
       this.converters = new HashMap<Object, ConverterInfo>();
     }
 
-    /**
-     * Registers an object that converts objects of a given type to CBOR objects
-     * (called a CBOR converter).
-     * @param type A Type object specifying the type that the converter converts to
-     * CBOR objects.
-     * @param converter The parameter {@code converter} is an ICBORConverter
-     * object.
-     * @param <T> Must be the same as the "type" parameter.
-     * @return This object.
-     * @throws java.lang.NullPointerException The parameter {@code type} or {@code
-     * converter} is null.
-     * @throws IllegalArgumentException Converter doesn't contain a proper
-     * ToCBORObject method".
-     */
+   /**
+    * Registers an object that converts objects of a given type to CBOR objects
+    * (called a CBOR converter).
+    * @param type A Type object specifying the type that the converter converts to
+    * CBOR objects.
+    * @param converter The parameter {@code converter} is an ICBORConverter
+    * object.
+    * @param <T> Must be the same as the "type" parameter.
+    * @return This object.
+    * @throws java.lang.NullPointerException The parameter {@code type} or {@code
+    * converter} is null.
+    * @throws IllegalArgumentException Converter doesn't contain a proper
+    * ToCBORObject method".
+    */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
       if (type == null) {
@@ -101,15 +101,15 @@ import java.util.*;
         obj);
     }
 
-    /**
-     * Returns whether the given Java or .NET type name fits the filters given in
-     * this mapper.
-     * @param typeName The fully qualified name of a Java or .NET class (e.g.,
-     * {@code java.math.BigInteger } or {@code
-     * System.Globalization.CultureInfo }).
-     * @return Either {@code true} if the given Java or .NET type name fits the
-     * filters given in this mapper, or {@code false} otherwise.
-     */
+   /**
+    * Returns whether the given Java or .NET type name fits the filters given in
+    * this mapper.
+    * @param typeName The fully qualified name of a Java or .NET class (e.g.,
+    * {@code java.math.BigInteger} or {@code
+    * System.Globalization.CultureInfo}).
+    * @return Either {@code true} if the given Java or .NET type name fits the
+    * filters given in this mapper, or {@code false} otherwise.
+    */
     public boolean FilterTypeName(String typeName) {
       if (((typeName) == null || (typeName).length() == 0)) {
         return false;
@@ -128,16 +128,16 @@ import java.util.*;
       return false;
     }
 
-    /**
-     * Adds a prefix of a Java or .NET type for use in type matching. A type
-     * matches a prefix if its fully qualified name is or begins with that
-     * prefix, using codepoint-by-codepoint (case-sensitive) matching.
-     * @param prefix The prefix of a Java or .NET type (e.g., `java.math.` or
-     * `System.Globalization`).
-     * @return This object.
-     * @throws java.lang.NullPointerException The parameter {@code prefix} is null.
-     * @throws IllegalArgumentException The parameter {@code prefix} is empty.
-     */
+   /**
+    * Adds a prefix of a Java or .NET type for use in type matching. A type
+    * matches a prefix if its fully qualified name is or begins with that
+    * prefix, using codepoint-by-codepoint (case-sensitive) matching.
+    * @param prefix The prefix of a Java or .NET type (e.g., `java.math.` or
+    * `System.Globalization`).
+    * @return This object.
+    * @throws java.lang.NullPointerException The parameter {@code prefix} is null.
+    * @throws IllegalArgumentException The parameter {@code prefix} is empty.
+    */
     public CBORTypeMapper AddTypePrefix(String prefix) {
       if (prefix == null) {
         throw new NullPointerException("prefix");
@@ -149,16 +149,15 @@ import java.util.*;
       return this;
     }
 
-    /**
-     * Adds the fully qualified name of a Java or .NET type for use in type
-     * matching.
-     * @param name The fully qualified name of a Java or .NET class (e.g., {@code
-     * java.math.BigInteger } or {@code System.Globalization.CultureInfo }
-     *).
-     * @return This object.
-     * @throws java.lang.NullPointerException The parameter {@code name} is null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty.
-     */
+   /**
+    * Adds the fully qualified name of a Java or .NET type for use in type
+    * matching.
+    * @param name The fully qualified name of a Java or .NET class (e.g., {@code
+    * java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
+    * @return This object.
+    * @throws java.lang.NullPointerException The parameter {@code name} is null.
+    * @throws IllegalArgumentException The parameter {@code name} is empty.
+    */
     public CBORTypeMapper AddTypeName(String name) {
       if (name == null) {
         throw new NullPointerException("name");

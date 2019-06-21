@@ -10,9 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-    /**
-     * Description of RandomObjects.
-     */
+   /**
+    * Description of RandomObjects.
+    */
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -49,19 +49,19 @@ private RandomObjects() {
       for (int i = 0; i < length; ++i) {
         int x = rand.UniformInt(100);
         if (x < 95) {
-          // ASCII
+         // ASCII
           sb.append((char)(0x20 + rand.UniformInt(0x60)));
         } else if (x < 98) {
-          // Supplementary character
+         // Supplementary character
           x = rand.UniformInt(0x400) + 0xd800;
           sb.append((char)x);
           x = rand.UniformInt(0x400) + 0xdc00;
           sb.append((char)x);
         } else {
-          // BMP character
+         // BMP character
           x = 0x20 + rand.UniformInt(0xffe0);
           if (x >= 0xd800 && x < 0xe000) {
-            // surrogate code unit, generate ASCII instead
+           // surrogate code unit, generate ASCII instead
             x = 0x20 + rand.UniformInt(0x60);
           }
           sb.append((char)x);
@@ -124,8 +124,8 @@ private RandomObjects() {
         if (x == 2) {
           return EDecimal.NaN;
         }
-        // Signaling NaN currently not generated because
-        // it doesn't round-trip as well
+       // Signaling NaN currently not generated because
+       // it doesn't round-trip as well
       }
       String str = RandomDecimalString(r);
       return EDecimal.FromString(str);

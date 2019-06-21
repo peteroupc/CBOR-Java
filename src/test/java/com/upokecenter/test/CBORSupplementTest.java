@@ -18,7 +18,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void IncorrectDecimalFrac() {
       byte[] bytes;
-      // String instead of array
+     // String instead of array
       bytes = new byte[] { (byte)0xc4, 0x61, 0x41 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -29,7 +29,7 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // number instead of array
+     // number instead of array
       bytes = new byte[] { (byte)0xc4, 0x00 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -85,7 +85,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void IncorrectBigFloat() {
       byte[] bytes;
-      // String instead of array
+     // String instead of array
       bytes = new byte[] { (byte)0xc5, 0x61, 0x41 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -96,7 +96,7 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // number instead of array
+     // number instead of array
       bytes = new byte[] { (byte)0xc5, 0x00 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -285,7 +285,7 @@ Assert.assertEquals(
 
     @Test
     public void TestIncompleteIndefLengthMap() {
-      // Premature end after value
+     // Premature end after value
       byte[] bytes = { (byte)0xbf, 0x61, 0x41, 0, 0x61, 0x42, 0 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -296,7 +296,7 @@ Assert.assertEquals(
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Premature end after key
+     // Premature end after key
       bytes = new byte[] { (byte)0xbf, 0x61, 0x41, 0, 0x61, 0x42 };
       try {
         CBORObject.DecodeFromBytes(bytes);
@@ -352,15 +352,15 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
           for (int i = 0; i < 2000; ++i) {
-            // Write beginning of indefinite-length array
+           // Write beginning of indefinite-length array
             ms.write((byte)0x9f);
           }
           for (int i = 0; i < 2000; ++i) {
-            // Write end of indefinite-length array
+           // Write end of indefinite-length array
             ms.write((byte)0xff);
           }
-          // Assert throwing CBOR exception for reaching maximum
-          // nesting depth
+         // Assert throwing CBOR exception for reaching maximum
+         // nesting depth
           try {
             CBORObject.DecodeFromBytes(ms.toByteArray());
             Assert.fail("Should have failed");
@@ -383,14 +383,14 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
           for (int i = 0; i < 495; ++i) {
-            // Write beginning of indefinite-length array
+           // Write beginning of indefinite-length array
             ms.write((byte)0x9f);
           }
           for (int i = 0; i < 495; ++i) {
-            // Write end of indefinite-length array
+           // Write end of indefinite-length array
             ms.write((byte)0xff);
           }
-          // Maximum nesting depth not reached, so shouldn't throw
+         // Maximum nesting depth not reached, so shouldn't throw
           try {
             CBORObject.DecodeFromBytes(ms.toByteArray());
           } catch (Exception ex) {
@@ -490,7 +490,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
       cbor = CBORObject.DecodeFromBytes(bytes);
       expected = "[[1],[1],3,3,[1]]";
       Assert.assertEquals(expected, cbor.ToJSONString());
-      // Checks if both objects are the same reference, not just equal
+     // Checks if both objects are the same reference, not just equal
       if (!(cbor.get(0) == cbor.get(1))) {
  Assert.fail("cbor.get(0) not same as cbor.get(1)");
  }
@@ -500,7 +500,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
       bytes = new byte[] { (byte)0xd8, 28, (byte)0x82, 1, (byte)0xd8, 29, 0 };
       cbor = CBORObject.DecodeFromBytes(bytes);
       Assert.assertEquals(2, cbor.size());
-      // Checks if both objects are the same reference, not just equal
+     // Checks if both objects are the same reference, not just equal
       if (!(cbor == cbor.get(1))) {
  Assert.fail("objects not the same");
  }
@@ -874,7 +874,7 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
       Assert.assertEquals((byte)0xff, bytes[15]);
     }
 
-    // @Test
+   // @Test
     public static void TestMiniCBOR() {
       byte[] bytes;
       bytes = new byte[] { 0x19, 2 };
