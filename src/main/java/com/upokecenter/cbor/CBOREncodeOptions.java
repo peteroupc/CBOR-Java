@@ -21,16 +21,14 @@ package com.upokecenter.cbor;
       new CBOREncodeOptions(false, false, true);
 
    /**
-    * Initializes a new instance of the {@link
-    * com.upokecenter.cbor.CBOREncodeOptions} class.
+    * Initializes a new instance of the {@link CBOREncodeOptions} class.
     */
     public CBOREncodeOptions() {
  this(false, false);
 }
 
    /**
-    * Initializes a new instance of the {@link
-    * com.upokecenter.cbor.CBOREncodeOptions} class.
+    * Initializes a new instance of the {@link CBOREncodeOptions} class.
     * @param useIndefLengthStrings A value indicating whether to always encode
     * strings with a definite-length encoding.
     * @param allowDuplicateKeys A value indicating whether to disallow duplicate
@@ -43,8 +41,7 @@ package com.upokecenter.cbor;
     }
 
    /**
-    * Initializes a new instance of the {@link
-    * com.upokecenter.cbor.CBOREncodeOptions} class.
+    * Initializes a new instance of the {@link CBOREncodeOptions} class.
     * @param useIndefLengthStrings A value indicating whether to encode strings
     * with a definite-length encoding in certain cases.
     * @param allowDuplicateKeys A value indicating whether to allow duplicate keys

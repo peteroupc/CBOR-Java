@@ -26,12 +26,12 @@ import com.upokecenter.numbers.*;
 
     enum CBORDuplicatePolicy {
       /**
-       * Overwrite.
+       * Not documented yet.
        */
       Overwrite,
 
       /**
-       * Disallow.
+       * Not documented yet.
        */
       Disallow,
     }

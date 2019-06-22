@@ -3803,8 +3803,7 @@ public boolean equals(CBORObject other) {
    /**
     * Removes all items from this CBOR array or all keys and values from this CBOR
     * map.
-    * @throws InvalidOperationException This object is not a CBOR array or CBOR
-    * map.
+    * @throws IllegalStateException This object is not a CBOR array or CBOR map.
     */
     public void Clear() {
       if (this.getItemType() == CBORObjectTypeArray) {
@@ -3839,7 +3838,7 @@ public boolean equals(CBORObject other) {
     * @return Returns "true" if the object was removed. Returns "false" if the
     * given index is less than 0, or is at least as high as the number of
     * items in the array.
-    * @throws InvalidOperationException This object is not a CBOR array.
+    * @throws IllegalStateException This object is not a CBOR array.
     */
     public boolean RemoveAt(int index) {
       if (this.getItemType() != CBORObjectTypeArray) {

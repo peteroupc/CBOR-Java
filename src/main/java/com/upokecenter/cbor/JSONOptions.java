@@ -7,16 +7,16 @@ import java.util.*;
     */
     public final class JSONOptions {
    /**
-    * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-    * class with default options.
+    * Initializes a new instance of the {@link JSONOptions} class with default
+    * options.
     */
     public JSONOptions() {
  this(false);
 }
 
    /**
-    * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-    * class with the given value for the Base64Padding option.
+    * Initializes a new instance of the {@link JSONOptions} class with the given
+    * value for the Base64Padding option.
     * @param base64Padding Whether padding is included when writing data in
     * base64url or traditional base64 format to JSON.
     */

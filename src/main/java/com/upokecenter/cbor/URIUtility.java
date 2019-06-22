@@ -5,27 +5,42 @@ private URIUtility() {
 }
     enum ParseMode {
       /**
-       * The IRIS trict.
+       * The rules follow the syntax for parsing IRIs. In particular, many code
+       * points outside the Basic Latin range (U + 0000 to U + 007F) are
+       * allowed. Strings with unpaired surrogate code points are considered
+       * invalid.
        */
       IRIStrict,
 
       /**
-       * The URIS trict.
+       * The rules follow the syntax for parsing IRIs, except that code points
+       * outside the Basic Latin range (U + 0000 to U + 007F) are not allowed.
        */
       URIStrict,
 
       /**
-       * The IRIL enient.
+       * The rules only check for the appropriate delimiters when splitting the path,
+       * without checking if all the characters in each component are valid.
+       * Even with this mode, strings with unpaired surrogate code points
+       * are considered invalid.
        */
       IRILenient,
 
       /**
-       * The URIL enient.
+       * The rules only check for the appropriate delimiters when splitting the path,
+       * without checking if all the characters in each component are valid.
+       * Code points outside the Basic Latin range (U + 0000 to U + 007F) are
+       * not allowed.
        */
       URILenient,
 
       /**
-       * The IRIS urrogate lenient.
+       * The rules only check for the appropriate delimiters when splitting the path,
+       * without checking if all the characters in each component are valid.
+       * Unpaired surrogate code points are treated as though they were
+       * replacement characters instead for the purposes of these rules, so
+       * that strings with those code points are not considered invalid
+       * strings.
        */
       IRISurrogateLenient,
     }

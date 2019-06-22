@@ -3038,8 +3038,7 @@ Removes all items from this CBOR array or all keys and values from this CBOR
 
 **Throws:**
 
-* <code>InvalidOperationException</code> - This object is not a CBOR array or CBOR
- map.
+* <code>java.lang.IllegalStateException</code> - This object is not a CBOR array or CBOR map.
 
 ### Remove
     public boolean Remove​(java.lang.Object obj)
@@ -3079,7 +3078,7 @@ Removes the item at the given index of this CBOR array.
 
 **Throws:**
 
-* <code>InvalidOperationException</code> - This object is not a CBOR array.
+* <code>java.lang.IllegalStateException</code> - This object is not a CBOR array.
 
 ### Remove
     public boolean Remove​(CBORObject obj)
