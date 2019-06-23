@@ -460,7 +460,7 @@ try { if (ms != null) {
         if (!hasBigAdditional) {
           int uad = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
             (int)uadditional);
-            switch (uad) {
+          switch (uad) {
             case 256:
              // Tag 256: String namespace
               this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
@@ -472,8 +472,8 @@ try { if (ms != null) {
                 throw new CBORException("No stringref namespace");
               }
               break;
-              case 28:
-              case 29:
+            case 28:
+            case 29:
               this.hasSharableObjects = true;
               break;
           }
