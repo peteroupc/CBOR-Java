@@ -22,20 +22,82 @@ import java.io.*;
     private int offset;
     private ICharacterInput reader;
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='str'>
+    // The parameter
+    // <paramref name='str'/>
+    // is a text String.
+    // </param>
     public CharacterReader(String str) {
  this(str, false, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='str'>
+    // The parameter
+    // <paramref name='str'/>
+    // is a text String.
+    // </param>
+    // <param name='skipByteOrderMark'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
     public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Boolean,System.Boolean)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='str'>
+    // The parameter
+    // <paramref name='str'/>
+    // is a text String.
+    // </param>
+    // <param name='skipByteOrderMark'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <param name='errorThrow'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='str'/>
+    // is null.
+    // </exception>
     public CharacterReader(
   String str,
   boolean skipByteOrderMark,
@@ -53,14 +115,77 @@ import java.io.*;
       this.stream = null;
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='str'>
+    // The parameter
+    // <paramref name='str'/>
+    // is a text String.
+    // </param>
+    // <param name='offset'>
+    // The parameter
+    // <paramref name='offset'/>
+    // is a 32-bit signed integer.
+    // </param>
+    // <param name='length'>
+    // The parameter
+    // <paramref name='length'/>
+    // is a 32-bit signed integer.
+    // </param>
     public CharacterReader(String str, int offset, int length) {
  this(str, offset, length, false, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='str'>
+    // The parameter
+    // <paramref name='str'/>
+    // is a text String.
+    // </param>
+    // <param name='offset'>
+    // The parameter
+    // <paramref name='offset'/>
+    // is a 32-bit signed integer.
+    // </param>
+    // <param name='length'>
+    // The parameter
+    // <paramref name='length'/>
+    // is a 32-bit signed integer.
+    // </param>
+    // <param name='skipByteOrderMark'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <param name='errorThrow'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='str'/>
+    // is null.
+    // </exception>
     public CharacterReader(
   String str,
   int offset,
@@ -100,26 +225,103 @@ import java.io.*;
       this.stream = null;
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='stream'>
+    // A readable data stream.
+    // </param>
     public CharacterReader(InputStream stream) {
  this(stream, 0, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='stream'>
+    // A readable data stream.
+    // </param>
+    // <param name='mode'>
+    // The parameter
+    // <paramref name='mode'/>
+    // is a 32-bit signed integer.
+    // </param>
+    // <param name='errorThrow'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
     public CharacterReader(InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='stream'>
+    // A readable data stream.
+    // </param>
+    // <param name='mode'>
+    // The parameter
+    // <paramref name='mode'/>
+    // is a 32-bit signed integer.
+    // </param>
     public CharacterReader(InputStream stream, int mode) {
  this(stream, mode, false, false);
     }
 
-    // <include file='../../docs.xml'
-    // path='docs/doc[@name="M:PeterO.Cbor.CharacterReader.#ctor(System.IO.InputStream,System.Int32,System.Boolean,System.Boolean)"]/*'/>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='CharacterReader'/>
+    // class.
+    // </summary>
+    // <param name='stream'>
+    // A readable data stream.
+    // </param>
+    // <param name='mode'>
+    // The parameter
+    // <paramref name='mode'/>
+    // is a 32-bit signed integer.
+    // </param>
+    // <param name='errorThrow'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <param name='dontSkipUtf8Bom'>
+    // Either
+    // <c>
+    // true
+    // </c>
+    // or
+    // <c>
+    // false
+    // </c>
+    // .
+    // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='stream'/>
+    // is null.
+    // </exception>
     public CharacterReader(
   InputStream stream,
   int mode,

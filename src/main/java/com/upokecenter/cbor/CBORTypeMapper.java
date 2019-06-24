@@ -14,7 +14,8 @@ import java.util.*;
       converters;
 
    /**
-    * Initializes a new instance of the {@link CBORTypeMapper} class.
+    * Initializes a new instance of the {@link
+    * com.upokecenter.cbor.CBORTypeMapper} class.
     */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();

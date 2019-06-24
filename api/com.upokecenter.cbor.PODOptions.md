@@ -13,10 +13,12 @@ Options for converting "plain old data" objects (better known as POCOs in
 ## Constructors
 
 * `PODOptions() PODOptions`<br>
- Initializes a new instance of the PODOptions class.
+ Initializes a new instance of the PODOptions
+ class.
 * `PODOptions​(boolean removeIsPrefix,
           boolean useCamelCase) PODOptions`<br>
- Initializes a new instance of the PODOptions class.
+ Initializes a new instance of the PODOptions
+ class.
 
 ## Methods
 
