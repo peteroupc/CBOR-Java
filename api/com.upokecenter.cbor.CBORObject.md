@@ -1068,7 +1068,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  <b>Note:</b> For security reasons, an application should not base this
  parameter on user input or other externally supplied data. Whenever
  possible, this parameter should be either a type specially handled by
- this method (such as <code>int</code> or <code>String</code>  // /) or a
+ this method (such as <code>int</code> or <code>String</code> // /) or a
  plain-old-data type (POCO or POJO type) within the control of the
  application. If the plain-old-data type references other data types,
  those types should likewise meet either criterion above.
@@ -1106,7 +1106,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  <b>Note:</b> For security reasons, an application should not base this
  parameter on user input or other externally supplied data. Whenever
  possible, this parameter should be either a type specially handled by
- this method (such as <code>int</code> or <code>String</code>  // /) or a
+ this method (such as <code>int</code> or <code>String</code> // /) or a
  plain-old-data type (POCO or POJO type) within the control of the
  application. If the plain-old-data type references other data types,
  those types should likewise meet either criterion above.
@@ -1156,7 +1156,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  <code>PeterO.Numbers</code>  library (in .NET) or the
  <code>com.github.peteroupc/numbers</code>  artifact (in Java), returns
  the result of the corresponding As* method. </li> <li>If the type is
- an enumeration (<code>Enum</code>  // /) type this CBOR object is a text
+ an enumeration (<code>Enum</code> // /) type this CBOR object is a text
  string or an integer, returns the appropriate enumerated constant.
  (For example, if <code>MyEnum</code> includes an entry for <code>MyValue</code> ,
  this method will return <code>MyEnum.MyValue</code> if the CBOR object
@@ -1241,7 +1241,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  <code>typeof</code> operator. The following example, written in Java, is a
  way to specify that the return value will be an ArrayList of String
  objects. </p> <pre>Type arrayListString = new ParameterizedType() {
- public Type[] getActualTypeArguments() {  // Contains one type
+ public Type[] getActualTypeArguments() { // Contains one type
  parameter, String return new Type[] { String.class }; } public Type
  getRawType() { /* Raw type is ArrayList */ return ArrayList.class; }
  public Type getOwnerType() { return null; } }; ArrayList&lt;String&gt;
@@ -1258,7 +1258,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  <b>Note:</b> For security reasons, an application should not base this
  parameter on user input or other externally supplied data. Whenever
  possible, this parameter should be either a type specially handled by
- this method (such as <code>int</code> or <code>String</code>  // /) or a
+ this method (such as <code>int</code> or <code>String</code> // /) or a
  plain-old-data type (POCO or POJO type) within the control of the
  application. If the plain-old-data type references other data types,
  those types should likewise meet either criterion above.
@@ -2527,7 +2527,7 @@ Converts this object to a 32-bit signed integer. Non-integer number values
  Framework) shows a way to check whether a given CBOR object stores a
  32-bit signed integer before getting its value. </p> <pre>CBORObject
  obj = CBORObject.FromInt32(99999); if(obj.isIntegral() &amp;&amp;
- obj.getCanTruncatedIntFitInInt32()()) {  // Not an Int32; handle
+ obj.getCanTruncatedIntFitInInt32()()) { // Not an Int32; handle
  the error Console.WriteLine("Not a 32-bit integer."); } else {
  Console.WriteLine("The value is " + obj.AsInt32()); }</pre>
 
@@ -2553,7 +2553,7 @@ Converts this object to a 64-bit signed integer. Non-integer numbers are
  Framework) shows a way to check whether a given CBOR object stores a
  64-bit signed integer before getting its value. </p> <pre>CBORObject
  obj = CBORObject.FromInt64(99999); if(obj.isIntegral() &amp;&amp;
- obj.getCanTruncatedIntFitInInt64()()) {  // Not an Int64; handle
+ obj.getCanTruncatedIntFitInInt64()()) { // Not an Int64; handle
  the error Console.WriteLine("Not a 64-bit integer."); } else {
  Console.WriteLine("The value is " + obj.AsInt64()); }</pre>
 
@@ -3356,12 +3356,12 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  <pre>CBORObject.WriteValue(stream, 4, 3); /* array, length 3 */
  CBORObject.Write("hello world", stream); /* item 1 */
  CBORObject.Write(25, stream); /* item 2 */ CBORObject.Write(false,
- stream);  // item 3</pre> <p>In the following example, a map
+ stream); // item 3</pre> <p>In the following example, a map
  consisting of two key-value pairs is written as CBOR to a data stream.
- </p> <pre>CBORObject.WriteValue(stream, 5, 2);  // map, 2 pairs
- CBORObject.Write("number", stream);  // key 1 CBORObject.Write(25,
- stream);  // value 1 CBORObject.Write("string", stream);  // key 2
- CBORObject.Write("hello", stream);  // value 2</pre> <p>In the
+ </p> <pre>CBORObject.WriteValue(stream, 5, 2); // map, 2 pairs
+ CBORObject.Write("number", stream); // key 1 CBORObject.Write(25,
+ stream); // value 1 CBORObject.Write("string", stream); // key 2
+ CBORObject.Write("hello", stream); // value 2</pre> <p>In the
  following example (originally written in C# for the .NET Framework
  version), a text string is written as CBOR to a data stream. </p>
  <pre>string str = "hello world"; byte[] bytes =

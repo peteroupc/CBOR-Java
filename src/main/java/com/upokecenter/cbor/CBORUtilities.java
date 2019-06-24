@@ -284,12 +284,12 @@ private CBORUtilities() {
        // Example: Apple Time is a 32-bit unsigned integer
        // of the number of seconds since the start of 1904.
        // EInteger appleTime = GetNumberOfDaysProlepticGregorian(
-       // year,  // month
+       // year, // month
        //,
         day)
        // .Subtract(GetNumberOfDaysProlepticGregorian(
        // EInteger.FromInt32(1904),
-        1  // ,
+        1 // ,
         s1));*/
     public static EInteger GetNumberOfDaysProlepticGregorian(
          EInteger year,
@@ -639,7 +639,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       if (floatExponent == 2047) {
         throw new ArithmeticException("Value is infinity or NaN");
       }
-      value1 &= 0xfffff;  // Mask out the exponent and sign
+      value1 &= 0xfffff; // Mask out the exponent and sign
       if (floatExponent == 0) {
         ++floatExponent;
       } else {
