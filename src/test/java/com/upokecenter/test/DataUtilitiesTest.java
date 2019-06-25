@@ -771,7 +771,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
             Assert.assertEquals(expectedString, builder.toString());
           }
           ms.reset();
-          builder.setLength(0);
+          builder.delete(0, (0)+(builder.length()));
           ret = DataUtilities.ReadUtf8(ms, length, builder, false);
           Assert.assertEquals(noReplaceRet, ret);
           if (noReplaceRet == 0) {
@@ -785,7 +785,7 @@ try { if (ms != null) {
 }
 }
         if (bytes.length >= length) {
-          builder.setLength(0);
+          builder.delete(0, (0)+(builder.length()));
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -796,7 +796,7 @@ try { if (ms != null) {
           if (expectedRet == 0) {
             Assert.assertEquals(expectedString, builder.toString());
           }
-          builder.setLength(0);
+          builder.delete(0, (0)+(builder.length()));
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
