@@ -7,16 +7,16 @@ import java.util.*;
    */
   public final class JSONOptions {
     /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with default options.
+     * Initializes a new instance of the {@link JSONOptions} class with default
+     * options.
      */
     public JSONOptions() {
  this(false);
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with the given value for the Base64Padding option.
+     * Initializes a new instance of the {@link JSONOptions} class with the given
+     * value for the Base64Padding option.
      * @param base64Padding Whether padding is included when writing data in
      * base64url or traditional base64 format to JSON.
      */
@@ -25,12 +25,12 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with the given values for the options.
+     * Initializes a new instance of the {@link JSONOptions} class with the given
+     * values for the options.
      * @param base64Padding Whether padding is included when writing data in
      * base64url or traditional base64 format to JSON.
      * @param replaceSurrogates Whether surrogate code points not part of a
-     * surrogate pair (which consists of two consecutive {@code char } s
+     * surrogate pair (which consists of two consecutive {@code char} s
      * forming one Unicode code point) are each replaced with a replacement
      * character (U + FFFD). The default is false; an exception is thrown when
      * such code points are encountered.

@@ -22,11 +22,7 @@ import java.io.*;
     private int offset;
     private ICharacterInput reader;
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='str'>
     // The parameter
     // <paramref name='str'/>
@@ -36,11 +32,7 @@ import java.io.*;
  this(str, false, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='str'>
     // The parameter
     // <paramref name='str'/>
@@ -61,11 +53,7 @@ import java.io.*;
  this(str, skipByteOrderMark, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='str'>
     // The parameter
     // <paramref name='str'/>
@@ -115,11 +103,7 @@ import java.io.*;
       this.stream = null;
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='str'>
     // The parameter
     // <paramref name='str'/>
@@ -139,11 +123,7 @@ import java.io.*;
  this(str, offset, length, false, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='str'>
     // The parameter
     // <paramref name='str'/>
@@ -225,11 +205,7 @@ import java.io.*;
       this.stream = null;
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='stream'>
     // A readable data stream.
     // </param>
@@ -237,11 +213,7 @@ import java.io.*;
  this(stream, 0, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='stream'>
     // A readable data stream.
     // </param>
@@ -265,11 +237,7 @@ import java.io.*;
  this(stream, mode, errorThrow, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='stream'>
     // A readable data stream.
     // </param>
@@ -282,11 +250,7 @@ import java.io.*;
  this(stream, mode, false, false);
     }
 
-    // <summary>
-    // Initializes a new instance of the
-    // <see cref='CharacterReader'/>
-    // class.
-    // </summary>
+    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
     // <param name='stream'>
     // A readable data stream.
     // </param>

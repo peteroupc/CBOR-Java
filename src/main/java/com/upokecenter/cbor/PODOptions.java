@@ -6,18 +6,16 @@ package com.upokecenter.cbor;
     */
     public class PODOptions {
     /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
-     * class.
+     * Initializes a new instance of the {@link PODOptions} class.
      */
     public PODOptions() {
  this(true, true);
 }
 
    /**
-    * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
-    * class.
-    * @param removeIsPrefix If set to {@code true } remove is prefix.
-    * @param useCamelCase If set to {@code true } use camel case.
+    * Initializes a new instance of the {@link PODOptions} class.
+    * @param removeIsPrefix If set to {@code true} remove is prefix.
+    * @param useCamelCase If set to {@code true} use camel case.
     */
     public PODOptions(boolean removeIsPrefix, boolean useCamelCase) {
       this.propVarusecamelcase = useCamelCase;
