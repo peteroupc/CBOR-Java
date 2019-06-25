@@ -205,10 +205,22 @@ import java.io.*;
       this.stream = null;
     }
 
-    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='T:PeterO.Cbor.CharacterReader'/>
+    // class; will read the stream as UTF-8, skip the byte-order mark (U + FEFF)
+    // if it appears first in the stream, and replace invalid byte sequences with
+    // replacement characters (U + FFFD).
+    // </summary>
     // <param name='stream'>
     // A readable data stream.
     // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='stream'/>
+    // is null.
+    // </exception>
+
     public CharacterReader(InputStream stream) {
  this(stream, 0, false);
     }
@@ -223,63 +235,106 @@ import java.io.*;
     // is a 32-bit signed integer.
     // </param>
     // <param name='errorThrow'>
-    // Either
-    // <c>
-    // true
-    // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // When encountering invalid encoding, throw an exception if this
+    // parameter is true, or replace it with U + FFFD (replacement character)
+    // if this parameter is false.
     // </param>
     public CharacterReader(InputStream stream, int mode, boolean errorThrow) {
  this(stream, mode, errorThrow, false);
     }
 
-    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='T:PeterO.Cbor.CharacterReader'/>
+    // class; will skip the byte-order mark (U + FEFF) if it appears first in the
+    // stream and replace invalid byte sequences with replacement characters
+    // (U + FFFD).
+    // </summary>
     // <param name='stream'>
-    // A readable data stream.
+    // A readable byte stream.
     // </param>
     // <param name='mode'>
-    // The parameter
-    // <paramref name='mode'/>
-    // is a 32-bit signed integer.
+    // The method to use when detecting encodings other than UTF-8 in the byte
+    // stream. This usually involves checking whether the stream begins with a
+    // byte-order mark (BOM, U + FEFF) or a non-zero basic code point (NZB, U + 0001
+    // to U + 007F) before reading the rest of the stream. This value can be one of
+    // the following:
+    // <list>
+    // <item>
+    // 0: UTF-8 only.
+    // </item>
+    // <item>
+    // 1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.
+    // </item>
+    // <item>
+    // 2: Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
+    // detect UTF-32 first.)
+    // </item>
+    // <item>
+    // 3: Detect UTF-16 using BOM, otherwise UTF-8.
+    // </item>
+    // <item>
+    // 4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to detect
+    // UTF-32 first.)
+    // </item>
+    // </list>
+    // .
     // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='stream'/>
+    // is null.
+    // </exception>
     public CharacterReader(InputStream stream, int mode) {
  this(stream, mode, false, false);
     }
 
-    // <summary>Initializes a new instance of the <see cref='CharacterReader'/> class.</summary>
+    // <summary>
+    // Initializes a new instance of the
+    // <see cref='T:PeterO.Cbor.CharacterReader'/>
+    // class.
+    // </summary>
     // <param name='stream'>
-    // A readable data stream.
+    // A readable byte stream.
     // </param>
     // <param name='mode'>
-    // The parameter
-    // <paramref name='mode'/>
-    // is a 32-bit signed integer.
+    // The method to use when detecting encodings other than UTF-8 in the byte
+    // stream. This usually involves checking whether the stream begins with a
+    // byte-order mark (BOM, U + FEFF) or a non-zero basic code point (NZB, U + 0001
+    // to U + 007F) before reading the rest of the stream. This value can be one of
+    // the following:
+    // <list>
+    // <item>
+    // 0: UTF-8 only.
+    // </item>
+    // <item>
+    // 1: Detect UTF-16 using BOM or NZB, otherwise UTF-8.
+    // </item>
+    // <item>
+    // 2: Detect UTF-16/UTF-32 using BOM or NZB, otherwise UTF-8. (Tries to
+    // detect UTF-32 first.)
+    // </item>
+    // <item>
+    // 3: Detect UTF-16 using BOM, otherwise UTF-8.
+    // </item>
+    // <item>
+    // 4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to detect
+    // UTF-32 first.)
+    // </item>
+    // </list>
+    // .
     // </param>
     // <param name='errorThrow'>
-    // Either
-    // <c>
-    // true
-    // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // If true, will throw an exception if invalid byte sequences (in the
+    // detected encoding) are found in the byte stream. If false, replaces those
+    // byte sequences with replacement characters (U + FFFD) as the stream is read.
     // </param>
     // <param name='dontSkipUtf8Bom'>
-    // Either
+    // If the stream is detected as UTF-8 and this parameter is
     // <c>
     // true
     // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // , won't skip the BOM character if it occurs at the start of the stream.
     // </param>
     // <exception cref='T:java.lang.NullPointerException'>
     // The parameter
