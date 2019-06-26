@@ -5,8 +5,8 @@ import org.junit.Test;
 import com.upokecenter.cbor.*;
 
   public class CBORExceptionTest {
-    @Test(expected = CBORException.class)
+    @Test
     public void TestConstructor() {
-      throw new CBORException("Test exception");
+      Assert.Throws<CBORException>(()=>throw new CBORException("Test exception"));
     }
   }

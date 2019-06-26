@@ -65,7 +65,7 @@ import com.upokecenter.numbers.*;
               case 't':
                 this.sb.append('\t');
                 break;
-              case 'u': {  // Unicode escape
+              case 'u': { // Unicode escape
                   c = 0;
                   // Consists of 4 hex digits
                   for (int i = 0; i < 4; ++i) {
@@ -124,7 +124,7 @@ import com.upokecenter.numbers.*;
                 }
             }
             break;
-          case 0x22:  // double quote
+          case 0x22: // double quote
             return this.sb.toString();
           default: {
               // NOTE: Assumes the character reader
@@ -615,12 +615,13 @@ Double.isNaN(f)) {
             }
             writer.WriteCodePoint((int)'\"');
             if (obj.HasTag(22)) {
+              // Base64 with padding
               Base64.WriteBase64(
                 writer,
                 byteArray,
                 0,
                 byteArray.length,
-                options.getBase64Padding());
+                true);
             } else if (obj.HasTag(23)) {
               // Write as base16
               for (int i = 0; i < byteArray.length; ++i) {
@@ -628,12 +629,13 @@ Double.isNaN(f)) {
                 writer.WriteCodePoint((int)Hex16.charAt(byteArray[i] & 15));
               }
             } else {
+              // Base64url no padding
               Base64.WriteBase64URL(
                 writer,
                 byteArray,
                 0,
                 byteArray.length,
-                options.getBase64Padding());
+                false);
             }
             writer.WriteCodePoint((int)'\"');
             break;

@@ -51,10 +51,10 @@ import java.util.*;
     * base64url or traditional base64 to JSON.<p> The padding character is
     * '='. </p>
     * @return The default is false, no padding.
-    * @deprecated This option may have no effect in the future. A future version may, by
-* default, include necessary padding when writing traditional base64 to JSON
-* and include no padding when writing base64url to JSON, in accordance with
-* the revision of the CBOR specification.
+    * @deprecated This option now has no effect. This library now includes necessary padding
+* when writing traditional base64 to JSON and includes no padding when
+* writing base64url to JSON, in accordance with the revision of the CBOR
+* specification.
  */
 @Deprecated
     public final boolean getBase64Padding() { return propVarbase64padding; }

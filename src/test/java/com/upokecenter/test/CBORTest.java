@@ -156,15 +156,15 @@ import com.upokecenter.numbers.*;
       CBORTestCommon.FromBytesTestAB(
         new byte[] { 0x5f, 0x41, 0x20, 0x41, 0x20, (byte)0xff });
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, 0x5f, 0x41,
-        0x20, (byte)0xff, (byte)0xff });
+      Assert.Throws<CBORException>(()=>CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, 0x5f, 0x41,
+        0x20, (byte)0xff, (byte)0xff }));
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestByteStringStreamNoTagsBeforeDefinite() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, (byte)0xc2, 0x41,
-        0x20, (byte)0xff });
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, (byte)0xc2, 0x41,
+        0x20, (byte)0xff }));
     }
 
     public static String ObjectMessage(CBORObject obj) {
@@ -223,7 +223,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCanFitInSpecificCases() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
-        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a });  // 2217361768.63373
+        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a }); // 2217361768.63373
       Assert.assertEquals(
   EInteger.FromString("2217361768"),
   cbor.AsEInteger());
@@ -234,7 +234,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x18, 0x2f, 0x32 });  // -2674012278751232
+        0x18, 0x2f, 0x32 }); // -2674012278751232
       Assert.assertEquals(52, cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked());
       if (!(cbor.CanFitInInt64())) {
  Assert.fail();
@@ -244,7 +244,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x10, 0x38, 0x64 });  // -6619136
+        0x10, 0x38, 0x64 }); // -6619136
       Assert.assertEquals(EInteger.FromString("-6619136"), cbor.AsEInteger());
       Assert.assertEquals(-6619136, cbor.AsInt32());
       if (!(cbor.CanTruncatedIntFitInInt32())) {
@@ -538,21 +538,21 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       CBORTestCommon.FromBytesTestAB(
         new byte[] { (byte)0xc4, (byte)0x82, 0x3, 0x1a, 1, 2, 3, 4 });
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestDecimalFracExactlyTwoElements() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1 });
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1 }));
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestDecimalFracExponentMustNotBeBignum() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,
-        1, 2, 3, 4 });
+        1, 2, 3, 4 }));
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestBigFloatExponentMustNotBeBignum() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc5, (byte)0x82, (byte)0xc2, 0x41, 1,
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc5, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,
-        1, 2, 3, 4 });
+        1, 2, 3, 4 }));
     }
 
     @Test
@@ -1060,7 +1060,7 @@ throw new IllegalStateException("", ex);
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
         byte[] array = new byte[rand.UniformInt(1000000) + 1];
-       // array = new byte[rand.UniformInt(500) + 1];  // TEMP
+       // array = new byte[rand.UniformInt(500) + 1]; // TEMP
         for (int j = 0; j < array.length; ++j) {
           if (j + 3 <= array.length) {
             int r = rand.UniformInt(0x1000000);
@@ -1118,7 +1118,7 @@ if (jsonString.length() > 0) {
                 throw new IllegalStateException("", ex);
               }
             } catch (CBORException ex) {
-              new Object();  // Expected exception
+              new Object(); // Expected exception
             } catch (Exception ex) {
              // if (!ex.getMessage().equals("Not a number type")) {
               String failString = ex.toString() +
@@ -1519,9 +1519,9 @@ try { if (ms != null) {
         (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2 });
       CBORTestCommon.AssertRoundTrip(cbor);
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestTagThenBreak() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff });
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff }));
     }
 
     @Test
@@ -1539,15 +1539,15 @@ try { if (ms != null) {
       TestTextStringStreamOne(TestCommon.Repeat('\u3000', 200000));
       TestTextStringStreamOne(TestCommon.Repeat("\ud800\udc00", 200000));
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, 0x7f, 0x61,
-        0x20, (byte)0xff, (byte)0xff });
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, 0x7f, 0x61,
+        0x20, (byte)0xff, (byte)0xff }));
     }
-    @Test(expected = CBORException.class)
+    @Test
     public void TestTextStringStreamNoTagsBeforeDefinite() {
-      CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
-        0x20, (byte)0xff });
+      Assert.Throws<CBORException>(() => CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
+        0x20, (byte)0xff }));
     }
 
     private static EDecimal AsED(CBORObject obj) {
