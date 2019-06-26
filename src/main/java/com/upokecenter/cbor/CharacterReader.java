@@ -39,16 +39,13 @@ import java.io.*;
     // is a text String.
     // </param>
     // <param name='skipByteOrderMark'>
-    // Either
-    // <c>
-    // true
-    // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // If true and the first character in the String is U + FEFF, skip that character.
     // </param>
+    // <exception cref='T:java.lang.NullPointerException'>
+    // The parameter
+    // <paramref name='str'/>
+    // is null.
+    // </exception>
     public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
     }
@@ -60,26 +57,12 @@ import java.io.*;
     // is a text String.
     // </param>
     // <param name='skipByteOrderMark'>
-    // Either
-    // <c>
-    // true
-    // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // If true and the first character in the String is U + FEFF, skip that character.
     // </param>
     // <param name='errorThrow'>
-    // Either
-    // <c>
-    // true
-    // </c>
-    // or
-    // <c>
-    // false
-    // </c>
-    // .
+    // When encountering invalid encoding, throw an exception if this
+    // parameter is true, or replace it with U + FFFD (replacement character)
+    // if this parameter is false.
     // </param>
     // <exception cref='T:java.lang.NullPointerException'>
     // The parameter
