@@ -463,7 +463,7 @@ try { if (ms != null) {
           switch (uad) {
             case 256:
              // Tag 256: String namespace
-              this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
+              this.stringRefs = (this.stringRefs == null) ? (new StringRefs()) : this.stringRefs;
               this.stringRefs.Push();
               break;
             case 25:

@@ -1188,7 +1188,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
     */
     public static CBORObject FromObject(long value) {
       return (value >= 0L && value < 24L) ? valueFixedObjects[(int)value] :
-        (new CBORObject(CBORObjectTypeInteger, value));
+        new CBORObject(CBORObjectTypeInteger, value);
     }
 
    /**
@@ -1213,8 +1213,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
               bigintValue.compareTo(Int64MaxValue) <= 0) ?
         new CBORObject(
           CBORObjectTypeInteger,
-          bigintValue.ToInt64Checked()) : (new CBORObject(
-        CBORObjectTypeBigInteger,
+          bigintValue.ToInt64Checked()) : (new CBORObject(CBORObjectTypeBigInteger,
         bigintValue));
     }
 
@@ -1262,8 +1261,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
           bigValue);
       }
       return (bigValue.isFinite() && bigValue.getDenominator().equals(EInteger.FromInt32(1))) ?
-            FromObject(bigValue.getNumerator()) : (new CBORObject(
-              CBORObjectTypeExtendedRational,
+            FromObject(bigValue.getNumerator()) : (new CBORObject(CBORObjectTypeExtendedRational,
               bigValue));
     }
 
@@ -4106,7 +4104,7 @@ public boolean equals(CBORObject other) {
               }
               sb.append(simvalue);
             } else {
-              sb = (sb == null) ? ((new StringBuilder())) : sb;
+              sb = (sb == null) ? (new StringBuilder()) : sb;
               sb.append("simple(");
               int thisItemInt = ((Integer)this.getThisItem()).intValue();
               sb.append(
@@ -4164,7 +4162,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeByteString: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+            sb = (sb == null) ? (new StringBuilder()) : sb;
             sb.append("h'");
             CBORUtilities.ToBase16(sb, (byte[])this.getThisItem());
             sb.append("'");
@@ -4180,7 +4178,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeArray: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+            sb = (sb == null) ? (new StringBuilder()) : sb;
             boolean first = true;
             sb.append("[");
             for (CBORObject i : this.AsList()) {
@@ -4194,7 +4192,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         case CBORObjectTypeMap: {
-            sb = (sb == null) ? ((new StringBuilder())) : sb;
+            sb = (sb == null) ? (new StringBuilder()) : sb;
             boolean first = true;
             sb.append("{");
             Map<CBORObject, CBORObject> map = this.AsMap();
@@ -4719,23 +4717,23 @@ public boolean equals(CBORObject other) {
             uadditional = (int)(data[1] & (int)0xff);
             break;
           case 25:
-            uadditional = (data[1] & (0xffL)) << 8;
+            uadditional = (data[1] & 0xffL) << 8;
             uadditional |= (long)(data[2] & 0xffL);
             break;
           case 26:
-            uadditional = (data[1] & (0xffL)) << 24;
-            uadditional |= (data[2] & (0xffL)) << 16;
-            uadditional |= (data[3] & (0xffL)) << 8;
+            uadditional = (data[1] & 0xffL) << 24;
+            uadditional |= (data[2] & 0xffL) << 16;
+            uadditional |= (data[3] & 0xffL) << 8;
             uadditional |= (long)(data[4] & 0xffL);
             break;
           case 27:
-            uadditional = (data[1] & (0xffL)) << 56;
-            uadditional |= (data[2] & (0xffL)) << 48;
-            uadditional |= (data[3] & (0xffL)) << 40;
-            uadditional |= (data[4] & (0xffL)) << 32;
-            uadditional |= (data[5] & (0xffL)) << 24;
-            uadditional |= (data[6] & (0xffL)) << 16;
-            uadditional |= (data[7] & (0xffL)) << 8;
+            uadditional = (data[1] & 0xffL) << 56;
+            uadditional |= (data[2] & 0xffL) << 48;
+            uadditional |= (data[3] & 0xffL) << 40;
+            uadditional |= (data[4] & 0xffL) << 32;
+            uadditional |= (data[5] & 0xffL) << 24;
+            uadditional |= (data[6] & 0xffL) << 16;
+            uadditional |= (data[7] & 0xffL) << 8;
             uadditional |= (long)(data[8] & 0xffL);
             break;
           default:
@@ -4748,7 +4746,7 @@ public boolean equals(CBORObject other) {
              // (additional is a signed long)
               return new CBORObject(CBORObjectTypeInteger, uadditional);
             } else {
-              int low = ((int)((uadditional) & 0xffffffffL));
+              int low = ((int)(uadditional & 0xffffffffL));
               int high = ((int)((uadditional >> 32) & 0xffffffffL));
               return FromObject(LowHighToEInteger(low, high));
             }
@@ -4758,7 +4756,7 @@ public boolean equals(CBORObject other) {
              // (additional is a signed long)
               return new CBORObject(CBORObjectTypeInteger, -1 - uadditional);
             } else {
-              int low = ((int)((uadditional) & 0xffffffffL));
+              int low = ((int)(uadditional & 0xffffffffL));
               int high = ((int)((uadditional >> 32) & 0xffffffffL));
               EInteger bigintAdditional = LowHighToEInteger(low, high);
               EInteger minusOne = EInteger.FromInt64(-1);
