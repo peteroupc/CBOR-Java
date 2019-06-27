@@ -1,14 +1,14 @@
 package com.upokecenter.util;
 
-    /**
-     * A class that adapts a random byte generator to generate random numbers in a
-     * variety of statistical distributions. <p>The method descriptions in
-     * this class assume the underlying random byte generator generates
-     * uniformly distributed numbers that are independent of each other.</p>
-     * <p><b>Thread safety:</b> The methods in this class are safe for
-     * concurrent use by multiple threads, as long as the underlying random
-     * byte generator is as well.</p>
-     */
+  /**
+   * A class that adapts a random byte generator to generate random numbers in a
+   * variety of statistical distributions. <p>The method descriptions in
+   * this class assume the underlying random byte generator generates
+   * uniformly distributed numbers that are independent of each other.</p>
+   * <p><b>Thread safety:</b> The methods in this class are safe for
+   * concurrent use by multiple threads, as long as the underlying random
+   * byte generator is as well.</p>
+   */
   public final class RandomGenerator {
     private boolean valueHaveLastNormal;
     private IRandomGen valueIrg;
@@ -165,9 +165,9 @@ package com.upokecenter.util;
           x = this.Normal();
           v = Math.pow((c * x) + 1, 3);
         } while (v <= 0);
-         u = 1.0 - this.Uniform();
-         x2 = x * x;
-  } while (u >= 1 - (0.0331 * x2 * x2) &&
+        u = 1.0 - this.Uniform();
+        x2 = x * x;
+      } while (u >= 1 - (0.0331 * x2 * x2) &&
                Math.log(u) >= (0.5 * x2) + (d * (1 - v + Math.log(v))));
       if (a < 1) {
         return d * v * Math.exp(this.Exponential() / -a);
@@ -410,7 +410,7 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double Uniform() {
-  return this.UniformLong(9007199254740992L) / 9007199254740992.0;
+      return this.UniformLong(9007199254740992L) / 9007199254740992.0;
     }
 
     /**
@@ -419,7 +419,7 @@ package com.upokecenter.util;
      * @return A 32-bit floating-point number.
      */
     public double UniformSingle() {
-  return this.UniformInt(16777216) / 16777216.0f;
+      return this.UniformInt(16777216) / 16777216.0f;
     }
 
     /**
@@ -429,14 +429,14 @@ package com.upokecenter.util;
      * number.
      * @return A 32-bit signed integer.
      */
-        public int UniformInt(int minInclusive, int maxExclusive) {
+    public int UniformInt(int minInclusive, int maxExclusive) {
       if (minInclusive > maxExclusive) {
-  throw new IllegalArgumentException("minInclusive (" + minInclusive +
-    ") is more than " + maxExclusive);
-}
-if (minInclusive == maxExclusive) {
- return minInclusive;
-}
+        throw new IllegalArgumentException("minInclusive (" + minInclusive +
+          ") is more than " + maxExclusive);
+      }
+      if (minInclusive == maxExclusive) {
+        return minInclusive;
+      }
       if (minInclusive >= 0) {
         return minInclusive + this.UniformInt(maxExclusive - minInclusive);
       } else {
@@ -458,37 +458,37 @@ if (minInclusive == maxExclusive) {
      */
     public long UniformLong(long minInclusive, long maxExclusive) {
       if (minInclusive > maxExclusive) {
-  throw new IllegalArgumentException("minInclusive (" + minInclusive +
-    ") is more than " + maxExclusive);
-}
-if (minInclusive == maxExclusive) {
- return minInclusive;
-}
+        throw new IllegalArgumentException("minInclusive (" + minInclusive +
+          ") is more than " + maxExclusive);
+      }
+      if (minInclusive == maxExclusive) {
+        return minInclusive;
+      }
       if (minInclusive >= 0) {
         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
       } else {
-      if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive < minInclusive) ||
-          (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
-                minInclusive - maxExclusive < 0) {
-           // Difference is greater than MaxValue
-         long lb = 0;
-         byte[] b = new byte[8];
-         while (true) {
-           this.valueIrg.GetBytes(b, 0, 8);
-           lb = b[0] & 0xffL;
-           lb |= (b[1] & 0xffL) << 8;
-           lb |= (b[2] & 0xffL) << 16;
-           lb |= (b[3] & 0xffL) << 24;
-           lb |= (b[4] & 0xffL) << 32;
-           lb |= (b[5] & 0xffL) << 40;
-           lb |= (b[6] & 0xffL) << 48;
-           lb |= (b[7] & 0x7fL) << 56;
-           if (lb >= minInclusive && lb < maxExclusive) {
-             return lb;
-           }
+        if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive < minInclusive) ||
+            (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
+                  minInclusive - maxExclusive < 0) {
+          // Difference is greater than MaxValue
+          long lb = 0;
+          byte[] b = new byte[8];
+          while (true) {
+            this.valueIrg.GetBytes(b, 0, 8);
+            lb = b[0] & 0xffL;
+            lb |= (b[1] & 0xffL) << 8;
+            lb |= (b[2] & 0xffL) << 16;
+            lb |= (b[3] & 0xffL) << 24;
+            lb |= (b[4] & 0xffL) << 32;
+            lb |= (b[5] & 0xffL) << 40;
+            lb |= (b[6] & 0xffL) << 48;
+            lb |= (b[7] & 0x7fL) << 56;
+            if (lb >= minInclusive && lb < maxExclusive) {
+              return lb;
+            }
           }
         } else {
-         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
+          return minInclusive + this.UniformLong(maxExclusive - minInclusive);
         }
       }
     }
@@ -502,12 +502,12 @@ if (minInclusive == maxExclusive) {
      */
     public int UniformInt(int maxExclusive) {
       if (maxExclusive < 0) {
-  throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
-    ") is less than 0");
-}
+        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
+          ") is less than 0");
+      }
       if (maxExclusive <= 1) {
- return 0;
-}
+        return 0;
+      }
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
@@ -543,7 +543,7 @@ if (minInclusive == maxExclusive) {
                 ib |= (b[2] & 0xff) << 16;
                 ib |= (b[3] & 0x7f) << 24;
                 if (ib < maxexc) {
-                 return ib % maxExclusive;
+                  return ib % maxExclusive;
                 }
               }
             }
@@ -558,11 +558,11 @@ if (minInclusive == maxExclusive) {
      * number.
      * @return A 64-bit signed integer.
      */
-        public long UniformLong(long maxExclusive) {
+    public long UniformLong(long maxExclusive) {
       if (maxExclusive < 0) {
-  throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
-    ") is less than 0");
-}
+        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
+          ") is less than 0");
+      }
       if (maxExclusive <= Integer.MAX_VALUE) {
         return this.UniformInt((int)maxExclusive);
       }
