@@ -3214,7 +3214,7 @@ private final PODClass propVarpropvalue;
         "\"mtb/6A\"",
         stringTemp);
       }
-      JSONOptions options = new JSONOptions(true);  // base64 padding enabled
+      JSONOptions options = new JSONOptions(true); // base64 padding enabled
       o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] { (byte)0x9a, (byte)0xd6,
         (byte)0xff, (byte)0xe8 });
      // Encode with Base64URL by default
@@ -6469,7 +6469,7 @@ throw new IllegalStateException("", ex);
     @Test
     public void TestToJSONString_ByteArray_Padding() {
       CBORObject o;
-      JSONOptions options = new JSONOptions(true);  // base64 padding enabled
+      JSONOptions options = new JSONOptions(true); // base64 padding enabled
       o = CBORObject.FromObjectAndTag(
         new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }, 22);
       {

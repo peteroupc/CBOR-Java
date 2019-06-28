@@ -143,7 +143,7 @@ import com.upokecenter.numbers.*;
       boolean haveZeros = false;
       int oldIndex = index;
       result[0] = -1;
-      while (index < str.length()) {  // skip zeros
+      while (index < str.length()) { // skip zeros
         int c = str.charAt(index++);
         if (c != '0') {
           --index;
@@ -261,7 +261,7 @@ import com.upokecenter.numbers.*;
     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
     * getPointersToKey is called on this object with a keyToFind called
     * "key", we get the following Map as the return value: <pre>{ "/0" =>
-    * "value1",  // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
+    * "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
     * "/1" points to {"bar":"barvalue"} }</pre> and the JSON object will
     * change to the following: <pre>[{"foo":"foovalue"}, {"bar":"barvalue"},
     * {"baz","bazvalue"}]</pre> @param root object to search @param
@@ -289,8 +289,8 @@ import com.upokecenter.numbers.*;
     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
     * getPointersToKey is called on this object with a keyToFind called
     * "key", we get the following Map as the return value: <pre>{ "/0" =>
-    * "value1",  // "/0" points to {"key":"value1","foo":"foovalue"} "/1" =>
-    * "value2"  // "/1" points to {"key":"value2","bar":"barvalue"} }</pre>
+    * "value1", // "/0" points to {"key":"value1","foo":"foovalue"} "/1" =>
+    * "value2" // "/1" points to {"key":"value2","bar":"barvalue"} }</pre>
     * and the JSON object will remain unchanged. @param root object to
     * search @param keyToFind the key to search for. @return a map: <ul>
     * <li>The keys in the map are JSON Pointers to the objects within
