@@ -758,7 +758,7 @@ import com.upokecenter.numbers.*;
      * if&#x28;bytes.length == 0 || bytes[0]&lt;0x60 ||
      * bytes[0]&gt;0x7f)&#x7b;throw new CBORException&#x28;);&#x7d; return
      * CBORObject.DecodeFromBytes&#x28;bytes,
-     * CBOREncodeOptions.Default).getAsString()&#x28;); &#x7d;</pre> </p>
+     * CBOREncodeOptions.Default).getAsString()&#x28;); &#x7d;</pre> . </p>
      * @param data A byte array in which a single CBOR object is encoded.
      * @param options The parameter {@code options} is a CBOREncodeOptions object.
      * @return A CBOR object decoded from the given byte array.
@@ -912,7 +912,7 @@ try { if (ms != null) {
      * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);</pre>
      * <p>By comparison, the C# version is much shorter. </p>
      * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
-     * typeof&#x28;List&lt;String&gt;));</pre> </p>
+     * typeof&#x28;List&lt;String&gt;));</pre> . </p>
      * @param t The type, class, or interface that this method's return value will
      * belong to. To express a generic type in Java, see the example.
      * <b>Note:</b> For security reasons, an application should not base
@@ -1121,7 +1121,7 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);</pre>
      * <p>By comparison, the C# version is much shorter. </p>
      * <pre>var&#x20;array = (List&lt;String&gt;)cborArray.ToObject(
-     * typeof&#x28;List&lt;String&gt;));</pre> </p>
+     * typeof&#x28;List&lt;String&gt;));</pre> . </p>
      * @param t The type, class, or interface that this method's return value will
      * belong to. To express a generic type in Java, see the example.
      * <b>Note:</b> For security reasons, an application should not base
@@ -1382,7 +1382,7 @@ FromObject(bigValue.getNumerator()) : new CBORObject(CBORObjectTypeExtendedRatio
      * UTF-8. </p> <pre>/* true does character replacement of invalid
      * UTF-8; false throws an exception on invalid UTF-8 &#x2a;&#x2f; byte[] bytes =
      * DataUtilities.GetUtf8Bytes(textString, true); CBORObject cbor =
-     * CBORObject.FromBytes(bytes);</pre> </p>
+     * CBORObject.FromBytes(bytes);</pre> . </p>
      * @param bytes A byte array. Can be null.
      * @return A CBOR byte string object where each byte of the given byte array is
      * copied to a new array, or CBORObject.Null if the value is null.
@@ -2683,7 +2683,7 @@ public static void Write(
      * the chaining behavior made possible by this method. </p>
      * <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False)
      * .Add(CBORObject.FromObject(5)) .Add(CBORObject.FromObject("text
-     * string")) .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> </p>
+     * string")) .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> . </p>
      * @param obj The parameter {@code obj} is a CBOR object.
      * @return This instance.
      * @throws IllegalStateException This object is not an array.
@@ -2707,7 +2707,7 @@ public static void Write(
      * which has a custom CBOR tag, to that array. Note the chaining
      * behavior made possible by this method. </p> <pre>CBORObject obj =
      * CBORObject.NewArray() .Add(CBORObject.False) .Add(5) .Add("text
-     * string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> </p>
+     * string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> . </p>
      * @param obj A CBOR object (or an object convertible to a CBOR object) to add
      * to this CBOR array.
      * @return This instance.
@@ -2861,7 +2861,7 @@ public static void Write(
      * obj = CBORObject.FromInt32(99999); if&#x28;obj.isIntegral() &amp;&amp;
      * obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b; // Not an Int32; handle
      * the error Console.WriteLine("Not a 32-bit integer."); &#x7d; else {
-     * Console.WriteLine("The value is " + obj.AsInt32()); }</pre> </p>
+     * Console.WriteLine("The value is " + obj.AsInt32()); }</pre> . </p>
      * @return The closest 32-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
@@ -2883,7 +2883,7 @@ public static void Write(
      * obj = CBORObject.FromInt64(99999); if&#x28;obj.isIntegral() &amp;&amp;
      * obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b; // Not an Int64; handle
      * the error Console.WriteLine("Not a 64-bit integer."); &#x7d; else {
-     * Console.WriteLine("The value is " + obj.AsInt64()); }</pre> </p>
+     * Console.WriteLine("The value is " + obj.AsInt64()); }</pre> . </p>
      * @return The closest 64-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
      * @throws java.lang.ArithmeticException This object's value exceeds the range of a
@@ -3332,7 +3332,7 @@ public int compareTo(CBORObject other) {
      * encoding the object to CBOR format. For the CTAP2 canonical ordering,
      * which is useful for implementing Web Authentication, call this method
      * as follows: <code>EncodeToBytes(new CBOREncodeOptions(false, false,
-     * true))</code>
+     * true))</code> .
      * @param options Options for encoding the data to CBOR.
      * @return A byte array in CBOR format.
      * @throws java.lang.NullPointerException The parameter {@code options} is null.
@@ -3998,11 +3998,9 @@ public boolean equals(CBORObject other) {
      * placing a byte-order mark at the beginning of a JSON string. </li>
      * <li>Byte strings are converted to Base64 URL without whitespace or
      * padding by default (see section 4.1 of RFC 7049). A byte string will
-     * instead be converted to traditional base64 without whitespace or
-     * padding by default if it has tag 22, or base16 for tag 23. Padding
-     * will be included in the Base64 URL or traditional base64 form if
-     * <b>Base64Padding</b> in the JSON options is set to <b>true</b> . (To
-     * create a CBOR object with a given tag, call the
+     * instead be converted to traditional base64 without whitespace and
+     * with padding if it has tag 22, or base16 for tag 23. (To create a
+     * CBOR object with a given tag, call the
      * <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR object
      * and the desired tag number to that method.) </li> <li>Rational
      * numbers will be converted to their exact form, if possible, otherwise
@@ -4027,7 +4025,7 @@ public boolean equals(CBORObject other) {
      * keyString=(key.getCBORType() == CBORType.String) ? key.AsString() :
      * key.ToJSONString(); builder.Append(CBORObject.FromObject(keyString)
      * .ToJSONString()) .Append(":").Append(mapObj.get(key).ToJSONString());
-     * first=false; } } return builder.Append("}").toString(); }</pre>
+     * first=false; } } return builder.Append("}").toString(); }</pre> .
      * @param options An object containing the options to control writing the CBOR
      * object to JSON.
      * @return A text string containing the converted object.
@@ -4399,7 +4397,7 @@ public boolean equals(CBORObject other) {
      * the .NET Framework version), a text string is written as CBOR to a
      * data stream. </p> <pre>string str = "hello world"; byte[] bytes =
      * DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream,
-     * 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> </p>
+     * 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> . </p>
      * @param outputStream A writable data stream.
      * @param majorType The CBOR major type to write. This is a number from 0
      * through 7 as follows. 0: integer 0 or greater; 1: negative integer;
@@ -4577,7 +4575,7 @@ public boolean equals(CBORObject other) {
      * NullPointerException&#x28;nameof(outputStream));&#x7d;
      * outputStream.write((byte)0x9f); for (object item in list) &#x7b;
      * new CBORObject(item).WriteTo(outputStream); &#x7d;
-     * outputStream.write((byte)0xff); &#x7d;</pre> </p>
+     * outputStream.write((byte)0xff); &#x7d;</pre> . </p>
      * @param stream A writable data stream.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.

@@ -341,7 +341,7 @@ try { if (ms != null) {
      * code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
      * codePoint = DataUtilities.CodePointAt(str, i);
      * Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
-     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> </p>
+     * 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; } }</pre> . </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @return The Unicode code point at the given position. Returns -1 if {@code
@@ -363,7 +363,7 @@ try { if (ms != null) {
      * DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
      * /* Unpaired surrogate &#x2a;&#x2f; } Console.WriteLine("codePoint:"+codePoint);
      * if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point &#x2a;&#x2f; }
-     * }</pre> </p>
+     * }</pre> . </p>
      * @param str The parameter {@code str} is a text string.
      * @param index Index of the current position into the string.
      * @param surrogateBehavior Specifies what kind of value to return if the

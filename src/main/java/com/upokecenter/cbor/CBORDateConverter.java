@@ -26,7 +26,13 @@ import com.upokecenter.numbers.*;
 
     public java.util.Date FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(0)) {
-        return StringToDateTime(obj.AsString());
+        try {
+          return StringToDateTime(obj.AsString());
+        } catch (ArithmeticException ex) {
+          throw new CBORException(ex.getMessage(), ex);
+        } catch (IllegalArgumentException ex) {
+          throw new CBORException(ex.getMessage(), ex);
+        }
       } else if (obj.HasMostOuterTag(1)) {
         if (!obj.isFinite()) {
           throw new CBORException("Not a finite number");

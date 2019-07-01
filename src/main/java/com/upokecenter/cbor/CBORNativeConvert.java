@@ -73,7 +73,8 @@ private CBORNativeConvert() {
       }
       EInteger exponent = o.get(0).AsEInteger();
       EInteger mantissa = o.get(1).AsEInteger();
-      if (!exponent.CanFitInInt64() && !extended) {
+      if (!extended &&
+         exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) {
         throw new CBORException("Exponent is too big");
       }
       if (exponent.isZero()) {

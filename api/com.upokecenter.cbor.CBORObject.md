@@ -924,7 +924,7 @@ Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  if(bytes.length == 0 || bytes[0]&lt;0x60 ||
  bytes[0]&gt;0x7f){throw new CBORException();} return
  CBORObject.DecodeFromBytes(bytes,
- CBOREncodeOptions.Default).getAsString()(); }</pre>
+ CBOREncodeOptions.Default).getAsString()(); }</pre> .
 
 **Parameters:**
 
@@ -1033,7 +1033,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);</pre>
  <p>By comparison, the C# version is much shorter. </p>
  <pre>var array = (List&lt;String&gt;)cborArray.ToObject(
- typeof(List&lt;String&gt;));</pre>
+ typeof(List&lt;String&gt;));</pre> .
 
 **Parameters:**
 
@@ -1256,7 +1256,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  (ArrayList&lt;String&gt;) cborArray.ToObject(arrayListString);</pre>
  <p>By comparison, the C# version is much shorter. </p>
  <pre>var array = (List&lt;String&gt;)cborArray.ToObject(
- typeof(List&lt;String&gt;));</pre>
+ typeof(List&lt;String&gt;));</pre> .
 
 **Parameters:**
 
@@ -1469,7 +1469,7 @@ Generates a CBOR object from a 64-bit floating-point number.
  UTF-8. </p> <pre>/* true does character replacement of invalid
  UTF-8; false throws an exception on invalid UTF-8 */ byte[] bytes =
  DataUtilities.GetUtf8Bytes(textString, true); CBORObject cbor =
- CBORObject.FromBytes(bytes);</pre>
+ CBORObject.FromBytes(bytes);</pre> .
 
 **Parameters:**
 
@@ -2354,7 +2354,7 @@ Gets this object's absolute value.
  the chaining behavior made possible by this method. </p>
  <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False)
  .Add(CBORObject.FromObject(5)) .Add(CBORObject.FromObject("text
- string")) .Add(CBORObject.FromObjectAndTag(9999, 1));</pre>
+ string")) .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
 
 **Parameters:**
 
@@ -2379,7 +2379,7 @@ Gets this object's absolute value.
  which has a custom CBOR tag, to that array. Note the chaining
  behavior made possible by this method. </p> <pre>CBORObject obj =
  CBORObject.NewArray() .Add(CBORObject.False) .Add(5) .Add("text
- string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre>
+ string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
 
 **Parameters:**
 
@@ -2539,7 +2539,7 @@ Converts this object to a 32-bit signed integer. Non-integer number values
  obj = CBORObject.FromInt32(99999); if(obj.isIntegral() &amp;&amp;
  obj.getCanTruncatedIntFitInInt32()()) { // Not an Int32; handle
  the error Console.WriteLine("Not a 32-bit integer."); } else {
- Console.WriteLine("The value is " + obj.AsInt32()); }</pre>
+ Console.WriteLine("The value is " + obj.AsInt32()); }</pre> .
 
 **Returns:**
 
@@ -2565,7 +2565,7 @@ Converts this object to a 64-bit signed integer. Non-integer numbers are
  obj = CBORObject.FromInt64(99999); if(obj.isIntegral() &amp;&amp;
  obj.getCanTruncatedIntFitInInt64()()) { // Not an Int64; handle
  the error Console.WriteLine("Not a 64-bit integer."); } else {
- Console.WriteLine("The value is " + obj.AsInt64()); }</pre>
+ Console.WriteLine("The value is " + obj.AsInt64()); }</pre> .
 
 **Returns:**
 
@@ -2804,7 +2804,7 @@ Writes the binary representation of this CBOR object and returns a byte
  encoding the object to CBOR format. For the CTAP2 canonical ordering,
  which is useful for implementing Web Authentication, call this method
  as follows: <code>EncodeToBytes(new CBOREncodeOptions(false, false,
- true))</code>
+ true))</code> .
 
 **Parameters:**
 
@@ -3189,11 +3189,9 @@ Converts this object to a string in JavaScript Object Notation (JSON)
  placing a byte-order mark at the beginning of a JSON string. </li>
  <li>Byte strings are converted to Base64 URL without whitespace or
  padding by default (see section 4.1 of RFC 7049). A byte string will
- instead be converted to traditional base64 without whitespace or
- padding by default if it has tag 22, or base16 for tag 23. Padding
- will be included in the Base64 URL or traditional base64 form if
- <b>Base64Padding</b> in the JSON options is set to <b>true</b> . (To
- create a CBOR object with a given tag, call the
+ instead be converted to traditional base64 without whitespace and
+ with padding if it has tag 22, or base16 for tag 23. (To create a
+ CBOR object with a given tag, call the
  <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR object
  and the desired tag number to that method.) </li> <li>Rational
  numbers will be converted to their exact form, if possible, otherwise
@@ -3218,7 +3216,7 @@ Converts this object to a string in JavaScript Object Notation (JSON)
  keyString=(key.getCBORType() == CBORType.String) ? key.AsString() :
  key.ToJSONString(); builder.Append(CBORObject.FromObject(keyString)
  .ToJSONString()) .Append(":").Append(mapObj.get(key).ToJSONString());
- first=false; } } return builder.Append("}").toString(); }</pre>
+ first=false; } } return builder.Append("}").toString(); }</pre> .
 
 **Parameters:**
 
@@ -3379,7 +3377,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  the .NET Framework version), a text string is written as CBOR to a
  data stream. </p> <pre>string str = "hello world"; byte[] bytes =
  DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream,
- 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre>
+ 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> .
 
 **Parameters:**
 
@@ -3502,7 +3500,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  NullPointerException(nameof(outputStream));}
  outputStream.write((byte)0x9f); for (object item in list) {
  new CBORObject(item).WriteTo(outputStream); }
- outputStream.write((byte)0xff); }</pre>
+ outputStream.write((byte)0xff); }</pre> .
 
 **Parameters:**
 

@@ -51,7 +51,7 @@ This option now has no effect. This library now includes necessary padding
 
 **Returns:**
 
-* The default is false, no padding.
+* A value indicating whether the Base64Padding property is true.
 
 ### getReplaceSurrogates
     public final boolean getReplaceSurrogates()

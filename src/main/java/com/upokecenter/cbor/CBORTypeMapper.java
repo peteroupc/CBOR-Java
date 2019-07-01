@@ -5,7 +5,7 @@ import java.util.*;
    /**
     * Holds converters to customize the serialization and deserialization behavior
     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
-    * well as type filters for <code>ToObject</code>
+    * well as type filters for <code>ToObject</code> .
     */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;

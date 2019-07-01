@@ -47,10 +47,11 @@ import java.util.*;
     public static final JSONOptions Default = new JSONOptions();
 
    /**
-    * Gets a value indicating whether padding is written out when writing
-    * base64url or traditional base64 to JSON.<p> The padding character is
-    * '='. </p>
-    * @return The default is false, no padding.
+    * Gets a value indicating whether the Base64Padding property is true. This
+    * property has no effect; in previous versions, this property meant that
+    * padding was written out when writing base64url or traditional base64
+    * to JSON.
+    * @return A value indicating whether the Base64Padding property is true.
     * @deprecated This option now has no effect. This library now includes necessary padding
 * when writing traditional base64 to JSON and includes no padding when
 * writing base64url to JSON, in accordance with the revision of the CBOR

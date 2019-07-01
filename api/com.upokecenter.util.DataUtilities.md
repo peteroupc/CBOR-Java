@@ -317,7 +317,7 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
  code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
  codePoint = DataUtilities.CodePointAt(str, i);
  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
- 0x10000) { i++; /* Supplementary code point */ } }</pre>
+ 0x10000) { i++; /* Supplementary code point */ } }</pre> .
 
 **Parameters:**
 
@@ -346,7 +346,7 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
  DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
  /* Unpaired surrogate */ } Console.WriteLine("codePoint:"+codePoint);
  if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point */ }
- }</pre>
+ }</pre> .
 
 **Parameters:**
 

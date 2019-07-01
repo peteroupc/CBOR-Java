@@ -1590,31 +1590,86 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
     }
     @Test
     public void TestCanFitInInt64() {
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(0).CanFitInSingle())) {
+      if (!(ToObjectTest.TestToFromObjectRoundTrip(0).CanFitInInt64())) {
  Assert.fail();
  }
-      if (CBORObject.True.CanFitInSingle()) {
+      if (CBORObject.True.CanFitInInt64()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip("")
-              .CanFitInSingle()) {
+              .CanFitInInt64()) {
  Assert.fail();
  }
-      if (CBORObject.NewArray().CanFitInSingle()) {
+      if (CBORObject.NewArray().CanFitInInt64()) {
  Assert.fail();
  }
-      if (CBORObject.NewMap().CanFitInSingle()) {
+      if (CBORObject.NewMap().CanFitInInt64()) {
  Assert.fail();
  }
-      if (CBORObject.False.CanFitInSingle()) {
+      if (CBORObject.False.CanFitInInt64()) {
  Assert.fail();
  }
-      if (CBORObject.Null.CanFitInSingle()) {
+      if (CBORObject.Null.CanFitInInt64()) {
  Assert.fail();
  }
-      if (CBORObject.Undefined.CanFitInSingle()) {
+      if (CBORObject.Undefined.CanFitInInt64()) {
  Assert.fail();
  }
+
+      EInteger ei;
+      ei = EInteger.FromString("9223372036854775807");
+      if (!(CBORObject.FromObject(ei).CanFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("9223372036854775808");
+      if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775807");
+      if (!(CBORObject.FromObject(ei).CanFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775808");
+      if (!(CBORObject.FromObject(ei).CanFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775809");
+      if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223373136366403584");
+      if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("9223373136366403584");
+      if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      String[] strings = new String[] {
+   "8000FFFFFFFF0000",
+   "8000AAAAAAAA0000",
+   "8000800080000000",
+   "8000000100010000",
+   "8000FFFF00000000",
+   "80000000FFFF0000",
+   "8000800000000000",
+   "8000000080000000",
+   "8000AAAA00000000",
+   "80000000AAAA0000",
+   "8000000100000000",
+   "8000000000010000",
+ };
+      for (Object str : strings) {
+        ei = EInteger.FromRadixString(str, 16);
+        if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail();
+ }
+        ei = ei.Negate();
+        if (CBORObject.FromObject(ei).CanFitInInt64()) {
+ Assert.fail();
+ }
+      }
+
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
@@ -1875,19 +1930,79 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).AsEFloat()
       if (CBORObject.Undefined.CanTruncatedIntFitInInt64()) {
  Assert.fail();
  }
+
+      EInteger ei;
+      ei = EInteger.FromString("9223372036854775807");
+      if (!(CBORObject.FromObject(ei).CanTruncatedIntFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("9223372036854775808");
+      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775807");
+      if (!(CBORObject.FromObject(ei).CanTruncatedIntFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775808");
+      if (!(CBORObject.FromObject(ei).CanTruncatedIntFitInInt64())) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223372036854775809");
+      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("-9223373136366403584");
+      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      ei = EInteger.FromString("9223373136366403584");
+      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail(ei.toString());
+ }
+      String[] strings = new String[] {
+   "8000FFFFFFFF0000",
+   "8000AAAAAAAA0000",
+   "8000800080000000",
+   "8000000100010000",
+   "8000FFFF00000000",
+   "80000000FFFF0000",
+   "8000800000000000",
+   "8000000080000000",
+   "8000AAAA00000000",
+   "80000000AAAA0000",
+   "8000000100000000",
+   "8000000000010000",
+ };
+      for (Object str : strings) {
+        ei = EInteger.FromRadixString(str, 16);
+        if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail();
+ }
+        ei = ei.Negate();
+        if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+ Assert.fail();
+ }
+      }
+
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        String numberString = numberinfo.get("number").AsString();
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-  numberinfo.get("number").AsString()));
+  numberString));
         if (numberinfo.get("int64").AsBoolean()) {
-          if (!(cbornumber.CanTruncatedIntFitInInt64())) {
- Assert.fail();
+          if (!(
+            cbornumber.CanTruncatedIntFitInInt64())) {
+ Assert.fail(
+            numberString);
  }
         } else {
-          if (cbornumber.CanTruncatedIntFitInInt64()) {
- Assert.fail();
+          if (
+            cbornumber.CanTruncatedIntFitInInt64()) {
+ Assert.fail(
+          numberString);
  }
         }
       }
@@ -3171,22 +3286,6 @@ private final PODClass propVarpropvalue;
      // Base64 tests
       CBORObject o;
       o = CBORObject.FromObjectAndTag(
-        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }, 22);
-      {
-        String stringTemp = o.ToJSONString();
-        Assert.assertEquals(
-        "\"mtbw6A\"",
-        stringTemp);
-      }
-      o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] { (byte)0x9a, (byte)0xd6,
-        (byte)0xf0, (byte)0xe8 });
-      {
-        String stringTemp = o.ToJSONString();
-        Assert.assertEquals(
-        "\"mtbw6A\"",
-        stringTemp);
-      }
-      o = CBORObject.FromObjectAndTag(
         new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 },
         23);
       {
@@ -3211,7 +3310,7 @@ private final PODClass propVarpropvalue;
       {
         String stringTemp = o.ToJSONString();
         Assert.assertEquals(
-        "\"mtb/6A\"",
+        "\"mtb/6A==\"",
         stringTemp);
       }
       JSONOptions options = new JSONOptions(true); // base64 padding enabled
@@ -3221,7 +3320,7 @@ private final PODClass propVarpropvalue;
       {
         String stringTemp = o.ToJSONString(options);
         Assert.assertEquals(
-       "\"mtb_6A==\"",
+       "\"mtb_6A\"",
        stringTemp);
       }
       o = CBORObject.FromObjectAndTag(
@@ -6478,14 +6577,16 @@ throw new IllegalStateException("", ex);
         "\"mtbw6A==\"",
         stringTemp);
       }
+      // untagged, so base64url without padding
       o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] { (byte)0x9a, (byte)0xd6,
         (byte)0xf0, (byte)0xe8 });
       {
         String stringTemp = o.ToJSONString(options);
         Assert.assertEquals(
-          "\"mtbw6A==\"",
+          "\"mtbw6A\"",
           stringTemp);
       }
+      // tagged 23, so base16
       o = CBORObject.FromObjectAndTag(
        new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 },
              23);
@@ -7523,6 +7624,31 @@ try { if (ms != null) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+
+    @Test
+    public void TestWriteBigExponentNumber() {
+String[] exponents = new String[] {
+"15368525994429920286",
+"18446744073709551615",
+"-18446744073709551616",
+"18446744073709551616",
+"-18446744073709551617",
+"18446744073709551615",
+"-18446744073709551614",
+};
+for (String strexp : exponents) {
+EInteger bigexp = EInteger.FromString(strexp);
+EDecimal ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
+TestWriteObj(ed);
+EFloat ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
+TestWriteObj(ef);
+bigexp = bigexp.Negate();
+ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
+TestWriteObj(ed);
+ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
+TestWriteObj(ef);
+}
     }
 
     private static void TestWriteObj(Object obj) {
