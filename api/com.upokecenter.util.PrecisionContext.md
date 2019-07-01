@@ -1,9 +1,9 @@
 # com.upokecenter.util.PrecisionContext
 
-    @Deprecated public class PrecisionContext extends Object
+    @Deprecated public class PrecisionContext extends java.lang.Object
 
 Deprecated.
-<div class='deprecationComment'>Use EContext from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EContext from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Methods
 
@@ -11,9 +11,10 @@ Deprecated.
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents) PrecisionContext`<br>
- Deprecated. Initializes a new instance of the PrecisionContext class.
-* `String toString()`<br>
+                boolean clampNormalExponents) com.upokecenter.PrecisionContext`<br>
+ Deprecated. Initializes a new instance of the com.upokecenter.PrecisionContext
+ class.
+* `java.lang.String toString()`<br>
  Deprecated. Gets a string representation of this object.
 
 ## Constructors
@@ -22,8 +23,9 @@ Deprecated.
                 Rounding rounding,
                 int exponentMinSmall,
                 int exponentMaxSmall,
-                boolean clampNormalExponents) PrecisionContext`<br>
- Deprecated. Initializes a new instance of the PrecisionContext class.
+                boolean clampNormalExponents) com.upokecenter.PrecisionContext`<br>
+ Deprecated. Initializes a new instance of the com.upokecenter.PrecisionContext
+ class.
 
 ## Method Details
 
@@ -68,24 +70,24 @@ Deprecated.
  exponent range.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
 * A string representation of this object.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 

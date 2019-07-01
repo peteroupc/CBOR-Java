@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.PODOptions
 
-    public class PODOptions extends Object
+    public class PODOptions extends java.lang.Object
 
 Options for converting "plain old data" objects to CBOR objects.
 
@@ -39,11 +39,11 @@ The default settings for "plain old data" options.
 ### getRemoveIsPrefix
     @Deprecated public final boolean getRemoveIsPrefix()
 Deprecated.
-<div class='deprecationComment'>Property name conversion may change, making this property obsolete.</div>
+Property name conversion may change, making this property obsolete.
 
 **Returns:**
 
-* <code>true</code> If the prefix is removed; otherwise, . <code>false</code>.
+* <code>true</code> If the prefix is removed; otherwise, . <code>false</code> .
 
 ### getUseCamelCase
     public final boolean getUseCamelCase()
@@ -53,4 +53,4 @@ Gets a value indicating whether property names are converted to camel case
 **Returns:**
 
 * <code>true</code> If the names are converted to camel case; otherwise, .
- <code>false</code>.
+ <code>false</code> .

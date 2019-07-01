@@ -1,10 +1,10 @@
 # com.upokecenter.util.ExtendedRational
 
-    @Deprecated public final class ExtendedRational extends Object implements Comparable<ExtendedRational>
+    @Deprecated public final class ExtendedRational extends java.lang.Object implements java.lang.Comparable<ExtendedRational>
 
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.
 
 ## Fields
 
@@ -32,8 +32,9 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ## Constructors
 
 * `ExtendedRational​(BigInteger numerator,
-                BigInteger denominator) ExtendedRational`<br>
- Deprecated. Initializes a new instance of the ExtendedRational class.
+                BigInteger denominator) com.upokecenter.ExtendedRational`<br>
+ Deprecated. Initializes a new instance of the com.upokecenter.ExtendedRational
+ class.
 
 ## Methods
 
@@ -47,7 +48,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated. Creates a rational number with the given numerator and denominator.
 * `boolean equals​(ExtendedRational other)`<br>
  Deprecated. Checks whether this and another value are equal.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(java.lang.Object obj)`<br>
  Deprecated. Checks whether this and another value are equal.
 * `BigInteger getDenominator()`<br>
  Deprecated. Gets this object's denominator.
@@ -72,7 +73,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.
 Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  Use ERational from PeterO.Numbers/com.upokecenter.numbers.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Deprecated. Converts this object to a text string.
 
 ## Field Details
@@ -80,7 +81,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 ### NaN
     @Deprecated public static final ExtendedRational NaN
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 ### NegativeInfinity
     public static final ExtendedRational NegativeInfinity
@@ -97,7 +98,7 @@ Deprecated.
 ### SignalingNaN
     @Deprecated public static final ExtendedRational SignalingNaN
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 ### Ten
     public static final ExtendedRational Ten
@@ -118,12 +119,12 @@ Deprecated.
 ### isFinite
     @Deprecated public final boolean isFinite()
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
 * <code>true</code> If this object is finite (not infinity or NaN);
- otherwise, . <code>false</code>.
+ otherwise, . <code>false</code> .
 
 ### isNegative
     public final boolean isNegative()
@@ -132,12 +133,17 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> If this object's value is negative; otherwise, . <code>
- false</code>.
+ false</code> .
 
 ### isZero
     @Deprecated public final boolean isZero()
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers.
+
+**Returns:**
+
+* <code>true</code> If this object's value equals 0; otherwise, . <code>
+ false</code> .
 
 ### getNumerator
     public final BigInteger getNumerator()
@@ -152,7 +158,7 @@ Deprecated.
 ### signum
     @Deprecated public final int signum()
 Deprecated.
-<div class='deprecationComment'>Use ERational from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -200,16 +206,16 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>numerator</code> or
+* <code>java.lang.NullPointerException</code> - The parameter <code>numerator</code> or
  <code>denominator</code> is null.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -223,7 +229,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedRational&gt;</code>
+* <code>compareTo</code> in interface <code>java.lang.Comparable&lt;ExtendedRational&gt;</code>
 
 **Parameters:**
 
@@ -247,12 +253,12 @@ Deprecated.
 * Either <code>true</code> or <code>false</code> .
 
 ### equals
-    public boolean equals​(Object obj)
+    public boolean equals​(java.lang.Object obj)
 Deprecated.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>Object</code>
+* <code>equals</code> in class <code>java.lang.Object</code>
 
 **Parameters:**
 
@@ -268,7 +274,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>Object</code>
+* <code>hashCode</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 

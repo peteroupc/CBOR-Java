@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.JSONOptions
 
-    public final class JSONOptions extends Object
+    public final class JSONOptions extends java.lang.Object
 
 Includes options to control how CBOR objects are converted to JSON.
 
@@ -21,8 +21,9 @@ Includes options to control how CBOR objects are converted to JSON.
 ## Methods
 
 * `boolean getBase64Padding()`<br>
- Gets a value indicating whether padding is written out when writing
- base64url or traditional base64 to JSON.
+ Deprecated.
+This option may have no effect in the future.
+ This option may have no effect in the future.
 
 ## Field Details
 
@@ -32,10 +33,12 @@ The default options for converting CBOR objects to JSON.
 ## Method Details
 
 ### getBase64Padding
-    public final boolean getBase64Padding()
-Gets a value indicating whether padding is written out when writing
- base64url or traditional base64 to JSON.<p>The padding character is
- '='.</p>
+    @Deprecated public final boolean getBase64Padding()
+Deprecated.
+This option may have no effect in the future. A future version may, by
+ default, include necessary padding when writing traditional base64 to JSON
+ and include no padding when writing base64url to JSON, in accordance with
+ the revision of the CBOR specification.
 
 **Returns:**
 

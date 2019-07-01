@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.CBORType
 
-    public enum CBORType extends Enum<CBORType>
+    public enum CBORType extends java.lang.Enum<CBORType>
 
 Represents a type that a CBOR object can have.
 
@@ -24,7 +24,7 @@ Represents a type that a CBOR object can have.
 
 ## Methods
 
-* `static CBORType valueOf​(String name)`<br>
+* `static CBORType valueOf​(java.lang.String name)`<br>
  Returns the enum constant of this type with the specified name.
 * `static CBORType[] values()`<br>
  Returns an array containing the constants of this enum type, in
@@ -49,7 +49,7 @@ the order they are declared.
 ### values
     public static CBORType[] values()
 ### valueOf
-    public static CBORType valueOf​(String name)
+    public static CBORType valueOf​(java.lang.String name)
 ## Enum Constant Details
 
 ### Number

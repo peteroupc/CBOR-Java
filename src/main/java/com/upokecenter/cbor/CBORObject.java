@@ -153,13 +153,13 @@ import com.upokecenter.numbers.*;
       CBORObject.ConstructIntegerValue(0);
 
     static final int CBORObjectTypeArray = 4;
-    static final int CBORObjectTypeBigInteger = 1;  // all other integers
+    static final int CBORObjectTypeBigInteger = 1; // all other integers
     static final int CBORObjectTypeByteString = 2;
     static final int CBORObjectTypeDouble = 8;
     static final int CBORObjectTypeExtendedDecimal = 9;
     static final int CBORObjectTypeExtendedFloat = 11;
     static final int CBORObjectTypeExtendedRational = 12;
-    static final int CBORObjectTypeInteger = 0;  // -(2^63).. (2^63-1)
+    static final int CBORObjectTypeInteger = 0; // -(2^63).. (2^63-1)
     static final int CBORObjectTypeMap = 5;
     static final int CBORObjectTypeSimpleValue = 6;
     static final int CBORObjectTypeSingle = 7;
@@ -194,21 +194,21 @@ import com.upokecenter.numbers.*;
     // 0 means length varies. -1 means invalid.
     private static final int[] ValueExpectedLengths = { 1, 1, 1, 1, 1, 1,
       1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1,  // major type 0
+      1, 1, 1, 1, 1, 1, 1, // major type 0
       1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // major type 1
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // major type 1
       1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1,
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,  // major type 2
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, // major type 2
       17, 18, 19, 20, 21, 22, 23, 24, 0, 0, 0, 0, -1, -1, -1, 0,
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,  // major type 3
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, // major type 3
       17, 18, 19, 20, 21, 22, 23, 24, 0, 0, 0, 0, -1, -1, -1, 0,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // major type 4
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // major type 4
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 0,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // major type 5
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // major type 5
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // major type 6
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // major type 6
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  // major type 7
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // major type 7
       1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5, 9, -1, -1, -1, -1 };
 
     private static final byte[] ValueFalseBytes = { 0x66, 0x61, 0x6c,
@@ -964,7 +964,7 @@ public <T> T ToObject(java.lang.reflect.Type t) {
      * <b>Note: </b> For security reasons, an application should not base
      * this parameter on user input or other externally supplied data.
      * Whenever possible, this parameter should be either a type specially
-     * handled by this method (such as {@code int } or {@code String }  // /)
+     * handled by this method (such as {@code int } or {@code String } // /)
      * or a plain-old-data type (POCO or POJO type) within the control of
      * the application. If the plain-old-data type references other data
      * types, those types should likewise meet either criterion above.
@@ -997,7 +997,7 @@ return (T)(this.ToObject(t, mapper, null, 0));
      * <b>Note: </b> For security reasons, an application should not base
      * this parameter on user input or other externally supplied data.
      * Whenever possible, this parameter should be either a type specially
-     * handled by this method (such as {@code int } or {@code String }  // /)
+     * handled by this method (such as {@code int } or {@code String } // /)
      * or a plain-old-data type (POCO or POJO type) within the control of
      * the application. If the plain-old-data type references other data
      * types, those types should likewise meet either criterion above.
@@ -1048,7 +1048,7 @@ return (T)(this.ToObject(t, null, options, 0));
      * href='https://github.com/peteroupc/numbers-java'>
      * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java), returns
      * the result of the corresponding As* method. </li> <li>If the type is
-     * an enumeration (<code>Enum </code>  // /) type this CBOR object is a text
+     * an enumeration (<code>Enum </code> // /) type this CBOR object is a text
      * string or an integer, returns the appropriate enumerated constant.
      * (For example, if <code>MyEnum </code> includes an entry for <code>MyValue </code>
      * , this method will return <code>MyEnum.MyValue </code> if the CBOR object
@@ -1125,7 +1125,7 @@ return (T)(this.ToObject(t, null, options, 0));
      * <code>typeof </code> operator. The following example, written in Java, is a
      * way to specify that the return value will be an ArrayList of String
      * objects. </p> <pre>Type arrayListString = new ParameterizedType() {
-     * public Type[] getActualTypeArguments() {  // Contains one type
+     * public Type[] getActualTypeArguments() { // Contains one type
      * parameter, String return new Type[] { String.class }; } public Type
      * getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; }
      * public Type getOwnerType() { return null; } };
@@ -1139,7 +1139,7 @@ return (T)(this.ToObject(t, null, options, 0));
      * <b>Note: </b> For security reasons, an application should not base
      * this parameter on user input or other externally supplied data.
      * Whenever possible, this parameter should be either a type specially
-     * handled by this method (such as {@code int } or {@code String }  // /)
+     * handled by this method (such as {@code int } or {@code String } // /)
      * or a plain-old-data type (POCO or POJO type) within the control of
      * the application. If the plain-old-data type references other data
      * types, those types should likewise meet either criterion above.
@@ -2170,7 +2170,7 @@ if (depth > 100) {
         throw new NullPointerException("options");
       }
       if (str == null) {
-        stream.write(0xf6);  // Write null instead of String
+        stream.write(0xf6); // Write null instead of String
       } else {
         if (!options.getUseIndefLengthStrings() || options.getCtap2Canonical()) {
           // NOTE: Length of a String Object won't be higher than the maximum
@@ -2245,13 +2245,13 @@ if (depth > 100) {
         Write(bignum.getMantissa(), stream);
       } else {
         if (!BigIntFits(exponent)) {
-          stream.write(0xd9);  // tag 265
+          stream.write(0xd9); // tag 265
           stream.write(0x01);
           stream.write(0x09);
-          stream.write(0x82);  // array, length 2
+          stream.write(0x82); // array, length 2
         } else {
-          stream.write(0xc5);  // tag 5
-          stream.write(0x82);  // array, length 2
+          stream.write(0xc5); // tag 5
+          stream.write(0x82); // array, length 2
         }
         Write(bignum.getExponent(), stream);
         Write(bignum.getMantissa(), stream);
@@ -2301,9 +2301,9 @@ if (depth > 100) {
         Write(rational.getNumerator(), stream);
         return;
       }
-      stream.write(0xd8);  // tag 30
+      stream.write(0xd8); // tag 30
       stream.write(0x1e);
-      stream.write(0x82);  // array, length 2
+      stream.write(0x82); // array, length 2
       Write(rational.getNumerator(), stream);
       Write(rational.getDenominator(), stream);
     }
@@ -2371,13 +2371,13 @@ if (depth > 100) {
         Write(bignum.getMantissa(), stream);
       } else {
         if (!BigIntFits(exponent)) {
-          stream.write(0xd9);  // tag 264
+          stream.write(0xd9); // tag 264
           stream.write(0x01);
           stream.write(0x08);
-          stream.write(0x82);  // array, length 2
+          stream.write(0x82); // array, length 2
         } else {
-          stream.write(0xc4);  // tag 4
-          stream.write(0x82);  // array, length 2
+          stream.write(0xc4); // tag 4
+          stream.write(0x82); // array, length 2
         }
         Write(bignum.getExponent(), stream);
         Write(bignum.getMantissa(), stream);
@@ -2516,7 +2516,7 @@ if (depth > 100) {
         WritePositiveInt64(0, value, stream);
       } else {
         ++value;
-        value = -value;  // Will never overflow
+        value = -value; // Will never overflow
         WritePositiveInt64(1, value, stream);
       }
     }
@@ -3112,7 +3112,7 @@ public static void Write(
      * object stores a 32-bit signed integer before getting its value. </p>
      * <pre>CBORObject obj = CBORObject.FromInt32(99999);
      * if&#x28;obj.isIntegral() &amp;&amp;
-     * obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b;  // Not an Int32; handle
+     * obj.getCanTruncatedIntFitInInt32()&#x28;)) &#x7b; // Not an Int32; handle
      * the error Console.WriteLine("Not a 32-bit integer."); &#x7d; else {
      * Console.WriteLine("The value is " + obj.AsInt32()); } </pre> </p>
      * @return The closest 32-bit signed integer to this object.
@@ -3135,7 +3135,7 @@ public static void Write(
      * object stores a 64-bit signed integer before getting its value. </p>
      * <pre>CBORObject obj = CBORObject.FromInt64(99999);
      * if&#x28;obj.isIntegral() &amp;&amp;
-     * obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b;  // Not an Int64; handle
+     * obj.getCanTruncatedIntFitInInt64()&#x28;)) &#x7b; // Not an Int64; handle
      * the error Console.WriteLine("Not a 64-bit integer."); &#x7d; else {
      * Console.WriteLine("The value is " + obj.AsInt64()); } </pre> </p>
      * @return The closest 64-bit signed integer to this object.
@@ -3315,31 +3315,31 @@ public int compareTo(CBORObject other) {
       int simpleValueA = -1;
       int simpleValueB = -1;
       if (typeA == CBORObjectTypeSimpleValue) {
-        if (((Integer)objA).intValue() == 20) {  // false
+        if (((Integer)objA).intValue() == 20) { // false
           simpleValueA = 2;
-        } else if (((Integer)objA).intValue() == 21) {  // true
+        } else if (((Integer)objA).intValue() == 21) { // true
           simpleValueA = 3;
-        } else if (((Integer)objA).intValue() == 22) {  // null
+        } else if (((Integer)objA).intValue() == 22) { // null
           simpleValueA = 1;
-        } else if (((Integer)objA).intValue() == 23) {  // undefined
+        } else if (((Integer)objA).intValue() == 23) { // undefined
           simpleValueA = 0;
         }
       }
       if (typeB == CBORObjectTypeSimpleValue) {
-        if (((Integer)objB).intValue() == 20) {  // false
+        if (((Integer)objB).intValue() == 20) { // false
           simpleValueB = 2;
-        } else if (((Integer)objB).intValue() == 21) {  // true
+        } else if (((Integer)objB).intValue() == 21) { // true
           simpleValueB = 3;
-        } else if (((Integer)objB).intValue() == 22) {  // null
+        } else if (((Integer)objB).intValue() == 22) { // null
           simpleValueB = 1;
-        } else if (((Integer)objB).intValue() == 23) {  // undefined
+        } else if (((Integer)objB).intValue() == 23) { // undefined
           simpleValueB = 0;
         }
       }
       int cmp = 0;
       if (simpleValueA >= 0 || simpleValueB >= 0) {
         if (simpleValueB < 0) {
-          return -1;  // B is not true, false, null, or undefined, so A is less
+          return -1; // B is not true, false, null, or undefined, so A is less
         }
         if (simpleValueA < 0) {
           return 1;
@@ -3660,7 +3660,7 @@ public int compareTo(CBORObject other) {
                 intBytes = GetPositiveInt64Bytes(0, value);
               } else {
                 ++value;
-                value = -value;  // Will never overflow
+                value = -value; // Will never overflow
                 intBytes = GetPositiveInt64Bytes(1, value);
               }
               if (!tagged) {
@@ -4646,12 +4646,12 @@ public boolean equals(CBORObject other) {
      * <pre>CBORObject.WriteValue(stream, 4, 3); /* array, length 3 &#x2a;&#x2f;
      * CBORObject.Write("hello world", stream); /* item 1 &#x2a;&#x2f;
      * CBORObject.Write(25, stream); /* item 2 &#x2a;&#x2f; CBORObject.Write(false,
-     * stream);  // item 3 </pre> <p>In the following example, a map
+     * stream); // item 3 </pre> <p>In the following example, a map
      * consisting of two key-value pairs is written as CBOR to a data
-     * stream. </p> <pre>CBORObject.WriteValue(stream, 5, 2);  // map, 2
-     * pairs CBORObject.Write("number", stream);  // key 1
-     * CBORObject.Write(25, stream);  // value 1 CBORObject.Write("string",
-     * stream);  // key 2 CBORObject.Write("hello", stream);  // value 2
+     * stream. </p> <pre>CBORObject.WriteValue(stream, 5, 2); // map, 2
+     * pairs CBORObject.Write("number", stream); // key 1
+     * CBORObject.Write(25, stream); // value 1 CBORObject.Write("string",
+     * stream); // key 2 CBORObject.Write("hello", stream); // value 2
      * </pre> <p>In the following example (originally written in C# for the
      * .NET Framework version), a text string is written as CBOR to a data
      * stream. </p> <pre>string str = "hello world"; byte[] bytes =
@@ -5098,12 +5098,12 @@ public boolean equals(CBORObject other) {
           default: throw new CBORException("Unexpected data encountered");
         }
       }
-      if (majortype == 2) {  // short byte String
+      if (majortype == 2) { // short byte String
         byte[] ret = new byte[firstbyte - 0x40];
         System.arraycopy(data, 1, ret, 0, firstbyte - 0x40);
         return new CBORObject(CBORObjectTypeByteString, ret);
       }
-      if (majortype == 3) {  // short text String
+      if (majortype == 3) { // short text String
         StringBuilder ret = new StringBuilder(firstbyte - 0x60);
         DataUtilities.ReadUtf8FromBytes(data, 1, firstbyte - 0x60, ret, false);
         return new CBORObject(CBORObjectTypeTextString, ret.toString());

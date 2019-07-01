@@ -255,7 +255,7 @@ try { if (ms != null) {
           size += 2;
         } else if (c <= 0xd7ff || c >= 0xe000) {
           size += 3;
-        } else if (c <= 0xdbff) {  // UTF-16 leading surrogate
+        } else if (c <= 0xdbff) { // UTF-16 leading surrogate
           ++i;
           if (i >= str.length() || str.charAt(i) < 0xdc00 || str.charAt(i) > 0xdfff) {
             if (replace) {
@@ -673,7 +673,7 @@ try { if (ms != null) {
             // unpaired surrogate
             if (!replace) {
               retval = -1;
-              break;  // write bytes read so far
+              break; // write bytes read so far
             }
             c = 0xfffd;
           }
@@ -938,14 +938,14 @@ try { if (ms != null) {
               if (bytesCount >= 0) {
                 return -2;
               }
-              break;  // end of stream
+              break; // end of stream
             }
             return -1;
           }
           if (bytesCount >= 0) {
             return -2;
           }
-          break;  // end of stream
+          break; // end of stream
         }
         if (bytesCount > 0) {
           ++pointer;

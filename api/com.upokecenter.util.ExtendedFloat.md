@@ -1,10 +1,10 @@
 # com.upokecenter.util.ExtendedFloat
 
-    @Deprecated public final class ExtendedFloat extends Object implements Comparable<ExtendedFloat>
+    @Deprecated public final class ExtendedFloat extends java.lang.Object implements java.lang.Comparable<ExtendedFloat>
 
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.
 
 ## Fields
 
@@ -49,7 +49,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(java.lang.Object obj)`<br>
  Deprecated. Determines whether this object's mantissa and exponent are equal to those of
  another object and that other object is an arbitrary-precision
  decimal number.
@@ -57,9 +57,9 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
-* `static ExtendedFloat FromString​(String str)`<br>
+* `static ExtendedFloat FromString​(java.lang.String str)`<br>
  Deprecated. Creates a binary float from a text string that represents a number.
-* `static ExtendedFloat FromString​(String str,
+* `static ExtendedFloat FromString​(java.lang.String str,
           int offset,
           int length,
           PrecisionContext ctx)`<br>
@@ -103,7 +103,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.
 Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
  Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Deprecated. Converts this value to a string.
 
 ## Field Details
@@ -111,22 +111,22 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 ### One
     @Deprecated public static final ExtendedFloat One
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ### Zero
     @Deprecated public static final ExtendedFloat Zero
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ### NegativeZero
     @Deprecated public static final ExtendedFloat NegativeZero
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ### Ten
     @Deprecated public static final ExtendedFloat Ten
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 ### NaN
     public static final ExtendedFloat NaN
@@ -171,7 +171,7 @@ Deprecated.
 ### EqualsInternal
     @Deprecated public boolean EqualsInternal​(ExtendedFloat otherValue)
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -184,13 +184,13 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>otherValue</code> is
+* <code>java.lang.NullPointerException</code> - The parameter <code>otherValue</code> is
  null.
 
 ### equals
     @Deprecated public boolean equals​(ExtendedFloat other)
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -203,15 +203,15 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>other</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>other</code> is null.
 
 ### equals
-    public boolean equals​(Object obj)
+    public boolean equals​(java.lang.Object obj)
 Deprecated.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>Object</code>
+* <code>equals</code> in class <code>java.lang.Object</code>
 
 **Parameters:**
 
@@ -227,7 +227,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>Object</code>
+* <code>hashCode</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -263,13 +263,13 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>mantissa</code> or
+* <code>java.lang.NullPointerException</code> - The parameter <code>mantissa</code> or
  <code>exponent</code> is null.
 
 ### FromString
-    @Deprecated public static ExtendedFloat FromString​(String str, int offset, int length, PrecisionContext ctx)
+    @Deprecated public static ExtendedFloat FromString​(java.lang.String str, int offset, int length, PrecisionContext ctx)
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -290,14 +290,14 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - Either <code>offset</code> or <code>length</code> is
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>length</code> is
  less than 0 or greater than <code>str</code> 's length, or <code>str</code> ' s
- length minus <code>offset</code> is less than <code>length</code>.
+ length minus <code>offset</code> is less than <code>length</code> .
 
 ### FromString
-    public static ExtendedFloat FromString​(String str)
+    public static ExtendedFloat FromString​(java.lang.String str)
 Deprecated.
 
 **Parameters:**
@@ -309,12 +309,12 @@ Deprecated.
 * The parsed number, converted to arbitrary-precision binary float.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -324,7 +324,7 @@ Deprecated.
 ### IsNegativeInfinity
     @Deprecated public boolean IsNegativeInfinity()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -334,7 +334,7 @@ Deprecated.
 ### IsPositiveInfinity
     @Deprecated public boolean IsPositiveInfinity()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -362,17 +362,17 @@ Deprecated.
 ### isNegative
     @Deprecated public final boolean isNegative()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
 * <code>true</code> If this object is negative, including negative zero;
- otherwise, . <code>false</code>.
+ otherwise, . <code>false</code> .
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -382,7 +382,7 @@ Deprecated.
 ### IsSignalingNaN
     @Deprecated public boolean IsSignalingNaN()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -395,7 +395,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedFloat&gt;</code>
+* <code>compareTo</code> in interface <code>java.lang.Comparable&lt;ExtendedFloat&gt;</code>
 
 **Parameters:**
 
@@ -409,7 +409,7 @@ Deprecated.
 ### signum
     @Deprecated public final int signum()
 Deprecated.
-<div class='deprecationComment'>Use EFloat from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 

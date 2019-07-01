@@ -1,9 +1,9 @@
 # com.upokecenter.cbor.CBORTypeFilter
 
-    @Deprecated public final class CBORTypeFilter extends Object
+    @Deprecated public final class CBORTypeFilter extends java.lang.Object
 
 Deprecated.
-<div class='deprecationComment'>May be removed without replacement.</div>
+May be removed without replacement.
 
 ## Fields
 
@@ -154,7 +154,7 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bigLength</code> is
+* <code>java.lang.NullPointerException</code> - The parameter <code>bigLength</code> is
  null.
 
 ### GetSubFilter
@@ -248,7 +248,7 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bigTag</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bigTag</code> is null.
 
 ### WithArrayAnyLength
     public CBORTypeFilter WithArrayAnyLength()
@@ -276,11 +276,11 @@ Deprecated.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter arrayLength is less than 0.
+* <code>java.lang.IllegalArgumentException</code> - The parameter arrayLength is less than 0.
 
-* <code>NullPointerException</code> - The parameter elements is null.
+* <code>java.lang.NullPointerException</code> - The parameter elements is null.
 
-* <code>IllegalArgumentException</code> - The parameter elements has fewer elements
+* <code>java.lang.IllegalArgumentException</code> - The parameter elements has fewer elements
  than specified in arrayLength.
 
 ### WithArrayMinLength
@@ -301,11 +301,11 @@ Deprecated.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter arrayLength is less than 0.
+* <code>java.lang.IllegalArgumentException</code> - The parameter arrayLength is less than 0.
 
-* <code>NullPointerException</code> - The parameter elements is null.
+* <code>java.lang.NullPointerException</code> - The parameter elements is null.
 
-* <code>IllegalArgumentException</code> - The parameter elements has fewer elements
+* <code>java.lang.IllegalArgumentException</code> - The parameter elements has fewer elements
  than specified in arrayLength.
 
 ### WithByteString

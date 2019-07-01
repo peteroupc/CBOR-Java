@@ -206,7 +206,7 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
       // The following doesn't check for major types 0 and 1,
       // since all of them are fixed-length types and are
       // handled in the call to GetFixedLengthObject.
-      if (type == 2) {  // Byte String
+      if (type == 2) { // Byte String
         if (additional == 31) {
           // Streaming byte String
           java.io.ByteArrayOutputStream ms = null;
@@ -264,7 +264,7 @@ try { if (ms != null) {
           return cbor;
         }
       }
-      if (type == 3) {  // Text String
+      if (type == 3) { // Text String
         if (additional == 31) {
           // Streaming text String
           StringBuilder builder = new StringBuilder();
@@ -336,7 +336,7 @@ try { if (ms != null) {
           return cbor;
         }
       }
-      if (type == 4) {  // Array
+      if (type == 4) { // Array
         CBORObject cbor = CBORObject.NewArray();
         if (additional == 31) {
           int vtindex = 0;
@@ -386,7 +386,7 @@ try { if (ms != null) {
         --this.depth;
         return cbor;
       }
-      if (type == 5) {  // Map, type 5
+      if (type == 5) { // Map, type 5
         CBORObject cbor = CBORObject.NewMap();
         if (additional == 31) {
           // Indefinite-length map
@@ -438,7 +438,7 @@ try { if (ms != null) {
         }
         return cbor;
       }
-      if (type == 6) {  // Tagged item
+      if (type == 6) { // Tagged item
         ICBORTag taginfo = null;
         boolean haveFirstByte = false;
         int newFirstByte = -1;

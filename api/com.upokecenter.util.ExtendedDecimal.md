@@ -1,10 +1,10 @@
 # com.upokecenter.util.ExtendedDecimal
 
-    @Deprecated public final class ExtendedDecimal extends Object implements Comparable<ExtendedDecimal>
+    @Deprecated public final class ExtendedDecimal extends java.lang.Object implements java.lang.Comparable<ExtendedDecimal>
 
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.
 
 ## Fields
 
@@ -42,11 +42,11 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated.
 Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(java.lang.Object obj)`<br>
  Deprecated. Determines whether this object's mantissa and exponent are equal to those of
  another object and that other object is an arbitrary-precision
  decimal number.
-* `static ExtendedDecimal FromString​(String str)`<br>
+* `static ExtendedDecimal FromString​(java.lang.String str)`<br>
  Deprecated. Creates a decimal number from a text string that represents a number.
 * `BigInteger getExponent()`<br>
  Deprecated. Gets this object's exponent.
@@ -77,7 +77,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
  Deprecated. Converts this value to a 64-bit floating-point number.
 * `float ToSingle()`<br>
  Deprecated. Converts this value to a 32-bit floating-point number.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Deprecated. Converts this value to a string.
 
 ## Field Details
@@ -85,12 +85,12 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 ### One
     @Deprecated public static final ExtendedDecimal One
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 ### Zero
     @Deprecated public static final ExtendedDecimal Zero
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 ### NegativeZero
     public static final ExtendedDecimal NegativeZero
@@ -141,7 +141,7 @@ Deprecated.
 ### equals
     @Deprecated public boolean equals​(ExtendedDecimal other)
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Parameters:**
 
@@ -153,12 +153,12 @@ Deprecated.
  those of another object; otherwise, <code>false</code> .
 
 ### equals
-    public boolean equals​(Object obj)
+    public boolean equals​(java.lang.Object obj)
 Deprecated.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>Object</code>
+* <code>equals</code> in class <code>java.lang.Object</code>
 
 **Parameters:**
 
@@ -174,7 +174,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>Object</code>
+* <code>hashCode</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -196,11 +196,11 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>mantissa</code> or
+* <code>java.lang.NullPointerException</code> - The parameter <code>mantissa</code> or
  <code>exponent</code> is null.
 
 ### FromString
-    public static ExtendedDecimal FromString​(String str)
+    public static ExtendedDecimal FromString​(java.lang.String str)
 Deprecated.
 
 **Parameters:**
@@ -214,9 +214,9 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>NumberFormatException</code> - The parameter <code>str</code> is not a correctly
+* <code>java.lang.NumberFormatException</code> - The parameter <code>str</code> is not a correctly
  formatted number string.
 
 ### ToSingle
@@ -240,12 +240,12 @@ Deprecated.
  exceeds the range of a 64-bit floating point number.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -272,17 +272,17 @@ Deprecated.
 ### isNegative
     @Deprecated public final boolean isNegative()
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
 * <code>true</code> If this object is negative, including negative zero;
- otherwise, . <code>false</code>.
+ otherwise, . <code>false</code> .
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
@@ -295,7 +295,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code> in interface <code>Comparable&lt;ExtendedDecimal&gt;</code>
+* <code>compareTo</code> in interface <code>java.lang.Comparable&lt;ExtendedDecimal&gt;</code>
 
 **Parameters:**
 
@@ -309,7 +309,7 @@ Deprecated.
 ### signum
     @Deprecated public final int signum()
 Deprecated.
-<div class='deprecationComment'>Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 

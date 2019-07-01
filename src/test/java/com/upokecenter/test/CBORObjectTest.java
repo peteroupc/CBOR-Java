@@ -5549,7 +5549,7 @@ try { if (msjson != null) {
     @Test
     public void TestToJSONString_ByteArray_Padding() {
       CBORObject o;
-      JSONOptions options = new JSONOptions(true);  // base64 padding enabled
+      JSONOptions options = new JSONOptions(true); // base64 padding enabled
       o = CBORObject.FromObjectAndTag(
         new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }, 22);
       {

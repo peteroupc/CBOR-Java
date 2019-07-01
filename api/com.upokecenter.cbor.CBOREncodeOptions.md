@@ -1,6 +1,6 @@
 # com.upokecenter.cbor.CBOREncodeOptions
 
-    public final class CBOREncodeOptions extends Object
+    public final class CBOREncodeOptions extends java.lang.Object
 
 Specifies options for encoding and decoding CBOR objects.
 
@@ -64,11 +64,11 @@ May be removed in a later version.
 ### None
     @Deprecated public static final CBOREncodeOptions None
 Deprecated.
-<div class='deprecationComment'>Use 'new CBOREncodeOptions(true,true)' instead. Option classes in this
+Use 'new CBOREncodeOptions(true,true)' instead. Option classes in this
  library will follow the form seen in JSONOptions in a later version; the
  approach used in this class is too complicated.
 'CBOREncodeOptions.Default' contains recommended default options that may
- be adopted by certain CBORObject methods in the next major version.</div>
+ be adopted by certain CBORObject methods in the next major version.
 
 ### Default
     public static final CBOREncodeOptions Default
@@ -79,16 +79,16 @@ Default options for CBOR objects. Disallow duplicate keys, and always encode
 ### NoIndefLengthStrings
     @Deprecated public static final CBOREncodeOptions NoIndefLengthStrings
 Deprecated.
-<div class='deprecationComment'>Use 'new CBOREncodeOptions(false,true)' instead. Option classes in this
+Use 'new CBOREncodeOptions(false,true)' instead. Option classes in this
  library will follow the form seen in JSONOptions in a later version; the
- approach used in this class is too complicated.</div>
+ approach used in this class is too complicated.
 
 ### NoDuplicateKeys
     @Deprecated public static final CBOREncodeOptions NoDuplicateKeys
 Deprecated.
-<div class='deprecationComment'>Use 'new CBOREncodeOptions(true,false)' instead. Option classes in this
+Use 'new CBOREncodeOptions(true,false)' instead. Option classes in this
  library will follow the form seen in JSONOptions in a later version; the
- approach used in this class is too complicated.</div>
+ approach used in this class is too complicated.
 
 ## Method Details
 
@@ -123,7 +123,7 @@ Gets a value indicating whether CBOR objects are written out using the CTAP2
 **Returns:**
 
 * <code>true</code> if CBOR objects are written out using the CTAP2
- canonical CBOR encoding form; otherwise, <code>false</code>.. In this
+ canonical CBOR encoding form; otherwise, <code>false</code> .. In this
  form, CBOR tags are not used, map keys are written out in a canonical
  order, and non-integer numbers and integers 2^63 or greater are
  written as 64-bit binary floating-point numbers.
@@ -131,8 +131,8 @@ Gets a value indicating whether CBOR objects are written out using the CTAP2
 ### getValue
     @Deprecated public final int getValue()
 Deprecated.
-<div class='deprecationComment'>Option classes in this library will follow the form seen in JSONOptions in a
- later version; the approach used in this class is too complicated.</div>
+Option classes in this library will follow the form seen in JSONOptions in a
+ later version; the approach used in this class is too complicated.
 
 **Returns:**
 
@@ -141,9 +141,9 @@ Deprecated.
 ### Or
     @Deprecated public CBOREncodeOptions Or​(CBOREncodeOptions o)
 Deprecated.
-<div class='deprecationComment'>May be removed in a later version. Option classes in this library will
+May be removed in a later version. Option classes in this library will
  follow the form seen in JSONOptions in a later version; the approach used
- in this class is too complicated.</div>
+ in this class is too complicated.
 
 **Parameters:**
 
@@ -156,9 +156,9 @@ Deprecated.
 ### And
     @Deprecated public CBOREncodeOptions And​(CBOREncodeOptions o)
 Deprecated.
-<div class='deprecationComment'>May be removed in a later version. Option classes in this library will
+May be removed in a later version. Option classes in this library will
  follow the form seen in JSONOptions in a later version; the approach used
- in this class is too complicated.</div>
+ in this class is too complicated.
 
 **Parameters:**
 

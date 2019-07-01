@@ -1,10 +1,10 @@
 # com.upokecenter.util.BigInteger
 
-    @Deprecated public final class BigInteger extends Object implements Comparable<BigInteger>
+    @Deprecated public final class BigInteger extends java.lang.Object implements java.lang.Comparable<BigInteger>
 
 Deprecated.
-<div class='deprecationComment'>Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.</div>
+Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
+this class's toString method.
 
 ## Fields
 
@@ -20,24 +20,24 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
  except for its sign.
 * `int compareTo​(BigInteger other)`<br>
  Deprecated. Compares this value to another.
-* `boolean equals​(Object obj)`<br>
+* `boolean equals​(java.lang.Object obj)`<br>
  Deprecated. Determines whether this object and another object are equal.
 * `static BigInteger fromBytes​(byte[] bytes,
          boolean littleEndian)`<br>
  Deprecated. Initializes an arbitrary-precision integer from an array of bytes.
-* `static BigInteger fromRadixString​(String str,
+* `static BigInteger fromRadixString​(java.lang.String str,
                int radix)`<br>
  Deprecated. Converts a string to an arbitrary-precision integer.
-* `static BigInteger fromString​(String str)`<br>
+* `static BigInteger fromString​(java.lang.String str)`<br>
  Deprecated. Converts a string to an arbitrary-precision integer.
 * `int hashCode()`<br>
  Deprecated. Returns the hash code for this instance.
 * `byte[] toBytes​(boolean littleEndian)`<br>
  Deprecated. Returns a byte array of this object's value.
-* `String toRadixString​(int radix)`<br>
+* `java.lang.String toRadixString​(int radix)`<br>
  Deprecated. Generates a string representing the value of this object, in the given
  radix.
-* `String toString()`<br>
+* `java.lang.String toString()`<br>
  Deprecated. Converts this object to a text string in base 10.
 * `static BigInteger valueOf​(long longerValue)`<br>
  Deprecated. Converts a 64-bit signed integer to a big integer.
@@ -47,7 +47,7 @@ Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 ### ONE
     @Deprecated public static final BigInteger ONE
 Deprecated.
-<div class='deprecationComment'>Use EInteger from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use EInteger from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Method Details
 
@@ -77,10 +77,10 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
 ### fromRadixString
-    public static BigInteger fromRadixString​(String str, int radix)
+    public static BigInteger fromRadixString​(java.lang.String str, int radix)
 Deprecated.
 
 **Parameters:**
@@ -102,15 +102,15 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>radix</code> is less than 2
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>radix</code> is less than 2
  or greater than 36.
 
-* <code>NumberFormatException</code> - The string is empty or in an invalid format.
+* <code>java.lang.NumberFormatException</code> - The string is empty or in an invalid format.
 
 ### fromString
-    public static BigInteger fromString​(String str)
+    public static BigInteger fromString​(java.lang.String str)
 Deprecated.
 
 **Parameters:**
@@ -127,9 +127,9 @@ Deprecated.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>NumberFormatException</code> - The parameter <code>str</code> is in an invalid
+* <code>java.lang.NumberFormatException</code> - The parameter <code>str</code> is in an invalid
  format.
 
 ### valueOf
@@ -156,12 +156,12 @@ Deprecated.
  object's value is 0 or negative 1.
 
 ### equals
-    public boolean equals​(Object obj)
+    public boolean equals​(java.lang.Object obj)
 Deprecated.
 
 **Overrides:**
 
-* <code>equals</code> in class <code>Object</code>
+* <code>equals</code> in class <code>java.lang.Object</code>
 
 **Parameters:**
 
@@ -178,7 +178,7 @@ Deprecated.
 
 **Overrides:**
 
-* <code>hashCode</code> in class <code>Object</code>
+* <code>hashCode</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -198,7 +198,7 @@ Deprecated.
  single element 0.
 
 ### toRadixString
-    public String toRadixString​(int radix)
+    public java.lang.String toRadixString​(int radix)
 Deprecated.
 
 **Parameters:**
@@ -217,18 +217,18 @@ Deprecated.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter "index" is less than 0,
+* <code>java.lang.IllegalArgumentException</code> - The parameter "index" is less than 0,
  "endIndex" is less than 0, or either is greater than the string's
  length, or "endIndex" is less than "index" ; or radix is less than 2
  or greater than 36.
 
 ### toString
-    public String toString()
+    public java.lang.String toString()
 Deprecated.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>Object</code>
+* <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
@@ -242,7 +242,7 @@ Deprecated.
 
 **Specified by:**
 
-* <code>compareTo</code> in interface <code>Comparable&lt;BigInteger&gt;</code>
+* <code>compareTo</code> in interface <code>java.lang.Comparable&lt;BigInteger&gt;</code>
 
 **Parameters:**
 

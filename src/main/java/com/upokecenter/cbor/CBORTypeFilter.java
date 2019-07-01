@@ -400,7 +400,7 @@ import com.upokecenter.numbers.*;
         return this;
       }
       CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << 6;  // Always include the "tag" major type
+      filter.types |= 1 << 6; // Always include the "tag" major type
       int startIndex = 0;
       if (filter.tags != null) {
         EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
@@ -426,7 +426,7 @@ import com.upokecenter.numbers.*;
         }
       }
       CBORTypeFilter filter = this.Copy();
-      filter.types |= 1 << 6;  // Always include the "tag" major type
+      filter.types |= 1 << 6; // Always include the "tag" major type
       int startIndex = 0;
       if (filter.tags != null) {
         EInteger[] newTags = new EInteger[tags.length + filter.tags.length];

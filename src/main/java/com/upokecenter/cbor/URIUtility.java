@@ -423,7 +423,7 @@ private URIUtility() {
         // has an authority, which is not allowed
         return false;
       }
-      state = 0;  // IRI Path
+      state = 0; // IRI Path
       while (index < valueSLength) {
         // Get the next Unicode character
         int c = s.charAt(index);
@@ -445,23 +445,23 @@ private URIUtility() {
           }
           return false;
         }
-        if (state == 0) {  // Path
+        if (state == 0) { // Path
           if (c == '?') {
-            state = 1;  // move to query state
+            state = 1; // move to query state
           } else if (c == '#') {
-            state = 2;  // move to fragment state
+            state = 2; // move to fragment state
           } else if (!isIpchar(c)) {
             return false;
           }
           ++index;
-        } else if (state == 1) {  // Query
+        } else if (state == 1) { // Query
           if (c == '#') {
-            state = 2;  // move to fragment state
+            state = 2; // move to fragment state
           } else if (!isIqueryChar(c)) {
             return false;
           }
           ++index;
-        } else if (state == 2) {  // Fragment
+        } else if (state == 2) { // Fragment
           if (!isIfragmentChar(c)) {
             return false;
           }
@@ -912,13 +912,13 @@ private URIUtility() {
         return refValue;
       }
       StringBuilder builder = new StringBuilder();
-      if (segments[0] >= 0) {  // scheme present
+      if (segments[0] >= 0) { // scheme present
         appendScheme(builder, refValue, segments);
         appendAuthority(builder, refValue, segments);
         appendNormalizedPath(builder, refValue, segments);
         appendQuery(builder, refValue, segments);
         appendFragment(builder, refValue, segments);
-      } else if (segments[2] >= 0) {  // authority present
+      } else if (segments[2] >= 0) { // authority present
         appendScheme(builder, baseURI, segmentsBase);
         appendAuthority(builder, refValue, segments);
         appendNormalizedPath(builder, refValue, segments);
@@ -1086,7 +1086,7 @@ if (s.length() - offset < length) {
         int authorityStart = index;
         retval[2] = authorityStart;
         retval[3] = valueSLength;
-        state = 0;  // userinfo
+        state = 0; // userinfo
         // Check for userinfo
         while (index < valueSLength) {
           int c = s.charAt(index);
@@ -1114,7 +1114,7 @@ if (s.length() - offset < length) {
             }
             return null;
           }
-          if (state == 0) {  // User info
+          if (state == 0) { // User info
             if (c == '/' || c == '?' || c == '#') {
               // not user info
               state = 1;
@@ -1141,7 +1141,7 @@ if (s.length() - offset < length) {
               index = authorityStart;
               continue;
             }
-          } else if (state == 1) {  // host
+          } else if (state == 1) { // host
             if (c == '/' || c == '?' || c == '#') {
               // end of authority
               retval[3] = index;
@@ -1168,7 +1168,7 @@ if (s.length() - offset < length) {
             } else {
               return null;
             }
-          } else if (state == 2) {  // Port
+          } else if (state == 2) { // Port
             if (c == '/' || c == '?' || c == '#') {
               // end of authority
               retval[3] = index;
@@ -1185,9 +1185,9 @@ if (s.length() - offset < length) {
       boolean colon = false;
       boolean segment = false;
       boolean fullyRelative = index == offset;
-      retval[4] = index;  // path offsets
+      retval[4] = index; // path offsets
       retval[5] = valueSLength;
-      state = 0;  // IRI Path
+      state = 0; // IRI Path
       while (index < valueSLength) {
         // Get the next Unicode character
         int c = s.charAt(index);
@@ -1212,7 +1212,7 @@ if (s.length() - offset < length) {
           }
           return null;
         }
-        if (state == 0) {  // Path
+        if (state == 0) { // Path
           if (c == ':' && fullyRelative) {
             colon = true;
           } else if (c == '/' && fullyRelative && !segment) {
@@ -1226,27 +1226,27 @@ if (s.length() - offset < length) {
             retval[5] = index;
             retval[6] = index + 1;
             retval[7] = valueSLength;
-            state = 1;  // move to query state
+            state = 1; // move to query state
           } else if (c == '#') {
             retval[5] = index;
             retval[8] = index + 1;
             retval[9] = valueSLength;
-            state = 2;  // move to fragment state
+            state = 2; // move to fragment state
           } else if (strict && !isIpchar(c)) {
             return null;
           }
           ++index;
-        } else if (state == 1) {  // Query
+        } else if (state == 1) { // Query
           if (c == '#') {
             retval[7] = index;
             retval[8] = index + 1;
             retval[9] = valueSLength;
-            state = 2;  // move to fragment state
+            state = 2; // move to fragment state
           } else if (strict && !isIqueryChar(c)) {
             return null;
           }
           ++index;
-        } else if (state == 2) {  // Fragment
+        } else if (state == 2) { // Fragment
           if (strict && !isIfragmentChar(c)) {
             return null;
           }
@@ -1254,7 +1254,7 @@ if (s.length() - offset < length) {
         }
       }
       if (strict && fullyRelative && colon && !segment) {
-        return null;  // ex. "x@y:z"
+        return null; // ex. "x@y:z"
       }
       return retval;
     }

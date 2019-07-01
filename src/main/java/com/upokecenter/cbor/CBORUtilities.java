@@ -631,7 +631,7 @@ while (digitdiv > 0 && fracSeconds != 0) {
       if (floatExponent == 2047) {
         throw new ArithmeticException("Value is infinity or NaN");
       }
-      value1 &= 0xfffff;  // Mask out the exponent and sign
+      value1 &= 0xfffff; // Mask out the exponent and sign
       if (floatExponent == 0) {
         ++floatExponent;
       } else {

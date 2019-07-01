@@ -3,8 +3,8 @@
     @Deprecated public interface ICBORTag
 
 Deprecated.
-<div class='deprecationComment'>May be removed in the future without replacement. Not as useful as
- ICBORConverters and ICBORObjectConverters for FromObject and ToObject.</div>
+May be removed in the future without replacement. Not as useful as
+ ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
 
 ## Methods
 

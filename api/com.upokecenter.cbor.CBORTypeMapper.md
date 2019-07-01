@@ -1,43 +1,43 @@
 # com.upokecenter.cbor.CBORTypeMapper
 
-    public final class CBORTypeMapper extends Object
+    public final class CBORTypeMapper extends java.lang.Object
 
 Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
- well as type filters for <code>ToObject</code>
+ of <code>CBORObject.FromObject </code> and <code>CBORObject#ToObject </code> , as
+ well as type filters for <code>ToObject </code>
 
 ## Methods
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
-* `<T> CBORTypeMapper AddConverter​(Type type,
+* `<T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type,
             ICBORConverter<T> converter)`<br>
  Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter).
-* `CBORTypeMapper AddTypeName​(String name)`<br>
+* `CBORTypeMapper AddTypeName​(java.lang.String name)`<br>
  Adds the fully qualified name of a Java or .NET type for use in type
  matching.
-* `CBORTypeMapper AddTypePrefix​(String prefix)`<br>
+* `CBORTypeMapper AddTypePrefix​(java.lang.String prefix)`<br>
  Adds a prefix of a Java or .NET type for use in type matching.
-* `boolean FilterTypeName​(String typeName)`<br>
+* `boolean FilterTypeName​(java.lang.String typeName)`<br>
  Returns whether the given Java or .NET type name fits the filters given in
  this mapper.
 
 ## Constructors
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 
 ## Method Details
 
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
-    public <T> CBORTypeMapper AddConverter​(Type type, ICBORConverter<T> converter)
+    public <T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type, ICBORConverter<T> converter)
 Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter).
 
@@ -59,22 +59,22 @@ Registers an object that converts objects of a given type to CBOR objects
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>type</code> or <code>
+* <code>java.lang.NullPointerException</code> - The parameter <code>type</code> or <code>
  converter</code> is null.
 
-* <code>IllegalArgumentException</code> - "Converter doesn't contain a proper
+* <code>java.lang.IllegalArgumentException</code> - Converter doesn't contain a proper
  ToCBORObject method".
 
 ### FilterTypeName
-    public boolean FilterTypeName​(String typeName)
+    public boolean FilterTypeName​(java.lang.String typeName)
 Returns whether the given Java or .NET type name fits the filters given in
  this mapper.
 
 **Parameters:**
 
 * <code>typeName</code> - The fully qualified name of a Java or .NET class (e.g.,
- <code>java.math.BigInteger</code> or <code>
- System.Globalization.CultureInfo</code>).
+ <code>java.math.BigInteger </code> or <code>
+ System.Globalization.CultureInfo </code>).
 
 **Returns:**
 
@@ -82,7 +82,7 @@ Returns whether the given Java or .NET type name fits the filters given in
  filters given in this mapper, or <code>false</code> otherwise.
 
 ### AddTypePrefix
-    public CBORTypeMapper AddTypePrefix​(String prefix)
+    public CBORTypeMapper AddTypePrefix​(java.lang.String prefix)
 Adds a prefix of a Java or .NET type for use in type matching. A type
  matches a prefix if its fully qualified name is or begins with that
  prefix, using codepoint-by-codepoint (case-sensitive) matching.
@@ -98,19 +98,20 @@ Adds a prefix of a Java or .NET type for use in type matching. A type
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>prefix</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>prefix</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>prefix</code> is empty.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>prefix</code> is empty.
 
 ### AddTypeName
-    public CBORTypeMapper AddTypeName​(String name)
+    public CBORTypeMapper AddTypeName​(java.lang.String name)
 Adds the fully qualified name of a Java or .NET type for use in type
  matching.
 
 **Parameters:**
 
 * <code>name</code> - The fully qualified name of a Java or .NET class (e.g., <code>
- java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
+ java.math.BigInteger </code> or <code>System.Globalization.CultureInfo </code>
+).
 
 **Returns:**
 
@@ -118,6 +119,6 @@ Adds the fully qualified name of a Java or .NET type for use in type
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>name</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty.
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>name</code> is empty.

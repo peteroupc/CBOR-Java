@@ -76,11 +76,11 @@ import com.upokecenter.numbers.*;
               int y0 = multiplicand;
               x0 &= 65535;
               x1 = (x1 >> 16) & 65535;
-              int temp = (x0 * y0);  // a * c
+              int temp = (x0 * y0); // a * c
               result1 = (temp >> 16) & 65535;
               result0 = temp & 65535;
               result2 = 0;
-              temp = (x1 * y0);  // b * c
+              temp = (x1 * y0); // b * c
               result2 += (temp >> 16) & 65535;
               result1 += temp & 65535;
               result2 += (result1 >> 16) & 65535;
@@ -109,22 +109,22 @@ import com.upokecenter.numbers.*;
               y0 &= 65535;
               x1 = (x1 >> 16) & 65535;
               y1 = (y1 >> 16) & 65535;
-              int temp = (x0 * y0);  // a * c
+              int temp = (x0 * y0); // a * c
               result1 = (temp >> 16) & 65535;
               result0 = temp & 65535;
-              temp = (x0 * y1);  // a * d
+              temp = (x0 * y1); // a * d
               result2 = (temp >> 16) & 65535;
               result1 += temp & 65535;
               result2 += (result1 >> 16) & 65535;
               result1 &= 65535;
-              temp = (x1 * y0);  // b * c
+              temp = (x1 * y0); // b * c
               result2 += (temp >> 16) & 65535;
               result1 += temp & 65535;
               result2 += (result1 >> 16) & 65535;
               result1 &= 65535;
               result3 = (result2 >> 16) & 65535;
               result2 &= 65535;
-              temp = (x1 * y1);  // b * d
+              temp = (x1 * y1); // b * d
               result3 += (temp >> 16) & 65535;
               result2 += temp & 65535;
               result3 += (result2 >> 16) & 65535;
@@ -302,9 +302,9 @@ import com.upokecenter.numbers.*;
     }
     }
 
-    private int smallValue;  // if integerMode is 0
-    private MutableNumber mnum;  // if integerMode is 1
-    private EInteger largeValue;  // if integerMode is 2
+    private int smallValue; // if integerMode is 0
+    private MutableNumber mnum; // if integerMode is 1
+    private EInteger largeValue; // if integerMode is 2
     private int integerMode;
 
     FastInteger2(int value) {

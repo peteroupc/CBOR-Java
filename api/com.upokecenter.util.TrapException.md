@@ -1,37 +1,37 @@
 # com.upokecenter.util.TrapException
 
-    @Deprecated public class TrapException extends ArithmeticException
+    @Deprecated public class TrapException extends java.lang.ArithmeticException
 
 Deprecated.
-<div class='deprecationComment'>Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Methods
 
 * `TrapException​(int flag,
              PrecisionContext ctx,
-             Object result) TrapException`<br>
- Deprecated. Initializes a new instance of the TrapException
+             java.lang.Object result) com.upokecenter.TrapException`<br>
+ Deprecated. Initializes a new instance of the com.upokecenter.TrapException
  class.
 * `PrecisionContext getContext()`<br>
  Deprecated. Gets the precision context used during the operation that triggered the
  trap.
 * `int getError()`<br>
  Deprecated. Gets the flag that specifies the kind of error (PrecisionContext.FlagXXX).
-* `Object getResult()`<br>
+* `java.lang.Object getResult()`<br>
  Deprecated. Gets the defined result of the operation that caused the trap.
 
 ## Constructors
 
 * `TrapException​(int flag,
              PrecisionContext ctx,
-             Object result) TrapException`<br>
- Deprecated. Initializes a new instance of the TrapException
+             java.lang.Object result) com.upokecenter.TrapException`<br>
+ Deprecated. Initializes a new instance of the com.upokecenter.TrapException
  class.
 
 ## Method Details
 
 ### TrapException
-    public TrapException​(int flag, PrecisionContext ctx, Object result)
+    public TrapException​(int flag, PrecisionContext ctx, java.lang.Object result)
 Deprecated.
 
 **Parameters:**
@@ -43,10 +43,10 @@ Deprecated.
 * <code>ctx</code> - A context object for arbitrary-precision arithmetic settings.
 
 * <code>result</code> - The desired result of the operation that caused the trap, such
- as an <code>ExtendedDecimal</code> or <code>ExtendedFloat</code> .
+ as an <code>ExtendedDecimal </code> or <code>ExtendedFloat </code> .
 
 ### TrapException
-    public TrapException​(int flag, PrecisionContext ctx, Object result)
+    public TrapException​(int flag, PrecisionContext ctx, java.lang.Object result)
 Deprecated.
 
 **Parameters:**
@@ -58,7 +58,7 @@ Deprecated.
 * <code>ctx</code> - A context object for arbitrary-precision arithmetic settings.
 
 * <code>result</code> - The desired result of the operation that caused the trap, such
- as an <code>ExtendedDecimal</code> or <code>ExtendedFloat</code> .
+ as an <code>ExtendedDecimal </code> or <code>ExtendedFloat </code> .
 
 ### getContext
     public final PrecisionContext getContext()
@@ -70,7 +70,7 @@ Deprecated.
  trap. May be null.
 
 ### getResult
-    public final Object getResult()
+    public final java.lang.Object getResult()
 Deprecated.
 
 **Returns:**

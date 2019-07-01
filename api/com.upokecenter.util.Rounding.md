@@ -1,9 +1,9 @@
 # com.upokecenter.util.Rounding
 
-    @Deprecated public enum Rounding extends Enum<Rounding>
+    @Deprecated public enum Rounding extends java.lang.Enum<Rounding>
 
 Deprecated.
-<div class='deprecationComment'>Use ERounding from PeterO.Numbers/com.upokecenter.numbers.</div>
+Use ERounding from PeterO.Numbers/com.upokecenter.numbers.
 
 ## Enum Constants
 
@@ -41,7 +41,7 @@ Deprecated.
 
 ## Methods
 
-* `static Rounding valueOf​(String name)`<br>
+* `static Rounding valueOf​(java.lang.String name)`<br>
  Deprecated. Returns the enum constant of this type with the specified name.
 * `static Rounding[] values()`<br>
  Deprecated. Returns an array containing the constants of this enum type, in
@@ -74,7 +74,7 @@ the order they are declared.
 ### values
     public static Rounding[] values()
 ### valueOf
-    public static Rounding valueOf​(String name)
+    public static Rounding valueOf​(java.lang.String name)
 ## Enum Constant Details
 
 ### Up
