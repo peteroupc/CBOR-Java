@@ -7,6 +7,6 @@ import com.upokecenter.cbor.*;
   public class CBORExceptionTest {
     @Test
     public void TestConstructor() {
-      Assert.Throws<CBORException>(()=>throw new CBORException("Test exception"));
+      Assert.Throws(CBORException.class, ()=>throw new CBORException("Test exception"));
     }
   }
