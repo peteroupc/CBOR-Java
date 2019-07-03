@@ -7,6 +7,13 @@ import com.upokecenter.cbor.*;
   public class CBORExceptionTest {
     @Test
     public void TestConstructor() {
-      Assert.Throws(CBORException.class, ()=>throw new CBORException("Test exception"));
+      try {
+ throw new CBORException("Test exception");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
   }
