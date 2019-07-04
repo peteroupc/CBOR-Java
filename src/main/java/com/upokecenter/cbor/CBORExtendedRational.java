@@ -61,7 +61,7 @@ import com.upokecenter.numbers.*;
       ERational ef = (ERational)obj;
       if (ef.isFinite()) {
         EInteger bi = ef.ToEInteger();
-        if (bi.GetSignedBitLength() <= 63) {
+        if (bi.GetSignedBitLengthAsEInteger().compareTo(63) <= 0) {
           return bi.ToInt64Checked();
         }
       }
@@ -94,7 +94,7 @@ import com.upokecenter.numbers.*;
         return false;
       }
       EInteger bi = ef.ToEInteger();
-      return bi.GetSignedBitLength() <= 63;
+      return bi.GetSignedBitLengthAsEInteger().compareTo(63) <= 0;
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {

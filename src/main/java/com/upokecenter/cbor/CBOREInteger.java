@@ -78,7 +78,7 @@ import com.upokecenter.numbers.*;
 
     public boolean CanFitInInt64(Object obj) {
       EInteger bi = (EInteger)obj;
-      return bi.GetSignedBitLength() <= 63;
+      return bi.GetSignedBitLengthAsEInteger().compareTo(63) <= 0;
     }
 
     public boolean CanTruncatedIntFitInInt64(Object obj) {

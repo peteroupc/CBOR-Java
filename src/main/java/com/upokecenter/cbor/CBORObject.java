@@ -739,9 +739,9 @@ import com.upokecenter.numbers.*;
         throw new IllegalArgumentException("bigintTag.signum() (" +
                     bigintTag.signum() + ") is less than 0");
       }
-      if (bigintTag.GetSignedBitLength() > 64) {
+      if (bigintTag.GetSignedBitLengthAsEInteger().compareTo(64) > 0) {
         throw new IllegalArgumentException("bigintTag.bitLength (" +
-                    (long)bigintTag.GetSignedBitLength() + ") is more than " +
+       bigintTag.GetSignedBitLengthAsEInteger() + ") is more than " +
                     "64");
       }
       synchronized (ValueTagHandlers) {
@@ -1860,7 +1860,7 @@ if (depth > 100) {
           "tag more than 18446744073709551615 (" + bigintTag + ")");
       }
       CBORObject c = FromObject(valueOb);
-      if (bigintTag.GetSignedBitLength() <= 16) {
+      if (bigintTag.GetSignedBitLengthAsEInteger().compareTo(16) <= 0) {
         // Low-numbered, commonly used tags
         return FromObjectAndTag(c, bigintTag.ToInt32Checked());
       } else {
@@ -5151,7 +5151,7 @@ Map<CBORObject, CBORObject> AsMap() {
     } */
 
     private static boolean BigIntFits(EInteger bigint) {
-      return bigint.GetSignedBitLength() <= 64;
+      return bigint.GetSignedBitLengthAsEInteger().compareTo(64) <= 0;
     }
 
     private static boolean CBORArrayEquals(

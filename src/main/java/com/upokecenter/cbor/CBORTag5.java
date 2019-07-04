@@ -56,7 +56,7 @@ import com.upokecenter.numbers.*;
       }
       EInteger exponent = o.get(0).AsEInteger();
       EInteger mantissa = o.get(1).AsEInteger();
-      if (exponent.GetSignedBitLength() > 64 && !extended) {
+      if (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0 && !extended) {
         throw new CBORException("Exponent is too big");
       }
       if (exponent.isZero()) {
