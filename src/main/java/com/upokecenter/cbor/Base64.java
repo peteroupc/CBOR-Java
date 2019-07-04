@@ -17,51 +17,51 @@ private Base64() {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     public static void WriteBase64(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, true, padding);
     }
 
     public static void WriteBase64URL(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, false, padding);
     }
 
     private static void WriteBase64(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean classic,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean classic,
+      boolean padding) throws java.io.IOException {
       if (writer == null) {
         throw new NullPointerException("writer");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+        throw new ArgumentException("offset (" + offset + ") is less than " +
                     "0 ");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+        throw new ArgumentException("offset (" + offset + ") is more than " +
                     data.length);
       }
       if (count < 0) {
-        throw new IllegalArgumentException("count (" + count + ") is less than " +
+        throw new ArgumentException("count (" + count + ") is less than " +
                     "0 ");
       }
       if (count > data.length) {
-        throw new IllegalArgumentException("count (" + count + ") is more than " +
+        throw new ArgumentException("count (" + count + ") is more than " +
                     data.length);
       }
       if (data.length - offset < count) {
-        throw new IllegalArgumentException("data's length minus " + offset + " (" +
+        throw new ArgumentException("data's length minus " + offset + " (" +
                 (data.length - offset) + ") is less than " + count);
       }
       String alphabet = classic ? Base64Classic : Base64URL;

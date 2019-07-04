@@ -25,14 +25,14 @@ import com.upokecenter.numbers.*;
     }
 
     enum CBORDuplicatePolicy {
-      /**
-       * Not documented yet.
-       */
+    /**
+     * Not documented yet.
+     */
       Overwrite,
 
-      /**
-       * Not documented yet.
-       */
+    /**
+     * Not documented yet.
+     */
       Disallow,
     }
 
@@ -52,8 +52,8 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
     }
 
     private static CBORObject ResolveSharedRefs(
-  CBORObject obj,
-  SharedRefs sharedRefs) {
+      CBORObject obj,
+      SharedRefs sharedRefs) {
   int type = obj.getItemType();
   boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
   if (hasTag) {
@@ -259,8 +259,8 @@ ms = new java.io.ByteArrayOutputStream();
             }
             data = ms.toByteArray();
             return new CBORObject(
-  CBORObject.CBORObjectTypeByteString,
-  data);
+              CBORObject.CBORObjectTypeByteString,
+              data);
 }
 finally {
 try { if (ms != null) {
@@ -510,9 +510,9 @@ try { if (ms != null) {
     }
 
     private static byte[] ReadByteData(
-  InputStream stream,
-  long uadditional,
-  OutputStream outputStream) throws java.io.IOException {
+      InputStream stream,
+      long uadditional,
+      OutputStream outputStream) throws java.io.IOException {
       if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
         throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
           " is bigger than supported ");
@@ -568,9 +568,9 @@ try { if (ms != null) {
     }
 
     private static long ReadDataLength(
-  InputStream stream,
-  int headByte,
-  int expectedType) throws java.io.IOException {
+      InputStream stream,
+      int headByte,
+      int expectedType) throws java.io.IOException {
       if (headByte < 0) {
         throw new CBORException("Unexpected data encountered");
       }

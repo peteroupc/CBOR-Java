@@ -1,12 +1,12 @@
 package com.upokecenter.util;
 
-   /**
-    * A class that implements a statistically-random byte generator, using
-    * Sebastiano Vigna's <a
-    * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-    * RNG as the underlying implementation. This class is safe for
-    * concurrent use among multiple threads.
-    */
+    /**
+     * A class that implements a statistically-random byte generator, using
+     * Sebastiano Vigna's <a
+     * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
+     * RNG as the underlying implementation. This class is safe for
+     * concurrent use among multiple threads.
+     */
   public class XorShift128Plus implements IRandomGen {
     private long[] s = new long[2];
     private Object syncRoot = new Object();
@@ -20,23 +20,23 @@ package com.upokecenter.util;
         throw new NullPointerException("bytes");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset +
+        throw new ArgumentException("offset (" + offset +
           ") is less than 0");
       }
       if (offset > bytes.length) {
-        throw new IllegalArgumentException("offset (" + offset +
+        throw new ArgumentException("offset (" + offset +
           ") is more than " + bytes.length);
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new ArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > bytes.length) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new ArgumentException("length (" + length +
           ") is more than " + bytes.length);
       }
       if (bytes.length - offset < length) {
-        throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
+        throw new ArgumentException("bytes's length minus " + offset + " (" +
           (bytes.length - offset) + ") is less than " + length);
       }
       int count = length;

@@ -7,44 +7,44 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-   /**
-    * Represents a type that a CBOR object can have.
-    */
+    /**
+     * Represents a type that a CBOR object can have.
+     */
   public enum CBORType {
-   /**
-    * A number of any kind, including integers, big integers, floating point
-    * numbers, and decimal numbers. The floating-point value Not-a-Number is
-    * also included in the Number type.
-    */
+    /**
+     * A number of any kind, including integers, big integers, floating point
+     * numbers, and decimal numbers. The floating-point value Not-a-Number
+     * is also included in the Number type.
+     */
     Number,
 
-   /**
-    * The simple values true and false.
-    */
+    /**
+     * The simple values true and false.
+     */
     Boolean,
 
-   /**
-    * A "simple value" other than floating point values, true, and false.
-    */
+    /**
+     * A "simple value" other than floating point values, true, and false.
+     */
     SimpleValue,
 
-   /**
-    * An array of bytes.
-    */
+    /**
+     * An array of bytes.
+     */
     ByteString,
 
-   /**
-    * A text string.
-    */
+    /**
+     * A text string.
+     */
     TextString,
 
-   /**
-    * An array of CBOR objects.
-    */
+    /**
+     * An array of CBOR objects.
+     */
     Array,
 
-   /**
-    * A map of CBOR objects.
-    */
+    /**
+     * A map of CBOR objects.
+     */
     Map,
   }

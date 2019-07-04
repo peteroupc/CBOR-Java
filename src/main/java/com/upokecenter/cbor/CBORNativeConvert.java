@@ -14,8 +14,8 @@ import com.upokecenter.numbers.*;
 private CBORNativeConvert() {
 }
     private static CBORObject FromObjectAndInnerTags(
-  Object objectValue,
-  CBORObject objectWithTags) {
+      Object objectValue,
+      CBORObject objectWithTags) {
       CBORObject newObject = CBORObject.FromObject(objectValue);
       if (!objectWithTags.isTagged()) {
         return newObject;
@@ -51,8 +51,7 @@ private CBORNativeConvert() {
         return ConvertToDecimalFrac(o, true, true);
       }
       return o.HasMostOuterTag(265) ?
-              ConvertToDecimalFrac(o, false, true) :
-             o;
+              ConvertToDecimalFrac(o, false, true) : o;
     }
 
     private static CBORObject ConvertToDecimalFrac(
@@ -152,7 +151,8 @@ private CBORNativeConvert() {
         throw new CBORException("Rational number requires integer denominator");
       }
       if (second.signum() <= 0) {
-        throw new CBORException("Rational number requires denominator greater than 0");
+throw new
+  CBORException("Rational number requires denominator greater than 0");
       }
       EInteger denom = second.AsEInteger();
       // NOTE: Discards tags.

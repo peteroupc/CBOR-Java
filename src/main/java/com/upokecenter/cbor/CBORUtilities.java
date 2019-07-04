@@ -10,9 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-   /**
-    * Contains utility methods that may have use outside of the CBORObject class.
-    */
+    /**
+     * Contains utility methods that may have use outside of the CBORObject class.
+     */
   final class CBORUtilities {
 private CBORUtilities() {
 }
@@ -227,13 +227,13 @@ private CBORUtilities() {
       0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e, };
 
     public static void GetNormalizedPartProlepticGregorian(
-          EInteger year,
-          int month,
-          EInteger day,
-          EInteger[] dest) {
+      EInteger year,
+      int month,
+      EInteger day,
+      EInteger[] dest) {
      // NOTE: This method assumes month is 1 to 12
       if (month <= 0 || month > 12) {
-        throw new java.lang.IllegalArgumentException("month");
+        throw new IllegalArgumentException("month");
       }
       int[] dayArray = (year.Remainder(4).signum() != 0 || (
                     year.Remainder(100).signum() == 0 &&
@@ -284,23 +284,23 @@ private CBORUtilities() {
        // Example: Apple Time is a 32-bit unsigned integer
        // of the number of seconds since the start of 1904.
        // EInteger appleTime = GetNumberOfDaysProlepticGregorian(
-       // year, // month
-       //,
-        day)
+         // year, // month
+         //,
+         day)
        // .Subtract(GetNumberOfDaysProlepticGregorian(
        // EInteger.FromInt32(1904),
-        1 // ,
-        s1));*/
+       1 // ,
+       s1));*/
     public static EInteger GetNumberOfDaysProlepticGregorian(
-         EInteger year,
-         int month,
-         int mday) {
+      EInteger year,
+      int month,
+      int mday) {
      // NOTE: month = 1 is January, year = 1 is year 1
       if (month <= 0 || month > 12) {
-        throw new IllegalArgumentException();
+        throw new ArgumentException();
       }
       if (mday <= 0 || mday > 31) {
-        throw new IllegalArgumentException();
+        throw new ArgumentException();
       }
       EInteger numDays = EInteger.FromInt32(0);
       int startYear = 1970;
@@ -471,9 +471,9 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
     }
 
     public static void ParseAtomDateTimeString(
-  String str,
-  EInteger[] bigYearArray,
-  int[] lf) {
+      String str,
+      EInteger[] bigYearArray,
+      int[] lf) {
       int[] d = ParseAtomDateTimeString(str);
       bigYearArray[0] = EInteger.FromInt32(d[0]);
       System.arraycopy(d, 1, lf, 0, 7);
@@ -482,7 +482,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
     private static int[] ParseAtomDateTimeString(String str) {
       boolean bad = false;
       if (str.length() < 19) {
-        throw new IllegalArgumentException("Invalid date/time");
+        throw new ArgumentException("Invalid date/time");
       }
       for (int i = 0; i < 19 && !bad; ++i) {
         if (i == 4 || i == 7) {
@@ -498,7 +498,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
         }
       }
       if (bad) {
-        throw new IllegalArgumentException("Invalid date/time");
+        throw new ArgumentException("Invalid date/time");
       }
       int year = ((str.charAt(0) - '0') * 1000) + ((str.charAt(1) - '0') * 100) +
         ((str.charAt(2) - '0') * 10) + (str.charAt(3) - '0');
@@ -544,24 +544,24 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
           }
         }
         if (bad) {
-          throw new IllegalArgumentException("Invalid date/time");
+          throw new ArgumentException("Invalid date/time");
         }
         boolean neg = str.charAt(index) == '-';
         int tzhour = ((str.charAt(index + 1) - '0') * 10) + (str.charAt(index + 2) - '0');
         int tzminute = ((str.charAt(index + 4) - '0') * 10) + (str.charAt(index + 5) - '0');
         if (tzminute >= 60) {
-          throw new IllegalArgumentException("Invalid date/time");
+          throw new ArgumentException("Invalid date/time");
         }
         utcToLocal = ((neg ? -1 : 1) * (tzhour * 60)) + tzminute;
       } else {
-        throw new IllegalArgumentException("Invalid date/time");
+        throw new ArgumentException("Invalid date/time");
       }
       int[] dt = {
         year, month, day, hour, minute, second,
         nanoSeconds, utcToLocal,
       };
       if (!IsValidDateTime(dt)) {
-        throw new IllegalArgumentException("Invalid date/time");
+        throw new ArgumentException("Invalid date/time");
       }
       return dt;
     }
@@ -575,11 +575,11 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
       int smallYear = bigYear.ToInt32Checked();
       if (smallYear < 0) {
-        throw new IllegalArgumentException("year (" + smallYear +
+        throw new ArgumentException("year (" + smallYear +
           ") is not greater or equal to 0");
       }
       if (smallYear > 9999) {
-        throw new IllegalArgumentException("year (" + smallYear +
+        throw new ArgumentException("year (" + smallYear +
           ") is not less or equal to 9999");
       }
       int month = lesserFields[0];

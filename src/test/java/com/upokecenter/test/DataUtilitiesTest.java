@@ -193,41 +193,41 @@ import com.upokecenter.util.*;
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-  "\ud800\udc00",
-  "\ud800\udc00")==0) ? 0 : ((
+            "\ud800\udc00",
+            "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-  "\ud800\udc00",
-  "\ud800\udc00")< 0) ? -1 : 1));
+            "\ud800\udc00",
+            "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(0, numberTemp);
       }
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-  "abc",
-  "\ud800\udc00")==0) ? 0 : ((
+            "abc",
+            "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-  "abc",
-  "\ud800\udc00")< 0) ? -1 : 1));
+            "abc",
+            "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
         long numberTemp = ((
           DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800\udc00")==0) ? 0 : ((
+            "\uf000",
+            "\ud800\udc00")==0) ? 0 : ((
           DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800\udc00")< 0) ? -1 : 1));
+            "\uf000",
+            "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
         long numberTemp = ((
   DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800")==0) ? 0 : ((
+    "\uf000",
+    "\ud800")==0) ? 0 : ((
   DataUtilities.CodePointCompare(
-  "\uf000",
-  "\ud800")< 0) ? -1 : 1));
+    "\uf000",
+    "\ud800")< 0) ? -1 : 1));
         Assert.assertEquals(1, numberTemp);
       }
       if (!(DataUtilities.CodePointCompare("abc", "def") < 0)) {
@@ -302,7 +302,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -311,7 +311,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -320,7 +320,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -329,7 +329,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -338,7 +338,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -356,7 +356,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -365,7 +365,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -374,7 +374,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800X", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -383,7 +383,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00X", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -392,7 +392,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -401,7 +401,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -410,7 +410,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00\ud800\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -419,7 +419,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\ud800\ud800\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -428,7 +428,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -629,7 +629,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8String(new byte[] { 0 }, -1, 1, true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -638,7 +638,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8String(new byte[] { 0 }, 2, 1, true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -647,7 +647,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8String(new byte[] { 0 }, 0, -1, true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -656,7 +656,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8String(new byte[] { 0 }, 0, 2, true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -665,7 +665,7 @@ import com.upokecenter.util.*;
       try {
         DataUtilities.GetUtf8String(new byte[] { 0 }, 1, 1, true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -696,7 +696,7 @@ import com.upokecenter.util.*;
           4,
           false);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -707,7 +707,7 @@ import com.upokecenter.util.*;
         try {
           DataUtilities.GetUtf8String(seq, false);
           Assert.fail("Should have failed");
-        } catch (IllegalArgumentException ex) {
+        } catch (ArgumentException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail(ex.toString());
@@ -721,7 +721,7 @@ import com.upokecenter.util.*;
         try {
           DataUtilities.GetUtf8String(seq, 0, seq.length, false);
           Assert.fail("Should have failed");
-        } catch (IllegalArgumentException ex) {
+        } catch (ArgumentException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail(ex.toString());
@@ -736,11 +736,11 @@ import com.upokecenter.util.*;
     }
 
     public static void DoTestReadUtf8(
-  byte[] bytes,
-  int expectedRet,
-  String expectedString,
-  int noReplaceRet,
-  String noReplaceString) {
+      byte[] bytes,
+      int expectedRet,
+      String expectedString,
+      int noReplaceRet,
+      String noReplaceString) {
       DoTestReadUtf8(
         bytes,
         bytes.length,
@@ -1024,7 +1024,7 @@ try { if (ms != null) {
           new StringBuilder(),
           true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1038,7 +1038,7 @@ try { if (ms != null) {
           new StringBuilder(),
           true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1052,7 +1052,7 @@ try { if (ms != null) {
           new StringBuilder(),
           true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1066,7 +1066,7 @@ try { if (ms != null) {
           new StringBuilder(),
           true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1080,7 +1080,7 @@ try { if (ms != null) {
           new StringBuilder(),
           true);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1310,7 +1310,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", -1, 1, ms, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1319,7 +1319,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 2, 1, ms, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1328,7 +1328,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 0, -1, ms, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1337,7 +1337,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 0, 2, ms, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1346,7 +1346,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 1, 1, ms, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1364,7 +1364,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", -1, 1, ms, true, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1373,7 +1373,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 2, 1, ms, true, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1382,7 +1382,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 0, -1, ms, true, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1391,7 +1391,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 0, 2, ms, true, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());
@@ -1400,7 +1400,7 @@ ms = new java.io.ByteArrayOutputStream();
             try {
               DataUtilities.WriteUtf8("x", 1, 1, ms, true, true);
               Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
+            } catch (ArgumentException ex) {
              // NOTE: Intentionally empty
             } catch (Exception ex) {
               Assert.fail(ex.toString());

@@ -59,8 +59,8 @@ Gets a value indicating whether to encode strings with an indefinite-length
 **Returns:**
 
 * A value indicating whether to encode strings with an
- indefinite-length encoding under certain circumstances. The default is
- false.
+ indefinite-length encoding under certain circumstances. The default
+ is false.
 
 ### getAllowDuplicateKeys
     public final boolean getAllowDuplicateKeys()
@@ -77,8 +77,9 @@ Gets a value indicating whether to allow duplicate keys when reading CBOR
 Gets a value indicating whether CBOR objects are written out using the CTAP2
  canonical CBOR encoding form, which is useful for implementing Web
  Authentication. In this form, CBOR tags are not used, map keys are
- written out in a canonical order, and non-integer numbers and integers
- 2^63 or greater are written as 64-bit binary floating-point numbers.
+ written out in a canonical order, and non-integer numbers and
+ integers 2^63 or greater are written as 64-bit binary floating-point
+ numbers.
 
 **Returns:**
 

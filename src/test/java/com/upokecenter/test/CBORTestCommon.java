@@ -34,13 +34,13 @@ private CBORTestCommon() {
         case 0:
 return ToObjectTest.TestToFromObjectRoundTrip(
   RandomObjects.RandomDouble(
-  rand,
-  Integer.MAX_VALUE));
+    rand,
+    Integer.MAX_VALUE));
         case 1:
 return ToObjectTest.TestToFromObjectRoundTrip(
   RandomObjects.RandomSingle(
-  rand,
-  Integer.MAX_VALUE));
+    rand,
+    Integer.MAX_VALUE));
         case 2:
           return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEInteger(rand));
@@ -53,7 +53,7 @@ return ToObjectTest.TestToFromObjectRoundTrip(
         case 5:
 return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomInt64(rand));
-        default: throw new IllegalArgumentException();
+        default: throw new ArgumentException();
       }
     }
 
@@ -62,13 +62,13 @@ return
         case 0:
 return ToObjectTest.TestToFromObjectRoundTrip(
   RandomObjects.RandomDouble(
-  rand,
-  Integer.MAX_VALUE));
+    rand,
+    Integer.MAX_VALUE));
         case 1:
 return ToObjectTest.TestToFromObjectRoundTrip(
   RandomObjects.RandomSingle(
-  rand,
-  Integer.MAX_VALUE));
+    rand,
+    Integer.MAX_VALUE));
         case 2:
           return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEInteger(rand));
@@ -84,7 +84,7 @@ return
         case 6:
           return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomERational(rand));
-        default: throw new IllegalArgumentException();
+        default: throw new ArgumentException();
       }
     }
 

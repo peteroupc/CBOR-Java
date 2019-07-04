@@ -53,130 +53,130 @@ Assert.assertEquals(
 
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0",
-  false,
-  false,
-  true));
+    "-0",
+    false,
+    false,
+    true));
  this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0",
-  false,
-  false,
-  true));
+    "-0.0",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0000",
-  false,
-  false,
-  true));
+    "-0.0000",
+    false,
+    false,
+    true));
  this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0e0",
-  false,
-  false,
-  true));
+    "-0e0",
+    false,
+    false,
+    true));
 this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0e+1",
-  false,
-  false,
-  true));
+    "-0e+1",
+    false,
+    false,
+    true));
 this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0e-1",
-  false,
-  false,
-  true));
+    "-0e-1",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0e+999999999999",
-  false,
-  false,
-  true));
+    "-0e+999999999999",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0e-999999999999",
-  false,
-  false,
-  true));
+    "-0e-999999999999",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0e0",
-  false,
-  false,
-  true));
+    "-0.0e0",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0e+1",
-  false,
-  false,
-  true));
+    "-0.0e+1",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0e-1",
-  false,
-  false,
-  true));
+    "-0.0e-1",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0e+999999999999",
-  false,
-  false,
-  true));
+    "-0.0e+999999999999",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.0e-999999999999",
-  false,
-  false,
-  true));
+    "-0.0e-999999999999",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e0",
-  false,
-  false,
-  true));
+    "-0.000e0",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e+0",
-  false,
-  false,
-  true));
+    "-0.000e+0",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e-0",
-  false,
-  false,
-  true));
+    "-0.000e-0",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e1",
-  false,
-  false,
-  true));
+    "-0.000e1",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e+1",
-  false,
-  false,
-  true));
+    "-0.000e+1",
+    false,
+    false,
+    true));
       this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e-1",
-  false,
-  false,
-  true));
+    "-0.000e-1",
+    false,
+    false,
+    true));
   this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e+999999999999",
-  false,
-  false,
-  true));
+    "-0.000e+999999999999",
+    false,
+    false,
+    true));
   this.AssertNegative(
   CBORDataUtilities.ParseJSONNumber(
-  "-0.000e-999999999999",
-  false,
-  false,
-  true));
+    "-0.000e-999999999999",
+    false,
+    false,
+    true));
     }
     @Test
     public void TestParseJSONNumberNegativeZero() {
@@ -240,16 +240,16 @@ Assert.assertEquals(
  }
     if (
   CBORDataUtilities.ParseJSONNumber(
-  "100.e+20",
-  false,
-  false) != null) {
+    "100.e+20",
+    false,
+    false) != null) {
  Assert.fail();
  }
     if (
   CBORDataUtilities.ParseJSONNumber(
-  "-100.e20",
-  false,
-  false) != null) {
+    "-100.e20",
+    false,
+    false) != null) {
  Assert.fail();
  }
       if (CBORDataUtilities.ParseJSONNumber("100.e20", false, false) != null) {
@@ -284,9 +284,9 @@ Assert.assertEquals(
  }
       if (
   CBORDataUtilities.ParseJSONNumber(
-  "",
-  false,
-  false) != null) {
+    "",
+    false,
+    false) != null) {
  Assert.fail();
  }
       if (CBORDataUtilities.ParseJSONNumber("xyz", false, false) != null) {
@@ -332,16 +332,16 @@ Assert.assertEquals(
       CBORTestCommon.AssertJSONSer(cbor, "2E-2147483648");
     if (
   CBORDataUtilities.ParseJSONNumber(
-  "0.5e+xyz",
-  false,
-  false) != null) {
+    "0.5e+xyz",
+    false,
+    false) != null) {
  Assert.fail();
  }
   if (
   CBORDataUtilities.ParseJSONNumber(
-  "0.5e+88xyz",
-  false,
-  false) != null) {
+    "0.5e+88xyz",
+    false,
+    false) != null) {
  Assert.fail();
  }
       if (CBORDataUtilities.ParseJSONNumber("0000") != null) {
@@ -403,9 +403,9 @@ Assert.assertEquals(
   ToObjectTest.TestToFromObjectRoundTrip(23),
   CBORDataUtilities.ParseJSONNumber("23.0e00"));
       cbor = CBORDataUtilities.ParseJSONNumber(
-  "1e+99999999999999999999999999",
-  false,
-  false);
+        "1e+99999999999999999999999999",
+        false,
+        false);
       if (!(cbor != null)) {
  Assert.fail();
  }

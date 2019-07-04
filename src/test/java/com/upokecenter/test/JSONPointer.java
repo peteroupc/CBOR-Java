@@ -25,7 +25,7 @@ import com.upokecenter.numbers.*;
       while (true) {
         if (obj.getType() == CBORType.Array) {
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
-            throw new IllegalArgumentException(pointer);
+            throw new ArgumentException(pointer);
           }
           ++index;
           int[] value = new int[] { 0 };
@@ -36,7 +36,7 @@ import com.upokecenter.numbers.*;
              // Index at the end of the array
               return new JSONPointer(obj, "-");
             }
-            throw new IllegalArgumentException(pointer);
+            throw new ArgumentException(pointer);
           }
           if (newIndex == pointer.length()) {
             return new JSONPointer(obj, pointer.substring(index));
@@ -50,7 +50,7 @@ import com.upokecenter.numbers.*;
             throw new NoSuchElementException(pointer);
           }
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
-            throw new IllegalArgumentException(pointer);
+            throw new ArgumentException(pointer);
           }
           ++index;
           String key = null;
@@ -69,8 +69,8 @@ import com.upokecenter.numbers.*;
           }
           if (!tilde) {
             key = pointer.substring(
-  oldIndex, (
-  oldIndex)+(index - oldIndex));
+              oldIndex, (
+              oldIndex)+(index - oldIndex));
           } else {
             index = oldIndex;
             StringBuilder sb = new StringBuilder();
@@ -91,7 +91,7 @@ import com.upokecenter.numbers.*;
                     continue;
                   }
                 }
-                throw new IllegalArgumentException(pointer);
+                throw new ArgumentException(pointer);
               } else {
                 sb.append((char)c);
               }
@@ -110,23 +110,23 @@ import com.upokecenter.numbers.*;
       }
     }
 
-   /**
-    * Gets the JSON object referred to by a JSON Pointer according to RFC6901. The
-    * syntax for pointers is: <pre>'/' KEY '/' KEY.get(...)</pre> where KEY
-    * represents a key into the JSON object or its sub-objects in the
-    * hierarchy. For example, <pre>/foo/2/bar</pre> means the same as
-    * <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
-    * occurs in a key, it must be escaped with "~0" or "~1", respectively,
-    * in a JSON pointer.
-    * @param obj A CBOR object.
-    * @param pointer A JSON pointer according to RFC 6901.
-    * @return An object within the specified JSON object, or {@code obj} if
-    * pointer is the empty string, if the pointer is null, if the pointer is
-    * invalid , if there is no JSON object at the given pointer, or if
-    * {@code obj} is not of type CBORObject, unless pointer is the empty
-    * string.
-    * @throws NullPointerException The parameter {@code pointer} is null.
-    */
+    /**
+     * Gets the JSON object referred to by a JSON Pointer according to RFC6901. The
+     * syntax for pointers is: <pre>'/' KEY '/' KEY.get(...)</pre> where KEY
+     * represents a key into the JSON object or its sub-objects in the
+     * hierarchy. For example, <pre>/foo/2/bar</pre> means the same as
+     * <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
+     * occurs in a key, it must be escaped with "~0" or "~1", respectively,
+     * in a JSON pointer.
+     * @param obj A CBOR object.
+     * @param pointer A JSON pointer according to RFC 6901.
+     * @return An object within the specified JSON object, or {@code obj} if
+     * pointer is the empty string, if the pointer is null, if the pointer
+     * is invalid , if there is no JSON object at the given pointer, or if
+     * {@code obj} is not of type CBORObject, unless pointer is the empty
+     * string.
+     * @throws NullPointerException The parameter {@code pointer} is null.
+     */
     public static Object getObject(CBORObject obj, String pointer) {
       if (pointer == null) {
         throw new NullPointerException("pointer");
@@ -136,9 +136,9 @@ import com.upokecenter.numbers.*;
     }
 
     private static int readPositiveInteger(
-        String str,
-        int index,
-        int[] result) {
+      String str,
+      int index,
+      int[] result) {
       boolean haveNumber = false;
       boolean haveZeros = false;
       int oldIndex = index;
@@ -205,12 +205,12 @@ import com.upokecenter.numbers.*;
       }
     }
 
-   /**
-    * Gets an index into the specified object, if the object is an array and is
-    * not greater than the array's length.
-    * @return The index contained in this instance, or -1 if the object isn't a
-    * JSON array or is greater than the array's length.
-    */
+    /**
+     * Gets an index into the specified object, if the object is an array and is
+     * not greater than the array's length.
+     * @return The index contained in this instance, or -1 if the object isn't a
+     * JSON array or is greater than the array's length.
+     */
     public int getIndex() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
@@ -254,58 +254,58 @@ import com.upokecenter.numbers.*;
       }
     }
 
-   /**
-    * Gets all children of the specified JSON object that contain the specified
-    * key. The method will not remove matching keys. As an example, consider
-    * this object: <pre>[{"key":"value1","foo":"foovalue"},
-    * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
-    * getPointersToKey is called on this object with a keyToFind called
-    * "key", we get the following Map as the return value: <pre>{ "/0" =>
-    * "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
-    * "/1" points to {"bar":"barvalue"} }</pre> and the JSON object will
-    * change to the following: <pre>[{"foo":"foovalue"}, {"bar":"barvalue"},
-    * {"baz","bazvalue"}]</pre> @param root object to search @param
-    * keyToFind the key to search for. @return a map: <ul> <li>The keys in
-    * the map are JSON Pointers to the objects within <i>root</i> that
-    * contained a key named <i>keyToFind</i>. To get the actual JSON object,
-    * call JSONPointer.getObject, passing <i>root</i> and the pointer as
-    * arguments.</li> <li>The values in the map are the values of each of
-    * those keys named <i>keyToFind</i>.</li></ul> The JSON Pointers are
-    * relative to the root object.
-    * @param root The parameter {@code root} is not documented yet.
-    * @param keyToFind The parameter {@code keyToFind} is not documented yet.
-    * @return An Map(string, object) object.
-    */
+    /**
+     * Gets all children of the specified JSON object that contain the specified
+     * key. The method will not remove matching keys. As an example,
+     * consider this object: <pre>[{"key":"value1","foo":"foovalue"},
+     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     * getPointersToKey is called on this object with a keyToFind called
+     * "key", we get the following Map as the return value: <pre>{ "/0" =>
+     * "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
+     * "/1" points to {"bar":"barvalue"} }</pre> and the JSON object will
+     * change to the following: <pre>[{"foo":"foovalue"},
+     * {"bar":"barvalue"}, {"baz","bazvalue"}]</pre> @param root object to
+     * search @param keyToFind the key to search for. @return a map: <ul>
+     * <li>The keys in the map are JSON Pointers to the objects within
+     * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
+     * actual JSON object, call JSONPointer.getObject, passing <i>root</i>
+     * and the pointer as arguments.</li> <li>The values in the map are the
+     * values of each of those keys named <i>keyToFind</i>.</li></ul> The
+     * JSON Pointers are relative to the root object.
+     * @param root The parameter {@code root} is not documented yet.
+     * @param keyToFind The parameter {@code keyToFind} is not documented yet.
+     * @return An Map(string, object) object.
+     */
     public static Map<String, Object> getPointersWithKeyAndRemove(CBORObject root, String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
       getPointersWithKey(root, keyToFind, "", list, true);
       return list;
     }
 
-   /**
-    * Gets all children of the specified JSON object that contain the specified
-    * key. The method will remove matching keys. As an example, consider
-    * this object: <pre>[{"key":"value1","foo":"foovalue"},
-    * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
-    * getPointersToKey is called on this object with a keyToFind called
-    * "key", we get the following Map as the return value: <pre>{ "/0" =>
-    * "value1", // "/0" points to {"key":"value1","foo":"foovalue"} "/1" =>
-    * "value2" // "/1" points to {"key":"value2","bar":"barvalue"} }</pre>
-    * and the JSON object will remain unchanged. @param root object to
-    * search @param keyToFind the key to search for. @return a map: <ul>
-    * <li>The keys in the map are JSON Pointers to the objects within
-    * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
-    * actual JSON object, call JSONPointer.getObject, passing <i>root</i>
-    * and the pointer as arguments.</li> <li>The values in the map are the
-    * values of each of those keys named <i>keyToFind</i>.</li></ul> The
-    * JSON Pointers are relative to the root object.
-    * @param root The parameter {@code root} is not documented yet.
-    * @param keyToFind The parameter {@code keyToFind} is not documented yet.
-    * @return An Map(string, object) object.
-    */
+    /**
+     * Gets all children of the specified JSON object that contain the specified
+     * key. The method will remove matching keys. As an example, consider
+     * this object: <pre>[{"key":"value1","foo":"foovalue"},
+     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     * getPointersToKey is called on this object with a keyToFind called
+     * "key", we get the following Map as the return value: <pre>{ "/0" =>
+     * "value1", // "/0" points to {"key":"value1","foo":"foovalue"} "/1" =>
+     * "value2" // "/1" points to {"key":"value2","bar":"barvalue"} }</pre>
+     * and the JSON object will remain unchanged. @param root object to
+     * search @param keyToFind the key to search for. @return a map: <ul>
+     * <li>The keys in the map are JSON Pointers to the objects within
+     * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
+     * actual JSON object, call JSONPointer.getObject, passing <i>root</i>
+     * and the pointer as arguments.</li> <li>The values in the map are the
+     * values of each of those keys named <i>keyToFind</i>.</li></ul> The
+     * JSON Pointers are relative to the root object.
+     * @param root The parameter {@code root} is not documented yet.
+     * @param keyToFind The parameter {@code keyToFind} is not documented yet.
+     * @return An Map(string, object) object.
+     */
     public static Map<String, Object> getPointersWithKey(
-        CBORObject root,
-        String keyToFind) {
+      CBORObject root,
+      String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
       getPointersWithKey(root, keyToFind, "", list, false);
       return list;
@@ -336,21 +336,21 @@ import com.upokecenter.numbers.*;
           ptrkey = ptrkey.replace("~", "~0");
           ptrkey = ptrkey.replace("/", "~1");
           getPointersWithKey(
-  rootObj.get(key),
-  keyToFind,
-  currentPointer + "/" + ptrkey,
-  pointerList,
-  remove);
+            rootObj.get(key),
+            keyToFind,
+            currentPointer + "/" + ptrkey,
+            pointerList,
+            remove);
         }
       } else if (root.getType() == CBORType.Array) {
         for (int i = 0; i < root.size(); ++i) {
           String ptrkey = EInteger.FromInt32(i).toString();
           getPointersWithKey(
-  root.get(i),
-  keyToFind,
-  currentPointer + "/" + ptrkey,
-  pointerList,
-  remove);
+            root.get(i),
+            keyToFind,
+            currentPointer + "/" + ptrkey,
+            pointerList,
+            remove);
         }
       }
     }

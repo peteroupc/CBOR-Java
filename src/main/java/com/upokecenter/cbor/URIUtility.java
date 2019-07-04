@@ -4,72 +4,71 @@ package com.upokecenter.cbor;
 private URIUtility() {
 }
     enum ParseMode {
-      /**
-       * The rules follow the syntax for parsing IRIs. In particular, many code
-       * points outside the Basic Latin range (U + 0000 to U + 007F) are
-       * allowed. Strings with unpaired surrogate code points are considered
-       * invalid.
-       */
+    /**
+     * The rules follow the syntax for parsing IRIs. In particular, many code
+     * points outside the Basic Latin range (U + 0000 to U + 007F) are allowed.
+     * Strings with unpaired surrogate code points are considered invalid.
+     */
       IRIStrict,
 
-      /**
-       * The rules follow the syntax for parsing IRIs, except that code points
-       * outside the Basic Latin range (U + 0000 to U + 007F) are not allowed.
-       */
+    /**
+     * The rules follow the syntax for parsing IRIs, except that code points
+     * outside the Basic Latin range (U + 0000 to U + 007F) are not allowed.
+     */
       URIStrict,
 
-      /**
-       * The rules only check for the appropriate delimiters when splitting the path,
-       * without checking if all the characters in each component are valid.
-       * Even with this mode, strings with unpaired surrogate code points
-       * are considered invalid.
-       */
+    /**
+     * The rules only check for the appropriate delimiters when splitting the path,
+     * without checking if all the characters in each component are valid.
+     * Even with this mode, strings with unpaired surrogate code points are
+     * considered invalid.
+     */
       IRILenient,
 
-      /**
-       * The rules only check for the appropriate delimiters when splitting the path,
-       * without checking if all the characters in each component are valid.
-       * Code points outside the Basic Latin range (U + 0000 to U + 007F) are
-       * not allowed.
-       */
+    /**
+     * The rules only check for the appropriate delimiters when splitting the path,
+     * without checking if all the characters in each component are valid.
+     * Code points outside the Basic Latin range (U + 0000 to U + 007F) are not
+     * allowed.
+     */
       URILenient,
 
-      /**
-       * The rules only check for the appropriate delimiters when splitting the path,
-       * without checking if all the characters in each component are valid.
-       * Unpaired surrogate code points are treated as though they were
-       * replacement characters instead for the purposes of these rules, so
-       * that strings with those code points are not considered invalid
-       * strings.
-       */
+    /**
+     * The rules only check for the appropriate delimiters when splitting the path,
+     * without checking if all the characters in each component are valid.
+     * Unpaired surrogate code points are treated as though they were
+     * replacement characters instead for the purposes of these rules, so
+     * that strings with those code points are not considered invalid
+     * strings.
+     */
       IRISurrogateLenient,
     }
 
     private static final String HexChars = "0123456789ABCDEF";
 
     private static void AppendAuthority(
-  StringBuilder builder,
-  String refValue,
-  int[] segments) {
+      StringBuilder builder,
+      String refValue,
+      int[] segments) {
       if (segments[2] >= 0) {
         builder.append("//");
         builder.append(
   refValue.substring(
-  segments[2], (
-  segments[2])+(segments[3] - segments[2])));
+    segments[2], (
+    segments[2])+(segments[3] - segments[2])));
       }
     }
 
     private static void AppendFragment(
-  StringBuilder builder,
-  String refValue,
-  int[] segments) {
+      StringBuilder builder,
+      String refValue,
+      int[] segments) {
       if (segments[8] >= 0) {
         builder.append('#');
         builder.append(
   refValue.substring(
-  segments[8], (
-  segments[8])+(segments[9] - segments[8])));
+    segments[8], (
+    segments[8])+(segments[9] - segments[8])));
       }
     }
 
@@ -80,42 +79,42 @@ private URIUtility() {
       builder.append(
         NormalizePath(
   refValue.substring(
-  segments[4], (
-  segments[4])+(segments[5] - segments[4]))));
+    segments[4], (
+    segments[4])+(segments[5] - segments[4]))));
     }
 
     private static void AppendPath(
-  StringBuilder builder,
-  String refValue,
-  int[] segments) {
+      StringBuilder builder,
+      String refValue,
+      int[] segments) {
       builder.append(
   refValue.substring(
-  segments[4], (
-  segments[4])+(segments[5] - segments[4])));
+    segments[4], (
+    segments[4])+(segments[5] - segments[4])));
     }
 
     private static void AppendQuery(
-  StringBuilder builder,
-  String refValue,
-  int[] segments) {
+      StringBuilder builder,
+      String refValue,
+      int[] segments) {
       if (segments[6] >= 0) {
         builder.append('?');
         builder.append(
   refValue.substring(
-  segments[6], (
-  segments[6])+(segments[7] - segments[6])));
+    segments[6], (
+    segments[6])+(segments[7] - segments[6])));
       }
     }
 
     private static void AppendScheme(
-  StringBuilder builder,
-  String refValue,
-  int[] segments) {
+      StringBuilder builder,
+      String refValue,
+      int[] segments) {
       if (segments[0] >= 0) {
         builder.append(
           refValue.substring(
-  segments[0], (
-  segments[0])+(segments[1] - segments[0])));
+            segments[0], (
+            segments[0])+(segments[1] - segments[0])));
         builder.append(':');
       }
     }
@@ -137,10 +136,10 @@ private URIUtility() {
         }
       } else {
         components = (s == null) ? null : SplitIRI(
-  s,
-  0,
-  s.length(),
-  ParseMode.IRISurrogateLenient);
+          s,
+          0,
+          s.length(),
+          ParseMode.IRISurrogateLenient);
       }
       int index = 0;
       int valueSLength = s.length();
@@ -496,23 +495,23 @@ private URIUtility() {
         return false;
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+        throw new ArgumentException("offset (" + offset + ") is less than " +
                "0 ");
       }
       if (offset > s.length()) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+        throw new ArgumentException("offset (" + offset + ") is more than " +
           s.length());
       }
       if (length < 0) {
-        throw new IllegalArgumentException(
+        throw new ArgumentException(
           "length (" + length + ") is less than " + "0 ");
       }
       if (length > s.length()) {
-        throw new IllegalArgumentException(
+        throw new ArgumentException(
           "length (" + length + ") is more than " + s.length());
       }
       if (s.length() - offset < length) {
-        throw new IllegalArgumentException(
+        throw new ArgumentException(
           "s's length minus " + offset + " (" + (s.length() - offset) +
           ") is less than " + length);
       }
@@ -586,7 +585,7 @@ private URIUtility() {
        // we check here whether path component is empty
         if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
           irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
-          throw new IllegalArgumentException("invalid schemeAndAuthority");
+          throw new ArgumentException("invalid schemeAndAuthority");
         }
       }
       if (((path) == null || (path).length() == 0)) {
@@ -647,7 +646,7 @@ private URIUtility() {
       }
       String ret = builder.toString();
       if (SplitIRI(ret) == null) {
-        throw new IllegalArgumentException();
+        throw new ArgumentException();
       }
       return ret;
     }
@@ -655,19 +654,19 @@ private URIUtility() {
     public static boolean IsValidIRI(String s) {
       return ((s == null) ?
   null : SplitIRI(
-  s,
-  0,
-  s.length(),
-  ParseMode.IRIStrict)) != null;
+    s,
+    0,
+    s.length(),
+    ParseMode.IRIStrict)) != null;
     }
 
     public static boolean IsValidIRI(String s, ParseMode mode) {
       return ((s == null) ?
   null : SplitIRI(
-  s,
-  0,
-  s.length(),
-  mode)) != null;
+    s,
+    0,
+    s.length(),
+    mode)) != null;
     }
 
     private static final String ValueDotSlash = "." + "/";
@@ -680,7 +679,7 @@ private URIUtility() {
       }
       if (path.indexOf(ValueSlashDot) < 0 &&
           path.indexOf(
-  ValueDotSlash) < 0) {
+            ValueDotSlash) < 0) {
         return path;
       }
       StringBuilder builder = new StringBuilder();
@@ -837,8 +836,9 @@ private URIUtility() {
         index = startIndex;
        // DebugUtility.Log(s.substring(startIndex, (startIndex)+(ipEndIndex-startIndex)));
         for (int part = 0; part < 8; ++part) {
-          if (!doubleColon && ipEndIndex - index > 1 && s.charAt(index) == ':' && s.charAt(index +
-            1) == ':') {
+          if (!doubleColon &&
+            ipEndIndex - index > 1 && s.charAt(index) == ':' &&
+            s.charAt(index + 1) == ':') {
             doubleColon = true;
             doubleColonPos = part;
             index += 2;
@@ -874,9 +874,9 @@ private URIUtility() {
           if (index == ipEndIndex && doubleColon) {
             break;
           }
-         // Skip single colon, but not double colon
-          if (index < ipEndIndex &&
-            (index + 1 >= ipEndIndex || s.charAt(index + 1) != ':')) {
+          // Skip single colon, but not double colon
+          if (index < ipEndIndex && (index + 1 >= ipEndIndex ||
+            s.charAt(index + 1) != ':')) {
             ++index;
           }
         }
@@ -935,17 +935,19 @@ private URIUtility() {
             int[] newAddressParts = new int[8];
             System.arraycopy(addressParts, 0, newAddressParts, 0, doubleColonPos);
             System.arraycopy(
-            addressParts,
-            doubleColonPos,
-            newAddressParts,
-            doubleColonPos + resid,
-            totalParts - doubleColonPos);
+              addressParts,
+              doubleColonPos,
+              newAddressParts,
+              doubleColonPos + resid,
+              totalParts - doubleColonPos);
             System.arraycopy(newAddressParts, 0, addressParts, 0, 8);
           }
         } else if (totalParts != 8) {
           return -1;
         }
-       // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}",
+
+  // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}"
+       // ,
        // addressParts[0], addressParts[1], addressParts[2],
        // addressParts[3], addressParts[4], addressParts[5],
        // addressParts[6], addressParts[7]);
@@ -992,9 +994,9 @@ private URIUtility() {
     }
 
     private static String PathParent(
-  String refValue,
-  int startIndex,
-  int endIndex) {
+      String refValue,
+      int startIndex,
+      int endIndex) {
       if (startIndex > endIndex) {
         return "";
       }
@@ -1039,9 +1041,9 @@ private URIUtility() {
     }
 
     public static String RelativeResolve(
-  String refValue,
-  String baseURI,
-  ParseMode parseMode) {
+      String refValue,
+      String baseURI,
+      ParseMode parseMode) {
       int[] segments = (refValue == null) ? null : SplitIRI(
         refValue,
         0,
@@ -1096,9 +1098,9 @@ private URIUtility() {
           } else {
             merged.append(
               PathParent(
-  baseURI,
-  segmentsBase[4],
-  segmentsBase[5]));
+                baseURI,
+                segmentsBase[4],
+                segmentsBase[5]));
             AppendPath(merged, refValue, segments);
             builder.append(NormalizePath(merged.toString()));
           }
@@ -1146,13 +1148,13 @@ private URIUtility() {
       return new String[] {
  indexes[0] < 0 ? null : ToLowerCaseAscii(
   s.substring(
-  indexes[0], (
-  indexes[0])+(indexes[1] - indexes[0]))),
+    indexes[0], (
+    indexes[0])+(indexes[1] - indexes[0]))),
  indexes[2] < 0 ? null : s.substring(indexes[2], (indexes[2])+(indexes[3] - indexes[2])),
  indexes[4] < 0 ? null : s.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4])),
  indexes[6] < 0 ? null : s.substring(indexes[6], (indexes[6])+(indexes[7] - indexes[6])),
  indexes[8] < 0 ? null : s.substring(indexes[8], (indexes[8])+(indexes[9] - indexes[8])),
-};
+  };
     }
 
     public static int[] SplitIRI(String s) {
@@ -1160,10 +1162,10 @@ private URIUtility() {
     }
 
     public static int[] SplitIRI(
-  String s,
-  int offset,
-  int length,
-  ParseMode parseMode) {
+      String s,
+      int offset,
+      int length,
+      ParseMode parseMode) {
       if (s == null) {
         return null;
       }
@@ -1171,23 +1173,23 @@ private URIUtility() {
         throw new NullPointerException("s");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset +
+        throw new ArgumentException("offset (" + offset +
           ") is less than 0");
       }
       if (offset > s.length()) {
-        throw new IllegalArgumentException("offset (" + offset +
+        throw new ArgumentException("offset (" + offset +
           ") is more than " + s.length());
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new ArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > s.length()) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new ArgumentException("length (" + length +
           ") is more than " + s.length());
       }
       if (s.length() - offset < length) {
-        throw new IllegalArgumentException("s's length minus " + offset + " (" +
+        throw new ArgumentException("s's length minus " + offset + " (" +
           (s.length() - offset) + ") is less than " + length);
       }
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
@@ -1428,7 +1430,7 @@ private URIUtility() {
       }
       if (path.indexOf(ValueSlashDot) < 0 &&
               path.indexOf(
-      ValueDotSlash) < 0) {
+                ValueDotSlash) < 0) {
         return false;
       }
       int index = 0;
@@ -1511,8 +1513,8 @@ private URIUtility() {
     }
 
     public static String RelativeResolveWithinBaseURI(
-     String refValue,
-     String absoluteBaseURI) {
+      String refValue,
+      String absoluteBaseURI) {
       String rel = RelativeResolve(refValue, absoluteBaseURI);
       if (rel == null) {
         return null;

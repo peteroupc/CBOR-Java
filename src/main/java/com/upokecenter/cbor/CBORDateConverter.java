@@ -30,7 +30,7 @@ import com.upokecenter.numbers.*;
           return StringToDateTime(obj.AsString());
         } catch (ArithmeticException ex) {
           throw new CBORException(ex.getMessage(), ex);
-        } catch (IllegalArgumentException ex) {
+        } catch (ArgumentException ex) {
           throw new CBORException(ex.getMessage(), ex);
         }
       } else if (obj.HasMostOuterTag(1)) {
@@ -41,9 +41,9 @@ import com.upokecenter.numbers.*;
         int[] lesserFields = new int[7];
         EInteger[] year = new EInteger[1];
         CBORUtilities.BreakDownSecondsSinceEpoch(
-                  dec,
-                  year,
-                  lesserFields);
+          dec,
+          year,
+          lesserFields);
         return PropertyMap.BuildUpDateTime(year[0], lesserFields);
       }
       throw new CBORException("Not tag 0 or 1");
