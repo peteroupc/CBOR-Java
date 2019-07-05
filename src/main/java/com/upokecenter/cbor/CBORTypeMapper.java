@@ -4,8 +4,8 @@ import java.util.*;
 
     /**
      * Holds converters to customize the serialization and deserialization behavior
-     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
-     * well as type filters for <code>ToObject</code>.
+     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+     * well as type filters for <code>ToObject</code> .
      */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
@@ -51,7 +51,7 @@ import java.util.*;
         "ToCBORObject",
         type));
       if (ci.getToObject() == null) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "Converter doesn't contain a proper ToCBORObject method");
       }
       ci.setFromObject(PropertyMap.FindOneArgumentMethod(
@@ -143,7 +143,7 @@ import java.util.*;
         throw new NullPointerException("prefix");
       }
       if (prefix.length() == 0) {
-        throw new ArgumentException("prefix" + " is empty.");
+        throw new IllegalArgumentException("prefix" + " is empty.");
       }
       this.typePrefixes.add(prefix);
       return this;
@@ -163,7 +163,7 @@ import java.util.*;
         throw new NullPointerException("name");
       }
       if (name.length() == 0) {
-        throw new ArgumentException("name" + " is empty.");
+        throw new IllegalArgumentException("name" + " is empty.");
       }
       this.typeNames.add(name);
       return this;

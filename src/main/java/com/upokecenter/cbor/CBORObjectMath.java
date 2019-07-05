@@ -24,11 +24,11 @@ private CBORObjectMath() {
         throw new NullPointerException("b");
       }
       if (a.getType() != CBORType.Number) {
-        throw new ArgumentException("a.Type (" + a.getType() +
+        throw new IllegalArgumentException("a.Type (" + a.getType() +
           ") is not equal to " + CBORType.Number);
       }
       if (b.getType() != CBORType.Number) {
-        throw new ArgumentException("b.Type (" + b.getType() +
+        throw new IllegalArgumentException("b.Type (" + b.getType() +
           ") is not equal to " + CBORType.Number);
       }
       Object objA = a.getThisItem();
@@ -87,11 +87,11 @@ private CBORObjectMath() {
         throw new NullPointerException("b");
       }
       if (a.getType() != CBORType.Number) {
-        throw new ArgumentException("a.Type (" + a.getType() +
+        throw new IllegalArgumentException("a.Type (" + a.getType() +
           ") is not equal to " + CBORType.Number);
       }
       if (b.getType() != CBORType.Number) {
-        throw new ArgumentException("b.Type (" + b.getType() +
+        throw new IllegalArgumentException("b.Type (" + b.getType() +
           ") is not equal to " + CBORType.Number);
       }
       Object objA = a.getThisItem();
@@ -150,11 +150,11 @@ private CBORObjectMath() {
         throw new NullPointerException("b");
       }
       if (a.getType() != CBORType.Number) {
-        throw new ArgumentException("a.Type (" + a.getType() +
+        throw new IllegalArgumentException("a.Type (" + a.getType() +
           ") is not equal to " + CBORType.Number);
       }
       if (b.getType() != CBORType.Number) {
-        throw new ArgumentException("b.Type (" + b.getType() +
+        throw new IllegalArgumentException("b.Type (" + b.getType() +
           ") is not equal to " + CBORType.Number);
       }
       Object objA = a.getThisItem();
@@ -221,11 +221,11 @@ private CBORObjectMath() {
         throw new NullPointerException("b");
       }
       if (a.getType() != CBORType.Number) {
-        throw new ArgumentException("a.Type (" + a.getType() +
+        throw new IllegalArgumentException("a.Type (" + a.getType() +
           ") is not equal to " + CBORType.Number);
       }
       if (b.getType() != CBORType.Number) {
-        throw new ArgumentException("b.Type (" + b.getType() +
+        throw new IllegalArgumentException("b.Type (" + b.getType() +
           ") is not equal to " + CBORType.Number);
       }
       Object objA = a.getThisItem();
@@ -329,11 +329,11 @@ bigrem = divrem[1]; }
         throw new NullPointerException("b");
       }
       if (a.getType() != CBORType.Number) {
-        throw new ArgumentException("a.Type (" + a.getType() +
+        throw new IllegalArgumentException("a.Type (" + a.getType() +
           ") is not equal to " + CBORType.Number);
       }
       if (b.getType() != CBORType.Number) {
-        throw new ArgumentException("b.Type (" + b.getType() +
+        throw new IllegalArgumentException("b.Type (" + b.getType() +
           ") is not equal to " + CBORType.Number);
       }
       Object objA = a.getThisItem();

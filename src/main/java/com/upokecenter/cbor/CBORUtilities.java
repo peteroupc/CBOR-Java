@@ -297,10 +297,10 @@ private CBORUtilities() {
       int mday) {
      // NOTE: month = 1 is January, year = 1 is year 1
       if (month <= 0 || month > 12) {
-        throw new ArgumentException();
+        throw new IllegalArgumentException();
       }
       if (mday <= 0 || mday > 31) {
-        throw new ArgumentException();
+        throw new IllegalArgumentException();
       }
       EInteger numDays = EInteger.FromInt32(0);
       int startYear = 1970;
@@ -482,7 +482,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
     private static int[] ParseAtomDateTimeString(String str) {
       boolean bad = false;
       if (str.length() < 19) {
-        throw new ArgumentException("Invalid date/time");
+        throw new IllegalArgumentException("Invalid date/time");
       }
       for (int i = 0; i < 19 && !bad; ++i) {
         if (i == 4 || i == 7) {
@@ -498,7 +498,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
         }
       }
       if (bad) {
-        throw new ArgumentException("Invalid date/time");
+        throw new IllegalArgumentException("Invalid date/time");
       }
       int year = ((str.charAt(0) - '0') * 1000) + ((str.charAt(1) - '0') * 100) +
         ((str.charAt(2) - '0') * 10) + (str.charAt(3) - '0');
@@ -544,24 +544,24 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
           }
         }
         if (bad) {
-          throw new ArgumentException("Invalid date/time");
+          throw new IllegalArgumentException("Invalid date/time");
         }
         boolean neg = str.charAt(index) == '-';
         int tzhour = ((str.charAt(index + 1) - '0') * 10) + (str.charAt(index + 2) - '0');
         int tzminute = ((str.charAt(index + 4) - '0') * 10) + (str.charAt(index + 5) - '0');
         if (tzminute >= 60) {
-          throw new ArgumentException("Invalid date/time");
+          throw new IllegalArgumentException("Invalid date/time");
         }
         utcToLocal = ((neg ? -1 : 1) * (tzhour * 60)) + tzminute;
       } else {
-        throw new ArgumentException("Invalid date/time");
+        throw new IllegalArgumentException("Invalid date/time");
       }
       int[] dt = {
         year, month, day, hour, minute, second,
         nanoSeconds, utcToLocal,
       };
       if (!IsValidDateTime(dt)) {
-        throw new ArgumentException("Invalid date/time");
+        throw new IllegalArgumentException("Invalid date/time");
       }
       return dt;
     }
@@ -575,11 +575,11 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
       int smallYear = bigYear.ToInt32Checked();
       if (smallYear < 0) {
-        throw new ArgumentException("year (" + smallYear +
+        throw new IllegalArgumentException("year (" + smallYear +
           ") is not greater or equal to 0");
       }
       if (smallYear > 9999) {
-        throw new ArgumentException("year (" + smallYear +
+        throw new IllegalArgumentException("year (" + smallYear +
           ") is not less or equal to 9999");
       }
       int month = lesserFields[0];

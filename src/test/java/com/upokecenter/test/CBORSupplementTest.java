@@ -335,7 +335,7 @@ try { if (memoryStream != null) {
  } } catch (java.io.IOException ex) {}
 }
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (ArgumentException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());

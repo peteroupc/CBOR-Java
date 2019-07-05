@@ -3,8 +3,8 @@
     public final class CBORTypeMapper extends java.lang.Object
 
 Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
- well as type filters for <code>ToObject</code>.
+ of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+ well as type filters for <code>ToObject</code> .
 
 ## Methods
 

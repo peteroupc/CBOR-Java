@@ -45,23 +45,23 @@ private Base64() {
         throw new NullPointerException("writer");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
                     "0 ");
       }
       if (offset > data.length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
                     data.length);
       }
       if (count < 0) {
-        throw new ArgumentException("count (" + count + ") is less than " +
+        throw new IllegalArgumentException("count (" + count + ") is less than " +
                     "0 ");
       }
       if (count > data.length) {
-        throw new ArgumentException("count (" + count + ") is more than " +
+        throw new IllegalArgumentException("count (" + count + ") is more than " +
                     data.length);
       }
       if (data.length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" +
+        throw new IllegalArgumentException("data's length minus " + offset + " (" +
                 (data.length - offset) + ") is less than " + count);
       }
       String alphabet = classic ? Base64Classic : Base64URL;

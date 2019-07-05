@@ -622,7 +622,7 @@ import com.upokecenter.numbers.*;
         }
         if (this.getItemType() == CBORObjectTypeArray) {
           if (!key.isIntegral()) {
-            throw new ArgumentException("Not an integer");
+            throw new IllegalArgumentException("Not an integer");
           }
           if (!key.CanTruncatedIntFitInInt32()) {
             throw new IllegalArgumentException("index");
@@ -666,7 +666,7 @@ import com.upokecenter.numbers.*;
         }
         if (this.getItemType() == CBORObjectTypeArray) {
           if (!key.isIntegral()) {
-            throw new ArgumentException("Not an integer");
+            throw new IllegalArgumentException("Not an integer");
           }
           if (!key.CanTruncatedIntFitInInt32()) {
             throw new IllegalArgumentException("index");
@@ -1029,9 +1029,9 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java), returns
      * the result of the corresponding As* method. </li> <li>In the .NET
      * version, if the type is a nullable (e.g., <code>Nullable&lt;int&gt;</code>
-     * or <code>int?</code>, returns <code>null</code> if this CBOR object is null, or
+     * or <code>int?</code> , returns <code>null</code> if this CBOR object is null, or
      * this object's value converted to the nullable's underlying type
-     * (e.g., <code>int</code>).</li> <li>If the type is an enumeration (
+     * (e.g., <code>int</code>). </li> <li>If the type is an enumeration (
      * <code>Enum</code>) type this CBOR object is a text string or an integer,
      * returns the appropriate enumerated constant. (For example, if
      * <code>MyEnum</code> includes an entry for <code>MyValue</code> , this method will
@@ -1312,7 +1312,7 @@ FromObject(bigValue.getNumerator()) : new
       }
       if (DataUtilities.GetUtf8Length(strValue, false) < 0) {
         throw new
-        ArgumentException("String contains an unpaired surrogate code point.");
+        IllegalArgumentException("String contains an unpaired surrogate code point.");
       }
       return new CBORObject(CBORObjectTypeTextString, strValue);
     }
@@ -1802,11 +1802,11 @@ FromObject(bigValue.getNumerator()) : new
         throw new NullPointerException("bigintTag");
       }
       if (bigintTag.signum() < 0) {
-        throw new ArgumentException("tagEInt's sign (" + bigintTag.signum() +
+        throw new IllegalArgumentException("tagEInt's sign (" + bigintTag.signum() +
                     ") is less than 0");
       }
       if (bigintTag.compareTo(UInt64MaxValue) > 0) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "tag more than 18446744073709551615 (" + bigintTag + ")");
       }
       CBORObject c = FromObject(valueOb);
@@ -1855,7 +1855,7 @@ FromObject(bigValue.getNumerator()) : new
       Object valueObValue,
       int smallTag) {
       if (smallTag < 0) {
-        throw new ArgumentException("smallTag (" + smallTag +
+        throw new IllegalArgumentException("smallTag (" + smallTag +
                     ") is less than 0");
       }
       CBORObject c = FromObject(valueObValue);
@@ -1876,15 +1876,15 @@ FromObject(bigValue.getNumerator()) : new
      */
     public static CBORObject FromSimpleValue(int simpleValue) {
       if (simpleValue < 0) {
-        throw new ArgumentException("simpleValue (" + simpleValue +
+        throw new IllegalArgumentException("simpleValue (" + simpleValue +
                     ") is less than 0");
       }
       if (simpleValue > 255) {
-        throw new ArgumentException("simpleValue (" + simpleValue +
+        throw new IllegalArgumentException("simpleValue (" + simpleValue +
                     ") is more than " + "255");
       }
       if (simpleValue >= 24 && simpleValue < 32) {
-        throw new ArgumentException("Simple value is from 24 to 31: " +
+        throw new IllegalArgumentException("Simple value is from 24 to 31: " +
                     simpleValue);
       }
       if (simpleValue < 32) {
@@ -2665,7 +2665,7 @@ public static void Write(
         }
         Map<CBORObject, CBORObject> map = this.AsMap();
         if (map.containsKey(mapKey)) {
-          throw new ArgumentException("Key already exists");
+          throw new IllegalArgumentException("Key already exists");
         }
         map.put(mapKey, mapValue);
       } else {
@@ -2736,7 +2736,7 @@ public static void Write(
      * for null before conversion, use the following idiom (originally
      * written in C# for the .NET version): {@code (cbor == null ||
      * cbor.isNull()) ? null : cbor.AsEInteger()} .
-     * @throws java.lang.ArithmeticException This object's value is infinity or
+     * @throws ArithmeticException This object's value is infinity or
      * not-a-number (NaN).
      */
     public EInteger AsEInteger() {
@@ -2760,7 +2760,7 @@ public static void Write(
      * truncated to an integer.
      * @return The closest byte-sized integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
-     * @throws java.lang.ArithmeticException This object's value exceeds the range of a
+     * @throws ArithmeticException This object's value exceeds the range of a
      * byte (would be less than 0 or greater than 255 when truncated to an
      * integer).
      */
@@ -2846,7 +2846,7 @@ public static void Write(
      * truncated to an integer.
      * @return The closest 16-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
-     * @throws java.lang.ArithmeticException This object's value exceeds the range of a
+     * @throws ArithmeticException This object's value exceeds the range of a
      * 16-bit signed integer.
      */
     public short AsInt16() {
@@ -2868,7 +2868,7 @@ public static void Write(
      * Console.WriteLine("The value is " + obj.AsInt32()); }</pre> . </p>
      * @return The closest 32-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
-     * @throws java.lang.ArithmeticException This object's value exceeds the range of a
+     * @throws ArithmeticException This object's value exceeds the range of a
      * 32-bit signed integer.
      */
     public int AsInt32() {
@@ -2890,7 +2890,7 @@ public static void Write(
      * Console.WriteLine("The value is " + obj.AsInt64()); }</pre> . </p>
      * @return The closest 64-bit signed integer to this object.
      * @throws IllegalStateException This object's type is not a number type.
-     * @throws java.lang.ArithmeticException This object's value exceeds the range of a
+     * @throws ArithmeticException This object's value exceeds the range of a
      * 64-bit signed integer.
      */
     public long AsInt64() {
@@ -3166,7 +3166,7 @@ public int compareTo(CBORObject other) {
               cmp = (valueA == valueB) ? 0 : ((valueA < valueB) ? -1 : 1);
               break;
             }
-          default: throw new ArgumentException("Unexpected data type");
+          default: throw new IllegalArgumentException("Unexpected data type");
         }
       } else {
         int typeOrderA = ValueNumberTypeOrder[typeA];
@@ -3336,7 +3336,7 @@ public int compareTo(CBORObject other) {
      * encoding the object to CBOR format. For the CTAP2 canonical ordering,
      * which is useful for implementing Web Authentication, call this method
      * as follows: <code>EncodeToBytes(new CBOREncodeOptions(false, false,
-     * true))</code>.
+     * true))</code> .
      * @param options Options for encoding the data to CBOR.
      * @return A byte array in CBOR format.
      * @throws NullPointerException The parameter {@code options} is null.
@@ -3629,7 +3629,7 @@ public boolean equals(CBORObject other) {
      */
     public boolean HasMostOuterTag(int tagValue) {
       if (tagValue < 0) {
-        throw new ArgumentException("tagValue (" + tagValue +
+        throw new IllegalArgumentException("tagValue (" + tagValue +
                     ") is less than 0");
       }
       return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
@@ -3651,7 +3651,7 @@ public boolean equals(CBORObject other) {
         throw new NullPointerException("bigTagValue");
       }
       if (bigTagValue.signum() < 0) {
-        throw new ArgumentException("bigTagValue (" + bigTagValue +
+        throw new IllegalArgumentException("bigTagValue (" + bigTagValue +
                     ") is less than 0");
       }
       return (!this.isTagged()) ? false : this.getMostOuterTag().equals(bigTagValue);
@@ -3668,7 +3668,7 @@ public boolean equals(CBORObject other) {
      */
     public boolean HasTag(int tagValue) {
       if (tagValue < 0) {
-        throw new ArgumentException("tagValue (" + tagValue +
+        throw new IllegalArgumentException("tagValue (" + tagValue +
                     ") is less than 0");
       }
       CBORObject obj = this;
@@ -3698,7 +3698,7 @@ public boolean equals(CBORObject other) {
         throw new NullPointerException("bigTagValue");
       }
       if (bigTagValue.signum() < 0) {
-        throw new ArgumentException("doesn't satisfy bigTagValue.signum()>= 0");
+        throw new IllegalArgumentException("doesn't satisfy bigTagValue.signum()>= 0");
       }
       EInteger[] bigTags = this.GetAllTags();
       for (EInteger bigTag : bigTags) {
@@ -3726,7 +3726,7 @@ public boolean equals(CBORObject other) {
         CBORObject mapValue;
         List<CBORObject> list = this.AsList();
         if (index < 0 || index > list.size()) {
-          throw new ArgumentException("index");
+          throw new IllegalArgumentException("index");
         }
         if (valueOb == null) {
           mapValue = CBORObject.Null;
@@ -3951,7 +3951,7 @@ public boolean equals(CBORObject other) {
           }
           list.set(index, mapValue);
         } else {
-          throw new ArgumentException("Is an array, but key is not int");
+          throw new IllegalArgumentException("Is an array, but key is not int");
         }
       } else {
         throw new IllegalStateException("Not a map or array");
@@ -3983,53 +3983,53 @@ public boolean equals(CBORObject other) {
      * Converts this object to a string in JavaScript Object Notation (JSON)
      * format, using the specified options to control the encoding process.
      * This function works not only with arrays and maps, but also integers,
-     * strings, byte arrays, and other JSON data types. Notes: <ul><li>If
+     * strings, byte arrays, and other JSON data types. Notes: <ul> <li>If
      * this object contains maps with non-string keys, the keys are
-     * converted to JSON strings before writing the map as a JSON
-     * string.</li> <li>If the CBOR object contains CBOR maps, or is a CBOR
-     * map itself, the keys to the map are written out to the JSON string in
-     * an undefined order. Map keys other than untagged text strings are
+     * converted to JSON strings before writing the map as a JSON string.
+     * </li> <li>If the CBOR object contains CBOR maps, or is a CBOR map
+     * itself, the keys to the map are written out to the JSON string in an
+     * undefined order. Map keys other than untagged text strings are
      * converted to JSON strings before writing them out (for example,
      * <code>22("Test")</code> is converted to <code>"Test"</code> and <code>true</code> is
-     * converted to <code>"true"</code>). If, after such conversion, two or more
-     * map keys are identical, this method throws a CBORException.</li>
-     * <li>If a number in the form of an arbitrary-precision binary float
-     * has a very high binary exponent, it will be converted to a double
-     * before being converted to a JSON string. (The resulting double could
-     * overflow to infinity, in which case the arbitrary-precision binary
-     * float is converted to null.)</li> <li>The string will not begin with
-     * a byte-order mark (U + FEFF); RFC 8259 (the JSON specification) forbids
-     * placing a byte-order mark at the beginning of a JSON string.</li>
-     * <li>Byte strings are converted to Base64 URL without whitespace or
-     * padding by default (see section 4.1 of RFC 7049). A byte string will
-     * instead be converted to traditional base64 without whitespace and
-     * with padding if it has tag 22, or base16 for tag 23. (To create a
-     * CBOR object with a given tag, call the
+     * converted to <code>"true"</code> ///). If, after such conversion, two or
+     * more map keys are identical, this method throws a CBORException.
+     * </li> <li>If a number in the form of an arbitrary-precision binary
+     * float has a very high binary exponent, it will be converted to a
+     * double before being converted to a JSON string. (The resulting double
+     * could overflow to infinity, in which case the arbitrary-precision
+     * binary float is converted to null.) </li> <li>The string will not
+     * begin with a byte-order mark (U + FEFF); RFC 8259 (the JSON
+     * specification) forbids placing a byte-order mark at the beginning of
+     * a JSON string. </li> <li>Byte strings are converted to Base64 URL
+     * without whitespace or padding by default (see section 4.1 of RFC
+     * 7049). A byte string will instead be converted to traditional base64
+     * without whitespace and with padding if it has tag 22, or base16 for
+     * tag 23. (To create a CBOR object with a given tag, call the
      * <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR object
-     * and the desired tag number to that method.)</li> <li>Rational numbers
-     * will be converted to their exact form, if possible, otherwise to a
-     * high-precision approximation. (The resulting approximation could
+     * and the desired tag number to that method.) </li> <li>Rational
+     * numbers will be converted to their exact form, if possible, otherwise
+     * to a high-precision approximation. (The resulting approximation could
      * overflow to infinity, in which case the rational number is converted
-     * to null.)</li> <li>Simple values other than true and false will be
-     * converted to null. (This doesn't include floating-point
-     * numbers.)</li> <li>Infinity and not-a-number will be converted to
-     * null.</li> </ul> <p>The example code given below (originally written
-     * in C# for the .NET version) can be used to write out certain keys of
-     * a CBOR map in a given order to a JSON string.</p> <pre>/* Generates
-     * a JSON string of 'mapObj' whose keys are in the order given in 'keys'
-     * . Only keys found in 'keys' will be written if they exist in
-     * 'mapObj'. &#x2a;&#x2f; private static string KeysToJSONMap&#x28;CBORObject
-     * mapObj, List&lt;CBORObject&gt; keys&#x29;&#x7b; if (mapObj == null) {
-     * throw new NullPointerException&#x29;nameof(mapObj));} if (keys ==
-     * null) { throw new NullPointerException&#x29;nameof(keys));} if
-     * (obj.getType() != CBORType.Map) { throw new ArgumentException("'obj' is
-     * not a map."); } StringBuilder builder = new StringBuilder(); boolean
-     * first = true; builder.append("{"); for (CBORObject key in keys) { if
-     * (mapObj.ContainsKey(key)) { if (!first) {builder.append(", ");} var
-     * keyString=(key.getCBORType() == CBORType.string) ? key.AsString() :
-     * key.ToJSONString(); builder.append(CBORObject.FromObject(keyString)
-     * .ToJSONString()) .append(":").append(mapObj.get(key).ToJSONString());
-     * first=false; } } return builder.append("}").toString(); }</pre> .
+     * to null.) </li> <li>Simple values other than true and false will be
+     * converted to null. (This doesn't include floating-point numbers.)
+     * </li> <li>Infinity and not-a-number will be converted to null. </li>
+     * </ul> <p>The example code given below (originally written in C# for
+     * the .NET version) can be used to write out certain keys of a CBOR map
+     * in a given order to a JSON string. </p> <pre>/* Generates a JSON
+     * string of 'mapObj' whose keys are in the order given in 'keys' . Only
+     * keys found in 'keys' will be written if they exist in 'mapObj'. &#x2a;&#x2f;
+     * private static string KeysToJSONMap&#x28;CBORObject mapObj,
+     * IList&lt;CBORObject&gt; keys&#x29;&#x7b; if (mapObj == null) { throw
+     * new NullPointerException&#x29;nameof(mapObj));} if (keys == null) {
+     * throw new NullPointerException&#x29;nameof(keys));} if (obj.getType() !=
+     * CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); }
+     * StringBuilder builder = new StringBuilder(); var first = true;
+     * builder.Append("{"); for (CBORObject key in keys) { if
+     * (mapObj.ContainsKey(key)) { if (!first) {builder.Append(", ");} var
+     * keyString=(key.getCBORType() == CBORType.String) ? key.AsString() :
+     * key.ToJSONString(); builder.Append(CBORObject.FromObject(keyString)
+     * .ToJSONString()) .Append(":").Append(mapObj.get(key).ToJSONString());
+     * first=false; } } return builder.Append("}").toString(); }</pre> .
      * @param options An object containing the options to control writing the CBOR
      * object to JSON.
      * @return A text string containing the converted object.
@@ -4349,27 +4349,27 @@ public boolean equals(CBORObject other) {
         throw new NullPointerException("outputStream");
       }
       if (majorType < 0) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is less than 0");
       }
       if (majorType > 7) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is more than 7");
       }
       if (value < 0) {
-        throw new ArgumentException("value (" + value +
+        throw new IllegalArgumentException("value (" + value +
           ") is less than 0");
       }
       if (majorType == 7) {
         if (value > 255) {
-          throw new ArgumentException("value (" + value +
+          throw new IllegalArgumentException("value (" + value +
             ") is more than 255");
         }
         if (value <= 23) {
           outputStream.write((byte)(0xe0 + (int)value));
           return 1;
         } else if (value < 32) {
-     throw new ArgumentException("value is from 24 to 31 and major type is 7");
+     throw new IllegalArgumentException("value is from 24 to 31 and major type is 7");
         } else {
           outputStream.write((byte)0xf8);
           outputStream.write((byte)value);
@@ -4427,27 +4427,27 @@ public boolean equals(CBORObject other) {
         throw new NullPointerException("outputStream");
       }
       if (majorType < 0) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is less than 0");
       }
       if (majorType > 7) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is more than 7");
       }
       if (value < 0) {
-        throw new ArgumentException("value (" + value +
+        throw new IllegalArgumentException("value (" + value +
           ") is less than 0");
       }
       if (majorType == 7) {
         if (value > 255) {
-          throw new ArgumentException("value (" + value +
+          throw new IllegalArgumentException("value (" + value +
             ") is more than 255");
         }
         if (value <= 23) {
           outputStream.write((byte)(0xe0 + value));
           return 1;
         } else if (value < 32) {
-     throw new ArgumentException("value is from 24 to 31 and major type is 7");
+     throw new IllegalArgumentException("value is from 24 to 31 and major type is 7");
         } else {
           outputStream.write((byte)0xf8);
           outputStream.write((byte)value);
@@ -4495,11 +4495,11 @@ public boolean equals(CBORObject other) {
         throw new NullPointerException("bigintValue");
       }
       if (bigintValue.signum() < 0) {
-        throw new ArgumentException("tagEInt's sign (" + bigintValue.signum() +
+        throw new IllegalArgumentException("tagEInt's sign (" + bigintValue.signum() +
                     ") is less than 0");
       }
       if (bigintValue.compareTo(UInt64MaxValue) > 0) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "tag more than 18446744073709551615 (" + bigintValue + ")");
       }
       if (bigintValue.compareTo(Int64MaxValue) <= 0) {
@@ -4511,15 +4511,15 @@ public boolean equals(CBORObject other) {
       long longVal = bigintValue.ToInt64Unchecked();
       int highbyte = (int)((longVal >> 56) & 0xff);
       if (majorType < 0) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is less than 0");
       }
       if (majorType > 7) {
-        throw new ArgumentException("majorType (" + majorType +
+        throw new IllegalArgumentException("majorType (" + majorType +
           ") is more than 7");
       }
       if (majorType == 7) {
-   throw new ArgumentException("majorType is 7 and value is greater than 255");
+   throw new IllegalArgumentException("majorType is 7 and value is greater than 255");
       }
       byte[] bytes = new byte[] { (byte)(27 | (majorType << 5)), (byte)highbyte,
         (byte)((longVal >> 48) & 0xff), (byte)((longVal >> 40) & 0xff),
@@ -4547,7 +4547,7 @@ public boolean equals(CBORObject other) {
      * if&#x28;outputStream == null)&#x7b;throw new
      * NullPointerException&#x28;nameof(outputStream));&#x7d;
      * if&#x28;obj.getType() != CBORType.Map)&#x7b; throw new
-     * ArgumentException("'obj' is not a map."); &#x7d; int keyCount = 0;
+     * IllegalArgumentException("'obj' is not a map."); &#x7d; int keyCount = 0;
      * for (CBORObject key in keys) &#x7b;
      * if&#x28;mapObj.ContainsKey(key))&#x7b; keyCount++; &#x7d; &#x7d;
      * CBORObject.WriteValue(outputStream, 5, keyCount); for (CBORObject key
@@ -4565,7 +4565,7 @@ public boolean equals(CBORObject other) {
      * if&#x28;outputStream == null)&#x7b;throw new
      * NullPointerException&#x28;nameof(outputStream));&#x7d;
      * if&#x28;obj.getType() != CBORType.Map)&#x7b; throw new
-     * ArgumentException("'obj' is not a map."); &#x7d;
+     * IllegalArgumentException("'obj' is not a map."); &#x7d;
      * outputStream.write((byte)0xbf); for (CBORObject key in keys)
      * &#x7b; if&#x28;mapObj.ContainsKey(key))&#x7b;
      * key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); &#x7d;
@@ -4680,7 +4680,7 @@ public boolean equals(CBORObject other) {
             break;
           }
         default: {
-            throw new ArgumentException("Unexpected data type");
+            throw new IllegalArgumentException("Unexpected data type");
           }
       }
     }
@@ -4776,9 +4776,11 @@ public boolean equals(CBORObject other) {
             }
           case 7:
             if (firstbyte == 0xf9) {
+              float flt = CBORUtilities.HalfPrecisionToSingle(
+                  ((int)uadditional));
               return new CBORObject(
                 CBORObjectTypeSingle,
-  CBORUtilities.HalfPrecisionToSingle(((int)uadditional)));
+                flt);
             }
             if (firstbyte == 0xfa) {
               float flt = Float.intBitsToFloat(((int)uadditional));
@@ -5046,7 +5048,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
 
     private static byte[] GetPositiveInt64Bytes(int type, long value) {
       if (value < 0) {
-        throw new ArgumentException("value (" + value + ") is less than " +
+        throw new IllegalArgumentException("value (" + value + ") is less than " +
                     "0");
       }
       if (value < 24) {
@@ -5076,7 +5078,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
 
     private static byte[] GetPositiveIntBytes(int type, int value) {
       if (value < 0) {
-        throw new ArgumentException("value (" + value + ") is less than " +
+        throw new IllegalArgumentException("value (" + value + ") is less than " +
                     "0");
       }
       if (value < 24) {
@@ -5239,7 +5241,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       }
       for (Object o : stack) {
         if (o == child) {
-          throw new ArgumentException("Circular reference in data structure");
+          throw new IllegalArgumentException("Circular reference in data structure");
         }
       }
       stack.add(child);

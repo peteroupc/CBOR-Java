@@ -20,7 +20,7 @@ throw new IllegalStateException("", ex);
       try {
  tm.AddTypeName("");
 Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
+} catch (ArgumentException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
@@ -48,7 +48,7 @@ throw new IllegalStateException("", ex);
       try {
  tm.AddTypePrefix("");
 Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
+} catch (ArgumentException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());

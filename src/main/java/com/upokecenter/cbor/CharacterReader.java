@@ -107,23 +107,23 @@ import java.io.*;
         throw new NullPointerException("str");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is less than 0");
       }
       if (offset > str.length()) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is more than " + str.length());
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > str.length()) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is more than " + str.length());
       }
       if (str.length() - offset < length) {
-        throw new ArgumentException("str's length minus " + offset + " (" +
+        throw new IllegalArgumentException("str's length minus " + offset + " (" +
           (str.length() - offset) + ") is less than " + length);
       }
       this.strLength = length;
@@ -252,23 +252,23 @@ import java.io.*;
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index +
+        throw new IllegalArgumentException("index (" + index +
           ") is less than 0");
       }
       if (index > chars.length) {
-        throw new ArgumentException("index (" + index +
+        throw new IllegalArgumentException("index (" + index +
           ") is more than " + chars.length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > chars.length) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is more than " + chars.length);
       }
       if (chars.length - index < length) {
-        throw new ArgumentException("chars's length minus " + index + " (" +
+        throw new IllegalArgumentException("chars's length minus " + index + " (" +
           (chars.length - index) + ") is less than " + length);
       }
       int count = 0;

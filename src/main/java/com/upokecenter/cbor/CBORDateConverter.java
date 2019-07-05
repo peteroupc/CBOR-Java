@@ -30,7 +30,7 @@ import com.upokecenter.numbers.*;
           return StringToDateTime(obj.AsString());
         } catch (ArithmeticException ex) {
           throw new CBORException(ex.getMessage(), ex);
-        } catch (ArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
           throw new CBORException(ex.getMessage(), ex);
         }
       } else if (obj.HasMostOuterTag(1)) {

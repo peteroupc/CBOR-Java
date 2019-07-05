@@ -52,7 +52,7 @@ private DataUtilities() {
       }
       StringBuilder b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, 0, bytes.length, b, replace) != 0) {
-        throw new ArgumentException("Invalid UTF-8");
+        throw new IllegalArgumentException("Invalid UTF-8");
       }
       return b.toString();
     }
@@ -104,28 +104,28 @@ private DataUtilities() {
         throw new NullPointerException("bytes");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
                     "0");
       }
       if (offset > bytes.length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
                     bytes.length);
       }
       if (bytesCount < 0) {
-        throw new ArgumentException("bytesCount (" + bytesCount +
+        throw new IllegalArgumentException("bytesCount (" + bytesCount +
                     ") is less than 0");
       }
       if (bytesCount > bytes.length) {
-        throw new ArgumentException("bytesCount (" + bytesCount +
+        throw new IllegalArgumentException("bytesCount (" + bytesCount +
                     ") is more than " + bytes.length);
       }
       if (bytes.length - offset < bytesCount) {
-        throw new ArgumentException("bytes's length minus " + offset + " (" +
+        throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
                 (bytes.length - offset) + ") is less than " + bytesCount);
       }
       StringBuilder b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, offset, bytesCount, b, replace) != 0) {
-        throw new ArgumentException("Invalid UTF-8");
+        throw new IllegalArgumentException("Invalid UTF-8");
       }
       return b.toString();
     }
@@ -185,7 +185,7 @@ private DataUtilities() {
           if (replace) {
             c = 0xfffd;
           } else {
-            throw new ArgumentException("Unpaired surrogate code point");
+            throw new IllegalArgumentException("Unpaired surrogate code point");
           }
         }
         if (c <= 0x80) {
@@ -218,7 +218,7 @@ ms = new java.io.ByteArrayOutputStream();
 
           if (WriteUtf8(str, 0, str.length(), ms, replace, lenientLineBreaks) !=
                0) {
-            throw new ArgumentException("Unpaired surrogate code point");
+            throw new IllegalArgumentException("Unpaired surrogate code point");
           }
           return ms.toByteArray();
 }
@@ -228,7 +228,7 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
-        throw new ArgumentException("I/O error occurred", ex);
+        throw new IllegalArgumentException("I/O error occurred", ex);
       }
     }
 
@@ -603,23 +603,23 @@ try { if (ms != null) {
         throw new NullPointerException("str");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
                     "0");
       }
       if (offset > str.length()) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
                     str.length());
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + length + ") is less than " +
+        throw new IllegalArgumentException("length (" + length + ") is less than " +
                     "0");
       }
       if (length > str.length()) {
-        throw new ArgumentException("length (" + length + ") is more than " +
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
                     str.length());
       }
       if (str.length() - offset < length) {
-        throw new ArgumentException("str.length() minus offset (" +
+        throw new IllegalArgumentException("str.length() minus offset (" +
                 (str.length() - offset) + ") is less than " + length);
       }
       int endIndex, c;
@@ -769,23 +769,23 @@ try { if (ms != null) {
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
                     "0");
       }
       if (offset > data.length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
                     data.length);
       }
       if (bytesCount < 0) {
-        throw new ArgumentException("bytesCount (" + bytesCount +
+        throw new IllegalArgumentException("bytesCount (" + bytesCount +
                     ") is less than 0");
       }
       if (bytesCount > data.length) {
-        throw new ArgumentException("bytesCount (" + bytesCount +
+        throw new IllegalArgumentException("bytesCount (" + bytesCount +
                     ") is more than " + data.length);
       }
       if (data.length - offset < bytesCount) {
-        throw new ArgumentException("data.length minus offset (" +
+        throw new IllegalArgumentException("data.length minus offset (" +
                 (data.length - offset) + ") is less than " + bytesCount);
       }
       if (builder == null) {
@@ -905,7 +905,7 @@ try { if (ms != null) {
       if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
         throw new IOException(
        "Unpaired surrogate code point found.",
-       new ArgumentException("Unpaired surrogate code point found."));
+       new IllegalArgumentException("Unpaired surrogate code point found."));
       }
       return builder.toString();
     }

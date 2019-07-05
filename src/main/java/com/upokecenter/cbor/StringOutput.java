@@ -37,7 +37,7 @@ import com.upokecenter.numbers.*;
             str.length(),
             this.outputStream,
             false) < 0) {
-            throw new ArgumentException("str has an unpaired surrogate");
+            throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
       } else {
@@ -57,7 +57,7 @@ import com.upokecenter.numbers.*;
     length,
     this.outputStream,
     false) < 0) {
-            throw new ArgumentException("str has an unpaired surrogate");
+            throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
       } else {
@@ -67,11 +67,11 @@ import com.upokecenter.numbers.*;
 
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
       if (codePoint < 0) {
-        throw new ArgumentException("codePoint (" + codePoint +
+        throw new IllegalArgumentException("codePoint (" + codePoint +
                 ") is less than 0");
       }
       if (codePoint > 0x10ffff) {
-        throw new ArgumentException("codePoint (" + codePoint +
+        throw new IllegalArgumentException("codePoint (" + codePoint +
                 ") is more than " + 0x10ffff);
       }
       if (this.outputStream != null) {
@@ -82,7 +82,7 @@ import com.upokecenter.numbers.*;
           this.outputStream.write((byte)(0x80 | (codePoint & 0x3f)));
         } else if (codePoint <= 0xffff) {
           if ((codePoint & 0xf800) == 0xd800) {
-            throw new ArgumentException("ch is a surrogate");
+            throw new IllegalArgumentException("ch is a surrogate");
           }
           this.outputStream.write((byte)(0xe0 | ((codePoint >> 12) &
                     0x0f)));
@@ -98,7 +98,7 @@ import com.upokecenter.numbers.*;
         }
       } else {
         if ((codePoint & 0xfff800) == 0xd800) {
-          throw new ArgumentException("ch is a surrogate");
+          throw new IllegalArgumentException("ch is a surrogate");
         }
         if (codePoint <= 0xffff) {
           { this.builder.append((char)codePoint);

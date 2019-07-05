@@ -495,23 +495,23 @@ private URIUtility() {
         return false;
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
                "0 ");
       }
       if (offset > s.length()) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
           s.length());
       }
       if (length < 0) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "length (" + length + ") is less than " + "0 ");
       }
       if (length > s.length()) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "length (" + length + ") is more than " + s.length());
       }
       if (s.length() - offset < length) {
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "s's length minus " + offset + " (" + (s.length() - offset) +
           ") is less than " + length);
       }
@@ -585,7 +585,7 @@ private URIUtility() {
        // we check here whether path component is empty
         if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
           irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
-          throw new ArgumentException("invalid schemeAndAuthority");
+          throw new IllegalArgumentException("invalid schemeAndAuthority");
         }
       }
       if (((path) == null || (path).length() == 0)) {
@@ -646,7 +646,7 @@ private URIUtility() {
       }
       String ret = builder.toString();
       if (SplitIRI(ret) == null) {
-        throw new ArgumentException();
+        throw new IllegalArgumentException();
       }
       return ret;
     }
@@ -1173,23 +1173,23 @@ private URIUtility() {
         throw new NullPointerException("s");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is less than 0");
       }
       if (offset > s.length()) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is more than " + s.length());
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > s.length()) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is more than " + s.length());
       }
       if (s.length() - offset < length) {
-        throw new ArgumentException("s's length minus " + offset + " (" +
+        throw new IllegalArgumentException("s's length minus " + offset + " (" +
           (s.length() - offset) + ") is less than " + length);
       }
       int[] retval = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };

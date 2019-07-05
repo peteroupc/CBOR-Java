@@ -99,7 +99,7 @@ try { if (ms != null) {
           return cbor.EncodeToBytes(CBOREncodeOptions.Default);
         }
       } else {
-        throw new ArgumentException("Invalid CBOR type.");
+        throw new IllegalArgumentException("Invalid CBOR type.");
       }
     }
   }

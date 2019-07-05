@@ -80,7 +80,8 @@ import com.upokecenter.numbers.*;
                       c <<= 4;
                       c |= ch + 10 - 'a';
                     } else {
-  this.reader.RaiseError("Invalid Unicode escaped character");
+                      this.reader.RaiseError(
+                          "Invalid Unicode escaped character");
                     }
                   }
                   if ((c & 0xf800) != 0xd800) {
@@ -188,7 +189,8 @@ import com.upokecenter.numbers.*;
           }
         case 'f': {
             // Parse false
-          if (this.reader.ReadChar() != 'a' || this.reader.ReadChar() != 'l' ||
+            if (this.reader.ReadChar() != 'a' ||
+              this.reader.ReadChar() != 'l' ||
               this.reader.ReadChar() != 's' || this.reader.ReadChar() != 'e') {
               this.reader.RaiseError("Value can't be parsed.");
             }
@@ -197,7 +199,8 @@ import com.upokecenter.numbers.*;
           }
         case 'n': {
             // Parse null
-          if (this.reader.ReadChar() != 'u' || this.reader.ReadChar() != 'l' ||
+            if (this.reader.ReadChar() != 'u' ||
+              this.reader.ReadChar() != 'l' ||
               this.reader.ReadChar() != 'l') {
               this.reader.RaiseError("Value can't be parsed.");
             }
