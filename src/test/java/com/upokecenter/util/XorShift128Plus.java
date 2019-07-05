@@ -20,23 +20,23 @@ package com.upokecenter.util;
         throw new NullPointerException("bytes");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is less than 0");
       }
       if (offset > bytes.length) {
-        throw new ArgumentException("offset (" + offset +
+        throw new IllegalArgumentException("offset (" + offset +
           ") is more than " + bytes.length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is less than 0");
       }
       if (length > bytes.length) {
-        throw new ArgumentException("length (" + length +
+        throw new IllegalArgumentException("length (" + length +
           ") is more than " + bytes.length);
       }
       if (bytes.length - offset < length) {
-        throw new ArgumentException("bytes's length minus " + offset + " (" +
+        throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
           (bytes.length - offset) + ") is less than " + length);
       }
       int count = length;

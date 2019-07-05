@@ -18,7 +18,7 @@ import com.upokecenter.cbor.*;
       String path,
       CBORObject value) {
       if (path == null) {
-        throw new ArgumentException("patch " + valueOpStr);
+        throw new IllegalArgumentException("patch " + valueOpStr);
       }
       if (path.length() == 0) {
         o = value;
@@ -27,14 +27,14 @@ import com.upokecenter.cbor.*;
         if (pointer.getParent().getType() == CBORType.Array) {
           int index = pointer.getIndex();
           if (index < 0) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
           ((CBORObject)pointer.getParent()).Insert(index, value);
         } else if (pointer.getParent().getType() == CBORType.Map) {
           String key = pointer.getKey();
           ((CBORObject)pointer.getParent()).Set(key, value);
         } else {
-          throw new ArgumentException("patch " + valueOpStr + " path");
+          throw new IllegalArgumentException("patch " + valueOpStr + " path");
         }
       }
       return o;
@@ -58,13 +58,13 @@ import com.upokecenter.cbor.*;
        // allow duplicates
         String valueOpStr = getString(patchOp, "op");
         if (valueOpStr == null) {
-          throw new ArgumentException("patch");
+          throw new IllegalArgumentException("patch");
         }
         if ("add".equals(valueOpStr)) {
          // operation
           CBORObject value = null;
           if (!patchOp.ContainsKey("value")) {
-throw new ArgumentException("patch " + valueOpStr + " value");
+throw new IllegalArgumentException("patch " + valueOpStr + " value");
           }
             value = patchOp.get("value");
           o = addOperation(o, valueOpStr, getString(patchOp, "path"), value);
@@ -72,7 +72,7 @@ throw new ArgumentException("patch " + valueOpStr + " value");
          // operation
           CBORObject value = null;
           if (!patchOp.ContainsKey("value")) {
-throw new ArgumentException("patch " + valueOpStr + " value");
+throw new IllegalArgumentException("patch " + valueOpStr + " value");
           }
             value = patchOp.get("value");
         o = replaceOperation(
@@ -84,7 +84,7 @@ throw new ArgumentException("patch " + valueOpStr + " value");
          // Remove operation
           String path = patchOp.get("path").AsString();
           if (path == null) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
           if (path.length() == 0) {
             o = null;
@@ -94,14 +94,14 @@ throw new ArgumentException("patch " + valueOpStr + " value");
         } else if ("move".equals(valueOpStr)) {
           String path = patchOp.get("path").AsString();
           if (path == null) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
           String fromPath = patchOp.get("from").AsString();
           if (fromPath == null) {
-            throw new ArgumentException("patch " + valueOpStr + " from");
+            throw new IllegalArgumentException("patch " + valueOpStr + " from");
           }
           if (path.startsWith(fromPath)) {
-            throw new ArgumentException("patch " + valueOpStr);
+            throw new IllegalArgumentException("patch " + valueOpStr);
           }
           CBORObject movedObj = removeOperation(o, valueOpStr, fromPath);
           o = addOperation(o, valueOpStr, path, cloneCbor(movedObj));
@@ -109,10 +109,10 @@ throw new ArgumentException("patch " + valueOpStr + " value");
           String path = patchOp.get("path").AsString();
           String fromPath = patchOp.get("from").AsString();
           if (path == null) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
           if (fromPath == null) {
-            throw new ArgumentException("patch " + valueOpStr + " from");
+            throw new IllegalArgumentException("patch " + valueOpStr + " from");
           }
           JSONPointer pointer = JSONPointer.fromPointer(o, path);
           if (!pointer.exists()) {
@@ -128,16 +128,16 @@ throw new ArgumentException("patch " + valueOpStr + " value");
         } else if ("test".equals(valueOpStr)) {
           String path = patchOp.get("path").AsString();
           if (path == null) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
           CBORObject value = null;
           if (!patchOp.ContainsKey("value")) {
-throw new ArgumentException("patch " + valueOpStr + " value");
+throw new IllegalArgumentException("patch " + valueOpStr + " value");
           }
             value = patchOp.get("value");
           JSONPointer pointer = JSONPointer.fromPointer(o, path);
           if (!pointer.exists()) {
-            throw new ArgumentException("patch " +
+            throw new IllegalArgumentException("patch " +
               valueOpStr + " " + path);
           }
           Object testedObj = pointer.getValue();
@@ -155,7 +155,7 @@ throw new ArgumentException("patch " + valueOpStr + " value");
       String valueOpStr,
       String path) {
       if (path == null) {
-        throw new ArgumentException("patch " + valueOpStr);
+        throw new IllegalArgumentException("patch " + valueOpStr);
       }
       if (path.length() == 0) {
         return o;
@@ -182,7 +182,7 @@ throw new ArgumentException("patch " + valueOpStr + " value");
       String path,
       CBORObject value) {
       if (path == null) {
-        throw new ArgumentException("patch " + valueOpStr);
+        throw new IllegalArgumentException("patch " + valueOpStr);
       }
       if (path.length() == 0) {
         o = value;
@@ -195,14 +195,14 @@ throw new ArgumentException("patch " + valueOpStr + " value");
         if (pointer.getParent().getType() == CBORType.Array) {
           int index = pointer.getIndex();
           if (index < 0) {
-            throw new ArgumentException("patch " + valueOpStr + " path");
+            throw new IllegalArgumentException("patch " + valueOpStr + " path");
           }
         ((CBORObject)pointer.getParent()).Set(index, value);
         } else if (pointer.getParent().getType() == CBORType.Map) {
           String key = pointer.getKey();
           ((CBORObject)pointer.getParent()).Set(key, value);
         } else {
-          throw new ArgumentException("patch " + valueOpStr + " path");
+          throw new IllegalArgumentException("patch " + valueOpStr + " path");
         }
       }
       return o;

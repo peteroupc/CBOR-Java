@@ -38,10 +38,10 @@ package com.upokecenter.util;
      */
     public boolean Bernoulli(double p) {
       if (p < 0) {
-        throw new ArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p (" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new ArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p (" + p + ") is more than 1");
       }
       return this.Uniform() < p;
     }
@@ -76,13 +76,13 @@ package com.upokecenter.util;
      */
     public int Binomial(int trials, double p) {
       if (p < 0) {
-        throw new ArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p (" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new ArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p (" + p + ") is more than 1");
       }
       if (trials <= -1) {
-        throw new ArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials (" + trials +
                ") is not greater than " + (-1));
       }
       if (trials == 0 || p == 1.0) {
@@ -122,7 +122,7 @@ package com.upokecenter.util;
      */
     public double ChiSquared(int df) {
       if (df <= 0) {
-        throw new ArgumentException("df (" + df + ") is not greater than 0");
+        throw new IllegalArgumentException("df (" + df + ") is not greater than 0");
       }
       return this.Gamma(df * 0.5, 2);
     }
@@ -143,7 +143,7 @@ package com.upokecenter.util;
      */
     public double Gamma(double a, double b) {
       if (b <= 0) {
-        throw new ArgumentException("b (" + b + ") is not greater than 0");
+        throw new IllegalArgumentException("b (" + b + ") is not greater than 0");
       }
       return this.Gamma(a) * b;
     }
@@ -155,7 +155,7 @@ package com.upokecenter.util;
      */
     public double Gamma(double a) {
       if (a <= 0) {
-        throw new ArgumentException("a (" + a + ") is not greater than 0");
+        throw new IllegalArgumentException("a (" + a + ") is not greater than 0");
       }
       double v, x, u, x2, d, c;
       d = (a < 1 ? 1 + a : a) - (1.0 / 3.0);
@@ -207,22 +207,22 @@ package com.upokecenter.util;
      */
     public int Hypergeometric(int trials, int ones, int count) {
       if (ones < 0) {
-        throw new ArgumentException("ones (" + ones + ") is less than 0");
+        throw new IllegalArgumentException("ones (" + ones + ") is less than 0");
       }
       if (ones > count) {
-        throw new ArgumentException("ones (" + ones + ") is more than " +
+        throw new IllegalArgumentException("ones (" + ones + ") is more than " +
           count);
       }
       if (count < 0) {
-        throw new ArgumentException("count (" + count +
+        throw new IllegalArgumentException("count (" + count +
           ") is less than 0");
       }
       if (trials < 0) {
-        throw new ArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials (" + trials +
           ") is less than 0");
       }
       if (trials > count) {
-        throw new ArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials (" + trials +
           ") is more than " + count);
       }
       int ret = 0;
@@ -259,13 +259,13 @@ package com.upokecenter.util;
      */
     public int NegativeBinomial(int trials, double p) {
       if (p < 0) {
-        throw new ArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p (" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new ArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p (" + p + ") is more than 1");
       }
       if (trials <= -1) {
-        throw new ArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials (" + trials +
                ") is not greater than " + (-1));
       }
       if (trials == 0 || p == 1.0) {
@@ -365,7 +365,7 @@ package com.upokecenter.util;
      */
     public int Poisson(double mean) {
       if (mean < 0) {
-        throw new ArgumentException("mean (" + mean +
+        throw new IllegalArgumentException("mean (" + mean +
           ") is less than 0");
       }
       double l = Math.exp(-mean);
@@ -388,7 +388,7 @@ package com.upokecenter.util;
      */
     public double Uniform(double min, double max) {
       if (min >= max) {
-        throw new ArgumentException("min (" + min + ") is not less than " +
+        throw new IllegalArgumentException("min (" + min + ") is not less than " +
             max);
       }
       return min + ((max - min) * this.Uniform());
@@ -431,7 +431,7 @@ package com.upokecenter.util;
      */
     public int UniformInt(int minInclusive, int maxExclusive) {
       if (minInclusive > maxExclusive) {
-        throw new ArgumentException("minInclusive (" + minInclusive +
+        throw new IllegalArgumentException("minInclusive (" + minInclusive +
           ") is more than " + maxExclusive);
       }
       if (minInclusive == maxExclusive) {
@@ -458,7 +458,7 @@ package com.upokecenter.util;
      */
     public long UniformLong(long minInclusive, long maxExclusive) {
       if (minInclusive > maxExclusive) {
-        throw new ArgumentException("minInclusive (" + minInclusive +
+        throw new IllegalArgumentException("minInclusive (" + minInclusive +
           ") is more than " + maxExclusive);
       }
       if (minInclusive == maxExclusive) {
@@ -504,7 +504,7 @@ package com.upokecenter.util;
      */
     public int UniformInt(int maxExclusive) {
       if (maxExclusive < 0) {
-        throw new ArgumentException("maxExclusive (" + maxExclusive +
+        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
           ") is less than 0");
       }
       if (maxExclusive <= 1) {
@@ -562,7 +562,7 @@ package com.upokecenter.util;
      */
     public long UniformLong(long maxExclusive) {
       if (maxExclusive < 0) {
-        throw new ArgumentException("maxExclusive (" + maxExclusive +
+        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
           ") is less than 0");
       }
       if (maxExclusive <= Integer.MAX_VALUE) {

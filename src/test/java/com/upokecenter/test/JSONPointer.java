@@ -25,7 +25,7 @@ import com.upokecenter.numbers.*;
       while (true) {
         if (obj.getType() == CBORType.Array) {
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
-            throw new ArgumentException(pointer);
+            throw new IllegalArgumentException(pointer);
           }
           ++index;
           int[] value = new int[] { 0 };
@@ -36,7 +36,7 @@ import com.upokecenter.numbers.*;
              // Index at the end of the array
               return new JSONPointer(obj, "-");
             }
-            throw new ArgumentException(pointer);
+            throw new IllegalArgumentException(pointer);
           }
           if (newIndex == pointer.length()) {
             return new JSONPointer(obj, pointer.substring(index));
@@ -50,7 +50,7 @@ import com.upokecenter.numbers.*;
             throw new NoSuchElementException(pointer);
           }
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
-            throw new ArgumentException(pointer);
+            throw new IllegalArgumentException(pointer);
           }
           ++index;
           String key = null;
@@ -91,7 +91,7 @@ import com.upokecenter.numbers.*;
                     continue;
                   }
                 }
-                throw new ArgumentException(pointer);
+                throw new IllegalArgumentException(pointer);
               } else {
                 sb.append((char)c);
               }

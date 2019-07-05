@@ -23,11 +23,11 @@ import com.upokecenter.numbers.*;
 
     public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
       if (radix < 2) {
-  throw new ArgumentException("radix (" + radix +
+  throw new IllegalArgumentException("radix (" + radix +
     ") is less than 2");
 }
 if (radix > 36) {
-  throw new ArgumentException("radix (" + radix +
+  throw new IllegalArgumentException("radix (" + radix +
     ") is more than 36");
 }
       EInteger bv = EInteger.FromInt32(0);

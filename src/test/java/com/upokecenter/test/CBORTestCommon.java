@@ -53,7 +53,7 @@ return ToObjectTest.TestToFromObjectRoundTrip(
         case 5:
 return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomInt64(rand));
-        default: throw new ArgumentException();
+        default: throw new IllegalArgumentException();
       }
     }
 
@@ -84,7 +84,7 @@ return
         case 6:
           return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomERational(rand));
-        default: throw new ArgumentException();
+        default: throw new IllegalArgumentException();
       }
     }
 
