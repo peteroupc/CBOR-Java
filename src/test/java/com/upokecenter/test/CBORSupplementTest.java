@@ -163,7 +163,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(
         CBORObject.Null,
         ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
-Assert.assertEquals(
+        Assert.assertEquals(
   CBORObject.True,
   ToObjectTest.TestToFromObjectRoundTrip(true));
       Assert.assertEquals(
@@ -481,12 +481,13 @@ try { if (ms != null) {
       byte[] bytes;
       CBORObject cbor;
       String expected;
-bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (byte)0xd8, 29, 0, (byte)0xff };
+bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (byte)0xd8, 29, 0, (byte)0xff
+         };
       cbor = CBORObject.DecodeFromBytes(bytes);
       expected = "[1,1,3,3,1]";
       Assert.assertEquals(expected, cbor.ToJSONString());
       bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, (byte)0x81, 1, (byte)0xd8, 29, 0, 3, 3, (byte)0xd8,
-        29, 0, (byte)0xff };
+        29, 0, (byte)0xff, };
       cbor = CBORObject.DecodeFromBytes(bytes);
       expected = "[[1],[1],3,3,[1]]";
       Assert.assertEquals(expected, cbor.ToJSONString());
@@ -841,7 +842,8 @@ bytes = new byte[] { (byte)0x9f, (byte)0xd8, 28, 1, (byte)0xd8, 29, 0, 3, 3, (by
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc2, 0x40 }).AsEInteger());
       Assert.assertEquals(
         EInteger.FromString("-1"),
-   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x41, 0x00 }).AsEInteger());
+     CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x41, 0x00
+           }).AsEInteger());
       Assert.assertEquals(
         EInteger.FromString("-1"),
         CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x40 }).AsEInteger());
@@ -1079,54 +1081,54 @@ try { if (ms6 != null) {
     public void TestNegativeBigInts() {
       Assert.assertEquals(
   EInteger.FromString("-257"),
-   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0 }).AsEInteger());
+  CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0 }).AsEInteger());
       Assert.assertEquals(
   EInteger.FromString("-65537"),
   CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0 }).AsEInteger());
       {
 Object objectTemp = EInteger.FromString("-16777217");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x44, 1,
-  0, 0, 0 }).AsEInteger();
+  0, 0, 0, }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-4294967297");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x45, 1,
-  0, 0, 0, 0 }).AsEInteger();
+  0, 0, 0, 0, }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-1099511627777");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x46, 1,
-  0, 0, 0, 0, 0 }).AsEInteger();
+  0, 0, 0, 0, 0, }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-281474976710657");
-    Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x47,
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x47,
           1,
-  0, 0, 0, 0,
-                    0, 0 }).AsEInteger();
+          0, 0, 0, 0,
+          0, 0 }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-72057594037927937");
-    Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x48,
+Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x48,
           1,
-  0, 0, 0, 0,
-                    0, 0, 0 }).AsEInteger();
+          0, 0, 0, 0,
+          0, 0, 0 }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-18446744073709551617");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x49, 1,
-  0, 0, 0, 0, 0, 0, 0, 0 }).AsEInteger();
+  0, 0, 0, 0, 0, 0, 0, 0, }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = EInteger.FromString("-4722366482869645213697");
 Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x4a, 1,
-  0, 0, 0, 0, 0, 0, 0, 0, 0 }).AsEInteger();
+  0, 0, 0, 0, 0, 0, 0, 0, 0, }).AsEInteger();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
     }
@@ -1136,7 +1138,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       CBORObject cbor = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64, (byte)0xd8,
           0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8,
-          0x19, 0x01, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff });
+          0x19, 0x01, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff, });
       String expected =
         "[\"abcd\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());

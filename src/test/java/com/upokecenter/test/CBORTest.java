@@ -51,14 +51,14 @@ import com.upokecenter.numbers.*;
         new byte[] { (byte)(0x80 | 2), 3, 4 },
         bytes);
       cbor = CBORObject.FromObject(new String[] { "a", "b", "c",
- "d", "e" });
+ "d", "e", });
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
       String[] strArray = (String[])cbor.ToObject(String[].class);
       cbor = CBORObject.FromObject(strArray);
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0x9f, 0, 1, 2, 3, 4, 5,
-                    6, 7, (byte)0xff });
+                    6, 7, (byte)0xff, });
       {
         String stringTemp = cbor.ToJSONString();
         String str1817 = "[0,1,2,3,4,5,6,7]";
@@ -87,13 +87,13 @@ import com.upokecenter.numbers.*;
       }
       EInteger[] ranges = {
        EInteger.FromString("-9223372036854776320"),
-  EInteger.FromString("-9223372036854775296"),
-  EInteger.FromString("-512"),
-  EInteger.FromString("512"),
-  EInteger.FromString("9223372036854775295"),
-  EInteger.FromString("9223372036854776319"),
-  EInteger.FromString("18446744073709551103"),
-  EInteger.FromString("18446744073709552127")
+       EInteger.FromString("-9223372036854775296"),
+       EInteger.FromString("-512"),
+       EInteger.FromString("512"),
+       EInteger.FromString("9223372036854775295"),
+       EInteger.FromString("9223372036854776319"),
+       EInteger.FromString("18446744073709551103"),
+       EInteger.FromString("18446744073709552127")
       };
       for (int i = 0; i < ranges.length; i += 2) {
         EInteger bigintTemp = ranges[i];
@@ -118,13 +118,13 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(EInteger.FromRadixString("8877", 16), o.AsEInteger());
       o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x44, (byte)0x88, 0x77,
         0x66,
-        0x55 });
+        0x55, });
       Assert.assertEquals(
   EInteger.FromRadixString("88776655", 16),
   o.AsEInteger());
       o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x47, (byte)0x88, 0x77,
         0x66,
-        0x55, 0x44, 0x33, 0x22 });
+        0x55, 0x44, 0x33, 0x22, });
       Assert.assertEquals(
   EInteger.FromRadixString("88776655443322", 16),
   o.AsEInteger());
@@ -160,26 +160,26 @@ import com.upokecenter.numbers.*;
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, 0x5f, 0x41,
-        0x20, (byte)0xff, (byte)0xff });
-Assert.fail("Should have failed");
+        0x20, (byte)0xff, (byte)0xff, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
     @Test
     public void TestByteStringStreamNoTagsBeforeDefinite() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { 0x5f, 0x41, 0x20, (byte)0xc2, 0x41,
-        0x20, (byte)0xff });
-Assert.fail("Should have failed");
+        0x20, (byte)0xff, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
 
@@ -215,7 +215,7 @@ throw new IllegalStateException("", ex);
         if (!ed.IsInfinity() && !ed.IsNaN()) {
           EInteger bi = ed.AsEInteger();
           if (ed.isIntegral()) {
-            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31)!=
+            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               ed.CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
             }
@@ -225,7 +225,7 @@ throw new IllegalStateException("", ex);
             Assert.fail(ObjectMessage(ed));
           }
           if (ed.isIntegral()) {
-            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63)!=
+            if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
               ed.CanFitInInt64()) {
               Assert.fail(ObjectMessage(ed));
             }
@@ -241,11 +241,11 @@ throw new IllegalStateException("", ex);
     @Test
     public void TestCanFitInSpecificCases() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
-        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a }); // 2217361768.63373
+        0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a, }); // 2217361768.63373
       Assert.assertEquals(
   EInteger.FromString("2217361768"),
   cbor.AsEInteger());
-if (cbor.AsEInteger() .GetSignedBitLengthAsEInteger()
+  if (cbor.AsEInteger() .GetSignedBitLengthAsEInteger()
         .ToInt32Checked() <= 31) {
  Assert.fail();
  }
@@ -253,7 +253,7 @@ if (cbor.AsEInteger() .GetSignedBitLengthAsEInteger()
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x18, 0x2f, 0x32 }); // -2674012278751232
+        0x18, 0x2f, 0x32, }); // -2674012278751232
       Assert.assertEquals(52,
         cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked());
       if (!(cbor.CanFitInInt64())) {
@@ -264,7 +264,7 @@ if (cbor.AsEInteger() .GetSignedBitLengthAsEInteger()
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82,
-        0x10, 0x38, 0x64 }); // -6619136
+        0x10, 0x38, 0x64, }); // -6619136
       Assert.assertEquals(EInteger.FromString("-6619136"), cbor.AsEInteger());
       Assert.assertEquals(-6619136, cbor.AsInt32());
       if (!(cbor.CanTruncatedIntFitInInt32())) {
@@ -275,7 +275,7 @@ if (cbor.AsEInteger() .GetSignedBitLengthAsEInteger()
     @Test
     public void TestCBOREInteger() {
       CBORObject o = CBORObject.DecodeFromBytes(new byte[] { 0x3b, (byte)0xce,
-        (byte)0xe2, 0x5a, 0x57, (byte)0xd8, 0x21, (byte)0xb9, (byte)0xa7 });
+        (byte)0xe2, 0x5a, 0x57, (byte)0xd8, 0x21, (byte)0xb9, (byte)0xa7, });
       Assert.assertEquals(
         EInteger.FromString("-14907577049884506536"),
         o.AsEInteger());
@@ -489,7 +489,7 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
     public void TestCompareB() {
       {
   String stringTemp = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa, 0x7f,
-        (byte)0x80, 0x00, 0x00 }).AsERational().toString();
+        (byte)0x80, 0x00, 0x00, }).AsERational().toString();
         Assert.assertEquals(
           "Infinity",
           stringTemp);
@@ -497,18 +497,18 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       {
     CBORObject objectTemp = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5,
   (byte)0x82, 0x38, (byte)0xc7, 0x3b, 0x00, 0x00, 0x08, (byte)0xbf,
-  (byte)0xda, (byte)0xaf, 0x73, 0x46 });
-   CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a,
+  (byte)0xda, (byte)0xaf, 0x73, 0x46, });
+  CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { 0x3b, 0x5a,
   (byte)0x9b, (byte)0x9a, (byte)0x9c, (byte)0xb4, (byte)0x95, (byte)0xbf,
-  0x71 });
-        AddSubCompare(objectTemp, objectTemp2);
+  0x71, });
+  AddSubCompare(objectTemp, objectTemp2);
       }
       {
     CBORObject objectTemp = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfa,
-  0x1f, (byte)0x80, (byte)0xdb, (byte)0x9b });
-   CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
-  0x31, (byte)0x90, (byte)0xea, 0x16, (byte)0xbe, (byte)0x80, 0x0b, 0x37 });
-        AddSubCompare(objectTemp, objectTemp2);
+  0x1f, (byte)0x80, (byte)0xdb, (byte)0x9b, });
+  CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb,
+  0x31, (byte)0x90, (byte)0xea, 0x16, (byte)0xbe, (byte)0x80, 0x0b, 0x37, });
+  AddSubCompare(objectTemp, objectTemp2);
       }
       CBORObject cbor = CBORObject.FromObjectAndTag(
         Double.NEGATIVE_INFINITY,
@@ -545,11 +545,11 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       CBORObject o1 = null;
       CBORObject o2 = null;
       o1 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xfb, (byte)0x8b, 0x44,
-        (byte)0xf2, (byte)0xa9, 0x0c, 0x27, 0x42, 0x28 });
+        (byte)0xf2, (byte)0xa9, 0x0c, 0x27, 0x42, 0x28, });
       o2 = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x82, 0x38,
         (byte)0xa4, (byte)0xc3, 0x50, 0x02, (byte)0x98, (byte)0xc5, (byte)0xa8,
         0x02, (byte)0xc1, (byte)0xf6, (byte)0xc0, 0x1a, (byte)0xbe, 0x08,
-          0x04, (byte)0x86, (byte)0x99, 0x3e, (byte)0xf1 });
+        0x04, (byte)0x86, (byte)0x99, 0x3e, (byte)0xf1 });
       AddSubCompare(o1, o2);
     }
 
@@ -562,12 +562,12 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
     public void TestDecimalFracExactlyTwoElements() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1 });
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
     @Test
@@ -575,13 +575,13 @@ throw new IllegalStateException("", ex);
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc4, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,
-        1, 2, 3, 4 });
-Assert.fail("Should have failed");
+        1, 2, 3, 4, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
     @Test
@@ -589,13 +589,13 @@ throw new IllegalStateException("", ex);
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc5, (byte)0x82, (byte)0xc2, 0x41, 1,
         0x1a,
-        1, 2, 3, 4 });
-Assert.fail("Should have failed");
+        1, 2, 3, 4, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
 
@@ -704,13 +704,13 @@ throw new IllegalStateException("", ex);
      // for all these test cases
       CBORObject obj;
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x82,
-     0x3a, 0x00, 0x1c, 0x2d, 0x0d, 0x1a, 0x13, 0x6c, (byte)0xa1, (byte)0x97 });
+     0x3a, 0x00, 0x1c, 0x2d, 0x0d, 0x1a, 0x13, 0x6c, (byte)0xa1, (byte)0x97, });
       CBORTestCommon.AssertRoundTrip(obj);
       obj = CBORObject.DecodeFromBytes(new byte[] { (byte)0xda, 0x00, 0x14,
         0x57, (byte)0xce, (byte)0xc5, (byte)0x82, 0x1a, 0x46, 0x5a, 0x37,
         (byte)0x87, (byte)0xc3, 0x50, 0x5e, (byte)0xec, (byte)0xfd, 0x73,
-          0x50, 0x64, (byte)0xa1, 0x1f, 0x10, (byte)0xc4, (byte)0xff,
-          (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12 });
+        0x50, 0x64, (byte)0xa1, 0x1f, 0x10, (byte)0xc4, (byte)0xff,
+        (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12 });
       CBORTestCommon.AssertRoundTrip(obj);
       int actual = ToObjectTest.TestToFromObjectRoundTrip(
         EDecimal.FromString("333333e-2"))
@@ -735,7 +735,7 @@ throw new IllegalStateException("", ex);
               .AsEDecimal().IsNaN())) {
  Assert.fail();
  }
-      for (int i = -65539; i <= 65539; ++i) {
+              for (int i = -65539; i <= 65539; ++i) {
         CBORTestCommon.AssertJSONSer(
           ToObjectTest.TestToFromObjectRoundTrip((float)i),
           TestCommon.IntToString(i));
@@ -905,7 +905,7 @@ try { if (ms2b != null) {
     public void TestLong() {
       long[] ranges = {
         -65539, 65539, 0xfffff000L, 0x100000400L,
-        Long.MAX_VALUE - 1000, Long.MAX_VALUE, Long.MIN_VALUE, Long.MIN_VALUE +
+        Long.MAX_VALUE - 1000, Long.MAX_VALUE, Long.MIN_VALUE, Long.MIN_VALUE +,
           1000 };
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
@@ -913,7 +913,7 @@ try { if (ms2b != null) {
           if (!(ToObjectTest.TestToFromObjectRoundTrip(j).isIntegral())) {
  Assert.fail();
  }
-if (!(ToObjectTest.TestToFromObjectRoundTrip(j).CanFitInInt64())) {
+if (!(ToObjectTest.TestToFromObjectRoundTrip(j) .CanFitInInt64())) {
  Assert.fail();
  }
           if (!(ToObjectTest.TestToFromObjectRoundTrip(j)
@@ -961,7 +961,7 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(j).CanFitInInt64())) {
       }
       Assert.assertEquals(0, CBORObject.True.size());
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xbf, 0x61, 0x61, 2,
-                    0x61, 0x62, 4, (byte)0xff });
+                    0x61, 0x62, 4, (byte)0xff, });
       Assert.assertEquals(2, cbor.size());
       TestCommon.AssertEqualsHashCode(
         ToObjectTest.TestToFromObjectRoundTrip(2),
@@ -1022,8 +1022,8 @@ if (!(ToObjectTest.TestToFromObjectRoundTrip(j).CanFitInInt64())) {
       for (int i = 0; i < 1000; ++i) {
         obj = CBORTestCommon.RandomCBORObject(rand);
         CBORTestCommon.AssertRoundTrip(obj);
-String jsonString = "";
-try {
+        String jsonString = "";
+        try {
                   jsonString = obj.ToJSONString();
 } catch (CBORException ex) {
 jsonString = "";
@@ -1050,46 +1050,46 @@ throw new IllegalStateException("", ex);
       bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x20 };
       try {
  CBORObject.DecodeFromBytes(bytes);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
      // Shared ref is non-integer
       bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, (byte)0xc4, (byte)0x82,
-        0x27, 0x19, (byte)0xff, (byte)0xff };
+        0x27, 0x19, (byte)0xff, (byte)0xff, };
       try {
  CBORObject.DecodeFromBytes(bytes);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
      // Shared ref is non-number
       bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x61, 0x41 };
       try {
  CBORObject.DecodeFromBytes(bytes);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
      // Shared ref is out of range
       bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x01 };
       try {
  CBORObject.DecodeFromBytes(bytes);
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
 
@@ -1191,7 +1191,7 @@ try { if (ms != null) {
       for (int i = 0; i < 2000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
-if (array.length > 50000) {
+        if (array.length > 50000) {
   System.out.println("" + array.length);
 }
        // System.out.println(originalObject);
@@ -1444,12 +1444,12 @@ try { if (ms != null) {
       EInteger[] ranges = {
         EInteger.FromString("37"),
         EInteger.FromString("65539"),
-       EInteger.FromString("2147483147"),
-  EInteger.FromString("2147484147"),
-  EInteger.FromString("9223372036854775307"),
-  EInteger.FromString("9223372036854776307"),
-  EInteger.FromString("18446744073709551115"),
-  EInteger.FromString("18446744073709551615") };
+        EInteger.FromString("2147483147"),
+        EInteger.FromString("2147484147"),
+        EInteger.FromString("9223372036854775307"),
+        EInteger.FromString("9223372036854776307"),
+        EInteger.FromString("18446744073709551115"),
+        EInteger.FromString("18446744073709551615") };
       if (CBORObject.True.isTagged()) {
  Assert.fail();
  }
@@ -1464,7 +1464,7 @@ try { if (ms != null) {
         while (true) {
           EInteger ei = bigintTemp;
           EInteger bigintNext = ei.Add(EInteger.FromInt32(1));
-        if (bigintTemp.GetSignedBitLengthAsEInteger().ToInt32Checked() <=
+          if (bigintTemp.GetSignedBitLengthAsEInteger().ToInt32Checked() <=
             31) {
             int bc = ei.ToInt32Checked();
             if (bc >= -1 && bc <= 37) {
@@ -1491,7 +1491,8 @@ try { if (ms != null) {
           Assert.assertEquals(1, tags.length);
           Assert.assertEquals(bigintTemp, obj.getMostOuterTag());
           Assert.assertEquals(bigintTemp, obj.getMostInnerTag());
-          Assert.assertEquals(0, obj.AsInt32()); if (!bigintTemp.equals(maxuint)) {
+          Assert.assertEquals(0, obj.AsInt32());
+          if (!bigintTemp.equals(maxuint)) {
             EInteger bigintNew = bigintNext;
             if (bigintNew.equals(EInteger.FromString("264")) ||
                 bigintNew.equals(EInteger.FromString("265"))) {
@@ -1557,23 +1558,23 @@ try { if (ms != null) {
       CBORObject cbor;
      // Tag 264
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xd9, 0x01, 0x08, (byte)0x82,
-        (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2 });
+        (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2, });
       CBORTestCommon.AssertRoundTrip(cbor);
      // Tag 265
       cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xd9, 0x01, 0x09, (byte)0x82,
-        (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2 });
+        (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2, });
       CBORTestCommon.AssertRoundTrip(cbor);
     }
     @Test
     public void TestTagThenBreak() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff });
-Assert.fail("Should have failed");
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
 
@@ -1596,26 +1597,26 @@ throw new IllegalStateException("", ex);
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, 0x7f, 0x61,
-        0x20, (byte)0xff, (byte)0xff });
-Assert.fail("Should have failed");
+        0x20, (byte)0xff, (byte)0xff, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
     @Test
     public void TestTextStringStreamNoTagsBeforeDefinite() {
       try {
  CBORTestCommon.FromBytesTestAB(new byte[] { 0x7f, 0x61, 0x20, (byte)0xc0, 0x61,
-        0x20, (byte)0xff });
-Assert.fail("Should have failed");
+        0x20, (byte)0xff, });
+        Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
 
@@ -1636,8 +1637,8 @@ throw new IllegalStateException("", ex);
 
     private static void TestDecimalString(String r) {
  CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(r));
-      CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
-      TestCommon.CompareTestEqual(o, o2);
+ CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
+ TestCommon.CompareTestEqual(o, o2);
     }
 
     private static void TestTextStringStreamOne(String longString) {

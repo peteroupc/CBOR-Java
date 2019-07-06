@@ -75,7 +75,7 @@ if (radix > 36) {
         } else {
           builder.append(ValueDigitsLower.charAt(digit4));
         }
-      int digits = (((((digit * radix) + digit2) *
+        int digits = (((((digit * radix) + digit2) *
           radix) + digit3) * radix) + digit4;
         bv = bv.Multiply(radixpow4);
         EInteger bigintTmp = EInteger.FromInt32(digits);

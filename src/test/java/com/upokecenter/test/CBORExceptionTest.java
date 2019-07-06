@@ -13,7 +13,7 @@ import com.upokecenter.cbor.*;
 // NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
+ throw new IllegalStateException("", ex);
 }
     }
   }

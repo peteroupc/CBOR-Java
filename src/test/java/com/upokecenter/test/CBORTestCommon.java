@@ -42,13 +42,13 @@ return ToObjectTest.TestToFromObjectRoundTrip(
     rand,
     Integer.MAX_VALUE));
         case 2:
-          return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEInteger(rand));
         case 3:
-          return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEFloat(rand));
         case 4:
-       return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEDecimal(rand));
         case 5:
 return
@@ -70,19 +70,19 @@ return ToObjectTest.TestToFromObjectRoundTrip(
     rand,
     Integer.MAX_VALUE));
         case 2:
-          return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEInteger(rand));
         case 3:
-          return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEFloat(rand));
         case 4:
-       return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomEDecimal(rand));
         case 5:
 return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomInt64(rand));
         case 6:
-          return
+        return
   ToObjectTest.TestToFromObjectRoundTrip(RandomObjects.RandomERational(rand));
         default: throw new IllegalArgumentException();
       }
@@ -106,7 +106,7 @@ return
       int tag = 0;
       if (rand.UniformInt(2) == 0) {
         int[] tagselection = { 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
-          30, 0, 1, 25, 26, 27 };
+          30, 0, 1, 25, 26, 27, };
         tag = tagselection[rand.UniformInt(tagselection.length)];
       } else {
         tag = rand.UniformInt(0x1000000);
@@ -210,8 +210,8 @@ return
         } catch (ArithmeticException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt16();
@@ -219,8 +219,8 @@ return
         } catch (ArithmeticException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt32();
@@ -228,8 +228,8 @@ return
         } catch (ArithmeticException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt64();
@@ -237,8 +237,8 @@ return
         } catch (ArithmeticException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsSingle();
@@ -258,21 +258,23 @@ return
         } catch (ArithmeticException ex) {
          // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         return;
       }
       try {
         o.AsSingle();
       } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new
           IllegalStateException("", ex);
       }
       try {
         o.AsDouble();
       } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new
           IllegalStateException("", ex);
       }
     }

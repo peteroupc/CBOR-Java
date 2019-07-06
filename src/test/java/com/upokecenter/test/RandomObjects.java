@@ -141,7 +141,7 @@ private RandomObjects() {
       StringAndBigInt sabi = StringAndBigInt.Generate(
   r,
   2 + r.UniformInt(35));
-        return sabi.getBigIntValue();
+  return sabi.getBigIntValue();
       } else {
         int count = r.UniformInt(60) + 1;
         byte[] bytes = new byte[count];
@@ -224,7 +224,7 @@ private RandomObjects() {
       }
       if (r.UniformInt(2) == 0) {
         sb.append('E');
-     count = (r.UniformInt(100) < 10) ? r.UniformInt(5000) :
+        count = (r.UniformInt(100) < 10) ? r.UniformInt(5000) :
           r.UniformInt(20);
         if (count != 0) {
           sb.append(r.UniformInt(2) == 0 ? '+' : '-');

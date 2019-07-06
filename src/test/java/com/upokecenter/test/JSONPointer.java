@@ -14,7 +14,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public final class JSONPointer {
-    public static JSONPointer fromPointer(CBORObject obj, String pointer) {
+    public static JSONPointer FromPointer(CBORObject obj, String pointer) {
       int index = 0;
       if (pointer == null) {
         throw new NullPointerException("pointer");
@@ -29,7 +29,7 @@ import com.upokecenter.numbers.*;
           }
           ++index;
           int[] value = new int[] { 0 };
-          int newIndex = readPositiveInteger(pointer, index, value);
+          int newIndex = ReadPositiveInteger(pointer, index, value);
           if (value[0] < 0) {
             if (index < pointer.length() && pointer.charAt(index) == '-' &&
                 (index + 1 == pointer.length() || pointer.charAt(index + 1) == '/')) {
@@ -127,15 +127,15 @@ import com.upokecenter.numbers.*;
      * string.
      * @throws NullPointerException The parameter {@code pointer} is null.
      */
-    public static Object getObject(CBORObject obj, String pointer) {
+    public static Object GetObject(CBORObject obj, String pointer) {
       if (pointer == null) {
         throw new NullPointerException("pointer");
       }
       return (pointer.length() == 0) ? obj :
-        JSONPointer.fromPointer(obj, pointer).getValue();
+        JSONPointer.FromPointer(obj, pointer).GetValue();
     }
 
-    private static int readPositiveInteger(
+    private static int ReadPositiveInteger(
       String str,
       int index,
       int[] result) {
@@ -185,11 +185,11 @@ import com.upokecenter.numbers.*;
     private CBORObject jsonobj;
 
     private JSONPointer(CBORObject jsonobj, String refValue) {
-      this.jsonobj = jsonobj;
-      this.refValue = refValue;
+this.jsonobj = jsonobj;
+this.refValue = refValue;
     }
 
-    public boolean exists() {
+    public boolean Exists() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
           return false;
@@ -211,7 +211,7 @@ import com.upokecenter.numbers.*;
      * @return The index contained in this instance, or -1 if the object isn't a
      * JSON array or is greater than the array's length.
      */
-    public int getIndex() {
+    public int GetIndex() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
           return ((CBORObject)this.jsonobj).size();
@@ -225,30 +225,30 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    public String getKey() {
+    public String GetKey() {
       return this.refValue;
     }
 
-    public CBORObject getParent() {
+    public CBORObject GetParent() {
       return this.jsonobj;
     }
 
-    public CBORObject getValue() {
+    public CBORObject GetValue() {
       if (this.refValue.length() == 0) {
         return this.jsonobj;
       }
-  CBORObject tmpcbor = null;
+      CBORObject tmpcbor = null;
       if (this.jsonobj.getType() == CBORType.Array) {
-        int index = this.getIndex();
+        int index = this.GetIndex();
         if (index >= 0 && index < ((CBORObject)this.jsonobj).size()) {
     tmpcbor = this.jsonobj;
-       return tmpcbor.get(index);
+    return tmpcbor.get(index);
         } else {
           return null;
         }
       } else if (this.jsonobj.getType() == CBORType.Map) {
         tmpcbor = this.jsonobj;
-       return tmpcbor.get(this.refValue);
+        return tmpcbor.get(this.refValue);
       } else {
         return (this.refValue.length() == 0) ? this.jsonobj : null;
       }
@@ -268,7 +268,7 @@ import com.upokecenter.numbers.*;
      * search @param keyToFind the key to search for. @return a map: <ul>
      * <li>The keys in the map are JSON Pointers to the objects within
      * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
-     * actual JSON object, call JSONPointer.getObject, passing <i>root</i>
+     * actual JSON object, call JSONPointer.GetObject, passing <i>root</i>
      * and the pointer as arguments.</li> <li>The values in the map are the
      * values of each of those keys named <i>keyToFind</i>.</li></ul> The
      * JSON Pointers are relative to the root object.
@@ -276,9 +276,9 @@ import com.upokecenter.numbers.*;
      * @param keyToFind The parameter {@code keyToFind} is not documented yet.
      * @return An Map(string, object) object.
      */
-    public static Map<String, Object> getPointersWithKeyAndRemove(CBORObject root, String keyToFind) {
+    public static Map<String, Object> GetPointersWithKeyAndRemove(CBORObject root, String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
-      getPointersWithKey(root, keyToFind, "", list, true);
+      GetPointersWithKey(root, keyToFind, "", list, true);
       return list;
     }
 
@@ -295,7 +295,7 @@ import com.upokecenter.numbers.*;
      * search @param keyToFind the key to search for. @return a map: <ul>
      * <li>The keys in the map are JSON Pointers to the objects within
      * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
-     * actual JSON object, call JSONPointer.getObject, passing <i>root</i>
+     * actual JSON object, call JSONPointer.GetObject, passing <i>root</i>
      * and the pointer as arguments.</li> <li>The values in the map are the
      * values of each of those keys named <i>keyToFind</i>.</li></ul> The
      * JSON Pointers are relative to the root object.
@@ -303,15 +303,15 @@ import com.upokecenter.numbers.*;
      * @param keyToFind The parameter {@code keyToFind} is not documented yet.
      * @return An Map(string, object) object.
      */
-    public static Map<String, Object> getPointersWithKey(
+    public static Map<String, Object> GetPointersWithKey(
       CBORObject root,
       String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
-      getPointersWithKey(root, keyToFind, "", list, false);
+      GetPointersWithKey(root, keyToFind, "", list, false);
       return list;
     }
 
-    private static void getPointersWithKey(
+    private static void GetPointersWithKey(
         CBORObject root,
         String keyToFind,
         String currentPointer,
@@ -335,7 +335,7 @@ import com.upokecenter.numbers.*;
           String ptrkey = key.AsString();
           ptrkey = ptrkey.replace("~", "~0");
           ptrkey = ptrkey.replace("/", "~1");
-          getPointersWithKey(
+          GetPointersWithKey(
             rootObj.get(key),
             keyToFind,
             currentPointer + "/" + ptrkey,
@@ -345,7 +345,7 @@ import com.upokecenter.numbers.*;
       } else if (root.getType() == CBORType.Array) {
         for (int i = 0; i < root.size(); ++i) {
           String ptrkey = EInteger.FromInt32(i).toString();
-          getPointersWithKey(
+          GetPointersWithKey(
             root.get(i),
             keyToFind,
             currentPointer + "/" + ptrkey,
