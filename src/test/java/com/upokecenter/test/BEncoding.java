@@ -134,22 +134,22 @@ private BEncoding() {
           char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
           chars[count--] = digit;
           intlongValue = intdivValue;
-      }
-      while (intlongValue > 9) {
-        int intdivValue = (intlongValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      if (intlongValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)intlongValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 12 - count);
+        }
+        while (intlongValue > 9) {
+          int intdivValue = (intlongValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        if (intlongValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)intlongValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 12 - count);
       } else {
         chars = new char[24];
         count = 23;
@@ -161,22 +161,22 @@ private BEncoding() {
           char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
-      }
-      while (longValue > 9) {
-        long divValue = (longValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      if (longValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)longValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 24 - count);
+        }
+        while (longValue > 9) {
+          long divValue = (longValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        if (longValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)longValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 24 - count);
       }
     }
 
@@ -243,9 +243,9 @@ private BEncoding() {
         }
         if (hasNonStringKeys) {
           HashMap<String, CBORObject> valueSMap = new HashMap<String, CBORObject>();
-         // Copy to a map with String keys, since
-         // some keys could be duplicates
-         // when serialized to strings
+          // Copy to a map with String keys, since
+          // some keys could be duplicates
+          // when serialized to strings
           for (CBORObject key : obj.getKeys()) {
             CBORObject value = obj.get(key);
             String str = (key.getType() == CBORType.TextString) ?

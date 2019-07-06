@@ -83,35 +83,35 @@ try { if (ms != null) {
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get(0).AsInt64());
       {
-String stringTemp = beo.get(1).AsString();
-Assert.assertEquals(
-  "two",
-  stringTemp);
-}
+        String stringTemp = beo.get(1).AsString();
+        Assert.assertEquals(
+          "two",
+          stringTemp);
+      }
       Assert.assertEquals(3, beo.get(2).AsInt64());
       {
-String stringTemp = beo.get(3).AsString();
-Assert.assertEquals(
-  "four",
-  stringTemp);
-}
+        String stringTemp = beo.get(3).AsString();
+        Assert.assertEquals(
+          "four",
+          stringTemp);
+      }
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get(0).AsInt64());
       {
-String stringTemp = beo.get(1).AsString();
-Assert.assertEquals(
-  "two",
-  stringTemp);
-}
+        String stringTemp = beo.get(1).AsString();
+        Assert.assertEquals(
+          "two",
+          stringTemp);
+      }
       Assert.assertEquals(3, beo.get(2).AsInt64());
       {
-String stringTemp = beo.get(3).AsString();
-Assert.assertEquals(
-  "four",
-  stringTemp);
-}
+        String stringTemp = beo.get(3).AsString();
+        Assert.assertEquals(
+          "four",
+          stringTemp);
+      }
     }
 
     @Test
@@ -124,35 +124,35 @@ Assert.assertEquals(
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get("zero").AsInt64());
       {
-String stringTemp = beo.get("one").AsString();
-Assert.assertEquals(
-  "two",
-  stringTemp);
-}
+        String stringTemp = beo.get("one").AsString();
+        Assert.assertEquals(
+          "two",
+          stringTemp);
+      }
       Assert.assertEquals(3, beo.get("two").AsInt64());
       {
-String stringTemp = beo.get("three").AsString();
-Assert.assertEquals(
-  "four",
-  stringTemp);
-}
+        String stringTemp = beo.get("three").AsString();
+        Assert.assertEquals(
+          "four",
+          stringTemp);
+      }
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
       Assert.assertEquals(4, beo.size());
       Assert.assertEquals(1, beo.get("zero").AsInt64());
       {
-String stringTemp = beo.get("one").AsString();
-Assert.assertEquals(
-  "two",
-  stringTemp);
-}
+        String stringTemp = beo.get("one").AsString();
+        Assert.assertEquals(
+          "two",
+          stringTemp);
+      }
       Assert.assertEquals(3, beo.get("two").AsInt64());
       {
-String stringTemp = beo.get("three").AsString();
-Assert.assertEquals(
-  "four",
-  stringTemp);
-}
+        String stringTemp = beo.get("three").AsString();
+        Assert.assertEquals(
+          "four",
+          stringTemp);
+      }
     }
 
     @Test
@@ -161,7 +161,8 @@ Assert.assertEquals(
       DoTestString(" ");
       DoTestString("test");
 
-  DoTestString(TestCommon.Repeat("three", 15));
+      DoTestString(
+            TestCommon.Repeat("three", 15));
       DoTestString("te\u007fst");
       DoTestString("te\u0080st");
       DoTestString("te\u3000st");

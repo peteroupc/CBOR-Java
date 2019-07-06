@@ -138,10 +138,10 @@ private RandomObjects() {
         return sabi.getBigIntValue();
       }
       if (selection < 50) {
-      StringAndBigInt sabi = StringAndBigInt.Generate(
-  r,
-  2 + r.UniformInt(35));
-  return sabi.getBigIntValue();
+        StringAndBigInt sabi = StringAndBigInt.Generate(
+          r,
+          2 + r.UniformInt(35));
+        return sabi.getBigIntValue();
       } else {
         int count = r.UniformInt(60) + 1;
         byte[] bytes = new byte[count];

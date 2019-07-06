@@ -188,8 +188,9 @@ ToObjectTest.TestToFromObjectRoundTrip((double)2.5)
           stringTemp);
       }
       {
+        double dvalue = 328323;
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((double)328323)
+ToObjectTest.TestToFromObjectRoundTrip(dvalue)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "328323",
@@ -618,8 +619,13 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         Assert.assertEquals(objectTemp, objectTemp2);
       }
 
-  Assert.assertTrue(ToObjectTest.TestToFromObjectRoundTrip(ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
-                .ToObject(ERational.class)).IsNaN());
+      boolean
+
+  bnan=(ToObjectTest.TestToFromObjectRoundTrip(ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)ToObject(ERational.class))
+    .IsNaN());
+      if (!(bnan)) {
+ Assert.fail();
+ }
       {
         Object objectTemp = CBORTestCommon.RatPosInf;
         Object objectTemp2 =
