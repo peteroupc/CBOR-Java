@@ -458,13 +458,13 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
         ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf));
 
       boolean bval = ToObjectTest.TestToFromObjectRoundTrip(
-           CBORTestCommon.FloatNegInf) .IsInfinity();
+           CBORTestCommon.FloatNegInf).IsInfinity();
       if (!(bval)) {
  Assert.fail();
  }
 
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
-            CBORTestCommon.RatPosInf) .IsInfinity())) {
+            CBORTestCommon.RatPosInf).IsInfinity())) {
  Assert.fail();
  }
 
@@ -800,13 +800,19 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
     public void TestHalfPrecision() {
       CBORObject o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7c, 0x00 });
-      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle(), 0f);
+      if (o.AsSingle() != Float.POSITIVE_INFINITY) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x00, 0x00 });
-      Assert.assertEquals(0f, o.AsSingle(), 0f);
+      if (o.AsSingle() != 0f) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, (byte)0xfc, 0x00 });
-      Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle(), 0f);
+      if (o.AsSingle() != Float.NEGATIVE_INFINITY) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7e, 0x00 });
       if (!(Float.isNaN(o.AsSingle())))Assert.fail();

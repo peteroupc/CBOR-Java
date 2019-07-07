@@ -594,7 +594,7 @@ ToObjectTest.TestToFromObjectRoundTrip((double)2.5).AsEInteger()
         double dbl = 328323;
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(dbl)
-            .AsEInteger() .toString();
+            .AsEInteger().toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
@@ -1547,7 +1547,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         // Try a random double with a given
         // exponent
         Object o = RandomObjects.RandomDouble(rand, i);
-        CBORObject cbornumber = ToObjectTest .TestToFromObjectRoundTrip(o);
+        CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(o);
         if (!(cbornumber.CanFitInDouble())) {
  Assert.fail();
  }
@@ -5757,7 +5757,6 @@ try { if (msjson != null) {
  } } catch (java.io.IOException ex) {}
 }
 }
-
     }
 
     @Test
