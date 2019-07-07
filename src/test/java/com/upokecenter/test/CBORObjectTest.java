@@ -1673,7 +1673,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         "8000000100000000",
         "8000000000010000",
       };
-      for (String : strings) {
+      for (String str : strings) {
         ei = EInteger.FromRadixString(str, 16);
         if (CBORObject.FromObject(ei).CanFitInInt64()) {
  Assert.fail();
@@ -1987,7 +1987,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         "8000000100000000",
         "8000000000010000",
       };
-      for (String : strings) {
+      for (String str : strings) {
         ei = EInteger.FromRadixString(str, 16);
         if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
  Assert.fail();
@@ -5736,7 +5736,6 @@ try { if (msjson != null) {
       }
     }
     private static void ReadJsonFail(byte[] msbytes) {
-      try {
         {
 java.io.ByteArrayInputStream msjson = null;
 try {
@@ -5758,9 +5757,7 @@ try { if (msjson != null) {
  } } catch (java.io.IOException ex) {}
 }
 }
-      } catch (IOException ex) {
-        Assert.fail(ex.getMessage());
-      }
+
     }
 
     @Test

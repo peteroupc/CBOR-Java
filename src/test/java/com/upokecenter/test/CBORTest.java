@@ -803,7 +803,7 @@ ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
       Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle(), 0f);
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x00, 0x00 });
-      Assert.assertEquals(0f, o.AsSingle());
+      Assert.assertEquals(0f, o.AsSingle(), 0f);
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, (byte)0xfc, 0x00 });
       Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle(), 0f);

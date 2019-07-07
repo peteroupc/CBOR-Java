@@ -73,7 +73,7 @@ import com.upokecenter.cbor.*;
         "-0.000e+999999999999",
         "-0.000e-999999999999",
       };
-      for (String : assertNegatives) {
+      for (String str : assertNegatives) {
         cbor = CBORDataUtilities.ParseJSONNumber(str, false, false, true);
         this.AssertNegative(cbor);
       }
