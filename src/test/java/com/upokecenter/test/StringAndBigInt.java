@@ -23,13 +23,13 @@ import com.upokecenter.numbers.*;
 
     public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
       if (radix < 2) {
-  throw new IllegalArgumentException("radix (" + radix +
-    ") is less than 2");
-}
-if (radix > 36) {
-  throw new IllegalArgumentException("radix (" + radix +
-    ") is more than 36");
-}
+        throw new IllegalArgumentException("radix (" + radix +
+          ") is less than 2");
+      }
+      if (radix > 36) {
+        throw new IllegalArgumentException("radix (" + radix +
+          ") is more than 36");
+      }
       EInteger bv = EInteger.FromInt32(0);
       StringAndBigInt sabi = new StringAndBigInt();
       int numDigits = 1 + rand.UniformInt(400);

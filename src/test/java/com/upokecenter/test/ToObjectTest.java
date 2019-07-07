@@ -63,9 +63,11 @@ import com.upokecenter.numbers.*;
       CBORObject numbers = CBORObjectTest.GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-      String numberString = (String)numberinfo.get("number").ToObject(String.class);
+        String numberString = (String)numberinfo.get("number")
+          .ToObject(String.class);
         CBORObject cbornumber =
-  ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(numberString));
+          ToObjectTest.TestToFromObjectRoundTrip(
+            EDecimal.FromString(numberString));
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
           Assert.assertEquals(
             numberinfo.get("integer").ToObject(String.class),
@@ -85,7 +87,7 @@ import com.upokecenter.numbers.*;
 
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)0.75)
+ToObjectTest.TestToFromObjectRoundTrip(0.75f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
@@ -93,7 +95,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)0.75)
       }
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)0.99)
+ToObjectTest.TestToFromObjectRoundTrip(0.99f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
@@ -101,7 +103,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)0.99)
       }
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)0.0000000000000001)
+ToObjectTest.TestToFromObjectRoundTrip(0.0000000000000001f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
@@ -109,7 +111,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)0.0000000000000001)
       }
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)0.5)
+ToObjectTest.TestToFromObjectRoundTrip(0.5f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
@@ -117,7 +119,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)0.5)
       }
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)1.5)
+ToObjectTest.TestToFromObjectRoundTrip(1.5f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "1",
@@ -125,7 +127,7 @@ ToObjectTest.TestToFromObjectRoundTrip((float)1.5)
       }
       {
         String stringTemp =
-ToObjectTest.TestToFromObjectRoundTrip((float)2.5)
+ToObjectTest.TestToFromObjectRoundTrip(2.5f)
             .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "2",
@@ -621,8 +623,10 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
 
       boolean
 
-  bnan=(ToObjectTest.TestToFromObjectRoundTrip(ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)ToObject(ERational.class))
-    .IsNaN());
+  bnan = ToObjectTest.TestToFromObjectRoundTrip(
+        ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
+        .ToObject(ERational.class))
+    .IsNaN();
       if (!(bnan)) {
  Assert.fail();
  }
@@ -641,7 +645,8 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       Assert.assertTrue(
-  ToObjectTest.TestToFromObjectRoundTrip(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
+  ToObjectTest.TestToFromObjectRoundTrip(
+    ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
           .ToObject(ERational.class)).IsNaN());
     }
     @Test
@@ -773,8 +778,10 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         throw new IllegalStateException("", ex);
       }
       try {
-ToObjectTest.TestToFromObjectRoundTrip("") .ToObject(int.class);
-Assert.fail("Should have failed");
+        CBORObject secbor =
+ToObjectTest.TestToFromObjectRoundTrip("");
+        secbor.ToObject(int.class);
+        Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -918,17 +925,17 @@ Assert.fail("Should have failed");
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if ((boolean)numberinfo.get("int64").AsBoolean()) {
           Assert.assertEquals(
-   TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
-   cbornumber.ToObject(long.class));
+  TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
+  cbornumber.ToObject(long.class));
           if (isdouble) {
             Assert.assertEquals(
-   TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
-   cbornumberdouble.ToObject(long.class));
+  TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
+  cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
             Assert.assertEquals(
-   TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
-   cbornumbersingle.ToObject(long.class));
+  TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(String.class)),
+  cbornumbersingle.ToObject(long.class));
           }
         } else {
           try {
@@ -1124,7 +1131,7 @@ Assert.fail("Should have failed");
  Assert.fail();
  }
       Assert.assertEquals(999, ao.getPropA());
-      if (ao.getFloatProp() != (float)3.5) {
+      if (ao.getFloatProp() != 3.5f) {
         Assert.fail();
       }
       if (ao.getDoubleProp() != 4.5) {

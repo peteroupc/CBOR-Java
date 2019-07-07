@@ -51,28 +51,28 @@ import com.upokecenter.cbor.*;
           stringTemp);
       }
       String[] assertNegatives = new String[] {
-    "-0",
-    "-0.0",
-    "-0.0000",
-    "-0e0",
-    "-0e+1",
-    "-0e-1",
-    "-0e+999999999999",
-    "-0e-999999999999",
-    "-0.0e0",
-    "-0.0e+1",
-    "-0.0e-1",
-    "-0.0e+999999999999",
-    "-0.0e-999999999999",
-    "-0.000e0",
-    "-0.000e+0",
-    "-0.000e-0",
-    "-0.000e1",
-    "-0.000e+1",
-    "-0.000e-1",
-    "-0.000e+999999999999",
-    "-0.000e-999999999999",
-    };
+        "-0",
+        "-0.0",
+        "-0.0000",
+        "-0e0",
+        "-0e+1",
+        "-0e-1",
+        "-0e+999999999999",
+        "-0e-999999999999",
+        "-0.0e0",
+        "-0.0e+1",
+        "-0.0e-1",
+        "-0.0e+999999999999",
+        "-0.0e-999999999999",
+        "-0.000e0",
+        "-0.000e+0",
+        "-0.000e-0",
+        "-0.000e1",
+        "-0.000e+1",
+        "-0.000e-1",
+        "-0.000e+999999999999",
+        "-0.000e-999999999999",
+      };
       for (String : assertNegatives) {
         cbor = CBORDataUtilities.ParseJSONNumber(str, false, false, true);
         this.AssertNegative(cbor);
@@ -80,60 +80,16 @@ import com.upokecenter.cbor.*;
     }
     @Test
     public void TestParseJSONNumberNegativeZero() {
-      {
+      String[] strings = new String[] {
+        "-0", "0", "-0E+0", "0", "-0E-0", "0", "-0E-1", "0.0",
+        "-0.00", "0.00", "-0.00E+0", "0.00", "-0.00E-0", "0.00",
+        "-0.00E-1", "0.000",
+      };
+      for (int i = 0; i < strings.length; i += 2) {
         String stringTemp = CBORDataUtilities
-                  .ParseJSONNumber("-0").toString();
+                  .ParseJSONNumber(strings[i]).toString();
         Assert.assertEquals(
-          "0",
-          stringTemp);
-      }
-      {
-     String stringTemp = CBORDataUtilities.ParseJSONNumber("-0E+0")
-.toString();
-Assert.assertEquals(
-          "0",
-          stringTemp);
-      }
-      {
-     String stringTemp = CBORDataUtilities.ParseJSONNumber("-0E-0")
-.toString();
-Assert.assertEquals(
-          "0",
-          stringTemp);
-      }
-      {
-     String stringTemp = CBORDataUtilities.ParseJSONNumber("-0E-1")
-.toString();
-Assert.assertEquals(
-          "0.0",
-          stringTemp);
-      }
-      {
-     String stringTemp = CBORDataUtilities.ParseJSONNumber("-0.00")
-.toString();
-Assert.assertEquals(
-          "0.00",
-          stringTemp);
-      }
-      {
-  String stringTemp = CBORDataUtilities.ParseJSONNumber("-0.00E+0")
-.toString();
-Assert.assertEquals(
-          "0.00",
-          stringTemp);
-      }
-      {
-  String stringTemp = CBORDataUtilities.ParseJSONNumber("-0.00E-0")
-.toString();
-Assert.assertEquals(
-          "0.00",
-          stringTemp);
-      }
-      {
-  String stringTemp = CBORDataUtilities.ParseJSONNumber("-0.00E-1")
-.toString();
-Assert.assertEquals(
-          "0.000",
+          strings[i + 1],
           stringTemp);
       }
     }
@@ -190,11 +146,10 @@ Assert.assertEquals(
       if (CBORDataUtilities.ParseJSONNumber(null, false, false) != null) {
         Assert.fail();
       }
-      if (
-  CBORDataUtilities.ParseJSONNumber(
-    "",
-    false,
-    false) != null) {
+      if (CBORDataUtilities.ParseJSONNumber(
+        "",
+        false,
+        false) != null) {
         Assert.fail();
       }
       if (CBORDataUtilities.ParseJSONNumber("xyz", false, false) != null) {
@@ -238,11 +193,10 @@ Assert.assertEquals(
       }
       CBORObject cbor = CBORDataUtilities.ParseJSONNumber("2e-2147483648");
       CBORTestCommon.AssertJSONSer(cbor, "2E-2147483648");
-      if (
-  CBORDataUtilities.ParseJSONNumber(
-    "0.5e+xyz",
-    false,
-    false) != null) {
+      if (CBORDataUtilities.ParseJSONNumber(
+        "0.5e+xyz",
+        false,
+        false) != null) {
         Assert.fail();
       }
       if (
