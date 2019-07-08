@@ -32,8 +32,8 @@ import java.util.*;
      * @param replaceSurrogates Whether surrogate code points not part of a
      * surrogate pair (which consists of two consecutive {@code char} s
      * forming one Unicode code point) are each replaced with a replacement
-     * character (U + FFFD). The default is false; an exception is thrown when
-     * such code points are encountered.
+     * character (U + FFFD). The default is false; an exception is thrown
+     * when such code points are encountered.
      */
 @SuppressWarnings("deprecation")
     public JSONOptions(boolean base64Padding, boolean replaceSurrogates) {
@@ -53,9 +53,9 @@ import java.util.*;
      * base64 to JSON.
      * @return A value indicating whether the Base64Padding property is true.
      * @deprecated This option now has no effect. This library now includes necessary padding
-* when writing traditional base64 to JSON and includes no padding when
-* writing base64url to JSON, in accordance with the revision of the CBOR
-* specification.
+ * when writing traditional base64 to JSON and includes no padding when
+ * writing base64url to JSON, in accordance with the revision of the CBOR
+ * specification.
  */
 @Deprecated
     public final boolean getBase64Padding() { return propVarbase64padding; }
@@ -65,8 +65,8 @@ private final boolean propVarbase64padding;
      * Gets a value indicating whether surrogate code points not part of a
      * surrogate pair (which consists of two consecutive <code>char</code> s
      * forming one Unicode code point) are each replaced with a replacement
-     * character (U + FFFD). The default is false; an exception is thrown when
-     * such code points are encountered.
+     * character (U + FFFD). The default is false; an exception is thrown
+     * when such code points are encountered.
      * @return True, if surrogate code points not part of a surrogate pair are each
      * replaced with a replacement character, or false if an exception is
      * thrown when such code points are encountered.

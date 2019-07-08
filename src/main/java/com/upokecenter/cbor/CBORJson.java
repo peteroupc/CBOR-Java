@@ -348,7 +348,7 @@ import com.upokecenter.numbers.*;
         c = SkipWhitespaceJSON(this.reader);
         switch (c) {
           case -1:
-            this.reader.RaiseError("A JSONObject must end with '}'");
+            this.reader.RaiseError("A JSON Object must end with '}'");
             break;
           case '}':
             if (seenComma) {

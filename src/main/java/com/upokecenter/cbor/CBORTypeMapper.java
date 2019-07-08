@@ -5,7 +5,7 @@ import java.util.*;
     /**
      * Holds converters to customize the serialization and deserialization behavior
      * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
-     * well as type filters for <code>ToObject</code> .
+     * well as type filters for <code>ToObject</code>.
      */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
@@ -34,7 +34,7 @@ import java.util.*;
      * @throws NullPointerException The parameter {@code type} or {@code
      * converter} is null.
      * @throws IllegalArgumentException Converter doesn't contain a proper
-     * ToCBORObject method".
+     *  ToCBORObject method".
      */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
@@ -102,12 +102,12 @@ import java.util.*;
     }
 
     /**
-     * Returns whether the given Java or .NET type name fits the filters given in
+     * Returns whether the given Java or.NET type name fits the filters given in
      * this mapper.
-     * @param typeName The fully qualified name of a Java or .NET class (e.g.,
+     * @param typeName The fully qualified name of a Java or.NET class (e.g.,
      * {@code java.math.BigInteger} or {@code
      * System.Globalization.CultureInfo}).
-     * @return Either {@code true} if the given Java or .NET type name fits the
+     * @return Either {@code true} if the given Java or.NET type name fits the
      * filters given in this mapper, or {@code false} otherwise.
      */
     public boolean FilterTypeName(String typeName) {
@@ -129,10 +129,10 @@ import java.util.*;
     }
 
     /**
-     * Adds a prefix of a Java or .NET type for use in type matching. A type
+     * Adds a prefix of a Java or.NET type for use in type matching. A type
      * matches a prefix if its fully qualified name is or begins with that
      * prefix, using codepoint-by-codepoint (case-sensitive) matching.
-     * @param prefix The prefix of a Java or .NET type (e.g., `java.math.` or
+     * @param prefix The prefix of a Java or.NET type (e.g., `java.math.` or
      * `System.Globalization`).
      * @return This object.
      * @throws NullPointerException The parameter {@code prefix} is null.
@@ -150,9 +150,9 @@ import java.util.*;
     }
 
     /**
-     * Adds the fully qualified name of a Java or .NET type for use in type
+     * Adds the fully qualified name of a Java or.NET type for use in type
      * matching.
-     * @param name The fully qualified name of a Java or .NET class (e.g., {@code
+     * @param name The fully qualified name of a Java or.NET class (e.g., {@code
      * java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
      * @return This object.
      * @throws NullPointerException The parameter {@code name} is null.

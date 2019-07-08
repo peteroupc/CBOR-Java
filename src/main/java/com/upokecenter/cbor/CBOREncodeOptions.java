@@ -47,8 +47,8 @@ package com.upokecenter.cbor;
      * @param allowDuplicateKeys A value indicating whether to allow duplicate keys
      * when reading CBOR objects from a data stream.
      * @param ctap2Canonical A value indicating whether CBOR objects are written
-     * out using the CTAP2 canonical CBOR encoding form, which is useful for
-     * implementing Web Authentication.
+     * out using the CTAP2 canonical CBOR encoding form, which is useful
+     * for implementing Web Authentication.
      */
     public CBOREncodeOptions(
       boolean useIndefLengthStrings,
@@ -86,7 +86,7 @@ private final boolean propVarallowduplicatekeys;
      * integers 2^63 or greater are written as 64-bit binary floating-point
      * numbers.
      * @return {@code true} if CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form; otherwise, {@code false} .
+     * canonical CBOR encoding form; otherwise, {@code false}.
      */
     public final boolean getCtap2Canonical() { return propVarctap2canonical; }
 private final boolean propVarctap2canonical;

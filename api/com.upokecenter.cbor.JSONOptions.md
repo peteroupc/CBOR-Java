@@ -58,8 +58,8 @@ This option now has no effect. This library now includes necessary padding
 Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive <code>char</code> s
  forming one Unicode code point) are each replaced with a replacement
- character (U + FFFD). The default is false; an exception is thrown when
- such code points are encountered.
+ character (U + FFFD). The default is false; an exception is thrown
+ when such code points are encountered.
 
 **Returns:**
 
