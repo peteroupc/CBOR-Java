@@ -280,7 +280,7 @@ try { if (ms != null) {
       } else {
         cp -= 0x10000;
         charbuf[index++] = (char)((cp >> 10) + 0xd800);
-        charbuf[index++] = (char)((cp & 0x3ff) + 0xdc00);
+        charbuf[index++] = (char)((cp & 0x3ff) | 0xdc00);
         if (quoted) {
           charbuf[index++] = (char)0x22;
         }

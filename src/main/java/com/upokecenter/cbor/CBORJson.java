@@ -135,9 +135,9 @@ import com.upokecenter.numbers.*;
               if ((c >> 16) == 0) {
                 this.sb.append((char)c);
               } else {
-                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                this.sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
               break;
             }

@@ -4,10 +4,10 @@ package com.upokecenter.util;
      * A class that adapts a random byte generator to generate random numbers in a
      * variety of statistical distributions. <p>The method descriptions in
      * this class assume the underlying random byte generator generates
-     * uniformly distributed numbers that are independent of each other.</p>
-     * <p><b>Thread safety:</b> The methods in this class are safe for
-     * concurrent use by multiple threads, as long as the underlying random
-     * byte generator is as well.</p>
+     * uniformly distributed numbers that are independent of each
+     * other.</p> <p><b>Thread safety:</b> The methods in this class are
+     * safe for concurrent use by multiple threads, as long as the
+     * underlying random byte generator is as well.</p>
      */
   public final class RandomGenerator {
     private boolean valueHaveLastNormal;
@@ -198,8 +198,8 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, given a set of tokens, some of which are labeled 1 and the
-     * others labeled 0, draws "trials" tokens at random without replacement
-     * and then counts the number of 1's drawn.
+     *  others labeled 0, draws "trials" tokens at random without
+     * replacement and then counts the number of 1's drawn.
      * @param trials The number of tokens drawn at random without replacement.
      * @param ones The number of tokens labeled 1.
      * @param count The number of tokens labeled 1 or 0.
@@ -310,7 +310,8 @@ package com.upokecenter.util;
     /**
      * Conceptually, generates either 1 or 0 the given number of times until the
      * given number of 1's are generated, and counts the number of 0's
-     * generated. Either number has an equal probability of being generated.
+     * generated. Either number has an equal probability of being
+     * generated.
      * @param trials The number of 1's to generate before the process stops.
      * @return The number of 0's generated. Returns Integer.MAX_VALUE if "p" is 0.
      */
@@ -467,11 +468,9 @@ package com.upokecenter.util;
       if (minInclusive >= 0) {
         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
       } else {
-      if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive < minInclusive)
-          ||
-          (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive)
-              ||
-                  minInclusive - maxExclusive < 0) {
+      if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive < minInclusive) ||
+          (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
+              minInclusive - maxExclusive < 0) {
           // Difference is greater than MaxValue
           long lb = 0;
           byte[] b = new byte[8];

@@ -149,7 +149,7 @@ private URIUtility() {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -164,9 +164,9 @@ private URIUtility() {
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             }
             ++index;
@@ -182,9 +182,9 @@ private URIUtility() {
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else {
              // percent encode
@@ -194,8 +194,8 @@ private URIUtility() {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         } else if (mode == 1 || mode == 2) {
@@ -208,9 +208,9 @@ private URIUtility() {
               if (c <= 0xffff) {
                 builder.append((char)c);
               } else if (c <= 0x10ffff) {
-                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else {
              // percent encode
@@ -220,8 +220,8 @@ private URIUtility() {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
-              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
           }
         }
@@ -298,7 +298,7 @@ private URIUtility() {
         if ((c & 0xfc00) == 0xd800 && i + 1 < endIndex &&
             (str.charAt(i + 1) & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(i + 1) & 0x3ff);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
@@ -370,9 +370,9 @@ private URIUtility() {
                 if (ret <= 0xffff) {
                   retString.append((char)ret);
                 } else {
-                  retString.append((char)((((ret - 0x10000) >> 10) &
-                        0x3ff) + 0xd800));
-                  retString.append((char)(((ret - 0x10000) & 0x3ff) + 0xdc00));
+                  retString.append((char)((((ret - 0x10000) >> 10) & 0x3ff) |
+                     0xd800));
+                  retString.append((char)(((ret - 0x10000) & 0x3ff) | 0xdc00));
                 }
                 continue;
               }
@@ -391,8 +391,8 @@ private URIUtility() {
             retString.append((char)c);
           }
         } else if (c <= 0x10ffff) {
-          retString.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+          retString.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+          retString.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
         }
       }
       if (bytesNeeded > 0) {
@@ -415,7 +415,7 @@ private URIUtility() {
         if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
@@ -442,8 +442,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "/?-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
-          0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd &&
+        (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean IsIpchar(int c) {
@@ -453,8 +453,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "/-._~:@!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
-          0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd &&
+        (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean IsIqueryChar(int c) {
@@ -475,8 +475,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
-          0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd &&
+        (c & 0xfffe) != 0xfffe);
     }
 
     private static boolean IsIUserInfoChar(int c) {
@@ -486,8 +486,8 @@ private URIUtility() {
         ((c & 0x7F) == c && "-._~:!$&'()*+,;=".indexOf((char)c) >= 0) ||
         (c >= 0xa0 && c <= 0xd7ff) || (c >= 0xf900 && c <= 0xfdcf) ||
         (c >= 0xfdf0 && c <= 0xffef) ||
-        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd && (c &
-          0xfffe) != 0xfffe);
+        (c >= 0xe1000 && c <= 0xefffd) || (c >= 0x10000 && c <= 0xdfffd &&
+        (c & 0xfffe) != 0xfffe);
     }
 
     public static boolean IsValidCurieReference(String s, int offset, int length) {
@@ -532,7 +532,7 @@ private URIUtility() {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
          // error
@@ -612,7 +612,7 @@ private URIUtility() {
           if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
               (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
            // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
           } else if ((c & 0xf800) == 0xd800) {
             c = 0xfffd;
           }
@@ -946,7 +946,8 @@ private URIUtility() {
           return -1;
         }
 
-  // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}"
+  // DebugUtility.Log("{0:X4}:{0:X4}:{0:X4}:{0:X4}:{0:X4}:" +
+  // "{0:X4}:{0:X4}:{0:X4}"
        // ,
        // addressParts[0], addressParts[1], addressParts[2],
        // addressParts[3], addressParts[4], addressParts[5],
@@ -1145,16 +1146,25 @@ private URIUtility() {
       if (indexes == null) {
         return null;
       }
+      String s1 = indexes[0] < 0 ? null : s.substring(
+        indexes[0], (
+        indexes[0])+(indexes[1] - indexes[0]));
+      String s2 = indexes[2] < 0 ? null : s.substring(
+        indexes[2], (
+        indexes[2])+(indexes[3] - indexes[2]));
+      String s3 = indexes[4] < 0 ? null : s.substring(
+        indexes[4], (
+        indexes[4])+(indexes[5] - indexes[4]));
+      String s4 = indexes[6] < 0 ? null : s.substring(
+        indexes[6], (
+        indexes[6])+(indexes[7] - indexes[6]));
+      String s5 = indexes[8] < 0 ? null : s.substring(
+        indexes[8], (
+        indexes[8])+(indexes[9] - indexes[8]));
       return new String[] {
- indexes[0] < 0 ? null : ToLowerCaseAscii(
-  s.substring(
-    indexes[0], (
-    indexes[0])+(indexes[1] - indexes[0]))),
- indexes[2] < 0 ? null : s.substring(indexes[2], (indexes[2])+(indexes[3] - indexes[2])),
- indexes[4] < 0 ? null : s.substring(indexes[4], (indexes[4])+(indexes[5] - indexes[4])),
- indexes[6] < 0 ? null : s.substring(indexes[6], (indexes[6])+(indexes[7] - indexes[6])),
- indexes[8] < 0 ? null : s.substring(indexes[8], (indexes[8])+(indexes[9] - indexes[8])),
-  };
+        s1 == null ? null : ToLowerCaseAscii(s1),
+        s2, s3, s4, s5,
+      };
     }
 
     public static int[] SplitIRI(String s) {
@@ -1250,7 +1260,7 @@ private URIUtility() {
           if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
               (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
            // Get the Unicode code point for the surrogate pair
-            c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+            c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
             ++index;
           } else if ((c & 0xf800) == 0xd800) {
             if (parseMode == ParseMode.IRISurrogateLenient) {
@@ -1351,7 +1361,7 @@ private URIUtility() {
         if ((c & 0xfc00) == 0xd800 && index + 1 < valueSLength &&
             (s.charAt(index + 1) & 0xfc00) == 0xdc00) {
          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c & 0x3ff) << 10) + (s.charAt(index + 1) & 0x3ff);
           ++index;
         } else if ((c & 0xf800) == 0xd800) {
          // error

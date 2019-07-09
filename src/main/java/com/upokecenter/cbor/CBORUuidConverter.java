@@ -22,7 +22,9 @@ at: http://peteroupc.github.io/
 
     /**
      * Internal API.
-     * @param obj The parameter {@code obj} is an internal parameter.
+     * @param obj The parameter
+      {@code obj}
+       is an internal parameter.
      * @return A CBORObject object.
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {

@@ -112,11 +112,11 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets the JSON object referred to by a JSON Pointer according to RFC6901. The
-     * syntax for pointers is: <pre>'/' KEY '/' KEY.get(...)</pre> where KEY
-     * represents a key into the JSON object or its sub-objects in the
+     * syntax for pointers is: <pre>'/' KEY '/' KEY.get(...)</pre> where
+     * KEY represents a key into the JSON object or its sub-objects in the
      * hierarchy. For example, <pre>/foo/2/bar</pre> means the same as
-     * <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
-     * occurs in a key, it must be escaped with "~0" or "~1", respectively,
+     *  <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
+     *  occurs in a key, it must be escaped with "~0" or "~1", respectively,
      * in a JSON pointer.
      * @param obj A CBOR object.
      * @param pointer A JSON pointer according to RFC 6901.
@@ -257,14 +257,14 @@ this.refValue = refValue;
     /**
      * Gets all children of the specified JSON object that contain the specified
      * key. The method will not remove matching keys. As an example,
-     * consider this object: <pre>[{"key":"value1","foo":"foovalue"},
-     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     *  consider this object: <pre>[{"key":"value1","foo":"foovalue"},
+     *  {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
      * getPointersToKey is called on this object with a keyToFind called
-     * "key", we get the following Map as the return value: <pre>{ "/0" =>
-     * "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
-     * "/1" points to {"bar":"barvalue"} }</pre> and the JSON object will
-     * change to the following: <pre>[{"foo":"foovalue"},
-     * {"bar":"barvalue"}, {"baz","bazvalue"}]</pre> @param root object to
+     *  "key", we get the following Map as the return value: <pre>{ "/0" =>
+     *  "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" //
+     *  "/1" points to {"bar":"barvalue"} }</pre> and the JSON object will
+     *  change to the following: <pre>[{"foo":"foovalue"},
+     *  {"bar":"barvalue"}, {"baz","bazvalue"}]</pre> @param root object to
      * search @param keyToFind the key to search for. @return a map: <ul>
      * <li>The keys in the map are JSON Pointers to the objects within
      * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
@@ -285,20 +285,21 @@ this.refValue = refValue;
     /**
      * Gets all children of the specified JSON object that contain the specified
      * key. The method will remove matching keys. As an example, consider
-     * this object: <pre>[{"key":"value1","foo":"foovalue"},
-     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     *  this object: <pre>[{"key":"value1","foo":"foovalue"},
+     *  {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
      * getPointersToKey is called on this object with a keyToFind called
-     * "key", we get the following Map as the return value: <pre>{ "/0" =>
-     * "value1", // "/0" points to {"key":"value1","foo":"foovalue"} "/1" =>
-     * "value2" // "/1" points to {"key":"value2","bar":"barvalue"} }</pre>
-     * and the JSON object will remain unchanged. @param root object to
-     * search @param keyToFind the key to search for. @return a map: <ul>
-     * <li>The keys in the map are JSON Pointers to the objects within
-     * <i>root</i> that contained a key named <i>keyToFind</i>. To get the
-     * actual JSON object, call JSONPointer.GetObject, passing <i>root</i>
-     * and the pointer as arguments.</li> <li>The values in the map are the
-     * values of each of those keys named <i>keyToFind</i>.</li></ul> The
-     * JSON Pointers are relative to the root object.
+     *  "key", we get the following Map as the return value: <pre>{ "/0" =>
+     *  "value1", // "/0" points to {"key":"value1","foo":"foovalue"} "/1"
+     *  => "value2" // "/1" points to {"key":"value2","bar":"barvalue"}
+     * }</pre> and the JSON object will remain unchanged. @param root
+     * object to search @param keyToFind the key to search for. @return a
+     * map: <ul> <li>The keys in the map are JSON Pointers to the objects
+     * within <i>root</i> that contained a key named <i>keyToFind</i>. To
+     * get the actual JSON object, call JSONPointer.GetObject, passing
+     * <i>root</i> and the pointer as arguments.</li> <li>The values in the
+     * map are the values of each of those keys named
+     * <i>keyToFind</i>.</li></ul> The JSON Pointers are relative to the
+     * root object.
      * @param root The parameter {@code root} is not documented yet.
      * @param keyToFind The parameter {@code keyToFind} is not documented yet.
      * @return An Map(string, object) object.

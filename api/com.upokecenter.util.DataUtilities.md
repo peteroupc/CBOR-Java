@@ -4,23 +4,23 @@
 
 Contains methods useful for reading and writing strings. It is designed to
  have no dependencies other than the basic runtime class library.
- <p>Many of these methods work with text encoded in UTF-8, an encoding
- form of the Unicode Standard which uses one byte to encode the most
- basic characters and two to four bytes to encode other characters.
- For example, the <code>GetUtf8</code> method converts a text string to an
- array of bytes in UTF-8. </p> <p>In C# and Java, text strings are
- represented as sequences of 16-bit values called <code>char</code> s. These
- sequences are well-formed under UTF-16, a 16-bit encoding form of
- Unicode, except if they contain unpaired surrogate code points. (A
- surrogate code point is used to encode supplementary characters,
- those with code points U + 10000 or higher, in UTF-16. A surrogate pair
- is a high surrogate [U + D800 to U + DBFF] followed by a low surrogate
- [U + DC00 to U + DFFF]. An unpaired surrogate code point is a surrogate
- not appearing in a surrogate pair.) Many of the methods in this class
- allow setting the behavior to follow when unpaired surrogate code
- points are found in text strings, such as throwing an error or
- treating the unpaired surrogate as a replacement character (U + FFFD).
- </p>
+ <p>Many of these methods work with text encoded in UTF-8, an
+ encoding form of the Unicode Standard which uses one byte to encode
+ the most basic characters and two to four bytes to encode other
+ characters. For example, the <code>GetUtf8</code> method converts a text
+ string to an array of bytes in UTF-8. </p> <p>In C# and Java, text
+ strings are represented as sequences of 16-bit values called
+ <code>char</code> s. These sequences are well-formed under UTF-16, a
+ 16-bit encoding form of Unicode, except if they contain unpaired
+ surrogate code points. (A surrogate code point is used to encode
+ supplementary characters, those with code points U + 10000 or higher,
+ in UTF-16. A surrogate pair is a high surrogate [U + D800 to U + DBFF]
+ followed by a low surrogate [U + DC00 to U + DFFF]. An unpaired
+ surrogate code point is a surrogate not appearing in a surrogate
+ pair.) Many of the methods in this class allow setting the behavior
+ to follow when unpaired surrogate code points are found in text
+ strings, such as throwing an error or treating the unpaired
+ surrogate as a replacement character (U + FFFD). </p>
 
 ## Methods
 
@@ -132,11 +132,13 @@ Generates a text string from a UTF-8 byte array.
     public static int CodePointLength​(java.lang.String str)
 Finds the number of Unicode code points in the given text string. Unpaired
  surrogate code points increase this number by 1. This is not
- necessarily the length of the string in "char" s.
+  necessarily the length of the string in "char" s.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
@@ -175,21 +177,23 @@ Generates a text string from a portion of a UTF-8 byte array.
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
- greater than the length of "data" .
+  greater than the length of "data" .
 
 ### GetUtf8Bytes
     public static byte[] GetUtf8Bytes​(java.lang.String str, boolean replace)
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
  byte-order mark (U + FEFF) at the beginning of the encoded byte array.
  </p> <p>REMARK: It is not recommended to use
- <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+ <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
  text strings in a default (so not fixed) character encoding, which
  can be undesirable. </p>
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -212,14 +216,16 @@ Generates a text string from a portion of a UTF-8 byte array.
 <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
  byte-order mark (U + FEFF) at the beginning of the encoded byte array.
  </p> <p>REMARK: It is not recommended to use
- <code>Encoding.UTF8.GetBytes</code> in .NET, or the <code>getBytes()</code>
+ <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
  method in Java to do this. For instance, <code>getBytes()</code> encodes
  text strings in a default (so not fixed) character encoding, which
  can be undesirable. </p>
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, replaces unpaired surrogate code points with the
  replacement character (U + FFFD). If false, stops processing when an
@@ -246,7 +252,9 @@ Calculates the number of bytes needed to encode a string in UTF-8.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>replace</code> - If true, treats unpaired surrogate code points as having 3
  UTF-8 bytes (the UTF-8 length of the replacement character U + FFFD).
@@ -254,8 +262,8 @@ Calculates the number of bytes needed to encode a string in UTF-8.
 **Returns:**
 
 * The number of bytes needed to encode the given string in UTF-8, or
- -1 if the string contains an unpaired surrogate code point and <code>
- replace</code> is false.
+ -1 if the string contains an unpaired surrogate code point and
+ <code>replace</code> is false.
 
 **Throws:**
 
@@ -267,7 +275,9 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -289,7 +299,9 @@ Gets the Unicode code point just before the given index of the string.
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -303,9 +315,9 @@ Gets the Unicode code point just before the given index of the string.
 * The Unicode code point at the previous position. Returns -1 if
  <code>index</code> is 0 or less, or is greater than the string's length.
  Returns a value as specified under <code>surrogateBehavior</code> if the
- previous character is an unpaired surrogate code point. If the return
- value is 65536 (0x10000) or greater, the code point takes up two
- UTF-16 code units.
+ previous character is an unpaired surrogate code point. If the
+ return value is 65536 (0x10000) or greater, the code point takes up
+ two UTF-16 code units.
 
 **Throws:**
 
@@ -317,12 +329,14 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
  code point. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int
  codePoint = DataUtilities.CodePointAt(str, i);
- Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
+  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
  0x10000) { i++; /* Supplementary code point */ } }</pre> .
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -331,8 +345,8 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
 * The Unicode code point at the given position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  the replacement character (U + FFFD) if the current character is an
- unpaired surrogate code point. If the return value is 65536 (0x10000)
- or greater, the code point takes up two UTF-16 code units.
+ unpaired surrogate code point. If the return value is 65536
+ (0x10000) or greater, the code point takes up two UTF-16 code units.
 
 **Throws:**
 
@@ -342,16 +356,18 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
     public static int CodePointAt​(java.lang.String str, int index, int surrogateBehavior)
 Gets the Unicode code point at the given index of the string.<p/><p>The
  following example shows how to iterate a text string code point by
- code point, terminating the loop when an unpaired surrogate is found.
- </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
+ code point, terminating the loop when an unpaired surrogate is
+ found. </p> <pre>for (var i = 0;i&lt;str.length(); ++i) { int codePoint =
  DataUtilities.CodePointAt(str, i, 2); if (codePoint &lt; 0) { break;
- /* Unpaired surrogate */ } Console.WriteLine("codePoint:"+codePoint);
- if (codePoint &gt;= 0x10000) { i++; /* Supplementary code point */ }
- }</pre> .
+ /* Unpaired surrogate */ }
+  Console.WriteLine("codePoint:"+codePoint); if (codePoint &gt;=
+ 0x10000) { i++; /* Supplementary code point */ } }</pre> .
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 * <code>index</code> - Index of the current position into the string.
 
@@ -365,9 +381,9 @@ Gets the Unicode code point at the given index of the string.<p/><p>The
 * The Unicode code point at the current position. Returns -1 if <code>
  index</code> is less than 0, or is the string's length or greater. Returns
  a value as specified under <code>surrogateBehavior</code> if the previous
- character is an unpaired surrogate code point. If the return value is
- 65536 (0x10000) or greater, the code point takes up two UTF-16 code
- units.
+ character is an unpaired surrogate code point. If the return value
+ is 65536 (0x10000) or greater, the code point takes up two UTF-16
+ code units.
 
 **Throws:**
 
@@ -380,11 +396,15 @@ Returns a string with the basic upper-case letters A to Z (U + 0041 to U + 005A)
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
-* The converted string, or null if <code>str</code> is null.
+* The converted string, or null if
+      <code>str</code>
+       is null.
 
 ### ToUpperCaseAscii
     public static java.lang.String ToUpperCaseAscii​(java.lang.String str)
@@ -393,11 +413,15 @@ Returns a string with the basic lower-case letters A to Z (U + 0061 to U + 007A)
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a text string.
+* <code>str</code> - The parameter
+      <code>str</code>
+       is a text string.
 
 **Returns:**
 
-* The converted string, or null if <code>str</code> is null.
+* The converted string, or null if
+      <code>str</code>
+       is null.
 
 ### CodePointCompare
     public static int CodePointCompare​(java.lang.String strA, java.lang.String strB)
@@ -413,11 +437,11 @@ Compares two strings in Unicode code point order. Unpaired surrogate code
 **Returns:**
 
 * A value indicating which string is " less" or " greater" . 0: Both
- strings are equal or null. Less than 0: a is null and b isn't; or the
- first code point that's different is less in A than in B; or b starts
- with a and is longer than a. Greater than 0: b is null and a isn't;
- or the first code point that's different is greater in A than in B;
- or a starts with b and is longer than b.
+ strings are equal or null. Less than 0: a is null and b isn't; or
+ the first code point that's different is less in A than in B; or b
+ starts with a and is longer than a. Greater than 0: b is null and a
+ isn't; or the first code point that's different is greater in A than
+ in B; or a starts with b and is longer than b.
 
 ### WriteUtf8
     public static int WriteUtf8​(java.lang.String str, int offset, int length, java.io.OutputStream stream, boolean replace) throws java.io.IOException
@@ -440,8 +464,8 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
 **Returns:**
 
 * 0 if the entire string portion was written; or -1 if the string
- portion contains an unpaired surrogate code point and <code>replace</code>
- is false.
+ portion contains an unpaired surrogate code point and <code>
+ replace</code> is false.
 
 **Throws:**
 
@@ -478,8 +502,8 @@ Writes a portion of a string in UTF-8 encoding to a data stream.
 **Returns:**
 
 * 0 if the entire string portion was written; or -1 if the string
- portion contains an unpaired surrogate code point and <code>replace</code>
- is false.
+ portion contains an unpaired surrogate code point and <code>
+ replace</code> is false.
 
 **Throws:**
 
@@ -549,7 +573,7 @@ Reads a string in UTF-8 encoding from a byte array.
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>offset</code> is less than
  0, <code>bytesCount</code> is less than 0, or offset plus bytesCount is
- greater than the length of <code>data</code> .
+ greater than the length of <code>data</code>.
 
 ### ReadUtf8ToString
     public static java.lang.String ReadUtf8ToString​(java.io.InputStream stream) throws java.io.IOException
@@ -618,8 +642,8 @@ Reads a string in UTF-8 encoding from a data stream.
 **Returns:**
 
 * 0 if the entire string was read without errors, -1 if the string is
- not valid UTF-8 and <code>replace</code> is false, or -2 if the end of the
- stream was reached before the last character was read completely
+ not valid UTF-8 and <code>replace</code> is false, or -2 if the end of
+ the stream was reached before the last character was read completely
  (which is only the case if <code>bytesCount</code> is 0 or greater).
 
 **Throws:**
