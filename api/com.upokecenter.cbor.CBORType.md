@@ -15,8 +15,11 @@ Represents a type that a CBOR object can have.
 * `Map`<br>
  A map of CBOR objects.
 * `Number`<br>
- A number of any kind, including integers, big integers, floating point
- numbers, and decimal numbers.
+ Deprecated.
+Use the IsNumber property of CBORObject to determine whether a CBOR Object
+ represents a number; however, IsNumber is narrower than CBORType.Number.
+ Use the IsNumber property of CBORObject to determine whether a CBOR Object
+ represents a number; however, IsNumber is narrower than CBORType.Number.
 * `SimpleValue`<br>
  A "simple value" other than floating point values, true, and false.
 * `TextString`<br>
@@ -33,7 +36,7 @@ the order they are declared.
 ## Method Details
 
 ### Number
-    public static final CBORType Number
+    @Deprecated public static final CBORType Number
 ### Boolean
     public static final CBORType Boolean
 ### SimpleValue
@@ -53,10 +56,11 @@ the order they are declared.
 ## Enum Constant Details
 
 ### Number
-    public static final CBORType Number
-A number of any kind, including integers, big integers, floating point
- numbers, and decimal numbers. The floating-point value Not-a-Number
- is also included in the Number type.
+    @Deprecated public static final CBORType Number
+Deprecated.
+Use the IsNumber property of CBORObject to determine whether a CBOR Object
+ represents a number; however, IsNumber is narrower than CBORType.Number.
+
 ### Boolean
     public static final CBORType Boolean
 The simple values true and false.

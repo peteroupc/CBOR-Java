@@ -152,25 +152,25 @@ private CBORUtilities() {
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      while (intlongValue > 9) {
-        int intdivValue = (intlongValue * 26215) >> 18;
-        char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      if (intlongValue != 0) {
-        chars[count--] = HexAlphabet.charAt((int)intlongValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 12 - count);
+          char digit = HexAlphabet.charAt(intlongValue - (intdivValue * 10));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        while (intlongValue > 9) {
+          int intdivValue = (intlongValue * 26215) >> 18;
+          char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        if (intlongValue != 0) {
+          chars[count--] = HexAlphabet.charAt((int)intlongValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 12 - count);
       } else {
         chars = new char[24];
         count = 23;
@@ -179,25 +179,25 @@ private CBORUtilities() {
         }
         while (longValue > 43698) {
           long divValue = longValue / 10;
-        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      while (longValue > 9) {
-        long divValue = (longValue * 26215) >> 18;
-        char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      if (longValue != 0) {
-        chars[count--] = HexAlphabet.charAt((int)longValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 24 - count);
+          char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        while (longValue > 9) {
+          long divValue = (longValue * 26215) >> 18;
+          char digit = HexAlphabet.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        if (longValue != 0) {
+          chars[count--] = HexAlphabet.charAt((int)longValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 24 - count);
       }
     }
 
@@ -210,30 +210,38 @@ private CBORUtilities() {
       return a.Subtract(FloorDiv(a, n).Multiply(n));
     }
 
-    private static final int[] ValueNormalDays = { 0, 31, 28, 31, 30, 31, 30,
+    private static final int[] ValueNormalDays = {
+      0, 31, 28, 31, 30, 31, 30,
       31, 31, 30,
-      31, 30, 31 };
+      31, 30, 31,
+    };
 
-    private static final int[] ValueLeapDays = { 0, 31, 29, 31, 30, 31, 30,
+    private static final int[] ValueLeapDays = {
+      0, 31, 29, 31, 30, 31, 30,
       31, 31, 30,
-      31, 30, 31 };
+      31, 30, 31,
+    };
 
-    private static final int[] ValueNormalToMonth = { 0, 0x1f, 0x3b, 90, 120,
+    private static final int[] ValueNormalToMonth = {
+      0, 0x1f, 0x3b, 90, 120,
       0x97, 0xb5,
-      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d };
+      0xd4, 0xf3, 0x111, 0x130, 0x14e, 0x16d,
+    };
 
-    private static final int[] ValueLeapToMonth = { 0, 0x1f, 60, 0x5b, 0x79,
+    private static final int[] ValueLeapToMonth = {
+      0, 0x1f, 60, 0x5b, 0x79,
       0x98, 0xb6,
-      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e };
+      0xd5, 0xf4, 0x112, 0x131, 0x14f, 0x16e,
+    };
 
     public static void GetNormalizedPartProlepticGregorian(
-          EInteger year,
-          int month,
-          EInteger day,
-          EInteger[] dest) {
+      EInteger year,
+      int month,
+      EInteger day,
+      EInteger[] dest) {
       // NOTE: This method assumes month is 1 to 12
       if (month <= 0 || month > 12) {
-        throw new java.lang.IllegalArgumentException("month");
+        throw new IllegalArgumentException("month");
       }
       EInteger num4 = EInteger.FromInt32(4);
       EInteger num100 = EInteger.FromInt32(100);
@@ -263,7 +271,7 @@ private CBORUtilities() {
                     year.Remainder(num100).signum() == 0 &&
                     year.Remainder(num400).signum() != 0)) ? ValueNormalDays :
               ValueLeapDays;
-          } else {
+            } else {
             ++month;
           }
         }
@@ -284,16 +292,16 @@ private CBORUtilities() {
     }
 
     public static EInteger GetNumberOfDaysProlepticGregorian(
-         EInteger year,
-         int month,
-         int mday) {
+      EInteger year,
+      int month,
+      int mday) {
       // NOTE: month = 1 is January, year = 1 is year 1
       if (month <= 0 || month > 12) {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException("month is out of range");
+      }
       if (mday <= 0 || mday > 31) {
- throw new IllegalArgumentException();
-}
+        throw new IllegalArgumentException("day of month is out of range");
+      }
       EInteger num4 = EInteger.FromInt32(4);
       EInteger num100 = EInteger.FromInt32(100);
       EInteger num400 = EInteger.FromInt32(400);
@@ -358,7 +366,7 @@ private CBORUtilities() {
       EInteger integerPart = edec.ToEInteger();
       EDecimal fractionalPart = edec.Abs()
         .Subtract(EDecimal.FromEInteger(integerPart).Abs());
-      int nanoseconds = fractionalPart .Multiply(EDecimal.FromInt32(1000000000))
+      int nanoseconds = fractionalPart.Multiply(EDecimal.FromInt32(1000000000))
        .ToInt32Checked();
       EInteger[] normPart = new EInteger[3];
       EInteger days = FloorDiv(
@@ -384,27 +392,26 @@ private CBORUtilities() {
 
     public static boolean NameStartsWithWord(String name, String word) {
       int wl = word.length();
-      return name.length() > wl && name.substring(0, wl).equals(word) &&
-              !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
+      return name.length() > wl && name.substring(0,wl).startsWith(word) && !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
               !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
     }
 
     public static String FirstCharLower(String name) {
       if (name.length() > 0 && name.charAt(0) >= 'A' && name.charAt(0) <= 'Z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(name.charAt(0) + 0x20));
-              sb.append(name.substring(1));
-              return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)(name.charAt(0) + 0x20));
+        sb.append(name.substring(1));
+        return sb.toString();
       }
       return name;
     }
 
     public static String FirstCharUpper(String name) {
       if (name.length() > 0 && name.charAt(0) >= 'a' && name.charAt(0) <= 'z') {
-              StringBuilder sb = new StringBuilder();
-              sb.append((char)(name.charAt(0) - 0x20));
-              sb.append(name.substring(1));
-              return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append((char)(name.charAt(0) - 0x20));
+        sb.append(name.substring(1));
+        return sb.toString();
       }
       return name;
     }
@@ -447,12 +454,12 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
     }
 
     public static void ParseAtomDateTimeString(
-  String str,
-  EInteger[] bigYearArray,
-  int[] lf) {
-  int[] d = ParseAtomDateTimeString(str);
-   bigYearArray[0] = EInteger.FromInt32(d[0]);
-   System.arraycopy(d, 1, lf, 0, 7);
+      String str,
+      EInteger[] bigYearArray,
+      int[] lf) {
+      int[] d = ParseAtomDateTimeString(str);
+      bigYearArray[0] = EInteger.FromInt32(d[0]);
+      System.arraycopy(d, 1, lf, 0, 7);
     }
 
     private static int[] ParseAtomDateTimeString(String str) {
@@ -477,7 +484,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
         throw new IllegalArgumentException("Invalid date/time");
       }
       int year = ((str.charAt(0) - '0') * 1000) + ((str.charAt(1) - '0') * 100) +
-        (str.charAt(2) - '0') * 10 + (str.charAt(3) - '0');
+        ((str.charAt(2) - '0') * 10) + (str.charAt(3) - '0');
       int month = ((str.charAt(5) - '0') * 10) + (str.charAt(6) - '0');
       int day = ((str.charAt(8) - '0') * 10) + (str.charAt(9) - '0');
       int hour = ((str.charAt(11) - '0') * 10) + (str.charAt(12) - '0');
@@ -493,7 +500,7 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
             break;
           }
           if (icount < 9) {
-            nanoSeconds = nanoSeconds * 10 + (str.charAt(index) - '0');
+            nanoSeconds = (nanoSeconds * 10) + (str.charAt(index) - '0');
             ++icount;
           }
           ++index;
@@ -528,12 +535,13 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
         if (tzminute >= 60) {
           throw new IllegalArgumentException("Invalid date/time");
         }
-        utcToLocal = (neg ? -1 : 1) * (tzhour * 60) + tzminute;
+        utcToLocal = ((neg ? -1 : 1) * tzhour * 60) + tzminute;
       } else {
         throw new IllegalArgumentException("Invalid date/time");
       }
       int[] dt = new int[] { year, month, day, hour, minute, second,
-        nanoSeconds, utcToLocal};
+        nanoSeconds, utcToLocal,
+      };
       if (!IsValidDateTime(dt)) {
         throw new IllegalArgumentException("Invalid date/time");
       }
@@ -552,13 +560,13 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
       int smallYear = bigYear.ToInt32Checked();
       if (smallYear < 0) {
-  throw new IllegalArgumentException("year (" + smallYear +
-    ") is not greater or equal to 0");
-}
-if (smallYear > 9999) {
-  throw new IllegalArgumentException("year (" + smallYear +
-    ") is not less or equal to 9999");
-}
+        throw new IllegalArgumentException("year (" + smallYear +
+          ") is not greater or equal to 0");
+      }
+      if (smallYear > 9999) {
+        throw new IllegalArgumentException("year (" + smallYear +
+          ") is not less or equal to 9999");
+      }
       int month = lesserFields[0];
       int day = lesserFields[1];
       int hour = lesserFields[2];
@@ -587,8 +595,8 @@ if (smallYear > 9999) {
       charbuf[18] = (char)('0' + (second % 10));
       int charbufLength = 19;
       if (!fracIsNanoseconds) {
-         int milliseconds = fracSeconds / 1000000;
-         if (milliseconds > 0) {
+        int milliseconds = fracSeconds / 1000000;
+        if (milliseconds > 0) {
           charbuf[19] = '.';
           charbuf[20] = (char)('0' + ((milliseconds / 100) % 10));
           charbuf[21] = (char)('0' + ((milliseconds / 10) % 10));
@@ -602,16 +610,16 @@ if (smallYear > 9999) {
       } else {
         if (fracSeconds > 0) {
           charbuf[19] = '.';
- ++charbufLength;
-int digitdiv = 100000000;
-int index = 20;
-while (digitdiv > 0 && fracSeconds != 0) {
- int digit = (fracSeconds / digitdiv) % 10;
- fracSeconds -= digit * digitdiv;
- charbuf[index++] = (char)('0' + digit);
- ++charbufLength;
- digitdiv /= 10;
-}
+          ++charbufLength;
+          int digitdiv = 100000000;
+          int index = 20;
+          while (digitdiv > 0 && fracSeconds != 0) {
+            int digit = (fracSeconds / digitdiv) % 10;
+            fracSeconds -= digit * digitdiv;
+            charbuf[index++] = (char)('0' + digit);
+            ++charbufLength;
+            digitdiv /= 10;
+          }
           charbuf[index] = 'Z';
           ++charbufLength;
         } else {

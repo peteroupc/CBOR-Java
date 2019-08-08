@@ -3,8 +3,8 @@
     @Deprecated public final class ExtendedRational extends java.lang.Object implements java.lang.Comparable<ExtendedRational>
 
 Deprecated.
-Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use ERational from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 ## Fields
 
@@ -124,7 +124,7 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> If this object is finite (not infinity or NaN);
- otherwise, . <code>false</code> .
+ otherwise, . <code>false</code>.
 
 ### isNegative
     public final boolean isNegative()
@@ -132,8 +132,8 @@ Deprecated.
 
 **Returns:**
 
-* <code>true</code> If this object's value is negative; otherwise, . <code>
- false</code> .
+* <code>true</code> If this object's value is negative; otherwise,. <code>
+ false</code>.
 
 ### isZero
     @Deprecated public final boolean isZero()
@@ -142,8 +142,8 @@ Use ERational from PeterO.Numbers/com.upokecenter.numbers.
 
 **Returns:**
 
-* <code>true</code> If this object's value equals 0; otherwise, . <code>
- false</code> .
+* <code>true</code> If this object's value equals 0; otherwise,. <code>
+ false</code>.
 
 ### getNumerator
     public final BigInteger getNumerator()
@@ -250,7 +250,9 @@ Deprecated.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code> .
+* Either
+      <code>true</code> or
+      <code>false</code> .
 
 ### equals
     public boolean equals​(java.lang.Object obj)
@@ -262,11 +264,15 @@ Deprecated.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
+* <code>obj</code> - The parameter
+      <code>obj</code>
+       is an arbitrary object.
 
 **Returns:**
 
-* Either <code>true</code> or <code>false</code> .
+* Either
+      <code>true</code> or
+      <code>false</code> .
 
 ### hashCode
     public int hashCode()

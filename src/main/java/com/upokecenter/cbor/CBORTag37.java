@@ -48,11 +48,11 @@ at: http://peteroupc.github.io/
       String hex = "0123456789abcdef";
       int index = 0;
       for (int i = 0; i < 16; ++i) {
-       if (i == 4 || i == 6 || i == 8 || i == 10) {
-         guidChars[index++] = '-';
-       }
-       guidChars[index++] = hex.charAt((int)(bytes[i] >> 4) & 15);
-       guidChars[index++] = hex.charAt((int)bytes[i] & 15);
+        if (i == 4 || i == 6 || i == 8 || i == 10) {
+          guidChars[index++] = '-';
+        }
+        guidChars[index++] = hex.charAt((int)(bytes[i] >> 4) & 15);
+        guidChars[index++] = hex.charAt((int)bytes[i] & 15);
       }
       String guidString = new String(guidChars);
       return java.util.UUID.fromString(guidString);

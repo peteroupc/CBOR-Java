@@ -17,8 +17,8 @@ import com.upokecenter.numbers.*;
     }
 
     private static CBORObject FromObjectAndInnerTags(
-  Object objectValue,
-  CBORObject objectWithTags) {
+      Object objectValue,
+      CBORObject objectWithTags) {
       CBORObject newObject = CBORObject.FromObject(objectValue);
       if (!objectWithTags.isTagged()) {
         return newObject;
@@ -71,7 +71,7 @@ import com.upokecenter.numbers.*;
         }
       }
       if (extended) {
-          bytes[bytes.length - 1] = negative ? (byte)0xff : (byte)0;
+        bytes[bytes.length - 1] = negative ? (byte)0xff : (byte)0;
       }
       bi = EInteger.FromBytes(bytes, true);
       // NOTE: Here, any tags are discarded; when called from

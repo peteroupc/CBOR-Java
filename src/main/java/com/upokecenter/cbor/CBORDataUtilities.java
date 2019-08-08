@@ -26,7 +26,7 @@ private CBORDataUtilities() {
      * space characters, including spaces.
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
-     * "-0" or "-0.0"). Returns null if the parsing fails, including if the
+     *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
      * string is null or empty.
      */
     public static CBORObject ParseJSONNumber(String str) {
@@ -37,7 +37,7 @@ private CBORDataUtilities() {
      * Parses a number whose format follows the JSON specification (RFC 8259).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
-     * is 0), an optional decimal point (".", full stop) with one or more
+     *  is 0), an optional decimal point (".", full stop) with one or more
      * basic digits, and an optional letter E or e with an optional plus or
      * minus sign and one or more basic digits (the exponent).
      * @param str A string to parse. The string is not allowed to contain white
@@ -48,7 +48,7 @@ private CBORDataUtilities() {
      * minus is disallowed).
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
-     * "-0" or "-0.0"). Returns null if the parsing fails, including if the
+     *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
      * string is null or empty.
      */
     public static CBORObject ParseJSONNumber(
@@ -62,7 +62,7 @@ private CBORDataUtilities() {
      * Parses a number whose format follows the JSON specification (RFC 8259).
      * Roughly speaking, a valid number consists of an optional minus sign,
      * one or more basic digits (starting with 1 to 9 unless the only digit
-     * is 0), an optional decimal point (".", full stop) with one or more
+     *  is 0), an optional decimal point (".", full stop) with one or more
      * basic digits, and an optional letter E or e with an optional plus or
      * minus sign and one or more basic digits (the exponent).
      * @param str A string to parse. The string is not allowed to contain white
@@ -72,7 +72,7 @@ private CBORDataUtilities() {
      * @param positiveOnly If true, only positive numbers are allowed (the leading
      * minus is disallowed).
      * @param preserveNegativeZero If true, returns positive zero if the number is
-     * a zero that starts with a minus sign (such as "-0" or "-0.0").
+     *  a zero that starts with a minus sign (such as "-0" or "-0.0").
      * Otherwise, returns negative zero in this case.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the string is null or empty.
@@ -155,8 +155,8 @@ private CBORDataUtilities() {
           if (haveDecimalPoint) {
             haveDigitsAfterDecimal = true;
             if (newScaleInt == Integer.MIN_VALUE) {
-newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
-              newScale.AddInt(-1);
+newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+newScale.AddInt(-1);
             } else {
               --newScaleInt;
             }
@@ -233,20 +233,21 @@ newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
         if (exp != null && (expBufferMult != 1 || expBuffer != 0)) {
           exp.Multiply(expBufferMult).AddInt(expBuffer);
         }
-      if (offset >= 0 && newScaleInt == 0 && newScale == null && exp == null) {
+        if (
+          offset >= 0 && newScaleInt == 0 && newScale == null && exp == null) {
           newScaleInt = expInt;
         } else if (exp == null) {
-newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
+          newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
           if (offset < 0) {
             newScale.SubtractInt(expInt);
           } else if (expInt != 0) {
             newScale.AddInt(expInt);
           }
         } else {
-newScale = (newScale == null) ? ((new FastInteger2(newScaleInt))) : newScale;
-          if (offset < 0) {
-            newScale.Subtract(exp);
-          } else {
+newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+if (offset < 0) {
+  newScale.Subtract(exp);
+} else {
             newScale.Add(exp);
           }
         }

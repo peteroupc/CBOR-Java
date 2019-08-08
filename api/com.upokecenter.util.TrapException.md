@@ -43,7 +43,7 @@ Deprecated.
 * <code>ctx</code> - A context object for arbitrary-precision arithmetic settings.
 
 * <code>result</code> - The desired result of the operation that caused the trap, such
- as an <code>ExtendedDecimal </code> or <code>ExtendedFloat </code> .
+ as an <code>ExtendedDecimal</code> or <code>ExtendedFloat</code>.
 
 ### TrapException
     public TrapException​(int flag, PrecisionContext ctx, java.lang.Object result)
@@ -58,7 +58,7 @@ Deprecated.
 * <code>ctx</code> - A context object for arbitrary-precision arithmetic settings.
 
 * <code>result</code> - The desired result of the operation that caused the trap, such
- as an <code>ExtendedDecimal </code> or <code>ExtendedFloat </code> .
+ as an <code>ExtendedDecimal</code> or <code>ExtendedFloat</code>.
 
 ### getContext
     public final PrecisionContext getContext()

@@ -23,6 +23,22 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    static final int CBORObjectTypeArray = 4;
+    static final int CBORObjectTypeBigInteger = 1; // all other integers
+    static final int CBORObjectTypeByteString = 2;
+    static final int CBORObjectTypeDouble = 8;
+    static final int CBORObjectTypeExtendedDecimal = 9;
+    static final int CBORObjectTypeExtendedFloat = 11;
+    static final int CBORObjectTypeExtendedRational = 12;
+    static final int CBORObjectTypeInteger = 0; // -(2^63).. (2^63-1)
+    static final int CBORObjectTypeMap = 5;
+    static final int CBORObjectTypeSimpleValue = 6;
+    static final int CBORObjectTypeSingle = 7;
+    static final int CBORObjectTypeTagged = 10;
+    static final int CBORObjectTypeTextString = 3;
+
+    private static final String Hex16 = "0123456789ABCDEF";
+
     private CharacterInputWithCount reader;
     private StringBuilder sb;
 
@@ -64,22 +80,23 @@ import com.upokecenter.numbers.*;
               case 't':
                 this.sb.append('\t');
                 break;
-                case 'u': { // Unicode escape
+              case 'u': { // Unicode escape
                   c = 0;
                   // Consists of 4 hex digits
                   for (int i = 0; i < 4; ++i) {
                     int ch = this.reader.ReadChar();
                     if (ch >= '0' && ch <= '9') {
-                    c <<= 4;
-                    c |= ch - '0';
+                      c <<= 4;
+                      c |= ch - '0';
                     } else if (ch >= 'A' && ch <= 'F') {
-                    c <<= 4;
-                    c |= ch + 10 - 'A';
+                      c <<= 4;
+                      c |= ch + 10 - 'A';
                     } else if (ch >= 'a' && ch <= 'f') {
-                    c <<= 4;
-                    c |= ch + 10 - 'a';
+                      c <<= 4;
+                      c |= ch + 10 - 'a';
                     } else {
-                this.reader.RaiseError("Invalid Unicode escaped character");
+                      this.reader.RaiseError("Invalid Unicode escaped" +
+                        "\u0020character");
                     }
                   }
                   if ((c & 0xf800) != 0xd800) {
@@ -88,37 +105,37 @@ import com.upokecenter.numbers.*;
                   } else if ((c & 0xfc00) == 0xd800) {
                     int ch = this.reader.ReadChar();
                     if (ch != '\\' || this.reader.ReadChar() != 'u') {
-                    this.reader.RaiseError("Invalid escaped character");
+                      this.reader.RaiseError("Invalid escaped character");
                     }
                     int c2 = 0;
                     for (int i = 0; i < 4; ++i) {
-                    ch = this.reader.ReadChar();
-                    if (ch >= '0' && ch <= '9') {
-                    c2 <<= 4;
-                    c2 |= ch - '0';
-                    } else if (ch >= 'A' && ch <= 'F') {
-                    c2 <<= 4;
-                    c2 |= ch + 10 - 'A';
-                    } else if (ch >= 'a' && ch <= 'f') {
-                    c2 <<= 4;
-                    c2 |= ch + 10 - 'a';
-                    } else {
-                    this.reader.RaiseError("Invalid Unicode escaped character");
-                    }
+                      ch = this.reader.ReadChar();
+                      if (ch >= '0' && ch <= '9') {
+                        c2 <<= 4;
+                        c2 |= ch - '0';
+                      } else if (ch >= 'A' && ch <= 'F') {
+                        c2 <<= 4;
+                        c2 |= ch + 10 - 'A';
+                      } else if (ch >= 'a' && ch <= 'f') {
+                        c2 <<= 4;
+                        c2 |= ch + 10 - 'a';
+                      } else {
+                        this.reader.RaiseError("Invalid Unicode escaped" +
+"\u0020character");
+                      }
                     }
                     if ((c2 & 0xfc00) != 0xdc00) {
-                    this.reader.RaiseError("Unpaired surrogate code point");
+                      this.reader.RaiseError("Unpaired surrogate code point");
                     } else {
-                    this.sb.append((char)c);
-                    this.sb.append((char)c2);
+                      this.sb.append((char)c);
+                      this.sb.append((char)c2);
                     }
                   } else {
                     this.reader.RaiseError("Unpaired surrogate code point");
                   }
                   break;
                 }
-              default:
-                {
+              default: {
                   this.reader.RaiseError("Invalid escaped character");
                   break;
                 }
@@ -134,9 +151,9 @@ import com.upokecenter.numbers.*;
               if ((c >> 16) == 0) {
                 this.sb.append((char)c);
               } else {
-              this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                  0xd800));
-                this.sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
               break;
             }
@@ -155,8 +172,7 @@ import com.upokecenter.numbers.*;
         this.reader.RaiseError("Unexpected end of data");
       }
       switch (c) {
-        case '"':
-          {
+        case '"': {
             // Parse a String
             // The tokenizer already checked the String for invalid
             // surrogate pairs, so just call the CBORObject
@@ -165,52 +181,50 @@ import com.upokecenter.numbers.*;
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return obj;
           }
-        case '{':
-          {
+        case '{': {
             // Parse an object
             obj = this.ParseJSONObject(depth + 1);
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return obj;
           }
-        case '[':
-          {
+        case '[': {
             // Parse an array
             obj = this.ParseJSONArray(depth + 1);
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return obj;
           }
-        case 't':
-          {
+        case 't': {
             // Parse true
-          if (this.reader.ReadChar() != 'r' || this.reader.ReadChar() != 'u' ||
-              this.reader.ReadChar() != 'e') {
+            if (this.reader.ReadChar() != 'r' || this.reader.ReadChar() !=
+'u' ||
+                this.reader.ReadChar() != 'e') {
               this.reader.RaiseError("Value can't be parsed.");
             }
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return CBORObject.True;
           }
-        case 'f':
-          {
+        case 'f': {
             // Parse false
-          if (this.reader.ReadChar() != 'a' || this.reader.ReadChar() != 'l' ||
-              this.reader.ReadChar() != 's' || this.reader.ReadChar() != 'e') {
+            if (this.reader.ReadChar() != 'a' || this.reader.ReadChar() !=
+'l' ||
+                this.reader.ReadChar() != 's' || this.reader.ReadChar() !=
+'e') {
               this.reader.RaiseError("Value can't be parsed.");
             }
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return CBORObject.False;
           }
-        case 'n':
-          {
+        case 'n': {
             // Parse null
-          if (this.reader.ReadChar() != 'u' || this.reader.ReadChar() != 'l' ||
-              this.reader.ReadChar() != 'l') {
+            if (this.reader.ReadChar() != 'u' || this.reader.ReadChar() !=
+'l' ||
+                this.reader.ReadChar() != 'l') {
               this.reader.RaiseError("Value can't be parsed.");
             }
             nextChar[0] = SkipWhitespaceJSON(this.reader);
             return CBORObject.Null;
           }
-        case '-':
-          {
+        case '-': {
             // Parse a negative number
             boolean lengthTwo = true;
             c = this.reader.ReadChar();
@@ -236,7 +250,7 @@ import com.upokecenter.numbers.*;
               obj = cval == 0 ?
               CBORDataUtilities.ParseJSONNumber("-0", true, false, true) :
                 CBORObject.FromObject(cval);
-            } else {
+              } else {
               str = sb.toString();
               obj = CBORDataUtilities.ParseJSONNumber(str);
               if (obj == null) {
@@ -259,8 +273,7 @@ import com.upokecenter.numbers.*;
         case '6':
         case '7':
         case '8':
-        case '9':
-          {
+        case '9': {
             // Parse a number
             boolean lengthOne = true;
             int cval = c - '0';
@@ -361,7 +374,7 @@ import com.upokecenter.numbers.*;
               return null;
             }
             return CBORObject.FromRaw(myHashMap);
-            default: {
+          default: {
               // Read the next String
               if (c < 0) {
                 this.reader.RaiseError("Unexpected end of data");
@@ -398,7 +411,7 @@ import com.upokecenter.numbers.*;
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-            default: this.reader.RaiseError("Expected a ',' or '}'");
+          default: this.reader.RaiseError("Expected a ',' or '}'");
             break;
         }
       }
@@ -444,8 +457,6 @@ import com.upokecenter.numbers.*;
         }
       }
     }
-
-    private static final String Hex16 = "0123456789ABCDEF";
 
     static void WriteJSONStringUnquoted(
       String str,
@@ -516,20 +527,20 @@ import com.upokecenter.numbers.*;
       JSONOptions options) throws java.io.IOException {
       int type = obj.getItemType();
       Object thisItem = obj.getThisItem();
+      if (obj.isTrue()) {
+        writer.WriteString("true");
+        return;
+      }
+      if (obj.isFalse()) {
+        writer.WriteString("false");
+        return;
+      }
       switch (type) {
-          case CBORObject.CBORObjectTypeSimpleValue: {
-            if (obj.isTrue()) {
-              writer.WriteString("true");
-              return;
-            }
-            if (obj.isFalse()) {
-              writer.WriteString("false");
-              return;
-            }
+        case CBORObjectTypeSimpleValue: {
             writer.WriteString("null");
             return;
           }
-          case CBORObject.CBORObjectTypeSingle: {
+        case CBORObjectTypeSingle: {
             float f = ((Float)thisItem).floatValue();
             if (((f) == Float.NEGATIVE_INFINITY) ||
 ((f) == Float.POSITIVE_INFINITY) ||
@@ -542,7 +553,7 @@ Float.isNaN(f)) {
                 CBORUtilities.SingleToString(f)));
             return;
           }
-          case CBORObject.CBORObjectTypeDouble: {
+        case CBORObjectTypeDouble: {
             double f = ((Double)thisItem).doubleValue();
             if (((f) == Double.NEGATIVE_INFINITY) ||
 ((f) == Double.POSITIVE_INFINITY) ||
@@ -555,16 +566,16 @@ Double.isNaN(f)) {
               CBORObject.TrimDotZero(dblString));
             return;
           }
-          case CBORObject.CBORObjectTypeInteger: {
+        case CBORObjectTypeInteger: {
             long longItem = (((Long)thisItem).longValue());
             writer.WriteString(CBORUtilities.LongToString(longItem));
             return;
           }
-          case CBORObject.CBORObjectTypeBigInteger: {
+        case CBORObjectTypeBigInteger: {
             writer.WriteString(((EInteger)thisItem).toString());
             return;
           }
-          case CBORObject.CBORObjectTypeExtendedDecimal: {
+        case CBORObjectTypeExtendedDecimal: {
             EDecimal dec = (EDecimal)thisItem;
             if (dec.IsInfinity() || dec.IsNaN()) {
               writer.WriteString("null");
@@ -573,7 +584,7 @@ Double.isNaN(f)) {
             }
             return;
           }
-          case CBORObject.CBORObjectTypeExtendedFloat: {
+        case CBORObjectTypeExtendedFloat: {
             EFloat flo = (EFloat)thisItem;
             if (flo.IsInfinity() || flo.IsNaN()) {
               writer.WriteString("null");
@@ -600,8 +611,18 @@ Double.isNaN(f)) {
             writer.WriteString(flo.toString());
             return;
           }
-        case CBORObject.CBORObjectTypeByteString:
-          {
+        case CBORObjectTypeExtendedRational: {
+            ERational dec = (ERational)thisItem;
+            EDecimal f = dec.ToEDecimalExactIfPossible(
+              EContext.Decimal128.WithUnlimitedExponents());
+            if (!f.isFinite()) {
+              writer.WriteString("null");
+            } else {
+              writer.WriteString(f.toString());
+            }
+            break;
+          }
+        case CBORObjectTypeByteString: {
             byte[] byteArray = (byte[])thisItem;
             if (byteArray.length == 0) {
               writer.WriteString("\"\"");
@@ -632,7 +653,7 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)'\"');
             break;
           }
-          case CBORObject.CBORObjectTypeTextString: {
+        case CBORObjectTypeTextString: {
             String thisString = (String)thisItem;
             if (thisString.length() == 0) {
               writer.WriteString("\"\"");
@@ -643,7 +664,7 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)'\"');
             break;
           }
-          case CBORObject.CBORObjectTypeArray: {
+        case CBORObjectTypeArray: {
             boolean first = true;
             writer.WriteCodePoint((int)'[');
             for (CBORObject i : obj.AsList()) {
@@ -656,24 +677,13 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)']');
             break;
           }
-          case CBORObject.CBORObjectTypeExtendedRational: {
-            ERational dec = (ERational)thisItem;
-            EDecimal f = dec.ToEDecimalExactIfPossible(
-              EContext.Decimal128.WithUnlimitedExponents());
-            if (!f.isFinite()) {
-              writer.WriteString("null");
-            } else {
-              writer.WriteString(f.toString());
-            }
-            break;
-          }
-          case CBORObject.CBORObjectTypeMap: {
+        case CBORObjectTypeMap: {
             boolean first = true;
             boolean hasNonStringKeys = false;
             Map<CBORObject, CBORObject> objMap = obj.AsMap();
             for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
               CBORObject key = entry.getKey();
-              if (key.getItemType() != CBORObject.CBORObjectTypeTextString) {
+              if (key.getItemType() != CBORObjectTypeTextString) {
                 hasNonStringKeys = true;
                 break;
               }
@@ -704,7 +714,8 @@ Double.isNaN(f)) {
               for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
-           String str = (key.getItemType() == CBORObject.CBORObjectTypeTextString) ?
+                String str = (
+                  key.getItemType() == CBORObjectTypeTextString) ?
                   ((String)key.getThisItem()) : key.ToJSONString();
                 stringMap.put(str, value);
               }

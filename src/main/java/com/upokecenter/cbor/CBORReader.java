@@ -15,6 +15,7 @@ import com.upokecenter.numbers.*;
   class CBORReader {
     private final InputStream stream;
     private int depth;
+    private boolean resolveReferences;
     private CBORDuplicatePolicy policy;
     private StringRefs stringRefs;
     private boolean hasSharableObjects;
@@ -22,10 +23,12 @@ import com.upokecenter.numbers.*;
     public CBORReader(InputStream inStream) {
       this.stream = inStream;
       this.policy = CBORDuplicatePolicy.Overwrite;
+      this.resolveReferences = false;
     }
 
     enum CBORDuplicatePolicy {
-      Overwrite, Disallow
+      Overwrite,
+      Disallow,
     }
 
     public final CBORDuplicatePolicy getDuplicatePolicy() {
@@ -35,41 +38,54 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
         this.policy = value;
       }
 
+    public final boolean getResolveReferences() {
+        return this.resolveReferences;
+      }
+public final void setResolveReferences(boolean value) {
+        this.resolveReferences = value;
+      }
+
     public CBORObject ResolveSharedRefsIfNeeded(CBORObject obj) {
+      if (obj == null || !this.getResolveReferences()) {
+        return obj;
+      }
       if (this.hasSharableObjects) {
         SharedRefs sharedRefs = new SharedRefs();
-        return ResolveSharedRefs(obj, sharedRefs);
+        return this.ResolveSharedRefs(obj, sharedRefs);
       }
       return obj;
     }
 
-    private static CBORObject ResolveSharedRefs(
-  CBORObject obj,
-  SharedRefs sharedRefs) {
-  int type = obj.getItemType();
-  boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
-  if (hasTag) {
-    return sharedRefs.GetObject(obj.AsEInteger());
-  }
-  hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(28));
-  if (hasTag) {
-      obj = obj.Untag();
-      sharedRefs.AddObject(obj);
-  }
-  if (type == CBORObject.CBORObjectTypeMap) {
-    for (CBORObject key : obj.getKeys()) {
-      CBORObject value = obj.get(key);
-      CBORObject newvalue = ResolveSharedRefs(value, sharedRefs);
-      if (value != newvalue) {
-        obj.set(key, newvalue);
+    private CBORObject ResolveSharedRefs(
+      CBORObject obj,
+      SharedRefs sharedRefs) {
+      if (obj == null) {
+        return obj;
       }
-    }
-  } else if (type == CBORObject.CBORObjectTypeArray) {
-    for (int i = 0; i < obj.size(); ++i) {
-      obj.set(i, ResolveSharedRefs(obj.get(i), sharedRefs));
-    }
-  }
-  return obj;
+      int type = obj.getItemType();
+      boolean hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(29));
+      if (hasTag) {
+        return sharedRefs.GetObject(obj.AsEInteger());
+      }
+      hasTag = obj.getMostOuterTag().equals(EInteger.FromInt64(28));
+      if (hasTag) {
+        obj = obj.Untag();
+        sharedRefs.AddObject(obj);
+      }
+      if (type == CBORObject.CBORObjectTypeMap) {
+        for (CBORObject key : obj.getKeys()) {
+          CBORObject value = obj.get(key);
+          CBORObject newvalue = this.ResolveSharedRefs(value, sharedRefs);
+          if (value != newvalue) {
+            obj.set(key, newvalue);
+          }
+        }
+      } else if (type == CBORObject.CBORObjectTypeArray) {
+        for (int i = 0; i < obj.size(); ++i) {
+          obj.set(i, this.ResolveSharedRefs(obj.get(i), sharedRefs));
+        }
+      }
+      return obj;
     }
 
     public CBORObject Read(CBORTypeFilter filter) throws java.io.IOException {
@@ -84,8 +100,8 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
     }
 
     public CBORObject ReadForFirstByte(
-  int firstbyte,
-  CBORTypeFilter filter) throws java.io.IOException {
+      int firstbyte,
+      CBORTypeFilter filter) throws java.io.IOException {
       if (this.depth > 500) {
         throw new CBORException("Too deeply nested");
       }
@@ -166,10 +182,10 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
             if (this.stream.read(data, 0, 4) != 4) {
               throw new CBORException("Premature end of data");
             }
-            uadditional = ((long)(data[0] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
-            uadditional |= (long)(data[3] & (long)0xff);
+            uadditional = ((long)(data[0] & 0xffL)) << 24;
+            uadditional |= ((long)(data[1] & 0xffL)) << 16;
+            uadditional |= ((long)(data[2] & 0xffL)) << 8;
+            uadditional |= (long)(data[3] & 0xffL);
             break;
           }
         case 27: {
@@ -191,14 +207,14 @@ public final void setDuplicatePolicy(CBORDuplicatePolicy value) {
               hasBigAdditional = true;
               bigintAdditional = EInteger.FromBytes(uabytes, true);
             } else {
-              uadditional = ((long)(data[0] & (long)0xff)) << 56;
-              uadditional |= ((long)(data[1] & (long)0xff)) << 48;
-              uadditional |= ((long)(data[2] & (long)0xff)) << 40;
-              uadditional |= ((long)(data[3] & (long)0xff)) << 32;
-              uadditional |= ((long)(data[4] & (long)0xff)) << 24;
-              uadditional |= ((long)(data[5] & (long)0xff)) << 16;
-              uadditional |= ((long)(data[6] & (long)0xff)) << 8;
-              uadditional |= (long)(data[7] & (long)0xff);
+              uadditional = ((long)(data[0] & 0xffL)) << 56;
+              uadditional |= ((long)(data[1] & 0xffL)) << 48;
+              uadditional |= ((long)(data[2] & 0xffL)) << 40;
+              uadditional |= ((long)(data[3] & 0xffL)) << 32;
+              uadditional |= ((long)(data[4] & 0xffL)) << 24;
+              uadditional |= ((long)(data[5] & 0xffL)) << 16;
+              uadditional |= ((long)(data[6] & 0xffL)) << 8;
+              uadditional |= (long)(data[7] & 0xffL);
             }
             break;
           }
@@ -226,7 +242,7 @@ ms = new java.io.ByteArrayOutputStream();
                   " is bigger than supported ");
               }
               if (nextByte != 0x40) {
-  // NOTE: 0x40 means the empty byte String
+                // NOTE: 0x40 means the empty byte String
                 ReadByteData(this.stream, len, ms);
               }
             }
@@ -236,8 +252,8 @@ ms = new java.io.ByteArrayOutputStream();
             }
             data = ms.toByteArray();
             return new CBORObject(
-  CBORObject.CBORObjectTypeByteString,
-  data);
+              CBORObject.CBORObjectTypeByteString,
+              data);
 }
 finally {
 try { if (ms != null) {
@@ -280,7 +296,7 @@ try { if (ms != null) {
                 " is bigger than supported");
             }
             if (nextByte != 0x60) {
-  // NOTE: 0x60 means the empty String
+              // NOTE: 0x60 means the empty String
               if (PropertyMap.ExceedsKnownLength(this.stream, len)) {
                 throw new CBORException("Premature end of data");
               }
@@ -422,7 +438,7 @@ try { if (ms != null) {
             " is bigger than supported");
         }
         if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
-            throw new CBORException("Remaining data too small for map length");
+          throw new CBORException("Remaining data too small for map length");
         }
         for (long i = 0; i < uadditional; ++i) {
           ++this.depth;
@@ -449,24 +465,25 @@ try { if (ms != null) {
           }
           int uad = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
             (int)uadditional);
-    switch (uad) {
-            case 256:
-              // Tag 256: String namespace
-              this.stringRefs = (this.stringRefs == null) ? ((new StringRefs())) : this.stringRefs;
-              this.stringRefs.Push();
-              break;
-            case 25:
-              // String reference
-              if (this.stringRefs == null) {
-                throw new CBORException("No stringref namespace");
-              }
-              break;
-     case 28:
-     case 29:
-          this.hasSharableObjects = true;
-       break;
+          if (this.getResolveReferences()) {
+            switch (uad) {
+              case 256:
+                // Tag 256: String namespace
+                this.stringRefs = (this.stringRefs == null) ? (new StringRefs()) : this.stringRefs;
+                this.stringRefs.Push();
+                break;
+              case 25:
+                // String reference
+                if (this.stringRefs == null) {
+                  throw new CBORException("No stringref namespace");
+                }
+                break;
+              case 28:
+              case 29:
+                this.hasSharableObjects = true;
+                break;
+            }
           }
-
           taginfo = CBORObject.FindTagConverterLong(uadditional);
         } else {
           if (filter != null && !filter.TagAllowed(bigintAdditional)) {
@@ -488,16 +505,17 @@ try { if (ms != null) {
         if (uadditional < 65536) {
           int uaddl = uadditional >= 257 ? 257 : (uadditional < 0 ? 0 :
             (int)uadditional);
-          switch (uaddl) {
-            case 256:
-              // String tag
-              this.stringRefs.Pop();
-              break;
-            case 25:
-              // stringref tag
-              return this.stringRefs.GetString(o.AsEInteger());
+          if (this.getResolveReferences()) {
+            switch (uaddl) {
+              case 256:
+                // String tag
+                this.stringRefs.Pop();
+                break;
+              case 25:
+                // stringref tag
+                return this.stringRefs.GetString(o.AsEInteger());
+            }
           }
-
           return CBORObject.FromObjectAndTag(
             o,
             (int)uadditional);
@@ -510,9 +528,9 @@ try { if (ms != null) {
     }
 
     private static byte[] ReadByteData(
-  InputStream stream,
-  long uadditional,
-  OutputStream outputStream) throws java.io.IOException {
+      InputStream stream,
+      long uadditional,
+      OutputStream outputStream) throws java.io.IOException {
       if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
         throw new CBORException("Length" + ToUnsignedBigInteger(uadditional) +
           " is bigger than supported ");
@@ -568,9 +586,9 @@ try { if (ms != null) {
     }
 
     private static long ReadDataLength(
-  InputStream stream,
-  int headByte,
-  int expectedType) throws java.io.IOException {
+      InputStream stream,
+      int headByte,
+      int expectedType) throws java.io.IOException {
       if (headByte < 0) {
         throw new CBORException("Unexpected data encountered");
       }
@@ -602,10 +620,10 @@ try { if (ms != null) {
             if (stream.read(data, 0, 4) != 4) {
               throw new CBORException("Premature end of data");
             }
-            long uadditional = ((long)(data[0] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 8;
-            uadditional |= (long)(data[3] & (long)0xff);
+            long uadditional = ((long)(data[0] & 0xffL)) << 24;
+            uadditional |= ((long)(data[1] & 0xffL)) << 16;
+            uadditional |= ((long)(data[2] & 0xffL)) << 8;
+            uadditional |= (long)(data[3] & 0xffL);
             return uadditional;
           }
         case 27: {
@@ -613,14 +631,14 @@ try { if (ms != null) {
               throw new CBORException("Premature end of data");
             }
             // Treat return value as an unsigned integer
-            long uadditional = ((long)(data[0] & (long)0xff)) << 56;
-            uadditional |= ((long)(data[1] & (long)0xff)) << 48;
-            uadditional |= ((long)(data[2] & (long)0xff)) << 40;
-            uadditional |= ((long)(data[3] & (long)0xff)) << 32;
-            uadditional |= ((long)(data[4] & (long)0xff)) << 24;
-            uadditional |= ((long)(data[5] & (long)0xff)) << 16;
-            uadditional |= ((long)(data[6] & (long)0xff)) << 8;
-            uadditional |= (long)(data[7] & (long)0xff);
+            long uadditional = ((long)(data[0] & 0xffL)) << 56;
+            uadditional |= ((long)(data[1] & 0xffL)) << 48;
+            uadditional |= ((long)(data[2] & 0xffL)) << 40;
+            uadditional |= ((long)(data[3] & 0xffL)) << 32;
+            uadditional |= ((long)(data[4] & 0xffL)) << 24;
+            uadditional |= ((long)(data[5] & 0xffL)) << 16;
+            uadditional |= ((long)(data[6] & 0xffL)) << 8;
+            uadditional |= (long)(data[7] & 0xffL);
             return uadditional;
           }
         case 28:

@@ -17,30 +17,30 @@ private Base64() {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     public static void WriteBase64(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, true, padding);
     }
 
     public static void WriteBase64URL(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean padding) throws java.io.IOException {
       WriteBase64(writer, data, offset, count, false, padding);
     }
 
     private static void WriteBase64(
-  StringOutput writer,
-  byte[] data,
-  int offset,
-  int count,
-  boolean classic,
-  boolean padding) throws java.io.IOException {
+      StringOutput writer,
+      byte[] data,
+      int offset,
+      int count,
+      boolean classic,
+      boolean padding) throws java.io.IOException {
       if (writer == null) {
         throw new NullPointerException("writer");
       }

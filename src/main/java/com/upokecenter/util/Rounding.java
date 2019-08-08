@@ -10,13 +10,13 @@ at: http://peteroupc.github.io/
     /**
      * <p><b>This class is obsolete. It will be replaced by a new version of this
      * class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.ERounding </code> in the <code>PeterO.ERounding </code>
-     * library (in .NET), or <code>com.upokecenter.numbers.EFloat </code> in the
+     * <code>PeterO.Numbers.ERounding</code> in the <code>PeterO.ERounding</code>
+     * library (in .NET), or <code>com.upokecenter.numbers.EFloat</code> in the
      * <a href='https://github.com/peteroupc/numbers-java'>
-     * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java). </b>
-     * </p> Specifies the mode to use when "shortening" numbers that
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java).</b>
+     *  </p> Specifies the mode to use when "shortening" numbers that
      * otherwise can't fit a given number of digits, so that the shortened
-     * number has about the same value. This "shortening" is known as
+     *  number has about the same value. This "shortening" is known as
      * rounding.
      * @deprecated Use ERounding from PeterO.Numbers/com.upokecenter.numbers.
  */
@@ -47,8 +47,8 @@ at: http://peteroupc.github.io/
 
     /**
      * Rounded to the nearest number; if the fractional part is exactly half, the
-     * number is rounded to the closest representable number away from zero.
-     * This is the most familiar rounding mode for many people.
+     * number is rounded to the closest representable number away from
+     * zero. This is the most familiar rounding mode for many people.
      */
     HalfUp,
 
@@ -61,7 +61,7 @@ at: http://peteroupc.github.io/
     /**
      * Rounded to the nearest number; if the fractional part is exactly half, the
      * number is rounded to the closest representable number that is even.
-     * This is sometimes also known as "banker's rounding".
+     *  This is sometimes also known as "banker's rounding".
      */
     HalfEven,
 
@@ -74,8 +74,8 @@ at: http://peteroupc.github.io/
     /**
      * If there is a fractional part and if the last digit before rounding is 0 or
      * half the radix, the number is rounded to the closest representable
-     * number away from zero; otherwise the fractional part is discarded. In
-     * overflow, the fractional part is always discarded.
+     * number away from zero; otherwise the fractional part is discarded.
+     * In overflow, the fractional part is always discarded.
      */
     ZeroFiveUp,
 
@@ -92,5 +92,5 @@ at: http://peteroupc.github.io/
      * slightly higher precision (at least 2 bits more for binary) than the
      * final precision.
      */
-    OddOrZeroFiveUp
+    OddOrZeroFiveUp,
   }

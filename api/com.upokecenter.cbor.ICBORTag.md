@@ -4,7 +4,8 @@
 
 Deprecated.
 May be removed in the future without replacement. Not as useful as
- ICBORConverters and ICBORObjectConverters for FromObject and ToObject.
+ ICBORConverters and ICBORObjectConverters for FromObject
+ and ToObject.
 
 ## Methods
 

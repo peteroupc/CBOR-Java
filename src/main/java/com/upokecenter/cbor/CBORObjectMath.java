@@ -23,13 +23,13 @@ private CBORObjectMath() {
       if (b == null) {
         throw new NullPointerException("b");
       }
-      if (a.getType() != CBORType.Number) {
+      if (!a.isLegacyNumber()) {
         throw new IllegalArgumentException("a.Type (" + a.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
-      if (b.getType() != CBORType.Number) {
+      if (!b.isLegacyNumber()) {
         throw new IllegalArgumentException("b.Type (" + b.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
       Object objA = a.getThisItem();
       Object objB = b.getThisItem();
@@ -86,13 +86,13 @@ private CBORObjectMath() {
       if (b == null) {
         throw new NullPointerException("b");
       }
-      if (a.getType() != CBORType.Number) {
+      if (!a.isLegacyNumber()) {
         throw new IllegalArgumentException("a.Type (" + a.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
-      if (b.getType() != CBORType.Number) {
+      if (!b.isLegacyNumber()) {
         throw new IllegalArgumentException("b.Type (" + b.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
       Object objA = a.getThisItem();
       Object objB = b.getThisItem();
@@ -149,13 +149,13 @@ private CBORObjectMath() {
       if (b == null) {
         throw new NullPointerException("b");
       }
-      if (a.getType() != CBORType.Number) {
+      if (!a.isLegacyNumber()) {
         throw new IllegalArgumentException("a.Type (" + a.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
-      if (b.getType() != CBORType.Number) {
+      if (!b.isLegacyNumber()) {
         throw new IllegalArgumentException("b.Type (" + b.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
       Object objA = a.getThisItem();
       Object objB = b.getThisItem();
@@ -220,13 +220,13 @@ private CBORObjectMath() {
       if (b == null) {
         throw new NullPointerException("b");
       }
-      if (a.getType() != CBORType.Number) {
+      if (!a.isLegacyNumber()) {
         throw new IllegalArgumentException("a.Type (" + a.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
-      if (b.getType() != CBORType.Number) {
+      if (!b.isLegacyNumber()) {
         throw new IllegalArgumentException("b.Type (" + b.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
       Object objA = a.getThisItem();
       Object objB = b.getThisItem();
@@ -312,10 +312,10 @@ private CBORObjectMath() {
         }
         EInteger bigrem;
         EInteger bigquo;
-{
-EInteger[] divrem = b1.DivRem(b2);
-bigquo = divrem[0];
-bigrem = divrem[1]; }
+        {
+          EInteger[] divrem = b1.DivRem(b2);
+          bigquo = divrem[0];
+          bigrem = divrem[1]; }
         return bigrem.isZero() ? CBORObject.FromObject(bigquo) :
         CBORObject.FromObject(ERational.Create(b1, b2));
       }
@@ -328,13 +328,13 @@ bigrem = divrem[1]; }
       if (b == null) {
         throw new NullPointerException("b");
       }
-      if (a.getType() != CBORType.Number) {
+      if (!a.isLegacyNumber()) {
         throw new IllegalArgumentException("a.Type (" + a.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
-      if (b.getType() != CBORType.Number) {
+      if (!b.isLegacyNumber()) {
         throw new IllegalArgumentException("b.Type (" + b.getType() +
-          ") is not equal to " + CBORType.Number);
+          ") does not indicate a number");
       }
       Object objA = a.getThisItem();
       Object objB = b.getThisItem();

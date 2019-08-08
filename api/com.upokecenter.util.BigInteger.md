@@ -3,8 +3,8 @@
     @Deprecated public final class BigInteger extends java.lang.Object implements java.lang.Comparable<BigInteger>
 
 Deprecated.
-Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 ## Fields
 
@@ -67,8 +67,8 @@ Deprecated.
  the byte order is reversed from the byte order just discussed.
 
 * <code>littleEndian</code> - If true, the byte order is little-endian, or
- least-significant-byte first. If false, the byte order is big-endian,
- or most-significant-byte first.
+ least-significant-byte first. If false, the byte order is
+ big-endian, or most-significant-byte first.
 
 **Returns:**
 
@@ -86,14 +86,14 @@ Deprecated.
 **Parameters:**
 
 * <code>str</code> - A text string. The string must contain only characters allowed by
- the given radix, except that it may start with a minus sign ("-",
+  the given radix, except that it may start with a minus sign ("-",
  U + 002D) to indicate a negative number. The string is not allowed to
  contain white space characters, including spaces.
 
 * <code>radix</code> - A base from 2 to 36. Depending on the radix, the string can use
- the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic letters
- A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10, and 0-9,
- then A-F in radix 16.
+ the basic digits 0 to 9 (U + 0030 to U + 0039) and then the basic
+ letters A to Z (U + 0041 to U + 005A). For example, 0-9 in radix 10, and
+ 0-9, then A-F in radix 16.
 
 **Returns:**
 
@@ -116,7 +116,7 @@ Deprecated.
 **Parameters:**
 
 * <code>str</code> - A text string. The string must contain only basic digits 0 to 9
- (U+0030 to U+0039), except that it may start with a minus sign ("-",
+  (U+0030 to U+0039), except that it may start with a minus sign ("-",
  U + 002D) to indicate a negative number. The string is not allowed to
  contain white space characters, including spaces.
 
@@ -165,12 +165,14 @@ Deprecated.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
+* <code>obj</code> - The parameter
+      <code>obj</code>
+       is an arbitrary object.
 
 **Returns:**
 
 * <code>true</code> if this object and another object are equal; otherwise,
- <code>false</code> .
+ <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -210,16 +212,17 @@ Deprecated.
 **Returns:**
 
 * A string representing the value of this object. If this value is 0,
- returns "0". If negative, the string will begin with a hyphen/minus
- ("-"). Depending on the radix, the string will use the basic digits 0
- to 9 (U + 0030 to U + 0039) and then the basic letters A to Z (U + 0041 to
- U + 005A). For example, 0-9 in radix 10, and 0-9, then A-F in radix 16.
+  returns "0". If negative, the string will begin with a hyphen/minus
+  ("-"). Depending on the radix, the string will use the basic digits
+ 0 to 9 (U + 0030 to U + 0039) and then the basic letters A to Z (U + 0041
+ to U + 005A). For example, 0-9 in radix 10, and 0-9, then A-F in radix
+ 16.
 
 **Throws:**
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter "index" is less than 0,
- "endIndex" is less than 0, or either is greater than the string's
- length, or "endIndex" is less than "index" ; or radix is less than 2
+  "endIndex" is less than 0, or either is greater than the string's
+  length, or "endIndex" is less than "index" ; or radix is less than 2
  or greater than 36.
 
 ### toString
@@ -233,7 +236,7 @@ Deprecated.
 **Returns:**
 
 * A string representation of this object. If negative, the string will
- begin with a minus sign ("-", U+002D). The string will use the basic
+  begin with a minus sign ("-", U+002D). The string will use the basic
  digits 0 to 9 (U + 0030 to U + 0039).
 
 ### compareTo

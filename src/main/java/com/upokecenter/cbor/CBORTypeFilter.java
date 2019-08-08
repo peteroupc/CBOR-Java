@@ -68,7 +68,7 @@ import com.upokecenter.numbers.*;
      * @param index An array index, starting from 0.
      * @return {@code true} if this type filter allows CBOR arrays and the given
      * array index is allowed under this type filter; otherwise, {@code
-     * false} .
+     * false}.
      */
     public boolean ArrayIndexAllowed(int index) {
    return (this.types & (1 << 4)) != 0 && index >= 0 &&
@@ -81,7 +81,7 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under this filter.
      * @param length The length of a CBOR array.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under this filter; otherwise, {@code false} .
+     * is allowed under this filter; otherwise, {@code false}.
      */
     public boolean ArrayLengthMatches(int length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
@@ -93,7 +93,7 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under a filter.
      * @param length The length of a CBOR array.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under a filter; otherwise, {@code false} .
+     * is allowed under a filter; otherwise, {@code false}.
      */
     public boolean ArrayLengthMatches(long length) {
       return (this.types & (1 << 4)) != 0 && (this.anyArrayLength ||
@@ -105,8 +105,8 @@ import com.upokecenter.numbers.*;
      * Returns whether an array's length is allowed under a filter.
      * @param bigLength An arbitrary-precision integer.
      * @return {@code true} if this filter allows CBOR arrays and an array's length
-     * is allowed under a filter; otherwise, {@code false} .
-     * @throws java.lang.NullPointerException The parameter {@code bigLength} is
+     * is allowed under a filter; otherwise, {@code false}.
+     * @throws NullPointerException The parameter {@code bigLength} is
      * null.
      */
     public boolean ArrayLengthMatches(EInteger bigLength) {
@@ -124,8 +124,8 @@ import com.upokecenter.numbers.*;
      * Gets the type filter for this array filter by its index.
      * @param index A zero-based index of the filter to retrieve.
      * @return Returns None if the index is out of range, or Any if this filter
-     * doesn't filter an array. Returns the appropriate filter for the array
-     * index otherwise.
+     * doesn't filter an array. Returns the appropriate filter for the
+     * array index otherwise.
      */
     public CBORTypeFilter GetSubFilter(int index) {
       if (this.anyArrayLength || this.any) {
@@ -153,8 +153,8 @@ import com.upokecenter.numbers.*;
      * Gets the type filter for this array filter by its index.
      * @param index A zero-based index of the filter to retrieve.
      * @return Returns None if the index is out of range, or Any if this filter
-     * doesn't filter an array. Returns the appropriate filter for the array
-     * index otherwise.
+     * doesn't filter an array. Returns the appropriate filter for the
+     * array index otherwise.
      */
     public CBORTypeFilter GetSubFilter(long index) {
       if (this.anyArrayLength || this.any) {
@@ -185,7 +185,7 @@ import com.upokecenter.numbers.*;
      * this filter.
      * @param type A CBOR major type from 0 to 7.
      * @return {@code true} if the given CBOR major type matches a major type
-     * allowed by this filter; otherwise, {@code false} .
+     * allowed by this filter; otherwise, {@code false}.
      */
     public boolean MajorTypeMatches(int type) {
       return type >= 0 && type <= 7 && (this.types & (1 << type)) != 0;
@@ -195,7 +195,7 @@ import com.upokecenter.numbers.*;
      * Returns whether this filter allows simple values that are not floating-point
      * numbers.
      * @return {@code true} if this filter allows simple values that are not
-     * floating-point numbers; otherwise, {@code false} .
+     * floating-point numbers; otherwise, {@code false}.
      */
     public boolean NonFPSimpleValueAllowed() {
       return this.MajorTypeMatches(7) && !this.floatingpoint;
@@ -205,7 +205,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param tag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false} .
+     * otherwise, {@code false}.
      */
     public boolean TagAllowed(int tag) {
       return this.any || this.TagAllowed(EInteger.FromInt32(tag));
@@ -215,7 +215,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param longTag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false} .
+     * otherwise, {@code false}.
      */
     public boolean TagAllowed(long longTag) {
       return this.any || this.TagAllowed(EInteger.FromInt64(longTag));
@@ -225,8 +225,8 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether CBOR objects can have the given tag number.
      * @param bigTag A tag number. Returns false if this is less than 0.
      * @return {@code true} if CBOR objects can have the given tag number;
-     * otherwise, {@code false} .
-     * @throws java.lang.NullPointerException The parameter {@code bigTag} is null.
+     * otherwise, {@code false}.
+     * @throws NullPointerException The parameter {@code bigTag} is null.
      */
     public boolean TagAllowed(EInteger bigTag) {
       if (bigTag == null) {
@@ -283,13 +283,13 @@ import com.upokecenter.numbers.*;
      * the arrayLength parameter.
      * @return A CBORTypeFilter object.
      * @throws IllegalArgumentException The parameter arrayLength is less than 0.
-     * @throws java.lang.NullPointerException The parameter elements is null.
+     * @throws NullPointerException The parameter elements is null.
      * @throws IllegalArgumentException The parameter elements has fewer elements
      * than specified in arrayLength.
      */
     public CBORTypeFilter WithArrayExactLength(
-  int arrayLength,
-  CBORTypeFilter... elements) {
+      int arrayLength,
+      CBORTypeFilter... elements) {
       if (this.any) {
         return this;
       }
@@ -322,13 +322,13 @@ import com.upokecenter.numbers.*;
      * the arrayLength parameter.
      * @return A CBORTypeFilter object.
      * @throws IllegalArgumentException The parameter arrayLength is less than 0.
-     * @throws java.lang.NullPointerException The parameter elements is null.
+     * @throws NullPointerException The parameter elements is null.
      * @throws IllegalArgumentException The parameter elements has fewer elements
      * than specified in arrayLength.
      */
     public CBORTypeFilter WithArrayMinLength(
-  int arrayLength,
-  CBORTypeFilter... elements) {
+      int arrayLength,
+      CBORTypeFilter... elements) {
       if (this.any) {
         return this;
       }
@@ -394,6 +394,8 @@ import com.upokecenter.numbers.*;
      * Copies this filter and includes a set of valid CBOR tags in the new filter.
      * @param tags An array of the CBOR tags to add to the new filter.
      * @return A CBORTypeFilter object.
+     * @throws NullPointerException The parameter {@code tags} or {@code
+     * tags} is null.
      */
     public CBORTypeFilter WithTags(int... tags) {
       if (this.any) {
@@ -403,11 +405,17 @@ import com.upokecenter.numbers.*;
       filter.types |= 1 << 6; // Always include the "tag" major type
       int startIndex = 0;
       if (filter.tags != null) {
+        if (tags == null) {
+          throw new NullPointerException("tags");
+        }
         EInteger[] newTags = new EInteger[tags.length + filter.tags.length];
         System.arraycopy(filter.tags, 0, newTags, 0, filter.tags.length);
         startIndex = filter.tags.length;
         filter.tags = newTags;
       } else {
+        if (tags == null) {
+          throw new NullPointerException("tags");
+        }
         filter.tags = new EInteger[tags.length];
       }
       for (int i = 0; i < tags.length; ++i) {

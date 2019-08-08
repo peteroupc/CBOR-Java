@@ -3,8 +3,8 @@
     public final class CBORTypeMapper extends java.lang.Object
 
 Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject </code> and <code>CBORObject#ToObject </code> , as
- well as type filters for <code>ToObject </code>
+ of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+ well as type filters for <code>ToObject</code>.
 
 ## Methods
 
@@ -15,12 +15,12 @@ Holds converters to customize the serialization and deserialization behavior
  Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter).
 * `CBORTypeMapper AddTypeName​(java.lang.String name)`<br>
- Adds the fully qualified name of a Java or .NET type for use in type
+ Adds the fully qualified name of a Java or.NET type for use in type
  matching.
 * `CBORTypeMapper AddTypePrefix​(java.lang.String prefix)`<br>
- Adds a prefix of a Java or .NET type for use in type matching.
+ Adds a prefix of a Java or.NET type for use in type matching.
 * `boolean FilterTypeName​(java.lang.String typeName)`<br>
- Returns whether the given Java or .NET type name fits the filters given in
+ Returns whether the given Java or.NET type name fits the filters given in
  this mapper.
 
 ## Constructors
@@ -63,33 +63,33 @@ Registers an object that converts objects of a given type to CBOR objects
  converter</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - Converter doesn't contain a proper
- ToCBORObject method".
+  ToCBORObject method".
 
 ### FilterTypeName
     public boolean FilterTypeName​(java.lang.String typeName)
-Returns whether the given Java or .NET type name fits the filters given in
+Returns whether the given Java or.NET type name fits the filters given in
  this mapper.
 
 **Parameters:**
 
-* <code>typeName</code> - The fully qualified name of a Java or .NET class (e.g.,
- <code>java.math.BigInteger </code> or <code>
- System.Globalization.CultureInfo </code>).
+* <code>typeName</code> - The fully qualified name of a Java or.NET class (e.g.,
+ <code>java.math.BigInteger</code> or <code>
+ System.Globalization.CultureInfo</code>).
 
 **Returns:**
 
-* Either <code>true</code> if the given Java or .NET type name fits the
+* Either <code>true</code> if the given Java or.NET type name fits the
  filters given in this mapper, or <code>false</code> otherwise.
 
 ### AddTypePrefix
     public CBORTypeMapper AddTypePrefix​(java.lang.String prefix)
-Adds a prefix of a Java or .NET type for use in type matching. A type
+Adds a prefix of a Java or.NET type for use in type matching. A type
  matches a prefix if its fully qualified name is or begins with that
  prefix, using codepoint-by-codepoint (case-sensitive) matching.
 
 **Parameters:**
 
-* <code>prefix</code> - The prefix of a Java or .NET type (e.g., `java.math.` or
+* <code>prefix</code> - The prefix of a Java or.NET type (e.g., `java.math.` or
  `System.Globalization`).
 
 **Returns:**
@@ -104,14 +104,13 @@ Adds a prefix of a Java or .NET type for use in type matching. A type
 
 ### AddTypeName
     public CBORTypeMapper AddTypeName​(java.lang.String name)
-Adds the fully qualified name of a Java or .NET type for use in type
+Adds the fully qualified name of a Java or.NET type for use in type
  matching.
 
 **Parameters:**
 
-* <code>name</code> - The fully qualified name of a Java or .NET class (e.g., <code>
- java.math.BigInteger </code> or <code>System.Globalization.CultureInfo </code>
-).
+* <code>name</code> - The fully qualified name of a Java or.NET class (e.g., <code>
+ java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
 
 **Returns:**
 

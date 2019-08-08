@@ -1,5 +1,7 @@
 package com.upokecenter.test;
 
+// PODClass is used for testing purposes
+
   public final class PODClass {
     public PODClass() {
       this.setPropA(0);

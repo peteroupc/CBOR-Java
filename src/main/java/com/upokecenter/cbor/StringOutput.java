@@ -52,11 +52,11 @@ import com.upokecenter.numbers.*;
         } else {
           if (
   DataUtilities.WriteUtf8(
-  str,
-  index,
-  length,
-  this.outputStream,
-  false) < 0) {
+    str,
+    index,
+    length,
+    this.outputStream,
+    false) < 0) {
             throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
@@ -104,9 +104,9 @@ import com.upokecenter.numbers.*;
           { this.builder.append((char)codePoint);
           }
         } else if (codePoint <= 0x10ffff) {
-          this.builder.append((char)((((codePoint - 0x10000) >> 10) &
-                    0x3ff) + 0xd800));
-          this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) + 0xdc00));
+          this.builder.append((char)((((codePoint - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+          this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) | 0xdc00));
         }
       }
     }

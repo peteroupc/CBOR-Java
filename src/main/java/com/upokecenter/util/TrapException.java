@@ -12,16 +12,17 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is obsolete. It will be replaced by a new version of this
      * class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.ETrapException </code> in the <a
+     * <code>PeterO.Numbers.ETrapException</code> in the <a
      * href='https://www.nuget.org/packages/PeterO.Numbers'>
-     * <code>PeterO.Numbers </code> </a> library (in .NET), or
-     * <code>com.upokecenter.numbers.ETrapException </code> in the <a
+     * <code>PeterO.Numbers</code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.ETrapException</code> in the <a
      * href='https://github.com/peteroupc/numbers-java'>
-     * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java). </b>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java).</b>
      * </p> Exception thrown for arithmetic trap errors.
      * @deprecated Use ETrapException from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
+
   public class TrapException extends ArithmeticException {
 private static final long serialVersionUID = 1L;
     private ETrapException ete;
@@ -73,7 +74,7 @@ private static final long serialVersionUID = 1L;
      * FlagInexact or FlagSubnormal.
      * @param ctx A context object for arbitrary-precision arithmetic settings.
      * @param result The desired result of the operation that caused the trap, such
-     * as an {@code ExtendedDecimal } or {@code ExtendedFloat } .
+     * as an {@code ExtendedDecimal} or {@code ExtendedFloat}.
      */
     public TrapException(int flag, PrecisionContext ctx, Object result) {
  super("");
@@ -82,17 +83,17 @@ private static final long serialVersionUID = 1L;
       ERational er = ((result instanceof ERational) ? (ERational)result : null);
       EFloat ef = ((result instanceof EFloat) ? (EFloat)result : null);
       if (ed != null) {
- wrappedResult = new ExtendedDecimal(ed);
-}
+        wrappedResult = new ExtendedDecimal(ed);
+      }
       if (er != null) {
- wrappedResult = new ExtendedRational(er);
-}
+        wrappedResult = new ExtendedRational(er);
+      }
       if (ef != null) {
- wrappedResult = new ExtendedFloat(ef);
-}
+        wrappedResult = new ExtendedFloat(ef);
+      }
       this.ete = new ETrapException(
-  flag,
-  ctx == null ? null : ctx.getEc(),
-  wrappedResult);
+        flag,
+        ctx == null ? null : ctx.getEc(),
+        wrappedResult);
     }
   }

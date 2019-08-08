@@ -17,6 +17,9 @@ import com.upokecenter.numbers.*;
 private RandomObjects() {
 }
     public static byte[] RandomByteString(RandomGenerator rand) {
+      if (rand == null) {
+        throw new NullPointerException("rand");
+      }
       int x = rand.UniformInt(0x2000);
       byte[] bytes = new byte[x];
       for (int i = 0; i < x; ++i) {
@@ -26,6 +29,9 @@ private RandomObjects() {
     }
 
     public static byte[] RandomByteStringShort(RandomGenerator rand) {
+      if (rand == null) {
+        throw new NullPointerException("rand");
+      }
       int x = rand.UniformInt(50);
       byte[] bytes = new byte[x];
       for (int i = 0; i < x; ++i) {
@@ -44,6 +50,9 @@ private RandomObjects() {
     }
 
     public static String RandomTextString(RandomGenerator rand) {
+      if (rand == null) {
+        throw new NullPointerException("rand");
+      }
       int length = rand.UniformInt(0x2000);
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {
@@ -71,6 +80,9 @@ private RandomObjects() {
     }
 
     public static long RandomInt64(RandomGenerator rand) {
+      if (rand == null) {
+        throw new NullPointerException("rand");
+      }
       long r = rand.UniformInt(0x10000);
       r |= ((long)rand.UniformInt(0x10000)) << 16;
       if (rand.UniformInt(2) == 0) {
@@ -84,7 +96,13 @@ private RandomObjects() {
 
     public static double RandomDouble(RandomGenerator rand, int exponent) {
       if (exponent == Integer.MAX_VALUE) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         exponent = rand.UniformInt(2047);
+      }
+      if (rand == null) {
+        throw new NullPointerException("rand");
       }
       long r = rand.UniformInt(0x10000);
       r |= ((long)rand.UniformInt(0x10000)) << 16;
@@ -101,7 +119,13 @@ private RandomObjects() {
 
     public static float RandomSingle(RandomGenerator rand, int exponent) {
       if (exponent == Integer.MAX_VALUE) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         exponent = rand.UniformInt(255);
+      }
+      if (rand == null) {
+        throw new NullPointerException("rand");
       }
       int r = rand.UniformInt(0x10000);
       if (rand.UniformInt(2) == 0) {
@@ -113,6 +137,9 @@ private RandomObjects() {
     }
 
     public static EDecimal RandomEDecimal(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       if (r.UniformInt(100) == 0) {
         int x = r.UniformInt(3);
         if (x == 0) {
@@ -132,15 +159,18 @@ private RandomObjects() {
     }
 
     public static EInteger RandomEInteger(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       int selection = r.UniformInt(100);
       if (selection < 40) {
         StringAndBigInt sabi = StringAndBigInt.Generate(r, 16);
         return sabi.getBigIntValue();
       }
       if (selection < 50) {
-      StringAndBigInt sabi = StringAndBigInt.Generate(
-  r,
-  2 + r.UniformInt(35));
+        StringAndBigInt sabi = StringAndBigInt.Generate(
+    r,
+    2 + r.UniformInt(35));
         return sabi.getBigIntValue();
       } else {
         int count = r.UniformInt(60) + 1;
@@ -153,6 +183,9 @@ private RandomObjects() {
     }
 
     public static EFloat RandomEFloat(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       if (r.UniformInt(100) == 0) {
         int x = r.UniformInt(3);
         if (x == 0) {
@@ -171,6 +204,9 @@ private RandomObjects() {
     }
 
     public static String RandomBigIntString(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       int count = r.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
@@ -187,6 +223,9 @@ private RandomObjects() {
     }
 
     public static EInteger RandomSmallIntegral(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       int count = r.UniformInt(20) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
@@ -203,6 +242,9 @@ private RandomObjects() {
     }
 
     public static String RandomDecimalString(RandomGenerator r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
       int count = r.UniformInt(40) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
@@ -224,7 +266,7 @@ private RandomObjects() {
       }
       if (r.UniformInt(2) == 0) {
         sb.append('E');
-     count = (r.UniformInt(100) < 10) ? r.UniformInt(5000) :
+        count = (r.UniformInt(100) < 10) ? r.UniformInt(5000) :
           r.UniformInt(20);
         if (count != 0) {
           sb.append(r.UniformInt(2) == 0 ? '+' : '-');

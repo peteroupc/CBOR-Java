@@ -10,16 +10,16 @@ private CBORCanonical() {
       public int compare(CBORObject a, CBORObject b) {
         byte[] abs;
         byte[] bbs;
-boolean bothBytes = false;
+        boolean bothBytes = false;
         if (a.getType() == CBORType.ByteString && b.getType() == CBORType.ByteString) {
           abs = a.GetByteString();
           bbs = b.GetByteString();
-bothBytes = true;
+          bothBytes = true;
         } else {
           abs = CtapCanonicalEncode(a);
           bbs = CtapCanonicalEncode(b);
         }
-if (!bothBytes && (abs[0] & 0xe0) != (bbs[0] & 0xe0)) {
+        if (!bothBytes && (abs[0] & 0xe0) != (bbs[0] & 0xe0)) {
  // different major types
  return (abs[0] & 0xe0) < (bbs[0] & 0xe0) ? -1 : 1;
 }
@@ -91,7 +91,7 @@ try { if (ms != null) {
        valueAType == CBORType.Boolean || valueAType == CBORType.ByteString ||
        valueAType == CBORType.TextString) {
         return cbor.EncodeToBytes(CBOREncodeOptions.Default);
-      } else if (valueAType == CBORType.Number) {
+      } else if (cbor.isLegacyNumber()) {
         if (cbor.CanFitInInt64()) {
           return cbor.EncodeToBytes(CBOREncodeOptions.Default);
         } else {

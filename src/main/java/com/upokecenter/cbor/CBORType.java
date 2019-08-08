@@ -15,7 +15,10 @@ at: http://peteroupc.github.io/
      * A number of any kind, including integers, big integers, floating point
      * numbers, and decimal numbers. The floating-point value Not-a-Number
      * is also included in the Number type.
-     */
+     * @deprecated Use the IsNumber property of CBORObject to determine whether a CBOR Object
+ * represents a number; however, IsNumber is narrower than CBORType.Number.
+ */
+@Deprecated
     Number,
 
     /**
@@ -46,5 +49,5 @@ at: http://peteroupc.github.io/
     /**
      * A map of CBOR objects.
      */
-    Map
+    Map,
   }

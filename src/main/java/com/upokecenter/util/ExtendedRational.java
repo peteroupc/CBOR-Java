@@ -12,25 +12,25 @@ import com.upokecenter.numbers.*;
     /**
      * <p><b>This class is largely obsolete. It will be replaced by a new version
      * of this class in a different namespace/package and library, called
-     * <code>PeterO.Numbers.ERational </code> in the <a
+     * <code>PeterO.Numbers.ERational</code> in the <a
      * href='https://www.nuget.org/packages/PeterO.Numbers'>
-     * <code>PeterO.Numbers </code> </a> library (in .NET), or
-     * <code>com.upokecenter.numbers.ERational </code> in the <a
+     * <code>PeterO.Numbers</code> </a> library (in .NET), or
+     * <code>com.upokecenter.numbers.ERational</code> in the <a
      * href='https://github.com/peteroupc/numbers-java'>
-     * <code>com.github.peteroupc/numbers </code> </a> artifact (in Java). This
-     * new class can be used in the <code>CBORObject.FromObject(object) </code>
+     * <code>com.github.peteroupc/numbers</code> </a> artifact (in Java). This
+     * new class can be used in the <code>CBORObject.FromObject(object)</code>
      * method (by including the new library in your code, among other
-     * things). </b> </p> Arbitrary-precision rational number. This class
+     * things).</b> </p> Arbitrary-precision rational number. This class
      * can't be inherited; this is a change in version 2.0 from previous
      * versions, where the class was inadvertently left inheritable.
-     * <p><b>Thread safety: </b> Instances of this class are immutable, so
+     * <p><b>Thread safety:</b> Instances of this class are immutable, so
      * they are inherently safe for use by multiple threads. Multiple
      * instances of this object with the same properties are
-     * interchangeable, so they should not be compared using the "=="
+     *  interchangeable, so they should not be compared using the "=="
      * operator (which might only check if each side of the operator is the
      * same instance). </p>
-     * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
- *this class's toString method.
+     * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers and the
+ * output\u0020of this class's toString method.
  */
 @Deprecated
   public final class ExtendedRational implements Comparable<ExtendedRational> {
@@ -93,10 +93,16 @@ import com.upokecenter.numbers.*;
      * class.
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
-     * @throws java.lang.NullPointerException The parameter {@code numerator} or
-     * {@code denominator} is null.
+     * @throws NullPointerException The parameter {@code numerator} or {@code
+     * denominator} is null.
      */
     public ExtendedRational(BigInteger numerator, BigInteger denominator) {
+      if (denominator == null) {
+        throw new NullPointerException("denominator");
+      }
+      if (numerator == null) {
+        throw new NullPointerException("numerator");
+      }
       this.er = new ERational(numerator.getEi(), denominator.getEi());
     }
 
@@ -118,7 +124,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object is finite (not infinity or NaN).
      * @return {@code true} If this object is finite (not infinity or NaN);
-     * otherwise, . {@code false} .
+     * otherwise, . {@code false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -129,8 +135,8 @@ import com.upokecenter.numbers.*;
     /**
      * Gets a value indicating whether this object's value is negative (including
      * negative zero).
-     * @return {@code true} If this object's value is negative; otherwise, . {@code
-     * false} .
+     * @return {@code true} If this object's value is negative; otherwise,. {@code
+     * false}.
      */
     public final boolean isNegative() {
         return this.getEr().isNegative();
@@ -138,8 +144,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} If this object's value equals 0; otherwise, . {@code
-     * false} .
+     * @return {@code true} If this object's value equals 0; otherwise,. {@code
+     * false}.
      * @deprecated Use ERational from PeterO.Numbers/com.upokecenter.numbers.
  */
 @Deprecated
@@ -190,12 +196,12 @@ import com.upokecenter.numbers.*;
      * @return An arbitrary-precision rational number.
      */
     public static ExtendedRational Create(
-  int numeratorSmall,
-  int denominatorSmall) {
+      int numeratorSmall,
+      int denominatorSmall) {
       return new ExtendedRational(
   ERational.Create(
-  numeratorSmall,
-  denominatorSmall));
+    numeratorSmall,
+    denominatorSmall));
     }
 
     /**
@@ -203,12 +209,12 @@ import com.upokecenter.numbers.*;
      * @param numerator An arbitrary-precision integer.
      * @param denominator Another arbitrary-precision integer.
      * @return An arbitrary-precision rational number.
-     * @throws java.lang.NullPointerException The parameter {@code numerator} or
+     * @throws NullPointerException The parameter {@code numerator} or
      * {@code denominator} is null.
      */
     public static ExtendedRational Create(
-  BigInteger numerator,
-  BigInteger denominator) {
+      BigInteger numerator,
+      BigInteger denominator) {
       if (numerator == null) {
         throw new NullPointerException("numerator");
       }
@@ -217,8 +223,8 @@ import com.upokecenter.numbers.*;
       }
       return new ExtendedRational(
   ERational.Create(
-  numerator.getEi(),
-  denominator.getEi()));
+    numerator.getEi(),
+    denominator.getEi()));
     }
 
     /**
@@ -256,7 +262,9 @@ import com.upokecenter.numbers.*;
     /**
      * Checks whether this and another value are equal.
      * @param other The parameter {@code other} is an ExtendedRational object.
-     * @return Either {@code true} or {@code false} .
+     * @return Either
+      {@code true} or
+      {@code false} .
      */
     public boolean equals(ExtendedRational other) {
       return this.getEr().equals(other == null ? null : other.getEr());
@@ -264,8 +272,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Checks whether this and another value are equal.
-     * @param obj The parameter {@code obj} is an arbitrary object.
-     * @return Either {@code true} or {@code false} .
+     * @param obj The parameter
+      {@code obj}
+       is an arbitrary object.
+     * @return Either
+      {@code true} or
+      {@code false} .
      */
     @Override public boolean equals(Object obj) {
       ExtendedRational other = ((obj instanceof ExtendedRational) ? (ExtendedRational)obj : null);

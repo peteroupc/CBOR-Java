@@ -111,7 +111,7 @@ Deprecated.
 
 * <code>true</code> if this type filter allows CBOR arrays and the given
  array index is allowed under this type filter; otherwise, <code>
- false</code> .
+ false</code>.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(int length)
@@ -124,7 +124,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under this filter; otherwise, <code>false</code> .
+ is allowed under this filter; otherwise, <code>false</code>.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(long length)
@@ -137,7 +137,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under a filter; otherwise, <code>false</code> .
+ is allowed under a filter; otherwise, <code>false</code>.
 
 ### ArrayLengthMatches
     public boolean ArrayLengthMatches​(com.upokecenter.numbers.EInteger bigLength)
@@ -150,7 +150,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this filter allows CBOR arrays and an array's length
- is allowed under a filter; otherwise, <code>false</code> .
+ is allowed under a filter; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -168,8 +168,8 @@ Deprecated.
 **Returns:**
 
 * Returns None if the index is out of range, or Any if this filter
- doesn't filter an array. Returns the appropriate filter for the array
- index otherwise.
+ doesn't filter an array. Returns the appropriate filter for the
+ array index otherwise.
 
 ### GetSubFilter
     public CBORTypeFilter GetSubFilter​(long index)
@@ -182,8 +182,8 @@ Deprecated.
 **Returns:**
 
 * Returns None if the index is out of range, or Any if this filter
- doesn't filter an array. Returns the appropriate filter for the array
- index otherwise.
+ doesn't filter an array. Returns the appropriate filter for the
+ array index otherwise.
 
 ### MajorTypeMatches
     public boolean MajorTypeMatches​(int type)
@@ -196,7 +196,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if the given CBOR major type matches a major type
- allowed by this filter; otherwise, <code>false</code> .
+ allowed by this filter; otherwise, <code>false</code>.
 
 ### NonFPSimpleValueAllowed
     public boolean NonFPSimpleValueAllowed()
@@ -205,7 +205,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this filter allows simple values that are not
- floating-point numbers; otherwise, <code>false</code> .
+ floating-point numbers; otherwise, <code>false</code>.
 
 ### TagAllowed
     public boolean TagAllowed​(int tag)
@@ -218,7 +218,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### TagAllowed
     public boolean TagAllowed​(long longTag)
@@ -231,7 +231,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### TagAllowed
     public boolean TagAllowed​(com.upokecenter.numbers.EInteger bigTag)
@@ -244,7 +244,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if CBOR objects can have the given tag number;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -351,6 +351,11 @@ Deprecated.
 **Returns:**
 
 * A CBORTypeFilter object.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>tags</code> or <code>
+ tags</code> is null.
 
 ### WithTextString
     public CBORTypeFilter WithTextString()

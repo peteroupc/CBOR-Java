@@ -23,7 +23,8 @@ Use ERounding from PeterO.Numbers/com.upokecenter.numbers.
  number is rounded to the closest representable number that is even.
 * `HalfUp`<br>
  Deprecated. Rounded to the nearest number; if the fractional part is exactly half, the
- number is rounded to the closest representable number away from zero.
+ number is rounded to the closest representable number away from
+ zero.
 * `Odd`<br>
  Deprecated. If there is a fractional part and the whole number part is even, the number
  is rounded to the closest representable odd number away from zero.

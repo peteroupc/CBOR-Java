@@ -3,8 +3,8 @@
     @Deprecated public final class ExtendedFloat extends java.lang.Object implements java.lang.Comparable<ExtendedFloat>
 
 Deprecated.
-Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output
+ of this class's toString method.
 
 ## Fields
 
@@ -180,7 +180,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code> .
+ those of another object; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -199,7 +199,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code> .
+ those of another object; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -215,11 +215,13 @@ Deprecated.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
+* <code>obj</code> - The parameter
+      <code>obj</code>
+       is an arbitrary object.
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, <code>false</code> .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -293,8 +295,12 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>length</code> is
- less than 0 or greater than <code>str</code> 's length, or <code>str</code> ' s
- length minus <code>offset</code> is less than <code>length</code> .
+ less than 0 or greater than <code>str</code> 's length, or <code>str</code> '
+ s length minus <code>offset</code> is less than <code>length</code>.
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>length</code> is
+ less than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ length minus <code>offset</code> is less than <code>length</code>.
 
 ### FromString
     public static ExtendedFloat FromString​(java.lang.String str)
@@ -329,7 +335,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object is negative infinity; otherwise, <code>
- false</code> .
+ false</code>.
 
 ### IsPositiveInfinity
     @Deprecated public boolean IsPositiveInfinity()
@@ -339,7 +345,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object is positive infinity; otherwise, <code>
- false</code> .
+ false</code>.
 
 ### IsNaN
     public boolean IsNaN()
@@ -348,7 +354,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this object is a not-a-number value; otherwise,
- <code>false</code> .
+ <code>false</code>.
 
 ### IsInfinity
     public boolean IsInfinity()
@@ -357,7 +363,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this object is positive or negative infinity;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### isNegative
     @Deprecated public final boolean isNegative()
@@ -367,7 +373,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> If this object is negative, including negative zero;
- otherwise, . <code>false</code> .
+ otherwise, . <code>false</code>.
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
@@ -377,7 +383,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object is a quiet not-a-number value;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### IsSignalingNaN
     @Deprecated public boolean IsSignalingNaN()
@@ -387,7 +393,7 @@ Use EFloat from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object is a signaling not-a-number value;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### compareTo
     public int compareTo​(ExtendedFloat other)

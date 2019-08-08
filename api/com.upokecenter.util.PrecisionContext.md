@@ -46,8 +46,8 @@ Deprecated.
 * <code>exponentMaxSmall</code> - The maximum exponent.
 
 * <code>clampNormalExponents</code> - Whether to clamp a number's significand to the
- given maximum precision (if it isn't zero) while remaining within the
- exponent range.
+ given maximum precision (if it isn't zero) while remaining within
+ the exponent range.
 
 ### PrecisionContext
     public PrecisionContext​(int precision, Rounding rounding, int exponentMinSmall, int exponentMaxSmall, boolean clampNormalExponents)
@@ -66,8 +66,8 @@ Deprecated.
 * <code>exponentMaxSmall</code> - The maximum exponent.
 
 * <code>clampNormalExponents</code> - Whether to clamp a number's significand to the
- given maximum precision (if it isn't zero) while remaining within the
- exponent range.
+ given maximum precision (if it isn't zero) while remaining within
+ the exponent range.
 
 ### toString
     public java.lang.String toString()

@@ -13,7 +13,7 @@ at: http://peteroupc.github.io/
       if (obj.getType() != CBORType.TextString) {
         throw new CBORException("URI must be a text String");
       }
-      if (!URIUtility.isValidIRI(obj.AsString())) {
+      if (!URIUtility.IsValidIRI(obj.AsString())) {
         throw new CBORException("String is not a valid URI/IRI");
       }
       return obj;

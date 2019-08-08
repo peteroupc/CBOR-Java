@@ -30,11 +30,10 @@ May be removed without replacement.
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior
- of CBORObject.FromObject  and CBORObject#ToObject  , as
- well as type filters for ToObject
+ of CBORObject.FromObject and CBORObject#ToObject , as
+ well as type filters for ToObject.
 
-* [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -
-Includes options to control how CBOR objects are converted to JSON.
+* [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -  
 
 * [com.upokecenter.cbor.PODOptions](com.upokecenter.cbor.PODOptions.md) -
 Options for converting "plain old data" objects to CBOR objects.
@@ -46,23 +45,23 @@ Represents a type that a CBOR object can have.
 Exception thrown for errors involving CBOR data.
 
 * [com.upokecenter.util.BigInteger](com.upokecenter.util.BigInteger.md) - Deprecated.
-Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EInteger from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 * [com.upokecenter.util.DataUtilities](com.upokecenter.util.DataUtilities.md) -
 Contains methods useful for reading and writing strings.
 
 * [com.upokecenter.util.ExtendedDecimal](com.upokecenter.util.ExtendedDecimal.md) - Deprecated.
-Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 * [com.upokecenter.util.ExtendedFloat](com.upokecenter.util.ExtendedFloat.md) - Deprecated.
-Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EFloat from PeterO.Numbers/com.upokecenter.numbers and the output
+ of this class's toString method.
 
 * [com.upokecenter.util.ExtendedRational](com.upokecenter.util.ExtendedRational.md) - Deprecated.
-Use ERational from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use ERational from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 * [com.upokecenter.util.PrecisionContext](com.upokecenter.util.PrecisionContext.md) - Deprecated.
 Use EContext from PeterO.Numbers/com.upokecenter.numbers.

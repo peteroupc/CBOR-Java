@@ -13,7 +13,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Implements CBOR string references, described at
-     * <code>http://cbor.schmorp.de/stringref </code>
+     * <code>http://cbor.schmorp.de/stringref</code> .
      */
   class StringRefs {
     private final ArrayList<ArrayList<CBORObject>> stack;

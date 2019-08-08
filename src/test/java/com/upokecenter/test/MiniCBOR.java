@@ -107,20 +107,22 @@ private MiniCBOR() {
         stream.write(bytes, 0, 2);
       } else if (value <= 0xffff) {
         bytes = new byte[] { (byte)(25 | type), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff) };
+          (byte)(value & 0xff),
+         };
         stream.write(bytes, 0, 3);
       } else {
         bytes = new byte[] { (byte)(26 | type), (byte)((value >> 24) & 0xff),
           (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-          (byte)(value & 0xff) };
+          (byte)(value & 0xff),
+         };
         stream.write(bytes, 0, 5);
       }
     }
 
-private static long ReadInteger(
-  InputStream stream,
-  int headByte,
-  boolean check32bit) throws java.io.IOException {
+    private static long ReadInteger(
+      InputStream stream,
+      int headByte,
+      boolean check32bit) throws java.io.IOException {
       int kind = headByte & 0x1f;
       if (kind == 0x18) {
         int b = stream.read();
@@ -371,8 +373,8 @@ private static long ReadInteger(
         int b1 = stream.read();
         int b2 = stream.read();
         if (b1 < 0 || b2 < 0) {
- throw new IOException();
-}
+          throw new IOException();
+        }
         int c = (b1 << 8) | b2;
         return (b == 0x18) ? c : -1 - c;
       }
@@ -380,15 +382,15 @@ private static long ReadInteger(
         if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
            stream.read() != 0 || stream.read() != 0 ||
            stream.read() != 0)) {
- throw new IOException();
-}
+          throw new IOException();
+        }
         int b1 = stream.read();
         int b2 = stream.read();
         int b3 = stream.read();
         int b4 = stream.read();
         if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0 || b1 >= 0x80) {
- throw new IOException();
-}
+          throw new IOException();
+        }
         int c = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
         return (b < 0x20) ? c : -1 - c;
       }

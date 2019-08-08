@@ -3,8 +3,8 @@
     @Deprecated public final class ExtendedDecimal extends java.lang.Object implements java.lang.Comparable<ExtendedDecimal>
 
 Deprecated.
-Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the output of
-this class's toString method.
+Use EDecimal from PeterO.Numbers/com.upokecenter.numbers and the
+ output of this class's toString method.
 
 ## Fields
 
@@ -150,7 +150,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object's mantissa and exponent are equal to
- those of another object; otherwise, <code>false</code> .
+ those of another object; otherwise, <code>false</code>.
 
 ### equals
     public boolean equals​(java.lang.Object obj)
@@ -162,11 +162,13 @@ Deprecated.
 
 **Parameters:**
 
-* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
+* <code>obj</code> - The parameter
+      <code>obj</code>
+       is an arbitrary object.
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, <code>false</code> .
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -258,7 +260,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this object is not a number (NaN); otherwise, <code>
- false</code> .
+ false</code>.
 
 ### IsInfinity
     public boolean IsInfinity()
@@ -267,7 +269,7 @@ Deprecated.
 **Returns:**
 
 * <code>true</code> if this object is positive or negative infinity;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### isNegative
     @Deprecated public final boolean isNegative()
@@ -277,7 +279,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> If this object is negative, including negative zero;
- otherwise, . <code>false</code> .
+ otherwise, . <code>false</code>.
 
 ### IsQuietNaN
     @Deprecated public boolean IsQuietNaN()
@@ -287,7 +289,7 @@ Use EDecimal from PeterO.Numbers/com.upokecenter.numbers.
 **Returns:**
 
 * <code>true</code> if this object is a quiet not-a-number value;
- otherwise, <code>false</code> .
+ otherwise, <code>false</code>.
 
 ### compareTo
     public int compareTo​(ExtendedDecimal other)

@@ -35,15 +35,15 @@ import com.upokecenter.numbers.*;
      * @param exponentMinSmall The minimum exponent.
      * @param exponentMaxSmall The maximum exponent.
      * @param clampNormalExponents Whether to clamp a number's significand to the
-     * given maximum precision (if it isn't zero) while remaining within the
-     * exponent range.
+     * given maximum precision (if it isn't zero) while remaining within
+     * the exponent range.
      */
     public PrecisionContext(
- int precision,
- Rounding rounding,
- int exponentMinSmall,
- int exponentMaxSmall,
- boolean clampNormalExponents) {
+      int precision,
+      Rounding rounding,
+      int exponentMinSmall,
+      int exponentMaxSmall,
+      boolean clampNormalExponents) {
       throw new UnsupportedOperationException("This class is now obsolete.");
     }
 

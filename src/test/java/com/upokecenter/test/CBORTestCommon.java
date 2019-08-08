@@ -12,7 +12,7 @@ import com.upokecenter.numbers.*;
 private CBORTestCommon() {
 }
     static final EDecimal DecPosInf =
-  EDecimal.PositiveInfinity;
+      EDecimal.PositiveInfinity;
 
     static final EDecimal DecNegInf =
       EDecimal.NegativeInfinity;
@@ -30,54 +30,63 @@ private CBORTestCommon() {
       ERational.NegativeInfinity;
 
     public static CBORObject RandomNumber(RandomGenerator rand) {
+      Object o = null;
       switch (rand.UniformInt(6)) {
         case 0:
-return CBORObject.FromObject(
-  RandomObjects.RandomDouble(
-  rand,
-  Integer.MAX_VALUE));
+          o = RandomObjects.RandomDouble(
+            rand,
+            Integer.MAX_VALUE);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 1:
-return CBORObject.FromObject(
-  RandomObjects.RandomSingle(
-  rand,
-  Integer.MAX_VALUE));
+          o = RandomObjects.RandomSingle(
+            rand,
+            Integer.MAX_VALUE);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+              RandomObjects.RandomEInteger(rand));
         case 3:
-          return CBORObject.FromObject(RandomObjects.RandomEFloat(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+              RandomObjects.RandomEFloat(rand));
         case 4:
-       return
-  CBORObject.FromObject(RandomObjects.RandomEDecimal(rand));
+          o = RandomObjects.RandomEDecimal(rand);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 5:
-          return CBORObject.FromObject(RandomObjects.RandomInt64(rand));
-        default: throw new IllegalArgumentException();
+          o = RandomObjects.RandomInt64(rand);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
+        default: throw new IllegalStateException();
       }
     }
 
     public static CBORObject RandomNumberOrRational(RandomGenerator rand) {
+      Object o = null;
       switch (rand.UniformInt(7)) {
         case 0:
-return CBORObject.FromObject(
-  RandomObjects.RandomDouble(
-  rand,
-  Integer.MAX_VALUE));
+          o = RandomObjects.RandomDouble(
+            rand,
+            Integer.MAX_VALUE);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 1:
-return CBORObject.FromObject(
-  RandomObjects.RandomSingle(
-  rand,
-  Integer.MAX_VALUE));
+          o = RandomObjects.RandomSingle(
+            rand,
+            Integer.MAX_VALUE);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return CBORObject.FromObject(RandomObjects.RandomEInteger(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+              RandomObjects.RandomEInteger(rand));
         case 3:
-          return CBORObject.FromObject(RandomObjects.RandomEFloat(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+              RandomObjects.RandomEFloat(rand));
         case 4:
-       return
-  CBORObject.FromObject(RandomObjects.RandomEDecimal(rand));
+          o = RandomObjects.RandomEDecimal(rand);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 5:
-          return CBORObject.FromObject(RandomObjects.RandomInt64(rand));
+          o = RandomObjects.RandomInt64(rand);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 6:
-          return CBORObject.FromObject(RandomObjects.RandomERational(rand));
-        default: throw new IllegalArgumentException();
+          o = RandomObjects.RandomERational(rand);
+          return ToObjectTest.TestToFromObjectRoundTrip(o);
+        default: throw new IllegalStateException();
       }
     }
 
@@ -98,8 +107,10 @@ return CBORObject.FromObject(
       int depth) {
       int tag = 0;
       if (rand.UniformInt(2) == 0) {
-        int[] tagselection = { 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
-          30, 0, 1, 25, 26, 27 };
+        int[] tagselection = {
+          2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
+          30, 0, 1, 25, 26, 27,
+        };
         tag = tagselection[rand.UniformInt(tagselection.length)];
       } else {
         tag = rand.UniformInt(0x1000000);
@@ -108,37 +119,41 @@ return CBORObject.FromObject(
         tag = 0;
       }
       if (tag == 30) {
-        return CBORObject.FromObject(RandomObjects.RandomByteString(rand));
+        Object o = RandomObjects.RandomByteString(rand);
+        return ToObjectTest.TestToFromObjectRoundTrip(o);
       }
-      for (int i = 0; i < 15; ++i) {
-        CBORObject o;
-        // System.out.println("tag "+tag+" "+i);
+      {
+        CBORObject cbor;
+       // System.out.println("tag "+tag+" "+i);
         if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
           tag = 999;
         }
         if (tag == 2 || tag == 3) {
-          o = CBORObject.FromObject(RandomObjects.RandomByteStringShort(rand));
+          Object o = RandomObjects.RandomByteStringShort(rand);
+          cbor = ToObjectTest.TestToFromObjectRoundTrip(o);
         } else if (tag == 4 || tag == 5) {
-          o = CBORObject.NewArray();
-          o.Add(CBORObject.FromObject(RandomObjects.RandomSmallIntegral(rand)));
-          o.Add(CBORObject.FromObject(RandomObjects.RandomEInteger(rand)));
+          cbor = CBORObject.NewArray();
+          Object o = RandomObjects.RandomSmallIntegral(rand);
+          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          o = RandomObjects.RandomEInteger(rand);
+          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
         } else if (tag == 30) {
-          o = CBORObject.NewArray();
-          o.Add(CBORObject.FromObject(RandomObjects.RandomSmallIntegral(rand)));
-          o.Add(CBORObject.FromObject(RandomObjects.RandomEInteger(rand)));
+          cbor = CBORObject.NewArray();
+          Object o = RandomObjects.RandomSmallIntegral(rand);
+          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          o = RandomObjects.RandomEInteger(rand);
+          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
         } else {
-          o = RandomCBORObject(rand, depth + 1);
+          cbor = RandomCBORObject(rand, depth + 1);
         }
         try {
-          o = CBORObject.FromObjectAndTag(o, tag);
-          // System.out.println("done");
-          return o;
+          cbor = CBORObject.FromObjectAndTag(cbor, tag);
+         // System.out.println("done");
+          return cbor;
         } catch (Exception ex) {
-          continue;
+          return CBORObject.FromObjectAndTag(cbor, 999);
         }
       }
-      // System.out.println("Failed "+tag);
-      return CBORObject.Null;
     }
 
     public static CBORObject RandomCBORArray(RandomGenerator rand, int depth) {
@@ -169,9 +184,11 @@ return CBORObject.FromObject(
           return rand.UniformInt(2) == 0 ? CBORObject.Null :
             CBORObject.Undefined;
         case 6:
-          return CBORObject.FromObject(RandomObjects.RandomTextString(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+            RandomObjects.RandomTextString(rand));
         case 7:
-          return CBORObject.FromObject(RandomObjects.RandomByteString(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip(
+            RandomObjects.RandomByteString(rand));
         case 8:
           return RandomCBORArray(rand, depth);
         case 9:
@@ -182,6 +199,7 @@ return CBORObject.FromObject(
       }
     }
 
+@SuppressWarnings("deprecation")
     public static void TestNumber(CBORObject o) {
       if (o.getType() != CBORType.Number) {
         return;
@@ -194,8 +212,8 @@ return CBORObject.FromObject(
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt16();
@@ -203,8 +221,8 @@ return CBORObject.FromObject(
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt32();
@@ -212,8 +230,8 @@ return CBORObject.FromObject(
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsInt64();
@@ -221,8 +239,8 @@ return CBORObject.FromObject(
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         try {
           o.AsSingle();
@@ -240,23 +258,25 @@ return CBORObject.FromObject(
           o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
+         // NOTE: Intentionally empty
         } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex); throw new
-            IllegalStateException("", ex);
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
         }
         return;
       }
       try {
         o.AsSingle();
       } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new
           IllegalStateException("", ex);
       }
       try {
         o.AsDouble();
       } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex); throw new
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new
           IllegalStateException("", ex);
       }
     }
@@ -268,20 +288,24 @@ return CBORObject.FromObject(
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
-    public static void AssertSer(CBORObject o, String s) {
-      if (!s.equals(o.toString())) {
-        Assert.assertEquals("o is not equal to s",s,o.toString());
+    public static void AssertJSONSer(CBORObject o, String s) {
+      if (!s.startsWith(o.ToJSONString())) {
+        Assert.assertEquals("o is not equal to s",s,o.ToJSONString());
       }
-      // Test round-tripping
+     // Test round-tripping
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
-      if (!s.equals(o2.toString())) {
-        Assert.assertEquals("o2 is not equal to s",s,o2.toString());
+      if (!s.startsWith(o2.ToJSONString())) {
+        String msg = "o2 is not equal to s:\no = " +
+          TestCommon.ToByteArrayString(o.EncodeToBytes()) +
+          "\no2 = " + TestCommon.ToByteArrayString(o2.EncodeToBytes()) +
+          "\no2string = " + o2.toString();
+        Assert.assertEquals(msg, s, o2.ToJSONString());
       }
       TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
-    // Tests the equivalence of the FromBytes and Read methods.
+   // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
       CBORObject oa = FromBytesA(b);
       CBORObject ob = FromBytesB(b);
@@ -297,7 +321,7 @@ return CBORObject.FromObject(
 
     private static CBORObject FromBytesB(byte[] b) {
       {
-java.io.ByteArrayInputStream ms = null;
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();

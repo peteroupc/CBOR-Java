@@ -17,35 +17,35 @@ import com.upokecenter.numbers.*;
     /**
      * Contains methods for reading and writing objects represented in BEncode, a
      * serialization format used in the BitTorrent protocol. For more
-     * information, see: http://wiki.theory.org/BitTorrentSpecification This
-     * class accepts BEncoded strings in UTF-8, and outputs BEncoded strings
-     * in UTF-8. This class also demonstrates how CBORObject supports
-     * predefined serialization formats.
+     * information, see: http://wiki.theory.org/BitTorrentSpecification
+     * This class accepts BEncoded strings in UTF-8, and outputs BEncoded
+     * strings in UTF-8. This class also demonstrates how CBORObject
+     * supports predefined serialization formats.
      */
   public final class BEncoding {
 private BEncoding() {
 }
-    private static void writeUtf8(String s, OutputStream stream) throws java.io.IOException {
+    private static void WriteUtf8(String s, OutputStream stream) throws java.io.IOException {
       if (DataUtilities.WriteUtf8(s, stream, false) != 0) {
         throw new CBORException("invalid surrogate");
       }
     }
 
-    private static CBORObject readDictionary(InputStream stream) throws java.io.IOException {
+    private static CBORObject ReadDictionary(InputStream stream) throws java.io.IOException {
       CBORObject obj = CBORObject.NewMap();
       while (true) {
         int c = stream.read();
         if (c == 'e') {
           break;
         }
-        CBORObject s = readString(stream, (char)c);
-        CBORObject o = readObject(stream, false);
+        CBORObject s = ReadString(stream, (char)c);
+        CBORObject o = ReadObject(stream, false);
         obj.set(s, o);
       }
       return obj;
     }
 
-    private static CBORObject readInteger(InputStream stream) throws java.io.IOException {
+    private static CBORObject ReadInteger(InputStream stream) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       boolean start = true;
       while (true) {
@@ -71,10 +71,10 @@ private BEncoding() {
         false);
     }
 
-    private static CBORObject readList(InputStream stream) throws java.io.IOException {
+    private static CBORObject ReadList(InputStream stream) throws java.io.IOException {
       CBORObject obj = CBORObject.NewArray();
       while (true) {
-        CBORObject o = readObject(stream, true);
+        CBORObject o = ReadObject(stream, true);
         if (o == null) {
           break; // 'e' was read
         }
@@ -84,25 +84,28 @@ private BEncoding() {
     }
 
     public static CBORObject Read(InputStream stream) throws java.io.IOException {
-      return readObject(stream, false);
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      return ReadObject(stream, false);
     }
 
-    private static CBORObject readObject(InputStream stream, boolean allowEnd) throws java.io.IOException {
+    private static CBORObject ReadObject(InputStream stream, boolean allowEnd) throws java.io.IOException {
       int c = stream.read();
       if (c == 'd') {
-        return readDictionary(stream);
+        return ReadDictionary(stream);
       }
       if (c == 'l') {
-        return readList(stream);
+        return ReadList(stream);
       }
       if (allowEnd && c == 'e') {
         return null;
       }
       if (c == 'i') {
-        return readInteger(stream);
+        return ReadInteger(stream);
       }
       if (c >= '0' && c <= '9') {
-        return readString(stream, (char)c);
+        return ReadString(stream, (char)c);
       }
       throw new CBORException("Object expected");
     }
@@ -131,25 +134,27 @@ private BEncoding() {
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-        char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      while (intlongValue > 9) {
-        int intdivValue = (intlongValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
-        chars[count--] = digit;
-        intlongValue = intdivValue;
-      }
-      if (intlongValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)intlongValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 12 - count);
+          char digit = ValueDigits.charAt((int)(intlongValue -
+            (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        while (intlongValue > 9) {
+          int intdivValue = (intlongValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(intlongValue -
+            (intdivValue * 10)));
+          chars[count--] = digit;
+          intlongValue = intdivValue;
+        }
+        if (intlongValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)intlongValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 12 - count);
       } else {
         chars = new char[24];
         count = 23;
@@ -158,29 +163,29 @@ private BEncoding() {
         }
         while (longValue > 43698) {
           long divValue = longValue / 10;
-        char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      while (longValue > 9) {
-        long divValue = (longValue * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
-        chars[count--] = digit;
-        longValue = divValue;
-      }
-      if (longValue != 0) {
-        chars[count--] = ValueDigits.charAt((int)longValue);
-      }
-      if (neg) {
-        chars[count] = '-';
-      } else {
-        ++count;
-      }
-      return new String(chars, count, 24 - count);
+          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        while (longValue > 9) {
+          long divValue = (longValue * 26215) >> 18;
+          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          chars[count--] = digit;
+          longValue = divValue;
+        }
+        if (longValue != 0) {
+          chars[count--] = ValueDigits.charAt((int)longValue);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, 24 - count);
       }
     }
 
-    private static CBORObject readString(InputStream stream, char firstChar) throws java.io.IOException {
+    private static CBORObject ReadString(InputStream stream, char firstChar) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       if (firstChar < (int)'0' && firstChar > (int)'9') {
         throw new CBORException("Invalid integer encoding");
@@ -220,19 +225,25 @@ private BEncoding() {
     }
 
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
-      if (obj.getType() == CBORType.Number) {
-        stream.write(((byte)((byte)'i')));
-        writeUtf8(obj.AsEInteger().toString(), stream);
-        stream.write(((byte)((byte)'e')));
+      if (obj == null) {
+        throw new NullPointerException("obj");
+      }
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
+      if (obj.isNumber()) {
+        stream.write(((byte)((byte)0x69)));
+        WriteUtf8(obj.AsEInteger().toString(), stream);
+        stream.write(((byte)((byte)0x65)));
       } else if (obj.getType() == CBORType.TextString) {
         String s = obj.AsString();
         long length = DataUtilities.GetUtf8Length(s, false);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        writeUtf8(LongToString(length), stream);
+        WriteUtf8(LongToString(length), stream);
         stream.write(((byte)((byte)':')));
-        writeUtf8(s, stream);
+        WriteUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
         boolean hasNonStringKeys = false;
         for (CBORObject key : obj.getKeys()) {
@@ -252,7 +263,10 @@ private BEncoding() {
               key.AsString() : key.ToJSONString();
             valueSMap.put(str, value);
           }
-          stream.write(((byte)((byte)'d')));
+          if (stream == null) {
+            throw new NullPointerException("stream");
+          }
+          stream.write(((byte)((byte)0x64)));
           for (Map.Entry<String, CBORObject> entry : valueSMap.entrySet()) {
             String key = entry.getKey();
             CBORObject value = entry.getValue();
@@ -260,44 +274,44 @@ private BEncoding() {
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            writeUtf8(
+            WriteUtf8(
   LongToString(length),
   stream);
             stream.write(((byte)((byte)':')));
-            writeUtf8(key, stream);
+            WriteUtf8(key, stream);
             Write(value, stream);
           }
-          stream.write(((byte)((byte)'e')));
+          stream.write(((byte)((byte)0x65)));
         } else {
-          stream.write(((byte)((byte)'d')));
+          stream.write(((byte)((byte)0x64)));
           for (CBORObject key : obj.getKeys()) {
             String str = key.AsString();
             long length = DataUtilities.GetUtf8Length(str, false);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            writeUtf8(LongToString(length), stream);
+            WriteUtf8(LongToString(length), stream);
             stream.write(((byte)((byte)':')));
-            writeUtf8(str, stream);
+            WriteUtf8(str, stream);
             Write(obj.get(key), stream);
           }
-          stream.write(((byte)((byte)'e')));
+          stream.write(((byte)((byte)0x65)));
         }
       } else if (obj.getType() == CBORType.Array) {
-        stream.write(((byte)((byte)'l')));
+        stream.write(((byte)((byte)0x6c)));
         for (int i = 0; i < obj.size(); ++i) {
           Write(obj.get(i), stream);
         }
-        stream.write(((byte)((byte)'e')));
+        stream.write(((byte)((byte)0x65)));
       } else {
         String str = obj.ToJSONString();
         long length = DataUtilities.GetUtf8Length(str, false);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
-        writeUtf8(LongToString(length), stream);
+        WriteUtf8(LongToString(length), stream);
         stream.write(((byte)((byte)':')));
-        writeUtf8(str, stream);
+        WriteUtf8(str, stream);
       }
     }
   }
