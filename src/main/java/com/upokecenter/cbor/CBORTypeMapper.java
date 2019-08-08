@@ -117,12 +117,12 @@ import java.util.*;
       }
       for (String prefix : this.typePrefixes) {
         if (typeName.length() >= prefix.length() &&
-          typeName.substring(0, prefix.length()).startsWith(prefix)) {
+          typeName.substring(0, prefix.length()).equals(prefix)) {
           return true;
         }
       }
       for (String name : this.typeNames) {
-        if (typeName.startsWith(name)) {
+        if (typeName.equals(name)) {
           return true;
         }
       }

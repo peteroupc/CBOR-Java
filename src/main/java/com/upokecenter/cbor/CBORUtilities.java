@@ -392,7 +392,7 @@ private CBORUtilities() {
 
     public static boolean NameStartsWithWord(String name, String word) {
       int wl = word.length();
-      return name.length() > wl && name.substring(0,wl).startsWith(word) && !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
+      return name.length() > wl && name.substring(0,wl).equals(word) && !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
               !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
     }
 

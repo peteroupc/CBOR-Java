@@ -803,13 +803,19 @@ cmpCobj.toString() +
     public void TestHalfPrecision() {
       CBORObject o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7c, 0x00 });
-      Assert.assertEquals(Float.POSITIVE_INFINITY, o.AsSingle(), 0f);
+      if (o.AsSingle() != Float.POSITIVE_INFINITY) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x00, 0x00 });
-      Assert.assertEquals(0f, o.AsSingle());
+      if (o.AsSingle() != 0f) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, (byte)0xfc, 0x00 });
-      Assert.assertEquals(Float.NEGATIVE_INFINITY, o.AsSingle(), 0f);
+      if (o.AsSingle() != Float.NEGATIVE_INFINITY) {
+        Assert.fail();
+      }
       o = CBORObject.DecodeFromBytes(
         new byte[] { (byte)0xf9, 0x7e, 0x00 });
       if (!(Float.isNaN(o.AsSingle())))Assert.fail();
@@ -1705,13 +1711,13 @@ try { if (ms != null) {
       if (s == null) {
         throw new NullPointerException("s");
       }
-      if (!s.startsWith(o.toString())) {
+      if (!s.equals(o.toString())) {
         Assert.assertEquals("o is not equal to s",s,o.toString());
       }
      // Test round-tripping
       CBORObject o2 = CBORTestCommon.FromBytesTestAB(
         o.EncodeToBytes());
-      if (!s.startsWith(o2.toString())) {
+      if (!s.equals(o2.toString())) {
         String msg = "o2 is not equal to s:\no = " +
           TestCommon.ToByteArrayString(o.EncodeToBytes()) +
           "\no2 = " + TestCommon.ToByteArrayString(o2.EncodeToBytes()) +

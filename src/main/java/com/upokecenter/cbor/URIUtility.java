@@ -463,8 +463,8 @@ private URIUtility() {
 
     private static String NormalizePath(String path) {
       int len = path.length();
-      if (len == 0 || path.startsWith("..") ||
-path.startsWith(".")) {
+      if (len == 0 || path.equals("..") ||
+path.equals(".")) {
         return "";
       }
       if (path.indexOf(ValueSlashDot) < 0 &&

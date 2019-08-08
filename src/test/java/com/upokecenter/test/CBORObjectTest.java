@@ -2302,7 +2302,7 @@ CBORObject.FromObject(CBORTestCommon.FloatPosInf);
         } else {
           cbor = TestSucceedingJSON(str);
           String exp = CharString(i, false, charbuf);
-          if (!exp.startsWith(cbor.AsString())) {
+          if (!exp.equals(cbor.AsString())) {
             Assert.assertEquals(exp, cbor.AsString());
           }
         }
@@ -5500,7 +5500,7 @@ try { if (msjson != null) {
           }
         } else if (numberinfo.get("number").AsString().indexOf('-') == 0) {
           Assert.assertEquals(-1, cbornumber.signum());
-        } else if (numberinfo.get("number").AsString().startsWith("0")) {
+        } else if (numberinfo.get("number").AsString().equals("0")) {
           Assert.assertEquals(0, cbornumber.signum());
         } else {
           Assert.assertEquals(1, cbornumber.signum());
