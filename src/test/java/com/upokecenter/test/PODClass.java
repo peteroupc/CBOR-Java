@@ -1,5 +1,7 @@
 package com.upokecenter.test;
 
+// One property returns an array for testing purposes
+
   public final class PODClass {
     public PODClass() {
       this.setPropA(0);

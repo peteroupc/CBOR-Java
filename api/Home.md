@@ -14,13 +14,16 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
 
+* [com.upokecenter.cbor.CBORNumber](com.upokecenter.cbor.CBORNumber.md) -
+An instance of a number that CBOR or certain CBOR tags can represent.
+
 * [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -
 Represents an object in Concise Binary Object Representation (CBOR) and
  contains methods for reading and writing CBOR data.
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior
- of CBORObject.FromObject and CBORObject#ToObject , as
+ of CBORObject.FromObject and CBORObject#ToObject, as
  well as type filters for ToObject.
 
 * [com.upokecenter.cbor.JSONOptions](com.upokecenter.cbor.JSONOptions.md) -
@@ -37,4 +40,4 @@ Represents a type that a CBOR object can have.
 Exception thrown for errors involving CBOR data.
 
 * [com.upokecenter.util.DataUtilities](com.upokecenter.util.DataUtilities.md) -
-Contains methods useful for reading and writing strings.
+Contains methods useful for reading and writing text strings.

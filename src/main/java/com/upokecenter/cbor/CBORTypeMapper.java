@@ -4,7 +4,7 @@ import java.util.*;
 
     /**
      * Holds converters to customize the serialization and deserialization behavior
-     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
      * well as type filters for <code>ToObject</code>.
      */
   public final class CBORTypeMapper {
@@ -14,7 +14,8 @@ import java.util.*;
       converters;
 
     /**
-     * Initializes a new instance of the CBORTypeMapper class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.cbor.CBORTypeMapper} class.
      */
     public CBORTypeMapper() {
       this.typePrefixes = new ArrayList<String>();
@@ -33,8 +34,8 @@ import java.util.*;
      * @return This object.
      * @throws NullPointerException The parameter {@code type} or {@code
      * converter} is null.
-     * @throws IllegalArgumentException Converter doesn't contain a proper
-     *  ToCBORObject method".
+     * @throws IllegalArgumentException Converter doesn't contain a proper ToCBORObject
+     *  method".
      */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
@@ -129,9 +130,9 @@ import java.util.*;
     }
 
     /**
-     * Adds a prefix of a Java or.NET type for use in type matching. A type
-     * matches a prefix if its fully qualified name is or begins with that
-     * prefix, using codepoint-by-codepoint (case-sensitive) matching.
+     * Adds a prefix of a Java or.NET type for use in type matching. A type matches
+     * a prefix if its fully qualified name is or begins with that prefix,
+     * using codepoint-by-codepoint (case-sensitive) matching.
      * @param prefix The prefix of a Java or.NET type (e.g., `java.math.` or
      * `System.Globalization`).
      * @return This object.

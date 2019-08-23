@@ -741,6 +741,9 @@ import com.upokecenter.util.*;
       String expectedString,
       int noReplaceRet,
       String noReplaceString) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
       DoTestReadUtf8(
         bytes,
         bytes.length,
@@ -761,7 +764,7 @@ import com.upokecenter.util.*;
         StringBuilder builder = new StringBuilder();
         int ret = 0;
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -784,6 +787,9 @@ try { if (ms != null) {
  } } catch (java.io.IOException ex) {}
 }
 }
+        if (bytes == null) {
+          throw new NullPointerException("bytes");
+        }
         if (bytes.length >= length) {
           builder.delete(0, (0)+(builder.length()));
           ret = DataUtilities.ReadUtf8FromBytes(
@@ -825,7 +831,7 @@ try { if (ms != null) {
       }
       {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
 
@@ -848,7 +854,7 @@ try { if (ms != null) {
       }
       {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
 
@@ -1146,7 +1152,7 @@ try { if (ms != null) {
       List<byte[]> illegalSeqs = GenerateIllegalUtf8Sequences();
       for (byte[] seq : illegalSeqs) {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(seq);
 
@@ -1167,7 +1173,7 @@ try { if (ms != null) {
 }
 }
         {
-java.io.ByteArrayInputStream ms2 = null;
+          java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(seq);
 

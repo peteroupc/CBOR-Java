@@ -11,7 +11,9 @@ at: http://peteroupc.github.io/
 import java.util.*;
 import com.upokecenter.cbor.*;
 
-  public class JSONPatch {
+  public final class JSONPatch {
+private JSONPatch() {
+}
     private static CBORObject AddOperation(
       CBORObject o,
       String valueOpStr,
@@ -50,7 +52,13 @@ import com.upokecenter.cbor.*;
 
     public static CBORObject Patch(CBORObject o, CBORObject ptch) {
       // clone the Object in case of failure
+      if (o == null) {
+        throw new NullPointerException("o");
+      }
       o = CloneCbor(o);
+      if (ptch == null) {
+        throw new NullPointerException("ptch");
+      }
       for (int i = 0; i < ptch.size(); ++i) {
         CBORObject patchOp = ptch.get(i);
         // NOTE: This algorithm requires "op" to exist

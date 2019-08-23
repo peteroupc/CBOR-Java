@@ -20,7 +20,7 @@ private CBORDataUtilities() {
 
     /**
      * Parses a number whose format follows the JSON specification. See
-     * #ParseJSONNumber(String, integersOnly, parseOnly) for more
+     * #ParseJSONNumber(string, integersOnly, parseOnly) for more
      * information.
      * @param str A string to parse. The string is not allowed to contain white
      * space characters, including spaces.
@@ -104,7 +104,7 @@ private CBORDataUtilities() {
       int newScaleInt = 0;
       FastInteger2 newScale = null;
       int i = offset;
-     // Ordinary number
+      // Ordinary number
       if (i < str.length() && str.charAt(i) == '0') {
         ++i;
         haveDigits = true;
@@ -155,15 +155,15 @@ private CBORDataUtilities() {
           if (haveDecimalPoint) {
             haveDigitsAfterDecimal = true;
             if (newScaleInt == Integer.MIN_VALUE) {
-newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
-newScale.AddInt(-1);
+              newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+              newScale.AddInt(-1);
             } else {
               --newScaleInt;
             }
           }
         } else if (!integersOnly && str.charAt(i) == '.') {
           if (!haveDigits) {
-           // no digits before the decimal point
+            // no digits before the decimal point
             return null;
           }
           if (haveDecimalPoint) {
@@ -213,7 +213,7 @@ newScale.AddInt(-1);
                   expBuffer = thisdigit;
                   expBufferMult = 10;
                 } else {
-                 // multiply expBufferMult and expBuffer each by 10
+                  // multiply expBufferMult and expBuffer each by 10
                   expBufferMult = (expBufferMult << 3) + (expBufferMult << 1);
                   expBuffer = (expBuffer << 3) + (expBuffer << 1);
                   expBuffer += thisdigit;
@@ -237,15 +237,15 @@ newScale.AddInt(-1);
           null) {
           newScaleInt = expInt;
         } else if (exp == null) {
-newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
-if (offset < 0) {
+          newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+          if (offset < 0) {
             newScale.SubtractInt(expInt);
           } else if (expInt != 0) {
             newScale.AddInt(expInt);
           }
         } else {
-newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
-if (offset < 0) {
+          newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+          if (offset < 0) {
             newScale.Subtract(exp);
           } else {
             newScale.Add(exp);
@@ -253,18 +253,18 @@ if (offset < 0) {
         }
       }
       if (i != str.length()) {
-       // End of the String wasn't reached, so isn't a number
+        // End of the String wasn't reached, so isn't a number
         return null;
       }
       if ((newScale == null && newScaleInt == 0) || (newScale != null &&
                     newScale.signum() == 0)) {
-       // No fractional part
+        // No fractional part
         if (mant != null && mant.CanFitInInt32()) {
           mantInt = mant.AsInt32();
           mant = null;
         }
         if (mant == null) {
-         // NOTE: mantInt can only be 0 or greater, so overflow is impossible
+          // NOTE: mantInt can only be 0 or greater, so overflow is impossible
 
           if (negative) {
             mantInt = -mantInt;

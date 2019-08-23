@@ -50,8 +50,7 @@ import com.upokecenter.numbers.*;
 
     public long AsInt64(Object obj) {
       EInteger bi = (EInteger)obj;
-      if (bi.compareTo(CBORObject.Int64MaxValue) > 0 ||
-          bi.compareTo(CBORObject.Int64MinValue) < 0) {
+      if (!bi.CanFitInInt64()) {
         throw new ArithmeticException("This Object's value is out of range");
       }
       return bi.ToInt64Checked();

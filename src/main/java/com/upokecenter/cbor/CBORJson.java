@@ -233,7 +233,7 @@ import com.upokecenter.numbers.*;
               obj = cval == 0 ?
               CBORDataUtilities.ParseJSONNumber("-0", true, false, true) :
                 CBORObject.FromObject(cval);
-            } else {
+              } else {
               str = sb.toString();
               obj = CBORDataUtilities.ParseJSONNumber(str);
               if (obj == null) {
@@ -524,10 +524,19 @@ import com.upokecenter.numbers.*;
       CBORObject obj,
       StringOutput writer,
       JSONOptions options) throws java.io.IOException {
-      int type = obj.getItemType();
-      Object thisItem = obj.getThisItem();
-      switch (type) {
-        case CBORObject.CBORObjectTypeSimpleValue: {
+      if (obj.isNumber()) {
+        writer.WriteString(CBORNumber.FromCBORObject(obj).ToJSONString());
+        return;
+      }
+      switch (obj.getType()) {
+        case Integer:
+        case FloatingPoint: {
+            CBORObject untaggedObj = obj.Untag();
+            writer.WriteString(
+              CBORNumber.FromCBORObject(untaggedObj).ToJSONString());
+            break;
+        }
+        case Boolean: {
             if (obj.isTrue()) {
               writer.WriteString("true");
               return;
@@ -536,82 +545,14 @@ import com.upokecenter.numbers.*;
               writer.WriteString("false");
               return;
             }
+            return;
+        }
+        case SimpleValue: {
             writer.WriteString("null");
             return;
-          }
-        case CBORObject.CBORObjectTypeSingle: {
-            float f = ((Float)thisItem).floatValue();
-            if (((f) == Float.NEGATIVE_INFINITY) ||
-((f) == Float.POSITIVE_INFINITY) ||
-Float.isNaN(f)) {
-              writer.WriteString("null");
-              return;
-            }
-            writer.WriteString(
-              CBORObject.TrimDotZero(
-                CBORUtilities.SingleToString(f)));
-            return;
-          }
-        case CBORObject.CBORObjectTypeDouble: {
-            double f = ((Double)thisItem).doubleValue();
-            if (((f) == Double.NEGATIVE_INFINITY) ||
-((f) == Double.POSITIVE_INFINITY) ||
-Double.isNaN(f)) {
-              writer.WriteString("null");
-              return;
-            }
-            String dblString = CBORUtilities.DoubleToString(f);
-            writer.WriteString(
-              CBORObject.TrimDotZero(dblString));
-            return;
-          }
-        case CBORObject.CBORObjectTypeInteger: {
-            long longItem = (((Long)thisItem).longValue());
-            writer.WriteString(CBORUtilities.LongToString(longItem));
-            return;
-          }
-        case CBORObject.CBORObjectTypeBigInteger: {
-            writer.WriteString(((EInteger)thisItem).toString());
-            return;
-          }
-        case CBORObject.CBORObjectTypeExtendedDecimal: {
-            EDecimal dec = (EDecimal)thisItem;
-            if (dec.IsInfinity() || dec.IsNaN()) {
-              writer.WriteString("null");
-            } else {
-              writer.WriteString(dec.toString());
-            }
-            return;
-          }
-        case CBORObject.CBORObjectTypeExtendedFloat: {
-            EFloat flo = (EFloat)thisItem;
-            if (flo.IsInfinity() || flo.IsNaN()) {
-              writer.WriteString("null");
-              return;
-            }
-            if (flo.isFinite() &&
-                flo.getExponent().Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
-              // Too inefficient to convert to a decimal number
-              // from a bigfloat with a very high exponent,
-              // so convert to double instead
-              double f = flo.ToDouble();
-              if (((f) == Double.NEGATIVE_INFINITY) ||
-((f) == Double.POSITIVE_INFINITY) ||
-Double.isNaN(f)) {
-                writer.WriteString("null");
-                return;
-              }
-              String dblString =
-                  CBORUtilities.DoubleToString(f);
-              writer.WriteString(
-                CBORObject.TrimDotZero(dblString));
-              return;
-            }
-            writer.WriteString(flo.toString());
-            return;
-          }
-        case CBORObject.CBORObjectTypeByteString: {
-            byte[] byteArray = (byte[])thisItem;
+        }
+        case ByteString: {
+            byte[] byteArray = obj.GetByteString();
             if (byteArray.length == 0) {
               writer.WriteString("\"\"");
               return;
@@ -643,8 +584,8 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)'\"');
             break;
           }
-        case CBORObject.CBORObjectTypeTextString: {
-            String thisString = (String)thisItem;
+        case TextString: {
+            String thisString = obj.AsString();
             if (thisString.length() == 0) {
               writer.WriteString("\"\"");
               return;
@@ -654,7 +595,7 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)'\"');
             break;
           }
-        case CBORObject.CBORObjectTypeArray: {
+        case Array: {
             boolean first = true;
             writer.WriteCodePoint((int)'[');
             for (CBORObject i : obj.AsList()) {
@@ -667,24 +608,13 @@ Double.isNaN(f)) {
             writer.WriteCodePoint((int)']');
             break;
           }
-        case CBORObject.CBORObjectTypeExtendedRational: {
-            ERational dec = (ERational)thisItem;
-            EDecimal f = dec.ToEDecimalExactIfPossible(
-              EContext.Decimal128.WithUnlimitedExponents());
-            if (!f.isFinite()) {
-              writer.WriteString("null");
-            } else {
-              writer.WriteString(f.toString());
-            }
-            break;
-          }
-        case CBORObject.CBORObjectTypeMap: {
+        case Map: {
             boolean first = true;
             boolean hasNonStringKeys = false;
             Map<CBORObject, CBORObject> objMap = obj.AsMap();
             for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
               CBORObject key = entry.getKey();
-              if (key.getItemType() != CBORObject.CBORObjectTypeTextString ||
+              if (key.getType() != CBORType.TextString ||
               key.isTagged()) {
                 // treat a non-text-String item or a tagged item
                 // as having non-String keys
@@ -701,7 +631,7 @@ Double.isNaN(f)) {
                   writer.WriteCodePoint((int)',');
                 }
                 writer.WriteCodePoint((int)'\"');
-                WriteJSONStringUnquoted((String)key.getThisItem(), writer, options);
+                WriteJSONStringUnquoted(key.AsString(), writer, options);
                 writer.WriteCodePoint((int)'\"');
                 writer.WriteCodePoint((int)':');
                 WriteJSONToInternal(value, writer, options);
@@ -718,9 +648,8 @@ Double.isNaN(f)) {
               for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
-                String str = (key.getItemType() ==
-                  CBORObject.CBORObjectTypeTextString) ?
-                  ((String)key.getThisItem()) : key.ToJSONString();
+                String str = (key.getType() == CBORType.TextString) ?
+                  key.AsString() : key.ToJSONString();
                 if (stringMap.containsKey(str)) {
                   throw new
               CBORException("Duplicate JSON String equivalents of map keys");

@@ -12,15 +12,18 @@ Includes options to control how CBOR objects are converted to JSON.
 ## Constructors
 
 * `JSONOptions() JSONOptions`<br>
- Initializes a new instance of the JSONOptions class with default
- options.
+ Initializes a new instance of the JSONOptions
+ class with default options.
 * `JSONOptions​(boolean base64Padding) JSONOptions`<br>
- Initializes a new instance of the JSONOptions class with the given
- value for the Base64Padding option.
+ Initializes a new instance of the JSONOptions
+ class with the given value for the Base64Padding option.
 * `JSONOptions​(boolean base64Padding,
            boolean replaceSurrogates) JSONOptions`<br>
- Initializes a new instance of the JSONOptions class with the given
- values for the options.
+ Initializes a new instance of the JSONOptions
+ class with the given values for the options.
+* `JSONOptions​(java.lang.String paramString) JSONOptions`<br>
+ Initializes a new instance of the JSONOptions
+ class.
 
 ## Methods
 
@@ -32,7 +35,9 @@ This option now has no effect.
  Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive char s
  forming one Unicode code point) are each replaced with a replacement
- character (U + FFFD).
+ character (U+FFFD).
+* `java.lang.String toString()`<br>
+ Gets the values of this options object's properties in text form.
 
 ## Field Details
 
@@ -40,6 +45,20 @@ This option now has no effect.
     public static final JSONOptions Default
 The default options for converting CBOR objects to JSON.
 ## Method Details
+
+### toString
+    public java.lang.String toString()
+Gets the values of this options object's properties in text form.
+
+**Overrides:**
+
+* <code>toString</code> in class <code>java.lang.Object</code>
+
+**Returns:**
+
+* A text string containing the values of this options object's
+ properties. The format of the string is the same as the one
+ described in the string constructor for this class.
 
 ### getBase64Padding
     @Deprecated public final boolean getBase64Padding()
@@ -58,7 +77,7 @@ This option now has no effect. This library now includes necessary padding
 Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive <code>char</code> s
  forming one Unicode code point) are each replaced with a replacement
- character (U + FFFD). The default is false; an exception is thrown
+ character (U+FFFD). The default is false; an exception is thrown
  when such code points are encountered.
 
 **Returns:**

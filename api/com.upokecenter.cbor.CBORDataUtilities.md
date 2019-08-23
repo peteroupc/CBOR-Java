@@ -23,7 +23,7 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
 ### ParseJSONNumber
     public static CBORObject ParseJSONNumber​(java.lang.String str)
 Parses a number whose format follows the JSON specification. See
- #ParseJSONNumber(String, integersOnly, parseOnly) for more
+ #ParseJSONNumber(string, integersOnly, parseOnly) for more
  information.
 
 **Parameters:**

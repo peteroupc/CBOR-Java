@@ -23,6 +23,9 @@ import com.upokecenter.numbers.*;
         return new JSONPointer(obj, pointer);
       }
       while (true) {
+        if (obj == null) {
+          throw new NullPointerException("obj");
+        }
         if (obj.getType() == CBORType.Array) {
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
             throw new IllegalArgumentException(pointer);
@@ -198,8 +201,9 @@ this.refValue = refValue;
         int icount = ((CBORObject)this.jsonobj).size();
         return eivalue.signum() >= 0 &&
                     eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
-      } else if (this.jsonobj.getType() == CBORType.Map) {
-        return ((CBORObject)this.jsonobj).ContainsKey(this.refValue);
+                  } else if (this.jsonobj.getType() == CBORType.Map) {
+                    return
+((CBORObject)this.jsonobj).ContainsKey(this.refValue);
       } else {
         return this.refValue.length() == 0;
       }
@@ -243,7 +247,7 @@ this.refValue = refValue;
         if (index >= 0 && index < ((CBORObject)this.jsonobj).size()) {
     tmpcbor = this.jsonobj;
     return tmpcbor.get(index);
-        } else {
+  } else {
           return null;
         }
       } else if (this.jsonobj.getType() == CBORType.Map) {
@@ -275,9 +279,13 @@ this.refValue = refValue;
      * @param root The parameter {@code root} is not documented yet.
      * @param keyToFind The parameter {@code keyToFind} is not documented yet.
      * @return An Map(string, object) object.
+     * @throws NullPointerException The parameter {@code root} is null.
      */
     public static Map<String, Object> GetPointersWithKeyAndRemove(CBORObject root, String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
+      if (root == null) {
+        throw new NullPointerException("root");
+      }
       GetPointersWithKey(root, keyToFind, "", list, true);
       return list;
     }
@@ -303,11 +311,15 @@ this.refValue = refValue;
      * @param root The parameter {@code root} is not documented yet.
      * @param keyToFind The parameter {@code keyToFind} is not documented yet.
      * @return An Map(string, object) object.
+     * @throws NullPointerException The parameter {@code root} is null.
      */
     public static Map<String, Object> GetPointersWithKey(
       CBORObject root,
       String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
+      if (root == null) {
+        throw new NullPointerException("root");
+      }
       GetPointersWithKey(root, keyToFind, "", list, false);
       return list;
     }

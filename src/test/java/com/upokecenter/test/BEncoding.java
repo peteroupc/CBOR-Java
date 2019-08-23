@@ -14,14 +14,14 @@ import java.io.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
-    /**
-     * Contains methods for reading and writing objects represented in BEncode, a
-     * serialization format used in the BitTorrent protocol. For more
-     * information, see: http://wiki.theory.org/BitTorrentSpecification
-     * This class accepts BEncoded strings in UTF-8, and outputs BEncoded
-     * strings in UTF-8. This class also demonstrates how CBORObject
-     * supports predefined serialization formats.
-     */
+  /**
+   * Contains methods for reading and writing objects represented in BEncode, a
+   * serialization format used in the BitTorrent protocol. For more
+   * information, see: http://wiki.theory.org/BitTorrentSpecification This
+   * class accepts BEncoded strings in UTF-8, and outputs BEncoded strings
+   * in UTF-8. This class also demonstrates how CBORObject supports
+   * predefined serialization formats.
+   */
   public final class BEncoding {
 private BEncoding() {
 }
@@ -84,6 +84,9 @@ private BEncoding() {
     }
 
     public static CBORObject Read(InputStream stream) throws java.io.IOException {
+      if (stream == null) {
+        throw new NullPointerException("stream");
+      }
       return ReadObject(stream, false);
     }
 
@@ -220,7 +223,13 @@ private BEncoding() {
     }
 
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
-      if (obj.getType() == CBORType.Number) {
+      if (obj == null) {
+        throw new NullPointerException("obj");
+      }
+      if (obj.isNumber()) {
+        if (stream == null) {
+          throw new NullPointerException("stream");
+        }
         stream.write(((byte)((byte)0x69)));
         WriteUtf8(obj.AsEInteger().toString(), stream);
         stream.write(((byte)((byte)0x65)));
@@ -231,6 +240,9 @@ private BEncoding() {
           throw new CBORException("invalid String");
         }
         WriteUtf8(LongToString(length), stream);
+        if (stream == null) {
+          throw new NullPointerException("stream");
+        }
         stream.write(((byte)((byte)':')));
         WriteUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
@@ -252,6 +264,9 @@ private BEncoding() {
               key.AsString() : key.ToJSONString();
             valueSMap.put(str, value);
           }
+          if (stream == null) {
+            throw new NullPointerException("stream");
+          }
           stream.write(((byte)((byte)0x64)));
           for (Map.Entry<String, CBORObject> entry : valueSMap.entrySet()) {
             String key = entry.getKey();
@@ -269,6 +284,9 @@ private BEncoding() {
           }
           stream.write(((byte)((byte)0x65)));
         } else {
+          if (stream == null) {
+            throw new NullPointerException("stream");
+          }
           stream.write(((byte)((byte)0x64)));
           for (CBORObject key : obj.getKeys()) {
             String str = key.AsString();
@@ -284,6 +302,9 @@ private BEncoding() {
           stream.write(((byte)((byte)0x65)));
         }
       } else if (obj.getType() == CBORType.Array) {
+        if (stream == null) {
+          throw new NullPointerException("stream");
+        }
         stream.write(((byte)((byte)0x6c)));
         for (int i = 0; i < obj.size(); ++i) {
           Write(obj.get(i), stream);
@@ -296,6 +317,9 @@ private BEncoding() {
           throw new CBORException("invalid String");
         }
         WriteUtf8(LongToString(length), stream);
+        if (stream == null) {
+          throw new NullPointerException("stream");
+        }
         stream.write(((byte)((byte)':')));
         WriteUtf8(str, stream);
       }

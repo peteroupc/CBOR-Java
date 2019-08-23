@@ -196,7 +196,7 @@ import com.upokecenter.numbers.*;
         return;
       }
       {
-java.io.ByteArrayInputStream ms = null;
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -237,7 +237,7 @@ try { if (ms != null) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
       try {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -263,14 +263,20 @@ try { if (ms != null) {
       }
     }
 
-    public String CharString(int cp, boolean quoted, char[] charbuf) {
+    public static String CharString(int cp, boolean quoted, char[] charbuf) {
       int index = 0;
       if (quoted) {
+        if (charbuf == null) {
+          throw new NullPointerException("charbuf");
+        }
         charbuf[index++] = (char)0x22;
       }
       if (cp < 0x10000) {
         if (cp >= 0xd800 && cp < 0xe000) {
           return null;
+        }
+        if (charbuf == null) {
+          throw new NullPointerException("charbuf");
         }
         charbuf[index++] = (char)cp;
         if (quoted) {
@@ -279,6 +285,9 @@ try { if (ms != null) {
         return new String(charbuf, 0, index);
       } else {
         cp -= 0x10000;
+        if (charbuf == null) {
+          throw new NullPointerException("charbuf");
+        }
         charbuf[index++] = (char)((cp >> 10) + 0xd800);
         charbuf[index++] = (char)((cp & 0x3ff) | 0xdc00);
         if (quoted) {
@@ -2039,7 +2048,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestGreater(cbor1, cbor2);
+      TestCommon.CompareTestGreater(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
     @Test(timeout = 1000)
@@ -2073,7 +2082,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestReciprocal(cbor1, cbor2);
+      TestCommon.CompareTestReciprocal(cbor1.AsNumber(), cbor2.AsNumber());
     }
     @Test(timeout = 1000)
     public void TestSlowCompareTo5() {
@@ -2093,7 +2102,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestReciprocal(cbor1, cbor2);
+      TestCommon.CompareTestReciprocal(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
     @Test(timeout = 1000)
@@ -2116,7 +2125,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestGreater(cbor1, cbor2);
+      TestCommon.CompareTestGreater(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
     @Test(timeout = 1000)
@@ -2139,7 +2148,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestLess(cbor1, cbor2);
+      TestCommon.CompareTestLess(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
     @Test(timeout = 1000)
@@ -2174,8 +2183,18 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
        });
       System.out.println(cbor1);
       System.out.println(cbor2);
-      TestCommon.CompareTestLess(cbor1, cbor2);
+      TestCommon.CompareTestLess(cbor1.AsNumber(), cbor2.AsNumber());
     }
+    private static String TrimStr(String str, int len) {
+      return str.substring(0, Math.min(len, str.length()));
+    }
+    @Test
+    public void CompareLongDouble() {
+      CBORObject cbor1 = CBORObject.FromObject(3.5E-15);
+      CBORObject cbor2 = CBORObject.FromObject(281479271677953L);
+      TestCommon.CompareTestLess(cbor1.AsDouble(), cbor2.AsDouble());
+    }
+
     @Test(timeout = 300000)
     public void TestCompareTo() {
       RandomGenerator r = new RandomGenerator();
@@ -2186,17 +2205,6 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         CBORObject o2 = CBORTestCommon.RandomCBORObject(r);
         CBORObject o3 = CBORTestCommon.RandomCBORObject(r);
         TestCommon.CompareTestRelations(o1, o2, o3);
-        if (list.size() < 400) {
-          if (o1.getType() == CBORType.Number) {
-            list.add(o1.Untag());
-          }
-          if (o2.getType() == CBORType.Number) {
-            list.add(o2.Untag());
-          }
-          if (o3.getType() == CBORType.Number) {
-            list.add(o3.Untag());
-          }
-        }
       }
       System.out.println("Check compare");
       for (int i = 0; i < list.size(); ++i) {
@@ -2205,17 +2213,6 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         for (; j < list.size(); ++j) {
           CBORObject o1 = list.get(i);
           CBORObject o2 = list.get(j);
-          // System.out.println("// --");
-          //
-          //
-          //
-          // System.out.println(
-          // TestCommon.ToByteArrayString(o1.EncodeToBytes()));
-          //
-          //
-          //
-          // System.out.println(
-          // TestCommon.ToByteArrayString(o2.EncodeToBytes()));
           TestCommon.CompareTestReciprocal(o1, o2);
         }
       }
@@ -2245,44 +2242,22 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         if (o2.IsInfinity() || o2.IsNaN()) {
           continue;
         }
-        TestCommon.CompareTestLess(o1, o2);
+        TestCommon.CompareTestLess(o1.AsNumber(), o2.AsNumber());
         o1 = ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
-        TestCommon.CompareTestLess(o1, o2);
+        TestCommon.CompareTestLess(o1.AsNumber(), o2.AsNumber());
         o1 = ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY);
-        TestCommon.CompareTestLess(o2, o1);
+        TestCommon.CompareTestGreater(o1.AsNumber(), o2.AsNumber());
         o1 = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
-        TestCommon.CompareTestLess(o2, o1);
-        o1 = ToObjectTest.TestToFromObjectRoundTrip(Float.NaN);
-        TestCommon.CompareTestLess(o2, o1);
-        o1 = ToObjectTest.TestToFromObjectRoundTrip(Double.NaN);
-        TestCommon.CompareTestLess(o2, o1);
+        TestCommon.CompareTestGreater(o1.AsNumber(), o2.AsNumber());
       }
       byte[] bytes1 = { 0, 1 };
       byte[] bytes2 = { 0, 2 };
-      byte[] bytes3 = { 0, 2, 0 };
-      byte[] bytes4 = { 1, 1 };
-      byte[] bytes5 = { 1, 1, 4 };
-      byte[] bytes6 = { 1, 2 };
+      byte[] bytes3 = { 1, 1 };
+      byte[] bytes4 = { 1, 2 };
+      byte[] bytes5 = { 0, 2, 0 };
+      byte[] bytes6 = { 1, 1, 4 };
       byte[] bytes7 = { 1, 2, 6 };
       CBORObject[] sortedObjects = {
-        CBORObject.Undefined, CBORObject.Null,
-        CBORObject.False, CBORObject.True,
-        ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY),
-        ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString("-1E+5000")),
-        ToObjectTest.TestToFromObjectRoundTrip(Long.MIN_VALUE),
-        ToObjectTest.TestToFromObjectRoundTrip(Integer.MIN_VALUE),
-        ToObjectTest.TestToFromObjectRoundTrip(-2),
-        ToObjectTest.TestToFromObjectRoundTrip(-1),
-        ToObjectTest.TestToFromObjectRoundTrip(0),
-        ToObjectTest.TestToFromObjectRoundTrip(1),
-        ToObjectTest.TestToFromObjectRoundTrip(2),
-        ToObjectTest.TestToFromObjectRoundTrip(Long.MAX_VALUE),
-        ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString("1E+5000")),
-        ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY),
-        ToObjectTest.TestToFromObjectRoundTrip(Double.NaN),
-        CBORObject.FromSimpleValue(0),
-        CBORObject.FromSimpleValue(19), CBORObject.FromSimpleValue(32),
-        CBORObject.FromSimpleValue(255),
         ToObjectTest.TestToFromObjectRoundTrip(bytes1),
         ToObjectTest.TestToFromObjectRoundTrip(bytes2),
         ToObjectTest.TestToFromObjectRoundTrip(bytes3),
@@ -2292,10 +2267,15 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         ToObjectTest.TestToFromObjectRoundTrip(bytes7),
         ToObjectTest.TestToFromObjectRoundTrip("aa"),
         ToObjectTest.TestToFromObjectRoundTrip("ab"),
-        ToObjectTest.TestToFromObjectRoundTrip("abc"),
         ToObjectTest.TestToFromObjectRoundTrip("ba"),
+        ToObjectTest.TestToFromObjectRoundTrip("abc"),
         ToObjectTest.TestToFromObjectRoundTrip(CBORObject.NewArray()),
         ToObjectTest.TestToFromObjectRoundTrip(CBORObject.NewMap()),
+        CBORObject.FromSimpleValue(0),
+        CBORObject.FromSimpleValue(1),
+        CBORObject.FromSimpleValue(19), CBORObject.FromSimpleValue(32),
+        CBORObject.FromSimpleValue(255),
+        ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY),
       };
       for (int i = 0; i < sortedObjects.length; ++i) {
         for (int j = i; j < sortedObjects.length; ++j) {
@@ -2307,16 +2287,13 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN).AsEDecimal()
         }
         Assert.assertEquals(1, sortedObjects[i].compareTo(null));
       }
-      CBORObject sp =
-        ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY);
-      CBORObject sn =
-        ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY);
-      CBORObject snan = ToObjectTest.TestToFromObjectRoundTrip(Float.NaN);
-      CBORObject dp =
-        ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
-      CBORObject dn =
-        ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
-      CBORObject dnan = ToObjectTest.TestToFromObjectRoundTrip(Double.NaN);
+      CBORNumber sp =
+        CBORObject.FromObject(Float.POSITIVE_INFINITY).AsNumber();
+      CBORNumber sn = CBORObject.FromObject(Float.NEGATIVE_INFINITY).AsNumber();
+      CBORNumber snan = CBORObject.FromObject(Float.NaN).AsNumber();
+      CBORNumber dp = CBORObject.FromObject(Double.POSITIVE_INFINITY).AsNumber();
+      CBORNumber dn = CBORObject.FromObject(Double.NEGATIVE_INFINITY).AsNumber();
+      CBORNumber dnan = CBORObject.FromObject(Double.NaN).AsNumber();
       TestCommon.CompareTestEqual(sp, sp);
       TestCommon.CompareTestEqual(sp, dp);
       TestCommon.CompareTestEqual(dp, dp);
@@ -2349,27 +2326,18 @@ ToObjectTest.TestToFromObjectRoundTrip(100).compareTo(null);
           ToObjectTest.TestToFromObjectRoundTrip(Double.NaN).compareTo(null);
         Assert.assertEquals(1, numberTemp);
       }
-      TestCommon.CompareTestLess(CBORObject.Undefined, CBORObject.Null);
-      TestCommon.CompareTestLess(CBORObject.Null, CBORObject.False);
-      TestCommon.CompareTestLess(CBORObject.False, CBORObject.True);
       TestCommon.CompareTestLess(
-  CBORObject.False,
-  ToObjectTest.TestToFromObjectRoundTrip(0));
+        ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber(),
+        ToObjectTest.TestToFromObjectRoundTrip(1).AsNumber());
       TestCommon.CompareTestLess(
-   CBORObject.False,
-   CBORObject.FromSimpleValue(0));
+        ToObjectTest.TestToFromObjectRoundTrip(0.0f).AsNumber(),
+        ToObjectTest.TestToFromObjectRoundTrip(1.0f).AsNumber());
       TestCommon.CompareTestLess(
-        CBORObject.FromSimpleValue(0),
-        CBORObject.FromSimpleValue(1));
-      TestCommon.CompareTestLess(
-        ToObjectTest.TestToFromObjectRoundTrip(0),
-        ToObjectTest.TestToFromObjectRoundTrip(1));
-      TestCommon.CompareTestLess(
-        ToObjectTest.TestToFromObjectRoundTrip(0.0f),
-        ToObjectTest.TestToFromObjectRoundTrip(1.0f));
-      TestCommon.CompareTestLess(
-        ToObjectTest.TestToFromObjectRoundTrip(0.0),
-        ToObjectTest.TestToFromObjectRoundTrip(1.0));
+        ToObjectTest.TestToFromObjectRoundTrip(0.0).AsNumber(),
+        ToObjectTest.TestToFromObjectRoundTrip(1.0).AsNumber());
+      TestCommon.CompareTestEqual(
+        CBORObject.FromObject(10).AsNumber(),
+        CBORObject.FromObject(ERational.Create(10, 1)).AsNumber());
     }
     @Test
     public void TestContainsKey() {
@@ -2520,6 +2488,217 @@ ToObjectTest.TestToFromObjectRoundTrip(100).compareTo(null);
         throw new IllegalStateException("", ex);
       }
     }
+
+    @Test
+    public void TestDecodeSequenceFromBytes() {
+      CBORObject[] objs;
+      byte[] bytes;
+      bytes = new byte[] { 0 };
+      objs = CBORObject.DecodeSequenceFromBytes(bytes);
+      Assert.assertEquals(1, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      bytes = new byte[] { 0, 1, 2 };
+      objs = CBORObject.DecodeSequenceFromBytes(bytes);
+      Assert.assertEquals(3, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      Assert.assertEquals(CBORObject.FromObject(1), objs[1]);
+      Assert.assertEquals(CBORObject.FromObject(2), objs[2]);
+      bytes = new byte[] { 0, 1, 0x61 };
+      try {
+        CBORObject.DecodeSequenceFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x61 };
+      try {
+        CBORObject.DecodeSequenceFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0, 1, 0x61, 0x41 };
+      objs = CBORObject.DecodeSequenceFromBytes(bytes);
+      Assert.assertEquals(3, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      Assert.assertEquals(CBORObject.FromObject(1), objs[1]);
+      Assert.assertEquals(CBORObject.FromObject("A"), objs[2]);
+      bytes = new byte[] { };
+      objs = CBORObject.DecodeSequenceFromBytes(bytes);
+      Assert.assertEquals(0, objs.length);
+      try {
+        CBORObject.DecodeSequenceFromBytes(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeSequenceFromBytes(bytes, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test
+    public void TestReadSequence() {
+      CBORObject[] objs;
+      byte[] bytes;
+      bytes = new byte[] { 0 };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        objs = CBORObject.ReadSequence(ms);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      Assert.assertEquals(1, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      bytes = new byte[] { 0, 1, 2 };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        objs = CBORObject.ReadSequence(ms);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      Assert.assertEquals(3, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      Assert.assertEquals(CBORObject.FromObject(1), objs[1]);
+      Assert.assertEquals(CBORObject.FromObject(2), objs[2]);
+      bytes = new byte[] { 0, 1, 0x61 };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        try {
+          CBORObject.ReadSequence(ms);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      bytes = new byte[] { 0x61 };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        try {
+          CBORObject.ReadSequence(ms);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      bytes = new byte[] { 0, 1, 0x61, 0x41 };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        objs = CBORObject.ReadSequence(ms);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      Assert.assertEquals(3, objs.length);
+      Assert.assertEquals(CBORObject.FromObject(0), objs[0]);
+      Assert.assertEquals(CBORObject.FromObject(1), objs[1]);
+      Assert.assertEquals(CBORObject.FromObject("A"), objs[2]);
+      bytes = new byte[] { };
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        objs = CBORObject.ReadSequence(ms);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      Assert.assertEquals(0, objs.length);
+      try {
+        CBORObject.ReadSequence(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
+        try {
+          CBORObject.ReadSequence(ms, null);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+    }
+
     @Test
     public void TestDivide() {
       try {
@@ -2618,12 +2797,12 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
           CBORObject cbor = ToObjectTest.TestToFromObjectRoundTrip(bj);
           byte[] bytes = cbor.EncodeToBytes();
           if (bytes.length != bigSizes[i / 2]) {
-            Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
+            Assert.assertEquals(bj.toString() + "\n" + TestCommon.ToByteArrayString(bytes),bigSizes[i / 2],bytes.length);
           }
           bytes = ToObjectTest.TestToFromObjectRoundTrip(bj)
           .EncodeToBytes(new CBOREncodeOptions(false, false, true));
           if (bytes.length != bigSizes[i / 2]) {
-            Assert.assertEquals(bj.toString(), bigSizes[i / 2], bytes.length);
+            Assert.assertEquals(bj.toString() + "\n" + TestCommon.ToByteArrayString(bytes),bigSizes[i / 2],bytes.length);
           }
           bj = bj.Add(EInteger.FromInt32(1));
         }
@@ -2838,7 +3017,7 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(cbor2);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
-      this.TestWriteObj(erat, erat);
+      TestWriteObj(erat, erat);
       erat = ERational.Create(
   EInteger.FromInt32(0),
   EInteger.FromString("84170882933504200501581262010093"));
@@ -2850,13 +3029,17 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(cbor2);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
-      this.TestWriteObj(cbor, cbor2);
-      this.TestWriteObj(erat, erat2);
+      TestWriteObj(cbor, cbor2);
+      TestWriteObj(erat, erat2);
+    }
+
+    private static void CompareTestNumber(CBORObject o1, CBORObject o2) {
+      TestCommon.CompareTestEqual(o1.AsNumber(), o2.AsNumber());
     }
 
     @Test
     public void TestEquivalentNegativeInfinity() {
-      TestCommon.CompareTestEqualAndConsistent(
+      CompareTestNumber(
       ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecNegInf),
       ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf));
       {
@@ -2864,41 +3047,41 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecNegInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecNegInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
     }
 
     @Test
     public void TestEquivalentPositiveInfinity() {
-      TestCommon.CompareTestEqualAndConsistent(
+      CompareTestNumber(
       ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf),
       ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatPosInf));
       {
@@ -2906,35 +3089,35 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatPosInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
       {
         CBORObject objectTemp =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatPosInf);
         CBORObject objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf);
-        TestCommon.CompareTestEqualAndConsistent(objectTemp, objectTemp2);
+        CompareTestNumber(objectTemp, objectTemp2);
       }
     }
 
@@ -2955,12 +3138,12 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
         if (i >= 0xd800 && i < 0xe000) {
           continue;
         }
-        String str = this.CharString(i, true, charbuf);
+        String str = CharString(i, true, charbuf);
         if (i < 0x20 || i == 0x22 || i == 0x5c) {
           TestFailingJSON(str);
         } else {
           cbor = TestSucceedingJSON(str);
-          String exp = this.CharString(i, false, charbuf);
+          String exp = CharString(i, false, charbuf);
           if (!exp.equals(cbor.AsString())) {
             Assert.assertEquals(exp, cbor.AsString());
           }
@@ -3043,37 +3226,39 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
     public void TestEI() {
       CBORObject cbor =
         ToObjectTest.TestToFromObjectRoundTrip(EInteger.FromString("100"));
-      Assert.assertEquals(CBORType.Number, cbor.getType());
+      if (!(cbor.isNumber())) {
+ Assert.fail();
+ }
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.ToJSONString();
         Assert.assertEquals(
           "100",
           stringTemp);
       }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString("200"));
-      Assert.assertEquals(CBORType.Number, cbor.getType());
+      if (!(cbor.isNumber())) {
+ Assert.fail();
+ }
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.ToJSONString();
         Assert.assertEquals(
           "200",
           stringTemp);
       }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(EFloat.FromString("300"));
-      Assert.assertEquals(CBORType.Number, cbor.getType());
+      if (!(cbor.isNumber())) {
+ Assert.fail();
+ }
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.ToJSONString();
         Assert.assertEquals(
           "300",
           stringTemp);
       }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(ERational.Create(1, 2));
-      Assert.assertEquals(CBORType.Number, cbor.getType());
-      {
-        String stringTemp = cbor.toString();
-        Assert.assertEquals(
-          "1/2",
-          stringTemp);
-      }
+      if (!(cbor.isNumber())) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestFromObject() {
@@ -3102,9 +3287,6 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
       Assert.assertEquals(
         CBORObject.Null,
         CBORObject.FromObject((EDecimal)null));
-      Assert.assertEquals(
-        CBORObject.FromObject(10),
-        CBORObject.FromObject(ERational.Create(10, 1)));
       try {
         CBORObject.FromObject(ERational.Create(10, 2));
       } catch (Exception ex) {
@@ -3272,13 +3454,16 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
       }
     }
 
-    public final class TestConverter implements ICBORToFromConverter<String> {
+    private static final class TestConverter implements ICBORToFromConverter<String> {
       public CBORObject ToCBORObject(String strValue) {
         return CBORObject.FromObject(
           DataUtilities.ToLowerCaseAscii(strValue));
       }
 
       public String FromCBORObject(CBORObject cbor) {
+        if (cbor == null) {
+          throw new NullPointerException("cbor");
+        }
         if (cbor.getType() == CBORType.TextString) {
           return DataUtilities.ToLowerCaseAscii(cbor.AsString());
         }
@@ -3329,6 +3514,8 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
       Assert.assertEquals("TestValue2", dict.get("TestKey2"));
     }
 
+    // nesting a public type is needed
+    // here for testing purposes
     public final class NestedPODClass {
       public NestedPODClass() {
         this.propVarpropvalue = new PODClass();
@@ -3729,7 +3916,6 @@ private final PODClass propVarpropvalue;
       if (!(ToObjectTest.TestToFromObjectRoundTrip(2.5).isFinite())) {
  Assert.fail();
  }
-
       if (
         ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
                         .isFinite()) {
@@ -3762,15 +3948,12 @@ private final PODClass propVarpropvalue;
         CBORObject numberinfo = numbers.get(i);
         EDecimal ed = EDecimal.FromString(numberinfo.get("number").AsString());
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(ed);
-        if (!numberinfo.get("integer").equals(CBORObject.Null)) {
+        if (numberinfo.get("isintegral").AsBoolean()) {
           if (!(cbornumber.isFinite())) {
- Assert.fail();
- }
-        } else {
-          if (cbornumber.isFinite()) {
- Assert.fail();
+ Assert.fail(numberinfo.get("number").AsString());
  }
         }
+        // NOTE: A nonintegral number is not necessarily non-finite
       }
     }
     @Test
@@ -4337,7 +4520,12 @@ private final PODClass propVarpropvalue;
         EDecimal cmpCobj = AsED(CBORObject.Multiply(
           o1,
           o2));
-        TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
+        if (!cmpDecFrac.equals(cmpCobj)) {
+          TestCommon.CompareTestEqual(
+            cmpDecFrac,
+            cmpCobj,
+            o1.toString() + "\n" + o2.toString());
+        }
         CBORTestCommon.AssertRoundTrip(o1);
         CBORTestCommon.AssertRoundTrip(o2);
       }
@@ -4460,7 +4648,7 @@ private final PODClass propVarpropvalue;
       }
       try {
         {
-java.io.ByteArrayInputStream ms2 = null;
+          java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0 });
 
@@ -4489,7 +4677,7 @@ try { if (ms2 != null) {
     public void TestReadJSON() {
       try {
         {
-java.io.ByteArrayInputStream ms2 = null;
+          java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x30 });
 
@@ -4510,7 +4698,7 @@ try { if (ms2 != null) {
 }
 }
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb, (byte)0xbf,
@@ -4532,7 +4720,7 @@ try { if (ms != null) {
 }
         // whitespace followed by BOM
         {
-java.io.ByteArrayInputStream ms2 = null;
+          java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] {
           0x20, (byte)0xef, (byte)0xbb,
@@ -4556,7 +4744,7 @@ try { if (ms2 != null) {
 }
 }
         {
-java.io.ByteArrayInputStream ms2a = null;
+          java.io.ByteArrayInputStream ms2a = null;
 try {
 ms2a = new java.io.ByteArrayInputStream(new byte[] { 0x7b, 0x05, 0x7d });
 
@@ -4577,7 +4765,7 @@ try { if (ms2a != null) {
 }
 }
         {
-java.io.ByteArrayInputStream ms2b = null;
+          java.io.ByteArrayInputStream ms2b = null;
 try {
 ms2b = new java.io.ByteArrayInputStream(new byte[] { 0x05, 0x7b, 0x7d });
 
@@ -4599,7 +4787,7 @@ try { if (ms2b != null) {
 }
         // two BOMs
         {
-java.io.ByteArrayInputStream ms3 = null;
+          java.io.ByteArrayInputStream ms3 = null;
 try {
 ms3 = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb, (byte)0xbf,
@@ -4623,7 +4811,7 @@ try { if (ms3 != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, (byte)0xfe, (byte)0xff, 0,
@@ -4642,7 +4830,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 0, 0x74, 0, 0,
@@ -4659,7 +4847,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0, 0,
@@ -4676,7 +4864,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0, 0, 0, 0x72,
@@ -4695,7 +4883,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, 0, 0x74,
@@ -4712,7 +4900,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x74, 0, 0x72, 0,
@@ -4728,7 +4916,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x74, 0,
@@ -4747,7 +4935,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0, 0x72, 0,
@@ -4763,7 +4951,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb, (byte)0xbf,
@@ -4779,7 +4967,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0x72, 0x75,
@@ -4795,7 +4983,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, (byte)0xfe, (byte)0xff, 0,
@@ -4817,7 +5005,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 0, 0x22, 0, 1,
@@ -4839,7 +5027,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0, 0,
@@ -4861,7 +5049,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0, 0, 0, 0,
@@ -4884,7 +5072,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, 0,
@@ -4907,7 +5095,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x22, (byte)0xd8, 0,
@@ -4928,7 +5116,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x22, 0,
@@ -4950,7 +5138,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0, (byte)0xd8, 0,
@@ -4971,7 +5159,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, (byte)0xfe, (byte)0xff, 0,
@@ -4996,7 +5184,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 0, 0x22, 0, 0,
@@ -5022,7 +5210,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0, 0,
@@ -5047,7 +5235,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0, 0, 0,
@@ -5074,7 +5262,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, 0, 0x22,
@@ -5099,7 +5287,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x22, 0, (byte)0xdc, 0,
@@ -5124,7 +5312,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x22, 0,
@@ -5149,7 +5337,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0, (byte)0xdc, 0,
@@ -5173,7 +5361,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] { (byte)0xfc });
 
@@ -5194,7 +5382,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0 });
 
@@ -5216,7 +5404,7 @@ try { if (msjson != null) {
 }
         // Illegal UTF-16
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, 0x20,
@@ -5240,7 +5428,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x20,
@@ -5264,7 +5452,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xd8,
@@ -5288,7 +5476,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xdc,
@@ -5312,7 +5500,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xd8,
@@ -5336,7 +5524,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xdc,
@@ -5360,7 +5548,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xd8,
@@ -5384,7 +5572,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xdc,
@@ -5408,7 +5596,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xdc,
@@ -5432,7 +5620,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff, (byte)0xdc,
@@ -5457,7 +5645,7 @@ try { if (msjson != null) {
 }
 
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5481,7 +5669,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5505,7 +5693,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5529,7 +5717,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5553,7 +5741,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5577,7 +5765,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5601,7 +5789,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5625,7 +5813,7 @@ try { if (msjson != null) {
 }
 }
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe, 0x00,
@@ -5651,7 +5839,7 @@ try { if (msjson != null) {
 
         // Illegal UTF-32
         {
-java.io.ByteArrayInputStream msjson = null;
+          java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] { 0, 0, 0, 0x20, 0 });
 
@@ -5736,20 +5924,20 @@ try { if (msjson != null) {
       }
     }
     private static void ReadJsonFail(byte[] msbytes) {
-        {
-java.io.ByteArrayInputStream msjson = null;
+      {
+        java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(msbytes);
 
-          try {
-            CBORObject.ReadJSON(msjson);
-            Assert.fail("Should have failed");
-          } catch (CBORException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
+        try {
+          CBORObject.ReadJSON(msjson);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (msjson != null) {
@@ -6595,7 +6783,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
         this.TestWrite2();
       }
       for (int i = 0; i < 40; ++i) {
-        this.TestWrite3();
+        TestWrite3();
       }
     }
 
@@ -6618,7 +6806,8 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6634,7 +6823,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)str, null);
+}
+          TestWriteObj((Object)str, null);
         }
 
         {
@@ -6652,7 +6842,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6670,7 +6861,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)"test", "test");
+}
+          TestWriteObj((Object)"test", "test");
         }
 
         str = TestCommon.Repeat("test", 4000);
@@ -6689,7 +6881,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6705,7 +6898,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)str, str);
+}
+          TestWriteObj((Object)str, str);
         }
 
         long[] values = {
@@ -6734,7 +6928,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6750,7 +6945,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)values[i], values[i]);
+}
+            TestWriteObj((Object)values[i], values[i]);
           }
 
           EInteger bigintVal = EInteger.FromInt64(values[i]);
@@ -6770,7 +6966,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6786,7 +6983,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)bigintVal, bigintVal);
+}
+            TestWriteObj((Object)bigintVal, bigintVal);
           }
 
           if (values[i] >= (long)Integer.MIN_VALUE && values[i] <=
@@ -6808,7 +7006,8 @@ try { if (ms != null) {
                 throw new IllegalStateException("", ex);
               }
               AssertWriteThrow(cborTemp1);
-              java.io.ByteArrayOutputStream ms = null;
+              {
+                java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6824,7 +7023,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-              this.TestWriteObj((Object)intval, intval);
+}
+              TestWriteObj((Object)intval, intval);
             }
           }
           if (values[i] >= -32768L && values[i] <= 32767) {
@@ -6846,7 +7046,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6862,7 +7063,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)shortval, shortval);
+}
+            TestWriteObj((Object)shortval, shortval);
           }
           if (values[i] >= 0L && values[i] <= 255) {
             byte byteval = (byte)values[i];
@@ -6883,7 +7085,8 @@ ToObjectTest.TestToFromObjectRoundTrip(byteval);
                 throw new IllegalStateException("", ex);
               }
               AssertWriteThrow(cborTemp1);
-              java.io.ByteArrayOutputStream ms = null;
+              {
+                java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6899,7 +7102,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-              this.TestWriteObj((Object)byteval, byteval);
+}
+              TestWriteObj((Object)byteval, byteval);
             }
           }
         }
@@ -6918,7 +7122,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6934,7 +7139,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)0.0f, 0.0f);
+}
+          TestWriteObj((Object)0.0f, 0.0f);
         }
 
         {
@@ -6952,7 +7158,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -6968,7 +7175,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)2.6, 2.6);
+}
+          TestWriteObj((Object)2.6, 2.6);
         }
 
         CBORObject cbor = null;
@@ -6987,7 +7195,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7003,7 +7212,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)cbor, null);
+}
+          TestWriteObj((Object)cbor, null);
         }
 
         Object aobj = null;
@@ -7022,7 +7232,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7038,7 +7249,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)aobj, null);
+}
+          TestWriteObj((Object)aobj, null);
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -7046,14 +7258,15 @@ try { if (ms != null) {
       }
     }
 
-    public void TestWrite3() {
+    public static void TestWrite3() {
       EFloat ef = null;
       EDecimal ed = null;
       RandomGenerator fr = new RandomGenerator();
       try {
         for (int i = 0; i < 256; ++i) {
           byte b = (byte)(i & 0xff);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7065,6 +7278,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         }
 
@@ -7085,7 +7299,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7101,7 +7316,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)ef, ef);
+}
+            TestWriteObj((Object)ef, ef);
           }
 
           ef = EFloat.Create(
@@ -7122,7 +7338,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7142,7 +7359,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)ef, ef);
+}
+            TestWriteObj((Object)ef, ef);
           }
         }
         for (int i = 0; i < 50; ++i) {
@@ -7162,7 +7380,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7182,9 +7401,10 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
             if (!(cborTemp1.isNegative() && cborTemp1.isZero())) {
-              this.TestWriteObj((Object)ed, ed);
-            }
+  TestWriteObj((Object)ed, ed);
+}
           }
 
           ed = EDecimal.Create(
@@ -7205,7 +7425,8 @@ try { if (ms != null) {
               throw new IllegalStateException("", ex);
             }
             AssertWriteThrow(cborTemp1);
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7221,7 +7442,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-            this.TestWriteObj((Object)ed, ed);
+}
+            TestWriteObj((Object)ed, ed);
           }
         }
       } catch (IOException ex) {
@@ -7251,7 +7473,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7267,7 +7490,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)ef, null);
+}
+          TestWriteObj((Object)ef, null);
         }
 
         ef = EFloat.FromString("20");
@@ -7286,7 +7510,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7302,7 +7527,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)ef, ef);
+}
+          TestWriteObj((Object)ef, ef);
         }
 
         ERational er = null;
@@ -7321,7 +7547,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7337,7 +7564,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)er, null);
+}
+          TestWriteObj((Object)er, null);
         }
         do {
           er = RandomObjects.RandomERational(fr);
@@ -7357,7 +7585,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7377,7 +7606,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)er, er);
+}
+          TestWriteObj((Object)er, er);
         }
 
         EDecimal ed = null;
@@ -7396,7 +7626,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7412,7 +7643,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)ed, null);
+}
+          TestWriteObj((Object)ed, null);
         }
 
         EInteger bigint = null;
@@ -7431,7 +7663,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7447,7 +7680,8 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
-          this.TestWriteObj((Object)bigint, null);
+}
+          TestWriteObj((Object)bigint, null);
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -7484,7 +7718,8 @@ try { if (ms != null) {
       int cmpDecFrac = TestCommon.CompareTestReciprocal(
         o1.AsEDecimal(),
         o2.AsEDecimal());
-      int cmpCobj = TestCommon.CompareTestReciprocal(o1, o2);
+      int cmpCobj = TestCommon.CompareTestReciprocal(o1.AsNumber(),
+  o2.AsNumber());
       if (cmpDecFrac != cmpCobj) {
         Assert.assertEquals(TestCommon.ObjectMessages(o1, o2, "Compare: Results don't match"),cmpDecFrac,cmpCobj);
       }
@@ -7515,7 +7750,7 @@ try { if (ms != null) {
     private static void AssertReadThree(byte[] bytes) {
       try {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -7544,7 +7779,7 @@ try { if (ms != null) {
     private static void AssertReadThree(byte[] bytes, CBORObject cbor) {
       try {
         {
-java.io.ByteArrayInputStream ms = null;
+          java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
@@ -7632,7 +7867,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7645,6 +7881,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         }
       } catch (IOException ex) {
@@ -7660,7 +7897,7 @@ try { if (ms != null) {
       byte[] bytes = cbor.EncodeToBytes();
     }
 
-    private void TestWriteObj(Object obj, Object objTest) {
+    private static void TestWriteObj(Object obj, Object objTest) {
       try {
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(obj);
@@ -7674,7 +7911,8 @@ try { if (ms != null) {
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7689,6 +7927,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         }
       } catch (IOException ex) {
@@ -7745,7 +7984,8 @@ try { if (ms != null) {
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
-        java.io.ByteArrayOutputStream ms = null;
+        {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -7891,9 +8131,202 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
+      }
+    }
+
+    @Test
+    public void TestWriteFloatingPointValue() {
+      RandomGenerator r = new RandomGenerator();
+      byte[] bytes = new byte[] { 0, 0, 0 };
+      for (int i = 0; i < 0x10000; ++i) {
+        bytes[0] = (byte)0xf9;
+        bytes[1] = (byte)((i >> 8) & 0xff);
+        bytes[2] = (byte)(i & 0xff);
+        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+        if (!cbor.IsNaN()) {
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsDouble(),
+               2);
+            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsSingle(),
+               2);
+            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+        }
+      }
+      // 32-bit values
+      bytes = new byte[5];
+      for (int i = 0; i < 100000; ++i) {
+        bytes[0] = (byte)0xfa;
+        for (int j = 1; j <= 4; ++j) {
+          bytes[j] = (byte)r.UniformInt(256);
+        }
+
+        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+        if (!cbor.IsNaN()) {
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsDouble(),
+               4);
+            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsSingle(),
+               4);
+            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+        }
+      }
+      // 64-bit values
+      bytes = new byte[9];
+      for (int i = 0; i < 100000; ++i) {
+        bytes[0] = (byte)0xfb;
+        for (int j = 1; j <= 8; ++j) {
+          bytes[j] = (byte)r.UniformInt(256);
+        }
+        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+        if (!cbor.IsNaN()) {
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsDouble(),
+               8);
+            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          CBORObject c2 = null;
+          byte[] c2bytes = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               cbor.AsSingle(),
+               8);
+            c2bytes = ms.toByteArray();
+            c2 = CBORObject.DecodeFromBytes(
+               c2bytes);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+            CBORObject.WriteFloatingPointValue(
+               ms,
+               c2.AsSingle(),
+               8);
+            TestCommon.AssertByteArraysEqual(c2bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          if (i == 0) {
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              try {
+                CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
+                Assert.fail("Should have failed");
+              } catch (IllegalArgumentException ex) {
+                // NOTE: Intentionally empty
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+              try {
+                CBORObject.WriteFloatingPointValue(null, cbor.AsSingle(), 4);
+                Assert.fail("Should have failed");
+              } catch (NullPointerException ex) {
+                // NOTE: Intentionally empty
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          }
+        }
       }
     }
 

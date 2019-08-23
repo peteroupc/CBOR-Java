@@ -72,7 +72,7 @@ import com.upokecenter.numbers.*;
           Assert.assertEquals(
             numberinfo.get("integer").ToObject(String.class),
             cbornumber.ToObject(EInteger.class).toString());
-        } else {
+          } else {
           try {
             cbornumber.ToObject(EInteger.class);
             Assert.fail("Should have failed");
@@ -354,7 +354,7 @@ ToObjectTest.TestToFromObjectRoundTrip(dvalue)
           Assert.assertEquals(
   TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(String.class)),
   ((int)(Byte)cbornumber.ToObject(byte.class)) & 0xff);
-        } else {
+} else {
           try {
             cbornumber.ToObject(byte.class);
             Assert.fail("Should have failed " + cbornumber);
@@ -716,7 +716,7 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
           Assert.assertEquals(
   (short)TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(String.class)),
   cbornumber.ToObject(short.class));
-        } else {
+} else {
           try {
             cbornumber.ToObject(short.class);
             Assert.fail("Should have failed " + cbornumber);
@@ -1372,22 +1372,37 @@ ToObjectTest.TestToFromObjectRoundTrip("");
       String hex = "0123456789ABCDEF";
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < 8; ++i) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
       sb.append('-');
       for (int i = 0; i < 4; ++i) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
       sb.append('-');
       for (int i = 0; i < 4; ++i) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
       sb.append('-');
       for (int i = 0; i < 4; ++i) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
       sb.append('-');
       for (int i = 0; i < 12; ++i) {
+        if (rand == null) {
+          throw new NullPointerException("rand");
+        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
       return java.util.UUID.fromString(sb.toString());
@@ -1400,7 +1415,7 @@ ToObjectTest.TestToFromObjectRoundTrip("");
         try {
           obj2 = cbor.ToObject(obj.getClass());
         } catch (Exception ex) {
-          Assert.fail(ex.toString() + "\n" + cbor);
+          Assert.fail(ex.toString() + "\n" + cbor + "\n" + obj.getClass());
           throw new IllegalStateException("", ex);
         }
         if (!obj.equals(obj2)) {
@@ -1408,10 +1423,10 @@ ToObjectTest.TestToFromObjectRoundTrip("");
             TestCommon.AssertByteArraysEqual(
               (byte[])obj,
               (byte[])obj2);
-          } else if (obj instanceof String[]) {
-            Assert.assertEquals((String[])obj, (String[])obj2);
-          } else {
-            Assert.assertEquals(cbor.toString(), obj, obj2);
+            } else if (obj instanceof String[]) {
+              Assert.assertEquals((String[])obj, (String[])obj2);
+            } else {
+            Assert.assertEquals(cbor + "\n" + obj.getClass(),obj,obj2);
           }
         }
       }

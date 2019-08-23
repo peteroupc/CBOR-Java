@@ -54,7 +54,7 @@ private CBORTestCommon() {
         case 5:
           o = RandomObjects.RandomInt64(rand);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
-        default: throw new IllegalArgumentException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -86,7 +86,7 @@ private CBORTestCommon() {
         case 6:
           o = RandomObjects.RandomERational(rand);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
-        default: throw new IllegalArgumentException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -122,7 +122,7 @@ private CBORTestCommon() {
         Object o = RandomObjects.RandomByteString(rand);
         return ToObjectTest.TestToFromObjectRoundTrip(o);
       }
-      for (int i = 0; i < 15; ++i) {
+      {
         CBORObject cbor;
        // System.out.println("tag "+tag+" "+i);
         if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
@@ -151,11 +151,9 @@ private CBORTestCommon() {
          // System.out.println("done");
           return cbor;
         } catch (Exception ex) {
-          continue;
+          return CBORObject.FromObjectAndTag(cbor, 999);
         }
       }
-     // System.out.println("Failed "+tag);
-      return CBORObject.Null;
     }
 
     public static CBORObject RandomCBORArray(RandomGenerator rand, int depth) {
@@ -201,6 +199,7 @@ private CBORTestCommon() {
       }
     }
 
+@SuppressWarnings("deprecation")
     public static void TestNumber(CBORObject o) {
       if (o.getType() != CBORType.Number) {
         return;
@@ -211,7 +210,7 @@ private CBORTestCommon() {
           o.AsByte();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-         // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex);
           throw new IllegalStateException("", ex);
@@ -220,7 +219,7 @@ private CBORTestCommon() {
           o.AsInt16();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-         // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex);
           throw new IllegalStateException("", ex);
@@ -229,7 +228,7 @@ private CBORTestCommon() {
           o.AsInt32();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-         // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex);
           throw new IllegalStateException("", ex);
@@ -238,7 +237,7 @@ private CBORTestCommon() {
           o.AsInt64();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-         // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex);
           throw new IllegalStateException("", ex);
@@ -296,7 +295,11 @@ private CBORTestCommon() {
      // Test round-tripping
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
       if (!s.equals(o2.ToJSONString())) {
-        Assert.assertEquals("o2 is not equal to s",s,o2.ToJSONString());
+        String msg = "o2 is not equal to s:\no = " +
+          TestCommon.ToByteArrayString(o.EncodeToBytes()) +
+          "\no2 = " + TestCommon.ToByteArrayString(o2.EncodeToBytes()) +
+          "\no2string = " + o2.toString();
+        Assert.assertEquals(msg, s, o2.ToJSONString());
       }
       TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
@@ -318,7 +321,7 @@ private CBORTestCommon() {
 
     private static CBORObject FromBytesB(byte[] b) {
       {
-java.io.ByteArrayInputStream ms = null;
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();

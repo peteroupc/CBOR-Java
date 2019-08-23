@@ -18,6 +18,43 @@ private CBORUtilities() {
 }
     private static final String HexAlphabet = "0123456789ABCDEF";
 
+    public static int FastPathStringCompare(String strA, String strB) {
+      if (strA == null) {
+        return (strB == null) ? 0 : -1;
+      }
+      if (strB == null) {
+        return 1;
+      }
+      if (strA.length() == 0) {
+        return strB.length() == 0 ? 0 : -1;
+      }
+      if (strB.length() == 0) {
+        return strA.length() == 0 ? 0 : 1;
+      }
+      if (strA.length() < 64 && strB.length() < 64) {
+        for (int i = 0; i < strA.length(); ++i) {
+          if ((strA.charAt(i) & ((byte)0x80)) != 0) {
+            return -2; // non-ASCII
+          }
+        }
+        for (int i = 0; i < strB.length(); ++i) {
+          if ((strB.charAt(i) & ((byte)0x80)) != 0) {
+            return -2; // non-ASCII
+          }
+        }
+        if (strA.length() != strB.length()) {
+          return strA.length() < strB.length() ? -1 : 1;
+        }
+        for (int i = 0; i < strA.length(); ++i) {
+          if (strA.charAt(i) != strB.charAt(i)) {
+            return strA.charAt(i) < strB.charAt(i) ? -1 : 1;
+          }
+        }
+        return 0;
+      }
+      return -2; // not short enough
+    }
+
     public static void ToBase16(StringBuilder str, byte[] data) {
       if (data == null) {
         throw new NullPointerException("data");
@@ -77,57 +114,52 @@ private CBORUtilities() {
       return (a.length != b.length) ? ((a.length < b.length) ? -1 : 1) : 0;
     }
 
+    public static int ByteArrayCompareLengthFirst(byte[] a, byte[] b) {
+      if (a == null) {
+        return (b == null) ? 0 : -1;
+      }
+      if (b == null) {
+        return 1;
+      }
+      if (a.length != b.length) {
+        return a.length < b.length ? -1 : 1;
+      }
+      for (int i = 0; i < a.length; ++i) {
+        if (a[i] != b[i]) {
+          return (a[i] < b[i]) ? -1 : 1;
+        }
+      }
+      return 0;
+    }
+
+    public static String TrimDotZero(String str) {
+      return (str.length() > 2 && str.charAt(str.length() - 1) == '0' && str.charAt(str.length()
+                    - 2) == '.') ? str.substring(0,str.length() - 2) :
+        str;
+    }
+
+    public static long DoubleToInt64Bits(double dbl) {
+      return Double.doubleToRawLongBits(dbl);
+    }
+
+    public static int SingleToInt32Bits(float flt) {
+      return Float.floatToRawIntBits(flt);
+    }
+
+    public static double Int64BitsToDouble(long bits) {
+      return Double.longBitsToDouble(bits);
+    }
+
+    public static float Int32BitsToSingle(int bits) {
+      return Float.intBitsToFloat(bits);
+    }
+
     public static String DoubleToString(double dbl) {
       return EFloat.FromDouble(dbl).ToShortestString(EContext.Binary64);
     }
 
     public static String SingleToString(float sing) {
       return EFloat.FromSingle(sing).ToShortestString(EContext.Binary32);
-    }
-
-    public static EInteger BigIntegerFromSingle(float flt) {
-      int value = Float.floatToRawIntBits(flt);
-      int fpexponent = (int)((value >> 23) & 0xff);
-      if (fpexponent == 255) {
-        throw new ArithmeticException("Value is infinity or NaN");
-      }
-      int mantissa = value & 0x7fffff;
-      if (fpexponent == 0) {
-        ++fpexponent;
-      } else {
-        mantissa |= 1 << 23;
-      }
-      if (mantissa == 0) {
-        return EInteger.FromInt32(0);
-      }
-      fpexponent -= 150;
-      while ((mantissa & 1) == 0) {
-        ++fpexponent;
-        mantissa >>= 1;
-      }
-      boolean neg = (value >> 31) != 0;
-      if (fpexponent == 0) {
-        if (neg) {
-          mantissa = -mantissa;
-        }
-        return EInteger.FromInt32(mantissa);
-      }
-      if (fpexponent > 0) {
-       // Value is an integer
-        EInteger bigmantissa = EInteger.FromInt32(mantissa);
-        bigmantissa = bigmantissa.ShiftLeft(fpexponent);
-        if (neg) {
-          bigmantissa=(bigmantissa).Negate();
-        }
-        return bigmantissa;
-      } else {
-       // Value has a fractional part
-        int exp = -fpexponent;
-        for (int i = 0; i < exp && mantissa != 0; ++i) {
-          mantissa >>= 1;
-        }
-        return EInteger.FromInt32(mantissa);
-      }
     }
 
     public static String LongToString(long longValue) {
@@ -239,7 +271,7 @@ private CBORUtilities() {
       int month,
       EInteger day,
       EInteger[] dest) {
-     // NOTE: This method assumes month is 1 to 12
+      // NOTE: This method assumes month is 1 to 12
       if (month <= 0 || month > 12) {
         throw new IllegalArgumentException("month");
       }
@@ -266,7 +298,7 @@ private CBORUtilities() {
                     year.Remainder(100).signum() == 0 &&
                     year.Remainder(400).signum() != 0)) ? ValueNormalDays :
               ValueLeapDays;
-          } else {
+            } else {
             ++month;
           }
         }
@@ -303,12 +335,12 @@ private CBORUtilities() {
       EInteger year,
       int month,
       int mday) {
-     // NOTE: month = 1 is January, year = 1 is year 1
+      // NOTE: month = 1 is January, year = 1 is year 1
       if (month <= 0 || month > 12) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("month");
       }
       if (mday <= 0 || mday > 31) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("mday");
       }
       EInteger numDays = EInteger.FromInt32(0);
       int startYear = 1970;
@@ -341,7 +373,7 @@ private CBORUtilities() {
                     year.Remainder(400).signum() != 0)) {
           numDays = numDays.Subtract(365 - ValueNormalToMonth[month])
            .Subtract(ValueNormalDays[month] - mday + 1);
-        } else {
+         } else {
           numDays = numDays
             .Subtract(366 - ValueLeapToMonth[month])
             .Subtract(ValueLeapDays[month] - mday + 1);
@@ -416,8 +448,7 @@ private CBORUtilities() {
 
     public static boolean NameStartsWithWord(String name, String word) {
       int wl = word.length();
-      return name.length() > wl && name.substring(0, wl).equals(word) &&
-              !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
+      return name.length() > wl && name.substring(0,wl).equals(word) && !(name.charAt(wl) >= 'a' && name.charAt(wl) <= 'z') &&
               !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
     }
 
@@ -682,14 +713,14 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
         return bigmantissa;
       }
       if (floatExponent > 0) {
-       // Value is an integer
+        // Value is an integer
         bigmantissa = bigmantissa.ShiftLeft(floatExponent);
         if (neg) {
           bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       } else {
-       // Value has a fractional part
+        // Value has a fractional part
         int exp = -floatExponent;
         bigmantissa = bigmantissa.ShiftRight(exp);
         if (neg) {
@@ -699,30 +730,198 @@ dateTime[6] >= 1000000000 || dateTime[7] <= -1440 ||
       }
     }
 
-    public static float HalfPrecisionToSingle(int value) {
-      int negvalue = (value >= 0x8000) ? (1 << 31) : 0;
-      value &= 0x7fff;
-      if (value >= 0x7c00) {
-        value = (int)(0x3fc00 | (value & 0x3ff)) << 13 | negvalue;
-        return Float.intBitsToFloat(value);
+    private static int RoundedShift(long mant, int shift) {
+      long mask = (1L << shift) - 1;
+      long half = 1L << (shift - 1);
+      long shifted = mant >> shift;
+      long masked = mant & mask;
+      return (masked > half || (masked == half && (shifted & 1L) != 0)) ?
+         ((int)shifted) + 1 : ((int)shifted);
+    }
+
+    private static int RoundedShift(int mant, int shift) {
+      int mask = (1 << shift) - 1;
+      int half = 1 << (shift - 1);
+      int shifted = mant >> shift;
+      int masked = mant & mask;
+      return (masked > half || (masked == half && (shifted & 1) != 0)) ?
+         shifted + 1 : shifted;
+    }
+
+    public static int DoubleToHalfPrecisionIfSameValue(long bits) {
+      int exp = ((int)((bits >> 52) & 0x7ffL));
+      long mant = bits & 0xfffffffffffffL;
+      int sign = ((int)(bits >> 48)) & (1 << 15);
+      int sexp = exp - 1008;
+      // DebugUtility.Log("bits={0:X8}, exp=" + exp + " sexp=" + (sexp));
+      if (exp == 2047) { // Infinity and NaN
+        int newmant = ((int)(mant >> 42));
+        return ((mant & ((1L << 42) - 1)) == 0) ? (sign | 0x7c00 | newmant) :
+          -1;
+        } else if (sexp >= 31) { // overflow
+        return -1;
+      } else if (sexp < -10) { // underflow
+        return -1;
+      } else if (sexp > 0) { // normal
+        return ((mant & ((1L << 42) - 1)) == 0) ?
+          (sign | (sexp << 10) | RoundedShift(mant, 42)) : -1;
+        } else { // subnormal and zero
+        return ((mant & ((1L << (42 - (sexp - 1))) - 1)) == 0) ?
+          (sign | RoundedShift(mant | (1L << 52), 42 - (sexp - 1))) : -1;
       }
-      if (value > 0x400) {
-        value = (int)((value + 0x1c000) << 13) | negvalue;
-        return Float.intBitsToFloat(value);
+    }
+
+    public static boolean DoubleRetainsSameValueInSingle(long bits) {
+      int exp = ((int)((bits >> 52) & 0x7ffL));
+      long mant = bits & 0xfffffffffffffL;
+      int sexp = exp - 896;
+      // DebugUtility.Log("sng mant={0:X8}, exp=" + exp + " sexp=" + (sexp));
+      if (exp == 2047) { // Infinity and NaN
+        return (mant & ((1L << 29) - 1)) == 0;
+      } else if (sexp < -23 || sexp >= 255) { // underflow or overflow
+        return false;
+      } else if (sexp > 0) { // normal
+        return (mant & ((1L << 29) - 1)) == 0;
+      } else { // subnormal and zero
+        return (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0;
       }
-      if ((value & 0x400) == value) {
-        value = (int)((value == 0) ? 0 : 0x38800000) | negvalue;
-        return Float.intBitsToFloat(value);
-      } else {
-       // denormalized
-        int m = value & 0x3ff;
-        value = 0x1c400;
-        while ((m >> 10) == 0) {
-          value -= 0x400;
-          m <<= 1;
+    }
+
+    // NOTE: Rounds to nearest, ties to even
+    public static int SingleToRoundedHalfPrecision(int bits) {
+      int exp = ((int)((bits >> 23) & 0xff));
+      int mant = bits & 0x7fffff;
+      int sign = (bits >> 16) & (1 << 15);
+      int sexp = exp - 112;
+      if (exp == 255) { // Infinity and NaN
+        int newmant = ((int)(mant >> 13));
+        return (mant != 0 && newmant == 0) ?
+           // signaling NaN truncated to have mantissa 0
+           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
+         } else if (sexp >= 31) { // overflow
+        return sign | 0x7c00;
+      } else if (sexp < -10) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 10) | RoundedShift(mant, 13);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1 << 23), 13 - (sexp - 1));
+      }
+    }
+
+    // NOTE: Rounds to nearest, ties to even
+    public static int DoubleToRoundedHalfPrecision(long bits) {
+      int exp = ((int)((bits >> 52) & 0x7ffL));
+      long mant = bits & 0xfffffffffffffL;
+      int sign = ((int)(bits >> 48)) & (1 << 15);
+      int sexp = exp - 1008;
+      if (exp == 2047) { // Infinity and NaN
+        int newmant = ((int)(mant >> 42));
+        return (mant != 0 && newmant == 0) ?
+           // signaling NaN truncated to have mantissa 0
+           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
+         } else if (sexp >= 31) { // overflow
+        return sign | 0x7c00;
+      } else if (sexp < -10) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 10) | RoundedShift(mant, 42);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1L << 52), 42 - (sexp - 1));
+      }
+    }
+
+    // NOTE: Rounds to nearest, ties to even
+    public static int DoubleToRoundedSinglePrecision(long bits) {
+      int exp = ((int)((bits >> 52) & 0x7ffL));
+      long mant = bits & 0xfffffffffffffL;
+      int sign = ((int)(bits >> 32)) & (1 << 31);
+      int sexp = exp - 896;
+      if (exp == 2047) { // Infinity and NaN
+        int newmant = ((int)(mant >> 29));
+        return (mant != 0 && newmant == 0) ?
+           // signaling NaN truncated to have mantissa 0
+           (sign | 0x7f800001) : (sign | 0x7f800000 | newmant);
+         } else if (sexp >= 255) { // overflow
+        return sign | 0x7f800000;
+      } else if (sexp < -23) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 23) | RoundedShift(mant, 29);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1L << 52), 29 - (sexp - 1));
+      }
+    }
+
+    public static int SingleToHalfPrecisionIfSameValue(float f) {
+      int bits = Float.floatToRawIntBits(f);
+      int exp = (bits >> 23) & 0xff;
+      int mant = bits & 0x7fffff;
+      int sign = (bits >> 16) & 0x8000;
+      if (exp == 255) { // Infinity and NaN
+        return (bits & 0x1fff) == 0 ? sign + 0x7c00 + (mant >> 13) : -1;
+      } else if (exp == 0) { // Subnormal
+        return (bits & 0x1fff) == 0 ? sign + (mant >> 13) : -1;
+      }
+      if (exp <= 102 || exp >= 143) { // Overflow or underflow
+        return -1;
+      } else if (exp <= 112) { // Subnormal
+        int shift = 126 - exp;
+        return (bits & ((1 << shift) - 1)) == 0 ? sign +
+            (1024 >> (145 - exp)) + (mant >> shift) : -1;
+          } else {
+        return (bits & 0x1fff) == 0 ? sign + ((exp - 112) << 10) +
+            (mant >> 13) : -1;
+      }
+    }
+
+    public static long SingleToDoublePrecision(int bits) {
+      long negvalue = (long)((bits >> 31) & 1) << 63;
+      int exp = (bits >> 23) & 0xff;
+      int mant = bits & 0x7fffff;
+      long value = 0;
+      if (exp == 255) {
+        value = 0x7ff0000000000000L | ((long)mant << 29) | negvalue;
+      } else if (exp == 0) {
+        if (mant == 0) {
+          value = negvalue;
+        } else {
+         ++exp;
+         while (mant < 0x800000) {
+           mant <<= 1;
+           --exp;
+         }
+         value = ((long)(exp + 896) << 52) | ((long)(mant & 0x7fffff) << 29) |
+negvalue;
         }
-        value = ((value | (m & 0x3ff)) << 13) | negvalue;
-        return Float.intBitsToFloat(value);
+      } else {
+         value = ((long)(exp + 896) << 52) | ((long)mant << 29) | negvalue;
       }
+      return value;
+    }
+
+    public static long HalfToDoublePrecision(int bits) {
+      long negvalue = (long)(bits & 0x8000) << 48;
+      int exp = (bits >> 10) & 31;
+      int mant = bits & 0x3ff;
+      long value = 0;
+      if (exp == 31) {
+        value = 0x7ff0000000000000L | ((long)mant << 42) | negvalue;
+      } else if (exp == 0) {
+        if (mant == 0) {
+          value = negvalue;
+        } else {
+         ++exp;
+         while (mant < 0x400) {
+           mant <<= 1;
+           --exp;
+         }
+         value = ((long)(exp + 1008) << 52) | ((long)(mant & 0x3ff) << 42) |
+negvalue;
+        }
+      } else {
+         value = ((long)(exp + 1008) << 52) | ((long)mant << 42) | negvalue;
+      }
+      return value;
     }
   }

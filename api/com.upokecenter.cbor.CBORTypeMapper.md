@@ -3,12 +3,12 @@
     public final class CBORTypeMapper extends java.lang.Object
 
 Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code> , as
+ of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
  well as type filters for <code>ToObject</code>.
 
 ## Methods
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 * `<T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type,
             ICBORConverter<T> converter)`<br>
@@ -25,17 +25,17 @@ Holds converters to customize the serialization and deserialization behavior
 
 ## Constructors
 
-* `CBORTypeMapper()`<br>
+* `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
 
 ## Method Details
 
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### CBORTypeMapper
     public CBORTypeMapper()
-Initializes a new instance of the CBORTypeMapper class.
+Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
     public <T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type, ICBORConverter<T> converter)
 Registers an object that converts objects of a given type to CBOR objects
@@ -62,8 +62,8 @@ Registers an object that converts objects of a given type to CBOR objects
 * <code>java.lang.NullPointerException</code> - The parameter <code>type</code> or <code>
  converter</code> is null.
 
-* <code>java.lang.IllegalArgumentException</code> - Converter doesn't contain a proper
-  ToCBORObject method".
+* <code>java.lang.IllegalArgumentException</code> - Converter doesn't contain a proper ToCBORObject
+  method".
 
 ### FilterTypeName
     public boolean FilterTypeName​(java.lang.String typeName)
@@ -83,9 +83,9 @@ Returns whether the given Java or.NET type name fits the filters given in
 
 ### AddTypePrefix
     public CBORTypeMapper AddTypePrefix​(java.lang.String prefix)
-Adds a prefix of a Java or.NET type for use in type matching. A type
- matches a prefix if its fully qualified name is or begins with that
- prefix, using codepoint-by-codepoint (case-sensitive) matching.
+Adds a prefix of a Java or.NET type for use in type matching. A type matches
+ a prefix if its fully qualified name is or begins with that prefix,
+ using codepoint-by-codepoint (case-sensitive) matching.
 
 **Parameters:**
 

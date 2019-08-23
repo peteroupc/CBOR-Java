@@ -347,9 +347,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Internal API.
-     * @param val The parameter
-      {@code val}
-       is an internal parameter.
+     * @param val The parameter {@code val} is an internal parameter.
      * @return A FastInteger2 object.
      */
     FastInteger2 Multiply(int val) {
@@ -405,9 +403,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Internal API.
-     * @param val The parameter
-      {@code val}
-       is an internal parameter.
+     * @param val The parameter {@code val} is an internal parameter.
      * @return A FastInteger2 object.
      */
     FastInteger2 Subtract(FastInteger2 val) {
@@ -457,9 +453,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Internal API.
-     * @param val The parameter
-      {@code val}
-       is an internal parameter.
+     * @param val The parameter {@code val} is an internal parameter.
      * @return A FastInteger2 object.
      */
     FastInteger2 SubtractInt(int val) {
@@ -583,10 +577,6 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    /**
-     * This is an internal API.
-     * @return Internal API value.
-     */
     final int signum() {
         switch (this.integerMode) {
           case 0:

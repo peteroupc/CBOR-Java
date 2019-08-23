@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   public class CBORDataUtilitiesTest {
     private void AssertNegative(CBORObject obj) {
@@ -17,35 +18,35 @@ import com.upokecenter.cbor.*;
       CBORObject cbor;
       cbor = CBORDataUtilities.ParseJSONNumber("-0", false, false, true);
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.AsEDecimal().toString();
         Assert.assertEquals(
           "-0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0e-1", false, false, true);
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.AsEDecimal().toString();
         Assert.assertEquals(
           "-0.0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0e1", false, false, true);
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.AsEDecimal().toString();
         Assert.assertEquals(
           "-0E+1",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0.0e1", false, false, true);
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.AsEDecimal().toString();
         Assert.assertEquals(
           "-0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0.0", false, false, true);
       {
-        String stringTemp = cbor.toString();
+        String stringTemp = cbor.AsEDecimal().toString();
         Assert.assertEquals(
           "-0.0",
           stringTemp);
@@ -86,11 +87,11 @@ import com.upokecenter.cbor.*;
         "-0.00E-1", "0.000",
       };
       for (int i = 0; i < strings.length; i += 2) {
-        String stringTemp = CBORDataUtilities
-                  .ParseJSONNumber(strings[i]).toString();
+        EDecimal jsonDecimal = CBORDataUtilities
+                  .ParseJSONNumber(strings[i]).AsEDecimal();
         Assert.assertEquals(
           strings[i + 1],
-          stringTemp);
+          jsonDecimal.toString());
       }
     }
 
@@ -259,11 +260,11 @@ import com.upokecenter.cbor.*;
       }
 
       TestCommon.CompareTestEqual(
-  ToObjectTest.TestToFromObjectRoundTrip(230),
-  CBORDataUtilities.ParseJSONNumber("23.0e01"));
+  ToObjectTest.TestToFromObjectRoundTrip(230).AsNumber(),
+  CBORDataUtilities.ParseJSONNumber("23.0e01").AsNumber());
       TestCommon.CompareTestEqual(
-  ToObjectTest.TestToFromObjectRoundTrip(23),
-  CBORDataUtilities.ParseJSONNumber("23.0e00"));
+  ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber(),
+  CBORDataUtilities.ParseJSONNumber("23.0e00").AsNumber());
       cbor = CBORDataUtilities.ParseJSONNumber(
         "1e+99999999999999999999999999",
         false,

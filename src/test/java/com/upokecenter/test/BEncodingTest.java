@@ -11,7 +11,7 @@ import com.upokecenter.cbor.*;
     private static CBORObject EncodingFromBytes(byte[] b) {
       try {
         {
-java.io.ByteArrayInputStream s = null;
+          java.io.ByteArrayInputStream s = null;
 try {
 s = new java.io.ByteArrayInputStream(b);
 
