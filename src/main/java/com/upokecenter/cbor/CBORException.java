@@ -6,9 +6,9 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * Exception thrown for errors involving CBOR data.
-     */
+  /**
+   * Exception thrown for errors involving CBOR data.
+   */
 
 public final class CBORException extends RuntimeException {
 private static final long serialVersionUID = 1L;
