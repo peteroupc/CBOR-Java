@@ -2562,7 +2562,13 @@ ToObjectTest.TestToFromObjectRoundTrip(100).compareTo(null);
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-        objs = CBORObject.ReadSequence(ms);
+        objs = null;
+        try {
+          objs = CBORObject.ReadSequence(ms);
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (ms != null) {
@@ -2578,7 +2584,13 @@ try { if (ms != null) {
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-        objs = CBORObject.ReadSequence(ms);
+        objs = null;
+        try {
+          objs = CBORObject.ReadSequence(ms);
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (ms != null) {
@@ -2640,7 +2652,13 @@ try { if (ms != null) {
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-        objs = CBORObject.ReadSequence(ms);
+        objs = null;
+        try {
+          objs = CBORObject.ReadSequence(ms);
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (ms != null) {
@@ -2658,7 +2676,13 @@ try { if (ms != null) {
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-        objs = CBORObject.ReadSequence(ms);
+        objs = null;
+        try {
+          objs = CBORObject.ReadSequence(ms);
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (ms != null) {
@@ -8142,6 +8166,7 @@ try { if (ms != null) {
     public void TestWriteFloatingPointValue() {
       RandomGenerator r = new RandomGenerator();
       byte[] bytes = new byte[] { 0, 0, 0 };
+      try {
       for (int i = 0; i < 0x10000; ++i) {
         bytes[0] = (byte)0xf9;
         bytes[1] = (byte)((i >> 8) & 0xff);
@@ -8283,9 +8308,9 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
             CBORObject.WriteFloatingPointValue(
-               ms,
-               c2.AsSingle(),
-               8);
+                 ms,
+                 c2.AsSingle(),
+                 8);
             TestCommon.AssertByteArraysEqual(c2bytes, ms.toByteArray());
 }
 finally {
@@ -8327,6 +8352,10 @@ try { if (ms != null) {
 }
           }
         }
+      }
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
       }
     }
 

@@ -2872,7 +2872,7 @@ try {
 ms2 = new java.io.ByteArrayOutputStream();
 
             CBORObject.Write(ed, ms2);
-            cbor = CBORObject.DecodeFromBytes(ms2.ToArray());
+            cbor = CBORObject.DecodeFromBytes(ms2.toByteArray());
             if (!(cbor.isNumber())) {
  Assert.fail(cbor.toString());
  }
