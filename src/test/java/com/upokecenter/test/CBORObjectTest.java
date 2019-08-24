@@ -3400,19 +3400,19 @@ ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
     }
 
     public enum EnumClass {
-    /**
-     * Internal API.
-     */
+      /**
+       * Internal API.
+       */
       Value1,
 
-    /**
-     * Internal API.
-     */
+      /**
+       * Internal API.
+       */
       Value2,
 
-    /**
-     * Internal API.
-     */
+      /**
+       * Internal API.
+       */
       Value3,
     }
 
@@ -8167,182 +8167,39 @@ try { if (ms != null) {
       RandomGenerator r = new RandomGenerator();
       byte[] bytes = new byte[] { 0, 0, 0 };
       try {
-      for (int i = 0; i < 0x10000; ++i) {
-        bytes[0] = (byte)0xf9;
-        bytes[1] = (byte)((i >> 8) & 0xff);
-        bytes[2] = (byte)(i & 0xff);
-        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-        if (!cbor.IsNaN()) {
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsDouble(),
-               2);
-            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsSingle(),
-               2);
-            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-        }
-      }
-      // 32-bit values
-      bytes = new byte[5];
-      for (int i = 0; i < 100000; ++i) {
-        bytes[0] = (byte)0xfa;
-        for (int j = 1; j <= 4; ++j) {
-          bytes[j] = (byte)r.UniformInt(256);
-        }
-
-        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-        if (!cbor.IsNaN()) {
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsDouble(),
-               4);
-            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsSingle(),
-               4);
-            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-        }
-      }
-      // 64-bit values
-      bytes = new byte[9];
-      for (int i = 0; i < 100000; ++i) {
-        bytes[0] = (byte)0xfb;
-        for (int j = 1; j <= 8; ++j) {
-          bytes[j] = (byte)r.UniformInt(256);
-        }
-        CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-        if (!cbor.IsNaN()) {
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsDouble(),
-               8);
-            TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-          CBORObject c2 = null;
-          byte[] c2bytes = null;
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-               ms,
-               cbor.AsSingle(),
-               8);
-            c2bytes = ms.toByteArray();
-            c2 = CBORObject.DecodeFromBytes(
-               c2bytes);
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.WriteFloatingPointValue(
-                 ms,
-                 c2.AsSingle(),
-                 8);
-            TestCommon.AssertByteArraysEqual(c2bytes, ms.toByteArray());
-}
-finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
-}
-}
-          if (i == 0) {
+        for (int i = 0; i < 0x10000; ++i) {
+          bytes[0] = (byte)0xf9;
+          bytes[1] = (byte)((i >> 8) & 0xff);
+          bytes[2] = (byte)(i & 0xff);
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          if (!cbor.IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-              try {
-                CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
-                Assert.fail("Should have failed");
-              } catch (IllegalArgumentException ex) {
-                // NOTE: Intentionally empty
-              } catch (Exception ex) {
-                Assert.fail(ex.toString());
-                throw new IllegalStateException("", ex);
-              }
-              try {
-                CBORObject.WriteFloatingPointValue(null, cbor.AsSingle(), 4);
-                Assert.fail("Should have failed");
-              } catch (NullPointerException ex) {
-                // NOTE: Intentionally empty
-              } catch (Exception ex) {
-                Assert.fail(ex.toString());
-                throw new IllegalStateException("", ex);
-              }
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsDouble(),
+                 2);
+              TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsSingle(),
+                 2);
+              TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
 }
 finally {
 try { if (ms != null) {
@@ -8352,10 +8209,153 @@ try { if (ms != null) {
 }
           }
         }
-      }
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
+        // 32-bit values
+        bytes = new byte[5];
+        for (int i = 0; i < 100000; ++i) {
+          bytes[0] = (byte)0xfa;
+          for (int j = 1; j <= 4; ++j) {
+            bytes[j] = (byte)r.UniformInt(256);
+          }
+
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          if (!cbor.IsNaN()) {
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsDouble(),
+                 4);
+              TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsSingle(),
+                 4);
+              TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+          }
+        }
+        // 64-bit values
+        bytes = new byte[9];
+        for (int i = 0; i < 100000; ++i) {
+          bytes[0] = (byte)0xfb;
+          for (int j = 1; j <= 8; ++j) {
+            bytes[j] = (byte)r.UniformInt(256);
+          }
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          if (!cbor.IsNaN()) {
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsDouble(),
+                 8);
+              TestCommon.AssertByteArraysEqual(bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            CBORObject c2 = null;
+            byte[] c2bytes = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                 ms,
+                 cbor.AsSingle(),
+                 8);
+              c2bytes = ms.toByteArray();
+              c2 = CBORObject.DecodeFromBytes(
+                 c2bytes);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            {
+              java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+              CBORObject.WriteFloatingPointValue(
+                   ms,
+                   c2.AsSingle(),
+                   8);
+              TestCommon.AssertByteArraysEqual(c2bytes, ms.toByteArray());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            if (i == 0) {
+              {
+                java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+                try {
+                  CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
+                  Assert.fail("Should have failed");
+                } catch (IllegalArgumentException ex) {
+                  // NOTE: Intentionally empty
+                } catch (Exception ex) {
+                  Assert.fail(ex.toString());
+                  throw new IllegalStateException("", ex);
+                }
+                try {
+                  CBORObject.WriteFloatingPointValue(null, cbor.AsSingle(), 4);
+                  Assert.fail("Should have failed");
+                } catch (NullPointerException ex) {
+                  // NOTE: Intentionally empty
+                } catch (Exception ex) {
+                  Assert.fail(ex.toString());
+                  throw new IllegalStateException("", ex);
+                }
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+            }
+          }
+        }
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
       }
     }
 

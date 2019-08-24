@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.lang.reflect.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -470,7 +471,7 @@ if(objThis.getType()==CBORType.TextString){
  } catch(Exception ex){
   throw new CBORException(ex.getMessage(),ex);
  }
-} else if(objThis.getType()==CBORType.Number && objThis.isIntegral()){
+} else if(objThis.isNumber() && objThis.isIntegral()){
  Object[] enumValues=EnumValues((Class<?>)t);
  int k=objThis.AsInt32();
  if(k<0 || k>=enumValues.length){
@@ -579,13 +580,32 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
        throw new CBORException();
     }
 
+    @SuppressWarnings("unchecked")
+    public static CBORObject CallToObject(
+       CBORTypeMapper.ConverterInfo convinfo,
+       Object obj) {
+      if(convinfo.getConverter() instanceof ICBORConverter) {
+        return ((ICBORConverter)convinfo.getConverter()).ToCBORObject(obj);
+      }
+      return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Object CallFromObject(
+       CBORTypeMapper.ConverterInfo convinfo,
+       CBORObject obj) {
+      if(convinfo.getConverter() instanceof ICBORToFromConverter<?>) {
+        return ((ICBORToFromConverter<?>)convinfo.getConverter()).FromCBORObject(obj);
+      }
+      return null;
+    }
+
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
     long time=bi.getTime();
     int nanoseconds=((int)(time%1000L));
     if(nanoseconds<0)nanoseconds=1000+nanoseconds;
     nanoseconds*=1000000;
-//System.out.println(nanoseconds+","+time);
     EDecimal edec=EDecimal.FromInt64(time).Divide(
       EDecimal.FromInt32(1000));
     CBORUtilities.BreakDownSecondsSinceEpoch(edec,year,lf);

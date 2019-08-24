@@ -76,13 +76,8 @@ import java.util.*;
       if (convinfo == null) {
         return null;
       }
-      if (convinfo.getFromObject() == null) {
-        return null;
-      }
-      return (T)(PropertyMap.InvokeOneArgumentMethod(
-        convinfo.getFromObject(),
-        convinfo.getConverter(),
-        cbor));
+      return (T)((convinfo.getFromObject() == null) ? null :
+        PropertyMap.CallFromObject(convinfo, cbor));
     }
 
     CBORObject ConvertWithConverter(Object obj) {
@@ -93,13 +88,8 @@ import java.util.*;
       } else {
         return null;
       }
-      if (convinfo == null) {
-        return null;
-      }
-      return (CBORObject)PropertyMap.InvokeOneArgumentMethod(
-        convinfo.getToObject(),
-        convinfo.getConverter(),
-        obj);
+      return (convinfo == null) ? null :
+        PropertyMap.CallToObject(convinfo, obj);
     }
 
     /**
