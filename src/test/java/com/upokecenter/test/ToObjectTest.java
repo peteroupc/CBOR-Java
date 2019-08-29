@@ -1103,7 +1103,6 @@ ToObjectTest.TestToFromObjectRoundTrip("");
       }
     }
 
-
     @Test
     public void TestToObjectFieldClass() {
       FieldClass fc = new FieldClass();
@@ -1124,6 +1123,12 @@ ToObjectTest.TestToFromObjectRoundTrip("");
  Assert.fail();
  }
       if (co.ContainsKey("StaticFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("constFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("ConstFieldA")) {
  Assert.fail();
  }
       if (co.ContainsKey("readonlyFieldA")) {

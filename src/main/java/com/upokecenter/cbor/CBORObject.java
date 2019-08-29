@@ -378,14 +378,15 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
     /**
      * Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
-     * @throws IllegalStateException This object does not represent a number,
-     * including the special not-a-number value (NaN).
+     * @throws IllegalStateException This object does not represent a number, or
+     * this object is a not-a-number (NaN) value.
      */
     public final int signum() {
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         int ret = cn == null ? 2 : cn.GetNumberInterface().Sign(cn.GetValue());
         if (ret == 2) {
-          throw new IllegalStateException("This Object is not a number.");
+          throw new IllegalStateException(
+            "This Object is not a number.");
         }
         return ret;
       }
@@ -1198,11 +1199,11 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a UUID object if
      * possible.</li> <li>Plain-Old-Data deserialization: If the object is
      * a type not specially handled above, the type includes a
-     * zero-argument constructor (default or not), this CBOR object is a
-     *  CBOR map, and the "mapper" parameter allows this type to be eligible
-     * for Plain-Old-Data deserialization, then this method checks the
-     * given type for eligible setters as follows:</li> <li>(*) In the .NET
-     * version, eligible setters are the public, nonstatic setters of
+     * zero-parameter constructor (default or not), this CBOR object is a
+     *  CBOR map, and the "mapper" parameter (if any) allows this type to be
+     * eligible for Plain-Old-Data deserialization, then this method checks
+     * the given type for eligible setters as follows:</li> <li>(*) In the
+     *.NET version, eligible setters are the public, nonstatic setters of
      * properties with a public, nonstatic getter. Eligible setters also
      * include public, nonstatic, non- <code>readonly</code> fields. If a class
      *  has two properties and/or fields of the form "X" and "IsX", where
@@ -1227,15 +1228,16 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * eligible setters according to the rules described in the {@link
      * com.upokecenter.cbor.PODOptions} documentation. Note that for
      * security reasons, certain types are not supported even if they
-     * contain eligible setters.</li> </ul><p> <p>Java offers no easy way
-     * to express a generic type, at least none as easy as C#'s
-     * <code>typeof</code> operator. The following example, written in Java, is a
-     * way to specify that the return value will be an ArrayList of string
-     * objects.</p> <pre>Type arrayListString = new ParameterizedType() {
-     * public Type[] getActualTypeArguments() { // Contains one type
-     * parameter, string return new Type[] { string.class }; } public Type
-     * getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; }
-     * public Type getOwnerType() { return null; } };
+     * contain eligible setters. For the Java version, the object creation
+     * may fail in the case of a nested nonstatic class.</li> </ul><p>
+     * <p>Java offers no easy way to express a generic type, at least none
+     * as easy as C#'s <code>typeof</code> operator. The following example,
+     * written in Java, is a way to specify that the return value will be
+     * an ArrayList of string objects.</p> <pre>Type arrayListString = new
+     * ParameterizedType() { public Type[] getActualTypeArguments() { //
+     * Contains one type parameter, string return new Type[] { string.class
+     * }; } public Type getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return
+     * ArrayList.class; } public Type getOwnerType() { return null; } };
      * ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;)
      * cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
      * version is much shorter.</p> <pre>List&lt;string&gt; array =
@@ -1252,7 +1254,7 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * those types should likewise meet either criterion above.
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from
-     * CBOR objects to certain data types.
+     * CBOR objects to certain data types. Can be null.
      * @param options Specifies options for controlling deserialization of CBOR
      * objects.
      * @return The converted object.
@@ -1260,13 +1262,11 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * this object's CBOR type, is not supported, or the given object's
      * nesting is too deep, or another error occurred when serializing the
      * object.
-     * @throws NullPointerException The parameter {@code t} is null.
+     * @throws NullPointerException The parameter {@code t} or {@code options} is
+     * null.
      */
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions options) {
-      if (mapper == null) {
-        throw new NullPointerException("mapper");
-      }
       if (options == null) {
         throw new NullPointerException("options");
       }
@@ -1806,12 +1806,14 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * references other data types, those types should likewise meet either
      * criterion above.</p>.
      * @param mapper An object containing optional converters to convert objects of
-     * certain types to CBOR objects.
+     * certain types to CBOR objects. Can be null.
      * @param options An object containing options to control how certain objects
      * are converted to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      * @throws NullPointerException The parameter {@code options} is null.
+     * @throws com.upokecenter.cbor.CBORException An error occurred while
+     * converting the given object to a CBOR object.
      */
     public static CBORObject FromObject(
       Object obj,

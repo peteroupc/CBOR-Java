@@ -47,9 +47,9 @@ class PropertyMap {
          else if(method instanceof Field)
             ((Field)method).set(obj, value);
        } catch(InvocationTargetException ex) {
-         throw (RuntimeException)new RuntimeException("").initCause(ex);
+         throw (RuntimeException)new CBORException("").initCause(ex);
        } catch (IllegalAccessException ex) {
-         throw (RuntimeException)new RuntimeException("").initCause(ex);
+         throw (RuntimeException)new CBORException("").initCause(ex);
        }
     }
     public Object GetValue(Object obj) {
@@ -61,9 +61,9 @@ class PropertyMap {
          else
           return null;
        } catch(InvocationTargetException ex) {
-         throw (RuntimeException)new RuntimeException("").initCause(ex);
+         throw (RuntimeException)new CBORException("").initCause(ex);
        } catch (IllegalAccessException ex) {
-         throw (RuntimeException)new RuntimeException("").initCause(ex);
+         throw (RuntimeException)new CBORException("").initCause(ex);
        }
     }
     public static boolean IsGetMethod(String methodName){
@@ -340,13 +340,13 @@ if(!setters){
       }
       return o;
     } catch(InvocationTargetException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
+      throw (RuntimeException)new CBORException("").initCause(ex);
     } catch(NoSuchMethodException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
+      throw (RuntimeException)new CBORException("").initCause(ex);
     } catch(InstantiationException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
+      throw (RuntimeException)new CBORException("").initCause(ex);
     } catch (IllegalAccessException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
+      throw (RuntimeException)new CBORException("").initCause(ex);
     }
     }
 
@@ -420,9 +420,9 @@ if(!setters){
     try {
       return m.invoke(obj, argument);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+      throw new CBORException(e.getMessage(), e);
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+      throw new CBORException(e.getMessage(), e);
     }
   }
 
@@ -472,7 +472,7 @@ if(Type.class.isAssignableFrom(cls) ||
        Constructor.class.isAssignableFrom(cls)){
       return true;
 }
-System.err.println(name);
+//System.err.println(name);
 if((name.startsWith("org.springframework.") ||
    name.startsWith("java.io.") ||
    name.startsWith("java.lang.annotation.") ||
