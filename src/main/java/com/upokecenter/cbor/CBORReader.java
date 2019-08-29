@@ -256,10 +256,17 @@ import com.upokecenter.numbers.*;
       int type = (firstbyte >> 5) & 0x07;
       int additional = firstbyte & 0x1f;
       long uadditional;
+      CBORObject fixedObject;
       if (this.options.getCtap2Canonical()) {
         if (additional >= 0x1c) {
           // NOTE: Includes stop byte and indefinite length data items
           throw new CBORException("Invalid canonical CBOR encountered");
+        }
+        // Check if this represents a fixed Object (NOTE: All fixed objects
+        // comply with CTAP2 canonical CBOR).
+        fixedObject = CBORObject.GetFixedObject(firstbyte);
+        if (fixedObject != null) {
+          return fixedObject;
         }
         if (type == 6) {
           throw new CBORException("Tags not allowed in canonical CBOR");
@@ -270,11 +277,8 @@ import com.upokecenter.numbers.*;
               CBORObject.FromObject(ToUnsignedEInteger(uadditional)) :
               CBORObject.FromObject(uadditional);
             } else if (type == 1) {
-          return (uadditional >> 63) != 0 ?
-
-              CBORObject.FromObject(
-                ToUnsignedEInteger(uadditional).Add(1).Negate())
-:
+          return (uadditional >> 63) != 0 ? CBORObject.FromObject(
+                ToUnsignedEInteger(uadditional).Add(1).Negate()) :
               CBORObject.FromObject((-uadditional) - 1L);
             } else if (type == 7) {
           if (additional < 24) {
@@ -302,7 +306,7 @@ import com.upokecenter.numbers.*;
         throw new CBORException("Unexpected data encountered");
       }
       // Check if this represents a fixed Object
-      CBORObject fixedObject = CBORObject.GetFixedObject(firstbyte);
+      fixedObject = CBORObject.GetFixedObject(firstbyte);
       if (fixedObject != null) {
         return fixedObject;
       }
@@ -331,7 +335,8 @@ import com.upokecenter.numbers.*;
         switch (type) {
           case 2: {
               // Streaming byte String
-              java.io.ByteArrayOutputStream ms = null;
+              {
+                java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -363,6 +368,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
             }
           case 3: {
@@ -540,7 +546,8 @@ try { if (ms != null) {
           }
           return null;
         }
-        java.io.ByteArrayOutputStream ms = null;
+        {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream(0x10000);
 
@@ -558,6 +565,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
       }
     }
@@ -659,5 +667,5 @@ try { if (ms != null) {
         return bytes[0];
       }
     }
-   */
+ */
   }

@@ -24,8 +24,48 @@ import com.upokecenter.numbers.*;
  */
 class PropertyMap {
   private static class MethodData {
-    public String name;
-    public Method method;
+    private String name;
+    private Member method;
+    public MethodData(String name, Member method) {
+        this.name=name;
+        this.method=method;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public Type GetValueType() {
+       if(method instanceof Method)
+          return ((Method)method).getGenericParameterTypes()[0];
+       else if(method instanceof Field)
+          return ((Field)method).getGenericType();
+       return null;
+    }
+    public void SetValue(Object obj, Object value) {
+       try {
+         if(method instanceof Method)
+            ((Method)method).invoke(obj, value);
+         else if(method instanceof Field)
+            ((Field)method).set(obj, value);
+       } catch(InvocationTargetException ex) {
+         throw (RuntimeException)new RuntimeException("").initCause(ex);
+       } catch (IllegalAccessException ex) {
+         throw (RuntimeException)new RuntimeException("").initCause(ex);
+       }
+    }
+    public Object GetValue(Object obj) {
+       try {
+         if(method instanceof Method)
+          return ((Method)method).invoke(obj);
+         else if(method instanceof Field)
+          return ((Field)method).get(obj);
+         else
+          return null;
+       } catch(InvocationTargetException ex) {
+         throw (RuntimeException)new RuntimeException("").initCause(ex);
+       } catch (IllegalAccessException ex) {
+         throw (RuntimeException)new RuntimeException("").initCause(ex);
+       }
+    }
     public static boolean IsGetMethod(String methodName){
           return (CBORUtilities.NameStartsWithWord(methodName,"get") && !methodName.equals("getClass"));
     }
@@ -61,12 +101,24 @@ class PropertyMap {
       if(IsGetMethod(name))return name.substring(3);
       return name;
     }
+    private static String RemoveIs(String name){
+      if(IsIsMethod(name))return name.substring(2);
+      return name;
+    }
     public String GetAdjustedName(boolean useCamelCase){
-      if(useCamelCase){
-        return CBORUtilities.FirstCharLower(RemoveGetSetIs(this.name));
+      if(method instanceof Field) {
+       if(useCamelCase){
+         return CBORUtilities.FirstCharLower(RemoveIs(this.name));
+       } else {
+         return CBORUtilities.FirstCharUpper(this.name);
+       }
       } else {
-        return CBORUtilities.FirstCharUpper(RemoveGetSet(this.name));
-      }
+       if(useCamelCase){
+         return CBORUtilities.FirstCharLower(RemoveGetSetIs(this.name));
+       } else {
+         return CBORUtilities.FirstCharUpper(RemoveGetSet(this.name));
+       }
+     }
     }
   }
 
@@ -90,6 +142,27 @@ private static Method FindMethod(List<Method> methods, String shortName, Type t)
  return null;
 }
 
+private static <T> List<T> Compact(List<T> list) {
+  boolean shouldCompact=false;
+  for(T item : list) {
+    if(item==null){
+      shouldCompact=true;
+      break;
+    }
+  }
+  if(shouldCompact) {
+    List<T> newList=new ArrayList<T>();
+    for(T item : list) {
+      if(item!=null){
+        newList.add(item);
+      }
+    }
+    return newList;
+  } else {
+    return list;
+  }
+}
+
   private static List<MethodData> GetPropertyList(final Class<?> t, boolean setters) {
     synchronized(setters ? setterPropertyList : propertyLists) {
       List<MethodData> ret;
@@ -105,10 +178,12 @@ private static Method FindMethod(List<Method> methods, String shortName, Type t)
          HashMap<String,Integer>();
       Map<String,Integer> setMethodNames=new
          HashMap<String,Integer>();
+      Map<String,Integer> methodNamesToIndices=new
+         HashMap<String,Integer>();
       boolean hasAmbiguousGetName=false;
       boolean hasAmbiguousSetName=false;
       for(Method pi : t.getMethods()) {
-        if((pi.getModifiers() & Modifier.STATIC)==0) {
+        if((pi.getModifiers() & (Modifier.PUBLIC | Modifier.STATIC))==Modifier.PUBLIC) {
           String methodName = pi.getName();
           String mn=MethodData.RemoveGetSetIs(methodName);
           if(MethodData.IsGetMethod(methodName)){
@@ -152,18 +227,14 @@ if(!setters){
     String mn=MethodData.RemoveGetSetIs(m.getName());
     // Don't add ambiguous methods
     if(getMethodNames.get(mn)>1){ continue;}
-            MethodData md = new MethodData();
-            md.name = m.getName();
-            md.method = m;
+            MethodData md = new MethodData(m.getName(), m);
      ret.add(md);
   }
   for(Method m : isMethods){
     String mn=MethodData.RemoveGetSetIs(m.getName());
     // Don't add ambiguous methods
     if(getMethodNames.get(mn)>1){ continue;}
-            MethodData md = new MethodData();
-            md.name = m.getName();
-            md.method = m;
+            MethodData md = new MethodData(m.getName(), m);
      ret.add(md);
   }
 } else {
@@ -178,13 +249,33 @@ if(!setters){
     if(gm==null)gm=FindMethod(isMethods,
       mn,m.getParameterTypes()[0]);
     if(gm!=null){
-     MethodData md = new MethodData();
-     md.name = m.getName();
-     md.method = m;
+     int sz=ret.size();
+            MethodData md = new MethodData(m.getName(), m);
      ret.add(md);
+     methodNamesToIndices.put(mn, sz);
     }
   }
 }
+      // Now add fields
+      for(Field pi : t.getFields()) {
+        if((pi.getModifiers() & (Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL))==Modifier.PUBLIC) {
+          String methodName = pi.getName();
+          String mn=MethodData.RemoveIs(methodName);
+          if(getMethodNames.containsKey(mn) || setMethodNames.containsKey(mn)) {
+             // Ambiguous with eligible method name
+             int index=methodNamesToIndices.containsKey(mn) ?
+                 (int)methodNamesToIndices.get(mn) : -1;
+             if(index>=0) {
+                ret.set(index, null);
+             }
+          } else {
+             // No ambiguity, so add field
+            MethodData md = new MethodData(pi.getName(), pi);
+            ret.add(md);
+          }
+        }
+      }
+      ret=Compact(ret);
       (setters ? setterPropertyList : propertyLists).put(t, ret);
       return ret;
     }
@@ -243,8 +334,8 @@ if(!setters){
         if (dict.containsKey(name)) {
           CBORObject dget=dict.get(name);
           Object dobj = dget.ToObject(
-             key.method.getGenericParameterTypes()[0],mapper,options, depth+1);
-          key.method.invoke(o, dobj);
+             key.GetValueType(),mapper,options, depth+1);
+          key.SetValue(o, dobj);
         }
       }
       return o;
@@ -266,18 +357,12 @@ if(!setters){
     if(IsProblematicForSerialization(o.getClass())){
        return ret;
     }
-    try {
       for(MethodData key : GetPropertyList(o.getClass())) {
         ret.add(new AbstractMap.SimpleEntry<String, Object>(
             key.GetAdjustedName(useCamelCase),
-            key.method.invoke(o)));
+            key.GetValue(o)));
       }
       return ret;
-    } catch(InvocationTargetException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
-    } catch (IllegalAccessException ex) {
-      throw (RuntimeException)new RuntimeException("").initCause(ex);
-    }
   }
 
   /**

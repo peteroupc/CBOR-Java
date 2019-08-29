@@ -9,7 +9,76 @@ private CBORCanonical() {
     static final Comparator<CBORObject> Comparer =
       new CtapComparer();
 
+    private static final Comparator<Map.Entry<byte[], byte[]>>
+         ByteComparer = new CtapByteComparer();
+
+    private static final class CtapByteComparer implements Comparator<Map.Entry<byte[],
+  byte[]>> {
+      public int compare(
+         Map.Entry<byte[], byte[]> kva,
+         Map.Entry<byte[], byte[]> kvb) {
+        byte[] bytesA = kva.getKey();
+        byte[] bytesB = kvb.getKey();
+        if (bytesA == null) {
+          return bytesB == null ? 0 : -1;
+        }
+        if (bytesB == null) {
+          return 1;
+        }
+        if (bytesA.length == 0) {
+          return bytesB.length == 0 ? 0 : -1;
+        }
+        if (bytesB.length == 0) {
+          return 1;
+        }
+        if (bytesA == bytesB) {
+          // NOTE: Assumes reference equality of CBORObjects
+          return 0;
+        }
+        // check major types
+        if (((int)bytesA[0] & 0xe0) != ((int)bytesB[0] & 0xe0)) {
+          return ((int)bytesA[0] & 0xe0) < ((int)bytesB[0] & 0xe0) ? -1 : 1;
+        }
+        // check lengths
+        if (bytesA.length != bytesB.length) {
+          return bytesA.length < bytesB.length ? -1 : 1;
+        }
+        // check bytes
+        for (int i = 0; i < bytesA.length; ++i) {
+          if (bytesA[i] != bytesB[i]) {
+            int ai = ((int)bytesA[i]) & 0xff;
+            int bi = ((int)bytesB[i]) & 0xff;
+            return (ai < bi) ? -1 : 1;
+          }
+        }
+        return 0;
+      }
+    }
+
     private static final class CtapComparer implements Comparator<CBORObject> {
+      private static int MajorType(CBORObject a) {
+        if (a.isTagged()) {
+          return 6;
+        }
+        switch (a.getType()) {
+          case Integer:
+            return a.isNegative() ? 1 : 0;
+          case SimpleValue:
+          case Boolean:
+          case FloatingPoint:
+            return 7;
+          case ByteString:
+            return 2;
+          case TextString:
+            return 3;
+          case Array:
+            return 4;
+          case Map:
+            return 5;
+          default: throw new IllegalStateException();
+        }
+      }
+
       public int compare(CBORObject a, CBORObject b) {
         if (a == null) {
           return b == null ? 0 : -1;
@@ -17,20 +86,31 @@ private CBORCanonical() {
         if (b == null) {
           return 1;
         }
+        if (a == b) {
+          // NOTE: Assumes reference equality of CBORObjects
+          return 0;
+        }
+        a = a.Untag();
+        b = b.Untag();
         byte[] abs;
         byte[] bbs;
-        boolean bothBytes = false;
-        if (a.getType() == CBORType.ByteString && b.getType() == CBORType.ByteString) {
+        int amt = MajorType(a);
+        int bmt = MajorType(b);
+        if (amt != bmt) {
+          return amt < bmt ? -1 : 1;
+        }
+        // DebugUtility.Log("a="+a);
+        // DebugUtility.Log("b="+b);
+        if (amt == 2) {
+          // Both objects are byte strings
           abs = a.GetByteString();
           bbs = b.GetByteString();
-          bothBytes = true;
         } else {
+          // Might store arrays or maps, where
+          // canonical encoding can fail due to too-deep
+          // nesting
           abs = CtapCanonicalEncode(a);
           bbs = CtapCanonicalEncode(b);
-        }
-        if (!bothBytes && (abs[0] & 0xe0) != (bbs[0] & 0xe0)) {
-          // different major types
-          return (abs[0] & 0xe0) < (bbs[0] & 0xe0) ? -1 : 1;
         }
         if (abs.length != bbs.length) {
           // different lengths
@@ -53,6 +133,24 @@ private CBORCanonical() {
 
     public static byte[] CtapCanonicalEncode(CBORObject a) {
       return CtapCanonicalEncode(a, 0);
+    }
+
+    private static boolean ByteArraysEqual(byte[] bytesA, byte[] bytesB) {
+if (bytesA == bytesB) {
+  return true;
+}
+if (bytesA == null || bytesB == null) {
+  return false;
+}
+if (bytesA.length == bytesB.length) {
+  for (int j = 0; j < bytesA.length; ++j) {
+          if (bytesA[j] != bytesB[j]) {
+            return false;
+          }
+        }
+        return true;
+      }
+      return false;
     }
 
     private static byte[] CtapCanonicalEncode(CBORObject a, int depth) {
@@ -82,25 +180,37 @@ try { if (ms != null) {
 }
 }
         } else if (valueAType == CBORType.Map) {
-          ArrayList<CBORObject> sortedKeys = new ArrayList<CBORObject>();
+          Map.Entry<byte[], byte[]> kv;
+          ArrayList<Map.Entry<byte[], byte[]>> sortedKeys;
+          sortedKeys = new ArrayList<Map.Entry<byte[], byte[]>>();
           for (CBORObject key : cbor.getKeys()) {
             if (depth >= 3 && (IsArrayOrMap(key) ||
                IsArrayOrMap(cbor.get(key)))) {
               throw new CBORException("Nesting level too deep");
             }
-            sortedKeys.add(key);
+            // Check if key and value can be canonically encoded
+            // (will throw an exception if they cannot)
+            kv = new AbstractMap.SimpleImmutableEntry<byte[], byte[]>(
+              CtapCanonicalEncode(key, depth + 1),
+              CtapCanonicalEncode(cbor.get(key), depth + 1));
+            sortedKeys.add(kv);
           }
-          java.util.Collections.sort(sortedKeys, Comparer);
+          Collections.sort(sortedKeys,ByteComparer);
           {
             java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
             CBORObject.WriteValue(ms, 5, cbor.size());
-            for (CBORObject key : sortedKeys) {
-              byte[] bytes = CtapCanonicalEncode(key, depth + 1);
+            byte[] lastKey = null;
+            for (Map.Entry<byte[], byte[]> kv2 : sortedKeys) {
+              byte[] bytes = kv2.getKey();
+              if (lastKey != null && ByteArraysEqual(bytes, lastKey)) {
+                throw new CBORException("duplicate canonical CBOR key");
+              }
+              lastKey = bytes;
               ms.write(bytes, 0, bytes.length);
-              bytes = CtapCanonicalEncode(cbor.get(key), depth + 1);
+              bytes = kv2.getValue();
               ms.write(bytes, 0, bytes.length);
             }
             return ms.toByteArray();

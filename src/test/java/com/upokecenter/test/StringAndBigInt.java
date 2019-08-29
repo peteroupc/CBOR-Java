@@ -22,6 +22,11 @@ import com.upokecenter.numbers.*;
       }
 
     public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
+       return Generate(rand, radix, 50);
+    }
+
+    public static StringAndBigInt Generate(RandomGenerator rand, int radix,
+  int maxNumDigits) {
       if (radix < 2) {
         throw new IllegalArgumentException("radix (" + radix +
           ") is less than 2");
@@ -32,7 +37,7 @@ import com.upokecenter.numbers.*;
       }
       EInteger bv = EInteger.FromInt32(0);
       StringAndBigInt sabi = new StringAndBigInt();
-      int numDigits = 1 + rand.UniformInt(400);
+      int numDigits = 1 + rand.UniformInt(maxNumDigits);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
       if (rand.UniformInt(2) == 0) {

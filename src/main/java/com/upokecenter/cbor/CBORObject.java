@@ -1203,42 +1203,40 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * for Plain-Old-Data deserialization, then this method checks the
      * given type for eligible setters as follows:</li> <li>(*) In the .NET
      * version, eligible setters are the public, nonstatic setters of
-     * properties with a public, nonstatic getter. If a class has two
-     *  properties of the form "X" and "IsX", where "X" is any name, or has
-     * multiple properties with the same name, those properties are
-     * ignored.</li> <li>(*) In the Java version, eligible setters are
-     *  public, nonstatic methods starting with "set" followed by a
-     * character other than a basic digit or lower-case letter, that is,
-     *  other than "a" to "z" or "0" to "9", that take one parameter. The
-     * class containing an eligible setter must have a public, nonstatic
-     *  method with the same name, but starting with "get" or "is" rather
-     *  than "set", that takes no parameters and does not return void. (For
-     *  example, if a class has "public setValue(string)" and "public
-     *  getValue()", "setValue" is an eligible setter. However, "setValue()"
-     *  and "setValue(string, int)" are not eligible setters.) If a class
-     * has two or more otherwise eligible setters with the same name, but
-     * different parameter type, they are not eligible setters.</li>
-     * <li>Then, the method creates an object of the given type and invokes
-     * each eligible setter with the corresponding value in the CBOR map,
-     * if any. Key names in the map are matched to eligible setters
-     * according to the rules described in the {@link
+     * properties with a public, nonstatic getter. Eligible setters also
+     * include public, nonstatic, non- <code>readonly</code> fields. If a class
+     *  has two properties and/or fields of the form "X" and "IsX", where
+     *  "X" is any name, or has multiple properties and/or fields with the
+     * same name, those properties and fields are ignored.</li> <li>(*) In
+     * the Java version, eligible setters are public, nonstatic methods
+     *  starting with "set" followed by a character other than a basic digit
+     *  or lower-case letter, that is, other than "a" to "z" or "0" to "9",
+     * that take one parameter. The class containing an eligible setter
+     * must have a public, nonstatic method with the same name, but
+     *  starting with "get" or "is" rather than "set", that takes no
+     * parameters and does not return void. (For example, if a class has
+     *  "public setValue(string)" and "public getValue()", "setValue" is an
+     *  eligible setter. However, "setValue()" and "setValue(string, int)"
+     * are not eligible setters.) In addition, public, nonstatic, nonfinal
+     * fields are also eligible setters. If a class has two or more
+     * otherwise eligible setters (methods and/or fields) with the same
+     * name, but different parameter type, they are not eligible
+     * setters.</li> <li>Then, the method creates an object of the given
+     * type and invokes each eligible setter with the corresponding value
+     * in the CBOR map, if any. Key names in the map are matched to
+     * eligible setters according to the rules described in the {@link
      * com.upokecenter.cbor.PODOptions} documentation. Note that for
      * security reasons, certain types are not supported even if they
-     * contain eligible setters.</li> </ul> <p>REMARK: A certain
-     * consistency between .NET and Java and between FromObject and
-     * ToObject are sought for version 4.0. It is also hoped that the
-     * ToObject method will support deserializing to objects consisting of
-     *  fields and not getters ("getX()" methods), both in .NET and in
-     * Java.</p><p> <p>Java offers no easy way to express a generic type,
-     * at least none as easy as C#'s <code>typeof</code> operator. The following
-     * example, written in Java, is a way to specify that the return value
-     * will be an ArrayList of string objects.</p> <pre>Type
-     * arrayListString = new ParameterizedType() { public Type[]
-     * getActualTypeArguments() { // Contains one type parameter, string
-     * return new Type[] { string.class }; } public Type getRawType() { /*
-     * Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type
-     * getOwnerType() { return null; } }; ArrayList&lt;string&gt; array =
-     * (ArrayList&lt;string&gt;)
+     * contain eligible setters.</li> </ul><p> <p>Java offers no easy way
+     * to express a generic type, at least none as easy as C#'s
+     * <code>typeof</code> operator. The following example, written in Java, is a
+     * way to specify that the return value will be an ArrayList of string
+     * objects.</p> <pre>Type arrayListString = new ParameterizedType() {
+     * public Type[] getActualTypeArguments() { // Contains one type
+     * parameter, string return new Type[] { string.class }; } public Type
+     * getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; }
+     * public Type getOwnerType() { return null; } };
+     * ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;)
      * cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
      * version is much shorter.</p> <pre>List&lt;string&gt; array =
      * (List&lt;string&gt;)cborArray.ToObject(
@@ -1767,24 +1765,28 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * name='obj'/> parameter for eligible getters as follows:</li> <li>(*)
      * In the .NET version, eligible getters are the public, nonstatic
      * getters of read/write properties (and also those of read-only
-     * properties in the case of a compiler-generated type). If a class has
-     *  two properties of the form "X" and "IsX", where "X" is any name, or
-     * has multiple properties with the same name, those properties are
+     * properties in the case of a compiler-generated type). Eligible
+     * getters also include public, nonstatic, non- <code>readonly</code> fields.
+     *  If a class has two properties and/or fields of the form "X" and
+     *  "IsX", where "X" is any name, or has multiple properties and/or
+     * fields with the same name, those properties and fields are
      * ignored.</li> <li>(*) In the Java version, eligible getters are
      *  public, nonstatic methods starting with "get" or "is" (either word
      * followed by a character other than a basic digit or lower-case
      *  letter, that is, other than "a" to "z" or "0" to "9"), that take no
      * parameters and do not return void, except that methods named
-     *  "getClass" are not eligible getters. If a class has two otherwise
-     *  eligible getters of the form "isX" and "getX", where "X" is the same
-     * in both, or two such getters with the same name but different return
-     * type, they are not eligible getters.</li> <li>Then, the method
-     * returns a CBOR map with each eligible getter's name or property name
-     * as each key, and with the corresponding value returned by that
-     * getter as that key's value. Before adding a key-value pair to the
-     * map, the key's name is adjusted according to the rules described in
-     * the {@link com.upokecenter.cbor.PODOptions} documentation. Note that
-     * for security reasons, certain types are not supported even if they
+     *  "getClass" are not eligible getters. In addition, public, nonstatic,
+     * nonfinal fields are also eligible getters. If a class has two
+     *  otherwise eligible getters (methods and/or fields) of the form "isX"
+     *  and "getX", where "X" is the same in both, or two such getters with
+     * the same name but different return type, they are not eligible
+     * getters.</li> <li>Then, the method returns a CBOR map with each
+     * eligible getter's name or property name as each key, and with the
+     * corresponding value returned by that getter as that key's value.
+     * Before adding a key-value pair to the map, the key's name is
+     * adjusted according to the rules described in the {@link
+     * com.upokecenter.cbor.PODOptions} documentation. Note that for
+     * security reasons, certain types are not supported even if they
      * contain eligible getters.</li></ul> <p><b>REMARK:</b>.NET
      * enumeration (<code>Enum</code>) constants could also have been converted
      * to text strings with <code>toString()</code>, but that method will return
@@ -1794,11 +1796,6 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * text strings, constants from Enum types with the <code>Flags</code>
      * attribute, and constants from the same Enum type that share an
      * underlying value, should not be passed to this method.</p>
-     * <p>REMARK: A certain consistency between .NET and Java and between
-     * FromObject and ToObject are sought for version 4.0. It is also hoped
-     * that the ToObject method will support deserializing to objects
-     *  consisting of fields and not getters ("getX()" methods), both in
-     *.NET and in Java.</p>
      * @param obj An arbitrary object to convert to a CBOR object. <p><b>NOTE:</b>
      * For security reasons, whenever possible, an application should not
      * base this parameter on user input or other externally supplied data
@@ -3789,9 +3786,10 @@ CBORObjectTypeEInteger)) {
      * byte array in an undefined order. The example code given in <see
      * cref='PeterO.Cbor.CBORObject.WriteTo(System.IO.InputStream)'/> can be
      * used to write out certain keys of a CBOR map in a given order. For
-     * the CTAP2 canonical ordering, which is useful for implementing Web
-     * Authentication, call <code>EncodeToBytes(new CBOREncodeOptions(false,
-     * false, true))</code> rather than this method.</p>
+     * the CTAP2 (FIDO Client-to-Authenticator Protocol 2) canonical
+     * ordering, which is useful for implementing Web Authentication, call
+     *  <code>EncodeToBytes(new CBOREncodeOptions("ctap2canonical=true"))</code>
+     * rather than this method.</p>
      * @return A byte array in CBOR format.
      */
     public byte[] EncodeToBytes() {
@@ -3801,10 +3799,11 @@ CBORObjectTypeEInteger)) {
     /**
      * Writes the binary representation of this CBOR object and returns a byte
      * array of that representation, using the specified options for
-     * encoding the object to CBOR format. For the CTAP2 canonical
-     * ordering, which is useful for implementing Web Authentication, call
-     * this method as follows: <code>EncodeToBytes(new
-     * CBOREncodeOptions(false, false, true))</code>.
+     * encoding the object to CBOR format. For the CTAP2 (FIDO
+     * Client-to-Authenticator Protocol 2) canonical ordering, which is
+     * useful for implementing Web Authentication, call this method as
+     * follows: <code>EncodeToBytes(new
+     *  CBOREncodeOptions("ctap2canonical=true"))</code>.
      * @param options Options for encoding the data to CBOR.
      * @return A byte array in CBOR format.
      * @throws NullPointerException The parameter {@code options} is null.

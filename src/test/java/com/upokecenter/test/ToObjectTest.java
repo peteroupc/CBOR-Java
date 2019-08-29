@@ -1103,6 +1103,51 @@ ToObjectTest.TestToFromObjectRoundTrip("");
       }
     }
 
+    private static final class FieldClass {
+       public int PublicFieldA;
+       public final int ReadonlyFieldA = 33;
+       private int privateFieldA;
+       private final int privateFieldB = 44;
+       private static int staticFieldA;
+    }
+
+    @Test
+    public void TestToObjectFieldClass() {
+      FieldClass fc = new FieldClass();
+      CBORObject co = CBORObject.FromObject(fc);
+      if (co.ContainsKey("PrivateFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("privateFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("PrivateFieldB")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("privateFieldB")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("staticFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("StaticFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("readonlyFieldA")) {
+ Assert.fail();
+ }
+      if (co.ContainsKey("ReadonlyFieldA")) {
+ Assert.fail();
+ }
+      if (!(co.ContainsKey("publicFieldA"))) {
+ Assert.fail();
+ }
+      co.set("privateFieldA",ToObjectTest.TestToFromObjectRoundTrip(999));
+      co.set("publicFieldA",ToObjectTest.TestToFromObjectRoundTrip(999));
+      fc = (FieldClass)co.ToObject(FieldClass.class);
+      Assert.assertEquals(999, fc.PublicFieldA);
+    }
+
     @Test(timeout = 5000)
     public void TestToObject() {
       PODClass ao = new PODClass();

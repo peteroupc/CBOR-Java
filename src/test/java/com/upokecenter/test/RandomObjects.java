@@ -16,11 +16,17 @@ import com.upokecenter.numbers.*;
   public final class RandomObjects {
 private RandomObjects() {
 }
+    private static final int MaxExclusiveStringLength = 0x2000;
+    private static final int MaxExclusiveExponentLength = 0x2000;
+    private static final int MaxExclusiveShortStringLength = 50;
+    private static final int MaxShortNumberLength = 40;
+    private static final int MaxStringNumDigits = 50;
+
     public static byte[] RandomByteString(RandomGenerator rand) {
       if (rand == null) {
         throw new NullPointerException("rand");
       }
-      int x = rand.UniformInt(0x2000);
+      int x = rand.UniformInt(MaxExclusiveStringLength);
       byte[] bytes = new byte[x];
       for (int i = 0; i < x; ++i) {
         bytes[i] = ((byte)rand.UniformInt(256));
@@ -32,7 +38,7 @@ private RandomObjects() {
       if (rand == null) {
         throw new NullPointerException("rand");
       }
-      int x = rand.UniformInt(50);
+      int x = rand.UniformInt(MaxExclusiveShortStringLength);
       byte[] bytes = new byte[x];
       for (int i = 0; i < x; ++i) {
         bytes[i] = ((byte)rand.UniformInt(256));
@@ -53,7 +59,7 @@ private RandomObjects() {
       if (rand == null) {
         throw new NullPointerException("rand");
       }
-      int length = rand.UniformInt(0x2000);
+      int length = rand.UniformInt(MaxExclusiveStringLength);
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {
         int x = rand.UniformInt(100);
@@ -164,16 +170,20 @@ private RandomObjects() {
       }
       int selection = r.UniformInt(100);
       if (selection < 40) {
-        StringAndBigInt sabi = StringAndBigInt.Generate(r, 16);
+        StringAndBigInt sabi = StringAndBigInt.Generate(
+          r,
+          16,
+          MaxStringNumDigits);
         return sabi.getBigIntValue();
       }
       if (selection < 50) {
         StringAndBigInt sabi = StringAndBigInt.Generate(
           r,
-          2 + r.UniformInt(35));
+          2 + r.UniformInt(35),
+          MaxStringNumDigits);
         return sabi.getBigIntValue();
       } else {
-        int count = r.UniformInt(60) + 1;
+        int count = r.UniformInt(MaxShortNumberLength) + 1;
         byte[] bytes = new byte[count];
         for (int i = 0; i < count; ++i) {
           bytes[i] = (byte)((int)r.UniformInt(256));
@@ -207,7 +217,7 @@ private RandomObjects() {
       if (r == null) {
         throw new NullPointerException("r");
       }
-      int count = r.UniformInt(50) + 1;
+      int count = r.UniformInt(MaxShortNumberLength) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
         sb.append('-');
@@ -226,7 +236,7 @@ private RandomObjects() {
       if (r == null) {
         throw new NullPointerException("r");
       }
-      int count = r.UniformInt(20) + 1;
+      int count = r.UniformInt(MaxShortNumberLength / 2) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
         sb.append('-');
@@ -245,7 +255,7 @@ private RandomObjects() {
       if (r == null) {
         throw new NullPointerException("r");
       }
-      int count = r.UniformInt(40) + 1;
+      int count = r.UniformInt(MaxShortNumberLength) + 1;
       StringBuilder sb = new StringBuilder();
       if (r.UniformInt(2) == 0) {
         sb.append('-');
@@ -266,8 +276,9 @@ private RandomObjects() {
       }
       if (r.UniformInt(2) == 0) {
         sb.append('E');
-        count = (r.UniformInt(100) < 10) ? r.UniformInt(5000) :
-          r.UniformInt(20);
+        count = (r.UniformInt(100) < 10) ?
+r.UniformInt(MaxExclusiveExponentLength) :
+          r.UniformInt(10);
         if (count != 0) {
           sb.append(r.UniformInt(2) == 0 ? '+' : '-');
         }
