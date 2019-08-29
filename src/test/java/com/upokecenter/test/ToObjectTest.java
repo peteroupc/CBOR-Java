@@ -1103,13 +1103,6 @@ ToObjectTest.TestToFromObjectRoundTrip("");
       }
     }
 
-    private static final class FieldClass {
-       public int PublicFieldA;
-       public final int ReadonlyFieldA = 33;
-       private int privateFieldA;
-       private final int privateFieldB = 44;
-       private static int staticFieldA;
-    }
 
     @Test
     public void TestToObjectFieldClass() {
@@ -1145,7 +1138,7 @@ ToObjectTest.TestToFromObjectRoundTrip("");
       co.set("privateFieldA",ToObjectTest.TestToFromObjectRoundTrip(999));
       co.set("publicFieldA",ToObjectTest.TestToFromObjectRoundTrip(999));
       fc = (FieldClass)co.ToObject(FieldClass.class);
-      Assert.assertEquals(999, fc.PublicFieldA);
+      Assert.assertEquals(999, fc.publicFieldA);
     }
 
     @Test(timeout = 5000)

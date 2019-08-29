@@ -3197,25 +3197,23 @@ for (int i = 0; i < 3000; ++i) {
    bytes = cbor.EncodeToBytes(options);
    try {
  cbor2 = CBORObject.DecodeFromBytes(bytes, options);
-} catch (Exception ex) {
- System.out.println(ex.getMessage());
- System.out.println(ex.getStackTrace());
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
+} catch (Exception ex2) {
+ Assert.fail(ex2.toString());
+ throw new IllegalStateException("", ex2);
 }
    byte[] bytes2 = cbor2.EncodeToBytes(options);
    TestCommon.AssertByteArraysEqual(bytes, bytes2);
- } catch (CBORException ex) {
+ } catch (CBORException ex4) {
    // Canonical encoding failed, so DecodeFromBytes must fail
    bytes = cbor.EncodeToBytes();
    try {
  CBORObject.DecodeFromBytes(bytes, options);
  Assert.fail("Should have failed");
-} catch (CBORException ex2) {
+} catch (CBORException ex) {
 // NOTE: Intentionally empty
-} catch (Exception ex2) {
- Assert.fail(ex2.toString());
- throw new IllegalStateException("", ex2);
+} catch (Exception ex3) {
+ Assert.fail(ex3.toString());
+ throw new IllegalStateException("", ex3);
 }
  }
 }

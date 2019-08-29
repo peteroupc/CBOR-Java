@@ -180,7 +180,7 @@ try { if (ms != null) {
 }
 }
         } else if (valueAType == CBORType.Map) {
-          Map.Entry<byte[], byte[]> kv;
+          Map.Entry<byte[], byte[]> kv1;
           ArrayList<Map.Entry<byte[], byte[]>> sortedKeys;
           sortedKeys = new ArrayList<Map.Entry<byte[], byte[]>>();
           for (CBORObject key : cbor.getKeys()) {
@@ -190,12 +190,12 @@ try { if (ms != null) {
             }
             // Check if key and value can be canonically encoded
             // (will throw an exception if they cannot)
-            kv = new AbstractMap.SimpleImmutableEntry<byte[], byte[]>(
+            kv1 = new AbstractMap.SimpleImmutableEntry<byte[], byte[]>(
               CtapCanonicalEncode(key, depth + 1),
               CtapCanonicalEncode(cbor.get(key), depth + 1));
-            sortedKeys.add(kv);
+            sortedKeys.add(kv1);
           }
-          Collections.sort(sortedKeys,ByteComparer);
+          java.util.Collections.sort(sortedKeys, ByteComparer);
           {
             java.io.ByteArrayOutputStream ms = null;
 try {
@@ -203,14 +203,15 @@ ms = new java.io.ByteArrayOutputStream();
 
             CBORObject.WriteValue(ms, 5, cbor.size());
             byte[] lastKey = null;
-            for (Map.Entry<byte[], byte[]> kv2 : sortedKeys) {
-              byte[] bytes = kv2.getKey();
+            for (int i = 0; i < sortedKeys.size(); ++i) {
+              kv1 = sortedKeys.get(i);
+              byte[] bytes = kv1.getKey();
               if (lastKey != null && ByteArraysEqual(bytes, lastKey)) {
                 throw new CBORException("duplicate canonical CBOR key");
               }
               lastKey = bytes;
               ms.write(bytes, 0, bytes.length);
-              bytes = kv2.getValue();
+              bytes = kv1.getValue();
               ms.write(bytes, 0, bytes.length);
             }
             return ms.toByteArray();
