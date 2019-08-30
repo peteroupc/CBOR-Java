@@ -128,7 +128,7 @@ private CBORCanonical() {
     }
 
     private static boolean IsArrayOrMap(CBORObject a) {
-       return a.getType() == CBORType.Array || a.getType() == CBORType.Map;
+      return a.getType() == CBORType.Array || a.getType() == CBORType.Map;
     }
 
     public static byte[] CtapCanonicalEncode(CBORObject a) {
@@ -136,14 +136,14 @@ private CBORCanonical() {
     }
 
     private static boolean ByteArraysEqual(byte[] bytesA, byte[] bytesB) {
-if (bytesA == bytesB) {
-  return true;
-}
-if (bytesA == null || bytesB == null) {
-  return false;
-}
-if (bytesA.length == bytesB.length) {
-  for (int j = 0; j < bytesA.length; ++j) {
+      if (bytesA == bytesB) {
+        return true;
+      }
+      if (bytesA == null || bytesB == null) {
+        return false;
+      }
+      if (bytesA.length == bytesB.length) {
+        for (int j = 0; j < bytesA.length; ++j) {
           if (bytesA[j] != bytesB[j]) {
             return false;
           }

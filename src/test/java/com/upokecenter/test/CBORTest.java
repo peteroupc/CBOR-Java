@@ -2963,261 +2963,261 @@ try { if (ms != null) {
 }
     }
 
-@Test
-public void TestCtap2CanonicalDecodeEncodeSpecific1() {
-  byte[] bytes = new byte[] {
-    (byte)0xa2, (byte)0x82, (byte)0xf6,
-    (byte)0x82,
-    (byte)0xfb, 0x3c,
-    (byte)0xf0, 0x03, 0x42,
-    (byte)0xcb, 0x54, 0x6c,
-    (byte)0x85,
-    (byte)0x82,
-    (byte)0xc5,
-    (byte)0x82, 0x18,
-    (byte)0xba, 0x0a,
-    (byte)0xfa,
-    (byte)0x84,
-    (byte)0xa0, 0x57,
-    (byte)0x97, 0x42, 0x00, 0x01, 0x65, 0x62, 0x7d, 0x45, 0x20, 0x6c, 0x41,
-    0x00,
-   };
-  CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-  CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-  System.out.println(cbor);
-  try {
- cbor.EncodeToBytes(options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+    @Test
+    public void TestCtap2CanonicalDecodeEncodeSpecific1() {
+      byte[] bytes = new byte[] {
+        (byte)0xa2, (byte)0x82, (byte)0xf6,
+        (byte)0x82,
+        (byte)0xfb, 0x3c,
+        (byte)0xf0, 0x03, 0x42,
+        (byte)0xcb, 0x54, 0x6c,
+        (byte)0x85,
+        (byte)0x82,
+        (byte)0xc5,
+        (byte)0x82, 0x18,
+        (byte)0xba, 0x0a,
+        (byte)0xfa,
+        (byte)0x84,
+        (byte)0xa0, 0x57,
+        (byte)0x97, 0x42, 0x00, 0x01, 0x65, 0x62, 0x7d, 0x45, 0x20, 0x6c, 0x41,
+        0x00,
+       };
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      System.out.println(cbor);
+      try {
+        cbor.EncodeToBytes(options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(bytes, options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
-@Test
-public void TestCtap2CanonicalDecodeEncodeSpecific2() {
-  byte[] bytes = new byte[] {
-    (byte)0x82,
-    (byte)0x82,
-    (byte)0xf5,
-    (byte)0x82,
-    (byte)0x81,
-    (byte)0xd8, 0x1e, (byte)0x82, 0x29, 0x01, (byte)0x80, 0x43, 0x01, 0x01,
-    0x00,
-   };
-  CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-  CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-  System.out.println(cbor);
-  try {
- cbor.EncodeToBytes(options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+    @Test
+    public void TestCtap2CanonicalDecodeEncodeSpecific2() {
+      byte[] bytes = new byte[] {
+        (byte)0x82,
+        (byte)0x82,
+        (byte)0xf5,
+        (byte)0x82,
+        (byte)0x81,
+        (byte)0xd8, 0x1e, (byte)0x82, 0x29, 0x01, (byte)0x80, 0x43, 0x01, 0x01,
+        0x00,
+       };
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      System.out.println(cbor);
+      try {
+        cbor.EncodeToBytes(options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(bytes, options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
-@Test
-public void TestCtap2CanonicalDecodeEncodeSpecific3() {
-  byte[] bytes = new byte[] {
-    (byte)0x82,
-    (byte)0xfa,
-    (byte)0xe0,
-    (byte)0xa0,
-    (byte)0x9d,
-    (byte)0xba,
-    (byte)0x82,
-    (byte)0x82,
-    (byte)0xf7, (byte)0xa2, (byte)0xa0, (byte)0xf7, 0x60, 0x41, 0x00,
-    (byte)0xf4,
-   };
-  CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-  CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-  System.out.println(cbor);
-  try {
- cbor.EncodeToBytes(options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+    @Test
+    public void TestCtap2CanonicalDecodeEncodeSpecific3() {
+      byte[] bytes = new byte[] {
+        (byte)0x82,
+        (byte)0xfa,
+        (byte)0xe0,
+        (byte)0xa0,
+        (byte)0x9d,
+        (byte)0xba,
+        (byte)0x82,
+        (byte)0x82,
+        (byte)0xf7, (byte)0xa2, (byte)0xa0, (byte)0xf7, 0x60, 0x41, 0x00,
+        (byte)0xf4,
+       };
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      System.out.println(cbor);
+      try {
+        cbor.EncodeToBytes(options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(bytes, options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
-@Test
-public void TestCtap2CanonicalDecodeEncodeSpecific4() {
-  byte[] bytes = new byte[] {
-    (byte)0x81,
-    (byte)0x82,
-    (byte)0xda, 0x00, 0x0d, 0x77, 0x09,
-    (byte)0xf4, (byte)0x82, (byte)0x82, (byte)0xf4, (byte)0xa0, (byte)0xf6,
-   };
-  CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-  CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-  System.out.println(cbor);
-  try {
- cbor.EncodeToBytes(options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+    @Test
+    public void TestCtap2CanonicalDecodeEncodeSpecific4() {
+      byte[] bytes = new byte[] {
+        (byte)0x81,
+        (byte)0x82,
+        (byte)0xda, 0x00, 0x0d, 0x77, 0x09,
+        (byte)0xf4, (byte)0x82, (byte)0x82, (byte)0xf4, (byte)0xa0, (byte)0xf6,
+       };
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      System.out.println(cbor);
+      try {
+        cbor.EncodeToBytes(options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(bytes, options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
-@Test
-public void TestCtap2CanonicalDecodeEncodeSpecific5() {
-  byte[] bytes = new byte[] {
-    (byte)0xa2,
-    (byte)0xda, 0x00, 0x03, 0x69,
-    (byte)0x95, (byte)0xf6, (byte)0xf7, (byte)0xf6, (byte)0xf4,
-   };
-  CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
-  CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-  System.out.println(cbor);
-  try {
- cbor.EncodeToBytes(options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-  try {
- CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+    @Test
+    public void TestCtap2CanonicalDecodeEncodeSpecific5() {
+      byte[] bytes = new byte[] {
+        (byte)0xa2,
+        (byte)0xda, 0x00, 0x03, 0x69,
+        (byte)0x95, (byte)0xf6, (byte)0xf7, (byte)0xf6, (byte)0xf4,
+       };
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      System.out.println(cbor);
+      try {
+        cbor.EncodeToBytes(options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(bytes, options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.DecodeFromBytes(cbor.EncodeToBytes(), options);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
-@Test
-public void TestCtap2CanonicalDecodeEncode() {
-RandomGenerator r = new RandomGenerator();
+    @Test
+    public void TestCtap2CanonicalDecodeEncode() {
+      RandomGenerator r = new RandomGenerator();
 
-CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-for (int i = 0; i < 3000; ++i) {
- CBORObject cbor = CBORTestCommon.RandomCBORObject(r);
- byte[] e2bytes = cbor.EncodeToBytes();
- byte[] bytes = e2bytes;
- cbor = CBORObject.DecodeFromBytes(bytes);
- CBORObject cbor2 = null;
- try {
-   bytes = cbor.EncodeToBytes(options);
-   try {
- cbor2 = CBORObject.DecodeFromBytes(bytes, options);
-} catch (Exception ex2) {
- Assert.fail(ex2.toString());
- throw new IllegalStateException("", ex2);
-}
-   byte[] bytes2 = cbor2.EncodeToBytes(options);
-   TestCommon.AssertByteArraysEqual(bytes, bytes2);
- } catch (CBORException ex4) {
-   // Canonical encoding failed, so DecodeFromBytes must fail
-   bytes = cbor.EncodeToBytes();
-   try {
- CBORObject.DecodeFromBytes(bytes, options);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex3) {
- Assert.fail(ex3.toString() + "\n" + ex4.toString());
- throw new IllegalStateException("", ex3);
-}
- }
-}
-}
+      CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
+      for (int i = 0; i < 3000; ++i) {
+        CBORObject cbor = CBORTestCommon.RandomCBORObject(r);
+        byte[] e2bytes = cbor.EncodeToBytes();
+        byte[] bytes = e2bytes;
+        cbor = CBORObject.DecodeFromBytes(bytes);
+        CBORObject cbor2 = null;
+        try {
+          bytes = cbor.EncodeToBytes(options);
+          try {
+            cbor2 = CBORObject.DecodeFromBytes(bytes, options);
+          } catch (Exception ex2) {
+            Assert.fail(ex2.toString());
+            throw new IllegalStateException("", ex2);
+          }
+          byte[] bytes2 = cbor2.EncodeToBytes(options);
+          TestCommon.AssertByteArraysEqual(bytes, bytes2);
+        } catch (CBORException ex4) {
+          // Canonical encoding failed, so DecodeFromBytes must fail
+          bytes = cbor.EncodeToBytes();
+          try {
+            CBORObject.DecodeFromBytes(bytes, options);
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex3) {
+            Assert.fail(ex3.toString() + "\n" + ex4.toString());
+            throw new IllegalStateException("", ex3);
+          }
+        }
+      }
+    }
 
     @Test
     public void TestTextStringStreamNoTagsBeforeDefinite() {

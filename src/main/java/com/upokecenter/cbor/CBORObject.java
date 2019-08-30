@@ -250,8 +250,9 @@ import com.upokecenter.numbers.*;
       }
 
     /**
-     * Gets a value indicating whether this value is a CBOR false value.
-     * @return {@code true} If this value is a CBOR false value; otherwise, {@code
+     * Gets a value indicating whether this value is a CBOR false value, whether
+     * tagged or not.
+     * @return {@code true} if this value is a CBOR false value; otherwise, {@code
      * false}.
      */
     public final boolean isFalse() {
@@ -261,7 +262,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return {@code true} If this CBOR object represents a finite number;
+     * @return {@code true} if this CBOR object represents a finite number;
      * otherwise, {@code false}.
      */
     public final boolean isFinite() {
@@ -273,7 +274,7 @@ import com.upokecenter.numbers.*;
      * Gets a value indicating whether this object represents an integer number,
      * that is, a number without a fractional part. Infinity and
      * not-a-number are not considered integers.
-     * @return {@code true} If this object represents an integer number, that is, a
+     * @return {@code true} if this object represents an integer number, that is, a
      * number without a fractional part; otherwise, {@code false}.
      */
     public final boolean isIntegral() {
@@ -284,7 +285,7 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
 
     /**
      * Gets a value indicating whether this value is a CBOR null value.
-     * @return {@code true} If this value is a CBOR null value; otherwise, {@code
+     * @return {@code true} if this value is a CBOR null value; otherwise, {@code
      * false}.
      */
     public final boolean isNull() {
@@ -294,7 +295,7 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
-     * @return {@code true} If this data item has at least one tag; otherwise,
+     * @return {@code true} if this data item has at least one tag; otherwise,
      * {@code false}.
      */
     public final boolean isTagged() {
@@ -302,8 +303,9 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
       }
 
     /**
-     * Gets a value indicating whether this value is a CBOR true value.
-     * @return {@code true} If this value is a CBOR true value; otherwise, {@code
+     * Gets a value indicating whether this value is a CBOR true value, whether
+     * tagged or not.
+     * @return {@code true} if this value is a CBOR true value; otherwise, {@code
      * false}.
      */
     public final boolean isTrue() {
@@ -313,7 +315,7 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value.
-     * @return {@code true} If this value is a CBOR undefined value; otherwise,
+     * @return {@code true} if this value is a CBOR undefined value; otherwise,
      * {@code false}.
      */
     public final boolean isUndefined() {
@@ -323,7 +325,7 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
 
     /**
      * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} If this object's value equals 0; otherwise, {@code
+     * @return {@code true} if this object's value equals 0; otherwise, {@code
      * false}.
      */
     public final boolean isZero() {
@@ -347,7 +349,7 @@ cn.GetNumberInterface().IsNumberZero(cn.GetValue());
 
     /**
      * Gets a value indicating whether this object is a negative number.
-     * @return {@code true} If this object is a negative number; otherwise, {@code
+     * @return {@code true} if this object is a negative number; otherwise, {@code
      * false}.
      */
     public final boolean isNegative() {
@@ -1021,15 +1023,15 @@ try { if (ms != null) {
      * <code>typeof</code> operator. The following example, written in Java, is a
      * way to specify that the return value will be an ArrayList of string
      * objects.</p> <pre>Type arrayListString = new ParameterizedType() {
-     * public Type[] getActualTypeArguments() { // Contains one type
-     * parameter, string return new Type[] { string.class }; } public Type
-     * getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return ArrayList.class; }
-     * public Type getOwnerType() { return null; } };
+     * public Type[] getActualTypeArguments() { /* Contains one type
+     * parameter, string &#x2a;&#x2f; return new Type[] { string.class }; } public
+     * Type getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return
+     * ArrayList.class; } public Type getOwnerType() { return null; } };
      * ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;)
      * cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
      * version is much shorter.</p> <pre>List&lt;string&gt; array =
      * (List&lt;string&gt;)cborArray.ToObject(
-     * typeof(List&lt;string&gt;));</pre> . </p>
+     * typeof(List&lt;string&gt;));</pre>. </p>
      * @param t The type, class, or interface that this method's return value will
      * belong to. To express a generic type in Java, see the example.
      * <b>Note:</b> For security reasons, an application should not base
@@ -1205,40 +1207,41 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * the given type for eligible setters as follows:</li> <li>(*) In the
      *.NET version, eligible setters are the public, nonstatic setters of
      * properties with a public, nonstatic getter. Eligible setters also
-     * include public, nonstatic, non- <code>readonly</code> fields. If a class
-     *  has two properties and/or fields of the form "X" and "IsX", where
-     *  "X" is any name, or has multiple properties and/or fields with the
-     * same name, those properties and fields are ignored.</li> <li>(*) In
-     * the Java version, eligible setters are public, nonstatic methods
-     *  starting with "set" followed by a character other than a basic digit
-     *  or lower-case letter, that is, other than "a" to "z" or "0" to "9",
-     * that take one parameter. The class containing an eligible setter
-     * must have a public, nonstatic method with the same name, but
-     *  starting with "get" or "is" rather than "set", that takes no
-     * parameters and does not return void. (For example, if a class has
-     *  "public setValue(string)" and "public getValue()", "setValue" is an
-     *  eligible setter. However, "setValue()" and "setValue(string, int)"
-     * are not eligible setters.) In addition, public, nonstatic, nonfinal
-     * fields are also eligible setters. If a class has two or more
-     * otherwise eligible setters (methods and/or fields) with the same
-     * name, but different parameter type, they are not eligible
-     * setters.</li> <li>Then, the method creates an object of the given
-     * type and invokes each eligible setter with the corresponding value
-     * in the CBOR map, if any. Key names in the map are matched to
-     * eligible setters according to the rules described in the {@link
-     * com.upokecenter.cbor.PODOptions} documentation. Note that for
-     * security reasons, certain types are not supported even if they
+     * include public, nonstatic, non- <code>static final</code> , non- <code>readonly</code>
+     *  fields. If a class has two properties and/or fields of the form "X"
+     *  and "IsX", where "X" is any name, or has multiple properties and/or
+     * fields with the same name, those properties and fields are
+     * ignored.</li> <li>(*) In the Java version, eligible setters are
+     *  public, nonstatic methods starting with "set" followed by a
+     * character other than a basic digit or lower-case letter, that is,
+     *  other than "a" to "z" or "0" to "9", that take one parameter. The
+     * class containing an eligible setter must have a public, nonstatic
+     *  method with the same name, but starting with "get" or "is" rather
+     *  than "set", that takes no parameters and does not return void. (For
+     *  example, if a class has "public setValue(string)" and "public
+     *  getValue()", "setValue" is an eligible setter. However, "setValue()"
+     *  and "setValue(string, int)" are not eligible setters.) In addition,
+     * public, nonstatic, nonfinal fields are also eligible setters. If a
+     * class has two or more otherwise eligible setters (methods and/or
+     * fields) with the same name, but different parameter type, they are
+     * not eligible setters.</li> <li>Then, the method creates an object of
+     * the given type and invokes each eligible setter with the
+     * corresponding value in the CBOR map, if any. Key names in the map
+     * are matched to eligible setters according to the rules described in
+     * the {@link com.upokecenter.cbor.PODOptions} documentation. Note that
+     * for security reasons, certain types are not supported even if they
      * contain eligible setters. For the Java version, the object creation
      * may fail in the case of a nested nonstatic class.</li> </ul><p>
      * <p>Java offers no easy way to express a generic type, at least none
      * as easy as C#'s <code>typeof</code> operator. The following example,
      * written in Java, is a way to specify that the return value will be
      * an ArrayList of string objects.</p> <pre>Type arrayListString = new
-     * ParameterizedType() { public Type[] getActualTypeArguments() { //
-     * Contains one type parameter, string return new Type[] { string.class
-     * }; } public Type getRawType() { /* Raw type is ArrayList &#x2a;&#x2f; return
-     * ArrayList.class; } public Type getOwnerType() { return null; } };
-     * ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;)
+     * ParameterizedType() { public Type[] getActualTypeArguments() { /*
+     * Contains one type parameter, string &#x2a;&#x2f; return new Type[] {
+     * string.class }; } public Type getRawType() { /* Raw type is
+     * ArrayList &#x2a;&#x2f; return ArrayList.class; } public Type getOwnerType() {
+     * return null; } }; ArrayList&lt;string&gt; array =
+     * (ArrayList&lt;string&gt;)
      * cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
      * version is much shorter.</p> <pre>List&lt;string&gt; array =
      * (List&lt;string&gt;)cborArray.ToObject(
@@ -1766,20 +1769,20 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * In the .NET version, eligible getters are the public, nonstatic
      * getters of read/write properties (and also those of read-only
      * properties in the case of a compiler-generated type). Eligible
-     * getters also include public, nonstatic, non- <code>readonly</code> fields.
-     *  If a class has two properties and/or fields of the form "X" and
-     *  "IsX", where "X" is any name, or has multiple properties and/or
-     * fields with the same name, those properties and fields are
-     * ignored.</li> <li>(*) In the Java version, eligible getters are
-     *  public, nonstatic methods starting with "get" or "is" (either word
-     * followed by a character other than a basic digit or lower-case
-     *  letter, that is, other than "a" to "z" or "0" to "9"), that take no
-     * parameters and do not return void, except that methods named
-     *  "getClass" are not eligible getters. In addition, public, nonstatic,
-     * nonfinal fields are also eligible getters. If a class has two
-     *  otherwise eligible getters (methods and/or fields) of the form "isX"
-     *  and "getX", where "X" is the same in both, or two such getters with
-     * the same name but different return type, they are not eligible
+     * getters also include public, nonstatic, non- <code>static final</code> , non-
+     * <code>readonly</code> fields. If a class has two properties and/or fields
+     *  of the form "X" and "IsX", where "X" is any name, or has multiple
+     * properties and/or fields with the same name, those properties and
+     * fields are ignored.</li> <li>(*) In the Java version, eligible
+     *  getters are public, nonstatic methods starting with "get" or "is"
+     * (either word followed by a character other than a basic digit or
+     *  lower-case letter, that is, other than "a" to "z" or "0" to "9"),
+     * that take no parameters and do not return void, except that methods
+     *  named "getClass" are not eligible getters. In addition, public,
+     * nonstatic, nonfinal fields are also eligible getters. If a class has
+     * two otherwise eligible getters (methods and/or fields) of the form
+     *  "isX" and "getX", where "X" is the same in both, or two such getters
+     * with the same name but different return type, they are not eligible
      * getters.</li> <li>Then, the method returns a CBOR map with each
      * eligible getter's name or property name as each key, and with the
      * corresponding value returned by that getter as that key's value.

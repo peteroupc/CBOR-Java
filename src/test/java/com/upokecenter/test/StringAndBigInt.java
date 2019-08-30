@@ -22,11 +22,13 @@ import com.upokecenter.numbers.*;
       }
 
     public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
-       return Generate(rand, radix, 50);
+      return Generate(rand, radix, 50);
     }
 
-    public static StringAndBigInt Generate(RandomGenerator rand, int radix,
-  int maxNumDigits) {
+    public static StringAndBigInt Generate(
+      RandomGenerator rand,
+      int radix,
+      int maxNumDigits) {
       if (radix < 2) {
         throw new IllegalArgumentException("radix (" + radix +
           ") is less than 2");
