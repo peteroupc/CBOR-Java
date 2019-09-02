@@ -216,7 +216,8 @@ private DataUtilities() {
         }
       }
       try {
-        java.io.ByteArrayOutputStream ms = null;
+        {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -230,6 +231,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
       } catch (IOException ex) {
         throw new IllegalArgumentException("I/O error occurred", ex);

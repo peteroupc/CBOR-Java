@@ -774,7 +774,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
             Assert.assertEquals(expectedString, builder.toString());
           }
           ms.reset();
-          builder.delete(0, (0)+(builder.length()));
+          builder.delete(0, builder.length());
           ret = DataUtilities.ReadUtf8(ms, length, builder, false);
           Assert.assertEquals(noReplaceRet, ret);
           if (noReplaceRet == 0) {
@@ -791,7 +791,7 @@ try { if (ms != null) {
           throw new NullPointerException("bytes");
         }
         if (bytes.length >= length) {
-          builder.delete(0, (0)+(builder.length()));
+          builder.delete(0, builder.length());
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -802,7 +802,7 @@ try { if (ms != null) {
           if (expectedRet == 0) {
             Assert.assertEquals(expectedString, builder.toString());
           }
-          builder.delete(0, (0)+(builder.length()));
+          builder.delete(0, builder.length());
           ret = DataUtilities.ReadUtf8FromBytes(
             bytes,
             0,
@@ -1273,7 +1273,8 @@ try { if (ms2 != null) {
           throw new IllegalStateException("", ex);
         }
         {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1436,10 +1437,12 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
         }
         {
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1453,9 +1456,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1469,9 +1474,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1485,9 +1492,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1501,9 +1510,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1517,9 +1528,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1533,9 +1546,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1549,9 +1564,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1565,9 +1582,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
           }
           {
-            java.io.ByteArrayOutputStream ms = null;
+            {
+              java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -1580,6 +1599,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
           }
         }

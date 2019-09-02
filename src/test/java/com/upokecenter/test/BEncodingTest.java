@@ -30,7 +30,8 @@ try { if (s != null) {
 
     private static byte[] EncodingToBytes(CBORObject b) {
       try {
-        java.io.ByteArrayOutputStream ms = null;
+        {
+          java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -41,6 +42,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
       } catch (IOException ex) {
         throw new CBORException("", ex);

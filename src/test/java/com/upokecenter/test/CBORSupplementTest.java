@@ -366,7 +366,8 @@ import com.upokecenter.numbers.*;
       cbor.Add(cbor);
       cbor.get(0).Add(cbor);
       try {
-        java.io.ByteArrayOutputStream memoryStream = null;
+        {
+          java.io.ByteArrayOutputStream memoryStream = null;
 try {
 memoryStream = new java.io.ByteArrayOutputStream();
 
@@ -376,6 +377,7 @@ finally {
 try { if (memoryStream != null) {
  memoryStream.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
@@ -390,7 +392,8 @@ try { if (memoryStream != null) {
     public void TestNestingDepth() {
       try {
         {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -419,9 +422,11 @@ try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+}
         }
         {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
@@ -445,6 +450,7 @@ finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
+}
 }
         }
       } catch (Exception ex) {

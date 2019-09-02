@@ -30,7 +30,7 @@ import com.upokecenter.numbers.*;
     private String NextJSONString() {
       int c;
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb.delete(0, (0)+(this.sb.length()));
+      this.sb.delete(0, this.sb.length());
       while (true) {
         c = this.reader.ReadChar();
         if (c == -1 || c < 0x20) {
@@ -498,7 +498,7 @@ import com.upokecenter.numbers.*;
                   first = false;
                   sb.WriteString(str, 0, i);
                 }
-                // Replace unpaired surrogate with U + FFFD
+                // Replace unpaired surrogate with U+FFFD
                 c = (char)0xfffd;
               } else {
                 throw new CBORException("Unpaired surrogate in String");
