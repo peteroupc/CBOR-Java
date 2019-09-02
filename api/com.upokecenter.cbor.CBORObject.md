@@ -2541,8 +2541,9 @@ Converts an arbitrary object to a string in JavaScript object Notation
  to a data stream in UTF-8. If the object is convertible to a CBOR
  map, or to a CBOR object that contains CBOR maps, the keys to those
  maps are written out to the JSON string in an undefined order. The
- example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(&#10; PeterO.Cbor.JSONOptions)'/> can be used to write out certain keys of
- a CBOR map in a given order to a JSON string.
+ example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ can be used to write out certain keys of a CBOR map in a given order
+ to a JSON string.
 
 **Parameters:**
 
@@ -3668,8 +3669,9 @@ Converts this object to a string in JavaScript object Notation (JSON)
   example, <code>22("Test")</code> is converted to <code>"Test"</code> and
   <code>true</code> is converted to <code>"true"</code>). If, after such
  conversion, two or more map keys are identical, this method throws a
- CBORException. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(&#10; PeterO.Cbor.JSONOptions)'/> can be used to write out certain keys of
- a CBOR map in a given order to a JSON string.</p>
+ CBORException. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ can be used to write out certain keys of a CBOR map in a given order
+ to a JSON string.</p>
 
 **Returns:**
 
@@ -3751,7 +3753,8 @@ Returns this CBOR object in string form. The format is intended to be
  human-readable, not machine-readable, the format is not intended to
  be parsed, and the format may change at any time. The returned
  string is not necessarily in JavaScript object Notation (JSON); to
- convert CBOR objects to JSON strings, use the <see cref='PeterO.Cbor.CBORObject.ToJSONString(&#10; PeterO.Cbor.JSONOptions)'/> method instead.
+ convert CBOR objects to JSON strings, use the <see cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ method instead.
 
 **Overrides:**
 
@@ -3789,8 +3792,9 @@ Converts this object to a string in JavaScript object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8. If the CBOR object contains CBOR maps, or is a
  CBOR map, the keys to the map are written out to the JSON string in
- an undefined order. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(&#10; PeterO.Cbor.JSONOptions)'/> can be used to write out certain keys of
- a CBOR map in a given order to a JSON string.
+ an undefined order. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ can be used to write out certain keys of a CBOR map in a given order
+ to a JSON string.
 
 **Parameters:**
 
@@ -3809,8 +3813,9 @@ Converts this object to a string in JavaScript object Notation (JSON)
  data stream in UTF-8, using the given JSON options to control the
  encoding process. If the CBOR object contains CBOR maps, or is a
  CBOR map, the keys to the map are written out to the JSON string in
- an undefined order. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(&#10; PeterO.Cbor.JSONOptions)'/> can be used to write out certain keys of
- a CBOR map in a given order to a JSON string.
+ an undefined order. The example code given in <see cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+ can be used to write out certain keys of a CBOR map in a given order
+ to a JSON string.
 
 **Parameters:**
 
