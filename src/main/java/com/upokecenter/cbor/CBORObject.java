@@ -2889,9 +2889,8 @@ public static void Write(
      * to a data stream in UTF-8. If the object is convertible to a CBOR
      * map, or to a CBOR object that contains CBOR maps, the keys to those
      * maps are written out to the JSON string in an undefined order. The
-     * example code given in <see
-     *
-       cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+     * example code given in
+     * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.
      * @param obj The parameter {@code obj} is an arbitrary object. Can be null.
@@ -4505,9 +4504,8 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      *  example, <code>22("Test")</code> is converted to <code>"Test"</code> and
      *  <code>true</code> is converted to <code>"true"</code>). If, after such
      * conversion, two or more map keys are identical, this method throws a
-     * CBORException. The example code given in <see
-     *
-       cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+     * CBORException. The example code given in
+     * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.</p>
      * @return A text string.
@@ -4609,9 +4607,8 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      * human-readable, not machine-readable, the format is not intended to
      * be parsed, and the format may change at any time. The returned
      * string is not necessarily in JavaScript object Notation (JSON); to
-     * convert CBOR objects to JSON strings, use the <see
-     *
-       cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+     * convert CBOR objects to JSON strings, use the
+     * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * method instead.
      * @return A text representation of this object.
      */
@@ -4790,9 +4787,8 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      * format, as in the ToJSONString method, and writes that string to a
      * data stream in UTF-8. If the CBOR object contains CBOR maps, or is a
      * CBOR map, the keys to the map are written out to the JSON string in
-     * an undefined order. The example code given in <see
-     *
-       cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+     * an undefined order. The example code given in
+     * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.
      * @param outputStream A writable data stream.
@@ -4815,9 +4811,8 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      * data stream in UTF-8, using the given JSON options to control the
      * encoding process. If the CBOR object contains CBOR maps, or is a
      * CBOR map, the keys to the map are written out to the JSON string in
-     * an undefined order. The example code given in <see
-     *
-       cref='PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)'/>
+     * an undefined order. The example code given in
+     * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * can be used to write out certain keys of a CBOR map in a given order
      * to a JSON string.
      * @param outputStream A writable data stream.
