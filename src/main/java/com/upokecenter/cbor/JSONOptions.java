@@ -65,7 +65,9 @@ import java.util.*;
      * false. For example, {@code base64padding = Yes} and {@code
      * base64padding = 1} both set the {@code Base64Padding} property to
      * true.
-     * @throws NullPointerException The parameter {@code paramString} is null.
+     * @throws NullPointerException The parameter {@code paramString} is null. In
+     * the future, this class may allow other keys to store other kinds of
+     * values, not just true or false.
      */
     public JSONOptions(String paramString) {
       if (paramString == null) {

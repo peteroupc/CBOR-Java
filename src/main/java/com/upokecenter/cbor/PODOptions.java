@@ -46,6 +46,8 @@ package com.upokecenter.cbor;
      * combination of case), which means true, and any other value meaning
      * false. For example, {@code usecamelcase = Yes} and {@code
      * usecamelcase = 1} both set the {@code UseCamelCase} property to true.
+     * In the future, this class may allow other keys to store other kinds
+     * of values, not just true or false.
      * @throws NullPointerException The parameter {@code paramString} is null.
      */
     public PODOptions(String paramString) {

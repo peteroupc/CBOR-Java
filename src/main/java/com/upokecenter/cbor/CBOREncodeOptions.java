@@ -89,7 +89,8 @@ package com.upokecenter.cbor;
      * case), which means true, and any other value meaning false. For
      * example, {@code allowduplicatekeys = Yes} and {@code
      * allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
-     * property to true.
+     * property to true. In the future, this class may allow other keys to
+     * store other kinds of values, not just true or false.
      * @throws NullPointerException The parameter {@code paramString} is null.
      */
     public CBOREncodeOptions(String paramString) {
