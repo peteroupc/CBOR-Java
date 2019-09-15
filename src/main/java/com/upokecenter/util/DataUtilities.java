@@ -410,7 +410,8 @@ try { if (ms != null) {
 
     /**
      * Returns a string with the basic upper-case letters A to Z (U+0041 to U+005A)
-     * converted to lower-case. Other characters remain unchanged.
+     * converted to the corresponding basic lower-case letters. Other
+     * characters remain unchanged.
      * @param str The parameter {@code str} is a text string.
      * @return The converted string, or null if {@code str} is null.
      */
@@ -445,7 +446,8 @@ try { if (ms != null) {
 
     /**
      * Returns a string with the basic lower-case letters A to Z (U+0061 to U+007A)
-     * converted to upper-case. Other characters remain unchanged.
+     * converted to the corresponding basic upper-case letters. Other
+     * characters remain unchanged.
      * @param str The parameter {@code str} is a text string.
      * @return The converted string, or null if {@code str} is null.
      */

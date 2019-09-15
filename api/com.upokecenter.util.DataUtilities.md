@@ -81,10 +81,10 @@ Contains methods useful for reading and writing text strings. It is designed
  Reads a string in UTF-8 encoding from a data stream and returns that string.
 * `static java.lang.String ToLowerCaseAscii​(java.lang.String str)`<br>
  Returns a string with the basic upper-case letters A to Z (U+0041 to U+005A)
- converted to lower-case.
+ converted to the corresponding basic lower-case letters.
 * `static java.lang.String ToUpperCaseAscii​(java.lang.String str)`<br>
  Returns a string with the basic lower-case letters A to Z (U+0061 to U+007A)
- converted to upper-case.
+ converted to the corresponding basic upper-case letters.
 * `static int WriteUtf8​(java.lang.String str,
          int offset,
          int length,
@@ -371,7 +371,8 @@ Gets the Unicode code point at the given index of the string.<p> </p><p>The
 ### ToLowerCaseAscii
     public static java.lang.String ToLowerCaseAscii​(java.lang.String str)
 Returns a string with the basic upper-case letters A to Z (U+0041 to U+005A)
- converted to lower-case. Other characters remain unchanged.
+ converted to the corresponding basic lower-case letters. Other
+ characters remain unchanged.
 
 **Parameters:**
 
@@ -384,7 +385,8 @@ Returns a string with the basic upper-case letters A to Z (U+0041 to U+005A)
 ### ToUpperCaseAscii
     public static java.lang.String ToUpperCaseAscii​(java.lang.String str)
 Returns a string with the basic lower-case letters A to Z (U+0061 to U+007A)
- converted to upper-case. Other characters remain unchanged.
+ converted to the corresponding basic upper-case letters. Other
+ characters remain unchanged.
 
 **Parameters:**
 
