@@ -3677,7 +3677,16 @@ Converts this object to a string in JavaScript object Notation (JSON)
  CBORException. The example code given in
  <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
  can be used to write out certain keys of a CBOR map in a given order
- to a JSON string.</p>
+ to a JSON string.</p> <p><b>Warning:</b> In general, if this CBOR
+ object contains integer map keys or uses other features not
+ supported in JSON, and the application converts this CBOR object to
+ JSON and back to CBOR, the application <i>should not</i> expect the
+ new CBOR object to be exactly the same as the original. This is
+ because the conversion in many cases may have to convert unsupported
+ features in JSON to supported features which correspond to a
+ different feature in CBOR (such as converting integer map keys,
+ which are supported in CBOR but not JSON, to text strings, which are
+ supported in both).</p>
 
 **Returns:**
 
@@ -3858,12 +3867,13 @@ Generates a CBOR object from a floating-point number represented by its
 
 * <code>byteCount</code> - The number of bytes of the stored floating-point number;
   this also specifies the format of the "floatingBits" parameter. This
-  value can be 2 if "floatingBits"'s lower 16 bits identify the
- floating-point number in IEEE 754r binary16 format; or 4 if
-  "floatingBits"'s lower 32 bits identify the floating-point number in
-  IEEE 754r binary32 format; or 8 if "floatingBits" identifies the
- floating point number in IEEE 754r binary64 format. Any other values
- for this parameter are invalid.
+  value can be 2 if "floatingBits"'s lowest (least significant) 16
+ bits identify the floating-point number in IEEE 754r binary16
+  format; or 4 if "floatingBits"'s lowest (least significant) 32 bits
+ identify the floating-point number in IEEE 754r binary32 format; or
+  8 if "floatingBits" identifies the floating point number in IEEE
+ 754r binary64 format. Any other values for this parameter are
+ invalid.
 
 **Returns:**
 
@@ -3886,12 +3896,13 @@ Writes the bits of a floating-point number in CBOR format to a data stream.
 
 * <code>byteCount</code> - The number of bytes of the stored floating-point number;
   this also specifies the format of the "floatingBits" parameter. This
-  value can be 2 if "floatingBits"'s lower 16 bits identify the
- floating-point number in IEEE 754r binary16 format; or 4 if
-  "floatingBits"'s lower 32 bits identify the floating-point number in
-  IEEE 754r binary32 format; or 8 if "floatingBits" identifies the
- floating point number in IEEE 754r binary64 format. Any other values
- for this parameter are invalid.
+  value can be 2 if "floatingBits"'s lowest (least significant) 16
+ bits identify the floating-point number in IEEE 754r binary16
+  format; or 4 if "floatingBits"'s lowest (least significant) 32 bits
+ identify the floating-point number in IEEE 754r binary32 format; or
+  8 if "floatingBits" identifies the floating point number in IEEE
+ 754r binary64 format. Any other values for this parameter are
+ invalid.
 
 **Returns:**
 
