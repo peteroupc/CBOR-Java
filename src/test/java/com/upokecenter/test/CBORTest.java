@@ -579,8 +579,11 @@ import com.upokecenter.numbers.*;
         (byte)0xc5, (byte)0x82,
         0x18, 0x2f, 0x32,
        }); // -2674012278751232
-      Assert.assertEquals(52,
-        cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked());
+      {
+        long numberTemp =
+cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked();
+Assert.assertEquals(52, numberTemp);
+}
       if (!(cbor.CanFitInInt64())) {
  Assert.fail();
  }
@@ -1507,6 +1510,35 @@ try { if (ms2b != null) {
         }
       }
     }
+
+@Test(timeout = 1000)
+public void TestNoRecursiveExpansion() {
+CBORObject root = CBORObject.NewArray();
+CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
+arr.Add("zzz")
+   .Add("wwww").Add("iiiiiii").Add("aaa").Add("bbb").Add("ccc");
+arr = CBORObject.FromObjectAndTag(arr, 28);
+root.Add(arr);
+CBORObject refobj;
+for (int i = 0; i <= 8; ++i) {
+ refobj = CBORObject.FromObjectAndTag(i, 29);
+ arr = CBORObject.FromObject(new CBORObject[] {
+   refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
+ });
+ arr = CBORObject.FromObjectAndTag(arr, 28);
+ root.Add(arr);
+}
+byte[] bytes = root.EncodeToBytes();
+CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
+root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+System.out.println(root.toString());
+System.out.println(root.EncodeToBytes().length);
+encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+if (root == null) {
+  Assert.fail();
+}
+}
 
     @Test
     public void TestSharedRefValidInteger() {
@@ -3109,7 +3141,8 @@ try { if (ms != null) {
         (byte)0x81,
         (byte)0x82,
         (byte)0xda, 0x00, 0x0d, 0x77, 0x09,
-        (byte)0xf4, (byte)0x82, (byte)0x82, (byte)0xf4, (byte)0xa0, (byte)0xf6,
+        (byte)0xf4, (byte)0x82, (byte)0x82, (byte)0xf4, (byte)0xa0,
+        (byte)0xf6,
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");

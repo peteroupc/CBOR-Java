@@ -13,6 +13,8 @@ import java.io.*;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+// TODO: Add method that finds estimated byte size of CBOR objects
+
     /**
      * <p>Represents an object in Concise Binary Object Representation (CBOR) and
      * contains methods for reading and writing CBOR data. CBOR is defined
