@@ -582,8 +582,8 @@ import com.upokecenter.numbers.*;
       {
         long numberTemp =
 cbor.AsEInteger().GetSignedBitLengthAsEInteger().ToInt32Checked();
-Assert.assertEquals(52, numberTemp);
-}
+        Assert.assertEquals(52, numberTemp);
+      }
       if (!(cbor.CanFitInInt64())) {
  Assert.fail();
  }
@@ -1511,80 +1511,80 @@ try { if (ms2b != null) {
       }
     }
 
-public static CBORObject ReferenceTestObject() {
-CBORObject root = CBORObject.NewArray();
-CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
-arr.Add("zzz")
-   .Add("wwww").Add("iiiiiii").Add("aaa").Add("bbb").Add("ccc");
-arr = CBORObject.FromObjectAndTag(arr, 28);
-root.Add(arr);
-CBORObject refobj;
-for (int i = 0; i <= 50; ++i) {
- refobj = CBORObject.FromObjectAndTag(i, 29);
- arr = CBORObject.FromObject(new CBORObject[] {
-   refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
- });
- arr = CBORObject.FromObjectAndTag(arr, 28);
- root.Add(arr);
-}
-return root;
-}
+    public static CBORObject ReferenceTestObject() {
+      CBORObject root = CBORObject.NewArray();
+      CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
+      arr.Add("zzz")
+         .Add("wwww").Add("iiiiiii").Add("aaa").Add("bbb").Add("ccc");
+      arr = CBORObject.FromObjectAndTag(arr, 28);
+      root.Add(arr);
+      CBORObject refobj;
+      for (int i = 0; i <= 50; ++i) {
+        refobj = CBORObject.FromObjectAndTag(i, 29);
+        arr = CBORObject.FromObject(new CBORObject[] {
+          refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
+        });
+        arr = CBORObject.FromObjectAndTag(arr, 28);
+        root.Add(arr);
+      }
+      return root;
+    }
 
-@Test(timeout = 2000)
-public void TestNoRecursiveExpansion() {
-CBORObject root = ReferenceTestObject();
-byte[] bytes = root.EncodeToBytes();
-CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
-root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
-System.out.println(root.toString());
-System.out.println(root.EncodeToBytes().length);
-encodeOptions = new CBOREncodeOptions("resolvereferences=true");
-root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
-if (root == null) {
-  Assert.fail();
-}
-// Test a mitigation for wild recursive-reference expansions
-root = CBORTest.ReferenceTestObject();
-CBORObject origroot = root;
-encodeOptions = new CBOREncodeOptions("resolvereferences=true");
-root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
-if (root == null) {
-  Assert.fail();
-}
-try {
-using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
- root.WriteTo(lms);
- Assert.fail("Should have failed");
-}
-} catch (UnsupportedOperationException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-try {
-using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
- root.WriteJSONTo(lms);
- Assert.fail("Should have failed");
-}
-} catch (UnsupportedOperationException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
-try {
-using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
-  origroot.WriteTo(lms);
-}
-using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
-  origroot.WriteJSONTo(lms);
-}
-} catch (Exception ex) {
-Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
-}
+    @Test(timeout = 2000)
+    public void TestNoRecursiveExpansion() {
+      CBORObject root = ReferenceTestObject();
+      byte[] bytes = root.EncodeToBytes();
+      CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      System.out.println(root.toString());
+      System.out.println(root.EncodeToBytes().length);
+      encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      if (root == null) {
+        Assert.fail();
+      }
+      // Test a mitigation for wild recursive-reference expansions
+      root = CBORTest.ReferenceTestObject();
+      CBORObject origroot = root;
+      encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      if (root == null) {
+        Assert.fail();
+      }
+      try {
+        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+          root.WriteTo(lms);
+          Assert.fail("Should have failed");
+        }
+      } catch (UnsupportedOperationException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+          root.WriteJSONTo(lms);
+          Assert.fail("Should have failed");
+        }
+      } catch (UnsupportedOperationException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+          origroot.WriteTo(lms);
+        }
+        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+          origroot.WriteJSONTo(lms);
+        }
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
     @Test
     public void TestSharedRefValidInteger() {
