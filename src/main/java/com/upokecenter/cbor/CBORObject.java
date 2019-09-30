@@ -4813,7 +4813,43 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      * an undefined order. The example code given in
      * <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
      * can be used to write out certain keys of a CBOR map in a given order
-     * to a JSON string.
+     * to a JSON string.<p> <p>The following example (written in C# for
+     * the.NET version) shows how to use the <code>LimitedMemoryStream</code>
+     * class (implemented in <i>LimitedMemoryStream.cs</i> in the
+     * peteroupc/CBOR open-source repository) to limit the size of
+     * supported JSON serializations of CBOR objects.</p> <pre> // maximum
+     * supported JSON size in bytes int maxSize = 20000; using
+     * (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) {
+     * cborObject.WriteJSONTo(ms); var bytes = ms.toByteArray(); } </pre>
+     * <p>The following example (written in Java for the Java version)
+     * shows how to use a subclassed <code>OutputStream</code> together with a
+     * <code>ByteArrayOutputStream</code> to limit the size of supported JSON
+     * serializations of CBOR objects.</p> <pre> // maximum supported JSON
+     * size in bytes final int maxSize = 20000; ByteArrayOutputStream ba =
+     * new ByteArrayOutputStream(); // throws UnsupportedOperationException
+     * if too big cborObject.WriteJSONTo(new FilterOutputStream(ba) {
+     * private int size = 0; public void write(byte[] b, int off, int len)
+     * throws IOException { if (len>(maxSize-size)) { throw new
+     * UnsupportedOperationException(); } size+=len; out.write(b, off,
+     * len); } public void write(byte b) { if (size >=
+     * maxSize) { throw new UnsupportedOperationException(); } size++;
+     * out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
+     * following example (written in C# for the.NET version) shows how to
+     * use a.NET MemoryStream to limit the size of supported JSON
+     * serializations of CBOR objects. The disadvantage is that the extra
+     * memory needed to do so can be wasteful, especially if the average
+     * serialized object is much smaller than the maximum size given (for
+     * example, if the maximum size is 20000 bytes, but the average
+     * serialized object has a size of 50 bytes).</p> <pre> byte[] backing
+     * = new byte[20000]; // maximum supported JSON size in bytes byte[]
+     * bytes1, bytes2; using (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing))
+     * { // throws UnsupportedOperationException if too big
+     * cborObject.WriteJSONTo(ms); bytes1 = new byte[ms.getPosition()]; // Copy
+     * serialized data if successful System.ArrayCopy(backing, 0, bytes1,
+     * 0, (int)ms.getPosition()); // Reset memory stream ms.setPosition(0);
+     * cborObject2.WriteJSONTo(ms); bytes2 = new byte[ms.getPosition()]; // Copy
+     * serialized data if successful System.ArrayCopy(backing, 0, bytes2,
+     * 0, (int)ms.getPosition()); } </pre> </p>
      * @param outputStream A writable data stream.
      * @throws java.io.IOException An I/O error occurred.
      * @throws NullPointerException The parameter {@code outputStream} is null.
@@ -5311,7 +5347,42 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      *  {throw new NullPointerException("outputStream");}
      * outputStream.write((byte)0x9f); for (object item in list) { new
      * CBORObject(item).WriteTo(outputStream); }
-     * outputStream.write((byte)0xff); }</pre> . </p>
+     * outputStream.write((byte)0xff); }</pre> <p>The following
+     * example (written in C# for the.NET version) shows how to use the
+     * <code>LimitedMemoryStream</code> class (implemented in
+     * <i>LimitedMemoryStream.cs</i> in the peteroupc/CBOR open-source
+     * repository) to limit the size of supported CBOR serializations.</p>
+     * <pre> // maximum supported CBOR size in bytes int maxSize = 20000;
+     * using (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) {
+     * cborObject.WriteTo(ms); var bytes = ms.toByteArray(); } </pre> <p>The
+     * following example (written in Java for the Java version) shows how
+     * to use a subclassed <code>OutputStream</code> together with a
+     * <code>ByteArrayOutputStream</code> to limit the size of supported CBOR
+     * serializations.</p> <pre> // maximum supported CBOR size in bytes
+     * final int maxSize = 20000; ByteArrayOutputStream ba = new
+     * ByteArrayOutputStream(); // throws UnsupportedOperationException if
+     * too big cborObject.WriteTo(new FilterOutputStream(ba) { private int
+     * size = 0; public void write(byte[] b, int off, int len) throws
+     * IOException { if (len>(maxSize-size)) { throw new
+     * UnsupportedOperationException(); } size+=len; out.write(b, off,
+     * len); } public void write(byte b) { if (size >=
+     * maxSize) { throw new UnsupportedOperationException(); } size++;
+     * out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
+     * following example (written in C# for the.NET version) shows how to
+     * use a.NET MemoryStream to limit the size of supported CBOR
+     * serializations. The disadvantage is that the extra memory needed to
+     * do so can be wasteful, especially if the average serialized object
+     * is much smaller than the maximum size given (for example, if the
+     * maximum size is 20000 bytes, but the average serialized object has a
+     * size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; // * maximum supported CBOR size in bytes byte[] bytes1, bytes2; using
+     * (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing)) { // throws
+     * UnsupportedOperationException if too big cborObject.WriteTo(ms); bytes1 =
+     * new byte[ms.getPosition()]; // Copy serialized data if successful
+     * System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition()); // Reset
+     * memory stream ms.setPosition(0); cborObject2.WriteTo(ms); bytes2 = new
+     * byte[ms.getPosition()]; // Copy serialized data if successful
+     * System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.getPosition()); } </pre>
+     * </p>
      * @param stream A writable data stream.
      * @throws NullPointerException The parameter {@code stream} is null.
      * @throws java.io.IOException An I/O error occurred.
