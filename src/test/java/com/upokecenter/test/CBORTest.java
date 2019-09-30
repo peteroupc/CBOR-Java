@@ -1530,7 +1530,7 @@ for (int i = 0; i <= 50; ++i) {
 return root;
 }
 
-@Test(timeout = 1000)
+@Test(timeout = 2000)
 public void TestNoRecursiveExpansion() {
 CBORObject root = ReferenceTestObject();
 byte[] bytes = root.EncodeToBytes();
@@ -1542,6 +1542,47 @@ encodeOptions = new CBOREncodeOptions("resolvereferences=true");
 root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
 if (root == null) {
   Assert.fail();
+}
+// Test a mitigation for wild recursive-reference expansions
+root = CBORTest.ReferenceTestObject();
+CBORObject origroot = root;
+encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+if (root == null) {
+  Assert.fail();
+}
+try {
+using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+ root.WriteTo(lms);
+ Assert.fail("Should have failed");
+}
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+try {
+using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+ root.WriteJSONTo(lms);
+ Assert.fail("Should have failed");
+}
+} catch (UnsupportedOperationException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+try {
+using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+  origroot.WriteTo(lms);
+}
+using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+  origroot.WriteJSONTo(lms);
+}
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
 }
 }
 
