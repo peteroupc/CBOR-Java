@@ -21,15 +21,13 @@ public final class LimitedMemoryStream extends OutputStream {
   }
   public void write(int b) throws IOException {
     if(pos>=maxSize)throw new UnsupportedOperationException();
-    ms.write(b);
-    pos++;
+    pos++; ms.write(b);
   }
   public void write(byte[] bytes) throws IOException {
     write(bytes, 0, bytes.length);
   }
   public void write(byte[] bytes, int offset, int length) throws IOException {
     if((long)pos + length > maxSize)throw new UnsupportedOperationException();
-    ms.write(bytes, offset, length);
-    pos+=length;
+    pos+=length; ms.write(bytes, offset, length);
   }
 }

@@ -1526,7 +1526,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       return root;
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 5000)
     public void TestNoRecursiveExpansion() {
       CBORObject root = ReferenceTestObject();
       byte[] bytes = root.EncodeToBytes();
