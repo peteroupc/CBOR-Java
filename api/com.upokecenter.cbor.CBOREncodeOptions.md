@@ -194,4 +194,5 @@ Gets a value indicating whether CBOR objects: <ul> <li>When encoding, are
 **Returns:**
 
 * <code>true</code> if CBOR objects are written out using the CTAP2
- canonical CBOR encoding form; otherwise, <code>false</code>.
+ canonical CBOR encoding form; otherwise, <code>false</code>. The default
+ is <code>false</code>.

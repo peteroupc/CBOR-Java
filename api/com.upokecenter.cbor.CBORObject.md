@@ -2963,9 +2963,10 @@ Converts this object to a 32-bit signed integer. Non-integer number values
  a way to check whether a given CBOR object stores a 32-bit signed
  integer before getting its value.</p> <pre>CBORObject obj =
  CBORObject.FromInt32(99999); if (obj.isIntegral() &amp;&amp;
- obj.CanTruncatedIntFitInInt32()) { // Not an Int32; handle the error
-  System.out.println("Not a 32-bit integer."); } else {
-  System.out.println("The value is " + obj.AsInt32()); }</pre> .
+ obj.CanTruncatedIntFitInInt32()) { /* Not an Int32;
+  handle*/ the error System.out.println("Not a 32-bit
+  integer."); } else { System.out.println("The value is " +
+ obj.AsInt32()); }</pre> .
 
 **Returns:**
 
@@ -2990,9 +2991,10 @@ Converts this object to a 64-bit signed integer. Non-integer numbers are
  a way to check whether a given CBOR object stores a 64-bit signed
  integer before getting its value.</p> <pre>CBORObject obj =
  CBORObject.FromInt64(99999); if (obj.isIntegral() &amp;&amp;
- obj.CanTruncatedIntFitInInt64()) { // Not an Int64; handle the error
-  System.out.println("Not a 64-bit integer."); } else {
-  System.out.println("The value is " + obj.AsInt64()); }</pre> .
+ obj.CanTruncatedIntFitInInt64()) { /* Not an Int64;
+  handle*/ the error System.out.println("Not a 64-bit
+  integer."); } else { System.out.println("The value is " +
+ obj.AsInt64()); }</pre> .
 
 **Returns:**
 
@@ -3823,19 +3825,21 @@ Converts this object to a string in JavaScript object Notation (JSON)
  the.NET version) shows how to use the <code>LimitedMemoryStream</code>
  class (implemented in <i>LimitedMemoryStream.cs</i> in the
  peteroupc/CBOR open-source repository) to limit the size of
- supported JSON serializations of CBOR objects.</p> <pre> // maximum
- supported JSON size in bytes int maxSize = 20000; using
- (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) {
- cborObject.WriteJSONTo(ms); var bytes = ms.toByteArray(); } </pre>
- <p>The following example (written in Java for the Java version)
- shows how to use a subclassed <code>OutputStream</code> together with a
- <code>ByteArrayOutputStream</code> to limit the size of supported JSON
- serializations of CBOR objects.</p> <pre> // maximum supported JSON
- size in bytes final int maxSize = 20000; ByteArrayOutputStream ba =
- new ByteArrayOutputStream(); // throws UnsupportedOperationException
- if too big cborObject.WriteJSONTo(new FilterOutputStream(ba) {
- private int size = 0; public void write(byte[] b, int off, int len)
- throws IOException { if (len&gt;(maxSize-size)) { throw new
+ supported JSON serializations of CBOR objects.</p> <pre>
+ /* maximum supported JSON size in bytes*/ int
+ maxSize = 20000; using (LimitedMemoryStream ms = new
+ LimitedMemoryStream(maxSize)) { cborObject.WriteJSONTo(ms); var
+ bytes = ms.toByteArray(); } </pre> <p>The following example (written in
+ Java for the Java version) shows how to use a subclassed
+ <code>OutputStream</code> together with a <code>ByteArrayOutputStream</code> to
+ limit the size of supported JSON serializations of CBOR objects.</p>
+ <pre> /* maximum supported JSON size in bytes*/
+ final int maxSize = 20000; ByteArrayOutputStream ba = new
+ ByteArrayOutputStream(); /* throws
+ UnsupportedOperationException if too big*/
+ cborObject.WriteJSONTo(new FilterOutputStream(ba) { private int size
+ = 0; public void write(byte[] b, int off, int len) throws
+ IOException { if (len&gt;(maxSize-size)) { throw new
  UnsupportedOperationException(); } size+=len; out.write(b, off,
  len); } public void write(byte b) { if (size &gt;=
  maxSize) { throw new UnsupportedOperationException(); } size++;
@@ -3847,15 +3851,17 @@ Converts this object to a string in JavaScript object Notation (JSON)
  serialized object is much smaller than the maximum size given (for
  example, if the maximum size is 20000 bytes, but the average
  serialized object has a size of 50 bytes).</p> <pre> byte[] backing
- = new byte[20000]; // maximum supported JSON size in bytes byte[]
- bytes1, bytes2; using (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing))
- { // throws UnsupportedOperationException if too big
- cborObject.WriteJSONTo(ms); bytes1 = new byte[ms.getPosition()]; // Copy
- serialized data if successful System.ArrayCopy(backing, 0, bytes1,
- 0, (int)ms.getPosition()); // Reset memory stream ms.setPosition(0);
- cborObject2.WriteJSONTo(ms); bytes2 = new byte[ms.getPosition()]; // Copy
- serialized data if successful System.ArrayCopy(backing, 0, bytes2,
- 0, (int)ms.getPosition()); } </pre>
+ = new byte[20000]; /* maximum supported JSON size in
+ bytes*/ byte[] bytes1, bytes2; using (MemoryStream ms =
+ new java.io.ByteArrayInputStream(backing)) { /* throws
+ UnsupportedOperationException if too big*/
+ cborObject.WriteJSONTo(ms); bytes1 = new byte[ms.getPosition()];
+ /* Copy serialized data if successful*/
+ System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition());
+ /* Reset memory stream*/ ms.setPosition(0);
+ cborObject2.WriteJSONTo(ms); bytes2 = new byte[ms.getPosition()];
+ /* Copy serialized data if successful*/
+ System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.getPosition()); } </pre>
 
 **Parameters:**
 
@@ -4063,20 +4069,22 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  encodes the given major type and value in the shortest form allowed
  for the major type.<p> </p><p>In the following example, an array of
  three objects is written as CBOR to a data stream.</p>
- <pre>CBORObject.WriteValue(stream, 4, 3); // array, length 3
-  CBORObject.Write("hello world", stream); // item 1
- CBORObject.Write(25, stream); /* item 2 */ CBORObject.Write(false,
- stream); // item 3</pre> <p>In the following example, a map
- consisting of two key-value pairs is written as CBOR to a data
- stream.</p> <pre>CBORObject.WriteValue(stream, 5, 2); // map, 2
-  pairs CBORObject.Write("number", stream); // key 1
-  CBORObject.Write(25, stream); // value 1 CBORObject.Write("string",
-  stream); // key 2 CBORObject.Write("hello", stream); // value
- 2</pre> <p>In the following example (originally written in C# for
- the.NET Framework version), a text string is written as CBOR to a
-  data stream.</p> <pre>string str = "hello world"; byte[] bytes =
- DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream,
- 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> .
+ <pre>CBORObject.WriteValue(stream, 4, 3); /* array,
+  length 3*/ CBORObject.Write("hello world", stream);
+ /* item 1 CBORObject.Write(25, */ stream); /*
+ item 2 */ CBORObject.Write(false, stream); /* item
+ 3*/</pre> <p>In the following example, a map consisting
+ of two key-value pairs is written as CBOR to a data stream.</p>
+ <pre>CBORObject.WriteValue(stream, 5, 2); /* map, 2
+  pairs*/ CBORObject.Write("number", stream); /*
+ key 1 CBORObject.Write(25, */ stream); /* value
+  1 CBORObject.Write("string", stream); /* key
+  2*/*/ CBORObject.Write("hello", stream);
+ /* value 2*/</pre> <p>In the following example
+ (originally written in C# for the.NET Framework version), a text
+ string is written as CBOR to a data stream.</p> <pre>string str =
+  "hello world"; byte[] bytes = DataUtilities.GetUtf8Bytes(str, true);
+ CBORObject.WriteValue(stream, 4, bytes.length); stream.write(bytes, * 0, bytes.length);</pre> .
 
 **Parameters:**
 
@@ -4201,18 +4209,20 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  <code>LimitedMemoryStream</code> class (implemented in
  <i>LimitedMemoryStream.cs</i> in the peteroupc/CBOR open-source
  repository) to limit the size of supported CBOR serializations.</p>
- <pre> // maximum supported CBOR size in bytes int maxSize = 20000;
- using (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) {
- cborObject.WriteTo(ms); var bytes = ms.toByteArray(); } </pre> <p>The
- following example (written in Java for the Java version) shows how
- to use a subclassed <code>OutputStream</code> together with a
- <code>ByteArrayOutputStream</code> to limit the size of supported CBOR
- serializations.</p> <pre> // maximum supported CBOR size in bytes
- final int maxSize = 20000; ByteArrayOutputStream ba = new
- ByteArrayOutputStream(); // throws UnsupportedOperationException if
- too big cborObject.WriteTo(new FilterOutputStream(ba) { private int
- size = 0; public void write(byte[] b, int off, int len) throws
- IOException { if (len&gt;(maxSize-size)) { throw new
+ <pre> /* maximum supported CBOR size in bytes*/
+ int maxSize = 20000; using (LimitedMemoryStream ms = new
+ LimitedMemoryStream(maxSize)) { cborObject.WriteTo(ms); var bytes =
+ ms.toByteArray(); } </pre> <p>The following example (written in Java
+ for the Java version) shows how to use a subclassed
+ <code>OutputStream</code> together with a <code>ByteArrayOutputStream</code> to
+ limit the size of supported CBOR serializations.</p> <pre>
+ /* maximum supported CBOR size in bytes*/ final
+ int maxSize = 20000; ByteArrayOutputStream ba = new
+ ByteArrayOutputStream(); /* throws
+ UnsupportedOperationException if too big*/
+ cborObject.WriteTo(new FilterOutputStream(ba) { private int size =
+ 0; public void write(byte[] b, int off, int len) throws IOException
+ { if (len&gt;(maxSize-size)) { throw new
  UnsupportedOperationException(); } size+=len; out.write(b, off,
  len); } public void write(byte b) { if (size &gt;=
  maxSize) { throw new UnsupportedOperationException(); } size++;
@@ -4223,13 +4233,16 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  do so can be wasteful, especially if the average serialized object
  is much smaller than the maximum size given (for example, if the
  maximum size is 20000 bytes, but the average serialized object has a
- size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; // * maximum supported CBOR size in bytes byte[] bytes1, bytes2; using
- (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing)) { // throws
- UnsupportedOperationException if too big cborObject.WriteTo(ms); bytes1 =
- new byte[ms.getPosition()]; // Copy serialized data if successful
- System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition()); // Reset
- memory stream ms.setPosition(0); cborObject2.WriteTo(ms); bytes2 = new
- byte[ms.getPosition()]; // Copy serialized data if successful
+ size of 50 bytes).</p> <pre> byte[] backing = new byte[20000];
+ /* maximum supported CBOR size in bytes*/ byte[]
+ bytes1, bytes2; using (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing))
+ { /* throws UnsupportedOperationException if too big*/
+ cborObject.WriteTo(ms); bytes1 = new byte[ms.getPosition()]; /*
+ Copy serialized data if successful*/
+ System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition());
+ /* Reset memory stream*/ ms.setPosition(0);
+ cborObject2.WriteTo(ms); bytes2 = new byte[ms.getPosition()];
+ /* Copy serialized data if successful*/
  System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.getPosition()); } </pre>
 
 **Parameters:**

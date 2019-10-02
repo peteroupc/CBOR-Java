@@ -6765,12 +6765,60 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
           "undefined",
           stringTemp);
       }
+      CBORObject cbor = CBORObject.True;
+      if (!("21").Equals(cbor.toString())) {
+ Assert.fail(("21")+" not equal to "+(cbor.toString()));
+}
+      if (!("simple(21)").Equals(cbor.toString())) {
+ Assert.fail(("simple(21)")+" not equal to "+(cbor.toString()));
+}
+      cbor = CBORObject.False;
+      if (!("20").Equals(cbor.toString())) {
+ Assert.fail(("20")+" not equal to "+(cbor.toString()));
+}
+      if (!("simple(20)").Equals(cbor.toString())) {
+ Assert.fail(("simple(20)")+" not equal to "+(cbor.toString()));
+}
+      cbor = CBORObject.Null;
+      if (!("22").Equals(cbor.toString())) {
+ Assert.fail(("22")+" not equal to "+(cbor.toString()));
+}
+      if (!("simple(22)").Equals(cbor.toString())) {
+ Assert.fail(("simple(22)")+" not equal to "+(cbor.toString()));
+}
+      cbor = CBORObject.Undefined;
+      if (!("23").Equals(cbor.toString())) {
+ Assert.fail(("23")+" not equal to "+(cbor.toString()));
+}
+      if (!("simple(23)").Equals(cbor.toString())) {
+ Assert.fail(("simple(23)")+" not equal to "+(cbor.toString()));
+}
       {
         String stringTemp = CBORObject.FromSimpleValue(50).toString();
         Assert.assertEquals(
         "simple(50)",
         stringTemp);
       }
+    }
+
+    @Test
+    public void TestSimpleValuesNotIntegers() {
+      CBORObject cbor = CBORObject.True;
+      if (!(CBORObject.FromObject(21)).Equals(cbor)) {
+ Assert.fail((CBORObject.FromObject(21))+" not equal to "+(cbor));
+}
+      cbor = CBORObject.False;
+      if (!(CBORObject.FromObject(20)).Equals(cbor)) {
+ Assert.fail((CBORObject.FromObject(20))+" not equal to "+(cbor));
+}
+      cbor = CBORObject.Null;
+      if (!(CBORObject.FromObject(22)).Equals(cbor)) {
+ Assert.fail((CBORObject.FromObject(22))+" not equal to "+(cbor));
+}
+      cbor = CBORObject.Undefined;
+      if (!(CBORObject.FromObject(23)).Equals(cbor)) {
+ Assert.fail((CBORObject.FromObject(23))+" not equal to "+(cbor));
+}
     }
 
     @Test
@@ -6783,7 +6831,34 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
 
     @Test
     public void TestType() {
-      // not implemented yet
+      CBORObject cbor = CBORObject.True;
+      Assert.assertEquals(
+        CBORType.Boolean,
+        cbor.getType());
+      cbor = CBORObject.FromObjectAndTag(CBORObject.True, 999);
+      Assert.assertEquals(
+        CBORType.Boolean,
+        cbor.getType());
+      cbor = CBORObject.False;
+      Assert.assertEquals(
+        CBORType.Boolean,
+        cbor.getType());
+      cbor = CBORObject.Null;
+      Assert.assertEquals(
+        CBORType.SimpleValue,
+        cbor.getType());
+      cbor = CBORObject.Null;
+      Assert.assertEquals(
+        CBORType.Undefined,
+        cbor.getType());
+      cbor = CBORObject.FromSimpleValue(99);
+      Assert.assertEquals(
+        CBORType.SimpleValue,
+        cbor.getType());
+      cbor = CBORObject.FromSimpleValue(21);
+      Assert.assertEquals(
+        CBORType.SimpleValue,
+        cbor.getType());
     }
     @Test
     public void TestUntag() {
@@ -7715,6 +7790,75 @@ try { if (ms != null) {
     @Test
     public void TestWriteJSON() {
       // not implemented yet
+      try {
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+          CBORObject.WriteJSON(CBORObject.True, ms);
+          byte[] bytes = ms.toByteArray();
+          String str = DataUtilities.GetUtf8String(bytes, false);
+          Assert.assertEquals("true", str);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+          CBORObject.True.WriteJSONTo(ms);
+          byte[] bytes = ms.toByteArray();
+          String str = DataUtilities.GetUtf8String(bytes, false);
+          Assert.assertEquals("true", str);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+          CBORObject.WriteJSON(CBORObject.False, ms);
+          byte[] bytes = ms.toByteArray();
+          String str = DataUtilities.GetUtf8String(bytes, false);
+          Assert.assertEquals("false", str);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+          CBORObject.False.WriteJSONTo(ms);
+          byte[] bytes = ms.toByteArray();
+          String str = DataUtilities.GetUtf8String(bytes, false);
+          Assert.assertEquals("false", str);
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
     }
     @Test
     public void TestWriteJSONTo() {

@@ -230,7 +230,8 @@ private final boolean propVarallowduplicatekeys;
      * maximum size for CBOR objects in that form according to the FIDO
      * Client-to-Authenticator Protocol 2 specification.
      * @return {@code true} if CBOR objects are written out using the CTAP2
-     * canonical CBOR encoding form; otherwise, {@code false}.
+     * canonical CBOR encoding form; otherwise, {@code false}. The default
+     * is {@code false}.
      */
     public final boolean getCtap2Canonical() { return propVarctap2canonical; }
 private final boolean propVarctap2canonical;
