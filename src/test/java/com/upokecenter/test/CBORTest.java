@@ -1254,9 +1254,7 @@ ms2a = new java.io.ByteArrayInputStream(new byte[] { });
         }
 }
 finally {
-try { if (ms2a != null) {
- ms2a.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2a != null) { ms2a.close(); } } catch (java.io.IOException ex) {}
 }
 }
       {
@@ -1275,9 +1273,7 @@ ms2b = new java.io.ByteArrayInputStream(new byte[] { 0x20 });
         }
 }
 finally {
-try { if (ms2b != null) {
- ms2b.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 }
 }
       try {
@@ -1552,10 +1548,18 @@ try { if (ms2b != null) {
         Assert.fail();
       }
       try {
-        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+        {
+          LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
           root.WriteTo(lms);
           Assert.fail("Should have failed");
-        }
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -1563,10 +1567,18 @@ try { if (ms2b != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+        {
+          LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
           root.WriteJSONTo(lms);
           Assert.fail("Should have failed");
-        }
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -1574,12 +1586,28 @@ try { if (ms2b != null) {
         throw new IllegalStateException("", ex);
       }
       try {
-        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+        {
+          LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
           origroot.WriteTo(lms);
-        }
-        using (LimitedMemoryStream lms = new LimitedMemoryStream(100000)) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
           origroot.WriteJSONTo(lms);
-        }
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1676,9 +1704,9 @@ ms = new java.io.ByteArrayInputStream(array);
 int startingAvailable = ms.available();
 
           int iobj = 0;
-          while (iobj < 25 && (startingAvailable-ms.available()) != startingAvailable) {
+          while (iobj < 25 && (startingAvailable - ms.available()) != startingAvailable) {
             ++iobj;
-            int objpos = (int)(startingAvailable-ms.available());
+            int objpos = (int)(startingAvailable - ms.available());
             try {
               CBORObject o = CBORObject.Read(ms);
               try {
@@ -1729,9 +1757,7 @@ int startingAvailable = ms.available();
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -1753,7 +1779,7 @@ try {
 inputStream = new java.io.ByteArrayInputStream(array);
 int startingAvailable = inputStream.available();
 
-        while ((startingAvailable-inputStream.available()) != startingAvailable) {
+        while ((startingAvailable - inputStream.available()) != startingAvailable) {
           try {
             CBORObject o;
             o = CBORObject.Read(inputStream);
@@ -1807,9 +1833,7 @@ int startingAvailable = inputStream.available();
         }
 }
 finally {
-try { if (inputStream != null) {
- inputStream.close();
- } } catch (java.io.IOException ex) {}
+try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOException ex) {}
 }
 }
     }
@@ -1846,16 +1870,12 @@ ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
                 Assert.assertEquals(val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
-try { if (ms2 != null) {
- ms2.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1874,16 +1894,12 @@ ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
                 Assert.assertEquals(val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
-try { if (ms2 != null) {
- ms2.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -2914,9 +2930,7 @@ ms = new java.io.ByteArrayOutputStream();
             }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           EDecimal ed = EDecimal.Create(EInteger.FromInt32(1), eints[i]);
@@ -2976,9 +2990,7 @@ ms2 = new java.io.ByteArrayOutputStream();
             }
 }
 finally {
-try { if (ms2 != null) {
- ms2.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
         } catch (IOException ioe) {
@@ -3020,9 +3032,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
         }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       {
@@ -3034,9 +3044,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
         Assert.assertEquals(null, CBORObject.Read(ms, options));
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
     }
@@ -3367,9 +3375,7 @@ ms = new java.io.ByteArrayOutputStream();
         }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       CBORObject objB = CBORObject.FromJSONString(obj.ToJSONString());
