@@ -105,6 +105,41 @@ private TestCommon() {
       }
     }
 
+    public static void AssertNotEqual(Object o, Object o2, String msg) {
+      if (o == null) {
+        throw new NullPointerException("o");
+      }
+      if (o.equals(o2)) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o,
+          o2,
+          "Unexpectedly equal");
+        Assert.fail(str);
+      }
+    }
+
+    public static void AssertEquals(Object o, Object o2, String msg) {
+      if (o == null) {
+        throw new NullPointerException("o");
+      }
+      if (!o.equals(o2)) {
+        Assert.assertEquals(msg, o, o2);
+      }
+    }
+
+    public static void AssertNotEqual(Object o, Object o2) {
+      if (o == null) {
+        throw new NullPointerException("o");
+      }
+      if (o.equals(o2)) {
+        String str = ObjectMessages(
+          o,
+          o2,
+          "Unexpectedly equal");
+        Assert.fail(str);
+      }
+    }
+
     public static void AssertEquals(Object o, Object o2) {
       if (o == null) {
         throw new NullPointerException("o");
@@ -177,6 +212,25 @@ private TestCommon() {
       Assert.assertEquals(cmp2 == 0, o3.equals(o2));
       Assert.assertEquals(cmp3 == 0, o1.equals(o3));
       Assert.assertEquals(cmp3 == 0, o3.equals(o1));
+    }
+
+    public static <T extends Comparable<T>> void CompareTestNotEqual(T o1, T o2) {
+      if (CompareTestReciprocal(o1, o2) == 0) {
+        Assert.fail(ObjectMessages(
+          o1,
+          o2,
+          "Unexpectedly equal: " + CompareTestReciprocal(o1, o2)));
+      }
+    }
+
+    public static <T extends Comparable<T>> void CompareTestNotEqual(T o1, T o2, String msg) {
+      if (CompareTestReciprocal(o1, o2) == 0) {
+        String str = msg + "\r\n" + ObjectMessages(
+          o1,
+          o2,
+          "Unexpectedly equal: " + CompareTestReciprocal(o1, o2));
+        Assert.fail(str);
+      }
     }
 
     public static <T extends Comparable<T>> void CompareTestEqual(T o1, T o2) {
