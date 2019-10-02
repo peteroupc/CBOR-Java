@@ -3210,7 +3210,7 @@ public static void Write(
      * any.<p> <p>The following example code (originally written in C# for
      * the.NET Framework) shows a way to check whether a given CBOR object
      * stores a 64-bit signed integer before getting its value.</p>
-     *  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { // Not an Int64; handle the error System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> . </p>
+     *  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { &#x2f;&#x2a; Not an Int64; handle the error&#x2a;&#x2f; System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> . </p>
      * @return The 64-bit signed integer stored by this object.
      * @throws IllegalStateException This object's type is not {@code
      * CBORType.Integer}.
@@ -5091,11 +5091,11 @@ try { if (ms != null) {
      * encodes the given major type and value in the shortest form allowed
      * for the major type.<p> <p>In the following example, an array of
      * three objects is written as CBOR to a data stream.</p>
-     *  <pre>&#x2f;&#x2a; array, length 3&#x2a;&#x2f; CBORObject.WriteValue(stream, 4, 3); &#x2f;&#x2a; item 1 &#x2a;&#x2f; CBORObject.Write("hello world", stream); CBORObject.Write(25, stream); // item 2 CBORObject.Write(false, stream); &#x2f;&#x2a; item 3&#x2a;&#x2f;</pre> <p>In the following example, a map
-     * consisting of two key-value pairs is written as CBOR to a data
-     *  stream.</p> <pre>CBORObject.WriteValue(stream, 5, 2); &#x2f;&#x2a; map, 2 pairs&#x2a;&#x2f; CBORObject.Write("number", stream); &#x2f;&#x2a; key 1 &#x2a;&#x2f; CBORObject.Write(25, stream); &#x2f;&#x2a; value 1 &#x2a;&#x2f; CBORObject.Write("string", stream); &#x2f;&#x2a; key 2&#x2a;&#x2f; CBORObject.Write("hello", stream); &#x2f;&#x2a; value 2&#x2a;&#x2f;</pre> <p>In the following example (originally written
-     * in C# for the.NET Framework version), a text string is written as
-     *  CBOR to a data stream.</p> <pre>string str = "hello world"; byte[] bytes = DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream, 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> . </p>
+     *  <pre>&#x2f;&#x2a; array, length 3&#x2a;&#x2f; CBORObject.WriteValue(stream, 4, 3); &#x2f;&#x2a; item 1 &#x2a;&#x2f; CBORObject.Write("hello world", stream); CBORObject.Write(25, stream); &#x2f;&#x2a; item 2&#x2a;&#x2f; CBORObject.Write(false, stream); &#x2f;&#x2a; item 3&#x2a;&#x2f;</pre> <p>In the following
+     * example, a map consisting of two key-value pairs is written as CBOR
+     *  to a data stream.</p> <pre>CBORObject.WriteValue(stream, 5, 2); &#x2f;&#x2a; map, 2 pairs&#x2a;&#x2f; CBORObject.Write("number", stream); &#x2f;&#x2a; key 1 &#x2a;&#x2f; CBORObject.Write(25, stream); &#x2f;&#x2a; value 1 &#x2a;&#x2f; CBORObject.Write("string", stream); &#x2f;&#x2a; key 2&#x2a;&#x2f; CBORObject.Write("hello", stream); &#x2f;&#x2a; value 2&#x2a;&#x2f;</pre> <p>In the following example
+     * (originally written in C# for the.NET Framework version), a text
+     *  string is written as CBOR to a data stream.</p> <pre>string str = "hello world"; byte[] bytes = DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream, 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> . </p>
      * @param outputStream A writable data stream.
      * @param majorType The CBOR major type to write. This is a number from 0
      * through 7 as follows. 0: integer 0 or greater; 1: negative integer;
