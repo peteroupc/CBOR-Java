@@ -1066,12 +1066,7 @@ Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  </p><p>The following example (originally written in C# for the.getNET()
  version) implements a method that decodes a text string from a CBOR
  byte array. It's successful only if the CBOR object contains an
- untagged text string.</p> <pre>private static string
- DecodeTextString(byte[] bytes) { if (bytes == null) { throw new
-  NullPointerException("mapObj");} if (bytes.length == 0 ||
- bytes[0]&lt;0x60 || bytes[0]&gt;0x7f) {throw new CBORException();}
- return CBORObject.DecodeFromBytes(bytes,
- CBOREncodeOptions.Default).AsString(); }</pre>.
+  untagged text string.</p> <pre>private static string DecodeTextString(byte[] bytes) { if (bytes == null) { throw new NullPointerException("mapObj");} if (bytes.length == 0 || bytes[0]&lt;0x60 || bytes[0]&gt;0x7f) {throw new CBORException();} return CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.Default).AsString(); }</pre>.
 
 **Parameters:**
 
@@ -1183,16 +1178,8 @@ Converts this CBOR object to an object of an arbitrary type. See the
  way to express a generic type, at least none as easy as C#'s
  <code>typeof</code> operator. The following example, written in Java, is a
  way to specify that the return value will be an ArrayList of string
- objects.</p> <pre>Type arrayListString = new ParameterizedType() {
- public Type[] getActualTypeArguments() { /* Contains one type
- parameter, string */ return new Type[] { string.class }; } public
- Type getRawType() { /* Raw type is ArrayList */ return
- ArrayList.class; } public Type getOwnerType() { return null; } };
- ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;)
- cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
- version is much shorter.</p> <pre>List&lt;string&gt; array =
- (List&lt;string&gt;)cborArray.ToObject(
- typeof(List&lt;string&gt;));</pre>.
+ objects.</p> <pre>Type arrayListString = new ParameterizedType() { public Type[] getActualTypeArguments() { /* Contains one type parameter, string */ return new Type[] { string.class }; } public Type getRawType() { /* Raw type is ArrayList */ return ArrayList.class; } public Type getOwnerType() { return null; } }; ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;) cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
+ version is much shorter.</p> <pre>List&lt;string&gt; array = (List&lt;string&gt;)cborArray.ToObject(typeof(List&lt;string&gt;));</pre>.
 
 **Parameters:**
 
@@ -1408,17 +1395,9 @@ Converts this CBOR object to an object of an arbitrary type. See the
  </p><p>Java offers no easy way to express a generic type, at least none
  as easy as C#'s <code>typeof</code> operator. The following example,
  written in Java, is a way to specify that the return value will be
- an ArrayList of string objects.</p> <pre>Type arrayListString = new
- ParameterizedType() { public Type[] getActualTypeArguments() { /*
- Contains one type parameter, string */ return new Type[] {
- string.class }; } public Type getRawType() { /* Raw type is
- ArrayList */ return ArrayList.class; } public Type getOwnerType() {
- return null; } }; ArrayList&lt;string&gt; array =
- (ArrayList&lt;string&gt;)
- cborArray.ToObject(arrayListString);</pre> <p>By comparison, the C#
- version is much shorter.</p> <pre>List&lt;string&gt; array =
- (List&lt;string&gt;)cborArray.ToObject(
- typeof(List&lt;string&gt;));</pre> .
+ an ArrayList of string objects.</p> <pre>Type arrayListString = new ParameterizedType() { public Type[] getActualTypeArguments() { /* Contains one type parameter, string */ return new Type[] { string.class }; } public Type getRawType() { /* Raw type is ArrayList */ return ArrayList.class; } public Type getOwnerType() { return null; } }; ArrayList&lt;string&gt; array = (ArrayList&lt;string&gt;) cborArray.ToObject(arrayListString);</pre>
+ <p>By comparison, the C# version is much shorter.</p>
+ <pre>List&lt;string&gt; array = (List&lt;string&gt;)cborArray.ToObject(typeof(List&lt;string&gt;));</pre> .
 
 **Parameters:**
 
@@ -2628,10 +2607,7 @@ Gets this object's absolute value.
  method.</p><p> </p><p>The following example creates a CBOR array and
  adds several CBOR objects, one of which has a custom CBOR tag, to
  that array. Note the chaining behavior made possible by this
- method.</p> <pre>CBORObject obj = CBORObject.NewArray()
-.Add(CBORObject.False) .Add(CBORObject.FromObject(5))
-  .Add(CBORObject.FromObject("text string"))
-.Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
+  method.</p> <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False) .Add(CBORObject.FromObject(5)) .Add(CBORObject.FromObject("text string")) .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
 
 **Parameters:**
 
@@ -2654,10 +2630,7 @@ Gets this object's absolute value.
  object and the desired tag number to that method.</p><p> </p><p>The
  following example creates a CBOR array and adds several CBOR
  objects, one of which has a custom CBOR tag, to that array. Note the
- chaining behavior made possible by this method.</p> <pre>CBORObject
- obj = CBORObject.NewArray() .Add(CBORObject.False) .Add(5)
-  .Add("text string") .Add(CBORObject.FromObjectAndTag(9999,
- 1));</pre> .
+  chaining behavior made possible by this method.</p> <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False) .Add(5) .Add("text string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
 
 **Parameters:**
 
@@ -2817,11 +2790,7 @@ Converts this object to a 32-bit signed integer if this CBOR object's type
  any.<p> </p><p>The following example code (originally written in C# for
  the.NET Framework) shows a way to check whether a given CBOR object
  stores a 32-bit signed integer before getting its value.</p>
- <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.getType() ==
- CBORType.Integer &amp;&amp; obj.CanValueFitInInt32()) { /* Not an
-  Int32; handle the error */ System.out.println("Not a 32-bit
-  integer."); } else { System.out.println("The value is " +
- obj.AsInt32Value()); }</pre> .
+  <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32Value()); }</pre> .
 
 **Returns:**
 
@@ -2842,11 +2811,7 @@ Converts this object to a 64-bit signed integer if this CBOR object's type
  any.<p> </p><p>The following example code (originally written in C# for
  the.NET Framework) shows a way to check whether a given CBOR object
  stores a 64-bit signed integer before getting its value.</p>
- <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() ==
- CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { /* Not an
-  Int64; handle the error */ System.out.println("Not a 64-bit
-  integer."); } else { System.out.println("The value is " +
- obj.AsInt64Value()); }</pre> .
+  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { // Not an Int64; handle the error System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> .
 
 **Returns:**
 
@@ -2961,12 +2926,7 @@ Converts this object to a 32-bit signed integer. Non-integer number values
  before calling this method. See the example.).<p> </p><p>The following
  example code (originally written in C# for the.NET Framework) shows
  a way to check whether a given CBOR object stores a 32-bit signed
- integer before getting its value.</p> <pre>CBORObject obj =
- CBORObject.FromInt32(99999); if (obj.isIntegral() &amp;&amp;
- obj.CanTruncatedIntFitInInt32()) { /* Not an Int32;
-  handle*/ the error System.out.println("Not a 32-bit
-  integer."); } else { System.out.println("The value is " +
- obj.AsInt32()); }</pre> .
+  integer before getting its value.</p> <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.isIntegral() &amp;&amp; obj.CanTruncatedIntFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32()); }</pre> .
 
 **Returns:**
 
@@ -2989,12 +2949,7 @@ Converts this object to a 64-bit signed integer. Non-integer numbers are
  before calling this method. See the example.).<p> </p><p>The following
  example code (originally written in C# for the.NET Framework) shows
  a way to check whether a given CBOR object stores a 64-bit signed
- integer before getting its value.</p> <pre>CBORObject obj =
- CBORObject.FromInt64(99999); if (obj.isIntegral() &amp;&amp;
- obj.CanTruncatedIntFitInInt64()) { /* Not an Int64;
-  handle*/ the error System.out.println("Not a 64-bit
-  integer."); } else { System.out.println("The value is " +
- obj.AsInt64()); }</pre> .
+  integer before getting its value.</p> <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.isIntegral() &amp;&amp; obj.CanTruncatedIntFitInInt64()) { /* Not an Int64; handle*/ the error System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64()); }</pre> .
 
 **Returns:**
 
@@ -3743,21 +3698,7 @@ Converts this object to a string in JavaScript object Notation (JSON)
  which are supported in CBOR but not JSON, to text strings, which are
  supported in both).</p> <p>The example code given below (originally
  written in C# for the.NET version) can be used to write out certain
- keys of a CBOR map in a given order to a JSON string.</p> <pre>/*
- Generates a JSON string of 'mapObj' whose keys are in the order
- given in 'keys' . Only keys found in 'keys' will be written if they
- exist in 'mapObj'. */ private static string KeysToJSONMap(CBORObject
- mapObj, List&lt;CBORObject&gt; keys) { if (mapObj == null) { throw
-  new NullPointerException)"mapObj");} if (keys == null) {
-  throw new NullPointerException)"keys");} if (obj.getType() !=
-  CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map.");
- } StringBuilder builder = new StringBuilder(); boolean first = true;
-  builder.append("{"); for (CBORObject key in keys) { if
-  (mapObj.ContainsKey(key)) { if (!first) {builder.append(", ");} var
- keyString=(key.getCBORType() == CBORType.string) ? key.AsString() :
- key.ToJSONString(); builder.append(CBORObject.FromObject(keyString)
-.ToJSONString()) .append(":").append(mapObj.get(key).ToJSONString());
-  first=false; } } return builder.append("}").toString(); }</pre> .
+  keys of a CBOR map in a given order to a JSON string.</p> <pre>/* Generates a JSON string of 'mapObj' whose keys are in the order given in 'keys' . Only keys found in 'keys' will be written if they exist in 'mapObj'. */ private static string KeysToJSONMap(CBORObject mapObj, List&lt;CBORObject&gt; keys) { if (mapObj == null) { throw new NullPointerException)"mapObj");} if (keys == null) { throw new NullPointerException)"keys");} if (obj.getType() != CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); } StringBuilder builder = new StringBuilder(); boolean first = true; builder.append("{"); for (CBORObject key in keys) { if (mapObj.ContainsKey(key)) { if (!first) {builder.append(", ");} var keyString=(key.getCBORType() == CBORType.string) ? key.AsString() : key.ToJSONString(); builder.append(CBORObject.FromObject(keyString) .ToJSONString()) .append(":").append(mapObj.get(key).ToJSONString()); first=false; } } return builder.append("}").toString(); }</pre> .
 
 **Parameters:**
 
@@ -3825,43 +3766,29 @@ Converts this object to a string in JavaScript object Notation (JSON)
  the.NET version) shows how to use the <code>LimitedMemoryStream</code>
  class (implemented in <i>LimitedMemoryStream.cs</i> in the
  peteroupc/CBOR open-source repository) to limit the size of
- supported JSON serializations of CBOR objects.</p> <pre>
- /* maximum supported JSON size in bytes*/ int
- maxSize = 20000; using (LimitedMemoryStream ms = new
- LimitedMemoryStream(maxSize)) { cborObject.WriteJSONTo(ms); var
- bytes = ms.toByteArray(); } </pre> <p>The following example (written in
+ supported JSON serializations of CBOR objects.</p> <pre> /* maximum supported JSON size in bytes*/ int maxSize = 20000; using (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) { cborObject.WriteJSONTo(ms); var bytes = ms.toByteArray(); } </pre> <p>The following example (written in
  Java for the Java version) shows how to use a subclassed
  <code>OutputStream</code> together with a <code>ByteArrayOutputStream</code> to
  limit the size of supported JSON serializations of CBOR objects.</p>
- <pre> /* maximum supported JSON size in bytes*/
- final int maxSize = 20000; ByteArrayOutputStream ba = new
- ByteArrayOutputStream(); /* throws
- UnsupportedOperationException if too big*/
- cborObject.WriteJSONTo(new FilterOutputStream(ba) { private int size
- = 0; public void write(byte[] b, int off, int len) throws
- IOException { if (len&gt;(maxSize-size)) { throw new
- UnsupportedOperationException(); } size+=len; out.write(b, off,
- len); } public void write(byte b) { if (size &gt;=
- maxSize) { throw new UnsupportedOperationException(); } size++;
- out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
+ <pre> /* maximum supported JSON size in bytes*/ final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); /* throws UnsupportedOperationException if too big*/ cborObject.WriteJSONTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len&gt;(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size &gt;= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
  following example (written in C# for the.NET version) shows how to
  use a.NET MemoryStream to limit the size of supported JSON
  serializations of CBOR objects. The disadvantage is that the extra
  memory needed to do so can be wasteful, especially if the average
  serialized object is much smaller than the maximum size given (for
  example, if the maximum size is 20000 bytes, but the average
- serialized object has a size of 50 bytes).</p> <pre> byte[] backing
- = new byte[20000]; /* maximum supported JSON size in
- bytes*/ byte[] bytes1, bytes2; using (MemoryStream ms =
- new java.io.ByteArrayInputStream(backing)) { /* throws
- UnsupportedOperationException if too big*/
- cborObject.WriteJSONTo(ms); bytes1 = new byte[ms.getPosition()];
- /* Copy serialized data if successful*/
- System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition());
- /* Reset memory stream*/ ms.setPosition(0);
- cborObject2.WriteJSONTo(ms); bytes2 = new byte[ms.getPosition()];
- /* Copy serialized data if successful*/
- System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.getPosition()); } </pre>
+ serialized object has a size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; /* maximum supported JSON size in bytes*/ byte[] bytes1, bytes2; {
+java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream(backing);
+ /* throws UnsupportedOperationException if too big*/ cborObject.WriteJSONTo(ms); bytes1 = new byte[ms.size()]; /* Copy serialized data if successful*/ System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.size()); /* Reset memory stream*/ ms.size() = 0; cborObject2.WriteJSONTo(ms); bytes2 = new byte[ms.size()]; /* Copy serialized data if successful*/ System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.size());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+} </pre>
 
 **Parameters:**
 
@@ -4069,22 +3996,11 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  encodes the given major type and value in the shortest form allowed
  for the major type.<p> </p><p>In the following example, an array of
  three objects is written as CBOR to a data stream.</p>
- <pre>CBORObject.WriteValue(stream, 4, 3); /* array,
-  length 3*/ CBORObject.Write("hello world", stream);
- /* item 1 CBORObject.Write(25, */ stream); /*
- item 2 */ CBORObject.Write(false, stream); /* item
- 3*/</pre> <p>In the following example, a map consisting
- of two key-value pairs is written as CBOR to a data stream.</p>
- <pre>CBORObject.WriteValue(stream, 5, 2); /* map, 2
-  pairs*/ CBORObject.Write("number", stream); /*
- key 1 CBORObject.Write(25, */ stream); /* value
-  1 CBORObject.Write("string", stream); /* key
-  2*/*/ CBORObject.Write("hello", stream);
- /* value 2*/</pre> <p>In the following example
- (originally written in C# for the.NET Framework version), a text
- string is written as CBOR to a data stream.</p> <pre>string str =
-  "hello world"; byte[] bytes = DataUtilities.GetUtf8Bytes(str, true);
- CBORObject.WriteValue(stream, 4, bytes.length); stream.write(bytes, * 0, bytes.length);</pre> .
+  <pre>/* array, length 3*/ CBORObject.WriteValue(stream, 4, 3); /* item 1 */ CBORObject.Write("hello world", stream); CBORObject.Write(25, stream); // item 2 CBORObject.Write(false, stream); /* item 3*/</pre> <p>In the following example, a map
+ consisting of two key-value pairs is written as CBOR to a data
+  stream.</p> <pre>CBORObject.WriteValue(stream, 5, 2); /* map, 2 pairs*/ CBORObject.Write("number", stream); /* key 1 */ CBORObject.Write(25, stream); /* value 1 */ CBORObject.Write("string", stream); /* key 2*/ CBORObject.Write("hello", stream); /* value 2*/</pre> <p>In the following example (originally written
+ in C# for the.NET Framework version), a text string is written as
+  CBOR to a data stream.</p> <pre>string str = "hello world"; byte[] bytes = DataUtilities.GetUtf8Bytes(str, true); CBORObject.WriteValue(stream, 4, bytes.length); stream.write(bytes, 0, bytes.length);</pre> .
 
 **Parameters:**
 
@@ -4169,81 +4085,39 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  each key of 'mapObj' to 'outputStream', in the order given in
  'keys', where 'mapObj' is written out in the form of a CBOR
  <b>definite-length map</b> . Only keys found in 'keys' will be
- written if they exist in 'mapObj'.</p> <pre>private static void
- WriteKeysToMap(CBORObject mapObj, List&lt;CBORObject&gt; keys,
- OutputStream outputStream) { if (mapObj == null) { throw new
-  NullPointerException("mapObj");} if (keys == null) {throw new
-  NullPointerException("keys");} if (outputStream == null)
-  {throw new NullPointerException("outputStream");} if
-  (obj.getType()!=CBORType.Map) { throw new IllegalArgumentException("'obj' is not
-  a map."); } int keyCount = 0; for (CBORObject key in keys) { if
- (mapObj.ContainsKey(key)) { keyCount++; } }
- CBORObject.WriteValue(outputStream, 5, keyCount); for (CBORObject
- key in keys) { if (mapObj.ContainsKey(key)) {
- key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); }
- } }</pre> <p>The following example shows a method that writes each
+  written if they exist in 'mapObj'.</p> <pre>private static void WriteKeysToMap(CBORObject mapObj, List&lt;CBORObject&gt; keys, OutputStream outputStream) throws java.io.IOException { if (mapObj == null) { throw new NullPointerException("mapObj");} if (keys == null) {throw new NullPointerException("keys");} if (outputStream == null) {throw new NullPointerException("outputStream");} if (obj.getType()!=CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); } int keyCount = 0; for (CBORObject key in keys) { if (mapObj.ContainsKey(key)) { keyCount++; } } CBORObject.WriteValue(outputStream, 5, keyCount); for (CBORObject key in keys) { if (mapObj.ContainsKey(key)) { key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); } } }</pre> <p>The following example shows a method that writes each
  key of 'mapObj' to 'outputStream', in the order given in 'keys',
  where 'mapObj' is written out in the form of a CBOR
  <b>indefinite-length map</b> . Only keys found in 'keys' will be
- written if they exist in 'mapObj'.</p> <pre>private static void
- WriteKeysToIndefMap(CBORObject mapObj, List&lt;CBORObject&gt; keys,
- OutputStream outputStream) { if (mapObj == null) { throw new
-  NullPointerException("mapObj");} if (keys == null) {throw new
-  NullPointerException("keys");} if (outputStream == null)
-  {throw new NullPointerException("outputStream");} if
-  (obj.getType()!=CBORType.Map) { throw new IllegalArgumentException("'obj' is not
-  a map."); } outputStream.write((byte)0xBF); for (CBORObject key
- in keys) { if (mapObj.ContainsKey(key)) { key.WriteTo(outputStream);
- mapObj.get(key).WriteTo(outputStream); } }
- outputStream.write((byte)0xff); }</pre> <p>The following
- example shows a method that writes out a list of objects to
- 'outputStream' as an <b>indefinite-length CBOR array</b> .</p>
- <pre>private static void WriteToIndefArray(List&lt;object&gt; list,
- OutputStream outputStream) throws java.io.IOException { if (list == null) { throw new
-  NullPointerException("list");} if (outputStream == null)
-  {throw new NullPointerException("outputStream");}
- outputStream.write((byte)0x9f); for (object item in list) { new
- CBORObject(item).WriteTo(outputStream); }
- outputStream.write((byte)0xff); }</pre> <p>The following
- example (written in C# for the.NET version) shows how to use the
+  written if they exist in 'mapObj'.</p> <pre>private static void WriteKeysToIndefMap(CBORObject mapObj, List&lt;CBORObject&gt; keys, OutputStream outputStream) throws java.io.IOException { if (mapObj == null) { throw new NullPointerException("mapObj");} if (keys == null) {throw new NullPointerException("keys");} if (outputStream == null) {throw new NullPointerException("outputStream");} if (obj.getType()!=CBORType.Map) { throw new IllegalArgumentException("'obj' is not a map."); } outputStream.write((byte)0xBF); for (CBORObject key in keys) { if (mapObj.ContainsKey(key)) { key.WriteTo(outputStream); mapObj.get(key).WriteTo(outputStream); } } outputStream.write((byte)0xff); }</pre> <p>The following example
+ shows a method that writes out a list of objects to 'outputStream'
+  as an <b>indefinite-length CBOR array</b> .</p> <pre>private static void WriteToIndefArray(List&lt;object&gt; list, OutputStream outputStream) throws java.io.IOException { if (list == null) { throw new NullPointerException("list");} if (outputStream == null) {throw new NullPointerException("outputStream");} outputStream.write((byte)0x9f); for (object item in list) { new CBORObject(item).WriteTo(outputStream); } outputStream.write((byte)0xff); }</pre> <p>The following example
+ (written in C# for the.NET version) shows how to use the
  <code>LimitedMemoryStream</code> class (implemented in
  <i>LimitedMemoryStream.cs</i> in the peteroupc/CBOR open-source
  repository) to limit the size of supported CBOR serializations.</p>
- <pre> /* maximum supported CBOR size in bytes*/
- int maxSize = 20000; using (LimitedMemoryStream ms = new
- LimitedMemoryStream(maxSize)) { cborObject.WriteTo(ms); var bytes =
- ms.toByteArray(); } </pre> <p>The following example (written in Java
- for the Java version) shows how to use a subclassed
- <code>OutputStream</code> together with a <code>ByteArrayOutputStream</code> to
- limit the size of supported CBOR serializations.</p> <pre>
- /* maximum supported CBOR size in bytes*/ final
- int maxSize = 20000; ByteArrayOutputStream ba = new
- ByteArrayOutputStream(); /* throws
- UnsupportedOperationException if too big*/
- cborObject.WriteTo(new FilterOutputStream(ba) { private int size =
- 0; public void write(byte[] b, int off, int len) throws IOException
- { if (len&gt;(maxSize-size)) { throw new
- UnsupportedOperationException(); } size+=len; out.write(b, off,
- len); } public void write(byte b) { if (size &gt;=
- maxSize) { throw new UnsupportedOperationException(); } size++;
- out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
+ <pre> /* maximum supported CBOR size in bytes*/ int maxSize = 20000; using (LimitedMemoryStream ms = new LimitedMemoryStream(maxSize)) { cborObject.WriteTo(ms); var bytes = ms.toByteArray(); } </pre> <p>The following example (written in Java for
+ the Java version) shows how to use a subclassed <code>OutputStream</code>
+ together with a <code>ByteArrayOutputStream</code> to limit the size of
+ supported CBOR serializations.</p> <pre> /* maximum supported CBOR size in bytes*/ final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); /* throws UnsupportedOperationException if too big*/ cborObject.WriteTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len&gt;(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size &gt;= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
  following example (written in C# for the.NET version) shows how to
  use a.NET MemoryStream to limit the size of supported CBOR
  serializations. The disadvantage is that the extra memory needed to
  do so can be wasteful, especially if the average serialized object
  is much smaller than the maximum size given (for example, if the
  maximum size is 20000 bytes, but the average serialized object has a
- size of 50 bytes).</p> <pre> byte[] backing = new byte[20000];
- /* maximum supported CBOR size in bytes*/ byte[]
- bytes1, bytes2; using (java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(backing))
- { /* throws UnsupportedOperationException if too big*/
- cborObject.WriteTo(ms); bytes1 = new byte[ms.getPosition()]; /*
- Copy serialized data if successful*/
- System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.getPosition());
- /* Reset memory stream*/ ms.setPosition(0);
- cborObject2.WriteTo(ms); bytes2 = new byte[ms.getPosition()];
- /* Copy serialized data if successful*/
- System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.getPosition()); } </pre>
+ size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; /* maximum supported CBOR size in bytes*/ byte[] bytes1, bytes2; {
+java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream(backing);
+ /* throws UnsupportedOperationException if too big*/ cborObject.WriteTo(ms); bytes1 = new byte[ms.size()]; /* Copy serialized data if successful*/ System.ArrayCopy(backing, 0, bytes1, 0, (int)ms.size()); /* Reset memory stream*/ ms.size() = 0; cborObject2.WriteTo(ms); bytes2 = new byte[ms.size()]; /* Copy serialized data if successful*/ System.ArrayCopy(backing, 0, bytes2, 0, (int)ms.size());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+} </pre>
 
 **Parameters:**
 
