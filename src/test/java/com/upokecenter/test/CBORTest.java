@@ -1518,7 +1518,8 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i <= 50; ++i) {
         refobj = CBORObject.FromObjectAndTag(i, 29);
         arr = CBORObject.FromObject(new CBORObject[] {
-          refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
+          refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
+          refobj,
         });
         arr = CBORObject.FromObjectAndTag(arr, 28);
         root.Add(arr);
