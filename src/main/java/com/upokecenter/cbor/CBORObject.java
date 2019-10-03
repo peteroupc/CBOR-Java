@@ -290,7 +290,8 @@ cn.GetNumberInterface().IsIntegral(cn.GetValue());
       }
 
     /**
-     * Gets a value indicating whether this value is a CBOR null value.
+     * Gets a value indicating whether this CBOR object is a CBOR null value,
+     * whether tagged or not.
      * @return {@code true} if this value is a CBOR null value; otherwise, {@code
      * false}.
      */

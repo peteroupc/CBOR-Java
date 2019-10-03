@@ -373,7 +373,8 @@
  Gets a value indicating whether this CBOR object represents negative
  infinity.
 * `boolean isNull()`<br>
- Gets a value indicating whether this value is a CBOR null value.
+ Gets a value indicating whether this CBOR object is a CBOR null value,
+ whether tagged or not.
 * `boolean isNumber()`<br>
  Gets a value indicating whether this CBOR object stores a number (including
  infinity or a not-a-number or NaN value).
@@ -673,7 +674,8 @@ Gets a value indicating whether this object represents an integer number,
 
 ### isNull
     public final boolean isNull()
-Gets a value indicating whether this value is a CBOR null value.
+Gets a value indicating whether this CBOR object is a CBOR null value,
+ whether tagged or not.
 
 **Returns:**
 
