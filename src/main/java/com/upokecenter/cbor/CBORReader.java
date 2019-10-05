@@ -365,9 +365,7 @@ ms = new java.io.ByteArrayOutputStream();
                 return CBORObject.FromRaw(data);
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
             }
@@ -562,9 +560,7 @@ ms = new java.io.ByteArrayOutputStream(0x10000);
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }

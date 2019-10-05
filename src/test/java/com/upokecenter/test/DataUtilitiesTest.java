@@ -782,9 +782,7 @@ ms = new java.io.ByteArrayInputStream(bytes);
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         if (bytes == null) {
@@ -846,9 +844,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -869,9 +865,7 @@ ms = new java.io.ByteArrayInputStream(new byte[] { 0 });
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -1167,9 +1161,7 @@ ms = new java.io.ByteArrayInputStream(seq);
           }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         {
@@ -1190,9 +1182,7 @@ ms2 = new java.io.ByteArrayInputStream(seq);
           Assert.assertEquals('\ufffd', strret.charAt(0));
 }
 finally {
-try { if (ms2 != null) {
- ms2.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
       }
@@ -1433,9 +1423,7 @@ ms = new java.io.ByteArrayOutputStream();
             }
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
         }
@@ -1452,9 +1440,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1470,9 +1456,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1488,9 +1472,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1506,9 +1488,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1524,9 +1504,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1542,9 +1520,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1560,9 +1536,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1578,9 +1552,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
@@ -1596,9 +1568,7 @@ ms = new java.io.ByteArrayOutputStream();
                 ms.toByteArray());
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }

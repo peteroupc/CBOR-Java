@@ -3967,7 +3967,7 @@ public boolean equals(CBORObject other) {
           switch (this.itemtypeValue) {
             case CBORObjectTypeByteString:
               itemHashCode =
-                CBORUtilities.ByteArrayHashCode((byte[])this.getThisItem());
+                CBORUtilities.ByteArrayHashCode(this.GetByteString());
               break;
             case CBORObjectTypeMap:
               itemHashCode = CBORMapHashCode(this.AsMap());
@@ -4575,147 +4575,7 @@ cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
      * @return A text representation of this object.
      */
     @Override public String toString() {
-      StringBuilder sb = null;
-      String simvalue = null;
-      CBORType type = this.getType();
-      if (this.isTagged()) {
-        if (sb == null) {
-          if (type == CBORType.TextString) {
-            // The default capacity of StringBuilder may be too small
-            // for many strings, so set a suggested capacity
-            // explicitly
-            String str = this.AsString();
-            sb = new StringBuilder(Math.min(str.length(), 4096) + 16);
-          } else {
-            sb = new StringBuilder();
-          }
-        }
-        this.AppendOpeningTags(sb);
-      }
-      switch (type) {
-        case Boolean:
-        case SimpleValue: {
-            if (this.isTrue()) {
-              simvalue = "true";
-              if (sb == null) {
-                return simvalue;
-              }
-              sb.append(simvalue);
-            } else if (this.isFalse()) {
-              simvalue = "false";
-              if (sb == null) {
-                return simvalue;
-              }
-              sb.append(simvalue);
-            } else if (this.isNull()) {
-              simvalue = "null";
-              if (sb == null) {
-                return simvalue;
-              }
-              sb.append(simvalue);
-            } else if (this.isUndefined()) {
-              simvalue = "undefined";
-              if (sb == null) {
-                return simvalue;
-              }
-              sb.append(simvalue);
-            } else {
-              sb = (sb == null) ? (new StringBuilder()) : sb;
-              sb.append("simple(");
-              int thisItemInt = ((Integer)this.getThisItem()).intValue();
-              sb.append(
-                CBORUtilities.LongToString(thisItemInt));
-              sb.append(")");
-            }
-
-            break;
-          }
-        case FloatingPoint: {
-            double f = this.AsDoubleValue();
-            simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
-              (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
-                    "NaN" : CBORUtilities.TrimDotZero(
-                       CBORUtilities.DoubleToString(f))));
-            if (sb == null) {
-              return simvalue;
-            }
-            sb.append(simvalue);
-            break;
-          }
-        case Integer: {
-            if (this.CanValueFitInInt64()) {
-              long v = this.AsInt64Value();
-              simvalue = CBORUtilities.LongToString(v);
-            } else {
-              simvalue = this.AsEIntegerValue().toString();
-            }
-            if (sb == null) {
-              return simvalue;
-            }
-            sb.append(simvalue);
-            break;
-          }
-        case ByteString: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            sb.append("h'");
-            CBORUtilities.ToBase16(sb, (byte[])this.getThisItem());
-            sb.append("'");
-            break;
-          }
-        case TextString: {
-            if (sb == null) {
-              return "\"" + this.AsString() + "\"";
-            }
-            sb.append('\"');
-            sb.append(this.AsString());
-            sb.append('\"');
-            break;
-          }
-        case Array: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            boolean first = true;
-            sb.append("[");
-            for (CBORObject i : this.AsList()) {
-              if (!first) {
-                sb.append(", ");
-              }
-              sb.append(i.toString());
-              first = false;
-            }
-            sb.append("]");
-            break;
-          }
-        case Map: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            boolean first = true;
-            sb.append("{");
-            Map<CBORObject, CBORObject> map = this.AsMap();
-            for (Map.Entry<CBORObject, CBORObject> entry : map.entrySet()) {
-              CBORObject key = entry.getKey();
-              CBORObject value = entry.getValue();
-              if (!first) {
-                sb.append(", ");
-              }
-              sb.append(key.toString());
-              sb.append(": ");
-              sb.append(value.toString());
-              first = false;
-            }
-            sb.append("}");
-            break;
-          }
-        default: {
-            if (sb == null) {
-              return this.getThisItem().toString();
-            }
-            sb.append(this.getThisItem().toString());
-            break;
-          }
-      }
-      if (this.isTagged()) {
-        this.AppendClosingTags(sb);
-      }
-      return sb.toString();
+      return CBORDataUtilities.ToStringHelper(this, 0);
     }
 
     /**
@@ -5329,9 +5189,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           }
         case CBORObjectTypeByteString: {
-            byte[] arr = (byte[])this.getThisItem();
+            byte[] arr = this.GetByteString();
             WritePositiveInt(
-              (this.getItemType() == CBORObjectTypeByteString) ? 2 : 3,
+              (this.getType() == CBORType.ByteString) ? 2 : 3,
               arr.length,
               stream);
             stream.write(arr, 0, arr.length);
@@ -5350,7 +5210,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           }
         case CBORObjectTypeSimpleValue: {
-            int value = ((Integer)this.getThisItem()).intValue();
+            int value = this.getSimpleValue();
             if (value < 24) {
               stream.write((byte)(0xe0 + value));
             } else {
@@ -6139,31 +5999,6 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       stream.write(bytes, 0, byteIndex);
       if (streaming) {
         stream.write((byte)0xff);
-      }
-    }
-
-    //-----------------------------------------------------------
-    private void AppendClosingTags(StringBuilder sb) {
-      CBORObject curobject = this;
-      while (curobject.isTagged()) {
-        sb.append(')');
-        curobject = (CBORObject)curobject.itemValue;
-      }
-    }
-
-    private void AppendOpeningTags(StringBuilder sb) {
-      CBORObject curobject = this;
-      while (curobject.isTagged()) {
-        int low = curobject.tagLow;
-        int high = curobject.tagHigh;
-        if (high == 0 && (low >> 16) == 0) {
-          sb.append(CBORUtilities.LongToString(low));
-        } else {
-          EInteger bi = LowHighToEInteger(low, high);
-          sb.append(bi.toString());
-        }
-        sb.append('(');
-        curobject = (CBORObject)curobject.itemValue;
       }
     }
 

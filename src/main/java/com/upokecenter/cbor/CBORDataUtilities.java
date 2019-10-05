@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import java.util.*;
+
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
@@ -16,6 +18,158 @@ import com.upokecenter.numbers.*;
   public final class CBORDataUtilities {
 private CBORDataUtilities() {
 }
+    private static final String HexAlphabet = "0123456789ABCDEF";
+
+    static String ToStringHelper(CBORObject obj, int depth) {
+      StringBuilder sb = null;
+      String simvalue = null;
+      CBORType type = obj.getType();
+      CBORObject curobject;
+      if (obj.isTagged()) {
+        if (sb == null) {
+          if (type == CBORType.TextString) {
+            // The default capacity of StringBuilder may be too small
+            // for many strings, so set a suggested capacity
+            // explicitly
+            String str = obj.AsString();
+            sb = new StringBuilder(Math.min(str.length(), 4096) + 16);
+          } else {
+            sb = new StringBuilder();
+          }
+        }
+        // Append opening tags if needed
+        curobject = obj;
+        while (curobject.isTagged()) {
+          EInteger ei = curobject.getMostOuterTag();
+          sb.append(ei.toString());
+          sb.append('(');
+          curobject = obj.UntagOne();
+        }
+      }
+      switch (type) {
+        case SimpleValue:
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          if (obj.isUndefined()) {
+            sb.append("undefined");
+          } else if (obj.isNull()) {
+            sb.append("null");
+          } else {
+            sb.append("simple(");
+            int thisItemInt = obj.getSimpleValue();
+            char c;
+            if (thisItemInt >= 100) {
+              // NOTE: '0'-'9' have ASCII code 0x30-0x39
+              c = (char)(0x30 + ((thisItemInt / 100) % 10));
+              sb.append(c);
+            }
+            if (thisItemInt >= 10) {
+              c = (char)(0x30 + ((thisItemInt / 10) % 10));
+              sb.append(c);
+              c = (char)(0x30 + (thisItemInt % 10));
+            } else {
+              c = (char)(0x30 + thisItemInt);
+            }
+            sb.append(c);
+            sb.append(")");
+          }
+          break;
+        case Boolean:
+        case Integer:
+          simvalue = obj.Untag().ToJSONString();
+          if (sb == null) {
+            return simvalue;
+          }
+          sb.append(simvalue);
+          break;
+        case FloatingPoint: {
+          double f = obj.AsDoubleValue();
+          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
+              (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
+                    "NaN" : obj.Untag().ToJSONString()));
+          if (sb == null) {
+            return simvalue;
+          }
+          sb.append(simvalue);
+          break;
+        }
+        case ByteString: {
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            sb.append("h'");
+            byte[] data = obj.GetByteString();
+            int length = data.length;
+            for (int i = 0; i < length; ++i) {
+             sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
+             sb.append(HexAlphabet.charAt(data[i] & 15));
+            }
+            sb.append("'");
+            break;
+          }
+        case TextString: {
+            if (sb == null) {
+              return "\"" + obj.AsString() + "\"";
+            }
+            sb.append('\"');
+            sb.append(obj.AsString());
+            sb.append('\"');
+            break;
+          }
+        case Array: {
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            boolean first = true;
+            sb.append("[");
+            if (depth >= 50) {
+            sb.append("...");
+          } else {
+            for (int i = 0; i < obj.size(); ++i) {
+              if (!first) {
+                sb.append(", ");
+              }
+              sb.append(ToStringHelper(obj.get(i), depth + 1));
+              first = false;
+            }
+            }
+            sb.append("]");
+            break;
+          }
+        case Map: {
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            boolean first = true;
+            sb.append("{");
+            if (depth >= 50) {
+              sb.append("...");
+            } else {
+              // TODO: Avoid use of internal method AsMap
+              Map<CBORObject, CBORObject> map = obj.AsMap();
+              for (Map.Entry<CBORObject, CBORObject> entry : map.entrySet()) {
+                CBORObject key = entry.getKey();
+                CBORObject value = entry.getValue();
+                if (!first) {
+                  sb.append(", ");
+                }
+                sb.append(ToStringHelper(key, depth + 1));
+                sb.append(": ");
+                sb.append(ToStringHelper(value, depth + 1));
+                first = false;
+              }
+            }
+            sb.append("}");
+            break;
+          }
+        default: {
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            sb.append("???");
+            break;
+        }
+      }
+      // Append closing tags if needed
+      curobject = obj;
+      while (curobject.isTagged()) {
+        sb.append(')');
+        curobject = obj.UntagOne();
+      }
+      return sb.toString();
+    }
+
     private static final int MaxSafeInt = 214748363;
 
     /**

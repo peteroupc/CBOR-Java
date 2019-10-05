@@ -6638,17 +6638,34 @@ ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
           stringTemp);
       }
       CBORObject cbor = CBORObject.True;
-      TestCommon.AssertNotEqual("21", cbor.toString());
-      TestCommon.AssertNotEqual("simple(21)", cbor.toString());
+      String cborString;
+      cborString = cbor.toString();
+      if (cborString == null) {
+        Assert.fail();
+      }
+      TestCommon.AssertNotEqual("21", cborString);
+      TestCommon.AssertNotEqual("simple(21)", cborString);
       cbor = CBORObject.False;
-      TestCommon.AssertNotEqual("20", cbor.toString());
-      TestCommon.AssertNotEqual("simple(20)", cbor.toString());
+      cborString = cbor.toString();
+      if (cborString == null) {
+        Assert.fail();
+      }
+      TestCommon.AssertNotEqual("20", cborString);
+      TestCommon.AssertNotEqual("simple(20)", cborString);
       cbor = CBORObject.Null;
-      TestCommon.AssertNotEqual("22", cbor.toString());
-      TestCommon.AssertNotEqual("simple(22)", cbor.toString());
+      cborString = cbor.toString();
+      if (cborString == null) {
+        Assert.fail();
+      }
+      TestCommon.AssertNotEqual("22", cborString);
+      TestCommon.AssertNotEqual("simple(22)", cborString);
       cbor = CBORObject.Undefined;
-      TestCommon.AssertNotEqual("23", cbor.toString());
-      TestCommon.AssertNotEqual("simple(23)", cbor.toString());
+      cborString = cbor.toString();
+      if (cborString == null) {
+        Assert.fail();
+      }
+      TestCommon.AssertNotEqual("23", cborString);
+      TestCommon.AssertNotEqual("simple(23)", cborString);
       {
         String stringTemp = CBORObject.FromSimpleValue(50).toString();
         Assert.assertEquals(

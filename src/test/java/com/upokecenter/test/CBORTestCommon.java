@@ -348,15 +348,13 @@ ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
 
         CBORObject o = CBORObject.Read(ms);
-        if ((startingAvailable-ms.available()) != startingAvailable) {
+        if ((startingAvailable - ms.available()) != startingAvailable) {
           throw new CBORException("not at EOF");
         }
         return o;
 }
 finally {
-try { if (ms != null) {
- ms.close();
- } } catch (java.io.IOException ex) {}
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
     }

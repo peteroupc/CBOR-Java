@@ -55,17 +55,6 @@ private CBORUtilities() {
       return -2; // not short enough
     }
 
-    public static void ToBase16(StringBuilder str, byte[] data) {
-      if (data == null) {
-        throw new NullPointerException("data");
-      }
-      int length = data.length;
-      for (int i = 0; i < length; ++i) {
-        str.append(HexAlphabet.charAt((data[i] >> 4) & 15));
-        str.append(HexAlphabet.charAt(data[i] & 15));
-      }
-    }
-
     public static boolean ByteArrayEquals(byte[] a, byte[] b) {
       if (a == null) {
         return b == null;
