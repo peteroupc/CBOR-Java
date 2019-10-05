@@ -14,6 +14,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
 // TODO: Add method that finds estimated byte size of CBOR objects
+// TODO: Consider deprecating most number conversion/checking methods here
 
     /**
      * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -401,14 +402,15 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
       }
 
     /**
-     * Gets the simple value ID of this object, or -1 if this object is not a
-     * simple value (including if the value is a floating-point number).
-     * @return The simple value ID of this object, or -1 if this object is not a
-     * simple value (including if the value is a floating-point number).
+     * Gets the simple value ID of this CBOR object, or -1 if the object is not a
+     * simple value. In this method, objects with a CBOR type of Boolean or
+     * SimpleValue are simple values, whether they are tagged or not.
+     * @return The simple value ID of this object if it's a simple value, or -1 if
+     * this object is not a simple value.
      */
     public final int getSimpleValue() {
         return (this.getItemType() == CBORObjectTypeSimpleValue) ?
-          (((Integer)this.getThisItem()).intValue()) : (-1);
+          (((Integer)this.getThisItem()).intValue()) : -1;
       }
 
     /**
@@ -496,8 +498,8 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * map. (If this is a map, the given index can be any 32-bit signed
      * integer, even a negative one.).
      * @return The CBOR object referred to by index or key in this array or map. If
-     * this is a CBOR map, returns null if an item with the given key
-     * doesn't exist.
+     * this is a CBOR map, returns {@code null} (not {@code
+     * CBORObject.Null}) if an item with the given key doesn't exist.
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is less than
      * 0 or at least the size of the array.
@@ -564,8 +566,8 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * exist, or if the CBOR object is an array and the key is not an
      * integer 0 or greater and less than the size of the array.
      * @return The CBOR object referred to by index or key in this array or map. If
-     * this is a CBOR map, returns null if an item with the given key
-     * doesn't exist.
+     * this is a CBOR map, returns {@code null} (not {@code
+     * CBORObject.Null}) if an item with the given key doesn't exist.
      */
     public CBORObject GetOrDefault(Object key, CBORObject defaultValue) {
       if (this.getItemType() == CBORObjectTypeArray) {
@@ -601,8 +603,8 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * array. If this is a CBOR array, the key must be an integer 0 or
      * greater and less than the size of the array.
      * @return The CBOR object referred to by index or key in this array or map. If
-     * this is a CBOR map, returns null if an item with the given key
-     * doesn't exist.
+     * this is a CBOR map, returns {@code null} (not {@code
+     * CBORObject.Null}) if an item with the given key doesn't exist.
      * @throws NullPointerException The key is null (as opposed to
      * CBORObject.Null); or the set method is called and the value is null.
      * @throws IllegalArgumentException This CBOR object is an array and the key is not an

@@ -316,8 +316,8 @@
  object key in this map, or a default value if that value is not
  found.
 * `int getSimpleValue()`<br>
- Gets the simple value ID of this object, or -1 if this object is not a
- simple value (including if the value is a floating-point number).
+ Gets the simple value ID of this CBOR object, or -1 if the object is not a
+ simple value.
 * `int getTagCount()`<br>
  Gets the number of tags this object has.
 * `CBORType getType()`<br>
@@ -765,13 +765,14 @@ Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
 
 ### getSimpleValue
     public final int getSimpleValue()
-Gets the simple value ID of this object, or -1 if this object is not a
- simple value (including if the value is a floating-point number).
+Gets the simple value ID of this CBOR object, or -1 if the object is not a
+ simple value. In this method, objects with a CBOR type of Boolean or
+ SimpleValue are simple values, whether they are tagged or not.
 
 **Returns:**
 
-* The simple value ID of this object, or -1 if this object is not a
- simple value (including if the value is a floating-point number).
+* The simple value ID of this object if it's a simple value, or -1 if
+ this object is not a simple value.
 
 ### isNumber
     public final boolean isNumber()
@@ -825,8 +826,8 @@ Gets the value of a CBOR object by integer index in this array or by integer
 **Returns:**
 
 * The CBOR object referred to by index or key in this array or map. If
- this is a CBOR map, returns null if an item with the given key
- doesn't exist.
+ this is a CBOR map, returns <code>null</code> (not <code>
+ CBORObject.Null</code>) if an item with the given key doesn't exist.
 
 **Throws:**
 
@@ -880,8 +881,8 @@ Gets the value of a CBOR object by integer index in this array or by CBOR
 **Returns:**
 
 * The CBOR object referred to by index or key in this array or map. If
- this is a CBOR map, returns null if an item with the given key
- doesn't exist.
+ this is a CBOR map, returns <code>null</code> (not <code>
+ CBORObject.Null</code>) if an item with the given key doesn't exist.
 
 ### get
     public CBORObject get​(CBORObject key)
@@ -897,8 +898,8 @@ Gets the value of a CBOR object by integer index in this array or by CBOR
 **Returns:**
 
 * The CBOR object referred to by index or key in this array or map. If
- this is a CBOR map, returns null if an item with the given key
- doesn't exist.
+ this is a CBOR map, returns <code>null</code> (not <code>
+ CBORObject.Null</code>) if an item with the given key doesn't exist.
 
 **Throws:**
 
