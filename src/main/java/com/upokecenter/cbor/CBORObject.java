@@ -63,31 +63,31 @@ import com.upokecenter.numbers.*;
      * method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR objects are
      * immutable (their values can't be changed), so they are inherently
      * safe for use by multiple threads.</p> <p>CBOR objects that are
-     * arrays, maps, and byte strings (including tagged objects that
-     * represent numbers) are mutable, but this class doesn't attempt to
-     * synchronize reads and writes to those objects by multiple threads,
-     * so those objects are not thread safe without such
-     * synchronization.</p> <p>One kind of CBOR object is called a map, or
-     * a list of key-value pairs. Keys can be any kind of CBOR object,
-     * including numbers, strings, arrays, and maps. However, untagged text
-     * strings (which means GetTags returns an empty array and the Type
-     *  property, or "getType()" in Java, returns TextString) are the most
-     * suitable to use as keys; other kinds of CBOR object are much better
-     * used as map values instead, keeping in mind that some of them are
-     * not thread safe without synchronizing reads and writes to them.</p>
-     * <p>To find the type of a CBOR object, call its Type property (or
-     *  "getType()" in Java). The return value can be Integer,
-     * FloatingPoint, Boolean, SimpleValue, or TextString for immutable
-     * CBOR objects, and Array, Map, or ByteString for mutable CBOR
-     * objects.</p> <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and
-     * Read methods can only read objects with a limited maximum depth of
-     * arrays and maps nested within other arrays and maps. The code sets
-     * this maximum depth to 500 (allowing more than enough nesting for
-     * most purposes), but it's possible that stack overflows in some
-     * runtimes might lower the effective maximum nesting depth. When the
-     * nesting depth goes above 500, the DecodeFromBytes and Read methods
-     * throw a CBORException.</p> <p>The ReadJSON and FromJSONString
-     * methods currently have nesting depths of 1000.</p></p>
+     * arrays, maps, and byte strings (whether or not they are tagged) are
+     * mutable, but this class doesn't attempt to synchronize reads and
+     * writes to those objects by multiple threads, so those objects are
+     * not thread safe without such synchronization.</p> <p>One kind of
+     * CBOR object is called a map, or a list of key-value pairs. Keys can
+     * be any kind of CBOR object, including numbers, strings, arrays, and
+     * maps. However, untagged text strings (which means GetTags returns an
+     *  empty array and the Type property, or "getType()" in Java, returns
+     * TextString) are the most suitable to use as keys; other kinds of
+     * CBOR object are much better used as map values instead, keeping in
+     * mind that some of them are not thread safe without synchronizing
+     * reads and writes to them.</p> <p>To find the type of a CBOR object,
+     *  call its Type property (or "getType()" in Java). The return value
+     * can be Integer, FloatingPoint, Boolean, SimpleValue, or TextString
+     * for immutable CBOR objects, and Array, Map, or ByteString for
+     * mutable CBOR objects.</p> <p><b>Nesting Depth:</b></p> <p>The
+     * DecodeFromBytes and Read methods can only read objects with a
+     * limited maximum depth of arrays and maps nested within other arrays
+     * and maps. The code sets this maximum depth to 500 (allowing more
+     * than enough nesting for most purposes), but it's possible that stack
+     * overflows in some runtimes might lower the effective maximum nesting
+     * depth. When the nesting depth goes above 500, the DecodeFromBytes
+     * and Read methods throw a CBORException.</p> <p>The ReadJSON and
+     * FromJSONString methods currently have nesting depths of
+     * 1000.</p></p>
      */
 
   public final class CBORObject implements Comparable<CBORObject> {
@@ -3055,7 +3055,8 @@ public static void Write(
     }
 
     /**
-     * Returns false if this object is False, Null, or Undefined; otherwise, true.
+     * Returns false if this object is False, Null, or Undefined (whether or not
+     * the object has tags); otherwise, true.
      * @return False if this object is False, Null, or Undefined; otherwise, true.
      */
     public boolean AsBoolean() {
