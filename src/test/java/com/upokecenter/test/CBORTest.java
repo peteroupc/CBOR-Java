@@ -535,7 +535,7 @@ import com.upokecenter.numbers.*;
           }
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
-          EDecimal bi = AsEI(ed);
+          EInteger bi = AsEI(ed);
           if (ed.isIntegral()) {
             if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               ed.AsNumber().CanFitInInt32()) {
