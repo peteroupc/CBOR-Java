@@ -535,7 +535,7 @@ import com.upokecenter.numbers.*;
           }
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
-          EInteger bi = EInteger.FromInt64(ed.getToObject())(EInteger.class);
+          var bi = AsEI(ed);
           if (ed.isIntegral()) {
             if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               ed.AsNumber().CanFitInInt32()) {
@@ -569,8 +569,12 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(
   EInteger.FromString("2217361768"),
   cbor.ToObject(EInteger.class));
-      Assert.IsFalse((EInteger.FromInt64(cbor.getToObject())(EInteger.class))
-            .GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31);
+
+      if (
+        (AsEI(cbor))GetSignedBitLengthAsEInteger().ToInt32Checked()
+<= 31) {
+ Assert.fail();
+ }
       if (cbor.CanTruncatedIntFitInInt32()) {
  Assert.fail();
  }
@@ -579,8 +583,8 @@ import com.upokecenter.numbers.*;
         0x18, 0x2f, 0x32,
        }); // -2674012278751232
       {
-        int intTemp = (EInteger.FromInt64(cbor.getToObject())(EInteger.class))
-            .GetSignedBitLengthAsEInteger().ToInt32Checked();
+        int intTemp =
+(AsEI(cbor))GetSignedBitLengthAsEInteger().ToInt32Checked();
         Assert.assertEquals(52, intTemp);
       }
       if (!(cbor.AsNumber().CanFitInInt64())) {
@@ -987,9 +991,7 @@ import com.upokecenter.numbers.*;
         if (o2.isZero()) {
           continue;
         }
-        ERational er = ERational.Create(
-            EInteger.FromInt64(o1.getToObject())(EInteger.class),
-            EInteger.FromInt64(o2.getToObject())(EInteger.class));
+        ERational er = ERational.Create(AsEI(o1), AsEI(o2));
         {
           ERational objectTemp = er;
           ERational objectTemp2;
@@ -3324,6 +3326,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+
+    private static EInteger AsEI(CBORObject obj) {
+      Object o = obj.ToObject(EInteger.class);
+      return (EInteger)o;
     }
 
     private static EDecimal AsED(CBORObject obj) {
