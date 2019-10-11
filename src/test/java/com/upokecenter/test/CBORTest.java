@@ -535,7 +535,7 @@ import com.upokecenter.numbers.*;
           }
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
-          var bi = AsEI(ed);
+          EDecimal bi = AsEI(ed);
           if (ed.isIntegral()) {
             if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               ed.AsNumber().CanFitInInt32()) {
@@ -571,8 +571,8 @@ import com.upokecenter.numbers.*;
   cbor.ToObject(EInteger.class));
 
       if (
-        (AsEI(cbor))GetSignedBitLengthAsEInteger().ToInt32Checked()
-<= 31) {
+        AsEI(cbor).GetSignedBitLengthAsEInteger().ToInt32Checked()
+          <= 31) {
  Assert.fail();
  }
       if (cbor.CanTruncatedIntFitInInt32()) {
@@ -583,8 +583,8 @@ import com.upokecenter.numbers.*;
         0x18, 0x2f, 0x32,
        }); // -2674012278751232
       {
-        int intTemp =
-(AsEI(cbor))GetSignedBitLengthAsEInteger().ToInt32Checked();
+        int intTemp = AsEI(cbor)
+          .GetSignedBitLengthAsEInteger().ToInt32Checked();
         Assert.assertEquals(52, intTemp);
       }
       if (!(cbor.AsNumber().CanFitInInt64())) {

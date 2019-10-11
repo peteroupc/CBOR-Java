@@ -471,7 +471,7 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
     public final Collection<Map.Entry<CBORObject, CBORObject>> getEntries() {
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> dict = this.AsMap();
-          return (Collection<Map.Entry<CBORObject, CBORObject>>)dict;
+          return dict.entrySet();
         }
         throw new IllegalStateException("Not a map");
       }
