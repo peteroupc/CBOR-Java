@@ -596,14 +596,12 @@ import com.upokecenter.numbers.*;
             break;
           }
         case Array: {
-            boolean first = true;
             writer.WriteCodePoint((int)'[');
-            for (CBORObject i : obj.AsList()) {
-              if (!first) {
+            for (int i = 0; i < obj.size(); ++i) {
+              if (i > 0) {
                 writer.WriteCodePoint((int)',');
               }
-              WriteJSONToInternal(i, writer, options);
-              first = false;
+              WriteJSONToInternal(obj.get(i), writer, options);
             }
             writer.WriteCodePoint((int)']');
             break;
@@ -611,8 +609,9 @@ import com.upokecenter.numbers.*;
         case Map: {
             boolean first = true;
             boolean hasNonStringKeys = false;
-            Map<CBORObject, CBORObject> objMap = obj.AsMap();
-            for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
+            Collection<Map.Entry<CBORObject, CBORObject>> entries =
+               obj.getEntries();
+            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
               CBORObject key = entry.getKey();
               if (key.getType() != CBORType.TextString ||
               key.isTagged()) {
@@ -624,7 +623,7 @@ import com.upokecenter.numbers.*;
             }
             if (!hasNonStringKeys) {
               writer.WriteCodePoint((int)'{');
-              for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
                 if (!first) {
@@ -645,7 +644,7 @@ import com.upokecenter.numbers.*;
               // Copy to a map with String keys, since
               // some keys could be duplicates
               // when serialized to strings
-              for (Map.Entry<CBORObject, CBORObject> entry : objMap.entrySet()) {
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
                 String str = (key.getType() == CBORType.TextString) ?

@@ -43,7 +43,7 @@ private CBORDataUtilities() {
           EInteger ei = curobject.getMostOuterTag();
           sb.append(ei.toString());
           sb.append('(');
-          curobject = obj.UntagOne();
+          curobject = curobject.UntagOne();
         }
       }
       switch (type) {
@@ -138,9 +138,9 @@ private CBORDataUtilities() {
             if (depth >= 50) {
               sb.append("...");
             } else {
-              // TODO: Avoid use of internal method AsMap
-              Map<CBORObject, CBORObject> map = obj.AsMap();
-              for (Map.Entry<CBORObject, CBORObject> entry : map.entrySet()) {
+              Collection<Map.Entry<CBORObject, CBORObject>> entries =
+                obj.getEntries();
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
                 CBORObject key = entry.getKey();
                 CBORObject value = entry.getValue();
                 if (!first) {
@@ -165,7 +165,7 @@ private CBORDataUtilities() {
       curobject = obj;
       while (curobject.isTagged()) {
         sb.append(')');
-        curobject = obj.UntagOne();
+        curobject = curobject.UntagOne();
       }
       return sb.toString();
     }

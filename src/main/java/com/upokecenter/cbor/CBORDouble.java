@@ -32,11 +32,11 @@ import com.upokecenter.numbers.*;
       return ((Double)obj).doubleValue();
     }
 
-    public EDecimal AsExtendedDecimal(Object obj) {
+    public EDecimal AsEDecimal(Object obj) {
       return EDecimal.FromDouble(((Double)obj).doubleValue());
     }
 
-    public EFloat AsExtendedFloat(Object obj) {
+    public EFloat AsEFloat(Object obj) {
       return EFloat.FromDouble(((Double)obj).doubleValue());
     }
 
@@ -146,7 +146,7 @@ import com.upokecenter.numbers.*;
       return (val < 0) ? -val : obj;
     }
 
-    public ERational AsExtendedRational(Object obj) {
+    public ERational AsERational(Object obj) {
       return ERational.FromDouble(((Double)obj).doubleValue());
     }
 

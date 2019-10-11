@@ -33,14 +33,14 @@ import com.upokecenter.numbers.*;
       return er.ToDouble();
     }
 
-    public EDecimal AsExtendedDecimal(Object obj) {
+    public EDecimal AsEDecimal(Object obj) {
       ERational er = (ERational)obj;
       return
 
   er.ToEDecimalExactIfPossible(EContext.Decimal128.WithUnlimitedExponents());
     }
 
-    public EFloat AsExtendedFloat(Object obj) {
+    public EFloat AsEFloat(Object obj) {
       ERational er = (ERational)obj;
       return
 
@@ -155,7 +155,7 @@ import com.upokecenter.numbers.*;
       return ed.Abs();
     }
 
-    public ERational AsExtendedRational(Object obj) {
+    public ERational AsERational(Object obj) {
       return (ERational)obj;
     }
 

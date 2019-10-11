@@ -13,6 +13,20 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 
 * `CBORNumber Add​(CBORNumber b)`<br>
  Returns the sum of this number and another number.
+* `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.EFloat AsEFloat()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.EInteger AsEInteger()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.ERational AsERational()`<br>
+ Not documented yet.
+* `boolean CanFitInInt32()`<br>
+ Returns whether this object's numerical value is an integer, is -(2^31) or
+ greater, and is less than 2^31.
+* `boolean CanFitInInt64()`<br>
+ Returns whether this object's numerical value is an integer, is -(2^63) or
+ greater, and is less than 2^63.
 * `int compareTo​(CBORNumber other)`<br>
  Compares two CBOR numbers.
 * `CBORNumber Divide​(CBORNumber b)`<br>
@@ -21,6 +35,10 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Creates a CBOR number object from a CBOR object representing a number (that
  is, one for which the IsNumber property in.NET or the isNumber()
  method in Java returns true).
+* `boolean IsInfinity()`<br>
+ Gets a value indicating whether this object represents infinity.
+* `boolean IsNaN()`<br>
+ Gets a value indicating whether this object represents a not-a-number value.
 * `CBORNumber Multiply​(CBORNumber b)`<br>
  Returns a CBOR number expressing the product of this number and the given
  number.
@@ -72,6 +90,76 @@ Returns the value of this object in text form.
 **Returns:**
 
 * A text string representing the value of this object.
+
+### CanFitInInt32
+    public boolean CanFitInInt32()
+Returns whether this object's numerical value is an integer, is -(2^31) or
+ greater, and is less than 2^31.
+
+**Returns:**
+
+* <code>true</code> if this object's numerical value is an integer, is
+ -(2^31) or greater, and is less than 2^31; otherwise, <code>false</code>.
+
+### CanFitInInt64
+    public boolean CanFitInInt64()
+Returns whether this object's numerical value is an integer, is -(2^63) or
+ greater, and is less than 2^63.
+
+**Returns:**
+
+* <code>true</code> if this object's numerical value is an integer, is
+ -(2^63) or greater, and is less than 2^63; otherwise, <code>false</code>.
+
+### IsInfinity
+    public boolean IsInfinity()
+Gets a value indicating whether this object represents infinity.
+
+**Returns:**
+
+* <code>true</code> if this object represents infinity; otherwise, <code>
+ false</code>.
+
+### IsNaN
+    public boolean IsNaN()
+Gets a value indicating whether this object represents a not-a-number value.
+
+**Returns:**
+
+* <code>true</code> if this object represents a not-a-number value;
+ otherwise, <code>false</code>.
+
+### AsEInteger
+    public com.upokecenter.numbers.EInteger AsEInteger()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### AsEDecimal
+    public com.upokecenter.numbers.EDecimal AsEDecimal()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### AsEFloat
+    public com.upokecenter.numbers.EFloat AsEFloat()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### AsERational
+    public com.upokecenter.numbers.ERational AsERational()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
 
 ### Negate
     public CBORNumber Negate()

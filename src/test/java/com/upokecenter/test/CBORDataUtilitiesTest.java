@@ -18,35 +18,35 @@ import com.upokecenter.numbers.*;
       CBORObject cbor;
       cbor = CBORDataUtilities.ParseJSONNumber("-0", false, false, true);
       {
-        String stringTemp = cbor.AsEDecimal().toString();
+        String stringTemp = cbor.ToObject(EDecimal.class).toString();
         Assert.assertEquals(
           "-0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0e-1", false, false, true);
       {
-        String stringTemp = cbor.AsEDecimal().toString();
+        String stringTemp = cbor.ToObject(EDecimal.class).toString();
         Assert.assertEquals(
           "-0.0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0e1", false, false, true);
       {
-        String stringTemp = cbor.AsEDecimal().toString();
+        String stringTemp = cbor.ToObject(EDecimal.class).toString();
         Assert.assertEquals(
           "-0E+1",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0.0e1", false, false, true);
       {
-        String stringTemp = cbor.AsEDecimal().toString();
+        String stringTemp = cbor.ToObject(EDecimal.class).toString();
         Assert.assertEquals(
           "-0",
           stringTemp);
       }
       cbor = CBORDataUtilities.ParseJSONNumber("-0.0", false, false, true);
       {
-        String stringTemp = cbor.AsEDecimal().toString();
+        String stringTemp = cbor.ToObject(EDecimal.class).toString();
         Assert.assertEquals(
           "-0.0",
           stringTemp);
@@ -87,8 +87,8 @@ import com.upokecenter.numbers.*;
         "-0.00E-1", "0.000",
       };
       for (int i = 0; i < strings.length; i += 2) {
-        EDecimal jsonDecimal = CBORDataUtilities
-                  .ParseJSONNumber(strings[i]).AsEDecimal();
+        EDecimal jsonDecimal = (EDecimal)CBORDataUtilities
+                  .ParseJSONNumber(strings[i]).ToObject(EDecimal.class);
         Assert.assertEquals(
           strings[i + 1],
           jsonDecimal.toString());

@@ -37,7 +37,8 @@ import com.upokecenter.numbers.*;
         if (!obj.isFinite()) {
           throw new CBORException("Not a finite number");
         }
-        EDecimal dec = obj.AsEDecimal();
+        EDecimal dec;
+        dec = (EDecimal)obj.ToObject(EDecimal.class);
         int[] lesserFields = new int[7];
         EInteger[] year = new EInteger[1];
         CBORUtilities.BreakDownSecondsSinceEpoch(

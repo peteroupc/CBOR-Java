@@ -231,7 +231,7 @@ private BEncoding() {
           throw new NullPointerException("stream");
         }
         stream.write(((byte)((byte)0x69)));
-        WriteUtf8(obj.AsEInteger().toString(), stream);
+        WriteUtf8(obj.ToObject(EInteger.class).toString(), stream);
         stream.write(((byte)((byte)0x65)));
       } else if (obj.getType() == CBORType.TextString) {
         String s = obj.AsString();

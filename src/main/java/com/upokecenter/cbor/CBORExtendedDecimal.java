@@ -37,12 +37,12 @@ import com.upokecenter.numbers.*;
       return ed.ToDouble();
     }
 
-    public EDecimal AsExtendedDecimal(Object obj) {
+    public EDecimal AsEDecimal(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed;
     }
 
-    public EFloat AsExtendedFloat(Object obj) {
+    public EFloat AsEFloat(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.ToEFloat();
     }
@@ -155,7 +155,7 @@ import com.upokecenter.numbers.*;
       return ed.Abs();
     }
 
-    public ERational AsExtendedRational(Object obj) {
+    public ERational AsERational(Object obj) {
       return ERational.FromEDecimal((EDecimal)obj);
     }
 

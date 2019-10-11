@@ -25,15 +25,15 @@ import com.upokecenter.numbers.*;
       return ((Long)obj).doubleValue();
     }
 
-    public EDecimal AsExtendedDecimal(Object obj) {
+    public EDecimal AsEDecimal(Object obj) {
       return EDecimal.FromInt64((((Long)obj).longValue()));
     }
 
-    public EFloat AsExtendedFloat(Object obj) {
+    public EFloat AsEFloat(Object obj) {
       return EFloat.FromInt64((((Long)obj).longValue()));
     }
 
-    public ERational AsExtendedRational(Object obj) {
+    public ERational AsERational(Object obj) {
       return ERational.FromInt64((((Long)obj).longValue()));
     }
 

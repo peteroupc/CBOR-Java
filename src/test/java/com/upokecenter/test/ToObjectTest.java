@@ -621,12 +621,9 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         Assert.assertEquals(objectTemp, objectTemp2);
       }
 
-      boolean
-
-  bnan = ToObjectTest.TestToFromObjectRoundTrip(
+      boolean bnan = ToObjectTest.TestToFromObjectRoundTrip(
         ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
-        .ToObject(ERational.class))
-    .IsNaN();
+        .ToObject(ERational.class)).AsNumber().IsNaN();
       if (!(bnan)) {
  Assert.fail();
  }
@@ -645,9 +642,9 @@ ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       Assert.assertTrue(
-  ToObjectTest.TestToFromObjectRoundTrip(
+     ToObjectTest.TestToFromObjectRoundTrip(
     ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-          .ToObject(ERational.class)).IsNaN());
+          .ToObject(ERational.class)).AsNumber().IsNaN());
     }
     @Test
     public void TestAsInt16() {

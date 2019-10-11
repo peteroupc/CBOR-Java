@@ -26,7 +26,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -41,7 +41,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -55,7 +55,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -69,7 +69,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -83,7 +83,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -97,7 +97,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEDecimal());
+        System.out.println("" + cbor.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -118,7 +118,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -133,7 +133,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -147,7 +147,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -161,7 +161,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -175,7 +175,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -189,7 +189,7 @@ import com.upokecenter.numbers.*;
  Assert.fail(cbor.toString());
  }
       try {
-        System.out.println(cbor.AsEFloat());
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -253,7 +253,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsERational();
+        CBORObject.True.ToObject(ERational.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -262,7 +262,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsERational();
+        CBORObject.False.ToObject(ERational.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -271,7 +271,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewArray().AsERational();
+        CBORObject.NewArray().ToObject(ERational.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -280,7 +280,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsERational();
+        CBORObject.NewMap().ToObject(ERational.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -510,10 +510,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       co = ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
       co2 = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
       {
-        Object objectTemp = co.isNegative() && co.IsInfinity();
-        Object objectTemp2 = co2.isNegative() &&
-co2.IsInfinity();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        boolean boolTemp = co.isNegative() && co.AsNumber().IsInfinity();
+        boolean boolTemp2 = co2.isNegative() && co2.AsNumber().IsInfinity();
+        Assert.assertEquals(boolTemp, boolTemp2);
       }
     }
 
@@ -691,7 +690,7 @@ co2.IsInfinity();
         Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xc2,
           0x40,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -699,12 +698,17 @@ co2.IsInfinity();
         Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xc3,
           0x41, 0x00,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
-      Assert.assertEquals(
-        EInteger.FromString("-1"),
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x40, }).AsEInteger());
+      {
+        Object objectTemp = EInteger.FromString("-1");
+        Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
+          (byte)0xc3,
+          0x40,
+         }).ToObject(EInteger.class);
+        Assert.assertEquals(objectTemp, objectTemp2);
+}
     }
 
     @Test
@@ -915,19 +919,31 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestNegativeBigInts() {
-      Assert.assertEquals(
-  EInteger.FromString("-257"),
-  CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x42, 1, 0 }).AsEInteger());
-      Assert.assertEquals(
-  EInteger.FromString("-65537"),
-  CBORObject.DecodeFromBytes(new byte[] { (byte)0xc3, 0x43, 1, 0, 0 }).AsEInteger());
+      {
+        Object objectTemp = EInteger.FromString("-257");
+        Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
+          (byte)0xc3,
+          0x42, 1,
+          0,
+         }).ToObject(EInteger.class);
+        Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+        Object objectTemp = EInteger.FromString("-65537");
+        Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
+          (byte)0xc3,
+          0x43, 1,
+          0, 0,
+         }).ToObject(EInteger.class);
+        Assert.assertEquals(objectTemp, objectTemp2);
+}
       {
         Object objectTemp = EInteger.FromString("-16777217");
         Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xc3, 0x44,
           1,
           0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -936,7 +952,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           (byte)0xc3, 0x45,
           1,
           0, 0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -945,7 +961,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           (byte)0xc3, 0x46,
           1,
           0, 0, 0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -955,7 +971,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           1,
           0, 0, 0, 0,
           0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -965,7 +981,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           1,
           0, 0, 0, 0,
           0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -974,7 +990,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           (byte)0xc3, 0x49,
           1,
           0, 0, 0, 0, 0, 0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
@@ -983,7 +999,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           (byte)0xc3, 0x4a,
           1,
           0, 0, 0, 0, 0, 0, 0, 0, 0,
-         }).AsEInteger();
+         }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
