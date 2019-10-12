@@ -293,42 +293,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
     @Test
-    public void TestAbs() {
-      Assert.assertEquals(
-        ToObjectTest.TestToFromObjectRoundTrip(2),
-        ToObjectTest.TestToFromObjectRoundTrip(-2).Abs());
-      Assert.assertEquals(
-        ToObjectTest.TestToFromObjectRoundTrip(2),
-        ToObjectTest.TestToFromObjectRoundTrip(2).Abs());
-      Assert.assertEquals(
-        ToObjectTest.TestToFromObjectRoundTrip(2.5),
-        ToObjectTest.TestToFromObjectRoundTrip(-2.5).Abs());
-      {
-        Object objectTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString("6.63"));
-        Object objectTemp2 =
-          ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-          "-6.63")).Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        Object objectTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(EFloat.FromString("2.75"));
-        Object objectTemp2 =
-                   ToObjectTest.TestToFromObjectRoundTrip(EFloat.FromString(
-                 "-2.75")).Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        Object objectTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(ERational.FromDouble(2.5));
-        Object objectTemp2 =
-          ToObjectTest.TestToFromObjectRoundTrip(ERational.FromDouble(-2.5))
-                  .Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-    }
-    @Test
     public void TestAdd() {
       CBORObject cbor = CBORObject.NewMap();
       CBORObject cborNull = CBORObject.Null;

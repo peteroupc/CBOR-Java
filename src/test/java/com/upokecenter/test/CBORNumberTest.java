@@ -6,6 +6,38 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
 public class CBORNumberTest {
+private static void ToCN(Object o) {
+  return ToObjectTest.TestToFromObjectRoundTrip(o).AsNumber();
+}
+
+@Test
+public void TestAbs() {
+      Assert.assertEquals(
+        ToCN(2),
+        ToCN(-2).Abs());
+      Assert.assertEquals(
+        ToCN(2),
+        ToCN(2).Abs());
+      Assert.assertEquals(
+        ToCN(2.5),
+        ToCN(-2.5).Abs());
+      {
+        Object objectTemp = ToCN(EDecimal.FromString("6.63"));
+        Object objectTemp2 = ToCN(EDecimal.FromString(
+          "-6.63")).Abs();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = ToCN(EFloat.FromString("2.75"));
+        Object objectTemp2 = ToCN(EFloat.FromString("-2.75")).Abs();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = ToCN(ERational.FromDouble(2.5));
+        Object objectTemp2 = ToCN(ERational.FromDouble(-2.5)).Abs();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+    }
 @Test
 public void TestToCBORObject() {
 // not implemented yet

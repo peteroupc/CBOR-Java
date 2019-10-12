@@ -762,7 +762,10 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * opposed to Not-a-Number, NaN).
      * @throws NullPointerException The parameter {@code first} or {@code second}
      * is null.
-     */
+     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
+ * use the first number's.Add() method.
+ */
+@Deprecated
     public static CBORObject Addition(CBORObject first, CBORObject second) {
       if (first == null) {
         throw new NullPointerException("first");
@@ -956,7 +959,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @return The quotient of the two objects.
      * @throws NullPointerException The parameter {@code first} or {@code second}
      * is null.
-     */
+     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
+ * use the first number's.Divide() method.
+ */
+@Deprecated
     public static CBORObject Divide(CBORObject first, CBORObject second) {
       if (first == null) {
         throw new NullPointerException("first");
@@ -2241,7 +2247,10 @@ if (longValue > 0xffffffffL) {
      * opposed to Not-a-Number, NaN).
      * @throws NullPointerException The parameter {@code first} or {@code second}
      * is null.
-     */
+     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
+ * use the first number's.Multiply() method.
+ */
+@Deprecated
     public static CBORObject Multiply(CBORObject first, CBORObject second) {
       if (first == null) {
         throw new NullPointerException("first");
@@ -2478,7 +2487,10 @@ options) throws java.io.IOException {
      * @return The remainder of the two numbers.
      * @throws NullPointerException The parameter {@code first} or {@code second}
      * is null.
-     */
+     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
+ * use the first number's.Remainder() method.
+ */
+@Deprecated
     public static CBORObject Remainder(CBORObject first, CBORObject second) {
       if (first == null) {
         throw new NullPointerException("first");
@@ -2508,7 +2520,10 @@ options) throws java.io.IOException {
      * opposed to Not-a-Number, NaN).
      * @throws NullPointerException The parameter {@code first} or {@code second}
      * is null.
-     */
+     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
+ * use the first number's.Subtract() method.
+ */
+@Deprecated
     public static CBORObject Subtract(CBORObject first, CBORObject second) {
       if (first == null) {
         throw new NullPointerException("first");

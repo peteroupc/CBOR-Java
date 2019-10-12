@@ -112,7 +112,11 @@ Instead, convert this CBOR Object to a number (with .AsNumber()), and
  key doesn't exist.
 * `static CBORObject Addition​(CBORObject first,
         CBORObject second)`<br>
- Finds the sum of two CBOR numbers.
+ Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Add() method.
+ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Add() method.
 * `boolean AsBoolean()`<br>
  Returns false if this object is False, Null, or Undefined (whether or not
  the object has tags); otherwise, true.
@@ -242,7 +246,11 @@ Instead, use CanValueFitInInt64(), if the application allows only CBOR
  bytes.
 * `static CBORObject Divide​(CBORObject first,
       CBORObject second)`<br>
- Divides a CBORObject object by the value of a CBORObject object.
+ Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Divide() method.
+ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Divide() method.
 * `byte[] EncodeToBytes()`<br>
  Writes the binary representation of this CBOR object and returns a byte
  array of that representation.
@@ -439,7 +447,11 @@ Use the following instead: (cbor.isNumber()
  Gets a value indicating whether this object's value equals 0.
 * `static CBORObject Multiply​(CBORObject first,
         CBORObject second)`<br>
- Multiplies two CBOR numbers.
+ Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Multiply() method.
+ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Multiply() method.
 * `CBORObject Negate()`<br>
  Deprecated.
 Instead, convert this CBOR Object to a number (with .AsNumber()), and
@@ -471,8 +483,11 @@ Instead, convert this CBOR Object to a number (with .AsNumber()), and
  Reads a sequence of objects in CBOR format from a data stream.
 * `static CBORObject Remainder​(CBORObject first,
          CBORObject second)`<br>
- Finds the remainder that results when a CBORObject object is divided by the
- value of a CBORObject object.
+ Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Remainder() method.
+ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Remainder() method.
 * `boolean Remove​(CBORObject obj)`<br>
  If this object is an array, removes the first instance of the specified item
  from the array.
@@ -503,7 +518,11 @@ Instead, convert this CBOR Object to a number (with .AsNumber()), and
  or 0 if this item is neither an array nor a map.
 * `static CBORObject Subtract​(CBORObject first,
         CBORObject second)`<br>
- Finds the difference between two CBOR number objects.
+ Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Subtract() method.
+ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Subtract() method.
 * `java.lang.String ToJSONString()`<br>
  Converts this object to a string in JavaScript object Notation (JSON)
  format.
@@ -1039,8 +1058,10 @@ Sets the value of a CBOR object in this map, using a string as the key.
 * <code>java.lang.IllegalStateException</code> - This object is not a map.
 
 ### Addition
-    public static CBORObject Addition​(CBORObject first, CBORObject second)
-Finds the sum of two CBOR numbers.
+    @Deprecated public static CBORObject Addition​(CBORObject first, CBORObject second)
+Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Add() method.
 
 **Parameters:**
 
@@ -1170,8 +1191,10 @@ Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  parameter <code>options</code> is null.
 
 ### Divide
-    public static CBORObject Divide​(CBORObject first, CBORObject second)
-Divides a CBORObject object by the value of a CBORObject object.
+    @Deprecated public static CBORObject Divide​(CBORObject first, CBORObject second)
+Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Divide() method.
 
 **Parameters:**
 
@@ -2069,8 +2092,10 @@ Creates a CBOR object from a simple value number.
  greater than 255, or from 24 through 31.
 
 ### Multiply
-    public static CBORObject Multiply​(CBORObject first, CBORObject second)
-Multiplies two CBOR numbers.
+    @Deprecated public static CBORObject Multiply​(CBORObject first, CBORObject second)
+Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Multiply() method.
 
 **Parameters:**
 
@@ -2275,9 +2300,10 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  encoding or is not in JSON format.
 
 ### Remainder
-    public static CBORObject Remainder​(CBORObject first, CBORObject second)
-Finds the remainder that results when a CBORObject object is divided by the
- value of a CBORObject object.
+    @Deprecated public static CBORObject Remainder​(CBORObject first, CBORObject second)
+Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Remainder() method.
 
 **Parameters:**
 
@@ -2295,8 +2321,10 @@ Finds the remainder that results when a CBORObject object is divided by the
  is null.
 
 ### Subtract
-    public static CBORObject Subtract​(CBORObject first, CBORObject second)
-Finds the difference between two CBOR number objects.
+    @Deprecated public static CBORObject Subtract​(CBORObject first, CBORObject second)
+Deprecated.
+Instead, convert both CBOR objects to numbers (with .AsNumber()), and
+ use the first number's.Subtract() method.
 
 **Parameters:**
 
