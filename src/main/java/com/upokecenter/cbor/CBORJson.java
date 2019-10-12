@@ -229,6 +229,14 @@ import com.upokecenter.numbers.*;
               sb.append((char)c);
               c = this.reader.ReadChar();
             }
+            if (this.numbersToDoubles) {
+              str = sb.toString();
+              double dbl = CBORDataUtilities.ParseJSONDouble(str, true);
+              if (Double.isNaN(dbl)) {
+                this.reader.RaiseError("JSON number can't be parsed. " + str);
+              }
+              return CBORObject.FromObject(dbl);
+            }
             if (lengthTwo) {
               obj = cval == 0 ?
               CBORDataUtilities.ParseJSONNumber("-0", true, false, true) :
@@ -273,7 +281,14 @@ import com.upokecenter.numbers.*;
               sb.append((char)c);
               c = this.reader.ReadChar();
             }
-            if (lengthOne) {
+            if (this.numbersToDoubles) {
+              str = sb.toString();
+              double dbl = CBORDataUtilities.ParseJSONDouble(str, true);
+              if (Double.isNaN(dbl)) {
+                this.reader.RaiseError("JSON number can't be parsed. " + str);
+              }
+              return CBORObject.FromObject(dbl);
+            } else if (lengthOne) {
               obj = CBORObject.FromObject(cval);
             } else {
               str = sb.toString();
@@ -296,12 +311,20 @@ import com.upokecenter.numbers.*;
       return null;
     }
 
-    private boolean noDuplicates;
+    private final boolean noDuplicates;
+    private final boolean numbersToDoubles;
 
-    public CBORJson(CharacterInputWithCount reader, boolean noDuplicates) {
+    public CBORJson(CharacterInputWithCount reader,
+          boolean noDuplicates) {
+ this(reader, noDuplicates, false);
+    }
+
+    public CBORJson(CharacterInputWithCount reader,
+          boolean noDuplicates, boolean numbersToDoubles) {
       this.reader = reader;
       this.sb = null;
       this.noDuplicates = noDuplicates;
+      this.numbersToDoubles = numbersToDoubles;
     }
 
     public CBORObject ParseJSON(boolean objectOrArrayOnly, int[] nextchar) {
