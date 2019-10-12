@@ -96,7 +96,11 @@
 ## Methods
 
 * `CBORObject Abs()`<br>
- Gets this object's absolute value.
+ Deprecated.
+Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Abs() method.
+ Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Abs() method.
 * `CBORObject Add​(CBORObject obj)`<br>
  Adds a new object to the end of this array.
 * `CBORObject Add​(java.lang.Object obj)`<br>
@@ -437,7 +441,11 @@ Use the following instead: (cbor.isNumber()
         CBORObject second)`<br>
  Multiplies two CBOR numbers.
 * `CBORObject Negate()`<br>
- Gets this object's value with the sign reversed.
+ Deprecated.
+Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Negate() method.
+ Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Negate() method.
 * `static CBORObject NewArray()`<br>
  Creates a new empty CBOR array.
 * `static CBORObject NewMap()`<br>
@@ -769,8 +777,8 @@ Gets a collection of the keys of this CBOR object in an undefined order.
 **Returns:**
 
 * A collection of the keys of this CBOR object. To avoid potential
- problems, the calling code should not modify the CBOR map while
- iterating over the returned collection.
+ problems, the calling code should not modify the CBOR map or the
+ returned collection while iterating over the returned collection.
 
 **Throws:**
 
@@ -850,7 +858,8 @@ Gets a collection of the key/value pairs stored in this CBOR object, if it's
 
 * A collection of the key/value pairs stored in this CBOR map. To
  avoid potential problems, the calling code should not modify the
- CBOR map while iterating over the returned collection.
+ CBOR map or the returned collection while iterating over the
+ returned collection.
 
 **Throws:**
 
@@ -869,7 +878,8 @@ Gets a collection of the values of this CBOR object, if it's a map or an
 
 * A collection of the values of this CBOR map or array. To avoid
  potential problems, the calling code should not modify the CBOR map
- or array while iterating over the returned collection.
+ or array or the returned collection while iterating over the
+ returned collection.
 
 **Throws:**
 
@@ -2638,8 +2648,10 @@ Converts an arbitrary object to a string in JavaScript object Notation
 * <code>java.io.IOException</code>
 
 ### Abs
-    public CBORObject Abs()
-Gets this object's absolute value.
+    @Deprecated public CBORObject Abs()
+Deprecated.
+Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Abs() method.
 
 **Returns:**
 
@@ -3603,8 +3615,10 @@ Gets a value indicating whether this CBOR object represents positive
  otherwise, <code>false</code>.
 
 ### Negate
-    public CBORObject Negate()
-Gets this object's value with the sign reversed.
+    @Deprecated public CBORObject Negate()
+Deprecated.
+Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ use that number's.Negate() method.
 
 **Returns:**
 

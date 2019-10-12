@@ -15,6 +15,7 @@ import com.upokecenter.numbers.*;
 
 // TODO: Add method that finds estimated byte size of CBOR objects
 // TODO: Consider deprecating most number conversion/checking methods here
+// TODO: Make .Keys, .Values, and .Entries read-only
 
     /**
      * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -349,8 +350,8 @@ cn.GetNumberInterface().IsNumberZero(cn.GetValue());
     /**
      * Gets a collection of the keys of this CBOR object in an undefined order.
      * @return A collection of the keys of this CBOR object. To avoid potential
-     * problems, the calling code should not modify the CBOR map while
-     * iterating over the returned collection.
+     * problems, the calling code should not modify the CBOR map or the
+     * returned collection while iterating over the returned collection.
      * @throws IllegalStateException This object is not a map.
      */
     public final Collection<CBORObject> getKeys() {
@@ -465,7 +466,8 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * undefined order.
      * @return A collection of the key/value pairs stored in this CBOR map. To
      * avoid potential problems, the calling code should not modify the
-     * CBOR map while iterating over the returned collection.
+     * CBOR map or the returned collection while iterating over the
+     * returned collection.
      * @throws IllegalStateException This object is not a map.
      */
     public final Collection<Map.Entry<CBORObject, CBORObject>> getEntries() {
@@ -485,7 +487,8 @@ cn.GetNumberInterface().IsNegative(cn.GetValue());
      * GetByteString method instead.).
      * @return A collection of the values of this CBOR map or array. To avoid
      * potential problems, the calling code should not modify the CBOR map
-     * or array while iterating over the returned collection.
+     * or array or the returned collection while iterating over the
+     * returned collection.
      * @throws IllegalStateException This object is not a map or an array.
      */
     public final Collection<CBORObject> getValues() {
@@ -3075,7 +3078,10 @@ public static void Write(
      * @throws IllegalStateException This object does not represent a number (for
      * this purpose, infinities and not-a-number or NaN values, but not
      * CBORObject.Null, are considered numbers).
-     */
+     * @deprecated Instead, convert this CBOR Object to a number (with\u0020.AsNumber()), and
+ * use that number's.Abs() method.
+ */
+@Deprecated
     public CBORObject Abs() {
       CBORNumber cn = CBORNumber.FromCBORObject(this);
       if (cn == null) {
@@ -4445,7 +4451,10 @@ public boolean equals(CBORObject other) {
      * @throws IllegalStateException This object does not represent a number (for
      * this purpose, infinities and not-a-number or NaN values, but not
      * CBORObject.Null, are considered numbers).
-     */
+     * @deprecated Instead, convert this CBOR Object to a number (with\u0020.AsNumber()), and
+ * use that number's.Negate() method.
+ */
+@Deprecated
     public CBORObject Negate() {
       CBORNumber cn = CBORNumber.FromCBORObject(this);
       if (cn == null) {

@@ -693,6 +693,27 @@ Double.isNaN(f)) {
     }
 
     /**
+     * Returns the absolute value of this CBOR number.
+     * @return This object's absolute value without its negative sign.
+     */
+    public CBORNumber Abs() {
+      switch (this.kind) {
+        case Integer: {
+          long longValue = (((Long)this.value).longValue());
+          if (longValue == Long.MIN_VALUE) {
+            return FromObject(EInteger.FromInt64(longValue).Negate());
+          } else {
+            return new CBORNumber(this.kind, Math.abs(longValue));
+          }
+        }
+        case EInteger:
+          return FromObject(((EInteger)this.value).Abs());
+        default: return new CBORNumber(this.kind,
+            this.GetNumberInterface().Abs(this.GetValue()));
+      }
+    }
+
+    /**
      * Returns a CBOR number with the same value as this one but with the sign
      * reversed.
      * @return A CBOR number with the same value as this one but with the sign
@@ -700,14 +721,16 @@ Double.isNaN(f)) {
      */
     public CBORNumber Negate() {
       switch (this.kind) {
-        case Integer:
-          if ((((Long)this.value).longValue()) == 0) {
+        case Integer: {
+          long longValue = (((Long)this.value).longValue());
+          if (longValue == 0) {
             return FromObject(EDecimal.NegativeZero);
-          } else if ((((Long)this.value).longValue()) == Long.MIN_VALUE) {
-            return FromObject(EInteger.FromInt64((((Long)this.value).longValue())).Negate());
+          } else if (longValue == Long.MIN_VALUE) {
+            return FromObject(EInteger.FromInt64(longValue).Negate());
           } else {
-            return new CBORNumber(this.kind, -(((Long)this.value).longValue()));
+            return new CBORNumber(this.kind, -longValue);
           }
+        }
         case EInteger:
           if ((((Long)this.value).longValue()) == 0) {
             return FromObject(EDecimal.NegativeZero);

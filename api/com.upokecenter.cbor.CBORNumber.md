@@ -11,6 +11,8 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 
 ## Methods
 
+* `CBORNumber Abs()`<br>
+ Returns the absolute value of this CBOR number.
 * `CBORNumber Add​(CBORNumber b)`<br>
  Returns the sum of this number and another number.
 * `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
@@ -160,6 +162,14 @@ Not documented yet.
 **Returns:**
 
 * The return value is not documented yet.
+
+### Abs
+    public CBORNumber Abs()
+Returns the absolute value of this CBOR number.
+
+**Returns:**
+
+* This object's absolute value without its negative sign.
 
 ### Negate
     public CBORNumber Negate()
