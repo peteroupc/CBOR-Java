@@ -362,10 +362,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
     }
-    @Test
-    public void TestAddTagHandler() {
-      // not implemented yet
-    }
 
     @Test
     public void TestAsBoolean() {
@@ -2225,50 +2221,6 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-    }
-
-    @Test
-    public void TestDivide() {
-      try {
-        CBORObject.Divide(null, ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Divide(ToObjectTest.TestToFromObjectRoundTrip(2), null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Divide(
-         CBORObject.Null,
-         ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Divide(
-         ToObjectTest.TestToFromObjectRoundTrip(2),
-         CBORObject.Null);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
     }
 
     @Test
@@ -5395,50 +5347,6 @@ finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
 }
 }
-    }
-
-    @Test
-    public void TestRemainder() {
-      try {
-        CBORObject.Remainder(null, ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Remainder(ToObjectTest.TestToFromObjectRoundTrip(2), null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Remainder(
-  CBORObject.Null,
-  ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Remainder(
-  ToObjectTest.TestToFromObjectRoundTrip(2),
-  CBORObject.Null);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
     }
 
     @Test

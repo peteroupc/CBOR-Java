@@ -6,36 +6,36 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
 public class CBORNumberTest {
-private static void ToCN(Object o) {
+private static CBORNumber ToCN(Object o) {
   return ToObjectTest.TestToFromObjectRoundTrip(o).AsNumber();
 }
 
 @Test
 public void TestAbs() {
-      Assert.assertEquals(
+      TestCommon.CompareTestEqual(
         ToCN(2),
         ToCN(-2).Abs());
-      Assert.assertEquals(
+      TestCommon.CompareTestEqual(
         ToCN(2),
         ToCN(2).Abs());
-      Assert.assertEquals(
+      TestCommon.CompareTestEqual(
         ToCN(2.5),
         ToCN(-2.5).Abs());
       {
-        Object objectTemp = ToCN(EDecimal.FromString("6.63"));
-        Object objectTemp2 = ToCN(EDecimal.FromString(
+        CBORNumber objectTemp = ToCN(EDecimal.FromString("6.63"));
+        CBORNumber objectTemp2 = ToCN(EDecimal.FromString(
           "-6.63")).Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
       {
-        Object objectTemp = ToCN(EFloat.FromString("2.75"));
-        Object objectTemp2 = ToCN(EFloat.FromString("-2.75")).Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        CBORNumber objectTemp = ToCN(EFloat.FromString("2.75"));
+        CBORNumber objectTemp2 = ToCN(EFloat.FromString("-2.75")).Abs();
+        TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
       {
-        Object objectTemp = ToCN(ERational.FromDouble(2.5));
-        Object objectTemp2 = ToCN(ERational.FromDouble(-2.5)).Abs();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        CBORNumber objectTemp = ToCN(ERational.FromDouble(2.5));
+        CBORNumber objectTemp2 = ToCN(ERational.FromDouble(-2.5)).Abs();
+        TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
     }
 @Test
@@ -92,17 +92,60 @@ public void TestAdd() {
 public void TestSubtract() {
 // not implemented yet
 }
+
+private static EDecimal AsED(CBORObject obj) {
+      return (EDecimal)obj.ToObject(EDecimal.class);
+    }
 @Test
 public void TestMultiply() {
-// not implemented yet
+      try {
+        ToCN(2).Multiply(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      RandomGenerator r = new RandomGenerator();
+      for (int i = 0; i < 3000; ++i) {
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
+        EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
+        EDecimal cmpCobj = AsED(AsCN(o1).Multiply(AsCN(o2)));
+        if (!cmpDecFrac.equals(cmpCobj)) {
+          TestCommon.CompareTestEqual(
+            cmpDecFrac,
+            cmpCobj,
+            o1.toString() + "\n" + o2.toString());
+        }
+        CBORTestCommon.AssertRoundTrip(o1);
+        CBORTestCommon.AssertRoundTrip(o2);
+      }
 }
 @Test
 public void TestDivide() {
-// not implemented yet
+      try {
+        ToCN(2).Divide(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 }
 @Test
 public void TestRemainder() {
-// not implemented yet
+      try {
+        ToCN(2).Remainder(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 }
 @Test
 public void TestCompareTo() {

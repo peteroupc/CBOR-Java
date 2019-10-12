@@ -703,11 +703,15 @@ Double.isNaN(f)) {
           if (longValue == Long.MIN_VALUE) {
             return FromObject(EInteger.FromInt64(longValue).Negate());
           } else {
-            return new CBORNumber(this.kind, Math.abs(longValue));
+            return longValue >= 0 ? this : new CBORNumber(
+              this.kind,
+              Math.abs(longValue));
           }
         }
-        case EInteger:
-          return FromObject(((EInteger)this.value).Abs());
+        case EInteger: {
+          EInteger eivalue = (EInteger)this.value;
+          return eivalue.signum() >= 0 ? this : FromObject(eivalue.Abs());
+        }
         default: return new CBORNumber(this.kind,
             this.GetNumberInterface().Abs(this.GetValue()));
       }
