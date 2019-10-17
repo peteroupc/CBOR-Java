@@ -65,10 +65,15 @@ private BEncoding() {
           throw new CBORException("Invalid integer encoding");
         }
       }
-      return CBORDataUtilities.ParseJSONNumber(
-        builder.toString(),
-        true,
-        false);
+      String s = builder.toString();
+      if (s.length()>= 2 && s.charAt(0)=='0' && s.charAt(1)=='0') {
+          throw new CBORException("Invalid integer encoding");
+      }
+      if (s.length()>= 3 && s.charAt(0)=='-' && s.charAt(1)=='0' && s.charAt(2)=='0') {
+          throw new CBORException("Invalid integer encoding");
+      }
+      return CBORObject.FromObject(
+          EInteger.FromString(s));
     }
 
     private static CBORObject ReadList(InputStream stream) throws java.io.IOException {
@@ -134,13 +139,15 @@ private BEncoding() {
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue *
+10)));
           chars[count--] = digit;
           intlongValue = intdivValue;
         }
         while (intlongValue > 9) {
           int intdivValue = (intlongValue * 26215) >> 18;
-          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue * 10)));
+          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue *
+10)));
           chars[count--] = digit;
           intlongValue = intdivValue;
         }
@@ -202,18 +209,17 @@ private BEncoding() {
           throw new CBORException("Invalid integer encoding");
         }
       }
-      CBORObject number = CBORDataUtilities.ParseJSONNumber(
-        builder.toString(),
-        true,
-        true);
-      int length = 0;
-      try {
-        length = number.AsInt32();
-      } catch (ArithmeticException ex) {
+      String s = builder.toString();
+      if (s.length()>= 2 && s.charAt(0)=='0' && s.charAt(1)=='0') {
+          throw new CBORException("Invalid integer encoding");
+      }
+      EInteger numlength = EInteger.FromString(s);
+      if (!numlength.CanFitInInt32()) {
         throw new CBORException("Length too long", ex);
       }
       builder = new StringBuilder();
-      switch (DataUtilities.ReadUtf8(stream, length, builder, false)) {
+      switch (DataUtilities.ReadUtf8(stream, numlength.ToInt32Checked(),
+  builder, false)) {
         case -2:
           throw new CBORException("Premature end of data");
         case -1:
@@ -275,9 +281,9 @@ private BEncoding() {
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            WriteUtf8(
-  LongToString(length),
-  stream);
+            WriteUtf8 (
+              LongToString(length),
+              stream);
             stream.write(((byte)((byte)':')));
             WriteUtf8(key, stream);
             Write(value, stream);

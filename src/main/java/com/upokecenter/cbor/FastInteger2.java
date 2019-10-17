@@ -17,7 +17,8 @@ import com.upokecenter.numbers.*;
 
       MutableNumber(int val) {
         if (val < 0) {
-          throw new IllegalArgumentException("val (" + val + ") is less than " + "0 ");
+          throw new IllegalArgumentException("val(" + val + ") is less than " +
+            "0 ");
         }
         this.data = new int[4];
         this.wordCount = (val == 0) ? 0 : 1;
@@ -47,7 +48,7 @@ import com.upokecenter.numbers.*;
 
       boolean CanFitInInt32() {
         return this.wordCount == 0 || (this.wordCount == 1 && (this.data[0] >>
-        31) == 0);
+              31) == 0);
       }
 
       int ToInt32() {
@@ -56,7 +57,7 @@ import com.upokecenter.numbers.*;
 
       MutableNumber Multiply(int multiplicand) {
         if (multiplicand < 0) {
-          throw new IllegalArgumentException("multiplicand (" + multiplicand +
+          throw new IllegalArgumentException("multiplicand(" + multiplicand +
             ") is less than " + "0 ");
         }
         if (multiplicand != 0) {
@@ -92,7 +93,7 @@ import com.upokecenter.numbers.*;
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
-              Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
+                    Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
                 // Carry in addition
                 x1 = (x1 + 1);
               }
@@ -134,7 +135,7 @@ import com.upokecenter.numbers.*;
               x1 = ((int)(result2 | (result3 << 16)));
               int x2 = (x0 + carry);
               if (((x2 >> 31) == (x0 >> 31)) ? ((x2 & Integer.MAX_VALUE) < (x0 &
-              Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
+                    Integer.MAX_VALUE)) : ((x2 >> 31) == 0)) {
                 // Carry in addition
                 x1 = (x1 + 1);
               }
@@ -170,8 +171,8 @@ import com.upokecenter.numbers.*;
 
       MutableNumber SubtractInt(int other) {
         if (other < 0) {
-          throw new IllegalArgumentException("other (" + other + ") is less than " +
-                 "0 ");
+          throw new IllegalArgumentException("other(" + other + ") is less than " +
+            "0 ");
         }
         if (other != 0) {
           {
@@ -188,14 +189,14 @@ import com.upokecenter.numbers.*;
             int a = this.data[0];
             u = a - other;
             borrow = ((((a >> 31) == (u >> 31)) ?
-                    ((a & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
-                    ((a >> 31) == 0)) || (a == u && other != 0)) ? 1 : 0;
+                  ((a & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
+                  ((a >> 31) == 0)) || (a == u && other != 0)) ? 1 : 0;
             this.data[0] = (int)u;
             if (borrow != 0) {
               for (int i = 1; i < this.wordCount; ++i) {
                 u = this.data[i] - borrow;
                 borrow = (((this.data[i] >> 31) == (u >> 31)) ?
-                ((this.data[i] & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
+                    ((this.data[i] & Integer.MAX_VALUE) < (u & Integer.MAX_VALUE)) :
                     ((this.data[i] >> 31) == 0)) ? 1 : 0;
                 this.data[i] = (int)u;
               }
@@ -215,21 +216,21 @@ import com.upokecenter.numbers.*;
             // System.out.println("" + this.data.length + " " +
             // (other.data.length));
             int neededSize = (this.wordCount > other.wordCount) ?
-            this.wordCount : other.wordCount;
+              this.wordCount : other.wordCount;
             if (this.data.length < neededSize) {
               int[] newdata = new int[neededSize + 20];
               System.arraycopy(this.data, 0, newdata, 0, this.data.length);
               this.data = newdata;
             }
             neededSize = (this.wordCount < other.wordCount) ? this.wordCount :
-            other.wordCount;
+              other.wordCount;
             int u = 0;
             int borrow = 0;
             for (int i = 0; i < neededSize; ++i) {
               int a = this.data[i];
               u = (a - other.data[i]) - borrow;
               borrow = ((((a >> 31) == (u >> 31)) ? ((a & Integer.MAX_VALUE) <
-              (u & Integer.MAX_VALUE)) :
+                      (u & Integer.MAX_VALUE)) :
                     ((a >> 31) == 0)) || (a == u && other.data[i] !=
                     0)) ? 1 : 0;
               this.data[i] = (int)u;
@@ -239,9 +240,9 @@ import com.upokecenter.numbers.*;
                 int a = this.data[i];
                 u = (a - other.data[i]) - borrow;
                 borrow = ((((a >> 31) == (u >> 31)) ? ((a & Integer.MAX_VALUE) <
-                (u & Integer.MAX_VALUE)) :
-                    ((a >> 31) == 0)) || (a == u && other.data[i] !=
-                    0)) ? 1 : 0;
+                        (u & Integer.MAX_VALUE)) :
+                      ((a >> 31) == 0)) || (a == u && other.data[i] !=
+                      0)) ? 1 : 0;
                 this.data[i] = (int)u;
               }
             }
@@ -256,8 +257,9 @@ import com.upokecenter.numbers.*;
 
       MutableNumber Add(int augend) {
         if (augend < 0) {
-          throw new IllegalArgumentException("augend (" + augend + ") is less than " +
-                   "0 ");
+          throw new IllegalArgumentException("augend(" + augend + ") is less than" +
+"\u0020" +
+            "0 ");
         }
         {
           if (augend != 0) {
@@ -275,8 +277,8 @@ import com.upokecenter.numbers.*;
               int a = this.data[i];
               u = (a + augend) + carry;
               carry = ((((u >> 31) == (a >> 31)) ? ((u & Integer.MAX_VALUE) < (a &
-              Integer.MAX_VALUE)) :
-                      ((u >> 31) == 0)) || (u == a && augend != 0)) ? 1 : 0;
+                        Integer.MAX_VALUE)) :
+                    ((u >> 31) == 0)) || (u == a && augend != 0)) ? 1 : 0;
               this.data[i] = u;
               if (carry == 0) {
                 return this;
@@ -361,10 +363,10 @@ import com.upokecenter.numbers.*;
             boolean bpos = val > 0L;
             if (
               (apos && ((!bpos && (Integer.MIN_VALUE / this.smallValue) > val) ||
-                    (bpos && this.smallValue > (Integer.MAX_VALUE / val)))) ||
+                  (bpos && this.smallValue > (Integer.MAX_VALUE / val)))) ||
               (!apos && ((!bpos && this.smallValue != 0L &&
                     (Integer.MAX_VALUE / this.smallValue) > val) ||
-                    (bpos && this.smallValue < (Integer.MIN_VALUE / val))))) {
+                  (bpos && this.smallValue < (Integer.MIN_VALUE / val))))) {
               // would overflow, convert to large
               if (apos && bpos) {
                 // if both operands are nonnegative
@@ -413,7 +415,7 @@ import com.upokecenter.numbers.*;
           if (val.integerMode == 0) {
             int vsv = val.smallValue;
             if ((vsv < 0 && Integer.MAX_VALUE + vsv < this.smallValue) ||
-                (vsv > 0 && Integer.MIN_VALUE + vsv > this.smallValue)) {
+              (vsv > 0 && Integer.MIN_VALUE + vsv > this.smallValue)) {
               // would overflow, convert to large
               this.integerMode = 2;
               this.largeValue = EInteger.FromInt32(this.smallValue);
@@ -424,7 +426,7 @@ import com.upokecenter.numbers.*;
           } else {
             this.integerMode = 2;
             this.largeValue = EInteger.FromInt32(this.smallValue);
-            valValue = val.AsBigInteger();
+            valValue = val.AsEInteger();
             this.largeValue = this.largeValue.Subtract(valValue);
           }
           break;
@@ -438,12 +440,12 @@ import com.upokecenter.numbers.*;
           } else {
             this.integerMode = 2;
             this.largeValue = this.mnum.ToEInteger();
-            valValue = val.AsBigInteger();
+            valValue = val.AsEInteger();
             this.largeValue = this.largeValue.Subtract(valValue);
           }
           break;
         case 2:
-          valValue = val.AsBigInteger();
+          valValue = val.AsEInteger();
           this.largeValue = this.largeValue.Subtract(valValue);
           break;
         default: throw new IllegalStateException();
@@ -462,7 +464,7 @@ import com.upokecenter.numbers.*;
       }
       if (this.integerMode == 0) {
         if ((val < 0 && Integer.MAX_VALUE + val < this.smallValue) ||
-                (val > 0 && Integer.MIN_VALUE + val > this.smallValue)) {
+          (val > 0 && Integer.MIN_VALUE + val > this.smallValue)) {
           // would overflow, convert to large
           this.integerMode = 2;
           this.largeValue = EInteger.FromInt32(this.smallValue);
@@ -481,8 +483,8 @@ import com.upokecenter.numbers.*;
         case 0:
           if (val.integerMode == 0) {
             if ((this.smallValue < 0 && (int)val.smallValue < Integer.MIN_VALUE
-            - this.smallValue) ||
-                (this.smallValue > 0 && (int)val.smallValue > Integer.MAX_VALUE
+                - this.smallValue) ||
+              (this.smallValue > 0 && (int)val.smallValue > Integer.MAX_VALUE
                 - this.smallValue)) {
               // would overflow
               if (val.smallValue >= 0) {
@@ -500,7 +502,7 @@ import com.upokecenter.numbers.*;
           } else {
             this.integerMode = 2;
             this.largeValue = EInteger.FromInt32(this.smallValue);
-            valValue = val.AsBigInteger();
+            valValue = val.AsEInteger();
             this.largeValue = this.largeValue.Add(valValue);
           }
           break;
@@ -510,12 +512,12 @@ import com.upokecenter.numbers.*;
           } else {
             this.integerMode = 2;
             this.largeValue = this.mnum.ToEInteger();
-            valValue = val.AsBigInteger();
+            valValue = val.AsEInteger();
             this.largeValue = this.largeValue.Add(valValue);
           }
           break;
         case 2:
-          valValue = val.AsBigInteger();
+          valValue = val.AsEInteger();
           this.largeValue = this.largeValue.Add(valValue);
           break;
         default: throw new IllegalStateException();
@@ -528,8 +530,8 @@ import com.upokecenter.numbers.*;
       switch (this.integerMode) {
         case 0:
           if ((this.smallValue < 0 && (int)val < Integer.MIN_VALUE -
-        this.smallValue) || (this.smallValue > 0 && (int)val >
-            Integer.MAX_VALUE - this.smallValue)) {
+              this.smallValue) || (this.smallValue > 0 && (int)val >
+              Integer.MAX_VALUE - this.smallValue)) {
             // would overflow
             if (val >= 0) {
               this.integerMode = 1;
@@ -570,8 +572,8 @@ import com.upokecenter.numbers.*;
         case 1:
           return this.mnum.CanFitInInt32();
         case 2: {
-            return this.largeValue.CanFitInInt32();
-          }
+          return this.largeValue.CanFitInInt32();
+        }
         default:
           throw new IllegalStateException();
       }
@@ -586,11 +588,12 @@ import com.upokecenter.numbers.*;
             return this.mnum.signum();
           case 2:
             return this.largeValue.signum();
-          default: return 0;
+          default:
+            return 0;
         }
       }
 
-    EInteger AsBigInteger() {
+    EInteger AsEInteger() {
       switch (this.integerMode) {
         case 0:
           return EInteger.FromInt32(this.smallValue);

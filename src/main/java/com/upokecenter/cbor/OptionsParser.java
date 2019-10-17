@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 
   final class OptionsParser {
     private final Map<String, String> dict = new
-HashMap<String, String>();
+    HashMap<String, String>();
 
     private static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
@@ -53,7 +53,8 @@ HashMap<String, String>();
         for (String opt : optionsArray) {
           int index = opt.indexOf('=');
           if (index < 0) {
-            throw new IllegalArgumentException("Invalid options String: " + options);
+            throw new IllegalArgumentException("Invalid options String: " +
+              options);
           }
           String key = DataUtilities.ToLowerCaseAscii(opt.substring(0, index));
           String value = opt.substring(index + 1);
@@ -62,14 +63,23 @@ HashMap<String, String>();
       }
     }
 
+    public String GetLCString(String key, String defaultValue) {
+      String lckey = DataUtilities.ToLowerCaseAscii(key);
+      if (this.dict.containsKey(lckey)) {
+        String lcvalue = DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
+        return lcvalue;
+      }
+      return defaultValue;
+    }
+
     public boolean GetBoolean(String key, boolean defaultValue) {
       String lckey = DataUtilities.ToLowerCaseAscii(key);
       if (this.dict.containsKey(lckey)) {
         String lcvalue = DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
         return lcvalue.equals("1") ||
-lcvalue.equals("yes") ||
-            lcvalue.equals("on") ||
-lcvalue.equals("true");
+          lcvalue.equals("yes") ||
+          lcvalue.equals("on") ||
+          lcvalue.equals("true");
       }
       return defaultValue;
     }

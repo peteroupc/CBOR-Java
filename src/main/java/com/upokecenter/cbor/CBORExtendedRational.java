@@ -10,8 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedRational implements ICBORNumber
-  {
+  class CBORExtendedRational implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((ERational)obj).IsPositiveInfinity();
     }
@@ -37,14 +36,16 @@ import com.upokecenter.numbers.*;
       ERational er = (ERational)obj;
       return
 
-  er.ToEDecimalExactIfPossible(EContext.Decimal128.WithUnlimitedExponents());
+        er.ToEDecimalExactIfPossible (
+          EContext.Decimal128.WithUnlimitedExponents());
     }
 
     public EFloat AsEFloat(Object obj) {
       ERational er = (ERational)obj;
       return
 
-  er.ToEFloatExactIfPossible(EContext.Binary128.WithUnlimitedExponents());
+        er.ToEFloatExactIfPossible (
+          EContext.Binary128.WithUnlimitedExponents());
     }
 
     public float AsSingle(Object obj) {
@@ -70,14 +71,14 @@ import com.upokecenter.numbers.*;
 
     public boolean CanFitInSingle(Object obj) {
       ERational ef = (ERational)obj;
-      return (!ef.isFinite()) ||
-      (ef.compareTo(ERational.FromSingle(ef.ToSingle())) == 0);
+      return (!ef.isFinite()) || (ef.compareTo(ERational.FromSingle(
+            ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
       ERational ef = (ERational)obj;
-      return (!ef.isFinite()) ||
-      (ef.compareTo(ERational.FromDouble(ef.ToDouble())) == 0);
+      return (!ef.isFinite()) || (ef.compareTo(ERational.FromDouble(
+            ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {
@@ -124,8 +125,8 @@ import com.upokecenter.numbers.*;
       if (ef.getDenominator().equals(EInteger.FromInt32(1))) {
         return true;
       }
-     // A rational number is integral if the remainder
-     // of the numerator divided by the denominator is 0
+      // A rational number is integral if the remainder
+      // of the numerator divided by the denominator is 0
       EInteger denom = ef.getDenominator();
       EInteger rem = ef.getNumerator().Remainder(denom);
       return rem.isZero();

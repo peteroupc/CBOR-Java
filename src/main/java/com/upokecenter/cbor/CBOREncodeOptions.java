@@ -1,8 +1,8 @@
 package com.upokecenter.cbor;
 
-    /**
-     * Specifies options for encoding and decoding CBOR objects.
-     */
+  /**
+   * Specifies options for encoding and decoding CBOR objects.
+   */
   public final class CBOREncodeOptions {
     /**
      * Default options for CBOR objects. Disallow duplicate keys, and always encode
@@ -26,7 +26,7 @@ package com.upokecenter.cbor;
      */
     public CBOREncodeOptions() {
  this(false, false);
-}
+    }
 
     /**
      * Initializes a new instance of the {@link
@@ -75,7 +75,8 @@ package com.upokecenter.cbor;
      * whitespace. The string can be empty, but cannot be null. The
      * following is an example of this parameter: {@code
      * allowduplicatekeys = true;ctap2Canonical = true}. The key can be any one
-     * of the following in any combination of case: {@code
+     * of the following where the letters can be any combination of basic
+     * upper-case and/or basic lower-case letters: {@code
      * allowduplicatekeys}, {@code ctap2canonical}, {@code
      * resolvereferences}, {@code useindeflengthstrings}, {@code
      * allowempty}. Keys other than these are ignored. (Keys are compared
@@ -85,8 +86,9 @@ package com.upokecenter.cbor;
      * letters.) If two or more key/value pairs have equal keys (in a basic
      * case-insensitive comparison), the value given for the last such key
      * is used. The four keys just given can have a value of {@code 1},
-     * {@code true}, {@code yes}, or {@code on} (in any combination of
-     * case), which means true, and any other value meaning false. For
+     * {@code true}, {@code yes}, or {@code on} (where the letters can be
+     * any combination of basic upper-case and/or basic lower-case
+     * letters), which means true, and any other value meaning false. For
      * example, {@code allowduplicatekeys = Yes} and {@code
      * allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
      * property to true. In the future, this class may allow other keys to
@@ -98,11 +100,13 @@ package com.upokecenter.cbor;
         throw new NullPointerException("paramString");
       }
       OptionsParser parser = new OptionsParser(paramString);
-      this.propVarresolvereferences = parser.GetBoolean("resolvereferences", false);
+      this.propVarresolvereferences = parser.GetBoolean("resolvereferences",
+          false);
       this.propVaruseindeflengthstrings = parser.GetBoolean(
         "useindeflengthstrings",
         false);
-      this.propVarallowduplicatekeys = parser.GetBoolean("allowduplicatekeys", false);
+      this.propVarallowduplicatekeys = parser.GetBoolean("allowduplicatekeys",
+          false);
       this.propVarallowempty = parser.GetBoolean("allowempty", false);
       this.propVarctap2canonical = parser.GetBoolean("ctap2canonical", false);
     }
@@ -115,16 +119,16 @@ package com.upokecenter.cbor;
      */
     @Override public String toString() {
       return new StringBuilder()
-           .append("allowduplicatekeys=")
-           .append(this.getAllowDuplicateKeys() ? "true" : "false")
-           .append(";useindeflengthstrings=")
-           .append(this.getUseIndefLengthStrings() ? "true" : "false")
-           .append(";ctap2canonical=")
-           .append(this.getCtap2Canonical() ? "true" : "false")
-           .append(";resolvereferences=")
-           .append(this.getResolveReferences() ? "true" : "false")
-           .append(";allowempty=").append(this.getAllowEmpty() ? "true" : "false")
-           .toString();
+        .append("allowduplicatekeys=")
+        .append(this.getAllowDuplicateKeys() ? "true" : "false")
+        .append(";useindeflengthstrings=")
+        .append(this.getUseIndefLengthStrings() ? "true" : "false")
+        .append(";ctap2canonical=")
+        .append(this.getCtap2Canonical() ? "true" : "false")
+        .append(";resolvereferences=")
+        .append(this.getResolveReferences() ? "true" : "false")
+        .append(";allowempty=").append(this.getAllowEmpty() ? "true" : "false")
+        .toString();
     }
 
     /**

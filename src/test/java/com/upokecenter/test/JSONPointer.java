@@ -35,8 +35,8 @@ import com.upokecenter.numbers.*;
           int newIndex = ReadPositiveInteger(pointer, index, value);
           if (value[0] < 0) {
             if (index < pointer.length() && pointer.charAt(index) == '-' &&
-                (index + 1 == pointer.length() || pointer.charAt(index + 1) == '/')) {
-             // Index at the end of the array
+              (index + 1 == pointer.length() || pointer.charAt(index + 1) == '/')) {
+              // Index at the end of the array
               return new JSONPointer(obj, "-");
             }
             throw new IllegalArgumentException(pointer);
@@ -188,8 +188,8 @@ import com.upokecenter.numbers.*;
     private CBORObject jsonobj;
 
     private JSONPointer(CBORObject jsonobj, String refValue) {
-this.jsonobj = jsonobj;
-this.refValue = refValue;
+      this.jsonobj = jsonobj;
+      this.refValue = refValue;
     }
 
     public boolean Exists() {
@@ -200,11 +200,10 @@ this.refValue = refValue;
         EInteger eivalue = EInteger.FromString(this.refValue);
         int icount = ((CBORObject)this.jsonobj).size();
         return eivalue.signum() >= 0 &&
-                    eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
-                  } else if (this.jsonobj.getType() == CBORType.Map) {
-                    return
-((CBORObject)this.jsonobj).ContainsKey(this.refValue);
-      } else {
+          eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
+        } else if (this.jsonobj.getType() == CBORType.Map) {
+          return ((CBORObject)this.jsonobj).ContainsKey(this.refValue);
+        } else {
         return this.refValue.length() == 0;
       }
     }
@@ -223,8 +222,10 @@ this.refValue = refValue;
         EInteger value = EInteger.FromString(this.refValue);
         int icount = ((CBORObject)this.jsonobj).size();
         return (value.signum() < 0) ? (-1) :
-          ((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
-           value.ToInt32Unchecked()); } else {
+((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
+
+            value.ToInt32Unchecked());
+      } else {
         return -1;
       }
     }
@@ -245,9 +246,9 @@ this.refValue = refValue;
       if (this.jsonobj.getType() == CBORType.Array) {
         int index = this.GetIndex();
         if (index >= 0 && index < ((CBORObject)this.jsonobj).size()) {
-    tmpcbor = this.jsonobj;
-    return tmpcbor.get(index);
-  } else {
+          tmpcbor = this.jsonobj;
+          return tmpcbor.get(index);
+        } else {
           return null;
         }
       } else if (this.jsonobj.getType() == CBORType.Map) {
@@ -277,7 +278,9 @@ this.refValue = refValue;
      * @return An Map(string, object) object.
      * @throws NullPointerException The parameter {@code root} is null.
      */
-    public static Map<String, Object> GetPointersWithKeyAndRemove(CBORObject root, String keyToFind) {
+    public static Map<String, Object> GetPointersWithKeyAndRemove(
+      CBORObject root,
+      String keyToFind) {
       Map<String, Object> list = new HashMap<String, Object>();
       if (root == null) {
         throw new NullPointerException("root");
@@ -317,25 +320,25 @@ this.refValue = refValue;
     }
 
     private static void GetPointersWithKey(
-        CBORObject root,
-        String keyToFind,
-        String currentPointer,
-        Map<String, Object> pointerList,
-        boolean remove) {
+      CBORObject root,
+      String keyToFind,
+      String currentPointer,
+      Map<String, Object> pointerList,
+      boolean remove) {
       if (root.getType() == CBORType.Map) {
         CBORObject rootObj = (CBORObject)root;
         if (rootObj.ContainsKey(keyToFind)) {
-         // Key found in this object,
-         // add this object's JSON pointer
+          // Key found in this object,
+          // add this object's JSON pointer
           Object pointerKey = rootObj.get(keyToFind);
           pointerList.put(currentPointer, pointerKey);
-         // and remove the key from the Object
-         // if necessary
+          // and remove the key from the Object
+          // if necessary
           if (remove) {
             rootObj.Remove(CBORObject.FromObject(keyToFind));
           }
         }
-       // Search the key's values
+        // Search the key's values
         for (CBORObject key : rootObj.getKeys()) {
           String ptrkey = key.AsString();
           ptrkey = ptrkey.replace("~", "~0");

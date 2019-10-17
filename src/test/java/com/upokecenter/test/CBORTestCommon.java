@@ -43,10 +43,10 @@ private CBORTestCommon() {
             Integer.MAX_VALUE);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return ToObjectTest.TestToFromObjectRoundTrip (
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return ToObjectTest.TestToFromObjectRoundTrip (
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
@@ -72,10 +72,10 @@ private CBORTestCommon() {
             Integer.MAX_VALUE);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return ToObjectTest.TestToFromObjectRoundTrip (
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return ToObjectTest.TestToFromObjectRoundTrip (
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
@@ -103,24 +103,24 @@ private CBORTestCommon() {
     }
 
     public static EInteger RandomEIntegerMajorType0(RandomGenerator rand) {
-       int v = rand.UniformInt(0x10000);
-       EInteger ei = EInteger.FromInt32(v);
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       return ei;
+      int v = rand.UniformInt(0x10000);
+      EInteger ei = EInteger.FromInt32(v);
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      return ei;
     }
 
     public static EInteger RandomEIntegerMajorType0Or1(RandomGenerator rand) {
-       int v = rand.UniformInt(0x10000);
-       EInteger ei = EInteger.FromInt32(v);
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
-       if (rand.UniformInt(2) == 0) {
-         ei = ei.Add(1).Negate();
-       }
-       return ei;
+      int v = rand.UniformInt(0x10000);
+      EInteger ei = EInteger.FromInt32(v);
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      ei = ei.ShiftLeft(16).Add(rand.UniformInt(0x10000));
+      if (rand.UniformInt(2) == 0) {
+        ei = ei.Add(1).Negate();
+      }
+      return ei;
     }
 
     public static CBORObject RandomCBORTaggedObject(
@@ -134,13 +134,13 @@ private CBORTestCommon() {
         };
         tag = tagselection[rand.UniformInt(tagselection.length)];
       } else if (rand.UniformInt(100) < 90) {
-        return CBORObject.FromObjectAndTag(
-           RandomCBORObject(rand, depth + 1),
-           rand.UniformInt(0x100000));
+        return CBORObject.FromObjectAndTag (
+            RandomCBORObject(rand, depth + 1),
+            rand.UniformInt(0x100000));
       } else {
-        return CBORObject.FromObjectAndTag(
-           RandomCBORObject(rand, depth + 1),
-           RandomEIntegerMajorType0(rand));
+        return CBORObject.FromObjectAndTag (
+            RandomCBORObject(rand, depth + 1),
+            RandomEIntegerMajorType0(rand));
       }
       if (tag == 25) {
         tag = 0;
@@ -151,7 +151,7 @@ private CBORTestCommon() {
       }
       {
         CBORObject cbor;
-       // System.out.println("tag "+tag+" "+i);
+        // System.out.println("tag "+tag+" "+i);
         if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
           tag = 999;
         }
@@ -191,7 +191,8 @@ private CBORTestCommon() {
       return RandomCBORObject(rand, 0);
     }
 
-    public static CBORObject RandomCBORObject(RandomGenerator rand, int depth) {
+    public static CBORObject RandomCBORObject(RandomGenerator rand, int
+      depth) {
       int nextval = rand.UniformInt(11);
       switch (nextval) {
         case 0:
@@ -205,11 +206,11 @@ private CBORTestCommon() {
           return rand.UniformInt(2) == 0 ? CBORObject.Null :
             CBORObject.Undefined;
         case 6:
-          return ToObjectTest.TestToFromObjectRoundTrip(
-            RandomObjects.RandomTextString(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip (
+              RandomObjects.RandomTextString(rand));
         case 7:
-          return ToObjectTest.TestToFromObjectRoundTrip(
-            RandomObjects.RandomByteString(rand));
+          return ToObjectTest.TestToFromObjectRoundTrip (
+              RandomObjects.RandomByteString(rand));
         case 8:
           return RandomCBORArray(rand, depth);
         case 9:
@@ -226,7 +227,7 @@ private CBORTestCommon() {
         return;
       }
       if (o.IsPositiveInfinity() || o.IsNegativeInfinity() ||
-          o.IsNaN()) {
+        o.IsNaN()) {
         try {
           o.AsByte();
           Assert.fail("Should have failed");
@@ -279,7 +280,7 @@ private CBORTestCommon() {
           o.AsEInteger();
           Assert.fail("Should have failed");
         } catch (ArithmeticException ex) {
-         // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.fail("Object: " + o + ", " + ex);
           throw new IllegalStateException("", ex);
@@ -290,15 +291,13 @@ private CBORTestCommon() {
         o.AsSingle();
       } catch (Exception ex) {
         Assert.fail("Object: " + o + ", " + ex);
-        throw new
-          IllegalStateException("", ex);
+        throw new IllegalStateException("", ex);
       }
       try {
         o.AsDouble();
       } catch (Exception ex) {
         Assert.fail("Object: " + o + ", " + ex);
-        throw new
-          IllegalStateException("", ex);
+        throw new IllegalStateException("", ex);
       }
     }
 
@@ -313,7 +312,7 @@ private CBORTestCommon() {
       if (!s.equals(o.ToJSONString())) {
         Assert.assertEquals("o is not equal to s",s,o.ToJSONString());
       }
-     // Test round-tripping
+      // Test round-tripping
       CBORObject o2 = FromBytesTestAB(o.EncodeToBytes());
       if (!s.equals(o2.ToJSONString())) {
         String msg = "o2 is not equal to s:\no = " +
@@ -326,7 +325,7 @@ private CBORTestCommon() {
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
-   // Tests the equivalence of the DecodeFromBytes and Read methods.
+    // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
       CBORObject oa = FromBytesA(b);
       CBORObject ob = FromBytesB(b);

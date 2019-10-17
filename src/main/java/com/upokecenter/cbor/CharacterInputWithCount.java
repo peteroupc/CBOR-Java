@@ -24,23 +24,23 @@ import com.upokecenter.numbers.*;
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index +
+        throw new IllegalArgumentException("index(" + index +
           ") is less than 0");
       }
       if (index > chars.length) {
-        throw new IllegalArgumentException("index (" + index +
+        throw new IllegalArgumentException("index(" + index +
           ") is more than " + chars.length);
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new IllegalArgumentException("length(" + length +
           ") is less than 0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + length +
+        throw new IllegalArgumentException("length(" + length +
           ") is more than " + chars.length);
       }
       if (chars.length - index < length) {
-        throw new IllegalArgumentException("chars's length minus " + index + " (" +
+        throw new IllegalArgumentException("chars's length minus " + index + "(" +
           (chars.length - index) + ") is less than " + length);
       }
       int ret = this.ci.Read(chars, index, length);
@@ -56,13 +56,13 @@ import com.upokecenter.numbers.*;
         c = this.ci.ReadChar();
       } catch (IllegalStateException ex) {
         if (ex.getCause() == null) {
-          throw new CBORException(
-  this.NewErrorString(ex.getMessage()),
-  ex);
+          throw new CBORException (
+            this.NewErrorString(ex.getMessage()),
+            ex);
         } else {
-          throw new CBORException(
-  this.NewErrorString(ex.getMessage()),
-  ex.getCause());
+          throw new CBORException (
+            this.NewErrorString(ex.getMessage()),
+            ex.getCause());
         }
       }
       if (c >= 0) {

@@ -45,24 +45,24 @@ private Base64() {
         throw new NullPointerException("writer");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                    "0 ");
+        throw new IllegalArgumentException("offset(" + offset + ") is less than " +
+          "0 ");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                    data.length);
+        throw new IllegalArgumentException("offset(" + offset + ") is more than " +
+          data.length);
       }
       if (count < 0) {
-        throw new IllegalArgumentException("count (" + count + ") is less than " +
-                    "0 ");
+        throw new IllegalArgumentException("count(" + count + ") is less than " +
+          "0 ");
       }
       if (count > data.length) {
-        throw new IllegalArgumentException("count (" + count + ") is more than " +
-                    data.length);
+        throw new IllegalArgumentException("count(" + count + ") is more than " +
+          data.length);
       }
       if (data.length - offset < count) {
-        throw new IllegalArgumentException("data's length minus " + offset + " (" +
-                (data.length - offset) + ") is less than " + count);
+        throw new IllegalArgumentException("data's length minus " + offset + "(" +
+          (data.length - offset) + ") is less than " + count);
       }
       String alphabet = classic ? Base64Classic : Base64URL;
       int length = offset + count;
@@ -71,9 +71,9 @@ private Base64() {
       for (i = offset; i < (length - 2); i += 3) {
         buffer[0] = (char)alphabet.charAt((data[i] >> 2) & 63);
         buffer[1] = (char)alphabet.charAt(((data[i] & 3) << 4) +
-                ((data[i + 1] >> 4) & 15));
+            ((data[i + 1] >> 4) & 15));
         buffer[2] = (char)alphabet.charAt(((data[i + 1] & 15) << 2) + ((data[i +
-                2] >> 6) & 3));
+                  2] >> 6) & 3));
         buffer[3] = (char)alphabet.charAt(data[i + 2] & 63);
         writer.WriteCodePoint((int)buffer[0]);
         writer.WriteCodePoint((int)buffer[1]);
@@ -86,7 +86,7 @@ private Base64() {
         buffer[0] = (char)alphabet.charAt((data[i] >> 2) & 63);
         if (lenmod3 == 2) {
           buffer[1] = (char)alphabet.charAt(((data[i] & 3) << 4) + ((data[i + 1] >>
-                4) & 15));
+                  4) & 15));
           buffer[2] = (char)alphabet.charAt((data[i + 1] & 15) << 2);
           writer.WriteCodePoint((int)buffer[0]);
           writer.WriteCodePoint((int)buffer[1]);

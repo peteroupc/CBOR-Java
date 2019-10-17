@@ -3,11 +3,11 @@
     public final class CBORNumber extends java.lang.Object implements java.lang.Comparable<CBORNumber>
 
 An instance of a number that CBOR or certain CBOR tags can represent. For
- this purpose, infinities and not-a-number or NaN values are
- considered numbers. Currently, this class can store one of the
- following kinds of numbers: 64-bit signed integers or binary
- floating-point numbers; or arbitrary-precision integers, decimal
- numbers, binary numbers, or rational numbers.
+ this purpose, infinities and not-a-number or NaN values are considered
+ numbers. Currently, this class can store one of the following kinds of
+ numbers: 64-bit signed integers or binary floating-point numbers; or
+ arbitrary-precision integers, decimal numbers, binary numbers, or
+ rational numbers.
 
 ## Methods
 
@@ -41,6 +41,10 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Gets a value indicating whether this object represents infinity.
 * `boolean IsNaN()`<br>
  Gets a value indicating whether this object represents a not-a-number value.
+* `boolean IsNegativeInfinity()`<br>
+ Gets a value indicating whether this object represents negative infinity.
+* `boolean IsPositiveInfinity()`<br>
+ Gets a value indicating whether this object represents positive infinity.
 * `CBORNumber Multiply​(CBORNumber b)`<br>
  Returns a CBOR number expressing the product of this number and the given
  number.
@@ -121,6 +125,24 @@ Gets a value indicating whether this object represents infinity.
 
 * <code>true</code> if this object represents infinity; otherwise, <code>
  false</code>.
+
+### IsPositiveInfinity
+    public boolean IsPositiveInfinity()
+Gets a value indicating whether this object represents positive infinity.
+
+**Returns:**
+
+* <code>true</code> if this object represents positive infinity; otherwise,
+ <code>false</code>.
+
+### IsNegativeInfinity
+    public boolean IsNegativeInfinity()
+Gets a value indicating whether this object represents negative infinity.
+
+**Returns:**
+
+* <code>true</code> if this object represents negative infinity; otherwise,
+ <code>false</code>.
 
 ### IsNaN
     public boolean IsNaN()

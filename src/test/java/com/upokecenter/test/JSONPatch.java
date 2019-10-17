@@ -83,11 +83,11 @@ private JSONPatch() {
             throw new IllegalArgumentException("Patch " + valueOpStr + " value");
           }
           value = patchOp.get("value");
-          o = ReplaceOperation(
-  o,
-  valueOpStr,
-  GetString(patchOp, "path"),
-  value);
+          o = ReplaceOperation (
+              o,
+              valueOpStr,
+              GetString(patchOp, "path"),
+              value);
         } else if ("remove".equals(valueOpStr)) {
           // Remove operation
           String path = patchOp.get("path").AsString();
@@ -128,11 +128,11 @@ private JSONPatch() {
               valueOpStr + " " + fromPath);
           }
           CBORObject copiedObj = pointer.GetValue();
-          o = AddOperation(
-  o,
-  valueOpStr,
-  path,
-  CloneCbor(copiedObj));
+          o = AddOperation (
+              o,
+              valueOpStr,
+              path,
+              CloneCbor(copiedObj));
         } else if ("test".equals(valueOpStr)) {
           String path = patchOp.get("path").AsString();
           if (path == null) {
@@ -177,8 +177,8 @@ private JSONPatch() {
         if (pointer.GetParent().getType() == CBORType.Array) {
           ((CBORObject)pointer.GetParent()).RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
-          ((CBORObject)pointer.GetParent()).Remove(
-              CBORObject.FromObject(pointer.GetKey()));
+          ((CBORObject)pointer.GetParent()).Remove (
+            CBORObject.FromObject(pointer.GetKey()));
         }
         return o;
       }

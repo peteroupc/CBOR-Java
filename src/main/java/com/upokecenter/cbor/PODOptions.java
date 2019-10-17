@@ -1,17 +1,17 @@
 package com.upokecenter.cbor;
 
-    /**
-     * Options for converting "plain old data" objects (better known as POCOs in
-     *.NET or POJOs in Java) to CBOR objects.
-     */
-    public class PODOptions {
+  /**
+   * Options for converting "plain old data" objects (better known as POCOs in
+   *.NET or POJOs in Java) to CBOR objects.
+   */
+  public class PODOptions {
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
      * class.
      */
     public PODOptions() {
  this(true, true);
-}
+    }
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.PODOptions}
@@ -34,16 +34,18 @@ package com.upokecenter.cbor;
      * between the equal signs, nor may the string begin or end with
      * whitespace. The string can be empty, but cannot be null. The
      * following is an example of this parameter: {@code
-     * usecamelcase = true}. The key can be any one of the following in any
-     * combination of case: {@code usecamelcase}. Other keys are ignored.
+     * usecamelcase = true}. The key can be any one of the following where
+     * the letters can be any combination of basic upper-case and/or basic
+     * lower-case letters: {@code usecamelcase}. Other keys are ignored.
      * (Keys are compared using a basic case-insensitive comparison, in
      * which two strings are equal if they match after converting the basic
      * upper-case letters A to Z (U+0041 to U+005A) in both strings to
      * basic lower-case letters.) If two or more key/value pairs have equal
      * keys (in a basic case-insensitive comparison), the value given for
      * the last such key is used. The key just given can have a value of
-     * {@code 1}, {@code true}, {@code yes} , or {@code on} (in any
-     * combination of case), which means true, and any other value meaning
+     * {@code 1}, {@code true}, {@code yes} , or {@code on} (where the
+     * letters can be any combination of basic upper-case and/or basic
+     * lower-case letters), which means true, and any other value meaning
      * false. For example, {@code usecamelcase = Yes} and {@code
      * usecamelcase = 1} both set the {@code UseCamelCase} property to true.
      * In the future, this class may allow other keys to store other kinds
@@ -66,9 +68,9 @@ package com.upokecenter.cbor;
      */
     @Override public String toString() {
       return new StringBuilder()
-           .append("usecamelcase=")
-           .append(this.getUseCamelCase() ? "true" : "false")
-           .toString();
+        .append("usecamelcase=").append(this.getUseCamelCase() ? "true" :
+"false")
+        .toString();
     }
 
     /**
@@ -111,4 +113,4 @@ package com.upokecenter.cbor;
      */
     public final boolean getUseCamelCase() { return propVarusecamelcase; }
 private final boolean propVarusecamelcase;
-    }
+  }

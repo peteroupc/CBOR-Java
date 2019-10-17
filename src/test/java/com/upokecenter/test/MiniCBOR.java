@@ -9,9 +9,9 @@ at: http://peteroupc.github.io/
 
 import java.io.*;
 
-    /**
-     * Contains lightweight methods for reading and writing CBOR data.
-     */
+  /**
+   * Contains lightweight methods for reading and writing CBOR data.
+   */
   public final class MiniCBOR {
 private MiniCBOR() {
 }
@@ -165,7 +165,7 @@ private MiniCBOR() {
         }
         long b;
         if (check32bit && (bytes[0] != 0 || bytes[1] != 0 || bytes[2] != 0 ||
-          bytes[3] != 0)) {
+            bytes[3] != 0)) {
           throw new IOException("Not a 32-bit integer");
         }
         if (!check32bit) {
@@ -292,7 +292,7 @@ private MiniCBOR() {
         return ReadFP(stream, b);
       }
       if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
-          b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
+        b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
         return (double)ReadInteger(stream, b, false);
       }
       throw new IOException("Not a double");
@@ -300,7 +300,8 @@ private MiniCBOR() {
 
     /**
      * Reads a 32-bit integer in CBOR format from a data stream. If the object read
-     * is a floating-point number, it is truncated to an integer.
+     * is a floating-point number, it is converted to an integer by
+     * discarding the fractional part of the result of division.
      * @param stream A data stream.
      * @return A 32-bit signed integer.
      * @throws java.io.IOException The end of the stream was reached, or the
@@ -380,8 +381,8 @@ private MiniCBOR() {
       }
       if (b == 0x19 || b == 0x39 || b == 0x1a || b == 0x3a) {
         if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
-           stream.read() != 0 || stream.read() != 0 ||
-           stream.read() != 0)) {
+            stream.read() != 0 || stream.read() != 0 ||
+            stream.read() != 0)) {
           throw new IOException();
         }
         int b1 = stream.read();

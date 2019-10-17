@@ -10,13 +10,13 @@ private CBORCanonical() {
       new CtapComparer();
 
     private static final Comparator<Map.Entry<byte[], byte[]>>
-         ByteComparer = new CtapByteComparer();
+    ByteComparer = new CtapByteComparer();
 
     private static final class CtapByteComparer implements Comparator<Map.Entry<byte[],
-  byte[]>> {
+      byte[]>> {
       public int compare(
-         Map.Entry<byte[], byte[]> kva,
-         Map.Entry<byte[], byte[]> kvb) {
+        Map.Entry<byte[], byte[]> kva,
+        Map.Entry<byte[], byte[]> kvb) {
         byte[] bytesA = kva.getKey();
         byte[] bytesB = kvb.getKey();
         if (bytesA == null) {
@@ -183,7 +183,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           sortedKeys = new ArrayList<Map.Entry<byte[], byte[]>>();
           for (CBORObject key : cbor.getKeys()) {
             if (depth >= 3 && (IsArrayOrMap(key) ||
-               IsArrayOrMap(cbor.get(key)))) {
+                IsArrayOrMap(cbor.get(key)))) {
               throw new CBORException("Nesting level too deep");
             }
             // Check if key and value can be canonically encoded
@@ -223,8 +223,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException(ex.toString(), ex);
       }
       if (valueAType == CBORType.SimpleValue ||
-       valueAType == CBORType.Boolean || valueAType == CBORType.ByteString ||
-       valueAType == CBORType.TextString) {
+        valueAType == CBORType.Boolean || valueAType == CBORType.ByteString ||
+        valueAType == CBORType.TextString) {
         return cbor.EncodeToBytes(CBOREncodeOptions.Default);
       } else if (valueAType == CBORType.FloatingPoint) {
         long bits = cbor.AsDoubleBits();

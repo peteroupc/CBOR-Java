@@ -6,31 +6,46 @@ Includes options to control how CBOR objects are converted to JSON.
 
 ## Fields
 
+* `static class  JSONOptions.ConversionKind`<br>
+ Specifies how JSON numbers are converted to CBOR when decoding JSON.
 * `static JSONOptions Default`<br>
  The default options for converting CBOR objects to JSON.
+
+## Nested Classes
+
+* `static class  JSONOptions.ConversionKind`<br>
+ Specifies how JSON numbers are converted to CBOR when decoding JSON.
 
 ## Constructors
 
 * `JSONOptions() JSONOptions`<br>
  Initializes a new instance of the JSONOptions
  class with default options.
-* `JSONOptions​(boolean base64Padding) JSONOptions`<br>
- Initializes a new instance of the JSONOptions
- class with the given value for the Base64Padding option.
+* `JSONOptions​(boolean base64Padding)`<br>
+ Deprecated.
+Use the String constructor instead.
+ Use the String constructor instead.
 * `JSONOptions​(boolean base64Padding,
-           boolean replaceSurrogates) JSONOptions`<br>
- Initializes a new instance of the JSONOptions
- class with the given values for the options.
+           boolean replaceSurrogates)`<br>
+ Deprecated.
 * `JSONOptions​(java.lang.String paramString) JSONOptions`<br>
  Initializes a new instance of the JSONOptions
  class.
 
 ## Methods
 
+* `boolean getAllowDuplicateKeys()`<br>
+ Gets a value indicating whether to allow duplicate keys when reading JSON.
 * `boolean getBase64Padding()`<br>
  Deprecated.
-This option now has no effect.
- This option now has no effect.
+This property now has no effect.
+ This property now has no effect.
+* `JSONOptions.ConversionKind getNumberConversion()`<br>
+ Gets a value indicating how JSON numbers are decoded to CBOR integers.
+* `boolean getPreserveNegativeZero()`<br>
+ Gets a value indicating whether the JSON decoder should preserve the
+ distinction between positive zero and negative zero in
+ floating-point number formats when the decoder decodes JSON to CBOR.
 * `boolean getReplaceSurrogates() char`<br>
  Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive char s
@@ -63,25 +78,61 @@ Gets the values of this options object's properties in text form.
 ### getBase64Padding
     @Deprecated public final boolean getBase64Padding()
 Deprecated.
-This option now has no effect. This library now includes necessary padding
- when writing traditional base64 to JSON and includes no padding when
- writing base64url to JSON, in accordance with the revision of the CBOR
- specification.
+This property now has no effect. This library now includes  necessary
+ padding when writing traditional base64 to JSON and includes no
+ padding when writing base64url to JSON, in  accordance with the
+ revision of the CBOR specification.
 
 **Returns:**
 
 * A value indicating whether the Base64Padding property is true.
+
+### getPreserveNegativeZero
+    public final boolean getPreserveNegativeZero()
+Gets a value indicating whether the JSON decoder should preserve the
+ distinction between positive zero and negative zero in
+ floating-point number formats when the decoder decodes JSON to CBOR.
+  For example the JSON number "-0.0" (which expresses negative zero)
+ is decoded to negative zero if this property is <code>true</code>, and to
+ positive zero if this property is <code>false</code>. This property has no
+ effect for number conversion kinds in which zeros are always decoded
+ as CBOR integers (such as the <code>IntOrFloat</code> and
+ <code>IntOrFloatFromDouble</code> conversion kinds).
+
+**Returns:**
+
+* A value indicating whether to preserve the distinction between
+ positive zero and negative zero. The default is true.
+
+### getNumberConversion
+    public final JSONOptions.ConversionKind getNumberConversion()
+Gets a value indicating how JSON numbers are decoded to CBOR integers.
+
+**Returns:**
+
+* A value indicating how JSON numbers are decoded to CBOR integers.
+ The default is <code>ConversionKind.Full</code>.
+
+### getAllowDuplicateKeys
+    public final boolean getAllowDuplicateKeys()
+Gets a value indicating whether to allow duplicate keys when reading JSON.
+ Used only when decoding JSON.
+
+**Returns:**
+
+* A value indicating whether to allow duplicate keys when reading
+ JSON. The default is false.
 
 ### getReplaceSurrogates
     public final boolean getReplaceSurrogates()
 Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive <code>char</code> s
  forming one Unicode code point) are each replaced with a replacement
- character (U+FFFD). The default is false; an exception is thrown
- when such code points are encountered.
+ character (U+FFFD). If false, an exception is thrown when such code
+ points are encountered.
 
 **Returns:**
 
 * True, if surrogate code points not part of a surrogate pair are each
  replaced with a replacement character, or false if an exception is
- thrown when such code points are encountered.
+ thrown when such code points are encountered. The default is false.

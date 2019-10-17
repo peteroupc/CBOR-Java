@@ -9,27 +9,26 @@ at: http://peteroupc.github.io/
 
 import java.io.*;
 
-    /**
-     * Contains methods useful for reading and writing text strings. It is designed
-     * to have no dependencies other than the basic runtime class library.
-     * <p>Many of these methods work with text encoded in UTF-8, an
-     * encoding form of the Unicode Standard which uses one byte to encode
-     * the most basic characters and two to four bytes to encode other
-     * characters. For example, the <code>GetUtf8</code> method converts a text
-     * string to an array of bytes in UTF-8.</p> <p>In C# and Java, text
-     * strings are represented as sequences of 16-bit values called
-     * <code>char</code> s. These sequences are well-formed under UTF-16, a
-     * 16-bit encoding form of Unicode, except if they contain unpaired
-     * surrogate code points. (A surrogate code point is used to encode
-     * supplementary characters, those with code points U+10000 or higher,
-     * in UTF-16. A surrogate pair is a high surrogate, U+D800 to U+DBFF,
-     * followed by a low surrogate, U+DC00 to U+DFFF. An unpaired surrogate
-     * code point is a surrogate not appearing in a surrogate pair.) Many
-     * of the methods in this class allow setting the behavior to follow
-     * when unpaired surrogate code points are found in text strings, such
-     * as throwing an error or treating the unpaired surrogate as a
-     * replacement character (U+FFFD).</p>
-     */
+  /**
+   * Contains methods useful for reading and writing text strings. It is designed
+   * to have no dependencies other than the basic runtime class library.
+   * <p>Many of these methods work with text encoded in UTF-8, an encoding
+   * form of the Unicode Standard which uses one byte to encode the most
+   * basic characters and two to four bytes to encode other characters. For
+   * example, the <code>GetUtf8</code> method converts a text string to an array
+   * of bytes in UTF-8.</p> <p>In C# and Java, text strings are represented
+   * as sequences of 16-bit values called <code>char</code> s. These sequences
+   * are well-formed under UTF-16, a 16-bit encoding form of Unicode,
+   * except if they contain unpaired surrogate code points. (A surrogate
+   * code point is used to encode supplementary characters, those with code
+   * points U+10000 or higher, in UTF-16. A surrogate pair is a high
+   * surrogate, U+D800 to U+DBFF, followed by a low surrogate, U+DC00 to
+   * U+DFFF. An unpaired surrogate code point is a surrogate not appearing
+   * in a surrogate pair.) Many of the methods in this class allow setting
+   * the behavior to follow when unpaired surrogate code points are found
+   * in text strings, such as throwing an error or treating the unpaired
+   * surrogate as a replacement character (U+FFFD).</p>
+   */
   public final class DataUtilities {
 private DataUtilities() {
 }
@@ -104,24 +103,24 @@ private DataUtilities() {
         throw new NullPointerException("bytes");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("offset(" + offset + ") is less than " +
+          "0");
       }
       if (offset > bytes.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                    bytes.length);
+        throw new IllegalArgumentException("offset(" + offset + ") is more than " +
+          bytes.length);
       }
       if (bytesCount < 0) {
-        throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                    ") is less than 0");
+        throw new IllegalArgumentException("bytesCount(" + bytesCount +
+          ") is less than 0");
       }
       if (bytesCount > bytes.length) {
-        throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                    ") is more than " + bytes.length);
+        throw new IllegalArgumentException("bytesCount(" + bytesCount +
+          ") is more than " + bytes.length);
       }
       if (bytes.length - offset < bytesCount) {
-        throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
-                (bytes.length - offset) + ") is less than " + bytesCount);
+        throw new IllegalArgumentException("bytes's length minus " + offset + "(" +
+          (bytes.length - offset) + ") is less than " + bytesCount);
       }
       StringBuilder b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, offset, bytesCount, b, replace) != 0) {
@@ -222,7 +221,7 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
           if (WriteUtf8(str, 0, str.length(), ms, replace, lenientLineBreaks) !=
-               0) {
+            0) {
             throw new IllegalArgumentException("Unpaired surrogate code point");
           }
           return ms.toByteArray();
@@ -329,14 +328,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       int c = str.charAt(index - 1);
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-          (str.charAt(index - 2) & 0xfc00) == 0xd800) {
+        (str.charAt(index - 2) & 0xfc00) == 0xd800) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) & 0x3ff) << 10) + (c & 0x3ff);
       }
       // unpaired surrogate
       if ((c & 0xf800) == 0xd800) {
         return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ?
-                    c : -1);
+            c : -1);
       }
       return c;
     }
@@ -391,13 +390,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       int c = str.charAt(index);
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-          (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
+        (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
         // Get the Unicode code point for the surrogate pair
         c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(index + 1) & 0x3ff);
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ?
-                    c : (-1));
+            c : (-1));
       }
       return c;
     }
@@ -524,18 +523,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             return ca - cb;
           }
           if ((ca & 0xfc00) == 0xd800 && i + 1 < strA.length() &&
-              (strA.charAt(i + 1) & 0xfc00) == 0xdc00) {
+            (strA.charAt(i + 1) & 0xfc00) == 0xdc00) {
             ca = 0x10000 + ((ca & 0x3ff) << 10) + (strA.charAt(i + 1) & 0x3ff);
           }
           if ((cb & 0xfc00) == 0xd800 && i + 1 < strB.length() &&
-              (strB.charAt(i + 1) & 0xfc00) == 0xdc00) {
+            (strB.charAt(i + 1) & 0xfc00) == 0xdc00) {
             cb = 0x10000 + ((cb & 0x3ff) << 10) + (strB.charAt(i + 1) & 0x3ff);
           }
           return ca - cb;
         }
       }
       return (strA.length() == strB.length()) ? 0 : ((strA.length() < strB.length()) ?
-                    -1 : 1);
+          -1 : 1);
     }
 
     /**
@@ -603,24 +602,24 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new NullPointerException("str");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("offset(" + offset + ") is less than " +
+          "0");
       }
       if (offset > str.length()) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                    str.length());
+        throw new IllegalArgumentException("offset(" + offset + ") is more than " +
+          str.length());
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + length + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("length(" + length + ") is less than " +
+          "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + length + ") is more than " +
-                    str.length());
+        throw new IllegalArgumentException("length(" + length + ") is more than " +
+          str.length());
       }
       if (str.length() - offset < length) {
-        throw new IllegalArgumentException("str.length() minus offset (" +
-                (str.length() - offset) + ") is less than " + length);
+        throw new IllegalArgumentException("str.length() minus offset(" +
+          (str.length() - offset) + ") is less than " + length);
       }
       int endIndex, c;
       byte[] bytes;
@@ -633,7 +632,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (c <= 0x7f) {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str.charAt(index + 1) !=
-                    0x0a)) {
+                0x0a)) {
               // bare CR, convert to CRLF
               if (byteIndex + 2 > StreamedStringBufferLength) {
                 // Write bytes retrieved so far
@@ -683,7 +682,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
         } else {
           if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
-              (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
+            (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
             // Get the Unicode code point for the surrogate pair
             c = 0x10000 + ((c & 0x3ff) << 10) + (str.charAt(index + 1) & 0x3ff);
             ++index;
@@ -769,24 +768,24 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                    "0");
+        throw new IllegalArgumentException("offset(" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                    data.length);
+        throw new IllegalArgumentException("offset(" + offset + ") is more than " +
+          data.length);
       }
       if (bytesCount < 0) {
-        throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                    ") is less than 0");
+        throw new IllegalArgumentException("bytesCount(" + bytesCount +
+          ") is less than 0");
       }
       if (bytesCount > data.length) {
-        throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                    ") is more than " + data.length);
+        throw new IllegalArgumentException("bytesCount(" + bytesCount +
+          ") is more than " + data.length);
       }
       if (data.length - offset < bytesCount) {
-        throw new IllegalArgumentException("data.length minus offset (" +
-                (data.length - offset) + ") is less than " + bytesCount);
+        throw new IllegalArgumentException("data.length minus offset(" +
+          (data.length - offset) + ") is less than " + bytesCount);
       }
       if (builder == null) {
         throw new NullPointerException("builder");
@@ -903,9 +902,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       boolean replace) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
       if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
-        throw new IOException(
-       "Unpaired surrogate code point found.",
-       new IllegalArgumentException("Unpaired surrogate code point found."));
+        throw new IOException (
+          "Unpaired surrogate code point found.",
+          new IllegalArgumentException("Unpaired surrogate code point found."));
       }
       return builder.toString();
     }

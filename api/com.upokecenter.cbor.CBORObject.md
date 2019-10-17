@@ -3,76 +3,73 @@
     public final class CBORObject extends java.lang.Object implements java.lang.Comparable<CBORObject>
 
 <p>Represents an object in Concise Binary Object Representation (CBOR) and
- contains methods for reading and writing CBOR data. CBOR is defined
- in RFC 7049.</p><p> </p><p><b>Converting CBOR objects</b></p> <p>There
- are many ways to get a CBOR object, including from bytes, objects,
- streams and JSON, as described below.</p> <p><b>To and from byte
- arrays:</b> The CBORObject.DecodeFromBytes method converts a byte
- array in CBOR format to a CBOR object. The EncodeToBytes method
- converts a CBOR object to its corresponding byte array in CBOR
- format.</p> <p><b>To and from data streams:</b> The CBORObject.Write
- methods write many kinds of objects to a data stream, including
- numbers, CBOR objects, strings, and arrays of numbers and strings.
- The CBORObject.Read method reads a CBOR object from a data
- stream.</p> <p><b>To and from other objects:</b> The
- <code>CBORObject.FromObject</code> method converts many kinds of objects
- to a CBOR object, including numbers, strings, and arrays and maps of
- numbers and strings. Methods like AsDouble, AsByte, and AsString
- convert a CBOR object to different types of object. The
- <code>CBORObject.ToObject</code> method converts a CBOR object to an
- object of a given type; for example, a CBOR array to a native
+ contains methods for reading and writing CBOR data. CBOR is defined in
+ RFC 7049.</p><p> </p><p><b>Converting CBOR objects</b></p> <p>There are
+ many ways to get a CBOR object, including from bytes, objects, streams
+ and JSON, as described below.</p> <p><b>To and from byte arrays:</b>
+ The CBORObject.DecodeFromBytes method converts a byte array in CBOR
+ format to a CBOR object. The EncodeToBytes method converts a CBOR
+ object to its corresponding byte array in CBOR format.</p> <p><b>To
+ and from data streams:</b> The CBORObject.Write methods write many
+ kinds of objects to a data stream, including numbers, CBOR objects,
+ strings, and arrays of numbers and strings. The CBORObject.Read method
+ reads a CBOR object from a data stream.</p> <p><b>To and from other
+ objects:</b> The <code>CBORObject.FromObject</code> method converts many
+ kinds of objects to a CBOR object, including numbers, strings, and
+ arrays and maps of numbers and strings. Methods like AsDouble, AsByte,
+ and AsString convert a CBOR object to different types of object. The
+ <code>CBORObject.ToObject</code> method converts a CBOR object to an object
+ of a given type; for example, a CBOR array to a native
  <code>ArrayList</code> (or <code>ArrayList</code> in Java), or a CBOR integer to
  an <code>int</code> or <code>long</code>.</p> <p><b>To and from JSON:</b> This
  class also doubles as a reader and writer of JavaScript object
- Notation (JSON). The CBORObject.FromJSONString method converts JSON
- to a CBOR object, and the ToJSONString method converts a CBOR object
- to a JSON string. (Note that the conversion from CBOR to JSON is not
- always without loss and may make it impossible to recover the
- original object when converting the JSON back to CBOR. See the
- ToJSONString documentation.)</p> <p>In addition, the
- CBORObject.WriteJSON method writes many kinds of objects as JSON to
- a data stream, including numbers, CBOR objects, strings, and arrays
- of numbers and strings. The CBORObject.Read method reads a CBOR
- object from a JSON data stream.</p> <p><b>Comparison
- Considerations:</b></p> <p>Instances of CBORObject should not be
-  compared for equality using the "==" operator; it's possible to
- create two CBOR objects with the same value but not the same
-  reference. (The "==" operator might only check if each side of the
- operator is the same instance.)</p> <p>This class's natural ordering
- (under the compareTo method) is consistent with the Equals method,
- meaning that two values that compare as equal under the compareTo
- method are also equal under the Equals method; this is a change in
- version 4.0. Two otherwise equal objects with different tags are not
- treated as equal by both compareTo and Equals. To strip the tags
- from a CBOR object before comparing, use the <code>Untag</code>
+ Notation (JSON). The CBORObject.FromJSONString method converts JSON to
+ a CBOR object, and the ToJSONString method converts a CBOR object to a
+ JSON string. (Note that the conversion from CBOR to JSON is not always
+ without loss and may make it impossible to recover the original object
+ when converting the JSON back to CBOR. See the ToJSONString
+ documentation.)</p> <p>In addition, the CBORObject.WriteJSON method
+ writes many kinds of objects as JSON to a data stream, including
+ numbers, CBOR objects, strings, and arrays of numbers and strings. The
+ CBORObject.Read method reads a CBOR object from a JSON data
+ stream.</p> <p><b>Comparison Considerations:</b></p> <p>Instances of
+  CBORObject should not be compared for equality using the "=="
+ operator; it's possible to create two CBOR objects with the same value
+  but not the same reference. (The "==" operator might only check if
+ each side of the operator is the same instance.)</p> <p>This class's
+ natural ordering (under the compareTo method) is consistent with the
+ Equals method, meaning that two values that compare as equal under the
+ compareTo method are also equal under the Equals method; this is a
+ change in version 4.0. Two otherwise equal objects with different tags
+ are not treated as equal by both compareTo and Equals. To strip the
+ tags from a CBOR object before comparing, use the <code>Untag</code>
  method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR objects are
- immutable (their values can't be changed), so they are inherently
- safe for use by multiple threads.</p> <p>CBOR objects that are
- arrays, maps, and byte strings (whether or not they are tagged) are
- mutable, but this class doesn't attempt to synchronize reads and
- writes to those objects by multiple threads, so those objects are
- not thread safe without such synchronization.</p> <p>One kind of
- CBOR object is called a map, or a list of key-value pairs. Keys can
- be any kind of CBOR object, including numbers, strings, arrays, and
- maps. However, untagged text strings (which means GetTags returns an
-  empty array and the Type property, or "getType()" in Java, returns
- TextString) are the most suitable to use as keys; other kinds of
- CBOR object are much better used as map values instead, keeping in
- mind that some of them are not thread safe without synchronizing
- reads and writes to them.</p> <p>To find the type of a CBOR object,
-  call its Type property (or "getType()" in Java). The return value
- can be Integer, FloatingPoint, Boolean, SimpleValue, or TextString
- for immutable CBOR objects, and Array, Map, or ByteString for
- mutable CBOR objects.</p> <p><b>Nesting Depth:</b></p> <p>The
- DecodeFromBytes and Read methods can only read objects with a
- limited maximum depth of arrays and maps nested within other arrays
- and maps. The code sets this maximum depth to 500 (allowing more
- than enough nesting for most purposes), but it's possible that stack
- overflows in some runtimes might lower the effective maximum nesting
- depth. When the nesting depth goes above 500, the DecodeFromBytes
- and Read methods throw a CBORException.</p> <p>The ReadJSON and
- FromJSONString methods currently have nesting depths of
- 1000.</p>
+ immutable (their values can't be changed), so they are inherently safe
+ for use by multiple threads.</p> <p>CBOR objects that are arrays,
+ maps, and byte strings (whether or not they are tagged) are mutable,
+ but this class doesn't attempt to synchronize reads and writes to
+ those objects by multiple threads, so those objects are not thread
+ safe without such synchronization.</p> <p>One kind of CBOR object is
+ called a map, or a list of key-value pairs. Keys can be any kind of
+ CBOR object, including numbers, strings, arrays, and maps. However,
+ untagged text strings (which means GetTags returns an empty array and
+  the Type property, or "getType()" in Java, returns TextString) are the
+ most suitable to use as keys; other kinds of CBOR object are much
+ better used as map values instead, keeping in mind that some of them
+ are not thread safe without synchronizing reads and writes to
+ them.</p> <p>To find the type of a CBOR object, call its Type property
+  (or "getType()" in Java). The return value can be Integer,
+ FloatingPoint, Boolean, SimpleValue, or TextString for immutable CBOR
+ objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
+ <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and Read methods
+ can only read objects with a limited maximum depth of arrays and maps
+ nested within other arrays and maps. The code sets this maximum depth
+ to 500 (allowing more than enough nesting for most purposes), but it's
+ possible that stack overflows in some runtimes might lower the
+ effective maximum nesting depth. When the nesting depth goes above
+ 500, the DecodeFromBytes and Read methods throw a CBORException.</p>
+ <p>The ReadJSON and FromJSONString methods currently have nesting
+ depths of 1000.</p>
 
 ## Fields
 
@@ -97,10 +94,10 @@
 
 * `CBORObject Abs()`<br>
  Deprecated.
-Instead, convert this CBOR Object to a number (with .AsNumber()), and
- use that number's.Abs() method.
- Instead, convert this CBOR Object to a number (with .AsNumber()), and
- use that number's.Abs() method.
+Instead, convert this object to a number (with .getAsNumber()()),
+ and use that number's.getAbs()() method.
+ Instead, convert this object to a number (with .getAsNumber()()),
+ and use that number's.getAbs()() method.
 * `CBORObject Add​(CBORObject obj)`<br>
  Adds a new object to the end of this array.
 * `CBORObject Add​(java.lang.Object obj)`<br>
@@ -132,10 +129,12 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  type is FloatingPoint.
 * `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
  Deprecated.
-Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EDecimal.class) in Java.
- Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EDecimal.class) in Java.
+Instead, use.getToObject()() in .NET or
+  .getToObject()(com.upokecenter.numbers.EDecimal.class)
+ in Java.
+ Instead, use.getToObject()() in .NET or
+  .getToObject()(com.upokecenter.numbers.EDecimal.class)
+ in Java.
 * `com.upokecenter.numbers.EFloat AsEFloat()`<br>
  Deprecated.
 Instead, use.getToObject()() in.NET or
@@ -144,10 +143,12 @@ Instead, use.getToObject()() in.NET or
   .getToObject()(com.upokecenter.numbers.EFloat.class) in Java.
 * `com.upokecenter.numbers.EInteger AsEInteger()`<br>
  Deprecated.
-Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EInteger.class) in Java.
- Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EInteger.class) in Java.
+Instead, use.getToObject()() in .NET or
+  .getToObject()(com.upokecenter.numbers.EInteger.class)
+ in Java.
+ Instead, use.getToObject()() in .NET or
+  .getToObject()(com.upokecenter.numbers.EInteger.class)
+ in Java.
 * `com.upokecenter.numbers.EInteger AsEIntegerValue()`<br>
  Converts this object to an arbitrary-precision integer if this CBOR object's
  type is Integer.
@@ -181,11 +182,11 @@ Instead, use.getToObject()() in.getNET() or
  value.
 * `boolean CanFitInInt32()`<br>
  Deprecated.
-Instead, use CanValueFitInInt32(), if the application allows only CBOR
+Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
  &&cbor.AsNumber().CanFitInInt32()),   if the application allows any
  CBOR Object convertible to an integer.
- Instead, use CanValueFitInInt32(), if the application allows only CBOR
+ Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
  &&cbor.AsNumber().CanFitInInt32()),   if the application allows any
  CBOR Object convertible to an integer.
@@ -272,6 +273,17 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  (JSON) format.
 * `static CBORObject FromJSONString​(java.lang.String str,
               CBOREncodeOptions options)`<br>
+ Deprecated.
+Instead, use.getFromJSONString()(str,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getFromJSONString()(str,   new
+ JSONOptions(\allowduplicatekeys = false\)), as appropriate.
+ Instead, use.getFromJSONString()(str,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getFromJSONString()(str,   new
+ JSONOptions(\allowduplicatekeys = false\)), as appropriate.
+* `static CBORObject FromJSONString​(java.lang.String str,
+              JSONOptions jsonoptions)`<br>
  Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process.
@@ -409,24 +421,27 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  Gets a value indicating whether this CBOR object represents a finite number.
 * `boolean IsInfinity()`<br>
  Deprecated.
-Use the following instead: (cbor.isNumber()
+Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsInfinity()).
- Use the following instead: (cbor.isNumber()
+ Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsInfinity()).
 * `boolean isIntegral()`<br>
  Gets a value indicating whether this object represents an integer number,
  that is, a number without a fractional part.
 * `boolean IsNaN()`<br>
  Deprecated.
-Use the following instead: (cbor.isNumber()
+Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsNaN()).
- Use the following instead: (cbor.isNumber()
+ Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsNaN()).
 * `boolean isNegative()`<br>
  Gets a value indicating whether this object is a negative number.
 * `boolean IsNegativeInfinity()`<br>
- Gets a value indicating whether this CBOR object represents negative
- infinity.
+ Deprecated.
+Instead, use the following: (cbor.isNumber()
+ && cbor.AsNumber().IsNegativeInfinity()).
+ Instead, use the following: (cbor.isNumber()
+ && cbor.AsNumber().IsNegativeInfinity()).
 * `boolean isNull()`<br>
  Gets a value indicating whether this CBOR object is a CBOR null value,
  whether tagged or not.
@@ -434,8 +449,11 @@ Use the following instead: (cbor.isNumber()
  Gets a value indicating whether this CBOR object stores a number (including
  infinity or a not-a-number or NaN value).
 * `boolean IsPositiveInfinity()`<br>
- Gets a value indicating whether this CBOR object represents positive
- infinity.
+ Deprecated.
+Instead, use the following: (cbor.isNumber()
+ && cbor.AsNumber().IsPositiveInfinity()).
+ Instead, use the following: (cbor.isNumber()
+ && cbor.AsNumber().IsPositiveInfinity()).
 * `boolean isTagged()`<br>
  Gets a value indicating whether this data item has at least one tag.
 * `boolean isTrue()`<br>
@@ -454,9 +472,9 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Multiply() method.
 * `CBORObject Negate()`<br>
  Deprecated.
-Instead, convert this CBOR Object to a number (with .AsNumber()), and
+Instead, convert this object to a number (with .AsNumber()), and
  use that number's.Negate() method.
- Instead, convert this CBOR Object to a number (with .AsNumber()), and
+ Instead, convert this object to a number (with .AsNumber()), and
  use that number's.Negate() method.
 * `static CBORObject NewArray()`<br>
  Creates a new empty CBOR array.
@@ -473,6 +491,19 @@ Instead, convert this CBOR Object to a number (with .AsNumber()), and
  (JSON) format.
 * `static CBORObject ReadJSON​(java.io.InputStream stream,
         CBOREncodeOptions options)`<br>
+ Deprecated.
+Instead, use.getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = false\)),
+ as appropriate.
+ Instead, use.getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = false\)),
+ as appropriate.
+* `static CBORObject ReadJSON​(java.io.InputStream stream,
+        JSONOptions jsonoptions)`<br>
  Generates a CBOR object from a data stream in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process.
@@ -1239,7 +1270,35 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 * <code>CBORException</code> - The string is not in JSON format.
 
 ### FromJSONString
-    public static CBORObject FromJSONString​(java.lang.String str, CBOREncodeOptions options)
+    @Deprecated public static CBORObject FromJSONString​(java.lang.String str, CBOREncodeOptions options)
+Deprecated.
+Instead, use.getFromJSONString()(str,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getFromJSONString()(str,   new
+ JSONOptions(\allowduplicatekeys = false\)), as appropriate.
+
+**Parameters:**
+
+* <code>str</code> - A string in JSON format. The entire string must contain a single
+ JSON object and not multiple objects. The string may not begin with
+ a byte-order mark (U+FEFF).
+
+* <code>options</code> - Specifies options to control the decoding process. This
+ method uses only the AllowDuplicateKeys property of this object.
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> or <code>options</code>
+ is null.
+
+* <code>CBORException</code> - The string is not in JSON format.
+
+### FromJSONString
+    public static CBORObject FromJSONString​(java.lang.String str, JSONOptions jsonoptions)
 Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process. <p>Note that if a CBOR object is converted to JSON with
@@ -1254,16 +1313,16 @@ Generates a CBOR object from a text string in JavaScript object Notation
  JSON object and not multiple objects. The string may not begin with
  a byte-order mark (U+FEFF).
 
-* <code>options</code> - Specifies options to control the decoding process.
+* <code>jsonoptions</code> - Specifies options to control the JSON decoding process.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object containing the JSON data decoded.
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> or <code>options</code>
- is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> or <code>
+ jsonoptions</code> is null.
 
 * <code>CBORException</code> - The string is not in JSON format.
 
@@ -2267,7 +2326,38 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  encoding or is not in JSON format.
 
 ### ReadJSON
-    public static CBORObject ReadJSON​(java.io.InputStream stream, CBOREncodeOptions options) throws java.io.IOException
+    @Deprecated public static CBORObject ReadJSON​(java.io.InputStream stream, CBOREncodeOptions options) throws java.io.IOException
+Deprecated.
+Instead, use.getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = true\))
+ or .getReadJSON()(stream,
+ new JSONOptions(\allowduplicatekeys = false\)),
+ as appropriate.
+
+**Parameters:**
+
+* <code>stream</code> - A readable data stream. The sequence of bytes read from the
+ data stream must contain a single JSON object and not multiple
+ objects.
+
+* <code>options</code> - Contains options to control the JSON decoding process. This
+ method uses only the AllowDuplicateKeys property of this object.
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
+
+* <code>java.io.IOException</code> - An I/O error occurred.
+
+* <code>CBORException</code> - The data stream contains invalid
+ encoding or is not in JSON format.
+
+### ReadJSON
+    public static CBORObject ReadJSON​(java.io.InputStream stream, JSONOptions jsonoptions) throws java.io.IOException
 Generates a CBOR object from a data stream in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process. The JSON stream may begin with a byte-order mark (U+FEFF).
@@ -2284,11 +2374,12 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  data stream must contain a single JSON object and not multiple
  objects.
 
-* <code>options</code> - The parameter <code>options</code> is a CBOREncodeOptions object.
+* <code>jsonoptions</code> - The parameter <code>jsonoptions</code> is a Cbor.JSONOptions
+ object.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object containing the JSON data decoded.
 
 **Throws:**
 
@@ -2678,8 +2769,8 @@ Converts an arbitrary object to a string in JavaScript object Notation
 ### Abs
     @Deprecated public CBORObject Abs()
 Deprecated.
-Instead, convert this CBOR Object to a number (with .AsNumber()), and
- use that number's.Abs() method.
+Instead, convert this object to a number (with .getAsNumber()()),
+ and use that number's.getAbs()() method.
 
 **Returns:**
 
@@ -2778,8 +2869,9 @@ Instead, convert this CBOR Object to a number (with .AsNumber()), and
 ### AsEInteger
     @Deprecated public com.upokecenter.numbers.EInteger AsEInteger()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.einteger>() in.NET or
-  .getToObject()(com.upokecenter.numbers.EInteger.class) in Java.</petero.numbers.einteger>
+Instead, use.getToObject()<petero.numbers.einteger>() in .NET or
+  .getToObject()(com.upokecenter.numbers.EInteger.class)
+ in Java.</petero.numbers.einteger>
 
 **Returns:**
 
@@ -2841,8 +2933,9 @@ Converts this object to a 64-bit floating point number.
 ### AsEDecimal
     @Deprecated public com.upokecenter.numbers.EDecimal AsEDecimal()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.edecimal>() in.NET or
-  .getToObject()(com.upokecenter.numbers.EDecimal.class) in Java.</petero.numbers.edecimal>
+Instead, use.getToObject()<petero.numbers.edecimal>() in .NET or
+  .getToObject()(com.upokecenter.numbers.EDecimal.class)
+ in Java.</petero.numbers.edecimal>
 
 **Returns:**
 
@@ -3138,7 +3231,7 @@ Returns whether this object's value can be converted to a 64-bit floating
 ### CanFitInInt32
     @Deprecated public boolean CanFitInInt32()
 Deprecated.
-Instead, use CanValueFitInInt32(), if the application allows only CBOR
+Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
  &amp;&amp;cbor.AsNumber().CanFitInInt32()),   if the application allows any
  CBOR Object convertible to an integer.
@@ -3601,7 +3694,7 @@ Inserts an object at the specified position in this CBOR array.
 ### IsInfinity
     @Deprecated public boolean IsInfinity()
 Deprecated.
-Use the following instead: (cbor.isNumber()
+Instead, use the following: (cbor.isNumber()
  &amp;&amp; cbor.AsNumber().IsInfinity()).
 
 **Returns:**
@@ -3612,7 +3705,7 @@ Use the following instead: (cbor.isNumber()
 ### IsNaN
     @Deprecated public boolean IsNaN()
 Deprecated.
-Use the following instead: (cbor.isNumber()
+Instead, use the following: (cbor.isNumber()
  &amp;&amp; cbor.AsNumber().IsNaN()).
 
 **Returns:**
@@ -3623,9 +3716,10 @@ Use the following instead: (cbor.isNumber()
  Java); otherwise, <code>false</code>.
 
 ### IsNegativeInfinity
-    public boolean IsNegativeInfinity()
-Gets a value indicating whether this CBOR object represents negative
- infinity.
+    @Deprecated public boolean IsNegativeInfinity()
+Deprecated.
+Instead, use the following: (cbor.isNumber()
+ &amp;&amp; cbor.AsNumber().IsNegativeInfinity()).
 
 **Returns:**
 
@@ -3633,9 +3727,10 @@ Gets a value indicating whether this CBOR object represents negative
  otherwise, <code>false</code>.
 
 ### IsPositiveInfinity
-    public boolean IsPositiveInfinity()
-Gets a value indicating whether this CBOR object represents positive
- infinity.
+    @Deprecated public boolean IsPositiveInfinity()
+Deprecated.
+Instead, use the following: (cbor.isNumber()
+ &amp;&amp; cbor.AsNumber().IsPositiveInfinity()).
 
 **Returns:**
 
@@ -3645,7 +3740,7 @@ Gets a value indicating whether this CBOR object represents positive
 ### Negate
     @Deprecated public CBORObject Negate()
 Deprecated.
-Instead, convert this CBOR Object to a number (with .AsNumber()), and
+Instead, convert this object to a number (with .AsNumber()), and
  use that number's.Negate() method.
 
 **Returns:**

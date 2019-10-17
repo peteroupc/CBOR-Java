@@ -10,8 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORDouble implements ICBORNumber
-  {
+  class CBORDouble implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((((Double)obj).doubleValue()) == Double.POSITIVE_INFINITY);
     }
@@ -55,7 +54,7 @@ import com.upokecenter.numbers.*;
       }
       fltItem = (fltItem < 0) ? Math.ceil(fltItem) : Math.floor(fltItem);
       if (fltItem >= -9223372036854775808.0 && fltItem <
-      9223372036854775808.0) {
+        9223372036854775808.0) {
         return (long)fltItem;
       }
       throw new ArithmeticException("This Object's value is out of range");
@@ -88,9 +87,9 @@ import com.upokecenter.numbers.*;
         return false;
       }
       double fltItem2 = (fltItem < 0) ? Math.ceil(fltItem) :
-      Math.floor(fltItem);
+        Math.floor(fltItem);
       return fltItem2 >= -9223372036854775808.0 && fltItem2 <
-      9223372036854775808.0;
+        9223372036854775808.0;
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {
@@ -99,7 +98,7 @@ import com.upokecenter.numbers.*;
         return false;
       }
       double fltItem2 = (fltItem < 0) ? Math.ceil(fltItem) :
-      Math.floor(fltItem);
+        Math.floor(fltItem);
       return fltItem2 >= Integer.MIN_VALUE && fltItem2 <= Integer.MAX_VALUE;
     }
 
@@ -123,7 +122,7 @@ import com.upokecenter.numbers.*;
     public int Sign(Object obj) {
       double flt = ((Double)obj).doubleValue();
       return Double.isNaN(flt) ? 2 : ((double)flt == 0.0 ? 0 : (flt < 0.0f ?
-      -1 : 1));
+            -1 : 1));
     }
 
     public boolean IsIntegral(Object obj) {
@@ -132,7 +131,7 @@ import com.upokecenter.numbers.*;
         return false;
       }
       double fltItem2 = (fltItem < 0) ? Math.ceil(fltItem) :
-      Math.floor(fltItem);
+        Math.floor(fltItem);
       return fltItem == fltItem2;
     }
 

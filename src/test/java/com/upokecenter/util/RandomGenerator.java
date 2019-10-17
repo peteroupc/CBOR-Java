@@ -1,14 +1,14 @@
 package com.upokecenter.util;
 
-    /**
-     * A class that adapts a random byte generator to generate random numbers in a
-     * variety of statistical distributions. <p>The method descriptions in
-     * this class assume the underlying random byte generator generates
-     * uniformly distributed numbers that are independent of each
-     * other.</p> <p><b>Thread safety:</b> The methods in this class are
-     * safe for concurrent use by multiple threads, as long as the
-     * underlying random byte generator is as well.</p>
-     */
+  /**
+   * A class that adapts a random byte generator to generate random numbers in a
+   * variety of statistical distributions. <p>The method descriptions in
+   * this class assume the underlying random byte generator generates
+   * uniformly distributed numbers that are independent of each other.</p>
+   * <p><b>Thread safety:</b> The methods in this class are safe for
+   * concurrent use by multiple threads, as long as the underlying random
+   * byte generator is as well.</p>
+   */
   public final class RandomGenerator {
     private boolean valueHaveLastNormal;
     private IRandomGen valueIrg;
@@ -38,10 +38,10 @@ package com.upokecenter.util;
      */
     public boolean Bernoulli(double p) {
       if (p < 0) {
-        throw new IllegalArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p(" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new IllegalArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p(" + p + ") is more than 1");
       }
       return this.Uniform() < p;
     }
@@ -76,14 +76,14 @@ package com.upokecenter.util;
      */
     public int Binomial(int trials, double p) {
       if (p < 0) {
-        throw new IllegalArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p(" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new IllegalArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p(" + p + ") is more than 1");
       }
       if (trials <= -1) {
-        throw new IllegalArgumentException("trials (" + trials +
-               ") is not greater than " + (-1));
+        throw new IllegalArgumentException("trials(" + trials +
+          ") is not greater than " + (-1));
       }
       if (trials == 0 || p == 1.0) {
         return trials;
@@ -122,7 +122,7 @@ package com.upokecenter.util;
      */
     public double ChiSquared(int df) {
       if (df <= 0) {
-        throw new IllegalArgumentException("df (" + df + ") is not greater than 0");
+        throw new IllegalArgumentException("df(" + df + ") is not greater than 0");
       }
       return this.Gamma(df * 0.5, 2);
     }
@@ -143,7 +143,7 @@ package com.upokecenter.util;
      */
     public double Gamma(double a, double b) {
       if (b <= 0) {
-        throw new IllegalArgumentException("b (" + b + ") is not greater than 0");
+        throw new IllegalArgumentException("b(" + b + ") is not greater than 0");
       }
       return this.Gamma(a) * b;
     }
@@ -155,7 +155,7 @@ package com.upokecenter.util;
      */
     public double Gamma(double a) {
       if (a <= 0) {
-        throw new IllegalArgumentException("a (" + a + ") is not greater than 0");
+        throw new IllegalArgumentException("a(" + a + ") is not greater than 0");
       }
       double v, x, u, x2, d, c;
       d = (a < 1 ? 1 + a : a) - (1.0 / 3.0);
@@ -167,8 +167,8 @@ package com.upokecenter.util;
         } while (v <= 0);
         u = 1.0 - this.Uniform();
         x2 = x * x;
-      } while (u >= 1 - (0.0331 * x2 * x2) &&
-               Math.log(u) >= (0.5 * x2) + (d * (1 - v + Math.log(v))));
+      } while (u >= 1 - (0.0331 * x2 * x 2) &&
+        Math.log(u) >= (0.5 * x2) + (d *(1 - v + Math.log(v))));
       if (a < 1) {
         return d * v * Math.exp(this.Exponential() / -a);
       } else {
@@ -207,22 +207,22 @@ package com.upokecenter.util;
      */
     public int Hypergeometric(int trials, int ones, int count) {
       if (ones < 0) {
-        throw new IllegalArgumentException("ones (" + ones + ") is less than 0");
+        throw new IllegalArgumentException("ones(" + ones + ") is less than 0");
       }
       if (ones > count) {
-        throw new IllegalArgumentException("ones (" + ones + ") is more than " +
+        throw new IllegalArgumentException("ones(" + ones + ") is more than " +
           count);
       }
       if (count < 0) {
-        throw new IllegalArgumentException("count (" + count +
+        throw new IllegalArgumentException("count(" + count +
           ") is less than 0");
       }
       if (trials < 0) {
-        throw new IllegalArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials(" + trials +
           ") is less than 0");
       }
       if (trials > count) {
-        throw new IllegalArgumentException("trials (" + trials +
+        throw new IllegalArgumentException("trials(" + trials +
           ") is more than " + count);
       }
       int ret = 0;
@@ -259,14 +259,14 @@ package com.upokecenter.util;
      */
     public int NegativeBinomial(int trials, double p) {
       if (p < 0) {
-        throw new IllegalArgumentException("p (" + p + ") is less than 0");
+        throw new IllegalArgumentException("p(" + p + ") is less than 0");
       }
       if (p > 1) {
-        throw new IllegalArgumentException("p (" + p + ") is more than 1");
+        throw new IllegalArgumentException("p(" + p + ") is more than 1");
       }
       if (trials <= -1) {
-        throw new IllegalArgumentException("trials (" + trials +
-               ") is not greater than " + (-1));
+        throw new IllegalArgumentException("trials(" + trials +
+          ") is not greater than " + (-1));
       }
       if (trials == 0 || p == 1.0) {
         return 0;
@@ -366,7 +366,7 @@ package com.upokecenter.util;
      */
     public int Poisson(double mean) {
       if (mean < 0) {
-        throw new IllegalArgumentException("mean (" + mean +
+        throw new IllegalArgumentException("mean(" + mean +
           ") is less than 0");
       }
       double l = Math.exp(-mean);
@@ -389,8 +389,8 @@ package com.upokecenter.util;
      */
     public double Uniform(double min, double max) {
       if (min >= max) {
-        throw new IllegalArgumentException("min (" + min + ") is not less than " +
-            max);
+        throw new IllegalArgumentException("min(" + min + ") is not less than " +
+          max);
       }
       return min + ((max - min) * this.Uniform());
     }
@@ -432,7 +432,7 @@ package com.upokecenter.util;
      */
     public int UniformInt(int minInclusive, int maxExclusive) {
       if (minInclusive > maxExclusive) {
-        throw new IllegalArgumentException("minInclusive (" + minInclusive +
+        throw new IllegalArgumentException("minInclusive(" + minInclusive +
           ") is more than " + maxExclusive);
       }
       if (minInclusive == maxExclusive) {
@@ -459,7 +459,7 @@ package com.upokecenter.util;
      */
     public long UniformLong(long minInclusive, long maxExclusive) {
       if (minInclusive > maxExclusive) {
-        throw new IllegalArgumentException("minInclusive (" + minInclusive +
+        throw new IllegalArgumentException("minInclusive(" + minInclusive +
           ") is more than " + maxExclusive);
       }
       if (minInclusive == maxExclusive) {
@@ -468,9 +468,10 @@ package com.upokecenter.util;
       if (minInclusive >= 0) {
         return minInclusive + this.UniformLong(maxExclusive - minInclusive);
       } else {
-      if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive < minInclusive) ||
+        if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive <
+minInclusive) ||
           (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
-              minInclusive - maxExclusive < 0) {
+          minInclusive - maxExclusive < 0) {
           // Difference is greater than MaxValue
           long lb = 0;
           byte[] b = new byte[8];
@@ -503,7 +504,7 @@ package com.upokecenter.util;
      */
     public int UniformInt(int maxExclusive) {
       if (maxExclusive < 0) {
-        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
+        throw new IllegalArgumentException("maxExclusive(" + maxExclusive +
           ") is less than 0");
       }
       if (maxExclusive <= 1) {
@@ -512,43 +513,43 @@ package com.upokecenter.util;
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
-            this.valueIrg.GetBytes(b, 0, 1);
-            return b[0] & 1;
-          }
+          this.valueIrg.GetBytes(b, 0, 1);
+          return b[0] & 1;
+        }
         case 256: {
-            this.valueIrg.GetBytes(b, 0, 1);
-            return (int)b[0] & 1;
-          }
+          this.valueIrg.GetBytes(b, 0, 1);
+          return (int)b[0] & 1;
+        }
         default: {
+          while (true) {
+            int ib = 0;
+            if (maxExclusive == 0x1000000) {
+              this.valueIrg.GetBytes(b, 0, 3);
+              ib = b[0] & 0xff;
+              ib |= (b[1] & 0xff) << 8;
+              ib |= (b[2] & 0xff) << 16;
+              return ib;
+            }
+            if (maxExclusive == 0x10000) {
+              this.valueIrg.GetBytes(b, 0, 2);
+              ib = b[0] & 0xff;
+              ib |= (b[1] & 0xff) << 8;
+              return ib;
+            }
+            int maxexc;
+            maxexc = (Integer.MAX_VALUE / maxExclusive) * maxExclusive;
             while (true) {
-              int ib = 0;
-              if (maxExclusive == 0x1000000) {
-                this.valueIrg.GetBytes(b, 0, 3);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
-                ib |= (b[2] & 0xff) << 16;
-                return ib;
-              }
-              if (maxExclusive == 0x10000) {
-                this.valueIrg.GetBytes(b, 0, 2);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
-                return ib;
-              }
-              int maxexc;
-              maxexc = (Integer.MAX_VALUE / maxExclusive) * maxExclusive;
-              while (true) {
-                this.valueIrg.GetBytes(b, 0, 4);
-                ib = b[0] & 0xff;
-                ib |= (b[1] & 0xff) << 8;
-                ib |= (b[2] & 0xff) << 16;
-                ib |= (b[3] & 0x7f) << 24;
-                if (ib < maxexc) {
-                  return ib % maxExclusive;
-                }
+              this.valueIrg.GetBytes(b, 0, 4);
+              ib = b[0] & 0xff;
+              ib |= (b[1] & 0xff) << 8;
+              ib |= (b[2] & 0xff) << 16;
+              ib |= (b[3] & 0x7f) << 24;
+              if (ib < maxexc) {
+                return ib % maxExclusive;
               }
             }
           }
+        }
       }
     }
 
@@ -561,7 +562,7 @@ package com.upokecenter.util;
      */
     public long UniformLong(long maxExclusive) {
       if (maxExclusive < 0) {
-        throw new IllegalArgumentException("maxExclusive (" + maxExclusive +
+        throw new IllegalArgumentException("maxExclusive(" + maxExclusive +
           ") is less than 0");
       }
       if (maxExclusive <= Integer.MAX_VALUE) {

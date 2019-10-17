@@ -28,7 +28,7 @@ import com.upokecenter.numbers.*;
       }
       if (smallIndex > Integer.MAX_VALUE) {
         throw new CBORException("Index " + smallIndex +
-                    " is bigger than supported ");
+          " is bigger than supported ");
       }
       int index = (int)smallIndex;
       if (index >= this.sharedObjects.size()) {
@@ -43,7 +43,7 @@ import com.upokecenter.numbers.*;
       }
       if (!bigIndex.CanFitInInt32()) {
         throw new CBORException("Index " + bigIndex +
-                    " is bigger than supported ");
+          " is bigger than supported ");
       }
       int index = bigIndex.ToInt32Checked();
       if (index >= this.sharedObjects.size()) {

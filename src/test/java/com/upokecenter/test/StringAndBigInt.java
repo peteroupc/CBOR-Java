@@ -7,7 +7,7 @@ import com.upokecenter.numbers.*;
     private static final String ValueDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static final String ValueDigitsLower =
-          "0123456789abcdefghijklmnopqrstuvwxyz";
+      "0123456789abcdefghijklmnopqrstuvwxyz";
 
     private String stringValue;
 
@@ -30,11 +30,11 @@ import com.upokecenter.numbers.*;
       int radix,
       int maxNumDigits) {
       if (radix < 2) {
-        throw new IllegalArgumentException("radix (" + radix +
+        throw new IllegalArgumentException("radix(" + radix +
           ") is less than 2");
       }
       if (radix > 36) {
-        throw new IllegalArgumentException("radix (" + radix +
+        throw new IllegalArgumentException("radix(" + radix +
           ") is more than 36");
       }
       EInteger bv = EInteger.FromInt32(0);
@@ -83,7 +83,7 @@ import com.upokecenter.numbers.*;
           builder.append(ValueDigitsLower.charAt(digit4));
         }
         int digits = (((((digit * radix) + digit2) *
-          radix) + digit3) * radix) + digit4;
+                radix) + digit3) * radix) + digit4;
         bv = bv.Multiply(radixpow4);
         EInteger bigintTmp = EInteger.FromInt32(digits);
         bv = bv.Add(bigintTmp);

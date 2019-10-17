@@ -7,9 +7,9 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-    /**
-     * Represents a type that a CBOR object can have.
-     */
+  /**
+   * Represents a type that a CBOR object can have.
+   */
   public enum CBORType {
     /**
      * A number of any kind, including integers, big integers, floating point

@@ -2,16 +2,16 @@ package com.upokecenter.cbor;
 
 import java.util.*;
 
-    /**
-     * Holds converters to customize the serialization and deserialization behavior
-     * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
-     * well as type filters for <code>ToObject</code>.
-     */
+  /**
+   * Holds converters to customize the serialization and deserialization behavior
+   * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
+   * well as type filters for <code>ToObject</code>.
+   */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
     private final List<String> typeNames;
     private final Map<Object, ConverterInfo>
-      converters;
+    converters;
 
     /**
      * Initializes a new instance of the {@link
@@ -52,13 +52,13 @@ import java.util.*;
         "ToCBORObject",
         type));
       if (ci.getToObject() == null) {
-        throw new IllegalArgumentException(
+        throw new IllegalArgumentException (
           "Converter doesn't contain a proper ToCBORObject method");
       }
-      ci.setFromObject(PropertyMap.FindOneArgumentMethod(
-        converter,
-        "FromCBORObject",
-        CBORObject.class));
+      ci.setFromObject(PropertyMap.FindOneArgumentMethod (
+          converter,
+          "FromCBORObject",
+          CBORObject.class));
       this.converters.put(type, ci);
       return this;
     }

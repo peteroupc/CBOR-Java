@@ -47,7 +47,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void DoTestLong(long value) {
       String b = "i" + TestCommon.LongToString(value) + "e";
-      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b, false));
+      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b,
+            false));
       Assert.assertEquals(value, beo.AsInt64());
       String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
@@ -55,7 +56,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void DoTestString(String value) {
       String b = DataUtilities.GetUtf8Length(value, false) + ":" + value;
-      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b, false));
+      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b,
+            false));
       Assert.assertEquals(value, beo.AsString());
       String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
@@ -159,8 +161,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       DoTestString(" ");
       DoTestString("test");
 
-      DoTestString(
-            TestCommon.Repeat("three", 15));
+      DoTestString (
+        TestCommon.Repeat("three", 15));
       DoTestString("te\u007fst");
       DoTestString("te\u0080st");
       DoTestString("te\u3000st");

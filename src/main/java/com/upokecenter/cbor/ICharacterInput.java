@@ -1,8 +1,8 @@
 package com.upokecenter.cbor;
 
-    /**
-     * An interface for reading Unicode characters from a data source.
-     */
+  /**
+   * An interface for reading Unicode characters from a data source.
+   */
   interface ICharacterInput {
     /**
      * Reads a Unicode character from a data source.

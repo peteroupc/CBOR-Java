@@ -15,22 +15,22 @@ at: http://peteroupc.github.io/
       boolean isiri = obj.HasMostOuterTag(266);
       boolean isiriref = obj.HasMostOuterTag(267);
       if (
-  isiriref && !URIUtility.IsValidIRI(
-  obj.AsString(),
-  URIUtility.ParseMode.IRIStrict)) {
+        isiriref && !URIUtility.IsValidIRI (
+          obj.AsString(),
+          URIUtility.ParseMode.IRIStrict)) {
         throw new CBORException("String is not a valid IRI Reference");
       }
       if (
-        isiri && (!URIUtility.IsValidIRI(
-        obj.AsString(),
-        URIUtility.ParseMode.IRIStrict) ||
-         !URIUtility.HasScheme(obj.AsString()))) {
+        isiri && (!URIUtility.IsValidIRI (
+            obj.AsString(),
+            URIUtility.ParseMode.IRIStrict) ||
+          !URIUtility.HasScheme(obj.AsString()))) {
         throw new CBORException("String is not a valid IRI");
       }
-      if (!URIUtility.IsValidIRI(
-  obj.AsString(),
-  URIUtility.ParseMode.URIStrict) ||
-   !URIUtility.HasScheme(obj.AsString())) {
+      if (!URIUtility.IsValidIRI (
+          obj.AsString(),
+          URIUtility.ParseMode.URIStrict) ||
+        !URIUtility.HasScheme(obj.AsString())) {
         throw new CBORException("String is not a valid URI");
       }
       return obj;
@@ -38,8 +38,8 @@ at: http://peteroupc.github.io/
 
     public java.net.URI FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(32) ||
-obj.HasMostOuterTag(266) ||
-obj.HasMostOuterTag(267)) {
+             obj.HasMostOuterTag(266) ||
+             obj.HasMostOuterTag(267)) {
         this.ValidateObject(obj);
         try {
           return new java.net.URI(obj.AsString());

@@ -200,21 +200,21 @@ import com.upokecenter.numbers.*;
     }
     @Test
     public void TestCBORObjectArgumentValidation() {
-      Assert.assertEquals(
-  CBORObject.Null,
-  ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
-      Assert.assertEquals(
+      Assert.assertEquals (
+        CBORObject.Null,
+        ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
+      Assert.assertEquals (
         CBORObject.Null,
         ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
-      Assert.assertEquals(
-  CBORObject.True,
-  ToObjectTest.TestToFromObjectRoundTrip(true));
-      Assert.assertEquals(
-  CBORObject.False,
-  ToObjectTest.TestToFromObjectRoundTrip(false));
-      Assert.assertEquals(
-  ToObjectTest.TestToFromObjectRoundTrip(8),
-  ToObjectTest.TestToFromObjectRoundTrip((byte)8));
+      Assert.assertEquals (
+        CBORObject.True,
+        ToObjectTest.TestToFromObjectRoundTrip(true));
+      Assert.assertEquals (
+        CBORObject.False,
+        ToObjectTest.TestToFromObjectRoundTrip(false));
+      Assert.assertEquals (
+        ToObjectTest.TestToFromObjectRoundTrip(8),
+        ToObjectTest.TestToFromObjectRoundTrip((byte)8));
 
       try {
         CBORObject.True.Abs();
@@ -620,14 +620,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail(cbor.toString());
  }
 
-      cbor = CBORObject.DecodeFromBytes(
-        new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, (byte)0xff, });
+      cbor = CBORObject.DecodeFromBytes (
+          new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, (byte)0xff, });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
 
-      cbor = CBORObject.DecodeFromBytes(
-        new byte[] { (byte)0xd9, 0x01, 0x0e, (byte)0x9f, (byte)0xff, });
+      cbor = CBORObject.DecodeFromBytes (
+          new byte[] { (byte)0xd9, 0x01, 0x0e, (byte)0x9f, (byte)0xff, });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
@@ -661,11 +661,17 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
-      cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc4, (byte)0x9f, 0x00, (byte)0xff, });
+      cbor = CBORObject.DecodeFromBytes(new byte[] {
+        (byte)0xc4, (byte)0x9f, 0x00,
+        (byte)0xff,
+       });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
-      cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xc5, (byte)0x9f, 0x00, (byte)0xff, });
+      cbor = CBORObject.DecodeFromBytes(new byte[] {
+        (byte)0xc5, (byte)0x9f, 0x00,
+        (byte)0xff,
+       });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
@@ -708,14 +714,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           0x40,
          }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
-}
+      }
     }
 
     @Test
     public void TestUUID() {
       CBORObject obj =
         ToObjectTest.TestToFromObjectRoundTrip(java.util.UUID.fromString(
-          "00112233-4455-6677-8899-AABBCCDDEEFF"));
+            "00112233-4455-6677-8899-AABBCCDDEEFF"));
       Assert.assertEquals(CBORType.ByteString, obj.getType());
       Assert.assertEquals(EInteger.FromString("37"), obj.getMostInnerTag());
       byte[] bytes = obj.GetByteString();
@@ -927,7 +933,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           0,
          }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
-}
+      }
       {
         Object objectTemp = EInteger.FromString("-65537");
         Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
@@ -936,7 +942,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
           0, 0,
          }).ToObject(EInteger.class);
         Assert.assertEquals(objectTemp, objectTemp2);
-}
+      }
       {
         Object objectTemp = EInteger.FromString("-16777217");
         Object objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
@@ -1007,13 +1013,13 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestStringRefs() {
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
-      CBORObject cbor = CBORObject.DecodeFromBytes(
-        new byte[] {
-          (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64, (byte)0xd8,
-          0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19,
-          0x01, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff,
-         },
-        encodeOptions);
+      CBORObject cbor = CBORObject.DecodeFromBytes (
+      new byte[] {
+        (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64, (byte)0xd8,
+        0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19,
+        0x01, (byte)0xd8, 0x19, 0x00, (byte)0xd8, 0x19, 0x01, (byte)0xff,
+       },
+      encodeOptions);
       String expected =
         "[\"abcd\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
@@ -1026,7 +1032,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
        },
       encodeOptions);
       expected =
-     "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
+  "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
     @Test

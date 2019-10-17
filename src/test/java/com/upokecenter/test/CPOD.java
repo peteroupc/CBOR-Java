@@ -7,12 +7,12 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
-   public final class CPOD {
-      public final String getAa() { return propVaraa; }
+  public final class CPOD {
+    public final String getAa() { return propVaraa; }
 public final void setAa(String value) { propVaraa = value; }
 private String propVaraa;
 
-      private final String getBb() { return propVarbb; }
+    private final String getBb() { return propVarbb; }
 private final void setBb(String value) { propVarbb = value; }
 private String propVarbb;
-    }
+  }

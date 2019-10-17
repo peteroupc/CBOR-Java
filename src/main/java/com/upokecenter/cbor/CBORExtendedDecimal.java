@@ -10,8 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedDecimal implements ICBORNumber
-  {
+  class CBORExtendedDecimal implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.IsPositiveInfinity();
@@ -68,14 +67,14 @@ import com.upokecenter.numbers.*;
 
     public boolean CanFitInSingle(Object obj) {
       EDecimal ef = (EDecimal)obj;
-      return (!ef.isFinite()) ||
-      (ef.compareTo(EDecimal.FromSingle(ef.ToSingle())) == 0);
+      return (!ef.isFinite()) || (ef.compareTo(EDecimal.FromSingle(
+            ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
       EDecimal ef = (EDecimal)obj;
-      return (!ef.isFinite()) ||
-      (ef.compareTo(EDecimal.FromDouble(ef.ToDouble())) == 0);
+      return (!ef.isFinite()) || (ef.compareTo(EDecimal.FromDouble(
+            ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {
@@ -129,8 +128,9 @@ import com.upokecenter.numbers.*;
     public boolean IsIntegral(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.isFinite() && ((ed.getExponent().signum() >= 0) ||
-      (ed.compareTo(EDecimal.FromEInteger(ed.ToEInteger())) ==
-      0));
+(ed.compareTo(EDecimal.FromEInteger(ed.ToEInteger())) ==
+
+            0));
     }
 
     public int AsInt32(Object obj, int minValue, int maxValue) {
