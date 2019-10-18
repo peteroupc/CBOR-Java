@@ -218,19 +218,22 @@ import com.upokecenter.numbers.*;
           c = this.reader.ReadChar();
           while (c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
             c == 'e' || c == 'E') {
-            if (lengthTwo) {
+            if (sb == null) {
               sb = new StringBuilder();
-              sb.append((char)'-');
+              sb.append('-');
               sb.append((char)cstart);
-              lengthTwo = false;
             }
             sb.append((char)c);
             c = this.reader.ReadChar();
           }
-          str = sb.toString();
-          obj = CBORDataUtilities.ParseJSONNumber(str, 0, str.length(),
-  false, this.options);
-  if (obj == null) {
+          if (sb == null) {
+            // Single-digit number
+             str = new String(new char[] { '-', (char)cstart });
+           } else {
+            str = sb.toString();
+          }
+          obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+          if (obj == null) {
               String errstr = (str.length() <= 100) ? str : (str.substring(0, 100) +
 "...");
               this.reader.RaiseError("JSON number can't be parsed. " + errstr);
@@ -260,18 +263,21 @@ import com.upokecenter.numbers.*;
           c = this.reader.ReadChar();
           while (c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
             c == 'e' || c == 'E') {
-            if (lengthOne) {
+            if (sb == null) {
               sb = new StringBuilder();
               sb.append((char)cstart);
-              lengthOne = false;
             }
             sb.append((char)c);
             c = this.reader.ReadChar();
           }
-          str = sb.toString();
-          obj = CBORDataUtilities.ParseJSONNumber(str, 0, str.length(),
-  false, this.options);
-  if (obj == null) {
+          if (sb == null) {
+             // Single-digit number
+             str = new String(new char[] { (char)cstart });
+           } else {
+             str = sb.toString();
+          }
+          obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+          if (obj == null) {
               String errstr = (str.length() <= 100) ? str : (str.substring(0, 100) +
 "...");
               this.reader.RaiseError("JSON number can't be parsed. " + errstr);

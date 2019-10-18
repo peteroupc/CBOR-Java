@@ -167,8 +167,8 @@ package com.upokecenter.util;
         } while (v <= 0);
         u = 1.0 - this.Uniform();
         x2 = x * x;
-      } while (u >= 1 - (0.0331 * x2 * x 2) &&
-        Math.log(u) >= (0.5 * x2) + (d *(1 - v + Math.log(v))));
+      } while (u >= 1 - (0.0331 * x2 * x2) &&
+        Math.log(u) >= (0.5 * x2) + (d * (1 - v + Math.log(v))));
       if (a < 1) {
         return d * v * Math.exp(this.Exponential() / -a);
       } else {

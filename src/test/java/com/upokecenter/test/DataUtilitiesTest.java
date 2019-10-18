@@ -244,11 +244,11 @@ import com.upokecenter.util.*;
 integerTemp3 = ((DataUtilities.CodePointCompare("A",
   null)==0) ? 0 : ((DataUtilities.CodePointCompare("A",
   null)< 0) ? -1 : 1));
-  Assert.assertEquals(-1, integerTemp3);
+  Assert.assertEquals(1, integerTemp3);
   integerTemp3 = ((DataUtilities.CodePointCompare(null,
             null) == 0) ? 0 : ((DataUtilities.CodePointCompare(null,
             null)< 0) ? -1 : 1));
-            Assert.assertEquals(-1, integerTemp3);
+            Assert.assertEquals(0, integerTemp3);
       {
       long numberTemp = Math.signum() (
             DataUtilities.CodePointCompare("abc", "abc"));

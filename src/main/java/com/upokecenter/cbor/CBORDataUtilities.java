@@ -172,37 +172,40 @@ private CBORDataUtilities() {
     }
 
     private static final int MaxSafeInt = 214748363;
+    private static final JSONOptions DefaultOptions =
+        new JSONOptions("");
     private static final JSONOptions PreserveNegZeroNo =
         new JSONOptions("preservenegativezero=0");
     private static final JSONOptions PreserveNegZeroYes =
         new JSONOptions("preservenegativezero=1");
 
     /**
-     * Parses a number whose format follows the JSON specification. See
-     * #ParseJSONNumber(string, integersOnly, parseOnly) for more
-     * information.
-     * @param str A string to parse as a JSON string.
+     * Parses a number whose format follows the JSON specification. The method uses
+     * a JSONOptions with all default properties except for a
+     * PreserveNegativeZero property of false.
+     * @param str A text string to parse as a JSON string.
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
      *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
      * string is null or empty.
      */
     public static CBORObject ParseJSONNumber(String str) {
-      return ((str) == null || (str).length() == 0) ? null : ParseJSONNumber(str, 0,
-  str.length(), false, PreserveNegZeroNo);
+      // TODO: Preserve negative zeros in next major version
+      return ParseJSONNumber(str, PreserveNegZeroNo);
     }
 
     /**
-     * Parses a number whose format follows the JSON specification (RFC
-     * 8259).<p>Roughly speaking, a valid JSON number consists of an
-     * optional minus sign, one or more basic digits (starting with 1 to 9
-     * unless there is only one digit and that digit is 0), an optional
-     *  decimal point (".", full stop) with one or more basic digits, and an
-     * optional letter E or e with an optional plus or minus sign and one
-     * or more basic digits (the exponent). A string representing a valid
-     * JSON number is not allowed to contain white space characters,
-     * including spaces.</p>
-     * @param str A string to parse as a JSON number.
+     * Parses a number whose format follows the JSON specification (RFC 8259). The
+     * method uses a JSONOptions with all default properties except for a
+     * PreserveNegativeZero property of false.<p>Roughly speaking, a valid
+     * JSON number consists of an optional minus sign, one or more basic
+     * digits (starting with 1 to 9 unless there is only one digit and that
+     *  digit is 0), an optional decimal point (".", full stop) with one or
+     * more basic digits, and an optional letter E or e with an optional
+     * plus or minus sign and one or more basic digits (the exponent). A
+     * string representing a valid JSON number is not allowed to contain
+     * white space characters, including spaces.</p>
+     * @param str A text string to parse as a JSON number.
      * @param integersOnly If true, no decimal points or exponents are allowed in
      * the string. The default is false.
      * @param positiveOnly If true, only positive numbers are allowed (the leading
@@ -225,12 +228,18 @@ public static CBORObject ParseJSONNumber(
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
+      if (integersOnly) {
+        for (int i = 0; i < str.length(); ++i) {
+if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
+  return null;
+}
+}
+      }
       return (positiveOnly && str.charAt(0) == '-') ? null :
          ParseJSONNumber(
            str,
            0,
            str.length(),
-           integersOnly,
            PreserveNegZeroNo);
     }
 
@@ -244,7 +253,7 @@ public static CBORObject ParseJSONNumber(
      * or more basic digits (the exponent). A string representing a valid
      * JSON number is not allowed to contain white space characters,
      * including spaces.</p>
-     * @param str A string to parse as a JSON number.
+     * @param str A text string to parse as a JSON number.
      * @param integersOnly If true, no decimal points or exponents are allowed in
      * the string. The default is false.
      * @param positiveOnly If true, the leading minus is disallowed in the string.
@@ -265,13 +274,19 @@ public static CBORObject ParseJSONNumber(
       if (((str) == null || (str).length() == 0)) {
         return null;
       }
+      if (integersOnly) {
+        for (int i = 0; i < str.length(); ++i) {
+if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
+  return null;
+}
+}
+      }
       JSONOptions jo = preserveNegativeZero ? PreserveNegZeroYes :
          PreserveNegZeroNo;
       return (positiveOnly && str.charAt(0) == '-') ? null :
          ParseJSONNumber(str,
            0,
            str.length(),
-           integersOnly,
            jo);
     }
 
@@ -285,19 +300,44 @@ public static CBORObject ParseJSONNumber(
      * plus or minus sign and one or more basic digits (the exponent). A
      * string representing a valid JSON number is not allowed to contain
      * white space characters, including spaces.</p>
-     * @param str The parameter {@code str} is a text string.
+     * @param str A text string to parse as a JSON number.
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions
+     * object with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty.
+     */
+    public static CBORObject ParseJSONNumber(
+      String str,
+      JSONOptions options) {
+      return ((str) == null || (str).length() == 0) ? null :
+         ParseJSONNumber(str,
+           0,
+           str.length(),
+           options);
+    }
+
+    /**
+     * Parses a number whose format follows the JSON specification (RFC 8259) and
+     * converts that number to a CBOR object.<p>Roughly speaking, a valid
+     * JSON number consists of an optional minus sign, one or more basic
+     * digits (starting with 1 to 9 unless there is only one digit and that
+     *  digit is 0), an optional decimal point (".", full stop) with one or
+     * more basic digits, and an optional letter E or e with an optional
+     * plus or minus sign and one or more basic digits (the exponent). A
+     * string representing a valid JSON number is not allowed to contain
+     * white space characters, including spaces.</p>
+     * @param str A text string to parse as a JSON number.
      * @param offset An index, starting at 0, showing where the desired portion of
      * {@code str} begins.
      * @param count The length, in code units, of the desired portion of {@code
      * str} (but not more than {@code str} 's length).
-     * @param integersOnly The parameter {@code integersOnly} is either {@code
-     * true} or {@code false}.
      * @param options An object containing options to control how JSON numbers are
-     * decoded to CBOR objects. Can be null.
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions
+     * object with all default properties is used instead.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the string is null or empty or {@code
      * count} is 0 or less.
-     * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
      * than 0 or greater than {@code str} 's length, or {@code str} 's
      * length minus {@code offset} is less than {@code count}.
@@ -306,10 +346,7 @@ public static CBORObject ParseJSONNumber(
       String str,
       int offset,
       int count,
-      boolean integersOnly,
       JSONOptions options) {
-      // TODO: Allow JSONOptions of null here
-      // TODO: Remove integersOnly parameter from this method
       if (((str) == null || (str).length() == 0) || count <= 0) {
         return null;
       }
@@ -319,17 +356,10 @@ public static CBORObject ParseJSONNumber(
       if (count > str.length() || str.length() - offset < count) {
         return null;
       }
-      // TODO: Create default JSONOptions here instead of
-      // hardcoding defaults here; for this purpose establish a JSONOptions.Default
-      // field
-      boolean preserveNegativeZero = options == null ? true :
-options.getPreserveNegativeZero();
-      JSONOptions.ConversionKind kind = options == null ?
-        JSONOptions.ConversionKind.Full : options.getNumberConversion();
-      if (kind != JSONOptions.ConversionKind.Full &&
-         kind != JSONOptions.ConversionKind.Double) {
-        preserveNegativeZero = false;
-      }
+      JSONOptions opt = (options == null) ? (DefaultOptions) : options;
+      boolean preserveNegativeZero = options.getPreserveNegativeZero();
+      JSONOptions.ConversionKind kind = options.getNumberConversion();
+      int endPos = offset + count;
       boolean negative = false;
       if (str.charAt(0) == '-') {
         negative = true;
@@ -348,7 +378,7 @@ options.getPreserveNegativeZero();
       int newScaleInt = 0;
       FastInteger2 newScale = null;
       int i = offset;
-      int endPos = offset + count;
+
       // Ordinary number
       if (i < endPos && str.charAt(i) == '0') {
         ++i;
@@ -362,18 +392,14 @@ CBORObject.FromObject(EDecimal.NegativeZero);
            }
           return CBORObject.FromObject(0);
         }
-        if (!integersOnly) {
-          if (str.charAt(i) == '.') {
-            haveDecimalPoint = true;
-            ++i;
-          } else if (str.charAt(i) == 'E' || str.charAt(i) == 'e') {
-            haveExponent = true;
-          } else {
+        if (str.charAt(i) == '.') {
+          haveDecimalPoint = true;
+          ++i;
+        } else if (str.charAt(i) == 'E' || str.charAt(i) == 'e') {
+          haveExponent = true;
+        } else {
             return null;
           }
-        } else {
-          return null;
-        }
       }
       for (; i < endPos; ++i) {
         if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
@@ -408,7 +434,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
               --newScaleInt;
             }
           }
-        } else if (!integersOnly && str.charAt(i) == '.') {
+        } else if (str.charAt(i) == '.') {
           if (!haveDigits) {
             // no digits before the decimal point
             return null;
@@ -417,7 +443,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
             return null;
           }
           haveDecimalPoint = true;
-        } else if (!integersOnly && (str.charAt(i) == 'E' || str.charAt(i) == 'e')) {
+        } else if (str.charAt(i) == 'E' || str.charAt(i) == 'e') {
           haveExponent = true;
           ++i;
           break;
@@ -519,7 +545,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
               if (kind == JSONOptions.ConversionKind.Double) {
                 return CBORObject.FromFloatingPointBits(0x8000, 2);
               }
-              return CBORObject.FromObject (
+              return CBORObject.FromObject(
                   EDecimal.NegativeZero);
             }
           }
@@ -576,10 +602,15 @@ CBORObject.FromObject(EDecimal.NegativeZero);
         }
         // Converting the EDecimal to a CBOR Object
         if (kind == JSONOptions.ConversionKind.Double) {
-          return CBORObject.FromObject(edec.ToDouble());
+          double dbl = edec.ToDouble();
+          if (preserveNegativeZero && dbl >= 0.0) {
+            dbl = Math.abs(dbl);
+          }
+          return CBORObject.FromObject(dbl);
         } else if (kind == JSONOptions.ConversionKind.IntOrFloat ||
               kind == JSONOptions.ConversionKind.IntOrFloatFromDouble) {
-            CBORObject cbor = (kind == JSONOptions.ConversionKind.IntOrFloat) ?
+          double dbl;
+          CBORObject cbor = (kind == JSONOptions.ConversionKind.IntOrFloat) ?
                CBORObject.FromObject(edec) :
                CBORObject.FromObject(edec.ToDouble());
                CBORNumber cn = cbor.AsNumber();
@@ -588,11 +619,15 @@ CBORObject.FromObject(EDecimal.NegativeZero);
              if (v >= -(1 << 53) && v <= (1 << 53)) {
                return CBORObject.FromObject(v);
              } else {
-                return CBORObject.FromObject(cbor.AsDouble());
+               dbl = cbor.AsDouble();
             }
           } else {
-            return CBORObject.FromObject(cbor.AsDouble());
+            dbl = edec.ToDouble();
           }
+          if (preserveNegativeZero && dbl >= 0.0) {
+            dbl = Math.abs(dbl);
+          }
+          return CBORObject.FromObject(dbl);
         }
         return CBORObject.FromObject(edec);
       }

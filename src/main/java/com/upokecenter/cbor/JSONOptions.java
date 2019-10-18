@@ -2,8 +2,6 @@ package com.upokecenter.cbor;
 
 import java.util.*;
 
-// TODO: PreserveNegativeZero property
-
   /**
    * Includes options to control how CBOR objects are converted to JSON.
    */
@@ -16,15 +14,16 @@ import java.util.*;
         * JSON numbers are decoded to CBOR using the full precision given in the JSON
         * text. This may involve numbers being converted to
         * arbitrary-precision integers or decimal numbers, where
-        * appropriate. The distinction between positive and negative zero
-        * is preserved.
+        * appropriate.
         */
        Full,
 
        /**
         * JSON numbers are decoded to CBOR as their closest-rounded approximation as
-        * 64-bit binary floating-point numbers. The distinction between
-        * positive and negative zero is preserved.
+        * 64-bit binary floating-point numbers. (In some cases, numbers
+        * extremely close to zero may underflow to positive or negative
+        * zero, and numbers of extremely large magnitude may overflow to
+        * infinity.).
         */
        Double,
 
@@ -37,7 +36,9 @@ import java.util.*;
         * on the full precision given in the JSON text. For example, the
         * JSON number 0.99999999999999999999999999999999999 is not an
         * integer, so it's converted to its closest floating-point
-        * approximation, namely 1.0.
+        * approximation, namely 1.0. (In some cases, numbers extremely
+        * close to zero may underflow to positive or negative zero, and
+        * numbers of extremely large magnitude may overflow to infinity.).
         */
        IntOrFloat,
 
@@ -51,7 +52,9 @@ import java.util.*;
         * example, the JSON number 0.99999999999999999999999999999999999 is
         * the integer 1 when rounded to its closest floating-point
         * approximation (1.0), so it's converted to the CBOR integer 1
-        * (major type 0).
+        * (major type 0). (In some cases, numbers extremely close to zero
+        * may underflow to zero, and numbers of extremely large magnitude
+        * may overflow to infinity.).
         */
        IntOrFloatFromDouble,
     };
@@ -229,17 +232,7 @@ private final boolean propVarbase64padding;
     }
 
     /**
-     * Gets a value indicating whether the JSON decoder should preserve the
-     * distinction between positive zero and negative zero in
-     * floating-point number formats when the decoder decodes JSON to CBOR.
-     *  For example the JSON number "-0.0" (which expresses negative zero)
-     * is decoded to negative zero if this property is <code>true</code>, and to
-     * positive zero if this property is <code>false</code>. This property has no
-     * effect for number conversion kinds in which zeros are always decoded
-     * as CBOR integers (such as the <code>IntOrFloat</code> and
-     * <code>IntOrFloatFromDouble</code> conversion kinds).
-     * @return A value indicating whether to preserve the distinction between
-     * positive zero and negative zero. The default is true.
+     *
      */
     public final boolean getPreserveNegativeZero() { return propVarpreservenegativezero; }
 private final boolean propVarpreservenegativezero;

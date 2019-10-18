@@ -137,12 +137,6 @@ import com.upokecenter.numbers.*;
           null) {
           Assert.fail(str);
         }
-        if (!Double.isNaN(CBORDataUtilities.ParseJSONDouble(str))) {
-          Assert.fail(str);
-        }
-        if (!Double.isNaN(CBORDataUtilities.ParseJSONDouble(str, false))) {
-          Assert.fail(str);
-        }
       }
       CBORObject cbor = CBORDataUtilities.ParseJSONNumber("2e-2147483648");
       CBORTestCommon.AssertJSONSer(cbor, "2E-2147483648");
@@ -166,12 +160,6 @@ import com.upokecenter.numbers.*;
         }
         if (CBORDataUtilities.ParseJSONNumber(str, false, false, false) ==
           null) {
-          Assert.fail(str);
-        }
-        if (Double.isNaN(CBORDataUtilities.ParseJSONDouble(str))) {
-          Assert.fail(str);
-        }
-        if (Double.isNaN(CBORDataUtilities.ParseJSONDouble(str, false))) {
           Assert.fail(str);
         }
       }

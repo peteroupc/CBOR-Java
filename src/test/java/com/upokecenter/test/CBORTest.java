@@ -15,7 +15,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORTest {
-    @Test
+  @Test
     public void TestLexOrderSpecific1() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 27, 0, 0, 65, 2, 0, 0, (byte)144, (byte)172, 71,
@@ -192,7 +192,7 @@ import com.upokecenter.numbers.*;
       cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(4));
       byte[] bytes = cbor.EncodeToBytes();
       TestCommon.AssertByteArraysEqual (
-        new byte[] { (byte)(0x80 | 2), 3, 4 },
+        new byte[] { (byte)((byte)0x80 | 2), 3, 4 },
         bytes);
       cbor = CBORObject.FromObject(new String[] { "a", "b", "c",
         "d", "e",
@@ -203,7 +203,8 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals("[\"a\",\"b\",\"c\",\"d\",\"e\"]", cbor.ToJSONString());
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor = CBORObject.DecodeFromBytes(new byte[] {
-        (byte)0x9f, 0, 1, 2, 3, 4, 5,
+        (byte)0x9f, 0, 1, 2, 3,
+        4, 5,
         6, 7, (byte)0xff,
        });
       {
@@ -260,17 +261,22 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestBigNumBytes() {
       CBORObject o = null;
-      o = CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xc2, 0x41, (byte)0x88 });
+      o = CBORTestCommon.FromBytesTestAB(new byte[] {
+        (byte)0xc2, 0x41,
+        (byte)0x88,
+       });
       Assert.assertEquals(EInteger.FromRadixString("88", 16),
         o.ToObject(EInteger.class));
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
-        (byte)0xc2, 0x42, (byte)0x88,
+        (byte)0xc2, 0x42,
+        (byte)0x88,
         0x77,
        });
       Assert.assertEquals(EInteger.FromRadixString("8877", 16),
         o.ToObject(EInteger.class));
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
-        (byte)0xc2, 0x44, (byte)0x88, 0x77,
+        (byte)0xc2, 0x44,
+        (byte)0x88, 0x77,
         0x66,
         0x55,
        });
@@ -278,7 +284,8 @@ import com.upokecenter.numbers.*;
         EInteger.FromRadixString("88776655", 16),
         o.ToObject(EInteger.class));
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
-        (byte)0xc2, 0x47, (byte)0x88, 0x77,
+        (byte)0xc2, 0x47,
+        (byte)0x88, 0x77,
         0x66,
         0x55, 0x44, 0x33, 0x22,
        });
@@ -498,8 +505,8 @@ import com.upokecenter.numbers.*;
     public void TestByteStringStreamNoTagsBeforeDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {
-          0x5f, 0x41, 0x20, (byte)0xc2,
-          0x41, 0x20, (byte)0xff,
+          0x5f, 0x41, 0x20,
+          (byte)0xc2, 0x41, 0x20, (byte)0xff,
          });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
@@ -935,7 +942,8 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestDecimalFracExponentMustNotBeBignum() {
       CBORObject obj = CBORObject.DecodeFromBytes(new byte[] {
-        (byte)0xc4, (byte)0x82,
+        (byte)0xc4,
+        (byte)0x82,
         (byte)0xc2, 0x41, 1,
         0x1a,
         1, 2, 3, 4,
@@ -953,7 +961,8 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestBigFloatExponentMustNotBeBignum() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
-        (byte)0xc5, (byte)0x82,
+        (byte)0xc5,
+        (byte)0x82,
         (byte)0xc2, 0x41, 1,
         0x1a,
         1, 2, 3, 4,
@@ -1640,7 +1649,10 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       byte[] bytes;
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
       // Shared ref is integer
-      bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x00 };
+      bytes = new byte[] {
+        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
+        0x1d, 0x00,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, encodeOptions);
       } catch (Exception ex) {
@@ -1648,7 +1660,10 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       // Shared ref is negative
-      bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x20 };
+      bytes = new byte[] {
+        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
+        0x1d, 0x20,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, encodeOptions);
         Assert.fail("Should have failed");
@@ -1660,7 +1675,8 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       }
       // Shared ref is non-integer
       bytes = new byte[] {
-        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, (byte)0xc4, (byte)0x82,
+        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
+        0x1d, (byte)0xc4, (byte)0x82,
         0x27, 0x19, (byte)0xff, (byte)0xff,
        };
       try {
@@ -1673,7 +1689,10 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       // Shared ref is non-number
-      bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x61, 0x41 };
+      bytes = new byte[] {
+        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
+        0x1d, 0x61, 0x41,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, encodeOptions);
         Assert.fail("Should have failed");
@@ -1684,7 +1703,10 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       // Shared ref is out of range
-      bytes = new byte[] { (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8, 0x1d, 0x01 };
+      bytes = new byte[] {
+        (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
+        0x1d, 0x01,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, encodeOptions);
         Assert.fail("Should have failed");
@@ -1710,9 +1732,9 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         for (int j = 0; j < array.length; ++j) {
           if (j + 3 <= array.length) {
             int r = rand.UniformInt(0x1000000);
-            array[j] = (byte)(r & 0xff);
-            array[j + 1] = (byte)((r >> 8) & 0xff);
-            array[j + 2] = (byte)((r >> 16) & 0xff);
+            array[j] = (byte)(r & (byte)0xff);
+            array[j + 1] = (byte)((r >> 8) & (byte)0xff);
+            array[j + 2] = (byte)((r >> 16) & (byte)0xff);
             j += 2;
           } else {
             array[j] = (byte)rand.UniformInt(256);
@@ -2415,8 +2437,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalStateException("", ex);
         }
         bytes = new byte[] {
-          (byte)(0x1b + eb), 0, 0, 0, 0, (byte)0xff, (byte)0xff,
-          (byte)0xff, (byte)0xff,
+          (byte)(0x1b + eb), 0, 0, 0, 0, (byte)0xff,
+          (byte)0xff, (byte)0xff, (byte)0xff,
          };
         try {
           CBORObject.DecodeFromBytes(bytes, options);
@@ -2525,7 +2547,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bytes = new byte[] { (byte)0xda, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, 0 };
+      bytes = new byte[] {
+        (byte)0xda, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, 0,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, options);
         Assert.fail("Should have failed");
@@ -2536,7 +2561,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       bytes = new byte[] {
-        (byte)0xdb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xdb, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
         (byte)0xff, 0,
        };
       try {
@@ -2563,14 +2589,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bytes = new byte[] { (byte)0x81, (byte)0x81, (byte)0x81, (byte)0xa1, 0, 0 };
+      bytes = new byte[] {
+        (byte)0x81, (byte)0x81, (byte)0x81, (byte)0xa1,
+        0, 0,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, options);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bytes = new byte[] { (byte)0x81, (byte)0x81, (byte)0x81, (byte)0x81, (byte)0x80 };
+      bytes = new byte[] {
+        (byte)0x81, (byte)0x81, (byte)0x81, (byte)0x81,
+        (byte)0x80,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, options);
         Assert.fail("Should have failed");
@@ -2580,14 +2612,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bytes = new byte[] { (byte)0x81, (byte)0x81, (byte)0x81, (byte)0xa1, 0, 0 };
+      bytes = new byte[] {
+        (byte)0x81, (byte)0x81, (byte)0x81, (byte)0xa1,
+        0, 0,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, options);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      bytes = new byte[] { (byte)0x81, (byte)0x81, (byte)0x81, (byte)0x81, (byte)0xa0 };
+      bytes = new byte[] {
+        (byte)0x81, (byte)0x81, (byte)0x81, (byte)0x81,
+        (byte)0xa0,
+       };
       try {
         CBORObject.DecodeFromBytes(bytes, options);
         Assert.fail("Should have failed");
@@ -2712,13 +2750,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject cbor;
       // Tag 264
       cbor = CBORObject.DecodeFromBytes(new byte[] {
-        (byte)0xd9, 0x01, 0x08, (byte)0x82,
+        (byte)0xd9, 0x01, 0x08,
+        (byte)0x82,
         (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2,
        });
       CBORTestCommon.AssertRoundTrip(cbor);
       // Tag 265
       cbor = CBORObject.DecodeFromBytes(new byte[] {
-        (byte)0xd9, 0x01, 0x09, (byte)0x82,
+        (byte)0xd9, 0x01, 0x09,
+        (byte)0x82,
         (byte)0xc2, 0x42, 2, 2, (byte)0xc2, 0x42, 2, 2,
        });
       CBORTestCommon.AssertRoundTrip(cbor);
@@ -3333,8 +3373,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestTextStringStreamNoTagsBeforeDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {
-          0x7f, 0x61, 0x20, (byte)0xc0,
-          0x61, 0x20, (byte)0xff,
+          0x7f, 0x61, 0x20,
+          (byte)0xc0, 0x61, 0x20, (byte)0xff,
          });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {

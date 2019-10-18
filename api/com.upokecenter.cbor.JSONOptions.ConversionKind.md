@@ -56,13 +56,14 @@ the order they are declared.
 JSON numbers are decoded to CBOR using the full precision given in the JSON
  text. This may involve numbers being converted to
  arbitrary-precision integers or decimal numbers, where
- appropriate. The distinction between positive and negative zero
- is preserved.
+ appropriate.
 ### Double
     public static final JSONOptions.ConversionKind Double
 JSON numbers are decoded to CBOR as their closest-rounded approximation as
- 64-bit binary floating-point numbers. The distinction between
- positive and negative zero is preserved.
+ 64-bit binary floating-point numbers. (In some cases, numbers
+ extremely close to zero may underflow to positive or negative
+ zero, and numbers of extremely large magnitude may overflow to
+ infinity.).
 ### IntOrFloat
     public static final JSONOptions.ConversionKind IntOrFloat
 A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
@@ -73,7 +74,9 @@ A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
  on the full precision given in the JSON text. For example, the
  JSON number 0.99999999999999999999999999999999999 is not an
  integer, so it's converted to its closest floating-point
- approximation, namely 1.0.
+ approximation, namely 1.0. (In some cases, numbers extremely
+ close to zero may underflow to positive or negative zero, and
+ numbers of extremely large magnitude may overflow to infinity.).
 ### IntOrFloatFromDouble
     public static final JSONOptions.ConversionKind IntOrFloatFromDouble
 A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
@@ -85,4 +88,6 @@ A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
  example, the JSON number 0.99999999999999999999999999999999999 is
  the integer 1 when rounded to its closest floating-point
  approximation (1.0), so it's converted to the CBOR integer 1
- (major type 0).
+ (major type 0). (In some cases, numbers extremely close to zero
+ may underflow to zero, and numbers of extremely large magnitude
+ may overflow to infinity.).
