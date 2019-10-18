@@ -613,8 +613,8 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           CBORObject cbor = (kind == JSONOptions.ConversionKind.IntOrFloat) ?
                CBORObject.FromObject(edec) :
                CBORObject.FromObject(edec.ToDouble());
-               CBORNumber cn = cbor.AsNumber();
-               if (cbor.isIntegral() && cn.CanFitInInt64()) {
+             CBORNumber cn = cbor.AsNumber();
+           if (cbor.isIntegral() && cn.CanFitInInt64()) {
              long v = cbor.AsInt64();
              if (v >= -(1 << 53) && v <= (1 << 53)) {
                return CBORObject.FromObject(v);

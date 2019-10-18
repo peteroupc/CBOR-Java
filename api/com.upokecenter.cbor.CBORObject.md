@@ -1641,6 +1641,11 @@ Generates a CBOR object from a CBOR object.
 ### CalcByteLength
     public long CalcByteLength()
 Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
 Generates a CBOR object from an arbitrary-precision integer. The CBOR object

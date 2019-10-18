@@ -1475,6 +1475,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
 
   /**
    * Not documented yet.
+   * @return The return value is not documented yet.
    */
     public long CalcByteLength() {
        return this.CalcByteLength(0);
