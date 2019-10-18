@@ -207,7 +207,6 @@ import com.upokecenter.numbers.*;
         }
         case '-': {
           // Parse a negative number
-          boolean lengthTwo = true;
           c = this.reader.ReadChar();
           if (c < '0' || c > '9') {
             this.reader.RaiseError("JSON number can't be parsed.");
@@ -256,7 +255,6 @@ import com.upokecenter.numbers.*;
         case '8':
         case '9': {
           // Parse a number
-          boolean lengthOne = true;
           int cval = c - '0';
           int cstart = c;
           StringBuilder sb = null;

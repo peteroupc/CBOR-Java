@@ -126,9 +126,11 @@ import com.upokecenter.numbers.*;
         if (CBORDataUtilities.ParseJSONNumber(str) != null) {
           Assert.fail(str);
         }
+        @SuppressWarnings("deprecation")
         if (CBORDataUtilities.ParseJSONNumber(str, false, false) != null) {
           Assert.fail(str);
         }
+
         if (CBORDataUtilities.ParseJSONNumber(str, false, false, true) !=
           null) {
           Assert.fail(str);
@@ -147,13 +149,15 @@ import com.upokecenter.numbers.*;
         "5.000e-01", "-5e-01",
         "5.000e01", "-5e01",
       };
-      for (String str : badNumbers) {
+      for (String str : goodNumbers) {
         if (CBORDataUtilities.ParseJSONNumber(str) == null) {
           Assert.fail(str);
         }
+        @SuppressWarnings("deprecation")
         if (CBORDataUtilities.ParseJSONNumber(str, false, false) == null) {
           Assert.fail(str);
         }
+
         if (CBORDataUtilities.ParseJSONNumber(str, false, false, true) ==
           null) {
           Assert.fail(str);
@@ -163,16 +167,14 @@ import com.upokecenter.numbers.*;
           Assert.fail(str);
         }
       }
-      TestCommon.CompareTestEqual (
+      TestCommon.CompareTestEqual(
         ToObjectTest.TestToFromObjectRoundTrip(230).AsNumber(),
         CBORDataUtilities.ParseJSONNumber("23.0e01").AsNumber());
-      TestCommon.CompareTestEqual (
+      TestCommon.CompareTestEqual(
         ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber(),
         CBORDataUtilities.ParseJSONNumber("23.0e00").AsNumber());
       cbor = CBORDataUtilities.ParseJSONNumber(
-        "1e+99999999999999999999999999",
-        false,
-        false);
+        "1e+99999999999999999999999999");
       if (!(cbor != null)) {
  Assert.fail();
  }

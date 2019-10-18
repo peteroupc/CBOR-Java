@@ -23,7 +23,8 @@ import com.upokecenter.util.*;
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = str.indexOf(delimiter, index);
+        int index2 = str.indexOf(
+          delimiter, index);
         if (index2 < 0) {
           if (first) {
             String[] strret = new String[1];

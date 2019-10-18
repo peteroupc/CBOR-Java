@@ -66,10 +66,10 @@ private BEncoding() {
         }
       }
       String s = builder.toString();
-      if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1)=='0') {
+      if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
           throw new CBORException("Invalid integer encoding");
       }
-      if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1)=='0' && s.charAt(2)=='0') {
+      if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) =='0') {
           throw new CBORException("Invalid integer encoding");
       }
       return CBORObject.FromObject(
@@ -210,7 +210,7 @@ private BEncoding() {
         }
       }
       String s = builder.toString();
-      if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1)=='0') {
+      if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
           throw new CBORException("Invalid integer encoding");
       }
       EInteger numlength = EInteger.FromString(s);

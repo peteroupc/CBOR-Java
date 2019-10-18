@@ -1384,8 +1384,9 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       if (t.equals(Object.class)) {
         return (T)(this);
       }
-      // TODO: Address inconsistent implementations for EDecimal,
-      // EInteger, EFloat, and ERational in next major version (perhaps
+      // TODO: In next major version, address inconsistent
+      // implementations for EDecimal, EInteger, EFloat,
+      // and ERational (perhaps
       // by using EDecimal implementation). Also, these operations
       // might throw IllegalStateException rather than CBORException.
       // Make them throw CBORException in next major version.
@@ -1444,7 +1445,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       return (value == null) ? (CBORObject.Null) : value;
     }
 
-    private int IntegerByteLength(int intValue) {
+    private static int IntegerByteLength(int intValue) {
       if (intValue < 0) {
         intValue = -(intValue + 1);
       }
@@ -1457,7 +1458,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       }
     }
 
-    private int IntegerByteLength(long longValue) {
+    private static int IntegerByteLength(long longValue) {
       if (longValue < 0) {
         longValue = -(longValue + 1);
       }
@@ -1472,14 +1473,24 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       }
     }
 
-    private long CalcByteLength() {
+  /**
+   * Not documented yet.
+   */
+    public long CalcByteLength() {
+       return this.CalcByteLength(0);
+    }
+
+    private long CalcByteLength(int depth) {
+if (depth > 1000) {
+        throw new CBORException("Too deeply nested");
+      }
       long size = 0L;
       CBORObject cbor = this;
       if (cbor.isTagged()) {
         EInteger etag = cbor.getMostOuterTag();
         if (etag.CanFitInInt64()) {
           long tag = etag.ToInt64Checked();
-          size = (size + this.IntegerByteLength(tag));
+          size = (size + IntegerByteLength(tag));
         } else {
           size = (size + 9);
         }
@@ -1489,7 +1500,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
         case Integer: {
           if (cbor.CanValueFitInInt64()) {
             long tag = cbor.AsInt64Value();
-            size = (size + this.IntegerByteLength(tag));
+            size = (size + IntegerByteLength(tag));
             return size;
           } else {
             return size + 9;
@@ -1498,19 +1509,31 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
         case FloatingPoint:
           return size + 9;
         case Array:
-          size += this.IntegerByteLength(cbor.size());
+          size = (size + IntegerByteLength(cbor.size()));
           for (int i = 0; i < cbor.size(); ++i) {
-            // TODO: Implement depth
-            size = (size + cbor.CalcByteLength());
+            size = (size + cbor.get(i).CalcByteLength(depth + 1));
           }
           return size;
-        case Map:
-          throw new UnsupportedOperationException();
-        case TextString:
-          throw new UnsupportedOperationException();
+        case Map: {
+          Collection<Map.Entry<CBORObject, CBORObject>> entries =
+             this.getEntries();
+          size = (size + IntegerByteLength(entries.size()));
+          for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+            CBORObject key = entry.getKey();
+            CBORObject value = entry.getValue();
+            size = (size + key.CalcByteLength(depth + 1));
+            size = (size + value.CalcByteLength(depth + 1));
+          }
+          return size;
+        }
+        case TextString: {
+          long ulength = DataUtilities.GetUtf8Length(this.AsString(), false);
+          size = (size + IntegerByteLength(ulength));
+          return size + ulength;
+        }
         case ByteString: {
           byte[] bytes = cbor.GetByteString();
-          size = (size + this.IntegerByteLength(bytes.length));
+          size = (size + IntegerByteLength(bytes.length));
           return size + bytes.length;
         }
         case Boolean:
@@ -5638,7 +5661,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if (majortype == 3) { // short text String
         StringBuilder ret = new StringBuilder(firstbyte - 0x60);
-        DataUtilities.ReadUtf8FromBytes(data, 1, firstbyte - 0x60, ret,
+        DataUtilities.ReadUtf8FromBytes(
+          data,
+          1,
+          firstbyte - 0x60,
+          ret,
           false);
         return new CBORObject(CBORObjectTypeTextString, ret.toString());
       }

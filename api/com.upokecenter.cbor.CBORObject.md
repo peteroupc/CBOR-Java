@@ -176,6 +176,8 @@ Instead, use.getToObject()() in.getNET() or
  Converts this object to a 32-bit floating point number.
 * `java.lang.String AsString()`<br>
  Gets the value of this object as a text string.
+* `long CalcByteLength()`<br>
+ Not documented yet.
 * `boolean CanFitInDouble()`<br>
  Returns whether this object's value can be converted to a 64-bit floating
  point number without its value being rounded to another numerical
@@ -1636,6 +1638,9 @@ Generates a CBOR object from a CBOR object.
 
 * Same as.
 
+### CalcByteLength
+    public long CalcByteLength()
+Not documented yet.
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
 Generates a CBOR object from an arbitrary-precision integer. The CBOR object

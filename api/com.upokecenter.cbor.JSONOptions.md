@@ -43,6 +43,10 @@ This property now has no effect.
 * `JSONOptions.ConversionKind getNumberConversion()`<br>
  Gets a value indicating how JSON numbers are decoded to CBOR integers.
 * `boolean getPreserveNegativeZero()`<br>
+ Gets a value indicating whether the JSON decoder should preserve the
+ distinction between positive zero and negative zero in when the
+ decoder decodes JSON to a floating-point number format that makes
+ this distinction.
 * `boolean getReplaceSurrogates() char`<br>
  Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive char s
@@ -86,6 +90,21 @@ This property now has no effect. This library now includes  necessary
 
 ### getPreserveNegativeZero
     public final boolean getPreserveNegativeZero()
+Gets a value indicating whether the JSON decoder should preserve the
+ distinction between positive zero and negative zero in when the
+ decoder decodes JSON to a floating-point number format that makes
+ this distinction. For a value of <code>false</code>, if the result of
+ parsing a JSON string would be a floating-point negative zero, that
+ result is a positive zero instead. (Note that this property has no
+ effect for conversion kind <code>IntOrFloatFromDouble</code>, where
+ floating-point zeros are not possible.).
+
+**Returns:**
+
+* A value indicating whether to preserve the distinction between
+ positive zero and negative zero when decoding JSON. The default is
+ true.
+
 ### getNumberConversion
     public final JSONOptions.ConversionKind getNumberConversion()
 Gets a value indicating how JSON numbers are decoded to CBOR integers.

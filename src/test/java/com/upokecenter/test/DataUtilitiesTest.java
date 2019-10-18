@@ -97,15 +97,19 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xfffd, DataUtilities.CodePointAt("\udc00X", 0, 0));
       {
         Object objectTemp = 0xfffd;
-        Object objectTemp2 = DataUtilities.CodePointAt("\ud800\ud800", 0,
-  0);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\ud800\ud800",
+          0,
+          0);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
         Object objectTemp = 0xfffd;
-        Object objectTemp2 = DataUtilities.CodePointAt("\udc00\ud800", 0,
-  0);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\udc00\ud800",
+          0,
+          0);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals (
         0xfffd,
@@ -115,15 +119,19 @@ import com.upokecenter.util.*;
         DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 0));
       {
         Object objectTemp = 0xfffd;
-        Object objectTemp2 = DataUtilities.CodePointAt("\udc00\udc00", 0,
-  0);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\udc00\udc00",
+          0,
+          0);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
         Object objectTemp = 0x10000;
-        Object objectTemp2 = DataUtilities.CodePointAt("\ud800\udc00",
-  0, 0);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\ud800\udc00",
+          0,
+          0);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
 
       Assert.assertEquals(0xd800, DataUtilities.CodePointAt("\ud800", 0, 1));
@@ -132,33 +140,41 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xdc00, DataUtilities.CodePointAt("\udc00X", 0, 1));
       {
         Object objectTemp = 0xd800;
-        Object objectTemp2 = DataUtilities.CodePointAt("\ud800\ud800", 0,
-  1);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\ud800\ud800",
+          0,
+          1);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals (
         0xd800,
         DataUtilities.CodePointAt("\ud800\ud800\udc00", 0, 1));
       {
         Object objectTemp = 0xdc00;
-        Object objectTemp2 = DataUtilities.CodePointAt("\udc00\ud800", 0,
-  1);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\udc00\ud800",
+          0,
+          1);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals (
         0xdc00,
         DataUtilities.CodePointAt("\udc00\ud800\udc00", 0, 1));
       {
         Object objectTemp = 0xdc00;
-        Object objectTemp2 = DataUtilities.CodePointAt("\udc00\udc00", 0,
-  1);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\udc00\udc00",
+          0,
+          1);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
         Object objectTemp = 0x10000;
-        Object objectTemp2 = DataUtilities.CodePointAt("\ud800\udc00",
-  0, 1);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\ud800\udc00",
+          0,
+          1);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
 
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800", 0, 2));
@@ -167,22 +183,28 @@ import com.upokecenter.util.*;
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
       {
-        long numberTemp = DataUtilities.CodePointAt("\ud800\ud800\udc00",
-  0, 2);
+        long numberTemp = DataUtilities.CodePointAt(
+          "\ud800\ud800\udc00",
+          0,
+          2);
         Assert.assertEquals(-1, numberTemp);
       }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
       {
-        long numberTemp = DataUtilities.CodePointAt("\udc00\ud800\udc00",
-  0, 2);
+        long numberTemp = DataUtilities.CodePointAt(
+          "\udc00\ud800\udc00",
+          0,
+          2);
         Assert.assertEquals(-1, numberTemp);
       }
       Assert.assertEquals(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
       {
         Object objectTemp = 0x10000;
-        Object objectTemp2 = DataUtilities.CodePointAt("\ud800\udc00",
-  0, 2);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointAt(
+          "\ud800\udc00",
+          0,
+          2);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
     }
     @Test
@@ -225,9 +247,11 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0xfffd, DataUtilities.CodePointBefore("A\udc00B", 2));
       {
         Object objectTemp = 0xdc00;
-        Object objectTemp2 = DataUtilities.CodePointBefore("A\udc00B", 2,
-  1);
-  Assert.assertEquals(objectTemp, objectTemp2);
+        Object objectTemp2 = DataUtilities.CodePointBefore(
+          "A\udc00B",
+          2,
+          1);
+          Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A\udc00B", 2, 2));
     }
@@ -250,36 +274,49 @@ integerTemp3 = ((DataUtilities.CodePointCompare("A",
             null)< 0) ? -1 : 1));
             Assert.assertEquals(0, integerTemp3);
       {
-      long numberTemp = Math.signum() (
-            DataUtilities.CodePointCompare("abc", "abc"));
+      long numberTemp = ((
+            DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((
+            DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1));
             Assert.assertEquals(0, numberTemp);
       }
       {
-        long numberTemp = Math.signum() (
+        long numberTemp = ((
             DataUtilities.CodePointCompare(
               "\ud800\udc00",
-              "\ud800\udc00"));
+              "\ud800\udc00")==0) ? 0 : ((
+            DataUtilities.CodePointCompare(
+              "\ud800\udc00",
+              "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(0, numberTemp);
       }
       {
-        long numberTemp = Math.signum() (
+        long numberTemp = ((
             DataUtilities.CodePointCompare(
               "abc",
-              "\ud800\udc00"));
+              "\ud800\udc00")==0) ? 0 : ((
+            DataUtilities.CodePointCompare(
+              "abc",
+              "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        long numberTemp = Math.signum() (
+        long numberTemp = ((
             DataUtilities.CodePointCompare(
               "\uf000",
-              "\ud800\udc00"));
+              "\ud800\udc00")==0) ? 0 : ((
+            DataUtilities.CodePointCompare(
+              "\uf000",
+              "\ud800\udc00")< 0) ? -1 : 1));
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        long numberTemp = Math.signum() (
+        long numberTemp = ((
             DataUtilities.CodePointCompare(
               "\uf000",
-              "\ud800"));
+              "\ud800")==0) ? 0 : ((
+            DataUtilities.CodePointCompare(
+              "\uf000",
+              "\ud800")< 0) ? -1 : 1));
         Assert.assertEquals(1, numberTemp);
       }
       if (!(DataUtilities.CodePointCompare("abc", "def") < 0)) {

@@ -439,8 +439,10 @@ import java.io.*;
           c2 = this.stream.read();
           if (c2 >= 0x01 && c2 <= 0x7f) {
             // 0 NZA, so UTF-16BE
-            Utf16Reader newReader = new Utf16Reader(this.stream, true,
-  this.errorThrow);
+            Utf16Reader newReader = new Utf16Reader(
+              this.stream,
+              true,
+              this.errorThrow);
             this.reader = newReader;
             return c2;
           } else if (c2 == 0) {
@@ -449,13 +451,17 @@ import java.io.*;
             c4 = this.stream.read();
             if (c3 == 0 && c4 >= 0x01 && c4 <= 0x7f) {
               // 0 0 0 NZA
-              this.reader = new Utf32Reader(this.stream, true,
-  this.errorThrow);
+              this.reader = new Utf32Reader(
+                this.stream,
+                true,
+                this.errorThrow);
               return c4;
             } else if (c3 == 0xfe && c4 == 0xff) {
               // 0 0 FE FF
-              this.reader = new Utf32Reader(this.stream, true,
-  this.errorThrow);
+              this.reader = new Utf32Reader(
+                this.stream,
+                true,
+                this.errorThrow);
               return this.reader.ReadChar();
             } else {
               // 0 0 ...
@@ -524,8 +530,10 @@ import java.io.*;
           c2 = this.stream.read();
           if (c2 >= 0x01 && c2 <= 0x7f) {
             // 0 NZA, so UTF-16BE
-            Utf16Reader newReader = new Utf16Reader(this.stream, true,
-  this.errorThrow);
+            Utf16Reader newReader = new Utf16Reader(
+              this.stream,
+              true,
+              this.errorThrow);
             this.reader = newReader;
             return c2;
           } else {
