@@ -341,6 +341,7 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
      * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
      * than 0 or greater than {@code str} 's length, or {@code str} 's
      * length minus {@code offset} is less than {@code count}.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static CBORObject ParseJSONNumber(
       String str,
@@ -611,10 +612,10 @@ CBORObject.FromObject(EDecimal.NegativeZero);
               kind == JSONOptions.ConversionKind.IntOrFloatFromDouble) {
           double dbl;
           CBORObject cbor = (kind == JSONOptions.ConversionKind.IntOrFloat) ?
-               CBORObject.FromObject(edec) :
-               CBORObject.FromObject(edec.ToDouble());
-             CBORNumber cn = cbor.AsNumber();
-           if (cbor.isIntegral() && cn.CanFitInInt64()) {
+            CBORObject.FromObject(edec) :
+            CBORObject.FromObject(edec.ToDouble());
+          CBORNumber cn = cbor.AsNumber();
+          if (cbor.isIntegral() && cn.CanFitInInt64()) {
              long v = cbor.AsInt64();
              if (v >= -(1 << 53) && v <= (1 << 53)) {
                return CBORObject.FromObject(v);

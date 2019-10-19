@@ -946,7 +946,9 @@ ms = new java.io.ByteArrayInputStream(data);
 int startingAvailable = ms.available();
 
         CBORObject o = Read(ms, options);
-        CheckCBORLength((long)data.length, (long)(startingAvailable - ms.available()));
+        CheckCBORLength(
+          (long)data.length,
+          (long)(startingAvailable - ms.available()));
         return o;
 }
 finally {
@@ -2730,7 +2732,9 @@ if (depth > 1000) {
         stream.write(0xc5); // tag 5
         stream.write(0x82); // array, length 2
       }
-      Write(bignum.getExponent(), stream);
+      Write(
+        bignum.getExponent(),
+        stream);
       Write(bignum.getMantissa(), stream);
     }
 
@@ -2759,7 +2763,9 @@ if (depth > 1000) {
       stream.write(0x1e);
       stream.write(0x82); // array, length 2
       Write(rational.getNumerator(), stream);
-      Write(rational.getDenominator(), stream);
+      Write(
+        rational.getDenominator(),
+        stream);
     }
 
     /**
@@ -2793,7 +2799,9 @@ if (depth > 1000) {
         stream.write(0xc4); // tag 4
         stream.write(0x82); // array, length 2
       }
-      Write(bignum.getExponent(), stream);
+      Write(
+        bignum.getExponent(),
+        stream);
       Write(bignum.getMantissa(), stream);
     }
 
@@ -3267,7 +3275,9 @@ public static void Write(
         if (map.containsKey(mapKey)) {
           throw new IllegalArgumentException("Key already exists");
         }
-        map.put(mapKey, mapValue);
+        map.put(
+          mapKey,
+          mapValue);
       } else {
         throw new IllegalStateException("Not a map");
       }
@@ -3566,10 +3576,10 @@ public static void Write(
      * @return The bits of a 64-bit floating-point number stored by this object.
      * The most significant bit is the sign (set means negative, clear
      * means nonnegative); the next most significant 11 bits are the
-     * exponent area; and the remaining bits are the mantissa area. If all
-     * the bits of the exponent area are set and the mantissa area is 0,
-     * this indicates infinity. If all the bits of the exponent area are
-     * set and the mantissa area is other than 0, this indicates
+     * exponent area; and the remaining bits are the significand area. If
+     * all the bits of the exponent area are set and the significand area
+     * is 0, this indicates infinity. If all the bits of the exponent area
+     * are set and the significand area is other than 0, this indicates
      * not-a-number (NaN).
      * @throws IllegalStateException This object's type is not {@code
      * CBORType.FloatingPoint}.
@@ -4514,7 +4524,9 @@ this.getMostOuterTag().equals(bigTagValue);
           mapValue = ((valueOb instanceof CBORObject) ? (CBORObject)valueOb : null);
           mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
         }
-        list.add(index, mapValue);
+        list.add(
+          index,
+          mapValue);
       } else {
         throw new IllegalStateException("Not an array");
       }
@@ -5888,7 +5900,9 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
           int offsetp1 = 1 + offset;
           // Check for type 3 String of short length
           int rightLength = offsetp1 + (nextbyte - 0x60);
-          CheckCBORLength(rightLength, length);
+          CheckCBORLength(
+            rightLength,
+            length);
           // Check for all ASCII text
           for (int i = offsetp1; i < length; ++i) {
             if ((data[i] & ((byte)0x80)) != 0) {

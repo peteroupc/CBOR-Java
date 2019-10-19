@@ -169,3 +169,5 @@ Parses a number whose format follows the JSON specification (RFC 8259) and
 * <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
  than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
  length minus <code>offset</code> is less than <code>count</code>.
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.

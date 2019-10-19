@@ -528,9 +528,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
-        AreEqualExact (
-  (double)EDecimal.FromString(numberinfo.get("number").AsString()).ToDouble(),
-  cbornumber.AsDouble());
+        {
+          Object objectTemp =
+(double)EDecimal.FromString(numberinfo.get("number").AsString()).ToDouble();
+          Object objectTemp2 = cbornumber.AsDouble();
+          AreEqualExact(objectTemp, objectTemp2);
+}
       }
     }
 
@@ -914,9 +917,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
-        AreEqualExact (
-  (float)EDecimal.FromString(numberinfo.get("number").AsString()).ToSingle(),
-  cbornumber.AsSingle());
+        {
+          Object objectTemp =
+(float)EDecimal.FromString(numberinfo.get("number").AsString()).ToSingle();
+          Object objectTemp2 = cbornumber.AsSingle();
+          AreEqualExact(objectTemp, objectTemp2);
+}
       }
     }
     @Test
@@ -3817,7 +3823,7 @@ private final PODClass propVarpropvalue;
         Object objectTemp = CBORObject.Null;
         Object objectTemp2 = cbor.GetOrDefault(-1,
           CBORObject.Null);
-          Assert.assertEquals(objectTemp, objectTemp2);
+        Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
         Object objectTemp = CBORObject.FromObject(2);
@@ -3855,7 +3861,7 @@ private final PODClass propVarpropvalue;
         Object objectTemp = CBORObject.Null;
         Object objectTemp2 = cbor.GetOrDefault(-1,
           CBORObject.Null);
-          Assert.assertEquals(objectTemp, objectTemp2);
+        Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(0, CBORObject.Null));
       {
@@ -3888,7 +3894,7 @@ private final PODClass propVarpropvalue;
         Object objectTemp = CBORObject.Null;
         Object objectTemp2 = cbor.GetOrDefault(-1,
           CBORObject.Null);
-          Assert.assertEquals(objectTemp, objectTemp2);
+        Assert.assertEquals(objectTemp, objectTemp2);
 }
       Assert.assertEquals(CBORObject.Null, cbor.GetOrDefault(0, CBORObject.Null));
       {

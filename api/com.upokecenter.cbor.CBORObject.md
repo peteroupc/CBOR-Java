@@ -3101,10 +3101,10 @@ Converts this object to the bits of a 64-bit floating-point number if this
 * The bits of a 64-bit floating-point number stored by this object.
  The most significant bit is the sign (set means negative, clear
  means nonnegative); the next most significant 11 bits are the
- exponent area; and the remaining bits are the mantissa area. If all
- the bits of the exponent area are set and the mantissa area is 0,
- this indicates infinity. If all the bits of the exponent area are
- set and the mantissa area is other than 0, this indicates
+ exponent area; and the remaining bits are the significand area. If
+ all the bits of the exponent area are set and the significand area
+ is 0, this indicates infinity. If all the bits of the exponent area
+ are set and the significand area is other than 0, this indicates
  not-a-number (NaN).
 
 **Throws:**
