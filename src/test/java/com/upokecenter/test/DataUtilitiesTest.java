@@ -264,17 +264,17 @@ import com.upokecenter.util.*;
         "A")==0) ? 0 : ((DataUtilities.CodePointCompare(null,
         "A")< 0) ? -1 : 1));
         Assert.assertEquals(objectTemp, objectTemp2);
-}
-integerTemp3 = ((DataUtilities.CodePointCompare("A",
-  null)==0) ? 0 : ((DataUtilities.CodePointCompare("A",
-  null)< 0) ? -1 : 1));
-  Assert.assertEquals(1, integerTemp3);
-  integerTemp3 = ((DataUtilities.CodePointCompare(null,
-            null) == 0) ? 0 : ((DataUtilities.CodePointCompare(null,
-            null)< 0) ? -1 : 1));
-          Assert.assertEquals(0, integerTemp3);
+      }
+      integerTemp3 = ((
+        DataUtilities.CodePointCompare("A", null)==0) ? 0 : ((
+        DataUtilities.CodePointCompare("A", null)< 0) ? -1 : 1));
+      Assert.assertEquals(1, integerTemp3);
+      integerTemp3 = ((
+        DataUtilities.CodePointCompare(null, null) == 0) ? 0 : ((
+        DataUtilities.CodePointCompare(null, null)< 0) ? -1 : 1));
+      Assert.assertEquals(0, integerTemp3);
       {
-      long numberTemp = ((
+        long numberTemp = ((
             DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((
             DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1));
           Assert.assertEquals(0, numberTemp);

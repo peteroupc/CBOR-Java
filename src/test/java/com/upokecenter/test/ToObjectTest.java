@@ -445,15 +445,17 @@ import com.upokecenter.numbers.*;
       }
       CBORObject numbers = CBORObjectTest.GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
+        double dbl;
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
   (String)numberinfo.get("number").ToObject(String.class)));
-
-        CBORObjectTest.AreEqualExact((double)EDecimal.FromString(
-  (String)numberinfo.get("number").ToObject(
-            String.class)).ToDouble(), (Double)cbornumber.ToObject(
-  double.class));
+        dbl = (double)EDecimal.FromString(
+          (String)numberinfo.get("number").ToObject(String.class))
+          .ToDouble();
+        CBORObjectTest.AreEqualExact(
+          dbl,
+          (double)cbornumber.ToObject(double.class));
       }
     }
 
@@ -705,10 +707,10 @@ import com.upokecenter.numbers.*;
             EDecimal.FromString((String)numberinfo.get("number").ToObject(
               String.class)));
         if ((boolean)numberinfo.get("int16").AsBoolean()) {
+          short sh = (short)TestCommon.StringToInt(
+             (String)numberinfo.get("integer").ToObject(String.class));
           Assert.assertEquals (
-            (short)TestCommon.StringToInt(
-  (String)numberinfo.get("integer").ToObject(String.class)),
-
+            sh,
             cbornumber.ToObject(short.class));
         } else {
           try {
@@ -928,17 +930,17 @@ import com.upokecenter.numbers.*;
               String.class)),
             cbornumber.ToObject(long.class));
           if (isdouble) {
+            String str = TestCommon.StringToLong(
+                (String)numberinfo.get("integer").ToObject(String.class));
             Assert.assertEquals (
-              TestCommon.StringToLong(
-  (String)numberinfo.get("integer").ToObject(String.class)),
-
+              str,
               cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
+            String str = TestCommon.StringToLong(
+                (String)numberinfo.get("integer").ToObject(String.class));
             Assert.assertEquals (
-              TestCommon.StringToLong(
-  (String)numberinfo.get("integer").ToObject(String.class)),
-
+              str,
               cbornumbersingle.ToObject(long.class));
           }
         } else {
