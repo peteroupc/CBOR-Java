@@ -529,10 +529,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
         {
-          Object objectTemp =
-(double)EDecimal.FromString(numberinfo.get("number").AsString()).ToDouble();
-          Object objectTemp2 = cbornumber.AsDouble();
-          AreEqualExact(objectTemp, objectTemp2);
+          double dtemp = (double)EDecimal.FromString(numberinfo.get("number").AsString()).ToDouble();
+          double dtemp2 = cbornumber.AsDouble();
+          AreEqualExact(dtemp, dtemp2);
 }
       }
     }
@@ -918,10 +917,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
         {
-          Object objectTemp =
-(float)EDecimal.FromString(numberinfo.get("number").AsString()).ToSingle();
-          Object objectTemp2 = cbornumber.AsSingle();
-          AreEqualExact(objectTemp, objectTemp2);
+          float ftemp = (float)EDecimal.FromString(numberinfo.get("number").AsString()).ToSingle();
+          float ftemp2 = cbornumber.AsSingle();
+          AreEqualExact(ftemp, ftemp2);
 }
       }
     }
