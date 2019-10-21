@@ -275,9 +275,9 @@ import com.upokecenter.util.*;
       Assert.assertEquals(0, integerTemp3);
       {
         long numberTemp = ((
-            DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((
-            DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1));
-          Assert.assertEquals(0, numberTemp);
+          DataUtilities.CodePointCompare("abc", "abc")==0) ? 0 : ((
+          DataUtilities.CodePointCompare("abc", "abc")< 0) ? -1 : 1));
+        Assert.assertEquals(0, numberTemp);
       }
       {
         long numberTemp = ((
@@ -389,7 +389,7 @@ import com.upokecenter.util.*;
           DataUtilities.GetUtf8Bytes(str, true),
           true);
         Assert.assertEquals(objectTemp, objectTemp2);
-}
+      }
     }
 
     @Test

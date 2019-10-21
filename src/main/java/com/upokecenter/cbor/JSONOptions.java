@@ -57,7 +57,7 @@ import java.util.*;
         * may overflow to infinity.).
         */
        IntOrFloatFromDouble,
-    };
+    }
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}

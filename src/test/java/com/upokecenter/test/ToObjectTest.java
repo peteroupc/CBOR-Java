@@ -930,17 +930,17 @@ import com.upokecenter.numbers.*;
               String.class)),
             cbornumber.ToObject(long.class));
           if (isdouble) {
-            String str = TestCommon.StringToLong(
+            long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
             Assert.assertEquals (
-              str,
+              strlong,
               cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
-            String str = TestCommon.StringToLong(
+            long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
             Assert.assertEquals (
-              str,
+              strlong,
               cbornumbersingle.ToObject(long.class));
           }
         } else {

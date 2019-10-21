@@ -232,7 +232,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static CBORObject TestSucceedingJSON(
       String str,
-      CBOREncodeOptions options) {
+      JSONOptions options) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
       try {
         {
@@ -2636,7 +2636,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
+        @SuppressWarnings("deprecation")
         CBORObject.FromJSONString("[]", (CBOREncodeOptions)null);
+
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -2656,10 +2658,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestFailingJSON("{\"a\":1,\"a\":2}", ValueNoDuplicateKeys);
       String aba = "{\"a\":1,\"b\":3,\"a\":2}";
       TestFailingJSON(aba, ValueNoDuplicateKeys);
-      cbor = TestSucceedingJSON(aba, new CBOREncodeOptions(false, true));
+      cbor = TestSucceedingJSON(aba, new JSONOptions("allowduplicatekeys=1"));
       Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(2), cbor.get("a"));
       aba = "{\"a\":1,\"a\":4}";
-      cbor = TestSucceedingJSON(aba, new CBOREncodeOptions(false, true));
+      cbor = TestSucceedingJSON(aba, new JSONOptions("allowduplicatekeys=1"));
       Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(4), cbor.get("a"));
       cbor = TestSucceedingJSON("\"\\t\"");
       {
@@ -3040,7 +3042,7 @@ private final PODClass propVarpropvalue;
           "\"mtb/6A==\"",
           stringTemp);
       }
-      JSONOptions options = new JSONOptions(true); // base64 padding enabled
+      JSONOptions options = new JSONOptions("base64padding=1");
       o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] {
         (byte)0x9a, (byte)0xd6,
         (byte)0xff, (byte)0xe8,
@@ -3557,10 +3559,10 @@ private final PODClass propVarpropvalue;
           if (!(cbornumber.isIntegral())) {
  Assert.fail();
  }
-          if (cbornumber.IsPositiveInfinity()) {
+          if (cbornumber.AsNumber().IsPositiveInfinity()) {
  Assert.fail();
  }
-          if (cbornumber.IsNegativeInfinity()) {
+          if (cbornumber.AsNumber().IsNegativeInfinity()) {
  Assert.fail();
  }
           if (cbornumber.AsNumber().IsNaN()) {
