@@ -2233,8 +2233,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
       for (int i = 0; i < ranges.length; i += 3) {
         for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
-          byte[] bytes =
-            ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes();
+          CBORObject bcbor = ToObjectTest.TestToFromObjectRoundTrip(j);
+          byte[] bytes = CBORTestCommon.CheckEncodeToBytes(bcbor);
           if (bytes.length != ranges[i + 2]) {
             String i2s = TestCommon.IntToString(j);
             Assert.assertEquals(i2s, ranges[i + 2], bytes.length);
@@ -2260,7 +2260,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
         while (bj.compareTo(valueBjEnd)< 0) {
           CBORObject cbor = ToObjectTest.TestToFromObjectRoundTrip(bj);
-          byte[] bytes = cbor.EncodeToBytes();
+          byte[] bytes = CBORTestCommon.CheckEncodeToBytes(cbor);
           if (bytes.length != bigSizes[i / 2]) {
             Assert.assertEquals (
               bigSizes[i / 2],
@@ -6091,6 +6091,124 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         ToObjectTest.TestToFromObjectRoundTrip(true));
     }
 
+@Test
+public void TestCalcEncodedBytesSpecific() {
+ CBORObject cbor;
+
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xda, 0x00, 0x1d,
+   (byte)0xdb, 0x03, (byte)0xd9, 0x01, 0x0d, (byte)0x83, 0x00, 0x00, 0x03,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xda, 0x00, 0x14, 0x57,
+   (byte)0xce,
+   (byte)0xc5,
+   (byte)0x82, 0x1a, 0x46, 0x5a, 0x37,
+   (byte)0x87,
+   (byte)0xc3, 0x50, 0x5e,
+   (byte)0xec,
+   (byte)0xfd, 0x73, 0x50, 0x64,
+   (byte)0xa1, 0x1f, 0x10,
+   (byte)0xc4, (byte)0xff, (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xfa, 0x56, 0x00,
+   0x69, 0x2a
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] { (byte)0xf9, (byte)0xfc, 0x00 });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xa2,
+   (byte)0x82,
+   (byte)0xf6,
+   (byte)0x82,
+   (byte)0xfb, 0x3c,
+   (byte)0xf0, 0x03, 0x42,
+   (byte)0xcb, 0x54, 0x6c,
+   (byte)0x85,
+   (byte)0x82,
+   (byte)0xc5,
+   (byte)0x82, 0x18,
+   (byte)0xba, 0x0a,
+   (byte)0xfa,
+   (byte)0x84,
+   (byte)0xa0, 0x57,
+   (byte)0x97, 0x42, 0x00, 0x01, 0x65, 0x62, 0x7d, 0x45, 0x20, 0x6c, 0x41,
+   0x00,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0x82,
+   (byte)0xfa,
+   (byte)0xe0,
+   (byte)0xa0,
+   (byte)0x9d,
+   (byte)0xba,
+   (byte)0x82,
+   (byte)0x82,
+   (byte)0xf7, (byte)0xa2, (byte)0xa0, (byte)0xf7, 0x60, 0x41, 0x00,
+   (byte)0xf4,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xfa, (byte)0xc7,
+   (byte)0x80, 0x01, (byte)0x80,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xa5, 0x64, 0x69,
+   0x74, 0x65, 0x6d, 0x6a, 0x61, 0x6e, 0x79, 0x20, 0x73, 0x74, 0x72, 0x69,
+   0x6e, 0x67, 0x66, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x2a, 0x63,
+   0x6d, 0x61, 0x70,
+   (byte)0xa1, 0x66, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x2a, 0x65,
+   0x61, 0x72, 0x72, 0x61, 0x79,
+   (byte)0x82,
+   (byte)0xf9, 0x63,
+   (byte)0xce, 0x63, 0x78, 0x79, 0x7a, 0x65, 0x62, 0x79, 0x74, 0x65, 0x73,
+   0x43, 0x00, 0x01, 0x02,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xda, 0x00, 0x14, 0x57,
+   (byte)0xce,
+   (byte)0xc5,
+   (byte)0x82, 0x1a, 0x46, 0x5a, 0x37,
+   (byte)0x87,
+   (byte)0xc3, 0x50, 0x5e,
+   (byte)0xec,
+   (byte)0xfd, 0x73, 0x50, 0x64,
+   (byte)0xa1, 0x1f, 0x10,
+   (byte)0xc4, (byte)0xff, (byte)0xf2, (byte)0xc4, (byte)0xc9, 0x65, 0x12,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xfa, (byte)0xc7,
+   (byte)0x80, 0x01, (byte)0x80,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0x82,
+   (byte)0xda, 0x00, 0x0a,
+   (byte)0xe8,
+   (byte)0xb6,
+   (byte)0xfb, 0x43,
+   (byte)0xc0, 0x00, 0x00,
+   (byte)0xd5, 0x42, 0x7f,
+   (byte)0xdc, (byte)0xfa, 0x71, (byte)0x80, (byte)0xd7, (byte)0xc8,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+ cbor = CBORObject.DecodeFromBytes(new byte[] {
+   (byte)0xfa, 0x29, 0x0a,
+   0x4c, (byte)0x9e,
+  });
+ CBORTestCommon.CheckEncodeToBytes(cbor);
+}
+
     @Test
     public void TestType() {
       CBORObject cbor = CBORObject.True;
@@ -7270,7 +7388,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestEMap() {
       CBORObject cbor = CBORObject.NewMap()
         .Add("name", "Example");
-      byte[] bytes = cbor.EncodeToBytes();
+      byte[] bytes = CBORTestCommon.CheckEncodeToBytes(cbor);
     }
 
     private static void TestWriteObj(Object obj, Object objTest) {

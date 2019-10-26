@@ -176,8 +176,9 @@ Instead, use.getToObject()() in.getNET() or
  Converts this object to a 32-bit floating point number.
 * `java.lang.String AsString()`<br>
  Gets the value of this object as a text string.
-* `long CalcByteLength()`<br>
- Not documented yet.
+* `long CalcEncodedSize() EncodeToBytes()`<br>
+ Calculates the number of bytes this CBOR object takes when serialized as a
+ byte array using the EncodeToBytes() method.
 * `boolean CanFitInDouble()`<br>
  Returns whether this object's value can be converted to a 64-bit floating
  point number without its value being rounded to another numerical
@@ -1638,9 +1639,14 @@ Generates a CBOR object from a CBOR object.
 
 * Same as.
 
-### CalcByteLength
-    public long CalcByteLength()
-Not documented yet.
+### CalcEncodedSize
+    public long CalcEncodedSize()
+Calculates the number of bytes this CBOR object takes when serialized as a
+ byte array using the <code>EncodeToBytes()</code> method. This calculation
+ assumes that integers, lengths of maps and arrays, lengths of text and
+ byte strings, and tag numbers are encoded in their shortest form; that
+ floating-point numbers are encoded in their shortest value-preserving
+ form; and that no indefinite-length encodings are used.
 
 **Returns:**
 

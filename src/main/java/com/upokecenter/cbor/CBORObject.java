@@ -13,7 +13,6 @@ import java.io.*;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-// TODO: Add method that finds estimated byte size of CBOR objects
 // TODO: Consider deprecating most number conversion/checking methods here
 // TODO: Make .Keys, .Values, and .Entries read-only
 
@@ -1476,20 +1475,26 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
     }
 
   /**
-   * Not documented yet.
+   * Calculates the number of bytes this CBOR object takes when serialized as a
+   * byte array using the <code>EncodeToBytes()</code> method. This calculation
+   * assumes that integers, lengths of maps and arrays, lengths of text and
+   * byte strings, and tag numbers are encoded in their shortest form; that
+   * floating-point numbers are encoded in their shortest value-preserving
+   * form; and that no indefinite-length encodings are used.
    * @return The return value is not documented yet.
    */
-    public long CalcByteLength() {
-       return this.CalcByteLength(0);
+    public long CalcEncodedSize() {
+       return this.CalcEncodedSize(0);
     }
 
-    private long CalcByteLength(int depth) {
+    private long CalcEncodedSize(int depth) {
+      // TODO: Check circular references
 if (depth > 1000) {
         throw new CBORException("Too deeply nested");
       }
       long size = 0L;
       CBORObject cbor = this;
-      if (cbor.isTagged()) {
+      while (cbor.isTagged()) {
         EInteger etag = cbor.getMostOuterTag();
         if (etag.CanFitInInt64()) {
           long tag = etag.ToInt64Checked();
@@ -1509,12 +1514,19 @@ if (depth > 1000) {
             return size + 9;
           }
         }
-        case FloatingPoint:
-          return size + 9;
+        case FloatingPoint: {
+          long valueBits = cbor.AsDoubleBits();
+          int bits = CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
+          if (bits != -1) {
+            return size + 3;
+          }
+          return CBORUtilities.DoubleRetainsSameValueInSingle(valueBits) ?
+(size + 5) : (size + 9);
+        }
         case Array:
           size = (size + IntegerByteLength(cbor.size()));
           for (int i = 0; i < cbor.size(); ++i) {
-            size = (size + cbor.get(i).CalcByteLength(depth + 1));
+            size = (size + cbor.get(i).CalcEncodedSize(depth + 1));
           }
           return size;
         case Map: {
@@ -1524,8 +1536,8 @@ if (depth > 1000) {
           for (Map.Entry<CBORObject, CBORObject> entry : entries) {
             CBORObject key = entry.getKey();
             CBORObject value = entry.getValue();
-            size = (size + key.CalcByteLength(depth + 1));
-            size = (size + value.CalcByteLength(depth + 1));
+            size = (size + key.CalcEncodedSize(depth + 1));
+            size = (size + value.CalcEncodedSize(depth + 1));
           }
           return size;
         }
