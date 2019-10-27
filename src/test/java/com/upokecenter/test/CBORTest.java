@@ -178,13 +178,13 @@ import com.upokecenter.numbers.*;
 
       if (!(cbor.ContainsKey(ToObjectTest.TestToFromObjectRoundTrip(
             "hello"))))Assert.fail();
-      Assert.assertEquals((int)2, cbor.get("hello"));
+      Assert.assertEquals((int)2, cbor.get("hello").AsInt32Value());
       cbor.Set(1, 3);
       CBORObject cborone = ToObjectTest.TestToFromObjectRoundTrip(1);
       if (!(cbor.ContainsKey(cborone))) {
  Assert.fail();
  }
-      Assert.assertEquals((int)3, cbor.get(cborone));
+      Assert.assertEquals((int)3, cbor.get(cborone).AsInt32Value());
     }
 
     @Test
@@ -1537,8 +1537,10 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
-
     public static CBORObject ReferenceTestObject() {
+      return ReferenceTestObject(50);
+    }
+    public static CBORObject ReferenceTestObject(int nests) {
       CBORObject root = CBORObject.NewArray();
       CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
       arr.Add("zzz")
@@ -1546,7 +1548,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       arr = CBORObject.FromObjectAndTag(arr, 28);
       root.Add(arr);
       CBORObject refobj;
-      for (int i = 0; i <= 50; ++i) {
+      for (int i = 0; i <= nests; ++i) {
         refobj = CBORObject.FromObjectAndTag(i, 29);
         arr = CBORObject.FromObject(new CBORObject[] {
           refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
@@ -1559,8 +1561,59 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
     }
 
     @Test(timeout = 5000)
-    public void TestNoRecursiveExpansion() {
-      CBORObject root = ReferenceTestObject();
+    public void TestCtap2CanonicalReferenceTest() {
+       for (int i = 4;i <= 60; ++i) {
+           // has high recursive reference depths, higher than
+           // Ctap2Canonical supports, which is 4
+           TestCtap2CanonicalReferenceTestOne(ReferenceTestObject(i));
+       }
+    }
+    public static void TestCtap2CanonicalReferenceTestOne(CBORObject root) {
+      if (root == null) {
+        throw new NullPointerException("root");
+      }
+      byte[] bytes = root.EncodeToBytes();
+      // NOTE: root has a nesting depth of more than four, so
+      // encoding it should fail with Ctap2Canonical
+      CBORObject origroot = root;
+      CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      encodeOptions = new CBOREncodeOptions("ctap2canonical=true");
+      if (root == null) {
+        Assert.fail();
+      }
+      try {
+        {
+          java.io.ByteArrayOutputStream lms = null;
+try {
+lms = new java.io.ByteArrayOutputStream();
+
+          root.WriteTo(lms, encodeOptions);
+          Assert.fail("Should have failed");
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test(timeout = 5000)
+    public void TestNoRecursiveExpansion(CBORObject root) {
+       for (int i = 5;i <= 60; ++i) {
+           // has high recursive reference depths
+           TestNoRecursiveExpansionOne(ReferenceTestObject(i));
+       }
+    }
+    public static void TestNoRecursiveExpansionOne(CBORObject root) {
+      if (root == null) {
+        throw new NullPointerException("root");
+      }
       byte[] bytes = root.EncodeToBytes();
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
       root = CBORObject.DecodeFromBytes(bytes, encodeOptions);

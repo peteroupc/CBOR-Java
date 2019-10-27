@@ -153,6 +153,26 @@ private CBORCanonical() {
       return false;
     }
 
+    private static void CheckDepth(CBORObject cbor, int depth) {
+        if (cbor.getType() == CBORType.Array) {
+          for (int i = 0; i < cbor.size(); ++i) {
+              if (depth >= 3 && IsArrayOrMap(cbor.get(i))) {
+                throw new CBORException("Nesting level too deep");
+              }
+              CheckDepth(cbor.get(i), depth + 1);
+            }
+        } else if (cbor.getType() == CBORType.Map) {
+          for (CBORObject key : cbor.getKeys()) {
+            if (depth >= 3 && (IsArrayOrMap(key) ||
+                IsArrayOrMap(cbor.get(key)))) {
+              throw new CBORException("Nesting level too deep");
+            }
+            CheckDepth(key, depth + 1);
+            CheckDepth(cbor.get(key), depth + 1);
+          }
+        }
+    }
+
     private static byte[] CtapCanonicalEncode(CBORObject a, int depth) {
       CBORObject cbor = a.Untag();
       CBORType valueAType = cbor.getType();
@@ -186,6 +206,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 IsArrayOrMap(cbor.get(key)))) {
               throw new CBORException("Nesting level too deep");
             }
+            CheckDepth(key, depth + 1);
+            CheckDepth(cbor.get(key), depth + 1);
             // Check if key and value can be canonically encoded
             // (will throw an exception if they cannot)
             kv1 = new AbstractMap.SimpleImmutableEntry<byte[], byte[]>(
