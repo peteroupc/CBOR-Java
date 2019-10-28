@@ -1562,7 +1562,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 5000)
     public void TestCtap2CanonicalReferenceTest() {
-       for (int i = 4;i <= 60; ++i) {
+       for (int i = 4; i <= 60; ++i) {
            // has high recursive reference depths, higher than
            // Ctap2Canonical supports, which is 4
            TestCtap2CanonicalReferenceTestOne(ReferenceTestObject(i));
@@ -1603,9 +1603,9 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test(timeout = 5000)
-    public void TestNoRecursiveExpansion(CBORObject root) {
-       for (int i = 5;i <= 60; ++i) {
+    @Test(timeout = 50000)
+    public void TestNoRecursiveExpansion() {
+       for (int i = 5; i <= 60; ++i) {
            // has high recursive reference depths
            TestNoRecursiveExpansionOne(ReferenceTestObject(i));
        }
@@ -1614,11 +1614,9 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       if (root == null) {
         throw new NullPointerException("root");
       }
-      byte[] bytes = root.EncodeToBytes();
+      byte[] bytes = CBORTestCommon.CheckEncodeToBytes(root);
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
       root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
-      System.out.println(root.toString());
-      System.out.println(root.EncodeToBytes().length);
       encodeOptions = new CBOREncodeOptions("resolvereferences=true");
       root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
       if (root == null) {
