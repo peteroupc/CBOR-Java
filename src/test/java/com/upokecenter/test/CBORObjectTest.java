@@ -3971,64 +3971,19 @@ private final PODClass propVarpropvalue;
       }
     }
     @Test
-    public void TestMultiply() {
-      try {
-        CBORObject.Multiply(null, ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Multiply(ToObjectTest.TestToFromObjectRoundTrip(2), null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Multiply (
-          CBORObject.Null,
-          ToObjectTest.TestToFromObjectRoundTrip(2));
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.Multiply (
-          ToObjectTest.TestToFromObjectRoundTrip(2),
-          CBORObject.Null);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-
+    public void TestAsNumberMultiply() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = AsED(CBORObject.Multiply(
-          o1,
-          o2));
+        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).AsEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual (
             cmpDecFrac,
             cmpCobj,
             o1.toString() + "\n" + o2.toString());
         }
-        CBORTestCommon.AssertRoundTrip(o1);
-        CBORTestCommon.AssertRoundTrip(o2);
       }
     }
     @Test

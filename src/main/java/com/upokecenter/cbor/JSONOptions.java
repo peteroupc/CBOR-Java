@@ -150,8 +150,6 @@ import java.util.*;
         "allowduplicatekeys",
         false);
       this.propVarbase64padding = parser.GetBoolean("base64padding", true);
-      // TODO: Note in release notes that JSONOptions String constructor
-      // inadvertently set ReplaceSurrogates to true by default
       this.propVarreplacesurrogates = parser.GetBoolean(
         "replacesurrogates",
         false);

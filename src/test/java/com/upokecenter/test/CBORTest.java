@@ -1614,6 +1614,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       if (root == null) {
         throw new NullPointerException("root");
       }
+      CBORObject origroot = root;
       byte[] bytes = CBORTestCommon.CheckEncodeToBytes(root);
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
       root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
@@ -1623,8 +1624,6 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail();
       }
       // Test a mitigation for wild recursive-reference expansions
-      root = CBORTest.ReferenceTestObject();
-      CBORObject origroot = root;
       encodeOptions = new CBOREncodeOptions("resolvereferences=true");
       root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
       if (root == null) {
