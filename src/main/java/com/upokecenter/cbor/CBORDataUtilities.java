@@ -215,16 +215,16 @@ private CBORDataUtilities() {
      *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
      * string is null or empty.
      * @deprecated Call the one-argument version of this method instead. If this\u0020method
- * call used positiveOnly = true, check that the String does
+ * call used positiveOnly = true, check that the String\u0020does
  * not\u0020begin\u0020with '-' before calling that version. If this method
  * call used\u0020integersOnly\u0020 = true, check that the String does not
- * contain '.', 'E', or 'e' before\u0020calling that version.
+ * contain '.', 'E', or 'e'\u0020before\u0020calling that version.
  */
 @Deprecated
-public static CBORObject ParseJSONNumber(
-    String str,
-    boolean integersOnly,
-    boolean positiveOnly) {
+    public static CBORObject ParseJSONNumber(
+      String str,
+      boolean integersOnly,
+      boolean positiveOnly) {
       if (((str) == null || (str).length() == 0)) {
         return null;
       }

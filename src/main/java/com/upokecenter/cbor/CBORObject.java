@@ -4886,7 +4886,9 @@ this.getMostOuterTag().equals(bigTagValue);
         default: {
           StringBuilder sb = new StringBuilder();
           try {
-            CBORJson.WriteJSONToInternal(this, new StringOutput(sb),
+            CBORJson.WriteJSONToInternal(
+              this,
+              new StringOutput(sb),
               options);
           } catch (IOException ex) {
             // This is truly exceptional
@@ -5646,8 +5648,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             if ((uadditional >> 63) == 0) {
               // use only if additional's top bit isn't set
               // (additional is a signed long)
-              return new CBORObject(CBORObjectTypeInteger, -1 -
-                  uadditional);
+              return new CBORObject(
+                  CBORObjectTypeInteger,
+                  -1 - uadditional);
             } else {
               int low = ((int)(uadditional & 0xffffffffL));
               int high = ((int)((uadditional >> 32) & 0xffffffffL));
@@ -6349,7 +6352,9 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       if (cn == null) {
         throw new IllegalStateException("not a number type");
       }
-      return cn.GetNumberInterface().AsInt32(cn.GetValue(), minValue,
+      return cn.GetNumberInterface().AsInt32(
+          cn.GetValue(),
+          minValue,
           maxValue);
     }
 

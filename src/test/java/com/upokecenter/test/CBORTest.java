@@ -784,13 +784,13 @@ import com.upokecenter.numbers.*;
 
       if (!(
         ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf)
-        .IsNegativeInfinity())) {
+        .AsNumber().IsNegativeInfinity())) {
  Assert.fail();
  }
 
       if (!(
         ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.RatPosInf)
-        .IsPositiveInfinity())) {
+        .AsNumber().IsPositiveInfinity())) {
  Assert.fail();
  }
       if (!(
@@ -798,10 +798,14 @@ import com.upokecenter.numbers.*;
         .AsNumber().IsInfinity())) {
  Assert.fail();
  }
-      if (!(CBORObject.PositiveInfinity.IsPositiveInfinity())) {
+
+      if (!(
+        CBORObject.PositiveInfinity.AsNumber().IsPositiveInfinity())) {
  Assert.fail();
  }
-      if (!(CBORObject.NegativeInfinity.IsNegativeInfinity())) {
+
+      if (!(
+        CBORObject.NegativeInfinity.AsNumber().IsNegativeInfinity())) {
  Assert.fail();
  }
       if (!(CBORObject.NaN.AsNumber().IsNaN())) {
@@ -2177,7 +2181,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-        EDecimal cmpCobj = AsED(CBORObject.Addition(o1, o2));
+        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).AsEDecimal();
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           String msg = "o1=" + o1.toString() + ", o2=" + o2.toString() +
             ", " + AsED(o1) + ", " + AsED(o2) + ", cmpCobj=" +
@@ -2196,7 +2200,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Subtract(AsED(o2));
-        EDecimal cmpCobj = AsED(CBORObject.Subtract(o1, o2));
+        EDecimal cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).AsEDecimal();
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           String msg = "o1=" + o1.toString() + ", o2=" + o2.toString() +
             ", " + AsED(o1) + ", " + AsED(o2) + ", cmpCobj=" +
