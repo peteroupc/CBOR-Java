@@ -5270,6 +5270,148 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
 }
     }
 
+// TODO: In next major version, consider using CBORException
+// for circular refs in EncodeToBytes
+@Test
+public void TestEncodeToBytesCircularRefs() {
+  CBORObject cbor = CBORObject.NewArray().Add(1).Add(2);
+  cbor.Add(cbor);
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add(cbor, "test");
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add("test", cbor);
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewArray().Add(1).Add(2);
+  cbor.Add(CBORObject.NewArray().Add(cbor));
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add(CBORObject.NewArray().Add(cbor), "test");
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add("test", CBORObject.NewArray().Add(cbor));
+  try {
+ cbor.EncodeToBytes();
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+}
+
+@Test
+public void TestCalcEncodedSizeCircularRefs() {
+  CBORObject cbor = CBORObject.NewArray().Add(1).Add(2);
+  cbor.Add(cbor);
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add(cbor, "test");
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add("test", cbor);
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewArray().Add(1).Add(2);
+  cbor.Add(CBORObject.NewArray().Add(cbor));
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add(CBORObject.NewArray().Add(cbor), "test");
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+  cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+  cbor.Add("test", CBORObject.NewArray().Add(cbor));
+  try {
+ cbor.CalcEncodedSize();
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+}
+
     @Test
     public void TestClear() {
       CBORObject cbor;

@@ -1650,7 +1650,13 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 
 **Returns:**
 
-* The return value is not documented yet.
+* The number of bytes this CBOR object takes when serialized as a byte
+ array using the <code>EncodeToBytes()</code> method.
+
+**Throws:**
+
+* <code>The</code> - CBOR object has an extremely deep level of nesting, including if
+ the CBOR object is or has an array or map that includes itself.
 
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)

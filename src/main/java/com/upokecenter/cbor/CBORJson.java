@@ -523,6 +523,47 @@ import com.upokecenter.numbers.*;
       CBORObject obj,
       StringOutput writer,
       JSONOptions options) throws java.io.IOException {
+      if (obj.getType() == CBORType.Array || obj.getType() == CBORType.Map) {
+        ArrayList<CBORObject> stack = new ArrayList<CBORObject>();
+        WriteJSONToInternal(obj, writer, options, stack);
+      } else {
+        WriteJSONToInternal(obj, writer, options, null);
+      }
+    }
+
+    private static void PopRefIfNeeded(List<CBORObject> stack, boolean pop) {
+        if (pop && stack != null) {
+          stack.remove(stack.size() - 1);
+        }
+    }
+
+    private static boolean CheckCircularRef(
+      List<CBORObject> stack,
+      CBORObject parent,
+      CBORObject child) {
+       if (child.getType() != CBORType.Array && child.getType() != CBORType.Map) {
+         return false;
+       }
+       CBORObject childUntag = child.Untag();
+       if (parent.Untag() == childUntag) {
+          throw new CBORException("Circular reference in CBOR Object");
+       }
+       if (stack != null) {
+         for (CBORObject o : stack) {
+             if (o.Untag() == childUntag) {
+                throw new CBORException("Circular reference in CBOR Object");
+             }
+          }
+       }
+       stack.add(child);
+       return true;
+    }
+
+    static void WriteJSONToInternal(
+      CBORObject obj,
+      StringOutput writer,
+      JSONOptions options,
+      List<CBORObject> stack) throws java.io.IOException {
       if (obj.isNumber()) {
         writer.WriteString(CBORNumber.FromCBORObject(obj).ToJSONString());
         return;
@@ -600,7 +641,9 @@ import com.upokecenter.numbers.*;
             if (i > 0) {
               writer.WriteCodePoint((int)',');
             }
-            WriteJSONToInternal(obj.get(i), writer, options);
+            boolean pop = CheckCircularRef(stack, obj, obj.get(i));
+            WriteJSONToInternal(obj.get(i), writer, options, stack);
+            PopRefIfNeeded(stack, pop);
           }
           writer.WriteCodePoint((int)']');
           break;
@@ -632,7 +675,9 @@ import com.upokecenter.numbers.*;
               WriteJSONStringUnquoted(key.AsString(), writer, options);
               writer.WriteCodePoint((int)'\"');
               writer.WriteCodePoint((int)':');
-              WriteJSONToInternal(value, writer, options);
+              boolean pop = CheckCircularRef(stack, obj, value);
+              WriteJSONToInternal(value, writer, options, stack);
+              PopRefIfNeeded(stack, pop);
               first = false;
             }
             writer.WriteCodePoint((int)'}');
@@ -646,12 +691,28 @@ import com.upokecenter.numbers.*;
             for (Map.Entry<CBORObject, CBORObject> entry : entries) {
               CBORObject key = entry.getKey();
               CBORObject value = entry.getValue();
-              String str = (key.getType() == CBORType.TextString) ?
-                key.AsString() : key.ToJSONString();
+              String str = null;
+              switch (key.getType()) {
+                case TextString:
+                   str = key.AsString();
+                   break;
+                case Array:
+                case Map: {
+                   StringBuilder sb = new StringBuilder();
+                   StringOutput sw = new StringOutput(sb);
+                   boolean pop = CheckCircularRef(stack, obj, key);
+                   WriteJSONToInternal(key, sw, options, stack);
+                   PopRefIfNeeded(stack, pop);
+                   str = sb.toString();
+                   break;
+                }
+                default: str = key.ToJSONString(options);
+                   break;
+              }
               if (stringMap.containsKey(str)) {
-                throw new
-                CBORException("Duplicate JSON String equivalents of map" +
-"\u0020keys");
+                throw new CBORException(
+                   "Duplicate JSON String equivalents of map" +
+                   "\u0020keys");
               }
               stringMap.put(str, value);
             }
@@ -667,7 +728,9 @@ import com.upokecenter.numbers.*;
               WriteJSONStringUnquoted((String)key, writer, options);
               writer.WriteCodePoint((int)'\"');
               writer.WriteCodePoint((int)':');
-              WriteJSONToInternal(value, writer, options);
+              boolean pop = CheckCircularRef(stack, obj, value);
+              WriteJSONToInternal(value, writer, options, stack);
+              PopRefIfNeeded(stack, pop);
               first = false;
             }
             writer.WriteCodePoint((int)'}');

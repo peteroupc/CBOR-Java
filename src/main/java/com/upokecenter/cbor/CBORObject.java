@@ -1481,15 +1481,17 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
    * byte strings, and tag numbers are encoded in their shortest form; that
    * floating-point numbers are encoded in their shortest value-preserving
    * form; and that no indefinite-length encodings are used.
-   * @return The return value is not documented yet.
+   * @return The number of bytes this CBOR object takes when serialized as a byte
+   * array using the {@code EncodeToBytes()} method.
+   * @throws The CBOR object has an extremely deep level of nesting, including if
+   * the CBOR object is or has an array or map that includes itself.
    */
     public long CalcEncodedSize() {
        return this.CalcEncodedSize(0);
     }
 
     private long CalcEncodedSize(int depth) {
-      // TODO: Check circular references
-if (depth > 1000) {
+      if (depth > 1000) {
         throw new CBORException("Too deeply nested");
       }
       long size = 0L;
@@ -1526,7 +1528,8 @@ if (depth > 1000) {
         case Array:
           size = (size + IntegerByteLength(cbor.size()));
           for (int i = 0; i < cbor.size(); ++i) {
-            size = (size + cbor.get(i).CalcEncodedSize(depth + 1));
+            long newsize = cbor.get(i).CalcEncodedSize(depth + 1);
+            size = (size + newsize);
           }
           return size;
         case Map: {

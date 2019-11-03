@@ -1607,9 +1607,24 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
     public void TestNoRecursiveExpansion() {
        for (int i = 5; i <= 60; ++i) {
            // has high recursive reference depths
+// System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
+// System.out.println("depth = "+i);
            TestNoRecursiveExpansionOne(ReferenceTestObject(i));
+// System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
        }
     }
+
+    @Test(timeout = 50000)
+    public void TestNoRecursiveExpansionJSON() {
+       for (int i = 5; i <= 60; ++i) {
+           // has high recursive reference depths
+// System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
+// System.out.println("depth = "+i);
+           TestNoRecursiveExpansionJSONOne(ReferenceTestObject(i));
+// System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
+       }
+    }
+
     public static void TestNoRecursiveExpansionOne(CBORObject root) {
       if (root == null) {
         throw new NullPointerException("root");
@@ -1654,6 +1669,43 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
 try {
 lms = new LimitedMemoryStream(100000);
 
+          origroot.WriteTo(lms);
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    public static void TestNoRecursiveExpansionJSONOne(CBORObject root) {
+      if (root == null) {
+        throw new NullPointerException("root");
+      }
+      CBORObject origroot = root;
+      byte[] bytes = CBORTestCommon.CheckEncodeToBytes(root);
+      CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=false");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      if (root == null) {
+        Assert.fail();
+      }
+      // Test a mitigation for wild recursive-reference expansions
+      encodeOptions = new CBOREncodeOptions("resolvereferences=true");
+      root = CBORObject.DecodeFromBytes(bytes, encodeOptions);
+      if (root == null) {
+        Assert.fail();
+      }
+      try {
+        {
+          LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
           root.WriteJSONTo(lms);
           Assert.fail("Should have failed");
 }
@@ -1668,17 +1720,6 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        {
-          LimitedMemoryStream lms = null;
-try {
-lms = new LimitedMemoryStream(100000);
-
-          origroot.WriteTo(lms);
-}
-finally {
-try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
-}
-}
         {
           LimitedMemoryStream lms = null;
 try {
