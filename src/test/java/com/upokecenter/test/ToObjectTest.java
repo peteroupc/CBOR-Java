@@ -69,7 +69,7 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip (
             EDecimal.FromString(numberString));
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
-          Assert.assertEquals (
+          Assert.assertEquals(
             numberinfo.get("integer").ToObject(String.class),
             cbornumber.ToObject(EInteger.class).toString());
         } else {
@@ -343,7 +343,7 @@ import com.upokecenter.numbers.*;
   (String)numberinfo.get("number").ToObject(String.class)));
 
         if ((boolean)numberinfo.get("byte").AsBoolean()) {
-          Assert.assertEquals (
+          Assert.assertEquals(
             TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
               String.class)), ((int)(Byte)cbornumber.ToObject(
   byte.class)) & 0xff);
@@ -360,7 +360,7 @@ import com.upokecenter.numbers.*;
         }
       }
       for (int i = 0; i < 255; ++i) {
-        Assert.assertEquals (
+        Assert.assertEquals(
           (byte)i,
           ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class));
       }
@@ -709,7 +709,7 @@ import com.upokecenter.numbers.*;
         if ((boolean)numberinfo.get("int16").AsBoolean()) {
           short sh = (short)TestCommon.StringToInt(
              (String)numberinfo.get("integer").ToObject(String.class));
-          Assert.assertEquals (
+          Assert.assertEquals(
             sh,
             cbornumber.ToObject(short.class));
         } else {
@@ -800,18 +800,18 @@ import com.upokecenter.numbers.*;
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if ((boolean)numberinfo.get("int32").AsBoolean()) {
-          Assert.assertEquals (
+          Assert.assertEquals(
             TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
               String.class)),
             cbornumber.ToObject(int.class));
           if (isdouble) {
-            Assert.assertEquals (
+            Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
                 String.class)),
               cbornumberdouble.ToObject(int.class));
           }
           if (issingle) {
-            Assert.assertEquals (
+            Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
                 String.class)),
               cbornumbersingle.ToObject(int.class));
@@ -925,21 +925,21 @@ import com.upokecenter.numbers.*;
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if ((boolean)numberinfo.get("int64").AsBoolean()) {
-          Assert.assertEquals (
+          Assert.assertEquals(
             TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(
               String.class)),
             cbornumber.ToObject(long.class));
           if (isdouble) {
             long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
-            Assert.assertEquals (
+            Assert.assertEquals(
               strlong,
               cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
             long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
-            Assert.assertEquals (
+            Assert.assertEquals(
               strlong,
               cbornumbersingle.ToObject(long.class));
           }
