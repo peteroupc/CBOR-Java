@@ -8,6 +8,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
+  @SuppressWarnings("deprecation")
   public class CBORObjectTest {
     private static final String[] ValueJsonFails = {
       "\"\\uxxxx\"",
@@ -2636,9 +2637,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        @SuppressWarnings("deprecation")
         CBORObject.FromJSONString("[]", (CBOREncodeOptions)null);
-
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -4100,9 +4099,7 @@ try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x30 });
 
           try {
-           @SuppressWarnings("deprecation")
             CBORObject.ReadJSON(ms2, (CBOREncodeOptions)null);
-
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
             // NOTE: Intentionally empty

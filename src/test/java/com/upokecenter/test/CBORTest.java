@@ -163,7 +163,7 @@ import com.upokecenter.numbers.*;
         int varintTemp2 = cbor.get(
           ToObjectTest.TestToFromObjectRoundTrip(1))
           .AsInt32();
-        Assert.assertEquals(CBORObject.FromObject(2), varintTemp2);
+        Assert.assertEquals(2, varintTemp2);
       }
       {
         String stringTemp = cbor.ToJSONString();
