@@ -1989,12 +1989,8 @@ try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOExcep
       }
     }
 
-    @Test
-    public void TestReadWriteInt() {
-      RandomGenerator r = new RandomGenerator();
+    private static void TestReadWriteIntOne(int val) {
       try {
-        for (int i = 0; i < 100000; ++i) {
-          int val = ((int)RandomObjects.RandomInt64(r));
           {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -2002,12 +1998,13 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
               MiniCBOR.WriteInt32(val, ms);
+              byte[] msarray = ms.toByteArray();
               {
                 java.io.ByteArrayInputStream ms2 = null;
 try {
-ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
+ms2 = new java.io.ByteArrayInputStream(msarray);
 
-                Assert.assertEquals(val, MiniCBOR.ReadInt32(ms2));
+                Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
 try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
@@ -2026,12 +2023,13 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
               CBORObject.Write(val, ms);
+              byte[] msarray = ms.toByteArray();
               {
                 java.io.ByteArrayInputStream ms2 = null;
 try {
-ms2 = new java.io.ByteArrayInputStream(ms.toByteArray());
+ms2 = new java.io.ByteArrayInputStream(msarray);
 
-                Assert.assertEquals(val, MiniCBOR.ReadInt32(ms2));
+                Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
 try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
@@ -2043,10 +2041,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           }
-        }
       } catch (IOException ioex) {
         Assert.fail(ioex.getMessage());
       }
+    }
+
+    @Test
+    public void TestReadWriteInt() {
+      RandomGenerator r = new RandomGenerator();
+      for (int i = -70000; i < 70000; ++i) {
+        TestReadWriteIntOne(i);
+      }
+        for (int i = 0; i < 100000; ++i) {
+          int val = ((int)RandomObjects.RandomInt64(r));
+          TestReadWriteIntOne(val);
+        }
     }
 
     @Test

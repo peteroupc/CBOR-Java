@@ -570,7 +570,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
                kind == JSONOptions.ConversionKind.IntOrFloatFromDouble) {
             if (bigmant2.CanFitInInt64()) {
               long longmant2 = bigmant2.ToInt64Checked();
-              if (longmant2 >= -(1 << 53) && longmant2 <= (1 << 53)) {
+              if (longmant2 >= (-(1 << 53)) + 1 && longmant2 <= (1 << 53) - 1) {
                 // An arbitrary-precision integer that's "small enough";
                 // return a CBOR Object of that integer
                 return CBORObject.FromObject(bigmant2);
@@ -617,7 +617,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           CBORNumber cn = cbor.AsNumber();
           if (cbor.isIntegral() && cn.CanFitInInt64()) {
              long v = cbor.AsInt64();
-             if (v >= -(1 << 53) && v <= (1 << 53)) {
+             if (v >= (-(1 << 53)) + 1 && v <= (1 << 53) - 1) {
                return CBORObject.FromObject(v);
              } else {
                dbl = cbor.AsDouble();

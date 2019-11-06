@@ -264,7 +264,7 @@ private MiniCBOR() {
         return (double)b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return (double)(-1 - b);
+        return (double)(-1 - (b & 0x1f));
       }
       while ((b >> 5) == 6) {
         // Skip tags until a tag character is no longer read
@@ -285,7 +285,7 @@ private MiniCBOR() {
         return (double)b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return (double)(-1 - b);
+        return (double)(-1 - (b & 0x1f));
       }
       if (b == 0xf9 || b == 0xfa || b == 0xfb) {
         // Read a floating-point number
@@ -317,7 +317,7 @@ private MiniCBOR() {
         return b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return -1 - b;
+        return -1 - (b & 0x1f);
       }
       while ((b >> 5) == 6) {
         // Skip tags until a tag character is no longer read
@@ -338,7 +338,7 @@ private MiniCBOR() {
         return b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return -1 - b;
+        return -1 - (b & 0x1f);
       }
       if (b == 0xf9 || b == 0xfa || b == 0xfb) {
         // Read a floating-point number
@@ -368,7 +368,7 @@ private MiniCBOR() {
         return b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return -1 - b;
+        return -1 - (b & 0x1f);
       }
       if (b == 0x18 || b == 0x38) {
         int b1 = stream.read();
