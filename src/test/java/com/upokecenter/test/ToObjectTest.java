@@ -453,9 +453,10 @@ import com.upokecenter.numbers.*;
         dbl = (double)EDecimal.FromString(
           (String)numberinfo.get("number").ToObject(String.class))
           .ToDouble();
+        Object dblobj = cbornumber.ToObject(double.class);
         CBORObjectTest.AreEqualExact(
           dbl,
-          (double)cbornumber.ToObject(double.class));
+          ((Double)dblobj).doubleValue());
       }
     }
 
