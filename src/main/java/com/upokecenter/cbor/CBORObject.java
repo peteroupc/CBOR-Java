@@ -1483,8 +1483,9 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
    * form; and that no indefinite-length encodings are used.
    * @return The number of bytes this CBOR object takes when serialized as a byte
    * array using the {@code EncodeToBytes()} method.
-   * @throws The CBOR object has an extremely deep level of nesting, including if
-   * the CBOR object is or has an array or map that includes itself.
+   * @throws CBORException The CBOR object has an extremely deep level of
+   * nesting, including if the CBOR object is or has an array or map that
+   * includes itself.
    */
     public long CalcEncodedSize() {
        return this.CalcEncodedSize(0);
