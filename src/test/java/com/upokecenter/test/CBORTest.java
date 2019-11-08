@@ -2052,7 +2052,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (int i = -70000; i < 70000; ++i) {
         TestReadWriteIntOne(i);
       }
-        for (int i = 0; i < 100000; ++i) {
+      for (int i = 0; i < 100000; ++i) {
           int val = ((int)RandomObjects.RandomInt64(r));
           TestReadWriteIntOne(val);
         }
