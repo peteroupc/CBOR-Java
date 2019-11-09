@@ -324,7 +324,8 @@ CBORObject.FromObject(Double.NaN);
       }
 
     /**
-     * Gets a value indicating whether this value is a CBOR undefined value.
+     * Gets a value indicating whether this value is a CBOR undefined value,
+     * whether tagged or not.
      * @return {@code true} if this value is a CBOR undefined value; otherwise,
      * {@code false}.
      */

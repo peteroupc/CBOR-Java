@@ -463,7 +463,8 @@ Instead, use the following: (cbor.isNumber()
  Gets a value indicating whether this value is a CBOR true value, whether
  tagged or not.
 * `boolean isUndefined()`<br>
- Gets a value indicating whether this value is a CBOR undefined value.
+ Gets a value indicating whether this value is a CBOR undefined value,
+ whether tagged or not.
 * `boolean isZero()`<br>
  Gets a value indicating whether this object's value equals 0.
 * `static CBORObject Multiply​(CBORObject first,
@@ -807,7 +808,8 @@ Gets a value indicating whether this value is a CBOR true value, whether
 
 ### isUndefined
     public final boolean isUndefined()
-Gets a value indicating whether this value is a CBOR undefined value.
+Gets a value indicating whether this value is a CBOR undefined value,
+ whether tagged or not.
 
 **Returns:**
 
@@ -1655,8 +1657,9 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 
 **Throws:**
 
-* <code>The</code> - CBOR object has an extremely deep level of nesting, including if
- the CBOR object is or has an array or map that includes itself.
+* <code>CBORException</code> - The CBOR object has an extremely deep level of
+ nesting, including if the CBOR object is or has an array or map that
+ includes itself.
 
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
