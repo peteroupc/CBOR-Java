@@ -471,6 +471,281 @@ import com.upokecenter.numbers.*;
       }
     }
 
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean CanTruncatedIntFitInInt32() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean CanTruncatedIntFitInInt64() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean CanFitInSingle() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean CanFitInDouble() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean IsFinite() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean IsInteger() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean IsNegative() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public boolean IsZero() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public EInteger ToEInteger() {
+  throw new UnsupportedOperationException();
+ }
+
+ /**
+  * Not documented yet.
+  * @return The return value is not documented yet.
+  */
+ public EInteger ToEIntegerIfExact() {
+  throw new UnsupportedOperationException();
+ }
+
+    // Begin integer conversions
+
+    /**
+     * Converts this number's value to a byte (from 0 to 255) if it can fit in a
+     * byte (from 0 to 255) after truncating to an integer.
+     * @return This number's value, truncated to a byte (from 0 to 255).
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * truncated integer is less than 0 or greater than 255.
+     */
+    public byte ToByteChecked() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.ToEInteger().ToByteChecked();
+    }
+
+    /**
+     * Truncates this number's value to an integer and returns the
+     * least-significant bits of its two's-complement form as a byte (from
+     * 0 to 255).
+     * @return This number, converted to a byte (from 0 to 255). Returns 0 if this
+     * value is infinity or not-a-number.
+     */
+    public byte ToByteUnchecked() {
+      return this.IsFinite() ? this.ToEInteger().ToByteUnchecked() : (byte)0;
+    }
+
+    /**
+     * Converts this number's value to a byte (from 0 to 255) if it can fit in a
+     * byte (from 0 to 255) without rounding to a different numerical
+     * value.
+     * @return This number's value as a byte (from 0 to 255).
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than 0 or greater than 255.
+     */
+    public byte ToByteIfExact() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      if (this.IsZero()) {
+        return (byte)0;
+      }
+      if (this.IsNegative()) {
+        throw new ArithmeticException("Value out of range");
+      }
+      return this.ToEIntegerIfExact().ToByteChecked();
+    }
+
+    /**
+     * Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
+     * @param inputByte The number to convert as a byte (from 0 to 255).
+     * @return This number's value as an arbitrary-precision decimal number.
+     */
+    public static CBORNumber FromByte(byte inputByte) {
+      int val = ((int)inputByte) & 0xff;
+      return FromObject((long)val);
+    }
+
+    /**
+     * Converts this number's value to a 16-bit signed integer if it can fit in a
+     * 16-bit signed integer after truncating to an integer.
+     * @return This number's value, truncated to a 16-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * truncated integer is less than -32768 or greater than 32767.
+     */
+    public short ToInt16Checked() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.ToEInteger().ToInt16Checked();
+    }
+
+    /**
+     * Truncates this number's value to an integer and returns the
+     * least-significant bits of its two's-complement form as a 16-bit
+     * signed integer.
+     * @return This number, converted to a 16-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
+    public short ToInt16Unchecked() {
+      return this.IsFinite() ? this.ToEInteger().ToInt16Unchecked() : (short)0;
+    }
+
+    /**
+     * Converts this number's value to a 16-bit signed integer if it can fit in a
+     * 16-bit signed integer without rounding to a different numerical
+     * value.
+     * @return This number's value as a 16-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -32768 or greater than 32767.
+     */
+    public short ToInt16IfExact() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.IsZero() ? ((short)0) :
+this.ToEIntegerIfExact().ToInt16Checked();
+    }
+
+    /**
+     * Converts a 16-bit signed integer to an arbitrary-precision decimal number.
+     * @param inputInt16 The number to convert as a 16-bit signed integer.
+     * @return This number's value as an arbitrary-precision decimal number.
+     */
+    public static CBORNumber FromInt16(short inputInt16) {
+      int val = (int)inputInt16;
+      return FromObject((long)val);
+    }
+
+    /**
+     * Converts this number's value to a 32-bit signed integer if it can fit in a
+     * 32-bit signed integer after truncating to an integer.
+     * @return This number's value, truncated to a 32-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * truncated integer is less than -2147483648 or greater than
+     * 2147483647.
+     */
+    public int ToInt32Checked() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.ToEInteger().ToInt32Checked();
+    }
+
+    /**
+     * Truncates this number's value to an integer and returns the
+     * least-significant bits of its two's-complement form as a 32-bit
+     * signed integer.
+     * @return This number, converted to a 32-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
+    public int ToInt32Unchecked() {
+      return this.IsFinite() ? this.ToEInteger().ToInt32Unchecked() : (int)0;
+    }
+
+    /**
+     * Converts this number's value to a 32-bit signed integer if it can fit in a
+     * 32-bit signed integer without rounding to a different numerical
+     * value.
+     * @return This number's value as a 32-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -2147483648 or greater than
+     * 2147483647.
+     */
+    public int ToInt32IfExact() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.IsZero() ? ((int)0) :
+this.ToEIntegerIfExact().ToInt32Checked();
+    }
+
+    /**
+     * Converts this number's value to a 64-bit signed integer if it can fit in a
+     * 64-bit signed integer after truncating to an integer.
+     * @return This number's value, truncated to a 64-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * truncated integer is less than -9223372036854775808 or greater than
+     * 9223372036854775807.
+     */
+    public long ToInt64Checked() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.ToEInteger().ToInt64Checked();
+    }
+
+    /**
+     * Truncates this number's value to an integer and returns the
+     * least-significant bits of its two's-complement form as a 64-bit
+     * signed integer.
+     * @return This number, converted to a 64-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
+    public long ToInt64Unchecked() {
+      return this.IsFinite() ? this.ToEInteger().ToInt64Unchecked() : 0L;
+    }
+
+    /**
+     * Converts this number's value to a 64-bit signed integer if it can fit in a
+     * 64-bit signed integer without rounding to a different numerical
+     * value.
+     * @return This number's value as a 64-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -9223372036854775808 or greater
+     * than 9223372036854775807.
+     */
+    public long ToInt64IfExact() {
+      if (!this.IsFinite()) {
+        throw new ArithmeticException("Value is infinity or NaN");
+      }
+      return this.IsZero() ? 0L :
+this.ToEIntegerIfExact().ToInt64Checked();
+    }
+    // End integer conversions
     private static CBORNumber BignumToNumber(CBORObject o) {
       if (o.getType() != CBORType.ByteString) {
         return null; // "Byte array expected");

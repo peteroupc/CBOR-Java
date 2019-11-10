@@ -23,28 +23,48 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Not documented yet.
 * `com.upokecenter.numbers.ERational AsERational()`<br>
  Not documented yet.
+* `boolean CanFitInDouble()`<br>
+ Not documented yet.
 * `boolean CanFitInInt32()`<br>
  Returns whether this object's numerical value is an integer, is -(2^31) or
  greater, and is less than 2^31.
 * `boolean CanFitInInt64()`<br>
  Returns whether this object's numerical value is an integer, is -(2^63) or
  greater, and is less than 2^63.
+* `boolean CanFitInSingle()`<br>
+ Not documented yet.
+* `boolean CanTruncatedIntFitInInt32()`<br>
+ Not documented yet.
+* `boolean CanTruncatedIntFitInInt64()`<br>
+ Not documented yet.
 * `int compareTo​(CBORNumber other)`<br>
  Compares two CBOR numbers.
 * `CBORNumber Divide​(CBORNumber b)`<br>
  Returns the quotient of this number and another number.
+* `static CBORNumber FromByte​(byte inputByte)`<br>
+ Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
 * `static CBORNumber FromCBORObject​(CBORObject o)`<br>
  Creates a CBOR number object from a CBOR object representing a number (that
  is, one for which the IsNumber property in.NET or the isNumber()
  method in Java returns true).
+* `static CBORNumber FromInt16​(short inputInt16)`<br>
+ Converts a 16-bit signed integer to an arbitrary-precision decimal number.
+* `boolean IsFinite()`<br>
+ Not documented yet.
 * `boolean IsInfinity()`<br>
  Gets a value indicating whether this object represents infinity.
+* `boolean IsInteger()`<br>
+ Not documented yet.
 * `boolean IsNaN()`<br>
  Gets a value indicating whether this object represents a not-a-number value.
+* `boolean IsNegative()`<br>
+ Not documented yet.
 * `boolean IsNegativeInfinity()`<br>
  Gets a value indicating whether this object represents negative infinity.
 * `boolean IsPositiveInfinity()`<br>
  Gets a value indicating whether this object represents positive infinity.
+* `boolean IsZero()`<br>
+ Not documented yet.
 * `CBORNumber Multiply​(CBORNumber b)`<br>
  Returns a CBOR number expressing the product of this number and the given
  number.
@@ -55,8 +75,56 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns the remainder when this number is divided by another number.
 * `CBORNumber Subtract​(CBORNumber b)`<br>
  Returns a number that expresses this number minus another.
+* `byte ToByteChecked()`<br>
+ Converts this number's value to a byte (from 0 to 255) if it can fit in a
+ byte (from 0 to 255) after truncating to an integer.
+* `byte ToByteIfExact()`<br>
+ Converts this number's value to a byte (from 0 to 255) if it can fit in a
+ byte (from 0 to 255) without rounding to a different numerical
+ value.
+* `byte ToByteUnchecked()`<br>
+ Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a byte (from
+ 0 to 255).
 * `CBORObject ToCBORObject()`<br>
  Converts this object's value to a CBOR object.
+* `com.upokecenter.numbers.EInteger ToEInteger()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.EInteger ToEIntegerIfExact()`<br>
+ Not documented yet.
+* `short ToInt16Checked()`<br>
+ Converts this number's value to a 16-bit signed integer if it can fit in a
+ 16-bit signed integer after truncating to an integer.
+* `short ToInt16IfExact()`<br>
+ Converts this number's value to a 16-bit signed integer if it can fit in a
+ 16-bit signed integer without rounding to a different numerical
+ value.
+* `short ToInt16Unchecked()`<br>
+ Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 16-bit
+ signed integer.
+* `int ToInt32Checked()`<br>
+ Converts this number's value to a 32-bit signed integer if it can fit in a
+ 32-bit signed integer after truncating to an integer.
+* `int ToInt32IfExact()`<br>
+ Converts this number's value to a 32-bit signed integer if it can fit in a
+ 32-bit signed integer without rounding to a different numerical
+ value.
+* `int ToInt32Unchecked()`<br>
+ Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 32-bit
+ signed integer.
+* `long ToInt64Checked()`<br>
+ Converts this number's value to a 64-bit signed integer if it can fit in a
+ 64-bit signed integer after truncating to an integer.
+* `long ToInt64IfExact()`<br>
+ Converts this number's value to a 64-bit signed integer if it can fit in a
+ 64-bit signed integer without rounding to a different numerical
+ value.
+* `long ToInt64Unchecked()`<br>
+ Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 64-bit
+ signed integer.
 * `java.lang.String toString()`<br>
  Returns the value of this object in text form.
 
@@ -84,6 +152,274 @@ Creates a CBOR number object from a CBOR object representing a number (that
 
 * A CBOR number object, or null if the given CBOR object is null or
  does not represent a number.
+
+### CanTruncatedIntFitInInt32
+    public boolean CanTruncatedIntFitInInt32()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### CanTruncatedIntFitInInt64
+    public boolean CanTruncatedIntFitInInt64()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### CanFitInSingle
+    public boolean CanFitInSingle()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### CanFitInDouble
+    public boolean CanFitInDouble()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### IsFinite
+    public boolean IsFinite()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### IsInteger
+    public boolean IsInteger()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### IsNegative
+    public boolean IsNegative()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### IsZero
+    public boolean IsZero()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### ToEInteger
+    public com.upokecenter.numbers.EInteger ToEInteger()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### ToEIntegerIfExact
+    public com.upokecenter.numbers.EInteger ToEIntegerIfExact()
+Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
+### ToByteChecked
+    public byte ToByteChecked()
+Converts this number's value to a byte (from 0 to 255) if it can fit in a
+ byte (from 0 to 255) after truncating to an integer.
+
+**Returns:**
+
+* This number's value, truncated to a byte (from 0 to 255).
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
+ truncated integer is less than 0 or greater than 255.
+
+### ToByteUnchecked
+    public byte ToByteUnchecked()
+Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a byte (from
+ 0 to 255).
+
+**Returns:**
+
+* This number, converted to a byte (from 0 to 255). Returns 0 if this
+ value is infinity or not-a-number.
+
+### ToByteIfExact
+    public byte ToByteIfExact()
+Converts this number's value to a byte (from 0 to 255) if it can fit in a
+ byte (from 0 to 255) without rounding to a different numerical
+ value.
+
+**Returns:**
+
+* This number's value as a byte (from 0 to 255).
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, is not
+ an exact integer, or is less than 0 or greater than 255.
+
+### FromByte
+    public static CBORNumber FromByte​(byte inputByte)
+Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
+
+**Parameters:**
+
+* <code>inputByte</code> - The number to convert as a byte (from 0 to 255).
+
+**Returns:**
+
+* This number's value as an arbitrary-precision decimal number.
+
+### ToInt16Checked
+    public short ToInt16Checked()
+Converts this number's value to a 16-bit signed integer if it can fit in a
+ 16-bit signed integer after truncating to an integer.
+
+**Returns:**
+
+* This number's value, truncated to a 16-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
+ truncated integer is less than -32768 or greater than 32767.
+
+### ToInt16Unchecked
+    public short ToInt16Unchecked()
+Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 16-bit
+ signed integer.
+
+**Returns:**
+
+* This number, converted to a 16-bit signed integer. Returns 0 if this
+ value is infinity or not-a-number.
+
+### ToInt16IfExact
+    public short ToInt16IfExact()
+Converts this number's value to a 16-bit signed integer if it can fit in a
+ 16-bit signed integer without rounding to a different numerical
+ value.
+
+**Returns:**
+
+* This number's value as a 16-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, is not
+ an exact integer, or is less than -32768 or greater than 32767.
+
+### FromInt16
+    public static CBORNumber FromInt16​(short inputInt16)
+Converts a 16-bit signed integer to an arbitrary-precision decimal number.
+
+**Parameters:**
+
+* <code>inputInt16</code> - The number to convert as a 16-bit signed integer.
+
+**Returns:**
+
+* This number's value as an arbitrary-precision decimal number.
+
+### ToInt32Checked
+    public int ToInt32Checked()
+Converts this number's value to a 32-bit signed integer if it can fit in a
+ 32-bit signed integer after truncating to an integer.
+
+**Returns:**
+
+* This number's value, truncated to a 32-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
+ truncated integer is less than -2147483648 or greater than
+ 2147483647.
+
+### ToInt32Unchecked
+    public int ToInt32Unchecked()
+Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 32-bit
+ signed integer.
+
+**Returns:**
+
+* This number, converted to a 32-bit signed integer. Returns 0 if this
+ value is infinity or not-a-number.
+
+### ToInt32IfExact
+    public int ToInt32IfExact()
+Converts this number's value to a 32-bit signed integer if it can fit in a
+ 32-bit signed integer without rounding to a different numerical
+ value.
+
+**Returns:**
+
+* This number's value as a 32-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, is not
+ an exact integer, or is less than -2147483648 or greater than
+ 2147483647.
+
+### ToInt64Checked
+    public long ToInt64Checked()
+Converts this number's value to a 64-bit signed integer if it can fit in a
+ 64-bit signed integer after truncating to an integer.
+
+**Returns:**
+
+* This number's value, truncated to a 64-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
+ truncated integer is less than -9223372036854775808 or greater than
+ 9223372036854775807.
+
+### ToInt64Unchecked
+    public long ToInt64Unchecked()
+Truncates this number's value to an integer and returns the
+ least-significant bits of its two's-complement form as a 64-bit
+ signed integer.
+
+**Returns:**
+
+* This number, converted to a 64-bit signed integer. Returns 0 if this
+ value is infinity or not-a-number.
+
+### ToInt64IfExact
+    public long ToInt64IfExact()
+Converts this number's value to a 64-bit signed integer if it can fit in a
+ 64-bit signed integer without rounding to a different numerical
+ value.
+
+**Returns:**
+
+* This number's value as a 64-bit signed integer.
+
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, is not
+ an exact integer, or is less than -9223372036854775808 or greater
+ than 9223372036854775807.
 
 ### toString
     public java.lang.String toString()
