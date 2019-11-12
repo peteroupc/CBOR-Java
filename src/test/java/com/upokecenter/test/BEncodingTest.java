@@ -49,7 +49,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String b = "i" + TestCommon.LongToString(value) + "e";
       CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b,
             false));
-      Assert.assertEquals(value, beo.AsInt64());
+      Assert.assertEquals(value, beo.AsNumber().ToInt64Checked());
       String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
     }
@@ -81,14 +81,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       beo.Add(ToObjectTest.TestToFromObjectRoundTrip(3));
       beo.Add(ToObjectTest.TestToFromObjectRoundTrip("four"));
       Assert.assertEquals(4, beo.size());
-      Assert.assertEquals(1, beo.get(0).AsInt64());
+      Assert.assertEquals(1, beo.get(0).AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get(1).AsString();
         Assert.assertEquals(
           "two",
           stringTemp);
       }
-      Assert.assertEquals(3, beo.get(2).AsInt64());
+      Assert.assertEquals(3, beo.get(2).AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get(3).AsString();
         Assert.assertEquals(
@@ -98,14 +98,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
       Assert.assertEquals(4, beo.size());
-      Assert.assertEquals(1, beo.get(0).AsInt64());
+      Assert.assertEquals(1, beo.get(0).AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get(1).AsString();
         Assert.assertEquals(
           "two",
           stringTemp);
       }
-      Assert.assertEquals(3, beo.get(2).AsInt64());
+      Assert.assertEquals(3, beo.get(2).AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get(3).AsString();
         Assert.assertEquals(
@@ -122,14 +122,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       beo.set("two",ToObjectTest.TestToFromObjectRoundTrip(3));
       beo.set("three",ToObjectTest.TestToFromObjectRoundTrip("four"));
       Assert.assertEquals(4, beo.size());
-      Assert.assertEquals(1, beo.get("zero").AsInt64());
+      Assert.assertEquals(1, beo.get("zero").AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get("one").AsString();
         Assert.assertEquals(
           "two",
           stringTemp);
       }
-      Assert.assertEquals(3, beo.get("two").AsInt64());
+      Assert.assertEquals(3, beo.get("two").AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get("three").AsString();
         Assert.assertEquals(
@@ -139,14 +139,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       byte[] b = EncodingToBytes(beo);
       beo = EncodingFromBytes(b);
       Assert.assertEquals(4, beo.size());
-      Assert.assertEquals(1, beo.get("zero").AsInt64());
+      Assert.assertEquals(1, beo.get("zero").AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get("one").AsString();
         Assert.assertEquals(
           "two",
           stringTemp);
       }
-      Assert.assertEquals(3, beo.get("two").AsInt64());
+      Assert.assertEquals(3, beo.get("two").AsNumber().ToInt64Checked());
       {
         String stringTemp = beo.get("three").AsString();
         Assert.assertEquals(

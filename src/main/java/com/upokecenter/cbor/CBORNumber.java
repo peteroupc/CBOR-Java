@@ -246,7 +246,7 @@ import com.upokecenter.numbers.*;
             if (denominator.compareTo(1) != 0) {
               return null; // "invalid values");
             }
-            erat = ERational.CreateNaN (
+            erat = ERational.CreateNaN(
                 numerator,
                 options >= 6,
                 options == 5 || options == 7);
@@ -447,13 +447,13 @@ import com.upokecenter.numbers.*;
               return null; // "invalid values");
             }
             if (isdec) {
-              edec = EDecimal.CreateNaN (
+              edec = EDecimal.CreateNaN(
                   mantissa,
                   options >= 6,
                   options == 5 || options == 7,
                   null);
             } else {
-              efloat = EFloat.CreateNaN (
+              efloat = EFloat.CreateNaN(
                   mantissa,
                   options >= 6,
                   options == 5 || options == 7,
@@ -471,94 +471,129 @@ import com.upokecenter.numbers.*;
       }
     }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean CanTruncatedIntFitInInt32() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean CanTruncatedIntFitInInt32() {
+      return
+this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean CanTruncatedIntFitInInt64() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean CanTruncatedIntFitInInt64() {
+      switch (this.kind) {
+        case Integer:
+          return true;
+        default:
+          return
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean CanFitInSingle() {
-  throw new UnsupportedOperationException();
- }
+              this.GetNumberInterface()
+.CanTruncatedIntFitInInt64(this.GetValue());
+      }
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean CanFitInDouble() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean CanFitInSingle() {
+      return this.GetNumberInterface().CanFitInSingle(this.GetValue());
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean IsFinite() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean CanFitInDouble() {
+      return this.GetNumberInterface().CanFitInDouble(this.GetValue());
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean IsInteger() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean IsFinite() {
+      switch (this.kind) {
+        case Integer:
+        case EInteger:
+          return true;
+        default:
+          return !this.IsInfinity() && !this.IsNaN();
+      }
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean IsNegative() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean IsInteger() {
+      switch (this.kind) {
+        case Integer:
+        case EInteger:
+          return true;
+        default:
+          return this.GetNumberInterface().IsIntegral(this.GetValue());
+      }
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public boolean IsZero() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean IsNegative() {
+      return this.GetNumberInterface().IsNegative(this.GetValue());
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public EInteger ToEInteger() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     */
+    public boolean IsZero() {
+      switch (this.kind) {
+        case Integer: {
+          long thisValue = (((Long)this.value).longValue());
+          return thisValue == 0;
+        }
+        default: return this.GetNumberInterface().IsNumberZero(this.GetValue());
+      }
+    }
 
- /**
-  * Not documented yet.
-  * @return The return value is not documented yet.
-  */
- public EInteger ToEIntegerIfExact() {
-  throw new UnsupportedOperationException();
- }
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     * @throws ArithmeticException This value is infinity or not-a-number.
+     */
+    public EInteger ToEInteger() {
+      return this.GetNumberInterface().AsEInteger(this.GetValue());
+    }
+
+    /**
+     * Not documented yet.
+     * @return The return value is not documented yet.
+     * @throws ArithmeticException This value is infinity or not-a-number or is not
+     * an exact integer.
+     */
+    public EInteger ToEIntegerIfExact() {
+      if (!this.IsInteger()) {
+        throw new ArithmeticException("Not an integer");
+      }
+      return this.ToEInteger();
+    }
 
     // Begin integer conversions
 
     /**
      * Converts this number's value to a byte (from 0 to 255) if it can fit in a
-     * byte (from 0 to 255) after truncating to an integer.
+     * byte (from 0 to 255) after converting it to an integer by discarding
+     * its fractional part.
      * @return This number's value, truncated to a byte (from 0 to 255).
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * truncated integer is less than 0 or greater than 255.
+     * number, once converted to an integer by discarding its fractional
+     * part, is less than 0 or greater than 255.
      */
     public byte ToByteChecked() {
       if (!this.IsFinite()) {
@@ -568,9 +603,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Truncates this number's value to an integer and returns the
-     * least-significant bits of its two's-complement form as a byte (from
-     * 0 to 255).
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement
+     * form as a byte (from 0 to 255).
      * @return This number, converted to a byte (from 0 to 255). Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -611,10 +646,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 16-bit signed integer if it can fit in a
-     * 16-bit signed integer after truncating to an integer.
+     * 16-bit signed integer after converting it to an integer by
+     * discarding its fractional part.
      * @return This number's value, truncated to a 16-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * truncated integer is less than -32768 or greater than 32767.
+     * number, once converted to an integer by discarding its fractional
+     * part, is less than -32768 or greater than 32767.
      */
     public short ToInt16Checked() {
       if (!this.IsFinite()) {
@@ -624,9 +661,9 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Truncates this number's value to an integer and returns the
-     * least-significant bits of its two's-complement form as a 16-bit
-     * signed integer.
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement
+     * form as a 16-bit signed integer.
      * @return This number, converted to a 16-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -662,11 +699,12 @@ this.ToEIntegerIfExact().ToInt16Checked();
 
     /**
      * Converts this number's value to a 32-bit signed integer if it can fit in a
-     * 32-bit signed integer after truncating to an integer.
+     * 32-bit signed integer after converting it to an integer by
+     * discarding its fractional part.
      * @return This number's value, truncated to a 32-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * truncated integer is less than -2147483648 or greater than
-     * 2147483647.
+     * number, once converted to an integer by discarding its fractional
+     * part, is less than -2147483648 or greater than 2147483647.
      */
     public int ToInt32Checked() {
       if (!this.IsFinite()) {
@@ -676,9 +714,9 @@ this.ToEIntegerIfExact().ToInt16Checked();
     }
 
     /**
-     * Truncates this number's value to an integer and returns the
-     * least-significant bits of its two's-complement form as a 32-bit
-     * signed integer.
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement
+     * form as a 32-bit signed integer.
      * @return This number, converted to a 32-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -705,10 +743,12 @@ this.ToEIntegerIfExact().ToInt32Checked();
 
     /**
      * Converts this number's value to a 64-bit signed integer if it can fit in a
-     * 64-bit signed integer after truncating to an integer.
+     * 64-bit signed integer after converting it to an integer by
+     * discarding its fractional part.
      * @return This number's value, truncated to a 64-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * truncated integer is less than -9223372036854775808 or greater than
+     * number, once converted to an integer by discarding its fractional
+     * part, is less than -9223372036854775808 or greater than
      * 9223372036854775807.
      */
     public long ToInt64Checked() {
@@ -719,9 +759,9 @@ this.ToEIntegerIfExact().ToInt32Checked();
     }
 
     /**
-     * Truncates this number's value to an integer and returns the
-     * least-significant bits of its two's-complement form as a 64-bit
-     * signed integer.
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement
+     * form as a 64-bit signed integer.
      * @return This number, converted to a 64-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -801,9 +841,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
     @Override public String toString() {
       switch (this.kind) {
         case Integer: {
-          long longItem = (((Long)this.value).longValue());
-          return CBORUtilities.LongToString(longItem);
-        }
+            long longItem = (((Long)this.value).longValue());
+            return CBORUtilities.LongToString(longItem);
+          }
         default:
           return (this.value == null) ? "" :
             this.value.toString();
@@ -813,42 +853,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
     String ToJSONString() {
       switch (this.kind) {
         case Double: {
-          double f = ((Double)this.value).doubleValue();
-          if (((f) == Double.NEGATIVE_INFINITY) ||
-                     ((f) == Double.POSITIVE_INFINITY) ||
-                     Double.isNaN(f)) {
-            return "null";
-          }
-          String dblString = CBORUtilities.DoubleToString(f);
-          return CBORUtilities.TrimDotZero(dblString);
-        }
-        case Integer: {
-          long longItem = (((Long)this.value).longValue());
-          return CBORUtilities.LongToString(longItem);
-        }
-        case EInteger: {
-          Object eiobj = this.value;
-          return ((EInteger)eiobj).toString();
-        }
-        case EDecimal: {
-          EDecimal dec = (EDecimal)this.value;
-          if (dec.IsInfinity() || dec.IsNaN()) {
-            return "null";
-          } else {
-            return dec.toString();
-          }
-        }
-        case EFloat: {
-          EFloat flo = (EFloat)this.value;
-          if (flo.IsInfinity() || flo.IsNaN()) {
-            return "null";
-          }
-          if (flo.isFinite() &&
-            flo.getExponent().Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
-            // Too inefficient to convert to a decimal number
-            // from a bigfloat with a very high exponent,
-            // so convert to double instead
-            double f = flo.ToDouble();
+            double f = ((Double)this.value).doubleValue();
             if (((f) == Double.NEGATIVE_INFINITY) ||
                          ((f) == Double.POSITIVE_INFINITY) ||
                          Double.isNaN(f)) {
@@ -857,18 +862,53 @@ this.ToEIntegerIfExact().ToInt64Checked();
             String dblString = CBORUtilities.DoubleToString(f);
             return CBORUtilities.TrimDotZero(dblString);
           }
-          return flo.toString();
-        }
-        case ERational: {
-          ERational dec = (ERational)this.value;
-          EDecimal f = dec.ToEDecimalExactIfPossible (
-              EContext.Decimal128.WithUnlimitedExponents());
-          if (!f.isFinite()) {
-            return "null";
-          } else {
-            return f.toString();
+        case Integer: {
+            long longItem = (((Long)this.value).longValue());
+            return CBORUtilities.LongToString(longItem);
           }
-        }
+        case EInteger: {
+            Object eiobj = this.value;
+            return ((EInteger)eiobj).toString();
+          }
+        case EDecimal: {
+            EDecimal dec = (EDecimal)this.value;
+            if (dec.IsInfinity() || dec.IsNaN()) {
+              return "null";
+            } else {
+              return dec.toString();
+            }
+          }
+        case EFloat: {
+            EFloat flo = (EFloat)this.value;
+            if (flo.IsInfinity() || flo.IsNaN()) {
+              return "null";
+            }
+            if (flo.isFinite() &&
+              flo.getExponent().Abs().compareTo(EInteger.FromInt64(2500)) > 0) {
+              // Too inefficient to convert to a decimal number
+              // from a bigfloat with a very high exponent,
+              // so convert to double instead
+              double f = flo.ToDouble();
+              if (((f) == Double.NEGATIVE_INFINITY) ||
+                             ((f) == Double.POSITIVE_INFINITY) ||
+                             Double.isNaN(f)) {
+                return "null";
+              }
+              String dblString = CBORUtilities.DoubleToString(f);
+              return CBORUtilities.TrimDotZero(dblString);
+            }
+            return flo.toString();
+          }
+        case ERational: {
+            ERational dec = (ERational)this.value;
+            EDecimal f = dec.ToEDecimalExactIfPossible(
+                EContext.Decimal128.WithUnlimitedExponents());
+            if (!f.isFinite()) {
+              return "null";
+            } else {
+              return f.toString();
+            }
+          }
         default: throw new IllegalStateException();
       }
     }
@@ -996,19 +1036,19 @@ this.ToEIntegerIfExact().ToInt64Checked();
     public CBORNumber Abs() {
       switch (this.kind) {
         case Integer: {
-          long longValue = (((Long)this.value).longValue());
-          if (longValue == Long.MIN_VALUE) {
-            return FromObject(EInteger.FromInt64(longValue).Negate());
-          } else {
-            return longValue >= 0 ? this : new CBORNumber (
-                this.kind,
-                Math.abs(longValue));
+            long longValue = (((Long)this.value).longValue());
+            if (longValue == Long.MIN_VALUE) {
+              return FromObject(EInteger.FromInt64(longValue).Negate());
+            } else {
+              return longValue >= 0 ? this : new CBORNumber(
+                  this.kind,
+                  Math.abs(longValue));
+            }
           }
-        }
         case EInteger: {
-          EInteger eivalue = (EInteger)this.value;
-          return eivalue.signum() >= 0 ? this : FromObject(eivalue.Abs());
-        }
+            EInteger eivalue = (EInteger)this.value;
+            return eivalue.signum() >= 0 ? this : FromObject(eivalue.Abs());
+          }
         default:
           return new CBORNumber(this.kind,
               this.GetNumberInterface().Abs(this.GetValue()));
@@ -1024,23 +1064,24 @@ this.ToEIntegerIfExact().ToInt64Checked();
     public CBORNumber Negate() {
       switch (this.kind) {
         case Integer: {
-          long longValue = (((Long)this.value).longValue());
-          if (longValue == 0) {
+            long longValue = (((Long)this.value).longValue());
+            if (longValue == 0) {
+              return FromObject(EDecimal.NegativeZero);
+            } else if (longValue == Long.MIN_VALUE) {
+              return FromObject(EInteger.FromInt64(longValue).Negate());
+            } else {
+              return new CBORNumber(this.kind, -longValue);
+            }
+          }
+        case EInteger: {
+          EInteger eiValue = (EInteger)this.value;
+          if (eiValue.isZero()) {
             return FromObject(EDecimal.NegativeZero);
-          } else if (longValue == Long.MIN_VALUE) {
-            return FromObject(EInteger.FromInt64(longValue).Negate());
           } else {
-            return new CBORNumber(this.kind, -longValue);
+            return FromObject(eiValue.Negate());
           }
         }
-        case EInteger:
-          if ((((Long)this.value).longValue()) == 0) {
-            return FromObject(EDecimal.NegativeZero);
-          } else {
-            return FromObject(((EInteger)this.value).Negate());
-          }
-        default:
-          return new CBORNumber(this.kind,
+        default: return new CBORNumber(this.kind,
               this.GetNumberInterface().Negate(this.GetValue()));
       }
     }
@@ -1066,7 +1107,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
         if ((valueA < 0 && valueB < Long.MIN_VALUE - valueA) ||
           (valueA > 0 && valueB > Long.MAX_VALUE - valueA)) {
           // would overflow, convert to EInteger
-          return CBORNumber.FromObject (
+          return CBORNumber.FromObject(
               EInteger.FromInt64(valueA).Add(EInteger.FromInt64(valueB)));
         }
         return new CBORNumber(Kind.Integer, valueA + valueB);
@@ -1118,7 +1159,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
         if ((valueB < 0 && Long.MAX_VALUE + valueB < valueA) ||
           (valueB > 0 && Long.MIN_VALUE + valueB > valueA)) {
           // would overflow, convert to EInteger
-          return CBORNumber.FromObject (
+          return CBORNumber.FromObject(
               EInteger.FromInt64(valueA).Subtract(EInteger.FromInt64(
                   valueB)));
         }
@@ -1239,7 +1280,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
         long rem = valueA - (quo * valueB);
         return (rem == 0) ? new CBORNumber(Kind.Integer, quo) :
           new CBORNumber(Kind.ERational,
-            ERational.Create (
+            ERational.Create(
               EInteger.FromInt64(valueA),
               EInteger.FromInt64(valueB)));
       }
@@ -1377,43 +1418,43 @@ this.ToEIntegerIfExact().ToInt64Checked();
       if (typeA == typeB) {
         switch (typeA) {
           case Integer: {
-            long a = (((Long)objA).longValue());
-            long b = (((Long)objB).longValue());
-            cmp = (a == b) ? 0 : ((a < b) ? -1 : 1);
-            break;
-          }
+              long a = (((Long)objA).longValue());
+              long b = (((Long)objB).longValue());
+              cmp = (a == b) ? 0 : ((a < b) ? -1 : 1);
+              break;
+            }
           case EInteger: {
-            EInteger bigintA = (EInteger)objA;
-            EInteger bigintB = (EInteger)objB;
-            cmp = bigintA.compareTo(bigintB);
-            break;
-          }
+              EInteger bigintA = (EInteger)objA;
+              EInteger bigintB = (EInteger)objB;
+              cmp = bigintA.compareTo(bigintB);
+              break;
+            }
           case Double: {
-            double a = ((Double)objA).doubleValue();
-            double b = ((Double)objB).doubleValue();
-            // Treat NaN as greater than all other numbers
-            cmp = Double.isNaN(a) ? (Double.isNaN(b) ? 0 : 1) : (Double.isNaN(
-                b) ? (-1) : ((a == b) ? 0 : ((a < b) ? -1 :
+              double a = ((Double)objA).doubleValue();
+              double b = ((Double)objB).doubleValue();
+              // Treat NaN as greater than all other numbers
+              cmp = Double.isNaN(a) ? (Double.isNaN(b) ? 0 : 1) : (Double.isNaN(
+                  b) ? (-1) : ((a == b) ? 0 : ((a < b) ? -1 :
 
-                    1)));
-            break;
-          }
+                      1)));
+              break;
+            }
           case EDecimal: {
-            cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
-            break;
-          }
+              cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
+              break;
+            }
           case EFloat: {
-            cmp = ((EFloat)objA).compareTo (
-                (EFloat)objB);
-            break;
-          }
+              cmp = ((EFloat)objA).compareTo(
+                  (EFloat)objB);
+              break;
+            }
           case ERational: {
-            cmp = ((ERational)objA).compareTo (
-                (ERational)objB);
-            break;
-          }
-          default: throw new IllegalStateException (
-              "Unexpected data type");
+              cmp = ((ERational)objA).compareTo(
+                  (ERational)objB);
+              break;
+            }
+          default: throw new IllegalStateException(
+       "Unexpected data type");
         }
       } else {
         int s1 = GetNumberInterface(typeA).Sign(objA);

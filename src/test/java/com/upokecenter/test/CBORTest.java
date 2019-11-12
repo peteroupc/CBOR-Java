@@ -227,7 +227,10 @@ import com.upokecenter.numbers.*;
         CBORTestCommon.AssertJSONSer (
           ToObjectTest.TestToFromObjectRoundTrip(bi),
           bi.toString());
-        if (!(ToObjectTest.TestToFromObjectRoundTrip(bi).isIntegral())) {
+
+        if (!(
+          ToObjectTest.TestToFromObjectRoundTrip(
+          bi).AsNumber().IsInteger())) {
  Assert.fail();
  }
 
@@ -546,13 +549,13 @@ import com.upokecenter.numbers.*;
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
           ed2 = EDecimal.FromEInteger(AsED(ed).ToEInteger());
-          if ((AsED(ed).compareTo(ed2) == 0) != ed.isIntegral()) {
+          if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().IsInteger()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
           EInteger bi = AsEI(ed);
-          if (ed.isIntegral()) {
+          if (ed.AsNumber().IsInteger()) {
             if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               ed.AsNumber().CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
@@ -562,7 +565,7 @@ import com.upokecenter.numbers.*;
             ed.CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
-          if (ed.isIntegral()) {
+          if (ed.AsNumber().IsInteger()) {
             if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
               ed.AsNumber().CanFitInInt64()) {
               Assert.fail(ObjectMessage(ed));
@@ -1046,7 +1049,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestDouble() {
       if (!ToObjectTest.TestToFromObjectRoundTrip (
-          Double.POSITIVE_INFINITY).IsPositiveInfinity()) {
+          Double.POSITIVE_INFINITY).AsNumber().IsPositiveInfinity()) {
         Assert.fail("Not positive infinity");
       }
 
@@ -1073,7 +1076,7 @@ import com.upokecenter.numbers.*;
         if (!(o.AsNumber().CanFitInInt32())) {
  Assert.fail();
  }
-        if (!(o.isIntegral())) {
+        if (!(o.AsNumber().IsInteger())) {
  Assert.fail();
  }
         CBORTestCommon.AssertJSONSer (
@@ -1194,7 +1197,7 @@ import com.upokecenter.numbers.*;
       for (int tag = 268; tag <= 269; ++tag) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(0);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
-        if (cbortag.isNegative()) {
+        if (cbortag.AsNumber().IsNegative()) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999);
@@ -1210,7 +1213,7 @@ import com.upokecenter.numbers.*;
         }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(1);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
-        if (!(cbortag.isNegative())) {
+        if (!(cbortag.AsNumber().IsNegative())) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(-1);
@@ -1237,12 +1240,12 @@ import com.upokecenter.numbers.*;
         }
         cbor = CBORObject.NewArray().Add(0).Add(0).Add(2);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
-        if (cbortag.isNegative()) {
+        if (cbortag.AsNumber().IsNegative()) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(0).Add(0).Add(3);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
-        if (!(cbortag.isNegative())) {
+        if (!(cbortag.AsNumber().IsNegative())) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(8);
@@ -1411,15 +1414,14 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
         while (true) {
-          if (!(ToObjectTest.TestToFromObjectRoundTrip(j).isIntegral())) {
+          CBORNumber cn = ToObjectTest.TestToFromObjectRoundTrip(j).AsNumber();
+          if (!(cn.IsInteger())) {
  Assert.fail();
  }
-          if (!(ToObjectTest.TestToFromObjectRoundTrip(j)
-            .AsNumber().CanFitInInt64())) {
+          if (!(cn.CanFitInInt64())) {
  Assert.fail();
  }
-          if (!(ToObjectTest.TestToFromObjectRoundTrip(j)
-            .CanTruncatedIntFitInInt64())) {
+          if (!(cn.CanTruncatedIntFitInInt64())) {
  Assert.fail();
  }
           CBORTestCommon.AssertJSONSer (

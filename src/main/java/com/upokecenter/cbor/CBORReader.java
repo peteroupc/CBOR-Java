@@ -79,7 +79,8 @@ import com.upokecenter.numbers.*;
       if (hasTag) {
         CBORObject untagged = obj.UntagOne();
         if (untagged.isTagged() ||
-          untagged.getType() != CBORType.Integer || untagged.isNegative()) {
+          untagged.getType() != CBORType.Integer ||
+untagged.AsNumber().IsNegative()) {
           throw new CBORException (
             "Shared ref index must be an untagged integer 0 or greater");
         }

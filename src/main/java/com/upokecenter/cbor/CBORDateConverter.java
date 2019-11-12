@@ -34,7 +34,7 @@ import com.upokecenter.numbers.*;
           throw new CBORException(ex.getMessage(), ex);
         }
       } else if (obj.HasMostOuterTag(1)) {
-        if (!obj.isFinite()) {
+        if (!obj.isNumber() || !obj.AsNumber().IsFinite()) {
           throw new CBORException("Not a finite number");
         }
         EDecimal dec;

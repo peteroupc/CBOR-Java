@@ -373,7 +373,9 @@ CBORObject.FromObject(Double.NaN);
      * Gets a value indicating whether this object is a negative number.
      * @return {@code true} if this object is a negative number; otherwise, {@code
      * false}.
-     */
+     * @deprecated Instead, use \u0028cbor.IsNumber() &&\u0020cbor.AsNumber().IsNegative()).
+ */
+@Deprecated
     public final boolean isNegative() {
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         return (cn != null) &&
@@ -613,13 +615,10 @@ cn.GetNumberInterface().Sign(cn.GetValue());
           index = ((Integer)key).intValue();
         } else {
           CBORObject cborkey = CBORObject.FromObject(key);
-          if (!cborkey.isIntegral()) {
+          if (!cborkey.isNumber() || !cborkey.AsNumber().CanFitInInt32()) {
             return defaultValue;
           }
-          if (!cborkey.CanTruncatedIntFitInInt32()) {
-            return defaultValue;
-          }
-          index = cborkey.AsInt32();
+          index = cborkey.AsNumber().ToInt32Checked();
         }
         List<CBORObject> list = this.AsList();
         return (index < 0 || index >= list.size()) ? defaultValue :
@@ -655,7 +654,7 @@ cn.GetNumberInterface().Sign(cn.GetValue());
         for " +
         "CBOR map keys to be anything other than text strings or integers; " +
         "including an object indexer would introduce the security issues
-        present " + "in the FromObject method because of the need to convert to
+        present in the FromObject method because of the need to convert to
         CBORObject;" +
         " and this CBORObject indexer is included here because any CBOR
         Object " +
@@ -668,14 +667,14 @@ cn.GetNumberInterface().Sign(cn.GetValue());
           return (!map.containsKey(key)) ? null : map.get(key);
         }
         if (this.getType() == CBORType.Array) {
-          if (!key.isIntegral()) {
+          if (!key.isNumber() || !key.AsNumber().IsInteger()) {
             throw new IllegalArgumentException("Not an integer");
           }
-          if (!key.CanTruncatedIntFitInInt32()) {
+          if (!key.AsNumber().CanFitInInt32()) {
             throw new IllegalArgumentException("key");
           }
           List<CBORObject> list = this.AsList();
-          int index = key.AsInt32();
+          int index = key.AsNumber().ToInt32Checked();
           if (index < 0 || index >= list.size()) {
             throw new IllegalArgumentException("key");
           }
@@ -710,14 +709,14 @@ cn.GetNumberInterface().Sign(cn.GetValue());
           return;
         }
         if (this.getType() == CBORType.Array) {
-          if (!key.isIntegral()) {
+          if (!key.isNumber() || !key.AsNumber().IsInteger()) {
             throw new IllegalArgumentException("Not an integer");
           }
-          if (!key.CanTruncatedIntFitInInt32()) {
+          if (!key.AsNumber().CanFitInInt32()) {
             throw new IllegalArgumentException("key");
           }
           List<CBORObject> list = this.AsList();
-          int index = key.AsInt32();
+          int index = key.AsNumber().ToInt32Checked();
           if (index < 0 || index >= list.size()) {
             throw new IllegalArgumentException("key");
           }
@@ -1210,16 +1209,32 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * single-character CBOR text strings and CBOR integers from 0 through
      * 65535 to a <code>char</code> object and returns that <code>char</code>
      * object.</li> <li>If the type is <code>boolean</code> (<code>boolean</code> in
-     * Java), returns the result of AsBoolean.</li> <li>If the type is a
-     * primitive integer type (<code>byte</code> , <code>int</code> , <code>short</code> ,
-     * <code>long</code> , as well as <code>sbyte</code> , <code>ushort</code> , <code>uint</code>
-     * , and <code>ulong</code> in.getNET()) or a primitive floating-point type (
-     * <code>float</code> , <code>double</code> , as well as <code>decimal</code> in.getNET()),
-     * returns the result of the corresponding As* method. [TODO: Move info
-     * on deprecated As* methods here.]</li> <li>If the type is
-     * <code>string</code> , returns the result of AsString.</li> <li>If the type
-     * is <code>EFloat</code> , <code>EDecimal</code> , <code>EInteger</code> , or
-     * <code>ERational</code> in the <a
+     * Java), returns the result of AsBoolean.</li> <li>If the type is
+     * <code>short</code> , returns this number as a 16-bit signed integer after
+     * converting its value to an integer by discarding its fractional
+     * part, and throws an exception if this object's value is infinity or
+     * a not-a-number value, or does not represent a number (currently
+     * IllegalStateException, but may change in the next major version), or
+     * if the value, once converted to an integer by discarding its
+     * fractional part, is less than -32768 or greater than 32767
+     * (currently ArithmeticException, but may change in the next major
+     * version).</li> <li>If the type is <code>long</code> , returns this number
+     * as a 64-bit signed integer after converting its value to an integer
+     * by discarding its fractional part, and throws an exception if this
+     * object's value is infinity or a not-a-number value, or does not
+     * represent a number (currently IllegalStateException, but may change
+     * in the next major version), or if the value, once converted to an
+     * integer by discarding its fractional part, is less than -2^63 or
+     * greater than 2^63-1 (currently ArithmeticException, but may change in
+     * the next major version).</li> <li>If the type is a primitive integer
+     * type (<code>byte</code> , <code>int</code> , as well as <code>sbyte</code> ,
+     * <code>ushort</code> , <code>uint</code> , and <code>ulong</code> in.getNET()) or a
+     * primitive floating-point type (<code>float</code> , <code>double</code> , as
+     * well as <code>decimal</code> in.getNET()), returns the result of the
+     * corresponding As* method. [TODO: Move info on deprecated As* methods
+     * here.]</li> <li>If the type is <code>string</code> , returns the result of
+     * AsString.</li> <li>If the type is <code>EFloat</code> , <code>EDecimal</code> ,
+     * <code>EInteger</code> , or <code>ERational</code> in the <a
   * href='https://www.nuget.org/packages/PeterO.Numbers'><code>PeterO.Numbers</code>
      * </a> library (in .NET) or the <a
   * href='https://github.com/peteroupc/numbers-java'><code>com.github.peteroupc/numbers</code>
@@ -1494,9 +1509,9 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
    * form; and that no indefinite-length encodings are used.
    * @return The number of bytes this CBOR object takes when serialized as a byte
    * array using the {@code EncodeToBytes()} method.
-   * @throws CBORException The CBOR object has an extremely deep level of
-   * nesting, including if the CBOR object is or has an array or map that
-   * includes itself.
+   * @throws com.upokecenter.cbor.CBORException The CBOR object has an extremely
+   * deep level of nesting, including if the CBOR object is or has an array
+   * or map that includes itself.
    */
     public long CalcEncodedSize() {
        return this.CalcEncodedSize(0);
@@ -3474,7 +3489,8 @@ public static void Write(
      * CBORObject.Null, are considered numbers).
      * @throws ArithmeticException This object's value exceeds the range of a 16-bit
      * signed integer.
-     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt16Checked()).
+     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt16Checked()), or
+ *.ToObject<short>() in\u0020.getNET().
  */
 @Deprecated
     public short AsInt16() {
@@ -3487,7 +3503,8 @@ public static void Write(
      * any.<p> <p>The following example code (originally written in C# for
      * the.NET Framework) shows a way to check whether a given CBOR object
      * stores a 32-bit signed integer before getting its value.</p>
-     *  <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt32()) { /* Not an Int32; handle the error &#x2a;&#x2f; System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32Value()); }</pre> . </p>
+     *  <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.CanValueFitInInt32()) { /* Not an Int32; handle the error &#x2a;&#x2f; System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32Value()); }</pre> .
+     * </p>
      * @return The 32-bit signed integer stored by this object.
      * @throws IllegalStateException This object's type is not {@code
      * CBORType.Integer}.
@@ -3517,7 +3534,7 @@ public static void Write(
      * any.<p> <p>The following example code (originally written in C# for
      * the.NET Framework) shows a way to check whether a given CBOR object
      * stores a 64-bit signed integer before getting its value.</p>
-     *  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { &#x2f;&#x2a; Not an Int64; handle the error&#x2a;&#x2f; System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> . </p>
+     *  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.CanValueFitInInt64()) { &#x2f;&#x2a; Not an Int64; handle the error&#x2a;&#x2f; System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> . </p>
      * @return The 64-bit signed integer stored by this object.
      * @throws IllegalStateException This object's type is not {@code
      * CBORType.Integer}.
@@ -3691,7 +3708,8 @@ public static void Write(
      * CBORObject.Null, are considered numbers).
      * @throws ArithmeticException This object's value exceeds the range of a 64-bit
      * signed integer.
-     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt64Checked()).
+     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt64Checked()), or
+ *.ToObject<long>() in.getNET().
  */
 @Deprecated
     public long AsInt64() {

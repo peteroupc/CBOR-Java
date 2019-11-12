@@ -77,15 +77,16 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns a number that expresses this number minus another.
 * `byte ToByteChecked()`<br>
  Converts this number's value to a byte (from 0 to 255) if it can fit in a
- byte (from 0 to 255) after truncating to an integer.
+ byte (from 0 to 255) after converting it to an integer by discarding
+ its fractional part.
 * `byte ToByteIfExact()`<br>
  Converts this number's value to a byte (from 0 to 255) if it can fit in a
  byte (from 0 to 255) without rounding to a different numerical
  value.
 * `byte ToByteUnchecked()`<br>
- Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a byte (from
- 0 to 255).
+ Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a byte (from 0 to 255).
 * `CBORObject ToCBORObject()`<br>
  Converts this object's value to a CBOR object.
 * `com.upokecenter.numbers.EInteger ToEInteger()`<br>
@@ -94,37 +95,40 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Not documented yet.
 * `short ToInt16Checked()`<br>
  Converts this number's value to a 16-bit signed integer if it can fit in a
- 16-bit signed integer after truncating to an integer.
+ 16-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 * `short ToInt16IfExact()`<br>
  Converts this number's value to a 16-bit signed integer if it can fit in a
  16-bit signed integer without rounding to a different numerical
  value.
 * `short ToInt16Unchecked()`<br>
- Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 16-bit
- signed integer.
+ Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 16-bit signed integer.
 * `int ToInt32Checked()`<br>
  Converts this number's value to a 32-bit signed integer if it can fit in a
- 32-bit signed integer after truncating to an integer.
+ 32-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 * `int ToInt32IfExact()`<br>
  Converts this number's value to a 32-bit signed integer if it can fit in a
  32-bit signed integer without rounding to a different numerical
  value.
 * `int ToInt32Unchecked()`<br>
- Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 32-bit
- signed integer.
+ Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 32-bit signed integer.
 * `long ToInt64Checked()`<br>
  Converts this number's value to a 64-bit signed integer if it can fit in a
- 64-bit signed integer after truncating to an integer.
+ 64-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 * `long ToInt64IfExact()`<br>
  Converts this number's value to a 64-bit signed integer if it can fit in a
  64-bit signed integer without rounding to a different numerical
  value.
 * `long ToInt64Unchecked()`<br>
- Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 64-bit
- signed integer.
+ Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 64-bit signed integer.
 * `java.lang.String toString()`<br>
  Returns the value of this object in text form.
 
@@ -225,6 +229,10 @@ Not documented yet.
 
 * The return value is not documented yet.
 
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number.
+
 ### ToEIntegerIfExact
     public com.upokecenter.numbers.EInteger ToEIntegerIfExact()
 Not documented yet.
@@ -233,10 +241,16 @@ Not documented yet.
 
 * The return value is not documented yet.
 
+**Throws:**
+
+* <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number or is not
+ an exact integer.
+
 ### ToByteChecked
     public byte ToByteChecked()
 Converts this number's value to a byte (from 0 to 255) if it can fit in a
- byte (from 0 to 255) after truncating to an integer.
+ byte (from 0 to 255) after converting it to an integer by discarding
+ its fractional part.
 
 **Returns:**
 
@@ -245,13 +259,14 @@ Converts this number's value to a byte (from 0 to 255) if it can fit in a
 **Throws:**
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
- truncated integer is less than 0 or greater than 255.
+ number, once converted to an integer by discarding its fractional
+ part, is less than 0 or greater than 255.
 
 ### ToByteUnchecked
     public byte ToByteUnchecked()
-Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a byte (from
- 0 to 255).
+Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a byte (from 0 to 255).
 
 **Returns:**
 
@@ -288,7 +303,8 @@ Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
 ### ToInt16Checked
     public short ToInt16Checked()
 Converts this number's value to a 16-bit signed integer if it can fit in a
- 16-bit signed integer after truncating to an integer.
+ 16-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 
 **Returns:**
 
@@ -297,13 +313,14 @@ Converts this number's value to a 16-bit signed integer if it can fit in a
 **Throws:**
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
- truncated integer is less than -32768 or greater than 32767.
+ number, once converted to an integer by discarding its fractional
+ part, is less than -32768 or greater than 32767.
 
 ### ToInt16Unchecked
     public short ToInt16Unchecked()
-Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 16-bit
- signed integer.
+Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 16-bit signed integer.
 
 **Returns:**
 
@@ -340,7 +357,8 @@ Converts a 16-bit signed integer to an arbitrary-precision decimal number.
 ### ToInt32Checked
     public int ToInt32Checked()
 Converts this number's value to a 32-bit signed integer if it can fit in a
- 32-bit signed integer after truncating to an integer.
+ 32-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 
 **Returns:**
 
@@ -349,14 +367,14 @@ Converts this number's value to a 32-bit signed integer if it can fit in a
 **Throws:**
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
- truncated integer is less than -2147483648 or greater than
- 2147483647.
+ number, once converted to an integer by discarding its fractional
+ part, is less than -2147483648 or greater than 2147483647.
 
 ### ToInt32Unchecked
     public int ToInt32Unchecked()
-Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 32-bit
- signed integer.
+Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 32-bit signed integer.
 
 **Returns:**
 
@@ -382,7 +400,8 @@ Converts this number's value to a 32-bit signed integer if it can fit in a
 ### ToInt64Checked
     public long ToInt64Checked()
 Converts this number's value to a 64-bit signed integer if it can fit in a
- 64-bit signed integer after truncating to an integer.
+ 64-bit signed integer after converting it to an integer by
+ discarding its fractional part.
 
 **Returns:**
 
@@ -391,14 +410,15 @@ Converts this number's value to a 64-bit signed integer if it can fit in a
 **Throws:**
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
- truncated integer is less than -9223372036854775808 or greater than
+ number, once converted to an integer by discarding its fractional
+ part, is less than -9223372036854775808 or greater than
  9223372036854775807.
 
 ### ToInt64Unchecked
     public long ToInt64Unchecked()
-Truncates this number's value to an integer and returns the
- least-significant bits of its two's-complement form as a 64-bit
- signed integer.
+Converts this number's value to an integer by discarding its fractional
+ part, and returns the least-significant bits of its two's-complement
+ form as a 64-bit signed integer.
 
 **Returns:**
 

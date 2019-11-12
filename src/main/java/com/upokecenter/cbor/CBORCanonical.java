@@ -62,7 +62,7 @@ private CBORCanonical() {
         }
         switch (a.getType()) {
           case Integer:
-            return a.isNegative() ? 1 : 0;
+            return a.AsNumber().IsNegative() ? 1 : 0;
           case SimpleValue:
           case Boolean:
           case FloatingPoint:

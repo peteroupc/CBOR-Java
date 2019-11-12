@@ -160,8 +160,10 @@ Instead, use.getToObject()() in.getNET() or
 .ToObject(com.upokecenter.numbers.ERational.class) in Java.
 * `short AsInt16()`<br>
  Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()).
- Instead, use the following: (cbor.AsNumber().ToInt16Checked()).
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject() in .getNET().
+ Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject() in .getNET().
 * `int AsInt32()`<br>
  Converts this object to a 32-bit signed integer.
 * `int AsInt32Value()`<br>
@@ -169,8 +171,10 @@ Instead, use the following: (cbor.AsNumber().ToInt16Checked()).
  is Integer.
 * `long AsInt64()`<br>
  Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt64Checked()).
- Instead, use the following: (cbor.AsNumber().ToInt64Checked()).
+Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
+.ToObject() in.getNET().
+ Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
+.ToObject() in.getNET().
 * `long AsInt64Value()`<br>
  Converts this object to a 64-bit signed integer if this CBOR object's type
  is Integer.
@@ -461,7 +465,9 @@ Instead, use the following: (cbor.isNumber()
  Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsNaN()).
 * `boolean isNegative()`<br>
- Gets a value indicating whether this object is a negative number.
+ Deprecated.
+Instead, use (cbor.IsNumber() && cbor.AsNumber().IsNegative()).
+ Instead, use (cbor.IsNumber() && cbor.AsNumber().IsNegative()).
 * `boolean IsNegativeInfinity()`<br>
  Deprecated.
 Instead, use the following: (cbor.isNumber()
@@ -871,8 +877,9 @@ Gets a collection of the keys of this CBOR object in an undefined order.
 * <code>java.lang.IllegalStateException</code> - This object is not a map.
 
 ### isNegative
-    public final boolean isNegative()
-Gets a value indicating whether this object is a negative number.
+    @Deprecated public final boolean isNegative()
+Deprecated.
+Instead, use (cbor.IsNumber() &amp;&amp; cbor.AsNumber().IsNegative()).
 
 **Returns:**
 
@@ -1489,16 +1496,32 @@ Converts this CBOR object to an object of an arbitrary type. See the
  single-character CBOR text strings and CBOR integers from 0 through
  65535 to a <code>char</code> object and returns that <code>char</code>
  object.</li> <li>If the type is <code>boolean</code> (<code>boolean</code> in
- Java), returns the result of AsBoolean.</li> <li>If the type is a
- primitive integer type (<code>byte</code> , <code>int</code> , <code>short</code> ,
- <code>long</code> , as well as <code>sbyte</code> , <code>ushort</code> , <code>uint</code>
- , and <code>ulong</code> in.getNET()) or a primitive floating-point type (
- <code>float</code> , <code>double</code> , as well as <code>decimal</code> in.getNET()),
- returns the result of the corresponding As* method. [TODO: Move info
- on deprecated As* methods here.]</li> <li>If the type is
- <code>string</code> , returns the result of AsString.</li> <li>If the type
- is <code>EFloat</code> , <code>EDecimal</code> , <code>EInteger</code> , or
- <code>ERational</code> in the <code>PeterO.Numbers</code>
+ Java), returns the result of AsBoolean.</li> <li>If the type is
+ <code>short</code> , returns this number as a 16-bit signed integer after
+ converting its value to an integer by discarding its fractional
+ part, and throws an exception if this object's value is infinity or
+ a not-a-number value, or does not represent a number (currently
+ IllegalStateException, but may change in the next major version), or
+ if the value, once converted to an integer by discarding its
+ fractional part, is less than -32768 or greater than 32767
+ (currently ArithmeticException, but may change in the next major
+ version).</li> <li>If the type is <code>long</code> , returns this number
+ as a 64-bit signed integer after converting its value to an integer
+ by discarding its fractional part, and throws an exception if this
+ object's value is infinity or a not-a-number value, or does not
+ represent a number (currently IllegalStateException, but may change
+ in the next major version), or if the value, once converted to an
+ integer by discarding its fractional part, is less than -2^63 or
+ greater than 2^63-1 (currently ArithmeticException, but may change in
+ the next major version).</li> <li>If the type is a primitive integer
+ type (<code>byte</code> , <code>int</code> , as well as <code>sbyte</code> ,
+ <code>ushort</code> , <code>uint</code> , and <code>ulong</code> in.getNET()) or a
+ primitive floating-point type (<code>float</code> , <code>double</code> , as
+ well as <code>decimal</code> in.getNET()), returns the result of the
+ corresponding As* method. [TODO: Move info on deprecated As* methods
+ here.]</li> <li>If the type is <code>string</code> , returns the result of
+ AsString.</li> <li>If the type is <code>EFloat</code> , <code>EDecimal</code> ,
+ <code>EInteger</code> , or <code>ERational</code> in the <code>PeterO.Numbers</code>
   library (in .NET) or the <code>com.github.peteroupc/numbers</code>
   artifact (in Java), converts the given object to a number of
  the corresponding type and throws an exception (currently
@@ -1689,9 +1712,9 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 
 **Throws:**
 
-* <code>CBORException</code> - The CBOR object has an extremely deep level of
- nesting, including if the CBOR object is or has an array or map that
- includes itself.
+* <code>CBORException</code> - The CBOR object has an extremely
+ deep level of nesting, including if the CBOR object is or has an array
+ or map that includes itself.
 
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
@@ -3040,7 +3063,8 @@ Instead, use.getToObject()<petero.numbers.erational>() in.getNET() or
 ### AsInt16
     @Deprecated public short AsInt16()
 Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()).
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject<short>() in .getNET().</short>
 
 **Returns:**
 
@@ -3062,7 +3086,7 @@ Converts this object to a 32-bit signed integer if this CBOR object's type
  any.<p> </p><p>The following example code (originally written in C# for
  the.NET Framework) shows a way to check whether a given CBOR object
  stores a 32-bit signed integer before getting its value.</p>
-  <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32Value()); }</pre> .
+  <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.CanValueFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32Value()); }</pre> .
 
 **Returns:**
 
@@ -3083,7 +3107,7 @@ Converts this object to a 64-bit signed integer if this CBOR object's type
  any.<p> </p><p>The following example code (originally written in C# for
  the.NET Framework) shows a way to check whether a given CBOR object
  stores a 64-bit signed integer before getting its value.</p>
-  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.getType() == CBORType.Integer &amp;&amp; obj.CanValueFitInInt64()) { /* Not an Int64; handle the error*/ System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> .
+  <pre>CBORObject obj = CBORObject.FromInt64(99999); if (obj.CanValueFitInInt64()) { /* Not an Int64; handle the error*/ System.out.println("Not a 64-bit integer."); } else { System.out.println("The value is " + obj.AsInt64Value()); }</pre> .
 
 **Returns:**
 
@@ -3217,7 +3241,8 @@ Converts this object to a 32-bit signed integer. Non-integer number values
 ### AsInt64
     @Deprecated public long AsInt64()
 Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt64Checked()).
+Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
+.ToObject<long>() in.getNET().</long>
 
 **Returns:**
 
