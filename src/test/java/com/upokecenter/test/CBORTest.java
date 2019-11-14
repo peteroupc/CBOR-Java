@@ -540,11 +540,11 @@ import com.upokecenter.numbers.*;
         EDecimal ed2;
 
         ed2 = EDecimal.FromDouble(AsED(ed).ToDouble());
-        if ((AsED(ed).compareTo(ed2) == 0) != ed.CanFitInDouble()) {
+        if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().CanFitInDouble()) {
           Assert.fail(ObjectMessage(ed));
         }
         ed2 = EDecimal.FromSingle(AsED(ed).ToSingle());
-        if ((AsED(ed).compareTo(ed2) == 0) != ed.CanFitInSingle()) {
+        if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().CanFitInSingle()) {
           Assert.fail(ObjectMessage(ed));
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
@@ -562,7 +562,7 @@ import com.upokecenter.numbers.*;
             }
           }
           if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
-            ed.CanTruncatedIntFitInInt32()) {
+            ed.AsNumber().CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
           if (ed.AsNumber().IsInteger()) {
@@ -572,7 +572,7 @@ import com.upokecenter.numbers.*;
             }
           }
           if ((bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
-            ed.CanTruncatedIntFitInInt64()) {
+            ed.AsNumber().CanTruncatedIntFitInInt64()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
@@ -594,7 +594,7 @@ import com.upokecenter.numbers.*;
         <= 31) {
  Assert.fail();
  }
-      if (cbor.CanTruncatedIntFitInInt32()) {
+      if (cbor.AsNumber().CanTruncatedIntFitInInt32()) {
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] {
@@ -610,7 +610,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(2554895343L)
-        .CanFitInSingle()) {
+        .AsNumber().CanFitInSingle()) {
  Assert.fail();
  }
       cbor = CBORObject.DecodeFromBytes(new byte[] {
@@ -620,7 +620,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(EInteger.FromString("-6619136"),
         cbor.ToObject(EInteger.class));
       Assert.assertEquals(-6619136, cbor.AsInt32());
-      if (!(cbor.CanTruncatedIntFitInInt32())) {
+      if (!(cbor.AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
     }
@@ -1019,16 +1019,16 @@ import com.upokecenter.numbers.*;
         CBORObject o2 = ToObjectTest.TestToFromObjectRoundTrip(
   RandomObjects.RandomEInteger(r));
 
-        if (o2.isZero()) {
+        if (o2.AsNumber().IsZero()) {
           continue;
         }
         ERational er = ERational.Create(AsEI(o1), AsEI(o2));
         {
           ERational objectTemp = er;
           ERational objectTemp2;
-          objectTemp2 = (ERational)CBORObject.Divide(
-            o1,
-            o2).ToObject(ERational.class);
+          CBORNumber cn = CBORObject.FromObject(o1).AsNumber()
+             .Divide(CBORObject.FromObject(o2).AsNumber());
+          objectTemp2 = cn.AsERational();
           TestCommon.CompareTestEqual(objectTemp, objectTemp2);
         }
       }
@@ -1424,7 +1424,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
           if (!(cn.CanTruncatedIntFitInInt64())) {
  Assert.fail();
  }
-          CBORTestCommon.AssertJSONSer (
+          CBORTestCommon.AssertJSONSer(
             ToObjectTest.TestToFromObjectRoundTrip(j),
             TestCommon.LongToString(j));
           Assert.assertEquals (
@@ -1432,7 +1432,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
             ToObjectTest.TestToFromObjectRoundTrip(EInteger.FromInt64(j)));
           CBORObject obj = CBORObject.FromJSONString (
               "[" + TestCommon.LongToString(j) + "]");
-          CBORTestCommon.AssertJSONSer (
+          CBORTestCommon.AssertJSONSer(
             obj,
             "[" + TestCommon.LongToString(j) + "]");
           if (j == ranges[i + 1]) {

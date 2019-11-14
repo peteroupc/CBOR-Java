@@ -218,8 +218,11 @@ private BEncoding() {
         throw new CBORException("Length too long");
       }
       builder = new StringBuilder();
-      switch (DataUtilities.ReadUtf8(stream, numlength.ToInt32Checked(),
-  builder, false)) {
+      switch (DataUtilities.ReadUtf8(
+        stream,
+        numlength.ToInt32Checked(),
+        builder,
+        false)) {
         case -2:
           throw new CBORException("Premature end of data");
         case -1:

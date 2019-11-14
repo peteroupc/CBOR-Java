@@ -7316,8 +7316,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int cmpCobj = TestCommon.CompareTestReciprocal(o1.AsNumber(),
           o2.AsNumber());
       if (cmpDecFrac != cmpCobj) {
-        Assert.fail(TestCommon.ObjectMessages(o1, o2, "Compare: Results" +
-"\u0020don't match"));
+        Assert.fail(TestCommon.ObjectMessages(
+          o1,
+          o2,
+          "Compare: Results\u0020don't match"));
       }
       CBORTestCommon.AssertRoundTrip(o1);
       CBORTestCommon.AssertRoundTrip(o2);
