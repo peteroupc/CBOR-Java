@@ -461,7 +461,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestCBOREInteger() {
       EInteger bi = EInteger.FromString("9223372036854775808");
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt64();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -470,7 +470,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -480,7 +480,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       bi = EInteger.FromString("-9223372036854775809");
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt64();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -489,7 +489,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -499,7 +499,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       bi = EInteger.FromString("-9223372036854775808");
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(bi).AsInt32();
+        ToObjectTest.TestToFromObjectRoundTrip(bi).ToObject(int.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -561,7 +561,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestBuiltInTags() {
       // As of 4.0, nearly all tags are no longer converted to native objects; thus,
       // DecodeFromBytes no longer fails when such tags are encountered but
-      // have the wrong format (though it can fail for other reasons)
+      // have the wrong format (though it can fail for other reasons).
       // Tag 2, bignums
       byte[] bytes;
       byte[] secondbytes = new byte[] { 0, 0x20, 0x60, (byte)0x80, (byte)0xa0, (byte)0xe0 };

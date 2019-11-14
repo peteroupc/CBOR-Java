@@ -15,7 +15,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORTest {
-  @Test
+    @Test
     public void TestLexOrderSpecific1() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 27, 0, 0, 65, 2, 0, 0, (byte)144, (byte)172, 71,

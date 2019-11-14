@@ -343,10 +343,10 @@ import com.upokecenter.numbers.*;
   (String)numberinfo.get("number").ToObject(String.class)));
 
         if ((boolean)numberinfo.get("byte").AsBoolean()) {
-          Assert.assertEquals(
-            TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
-              String.class)), ((int)(Byte)cbornumber.ToObject(
-  byte.class)) & 0xff);
+          int i1 = TestCommon.StringToInt((String)numberinfo.get("integer")
+              .ToObject(String.class));
+          int i2 = ((int)(Byte)cbornumber.ToObject(byte.class)) & 0xff;
+          Assert.assertEquals(i1, i2);
         } else {
           try {
             cbornumber.ToObject(byte.class);

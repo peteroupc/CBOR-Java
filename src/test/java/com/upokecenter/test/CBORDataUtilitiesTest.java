@@ -8,7 +8,7 @@ import com.upokecenter.numbers.*;
 
   public class CBORDataUtilitiesTest {
     private void AssertNegative(CBORObject obj) {
-      if (!(obj.isNegative())) {
+      if (!(obj.AsNumber().IsNegative())) {
  Assert.fail();
  }
       CBORTestCommon.AssertRoundTrip(obj);
@@ -183,7 +183,7 @@ import com.upokecenter.numbers.*;
       if (!(cbor != null)) {
  Assert.fail();
  }
-      if (cbor.CanFitInDouble()) {
+      if (cbor.AsNumber().CanFitInDouble()) {
  Assert.fail();
  }
       CBORTestCommon.AssertRoundTrip(cbor);
