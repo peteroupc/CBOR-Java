@@ -3,6 +3,8 @@ package com.upokecenter.cbor;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+// TODO: Consider renaming As* methods here to To*
+
   /**
    * An instance of a number that CBOR or certain CBOR tags can represent. For
    * this purpose, infinities and not-a-number or NaN values are considered

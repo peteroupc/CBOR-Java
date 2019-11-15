@@ -515,8 +515,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       co = ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
       co2 = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
       {
-        boolean boolTemp = co.isNegative() && co.AsNumber().IsInfinity();
-        boolean boolTemp2 = co2.isNegative() && co2.AsNumber().IsInfinity();
+        boolean boolTemp = co.AsNumber().IsNegative() &&
+          co.AsNumber().IsInfinity();
+        boolean boolTemp2 = co2.AsNumber().IsNegative() &&
+          co2.AsNumber().IsInfinity();
         Assert.assertEquals(boolTemp, boolTemp2);
       }
     }
