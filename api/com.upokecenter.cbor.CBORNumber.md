@@ -15,14 +15,6 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns the absolute value of this CBOR number.
 * `CBORNumber Add​(CBORNumber b)`<br>
  Returns the sum of this number and another number.
-* `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
- Not documented yet.
-* `com.upokecenter.numbers.EFloat AsEFloat()`<br>
- Not documented yet.
-* `com.upokecenter.numbers.EInteger AsEInteger()`<br>
- Not documented yet.
-* `com.upokecenter.numbers.ERational AsERational()`<br>
- Not documented yet.
 * `boolean CanFitInDouble()`<br>
  Not documented yet.
 * `boolean CanFitInInt32()`<br>
@@ -89,9 +81,15 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  form as a byte (from 0 to 255).
 * `CBORObject ToCBORObject()`<br>
  Converts this object's value to a CBOR object.
+* `com.upokecenter.numbers.EDecimal ToEDecimal()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.EFloat ToEFloat()`<br>
+ Not documented yet.
 * `com.upokecenter.numbers.EInteger ToEInteger()`<br>
  Not documented yet.
 * `com.upokecenter.numbers.EInteger ToEIntegerIfExact()`<br>
+ Not documented yet.
+* `com.upokecenter.numbers.ERational ToERational()`<br>
  Not documented yet.
 * `short ToInt16Checked()`<br>
  Converts this number's value to a 16-bit signed integer if it can fit in a
@@ -509,32 +507,24 @@ Gets a value indicating whether this object represents a not-a-number value.
 * <code>true</code> if this object represents a not-a-number value;
  otherwise, <code>false</code>.
 
-### AsEInteger
-    public com.upokecenter.numbers.EInteger AsEInteger()
+### ToEDecimal
+    public com.upokecenter.numbers.EDecimal ToEDecimal()
 Not documented yet.
 
 **Returns:**
 
 * The return value is not documented yet.
 
-### AsEDecimal
-    public com.upokecenter.numbers.EDecimal AsEDecimal()
+### ToEFloat
+    public com.upokecenter.numbers.EFloat ToEFloat()
 Not documented yet.
 
 **Returns:**
 
 * The return value is not documented yet.
 
-### AsEFloat
-    public com.upokecenter.numbers.EFloat AsEFloat()
-Not documented yet.
-
-**Returns:**
-
-* The return value is not documented yet.
-
-### AsERational
-    public com.upokecenter.numbers.ERational AsERational()
+### ToERational
+    public com.upokecenter.numbers.ERational ToERational()
 Not documented yet.
 
 **Returns:**

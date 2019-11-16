@@ -1003,15 +1003,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
      * Not documented yet.
      * @return The return value is not documented yet.
      */
-    public EInteger AsEInteger() {
-      return this.GetNumberInterface().AsEInteger(this.GetValue());
-    }
-
-    /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
-     */
-    public EDecimal AsEDecimal() {
+    public EDecimal ToEDecimal() {
       return this.GetNumberInterface().AsEDecimal(this.GetValue());
     }
 
@@ -1019,7 +1011,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
      * Not documented yet.
      * @return The return value is not documented yet.
      */
-    public EFloat AsEFloat() {
+    public EFloat ToEFloat() {
       return this.GetNumberInterface().AsEFloat(this.GetValue());
     }
 
@@ -1027,7 +1019,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
      * Not documented yet.
      * @return The return value is not documented yet.
      */
-    public ERational AsERational() {
+    public ERational ToERational() {
       return this.GetNumberInterface().AsERational(this.GetValue());
     }
 

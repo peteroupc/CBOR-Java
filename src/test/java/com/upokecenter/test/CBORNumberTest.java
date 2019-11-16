@@ -113,7 +113,7 @@ import com.upokecenter.numbers.*;
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = ToCN(o1).Multiply(ToCN(o2)).AsEDecimal();
+        EDecimal cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual (
             cmpDecFrac,
@@ -177,7 +177,7 @@ import com.upokecenter.numbers.*;
     public void TestAsEInteger() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip (
-          (Object)null).AsNumber().AsEInteger();
+          (Object)null).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -186,7 +186,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Null.AsNumber().AsEInteger();
+        CBORObject.Null.AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -195,7 +195,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsNumber().AsEInteger();
+        CBORObject.True.AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -204,7 +204,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsNumber().AsEInteger();
+        CBORObject.False.AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -213,7 +213,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Undefined.AsNumber().AsEInteger();
+        CBORObject.Undefined.AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -222,7 +222,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewArray().AsNumber().AsEInteger();
+        CBORObject.NewArray().AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -231,7 +231,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsNumber().AsEInteger();
+        CBORObject.NewMap().AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -249,10 +249,10 @@ import com.upokecenter.numbers.*;
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
           Assert.assertEquals (
             numberinfo.get("integer").AsString(),
-            cbornumber.AsNumber().AsEInteger().toString());
+            cbornumber.AsNumber().ToEInteger().toString());
         } else {
           try {
-            cbornumber.AsNumber().AsEInteger();
+            cbornumber.AsNumber().ToEInteger();
             Assert.fail("Should have failed");
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -265,7 +265,7 @@ import com.upokecenter.numbers.*;
 
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(0.75f).AsNumber().AsEInteger()
+          ToObjectTest.TestToFromObjectRoundTrip(0.75f).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -273,7 +273,7 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(0.99f).AsNumber().AsEInteger()
+          ToObjectTest.TestToFromObjectRoundTrip(0.99f).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -282,14 +282,14 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(0.0000000000000001f)
-          .AsNumber().AsEInteger().toString();
+          .AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(0.5f).AsNumber().AsEInteger()
+          ToObjectTest.TestToFromObjectRoundTrip(0.5f).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -297,7 +297,7 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(1.5f).AsNumber().AsEInteger()
+          ToObjectTest.TestToFromObjectRoundTrip(1.5f).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "1",
@@ -305,7 +305,7 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(2.5f).AsNumber().AsEInteger()
+          ToObjectTest.TestToFromObjectRoundTrip(2.5f).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "2",
@@ -315,7 +315,7 @@ import com.upokecenter.numbers.*;
         String stringTemp =
 
           ToObjectTest.TestToFromObjectRoundTrip (
-            (float)328323f).AsNumber().AsEInteger().toString();
+            (float)328323f).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
@@ -323,7 +323,7 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(
-          (double)0.75).AsNumber().AsEInteger()
+          (double)0.75).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -331,7 +331,7 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-          (double)0.99).AsNumber().AsEInteger().toString();
+          (double)0.99).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
@@ -339,14 +339,14 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip((double)0.0000000000000001)
-          .AsNumber().AsEInteger().toString();
+          .AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-          (double)0.5).AsNumber().AsEInteger().toString();
+          (double)0.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
@@ -354,7 +354,7 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(
-          (double)1.5).AsNumber().AsEInteger()
+          (double)1.5).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "1",
@@ -362,7 +362,7 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-          (double)2.5).AsNumber().AsEInteger().toString();
+          (double)2.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "2",
           stringTemp);
@@ -370,14 +370,14 @@ import com.upokecenter.numbers.*;
       {
         double dbl = 328323;
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(dbl)
-          .AsNumber().AsEInteger().toString();
+          .AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-        .AsNumber().AsEInteger();
+        .AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -387,7 +387,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-        .AsNumber().AsEInteger();
+        .AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -397,7 +397,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip (
-          Float.NaN).AsNumber().AsEInteger();
+          Float.NaN).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -407,7 +407,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-        .AsNumber().AsEInteger();
+        .AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -417,7 +417,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-        .AsNumber().AsEInteger();
+        .AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -427,7 +427,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip (
-          Double.NaN).AsNumber().AsEInteger();
+          Double.NaN).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -443,19 +443,19 @@ import com.upokecenter.numbers.*;
         Object objectTemp = CBORTestCommon.DecPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-          .AsNumber().AsEDecimal();
+          .AsNumber().ToEDecimal();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.DecNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-          .AsNumber().AsEDecimal();
+          .AsNumber().ToEDecimal();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-          Float.NaN).AsNumber().AsEDecimal().toString();
+          Float.NaN).AsNumber().ToEDecimal().toString();
         Assert.assertEquals(
           "NaN",
           stringTemp);
@@ -464,26 +464,26 @@ import com.upokecenter.numbers.*;
         Object objectTemp = CBORTestCommon.DecPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-          .AsNumber().AsEDecimal();
+          .AsNumber().ToEDecimal();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.DecNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-          .AsNumber().AsEDecimal();
+          .AsNumber().ToEDecimal();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = "NaN";
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip (
-            Double.NaN).AsNumber().AsEDecimal()
+            Double.NaN).AsNumber().ToEDecimal()
           .toString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       try {
-        CBORObject.NewArray().AsNumber().AsEDecimal();
+        CBORObject.NewArray().AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -492,7 +492,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsNumber().AsEDecimal();
+        CBORObject.NewMap().AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -501,7 +501,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsNumber().AsEDecimal();
+        CBORObject.True.AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -510,7 +510,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsNumber().AsEDecimal();
+        CBORObject.False.AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -519,7 +519,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Undefined.AsNumber().AsEDecimal();
+        CBORObject.Undefined.AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -529,7 +529,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip (
-          "").AsNumber().AsEDecimal();
+          "").AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -544,14 +544,14 @@ import com.upokecenter.numbers.*;
         Object objectTemp = CBORTestCommon.FloatPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-          .AsNumber().AsEFloat();
+          .AsNumber().ToEFloat();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.FloatNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-          .AsNumber().AsEFloat();
+          .AsNumber().ToEFloat();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
@@ -562,14 +562,14 @@ import com.upokecenter.numbers.*;
         Object objectTemp = CBORTestCommon.FloatPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-          .AsNumber().AsEFloat();
+          .AsNumber().ToEFloat();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.FloatNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-          .AsNumber().AsEFloat();
+          .AsNumber().ToEFloat();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
@@ -583,38 +583,38 @@ import com.upokecenter.numbers.*;
         Object objectTemp = CBORTestCommon.RatPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-          .AsNumber().AsERational();
+          .AsNumber().ToERational();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.RatNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-          .AsNumber().AsERational();
+          .AsNumber().ToERational();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
 
       if (!(
         ToObjectTest.TestToFromObjectRoundTrip (
           ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
-          .AsNumber().AsERational()).AsNumber().IsNaN()))Assert.fail();
+          .AsNumber().ToERational()).AsNumber().IsNaN()))Assert.fail();
       {
         Object objectTemp = CBORTestCommon.RatPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-          .AsNumber().AsERational();
+          .AsNumber().ToERational();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = CBORTestCommon.RatNegInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-          .AsNumber().AsERational();
+          .AsNumber().ToERational();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       if (!(
         ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-        .AsNumber().AsERational().IsNaN())) {
+        .AsNumber().ToERational().IsNaN())) {
  Assert.fail();
  }
     }

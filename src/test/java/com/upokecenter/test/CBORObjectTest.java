@@ -318,7 +318,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).AsEDecimal();
+        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
         TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
         CBORTestCommon.AssertRoundTrip(o1);
         CBORTestCommon.AssertRoundTrip(o2);
@@ -3972,7 +3972,7 @@ private final PODClass propVarpropvalue;
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).AsEDecimal();
+        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual(
             cmpDecFrac,

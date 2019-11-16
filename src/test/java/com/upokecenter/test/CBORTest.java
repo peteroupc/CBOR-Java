@@ -1028,7 +1028,7 @@ import com.upokecenter.numbers.*;
           ERational objectTemp2;
           CBORNumber cn = CBORObject.FromObject(o1).AsNumber()
              .Divide(CBORObject.FromObject(o2).AsNumber());
-          objectTemp2 = cn.AsERational();
+          objectTemp2 = cn.ToERational();
           TestCommon.CompareTestEqual(objectTemp, objectTemp2);
         }
       }
@@ -2173,7 +2173,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).AsEDecimal();
+        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           String msg = "o1=" + o1.toString() + ", o2=" + o2.toString() +
             ", " + AsED(o1) + ", " + AsED(o2) + ", cmpCobj=" +
@@ -2192,7 +2192,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).AsEDecimal();
+        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           String msg = "o1=" + o1.toString() + ", o2=" + o2.toString() +
             ", " + AsED(o1) + ", " + AsED(o2) + ", cmpCobj=" +
@@ -2211,7 +2211,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Subtract(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).AsEDecimal();
+        EDecimal cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).ToEDecimal();
         if (cmpDecFrac.compareTo(cmpCobj) != 0) {
           String msg = "o1=" + o1.toString() + ", o2=" + o2.toString() +
             ", " + AsED(o1) + ", " + AsED(o2) + ", cmpCobj=" +
@@ -3510,10 +3510,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static void AddSubCompare(CBORObject o1, CBORObject o2) {
       EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-      EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).AsEDecimal();
+      EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
       TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       cmpDecFrac = AsED(o1).Subtract(AsED(o2));
-      cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).AsEDecimal();
+      cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).ToEDecimal();
       TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       CBORObjectTest.CompareDecimals(o1, o2);
     }
