@@ -317,6 +317,22 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
            options);
     }
 
+private static EInteger FastEIntegerFromString(String str, int index, int
+endIndex) {
+  if (endIndex - index > 32) {
+    // DebugUtility.Log("FastEInteger " + index + " " + endIndex + " len=" +
+    //(endIndex -
+    // index));
+    int midIndex = index + (endIndex - index) / 2;
+    EInteger eia = FastEIntegerFromString(str, index, midIndex);
+    EInteger eib = FastEIntegerFromString(str, midIndex, endIndex);
+    EInteger mult = EInteger.FromInt32(10).Pow(endIndex - midIndex);
+    return eia.Multiply(mult).Add(eib);
+  } else {
+    return EInteger.FromSubstring(str, index, endIndex);
+  }
+}
+
     /**
      * Parses a number whose format follows the JSON specification (RFC 8259) and
      * converts that number to a CBOR object.<p>Roughly speaking, a valid
@@ -452,16 +468,19 @@ CBORObject.FromObject(EDecimal.NegativeZero);
             }
             ++k;
            }
-           for (; i < endPos; ++i) {
-             if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+           for (; k < endPos; ++k) {
+             if (str.charAt(k) >= '0' && str.charAt(k) <= '9') {
                haveDigits = true;
              } else {
- return null;
-}
+               return null;
+             }
            }
            if (!haveDigits) {
              return null;
            }
+        }
+        if (k != endPos) {
+          return null;
         }
         if (kind == JSONOptions.ConversionMode.Double ||
            kind == JSONOptions.ConversionMode.IntOrFloat ||
@@ -470,16 +489,27 @@ CBORObject.FromObject(EDecimal.NegativeZero);
              return negative ? CBORObject.FromObject(Double.NEGATIVE_INFINITY) :
                   CBORObject.FromObject(Double.POSITIVE_INFINITY);
           }
+          // TODO: Fast cases involving negative exponents
         }
         haveDigitsAfterDecimal = hdad;
         haveDigits = hd;
         haveDecimalPoint = hdp;
         haveExponent = hex;
       }
+      int digitStart = (haveDecimalPoint || haveExponent) ? -1 : i;
+      int digitEnd = (haveDecimalPoint || haveExponent) ? -1 : i;
+      int decimalDigitStart = haveDecimalPoint ? i : -1;
+      int decimalDigitEnd = haveDecimalPoint ? i : -1;
       for (; i < endPos; ++i) {
         if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
           int thisdigit = (int)(str.charAt(i) - '0');
+          if (haveDecimalPoint) {
+            decimalDigitEnd = i + 1;
+          } else {
+ digitEnd = i + 1;
+}
           if (mantInt > MaxSafeInt) {
+/*
             if (mant == null) {
               mant = new FastInteger2(mantInt);
               mantBuffer = thisdigit;
@@ -495,6 +525,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
                 mantBuffer += thisdigit;
               }
             }
+*/
           } else {
             mantInt *= 10;
             mantInt += thisdigit;
@@ -529,9 +560,30 @@ CBORObject.FromObject(EDecimal.NegativeZero);
       if (!haveDigits || (haveDecimalPoint && !haveDigitsAfterDecimal)) {
         return null;
       }
+      if (mantInt > MaxSafeInt) {
+        if (haveDecimalPoint) {
+  EInteger eidec = FastEIntegerFromString(
+    str,
+    decimalDigitStart,
+    decimalDigitEnd);
+  if (digitStart < 0) {
+    mant = new FastInteger2(eidec);
+  } else {
+    EInteger eimant = FastEIntegerFromString(str, digitStart, digitEnd);
+    EInteger mult = EInteger.FromInt32(10).Pow(digitEnd - digitStart);
+    eimant = eimant.Multiply(mult).Add(eidec);
+    mant = new FastInteger2(eidec);
+  }
+} else {
+  EInteger eimant = FastEIntegerFromString(str, digitStart, digitEnd);
+  mant = new FastInteger2(eimant);
+}
+      }
+/*
       if (mant != null && (mantBufferMult != 1 || mantBuffer != 0)) {
         mant.Multiply(mantBufferMult).AddInt(mantBuffer);
       }
+*/
       if (haveExponent) {
         FastInteger2 exp = null;
         int expInt = 0;
@@ -551,6 +603,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
             haveDigits = true;
             int thisdigit = (int)(str.charAt(i) - '0');
             if (expInt > MaxSafeInt) {
+              // TODO: Use same optimization as in mant above
               if (exp == null) {
                 exp = new FastInteger2(expInt);
                 expBuffer = thisdigit;
@@ -612,7 +665,8 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           mant = null;
         }
         if (mant == null) {
-          // NOTE: mantInt can only be 0 or greater, so overflow is impossible
+          // NOTE: mantInt can only be 0 or greater, so overflow is
+          // impossible with Integer.MIN_VALUE
 
           if (negative) {
             mantInt = -mantInt;

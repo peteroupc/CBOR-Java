@@ -313,6 +313,11 @@ import com.upokecenter.numbers.*;
       this.smallValue = value;
     }
 
+    FastInteger2(EInteger largeValue) {
+      this.integerMode = 2;
+      this.largeValue = largeValue;
+    }
+
     int AsInt32() {
       switch (this.integerMode) {
         case 0:
