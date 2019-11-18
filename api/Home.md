@@ -36,7 +36,7 @@ Options for converting "plain old data" objects (better known as POCOs in
 * [com.upokecenter.cbor.CBORType](com.upokecenter.cbor.CBORType.md) -
 Represents a type that a CBOR object can have.
 
-* [com.upokecenter.cbor.JSONOptions.ConversionKind](com.upokecenter.cbor.JSONOptions.ConversionKind.md) -
+* [com.upokecenter.cbor.JSONOptions.ConversionMode](com.upokecenter.cbor.JSONOptions.ConversionMode.md) -
 Specifies how JSON numbers are converted to CBOR when decoding JSON.
 
 * [com.upokecenter.cbor.CBORException](com.upokecenter.cbor.CBORException.md) -

@@ -359,7 +359,7 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
       }
       JSONOptions opt = (options == null) ? (DefaultOptions) : options;
       boolean preserveNegativeZero = options.getPreserveNegativeZero();
-      JSONOptions.ConversionKind kind = options.getNumberConversion();
+      JSONOptions.ConversionMode kind = options.getNumberConversion();
       int endPos = offset + count;
       boolean negative = false;
       if (str.charAt(0) == '-') {
@@ -387,7 +387,7 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
         if (i == endPos) {
           if (preserveNegativeZero && negative) {
              // Negative zero in floating-point format
-             return (kind == JSONOptions.ConversionKind.Double) ?
+             return (kind == JSONOptions.ConversionMode.Double) ?
 CBORObject.FromFloatingPointBits(0x8000, 2) :
 CBORObject.FromObject(EDecimal.NegativeZero);
            }
@@ -399,8 +399,82 @@ CBORObject.FromObject(EDecimal.NegativeZero);
         } else if (str.charAt(i) == 'E' || str.charAt(i) == 'e') {
           haveExponent = true;
         } else {
+          return null;
+        }
+      }
+      if (endPos - i >= 400) {
+        // Check for certain fast cases
+        int k = i;
+        boolean hdp = haveDecimalPoint;
+        boolean hd = haveDigits;
+        boolean hdad = haveDigitsAfterDecimal;
+        boolean hex = haveExponent;
+        boolean haveManyDigits = false;
+        boolean eplus = true;
+        for (; k < endPos; ++k) {
+          if (str.charAt(k) >= '0' && str.charAt(k) <= '9') {
+            haveDigits = true;
+            if (k - i > 400 && !haveDecimalPoint) {
+               // Indicates that this value is bigger
+               // than a decimal can store
+               haveManyDigits = true;
+            }
+            if (haveDecimalPoint) {
+              haveDigitsAfterDecimal = true;
+            }
+          } else if (str.charAt(k) == '.') {
+            if (!haveDigits) {
+              // no digits before the decimal point
+              return null;
+            } else if (haveDecimalPoint) {
+              return null;
+            }
+            haveDecimalPoint = true;
+          } else if (str.charAt(k) == 'E' || str.charAt(k) == 'e') {
+            ++k;
+            haveExponent = true;
+            break;
+          } else {
             return null;
           }
+        }
+        if (!haveDigits || (haveDecimalPoint && !haveDigitsAfterDecimal)) {
+          return null;
+        }
+        if (haveExponent) {
+          haveDigits = false;
+          if (k == endPos) {
+            return null;
+          }
+          if (str.charAt(k) == '+' || str.charAt(k) == '-') {
+            if (str.charAt(k) == '-') {
+              eplus = false;
+            }
+            ++k;
+           }
+           for (; i < endPos; ++i) {
+             if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+               haveDigits = true;
+             } else {
+ return null;
+}
+           }
+           if (!haveDigits) {
+             return null;
+           }
+        }
+        if (kind == JSONOptions.ConversionMode.Double ||
+           kind == JSONOptions.ConversionMode.IntOrFloat ||
+           kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+          if (haveManyDigits && (!haveExponent || eplus)) {
+             return negative ? CBORObject.FromObject(Double.NEGATIVE_INFINITY) :
+                  CBORObject.FromObject(Double.POSITIVE_INFINITY);
+          }
+        }
+        haveDigitsAfterDecimal = hdad;
+        haveDigits = hd;
+        haveDecimalPoint = hdp;
+        haveExponent = hex;
       }
       for (; i < endPos; ++i) {
         if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
@@ -543,14 +617,14 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           if (negative) {
             mantInt = -mantInt;
             if (preserveNegativeZero && mantInt == 0) {
-              if (kind == JSONOptions.ConversionKind.Double) {
+              if (kind == JSONOptions.ConversionMode.Double) {
                 return CBORObject.FromFloatingPointBits(0x8000, 2);
               }
               return CBORObject.FromObject(
                   EDecimal.NegativeZero);
             }
           }
-          if (kind == JSONOptions.ConversionKind.Double) {
+          if (kind == JSONOptions.ConversionMode.Double) {
             return CBORObject.FromObject((double)mantInt);
           } else {
             // mantInt is a 32-bit integer, write as CBOR integer in
@@ -562,12 +636,12 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           if (negative) {
             bigmant2=(bigmant2).Negate();
           }
-          if (kind == JSONOptions.ConversionKind.Double) {
+          if (kind == JSONOptions.ConversionMode.Double) {
             // An arbitrary-precision integer; convert to double
             return CBORObject.FromObject(
               EFloat.FromEInteger(bigmant2).ToDouble());
-          } else if (kind == JSONOptions.ConversionKind.IntOrFloat ||
-               kind == JSONOptions.ConversionKind.IntOrFloatFromDouble) {
+          } else if (kind == JSONOptions.ConversionMode.IntOrFloat ||
+               kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
             if (bigmant2.CanFitInInt64()) {
               long longmant2 = bigmant2.ToInt64Checked();
               if (longmant2 >= (-(1 << 53)) + 1 && longmant2 <= (1 << 53) - 1) {
@@ -594,7 +668,7 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           bigmant,
           bigexp);
         if (negative && preserveNegativeZero && bigmant.isZero()) {
-          if (kind == JSONOptions.ConversionKind.Double) {
+          if (kind == JSONOptions.ConversionMode.Double) {
             return CBORObject.FromFloatingPointBits(0x8000, 2);
           }
           EDecimal negzero = EDecimal.NegativeZero;
@@ -602,16 +676,16 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           edec = negzero.Subtract(edec);
         }
         // Converting the EDecimal to a CBOR Object
-        if (kind == JSONOptions.ConversionKind.Double) {
+        if (kind == JSONOptions.ConversionMode.Double) {
           double dbl = edec.ToDouble();
           if (preserveNegativeZero && dbl >= 0.0) {
             dbl = Math.abs(dbl);
           }
           return CBORObject.FromObject(dbl);
-        } else if (kind == JSONOptions.ConversionKind.IntOrFloat ||
-              kind == JSONOptions.ConversionKind.IntOrFloatFromDouble) {
+        } else if (kind == JSONOptions.ConversionMode.IntOrFloat ||
+              kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
           double dbl;
-          CBORObject cbor = (kind == JSONOptions.ConversionKind.IntOrFloat) ?
+          CBORObject cbor = (kind == JSONOptions.ConversionMode.IntOrFloat) ?
             CBORObject.FromObject(edec) :
             CBORObject.FromObject(edec.ToDouble());
           CBORNumber cn = cbor.AsNumber();

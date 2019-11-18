@@ -9,7 +9,7 @@ import java.util.*;
     /**
      * Specifies how JSON numbers are converted to CBOR when decoding JSON.
      */
-    public enum ConversionKind {
+    public enum ConversionMode {
        /**
         * JSON numbers are decoded to CBOR using the full precision given in the JSON
         * text. This may involve numbers being converted to
@@ -123,13 +123,13 @@ import java.util.*;
      * upper-case and/or basic lower-case letters), which means true, and
      * any other value meaning false. The last key, {@code
      * numberconversion}, can have a value of any name given in the {@code
-     * JSONOptions.ConversionKind} enumeration (where the letters can be
+     * JSONOptions.ConversionMode} enumeration (where the letters can be
      * any combination of basic upper-case and/or basic lower-case
      * letters), or any other value, which is treated the same as {@code
      * full}. For example, {@code base64padding = Yes} and {@code
      * base64padding = 1} both set the {@code Base64Padding} property to
      * true, and {@code numberconversion = double} sets the {@code
-     * NumberConversion} property to {@code ConversionKind.Double} .
+     * NumberConversion} property to {@code ConversionMode.Double} .
      * @throws NullPointerException The parameter {@code paramString} is null. In
      * the future, this class may allow other keys to store other kinds of
      * values, not just true or false.
@@ -193,36 +193,36 @@ import java.util.*;
 private final boolean propVarbase64padding;
 
     private String FromNumberConversion() {
-      ConversionKind kind = this.getNumberConversion();
-      if (kind == ConversionKind.Full) {
+      ConversionMode kind = this.getNumberConversion();
+      if (kind == ConversionMode.Full) {
         return "full";
       }
-      if (kind == ConversionKind.Double) {
+      if (kind == ConversionMode.Double) {
         return "double";
       }
-      if (kind == ConversionKind.IntOrFloat) {
+      if (kind == ConversionMode.IntOrFloat) {
         return "intorfloat";
       }
-      return (kind == ConversionKind.IntOrFloatFromDouble) ?
+      return (kind == ConversionMode.IntOrFloatFromDouble) ?
 "intorfloatfromdouble" : "full";
     }
 
-    private static ConversionKind ToNumberConversion(String str) {
+    private static ConversionMode ToNumberConversion(String str) {
       if (str != null) {
         if (str.equals("full")) {
-          return ConversionKind.Full;
+          return ConversionMode.Full;
         }
         if (str.equals("double")) {
-          return ConversionKind.Double;
+          return ConversionMode.Double;
         }
         if (str.equals("intorfloat")) {
-          return ConversionKind.IntOrFloat;
+          return ConversionMode.IntOrFloat;
         }
         if (str.equals("intorfloatfromdouble")) {
-          return ConversionKind.IntOrFloatFromDouble;
+          return ConversionMode.IntOrFloatFromDouble;
         }
       }
-      return ConversionKind.Full;
+      return ConversionMode.Full;
     }
 
     /**
@@ -244,10 +244,10 @@ private final boolean propVarpreservenegativezero;
     /**
      * Gets a value indicating how JSON numbers are decoded to CBOR.
      * @return A value indicating how JSON numbers are decoded to CBOR. The default
-     * is {@code ConversionKind.Full}.
+     * is {@code ConversionMode.Full}.
      */
-    public final ConversionKind getNumberConversion() { return propVarnumberconversion; }
-private final ConversionKind propVarnumberconversion;
+    public final ConversionMode getNumberConversion() { return propVarnumberconversion; }
+private final ConversionMode propVarnumberconversion;
 
     /**
      * Gets a value indicating whether to allow duplicate keys when reading JSON.

@@ -103,6 +103,16 @@ import com.upokecenter.numbers.*;
       return CBORObject.FromObject(this.value);
     }
 
+  /**
+   * Gets a value not documented yet.
+   * @return A value not documented yet.
+   */
+    public final int signum() {
+        // TODO: Will return 2 if this is NaN; is this
+        // still desirable?
+        return this.GetNumberInterface().Sign(this.value);
+      }
+
     static boolean IsNumber(CBORObject o) {
       if (IsUntaggedInteger(o)) {
         return true;

@@ -7971,6 +7971,153 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+@Test(timeout = 10000)
+public void TestFromJsonStringLongKindFull() {
+JSONOptions jsonop = new JSONOptions("numberconversion=full");
+String json = TestCommon.Repeat("7", 1000000);
+CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
+if (!(cbor.isTagged())) {
+ Assert.fail();
+ }
+}
+
+@Test(timeout = 10000)
+public void TestFromJsonStringLongKindFull2() {
+JSONOptions jsonop = new JSONOptions("numberconversion=full");
+String json = TestCommon.Repeat("7", 1000000) + ".0";
+CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
+if (!(cbor.isTagged())) {
+ Assert.fail();
+ }
+}
+
+@Test(timeout = 2000)
+public void TestFromJsonStringLongKindFullBad() {
+JSONOptions jsonop = new JSONOptions("numberconversion=full");
+String json = TestCommon.Repeat("7", 1000000) + "x";
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+json = TestCommon.Repeat("0", 1000000);
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+}
+
+@Test(timeout = 2000)
+public void TestFromJsonStringLongKindsBad() {
+JSONOptions jsonop;
+String json = TestCommon.Repeat("7", 1000000) + "x";
+jsonop = new JSONOptions("numberconversion=double");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+jsonop = new JSONOptions("numberconversion=intorfloat");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+json = TestCommon.Repeat("0", 1000000);
+jsonop = new JSONOptions("numberconversion=double");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+jsonop = new JSONOptions("numberconversion=intorfloat");
+try {
+ CBORObject.FromJSONString(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+}
+
+@Test(timeout = 2000)
+public void TestFromJsonStringLongKindIntOrFloatFromDouble() {
+JSONOptions jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+String json = TestCommon.Repeat("7", 1000000);
+CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
+Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+json = TestCommon.Repeat("7", 1000000) + "e+0";
+cbor = CBORObject.FromJSONString(json, jsonop);
+Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+json = TestCommon.Repeat("7", 1000000) + "e0";
+cbor = CBORObject.FromJSONString(json, jsonop);
+Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+}
+
+@Test(timeout = 2000)
+public void TestFromJsonStringLongKindIntOrFloat() {
+JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
+String json = TestCommon.Repeat("7", 1000000);
+CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
+Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+}
+
+@Test(timeout = 2000)
+public void TestFromJsonStringLongKindIntOrFloat2() {
+JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
+String json = "-" + TestCommon.Repeat("7", 1000000);
+CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
+Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+Assert.assertEquals(Double.NEGATIVE_INFINITY, cbor.AsDoubleValue());
+}
+
     @Test
     public void TestToObject_TypeMapper() {
       CBORTypeMapper mapper = new CBORTypeMapper()

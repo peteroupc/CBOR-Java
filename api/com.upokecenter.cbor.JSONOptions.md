@@ -6,14 +6,14 @@ Includes options to control how CBOR objects are converted to JSON.
 
 ## Fields
 
-* `static class  JSONOptions.ConversionKind`<br>
+* `static class  JSONOptions.ConversionMode`<br>
  Specifies how JSON numbers are converted to CBOR when decoding JSON.
 * `static JSONOptions Default`<br>
  The default options for converting CBOR objects to JSON.
 
 ## Nested Classes
 
-* `static class  JSONOptions.ConversionKind`<br>
+* `static class  JSONOptions.ConversionMode`<br>
  Specifies how JSON numbers are converted to CBOR when decoding JSON.
 
 ## Constructors
@@ -40,7 +40,7 @@ Use the String constructor instead.
  Deprecated.
 This property now has no effect.
  This property now has no effect.
-* `JSONOptions.ConversionKind getNumberConversion()`<br>
+* `JSONOptions.ConversionMode getNumberConversion()`<br>
  Gets a value indicating how JSON numbers are decoded to CBOR.
 * `boolean getPreserveNegativeZero()`<br>
  Gets a value indicating whether the JSON decoder should preserve the
@@ -106,13 +106,13 @@ Gets a value indicating whether the JSON decoder should preserve the
  true.
 
 ### getNumberConversion
-    public final JSONOptions.ConversionKind getNumberConversion()
+    public final JSONOptions.ConversionMode getNumberConversion()
 Gets a value indicating how JSON numbers are decoded to CBOR.
 
 **Returns:**
 
 * A value indicating how JSON numbers are decoded to CBOR. The default
- is <code>ConversionKind.Full</code>.
+ is <code>ConversionMode.Full</code>.
 
 ### getAllowDuplicateKeys
     public final boolean getAllowDuplicateKeys()

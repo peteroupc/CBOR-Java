@@ -16,8 +16,8 @@
  reads a CBOR object from a data stream.</p> <p><b>To and from other
  objects:</b> The <code>CBORObject.FromObject</code> method converts many
  kinds of objects to a CBOR object, including numbers, strings, and
- arrays and maps of numbers and strings. Methods like AsDouble, AsByte,
- and AsString convert a CBOR object to different types of object. The
+ arrays and maps of numbers and strings. Methods like AsNumber and
+ AsString convert a CBOR object to different types of object. The
  <code>CBORObject.ToObject</code> method converts a CBOR object to an object
  of a given type; for example, a CBOR array to a native
  <code>ArrayList</code> (or <code>ArrayList</code> in Java), or a CBOR integer to
@@ -115,10 +115,14 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Add() method.
 * `boolean AsBoolean()`<br>
- Returns false if this object is False, Null, or Undefined (whether or not
- the object has tags); otherwise, true.
+ Returns false if this object is a CBOR false, null, or undefined value
+ (whether or not the object has tags); otherwise, true.
 * `byte AsByte()`<br>
- Converts this object to a byte (0 to 255).
+ Deprecated.
+Instead, use.getToObject()&lt;byte&gt;() in .NET or
+  .getToObject()(Byte.class) in Java.
+ Instead, use.getToObject()&lt;byte&gt;() in .NET or
+  .getToObject()(Byte.class) in Java.
 * `double AsDouble()`<br>
  Converts this object to a 64-bit floating point number.
 * `long AsDoubleBits()`<br>
@@ -129,24 +133,30 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  type is FloatingPoint.
 * `com.upokecenter.numbers.EDecimal AsEDecimal()`<br>
  Deprecated.
-Instead, use.getToObject()() in .NET or
+Instead, use.getToObject()&lt;PeterO.Numbers.EDecimal&gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EDecimal.class)
  in Java.
- Instead, use.getToObject()() in .NET or
+ Instead, use.getToObject()&lt;PeterO.Numbers.EDecimal&gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EDecimal.class)
  in Java.
 * `com.upokecenter.numbers.EFloat AsEFloat()`<br>
  Deprecated.
-Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EFloat.class) in Java.
- Instead, use.getToObject()() in.NET or
-  .getToObject()(com.upokecenter.numbers.EFloat.class) in Java.
+Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.getNET()
+ or  .getToObject()(com.upokecenter.numbers.EFloat.class)
+ in Java.
+ Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.getNET()
+ or  .getToObject()(com.upokecenter.numbers.EFloat.class)
+ in Java.
 * `com.upokecenter.numbers.EInteger AsEInteger()`<br>
  Deprecated.
-Instead, use.getToObject()() in .NET or
+Instead, use.getToObject()&lt;PeterO.Numbers.EInteger&gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EInteger.class)
  in Java.
- Instead, use.getToObject()() in .NET or
+ Instead, use.getToObject()&lt;PeterO.Numbers.EInteger&gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EInteger.class)
  in Java.
 * `com.upokecenter.numbers.EInteger AsEIntegerValue()`<br>
@@ -154,16 +164,18 @@ Instead, use.getToObject()() in .NET or
  type is Integer.
 * `com.upokecenter.numbers.ERational AsERational()`<br>
  Deprecated.
-Instead, use.getToObject()() in.getNET() or
-.ToObject(com.upokecenter.numbers.ERational.class) in Java.
- Instead, use.getToObject()() in.getNET() or
-.ToObject(com.upokecenter.numbers.ERational.class) in Java.
+Instead, use.getToObject()&lt;PeterO.Numbers.ERational&gt;() in
+.NET or.getToObject()(com.upokecenter.numbers.ERational.class)
+ in Java.
+ Instead, use.getToObject()&lt;PeterO.Numbers.ERational&gt;() in
+.NET or.getToObject()(com.upokecenter.numbers.ERational.class)
+ in Java.
 * `short AsInt16()`<br>
  Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject() in .getNET().
+.ToObject&lt;short&gt;() in .getNET().
  Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject() in .getNET().
+.ToObject&lt;short&gt;() in .getNET().
 * `int AsInt32()`<br>
  Converts this object to a 32-bit signed integer.
 * `int AsInt32Value()`<br>
@@ -172,9 +184,9 @@ Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
 * `long AsInt64()`<br>
  Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject() in.getNET().
+.ToObject&lt;long&gt;() in.getNET().
  Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject() in.getNET().
+.ToObject&lt;long&gt;() in.getNET().
 * `long AsInt64Value()`<br>
  Converts this object to a 64-bit signed integer if this CBOR object's type
  is Integer.
@@ -197,22 +209,22 @@ Instead, use the following: (cbor.isNumber()
  Deprecated.
 Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &&cbor.AsNumber().CanFitInInt32()),   if the application allows any
- CBOR Object convertible to an integer.
+ &&cbor.AsNumber().CanFitInInt32()),   if the application
+ allows any CBOR Object convertible to an integer.
  Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &&cbor.AsNumber().CanFitInInt32()),   if the application allows any
- CBOR Object convertible to an integer.
+ &&cbor.AsNumber().CanFitInInt32()),   if the application
+ allows any CBOR Object convertible to an integer.
 * `boolean CanFitInInt64()`<br>
  Deprecated.
 Instead, use CanValueFitInInt64(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &&cbor.AsNumber().CanFitInInt64()),   if the application allows any
- CBOR Object convertible to an integer.
+ &&cbor.AsNumber().CanFitInInt64()),   if the application
+ allows any CBOR Object convertible to an integer.
  Instead, use CanValueFitInInt64(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &&cbor.AsNumber().CanFitInInt64()),   if the application allows any
- CBOR Object convertible to an integer.
+ &&cbor.AsNumber().CanFitInInt64()),   if the application
+ allows any CBOR Object convertible to an integer.
 * `boolean CanFitInSingle()`<br>
  Deprecated.
 Instead, use the following: (cbor.isNumber()
@@ -466,8 +478,10 @@ Instead, use the following: (cbor.isNumber()
  && cbor.AsNumber().IsNaN()).
 * `boolean isNegative()`<br>
  Deprecated.
-Instead, use (cbor.IsNumber() && cbor.AsNumber().IsNegative()).
- Instead, use (cbor.IsNumber() && cbor.AsNumber().IsNegative()).
+Instead, use (cbor.IsNumber()
+ && cbor.AsNumber().IsNegative()).
+ Instead, use (cbor.IsNumber()
+ && cbor.AsNumber().IsNegative()).
 * `boolean IsNegativeInfinity()`<br>
  Deprecated.
 Instead, use the following: (cbor.isNumber()
@@ -580,7 +594,11 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  Maps an object to a key in this CBOR map, or adds the value if the key
  doesn't exist.
 * `int signum()`<br>
- Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
+ Deprecated.
+Instead, convert this object to a number with.AsNumber(),   and use the
+ Sign property in.NET or the signum method in Java.
+ Instead, convert this object to a number with.AsNumber(),   and use the
+ Sign property in.NET or the signum method in Java.
 * `int size()`<br>
  Gets the number of keys in this map, or the number of items in this array,
  or 0 if this item is neither an array nor a map.
@@ -879,7 +897,8 @@ Gets a collection of the keys of this CBOR object in an undefined order.
 ### isNegative
     @Deprecated public final boolean isNegative()
 Deprecated.
-Instead, use (cbor.IsNumber() &amp;&amp; cbor.AsNumber().IsNegative()).
+Instead, use (cbor.IsNumber()
+ &amp;&amp; cbor.AsNumber().IsNegative()).
 
 **Returns:**
 
@@ -897,8 +916,10 @@ Gets the outermost tag for this CBOR data item, or -1 if the item is
  untagged.
 
 ### signum
-    public final int signum()
-Gets this value's sign: -1 if negative; 1 if positive; 0 if zero.
+    @Deprecated public final int signum()
+Deprecated.
+Instead, convert this object to a number with.AsNumber(),   and use the
+ Sign property in.NET or the signum method in Java.
 
 **Returns:**
 
@@ -2949,9 +2970,10 @@ Instead, convert this object to a number (with .getAsNumber()()),
 ### AsEInteger
     @Deprecated public com.upokecenter.numbers.EInteger AsEInteger()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.einteger>() in .NET or
+Instead, use.getToObject()&amp;lt;PeterO.Numbers.EInteger&amp;gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EInteger.class)
- in Java.</petero.numbers.einteger>
+ in Java.
 
 **Returns:**
 
@@ -2968,17 +2990,19 @@ Instead, use.getToObject()<petero.numbers.einteger>() in .NET or
 
 ### AsBoolean
     public boolean AsBoolean()
-Returns false if this object is False, Null, or Undefined (whether or not
- the object has tags); otherwise, true.
+Returns false if this object is a CBOR false, null, or undefined value
+ (whether or not the object has tags); otherwise, true.
 
 **Returns:**
 
-* False if this object is False, Null, or Undefined; otherwise, true.
+* False if this object is a CBOR false, null, or undefined value;
+ otherwise, true.
 
 ### AsByte
-    public byte AsByte()
-Converts this object to a byte (0 to 255). Floating point values are
- converted to integers by discarding their fractional parts.
+    @Deprecated public byte AsByte()
+Deprecated.
+Instead, use.getToObject()&amp;lt;byte&amp;gt;() in .NET or
+  .getToObject()(Byte.class) in Java.
 
 **Returns:**
 
@@ -3013,9 +3037,10 @@ Converts this object to a 64-bit floating point number.
 ### AsEDecimal
     @Deprecated public com.upokecenter.numbers.EDecimal AsEDecimal()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.edecimal>() in .NET or
+Instead, use.getToObject()&amp;lt;PeterO.Numbers.EDecimal&amp;gt;()
+ in .NET or
   .getToObject()(com.upokecenter.numbers.EDecimal.class)
- in Java.</petero.numbers.edecimal>
+ in Java.
 
 **Returns:**
 
@@ -3030,8 +3055,9 @@ Instead, use.getToObject()<petero.numbers.edecimal>() in .NET or
 ### AsEFloat
     @Deprecated public com.upokecenter.numbers.EFloat AsEFloat()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.efloat>() in.NET or
-  .getToObject()(com.upokecenter.numbers.EFloat.class) in Java.</petero.numbers.efloat>
+Instead, use.getToObject()&amp;lt;PeterO.Numbers.EFloat&amp;gt;() in.getNET()
+ or  .getToObject()(com.upokecenter.numbers.EFloat.class)
+ in Java.
 
 **Returns:**
 
@@ -3047,8 +3073,9 @@ Instead, use.getToObject()<petero.numbers.efloat>() in.NET or
 ### AsERational
     @Deprecated public com.upokecenter.numbers.ERational AsERational()
 Deprecated.
-Instead, use.getToObject()<petero.numbers.erational>() in.getNET() or
-.ToObject(com.upokecenter.numbers.ERational.class) in Java.</petero.numbers.erational>
+Instead, use.getToObject()&amp;lt;PeterO.Numbers.ERational&amp;gt;() in
+.NET or.getToObject()(com.upokecenter.numbers.ERational.class)
+ in Java.
 
 **Returns:**
 
@@ -3064,7 +3091,7 @@ Instead, use.getToObject()<petero.numbers.erational>() in.getNET() or
     @Deprecated public short AsInt16()
 Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject<short>() in .getNET().</short>
+.ToObject&amp;lt;short&amp;gt;() in .getNET().
 
 **Returns:**
 
@@ -3242,7 +3269,7 @@ Converts this object to a 32-bit signed integer. Non-integer number values
     @Deprecated public long AsInt64()
 Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject<long>() in.getNET().</long>
+.ToObject&amp;lt;long&amp;gt;() in.getNET().
 
 **Returns:**
 
@@ -3309,8 +3336,8 @@ Instead, use the following: (cbor.isNumber()
 Deprecated.
 Instead, use.CanValueFitInInt32(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &amp;&amp;cbor.AsNumber().CanFitInInt32()),   if the application allows any
- CBOR Object convertible to an integer.
+ &amp;&amp;cbor.AsNumber().CanFitInInt32()),   if the application
+ allows any CBOR Object convertible to an integer.
 
 **Returns:**
 
@@ -3322,8 +3349,8 @@ Instead, use.CanValueFitInInt32(), if the application allows only CBOR
 Deprecated.
 Instead, use CanValueFitInInt64(), if the application allows only CBOR
  integers, or (cbor.isNumber()
- &amp;&amp;cbor.AsNumber().CanFitInInt64()),   if the application allows any
- CBOR Object convertible to an integer.
+ &amp;&amp;cbor.AsNumber().CanFitInInt64()),   if the application
+ allows any CBOR Object convertible to an integer.
 
 **Returns:**
 

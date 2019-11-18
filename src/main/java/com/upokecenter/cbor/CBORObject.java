@@ -31,8 +31,8 @@ import com.upokecenter.numbers.*;
    * reads a CBOR object from a data stream.</p> <p><b>To and from other
    * objects:</b> The <code>CBORObject.FromObject</code> method converts many
    * kinds of objects to a CBOR object, including numbers, strings, and
-   * arrays and maps of numbers and strings. Methods like AsDouble, AsByte,
-   * and AsString convert a CBOR object to different types of object. The
+   * arrays and maps of numbers and strings. Methods like AsNumber and
+   * AsString convert a CBOR object to different types of object. The
    * <code>CBORObject.ToObject</code> method converts a CBOR object to an object
    * of a given type; for example, a CBOR array to a native
    * <code>ArrayList</code> (or <code>ArrayList</code> in Java), or a CBOR integer to
@@ -270,7 +270,7 @@ CBORObject.FromObject(Double.NaN);
      * @return {@code true} if this CBOR object represents a finite number;
      * otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsFinite()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsFinite()).
  */
 @Deprecated
     public final boolean isFinite() {
@@ -289,7 +289,7 @@ CBORObject.FromObject(Double.NaN);
      * @return {@code true} if this object represents an integer number, that is, a
      * number without a fractional part; otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsInteger()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsInteger()).
  */
 @Deprecated
     public final boolean isIntegral() {
@@ -345,7 +345,7 @@ CBORObject.FromObject(Double.NaN);
      * @return {@code true} if this object's value equals 0; otherwise, {@code
      * false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsZero()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsZero()).
  */
 @Deprecated
     public final boolean isZero() {
@@ -373,7 +373,8 @@ CBORObject.FromObject(Double.NaN);
      * Gets a value indicating whether this object is a negative number.
      * @return {@code true} if this object is a negative number; otherwise, {@code
      * false}.
-     * @deprecated Instead, use \u0028cbor.IsNumber() &&\u0020cbor.AsNumber().IsNegative()).
+     * @deprecated Instead, use \u0028cbor.IsNumber()
+ * &amp;&amp;\u0020cbor.AsNumber().IsNegative()).
  */
 @Deprecated
     public final boolean isNegative() {
@@ -406,7 +407,10 @@ CBORObject.FromObject(Double.NaN);
      * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
      * @throws IllegalStateException This object does not represent a number, or
      * this object is a not-a-number (NaN) value.
-     */
+     * @deprecated Instead, convert this object to a number with.AsNumber(), \u0020 and use the
+ * Sign property in.NET or the signum method in Java.
+ */
+@Deprecated
     public final int signum() {
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         int ret = cn == null ? 2 :
@@ -3384,7 +3388,8 @@ public static void Write(
      * not {@code CBORObject.Null}, are considered numbers).
      * @throws ArithmeticException This object's value is infinity or not-a-number
      * (NaN).
-     * @deprecated Instead, use.getToObject()<PeterO.Numbers.EInteger>\u0028) in\u0020.NET or
+     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EInteger&amp;gt;\u0028)
+ * in\u0020.NET or
  * \u0020.getToObject()\u0028com.upokecenter.numbers.EInteger.class)
  * in\u0020Java.
  */
@@ -3394,9 +3399,10 @@ public static void Write(
     }
 
     /**
-     * Returns false if this object is False, Null, or Undefined (whether or not
-     * the object has tags); otherwise, true.
-     * @return False if this object is False, Null, or Undefined; otherwise, true.
+     * Returns false if this object is a CBOR false, null, or undefined value
+     * (whether or not the object has tags); otherwise, true.
+     * @return False if this object is a CBOR false, null, or undefined value;
+     * otherwise, true.
      */
     public boolean AsBoolean() {
       return !this.isFalse() && !this.isNull() && !this.isUndefined();
@@ -3412,7 +3418,10 @@ public static void Write(
      * @throws ArithmeticException This object's value exceeds the range of a byte
      * (would be less than 0 or greater than 255 when converted to an
      * integer by discarding its fractional part).
-     */
+     * @deprecated Instead, use.getToObject()&amp;lt;byte&amp;gt;\u0028) in\u0020.NET or
+ * \u0020.getToObject()\u0028Byte.class) in\u0020Java.
+ */
+@Deprecated
     public byte AsByte() {
       return (byte)this.AsInt32(0, 255);
     }
@@ -3440,7 +3449,8 @@ public static void Write(
      * @throws IllegalStateException This object does not represent a number (for
      * the purposes of this method, infinity and not-a-number values, but
      * not {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()<PeterO.Numbers.EDecimal>\u0028) in\u0020.NET or
+     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EDecimal&amp;gt;\u0028)
+ * in\u0020.NET or
  * \u0020.getToObject()\u0028com.upokecenter.numbers.EDecimal.class)
  * in\u0020Java.
  */
@@ -3457,8 +3467,9 @@ public static void Write(
      * @throws IllegalStateException This object does not represent a number (for
      * the purposes of this method, infinity and not-a-number values, but
      * not {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()<PeterO.Numbers.EFloat>\u0028) in.NET or
- * \u0020.getToObject()\u0028com.upokecenter.numbers.EFloat.class) in\u0020Java.
+     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EFloat&amp;gt;\u0028) in.getNET()
+ * or \u0020.getToObject()\u0028com.upokecenter.numbers.EFloat.class)
+ * in\u0020Java.
  */
 @Deprecated
     public EFloat AsEFloat() {
@@ -3472,8 +3483,9 @@ public static void Write(
      * @throws IllegalStateException This object does not represent a number (for
      * the purposes of this method, infinity and not-a-number values, but
      * not {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()<PeterO.Numbers.ERational>\u0028) in.getNET()\u0020or
- *.ToObject\u0028com.upokecenter.numbers.ERational.class) in\u0020Java.
+     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.ERational&amp;gt;\u0028) in
+ *.NET\u0020or.getToObject()\u0028com.upokecenter.numbers.ERational.class)
+ * in\u0020Java.
  */
 @Deprecated
     public ERational AsERational() {
@@ -3490,7 +3502,7 @@ public static void Write(
      * @throws ArithmeticException This object's value exceeds the range of a 16-bit
      * signed integer.
      * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt16Checked()), or
- *.ToObject<short>() in\u0020.getNET().
+ *.ToObject&amp;lt;short&amp;gt;() in\u0020.getNET().
  */
 @Deprecated
     public short AsInt16() {
@@ -3709,7 +3721,7 @@ public static void Write(
      * @throws ArithmeticException This object's value exceeds the range of a 64-bit
      * signed integer.
      * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt64Checked()), or
- *.ToObject<long>() in.getNET().
+ *.ToObject&amp;lt;long&amp;gt;() in.getNET().
  */
 @Deprecated
     public long AsInt64() {
@@ -3761,7 +3773,7 @@ public static void Write(
      * value's diagnostic information can't fit in a 64-bit floating point
      * number; otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().CanFitInDouble()).
+ * &amp;&amp;\u0020cbor.AsNumber().CanFitInDouble()).
  */
 @Deprecated
     public boolean CanFitInDouble() {
@@ -3777,8 +3789,8 @@ public static void Write(
      * -(2^31) or greater, and is less than 2^31; otherwise, {@code false}.
      * @deprecated Instead, use.CanValueFitInInt32(), if the application allows\u0020only CBOR
  * integers, or \u0028cbor.isNumber()
- * &&cbor.AsNumber().CanFitInInt32()), \u0020 if the application allows any
- * CBOR Object convertible to an integer.
+ * &amp;&amp;cbor.AsNumber().CanFitInInt32()), \u0020 if the application
+ * allows any CBOR Object convertible to an integer.
  */
 @Deprecated
     public boolean CanFitInInt32() {
@@ -3796,8 +3808,8 @@ public static void Write(
      * -(2^63) or greater, and is less than 2^63; otherwise, {@code false}.
      * @deprecated Instead, use CanValueFitInInt64(), if the application allows\u0020only CBOR
  * integers, or \u0028cbor.isNumber()
- * &&cbor.AsNumber().CanFitInInt64()), \u0020 if the application allows any
- * CBOR Object convertible to an integer.
+ * &amp;&amp;cbor.AsNumber().CanFitInInt64()), \u0020 if the application
+ * allows any CBOR Object convertible to an integer.
  */
 @Deprecated
     public boolean CanFitInInt64() {
@@ -3816,7 +3828,7 @@ public static void Write(
      * value's diagnostic information can' t fit in a 32-bit floating point
      * number; otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().CanFitInSingle()).
+ * &amp;&amp;\u0020cbor.AsNumber().CanFitInSingle()).
  */
 @Deprecated
     public boolean CanFitInSingle() {
@@ -3834,7 +3846,7 @@ public static void Write(
      * less than 2^31; otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.CanValueFitInInt32()\u0020if only
  * integers of any tag are allowed, or \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().CanTruncatedIntFitInInt32()).
+ * &amp;&amp;\u0020cbor.AsNumber().CanTruncatedIntFitInInt32()).
  */
 @Deprecated
     public boolean CanTruncatedIntFitInInt32() {
@@ -3852,7 +3864,7 @@ public static void Write(
      * less than 2^63; otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.CanValueFitInInt64()\u0020if only
  * integers of any tag are allowed, or \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().CanTruncatedIntFitInInt64()).
+ * &amp;&amp;\u0020cbor.AsNumber().CanTruncatedIntFitInInt64()).
  */
 @Deprecated
     public boolean CanTruncatedIntFitInInt64() {
@@ -4601,7 +4613,7 @@ this.getMostOuterTag().equals(bigTagValue);
      * @return {@code true} if this CBOR object represents infinity; otherwise,
      * {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsInfinity()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsInfinity()).
  */
 @Deprecated
     public boolean IsInfinity() {
@@ -4616,7 +4628,7 @@ this.getMostOuterTag().equals(bigTagValue);
      * defined by the IsNumber property or {@code isNumber()} method in
      * Java); otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsNaN()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsNaN()).
  */
 @Deprecated
     public boolean IsNaN() {
@@ -4629,7 +4641,7 @@ this.getMostOuterTag().equals(bigTagValue);
      * @return {@code true} if this CBOR object represents negative infinity;
      * otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsNegativeInfinity()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsNegativeInfinity()).
  */
 @Deprecated
     public boolean IsNegativeInfinity() {
@@ -4644,7 +4656,7 @@ this.getMostOuterTag().equals(bigTagValue);
      * @return {@code true} if this CBOR object represents positive infinity;
      * otherwise, {@code false}.
      * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &&\u0020cbor.AsNumber().IsPositiveInfinity()).
+ * &amp;&amp;\u0020cbor.AsNumber().IsPositiveInfinity()).
  */
 @Deprecated
     public boolean IsPositiveInfinity() {
