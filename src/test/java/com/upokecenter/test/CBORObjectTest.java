@@ -7972,16 +7972,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
 private static CBORObject FromJSON(String json, JSONOptions jsonop) {
- System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
+ System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+ sw.Start();
  CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
- sw.Stop(); System.out.println("" + sw.getElapsedMilliseconds() + " ms");
+ sw.Stop();
+ System.out.println("" + sw.getElapsedMilliseconds() + " ms");
  return cbor;
 }
 
 @Test(timeout = 10000)
 public void TestFromJsonStringLongKindFull() {
 JSONOptions jsonop = new JSONOptions("numberconversion=full");
-String json = TestCommon.Repeat("7", 1000000);
+String json = TestCommon.Repeat("7", 200000);
 CBORObject cbor = FromJSON(json, jsonop);
 if (!(cbor.isTagged())) {
  Assert.fail();
@@ -7991,7 +7993,7 @@ if (!(cbor.isTagged())) {
 @Test(timeout = 10000)
 public void TestFromJsonStringLongKindFull2() {
 JSONOptions jsonop = new JSONOptions("numberconversion=full");
-String json = TestCommon.Repeat("7", 1000000) + ".0";
+String json = TestCommon.Repeat("7", 200000) + ".0";
 CBORObject cbor = FromJSON(json, jsonop);
 if (!(cbor.isTagged())) {
  Assert.fail();
@@ -8000,6 +8002,7 @@ if (!(cbor.isTagged())) {
 
 @Test(timeout = 2000)
 public void TestFromJsonStringLongKindFullBad() {
+System.out.println("FullBad 1");
 JSONOptions jsonop = new JSONOptions("numberconversion=full");
 String json = TestCommon.Repeat("7", 1000000) + "x";
 try {
@@ -8011,6 +8014,18 @@ try {
  Assert.fail(ex.toString());
  throw new IllegalStateException("", ex);
 }
+System.out.println("FullBad 1a");
+json = "7x" + TestCommon.Repeat("7", 1000000);
+try {
+ FromJSON(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+System.out.println("FullBad 2");
 json = TestCommon.Repeat("0", 1000000);
 try {
  FromJSON(json, jsonop);
