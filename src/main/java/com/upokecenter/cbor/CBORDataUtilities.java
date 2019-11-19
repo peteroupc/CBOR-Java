@@ -317,9 +317,12 @@ private CBORDataUtilities() {
            options);
     }
 
+    // TODO: Remove once updated Numbers library is available
     private static final HashMap<Integer, EInteger> pows = new
 HashMap<Integer, EInteger>();
 
+    // TODO: Replace with EInteger.FromRadixSubstring once
+    // updated Numbers library is available
     private static EInteger FastEIntegerFromString(String str, int index, int
     endIndex) {
       if (endIndex - index > 32) {
@@ -336,7 +339,7 @@ HashMap<Integer, EInteger>();
           }
         }
         if (mult == null) {
-          mult = EInteger.FromInt32(10).Pow(endIndex - midIndex);
+          mult = EInteger.FromInt32(10).Pow(tenpow);
           synchronized (pows) {
             pows.put(tenpow, mult);
           }
@@ -683,8 +686,8 @@ HashMap<Integer, EInteger>();
           }
         } else {
           newScale = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) : newScale;
-          newScale = (offset < 0) ? (newScale.Subtract(exp)) :
-(newScale.Add(exp));
+          newScale = (offset < 0) ? newScale.Subtract(exp) :
+newScale.Add(exp);
         }
       }
       if (i != endPos) {
