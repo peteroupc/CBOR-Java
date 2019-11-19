@@ -82,85 +82,85 @@ private CBORDataUtilities() {
           sb.append(simvalue);
           break;
         case FloatingPoint: {
-          double f = obj.AsDoubleValue();
-          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
-(((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
+            double f = obj.AsDoubleValue();
+            simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
+  (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
 
-                "NaN" : obj.Untag().ToJSONString()));
-          if (sb == null) {
-            return simvalue;
+                  "NaN" : obj.Untag().ToJSONString()));
+            if (sb == null) {
+              return simvalue;
+            }
+            sb.append(simvalue);
+            break;
           }
-          sb.append(simvalue);
-          break;
-        }
         case ByteString: {
-          sb = (sb == null) ? (new StringBuilder()) : sb;
-          sb.append("h'");
-          byte[] data = obj.GetByteString();
-          int length = data.length;
-          for (int i = 0; i < length; ++i) {
-            sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
-            sb.append(HexAlphabet.charAt(data[i] & 15));
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            sb.append("h'");
+            byte[] data = obj.GetByteString();
+            int length = data.length;
+            for (int i = 0; i < length; ++i) {
+              sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
+              sb.append(HexAlphabet.charAt(data[i] & 15));
+            }
+            sb.append("'");
+            break;
           }
-          sb.append("'");
-          break;
-        }
         case TextString: {
-          if (sb == null) {
-            return "\"" + obj.AsString() + "\"";
+            if (sb == null) {
+              return "\"" + obj.AsString() + "\"";
+            }
+            sb.append('\"');
+            sb.append(obj.AsString());
+            sb.append('\"');
+            break;
           }
-          sb.append('\"');
-          sb.append(obj.AsString());
-          sb.append('\"');
-          break;
-        }
         case Array: {
-          sb = (sb == null) ? (new StringBuilder()) : sb;
-          boolean first = true;
-          sb.append("[");
-          if (depth >= 50) {
-            sb.append("...");
-          } else {
-            for (int i = 0; i < obj.size(); ++i) {
-              if (!first) {
-                sb.append(", ");
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            boolean first = true;
+            sb.append("[");
+            if (depth >= 50) {
+              sb.append("...");
+            } else {
+              for (int i = 0; i < obj.size(); ++i) {
+                if (!first) {
+                  sb.append(", ");
+                }
+                sb.append(ToStringHelper(obj.get(i), depth + 1));
+                first = false;
               }
-              sb.append(ToStringHelper(obj.get(i), depth + 1));
-              first = false;
             }
+            sb.append("]");
+            break;
           }
-          sb.append("]");
-          break;
-        }
         case Map: {
-          sb = (sb == null) ? (new StringBuilder()) : sb;
-          boolean first = true;
-          sb.append("{");
-          if (depth >= 50) {
-            sb.append("...");
-          } else {
-            Collection<Map.Entry<CBORObject, CBORObject>> entries =
-              obj.getEntries();
-            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-              CBORObject key = entry.getKey();
-              CBORObject value = entry.getValue();
-              if (!first) {
-                sb.append(", ");
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            boolean first = true;
+            sb.append("{");
+            if (depth >= 50) {
+              sb.append("...");
+            } else {
+              Collection<Map.Entry<CBORObject, CBORObject>> entries =
+                obj.getEntries();
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+                CBORObject key = entry.getKey();
+                CBORObject value = entry.getValue();
+                if (!first) {
+                  sb.append(", ");
+                }
+                sb.append(ToStringHelper(key, depth + 1));
+                sb.append(": ");
+                sb.append(ToStringHelper(value, depth + 1));
+                first = false;
               }
-              sb.append(ToStringHelper(key, depth + 1));
-              sb.append(": ");
-              sb.append(ToStringHelper(value, depth + 1));
-              first = false;
             }
+            sb.append("}");
+            break;
           }
-          sb.append("}");
-          break;
-        }
         default: {
-          sb = (sb == null) ? (new StringBuilder()) : sb;
-          sb.append("???");
-          break;
-        }
+            sb = (sb == null) ? (new StringBuilder()) : sb;
+            sb.append("???");
+            break;
+          }
       }
       // Append closing tags if needed
       curobject = obj;
@@ -230,10 +230,10 @@ private CBORDataUtilities() {
       }
       if (integersOnly) {
         for (int i = 0; i < str.length(); ++i) {
-if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
-  return null;
-}
-}
+          if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
+            return null;
+          }
+        }
       }
       return (positiveOnly && str.charAt(0) == '-') ? null :
          ParseJSONNumber(
@@ -276,10 +276,10 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
       }
       if (integersOnly) {
         for (int i = 0; i < str.length(); ++i) {
-if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
-  return null;
-}
-}
+          if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '-')) {
+            return null;
+          }
+        }
       }
       JSONOptions jo = preserveNegativeZero ? PreserveNegZeroYes :
          PreserveNegZeroNo;
@@ -317,20 +317,35 @@ if (str.charAt(i) >= '0' && str.charAt(i) <= '9' && (i > 0 || str.charAt(i) != '
            options);
     }
 
-private static EInteger FastEIntegerFromString(String str, int index, int
-endIndex) {
-  if (endIndex - index > 32) {
-     // DebugUtility.Log("FastEInteger " + index + " " + endIndex + " len=" +
-    // (endIndex - index));
-    int midIndex = index + (endIndex - index) / 2;
-    EInteger eia = FastEIntegerFromString(str, index, midIndex);
-    EInteger eib = FastEIntegerFromString(str, midIndex, endIndex);
-    EInteger mult = EInteger.FromInt32(10).Pow(endIndex - midIndex);
-    return eia.Multiply(mult).Add(eib);
-  } else {
-    return EInteger.FromSubstring(str, index, endIndex);
-  }
-}
+    private static final HashMap<Integer, EInteger> pows = new
+HashMap<Integer, EInteger>();
+
+    private static EInteger FastEIntegerFromString(String str, int index, int
+    endIndex) {
+      if (endIndex - index > 32) {
+        // DebugUtility.Log("FastEInteger " + index + " " + endIndex + " len=" +
+        // (endIndex - index));
+        int midIndex = index + (endIndex - index) / 2;
+        EInteger eia = FastEIntegerFromString(str, index, midIndex);
+        EInteger eib = FastEIntegerFromString(str, midIndex, endIndex);
+        EInteger mult = null;
+        int tenpow = endIndex - midIndex;
+        synchronized (pows) {
+          if (pows.containsKey(tenpow)) {
+            mult = pows.get(tenpow);
+          }
+        }
+        if (mult == null) {
+          mult = EInteger.FromInt32(10).Pow(endIndex - midIndex);
+          synchronized (pows) {
+            pows.put(tenpow, mult);
+          }
+        }
+        return eia.Multiply(mult).Add(eib);
+      } else {
+        return EInteger.FromSubstring(str, index, endIndex);
+      }
+    }
 
     /**
      * Parses a number whose format follows the JSON specification (RFC 8259) and
@@ -382,9 +397,7 @@ endIndex) {
         ++offset;
       }
       int mantInt = 0;
-      FastInteger2 mant = null;
-      int mantBuffer = 0;
-      int mantBufferMult = 1;
+      EInteger mant = null;
       int expBuffer = 0;
       int expBufferMult = 1;
       boolean haveDecimalPoint = false;
@@ -392,7 +405,7 @@ endIndex) {
       boolean haveDigitsAfterDecimal = false;
       boolean haveExponent = false;
       int newScaleInt = 0;
-      FastInteger2 newScale = null;
+      EInteger newScale = null;
       int i = offset;
 
       // Ordinary number
@@ -400,12 +413,17 @@ endIndex) {
         ++i;
         haveDigits = true;
         if (i == endPos) {
-          if (preserveNegativeZero && negative) {
-             // Negative zero in floating-point format
-             return (kind == JSONOptions.ConversionMode.Double) ?
-CBORObject.FromFloatingPointBits(0x8000, 2) :
-CBORObject.FromObject(EDecimal.NegativeZero);
-           }
+          if (preserveNegativeZero && negative &&
+             (kind == JSONOptions.ConversionMode.Double ||
+              kind == JSONOptions.ConversionMode.Full)) {
+            // Negative zero in floating-point format
+            return (kind == JSONOptions.ConversionMode.Double) ?
+              CBORObject.FromFloatingPointBits(0x8000, 2) :
+              CBORObject.FromObject(EDecimal.NegativeZero);
+          }
+          // In IntOrFloat*, since this is an integer within range,
+          // always decode to CBOR integer 0, regardless of
+          // PreserveNegativeZero setting
           return CBORObject.FromObject(0);
         }
         if (str.charAt(i) == '.') {
@@ -425,14 +443,22 @@ CBORObject.FromObject(EDecimal.NegativeZero);
         boolean hdad = haveDigitsAfterDecimal;
         boolean hex = haveExponent;
         boolean haveManyDigits = false;
+        int precision = 0;
+        boolean allZeros = true;
+        boolean expAllZeros = true;
+        boolean haveBigExponent = false;
         boolean eplus = true;
         for (; k < endPos; ++k) {
           if (str.charAt(k) >= '0' && str.charAt(k) <= '9') {
+            if (str.charAt(k) != '0') {
+              allZeros = false;
+            }
             haveDigits = true;
+            ++precision;
             if (k - i > 400 && !haveDecimalPoint) {
-               // Indicates that this value is bigger
-               // than a decimal can store
-               haveManyDigits = true;
+              // Indicates that this value is bigger
+              // than a decimal can store
+              haveManyDigits = true;
             }
             if (haveDecimalPoint) {
               haveDigitsAfterDecimal = true;
@@ -461,22 +487,47 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           if (k == endPos) {
             return null;
           }
+          int firstNonZero = -1;
           if (str.charAt(k) == '+' || str.charAt(k) == '-') {
             if (str.charAt(k) == '-') {
               eplus = false;
             }
             ++k;
-           }
-           for (; k < endPos; ++k) {
-             if (str.charAt(k) >= '0' && str.charAt(k) <= '9') {
-               haveDigits = true;
-             } else {
-               return null;
-             }
-           }
-           if (!haveDigits) {
-             return null;
-           }
+          }
+          for (; k < endPos; ++k) {
+            if (str.charAt(k) >= '0' && str.charAt(k) <= '9') {
+              if (str.charAt(k) != '0') {
+                expAllZeros = false;
+                if (firstNonZero < 0) {
+                  firstNonZero = k;
+                }
+              }
+              int thisdigit = (int)(str.charAt(i) - '0');
+              haveDigits = true;
+            } else {
+              return null;
+            }
+          }
+          if (!haveDigits) {
+            return null;
+          }
+          if (firstNonZero >= 0 && endPos - firstNonZero >= 12) {
+            // Exponent is at least 10^12, which can't be matched
+            // by the precision, which can't exceed Integer.MAX_VALUE,
+            // and the difference will cause an underflow to 0
+            haveBigExponent = true;
+          } else if (firstNonZero >= 0 && !allZeros) {
+            EInteger eiexponent = FastEIntegerFromString(
+              str,
+              firstNonZero,
+              endPos);
+            EInteger eiprecision = EInteger.FromInt32(precision - 1);
+            eiexponent = eiexponent.Negate().Add(eiprecision);
+            if (eiexponent.compareTo(-400) < 0) {
+              // Will underflow to 0 in double precision
+              haveBigExponent = true;
+            }
+          }
         }
         if (k != endPos) {
           return null;
@@ -484,11 +535,37 @@ CBORObject.FromObject(EDecimal.NegativeZero);
         if (kind == JSONOptions.ConversionMode.Double ||
            kind == JSONOptions.ConversionMode.IntOrFloat ||
            kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
-          if (haveManyDigits && (!haveExponent || eplus)) {
-             return negative ? CBORObject.FromObject(Double.NEGATIVE_INFINITY) :
-                  CBORObject.FromObject(Double.POSITIVE_INFINITY);
+          if (allZeros) {
+            // All zeros, regardless of exponent
+            if (kind == JSONOptions.ConversionMode.Double) {
+              return (preserveNegativeZero && negative) ?
+                 CBORObject.FromFloatingPointBits(0x8000, 2) :
+                 CBORObject.FromObject(0.0);
+               } else {
+              // In IntOrFloat*, since this is an integer within range,
+              // always decode to CBOR integer 0, regardless of
+              // PreserveNegativeZero setting
+              return CBORObject.FromObject(0);
+            }
+          } else if (haveManyDigits && (!haveExponent || eplus ||
+              expAllZeros)) {
+            // Many digits, and either no exponent, exponent zero, or positive exponent
+            return negative ? CBORObject.FromObject(Double.NEGATIVE_INFINITY) :
+                 CBORObject.FromObject(Double.POSITIVE_INFINITY);
+               } else if (haveExponent && !eplus && haveBigExponent) {
+            // Negative exponent with magnitude much too big to be matched
+            // by the precision, and the difference will cause an underflow to 0
+            if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+              // In IntOrFloatFromDouble, since underflows to 0
+              // are treated as integer zeros,
+              // always decode to CBOR integer 0, regardless of
+              // PreserveNegativeZero setting
+              return CBORObject.FromObject(0);
+            }
+            return (preserveNegativeZero && negative) ?
+              CBORObject.FromFloatingPointBits(0x8000, 2) :
+              CBORObject.FromObject(0.0);
           }
-          // TODO: Fast cases involving negative exponents
         }
         haveDigitsAfterDecimal = hdad;
         haveDigits = hd;
@@ -505,18 +582,18 @@ CBORObject.FromObject(EDecimal.NegativeZero);
           if (haveDecimalPoint) {
             decimalDigitEnd = i + 1;
           } else {
- digitEnd = i + 1;
-}
+            digitEnd = i + 1;
+          }
           if (mantInt <= MaxSafeInt) {
-  mantInt *= 10;
-  mantInt += thisdigit;
+            mantInt *= 10;
+            mantInt += thisdigit;
           }
           haveDigits = true;
           if (haveDecimalPoint) {
             haveDigitsAfterDecimal = true;
             if (newScaleInt == Integer.MIN_VALUE) {
-              newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
-              newScale.AddInt(-1);
+              newScale = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) : newScale;
+              newScale = newScale.Subtract(1);
             } else {
               --newScaleInt;
             }
@@ -545,27 +622,24 @@ CBORObject.FromObject(EDecimal.NegativeZero);
       }
       if (mantInt > MaxSafeInt) {
         if (haveDecimalPoint) {
-  if (digitStart < 0) {
-    EInteger eidec = FastEIntegerFromString(
-      str,
-      decimalDigitStart,
-      decimalDigitEnd);
-    mant = new FastInteger2(eidec);
-  } else {
-    EInteger eidec;
-    String tmpstr = str.substring(digitStart, (digitStart)+(digitEnd - digitStart)) +
-              str.substring(decimalDigitStart, (decimalDigitStart)+(decimalDigitEnd -
-decimalDigitStart));
-    eidec = FastEIntegerFromString(tmpstr, 0, tmpstr.length());
-    mant = new FastInteger2(eidec);
-  }
-} else if (digitStart >= 0) {
-  EInteger eimant = FastEIntegerFromString(str, digitStart, digitEnd);
-  mant = new FastInteger2(eimant);
-}
+          if (digitStart < 0) {
+            mant = FastEIntegerFromString(
+              str,
+              decimalDigitStart,
+              decimalDigitEnd);
+          } else {
+            EInteger eidec;
+            String tmpstr = str.substring(digitStart, (digitStart)+(digitEnd - digitStart)) +
+                      str.substring(decimalDigitStart, (decimalDigitStart)+(decimalDigitEnd -
+        decimalDigitStart));
+            mant = FastEIntegerFromString(tmpstr, 0, tmpstr.length());
+          }
+        } else if (digitStart >= 0) {
+          mant = FastEIntegerFromString(str, digitStart, digitEnd);
+        }
       }
       if (haveExponent) {
-        FastInteger2 exp = null;
+        EInteger exp = null;
         int expInt = 0;
         offset = 1;
         haveDigits = false;
@@ -578,29 +652,12 @@ decimalDigitStart));
           }
           ++i;
         }
+        int expStart = i;
         for (; i < endPos; ++i) {
           if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
             haveDigits = true;
             int thisdigit = (int)(str.charAt(i) - '0');
-            if (expInt > MaxSafeInt) {
-              // TODO: Use same optimization as in mant above
-              if (exp == null) {
-                exp = new FastInteger2(expInt);
-                expBuffer = thisdigit;
-                expBufferMult = 10;
-              } else {
-                if (expBufferMult >= 1000000000) {
-                  exp.Multiply(expBufferMult).AddInt(expBuffer);
-                  expBuffer = thisdigit;
-                  expBufferMult = 10;
-                } else {
-                  // multiply expBufferMult and expBuffer each by 10
-                  expBufferMult = (expBufferMult << 3) + (expBufferMult << 1);
-                  expBuffer = (expBuffer << 3) + (expBuffer << 1);
-                  expBuffer += thisdigit;
-                }
-              }
-            } else {
+            if (expInt <= MaxSafeInt) {
               expInt *= 10;
               expInt += thisdigit;
             }
@@ -611,26 +668,23 @@ decimalDigitStart));
         if (!haveDigits) {
           return null;
         }
-        if (exp != null && (expBufferMult != 1 || expBuffer != 0)) {
-          exp.Multiply(expBufferMult).AddInt(expBuffer);
+        if (expInt > MaxSafeInt) {
+          exp = FastEIntegerFromString(str, expStart, endPos);
         }
         if (offset >= 0 && newScaleInt == 0 && newScale == null && exp ==
           null) {
           newScaleInt = expInt;
         } else if (exp == null) {
-          newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
+          newScale = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) : newScale;
           if (offset < 0) {
-            newScale.SubtractInt(expInt);
+            newScale = newScale.Subtract(expInt);
           } else if (expInt != 0) {
-            newScale.AddInt(expInt);
+            newScale = newScale.Add(expInt);
           }
         } else {
-          newScale = (newScale == null) ? (new FastInteger2(newScaleInt)) : newScale;
-          if (offset < 0) {
-            newScale.Subtract(exp);
-          } else {
-            newScale.Add(exp);
-          }
+          newScale = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) : newScale;
+          newScale = (offset < 0) ? (newScale.Subtract(exp)) :
+(newScale.Add(exp));
         }
       }
       if (i != endPos) {
@@ -641,7 +695,7 @@ decimalDigitStart));
           newScale.signum() == 0)) {
         // No fractional part
         if (mant != null && mant.CanFitInInt32()) {
-          mantInt = mant.AsInt32();
+          mantInt = mant.ToInt32Checked();
           mant = null;
         }
         if (mant == null) {
@@ -666,7 +720,7 @@ decimalDigitStart));
             return CBORObject.FromObject(mantInt);
           }
         } else {
-          EInteger bigmant2 = mant.AsEInteger();
+          EInteger bigmant2 = mant;
           if (negative) {
             bigmant2=(bigmant2).Negate();
           }
@@ -690,10 +744,10 @@ decimalDigitStart));
           return CBORObject.FromObject(bigmant2);
         }
       } else {
-        EInteger bigmant = (mant == null) ? (EInteger.FromInt32(mantInt)) :
-          mant.AsEInteger();
-        EInteger bigexp = (newScale == null) ? (EInteger.FromInt32(newScaleInt)) :
-          newScale.AsEInteger();
+        EInteger bigmant = (mant == null) ? EInteger.FromInt32(mantInt) :
+          mant;
+        EInteger bigexp = (newScale == null) ? EInteger.FromInt32(newScaleInt) :
+          newScale;
         if (negative) {
           bigmant=(bigmant).Negate();
         }
@@ -724,11 +778,11 @@ decimalDigitStart));
             CBORObject.FromObject(edec.ToDouble());
           CBORNumber cn = cbor.AsNumber();
           if (cn.IsInteger() && cn.CanFitInInt64()) {
-             long v = cn.ToInt64Checked();
-             if (v >= (-(1 << 53)) + 1 && v <= (1 << 53) - 1) {
-               return CBORObject.FromObject(v);
-             } else {
-               dbl = cbor.AsDouble();
+            long v = cn.ToInt64Checked();
+            if (v >= (-(1 << 53)) + 1 && v <= (1 << 53) - 1) {
+              return CBORObject.FromObject(v);
+            } else {
+              dbl = cbor.AsDouble();
             }
           } else {
             dbl = edec.ToDouble();

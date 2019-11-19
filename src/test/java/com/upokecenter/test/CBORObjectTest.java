@@ -7972,18 +7972,110 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
 private static CBORObject FromJSON(String json, JSONOptions jsonop) {
- System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
- sw.Start();
+ // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+ // sw.Start();
  CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
- sw.Stop();
- System.out.println("" + sw.getElapsedMilliseconds() + " ms");
+ // sw.Stop();
+ // System.out.println("" + sw.getElapsedMilliseconds() + " ms");
  return cbor;
+}
+
+private static CBORObject FromJSON(String json, String numconv) {
+ return FromJSON(json, new JSONOptions("numberconversion=" + numconv));
+}
+
+private static void AssertJSONDouble(String json, String numconv, double dbl) {
+ CBORObject cbor = FromJSON(json, numconv);
+ Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+ Assert.assertEquals(dbl, cbor.AsDoubleValue());
+}
+
+private static void AssertJSONInteger(String json, String numconv, int intval) {
+ CBORObject cbor = FromJSON(json, numconv);
+ Assert.assertEquals(CBORType.Integer, cbor.getType());
+ Assert.assertEquals(intval, cbor.AsInt32Value());
+}
+
+@Test
+public void TestFromJsonStringFastCases() {
+AssertJSONDouble(
+  "0e-" + TestCommon.Repeat("0", 1000000),
+  "double",
+  0.0);
+AssertJSONDouble(
+  "0." + TestCommon.Repeat("0", 1000000),
+  "double",
+  0.0);
+AssertJSONDouble(
+  "0." + TestCommon.Repeat("0", 1000000) + "e-9999999999999",
+  "double",
+  0.0);
+AssertJSONDouble(
+  TestCommon.Repeat("3", 1000000) + "e-9999999999999",
+  "double",
+  0.0);
+AssertJSONDouble(
+  TestCommon.Repeat("3", 1000000) + "e-9999999999999",
+  "intorfloat",
+  0.0);
+AssertJSONInteger(
+  TestCommon.Repeat("3", 1000000) + "e-9999999999999",
+  "intorfloatfromdouble",
+  0);
+AssertJSONDouble(
+  "0." + TestCommon.Repeat("0", 1000000) + "e-99999999",
+  "double",
+  0.0);
+AssertJSONDouble(
+  TestCommon.Repeat("3", 1000000) + "e-99999999",
+  "double",
+  0.0);
+AssertJSONDouble(
+  TestCommon.Repeat("3", 1000000) + "e-99999999",
+  "intorfloat",
+  0.0);
+AssertJSONInteger(
+  TestCommon.Repeat("3", 1000000) + "e-99999999",
+  "intorfloatfromdouble",
+  0);
+AssertJSONInteger(
+  "0e-" + TestCommon.Repeat("0", 1000000),
+  "intorfloat",
+  0);
+AssertJSONInteger(
+  "0e-" + TestCommon.Repeat("0", 1000000),
+  "intorfloatfromdouble",
+  0);
+AssertJSONInteger(
+  "-0e-" + TestCommon.Repeat("0", 1000000),
+  "intorfloat",
+  0);
+AssertJSONInteger(
+  "-0e-" + TestCommon.Repeat("0", 1000000),
+  "intorfloatfromdouble",
+  0);
+AssertJSONInteger(
+  "0." + TestCommon.Repeat("0", 1000000),
+  "intorfloat",
+  0);
+AssertJSONInteger(
+  "0." + TestCommon.Repeat("0", 1000000),
+  "intorfloatfromdouble",
+  0);
+AssertJSONInteger(
+  "-0." + TestCommon.Repeat("0", 1000000),
+  "intorfloat",
+  0);
+AssertJSONInteger(
+  "-0." + TestCommon.Repeat("0", 1000000),
+  "intorfloatfromdouble",
+  0);
 }
 
 @Test(timeout = 10000)
 public void TestFromJsonStringLongKindFull() {
 JSONOptions jsonop = new JSONOptions("numberconversion=full");
-String json = TestCommon.Repeat("7", 200000);
+String json = TestCommon.Repeat("7", 100000);
 CBORObject cbor = FromJSON(json, jsonop);
 if (!(cbor.isTagged())) {
  Assert.fail();
@@ -7993,7 +8085,7 @@ if (!(cbor.isTagged())) {
 @Test(timeout = 10000)
 public void TestFromJsonStringLongKindFull2() {
 JSONOptions jsonop = new JSONOptions("numberconversion=full");
-String json = TestCommon.Repeat("7", 200000) + ".0";
+String json = TestCommon.Repeat("7", 100000) + ".0";
 CBORObject cbor = FromJSON(json, jsonop);
 if (!(cbor.isTagged())) {
  Assert.fail();
@@ -8016,6 +8108,17 @@ try {
 }
 System.out.println("FullBad 1a");
 json = "7x" + TestCommon.Repeat("7", 1000000);
+try {
+ FromJSON(json, jsonop);
+ Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+
+json = TestCommon.Repeat("7", 1000000) + "e0x";
 try {
  FromJSON(json, jsonop);
  Assert.fail("Should have failed");
