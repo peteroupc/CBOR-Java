@@ -212,7 +212,10 @@ private final boolean propVarallowempty;
 
     /**
      * Gets a value indicating whether to allow duplicate keys when reading CBOR
-     * objects from a data stream. Used only when decoding CBOR objects.
+     * objects from a data stream. Used only when decoding CBOR objects. If
+     * this property is <code>true</code> and a CBOR map has two or more values
+     * with the same key, the last value of that key set forth in the CBOR
+     * map is taken.
      * @return A value indicating whether to allow duplicate keys when reading CBOR
      * objects from a data stream. The default is false.
      */

@@ -251,7 +251,9 @@ private final ConversionMode propVarnumberconversion;
 
     /**
      * Gets a value indicating whether to allow duplicate keys when reading JSON.
-     * Used only when decoding JSON.
+     * Used only when decoding JSON. If this property is <code>true</code> and a
+     * JSON object has two or more values with the same key, the last value
+     * of that key set forth in the JSON object is taken.
      * @return A value indicating whether to allow duplicate keys when reading
      * JSON. The default is false.
      */
