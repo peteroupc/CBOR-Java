@@ -2090,7 +2090,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  object implementing Map (Map in Java) is converted to a CBOR map
  containing the keys and values enumerated.</li> <li>An object
  implementing Iterable (Iterable in Java) is converted to a CBOR
- array containing the items enumerated.</li> <li>An enumeration (
+ array containing the items enumerated.</li> <li>An enumeration(
  <code>Enum</code>) object is converted to its <i>underlying value</i> in
  the.NET version, or the result of its <code>ordinal()</code> method in the
  Java version.</li> <li>An object of type <code>java.util.Date</code>,
@@ -2184,7 +2184,7 @@ Generates a CBOR object from an arbitrary object and gives the resulting
   "self-described CBOR" object. This document does not attempt to list
  all CBOR tags and their meanings. An up-to-date list can be found at
  the CBOR Tags registry maintained by the Internet Assigned Numbers
- Authority (<i>iana.org/assignments/cbor-tags</i>).
+ Authority(<i>iana.org/assignments/cbor-tags</i>).
 
 **Returns:**
 
@@ -2220,7 +2220,7 @@ Generates a CBOR object from an arbitrary object and gives the resulting
   55799 can be used to mark a "self-described CBOR" object. This
  document does not attempt to list all CBOR tags and their meanings.
  An up-to-date list can be found at the CBOR Tags registry maintained
- by the Internet Assigned Numbers Authority (
+ by the Internet Assigned Numbers Authority(
  <i>iana.org/assignments/cbor-tags</i>).
 
 **Returns:**
@@ -3551,7 +3551,9 @@ Determines whether this object and another object are equal and have the
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>. In
+ this method, two objects are not equal if they don't have the same
+ type or if one is null and the other isn't.
 
 ### equals
     public boolean equals​(CBORObject other)
@@ -3564,7 +3566,9 @@ Compares the equality of two CBOR objects. Not-a-number values can be
 
 **Returns:**
 
-* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>. In
+ this method, two objects are not equal if they don't have the same
+ type or if one is null and the other isn't.
 
 ### GetByteString
     public byte[] GetByteString()
@@ -3940,9 +3944,8 @@ Maps an object to a key in this CBOR map, or adds the value if the key
  representing the key, which will be converted to a CBORObject; in
  this case, this parameter can be null, in which case this value is
  converted to CBORObject.Null. If this instance is a CBOR array, this
- parameter must be a 32-bit signed integer (<code>int</code>)
- identifying the index (starting from 0) of the item to set in the
- array.
+ parameter must be a 32-bit signed integer(<code>int</code>) identifying
+ the index (starting from 0) of the item to set in the array.
 
 * <code>valueOb</code> - An object representing the value, which will be converted to
  a CBORObject. Can be null, in which case this value is converted to
