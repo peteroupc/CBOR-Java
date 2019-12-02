@@ -104,7 +104,7 @@ import com.upokecenter.numbers.*;
     }
 
   /**
-   *
+   * Not documented yet.
    */
     public final int signum() {
         // TODO: Will return 2 if this is NaN; is this
