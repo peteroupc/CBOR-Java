@@ -66,7 +66,6 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 * `CBORNumber Remainder​(CBORNumber b)`<br>
  Returns the remainder when this number is divided by another number.
 * `int signum()`<br>
- Gets a value not documented yet.
 * `CBORNumber Subtract​(CBORNumber b)`<br>
  Returns a number that expresses this number minus another.
 * `byte ToByteChecked()`<br>
@@ -144,12 +143,6 @@ Converts this object's value to a CBOR object.
 
 ### signum
     public final int signum()
-Gets a value not documented yet.
-
-**Returns:**
-
-* A value not documented yet.
-
 ### FromCBORObject
     public static CBORNumber FromCBORObject​(CBORObject o)
 Creates a CBOR number object from a CBOR object representing a number (that

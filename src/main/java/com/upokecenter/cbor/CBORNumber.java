@@ -104,8 +104,7 @@ import com.upokecenter.numbers.*;
     }
 
   /**
-   * Gets a value not documented yet.
-   * @return A value not documented yet.
+   *
    */
     public final int signum() {
         // TODO: Will return 2 if this is NaN; is this
