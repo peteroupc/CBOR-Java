@@ -4180,29 +4180,25 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
     }
 
     public static void ExpectJsonSequenceError(byte[] bytes) {
-      try {
-        {
-          java.io.ByteArrayInputStream ms = null;
+      {
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
-          try {
-            CBORObject.ReadJSONSequence(ms);
-            Assert.fail("Should have failed");
-          } catch (CBORException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
+        try {
+          CBORObject.ReadJSONSequence(ms);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-      } catch (IOException ioe) {
-        throw new IllegalStateException(ioe.getMessage(), ioe);
-      }
     }
 
     public static void ExpectJsonSequenceZero(byte[] bytes) {
@@ -4233,7 +4229,7 @@ try {
 ms = new java.io.ByteArrayInputStream(bytes);
 
           String ss = TestCommon.ToByteArrayString(bytes);
-         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
+          CBORObject[] array = CBORObject.ReadJSONSequence(ms);
           Assert.assertEquals(ss, 1, array.length);
           Assert.assertEquals(ss, o1, array[0]);
 }
@@ -8266,11 +8262,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static CBORObject FromJSON(String json, JSONOptions jsonop) {
-      //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-      //sw.Start();
+      // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+      // sw.Start();
       CBORObject cbor = CBORObject.FromJSONString(json, jsonop);
-      //sw.Stop();
-      //System.out.println("" + sw.getElapsedMilliseconds() + " ms");
+      // sw.Stop();
+      // System.out.println("" + sw.getElapsedMilliseconds() + " ms");
       return cbor;
     }
 
@@ -8282,16 +8278,25 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       double dbl) {
+System.out.println("JSONDouble "+json.length());
+
       CBORObject cbor = FromJSON(json, numconv);
+
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(dbl, cbor.AsDoubleValue());
+      double cbordbl = cbor.AsDoubleValue();
+      if (dbl != cbordbl) {
+        Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
+      }
     }
 
     private static void AssertJSONInteger(
       String json,
       String numconv,
       int intval) {
+System.out.println("JSONInteger "+json.length());
+
       CBORObject cbor = FromJSON(json, numconv);
+
       if (cbor.getType() != CBORType.Integer) {
         Assert.assertEquals(CBORType.Integer, cbor.getType());
       }
@@ -8531,27 +8536,38 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test(timeout = 2000)
     public void TestFromJsonStringLongKindIntOrFloatFromDouble() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
-      String json = TestCommon.Repeat("7", 1000000);
+      String manysevens = TestCommon.Repeat("7", 1000000);
+      String json = manysevens;
       CBORObject cbor = FromJSON(json, jsonop);
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
-      json = TestCommon.Repeat("7", 1000000) + "e+0";
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+      json = manysevens + "e+0";
       cbor = FromJSON(json, jsonop);
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
-      json = TestCommon.Repeat("7", 1000000) + "e0";
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+      json = manysevens + "e0";
       cbor = FromJSON(json, jsonop);
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
     }
 
     @Test(timeout = 2000)
     public void TestFromJsonStringLongKindIntOrFloat() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
       String json = TestCommon.Repeat("7", 1000000);
+
       CBORObject cbor = FromJSON(json, jsonop);
+
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(Double.POSITIVE_INFINITY, cbor.AsDoubleValue());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
     }
 
     @Test(timeout = 2000)
