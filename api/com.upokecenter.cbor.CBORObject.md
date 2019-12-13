@@ -303,9 +303,49 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
                      int byteCount)`<br>
  Generates a CBOR object from a floating-point number represented by its
  bits.
+* `static CBORObject FromJSONBytes​(byte[] bytes)`<br>
+ Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format.
+* `static CBORObject FromJSONBytes​(byte[] bytes,
+             int offset,
+             int count)`<br>
+ Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format.
+* `static CBORObject FromJSONBytes​(byte[] bytes,
+             int offset,
+             int count,
+             JSONOptions jsonoptions)`<br>
+ Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process.
+* `static CBORObject FromJSONBytes​(byte[] bytes,
+             JSONOptions jsonoptions)`<br>
+ Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process.
+* `static CBORObject[] FromJSONSequenceBytes​(byte[] bytes)`<br>
+ Generates a list of CBOR objects from an array of bytes in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464).
+* `static CBORObject[] FromJSONSequenceBytes​(byte[] data,
+                     JSONOptions options)`<br>
+ Generates a list of CBOR objects from an array of bytes in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464), using the specified
+ options to control the decoding process.
 * `static CBORObject FromJSONString​(java.lang.String str)`<br>
  Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format.
+* `static CBORObject FromJSONString​(java.lang.String str,
+              int offset,
+              int count)`<br>
+ Generates a CBOR object from a text string in JavaScript object Notation
+ (JSON) format.
+* `static CBORObject FromJSONString​(java.lang.String str,
+              int offset,
+              int count,
+              JSONOptions jsonoptions)`<br>
+ Generates a CBOR object from a text string in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process.
 * `static CBORObject FromJSONString​(java.lang.String str,
               CBOREncodeOptions options)`<br>
  Deprecated.
@@ -374,11 +414,13 @@ Instead, use.getFromJSONString()(str,
 * `static CBORObject FromObjectAndTag​(java.lang.Object valueObValue,
                 int smallTag)`<br>
  Generates a CBOR object from an arbitrary object and gives the resulting
- object a tag.
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
 * `static CBORObject FromObjectAndTag​(java.lang.Object valueOb,
                 com.upokecenter.numbers.EInteger bigintTag)`<br>
  Generates a CBOR object from an arbitrary object and gives the resulting
- object a tag.
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
 * `static CBORObject FromSimpleValue​(int simpleValue)`<br>
  Creates a CBOR object from a simple value number.
 * `CBORObject get​(int index)`<br>
@@ -558,6 +600,13 @@ Instead, use.getReadJSON()(stream,
  Generates a CBOR object from a data stream in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process.
+* `static CBORObject[] ReadJSONSequence​(java.io.InputStream stream)`<br>
+ Generates a list of CBOR objects from a data stream in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464).
+* `static CBORObject[] ReadJSONSequence​(java.io.InputStream stream,
+                JSONOptions jsonoptions)`<br>
+ Generates a list of CBOR objects from a data stream in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464).
 * `static CBORObject[] ReadSequence​(java.io.InputStream stream)`<br>
  Reads a sequence of objects in CBOR format from a data stream.
 * `static CBORObject[] ReadSequence​(java.io.InputStream stream,
@@ -609,11 +658,17 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Subtract() method.
  Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Subtract() method.
+* `byte[] ToJSONBytes()`<br>
+ Converts this object to a byte array in JavaScript object Notation (JSON)
+ format.
+* `byte[] ToJSONBytes​(JSONOptions jsonoptions)`<br>
+ Converts this object to a byte array in JavaScript object Notation (JSON)
+ format.
 * `java.lang.String ToJSONString()`<br>
- Converts this object to a string in JavaScript object Notation (JSON)
+ Converts this object to a text string in JavaScript object Notation (JSON)
  format.
 * `java.lang.String ToJSONString​(JSONOptions options)`<br>
- Converts this object to a string in JavaScript object Notation (JSON)
+ Converts this object to a text string in JavaScript object Notation (JSON)
  format, using the specified options to control the encoding process.
 * `<T> T ToObject​(java.lang.reflect.Type t)`<br>
  Converts this CBOR object to an object of an arbitrary type.
@@ -628,13 +683,21 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
         PODOptions options)`<br>
  Converts this CBOR object to an object of an arbitrary type.
 * `java.lang.String toString()`<br>
- Returns this CBOR object in string form.
+ Returns this CBOR object in a text form intended to be read by humans.
 * `CBORObject Untag()`<br>
  Gets an object with the same value as this one but without the tags it has,
  if any.
 * `CBORObject UntagOne()`<br>
  Gets an object with the same value as this one but without this object's
  outermost tag, if any.
+* `CBORObject WithTag​(int smallTag)`<br>
+ Generates a CBOR object from an arbitrary object and gives the resulting
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
+* `CBORObject WithTag​(com.upokecenter.numbers.EInteger bigintTag)`<br>
+ Generates a CBOR object from this one, but gives the resulting object a tag
+ in addition to its existing tags (the new tag is made the outermost
+ tag).
 * `static void Write​(boolean value,
      java.io.OutputStream stream)`<br>
  Writes a Boolean value in CBOR format to a data stream.
@@ -688,12 +751,12 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  format.
 * `static void Write​(java.lang.String str,
      java.io.OutputStream stream)`<br>
- Writes a string in CBOR format to a data stream.
+ Writes a text string in CBOR format to a data stream.
 * `static void Write​(java.lang.String str,
      java.io.OutputStream stream,
      CBOREncodeOptions options)`<br>
- Writes a string in CBOR format to a data stream, using the given options to
- control the encoding process.
+ Writes a text string in CBOR format to a data stream, using the given
+ options to control the encoding process.
 * `static int WriteFloatingPointBits​(java.io.OutputStream outputStream,
                       long floatingBits,
                       int byteCount)`<br>
@@ -712,16 +775,16 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  equivalent.
 * `static void WriteJSON​(java.lang.Object obj,
          java.io.OutputStream outputStream)`<br>
- Converts an arbitrary object to a string in JavaScript object Notation
+ Converts an arbitrary object to a text string in JavaScript object Notation
  (JSON) format, as in the ToJSONString method, and writes that string
  to a data stream in UTF-8.
 * `void WriteJSONTo​(java.io.OutputStream outputStream)`<br>
- Converts this object to a string in JavaScript object Notation (JSON)
+ Converts this object to a text string in JavaScript object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8.
 * `void WriteJSONTo​(java.io.OutputStream outputStream,
            JSONOptions options)`<br>
- Converts this object to a string in JavaScript object Notation (JSON)
+ Converts this object to a text string in JavaScript object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8, using the given JSON options to control the
  encoding process.
@@ -919,7 +982,8 @@ Gets the outermost tag for this CBOR data item, or -1 if the item is
     @Deprecated public final int signum()
 Deprecated.
 Instead, convert this object to a number with.AsNumber(),   and use the
- Sign property in.NET or the signum method in Java.
+ Sign property in.NET or the signum method in Java. Either will treat
+ not-a-number (NaN) values differently than here.
 
 **Returns:**
 
@@ -970,9 +1034,9 @@ Gets a collection of the key/value pairs stored in this CBOR object, if it's
 
 **Returns:**
 
-* A collection of the key/value pairs stored in this CBOR map. To
- avoid potential problems, the calling code should not modify the
- CBOR map or the returned collection while iterating over the
+* A collection of the key/value pairs stored in this CBOR map, as a
+ read-only view of those pairs. To avoid potential problems, the
+ calling code should not modify the CBOR map while iterating over the
  returned collection.
 
 **Throws:**
@@ -1166,7 +1230,7 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 **Throws:**
 
@@ -1251,6 +1315,98 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 * <code>java.lang.NullPointerException</code> - The parameter <code>data</code> is null, or the
  parameter <code>options</code> is null.
 
+### FromJSONSequenceBytes
+    public static CBORObject[] FromJSONSequenceBytes​(byte[] bytes)
+Generates a list of CBOR objects from an array of bytes in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464). The byte array must
+ be in UTF-8 encoding and may not begin with a byte-order mark
+ (U+FEFF).<p>Generally, each JSON text in a JSON text sequence is
+ written as follows: Write a record separator byte (0x1e), then write
+ the JSON text in UTF-8 (without a byte order mark, U+FEFF), then
+ write the line feed byte (0x0a). RFC 7464, however, uses a more
+ liberal syntax for parsing JSON text sequences.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array in which a JSON text sequence is encoded.
+
+**Returns:**
+
+* A list of CBOR objects read from the JSON sequence. Objects that
+ could not be parsed are replaced with <code>null</code> (as opposed to
+ <code>CBORObject.Null</code>) in the given list.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
+
+* <code>CBORException</code> - The byte array is not empty and
+ does not begin with a record separator byte (0x1e), or an I/O error
+ occurred.
+
+### ToJSONBytes
+    public byte[] ToJSONBytes()
+Converts this object to a byte array in JavaScript object Notation (JSON)
+ format. The JSON text will be written out in UTF-8 encoding, without
+ a byte order mark, to the byte array. See the overload to
+ ToJSONString taking a JSONOptions argument for further information.
+
+**Returns:**
+
+* A byte array containing the converted in JSON format.
+
+### ToJSONBytes
+    public byte[] ToJSONBytes​(JSONOptions jsonoptions)
+Converts this object to a byte array in JavaScript object Notation (JSON)
+ format. The JSON text will be written out in UTF-8 encoding, without
+ a byte order mark, to the byte array. See the overload to
+ ToJSONString taking a JSONOptions argument for further information.
+
+**Parameters:**
+
+* <code>jsonoptions</code> - Specifies options to control writing the CBOR object to
+ JSON.
+
+**Returns:**
+
+* A byte array containing the converted object in JSON format.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>jsonoptions</code> is null.
+
+### FromJSONSequenceBytes
+    public static CBORObject[] FromJSONSequenceBytes​(byte[] data, JSONOptions options)
+Generates a list of CBOR objects from an array of bytes in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464), using the specified
+ options to control the decoding process. The byte array must be in
+ UTF-8 encoding and may not begin with a byte-order mark
+ (U+FEFF).<p>Generally, each JSON text in a JSON text sequence is
+ written as follows: Write a record separator byte (0x1e), then write
+ the JSON text in UTF-8 (without a byte order mark, U+FEFF), then
+ write the line feed byte (0x0a). RFC 7464, however, uses a more
+ liberal syntax for parsing JSON text sequences.</p>
+
+**Parameters:**
+
+* <code>data</code> - A byte array in which a JSON text sequence is encoded.
+
+* <code>options</code> - Specifies options to control the JSON decoding process.
+
+**Returns:**
+
+* A list of CBOR objects read from the JSON sequence. Objects that
+ could not be parsed are replaced with <code>null</code> (as opposed to
+ <code>CBORObject.Null</code>) in the given list.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>data</code> is null.
+
+* <code>CBORException</code> - The byte array is not empty and
+ does not begin with a record separator byte (0x1e), or an I/O error
+ occurred.
+
 ### DecodeFromBytes
     public static CBORObject DecodeFromBytes​(byte[] data, CBOREncodeOptions options)
 Generates a CBOR object from an array of CBOR-encoded bytes, using the given
@@ -1307,6 +1463,72 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  is null.
 
 ### FromJSONString
+    public static CBORObject FromJSONString​(java.lang.String str, int offset, int count)
+<p>Generates a CBOR object from a text string in JavaScript object Notation
+ (JSON) format.</p> <p>If a JSON object has duplicate keys, a
+ CBORException is thrown. This is a change in version 4.0.</p>
+ <p>Note that if a CBOR object is converted to JSON with
+ <code>ToJSONString</code>, then the JSON is converted back to CBOR with
+ this method, the new CBOR object will not necessarily be the same as
+ the old CBOR object, especially if the old CBOR object uses data
+ types not supported in JSON, such as integers in map keys.</p>
+
+**Parameters:**
+
+* <code>str</code> - A text string in JSON format. The entire string must contain a
+ single JSON object and not multiple objects. The string may not
+ begin with a byte-order mark (U+FEFF).
+
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>str</code> begins.
+
+* <code>count</code> - The length, in code units, of the desired portion of <code>
+ str</code> (but not more than <code>str</code> 's length).
+
+**Returns:**
+
+* A CBOR object.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+
+* <code>CBORException</code> - The string is not in JSON format.
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
+ than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ length minus <code>offset</code> is less than <code>count</code>.
+
+### FromJSONString
+    public static CBORObject FromJSONString​(java.lang.String str, JSONOptions jsonoptions)
+Generates a CBOR object from a text string in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process. <p>Note that if a CBOR object is converted to JSON with
+ <code>ToJSONString</code>, then the JSON is converted back to CBOR with
+ this method, the new CBOR object will not necessarily be the same as
+ the old CBOR object, especially if the old CBOR object uses data
+ types not supported in JSON, such as integers in map keys.</p>
+
+**Parameters:**
+
+* <code>str</code> - A text string in JSON format. The entire string must contain a
+ single JSON object and not multiple objects. The string may not
+ begin with a byte-order mark (U+FEFF).
+
+* <code>jsonoptions</code> - Specifies options to control the JSON decoding process.
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> or <code>
+ jsonoptions</code> is null.
+
+* <code>CBORException</code> - The string is not in JSON format.
+
+### FromJSONString
     public static CBORObject FromJSONString​(java.lang.String str)
 <p>Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format.</p> <p>If a JSON object has duplicate keys, a
@@ -1319,9 +1541,9 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 
 **Parameters:**
 
-* <code>str</code> - A string in JSON format. The entire string must contain a single
- JSON object and not multiple objects. The string may not begin with
- a byte-order mark (U+FEFF).
+* <code>str</code> - A text string in JSON format. The entire string must contain a
+ single JSON object and not multiple objects. The string may not
+ begin with a byte-order mark (U+FEFF).
 
 **Returns:**
 
@@ -1343,9 +1565,9 @@ Instead, use.getFromJSONString()(str,
 
 **Parameters:**
 
-* <code>str</code> - A string in JSON format. The entire string must contain a single
- JSON object and not multiple objects. The string may not begin with
- a byte-order mark (U+FEFF).
+* <code>str</code> - A text string in JSON format. The entire string must contain a
+ single JSON object and not multiple objects. The string may not
+ begin with a byte-order mark (U+FEFF).
 
 * <code>options</code> - Specifies options to control the decoding process. This
  method uses only the AllowDuplicateKeys property of this object.
@@ -1362,7 +1584,7 @@ Instead, use.getFromJSONString()(str,
 * <code>CBORException</code> - The string is not in JSON format.
 
 ### FromJSONString
-    public static CBORObject FromJSONString​(java.lang.String str, JSONOptions jsonoptions)
+    public static CBORObject FromJSONString​(java.lang.String str, int offset, int count, JSONOptions jsonoptions)
 Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding
  process. <p>Note that if a CBOR object is converted to JSON with
@@ -1373,11 +1595,16 @@ Generates a CBOR object from a text string in JavaScript object Notation
 
 **Parameters:**
 
-* <code>str</code> - A string in JSON format. The entire string must contain a single
- JSON object and not multiple objects. The string may not begin with
- a byte-order mark (U+FEFF).
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>jsonoptions</code> - Specifies options to control the JSON decoding process.
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>str</code> begins.
+
+* <code>count</code> - The length, in code units, of the desired portion of <code>
+ str</code> (but not more than <code>str</code> 's length).
+
+* <code>jsonoptions</code> - The parameter <code>jsonoptions</code> is a Cbor.JSONOptions
+ object.
 
 **Returns:**
 
@@ -1389,6 +1616,10 @@ Generates a CBOR object from a text string in JavaScript object Notation
  jsonoptions</code> is null.
 
 * <code>CBORException</code> - The string is not in JSON format.
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
+ than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ length minus <code>offset</code> is less than <code>count</code>.
 
 ### ToObject
     public <T> T ToObject​(java.lang.reflect.Type t)
@@ -1534,15 +1765,27 @@ Converts this CBOR object to an object of an arbitrary type. See the
  in the next major version), or if the value, once converted to an
  integer by discarding its fractional part, is less than -2^63 or
  greater than 2^63-1 (currently ArithmeticException, but may change in
- the next major version).</li> <li>If the type is a primitive integer
- type (<code>byte</code> , <code>int</code> , as well as <code>sbyte</code> ,
- <code>ushort</code> , <code>uint</code> , and <code>ulong</code> in.getNET()) or a
- primitive floating-point type (<code>float</code> , <code>double</code> , as
- well as <code>decimal</code> in.getNET()), returns the result of the
- corresponding As* method. [TODO: Move info on deprecated As* methods
- here.]</li> <li>If the type is <code>string</code> , returns the result of
- AsString.</li> <li>If the type is <code>EFloat</code> , <code>EDecimal</code> ,
- <code>EInteger</code> , or <code>ERational</code> in the <code>PeterO.Numbers</code>
+ the next major version).</li> <li>If the type is <code>short</code> , the
+ same rules as for <code>long</code> are used, but the range is from -32768
+ through 32767 and the return type is <code>short</code> .</li> <li>If the
+ type is <code>byte</code> , the same rules as for <code>long</code> are used,
+ but the range is from 0 through 255 and the return type is
+ <code>byte</code> .</li> <li>If the type is <code>sbyte</code> , the same rules
+ as for <code>long</code> are used, but the range is from -128 through 127
+ and the return type is <code>sbyte</code> .</li> <li>If the type is
+ <code>ushort</code> , the same rules as for <code>long</code> are used, but the
+ range is from 0 through 65535 and the return type is <code>ushort</code>
+.</li> <li>If the type is <code>uint</code> , the same rules as for
+ <code>long</code> are used, but the range is from 0 through 2^31-1 and the
+ return type is <code>uint</code> .</li> <li>If the type is <code>ulong</code> ,
+ the same rules as for <code>long</code> are used, but the range is from 0
+ through 2^63-1 and the return type is <code>ulong</code> .</li> <li>If the
+ type is <code>int</code> or a primitive floating-point type (<code>float</code>
+ , <code>double</code> , as well as <code>decimal</code> in.getNET()), returns the
+ result of the corresponding As* method.</li> <li>If the type is
+ <code>string</code> , returns the result of AsString.</li> <li>If the type
+ is <code>EFloat</code> , <code>EDecimal</code> , <code>EInteger</code> , or
+ <code>ERational</code> in the <code>PeterO.Numbers</code>
   library (in .NET) or the <code>com.github.peteroupc/numbers</code>
   artifact (in Java), converts the given object to a number of
  the corresponding type and throws an exception (currently
@@ -1703,7 +1946,7 @@ Generates a CBOR object from a 64-bit signed integer.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 ### FromObject
     public static CBORObject FromObject​(CBORObject value)
@@ -1715,7 +1958,8 @@ Generates a CBOR object from a CBOR object.
 
 **Returns:**
 
-* Same as.
+* Same as <code>value</code>, or "CBORObject.Null" is <code>value</code> is
+ null.
 
 ### CalcEncodedSize
     public long CalcEncodedSize()
@@ -1825,7 +2069,7 @@ Generates a CBOR object from a text string.
 
 **Parameters:**
 
-* <code>strValue</code> - A string value. Can be null.
+* <code>strValue</code> - A text string value. Can be null.
 
 **Returns:**
 
@@ -1847,7 +2091,7 @@ Generates a CBOR object from a 32-bit signed integer.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 ### FromObject
     public static CBORObject FromObject​(short value)
@@ -2102,25 +2346,25 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  specially handled above, this method checks the <paramref name='obj'/> parameter for eligible getters as follows:</li> <li>(*)
  In the .NET version, eligible getters are the public, nonstatic
  getters of read/write properties (and also those of read-only
- properties in the case of a compiler-generated type). Eligible
- getters also include public, nonstatic, non- <code>static final</code> , non-
- <code>readonly</code> fields. If a class has two properties and/or fields
-  of the form "X" and "IsX", where "X" is any name, or has multiple
- properties and/or fields with the same name, those properties and
- fields are ignored.</li> <li>(*) In the Java version, eligible
-  getters are public, nonstatic methods starting with "get" or "is"
- (either word followed by a character other than a basic digit or
-  lower-case letter, that is, other than "a" to "z" or "0" to "9"),
- that take no parameters and do not return void, except that methods
-  named "getClass" are not eligible getters. In addition, public,
- nonstatic, nonfinal fields are also eligible getters. If a class has
- two otherwise eligible getters (methods and/or fields) of the form
-  "isX" and "getX", where "X" is the same in both, or two such getters
- with the same name but different return type, they are not eligible
- getters.</li> <li>Then, the method returns a CBOR map with each
- eligible getter's name or property name as each key, and with the
- corresponding value returned by that getter as that key's value.
- Before adding a key-value pair to the map, the key's name is
+ properties in the case of a compiler-generated type or an F# type).
+ Eligible getters also include public, nonstatic, non- <code>static final</code>,
+ non- <code>readonly</code> fields. If a class has two properties and/or
+  fields of the form "X" and "IsX", where "X" is any name, or has
+ multiple properties and/or fields with the same name, those
+ properties and fields are ignored.</li> <li>(*) In the Java version,
+  eligible getters are public, nonstatic methods starting with "get"
+  or "is" (either word followed by a character other than a basic
+  digit or lower-case letter, that is, other than "a" to "z" or "0" to
+  "9"), that take no parameters and do not return void, except that
+  methods named "getClass" are not eligible getters. In addition,
+ public, nonstatic, nonfinal fields are also eligible getters. If a
+ class has two otherwise eligible getters (methods and/or fields) of
+  the form "isX" and "getX", where "X" is the same in both, or two
+ such getters with the same name but different return type, they are
+ not eligible getters.</li> <li>Then, the method returns a CBOR map
+ with each eligible getter's name or property name as each key, and
+ with the corresponding value returned by that getter as that key's
+ value. Before adding a key-value pair to the map, the key's name is
  adjusted according to the rules described in the <code>PODOptions</code> documentation. Note that for
  security reasons, certain types are not supported even if they
  contain eligible getters.</li></ul> <p><b>REMARK:</b>.NET
@@ -2163,10 +2407,38 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 * <code>CBORException</code> - An error occurred while
  converting the given object to a CBOR object.
 
+### WithTag
+    public CBORObject WithTag​(com.upokecenter.numbers.EInteger bigintTag)
+Generates a CBOR object from this one, but gives the resulting object a tag
+ in addition to its existing tags (the new tag is made the outermost
+ tag).
+
+**Parameters:**
+
+* <code>bigintTag</code> - Tag number. The tag number 55799 can be used to mark a
+  "self-described CBOR" object. This document does not attempt to list
+ all CBOR tags and their meanings. An up-to-date list can be found at
+ the CBOR Tags registry maintained by the Internet Assigned Numbers
+ Authority(<i>iana.org/assignments/cbor-tags</i>).
+
+**Returns:**
+
+* A CBOR object with the same value as this one but given the tag
+ <code>bigintTag</code> in addition to its existing tags (the new tag is
+ made the outermost tag).
+
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>bigintTag</code> is less than 0 or
+ greater than 2^64-1.
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bigintTag</code> is null.
+
 ### FromObjectAndTag
     public static CBORObject FromObjectAndTag​(java.lang.Object valueOb, com.upokecenter.numbers.EInteger bigintTag)
 Generates a CBOR object from an arbitrary object and gives the resulting
- object a tag.
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
 
 **Parameters:**
 
@@ -2199,10 +2471,36 @@ Generates a CBOR object from an arbitrary object and gives the resulting
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>bigintTag</code> is null.
 
+### WithTag
+    public CBORObject WithTag​(int smallTag)
+Generates a CBOR object from an arbitrary object and gives the resulting
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
+
+**Parameters:**
+
+* <code>smallTag</code> - A 32-bit integer that specifies a tag number. The tag number
+  55799 can be used to mark a "self-described CBOR" object. This
+ document does not attempt to list all CBOR tags and their meanings.
+ An up-to-date list can be found at the CBOR Tags registry maintained
+ by the Internet Assigned Numbers Authority(
+ <i>iana.org/assignments/cbor-tags</i>).
+
+**Returns:**
+
+* A CBOR object with the same value as this one but given the tag
+ <code>smallTag</code> in addition to its existing tags (the new tag is
+ made the outermost tag).
+
+**Throws:**
+
+* <code>java.lang.IllegalArgumentException</code> - The parameter <code>smallTag</code> is less than 0.
+
 ### FromObjectAndTag
     public static CBORObject FromObjectAndTag​(java.lang.Object valueObValue, int smallTag)
 Generates a CBOR object from an arbitrary object and gives the resulting
- object a tag.
+ object a tag in addition to its existing tags (the new tag is made
+ the outermost tag).
 
 **Parameters:**
 
@@ -2244,7 +2542,7 @@ Creates a CBOR object from a simple value number.
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 **Throws:**
 
@@ -2404,8 +2702,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  UTF-16, or UTF-32 encoding; the encoding is detected by assuming
  that the first character read must be a byte-order mark or a nonzero
  basic character (U+0001 to U+007F). (In previous versions, only
- UTF-8 was allowed.) <p>If a JSON object has the same key, only the
- last given value will be used for each duplicated key.</p>
+ UTF-8 was allowed.).
 
 **Parameters:**
 
@@ -2415,7 +2712,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 **Throws:**
 
@@ -2425,6 +2722,38 @@ Generates a CBOR object from a data stream in JavaScript object Notation
 
 * <code>CBORException</code> - The data stream contains invalid
  encoding or is not in JSON format.
+
+### ReadJSONSequence
+    public static CBORObject[] ReadJSONSequence​(java.io.InputStream stream) throws java.io.IOException
+Generates a list of CBOR objects from a data stream in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464). The data stream
+ must be in UTF-8 encoding and may not begin with a byte-order mark
+ (U+FEFF).<p>Generally, each JSON text in a JSON text sequence is
+ written as follows: Write a record separator byte (0x1e), then write
+ the JSON text in UTF-8 (without a byte order mark, U+FEFF), then
+ write the line feed byte (0x0a). RFC 7464, however, uses a more
+ liberal syntax for parsing JSON text sequences.</p>
+
+**Parameters:**
+
+* <code>stream</code> - A readable data stream. The sequence of bytes read from the
+ data stream must either be empty or begin with a record separator
+ byte (0x1e).
+
+**Returns:**
+
+* A list of CBOR objects read from the JSON sequence. Objects that
+ could not be parsed are replaced with <code>null</code> (as opposed to
+ <code>CBORObject.Null</code>) in the given list.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
+
+* <code>java.io.IOException</code> - An I/O error occurred.
+
+* <code>CBORException</code> - The data stream is not empty and
+ does not begin with a record separator byte (0x1e).
 
 ### ReadJSON
     @Deprecated public static CBORObject ReadJSON​(java.io.InputStream stream, CBOREncodeOptions options) throws java.io.IOException
@@ -2457,6 +2786,41 @@ Instead, use.getReadJSON()(stream,
 * <code>CBORException</code> - The data stream contains invalid
  encoding or is not in JSON format.
 
+### ReadJSONSequence
+    public static CBORObject[] ReadJSONSequence​(java.io.InputStream stream, JSONOptions jsonoptions) throws java.io.IOException
+Generates a list of CBOR objects from a data stream in JavaScript object
+ Notation (JSON) text sequence format (RFC 7464). The data stream
+ must be in UTF-8 encoding and may not begin with a byte-order mark
+ (U+FEFF).<p>Generally, each JSON text in a JSON text sequence is
+ written as follows: Write a record separator byte (0x1e), then write
+ the JSON text in UTF-8 (without a byte order mark, U+FEFF), then
+ write the line feed byte (0x0a). RFC 7464, however, uses a more
+ liberal syntax for parsing JSON text sequences.</p>
+
+**Parameters:**
+
+* <code>stream</code> - A readable data stream. The sequence of bytes read from the
+ data stream must either be empty or begin with a record separator
+ byte (0x1e).
+
+* <code>jsonoptions</code> - Specifies options to control how JSON texts in the stream
+ are decoded to CBOR. See the JSONOptions class.
+
+**Returns:**
+
+* A list of CBOR objects read from the JSON sequence. Objects that
+ could not be parsed are replaced with <code>null</code> (as opposed to
+ <code>CBORObject.Null</code>) in the given list.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>stream</code> is null.
+
+* <code>java.io.IOException</code> - An I/O error occurred.
+
+* <code>CBORException</code> - The data stream is not empty and
+ does not begin with a record separator byte (0x1e).
+
 ### ReadJSON
     public static CBORObject ReadJSON​(java.io.InputStream stream, JSONOptions jsonoptions) throws java.io.IOException
 Generates a CBOR object from a data stream in JavaScript object Notation
@@ -2466,8 +2830,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  UTF-32 encoding; the encoding is detected by assuming that the first
  character read must be a byte-order mark or a nonzero basic
  character (U+0001 to U+007F). (In previous versions, only UTF-8 was
- allowed.) <p>By default, if a JSON object has the same key, only the
- last given value will be used for each duplicated key.</p>
+ allowed.).
 
 **Parameters:**
 
@@ -2475,8 +2838,8 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  data stream must contain a single JSON object and not multiple
  objects.
 
-* <code>jsonoptions</code> - The parameter <code>jsonoptions</code> is a Cbor.JSONOptions
- object.
+* <code>jsonoptions</code> - Specifies options to control how the JSON stream is
+ decoded to CBOR. See the JSONOptions class.
 
 **Returns:**
 
@@ -2490,6 +2853,158 @@ Generates a CBOR object from a data stream in JavaScript object Notation
 
 * <code>CBORException</code> - The data stream contains invalid
  encoding or is not in JSON format.
+
+### FromJSONBytes
+    public static CBORObject FromJSONBytes​(byte[] bytes)
+<p>Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format.</p> <p>If a JSON object has duplicate keys, a
+ CBORException is thrown.</p> <p>Note that if a CBOR object is
+ converted to JSON with <code>ToJSONBytes</code>, then the JSON is
+ converted back to CBOR with this method, the new CBOR object will
+ not necessarily be the same as the old CBOR object, especially if
+ the old CBOR object uses data types not supported in JSON, such as
+ integers in map keys.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array in JSON format. The entire byte array must contain
+ a single JSON object and not multiple objects. The byte array may
+ begin with a byte-order mark (U+FEFF). The byte array can be in
+ UTF-8, UTF-16, or UTF-32 encoding; the encoding is detected by
+ assuming that the first character read must be a byte-order mark or
+ a nonzero basic character (U+0001 to U+007F).
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
+
+* <code>CBORException</code> - The byte array contains invalid
+ encoding or is not in JSON format.
+
+### FromJSONBytes
+    public static CBORObject FromJSONBytes​(byte[] bytes, JSONOptions jsonoptions)
+Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process. <p>Note that if a CBOR object is converted to JSON with
+ <code>ToJSONBytes</code>, then the JSON is converted back to CBOR with
+ this method, the new CBOR object will not necessarily be the same as
+ the old CBOR object, especially if the old CBOR object uses data
+ types not supported in JSON, such as integers in map keys.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array in JSON format. The entire byte array must contain
+ a single JSON object and not multiple objects. The byte array may
+ begin with a byte-order mark (U+FEFF). The byte array can be in
+ UTF-8, UTF-16, or UTF-32 encoding; the encoding is detected by
+ assuming that the first character read must be a byte-order mark or
+ a nonzero basic character (U+0001 to U+007F).
+
+* <code>jsonoptions</code> - Specifies options to control how the JSON data is decoded
+ to CBOR. See the JSONOptions class.
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> or <code>
+ jsonoptions</code> is null.
+
+* <code>CBORException</code> - The byte array contains invalid
+ encoding or is not in JSON format.
+
+### FromJSONBytes
+    public static CBORObject FromJSONBytes​(byte[] bytes, int offset, int count)
+<p>Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format.</p> <p>If a JSON object has duplicate keys, a
+ CBORException is thrown.</p> <p>Note that if a CBOR object is
+ converted to JSON with <code>ToJSONBytes</code>, then the JSON is
+ converted back to CBOR with this method, the new CBOR object will
+ not necessarily be the same as the old CBOR object, especially if
+ the old CBOR object uses data types not supported in JSON, such as
+ integers in map keys.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array, the specified portion of which is in JSON format.
+ The specified portion of the byte array must contain a single JSON
+ object and not multiple objects. The portion may begin with a
+ byte-order mark (U+FEFF). The portion can be in UTF-8, UTF-16, or
+ UTF-32 encoding; the encoding is detected by assuming that the first
+ character read must be a byte-order mark or a nonzero basic
+ character (U+0001 to U+007F).
+
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>bytes</code> begins.
+
+* <code>count</code> - The length, in bytes, of the desired portion of <code>bytes</code>
+ (but not more than <code>bytes</code> 's length).
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
+
+* <code>CBORException</code> - The byte array contains invalid
+ encoding or is not in JSON format.
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
+ than 0 or greater than <code>bytes</code> 's length, or <code>bytes</code> 's
+ length minus <code>offset</code> is less than <code>count</code>.
+
+### FromJSONBytes
+    public static CBORObject FromJSONBytes​(byte[] bytes, int offset, int count, JSONOptions jsonoptions)
+Generates a CBOR object from a byte array in JavaScript object Notation
+ (JSON) format, using the specified options to control the decoding
+ process. <p>Note that if a CBOR object is converted to JSON with
+ <code>ToJSONBytes</code>, then the JSON is converted back to CBOR with
+ this method, the new CBOR object will not necessarily be the same as
+ the old CBOR object, especially if the old CBOR object uses data
+ types not supported in JSON, such as integers in map keys.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - A byte array, the specified portion of which is in JSON format.
+ The specified portion of the byte array must contain a single JSON
+ object and not multiple objects. The portion may begin with a
+ byte-order mark (U+FEFF). The portion can be in UTF-8, UTF-16, or
+ UTF-32 encoding; the encoding is detected by assuming that the first
+ character read must be a byte-order mark or a nonzero basic
+ character (U+0001 to U+007F).
+
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>bytes</code> begins.
+
+* <code>count</code> - The length, in bytes, of the desired portion of <code>bytes</code>
+ (but not more than <code>bytes</code> 's length).
+
+* <code>jsonoptions</code> - Specifies options to control how the JSON data is decoded
+ to CBOR. See the JSONOptions class.
+
+**Returns:**
+
+* A CBOR object containing the JSON data decoded.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> or <code>
+ jsonoptions</code> is null.
+
+* <code>CBORException</code> - The byte array contains invalid
+ encoding or is not in JSON format.
+
+* <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
+ than 0 or greater than <code>bytes</code> 's length, or <code>bytes</code> 's
+ length minus <code>offset</code> is less than <code>count</code>.
 
 ### Remainder
     @Deprecated public static CBORObject Remainder​(CBORObject first, CBORObject second)
@@ -2538,7 +3053,7 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 
 ### Write
     public static void Write​(java.lang.String str, java.io.OutputStream stream) throws java.io.IOException
-<p>Writes a string in CBOR format to a data stream. The string will be
+<p>Writes a text string in CBOR format to a data stream. The string will be
  encoded using definite-length encoding regardless of its length.</p>
 
 **Parameters:**
@@ -2555,8 +3070,8 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
 
 ### Write
     public static void Write​(java.lang.String str, java.io.OutputStream stream, CBOREncodeOptions options) throws java.io.IOException
-Writes a string in CBOR format to a data stream, using the given options to
- control the encoding process.
+Writes a text string in CBOR format to a data stream, using the given
+ options to control the encoding process.
 
 **Parameters:**
 
@@ -2837,7 +3352,7 @@ Writes an arbitrary object to a CBOR data stream, using the specified
 
 ### WriteJSON
     public static void WriteJSON​(java.lang.Object obj, java.io.OutputStream outputStream) throws java.io.IOException
-Converts an arbitrary object to a string in JavaScript object Notation
+Converts an arbitrary object to a text string in JavaScript object Notation
  (JSON) format, as in the ToJSONString method, and writes that string
  to a data stream in UTF-8. If the object is convertible to a CBOR
  map, or to a CBOR object that contains CBOR maps, the keys to those
@@ -3245,12 +3760,12 @@ Converts this object to a CBOR number. (NOTE: To determine whether this
     public int AsInt32()
 Converts this object to a 32-bit signed integer. Non-integer number values
  are converted to integers by discarding their fractional parts.
- (NOTE: To determine whether this method call can succeed, call the
- <b>CanTruncatedIntFitInInt32</b> method before calling this method.
- See the example. [TODO: Specify alternative.]).<p> </p><p>The following
- example code (originally written in C# for the.NET Framework) shows
- a way to check whether a given CBOR object stores a 32-bit signed
-  integer before getting its value.</p> <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.isIntegral() &amp;&amp; obj.AsNumber().CanFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32()); }</pre> .
+ (NOTE: To determine whether this method call can succeed, call
+ <b>AsNumber().getCanTruncatedIntFitInInt32()</b> before calling this
+ method. See the example.).<p> </p><p>The following example code
+ (originally written in C# for the.NET Framework) shows a way to
+ check whether a given CBOR object stores a 32-bit signed integer
+  before getting its value.</p> <pre>CBORObject obj = CBORObject.FromInt32(99999); if (obj.AsNumber().CanTruncatedIntFitInInt32()) { /* Not an Int32; handle the error */ System.out.println("Not a 32-bit integer."); } else { System.out.println("The value is " + obj.AsInt32()); }</pre> .
 
 **Returns:**
 
@@ -3310,10 +3825,10 @@ Gets the value of this object as a text string.
 
 **Throws:**
 
-* <code>java.lang.IllegalStateException</code> - This object's type is not a string (for the
- purposes of this method, infinity and not-a-number values, but not
- <code>CBORObject.Null</code>, are considered numbers). To check the CBOR
- object for null before conversion, use the following idiom
+* <code>java.lang.IllegalStateException</code> - This object's type is not a text string (for
+ the purposes of this method, infinity and not-a-number values, but
+ not <code>CBORObject.Null</code>, are considered numbers). To check the
+ CBOR object for null before conversion, use the following idiom
  (originally written in C# for the.NET version): <code>(cbor == null
  || cbor.isNull()) ? null : cbor.AsString()</code>.
 
@@ -3489,8 +4004,8 @@ Determines whether a value of the given key exists in this object.
 
 **Parameters:**
 
-* <code>key</code> - A string that serves as the key. If this is <code>null</code>, checks
- for <code>CBORObject.Null</code>.
+* <code>key</code> - A text string that serves as the key. If this is <code>null</code>,
+ checks for <code>CBORObject.Null</code>.
 
 **Returns:**
 
@@ -3966,19 +4481,20 @@ Maps an object to a key in this CBOR map, or adds the value if the key
 
 ### ToJSONString
     public java.lang.String ToJSONString()
-Converts this object to a string in JavaScript object Notation (JSON)
- format. See the overload to JSONString taking a JSONOptions argument
- for further information. <p>If the CBOR object contains CBOR maps,
- or is a CBOR map itself, the keys to the map are written out to the
- JSON string in an undefined order. Map keys other than untagged text
- strings are converted to JSON strings before writing them out (for
-  example, <code>22("Test")</code> is converted to <code>"Test"</code> and
-  <code>true</code> is converted to <code>"true"</code>). If, after such
- conversion, two or more map keys are identical, this method throws a
- CBORException. The example code given in
+Converts this object to a text string in JavaScript object Notation (JSON)
+ format. See the overload to ToJSONString taking a JSONOptions
+ argument for further information. <p>If the CBOR object contains
+ CBOR maps, or is a CBOR map itself, the keys to the map are written
+ out to the JSON string in an undefined order. Map keys other than
+ untagged text strings are converted to JSON strings before writing
+  them out (for example, <code>22("Test")</code> is converted to
+  <code>"Test"</code> and <code>true</code> is converted to <code>"true"</code>). If,
+ after such conversion, two or more map keys are identical, this
+ method throws a CBORException. The example code given in
  <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
  can be used to write out certain keys of a CBOR map in a given order
- to a JSON string.</p> <p><b>Warning:</b> In general, if this CBOR
+ to a JSON string, or to write out a CBOR object as part of a JSON
+ text sequence.</p> <p><b>Warning:</b> In general, if this CBOR
  object contains integer map keys or uses other features not
  supported in JSON, and the application converts this CBOR object to
  JSON and back to CBOR, the application <i>should not</i> expect the
@@ -3991,11 +4507,11 @@ Converts this object to a string in JavaScript object Notation (JSON)
 
 **Returns:**
 
-* A text string.
+* A text string containing the converted object in JSON format.
 
 ### ToJSONString
     public java.lang.String ToJSONString​(JSONOptions options)
-Converts this object to a string in JavaScript object Notation (JSON)
+Converts this object to a text string in JavaScript object Notation (JSON)
  format, using the specified options to control the encoding process.
  This function works not only with arrays and maps, but also
  integers, strings, byte arrays, and other JSON data types. Notes:
@@ -4046,12 +4562,11 @@ Converts this object to a string in JavaScript object Notation (JSON)
 
 **Parameters:**
 
-* <code>options</code> - An object containing the options to control writing the CBOR
- object to JSON.
+* <code>options</code> - Specifies options to control writing the CBOR object to JSON.
 
 **Returns:**
 
-* A text string containing the converted object.
+* A text string containing the converted object in JSON format.
 
 **Throws:**
 
@@ -4059,13 +4574,14 @@ Converts this object to a string in JavaScript object Notation (JSON)
 
 ### toString
     public java.lang.String toString()
-Returns this CBOR object in string form. The format is intended to be
- human-readable, not machine-readable, the format is not intended to
- be parsed, and the format may change at any time. The returned
- string is not necessarily in JavaScript object Notation (JSON); to
- convert CBOR objects to JSON strings, use the
+Returns this CBOR object in a text form intended to be read by humans. The
+ value returned by this method is not intended to be parsed by
+ computer programs, and the exact text of the value may change at any
+ time between versions of this library. <p>The returned string is not
+ necessarily in JavaScript object Notation (JSON); to convert CBOR
+ objects to JSON strings, use the
  <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
- method instead.
+ method instead.</p>
 
 **Overrides:**
 
@@ -4084,7 +4600,7 @@ Gets an object with the same value as this one but without the tags it has,
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 ### UntagOne
     public CBORObject UntagOne()
@@ -4095,11 +4611,11 @@ Gets an object with the same value as this one but without this object's
 
 **Returns:**
 
-* A CBORObject object.
+* A CBOR object.
 
 ### WriteJSONTo
     public void WriteJSONTo​(java.io.OutputStream outputStream) throws java.io.IOException
-Converts this object to a string in JavaScript object Notation (JSON)
+Converts this object to a text string in JavaScript object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8. If the CBOR object contains CBOR maps, or is a
  CBOR map, the keys to the map are written out to the JSON string in
@@ -4107,7 +4623,9 @@ Converts this object to a string in JavaScript object Notation (JSON)
  <b>PeterO.Cbor.CBORObject.ToJSONString(PeterO.Cbor.JSONOptions)</b>
  can be used to write out certain keys of a CBOR map in a given order
  to a JSON string.<p> </p><p>The following example (originally written in
- C# for the.NET version) shows how to use the
+ C# for the.NET version) writes out a CBOR object as part of a JSON
+ text sequence (RFC 7464).</p> <pre> stream.write(0x1e); /* RS */ cborObject.WriteJSONTo(stream); /* JSON */ stream.write(0x0a); /* LF */ </pre> <p>The following example (originally written
+ in C# for the.NET version) shows how to use the
  <code>LimitedMemoryStream</code> class (implemented in
  <i>LimitedMemoryStream.cs</i> in the peteroupc/CBOR open-source
  repository) to limit the size of supported JSON serializations of
@@ -4154,7 +4672,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
 ### WriteJSONTo
     public void WriteJSONTo​(java.io.OutputStream outputStream, JSONOptions options) throws java.io.IOException
-Converts this object to a string in JavaScript object Notation (JSON)
+Converts this object to a text string in JavaScript object Notation (JSON)
  format, as in the ToJSONString method, and writes that string to a
  data stream in UTF-8, using the given JSON options to control the
  encoding process. If the CBOR object contains CBOR maps, or is a

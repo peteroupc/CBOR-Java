@@ -12,6 +12,8 @@ import java.lang.reflect.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,6 +281,11 @@ if(!setters){
       (setters ? setterPropertyList : propertyLists).put(t, ret);
       return ret;
     }
+  }
+
+  public static <K, V> Collection<Map.Entry<K, V>>
+         GetEntries(Map<? extends K, ? extends V> dict) {
+      return Collections.unmodifiableMap(dict).entrySet();
   }
 
   /**

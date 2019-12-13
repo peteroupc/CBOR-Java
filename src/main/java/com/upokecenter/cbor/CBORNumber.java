@@ -3,8 +3,6 @@ package com.upokecenter.cbor;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-// TODO: Consider renaming As* methods here to To*
-
   /**
    * An instance of a number that CBOR or certain CBOR tags can represent. For
    * this purpose, infinities and not-a-number or NaN values are considered
@@ -15,7 +13,10 @@ import com.upokecenter.numbers.*;
    */
 
   public final class CBORNumber implements Comparable<CBORNumber> {
-    enum Kind {
+    /**
+     * Specifies the underlying form of this CBOR number object.
+     */
+    public enum NumberKind {
       /**
        * A 64-bit signed integer.
        */
@@ -56,9 +57,9 @@ import com.upokecenter.numbers.*;
       new CBORExtendedRational(),
     };
 
-    private final Kind kind;
+    private final NumberKind kind;
     private final Object value;
-    CBORNumber(Kind kind, Object value) {
+    CBORNumber(NumberKind kind, Object value) {
       this.kind = kind;
       this.value = value;
     }
@@ -76,7 +77,7 @@ import com.upokecenter.numbers.*;
       return this.value;
     }
 
-    static ICBORNumber GetNumberInterface(Kind kind) {
+    static ICBORNumber GetNumberInterface(NumberKind kind) {
       switch (kind) {
         case Integer:
           return NumberInterfaces[0];
@@ -103,13 +104,15 @@ import com.upokecenter.numbers.*;
       return CBORObject.FromObject(this.value);
     }
 
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
+     * positive; 0 if zero. Not-a-number (NaN) values are positive or
+     * negative depending on what sign is stored in their underlying forms.
+     * @return This value's sign.
+     */
     public final int signum() {
-        // TODO: Will return 2 if this is NaN; is this
-        // still desirable?
-        return this.GetNumberInterface().Sign(this.value);
+        return this.IsNaN() ? (this.IsNegative() ? -1 : 1) :
+this.GetNumberInterface().Sign(this.value);
       }
 
     static boolean IsNumber(CBORObject o) {
@@ -150,9 +153,9 @@ import com.upokecenter.numbers.*;
       }
       if (IsUntaggedInteger(o)) {
         if (o.CanValueFitInInt64()) {
-          return new CBORNumber(Kind.Integer, o.AsInt64Value());
+          return new CBORNumber(NumberKind.Integer, o.AsInt64Value());
         } else {
-          return new CBORNumber(Kind.EInteger, o.AsEIntegerValue());
+          return new CBORNumber(NumberKind.EInteger, o.AsEIntegerValue());
         }
       } else if (!o.isTagged() && o.getType() == CBORType.FloatingPoint) {
         return CBORNumber.FromObject(o.AsDoubleValue());
@@ -483,8 +486,20 @@ import com.upokecenter.numbers.*;
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Gets the underlying form of this CBOR number object.
+     * @return The underlying form of this CBOR number object.
+     */
+    public final NumberKind getKind() {
+  return this.kind;
+ }
+
+    /**
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be -(2^31) or greater, and less than
+     * 2^31.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be -(2^31) or greater, and
+     * less than 2^31; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt32() {
       return
@@ -492,8 +507,12 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be -(2^63) or greater, and less than
+     * 2^63.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be -(2^63) or greater, and
+     * less than 2^63; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt64() {
       switch (this.kind) {
@@ -508,24 +527,37 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Returns whether this object's value can be converted to a 32-bit floating
+     * point number without its value being rounded to another numerical
+     * value.
+     * @return {@code true} if this object's value can be converted to a 32-bit
+     * floating point number without its value being rounded to another
+     * numerical value, or if this is a not-a-number value, even if the
+     * value's diagnostic information can' t fit in a 32-bit floating point
+     * number; otherwise, {@code false}.
      */
     public boolean CanFitInSingle() {
       return this.GetNumberInterface().CanFitInSingle(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Returns whether this object's value can be converted to a 64-bit floating
+     * point number without its value being rounded to another numerical
+     * value.
+     * @return {@code true} if this object's value can be converted to a 64-bit
+     * floating point number without its value being rounded to another
+     * numerical value, or if this is a not-a-number value, even if the
+     * value's diagnostic information can't fit in a 64-bit floating point
+     * number; otherwise, {@code false}.
      */
     public boolean CanFitInDouble() {
       return this.GetNumberInterface().CanFitInDouble(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Gets a value indicating whether this CBOR object represents a finite number.
+     * @return {@code true} if this CBOR object represents a finite number;
+     * otherwise, {@code false}.
      */
     public boolean IsFinite() {
       switch (this.kind) {
@@ -538,8 +570,11 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Gets a value indicating whether this object represents an integer number,
+     * that is, a number without a fractional part. Infinity and
+     * not-a-number are not considered integers.
+     * @return {@code true} if this object represents an integer number, that is, a
+     * number without a fractional part; otherwise, {@code false}.
      */
     public boolean IsInteger() {
       switch (this.kind) {
@@ -552,16 +587,18 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Gets a value indicating whether this object is a negative number.
+     * @return {@code true} if this object is a negative number; otherwise, {@code
+     * false}.
      */
     public boolean IsNegative() {
       return this.GetNumberInterface().IsNegative(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Gets a value indicating whether this object's value equals 0.
+     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * false}.
      */
     public boolean IsZero() {
       switch (this.kind) {
@@ -574,8 +611,9 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Converts this object to an arbitrary-precision integer. See the ToObject
+     * overload taking a type for more information.
+     * @return The closest arbitrary-precision integer to this object.
      * @throws ArithmeticException This value is infinity or not-a-number.
      */
     public EInteger ToEInteger() {
@@ -583,8 +621,9 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Converts this object to an arbitrary-precision integer if its value is an
+     * integer.
+     * @return The arbitrary-precision integer given by object.
      * @throws ArithmeticException This value is infinity or not-a-number or is not
      * an exact integer.
      */
@@ -813,7 +852,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
           x = -x;
           --x;
         }
-        return new CBORNumber(Kind.Integer, x);
+        return new CBORNumber(NumberKind.Integer, x);
       }
       int neededLength = data.length;
       byte[] bytes;
@@ -839,9 +878,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
       }
       bi = EInteger.FromBytes(bytes, true);
       if (bi.CanFitInInt64()) {
-        return new CBORNumber(Kind.Integer, bi.ToInt64Checked());
+        return new CBORNumber(NumberKind.Integer, bi.ToInt64Checked());
       } else {
-        return new CBORNumber(Kind.EInteger, bi);
+        return new CBORNumber(NumberKind.EInteger, bi);
       }
     }
 
@@ -925,25 +964,25 @@ this.ToEIntegerIfExact().ToInt64Checked();
     }
 
     static CBORNumber FromObject(int intValue) {
-      return new CBORNumber(Kind.Integer, (long)intValue);
+      return new CBORNumber(NumberKind.Integer, (long)intValue);
     }
     static CBORNumber FromObject(long longValue) {
-      return new CBORNumber(Kind.Integer, longValue);
+      return new CBORNumber(NumberKind.Integer, longValue);
     }
     static CBORNumber FromObject(double doubleValue) {
-      return new CBORNumber(Kind.Double, doubleValue);
+      return new CBORNumber(NumberKind.Double, doubleValue);
     }
     static CBORNumber FromObject(EInteger eivalue) {
-      return new CBORNumber(Kind.EInteger, eivalue);
+      return new CBORNumber(NumberKind.EInteger, eivalue);
     }
     static CBORNumber FromObject(EFloat value) {
-      return new CBORNumber(Kind.EFloat, value);
+      return new CBORNumber(NumberKind.EFloat, value);
     }
     static CBORNumber FromObject(EDecimal value) {
-      return new CBORNumber(Kind.EDecimal, value);
+      return new CBORNumber(NumberKind.EDecimal, value);
     }
     static CBORNumber FromObject(ERational value) {
-      return new CBORNumber(Kind.ERational, value);
+      return new CBORNumber(NumberKind.ERational, value);
     }
 
     /**
@@ -1009,24 +1048,27 @@ this.ToEIntegerIfExact().ToInt64Checked();
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Converts this object to a decimal number.
+     * @return A decimal number for this object's value.
      */
     public EDecimal ToEDecimal() {
       return this.GetNumberInterface().AsEDecimal(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Converts this object to an arbitrary-precision binary floating point number.
+     * See the ToObject overload taking a type for more information.
+     * @return An arbitrary-precision binary floating-point number for this
+     * object's value.
      */
     public EFloat ToEFloat() {
       return this.GetNumberInterface().AsEFloat(this.GetValue());
     }
 
     /**
-     * Not documented yet.
-     * @return The return value is not documented yet.
+     * Converts this object to a rational number. See the ToObject overload taking
+     * a type for more information.
+     * @return A rational number for this object's value.
      */
     public ERational ToERational() {
       return this.GetNumberInterface().AsERational(this.GetValue());
@@ -1102,9 +1144,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
       CBORNumber a = this;
       Object objA = a.value;
       Object objB = b.value;
-      Kind typeA = a.kind;
-      Kind typeB = b.kind;
-      if (typeA == Kind.Integer && typeB == Kind.Integer) {
+      NumberKind typeA = a.kind;
+      NumberKind typeB = b.kind;
+      if (typeA == NumberKind.Integer && typeB == NumberKind.Integer) {
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         if ((valueA < 0 && valueB < Long.MIN_VALUE - valueA) ||
@@ -1113,31 +1155,31 @@ this.ToEIntegerIfExact().ToInt64Checked();
           return CBORNumber.FromObject(
               EInteger.FromInt64(valueA).Add(EInteger.FromInt64(valueB)));
         }
-        return new CBORNumber(Kind.Integer, valueA + valueB);
+        return new CBORNumber(NumberKind.Integer, valueA + valueB);
       }
-      if (typeA == Kind.ERational ||
-        typeB == Kind.ERational) {
+      if (typeA == NumberKind.ERational ||
+        typeB == NumberKind.ERational) {
         ERational e1 =
           GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(Kind.ERational, e1.Add(e2));
+        return new CBORNumber(NumberKind.ERational, e1.Add(e2));
       }
-      if (typeA == Kind.EDecimal ||
-        typeB == Kind.EDecimal) {
+      if (typeA == NumberKind.EDecimal ||
+        typeB == NumberKind.EDecimal) {
         EDecimal e1 =
           GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return new CBORNumber(Kind.EDecimal, e1.Add(e2));
+        return new CBORNumber(NumberKind.EDecimal, e1.Add(e2));
       }
-      if (typeA == Kind.EFloat || typeB == Kind.EFloat ||
-        typeA == Kind.Double || typeB == Kind.Double) {
+      if (typeA == NumberKind.EFloat || typeB == NumberKind.EFloat ||
+        typeA == NumberKind.Double || typeB == NumberKind.Double) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(Kind.EFloat, e1.Add(e2));
+        return new CBORNumber(NumberKind.EFloat, e1.Add(e2));
       } else {
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
-        return new CBORNumber(Kind.EInteger, b1.Add(b2));
+        return new CBORNumber(NumberKind.EInteger, b1.Add(b2));
       }
     }
 
@@ -1154,9 +1196,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
       CBORNumber a = this;
       Object objA = a.value;
       Object objB = b.value;
-      Kind typeA = a.kind;
-      Kind typeB = b.kind;
-      if (typeA == Kind.Integer && typeB == Kind.Integer) {
+      NumberKind typeA = a.kind;
+      NumberKind typeB = b.kind;
+      if (typeA == NumberKind.Integer && typeB == NumberKind.Integer) {
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         if ((valueB < 0 && Long.MAX_VALUE + valueB < valueA) ||
@@ -1166,27 +1208,27 @@ this.ToEIntegerIfExact().ToInt64Checked();
               EInteger.FromInt64(valueA).Subtract(EInteger.FromInt64(
                   valueB)));
         }
-        return new CBORNumber(Kind.Integer, valueA - valueB);
+        return new CBORNumber(NumberKind.Integer, valueA - valueB);
       }
-      if (typeA == Kind.ERational || typeB == Kind.ERational) {
+      if (typeA == NumberKind.ERational || typeB == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(Kind.ERational, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.ERational, e1.Subtract(e2));
       }
-      if (typeA == Kind.EDecimal || typeB == Kind.EDecimal) {
+      if (typeA == NumberKind.EDecimal || typeB == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return new CBORNumber(Kind.EDecimal, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.EDecimal, e1.Subtract(e2));
       }
-      if (typeA == Kind.EFloat || typeB == Kind.EFloat ||
-        typeA == Kind.Double || typeB == Kind.Double) {
+      if (typeA == NumberKind.EFloat || typeB == NumberKind.EFloat ||
+        typeA == NumberKind.Double || typeB == NumberKind.Double) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(Kind.EFloat, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.EFloat, e1.Subtract(e2));
       } else {
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
-        return new CBORNumber(Kind.EInteger, b1.Subtract(b2));
+        return new CBORNumber(NumberKind.EInteger, b1.Subtract(b2));
       }
     }
 
@@ -1204,9 +1246,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
       CBORNumber a = this;
       Object objA = a.value;
       Object objB = b.value;
-      Kind typeA = a.kind;
-      Kind typeB = b.kind;
-      if (typeA == Kind.Integer && typeB == Kind.Integer) {
+      NumberKind typeA = a.kind;
+      NumberKind typeB = b.kind;
+      if (typeA == NumberKind.Integer && typeB == NumberKind.Integer) {
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         boolean apos = valueA > 0L;
@@ -1224,31 +1266,31 @@ this.ToEIntegerIfExact().ToInt64Checked();
         }
         return CBORNumber.FromObject(valueA * valueB);
       }
-      if (typeA == Kind.ERational ||
-        typeB == Kind.ERational) {
+      if (typeA == NumberKind.ERational ||
+        typeB == NumberKind.ERational) {
         ERational e1 =
           GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
         return CBORNumber.FromObject(e1.Multiply(e2));
       }
-      if (typeA == Kind.EDecimal ||
-        typeB == Kind.EDecimal) {
+      if (typeA == NumberKind.EDecimal ||
+        typeB == NumberKind.EDecimal) {
         EDecimal e1 =
           GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         return CBORNumber.FromObject(e1.Multiply(e2));
       }
-      if (typeA == Kind.EFloat || typeB ==
-        Kind.EFloat || typeA == Kind.Double || typeB ==
-        Kind.Double) {
+      if (typeA == NumberKind.EFloat || typeB ==
+        NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
+        NumberKind.Double) {
         EFloat e1 =
           GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(Kind.EFloat, e1.Multiply(e2));
+        return new CBORNumber(NumberKind.EFloat, e1.Multiply(e2));
       } else {
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
-        return new CBORNumber(Kind.EInteger, b1.Multiply(b2));
+        return new CBORNumber(NumberKind.EInteger, b1.Multiply(b2));
       }
     }
 
@@ -1265,9 +1307,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
       CBORNumber a = this;
       Object objA = a.value;
       Object objB = b.value;
-      Kind typeA = a.kind;
-      Kind typeB = b.kind;
-      if (typeA == Kind.Integer && typeB == Kind.Integer) {
+      NumberKind typeA = a.kind;
+      NumberKind typeB = b.kind;
+      if (typeA == NumberKind.Integer && typeB == NumberKind.Integer) {
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         if (valueB == 0) {
@@ -1277,42 +1319,42 @@ this.ToEIntegerIfExact().ToInt64Checked();
               CBORNumber.FromObject(EDecimal.PositiveInfinity));
         }
         if (valueA == Long.MIN_VALUE && valueB == -1) {
-          return new CBORNumber(Kind.Integer, valueA).Negate();
+          return new CBORNumber(NumberKind.Integer, valueA).Negate();
         }
         long quo = valueA / valueB;
         long rem = valueA - (quo * valueB);
-        return (rem == 0) ? new CBORNumber(Kind.Integer, quo) :
-          new CBORNumber(Kind.ERational,
+        return (rem == 0) ? new CBORNumber(NumberKind.Integer, quo) :
+          new CBORNumber(NumberKind.ERational,
             ERational.Create(
               EInteger.FromInt64(valueA),
               EInteger.FromInt64(valueB)));
       }
-      if (typeA == Kind.ERational || typeB == Kind.ERational) {
+      if (typeA == NumberKind.ERational || typeB == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(Kind.ERational, e1.Divide(e2));
+        return new CBORNumber(NumberKind.ERational, e1.Divide(e2));
       }
-      if (typeA == Kind.EDecimal ||
-        typeB == Kind.EDecimal) {
+      if (typeA == NumberKind.EDecimal ||
+        typeB == NumberKind.EDecimal) {
         EDecimal e1 =
           GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         if (e1.isZero() && e2.isZero()) {
-          return new CBORNumber(Kind.EDecimal, EDecimal.NaN);
+          return new CBORNumber(NumberKind.EDecimal, EDecimal.NaN);
         }
         EDecimal eret = e1.Divide(e2, null);
         // If either operand is infinity or NaN, the result
         // is already exact. Likewise if the result is a finite number.
         if (!e1.isFinite() || !e2.isFinite() || eret.isFinite()) {
-          return new CBORNumber(Kind.EDecimal, eret);
+          return new CBORNumber(NumberKind.EDecimal, eret);
         }
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(Kind.ERational, er1.Divide(er2));
+        return new CBORNumber(NumberKind.ERational, er1.Divide(er2));
       }
-      if (typeA == Kind.EFloat || typeB ==
-        Kind.EFloat || typeA == Kind.Double || typeB ==
-        Kind.Double) {
+      if (typeA == NumberKind.EFloat || typeB ==
+        NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
+        NumberKind.Double) {
         EFloat e1 =
           GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
@@ -1327,7 +1369,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
         }
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(Kind.ERational, er1.Divide(er2));
+        return new CBORNumber(NumberKind.ERational, er1.Divide(er2));
       } else {
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
@@ -1344,7 +1386,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
           bigrem = divrem[1];
         }
         return bigrem.isZero() ? CBORNumber.FromObject(bigquo) :
-          new CBORNumber(Kind.ERational, ERational.Create(b1, b2));
+          new CBORNumber(NumberKind.ERational, ERational.Create(b1, b2));
       }
     }
 
@@ -1360,31 +1402,31 @@ this.ToEIntegerIfExact().ToInt64Checked();
       }
       Object objA = this.value;
       Object objB = b.value;
-      Kind typeA = this.kind;
-      Kind typeB = b.kind;
-      if (typeA == Kind.Integer && typeB == Kind.Integer) {
+      NumberKind typeA = this.kind;
+      NumberKind typeB = b.kind;
+      if (typeA == NumberKind.Integer && typeB == NumberKind.Integer) {
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         return (valueA == Long.MIN_VALUE && valueB == -1) ?
           CBORNumber.FromObject(0) : CBORNumber.FromObject(valueA % valueB);
       }
-      if (typeA == Kind.ERational ||
-        typeB == Kind.ERational) {
+      if (typeA == NumberKind.ERational ||
+        typeB == NumberKind.ERational) {
         ERational e1 =
           GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
         return CBORNumber.FromObject(e1.Remainder(e2));
       }
-      if (typeA == Kind.EDecimal ||
-        typeB == Kind.EDecimal) {
+      if (typeA == NumberKind.EDecimal ||
+        typeB == NumberKind.EDecimal) {
         EDecimal e1 =
           GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         return CBORNumber.FromObject(e1.Remainder(e2, null));
       }
-      if (typeA == Kind.EFloat ||
-        typeB == Kind.EFloat || typeA == Kind.Double || typeB ==
-        Kind.Double) {
+      if (typeA == NumberKind.EFloat ||
+        typeB == NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
+        NumberKind.Double) {
         EFloat e1 =
           GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
@@ -1414,8 +1456,8 @@ this.ToEIntegerIfExact().ToInt64Checked();
         return 0;
       }
       int cmp = 0;
-      Kind typeA = this.kind;
-      Kind typeB = other.kind;
+      NumberKind typeA = this.kind;
+      NumberKind typeB = other.kind;
       Object objA = this.value;
       Object objB = other.value;
       if (typeA == typeB) {
@@ -1478,10 +1520,10 @@ this.ToEIntegerIfExact().ToInt64Checked();
           return -1;
         } else {
           // DebugUtility.Log("a=" + this + " b=" + other);
-          if (typeA == Kind.ERational) {
+          if (typeA == NumberKind.ERational) {
             ERational e1 =
               GetNumberInterface(typeA).AsERational(objA);
-            if (typeB == Kind.EDecimal) {
+            if (typeB == NumberKind.EDecimal) {
               EDecimal e2 =
                 GetNumberInterface(typeB).AsEDecimal(objB);
               cmp = e1.CompareToDecimal(e2);
@@ -1489,10 +1531,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
               EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
               cmp = e1.CompareToBinary(e2);
             }
-          } else if (typeB == Kind.ERational) {
-            ERational e2 =
-              GetNumberInterface(typeB).AsERational(objB);
-            if (typeA == Kind.EDecimal) {
+          } else if (typeB == NumberKind.ERational) {
+            ERational e2 = GetNumberInterface(typeB).AsERational(objB);
+            if (typeA == NumberKind.EDecimal) {
               EDecimal e1 =
                 GetNumberInterface(typeA).AsEDecimal(objA);
               cmp = e2.CompareToDecimal(e1);
@@ -1503,16 +1544,16 @@ this.ToEIntegerIfExact().ToInt64Checked();
               cmp = e2.CompareToBinary(e1);
               cmp = -cmp;
             }
-          } else if (typeA == Kind.EDecimal ||
-            typeB == Kind.EDecimal) {
+          } else if (typeA == NumberKind.EDecimal ||
+            typeB == NumberKind.EDecimal) {
             EDecimal e1 = null;
             EDecimal e2 = null;
-            if (typeA == Kind.EFloat) {
+            if (typeA == NumberKind.EFloat) {
               EFloat ef1 = (EFloat)objA;
               e2 = (EDecimal)objB;
               cmp = e2.CompareToBinary(ef1);
               cmp = -cmp;
-            } else if (typeB == Kind.EFloat) {
+            } else if (typeB == NumberKind.EFloat) {
               EFloat ef1 = (EFloat)objB;
               e2 = (EDecimal)objA;
               cmp = e2.CompareToBinary(ef1);
@@ -1521,9 +1562,9 @@ this.ToEIntegerIfExact().ToInt64Checked();
               e2 = GetNumberInterface(typeB).AsEDecimal(objB);
               cmp = e1.compareTo(e2);
             }
-          } else if (typeA == Kind.EFloat || typeB ==
-            Kind.EFloat || typeA == Kind.Double || typeB ==
-            Kind.Double) {
+          } else if (typeA == NumberKind.EFloat || typeB ==
+            NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
+            NumberKind.Double) {
             EFloat e1 =
               GetNumberInterface(typeA).AsEFloat(objA);
             EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);

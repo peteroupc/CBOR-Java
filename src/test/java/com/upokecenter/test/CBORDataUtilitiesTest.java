@@ -13,6 +13,8 @@ import com.upokecenter.numbers.*;
  }
       CBORTestCommon.AssertRoundTrip(obj);
     }
+    // testing obsolete method
+    @SuppressWarnings("deprecation")
     @Test
     public void TestPreserveNegativeZero() {
       CBORObject cbor;
@@ -79,6 +81,24 @@ import com.upokecenter.numbers.*;
         this.AssertNegative(cbor);
       }
     }
+
+    @Test
+    public void TestParseJSONNumberSubstring() {
+      String tstr =
+
+  "-3.00931381333368754713014659613049757554804012787921371662913692598770508705049030832574634419795955864174175076186656951904296875000E-49";
+      try {
+        CBORDataUtilities.ParseJSONNumber(
+          "xyzxyz" + tstr,
+          6,
+          tstr.length(),
+          JSONOptions.Default);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
     @Test
     public void TestParseJSONNumberNegativeZero() {
       String[] strings = new String[] {
@@ -89,7 +109,7 @@ import com.upokecenter.numbers.*;
       for (int i = 0; i < strings.length; i += 2) {
         EDecimal jsonDecimal = (EDecimal)CBORDataUtilities
           .ParseJSONNumber(strings[i]).ToObject(EDecimal.class);
-        Assert.assertEquals (
+        Assert.assertEquals(
           strings[i + 1],
           jsonDecimal.toString());
       }
@@ -126,7 +146,7 @@ import com.upokecenter.numbers.*;
       "-0x1", "-0xf", "-0x20", "-0x01", "-.2", "-.05",
       "23.", "23.e-2", "23.e0", "23.e1", "0.",
     };
-    @SuppressWarnings("deprecation")
+
     @Test
     public void TestParseJSONNumberObsolete() {
       for (String str : BadJsonNumbers) {
@@ -179,7 +199,7 @@ import com.upokecenter.numbers.*;
         ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber(),
         CBORDataUtilities.ParseJSONNumber("23.0e00").AsNumber());
       cbor = CBORDataUtilities.ParseJSONNumber(
-        "1e+99999999999999999999999999");
+          "1e+99999999999999999999999999");
       if (!(cbor != null)) {
  Assert.fail();
  }

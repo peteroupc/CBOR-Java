@@ -11,12 +11,16 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 
 ## Methods
 
+* `static class  CBORNumber.NumberKind`<br>
+ Specifies the underlying form of this CBOR number object.
 * `CBORNumber Abs()`<br>
  Returns the absolute value of this CBOR number.
 * `CBORNumber Add​(CBORNumber b)`<br>
  Returns the sum of this number and another number.
 * `boolean CanFitInDouble()`<br>
- Not documented yet.
+ Returns whether this object's value can be converted to a 64-bit floating
+ point number without its value being rounded to another numerical
+ value.
 * `boolean CanFitInInt32()`<br>
  Returns whether this object's numerical value is an integer, is -(2^31) or
  greater, and is less than 2^31.
@@ -24,11 +28,17 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns whether this object's numerical value is an integer, is -(2^63) or
  greater, and is less than 2^63.
 * `boolean CanFitInSingle()`<br>
- Not documented yet.
+ Returns whether this object's value can be converted to a 32-bit floating
+ point number without its value being rounded to another numerical
+ value.
 * `boolean CanTruncatedIntFitInInt32()`<br>
- Not documented yet.
+ Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be -(2^31) or greater, and less than
+ 2^31.
 * `boolean CanTruncatedIntFitInInt64()`<br>
- Not documented yet.
+ Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be -(2^63) or greater, and less than
+ 2^63.
 * `int compareTo​(CBORNumber other)`<br>
  Compares two CBOR numbers.
 * `CBORNumber Divide​(CBORNumber b)`<br>
@@ -41,22 +51,25 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  method in Java returns true).
 * `static CBORNumber FromInt16​(short inputInt16)`<br>
  Converts a 16-bit signed integer to an arbitrary-precision decimal number.
+* `CBORNumber.NumberKind getKind()`<br>
+ Gets the underlying form of this CBOR number object.
 * `boolean IsFinite()`<br>
- Not documented yet.
+ Gets a value indicating whether this CBOR object represents a finite number.
 * `boolean IsInfinity()`<br>
  Gets a value indicating whether this object represents infinity.
 * `boolean IsInteger()`<br>
- Not documented yet.
+ Gets a value indicating whether this object represents an integer number,
+ that is, a number without a fractional part.
 * `boolean IsNaN()`<br>
  Gets a value indicating whether this object represents a not-a-number value.
 * `boolean IsNegative()`<br>
- Not documented yet.
+ Gets a value indicating whether this object is a negative number.
 * `boolean IsNegativeInfinity()`<br>
  Gets a value indicating whether this object represents negative infinity.
 * `boolean IsPositiveInfinity()`<br>
  Gets a value indicating whether this object represents positive infinity.
 * `boolean IsZero()`<br>
- Not documented yet.
+ Gets a value indicating whether this object's value equals 0.
 * `CBORNumber Multiply​(CBORNumber b)`<br>
  Returns a CBOR number expressing the product of this number and the given
  number.
@@ -66,7 +79,8 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 * `CBORNumber Remainder​(CBORNumber b)`<br>
  Returns the remainder when this number is divided by another number.
 * `int signum()`<br>
- Not documented yet.
+ Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
+ positive; 0 if zero.
 * `CBORNumber Subtract​(CBORNumber b)`<br>
  Returns a number that expresses this number minus another.
 * `byte ToByteChecked()`<br>
@@ -84,15 +98,16 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 * `CBORObject ToCBORObject()`<br>
  Converts this object's value to a CBOR object.
 * `com.upokecenter.numbers.EDecimal ToEDecimal()`<br>
- Not documented yet.
+ Converts this object to a decimal number.
 * `com.upokecenter.numbers.EFloat ToEFloat()`<br>
- Not documented yet.
+ Converts this object to an arbitrary-precision binary floating point number.
 * `com.upokecenter.numbers.EInteger ToEInteger()`<br>
- Not documented yet.
+ Converts this object to an arbitrary-precision integer.
 * `com.upokecenter.numbers.EInteger ToEIntegerIfExact()`<br>
- Not documented yet.
+ Converts this object to an arbitrary-precision integer if its value is an
+ integer.
 * `com.upokecenter.numbers.ERational ToERational()`<br>
- Not documented yet.
+ Converts this object to a rational number.
 * `short ToInt16Checked()`<br>
  Converts this number's value to a 16-bit signed integer if it can fit in a
  16-bit signed integer after converting it to an integer by
@@ -132,6 +147,11 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 * `java.lang.String toString()`<br>
  Returns the value of this object in text form.
 
+## Nested Classes
+
+* `static class  CBORNumber.NumberKind`<br>
+ Specifies the underlying form of this CBOR number object.
+
 ## Method Details
 
 ### ToCBORObject
@@ -144,7 +164,14 @@ Converts this object's value to a CBOR object.
 
 ### signum
     public final int signum()
-Not documented yet.
+Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
+ positive; 0 if zero. Not-a-number (NaN) values are positive or
+ negative depending on what sign is stored in their underlying forms.
+
+**Returns:**
+
+* This value's sign.
+
 ### FromCBORObject
     public static CBORNumber FromCBORObject​(CBORObject o)
 Creates a CBOR number object from a CBOR object representing a number (that
@@ -160,77 +187,112 @@ Creates a CBOR number object from a CBOR object representing a number (that
 * A CBOR number object, or null if the given CBOR object is null or
  does not represent a number.
 
-### CanTruncatedIntFitInInt32
-    public boolean CanTruncatedIntFitInInt32()
-Not documented yet.
+### getKind
+    public final CBORNumber.NumberKind getKind()
+Gets the underlying form of this CBOR number object.
 
 **Returns:**
 
-* The return value is not documented yet.
+* The underlying form of this CBOR number object.
+
+### CanTruncatedIntFitInInt32
+    public boolean CanTruncatedIntFitInInt32()
+Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be -(2^31) or greater, and less than
+ 2^31.
+
+**Returns:**
+
+* <code>true</code> if this object's value, converted to an integer by
+ discarding its fractional part, would be -(2^31) or greater, and
+ less than 2^31; otherwise, <code>false</code>.
 
 ### CanTruncatedIntFitInInt64
     public boolean CanTruncatedIntFitInInt64()
-Not documented yet.
+Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be -(2^63) or greater, and less than
+ 2^63.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object's value, converted to an integer by
+ discarding its fractional part, would be -(2^63) or greater, and
+ less than 2^63; otherwise, <code>false</code>.
 
 ### CanFitInSingle
     public boolean CanFitInSingle()
-Not documented yet.
+Returns whether this object's value can be converted to a 32-bit floating
+ point number without its value being rounded to another numerical
+ value.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object's value can be converted to a 32-bit
+ floating point number without its value being rounded to another
+ numerical value, or if this is a not-a-number value, even if the
+ value's diagnostic information can' t fit in a 32-bit floating point
+ number; otherwise, <code>false</code>.
 
 ### CanFitInDouble
     public boolean CanFitInDouble()
-Not documented yet.
+Returns whether this object's value can be converted to a 64-bit floating
+ point number without its value being rounded to another numerical
+ value.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object's value can be converted to a 64-bit
+ floating point number without its value being rounded to another
+ numerical value, or if this is a not-a-number value, even if the
+ value's diagnostic information can't fit in a 64-bit floating point
+ number; otherwise, <code>false</code>.
 
 ### IsFinite
     public boolean IsFinite()
-Not documented yet.
+Gets a value indicating whether this CBOR object represents a finite number.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this CBOR object represents a finite number;
+ otherwise, <code>false</code>.
 
 ### IsInteger
     public boolean IsInteger()
-Not documented yet.
+Gets a value indicating whether this object represents an integer number,
+ that is, a number without a fractional part. Infinity and
+ not-a-number are not considered integers.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object represents an integer number, that is, a
+ number without a fractional part; otherwise, <code>false</code>.
 
 ### IsNegative
     public boolean IsNegative()
-Not documented yet.
+Gets a value indicating whether this object is a negative number.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object is a negative number; otherwise, <code>
+ false</code>.
 
 ### IsZero
     public boolean IsZero()
-Not documented yet.
+Gets a value indicating whether this object's value equals 0.
 
 **Returns:**
 
-* The return value is not documented yet.
+* <code>true</code> if this object's value equals 0; otherwise, <code>
+ false</code>.
 
 ### ToEInteger
     public com.upokecenter.numbers.EInteger ToEInteger()
-Not documented yet.
+Converts this object to an arbitrary-precision integer. See the ToObject
+ overload taking a type for more information.
 
 **Returns:**
 
-* The return value is not documented yet.
+* The closest arbitrary-precision integer to this object.
 
 **Throws:**
 
@@ -238,11 +300,12 @@ Not documented yet.
 
 ### ToEIntegerIfExact
     public com.upokecenter.numbers.EInteger ToEIntegerIfExact()
-Not documented yet.
+Converts this object to an arbitrary-precision integer if its value is an
+ integer.
 
 **Returns:**
 
-* The return value is not documented yet.
+* The arbitrary-precision integer given by object.
 
 **Throws:**
 
@@ -514,27 +577,30 @@ Gets a value indicating whether this object represents a not-a-number value.
 
 ### ToEDecimal
     public com.upokecenter.numbers.EDecimal ToEDecimal()
-Not documented yet.
+Converts this object to a decimal number.
 
 **Returns:**
 
-* The return value is not documented yet.
+* A decimal number for this object's value.
 
 ### ToEFloat
     public com.upokecenter.numbers.EFloat ToEFloat()
-Not documented yet.
+Converts this object to an arbitrary-precision binary floating point number.
+ See the ToObject overload taking a type for more information.
 
 **Returns:**
 
-* The return value is not documented yet.
+* An arbitrary-precision binary floating-point number for this
+ object's value.
 
 ### ToERational
     public com.upokecenter.numbers.ERational ToERational()
-Not documented yet.
+Converts this object to a rational number. See the ToObject overload taking
+ a type for more information.
 
 **Returns:**
 
-* The return value is not documented yet.
+* A rational number for this object's value.
 
 ### Abs
     public CBORNumber Abs()

@@ -1,5 +1,6 @@
 package com.upokecenter.cbor;
 
+import java.io.*;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
@@ -17,6 +18,18 @@ import com.upokecenter.numbers.*;
 
     public void RaiseError(String str) {
       throw new CBORException(this.NewErrorString(str));
+    }
+
+    public void RaiseError(Exception ex) {
+      if (ex.getCause() == null) {
+        throw new CBORException(
+            this.NewErrorString(ex.getMessage()),
+            ex);
+      } else {
+        throw new CBORException(
+            this.NewErrorString(ex.getMessage()),
+            ex.getCause());
+      }
     }
 
     public int Read(int[] chars, int index, int length) {
@@ -55,15 +68,7 @@ import com.upokecenter.numbers.*;
       try {
         c = this.ci.ReadChar();
       } catch (IllegalStateException ex) {
-        if (ex.getCause() == null) {
-          throw new CBORException (
-            this.NewErrorString(ex.getMessage()),
-            ex);
-        } else {
-          throw new CBORException (
-            this.NewErrorString(ex.getMessage()),
-            ex.getCause());
-        }
+        this.RaiseError(ex);
       }
       if (c >= 0) {
         ++this.offset;

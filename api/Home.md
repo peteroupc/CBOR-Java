@@ -33,6 +33,9 @@ Includes options to control how CBOR objects are converted to JSON.
 Options for converting "plain old data" objects (better known as POCOs in
 .NET or POJOs in Java) to CBOR objects.
 
+* [com.upokecenter.cbor.CBORNumber.NumberKind](com.upokecenter.cbor.CBORNumber.NumberKind.md) -
+Specifies the underlying form of this CBOR number object.
+
 * [com.upokecenter.cbor.CBORType](com.upokecenter.cbor.CBORType.md) -
 Represents a type that a CBOR object can have.
 

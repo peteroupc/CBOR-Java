@@ -21,10 +21,12 @@ Represents a type that a CBOR object can have.
  A map of CBOR objects.
 * `Number`<br>
  Deprecated.
-Use the IsNumber property of CBORObject to determine whether a CBOR Object
- represents a number, or use the two new CBORType values instead.
- Use the IsNumber property of CBORObject to determine whether a CBOR Object
- represents a number, or use the two new CBORType values instead.
+Since version 4.0, CBORObject.Type no longer returns this value for any
+ CBOR Object - this is a breaking change from earlier
+ versions.
+ Since version 4.0, CBORObject.Type no longer returns this value for any
+ CBOR Object - this is a breaking change from earlier
+ versions.
 * `SimpleValue`<br>
  A "simple value" other than floating point values, true, and false.
 * `TextString`<br>
@@ -67,11 +69,15 @@ the order they are declared.
 ### Number
     @Deprecated public static final CBORType Number
 Deprecated.
-Use the IsNumber property of CBORObject to determine whether a CBOR Object
- represents a number, or use the two new CBORType values instead.
- CBORType.Integer covers CBOR objects representing integers of major type
- 0 and 1. CBORType.FloatingPoint covers CBOR objects representing 16-,
- 32-, and 64-bit floating-point numbers.
+Since version 4.0, CBORObject.Type no longer returns this value for any
+ CBOR Object - this is a breaking change from earlier
+ versions. Instead, use the IsNumber property of CBORObject to
+ determine whether a CBOR Object represents a number, or use the two new
+ CBORType values instead. CBORType.Integer covers CBOR objects
+ representing integers of major type 0 and 1.
+ CBORType.FloatingPoint covers CBOR objects representing 16-, 32-, and
+ 64-bit floating-point numbers. CBORType.Number may be removed in version
+ 5.0 or later.
 
 ### Boolean
     public static final CBORType Boolean

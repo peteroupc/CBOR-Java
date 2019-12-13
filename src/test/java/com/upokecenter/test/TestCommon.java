@@ -158,7 +158,7 @@ private TestCommon() {
           throw new NullPointerException("o2");
         }
         if (!o2.equals(o)) {
-          Assert.fail (
+          Assert.fail(
             "" + o + " equals " + o2 + " but not vice versa");
         }
         // Test for the guarantee that equal objects
@@ -166,7 +166,7 @@ private TestCommon() {
         if (o2.hashCode() != o.hashCode()) {
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
-          Assert.fail (
+          Assert.fail(
             "" + o + " and " + o2 + " don't have equal hash codes");
         }
       } else {
@@ -225,7 +225,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestNotEqual(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) == 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Unexpectedly equal: " + CompareTestReciprocal(o1, o2));
@@ -244,7 +244,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestEqual(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) != 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Not equal: " + CompareTestReciprocal(o1, o2));
@@ -306,7 +306,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestLess(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) >= 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Not less: " + CompareTestReciprocal(o1, o2));
@@ -316,7 +316,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestLessEqual(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) > 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Not less or equal: " + CompareTestReciprocal(o1, o2));
@@ -326,7 +326,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestGreater(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) <= 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Not greater: " + CompareTestReciprocal(o1, o2));
@@ -336,7 +336,7 @@ private TestCommon() {
 
     public static <T extends Comparable<T>> void CompareTestGreaterEqual(T o1, T o2, String msg) {
       if (CompareTestReciprocal(o1, o2) < 0) {
-        String str = msg + "\r\n" + ObjectMessages (
+        String str = msg + "\r\n" + ObjectMessages(
           o1,
           o2,
           "Not greater or equal: " + CompareTestReciprocal(o1, o2));
@@ -531,19 +531,46 @@ private TestCommon() {
       String s) {
       return s + ":\n" + o1 + " and\n" + o2 + " and\n" + o3;
     }
+    private static final int RepeatDivideThreshold = 10000;
 
     public static String Repeat(char c, int num) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < num; ++i) {
-        sb.append(c);
+      if (num < 0) {
+        throw new IllegalArgumentException("num (" + num +
+           ") is not greater or equal to 0");
+      }
+      StringBuilder sb = new StringBuilder(num);
+      if (num > RepeatDivideThreshold) {
+        String sb2 = Repeat(c, RepeatDivideThreshold);
+        int count = num / RepeatDivideThreshold;
+        int rem = num % RepeatDivideThreshold;
+        for (int i = 0; i < count; ++i) {
+          sb.append(sb2);
+        }
+        for (int i = 0; i < rem; ++i) {
+          sb.append(c);
+        }
+      } else {
+        for (int i = 0; i < num; ++i) {
+          sb.append(c);
+        }
       }
       return sb.toString();
     }
 
-    public static String Repeat(String c, int num) {
-      StringBuilder sb = new StringBuilder();
+    public static String Repeat(String str, int num) {
+      if (num < 0) {
+        throw new IllegalArgumentException("num (" + num +
+           ") is not greater or equal to 0");
+      }
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (str.length() == 1) {
+        return Repeat(str.charAt(0), num);
+      }
+      StringBuilder sb = new StringBuilder(num * str.length());
       for (int i = 0; i < num; ++i) {
-        sb.append(c);
+        sb.append(str);
       }
       return sb.toString();
     }

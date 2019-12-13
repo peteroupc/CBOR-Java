@@ -53,6 +53,14 @@ import java.util.*;
         * numbers of extremely large magnitude may overflow to infinity.).
         */
        IntOrFloatFromDouble,
+
+       /**
+        * JSON numbers are decoded to CBOR as their closest-rounded approximation to
+        * an IEEE 854 decimal128 value, using the rules for the EDecimal
+        * form of that approximation as given in the
+        * <code>CBORObject.FromObject(EDecimal)</code> method.
+        */
+       Decimal128,
     }
 
     /**
@@ -125,14 +133,18 @@ import java.util.*;
      * numberconversion}, can have a value of any name given in the {@code
      * JSONOptions.ConversionMode} enumeration (where the letters can be
      * any combination of basic upper-case and/or basic lower-case
-     * letters), or any other value, which is treated the same as {@code
-     * full}. For example, {@code base64padding = Yes} and {@code
-     * base64padding = 1} both set the {@code Base64Padding} property to
-     * true, and {@code numberconversion = double} sets the {@code
+     * letters), and any other value is unrecognized. (If the {@code
+     * numberconversion} key is not given, its value is treated as {@code
+     * full}. If that key is given, but has an unrecognized value, an
+     * exception is thrown.) For example, {@code base64padding = Yes} and
+     * {@code base64padding = 1} both set the {@code Base64Padding} property
+     * to true, and {@code numberconversion = double} sets the {@code
      * NumberConversion} property to {@code ConversionMode.Double} .
      * @throws NullPointerException The parameter {@code paramString} is null. In
      * the future, this class may allow other keys to store other kinds of
      * values, not just true or false.
+     * @throws IllegalArgumentException An unrecognized value for {@code numberconversion}
+     * was given.
      */
     public JSONOptions(String paramString) {
       if (paramString == null) {
@@ -200,6 +212,9 @@ private final boolean propVarbase64padding;
       if (kind == ConversionMode.Double) {
         return "double";
       }
+      if (kind == ConversionMode.Decimal128) {
+        return "decimal128";
+      }
       if (kind == ConversionMode.IntOrFloat) {
         return "intorfloat";
       }
@@ -215,14 +230,19 @@ private final boolean propVarbase64padding;
         if (str.equals("double")) {
           return ConversionMode.Double;
         }
+        if (str.equals("decimal128")) {
+          return ConversionMode.Decimal128;
+        }
         if (str.equals("intorfloat")) {
           return ConversionMode.IntOrFloat;
         }
         if (str.equals("intorfloatfromdouble")) {
           return ConversionMode.IntOrFloatFromDouble;
         }
+      } else {
+        return ConversionMode.Full;
       }
-      return ConversionMode.Full;
+      throw new IllegalArgumentException("Unrecognized conversion mode");
     }
 
     /**
