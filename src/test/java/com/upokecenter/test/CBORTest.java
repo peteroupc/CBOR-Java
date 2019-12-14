@@ -1862,6 +1862,9 @@ int startingAvailable = ms.available();
                   (ex.getCause() == null ? "" : "\n" +
                     ex.getCause().toString()) +
                   "\n" + ToByteArrayStringFrom(array, objpos);
+                failString = failString.substring(
+                  0, (
+                  0)+(Math.min(2000, failString.length())));
                 Assert.fail(failString);
                 throw new IllegalStateException("", ex);
               }
@@ -1881,6 +1884,9 @@ int startingAvailable = ms.available();
                   (ex.getCause() == null ? "" : "\n" +
                     ex.getCause().toString()) +
                   "\n" + ToByteArrayStringFrom(o.EncodeToBytes(), 0);
+                failString = failString.substring(
+                  0, (
+                  0)+(Math.min(2000, failString.length())));
                 Assert.fail(failString);
                 throw new IllegalStateException("", ex);
               }
@@ -1892,6 +1898,9 @@ int startingAvailable = ms.available();
                 (ex.getCause() == null ? "" : "\n" +
                   ex.getCause().toString()) +
                 "\n" + ToByteArrayStringFrom(array, objpos);
+              failString = failString.substring(
+                0, (
+                0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
               // }
@@ -1933,6 +1942,9 @@ int startingAvailable = inputStream.available();
                 (ex.getCause() == null ? "" : "\n" +
                   ex.getCause().toString());
               failString += "\n" + TestCommon.ToByteArrayString(array);
+              failString = failString.substring(
+                0, (
+                0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
             }
@@ -1958,6 +1970,9 @@ int startingAvailable = inputStream.available();
                 (ex.getCause() == null ? "" : "\n" +
                   ex.getCause().toString());
               failString += "\n" + TestCommon.ToByteArrayString(array);
+              failString = failString.substring(
+                0, (
+                0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
             }
@@ -1969,6 +1984,9 @@ int startingAvailable = inputStream.available();
               (ex.getCause() == null ? "" : "\n" +
                 ex.getCause().toString());
             failString += "\n" + TestCommon.ToByteArrayString(array);
+            failString = failString.substring(
+              0, (
+              0)+(Math.min(2000, failString.length())));
             Assert.fail(failString);
             throw new IllegalStateException("", ex);
           }

@@ -2630,7 +2630,7 @@ CBOREncodeOptions(false, false, true));
         ToObjectTest.TestToFromObjectRoundTrip(false));
     }
 
-    @Test
+    @Test(timeout = 50000)
     public void TestFromJSONString() {
       char[] charbuf = new char[4];
       CBORObject cbor;
@@ -8295,6 +8295,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(CBORType.Integer, cbor.getType());
       }
       Assert.assertEquals(intval, cbor.AsInt32Value());
+    }
+
+    @Test(timeout = 2000)
+    public void TestFromJsonStringLongSpecific1() {
+      var jsonop = JSONOptions.Default;
+      String json = "{\"x\":-9.2574033594381E-7962\u002c\"1\":" +
+        "-2.8131427974929237E+240}";
+      try {
+ FromJSON(json, jsonop);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
 
     @Test(timeout = 5000)

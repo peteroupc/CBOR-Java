@@ -495,13 +495,13 @@ JSONOptions.ConversionMode.Double) {
       }
       if (haveExponent) {
         haveDigits = false;
-        char c = str.charAt(k);
         if (k == endPos) {
           if (endOfNumber != null) {
             endOfNumber[0] = k;
           }
           return null;
         }
+        char c = str.charAt(k);
         if (c == '+' || c == '-') {
           ++k;
         }
