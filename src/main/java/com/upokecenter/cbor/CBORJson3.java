@@ -79,7 +79,7 @@ import com.upokecenter.numbers.*;
                 // Consists of 4 hex digits
                 for (int i = 0; i < 4; ++i) {
                   int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) & 0xffff : -1;
+                    ((int)this.jstring.charAt(this.index++)) : -1;
                   if (ch >= '0' && ch <= '9') {
                     c <<= 4;
                     c |= ch - '0';
@@ -99,15 +99,15 @@ import com.upokecenter.numbers.*;
                   this.sb.append((char)c);
                 } else if ((c & 0xfc00) == 0xd800) {
                   int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) & 0xffff : -1;
+                    ((int)this.jstring.charAt(this.index++)) : -1;
                   if (ch != '\\' || (this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) & 0xffff : -1) != 'u') {
+                      ((int)this.jstring.charAt(this.index++)) : -1) != 'u') {
                     this.RaiseError("Invalid escaped character");
                   }
                   int c2 = 0;
                   for (int i = 0; i < 4; ++i) {
                     ch = this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) & 0xffff : -1;
+                      ((int)this.jstring.charAt(this.index++)) : -1;
                     if (ch >= '0' && ch <= '9') {
                       c2 <<= 4;
                       c2 |= ch - '0';
@@ -164,7 +164,6 @@ import com.upokecenter.numbers.*;
     private CBORObject NextJSONNegativeNumber(
       int[] nextChar) {
       // Assumes the last character read was '-'
-
       // DebugUtility.Log("js=" + (jstring));
       CBORObject obj;
       int numberStartIndex = this.index - 1;
@@ -173,39 +172,34 @@ import com.upokecenter.numbers.*;
       if (c < '0' || c > '9') {
         this.RaiseError("JSON number can't be parsed.");
       }
-      int cstart = c;
-      while (c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
-        c == 'e' || c == 'E') {
-        c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
-          0xffff : -1;
+      // NOTE: Differs from CBORJson2, notably because the whole
+      // rest of the String is checked whether the beginning of the rest
+      // is a JSON number
+      int[] endIndex = new int[1];
+      endIndex[0] = numberStartIndex;
+      obj = CBORDataUtilities.ParseJSONNumber(
+              this.jstring,
+              numberStartIndex,
+              this.jstring.length() - numberStartIndex,
+              this.options,
+              endIndex);
+      int numberEndIndex = endIndex[0];
+      this.index = numberEndIndex;
+      if (obj == null) {
+        int strlen = numberEndIndex - numberStartIndex;
+        String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
+        if (strlen > 100) {
+          errstr += "...";
+        }
+        this.RaiseError("JSON number can't be parsed. " + errstr);
       }
+
+      c = numberEndIndex >= this.jstring.length() ? -1 :
+this.jstring.charAt(numberEndIndex);
       // check if character can validly appear after a JSON number
       if (c != ',' && c != ']' && c != '}' && c != -1 &&
-        c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+          c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
         this.RaiseError("Invalid character after JSON number");
-      }
-      int numberEndIndex = c < 0 ? this.endPos : this.index - 1;
-      if (numberEndIndex - numberStartIndex == 2 && cstart != '0') {
-        // Negative single digit other than negative zero
-        obj = CBORDataUtilities.ParseSmallNumberAsNegative((int)(cstart
-              - '0'),
-            this.options);
-      } else {
-        // DebugUtility.Log("pjn = " + (this.jstring.substring(numberStartIndex,(numberStartIndex)+(// numberEndIndex - numberStartIndex))));
-        // NOTE: Differs from CBORJson2
-        obj = CBORDataUtilities.ParseJSONNumber(
-            this.jstring,
-            numberStartIndex,
-            numberEndIndex - numberStartIndex,
-            this.options);
-        if (obj == null) {
-          int strlen = numberEndIndex - numberStartIndex;
-          String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
-          if (strlen > 100) {
-            errstr += "...";
-          }
-          this.RaiseError("JSON number can't be parsed. " + errstr);
-        }
       }
       if (c == -1 || (c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09)) {
         nextChar[0] = c;
@@ -239,14 +233,13 @@ import com.upokecenter.numbers.*;
           this.RaiseError("JSON number can't be parsed.");
         }
         cval = (cval * 10) + (int)(c - '0');
-        c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
-          0xffff : -1;
+        c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) : -1;
         if (c >= '0' && c <= '9') {
           int digits = 2;
           while (digits < 9 && (c >= '0' && c <= '9')) {
             cval = (cval * 10) + (int)(c - '0');
             c = this.index < this.endPos ?
-              ((int)this.jstring.charAt(this.index++)) & 0xffff : -1;
+              ((int)this.jstring.charAt(this.index++)) : -1;
             ++digits;
           }
           if (!(c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
@@ -264,31 +257,19 @@ import com.upokecenter.numbers.*;
         }
       }
       if (needObj) {
-        while (c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
-          c == 'e' || c == 'E') {
-          c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
-            0xffff : -1;
-        }
-        // check if character can validly appear after a JSON number
-        if (c != ',' && c != ']' && c != '}' && c != -1 &&
-          c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
-          this.RaiseError("Invalid character after JSON number");
-        }
-        int numberEndIndex = c < 0 ?
-          this.endPos : this.index - 1;
-        // DebugUtility.Log("pjn = " + (this.jstring.substring(numberStartIndex,(numberStartIndex)+(// numberEndIndex - numberStartIndex))));
-        // NOTE: Differs from CBORJson2
-        try {
-          obj = CBORDataUtilities.ParseJSONNumber(
+        // NOTE: Differs from CBORJson2, notably because the whole
+        // rest of the String is checked whether the beginning of the rest
+        // is a JSON number
+        int[] endIndex = new int[1];
+        endIndex[0] = numberStartIndex;
+        obj = CBORDataUtilities.ParseJSONNumber(
               this.jstring,
               numberStartIndex,
-              numberEndIndex - numberStartIndex,
-              this.options);
-        } catch (NumberFormatException exc) {
-          throw new IllegalStateException(this.jstring.substring(
-            numberStartIndex, (
-            numberStartIndex)+(numberEndIndex - numberStartIndex)), exc);
-        }
+              this.jstring.length() - numberStartIndex,
+              this.options,
+              endIndex);
+        int numberEndIndex = endIndex[0];
+        this.index = numberEndIndex;
         if (obj == null) {
           int strlen = numberEndIndex - numberStartIndex;
           String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
@@ -296,6 +277,14 @@ import com.upokecenter.numbers.*;
             errstr += "...";
           }
           this.RaiseError("JSON number can't be parsed. " + errstr);
+        }
+
+        c = numberEndIndex >= this.jstring.length() ? -1 :
+this.jstring.charAt(numberEndIndex);
+        // check if character can validly appear after a JSON number
+        if (c != ',' && c != ']' && c != '}' && c != -1 &&
+          c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+          this.RaiseError("Invalid character after JSON number");
         }
       }
       if (c == -1 || (c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09)) {

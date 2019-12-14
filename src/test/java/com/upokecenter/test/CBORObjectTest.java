@@ -8278,10 +8278,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       double dbl) {
-System.out.println("JSONDouble "+json.length());
-
       CBORObject cbor = FromJSON(json, numconv);
-
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
       double cbordbl = cbor.AsDoubleValue();
       if (dbl != cbordbl) {
@@ -8293,10 +8290,7 @@ System.out.println("JSONDouble "+json.length());
       String json,
       String numconv,
       int intval) {
-System.out.println("JSONInteger "+json.length());
-
       CBORObject cbor = FromJSON(json, numconv);
-
       if (cbor.getType() != CBORType.Integer) {
         Assert.assertEquals(CBORType.Integer, cbor.getType());
       }
@@ -8561,9 +8555,7 @@ System.out.println("JSONInteger "+json.length());
     public void TestFromJsonStringLongKindIntOrFloat() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
       String json = TestCommon.Repeat("7", 1000000);
-
       CBORObject cbor = FromJSON(json, jsonop);
-
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
       if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
  Assert.fail();
@@ -8576,7 +8568,9 @@ System.out.println("JSONInteger "+json.length());
       String json = "-" + TestCommon.Repeat("7", 1000000);
       CBORObject cbor = FromJSON(json, jsonop);
       Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
-      Assert.assertEquals(Double.NEGATIVE_INFINITY, cbor.AsDoubleValue());
+      if (!(cbor.AsDoubleValue() == Double.NEGATIVE_INFINITY)) {
+ Assert.fail();
+ }
     }
 
     @Test
