@@ -32,6 +32,18 @@ private CBORUtilities() {
         return strA.length() == 0 ? 0 : 1;
       }
       if (strA.length() < 64 && strB.length() < 64) {
+        if (strA.length() == strB.length()) {
+          boolean equalStrings = true;
+          for (int i = 0; i < strA.length(); ++i) {
+            if (strA.charAt(i) != strB.charAt(i)) {
+              equalStrings = false;
+              break;
+            }
+          }
+          if (equalStrings) {
+            return 0;
+          }
+        }
         for (int i = 0; i < strA.length(); ++i) {
           if ((strA.charAt(i) & ((byte)0x80)) != 0) {
             return -2; // non-ASCII
@@ -376,9 +388,9 @@ private CBORUtilities() {
         EInteger ei = EInteger.FromInt32(startYear);
         if (ei.Add(401).compareTo(year) < 0) {
           EInteger y2 = year.Subtract(2);
-          numDays = numDays.Add (
+          numDays = numDays.Add(
               y2.Subtract(startYear).Divide(400).Multiply(146097));
-          ei = y2.Subtract (
+          ei = y2.Subtract(
               y2.Subtract(startYear).Remainder(400));
         }
 
@@ -417,13 +429,13 @@ private CBORUtilities() {
       int nanoseconds = fractionalPart.Multiply(1000000000)
         .ToInt32Checked();
       EInteger[] normPart = new EInteger[3];
-      EInteger days = FloorDiv (
+      EInteger days = FloorDiv(
           integerPart,
           EInteger.FromInt32(86400)).Add(1);
-      int secondsInDay = FloorMod (
+      int secondsInDay = FloorMod(
           integerPart,
           EInteger.FromInt32(86400)).ToInt32Checked();
-      GetNormalizedPartProlepticGregorian (
+      GetNormalizedPartProlepticGregorian(
         EInteger.FromInt32(1970),
         1,
         days,
@@ -602,7 +614,7 @@ private CBORUtilities() {
       EInteger bigYear,
       int[] lesserFields) {
       if (lesserFields[6] != 0) {
-        throw new UnsupportedOperationException (
+        throw new UnsupportedOperationException(
           "Local time offsets not supported");
       }
       int smallYear = bigYear.ToInt32Checked();

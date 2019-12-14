@@ -8299,7 +8299,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 2000)
     public void TestFromJsonStringLongSpecific1() {
-      var jsonop = JSONOptions.Default;
+      JSONOptions jsonop = JSONOptions.Default;
       String json = "{\"x\":-9.2574033594381E-7962\u002c\"1\":" +
         "-2.8131427974929237E+240}";
       try {

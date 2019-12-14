@@ -4467,9 +4467,11 @@ public int compareTo(CBORObject other) {
             break;
           }
           case CBORObjectTypeTextString: {
+            String strA = (String)objA;
+            String strB = (String)objB;
             cmp = CBORUtilities.FastPathStringCompare(
-                (String)objA,
-                (String)objB);
+                strA,
+                strB);
             if (cmp < -1) {
               cmp = CBORUtilities.ByteArrayCompare(
                   this.EncodeToBytes(),
@@ -6846,7 +6848,16 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         stream.write(bytes, 0, bytes.length);
         return;
       }
-      bytes = new byte[StreamedStringBufferLength];
+      // Take String's length into account when allocating
+      // stream buffer, in case it's much smaller than the usual stream
+      // String buffer length and to improve performance on small strings
+      int bufferLength = Math.min(StreamedStringBufferLength, str.length());
+      if (bufferLength < StreamedStringBufferLength) {
+        bufferLength = Math.min(
+          StreamedStringBufferLength,
+          bufferLength * 3);
+      }
+      bytes = new byte[bufferLength];
       int byteIndex = 0;
       boolean streaming = false;
       for (int index = 0; index < str.length(); ++index) {
