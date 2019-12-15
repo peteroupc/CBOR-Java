@@ -245,9 +245,11 @@ ms = new java.io.ByteArrayInputStream(bytes);
             CBORObject.ReadJSON(ms, options);
           CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
             CBORObject.FromJSONString(str, options);
-          TestCommon.CompareTestEqualAndConsistent(
-            obj,
-            obj2);
+          if (!obj.equals(obj2)) {
+            TestCommon.CompareTestEqualAndConsistent(
+              obj,
+              obj2);
+          }
           if (str == null) {
             throw new NullPointerException("str");
           }
@@ -256,17 +258,17 @@ ms = new java.io.ByteArrayInputStream(bytes);
               0,
               str.length()) :
             CBORObject.FromJSONString(str, 0, str.length(), options);
-          if (!(obj.equals(obj3))) {
- Assert.fail();
- }
+          if (!obj.equals(obj3)) {
+            Assert.assertEquals(obj, obj3);
+          }
           obj3 = options == null ? CBORObject.FromJSONString(
               "xyzxyz" + str,
               6,
               str.length()) :
             CBORObject.FromJSONString("xyzxyz" + str, 6, str.length(), options);
-          if (!(obj.equals(obj3))) {
- Assert.fail();
- }
+          if (!obj.equals(obj3)) {
+            Assert.assertEquals(obj, obj3);
+          }
           obj3 = options == null ? CBORObject.FromJSONString(
               "xyzxyz" + str + "xyzxyz",
               6,
@@ -275,9 +277,9 @@ ms = new java.io.ByteArrayInputStream(bytes);
               6,
               str.length(),
               options);
-          if (!(obj.equals(obj3))) {
- Assert.fail();
- }
+          if (!obj.equals(obj3)) {
+            Assert.assertEquals(obj, obj3);
+          }
           return obj;
 }
 finally {
