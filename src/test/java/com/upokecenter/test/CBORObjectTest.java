@@ -256,17 +256,17 @@ ms = new java.io.ByteArrayInputStream(bytes);
               0,
               str.length()) :
             CBORObject.FromJSONString(str, 0, str.length(), options);
-          TestCommon.CompareTestEqualAndConsistent(
-            obj,
-            obj3);
+          if (!(obj.equals(obj3))) {
+ Assert.fail();
+ }
           obj3 = options == null ? CBORObject.FromJSONString(
               "xyzxyz" + str,
               6,
               str.length()) :
             CBORObject.FromJSONString("xyzxyz" + str, 6, str.length(), options);
-          TestCommon.CompareTestEqualAndConsistent(
-            obj,
-            obj3);
+          if (!(obj.equals(obj3))) {
+ Assert.fail();
+ }
           obj3 = options == null ? CBORObject.FromJSONString(
               "xyzxyz" + str + "xyzxyz",
               6,
@@ -275,10 +275,9 @@ ms = new java.io.ByteArrayInputStream(bytes);
               6,
               str.length(),
               options);
-          TestCommon.CompareTestEqualAndConsistent(
-            obj,
-            obj3);
-          CBORTestCommon.AssertRoundTrip(obj);
+          if (!(obj.equals(obj3))) {
+ Assert.fail();
+ }
           return obj;
 }
 finally {
@@ -2630,7 +2629,7 @@ CBOREncodeOptions(false, false, true));
         ToObjectTest.TestToFromObjectRoundTrip(false));
     }
 
-    @Test(timeout = 50000)
+    @Test(timeout = 100000)
     public void TestFromJSONString() {
       char[] charbuf = new char[4];
       CBORObject cbor;
