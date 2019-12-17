@@ -1860,7 +1860,7 @@ if (value >= 0L && value < 24L) {
             .Add(exponent).Add(bigValue.getMantissa());
         }
       }
-      return CBORObject.FromObjectAndTag(cbor, tag);
+      return cbor.WithTag(tag);
     }
 
     /**
@@ -1902,7 +1902,7 @@ if (value >= 0L && value < 24L) {
         cbor = CBORObject.NewArray()
           .Add(bigValue.getNumerator()).Add(bigValue.getDenominator());
       }
-      return CBORObject.FromObjectAndTag(cbor, tag);
+      return cbor.WithTag(tag);
     }
 
     /**
@@ -1953,7 +1953,7 @@ if (value >= 0L && value < 24L) {
             .Add(exponent).Add(bigValue.getMantissa());
         }
       }
-      return CBORObject.FromObjectAndTag(cbor, tag);
+      return cbor.WithTag(tag);
     }
 
     /**
@@ -2452,7 +2452,34 @@ FromObject((long)value);
      * @throws NullPointerException The parameter {@code bigintTag} is null.
      */
     public CBORObject WithTag(EInteger bigintTag) {
-     return FromObjectAndTag(this, bigintTag);
+      if (bigintTag == null) {
+        throw new NullPointerException("bigintTag");
+      }
+      if (bigintTag.signum() < 0) {
+        throw new IllegalArgumentException("tagEInt's sign(" + bigintTag.signum() +
+          ") is less than 0");
+      }
+      if (bigintTag.CanFitInInt32()) {
+        // Low-numbered, commonly used tags
+        return this.WithTag(bigintTag.ToInt32Checked());
+      } else {
+        if (bigintTag.compareTo(UInt64MaxValue) > 0) {
+          throw new IllegalArgumentException(
+            "tag more than 18446744073709551615 (" + bigintTag + ")");
+        }
+        int tagLow = 0;
+        int tagHigh = 0;
+        byte[] bytes = bigintTag.ToBytes(true);
+        for (int i = 0; i < Math.min(4, bytes.length); ++i) {
+          int b = ((int)bytes[i]) & 0xff;
+          tagLow = (tagLow | (((int)b) << (i * 8)));
+        }
+        for (int i = 4; i < Math.min(8, bytes.length); ++i) {
+          int b = ((int)bytes[i]) & 0xff;
+          tagHigh = (tagHigh | (((int)b) << (i * 8)));
+        }
+        return new CBORObject(this, tagLow, tagHigh);
+      }
     }
 
     /**
@@ -2494,25 +2521,7 @@ FromObject((long)value);
         throw new IllegalArgumentException(
           "tag more than 18446744073709551615 (" + bigintTag + ")");
       }
-      CBORObject c = FromObject(valueOb);
-      if (bigintTag.CanFitInInt32()) {
-        // Low-numbered, commonly used tags
-        return FromObjectAndTag(c, bigintTag.ToInt32Checked());
-      } else {
-        int tagLow = 0;
-        int tagHigh = 0;
-        byte[] bytes = bigintTag.ToBytes(true);
-        for (int i = 0; i < Math.min(4, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagLow = (tagLow | (((int)b) << (i * 8)));
-        }
-        for (int i = 4; i < Math.min(8, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagHigh = (tagHigh | (((int)b) << (i * 8)));
-        }
-        CBORObject c2 = new CBORObject(c, tagLow, tagHigh);
-        return c2;
-      }
+      return FromObject(valueOb).WithTag(bigintTag);
     }
 
     /**
@@ -2531,7 +2540,11 @@ FromObject((long)value);
      * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0.
      */
     public CBORObject WithTag(int smallTag) {
-     return FromObjectAndTag(this, smallTag);
+      if (smallTag < 0) {
+        throw new IllegalArgumentException("smallTag(" + smallTag +
+          ") is less than 0");
+      }
+      return new CBORObject(this, smallTag, 0);
     }
 
     /**
@@ -2565,9 +2578,7 @@ FromObject((long)value);
         throw new IllegalArgumentException("smallTag(" + smallTag +
           ") is less than 0");
       }
-      CBORObject c = FromObject(valueObValue);
-      c = new CBORObject(c, smallTag, 0);
-      return c;
+      return FromObject(valueObValue).WithTag(smallTag);
     }
 
     /**

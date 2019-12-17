@@ -581,8 +581,9 @@ JSONOptions.ConversionMode.Double) {
           }
           if (!negative || lv != 0) {
             CBORObject cbor = CBORObject.NewArray()
-                .Add(expo).Add(lv);
-            return CBORObject.FromObjectAndTag(cbor, 4);
+                .Add(CBORObject.FromObject(expo))
+                .Add(CBORObject.FromObject(lv));
+            return cbor.WithTag(4);
           }
         }
         EDecimal ed = EDecimal.FromString(
