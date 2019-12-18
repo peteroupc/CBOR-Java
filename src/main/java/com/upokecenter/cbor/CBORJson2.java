@@ -37,13 +37,40 @@ import com.upokecenter.numbers.*;
 
     private String NextJSONString() {
       int c;
+      int startIndex = this.index;
+      for (int i = 0; i < 64; ++i) {
+        if (this.index >= this.endPos) {
+          this.RaiseError("Unterminated String");
+        }
+        c = (int)this.bytes[this.index++];
+        if (c < 0x20) {
+          this.RaiseError("Invalid character in String literal");
+        }
+        if (c == '\\' || c >= 0x80) {
+          break;
+        }
+        if (c == 0x22) {
+          if (i == 0) {
+            return "";
+          }
+          char[] buf = new char[i];
+          for (int j = 0; j < i; ++j) {
+            buf[j] = (char)this.bytes[startIndex + j];
+          }
+          return new String(buf, 0, buf.length);
+        }
+      }
+      this.index = startIndex;
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
       this.sb.delete(0, this.sb.length());
       while (true) {
         c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
           0xff : -1;
-        if (c == -1 || c < 0x20) {
+          if (c == -1) {
           this.RaiseError("Unterminated String");
+        }
+        if (c < 0x20) {
+          this.RaiseError("Invalid character in String literal");
         }
         switch (c) {
           case '\\':
@@ -356,9 +383,9 @@ import com.upokecenter.numbers.*;
         case 't': {
           // Parse true
           if (this.endPos - this.index <= 2 ||
-            (((int)this.bytes[this.index]) & 0xFF) != 'r' ||
-            (((int)this.bytes[this.index + 1]) & 0xFF) != 'u' ||
-            (((int)this.bytes[this.index + 2]) & 0xFF) != 'e') {
+            this.bytes[this.index] != (byte)0x72 ||
+            this.bytes[this.index + 1] != (byte)0x75 ||
+            this.bytes[this.index + 2] != (byte)0x65) {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 3;
@@ -368,10 +395,10 @@ import com.upokecenter.numbers.*;
         case 'f': {
           // Parse false
           if (this.endPos - this.index <= 3 ||
-            (((int)this.bytes[this.index]) & 0xFF) != 'a' ||
-            (((int)this.bytes[this.index + 1]) & 0xFF) != 'l' ||
-            (((int)this.bytes[this.index + 2]) & 0xFF) != 's' ||
-            (((int)this.bytes[this.index + 3]) & 0xFF) != 'e') {
+            this.bytes[this.index] != (byte)0x61 ||
+            this.bytes[this.index + 1] != (byte)0x6c ||
+            this.bytes[this.index + 2] != (byte)0x73 ||
+            this.bytes[this.index + 3] != (byte)0x65) {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 4;
@@ -381,9 +408,9 @@ import com.upokecenter.numbers.*;
         case 'n': {
           // Parse null
           if (this.endPos - this.index <= 2 ||
-            (((int)this.bytes[this.index]) & 0xFF) != 'u' ||
-            (((int)this.bytes[this.index + 1]) & 0xFF) != 'l' ||
-            (((int)this.bytes[this.index + 2]) & 0xFF) != 'l') {
+            this.bytes[this.index] != (byte)0x75 ||
+            this.bytes[this.index + 1] != (byte)0x6c ||
+            this.bytes[this.index + 2] != (byte)0x6c) {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 3;
