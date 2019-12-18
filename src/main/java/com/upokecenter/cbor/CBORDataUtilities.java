@@ -580,9 +580,11 @@ JSONOptions.ConversionMode.Double) {
             lv = -lv;
           }
           if (!negative || lv != 0) {
-            CBORObject cbor = CBORObject.NewArray()
-                .Add(CBORObject.FromObject(expo))
-                .Add(CBORObject.FromObject(lv));
+            CBORObject cbor = CBORObject.FromObject(
+              new CBORObject[] {
+                CBORObject.FromObject(expo),
+                CBORObject.FromObject(lv),
+              });
             return cbor.WithTag(4);
           }
         }

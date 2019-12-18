@@ -1851,13 +1851,15 @@ if (value >= 0L && value < 24L) {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 5;
-          cbor = CBORObject.NewArray()
-             .Add(exponent.ToInt64Checked()).Add(bigValue.getMantissa());
+          cbor = CBORObject.NewArray(
+                CBORObject.FromObject(exponent.ToInt64Checked()),
+                CBORObject.FromObject(bigValue.getMantissa()));
            } else {
           tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
             265 : 5;
-          cbor = CBORObject.NewArray()
-            .Add(exponent).Add(bigValue.getMantissa());
+          cbor = CBORObject.NewArray(
+                CBORObject.FromObject(exponent),
+                CBORObject.FromObject(bigValue.getMantissa()));
         }
       }
       return cbor.WithTag(tag);
@@ -1899,8 +1901,9 @@ if (value >= 0L && value < 24L) {
         tag = 270;
       } else {
         tag = 30;
-        cbor = CBORObject.NewArray()
-          .Add(bigValue.getNumerator()).Add(bigValue.getDenominator());
+        cbor = CBORObject.NewArray(
+          CBORObject.FromObject(bigValue.getNumerator()),
+          CBORObject.FromObject(bigValue.getDenominator()));
       }
       return cbor.WithTag(tag);
     }
@@ -1944,13 +1947,15 @@ if (value >= 0L && value < 24L) {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 4;
-          cbor = CBORObject.NewArray()
-             .Add(exponent.ToInt64Checked()).Add(bigValue.getMantissa());
+          cbor = CBORObject.NewArray(
+             CBORObject.FromObject(exponent.ToInt64Checked()),
+             CBORObject.FromObject(bigValue.getMantissa()));
            } else {
           tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
             264 : 4;
-          cbor = CBORObject.NewArray()
-            .Add(exponent).Add(bigValue.getMantissa());
+          cbor = CBORObject.NewArray(
+             CBORObject.FromObject(exponent),
+             CBORObject.FromObject(bigValue.getMantissa()));
         }
       }
       return cbor.WithTag(tag);
@@ -2070,11 +2075,11 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      CBORObject cbor = CBORObject.NewArray();
-      for (CBORObject i : array) {
-        cbor.Add(i);
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
+      for (CBORObject cbor : array) {
+        list.add(cbor);
       }
-      return cbor;
+      return new CBORObject(CBORObjectTypeArray, list);
     }
 
     /**
@@ -2087,7 +2092,7 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>();
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
       for (int i : array) {
         list.add(FromObject(i));
       }
@@ -2104,7 +2109,7 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>();
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
       for (long i : array) {
         list.add(FromObject(i));
       }
@@ -2649,6 +2654,13 @@ FromObject((long)value);
      */
     public static CBORObject NewArray() {
       return new CBORObject(CBORObjectTypeArray, new ArrayList<CBORObject>());
+    }
+
+    static CBORObject NewArray(CBORObject o1, CBORObject o2) {
+      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
+      list.add(o1);
+      list.add(o2);
+      return new CBORObject(CBORObjectTypeArray, list);
     }
 
     /**
