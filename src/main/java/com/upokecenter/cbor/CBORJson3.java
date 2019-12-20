@@ -40,8 +40,9 @@ import com.upokecenter.numbers.*;
 
     private String NextJSONString() {
       int c;
-      this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb.delete(0, this.sb.length());
+      boolean unescaped = true;
+      int startIndex = this.index;
+      int endIndex = -1;
       while (true) {
         c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
           0xffff : -1;
@@ -50,8 +51,13 @@ import com.upokecenter.numbers.*;
         }
         switch (c) {
           case '\\':
+            endIndex = this.index - 1;
             c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
               0xffff : -1;
+            unescaped = false;
+            this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
+            this.sb.delete(0, this.sb.length());
+            this.sb.append(this.jstring, startIndex, (startIndex)+(endIndex - startIndex));
             switch (c) {
               case '\\':
               case '/':
@@ -140,17 +146,26 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-            return this.sb.toString();
+          if (unescaped) {
+              return this.jstring.substring(startIndex, (startIndex)+((this.index - 1) -
+startIndex));
+            } else {
+ return this.sb.toString();
+}
           default: {
             // NOTE: Differs from CBORJson2
             if ((c & 0xf800) != 0xd800) {
               // Non-surrogate
-              this.sb.append((char)c);
+              if (!unescaped) {
+                this.sb.append((char)c);
+              }
             } else if ((c & 0xfc00) == 0xd800 && this.index < this.endPos &&
               (this.jstring.charAt(this.index) & 0xfc00) == 0xdc00) {
               // Surrogate pair
-              this.sb.append((char)c);
-              this.sb.append(this.jstring.charAt(this.index));
+              if (!unescaped) {
+                this.sb.append((char)c);
+                this.sb.append(this.jstring.charAt(this.index));
+              }
               ++this.index;
             } else {
               this.RaiseError("Unpaired surrogate code point");
