@@ -54,10 +54,12 @@ import com.upokecenter.numbers.*;
             endIndex = this.index - 1;
             c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
               0xffff : -1;
-            unescaped = false;
-            this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-            this.sb.delete(0, this.sb.length());
-            this.sb.append(this.jstring, startIndex, (startIndex)+(endIndex - startIndex));
+            if (unescaped) {
+              unescaped = false;
+              this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
+              this.sb.delete(0, this.sb.length());
+              this.sb.append(this.jstring, startIndex, (startIndex)+(endIndex - startIndex));
+            }
             switch (c) {
               case '\\':
               case '/':
