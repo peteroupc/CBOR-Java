@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <version>4.1.0-SNAPSHOT</version>
   <name>CBOR (Concise Binary Object Representation)</name>
-  <description>A Java implementation of Concise Binary Object Representation (CBOR), a general-purpose binary data format defined in RFC 7049.</description>
+  <description>A Java implementation of Concise Binary Object Representation (CBOR), a general-purpose binary data format defined in RFC 7049. </description>
   <url>https://github.com/peteroupc/CBOR-Java</url>
   <profiles>
     <profile>
@@ -104,6 +104,23 @@
   </licenses>
   <build>
    <plugins>
+
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <configuration>
+      <properties>
+        <property>
+          <name>listener</name>
+          <value>org.spf4j.junit.Spf4jRunListener</value>
+        </property>
+        <property>
+          <name>spf4j.junit.sampleTimeMillis</name>
+          <value>10</value>
+        </property>
+      </properties>
+    </configuration>
+  </plugin>
     <plugin>
       <groupId>org.sonatype.plugins</groupId>
       <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -124,6 +141,18 @@
     </snapshotRepository>
   </distributionManagement>
   <dependencies>
+<dependency>
+  <groupId>org.spf4j</groupId>
+  <artifactId>spf4j-junit</artifactId>
+  <version>8.6.28</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>org.spf4j</groupId>
+  <artifactId>spf4j-ui</artifactId>
+  <version>8.6.28</version>
+  <scope>test</scope>
+</dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
