@@ -66,7 +66,7 @@ import com.upokecenter.numbers.*;
       while (true) {
         c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
           0xff : -1;
-          if (c == -1) {
+        if (c == -1) {
           this.RaiseError("Unterminated String");
         }
         if (c < 0x20) {
@@ -124,8 +124,8 @@ import com.upokecenter.numbers.*;
                 } else if ((c & 0xfc00) == 0xd800) {
                   int ch;
                   if (this.index >= this.endPos - 1 ||
-                      this.bytes[this.index] != (byte)'\\' ||
-                      this.bytes[this.index + 1] != (byte)0x75) {
+                    this.bytes[this.index] != (byte)'\\' ||
+                    this.bytes[this.index + 1] != (byte)0x75) {
                     this.RaiseError("Invalid escaped character");
                   }
                   this.index += 2;
@@ -208,7 +208,7 @@ import com.upokecenter.numbers.*;
                 this.sb.append((char)c);
               } else if (c <= 0x10ffff) {
                 this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                  0xd800));
+                    0xd800));
                 this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
             } else {
@@ -280,7 +280,7 @@ import com.upokecenter.numbers.*;
       int numberStartIndex = this.index - 1;
       c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
         0xff : -1;
-      if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
+      if (!(c == '-' || c == '+' || c == '.' ||(c >= '0' && c <= '9') ||
           c == 'e' || c == 'E')) {
         // Optimize for common case where JSON number
         // is a single digit without sign or exponent
@@ -303,7 +303,7 @@ import com.upokecenter.numbers.*;
               ((int)this.bytes[this.index++]) & 0xff : -1;
             ++digits;
           }
-          if (!(c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
+          if (!(c == 'e' || c == 'E' || c == '.' ||(c >= '0' && c <=
                 '9'))) {
             // All-digit number that's short enough
             obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
@@ -442,7 +442,7 @@ import com.upokecenter.numbers.*;
     }
 
     public CBORJson2(byte[] bytes, int index, int endPos, JSONOptions
-options) {
+      options) {
       this.sb = null;
       this.bytes = bytes;
       this.index = index;

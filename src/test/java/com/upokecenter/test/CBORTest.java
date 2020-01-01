@@ -161,7 +161,7 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(1))))Assert.fail();
       {
         int varintTemp2 = cbor.get(
-          ToObjectTest.TestToFromObjectRoundTrip(1))
+            ToObjectTest.TestToFromObjectRoundTrip(1))
           .AsInt32();
         Assert.assertEquals(2, varintTemp2);
       }
@@ -230,7 +230,7 @@ import com.upokecenter.numbers.*;
 
         if (!(
           ToObjectTest.TestToFromObjectRoundTrip(
-          bi).AsNumber().IsInteger())) {
+            bi).AsNumber().IsInteger())) {
  Assert.fail();
  }
 
@@ -488,7 +488,10 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xbf, 0x00, (byte)0xff });
+        CBORObject.DecodeFromBytes(new byte[] {
+          (byte)0xbf, 0x00,
+          (byte)0xff,
+         });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -497,7 +500,10 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.DecodeFromBytes(new byte[] { (byte)0xbf, 0x20, (byte)0xff });
+        CBORObject.DecodeFromBytes(new byte[] {
+          (byte)0xbf, 0x20,
+          (byte)0xff,
+         });
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -540,11 +546,13 @@ import com.upokecenter.numbers.*;
         EDecimal ed2;
 
         ed2 = EDecimal.FromDouble(AsED(ed).ToDouble());
-        if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().CanFitInDouble()) {
+        if ((AsED(ed).compareTo(ed2) == 0) !=
+ed.AsNumber().CanFitInDouble()) {
           Assert.fail(ObjectMessage(ed));
         }
         ed2 = EDecimal.FromSingle(AsED(ed).ToSingle());
-        if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().CanFitInSingle()) {
+        if ((AsED(ed).compareTo(ed2) == 0) !=
+ed.AsNumber().CanFitInSingle()) {
           Assert.fail(ObjectMessage(ed));
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
@@ -872,8 +880,8 @@ import com.upokecenter.numbers.*;
         AddSubCompare(objectTemp, objectTemp2);
       }
       CBORObject cbor = CBORObject.FromObjectAndTag(
-        Double.NEGATIVE_INFINITY,
-        1956611);
+          Double.NEGATIVE_INFINITY,
+          1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
       cbor =
 
@@ -1014,10 +1022,10 @@ import com.upokecenter.numbers.*;
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 =
           ToObjectTest.TestToFromObjectRoundTrip(
-  RandomObjects.RandomEInteger(r));
+            RandomObjects.RandomEInteger(r));
 
         CBORObject o2 = ToObjectTest.TestToFromObjectRoundTrip(
-  RandomObjects.RandomEInteger(r));
+            RandomObjects.RandomEInteger(r));
 
         if (o2.AsNumber().IsZero()) {
           continue;
@@ -1027,7 +1035,7 @@ import com.upokecenter.numbers.*;
           ERational objectTemp = er;
           ERational objectTemp2;
           CBORNumber cn = CBORObject.FromObject(o1).AsNumber()
-             .Divide(CBORObject.FromObject(o2).AsNumber());
+            .Divide(CBORObject.FromObject(o2).AsNumber());
           objectTemp2 = cn.ToERational();
           TestCommon.CompareTestEqual(objectTemp, objectTemp2);
         }
@@ -1568,11 +1576,11 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 5000)
     public void TestCtap2CanonicalReferenceTest() {
-       for (int i = 4; i <= 60; ++i) {
-           // has high recursive reference depths, higher than
-           // Ctap2Canonical supports, which is 4
-           TestCtap2CanonicalReferenceTestOne(ReferenceTestObject(i));
-       }
+      for (int i = 4; i <= 60; ++i) {
+        // has high recursive reference depths, higher than
+        // Ctap2Canonical supports, which is 4
+        TestCtap2CanonicalReferenceTestOne(ReferenceTestObject(i));
+      }
     }
     public static void TestCtap2CanonicalReferenceTestOne(CBORObject root) {
       if (root == null) {
@@ -1611,24 +1619,24 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 50000)
     public void TestNoRecursiveExpansion() {
-       for (int i = 5; i <= 60; ++i) {
-           // has high recursive reference depths
-// System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
-// System.out.println("depth = "+i);
-           TestNoRecursiveExpansionOne(ReferenceTestObject(i));
-// System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
-       }
+      for (int i = 5; i <= 60; ++i) {
+        // has high recursive reference depths
+        // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
+        // System.out.println("depth = "+i);
+        TestNoRecursiveExpansionOne(ReferenceTestObject(i));
+        // System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
+      }
     }
 
     @Test(timeout = 50000)
     public void TestNoRecursiveExpansionJSON() {
-       for (int i = 5; i <= 60; ++i) {
-           // has high recursive reference depths
-// System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
-// System.out.println("depth = "+i);
-           TestNoRecursiveExpansionJSONOne(ReferenceTestObject(i));
-// System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
-       }
+      for (int i = 5; i <= 60; ++i) {
+        // has high recursive reference depths
+        // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();sw.Start();
+        // System.out.println("depth = "+i);
+        TestNoRecursiveExpansionJSONOne(ReferenceTestObject(i));
+        // System.out.println("elapsed=" + sw.getElapsedMilliseconds() + " ms");
+      }
     }
 
     public static void TestNoRecursiveExpansionOne(CBORObject root) {
@@ -1863,8 +1871,8 @@ int startingAvailable = ms.available();
                     ex.getCause().toString()) +
                   "\n" + ToByteArrayStringFrom(array, objpos);
                 failString = failString.substring(
-                  0, (
-                  0)+(Math.min(2000, failString.length())));
+                    0, (
+                    0)+(Math.min(2000, failString.length())));
                 Assert.fail(failString);
                 throw new IllegalStateException("", ex);
               }
@@ -1885,8 +1893,8 @@ int startingAvailable = ms.available();
                     ex.getCause().toString()) +
                   "\n" + ToByteArrayStringFrom(o.EncodeToBytes(), 0);
                 failString = failString.substring(
-                  0, (
-                  0)+(Math.min(2000, failString.length())));
+                    0, (
+                    0)+(Math.min(2000, failString.length())));
                 Assert.fail(failString);
                 throw new IllegalStateException("", ex);
               }
@@ -1899,8 +1907,8 @@ int startingAvailable = ms.available();
                   ex.getCause().toString()) +
                 "\n" + ToByteArrayStringFrom(array, objpos);
               failString = failString.substring(
-                0, (
-                0)+(Math.min(2000, failString.length())));
+                  0, (
+                  0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
               // }
@@ -1943,8 +1951,8 @@ int startingAvailable = inputStream.available();
                   ex.getCause().toString());
               failString += "\n" + TestCommon.ToByteArrayString(array);
               failString = failString.substring(
-                0, (
-                0)+(Math.min(2000, failString.length())));
+                  0, (
+                  0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
             }
@@ -1971,8 +1979,8 @@ int startingAvailable = inputStream.available();
                   ex.getCause().toString());
               failString += "\n" + TestCommon.ToByteArrayString(array);
               failString = failString.substring(
-                0, (
-                0)+(Math.min(2000, failString.length())));
+                  0, (
+                  0)+(Math.min(2000, failString.length())));
               Assert.fail(failString);
               throw new IllegalStateException("", ex);
             }
@@ -1985,8 +1993,8 @@ int startingAvailable = inputStream.available();
                 ex.getCause().toString());
             failString += "\n" + TestCommon.ToByteArrayString(array);
             failString = failString.substring(
-              0, (
-              0)+(Math.min(2000, failString.length())));
+                0, (
+                0)+(Math.min(2000, failString.length())));
             Assert.fail(failString);
             throw new IllegalStateException("", ex);
           }
@@ -2011,20 +2019,20 @@ try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOExcep
 
     private static void TestReadWriteIntOne(int val) {
       try {
+        {
           {
-            {
-              java.io.ByteArrayOutputStream ms = null;
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-              MiniCBOR.WriteInt32(val, ms);
-              byte[] msarray = ms.toByteArray();
-              {
-                java.io.ByteArrayInputStream ms2 = null;
+            MiniCBOR.WriteInt32(val, ms);
+            byte[] msarray = ms.toByteArray();
+            {
+              java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(msarray);
 
-                Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
+              Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
 try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
@@ -2035,21 +2043,21 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          }
+        }
+        {
           {
-            {
-              java.io.ByteArrayOutputStream ms = null;
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-              CBORObject.Write(val, ms);
-              byte[] msarray = ms.toByteArray();
-              {
-                java.io.ByteArrayInputStream ms2 = null;
+            CBORObject.Write(val, ms);
+            byte[] msarray = ms.toByteArray();
+            {
+              java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(msarray);
 
-                Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
+              Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
 try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
@@ -2060,7 +2068,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          }
+        }
       } catch (IOException ioex) {
         Assert.fail(ioex.getMessage());
       }
@@ -2073,9 +2081,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         TestReadWriteIntOne(i);
       }
       for (int i = 0; i < 100000; ++i) {
-          int val = ((int)RandomObjects.RandomInt64(r));
-          TestReadWriteIntOne(val);
-        }
+        int val = ((int)RandomObjects.RandomInt64(r));
+        TestReadWriteIntOne(val);
+      }
     }
 
     @Test
@@ -2871,755 +2879,833 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-@Test
-public void TestIndefLengthMore() {
-byte[] bytes;
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x41, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
-} catch (Exception ex) {
-Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
-throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x00, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x18, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x20, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x38, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x60, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, 0x61, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+    @Test
+    public void TestIndefLengthMore() {
+      byte[] bytes;
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x41, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x00, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x18, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x20, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x38, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x60, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, 0x61, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0x80, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0x81, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0x80, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0x81, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xa0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xa1, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xa0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xa1, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xc0, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xc0, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xe0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xe0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xf8, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xf8, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] {
-  0x5f, 0x41, 0x30, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
-  (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
- };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x61, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
-} catch (Exception ex) {
-Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
-throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x00, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x18, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x20, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x38, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x40, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, 0x41, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x30, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x5f, 0x41, 0x30, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x5f, 0x41, 0x30, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x61, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x00, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x18, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x20, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x38, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x40, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, 0x41, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0x80, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0x81, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0x80, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0x81, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xa0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xa1, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xa0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xa1, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xc0, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xc0, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xe0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xe0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xf8, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xf8, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] {
-  0x7f, 0x61, 0x30, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
-  (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
- };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, 0x61, 0x30, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x7f, 0x61, 0x30, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x7f, 0x61, 0x30, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, 0x41, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
-} catch (Exception ex) {
-Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
-throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x00, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x18, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x20, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x38, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x60, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, 0x61, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, 0x41, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x00, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x18, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x20, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x38, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x60, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, 0x61, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0x80, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, (byte)0x81, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0x80, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, (byte)0x81, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0xa0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, (byte)0xa1, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0xa0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, (byte)0xa1, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0xc0, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0xc0, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0xe0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0xe0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0xf8, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0xf8, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x5f, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x5f, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] {
-  0x5f, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
-  (byte)0xff, (byte)0xff,
- };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x61, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
-} catch (Exception ex) {
-Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
-throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x00, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x18, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x20, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x38, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x40, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, 0x41, 0x31, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x5f, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x5f, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x5f, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x61, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x00, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x18, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x20, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x38, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x40, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, 0x41, 0x31, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0x80, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, (byte)0x81, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, (byte)0x80, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, (byte)0x81, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0xa0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, (byte)0xa1, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, (byte)0xa0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, (byte)0xa1, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0xc0, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, (byte)0xc0, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, (byte)0xd8, (byte)0xff, 0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0xe0, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, (byte)0xe0, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0xf8, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
+      bytes = new byte[] { 0x7f, (byte)0xf8, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
-bytes = new byte[] { 0x7f, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] { 0x7f, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-bytes = new byte[] {
-  0x7f, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
-  (byte)0xff, (byte)0xff,
- };
-try {
- CBORObject.DecodeFromBytes(bytes);
- Assert.fail("Should have failed");
-} catch (CBORException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" + ex.toString());
- throw new IllegalStateException("", ex);
-}
-}
+      bytes = new byte[] { 0x7f, (byte)0xf9, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] { 0x7f, (byte)0xfa, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      bytes = new byte[] {
+        0x7f, (byte)0xfb, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
+        (byte)0xff, (byte)0xff,
+       };
+      try {
+        CBORObject.DecodeFromBytes(bytes);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(TestCommon.ToByteArrayString(bytes) + "\n" +
+ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
 
     @Test
     public void TestTags264And265() {
@@ -3699,7 +3785,7 @@ try {
       }
       {
         String stringTemp = cbor.get(CBORObject.FromObject(
-            (double)0.0)).AsString();
+              (double)0.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
@@ -3716,7 +3802,7 @@ try {
       }
       {
         String stringTemp = cbor.get(CBORObject.FromObject(
-            (double)0.0)).AsString();
+              (double)0.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
@@ -3734,7 +3820,7 @@ try {
       }
       {
         String stringTemp = cbor.get(CBORObject.FromObject(
-            (double)3.0)).AsString();
+              (double)3.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
@@ -3751,7 +3837,7 @@ try {
       }
       {
         String stringTemp = cbor.get(CBORObject.FromObject(
-            (double)3.0)).AsString();
+              (double)3.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
@@ -3772,7 +3858,7 @@ try {
       EInteger minCborInteger = EInteger.FromString("-18446744073709551616");
       EInteger minInt64 = EInteger.FromString("-9223372036854775808");
       EInteger pastMaxCborInteger = EInteger.FromString(
-        "18446744073709551616");
+          "18446744073709551616");
       EInteger pastMaxInt64 = EInteger.FromString("9223372036854775808");
       EInteger pastMinCborInteger =
         EInteger.FromString("-18446744073709551617");
@@ -4030,7 +4116,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.DecodeFromBytes(CBORTestCommon.CheckEncodeToBytes(cbor),
-  options);
+          options);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -4074,7 +4160,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.DecodeFromBytes(CBORTestCommon.CheckEncodeToBytes(cbor),
-  options);
+          options);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -4121,7 +4207,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.DecodeFromBytes(CBORTestCommon.CheckEncodeToBytes(cbor),
-  options);
+          options);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -4163,7 +4249,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.DecodeFromBytes(CBORTestCommon.CheckEncodeToBytes(cbor),
-  options);
+          options);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -4203,7 +4289,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.DecodeFromBytes(CBORTestCommon.CheckEncodeToBytes(cbor),
-  options);
+          options);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
@@ -4289,13 +4375,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static void TestTextStringStreamOne(String longString) {
       CBORObject cbor, cbor2;
       cbor = ToObjectTest.TestToFromObjectRoundTrip(longString);
-      cbor2 =
-CBORTestCommon.FromBytesTestAB(CBORTestCommon.CheckEncodeToBytes(cbor));
+      cbor2 = CBORTestCommon.FromBytesTestAB(CBORTestCommon.CheckEncodeToBytes(
+  cbor));
       {
         Object objectTemp = longString;
-        Object objectTemp2 =
-CBORObject.DecodeFromBytes(
-  CBORTestCommon.CheckEncodeToBytes(cbor)).AsString();
+        Object objectTemp2 = CBORObject.DecodeFromBytes(
+            CBORTestCommon.CheckEncodeToBytes(cbor)).AsString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {

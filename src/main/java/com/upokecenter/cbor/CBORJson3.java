@@ -148,12 +148,12 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-          if (unescaped) {
+            if (unescaped) {
               return this.jstring.substring(startIndex, (startIndex)+((this.index - 1) -
-startIndex));
+                  startIndex));
             } else {
- return this.sb.toString();
-}
+              return this.sb.toString();
+            }
           default: {
             // NOTE: Differs from CBORJson2
             if ((c & 0xf800) != 0xd800) {
@@ -195,15 +195,15 @@ startIndex));
         if (c2 == ',' || c2 == ']' || c2 == '}') {
           ++this.index;
           obj = CBORDataUtilities.ParseSmallNumberAsNegative(
-            c - '0',
-            this.options);
+              c - '0',
+              this.options);
           nextChar[0] = c2;
           return obj;
         } else if (c2 == 0x20 || c2 == 0x0a || c2 == 0x0d || c2 == 0x09) {
           ++this.index;
           obj = CBORDataUtilities.ParseSmallNumberAsNegative(
-            c - '0',
-            this.options);
+              c - '0',
+              this.options);
           nextChar[0] = this.SkipWhitespaceJSON();
           return obj;
         }
@@ -214,14 +214,14 @@ startIndex));
       int[] endIndex = new int[1];
       endIndex[0] = numberStartIndex;
       obj = CBORDataUtilities.ParseJSONNumber(
-              this.jstring,
-              numberStartIndex,
-              this.endPos - numberStartIndex,
-              this.options,
-              endIndex);
+          this.jstring,
+          numberStartIndex,
+          this.endPos - numberStartIndex,
+          this.options,
+          endIndex);
       int numberEndIndex = endIndex[0];
       this.index = numberEndIndex >= this.endPos ? this.endPos :
-         (numberEndIndex + 1);
+        (numberEndIndex + 1);
       if (obj == null) {
         int strlen = numberEndIndex - numberStartIndex;
         String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
@@ -231,11 +231,10 @@ startIndex));
         this.RaiseError("JSON number can't be parsed. " + errstr);
       }
 
-      c = numberEndIndex >= this.endPos ? -1 :
-this.jstring.charAt(numberEndIndex);
+      c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
       // check if character can validly appear after a JSON number
       if (c != ',' && c != ']' && c != '}' && c != -1 &&
-          c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+        c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
         this.RaiseError("Invalid character after JSON number");
       }
       // DebugUtility.Log("endIndex="+endIndex[0]+", "+
@@ -259,7 +258,7 @@ this.jstring.charAt(numberEndIndex);
       // DebugUtility.Log("js=" + (jstring));
       c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
         0xffff : -1;
-      if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
+      if (!(c == '-' || c == '+' || c == '.' ||(c >= '0' && c <= '9') ||
           c == 'e' || c == 'E')) {
         // Optimize for common case where JSON number
         // is a single digit without sign or exponent
@@ -281,7 +280,7 @@ this.jstring.charAt(numberEndIndex);
               ((int)this.jstring.charAt(this.index++)) : -1;
             ++digits;
           }
-          if (!(c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
+          if (!(c == 'e' || c == 'E' || c == '.' ||(c >= '0' && c <=
                 '9'))) {
             // All-digit number that's short enough
             obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
@@ -302,14 +301,14 @@ this.jstring.charAt(numberEndIndex);
         int[] endIndex = new int[1];
         endIndex[0] = numberStartIndex;
         obj = CBORDataUtilities.ParseJSONNumber(
-              this.jstring,
-              numberStartIndex,
-              this.endPos - numberStartIndex,
-              this.options,
-              endIndex);
+            this.jstring,
+            numberStartIndex,
+            this.endPos - numberStartIndex,
+            this.options,
+            endIndex);
         int numberEndIndex = endIndex[0];
         this.index = numberEndIndex >= this.endPos ? this.endPos :
-           (numberEndIndex + 1);
+          (numberEndIndex + 1);
         if (obj == null) {
           int strlen = numberEndIndex - numberStartIndex;
           String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
@@ -319,8 +318,7 @@ this.jstring.charAt(numberEndIndex);
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
 
-        c = numberEndIndex >= this.endPos ? -1 :
-this.jstring.charAt(numberEndIndex);
+        c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
         // check if character can validly appear after a JSON number
         if (c != ',' && c != ']' && c != '}' && c != -1 &&
           c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
