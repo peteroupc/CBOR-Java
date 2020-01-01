@@ -280,7 +280,7 @@ import com.upokecenter.numbers.*;
       int numberStartIndex = this.index - 1;
       c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
         0xff : -1;
-      if (!(c == '-' || c == '+' || c == '.' ||(c >= '0' && c <= '9') ||
+      if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
           c == 'e' || c == 'E')) {
         // Optimize for common case where JSON number
         // is a single digit without sign or exponent
@@ -303,7 +303,7 @@ import com.upokecenter.numbers.*;
               ((int)this.bytes[this.index++]) & 0xff : -1;
             ++digits;
           }
-          if (!(c == 'e' || c == 'E' || c == '.' ||(c >= '0' && c <=
+          if (!(c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
                 '9'))) {
             // All-digit number that's short enough
             obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
