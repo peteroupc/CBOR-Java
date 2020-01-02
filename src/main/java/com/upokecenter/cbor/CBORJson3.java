@@ -149,8 +149,10 @@ import com.upokecenter.numbers.*;
             break;
           case 0x22: // double quote
             if (unescaped) {
-              return this.jstring.substring(startIndex, (startIndex)+((this.index - 1) -
-                  startIndex));
+              int iend = this.index - 1;
+              return this.jstring.substring(
+                startIndex, (
+                startIndex)+(iend - startIndex));
             } else {
               return this.sb.toString();
             }
