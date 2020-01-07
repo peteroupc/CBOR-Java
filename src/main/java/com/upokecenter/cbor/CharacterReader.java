@@ -38,7 +38,7 @@ import java.io.*;
     // String.</param>
     // <param name='skipByteOrderMark'>If true and the first character in
     // the String is U+FEFF, skip that character.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='str'/> is null.</exception>
     public CharacterReader(String str, boolean skipByteOrderMark) {
  this(str, skipByteOrderMark, false);
@@ -53,7 +53,7 @@ import java.io.*;
     // <param name='errorThrow'>When encountering invalid encoding, throw
     // an exception if this parameter is true, or replace it with U+FFFD
     // (replacement character) if this parameter is false.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='str'/> is null.</exception>
     public CharacterReader(
       String str,
@@ -81,12 +81,12 @@ import java.io.*;
     // <param name='length'>The length, in code units, of the desired
     // portion of <paramref name='str'/> (but not more than <paramref
     // name='str'/> 's length).</param>
-    // <exception cref='IllegalArgumentException'>Either &#x22;offset&#x22; or
+    // <exception cref="IllegalArgumentException">Either &#x22;offset&#x22; or
     // &#x22;length&#x22; is less than 0 or greater than
     // &#x22;str&#x22;&#x27;s length, or &#x22;str&#x22;&#x27;s length
     // minus &#x22;offset&#x22; is less than
     // &#x22;length&#x22;.</exception>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='str'/> is null.</exception>
     public CharacterReader(String str, int offset, int length) {
  this(str, offset, length, false, false);
@@ -106,9 +106,9 @@ import java.io.*;
     // <param name='errorThrow'>When encountering invalid encoding, throw
     // an exception if this parameter is true, or replace it with U+FFFD
     // (replacement character) if this parameter is false.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='str'/> is null.</exception>
-    // <exception cref='IllegalArgumentException'>Either <paramref
+    // <exception cref="IllegalArgumentException">Either <paramref
     // name='offset'/> or <paramref name='length'/> is less than 0 or
     // greater than <paramref name='str'/> 's length, or <paramref
     // name='str'/> 's length minus <paramref name='offset'/> is less than
@@ -158,7 +158,7 @@ import java.io.*;
     // first in the stream, and replace invalid byte sequences with
     // replacement characters (U+FFFD).</summary>
     // <param name='stream'>A readable data stream.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='stream'/> is null.</exception>
     public CharacterReader(InputStream stream) {
  this(stream, 0, false);
@@ -210,7 +210,7 @@ import java.io.*;
     // <item>3: Detect UTF-16 using BOM, otherwise UTF-8.</item>
     // <item>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to
     // detect UTF-32 first.)</item></list>.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='stream'/> is null.</exception>
     public CharacterReader(InputStream stream, int mode) {
  this(stream, mode, false, false);
@@ -241,7 +241,7 @@ import java.io.*;
     // (including when "mode" is 0) and this parameter is <c>true</c>,
     // won't skip the BOM character if it occurs at the start of the
     // stream.</param>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='stream'/> is null.</exception>
     public CharacterReader(
       InputStream stream,
@@ -259,7 +259,14 @@ import java.io.*;
       this.strLength = -1;
     }
 
+  /**
+   * Not documented yet.
+   */
     private interface IByteReader {
+  /**
+   * Not documented yet.
+   * @return Not documented yet.
+   */
       int read();
     }
 
@@ -275,9 +282,9 @@ import java.io.*;
     // <returns>The number of code points read from the stream. This can
     // be less than the <paramref name='length'/> parameter if the end of
     // the stream is reached.</returns>
-    // <exception cref='NullPointerException'>The parameter <paramref
+    // <exception cref="NullPointerException">The parameter <paramref
     // name='chars'/> is null.</exception>
-    // <exception cref='IllegalArgumentException'>Either <paramref name='index'/>
+    // <exception cref="IllegalArgumentException">Either <paramref name='index'/>
     // or <paramref name='length'/> is less than 0 or greater than
     // <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
     // length minus <paramref name='index'/> is less than <paramref
