@@ -14,6 +14,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
 // TODO: In next major version, make .Keys and .Values read-only
+// TODO: Consider storing text ((strings instanceof bytes) ? (bytes)strings : null), at least in some cases
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
