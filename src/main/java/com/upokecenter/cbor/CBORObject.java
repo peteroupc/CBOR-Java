@@ -1845,8 +1845,10 @@ if (value >= 0L && value < 24L) {
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray().Add(bigValue.getExponent())
-          .Add(bigValue.getUnsignedMantissa()).Add(options);
+        cbor = CBORObject.NewArray(
+          CBORObject.FromObject(bigValue.getExponent()),
+          CBORObject.FromObject(bigValue.getUnsignedMantissa()),
+          CBORObject.FromObject(options));
         tag = 269;
       } else {
         EInteger exponent = bigValue.getExponent();
@@ -1897,8 +1899,10 @@ if (value >= 0L && value < 24L) {
           options += 6;
         }
 
-        cbor = CBORObject.NewArray().Add(bigValue.getUnsignedNumerator())
-          .Add(bigValue.getDenominator()).Add(options);
+        cbor = CBORObject.NewArray(
+          FromObject(bigValue.getUnsignedNumerator()),
+          FromObject(bigValue.getDenominator()),
+          FromObject(options));
         tag = 270;
       } else {
         tag = 30;
@@ -1941,8 +1945,10 @@ if (value >= 0L && value < 24L) {
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray().Add(bigValue.getExponent())
-          .Add(bigValue.getUnsignedMantissa()).Add(options);
+        cbor = CBORObject.NewArray(
+          FromObject(bigValue.getExponent()),
+          FromObject(bigValue.getUnsignedMantissa()),
+          FromObject(options));
         tag = 268;
       } else {
         EInteger exponent = bigValue.getExponent();
@@ -2076,7 +2082,8 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
+Integer.MAX_VALUE ? array.length : (array.length + 1));
       for (CBORObject cbor : array) {
         list.add(cbor);
       }
@@ -2093,7 +2100,8 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
+Integer.MAX_VALUE ? array.length : (array.length + 1));
       for (int i : array) {
         list.add(FromObject(i));
       }
@@ -2110,7 +2118,8 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length);
+      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
+Integer.MAX_VALUE ? array.length : (array.length + 1));
       for (long i : array) {
         list.add(FromObject(i));
       }
@@ -2661,6 +2670,17 @@ FromObject((long)value);
       ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
       list.add(o1);
       list.add(o2);
+      return new CBORObject(CBORObjectTypeArray, list);
+    }
+
+    static CBORObject NewArray(
+      CBORObject o1,
+      CBORObject o2,
+      CBORObject o3) {
+      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
+      list.add(o1);
+      list.add(o2);
+      list.add(o3);
       return new CBORObject(CBORObjectTypeArray, list);
     }
 
@@ -6742,7 +6762,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       Object parent,
       Object child) {
       if (stack == null) {
-        stack = new ArrayList<Object>();
+        stack = new ArrayList<Object>(4);
         stack.add(parent);
       }
       for (Object o : stack) {
