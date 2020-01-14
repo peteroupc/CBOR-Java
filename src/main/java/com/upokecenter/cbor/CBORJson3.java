@@ -43,8 +43,32 @@ import com.upokecenter.numbers.*;
       boolean unescaped = true;
       int startIndex = this.index;
       int endIndex = -1;
+      int ep = this.endPos;
+      String js = this.jstring;
+      int idx = this.index;
       while (true) {
-        c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
+        c = idx < ep ? ((int)js.charAt(idx++)) &
+          0xffff : -1;
+        if (c == -1 || c < 0x20) {
+          this.index = idx;
+          this.RaiseError("Unterminated String");
+        } else if (c=='"') {
+          int iend = idx - 1;
+          this.index = idx;
+          return js.substring(
+                startIndex, (
+                startIndex)+(iend - startIndex));
+        } else if (c=='\\' || (c & 0xf800) == 0xd800) {
+          this.index = idx-1;
+          endIndex = this.index;
+          break;
+        }
+      }
+      this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
+      this.sb.delete(0, this.sb.length());
+      this.sb.append(js, startIndex, (startIndex)+(endIndex - startIndex));
+      while (true) {
+        c = this.index < ep ? ((int)js.charAt(this.index++)) &
           0xffff : -1;
         if (c == -1 || c < 0x20) {
           this.RaiseError("Unterminated String");
@@ -52,14 +76,8 @@ import com.upokecenter.numbers.*;
         switch (c) {
           case '\\':
             endIndex = this.index - 1;
-            c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
+            c = this.index < ep ? ((int)js.charAt(this.index++)) &
               0xffff : -1;
-            if (unescaped) {
-              unescaped = false;
-              this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-              this.sb.delete(0, this.sb.length());
-              this.sb.append(this.jstring, startIndex, (startIndex)+(endIndex - startIndex));
-            }
             switch (c) {
               case '\\':
               case '/':
@@ -86,8 +104,8 @@ import com.upokecenter.numbers.*;
                 c = 0;
                 // Consists of 4 hex digits
                 for (int i = 0; i < 4; ++i) {
-                  int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) : -1;
+                  int ch = this.index < ep ?
+                    ((int)js.charAt(this.index++)) : -1;
                   if (ch >= '0' && ch <= '9') {
                     c <<= 4;
                     c |= ch - '0';
@@ -106,16 +124,15 @@ import com.upokecenter.numbers.*;
                   // Non-surrogate
                   this.sb.append((char)c);
                 } else if ((c & 0xfc00) == 0xd800) {
-                  int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) : -1;
-                  if (ch != '\\' || (this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) : -1) != 'u') {
+                  int ch = this.index < ep ? ((int)js.charAt(this.index++)) : -1;
+                  if (ch != '\\' || (this.index < ep ?
+                      ((int)js.charAt(this.index++)) : -1) != 'u') {
                     this.RaiseError("Invalid escaped character");
                   }
                   int c2 = 0;
                   for (int i = 0; i < 4; ++i) {
-                    ch = this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) : -1;
+                    ch = this.index < ep ?
+                      ((int)js.charAt(this.index++)) : -1;
                     if (ch >= '0' && ch <= '9') {
                       c2 <<= 4;
                       c2 |= ch - '0';
@@ -148,28 +165,17 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-            if (unescaped) {
-              int iend = this.index - 1;
-              return this.jstring.substring(
-                startIndex, (
-                startIndex)+(iend - startIndex));
-            } else {
               return this.sb.toString();
-            }
           default: {
             // NOTE: Differs from CBORJson2
             if ((c & 0xf800) != 0xd800) {
               // Non-surrogate
-              if (!unescaped) {
-                this.sb.append((char)c);
-              }
-            } else if ((c & 0xfc00) == 0xd800 && this.index < this.endPos &&
-              (this.jstring.charAt(this.index) & 0xfc00) == 0xdc00) {
+              this.sb.append((char)c);
+            } else if ((c & 0xfc00) == 0xd800 && this.index < ep &&
+              (js.charAt(this.index) & 0xfc00) == 0xdc00) {
               // Surrogate pair
-              if (!unescaped) {
-                this.sb.append((char)c);
-                this.sb.append(this.jstring.charAt(this.index));
-              }
+              this.sb.append((char)c);
+              this.sb.append(js.charAt(this.index));
               ++this.index;
             } else {
               this.RaiseError("Unpaired surrogate code point");
