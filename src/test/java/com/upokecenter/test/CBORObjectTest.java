@@ -2692,6 +2692,12 @@ CBOREncodeOptions(false, false, true));
       aba = "{\"a\":1,\"a\":4}";
       cbor = TestSucceedingJSON(aba, new JSONOptions("allowduplicatekeys=1"));
       Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(4), cbor.get("a"));
+      aba = "{\"a\" :1}";
+      cbor = TestSucceedingJSON(aba);
+      Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(1), cbor.get("a"));
+      aba = "{\"a\" : 1}";
+      cbor = TestSucceedingJSON(aba);
+      Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(1), cbor.get("a"));
       cbor = TestSucceedingJSON("\"\\t\"");
       {
         String stringTemp = cbor.AsString();
