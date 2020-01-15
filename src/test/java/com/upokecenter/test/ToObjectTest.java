@@ -66,7 +66,7 @@ import com.upokecenter.numbers.*;
         String numberString = (String)numberinfo.get("number")
           .ToObject(String.class);
         CBORObject cbornumber =
-          ToObjectTest.TestToFromObjectRoundTrip (
+          ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString(numberString));
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
           Assert.assertEquals(
@@ -618,7 +618,7 @@ import com.upokecenter.numbers.*;
         Assert.assertEquals(objectTemp, objectTemp2);
       }
 
-      boolean bnan = ToObjectTest.TestToFromObjectRoundTrip (
+      boolean bnan = ToObjectTest.TestToFromObjectRoundTrip(
           ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
           .ToObject(ERational.class)).AsNumber().IsNaN();
       if (!(bnan)) {
@@ -638,8 +638,8 @@ import com.upokecenter.numbers.*;
           .ToObject(ERational.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
-      Assert.assertTrue (
-        ToObjectTest.TestToFromObjectRoundTrip (
+      Assert.assertTrue(
+        ToObjectTest.TestToFromObjectRoundTrip(
           ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
           .ToObject(ERational.class)).AsNumber().IsNaN());
     }
@@ -704,7 +704,7 @@ import com.upokecenter.numbers.*;
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
-          ToObjectTest.TestToFromObjectRoundTrip (
+          ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString((String)numberinfo.get("number").ToObject(
               String.class)));
         if ((boolean)numberinfo.get("int16").AsBoolean()) {
@@ -1228,7 +1228,7 @@ import com.upokecenter.numbers.*;
       co.Add("a", 1);
       co.Add("b", 2);
       HashMap<String, Integer> intDict =
-        (HashMap<String, Integer>)co.ToObject (
+        (HashMap<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, intDict.size());
       if (!(intDict.containsKey("a"))) {
@@ -1243,7 +1243,7 @@ import com.upokecenter.numbers.*;
       if (intDict.get("b") != 2) {
         Assert.fail();
       }
-      Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject (
+      Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, iintDict.size());
       if (!(iintDict.containsKey("a"))) {
@@ -1473,7 +1473,7 @@ import com.upokecenter.numbers.*;
         }
         if (!obj.equals(obj2)) {
           if (obj instanceof byte[]) {
-            TestCommon.AssertByteArraysEqual (
+            TestCommon.AssertByteArraysEqual(
               (byte[])obj,
               (byte[])obj2);
           } else if (obj instanceof String[]) {

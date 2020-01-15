@@ -13,13 +13,13 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestAbs() {
-      TestCommon.CompareTestEqual (
+      TestCommon.CompareTestEqual(
         ToCN(2),
         ToCN(-2).Abs());
-      TestCommon.CompareTestEqual (
+      TestCommon.CompareTestEqual(
         ToCN(2),
         ToCN(2).Abs());
-      TestCommon.CompareTestEqual (
+      TestCommon.CompareTestEqual(
         ToCN(2.5),
         ToCN(-2.5).Abs());
       {
@@ -115,7 +115,7 @@ import com.upokecenter.numbers.*;
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
         EDecimal cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
-          TestCommon.CompareTestEqual (
+          TestCommon.CompareTestEqual(
             cmpDecFrac,
             cmpCobj,
             o1.toString() + "\n" + o2.toString());
@@ -176,7 +176,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestAsEInteger() {
       try {
-        ToObjectTest.TestToFromObjectRoundTrip (
+        ToObjectTest.TestToFromObjectRoundTrip(
           (Object)null).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
@@ -247,7 +247,7 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
             numberString));
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
-          Assert.assertEquals (
+          Assert.assertEquals(
             numberinfo.get("integer").AsString(),
             cbornumber.AsNumber().ToEInteger().toString());
         } else {
@@ -314,7 +314,7 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
 
-          ToObjectTest.TestToFromObjectRoundTrip (
+          ToObjectTest.TestToFromObjectRoundTrip(
             (float)328323f).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "328323",
@@ -396,7 +396,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip (
+        ToObjectTest.TestToFromObjectRoundTrip(
           Float.NaN).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -426,7 +426,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip (
+        ToObjectTest.TestToFromObjectRoundTrip(
           Double.NaN).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
@@ -477,7 +477,7 @@ import com.upokecenter.numbers.*;
       {
         Object objectTemp = "NaN";
         Object objectTemp2 =
-          ToObjectTest.TestToFromObjectRoundTrip (
+          ToObjectTest.TestToFromObjectRoundTrip(
             Double.NaN).AsNumber().ToEDecimal()
           .toString();
         Assert.assertEquals(objectTemp, objectTemp2);
@@ -528,7 +528,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip (
+        ToObjectTest.TestToFromObjectRoundTrip(
           "").AsNumber().ToEDecimal();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
@@ -595,7 +595,7 @@ import com.upokecenter.numbers.*;
       }
 
       if (!(
-        ToObjectTest.TestToFromObjectRoundTrip (
+        ToObjectTest.TestToFromObjectRoundTrip(
           ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
           .AsNumber().ToERational()).AsNumber().IsNaN()))Assert.fail();
       {

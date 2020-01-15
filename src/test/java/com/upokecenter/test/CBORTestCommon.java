@@ -43,10 +43,10 @@ private CBORTestCommon() {
             Integer.MAX_VALUE);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
@@ -72,10 +72,10 @@ private CBORTestCommon() {
             Integer.MAX_VALUE);
           return ToObjectTest.TestToFromObjectRoundTrip(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
@@ -134,11 +134,11 @@ private CBORTestCommon() {
         };
         tag = tagselection[rand.UniformInt(tagselection.length)];
       } else if (rand.UniformInt(100) < 90) {
-        return CBORObject.FromObjectAndTag (
+        return CBORObject.FromObjectAndTag(
             RandomCBORObject(rand, depth + 1),
             rand.UniformInt(0x100000));
       } else {
-        return CBORObject.FromObjectAndTag (
+        return CBORObject.FromObjectAndTag(
             RandomCBORObject(rand, depth + 1),
             RandomEIntegerMajorType0(rand));
       }
@@ -206,10 +206,10 @@ private CBORTestCommon() {
           return rand.UniformInt(2) == 0 ? CBORObject.Null :
             CBORObject.Undefined;
         case 6:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomTextString(rand));
         case 7:
-          return ToObjectTest.TestToFromObjectRoundTrip (
+          return ToObjectTest.TestToFromObjectRoundTrip(
               RandomObjects.RandomByteString(rand));
         case 8:
           return RandomCBORArray(rand, depth);

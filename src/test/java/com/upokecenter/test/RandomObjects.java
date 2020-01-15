@@ -177,7 +177,7 @@ private RandomObjects() {
         return sabi.getBigIntValue();
       }
       if (selection < 50) {
-        StringAndBigInt sabi = StringAndBigInt.Generate (
+        StringAndBigInt sabi = StringAndBigInt.Generate(
             r,
             2 + r.UniformInt(35),
             MaxStringNumDigits);
@@ -208,7 +208,7 @@ private RandomObjects() {
           return EFloat.NaN;
         }
       }
-      return EFloat.Create (
+      return EFloat.Create(
           RandomEInteger(r),
           EInteger.FromInt64(r.UniformInt(400) - 200));
     }

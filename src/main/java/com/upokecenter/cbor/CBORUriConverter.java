@@ -15,19 +15,19 @@ at: http://peteroupc.github.io/
       boolean isiri = obj.HasMostOuterTag(266);
       boolean isiriref = obj.HasMostOuterTag(267);
       if (
-        isiriref && !URIUtility.IsValidIRI (
+        isiriref && !URIUtility.IsValidIRI(
           obj.AsString(),
           URIUtility.ParseMode.IRIStrict)) {
         throw new CBORException("String is not a valid IRI Reference");
       }
       if (
-        isiri && (!URIUtility.IsValidIRI (
+        isiri && (!URIUtility.IsValidIRI(
             obj.AsString(),
             URIUtility.ParseMode.IRIStrict) ||
           !URIUtility.HasScheme(obj.AsString()))) {
         throw new CBORException("String is not a valid IRI");
       }
-      if (!URIUtility.IsValidIRI (
+      if (!URIUtility.IsValidIRI(
           obj.AsString(),
           URIUtility.ParseMode.URIStrict) ||
         !URIUtility.HasScheme(obj.AsString())) {

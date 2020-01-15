@@ -161,7 +161,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       DoTestString(" ");
       DoTestString("test");
 
-      DoTestString (
+      DoTestString(
         TestCommon.Repeat("three", 15));
       DoTestString("te\u007fst");
       DoTestString("te\u0080st");

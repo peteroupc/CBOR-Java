@@ -52,10 +52,10 @@ import java.util.*;
         "ToCBORObject",
         type));
       if (ci.getToObject() == null) {
-        throw new IllegalArgumentException (
+        throw new IllegalArgumentException(
           "Converter doesn't contain a proper ToCBORObject method");
       }
-      ci.setFromObject(PropertyMap.FindOneArgumentMethod (
+      ci.setFromObject(PropertyMap.FindOneArgumentMethod(
           converter,
           "FromCBORObject",
           CBORObject.class));

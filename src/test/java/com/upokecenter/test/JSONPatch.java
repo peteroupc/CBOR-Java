@@ -83,7 +83,7 @@ private JSONPatch() {
             throw new IllegalArgumentException("Patch " + valueOpStr + " value");
           }
           value = patchOp.get("value");
-          o = ReplaceOperation (
+          o = ReplaceOperation(
               o,
               valueOpStr,
               GetString(patchOp, "path"),
@@ -128,7 +128,7 @@ private JSONPatch() {
               valueOpStr + " " + fromPath);
           }
           CBORObject copiedObj = pointer.GetValue();
-          o = AddOperation (
+          o = AddOperation(
               o,
               valueOpStr,
               path,
@@ -177,7 +177,7 @@ private JSONPatch() {
         if (pointer.GetParent().getType() == CBORType.Array) {
           ((CBORObject)pointer.GetParent()).RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
-          ((CBORObject)pointer.GetParent()).Remove (
+          ((CBORObject)pointer.GetParent()).Remove(
             CBORObject.FromObject(pointer.GetKey()));
         }
         return o;

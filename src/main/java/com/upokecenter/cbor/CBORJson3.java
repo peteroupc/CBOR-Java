@@ -52,14 +52,14 @@ import com.upokecenter.numbers.*;
         if (c == -1 || c < 0x20) {
           this.index = idx;
           this.RaiseError("Unterminated String");
-        } else if (c=='"') {
+        } else if (c == '"') {
           int iend = idx - 1;
           this.index = idx;
           return js.substring(
                 startIndex, (
                 startIndex)+(iend - startIndex));
-        } else if (c=='\\' || (c & 0xf800) == 0xd800) {
-          this.index = idx-1;
+        } else if (c == '\\' || (c & 0xf800) == 0xd800) {
+          this.index = idx - 1;
           endIndex = this.index;
           break;
         }
@@ -165,7 +165,7 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-              return this.sb.toString();
+          return this.sb.toString();
           default: {
             // NOTE: Differs from CBORJson2
             if ((c & 0xf800) != 0xd800) {

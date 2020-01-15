@@ -36,7 +36,7 @@ import com.upokecenter.numbers.*;
       ERational er = (ERational)obj;
       return
 
-        er.ToEDecimalExactIfPossible (
+        er.ToEDecimalExactIfPossible(
           EContext.Decimal128.WithUnlimitedExponents());
     }
 
@@ -44,7 +44,7 @@ import com.upokecenter.numbers.*;
       ERational er = (ERational)obj;
       return
 
-        er.ToEFloatExactIfPossible (
+        er.ToEFloatExactIfPossible(
           EContext.Binary128.WithUnlimitedExponents());
     }
 

@@ -81,7 +81,7 @@ import com.upokecenter.numbers.*;
         if (untagged.isTagged() ||
           untagged.getType() != CBORType.Integer ||
 untagged.AsNumber().IsNegative()) {
-          throw new CBORException (
+          throw new CBORException(
             "Shared ref index must be an untagged integer 0 or greater");
         }
         return sharedRefs.GetObject(untagged.AsEIntegerValue());
@@ -164,7 +164,7 @@ untagged.AsNumber().IsNegative()) {
         }
         StringBuilder builder = new StringBuilder();
         switch (
-          DataUtilities.ReadUtf8 (
+          DataUtilities.ReadUtf8(
             this.stream,
             (int)uadditional,
             builder,
@@ -198,7 +198,7 @@ untagged.AsNumber().IsNegative()) {
         }
         ++this.depth;
         for (long i = 0; i < uadditional; ++i) {
-          cbor.Add (
+          cbor.Add(
             this.ReadInternal());
         }
         --this.depth;
@@ -284,7 +284,7 @@ untagged.AsNumber().IsNegative()) {
             CBORObject.FromObject(ToUnsignedEInteger(uadditional)) :
             CBORObject.FromObject(uadditional);
           } else if (type == 1) {
-          return (uadditional >> 63) != 0 ? CBORObject.FromObject (
+          return (uadditional >> 63) != 0 ? CBORObject.FromObject(
               ToUnsignedEInteger(uadditional).Add(1).Negate()) :
             CBORObject.FromObject((-uadditional) - 1L);
           } else if (type == 7) {
@@ -398,7 +398,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                   throw new CBORException("Premature end of data");
                 }
                 switch (
-                  DataUtilities.ReadUtf8 (
+                  DataUtilities.ReadUtf8(
                     this.stream,
                     (int)len,
                     builder,
@@ -426,7 +426,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 break;
               }
               ++this.depth;
-              CBORObject o = this.ReadForFirstByte (
+              CBORObject o = this.ReadForFirstByte(
                   headByte);
               --this.depth;
               cbor.Add(o);
@@ -478,7 +478,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           this.HandleItemTag(uadditional);
         }
         ++this.depth;
-        CBORObject o = haveFirstByte ? this.ReadForFirstByte (
+        CBORObject o = haveFirstByte ? this.ReadForFirstByte(
             newFirstByte) : this.ReadInternal();
         --this.depth;
         if ((uadditional >> 63) != 0) {
@@ -503,11 +503,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 return this.stringRefs.GetString(o.AsEIntegerValue());
             }
           }
-          return CBORObject.FromObjectAndTag (
+          return CBORObject.FromObjectAndTag(
               o,
               (int)uadditional);
         }
-        return CBORObject.FromObjectAndTag (
+        return CBORObject.FromObjectAndTag(
             o,
             EInteger.FromInt64(uadditional));
       }

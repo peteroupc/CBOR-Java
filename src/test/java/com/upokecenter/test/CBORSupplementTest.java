@@ -200,19 +200,19 @@ import com.upokecenter.numbers.*;
     }
     @Test
     public void TestCBORObjectArgumentValidation() {
-      Assert.assertEquals (
+      Assert.assertEquals(
         CBORObject.Null,
         ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         CBORObject.Null,
         ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
-      Assert.assertEquals (
+      Assert.assertEquals(
         CBORObject.True,
         ToObjectTest.TestToFromObjectRoundTrip(true));
-      Assert.assertEquals (
+      Assert.assertEquals(
         CBORObject.False,
         ToObjectTest.TestToFromObjectRoundTrip(false));
-      Assert.assertEquals (
+      Assert.assertEquals(
         ToObjectTest.TestToFromObjectRoundTrip(8),
         ToObjectTest.TestToFromObjectRoundTrip((byte)8));
 
@@ -627,13 +627,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail(cbor.toString());
  }
 
-      cbor = CBORObject.DecodeFromBytes (
+      cbor = CBORObject.DecodeFromBytes(
           new byte[] { (byte)0xd8, 0x1e, (byte)0x9f, (byte)0xff, });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
  }
 
-      cbor = CBORObject.DecodeFromBytes (
+      cbor = CBORObject.DecodeFromBytes(
           new byte[] { (byte)0xd9, 0x01, 0x0e, (byte)0x9f, (byte)0xff, });
       if (cbor.isNumber()) {
  Assert.fail(cbor.toString());
@@ -1020,7 +1020,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestStringRefs() {
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
-      CBORObject cbor = CBORObject.DecodeFromBytes (
+      CBORObject cbor = CBORObject.DecodeFromBytes(
       new byte[] {
         (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64, (byte)0xd8,
         0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19,

@@ -284,7 +284,7 @@ private BEncoding() {
             if (length < 0) {
               throw new CBORException("invalid String");
             }
-            WriteUtf8 (
+            WriteUtf8(
               LongToString(length),
               stream);
             stream.write(((byte)((byte)':')));
