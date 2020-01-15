@@ -59,26 +59,23 @@ private CBORJsonWriter() {
             sb.WriteCodePoint((int)Hex16.charAt((int)(c >> 4)));
             sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
           }
-        } else {
-          if ((c & 0xfc00) == 0xd800) {
+        } else if ((c & 0xfc00) == 0xd800) {
             if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
               // NOTE: RFC 8259 doesn't prohibit any particular
               // error-handling behavior when a writer of JSON
               // receives a String with an unpaired surrogate.
               if (options.getReplaceSurrogates()) {
                 // Replace unpaired surrogate with U+FFFD
-                c = (char)0xfffd;
+                sb.WriteCodePoint(0xfffd);
               } else {
                 throw new CBORException("Unpaired surrogate in String");
               }
+            } else {
+              sb.WriteString(str, i, 2);
+              ++i;
             }
-          }
-          if ((c & 0xfc00) == 0xd800) {
-            sb.WriteString(str, i, 2);
-          ++i;
         } else {
-              sb.WriteCodePoint((int)c);
-          }
+          sb.WriteCodePoint((int)c);
         }
       }
     }

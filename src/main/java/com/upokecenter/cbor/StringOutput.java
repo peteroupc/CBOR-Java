@@ -46,7 +46,9 @@ import com.upokecenter.numbers.*;
     }
 
     public void WriteString(String str, int index, int length) throws java.io.IOException {
-      if (this.outputStream != null) {
+      if (this.outputStream == null) {
+        this.builder.append(str, index, (index)+(length));
+      } else {
         if (length == 1) {
           this.WriteCodePoint((int)str.charAt(index));
         } else {
@@ -60,12 +62,18 @@ import com.upokecenter.numbers.*;
             throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
-      } else {
-        this.builder.append(str, index, (index)+(length));
       }
     }
 
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
+      if ((codePoint >> 8) == 0) {
+        if (this.outputStream == null) {
+          this.builder.append((char)codePoint);
+        } else {
+ this.outputStream.write((byte)codePoint);
+}
+        return;
+      }
       if (codePoint < 0) {
         throw new IllegalArgumentException("codePoint(" + codePoint +
           ") is less than 0");
