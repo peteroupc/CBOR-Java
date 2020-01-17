@@ -40,7 +40,6 @@ import com.upokecenter.numbers.*;
 
     private String NextJSONString() {
       int c;
-      boolean unescaped = true;
       int startIndex = this.index;
       int endIndex = -1;
       int ep = this.endPos;
