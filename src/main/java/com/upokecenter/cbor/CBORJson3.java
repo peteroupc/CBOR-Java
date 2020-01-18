@@ -46,8 +46,7 @@ import com.upokecenter.numbers.*;
       String js = this.jstring;
       int idx = this.index;
       while (true) {
-        c = idx < ep ? ((int)js.charAt(idx++)) &
-          0xffff : -1;
+        c = idx < ep ? ((int)js.charAt(idx++)) & 0xffff : -1;
         if (c == -1 || c < 0x20) {
           this.index = idx;
           this.RaiseError("Unterminated String");
