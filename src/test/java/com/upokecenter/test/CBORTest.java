@@ -933,7 +933,7 @@ ed.AsNumber().CanFitInSingle()) {
       CBORObject obj = CBORTestCommon.FromBytesTestAB(
           new byte[] { (byte)0xc4, (byte)0x82, 0x3, 0x1a, 1, 2, 3, 4 });
       try {
-        System.out.println(obj.ToObject(EDecimal.class));
+        System.out.println("" + obj.ToObject(EDecimal.class));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -947,7 +947,7 @@ ed.AsNumber().CanFitInSingle()) {
         1,
        });
       try {
-        System.out.println(obj.ToObject(EDecimal.class));
+        System.out.println("" + obj.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -966,7 +966,7 @@ ed.AsNumber().CanFitInSingle()) {
         1, 2, 3, 4,
        });
       try {
-        System.out.println(obj.ToObject(EDecimal.class));
+        System.out.println("" + obj.ToObject(EDecimal.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -985,7 +985,7 @@ ed.AsNumber().CanFitInSingle()) {
         1, 2, 3, 4,
        });
       try {
-        System.out.println(cbor.ToObject(EFloat.class));
+        System.out.println("" + cbor.ToObject(EFloat.class));
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -1211,7 +1211,7 @@ ed.AsNumber().CanFitInSingle()) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
         try {
-          System.out.println(cbortag.ToObject(EDecimal.class));
+          System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
         } catch (IllegalStateException ex) {
           // NOTE: Intentionally empty
@@ -1227,7 +1227,7 @@ ed.AsNumber().CanFitInSingle()) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(-1);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
         try {
-          System.out.println(cbortag.ToObject(EDecimal.class));
+          System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
         } catch (IllegalStateException ex) {
           // NOTE: Intentionally empty
@@ -1238,7 +1238,7 @@ ed.AsNumber().CanFitInSingle()) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(2);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
         try {
-          System.out.println(cbortag.ToObject(EDecimal.class));
+          System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
         } catch (IllegalStateException ex) {
           // NOTE: Intentionally empty
@@ -1259,7 +1259,7 @@ ed.AsNumber().CanFitInSingle()) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(8);
         cbortag = CBORObject.FromObjectAndTag(cbor, tag);
         try {
-          System.out.println(cbortag.ToObject(EDecimal.class));
+          System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
         } catch (IllegalStateException ex) {
           // NOTE: Intentionally empty
@@ -4095,7 +4095,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-      System.out.println(cbor);
+      System.out.println("" + cbor);
       try {
         cbor.EncodeToBytes(options);
         Assert.fail("Should have failed");
@@ -4139,7 +4139,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-      System.out.println(cbor);
+      System.out.println("" + cbor);
       try {
         cbor.EncodeToBytes(options);
         Assert.fail("Should have failed");
@@ -4186,7 +4186,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-      System.out.println(cbor);
+      System.out.println("" + cbor);
       try {
         cbor.EncodeToBytes(options);
         Assert.fail("Should have failed");
@@ -4228,7 +4228,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-      System.out.println(cbor);
+      System.out.println("" + cbor);
       try {
         cbor.EncodeToBytes(options);
         Assert.fail("Should have failed");
@@ -4268,7 +4268,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        };
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
-      System.out.println(cbor);
+      System.out.println("" + cbor);
       try {
         cbor.EncodeToBytes(options);
         Assert.fail("Should have failed");
@@ -4419,8 +4419,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
       CBORObject objB = CBORObject.FromJSONString(obj.ToJSONString());
       if (!objA.equals(objB)) {
-        System.out.println(objA);
-        System.out.println(objB);
+        System.out.println("" + objA);
+        System.out.println("" + objB);
         Assert.fail("WriteJSONTo gives different results from ToJSONString");
       }
     }

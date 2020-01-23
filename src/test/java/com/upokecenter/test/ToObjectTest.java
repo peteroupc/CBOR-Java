@@ -819,8 +819,7 @@ import com.upokecenter.numbers.*;
           }
         } else {
           try {
-            System.out.println(cbornumber.ToObject(int.class));
-            System.out.println(cbornumber.ToObject(int.class));
+            System.out.println("" + cbornumber.ToObject(int.class));
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty

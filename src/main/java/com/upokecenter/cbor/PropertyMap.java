@@ -284,7 +284,7 @@ if(!setters){
   }
 
   public static <K, V> Collection<Map.Entry<K, V>>
-         GetEntries(Map<? extends K, ? extends V> dict) {
+         GetEntries(Map<K, V> dict) {
       return Collections.unmodifiableMap(dict).entrySet();
   }
 
