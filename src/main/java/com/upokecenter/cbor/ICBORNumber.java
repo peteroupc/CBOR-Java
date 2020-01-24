@@ -11,173 +11,173 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    */
   interface ICBORNumber {
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsPositiveInfinity(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsInfinity(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsNegativeInfinity(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsNaN(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsNegative(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     double AsDouble(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     Object Negate(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     Object Abs(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     EDecimal AsEDecimal(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     EFloat AsEFloat(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     ERational AsERational(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     float AsSingle(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     EInteger AsEInteger(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     long AsInt64(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanFitInSingle(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanFitInDouble(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanFitInInt32(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanFitInInt64(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanTruncatedIntFitInInt64(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean CanTruncatedIntFitInInt32(Object obj);
 
   /**
-   * Not documented yet.
-   * @return The return value is not documented yet.
+   * This is an internal API.
+   * @return The return value is an internal value.
    */
     int AsInt32(Object obj, int minValue, int maxValue);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsNumberZero(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     int Sign(Object obj);
 
   /**
-   * Not documented yet.
+   * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
-   * @return The return value is not documented yet.
+   * @return The return value is an internal value.
    */
     boolean IsIntegral(Object obj);
   }
