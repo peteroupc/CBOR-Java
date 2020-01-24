@@ -3,7 +3,7 @@ package com.upokecenter.test;
 import java.util.*;
 import com.upokecenter.util.*;
 
-  public class JSONGenerator {
+  public final class JSONGenerator {
     private static final class ByteWriter {
       private byte[] bytes = new byte[64];
       private int pos = 0;
@@ -187,9 +187,7 @@ import com.upokecenter.util.*;
         majorType = MajorTypesTop[r.UniformInt(MajorTypes.length)];
       }
       GenerateWhitespace(r, bs);
-      if (depth > 6) {
-        majorType = r.UniformInt(2); // either 0 or 1
-      } else if (bs.getByteLength() > 2000000) {
+      if (bs.getByteLength() > 2000000) {
         majorType = r.UniformInt(2); // either 0 or 1
       }
       if (majorType == 0) {
@@ -219,6 +217,9 @@ import com.upokecenter.util.*;
         if (r.UniformInt(50) == 0 && depth < 2) {
           long v = (long)r.UniformInt(1000) * r.UniformInt(1000);
           len = (int)(v / 1000);
+        }
+if (depth>6) {
+          len = r.UniformInt(100) == 0 ? 1 : 0;
         }
         if (majorType == 4) {
           bs.Write((int)'[');
