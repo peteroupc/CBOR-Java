@@ -6,64 +6,8 @@
   <packaging>jar</packaging>
   <version>4.1.0-SNAPSHOT</version>
   <name>CBOR (Concise Binary Object Representation)</name>
-  <description>A Java implementation of Concise Binary Object Representation (CBOR), a general-purpose binary data format defined in RFC 7049.</description>
+  <description>A Java implementation of Concise Binary Object Representation (CBOR), a general-purpose binary data format defined in RFC 7049. </description>
   <url>https://github.com/peteroupc/CBOR-Java</url>
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
-            <configuration>
-              <bottom>CBOR for Java documentation, generated in {currentYear}.</bottom>
-              <additionalJOptions>
-              <additionalJOption>-html5</additionalJOption>
-              </additionalJOptions>
-
-            </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <scm>
     <connection>scm:git:https://github.com/peteroupc/CBOR-Java</connection>
     <developerConnection>scm:git:https://github.com/peteroupc/CBOR-Java.git</developerConnection>
@@ -82,8 +26,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
   <licenses>
     <license>
@@ -100,21 +44,15 @@
             <version>3.7.0</version>
             <configuration>
                 <compilerArgs>
-                   <arg>-Xlint:all</arg>
+                   <arg>-Xlint:deprecation</arg>
                 </compilerArgs>
             </configuration>
         </plugin>
-    <plugin>
-      <groupId>org.sonatype.plugins</groupId>
-      <artifactId>nexus-staging-maven-plugin</artifactId>
-      <extensions>true</extensions>
-      <version>1.6.1</version>
-      <configuration>
-        <serverId>ossrh</serverId>
-        <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-      </configuration>
-    </plugin>
+        <plugin>
+            <groupId>edu.berkeley.cs.jqf</groupId>
+            <artifactId>jqf-maven-plugin</artifactId>
+            <version>1.3</version>
+        </plugin>
    </plugins>
   </build>
   <distributionManagement>
@@ -124,6 +62,22 @@
     </snapshotRepository>
   </distributionManagement>
   <dependencies>
+        <dependency>
+            <groupId>edu.berkeley.cs.jqf</groupId>
+            <artifactId>jqf-fuzz</artifactId>
+            <version>1.3</version>
+        </dependency>
+<dependency>
+  <groupId>org.spf4j</groupId>
+  <artifactId>spf4j-ui</artifactId>
+  <version>8.6.28</version>
+  <scope>test</scope>
+</dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.25</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -133,7 +87,7 @@
     <dependency>
       <groupId>com.github.peteroupc</groupId>
       <artifactId>numbers</artifactId>
-      <version>1.5.1</version>
+      <version>1.6.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
