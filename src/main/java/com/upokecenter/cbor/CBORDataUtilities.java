@@ -493,6 +493,8 @@ JSONOptions.ConversionMode.Double) {
         }
         return null;
       }
+      int exponentPos = -1;
+      boolean negativeExp = false;
       if (haveExponent) {
         haveDigits = false;
         if (k == endPos) {
@@ -502,12 +504,18 @@ JSONOptions.ConversionMode.Double) {
           return null;
         }
         char c = str.charAt(k);
-        if (c == '+' || c == '-') {
+        if (c == '+') {
+          ++k;
+        } else if (c == '-') {
+          negativeExp = true;
           ++k;
         }
         for (; k < endPos; ++k) {
           c = str.charAt(k);
           if (c >= '0' && c <= '9') {
+            if (exponentPos<0 && c != '0') {
+              exponentPos = k;
+            }
             haveDigits = true;
           } else if (endOfNumber != null) {
             endOfNumber[0] = k;
@@ -533,6 +541,36 @@ JSONOptions.ConversionMode.Double) {
       if (endOfNumber != null) {
         endOfNumber[0] = endPos;
       }
+        if (exponentPos >= 0 && endPos - exponentPos > 20) {
+          // Exponent too high for precision to overcome (which
+          // has a length no bigger than Integer.MAX_VALUE, which is 10 digits
+          // long)
+          if (negativeExp) {
+            // underflow
+            if (kind == JSONOptions.ConversionMode.Double ||
+                kind == JSONOptions.ConversionMode.IntOrFloat) {
+              if (!negative) {
+                return CBORObject.FromObject((double)0.0);
+              } else {
+ return CBORObject.FromFloatingPointBits(0x8000, 2);
+}
+            } else if (kind ==
+JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+              return CBORObject.FromObject(0);
+            }
+          } else {
+            // overflow
+            if (kind == JSONOptions.ConversionMode.Double ||
+                kind == JSONOptions.ConversionMode.IntOrFloatFromDouble ||
+                kind == JSONOptions.ConversionMode.IntOrFloat) {
+              return CBORObject.FromObject(
+                 negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
+            } else if (kind == JSONOptions.ConversionMode.Decimal128) {
+              return CBORObject.FromObject(negative ?
+                 EDecimal.NegativeInfinity : EDecimal.PositiveInfinity);
+            }
+          }
+        }
       if (!haveExponent && !haveDecimalPoint &&
          (endPos - numOffset) <= 16) {
         // Very common case of all-digit JSON number strings
