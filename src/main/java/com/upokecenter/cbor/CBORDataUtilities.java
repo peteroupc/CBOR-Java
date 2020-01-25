@@ -83,8 +83,8 @@ private CBORDataUtilities() {
           break;
         case FloatingPoint: {
           double f = obj.AsDoubleValue();
-          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
-(((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
+          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity"
+:(((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
 
                 "NaN" : obj.Untag().ToJSONString()));
           if (sb == null) {
@@ -359,25 +359,25 @@ private CBORDataUtilities() {
     static CBORObject ParseSmallNumberAsNegative(
       int digit,
       JSONOptions options) {
-       if (options != null && options.getNumberConversion() ==
-             JSONOptions.ConversionMode.Double) {
-         return CBORObject.FromObject((double)(-digit));
-       } else {
-         // NOTE: Assumes digit is greater than zero, so PreserveNegativeZeros is
-         // irrelevant
-         return CBORObject.FromObject(-digit);
-       }
+      if (options != null && options.getNumberConversion() ==
+        JSONOptions.ConversionMode.Double) {
+        return CBORObject.FromObject((double)(-digit));
+      } else {
+        // NOTE: Assumes digit is greater than zero, so PreserveNegativeZeros is
+        // irrelevant
+        return CBORObject.FromObject(-digit);
+      }
     }
 
     static CBORObject ParseSmallNumber(int digit, JSONOptions
-options) {
-       if (options != null && options.getNumberConversion() ==
-JSONOptions.ConversionMode.Double) {
-         return CBORObject.FromObject((double)digit);
-       } else {
-         // NOTE: Assumes digit is nonnegative, so PreserveNegativeZeros is irrelevant
-         return CBORObject.FromObject(digit);
-       }
+      options) {
+      if (options != null && options.getNumberConversion() ==
+        JSONOptions.ConversionMode.Double) {
+        return CBORObject.FromObject((double)digit);
+      } else {
+        // NOTE: Assumes digit is nonnegative, so PreserveNegativeZeros is irrelevant
+        return CBORObject.FromObject(digit);
+      }
     }
 
     /**
@@ -446,7 +446,7 @@ JSONOptions.ConversionMode.Double) {
       // Check syntax
       int k = i;
       if (endPos - 1 > k && str.charAt(k) == '0' && str.charAt(k + 1) >= '0' &&
-         str.charAt(k + 1) <= '9') {
+        str.charAt(k + 1) <= '9') {
         if (endOfNumber != null) {
           endOfNumber[0] = k + 2;
         }
@@ -478,8 +478,8 @@ JSONOptions.ConversionMode.Double) {
             // Check if character can validly appear after a JSON number
             if (c != ',' && c != ']' && c != '}' &&
               c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
-               return null;
-             } else {
+              return null;
+            } else {
               endPos = k;
               break;
             }
@@ -513,7 +513,7 @@ JSONOptions.ConversionMode.Double) {
         for (; k < endPos; ++k) {
           c = str.charAt(k);
           if (c >= '0' && c <= '9') {
-            if (exponentPos<0 && c != '0') {
+            if (exponentPos < 0 && c != '0') {
               exponentPos = k;
             }
             haveDigits = true;
@@ -522,10 +522,10 @@ JSONOptions.ConversionMode.Double) {
             // Check if character can validly appear after a JSON number
             if (c != ',' && c != ']' && c != '}' &&
               c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
-               return null;
-             } else {
-               endPos = k;
-               break;
+              return null;
+            } else {
+              endPos = k;
+              break;
             }
           } else {
             return null;
@@ -541,38 +541,38 @@ JSONOptions.ConversionMode.Double) {
       if (endOfNumber != null) {
         endOfNumber[0] = endPos;
       }
-        if (exponentPos >= 0 && endPos - exponentPos > 20) {
-          // Exponent too high for precision to overcome (which
-          // has a length no bigger than Integer.MAX_VALUE, which is 10 digits
-          // long)
-          if (negativeExp) {
-            // underflow
-            if (kind == JSONOptions.ConversionMode.Double ||
-                kind == JSONOptions.ConversionMode.IntOrFloat) {
-              if (!negative) {
-                return CBORObject.FromObject((double)0.0);
-              } else {
- return CBORObject.FromFloatingPointBits(0x8000, 2);
-}
-            } else if (kind ==
-JSONOptions.ConversionMode.IntOrFloatFromDouble) {
-              return CBORObject.FromObject(0);
+      if (exponentPos >= 0 && endPos - exponentPos > 20) {
+        // Exponent too high for precision to overcome (which
+        // has a length no bigger than Integer.MAX_VALUE, which is 10 digits
+        // long)
+        if (negativeExp) {
+          // underflow
+          if (kind == JSONOptions.ConversionMode.Double ||
+            kind == JSONOptions.ConversionMode.IntOrFloat) {
+            if (!negative) {
+              return CBORObject.FromObject((double)0.0);
+            } else {
+              return CBORObject.FromFloatingPointBits(0x8000, 2);
             }
-          } else {
-            // overflow
-            if (kind == JSONOptions.ConversionMode.Double ||
-                kind == JSONOptions.ConversionMode.IntOrFloatFromDouble ||
-                kind == JSONOptions.ConversionMode.IntOrFloat) {
-              return CBORObject.FromObject(
-                 negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
-            } else if (kind == JSONOptions.ConversionMode.Decimal128) {
-              return CBORObject.FromObject(negative ?
-                 EDecimal.NegativeInfinity : EDecimal.PositiveInfinity);
-            }
+          } else if (kind ==
+            JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+            return CBORObject.FromObject(0);
+          }
+        } else {
+          // overflow
+          if (kind == JSONOptions.ConversionMode.Double ||
+            kind == JSONOptions.ConversionMode.IntOrFloatFromDouble ||
+            kind == JSONOptions.ConversionMode.IntOrFloat) {
+            return CBORObject.FromObject(
+                negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
+          } else if (kind == JSONOptions.ConversionMode.Decimal128) {
+            return CBORObject.FromObject(negative ?
+                EDecimal.NegativeInfinity : EDecimal.PositiveInfinity);
           }
         }
+      }
       if (!haveExponent && !haveDecimalPoint &&
-         (endPos - numOffset) <= 16) {
+        (endPos - numOffset) <= 16) {
         // Very common case of all-digit JSON number strings
         // less than 2^53 (with or without number sign)
         long v = 0L;
@@ -619,17 +619,17 @@ JSONOptions.ConversionMode.IntOrFloatFromDouble) {
           }
           if (!negative || lv != 0) {
             CBORObject cbor = CBORObject.FromObject(
-              new CBORObject[] {
-                CBORObject.FromObject(expo),
-                CBORObject.FromObject(lv),
-              });
+            new CBORObject[] {
+              CBORObject.FromObject(expo),
+              CBORObject.FromObject(lv),
+            });
             return cbor.WithTag(4);
           }
         }
         EDecimal ed = EDecimal.FromString(
-          str,
-          initialOffset,
-          endPos - initialOffset);
+            str,
+            initialOffset,
+            endPos - initialOffset);
         if (ed.isZero() && negative) {
           if (preserveNegativeZero && ed.getExponent().isZero()) {
             // TODO: In next major version, use EDecimal
@@ -641,30 +641,30 @@ JSONOptions.ConversionMode.IntOrFloatFromDouble) {
         return CBORObject.FromObject(ed);
       } else if (kind == JSONOptions.ConversionMode.Double) {
         double dbl = EFloat.FromString(
-          str,
-          initialOffset,
-          endPos - initialOffset,
-          EContext.Binary64).ToDouble();
+            str,
+            initialOffset,
+            endPos - initialOffset,
+            EContext.Binary64).ToDouble();
         if (!preserveNegativeZero && dbl == 0.0) {
           dbl = 0.0;
         }
         return CBORObject.FromObject(dbl);
       } else if (kind == JSONOptions.ConversionMode.Decimal128) {
         EDecimal ed = EDecimal.FromString(
-          str,
-          initialOffset,
-          endPos - initialOffset,
-          EContext.Decimal128);
+            str,
+            initialOffset,
+            endPos - initialOffset,
+            EContext.Decimal128);
         if (!preserveNegativeZero && ed.isNegative() && ed.isZero()) {
           ed = ed.Negate();
         }
         return CBORObject.FromObject(ed);
       } else if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
         double dbl = EFloat.FromString(
-          str,
-          initialOffset,
-          endPos - initialOffset,
-          EContext.Binary64).ToDouble();
+            str,
+            initialOffset,
+            endPos - initialOffset,
+            EContext.Binary64).ToDouble();
         if (!Double.isNaN(dbl) && dbl >= -9007199254740991.0 &&
           dbl <= 9007199254740991.0 && Math.floor(dbl) == dbl) {
           long idbl = (long)dbl;
@@ -674,10 +674,10 @@ JSONOptions.ConversionMode.IntOrFloatFromDouble) {
       } else if (kind == JSONOptions.ConversionMode.IntOrFloat) {
         EContext ctx = EContext.Binary64.WithBlankFlags();
         double dbl = EFloat.FromString(
-          str,
-          initialOffset,
-          endPos - initialOffset,
-          ctx).ToDouble();
+            str,
+            initialOffset,
+            endPos - initialOffset,
+            ctx).ToDouble();
         if ((ctx.getFlags() & EContext.FlagInexact) != 0) {
           // Inexact conversion to double, meaning that the String doesn't
           // represent an integer in [-(2^53)+1, 2^53), which is representable
