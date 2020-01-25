@@ -66,7 +66,8 @@ import com.upokecenter.numbers.*;
     }
 
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
-      if ((codePoint >> 8) == 0) {
+      if ((codePoint >> 7) == 0) {
+        // Code point is in the Basic Latin range (U+0000 to U+007F)
         if (this.outputStream == null) {
           this.builder.append((char)codePoint);
         } else {
