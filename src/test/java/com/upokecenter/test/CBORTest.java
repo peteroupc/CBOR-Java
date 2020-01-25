@@ -330,7 +330,7 @@ import com.upokecenter.numbers.*;
 public void TestWriteToJSONSpecific() {
  byte[] bytes = new byte[] {
    0x6a, 0x25, 0x7f, 0x41, 0x58, 0x11, 0x54,
-   (byte)0xc3, (byte)0x94, 0x19, 0x49
+   (byte)0xc3, (byte)0x94, 0x19, 0x49,
   };
  TestWriteToJSON(CBORObject.DecodeFromBytes(bytes));
 }
@@ -4411,6 +4411,9 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
         try {
+          if (obj == null) {
+            throw new NullPointerException("obj");
+          }
           obj.WriteJSONTo(ms);
           jsonString = DataUtilities.GetUtf8String(
               ms.toByteArray(),
@@ -4426,6 +4429,9 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+      if (obj == null) {
+        throw new NullPointerException("obj");
+      }
       CBORObject objB = CBORObject.FromJSONString(obj.ToJSONString());
       if (!objA.equals(objB)) {
         Assert.fail("WriteJSONTo gives different results from " +

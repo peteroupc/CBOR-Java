@@ -305,9 +305,9 @@ import com.upokecenter.util.*;
             break;
           case 2:
 
-            bs.Write((int)'f').Write((int)'a').Write((int)'l').Write
-((int)'s').Write((
-                    int)'e');
+            bs.Write((int)'f').Write((int)'a').Write((int)'l').Write(
+  (int)'s').Write(
+                    (int)'e');
             break;
         }
       } else if (majorType == 3) {

@@ -83,8 +83,8 @@ private CBORDataUtilities() {
           break;
         case FloatingPoint: {
           double f = obj.AsDoubleValue();
-          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity"
-:(((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
+          simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity":
+(((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
 
                 "NaN" : obj.Untag().ToJSONString()));
           if (sb == null) {
