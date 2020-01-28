@@ -936,8 +936,8 @@ public void TestEquivJSON() {
   };
  TestEquivJSONOne(jsonBytes);
 }
-@Test
-public void TestEquivJSONOne() {
+
+public void TestEquivJSONOne(byte[] bytes) {
    CBORObject cbo = CBORObject.FromJSONBytes(bytes);
    if (!(cbo != null)) {
  Assert.fail();
@@ -947,14 +947,14 @@ public void TestEquivJSONOne() {
  Assert.fail();
  }
    if (!cbo.equals(cbo2)) {
-     Assert.assertEquals(cbo, cbo2);
+     Assert.assertEquals("differs for JSONString",cbo,cbo2);
    }
    cbo2 = CBORObject.FromJSONBytes(cbo.ToJSONBytes());
    if (!(cbo2 != null)) {
  Assert.fail();
  }
    if (!cbo.equals(cbo2)) {
-     Assert.assertEquals(cbo, cbo2);
+     Assert.assertEquals("differs for JSONBytes",cbo,cbo2);
    }
 }
 
