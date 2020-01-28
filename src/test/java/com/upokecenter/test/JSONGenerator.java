@@ -197,7 +197,8 @@ bs) {
       while (true) {
         StringBuilder sb = new StringBuilder();
         ByteWriter bs = new ByteWriter();
-        int len = ra.GetInt32(1000);
+        int len = ra.GetInt32(1000) * ra.GetInt32(1000);
+        len /= 1000;
         if (ra.GetInt32(50) == 0 && depth < 2) {
           // Exponential curve that strongly favors small numbers
           long v = (long)ra.GetInt32(1000000) * ra.GetInt32(1000000);
@@ -250,7 +251,8 @@ bs) {
       IRandomGenExtended ra,
       ByteWriter bs,
       int depth) {
-      int len = ra.GetInt32(1000);
+      int len = ra.GetInt32(1000) * ra.GetInt32(1000);
+      len /= 1000;
       if (ra.GetInt32(50) == 0 && depth < 2) {
         // Exponential curve that strongly favors small numbers
         long v = (long)ra.GetInt32(1000000) * ra.GetInt32(1000000);
@@ -355,6 +357,9 @@ bs) {
 
     public byte[] Generate(IRandomGenExtended random) {
       ByteWriter bs = new ByteWriter();
+      if (random == null) {
+        throw new NullPointerException("random");
+      }
       this.Generate(random, 0, bs);
       byte[] ret = bs.ToBytes();
       return ret;

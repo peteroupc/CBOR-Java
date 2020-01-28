@@ -515,9 +515,9 @@ minInclusive) ||
         return 0;
       }
       IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
-if (rge != null) {
-  return rge.GetInt32();
-}
+      if (rge != null) {
+        return rge.GetInt32(maxExclusive);
+      }
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
@@ -562,11 +562,11 @@ if (rge != null) {
     }
 
 public long GetInt64(long maxExclusive) {
-  return UniformLong(maxExclusive);
+  return this.UniformLong(maxExclusive);
 }
 
-public long GetInt32(int maxExclusive) {
-  return UniformInt(maxExclusive);
+public int GetInt32(int maxExclusive) {
+  return this.UniformInt(maxExclusive);
 }
 
     /**
@@ -585,9 +585,9 @@ public long GetInt32(int maxExclusive) {
         return this.UniformInt((int)maxExclusive);
       }
       IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
-if (rge != null) {
-  return rge.GetInt64();
-}
+      if (rge != null) {
+        return rge.GetInt64(maxExclusive);
+      }
       long lb = 0;
       long maxexc;
       byte[] b = new byte[8];
