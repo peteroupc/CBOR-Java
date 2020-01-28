@@ -9,7 +9,7 @@ package com.upokecenter.util;
    * concurrent use by multiple threads, as long as the underlying random
    * byte generator is as well.</p>
    */
-  public final class RandomGenerator {
+  public final class RandomGenerator implements IRandomGenExtended {
     private boolean valueHaveLastNormal;
     private IRandomGen valueIrg;
     private double valueLastNormal;
@@ -63,6 +63,10 @@ package com.upokecenter.util;
      */
     public int Binomial(int trials) {
       return this.Binomial(trials, 0.5);
+    }
+
+    public int GetBytes(byte[] bytes, int offset, int count) {
+      return this.valueIrg.GetBytes(bytes, offset, count);
     }
 
     /**
@@ -510,6 +514,10 @@ minInclusive) ||
       if (maxExclusive <= 1) {
         return 0;
       }
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
+if (rge != null) {
+  return rge.GetInt32();
+}
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
@@ -553,6 +561,14 @@ minInclusive) ||
       }
     }
 
+public long GetInt64(long maxExclusive) {
+  return UniformLong(maxExclusive);
+}
+
+public long GetInt32(int maxExclusive) {
+  return UniformInt(maxExclusive);
+}
+
     /**
      * Generates a random 32-bit signed integer 0 or greater and less than the
      * given number.
@@ -568,6 +584,10 @@ minInclusive) ||
       if (maxExclusive <= Integer.MAX_VALUE) {
         return this.UniformInt((int)maxExclusive);
       }
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
+if (rge != null) {
+  return rge.GetInt64();
+}
       long lb = 0;
       long maxexc;
       byte[] b = new byte[8];
