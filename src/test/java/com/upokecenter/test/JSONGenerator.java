@@ -111,14 +111,14 @@ bs) {
       if (ra.GetInt32(2) == 0) {
         bs.Write((int)'-');
       }
-      int len = (ra.GetInt32(1000) * ra.GetInt32(3)) + 1;
+      int len = ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000) + 1;
       bs.Write(0x31 + ra.GetInt32(9));
       for (int i = 0; i < len; ++i) {
         bs.Write(0x30 + ra.GetInt32(10));
       }
       if (ra.GetInt32(2) == 0) {
         bs.Write(0x2e);
-        len = (ra.GetInt32(1000) * ra.GetInt32(3)) + 1;
+        len = ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000) + 1;
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
         }
@@ -132,7 +132,10 @@ bs) {
         } else if (rr == 2) {
           bs.Write((int)'E').Write((int)'-');
         }
-        len = 1 + ra.GetInt32(1000);
+        len = 1 + ra.GetInt32(5);
+        if (ra.GetInt32(10) == 0) {
+          len = 1 + ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000);
+        }
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
         }

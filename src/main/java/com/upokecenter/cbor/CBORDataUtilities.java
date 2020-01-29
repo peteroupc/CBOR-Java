@@ -631,14 +631,21 @@ private CBORDataUtilities() {
             initialOffset,
             endPos - initialOffset);
         if (ed.isZero() && negative) {
-          if (preserveNegativeZero && ed.getExponent().isZero()) {
-            // TODO: In next major version, use EDecimal
-            return CBORObject.FromFloatingPointBits(0x8000, 2);
-          } else if (!preserveNegativeZero) {
-            ed = ed.Negate();
+          if (ed.getExponent().isZero()) {
+           // TODO: In next major version, use EDecimal
+           // for preserveNegativeZero
+           return (preserveNegativeZero) ?
+              CBORObject.FromFloatingPointBits(0x8000, 2) :
+              CBORObject.FromObject(0);
+            } else if (!preserveNegativeZero) {
+              return CBORObject.FromObject(ed.Negate());
+            } else {
+            return CBORObject.FromObject(ed);
           }
+        } else {
+          return (ed.getExponent().isZero()) ? (CBORObject.FromObject(ed.getMantissa())):
+(CBORObject.FromObject(ed));
         }
-        return CBORObject.FromObject(ed);
       } else if (kind == JSONOptions.ConversionMode.Double) {
         double dbl = EFloat.FromString(
             str,
