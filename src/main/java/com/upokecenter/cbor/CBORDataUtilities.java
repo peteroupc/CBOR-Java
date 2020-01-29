@@ -618,12 +618,16 @@ private CBORDataUtilities() {
             lv = -lv;
           }
           if (!negative || lv != 0) {
-            CBORObject cbor = CBORObject.FromObject(
-            new CBORObject[] {
-              CBORObject.FromObject(expo),
-              CBORObject.FromObject(lv),
-            });
-            return cbor.WithTag(4);
+            if (expo == 0) {
+              return CBORObject.FromObject(lv);
+            } else {
+              CBORObject cbor = CBORObject.FromObject(
+              new CBORObject[] {
+                CBORObject.FromObject(expo),
+                CBORObject.FromObject(lv),
+              });
+              return cbor.WithTag(4);
+            }
           }
         }
         EDecimal ed = EDecimal.FromString(
@@ -634,7 +638,7 @@ private CBORDataUtilities() {
           if (ed.getExponent().isZero()) {
            // TODO: In next major version, use EDecimal
            // for preserveNegativeZero
-           return (preserveNegativeZero) ?
+           return preserveNegativeZero ?
               CBORObject.FromFloatingPointBits(0x8000, 2) :
               CBORObject.FromObject(0);
             } else if (!preserveNegativeZero) {
@@ -643,8 +647,8 @@ private CBORDataUtilities() {
             return CBORObject.FromObject(ed);
           }
         } else {
-          return (ed.getExponent().isZero()) ? (CBORObject.FromObject(ed.getMantissa())):
-(CBORObject.FromObject(ed));
+          return ed.getExponent().isZero() ? CBORObject.FromObject(ed.getMantissa()) :
+CBORObject.FromObject(ed);
         }
       } else if (kind == JSONOptions.ConversionMode.Double) {
         double dbl = EFloat.FromString(
