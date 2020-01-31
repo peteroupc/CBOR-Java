@@ -256,8 +256,10 @@ private RandomObjects() {
       return RandomDecimalString(r, false, true);
     }
 
-    public static String RandomDecimalString(IRandomGenExtended r, boolean
-extended, boolean limitedExponent) {
+    public static String RandomDecimalString(
+      IRandomGenExtended r,
+      boolean extended,
+      boolean limitedExponent) {
       if (r == null) {
         throw new NullPointerException("r");
       }
@@ -286,7 +288,7 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
       }
       if (r.GetInt32(2) == 0) {
         int rr = r.GetInt32(3);
-if (rr == 0) {
+        if (rr == 0) {
           sb.append("E");
         } else if (rr == 1) {
    sb.append("E+");
