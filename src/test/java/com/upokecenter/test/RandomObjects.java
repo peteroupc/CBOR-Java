@@ -162,7 +162,11 @@ private RandomObjects() {
         // it doesn't round-trip as well
       }
       String str = RandomDecimalString(r);
-      return EDecimal.FromString(str);
+      if (str.length() < 1000 || str.indexOf('E') < 0) {
+        return EDecimal.FromString(str);
+      } else {
+        return EDecimal.Create(RandomEInteger(r), RandomEInteger(r));
+      }
     }
 
     public static EInteger RandomEInteger(IRandomGenExtended r) {
@@ -174,7 +178,7 @@ private RandomObjects() {
         StringAndBigInt sabi = StringAndBigInt.Generate(
           r,
           16,
-          MaxStringNumDigits);
+          MaxNumberLength);
         return sabi.getBigIntValue();
       }
       if (selection < 50) {
@@ -256,10 +260,8 @@ private RandomObjects() {
       return RandomDecimalString(r, false, true);
     }
 
-    public static String RandomDecimalString(
-      IRandomGenExtended r,
-      boolean extended,
-      boolean limitedExponent) {
+    public static String RandomDecimalString(IRandomGenExtended r, boolean
+extended, boolean limitedExponent) {
       if (r == null) {
         throw new NullPointerException("r");
       }
@@ -288,7 +290,7 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
       }
       if (r.GetInt32(2) == 0) {
         int rr = r.GetInt32(3);
-        if (rr == 0) {
+if (rr == 0) {
           sb.append("E");
         } else if (rr == 1) {
    sb.append("E+");
