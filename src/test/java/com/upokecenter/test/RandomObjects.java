@@ -17,7 +17,6 @@ import com.upokecenter.numbers.*;
 private RandomObjects() {
 }
     private static final int MaxExclusiveStringLength = 0x2000;
-    private static final int MaxExclusiveExponentLength = 0x2000;
     private static final int MaxExclusiveShortStringLength = 50;
     private static final int MaxNumberLength = 100000;
     private static final int MaxShortNumberLength = 40;
@@ -174,12 +173,13 @@ private RandomObjects() {
         throw new NullPointerException("r");
       }
       int selection = r.GetInt32(100);
-      if (selection < 40) {
-        StringAndBigInt sabi = StringAndBigInt.Generate(
-          r,
-          16,
-          MaxNumberLength);
-        return sabi.getBigIntValue();
+      if (selection < 10) {
+        int count = r.GetInt32(MaxNumberLength) + 1;
+        byte[] bytes = new byte[count];
+        for (int i = 0; i < count; ++i) {
+          bytes[i] = (byte)((int)r.GetInt32(256));
+        }
+        return EInteger.FromBytes(bytes, true);
       }
       if (selection < 50) {
         StringAndBigInt sabi = StringAndBigInt.Generate(
