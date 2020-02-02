@@ -161,7 +161,7 @@ private RandomObjects() {
         // it doesn't round-trip as well
       }
       String str = RandomDecimalString(r);
-      if (str.length() < 1000 || str.indexOf('E') < 0) {
+      if (str.length() < 1000 || (str.indexOf('E') < 0 && str.indexOf('.') < 0)) {
         return EDecimal.FromString(str);
       } else {
         return EDecimal.Create(RandomEInteger(r), RandomEInteger(r));
@@ -285,6 +285,8 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
         sb.append('.');
         count = ((long)r.GetInt32(MaxNumberLength) *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
+        count = ((long)count *
+r.GetInt32(MaxNumberLength)) / MaxNumberLength;
         count = Math.max(1, count);
         for (int i = 0; i < count; ++i) {
           sb.append((char)('0' + r.GetInt32(10)));
@@ -303,6 +305,8 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
    sb.append(TestCommon.IntToString(r.GetInt32(10000)));
         } else {
           count = ((long)r.GetInt32(MaxNumberLength) *
+r.GetInt32(MaxNumberLength)) / MaxNumberLength;
+          count = ((long)count *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
           count = Math.max(1, count);
           for (int i = 0; i < count; ++i) {
