@@ -160,12 +160,13 @@ private RandomObjects() {
         // Signaling NaN currently not generated because
         // it doesn't round-trip as well
       }
-      String str = RandomDecimalString(r);
-      if (str.length() < 1000 || (str.indexOf('E') < 0 && str.indexOf('.') < 0)) {
-        return EDecimal.FromString(str);
-      } else {
-        return EDecimal.Create(RandomEInteger(r), RandomEInteger(r));
+      if (r.GetInt32(100) < 10) {
+        String str = RandomDecimalString(r);
+        if (str.length() < 500) {
+          return EDecimal.FromString(str);
+        }
       }
+      return EDecimal.Create(RandomEInteger(r), RandomEInteger(r));
     }
 
     public static EInteger RandomEInteger(IRandomGenExtended r) {
