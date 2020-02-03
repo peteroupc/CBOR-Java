@@ -28,9 +28,7 @@ private RandomObjects() {
       }
       int x = rand.GetInt32(MaxExclusiveStringLength);
       byte[] bytes = new byte[x];
-      for (int i = 0; i < x; ++i) {
-        bytes[i] = ((byte)rand.GetInt32(256));
-      }
+      rand.GetBytes(bytes, 0, bytes.length);
       return bytes;
     }
 
@@ -40,9 +38,7 @@ private RandomObjects() {
       }
       int x = rand.GetInt32(MaxExclusiveShortStringLength);
       byte[] bytes = new byte[x];
-      for (int i = 0; i < x; ++i) {
-        bytes[i] = ((byte)rand.GetInt32(256));
-      }
+      rand.GetBytes(bytes, 0, bytes.length);
       return bytes;
     }
 
@@ -177,9 +173,8 @@ private RandomObjects() {
       if (selection < 10) {
         int count = r.GetInt32(MaxNumberLength) + 1;
         byte[] bytes = new byte[count];
-        for (int i = 0; i < count; ++i) {
-          bytes[i] = (byte)((int)r.GetInt32(256));
-        }
+        r.GetBytes(bytes, 0, bytes.length);
+
         return EInteger.FromBytes(bytes, true);
       }
       if (selection < 50) {
@@ -191,9 +186,7 @@ private RandomObjects() {
       } else {
         int count = r.GetInt32(MaxShortNumberLength) + 1;
         byte[] bytes = new byte[count];
-        for (int i = 0; i < count; ++i) {
-          bytes[i] = (byte)((int)r.GetInt32(256));
-        }
+        r.GetBytes(bytes, 0, bytes.length);
         return EInteger.FromBytes(bytes, true);
       }
     }
