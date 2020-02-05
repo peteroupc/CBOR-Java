@@ -138,6 +138,23 @@ private RandomObjects() {
       return Float.intBitsToFloat(r);
     }
 
+    public static EDecimal GenerateEDecimalSmall(IRandomGenExtended wrapper) {
+       StringBuilder sb = new StringBuilder();
+       int len = 1 + wrapper.GetInt32(4);
+       for (int i = 0; i < len; ++i) {
+         sb.append((char)(0x30 + wrapper.GetInt32(10)));
+       }
+       sb.append('.');
+       len = 1 + wrapper.GetInt32(36);
+       for (int i = 0; i < len; ++i) {
+         sb.append((char)(0x30 + wrapper.GetInt32(10)));
+       }
+       sb.append('E');
+       len = wrapper.GetInt32(25)-12;
+       sb.append(TestCommon.IntToString(len));
+       return EDecimal.FromString(sb.toString());
+    }
+
     public static EDecimal RandomEDecimal(IRandomGenExtended r) {
       if (r == null) {
         throw new NullPointerException("r");
