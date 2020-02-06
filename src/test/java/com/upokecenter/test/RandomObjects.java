@@ -140,6 +140,9 @@ private RandomObjects() {
 
     public static EDecimal GenerateEDecimalSmall(IRandomGenExtended wrapper) {
        StringBuilder sb = new StringBuilder();
+       if (wrapper == null) {
+         throw new NullPointerException("wrapper");
+       }
        int len = 1 + wrapper.GetInt32(4);
        for (int i = 0; i < len; ++i) {
          sb.append((char)(0x30 + wrapper.GetInt32(10)));
@@ -150,7 +153,7 @@ private RandomObjects() {
          sb.append((char)(0x30 + wrapper.GetInt32(10)));
        }
        sb.append('E');
-       len = wrapper.GetInt32(25)-12;
+       len = wrapper.GetInt32(25) - 12;
        sb.append(TestCommon.IntToString(len));
        return EDecimal.FromString(sb.toString());
     }
