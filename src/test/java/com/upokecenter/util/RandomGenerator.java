@@ -51,7 +51,7 @@ package com.upokecenter.util;
      * @return A Boolean object.
      */
     public boolean Bernoulli() {
-      return this.UniformInt(2) == 0;
+      return this.UniformInt (2) == 0;
     }
 
     /**
@@ -62,11 +62,11 @@ package com.upokecenter.util;
      * @return A 32-bit signed integer.
      */
     public int Binomial(int trials) {
-      return this.Binomial(trials, 0.5);
+      return this.Binomial (trials, 0.5);
     }
 
     public int GetBytes(byte[] bytes, int offset, int count) {
-      return this.valueIrg.GetBytes(bytes, offset, count);
+      return this.valueIrg.GetBytes (bytes, offset, count);
     }
 
     /**
@@ -96,7 +96,7 @@ package com.upokecenter.util;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         for (int i = 0; i < trials && i >= 0;) {
-          this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes (bytes, 0, 1);
           int b = bytes[0];
           while (i < trials && i >= 0) {
             if ((b & 1) == 1) {
@@ -128,7 +128,7 @@ package com.upokecenter.util;
       if (df <= 0) {
         throw new IllegalArgumentException("df(" + df + ") is not greater than 0");
       }
-      return this.Gamma(df * 0.5, 2);
+      return this.Gamma (df * 0.5, 2);
     }
 
     /**
@@ -136,7 +136,7 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double Exponential() {
-      return -Math.log(1.0 - this.Uniform());
+      return -Math.log (1.0 - this.Uniform());
     }
 
     /**
@@ -149,7 +149,7 @@ package com.upokecenter.util;
       if (b <= 0) {
         throw new IllegalArgumentException("b(" + b + ") is not greater than 0");
       }
-      return this.Gamma(a) * b;
+      return this.Gamma (a) * b;
     }
 
     /**
@@ -163,18 +163,18 @@ package com.upokecenter.util;
       }
       double v, x, u, x2, d, c;
       d = (a < 1 ? 1 + a : a) - (1.0 / 3.0);
-      c = 1 / Math.sqrt(9 * d);
+      c = 1 / Math.sqrt (9 * d);
       do {
         do {
           x = this.Normal();
-          v = Math.pow((c * x) + 1, 3);
+          v = Math.pow ((c * x) + 1, 3);
         } while (v <= 0);
         u = 1.0 - this.Uniform();
         x2 = x * x;
       } while (u >= 1 - (0.0331 * x2 * x2) &&
-        Math.log(u) >= (0.5 * x2) + (d * (1 - v + Math.log(v))));
+        Math.log (u) >= (0.5 * x2) + (d * (1 - v + Math.log (v))));
       if (a < 1) {
-        return d * v * Math.exp(this.Exponential() / -a);
+        return d * v * Math.exp (this.Exponential() / -a);
       } else {
         return d * v;
       }
@@ -187,7 +187,7 @@ package com.upokecenter.util;
      * @return The number of failures until a success happens.
      */
     public int Geometric() {
-      return this.NegativeBinomial(1, 0.5);
+      return this.NegativeBinomial (1, 0.5);
     }
 
     /**
@@ -197,7 +197,7 @@ package com.upokecenter.util;
      * @return The number of failures until a success happens.
      */
     public int Geometric(double p) {
-      return this.NegativeBinomial(1, p);
+      return this.NegativeBinomial (1, p);
     }
 
     /**
@@ -231,7 +231,7 @@ package com.upokecenter.util;
       }
       int ret = 0;
       for (int i = 0; i < trials && ones > 0; ++i) {
-        if (this.UniformInt(count) < ones) {
+        if (this.UniformInt (count) < ones) {
           --ones;
           ++ret;
         }
@@ -248,7 +248,7 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double LogNormal(double mean, double sd) {
-      return Math.exp(this.Normal(mean, sd));
+      return Math.exp (this.Normal (mean, sd));
     }
 
     /**
@@ -282,7 +282,7 @@ package com.upokecenter.util;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         while (true) {
-          this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes (bytes, 0, 1);
           int b = bytes[0];
           for (int i = 0; i < 8; ++i) {
             if ((b & 1) == 1) {
@@ -320,7 +320,7 @@ package com.upokecenter.util;
      * @return The number of 0's generated. Returns Integer.MAX_VALUE if "p" is 0.
      */
     public int NegativeBinomial(int trials) {
-      return this.NegativeBinomial(trials, 0.5);
+      return this.NegativeBinomial (trials, 0.5);
     }
     // The Normal, Exponential, Poisson, and
     // single-argument Gamma methods were adapted
@@ -340,14 +340,14 @@ package com.upokecenter.util;
       }
       double x = 1.0 - this.Uniform();
       double y = this.Uniform();
-      double s = Math.sqrt(-2 * Math.log(x));
+      double s = Math.sqrt (-2 * Math.log (x));
       double t = 2 * Math.PI * y;
-      double otherNormal = s * Math.sin(t);
+      double otherNormal = s * Math.sin (t);
       synchronized (this.valueNormalLock) {
         this.valueLastNormal = otherNormal;
         this.valueHaveLastNormal = true;
       }
-      return s * Math.cos(t);
+      return s * Math.cos (t);
     }
 
     /**
@@ -373,7 +373,7 @@ package com.upokecenter.util;
         throw new IllegalArgumentException("mean(" + mean +
           ") is less than 0");
       }
-      double l = Math.exp(-mean);
+      double l = Math.exp (-mean);
       int count = -1;
       double p = 1.0;
       while (true) {
@@ -406,7 +406,7 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double Uniform(double max) {
-      return this.Uniform(0.0, max);
+      return this.Uniform (0.0, max);
     }
 
     /**
@@ -415,7 +415,7 @@ package com.upokecenter.util;
      * @return A 64-bit floating-point number.
      */
     public double Uniform() {
-      return this.UniformLong(9007199254740992L) / 9007199254740992.0;
+      return this.UniformLong (9007199254740992L) / 9007199254740992.0;
     }
 
     /**
@@ -424,7 +424,7 @@ package com.upokecenter.util;
      * @return A 32-bit floating-point number.
      */
     public double UniformSingle() {
-      return this.UniformInt(16777216) / 16777216.0f;
+      return this.UniformInt (16777216) / 16777216.0f;
     }
 
     /**
@@ -443,13 +443,13 @@ package com.upokecenter.util;
         return minInclusive;
       }
       if (minInclusive >= 0) {
-        return minInclusive + this.UniformInt(maxExclusive - minInclusive);
+        return minInclusive + this.UniformInt (maxExclusive - minInclusive);
       } else {
         long diff = maxExclusive - minInclusive;
         if (diff <= Integer.MAX_VALUE) {
-          return minInclusive + this.UniformInt((int)diff);
+          return minInclusive + this.UniformInt ((int)diff);
         } else {
-          return (int)(minInclusive + this.UniformLong(diff));
+          return (int) (minInclusive + this.UniformLong (diff));
         }
       }
     }
@@ -470,17 +470,17 @@ package com.upokecenter.util;
         return minInclusive;
       }
       if (minInclusive >= 0) {
-        return minInclusive + this.UniformLong(maxExclusive - minInclusive);
+        return minInclusive + this.UniformLong (maxExclusive - minInclusive);
       } else {
         if ((maxExclusive < 0 && Long.MAX_VALUE + maxExclusive <
-minInclusive) ||
+            minInclusive) ||
           (maxExclusive > 0 && Long.MIN_VALUE + maxExclusive > minInclusive) ||
           minInclusive - maxExclusive < 0) {
           // Difference is greater than MaxValue
           long lb = 0;
           byte[] b = new byte[8];
           while (true) {
-            this.valueIrg.GetBytes(b, 0, 8);
+            this.valueIrg.GetBytes (b, 0, 8);
             lb = b[0] & 0xffL;
             lb |= (b[1] & 0xffL) << 8;
             lb |= (b[2] & 0xffL) << 16;
@@ -494,7 +494,7 @@ minInclusive) ||
             }
           }
         } else {
-          return minInclusive + this.UniformLong(maxExclusive - minInclusive);
+          return minInclusive + this.UniformLong (maxExclusive - minInclusive);
         }
       }
     }
@@ -516,30 +516,30 @@ minInclusive) ||
       }
       IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
       if (rge != null) {
-        return rge.GetInt32(maxExclusive);
+        return rge.GetInt32 (maxExclusive);
       }
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
-          this.valueIrg.GetBytes(b, 0, 1);
+          this.valueIrg.GetBytes (b, 0, 1);
           return b[0] & 1;
         }
         case 256: {
-          this.valueIrg.GetBytes(b, 0, 1);
+          this.valueIrg.GetBytes (b, 0, 1);
           return (int)b[0] & 1;
         }
         default: {
           while (true) {
             int ib = 0;
             if (maxExclusive == 0x1000000) {
-              this.valueIrg.GetBytes(b, 0, 3);
+              this.valueIrg.GetBytes (b, 0, 3);
               ib = b[0] & 0xff;
               ib |= (b[1] & 0xff) << 8;
               ib |= (b[2] & 0xff) << 16;
               return ib;
             }
             if (maxExclusive == 0x10000) {
-              this.valueIrg.GetBytes(b, 0, 2);
+              this.valueIrg.GetBytes (b, 0, 2);
               ib = b[0] & 0xff;
               ib |= (b[1] & 0xff) << 8;
               return ib;
@@ -547,7 +547,7 @@ minInclusive) ||
             int maxexc;
             maxexc = (Integer.MAX_VALUE / maxExclusive) * maxExclusive;
             while (true) {
-              this.valueIrg.GetBytes(b, 0, 4);
+              this.valueIrg.GetBytes (b, 0, 4);
               ib = b[0] & 0xff;
               ib |= (b[1] & 0xff) << 8;
               ib |= (b[2] & 0xff) << 16;
@@ -561,13 +561,13 @@ minInclusive) ||
       }
     }
 
-public long GetInt64(long maxExclusive) {
-  return this.UniformLong(maxExclusive);
-}
+    public long GetInt64(long maxExclusive) {
+      return this.UniformLong (maxExclusive);
+    }
 
-public int GetInt32(int maxExclusive) {
-  return this.UniformInt(maxExclusive);
-}
+    public int GetInt32(int maxExclusive) {
+      return this.UniformInt (maxExclusive);
+    }
 
     /**
      * Generates a random 32-bit signed integer 0 or greater and less than the
@@ -582,18 +582,18 @@ public int GetInt32(int maxExclusive) {
           ") is less than 0");
       }
       if (maxExclusive <= Integer.MAX_VALUE) {
-        return this.UniformInt((int)maxExclusive);
+        return this.UniformInt ((int)maxExclusive);
       }
       IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null);
       if (rge != null) {
-        return rge.GetInt64(maxExclusive);
+        return rge.GetInt64 (maxExclusive);
       }
       long lb = 0;
       long maxexc;
       byte[] b = new byte[8];
       maxexc = (Long.MAX_VALUE / maxExclusive) * maxExclusive;
       while (true) {
-        this.valueIrg.GetBytes(b, 0, 8);
+        this.valueIrg.GetBytes (b, 0, 8);
         lb = b[0] & 0xffL;
         lb |= (b[1] & 0xffL) << 8;
         lb |= (b[2] & 0xffL) << 16;

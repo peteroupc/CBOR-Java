@@ -12,7 +12,7 @@ import com.upokecenter.util.*;
           this.bytes[this.pos++] = (byte)b;
         } else {
           byte[] newbytes = new byte[this.bytes.length * 2];
-          System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
+          System.arraycopy (this.bytes, 0, newbytes, 0, this.bytes.length);
           this.bytes = newbytes;
           this.bytes[this.pos++] = (byte)b;
         }
@@ -23,7 +23,7 @@ import com.upokecenter.util.*;
         }
       public byte[] ToBytes() {
         byte[] newbytes = new byte[this.pos];
-        System.arraycopy(this.bytes, 0, newbytes, 0, this.pos);
+        System.arraycopy (this.bytes, 0, newbytes, 0, this.pos);
         return newbytes;
       }
     }
@@ -36,40 +36,41 @@ import com.upokecenter.util.*;
       int minArg = 0;
       int maxArg = 4;
       minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 : ((len <= 0xffff) ? 2 :
-(3)));
-int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
+            (3)));
+      int sh = 0;
+      int arg = minArg + r.GetInt32 (maxArg - minArg + 1);
       switch (arg) {
         case 0:
-          bs.Write(majorType * 0x20 + len);
+          bs.Write (majorType * 0x20 + len);
           break;
         case 1:
-          bs.Write(majorType * 0x20 + 0x18);
-          bs.Write(len & 0xff);
+          bs.Write (majorType * 0x20 + 0x18);
+          bs.Write (len & 0xff);
           break;
         case 2:
-          bs.Write(majorType * 0x20 + 0x19);
+          bs.Write (majorType * 0x20 + 0x19);
           sh = 8;
           for (int i = 0; i < 2; ++i) {
-            bs.Write((len >> sh) & 0xff);
+            bs.Write ((len >> sh) & 0xff);
             sh -= 8;
           }
           break;
         case 3:
-          bs.Write(majorType * 0x20 + 0x1a);
+          bs.Write (majorType * 0x20 + 0x1a);
           sh = 24;
           for (int i = 0; i < 4; ++i) {
-            bs.Write((len >> sh) & 0xff);
+            bs.Write ((len >> sh) & 0xff);
             sh -= 8;
           }
           break;
         case 4:
-          bs.Write(majorType * 0x20 + 0x1b);
+          bs.Write (majorType * 0x20 + 0x1b);
           for (int i = 0; i < 4; ++i) {
-            bs.Write(0);
+            bs.Write (0);
           }
           sh = 24;
           for (int i = 0; i < 4; ++i) {
-            bs.Write((len >> sh) & 0xff);
+            bs.Write ((len >> sh) & 0xff);
             sh -= 8;
           }
           break;
@@ -89,35 +90,35 @@ int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
     private static void GenerateUtf8(IRandomGenExtended ra, ByteWriter bs, int
       length) {
       for (int i = 0; i < length;) {
-        int r = ra.GetInt32(10);
+        int r = ra.GetInt32 (10);
         if (r > 0) {
-          bs.Write(ra.GetInt32(128));
+          bs.Write (ra.GetInt32 (128));
           ++i;
         } else {
-          r = ra.GetInt32(3);
+          r = ra.GetInt32 (3);
           if (r == 0 && length - i >= 2) {
-            r = 0xc2 + ra.GetInt32((0xdf - 0xc2) + 1);
-            bs.Write(r);
-            bs.Write(0x80 + ra.GetInt32(0x40));
+            r = 0xc2 + ra.GetInt32 ((0xdf - 0xc2) + 1);
+            bs.Write (r);
+            bs.Write (0x80 + ra.GetInt32 (0x40));
             i += 2;
           } else if (r == 1 && length - i >= 3) {
-            r = 0xe0 + ra.GetInt32(16);
-            bs.Write(r);
+            r = 0xe0 + ra.GetInt32 (16);
+            bs.Write (r);
             int lower = (r == 0xe0) ? 0xa0 : 0x80;
             int upper = (r == 0xed) ? 0x9f : 0xbf;
-            r = lower + ra.GetInt32((upper - lower) + 1);
-            bs.Write(r);
-            bs.Write(0x80 + ra.GetInt32(0x40));
+            r = lower + ra.GetInt32 ((upper - lower) + 1);
+            bs.Write (r);
+            bs.Write (0x80 + ra.GetInt32 (0x40));
             i += 3;
           } else if (r == 2 && length - i >= 4) {
-            r = 0xf0 + ra.GetInt32(5);
-            bs.Write(r);
+            r = 0xf0 + ra.GetInt32 (5);
+            bs.Write (r);
             int lower = (r == 0xf0) ? 0x90 : 0x80;
             int upper = (r == 0xf4) ? 0x8f : 0xbf;
-            r = lower + ra.GetInt32((upper - lower) + 1);
-            bs.Write(r);
-            bs.Write(0x80 + ra.GetInt32(0x40));
-            bs.Write(0x80 + ra.GetInt32(0x40));
+            r = lower + ra.GetInt32 ((upper - lower) + 1);
+            bs.Write (r);
+            bs.Write (0x80 + ra.GetInt32 (0x40));
+            bs.Write (0x80 + ra.GetInt32 (0x40));
             i += 4;
           }
         }
@@ -125,106 +126,106 @@ int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
     }
 
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
-      int majorType = MajorTypes[r.GetInt32(MajorTypes.length)];
+      int majorType = MajorTypes[r.GetInt32 (MajorTypes.length)];
       if (bs.getByteLength() > 2000000) {
         majorType = MajorTypesHighLength[r.GetInt32(
-  MajorTypesHighLength.length)];
+              MajorTypesHighLength.length)];
       }
       if (majorType == 3 || majorType == 2) {
-        int len = r.GetInt32(1000);
-        if (r.GetInt32(50) == 0 && depth < 2) {
-          long v = (long)r.GetInt32(100000) * r.GetInt32(100000);
-          len = (int)(v / 100000);
+        int len = r.GetInt32 (1000);
+        if (r.GetInt32 (50) == 0 && depth < 2) {
+          long v = (long)r.GetInt32 (100000) * r.GetInt32 (100000);
+          len = (int) (v / 100000);
         }
         if (depth > 6) {
-          len = r.GetInt32(100) == 0 ? 1 : 0;
+          len = r.GetInt32 (100) == 0 ? 1 : 0;
         }
         // TODO: Ensure key uniqueness
-        if (r.GetInt32(2) == 0) {
+        if (r.GetInt32 (2) == 0) {
           // Indefinite length
-          bs.Write(0x1f + majorType * 0x20);
+          bs.Write (0x1f + majorType * 0x20);
           while (len > 0) {
-            int sublen = r.GetInt32(len + 1);
-            this.GenerateArgument(r, majorType, sublen, bs);
+            int sublen = r.GetInt32 (len + 1);
+            this.GenerateArgument (r, majorType, sublen, bs);
             if (majorType == 3) {
-              GenerateUtf8(r, bs, sublen);
+              GenerateUtf8 (r, bs, sublen);
             } else {
               for (int i = 0; i < sublen; ++i) {
-                bs.Write(r.GetInt32(256));
+                bs.Write (r.GetInt32 (256));
               }
             }
             len -= sublen;
           }
-          bs.Write(0xff);
+          bs.Write (0xff);
         } else {
           // Definite length
-          this.GenerateArgument(r, majorType, len, bs);
+          this.GenerateArgument (r, majorType, len, bs);
           if (majorType == 3) {
-            GenerateUtf8(r, bs, len);
+            GenerateUtf8 (r, bs, len);
           } else {
             for (int i = 0; i < len; ++i) {
-              bs.Write(r.GetInt32(256));
+              bs.Write (r.GetInt32 (256));
             }
           }
         }
         return;
       } else if (majorType == 4 || majorType == 5) {
-        int len = r.GetInt32(8);
-        if (r.GetInt32(50) == 0 && depth < 2) {
-          long v = (long)r.GetInt32(1000) * r.GetInt32(1000);
-          len = (int)(v / 1000);
+        int len = r.GetInt32 (8);
+        if (r.GetInt32 (50) == 0 && depth < 2) {
+          long v = (long)r.GetInt32 (1000) * r.GetInt32 (1000);
+          len = (int) (v / 1000);
         }
-        boolean indefiniteLength = r.GetInt32(2) == 0;
+        boolean indefiniteLength = r.GetInt32 (2) == 0;
         if (indefiniteLength) {
-          bs.Write(0x1f + majorType * 0x20);
+          bs.Write (0x1f + majorType * 0x20);
         } else {
-          this.GenerateArgument(r, majorType, len, bs);
+          this.GenerateArgument (r, majorType, len, bs);
         }
         for (int i = 0; i < len; ++i) {
-          this.Generate(r, depth + 1, bs);
+          this.Generate (r, depth + 1, bs);
           if (majorType == 5) {
-            this.Generate(r, depth + 1, bs);
+            this.Generate (r, depth + 1, bs);
           }
         }
         if (indefiniteLength) {
-          bs.Write(0xff);
+          bs.Write (0xff);
         }
         return;
       }
-      int arg = r.GetInt32(5);
+      int arg = r.GetInt32 (5);
       switch (arg) {
         case 0:
-          bs.Write(majorType * 0x20 + r.GetInt32(0x18));
+          bs.Write (majorType * 0x20 + r.GetInt32 (0x18));
           break;
         case 1:
-          bs.Write(majorType * 0x20 + 0x18);
+          bs.Write (majorType * 0x20 + 0x18);
           if (majorType == 7) {
-            bs.Write(32 + r.GetInt32(224));
+            bs.Write (32 + r.GetInt32 (224));
           } else {
-            bs.Write(r.GetInt32(256));
+            bs.Write (r.GetInt32 (256));
           }
           break;
         case 2:
-          bs.Write(majorType * 0x20 + 0x19);
+          bs.Write (majorType * 0x20 + 0x19);
           for (int i = 0; i < 2; ++i) {
-            bs.Write(r.GetInt32(256));
+            bs.Write (r.GetInt32 (256));
           }
           break;
         case 3:
-          bs.Write(majorType * 0x20 + 0x1a);
+          bs.Write (majorType * 0x20 + 0x1a);
           for (int i = 0; i < 4; ++i) {
-            bs.Write(r.GetInt32(256));
+            bs.Write (r.GetInt32 (256));
           }
           break;
         case 4:
-          bs.Write(majorType * 0x20 + 0x1b);
+          bs.Write (majorType * 0x20 + 0x1b);
           for (int i = 0; i < 8; ++i) {
-            bs.Write(r.GetInt32(256));
+            bs.Write (r.GetInt32 (256));
           }
           break;
       }
       if (majorType == 6) {
-        this.Generate(r, depth + 1, bs);
+        this.Generate (r, depth + 1, bs);
       }
     }
 
@@ -233,7 +234,7 @@ int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
       if (random == null) {
         throw new NullPointerException("random");
       }
-      this.Generate(random, 0, bs);
+      this.Generate (random, 0, bs);
       byte[] ret = bs.ToBytes();
       return ret;
     }
