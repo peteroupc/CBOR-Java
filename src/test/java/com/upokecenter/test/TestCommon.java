@@ -12,7 +12,7 @@ import org.junit.Assert;
   public final class TestCommon {
 private TestCommon() {
 }
-    private static final String ValueDigits = "0123456789";
+    private static final String Digits = "0123456789";
 
     public static int StringToInt(String str) {
       boolean neg = false;
@@ -422,12 +422,12 @@ private TestCommon() {
         count = 4;
         while (value > 9) {
           int intdivvalue = (value * 26215) >> 18;
-          char digit = HexAlphabet.get((int)(value - (intdivvalue * 10)));
+          char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
           chars[count--] = digit;
           value = intdivvalue;
         }
         if (value != 0) {
-          chars[count--] = HexAlphabet.get((int)value);
+          chars[count--] = Digits.charAt((int)value);
         }
         ++count;
         return new String(chars, count, 5 - count);
@@ -440,18 +440,18 @@ private TestCommon() {
       }
       while (value > 43698) {
         int intdivvalue = value / 10;
-        char digit = HexAlphabet.get((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = (value * 26215) >> 18;
-        char digit = HexAlphabet.get((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = HexAlphabet.get((int)value);
+        chars[count--] = Digits.charAt((int)value);
       }
       if (neg) {
         chars[count] = '-';
@@ -473,7 +473,7 @@ private TestCommon() {
       char[] chars;
       int intlongValue = ((int)longValue);
       if ((long)intlongValue == longValue) {
-        return IntToString(intLongValue);
+        return IntToString(intlongValue);
       } else {
         chars = new char[24];
         count = 23;
@@ -482,18 +482,18 @@ private TestCommon() {
         }
         while (longValue > 43698) {
           long divValue = longValue / 10;
-          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
         }
         while (longValue > 9) {
           long divValue = (longValue * 26215) >> 18;
-          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
         }
         if (longValue != 0) {
-          chars[count--] = ValueDigits.charAt((int)longValue);
+          chars[count--] = Digits.charAt((int)longValue);
         }
         if (neg) {
           chars[count] = '-';
@@ -598,6 +598,11 @@ private TestCommon() {
         if (arr1[i] != arr2[i]) {
           return false;
         }
+      }
+      return true;
+    }
+  }
+}
       }
       return true;
     }
