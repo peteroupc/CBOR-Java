@@ -135,7 +135,7 @@ import com.upokecenter.util.*;
         int len = r.GetInt32 (1000);
         if (r.GetInt32 (50) == 0 && depth < 2) {
           long v = (long)r.GetInt32 (100000) * r.GetInt32 (100000);
-          len = (int) (v / 100000);
+          len = (int)(v / 100000);
         }
         if (depth > 6) {
           len = r.GetInt32 (100) == 0 ? 1 : 0;
@@ -173,7 +173,7 @@ import com.upokecenter.util.*;
         int len = r.GetInt32 (8);
         if (r.GetInt32 (50) == 0 && depth < 2) {
           long v = (long)r.GetInt32 (1000) * r.GetInt32 (1000);
-          len = (int) (v / 1000);
+          len = (int)(v / 1000);
         }
         boolean indefiniteLength = r.GetInt32 (2) == 0;
         if (indefiniteLength) {

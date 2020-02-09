@@ -449,7 +449,7 @@ package com.upokecenter.util;
         if (diff <= Integer.MAX_VALUE) {
           return minInclusive + this.UniformInt ((int)diff);
         } else {
-          return (int) (minInclusive + this.UniformLong (diff));
+          return (int)(minInclusive + this.UniformLong (diff));
         }
       }
     }
