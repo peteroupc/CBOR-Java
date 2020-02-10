@@ -602,8 +602,3 @@ private TestCommon() {
       return true;
     }
   }
-}
-      }
-      return true;
-    }
-  }
