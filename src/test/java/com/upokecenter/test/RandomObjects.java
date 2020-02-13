@@ -10,7 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /// <summary>Description of RandomObjects.</summary>
+  /**
+   * Description of RandomObjects.
+   */
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -189,19 +191,19 @@ decimalString) {
         int x = r.GetInt32(3);
         if (x == 0) {
           if (decimalString != null) {
-            decimalString[0]="Infinity";
+            decimalString[0] = "Infinity";
           }
           return EDecimal.PositiveInfinity;
         }
         if (x == 1) {
           if (decimalString != null) {
-            decimalString[0]="-Infinity";
+            decimalString[0] = "-Infinity";
           }
           return EDecimal.NegativeInfinity;
         }
         if (x == 2) {
           if (decimalString != null) {
-            decimalString[0]="NaN";
+            decimalString[0] = "NaN";
           }
           return EDecimal.NaN;
         }
@@ -212,7 +214,7 @@ decimalString) {
         String str = RandomDecimalString(r);
         if (str.length() < 500) {
           if (decimalString != null) {
-            decimalString[0]=str;
+            decimalString[0] = str;
           }
           return EDecimal.FromString(str);
         }
@@ -221,7 +223,7 @@ decimalString) {
       EInteger eexp = RandomEInteger(r);
       EDecimal ed = EDecimal.Create(emant, eexp);
       if (decimalString != null) {
-        decimalString[0]=emant.toString() + "E" + eexp.toString();
+        decimalString[0] = emant.toString() + "E" + eexp.toString();
       }
       return ed;
     }
@@ -306,22 +308,24 @@ decimalString) {
       return RandomDecimalString(r, false, true);
     }
 
-    private static void AppendRandomDecimalsLong(IRandomGenExtended r,
-  StringBuilder sb, long count) {
-      if ((sb) == null) {
+    private static void AppendRandomDecimalsLong(
+      IRandomGenExtended r,
+      StringBuilder sb,
+      long count) {
+      if (sb == null) {
         throw new NullPointerException("sb");
       }
-      if ((r) == null) {
+      if (r == null) {
         throw new NullPointerException("r");
       }
       if (count > 0) {
         int buflen = (int)Math.min(0x10000, Math.max(count + 8, 64));
         byte[] buffer = new byte[buflen];
-        while (count>0) {
+        while (count > 0) {
           r.GetBytes(buffer, 0, buflen);
-          for (int i = 0;i<buflen && count>0; ++i) {
-            int x=((int)buffer[i]) & 31;
-            if (x< 30) {
+          for (int i = 0; i < buflen && count > 0; ++i) {
+            int x = ((int)buffer[i]) & 31;
+            if (x < 30) {
               sb.append((char)(0x30 + (x % 10)));
               --count;
             }
@@ -330,8 +334,10 @@ decimalString) {
       }
     }
 
-    private static void AppendRandomDecimals(IRandomGenExtended r,
-  StringBuilder sb, int smallCount) {
+    private static void AppendRandomDecimals(
+      IRandomGenExtended r,
+      StringBuilder sb,
+      int smallCount) {
       AppendRandomDecimalsLong(r, sb, smallCount);
     }
 
@@ -369,7 +375,7 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
           exponentCount = Math.max(1, count);
         }
       }
-      int bufferSize=(int)Math.min(
+      int bufferSize = (int)Math.min(
          Integer.MAX_VALUE,
          8 + count + afterPointCount + exponentCount);
       StringBuilder sb = new StringBuilder(bufferSize);
