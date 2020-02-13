@@ -10,9 +10,7 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Description of RandomObjects.
-   */
+  /// <summary>Description of RandomObjects.</summary>
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -308,7 +306,7 @@ decimalString) {
       return RandomDecimalString(r, false, true);
     }
 
-    private static void AppendRandomDecimals(IRandomGenExtended r,
+    private static void AppendRandomDecimalsLong(IRandomGenExtended r,
   StringBuilder sb, long count) {
       if ((sb) == null) {
         throw new NullPointerException("sb");
@@ -333,8 +331,8 @@ decimalString) {
     }
 
     private static void AppendRandomDecimals(IRandomGenExtended r,
-  StringBuilder sb, int count) {
-      AppendRandomDecimals(r, sb, count);
+  StringBuilder sb, int smallCount) {
+      AppendRandomDecimalsLong(r, sb, smallCount);
     }
 
     public static String RandomDecimalString(
@@ -382,10 +380,10 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
         sb.append((char)('1' + r.GetInt32(9)));
         --count;
       }
-      AppendRandomDecimals(r, sb, count);
+      AppendRandomDecimalsLong(r, sb, count);
       if (afterPointCount > 0) {
         sb.append('.');
-        AppendRandomDecimals(r, sb, afterPointCount);
+        AppendRandomDecimalsLong(r, sb, afterPointCount);
       }
       if (exponentCount > 0) {
         int rr = r.GetInt32(3);
@@ -399,7 +397,7 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
         if (smallExponent) {
    sb.append(TestCommon.IntToString(r.GetInt32(10000)));
         } else {
-          AppendRandomDecimals(r, sb, exponentCount);
+          AppendRandomDecimalsLong(r, sb, exponentCount);
         }
       }
       return sb.toString();
