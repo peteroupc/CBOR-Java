@@ -234,21 +234,24 @@ decimalString) {
       }
       int selection = r.GetInt32(100);
       if (selection < 10) {
-        int count = r.GetInt32(MaxNumberLength) + 1;
-        byte[] bytes = new byte[count];
-        r.GetBytes(bytes, 0, bytes.length);
+        int count = r.GetInt32(MaxNumberLength);
+        count = (int)(((long)count * r.GetInt32(MaxNumberLength)) /
+MaxNumberLength);
+        count = (int)(((long)count * r.GetInt32(MaxNumberLength)) /
+MaxNumberLength);
+        count = Math.max(count, 1);
+        byte[] bytes = RandomByteString(r, count);
         return EInteger.FromBytes(bytes, true);
-      }
-      if (selection < 50) {
+      } else if (selection < 50) {
         StringAndBigInt sabi = StringAndBigInt.Generate(
             r,
             2 + r.GetInt32(35),
             MaxStringNumDigits);
         return sabi.getBigIntValue();
       } else {
-        int count = r.GetInt32(MaxShortNumberLength) + 1;
-        byte[] bytes = new byte[count];
-        r.GetBytes(bytes, 0, bytes.length);
+        byte[] bytes = RandomByteString(
+          r,
+          r.GetInt32(MaxShortNumberLength) + 1);
         return EInteger.FromBytes(bytes, true);
       }
     }
@@ -308,6 +311,23 @@ decimalString) {
       return RandomDecimalString(r, false, true);
     }
 
+    private static char[] charTable = {
+      '0', '0', '0','1','1','1','2','2','2','3','3','3','4','4','4',
+      '5', '5','5','6','6','6','7','7','7','8','8','8','9','9','9',
+    };
+
+    // Special 10-digit-long strings
+    private static String[] SpecialDecimals = {
+      "1000000000",
+      "0000000001",
+      "4999999999",
+      "5000000000",
+      "5000000001",
+      "5500000000",
+      "0000000000",
+      "9999999999",
+    };
+
     private static void AppendRandomDecimalsLong(
       IRandomGenExtended r,
       StringBuilder sb,
@@ -323,13 +343,22 @@ decimalString) {
         byte[] buffer = new byte[buflen];
         while (count > 0) {
           r.GetBytes(buffer, 0, buflen);
-          for (int i = 0; i < buflen && count > 0; ++i) {
-            int x = ((int)buffer[i]) & 31;
-            if (x < 30) {
-              sb.append((char)(0x30 + (x % 10)));
-              --count;
+          int i = 0;
+          while (i < buflen && count > 0) {
+              int x = ((int)buffer[i]) & 31;
+              if (x < 30) {
+                sb.append(charTable[x]);
+                --count;
+                ++i;
+              } else if (count >= 10 && i + 1 < buflen) {
+                int y = (((int)buffer[i + 1]) & 0xff) % SpecialDecimals.length;
+                sb.append(SpecialDecimals[y]);
+                count -= 10;
+                i += 2;
+              } else {
+                ++i;
+              }
             }
-          }
         }
       }
     }
@@ -353,6 +382,8 @@ decimalString) {
       }
       long count = ((long)r.GetInt32(MaxNumberLength) *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
+      count = ((long)count *
+r.GetInt32(MaxNumberLength)) / MaxNumberLength;
       count = Math.max(1, count);
       long afterPointCount = 0;
       long exponentCount = 0;
@@ -360,9 +391,9 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
       if (r.GetInt32(2) == 0) {
         afterPointCount = ((long)r.GetInt32(MaxNumberLength) *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
-        afterPointCount = ((long)count *
+        afterPointCount = ((long)afterPointCount *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
-        afterPointCount = Math.max(1, count);
+        afterPointCount = Math.max(1, afterPointCount);
       }
       if (r.GetInt32(2) == 0) {
         if (limitedExponent || r.GetInt32(10) > 0) {
@@ -370,9 +401,11 @@ r.GetInt32(MaxNumberLength)) / MaxNumberLength;
         } else {
           exponentCount = ((long)r.GetInt32(MaxNumberLength) *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
-          exponentCount = ((long)count *
+          exponentCount = ((long)exponentCount *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
-          exponentCount = Math.max(1, count);
+          exponentCount = ((long)exponentCount *
+r.GetInt32(MaxNumberLength)) / MaxNumberLength;
+          exponentCount = Math.max(1, exponentCount);
         }
       }
       int bufferSize = (int)Math.min(
