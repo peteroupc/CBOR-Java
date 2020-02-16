@@ -18,7 +18,7 @@ private RandomObjects() {
 }
     private static final int MaxExclusiveStringLength = 0x2000;
     private static final int MaxExclusiveShortStringLength = 50;
-    private static final int MaxNumberLength = 100000;
+    private static final int MaxNumberLength = 50000;
     private static final int MaxShortNumberLength = 40;
     private static final int MaxStringNumDigits = 50;
 
@@ -89,19 +89,26 @@ private RandomObjects() {
       return sb.toString();
     }
 
+    public static int RandomInt32(IRandomGenExtended rand) {
+      byte[] bytes = RandomByteString(rand, 4);
+      int ret = ((int)bytes[0]) & 0xff;
+      ret |= (((int)bytes[1]) & 0xff) << 8;
+      ret |= (((int)bytes[2]) & 0xff) << 16;
+      ret |= (((int)bytes[3]) & 0xff) << 24;
+      return ret;
+    }
+
     public static long RandomInt64(IRandomGenExtended rand) {
-      if (rand == null) {
-        throw new NullPointerException("rand");
-      }
-      long r = rand.GetInt32(0x10000);
-      r |= ((long)rand.GetInt32(0x10000)) << 16;
-      if (rand.GetInt32(2) == 0) {
-        r |= ((long)rand.GetInt32(0x10000)) << 32;
-        if (rand.GetInt32(2) == 0) {
-          r |= ((long)rand.GetInt32(0x10000)) << 48;
-        }
-      }
-      return r;
+      byte[] bytes = RandomByteString(rand, 8);
+      long ret = ((long)bytes[0]) & 0xff;
+      ret |= (((long)bytes[1]) & 0xff) << 8;
+      ret |= (((long)bytes[2]) & 0xff) << 16;
+      ret |= (((long)bytes[3]) & 0xff) << 24;
+      ret |= (((long)bytes[4]) & 0xff) << 32;
+      ret |= (((long)bytes[5]) & 0xff) << 40;
+      ret |= (((long)bytes[6]) & 0xff) << 48;
+      ret |= (((long)bytes[7]) & 0xff) << 56;
+      return ret;
     }
 
     public static double RandomDouble(IRandomGenExtended rand, int exponent) {
@@ -125,6 +132,16 @@ private RandomObjects() {
       r &= ~0x7ff0000000000000L; // clear exponent
       r |= ((long)exponent) << 52; // set exponent
       return Double.longBitsToDouble(r);
+    }
+
+    public static double RandomDouble(IRandomGenExtended rand) {
+      long r = RandomInt64(rand);
+      return Double.longBitsToDouble(r);
+    }
+
+    public static float RandomSingle(IRandomGenExtended rand) {
+      int r = RandomInt32(rand);
+      return Float.intBitsToFloat(r);
     }
 
     public static float RandomSingle(IRandomGenExtended rand, int exponent) {
@@ -312,8 +329,8 @@ MaxNumberLength);
     }
 
     private static char[] charTable = {
-      '0', '0', '0','1','1','1','2','2','2','3','3','3','4','4','4',
-      '5', '5','5','6','6','6','7','7','7','8','8','8','9','9','9',
+      '0', '0', '0', '1', '1','1','2','2','2','3','3','3','4','4','4',
+      '5', '5', '5', '6','6','6','7','7','7','8','8','8','9','9','9',
     };
 
     // Special 10-digit-long strings
