@@ -259,12 +259,6 @@ MaxNumberLength);
         count = Math.max(count, 1);
         byte[] bytes = RandomByteString(r, count);
         return EInteger.FromBytes(bytes, true);
-      } else if (selection < 50) {
-        StringAndBigInt sabi = StringAndBigInt.Generate(
-            r,
-            2 + r.GetInt32(35),
-            MaxStringNumDigits);
-        return sabi.getBigIntValue();
       } else {
         byte[] bytes = RandomByteString(
           r,
@@ -329,8 +323,8 @@ MaxNumberLength);
     }
 
     private static char[] charTable = {
-      '0', '0', '0', '1', '1','1','2','2','2','3','3','3','4','4','4',
-      '5', '5', '5', '6','6','6','7','7','7','8','8','8','9','9','9',
+      '0', '0', '0', '1', '1', '1', '2','2','2','3','3','3','4','4','4',
+      '5', '5', '5', '6', '6', '6','7','7','7','8','8','8','9','9','9',
     };
 
     // Special 10-digit-long strings
@@ -343,6 +337,18 @@ MaxNumberLength);
       "5500000000",
       "0000000000",
       "9999999999",
+    };
+
+    // Special 40-digit-long strings
+    private static String[] SpecialDecimals2 = {
+      "1000000000000000000000000000000000000000",
+      "0000000000000000000000000000000000000001",
+      "4999999999999999999999999999999999999999",
+      "5000000000000000000000000000000000000000",
+      "5000000000000000000000000000000000000001",
+      "5500000000000000000000000000000000000000",
+      "0000000000000000000000000000000000000000",
+      "9999999999999999999999999999999999999999",
     };
 
     private static void AppendRandomDecimalsLong(
@@ -367,6 +373,11 @@ MaxNumberLength);
                 sb.append(charTable[x]);
                 --count;
                 ++i;
+              } else if (count >= 40 && i + 1 < buflen) {
+                int y = (((int)buffer[i + 1]) & 0xff) % SpecialDecimals2.length;
+                sb.append(SpecialDecimals2[y]);
+                count -= 40;
+                i += 2;
               } else if (count >= 10 && i + 1 < buflen) {
                 int y = (((int)buffer[i + 1]) & 0xff) % SpecialDecimals.length;
                 sb.append(SpecialDecimals[y]);
