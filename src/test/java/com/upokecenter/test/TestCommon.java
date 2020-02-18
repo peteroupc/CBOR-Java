@@ -408,20 +408,29 @@ private TestCommon() {
       }
     }
 
-    static String IntToString(int value) {
+    public static String IntToString(int value) {
       if (value == 0) {
         return "0";
       }
       if (value == Integer.MIN_VALUE) {
         return "-2147483648";
       }
+      boolean neg = value < 0;
+      if (neg) {
+        value = -value;
+      }
       char[] chars;
       int count;
-      if ((value >> 15) == 0) {
-        chars = new char[5];
-        count = 4;
+      if (value < 100000) {
+        if (neg) {
+         chars = new char[6];
+         count = 5;
+       } else {
+         chars = new char[5];
+         count = 4;
+        }
         while (value > 9) {
-          int intdivvalue = (value * 26215) >> 18;
+          int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
           char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
           chars[count--] = digit;
           value = intdivvalue;
@@ -429,23 +438,23 @@ private TestCommon() {
         if (value != 0) {
           chars[count--] = Digits.charAt((int)value);
         }
-        ++count;
-        return new String(chars, count, 5 - count);
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, chars.length - count);
       }
-      boolean neg = value < 0;
       chars = new char[12];
       count = 11;
-      if (neg) {
-        value = -value;
-      }
-      while (value > 43698) {
+      while (value >= 163840) {
         int intdivvalue = value / 10;
         char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
-        int intdivvalue = (value * 26215) >> 18;
+        int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
         char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
@@ -480,14 +489,14 @@ private TestCommon() {
         if (neg) {
           longValue = -longValue;
         }
-        while (longValue > 43698) {
+        while (longValue >= 163840) {
           long divValue = longValue / 10;
           char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
         }
         while (longValue > 9) {
-          long divValue = (longValue * 26215) >> 18;
+          long divValue = ((((longValue >> 1) * 52429) >> 18) & 16383);
           char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;

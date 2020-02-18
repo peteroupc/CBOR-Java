@@ -36,18 +36,18 @@ import com.upokecenter.util.*;
       int minArg = 0;
       int maxArg = 4;
       minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 : ((len <= 0xffff) ? 2 :
-            (3))); int sh = 0;
-            int arg = minArg + r.GetInt32(maxArg - minArg + 1);
+            (3)));
+            int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
       switch (arg) {
         case 0:
-          bs.Write(majorType * 0x20 + len);
+          bs.Write((majorType * 0x20) + len);;
           break;
         case 1:
-          bs.Write(majorType * 0x20 + 0x18);
+          bs.Write((majorType * 0x20) + 0x18);;
           bs.Write(len & 0xff);
           break;
         case 2:
-          bs.Write(majorType * 0x20 + 0x19);
+          bs.Write((majorType * 0x20) + 0x19);;
           sh = 8;
           for (int i = 0; i < 2; ++i) {
             bs.Write((len >> sh) & 0xff);
@@ -55,7 +55,7 @@ import com.upokecenter.util.*;
           }
           break;
         case 3:
-          bs.Write(majorType * 0x20 + 0x1a);
+          bs.Write((majorType * 0x20) + 0x1a);;
           sh = 24;
           for (int i = 0; i < 4; ++i) {
             bs.Write((len >> sh) & 0xff);
@@ -63,7 +63,7 @@ import com.upokecenter.util.*;
           }
           break;
         case 4:
-          bs.Write(majorType * 0x20 + 0x1b);
+          bs.Write((majorType * 0x20) + 0x1b);;
           for (int i = 0; i < 4; ++i) {
             bs.Write(0);
           }
@@ -142,7 +142,7 @@ import com.upokecenter.util.*;
         // TODO: Ensure key uniqueness
         if (r.GetInt32(2) == 0) {
           // Indefinite length
-          bs.Write(0x1f + majorType * 0x20);
+          bs.Write(0x1f + (majorType * 0x20));;
           while (len > 0) {
             int sublen = r.GetInt32(len + 1);
             this.GenerateArgument(r, majorType, sublen, bs);
@@ -176,7 +176,7 @@ import com.upokecenter.util.*;
         }
         boolean indefiniteLength = r.GetInt32(2) == 0;
         if (indefiniteLength) {
-          bs.Write(0x1f + majorType * 0x20);
+          bs.Write(0x1f + (majorType * 0x20));;
         } else {
           this.GenerateArgument(r, majorType, len, bs);
         }
@@ -197,7 +197,7 @@ import com.upokecenter.util.*;
           bs.Write(majorType * 0x20 + r.GetInt32(0x18));
           break;
         case 1:
-          bs.Write(majorType * 0x20 + 0x18);
+          bs.Write((majorType * 0x20) + 0x18);;
           if (majorType == 7) {
             bs.Write(32 + r.GetInt32(224));
           } else {
@@ -205,19 +205,19 @@ import com.upokecenter.util.*;
           }
           break;
         case 2:
-          bs.Write(majorType * 0x20 + 0x19);
+          bs.Write((majorType * 0x20) + 0x19);;
           for (int i = 0; i < 2; ++i) {
             bs.Write(r.GetInt32(256));
           }
           break;
         case 3:
-          bs.Write(majorType * 0x20 + 0x1a);
+          bs.Write((majorType * 0x20) + 0x1a);;
           for (int i = 0; i < 4; ++i) {
             bs.Write(r.GetInt32(256));
           }
           break;
         case 4:
-          bs.Write(majorType * 0x20 + 0x1b);
+          bs.Write((majorType * 0x20) + 0x1b);;
           for (int i = 0; i < 8; ++i) {
             bs.Write(r.GetInt32(256));
           }
