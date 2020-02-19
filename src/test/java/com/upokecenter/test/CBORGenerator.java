@@ -77,11 +77,11 @@ import com.upokecenter.util.*;
     }
 
     private static int[]
-    MajorTypes = {
+    valueMajorTypes = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4,
       4, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
-    private static int[] MajorTypesHighLength = {
+    private static int[] valueMajorTypesHighLength = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6,
       6, 7, 7, 7, 7, 7, 7,
     };
@@ -125,10 +125,10 @@ import com.upokecenter.util.*;
     }
 
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
-      int majorType = MajorTypes[r.GetInt32(MajorTypes.length)];
+      int majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
       if (bs.getByteLength() > 2000000) {
-        majorType = MajorTypesHighLength[r.GetInt32(
-              MajorTypesHighLength.length)];
+        majorType = valueMajorTypesHighLength[r.GetInt32(
+              valueMajorTypesHighLength.length)];
       }
       if (majorType == 3 || majorType == 2) {
         int len = r.GetInt32(1000);

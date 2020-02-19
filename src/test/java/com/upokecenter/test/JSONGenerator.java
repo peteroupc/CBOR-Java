@@ -29,20 +29,20 @@ import com.upokecenter.util.*;
       }
     }
 
-    private static int[] MajorTypes = {
+    private static int[] valueMajorTypes = {
       0, 1, 3, 4, 5,
     };
-    private static int[] MajorTypesTop = {
+    private static int[] valueMajorTypesTop = {
       0, 1, 3, 4, 4, 4, 4, 4, 5, 5, 5,
       5, 5, 5, 5, 5, 5, 5, 5, 5,
     };
 
-    private static int[] Escapes = {
+    private static int[] valueEscapes = {
       (int)'\\', (int)'/', (int)'\"',
       (int)'b', (int)'f', (int)'n', (int)'r', (int)'t', (int)'u',
     };
 
-    private static char[] EscapeChars = {
+    private static char[] valueEscapeChars = {
       '\\', '/', '\"',
       (char)8, (char)12, '\n', '\r', '\t', (char)0,
     };
@@ -225,13 +225,13 @@ bs) {
             ++i;
           } else if (r == 1) {
             bs.Write((int)'\\');
-            int escindex = ra.GetInt32(Escapes.length);
-            int esc = Escapes[escindex];
+            int escindex = ra.GetInt32(valueEscapes.length);
+            int esc = valueEscapes[escindex];
             bs.Write((int)esc);
             if (esc == (int)'u') {
               GenerateUtf16(ra, bs, sb);
             } else {
-              sb.append(EscapeChars[escindex]);
+              sb.append(valueEscapeChars[escindex]);
             }
           } else {
             GenerateUtf8(ra, bs, sb, len - i);
@@ -276,7 +276,7 @@ bs) {
           ++i;
         } else if (r == 1) {
           bs.Write((int)'\\');
-          int esc = Escapes[ra.GetInt32(Escapes.length)];
+          int esc = valueEscapes[ra.GetInt32(valueEscapes.length)];
           bs.Write((int)esc);
           if (esc == (int)'u') {
             GenerateUtf16(ra, bs, null);
@@ -290,9 +290,9 @@ bs) {
 
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
       int majorType;
-      majorType = MajorTypes[r.GetInt32(MajorTypes.length)];
+      majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
       if (depth == 0) {
-        majorType = MajorTypesTop[r.GetInt32(MajorTypes.length)];
+        majorType = valueMajorTypesTop[r.GetInt32(valueMajorTypes.length)];
       }
       GenerateWhitespace(r, bs);
       if (bs.getByteLength() > 2000000) {
