@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2013.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -758,7 +758,7 @@ private CBORUtilities() {
       long mant = bits & 0xfffffffffffffL;
       int sign = ((int)(bits >> 48)) & (1 << 15);
       int sexp = exp - 1008;
-      // DebugUtility.Log("bits={0:X8}, exp=" + exp + " sexp=" + (sexp));
+      // System.out.println("bits={0:X8}, exp=" + exp + " sexp=" + (sexp));
       if (exp == 2047) { // Infinity and NaN
         int newmant = ((int)(mant >> 42));
         return ((mant & ((1L << 42) - 1)) == 0) ? (sign | 0x7c00 | newmant) :
@@ -780,7 +780,7 @@ private CBORUtilities() {
       int exp = ((int)((bits >> 52) & 0x7ffL));
       long mant = bits & 0xfffffffffffffL;
       int sexp = exp - 896;
-      // DebugUtility.Log("sng mant={0:X8}, exp=" + exp + " sexp=" + (sexp));
+      // System.out.println("sng mant={0:X8}, exp=" + exp + " sexp=" + (sexp));
       if (exp == 2047) { // Infinity and NaN
         return (mant & ((1L << 29) - 1)) == 0;
       } else if (sexp < -23 || sexp >= 255) { // underflow or overflow
