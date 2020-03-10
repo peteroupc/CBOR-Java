@@ -10,9 +10,6 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Description of RandomObjects.
-   */
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -406,7 +403,7 @@ valueSpecialDecimals.length;
       if (r == null) {
         throw new NullPointerException("r");
       }
-      if (r.GetInt32(100) < 10) {
+      if (r.GetInt32(100) < 95) {
         return GenerateEDecimalSmallString(r, extended);
       }
       long count = ((long)r.GetInt32(MaxNumberLength) *
