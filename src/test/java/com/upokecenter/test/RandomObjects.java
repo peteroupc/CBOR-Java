@@ -10,6 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+  /**
+   * Description of RandomObjects.
+   */
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -159,9 +162,12 @@ private RandomObjects() {
       return Float.intBitsToFloat(r);
     }
 
-    private static String GenerateEDecimalSmallString(IRandomGenExtended
+    public static String RandomDecimalStringShort(IRandomGenExtended
 wrapper, boolean extended) {
        StringBuilder sb = new StringBuilder();
+       if (wrapper == null) {
+         throw new NullPointerException("wrapper");
+       }
        int len = 1 + wrapper.GetInt32(4);
        if (!extended) {
         sb.append((char)('1' + wrapper.GetInt32(9)));
@@ -188,7 +194,7 @@ wrapper, boolean extended) {
          int exp = wrapper.GetInt32(25) - 12;
          return EDecimal.Create(eix, exp);
        }
-       return EDecimal.FromString(GenerateEDecimalSmallString(wrapper, false));
+       return EDecimal.FromString(RandomDecimalStringShort(wrapper, false));
     }
 
     public static EDecimal RandomEDecimal(IRandomGenExtended r) {
@@ -261,6 +267,16 @@ MaxNumberLength);
           r.GetInt32(MaxShortNumberLength) + 1);
         return EInteger.FromBytes(bytes, true);
       }
+    }
+
+    public static EInteger RandomEIntegerSmall(IRandomGenExtended r) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
+      byte[] bytes = RandomByteString(
+        r,
+        r.GetInt32(MaxShortNumberLength) + 1);
+      return EInteger.FromBytes(bytes, true);
     }
 
     public static EFloat RandomEFloat(IRandomGenExtended r) {
@@ -396,6 +412,11 @@ valueSpecialDecimals.length;
       AppendRandomDecimalsLong(r, sb, smallCount);
     }
 
+    public static String RandomDecimalStringShort(
+      IRandomGenExtended r) {
+     return RandomDecimalStringShort(r, false);
+    }
+
     public static String RandomDecimalString(
       IRandomGenExtended r,
       boolean extended,
@@ -404,7 +425,7 @@ valueSpecialDecimals.length;
         throw new NullPointerException("r");
       }
       if (r.GetInt32(100) < 95) {
-        return GenerateEDecimalSmallString(r, extended);
+        return RandomDecimalStringShort(r, extended);
       }
       long count = ((long)r.GetInt32(MaxNumberLength) *
 r.GetInt32(MaxNumberLength)) / MaxNumberLength;
