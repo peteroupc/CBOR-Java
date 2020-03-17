@@ -10,9 +10,6 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Description of RandomObjects.
-   */
   public final class RandomObjects {
 private RandomObjects() {
 }
@@ -229,7 +226,7 @@ decimalString) {
         // Signaling NaN currently not generated because
         // it doesn't round-trip as well
       }
-      if (r.GetInt32(100) < 10) {
+      if (r.GetInt32(100) < 30) {
         String str = RandomDecimalString(r);
         if (str.length() < 500) {
           if (decimalString != null) {
@@ -239,7 +236,18 @@ decimalString) {
         }
       }
       EInteger emant = RandomEInteger(r);
-      EInteger eexp = RandomEInteger(r);
+      EInteger eexp = null;
+      if (r.GetInt32(100) < 95) {
+        int exp = 0;
+        if (r.GetInt32(100) < 80) {
+          exp = r.GetInt32(50) - 25;
+        } else {
+          exp = r.GetInt32(5000) - 2500;
+        }
+        eexp = EInteger.FromInt32(exp);
+      } else {
+        eexp = RandomEInteger(r);
+      }
       EDecimal ed = EDecimal.Create(emant, eexp);
       if (decimalString != null) {
         decimalString[0] = emant.toString() + "E" + eexp.toString();
