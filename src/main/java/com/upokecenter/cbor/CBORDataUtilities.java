@@ -82,6 +82,7 @@ private CBORDataUtilities() {
           sb.append(simvalue);
           break;
         case FloatingPoint: {
+          // TODO: Avoid converting to double
           double f = obj.AsDoubleValue();
           simvalue = ((f)==Double.NEGATIVE_INFINITY) ? "-Infinity" :
 (((f)==Double.POSITIVE_INFINITY) ? "Infinity" : (Double.isNaN(f) ?
@@ -651,6 +652,7 @@ private CBORDataUtilities() {
 CBORObject.FromObject(ed);
         }
       } else if (kind == JSONOptions.ConversionMode.Double) {
+        // TODO: Avoid converting to double
         double dbl = EFloat.FromString(
             str,
             initialOffset,
@@ -671,6 +673,7 @@ CBORObject.FromObject(ed);
         }
         return CBORObject.FromObject(ed);
       } else if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+        // TODO: Avoid converting to double
         double dbl = EFloat.FromString(
             str,
             initialOffset,
@@ -684,6 +687,7 @@ CBORObject.FromObject(ed);
         return CBORObject.FromObject(dbl);
       } else if (kind == JSONOptions.ConversionMode.IntOrFloat) {
         EContext ctx = EContext.Binary64.WithBlankFlags();
+        // TODO: Avoid converting to double
         double dbl = EFloat.FromString(
             str,
             initialOffset,
