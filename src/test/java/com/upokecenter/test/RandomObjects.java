@@ -10,6 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+  /**
+   * Description of RandomObjects.
+   */
   public final class RandomObjects {
 private RandomObjects() {
 }

@@ -99,8 +99,8 @@ private CBORCanonical() {
         if (amt != bmt) {
           return amt < bmt ? -1 : 1;
         }
-        // DebugUtility.Log("a="+a);
-        // DebugUtility.Log("b="+b);
+        // System.out.println("a="+a);
+        // System.out.println("b="+b);
         if (amt == 2) {
           // Both objects are byte strings
           abs = a.GetByteString();

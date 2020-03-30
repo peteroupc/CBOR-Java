@@ -17,7 +17,9 @@ Specifies options for encoding and decoding CBOR objects.
 * [com.upokecenter.cbor.CBORNumber](com.upokecenter.cbor.CBORNumber.md) -
 An instance of a number that CBOR or certain CBOR tags can represent.
 
-* [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -  
+* [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -
+Represents an object in Concise Binary Object Representation (CBOR) and
+ contains methods for reading and writing CBOR data.
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior

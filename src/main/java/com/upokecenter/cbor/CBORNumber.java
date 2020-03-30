@@ -1519,7 +1519,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
           // second Object is NaN
           return -1;
         } else {
-          // DebugUtility.Log("a=" + this + " b=" + other);
+          // System.out.println("a=" + this + " b=" + other);
           if (typeA == NumberKind.ERational) {
             ERational e1 =
               GetNumberInterface(typeA).AsERational(objA);

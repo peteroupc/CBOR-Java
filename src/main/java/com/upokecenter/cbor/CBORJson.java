@@ -211,16 +211,16 @@ import com.upokecenter.numbers.*;
       if (charbufptr > 0) {
         this.sb.append(charbuf, 0, charbufptr);
       }
-      // DebugUtility.Log("--nega=" + sw.getElapsedMilliseconds() + " ms");
+      // System.out.println("--nega=" + sw.getElapsedMilliseconds() + " ms");
       // check if character can validly appear after a JSON number
       if (c != ',' && c != ']' && c != '}' && c != -1 &&
         c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
         this.RaiseError("Invalid character after JSON number");
       }
       str = this.sb.toString();
-      // DebugUtility.Log("negb=" + sw.getElapsedMilliseconds() + " ms");
+      // System.out.println("negb=" + sw.getElapsedMilliseconds() + " ms");
       obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
-      // DebugUtility.Log("negc=" + sw.getElapsedMilliseconds() + " ms");
+      // System.out.println("negc=" + sw.getElapsedMilliseconds() + " ms");
       if (obj == null) {
         String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");
         this.RaiseError("JSON number can't be parsed. " + errstr);

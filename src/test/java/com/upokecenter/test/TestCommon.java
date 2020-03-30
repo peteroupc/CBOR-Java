@@ -425,7 +425,7 @@ private TestCommon() {
         if (neg) {
          chars = new char[6];
          count = 5;
-       } else {
+        } else {
          chars = new char[5];
          count = 4;
         }
