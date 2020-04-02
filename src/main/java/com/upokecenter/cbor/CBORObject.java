@@ -15,7 +15,6 @@ import com.upokecenter.numbers.*;
 
 // TODO: In next major version, make .Keys and .Values read-only
 // TODO: Consider storing text ((strings instanceof bytes) ? (bytes)strings : null), at least in some cases
-// TODO: Consider using red/black trees rather than hash tables as maps
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -2692,7 +2691,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
     public static CBORObject NewMap() {
       return new CBORObject(
           CBORObjectTypeMap,
-          new HashMap<CBORObject, CBORObject>());
+          new TreeMap<CBORObject, CBORObject>());
     }
 
     /**
