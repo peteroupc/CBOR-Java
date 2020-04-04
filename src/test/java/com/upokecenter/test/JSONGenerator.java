@@ -58,7 +58,7 @@ import com.upokecenter.util.*;
         if (c < 10) {
           bs.Write(0x30 + c);
         } else {
-          bs.Write(0x41 + (c - 10) + ra.GetInt32(2) * 0x20);
+          bs.Write(0x41 + (c - 10) + (ra.GetInt32(2) * 0x20));
         }
         shift -= 4;
       }
@@ -92,11 +92,12 @@ import com.upokecenter.util.*;
         }
       }
     }
-    private static void GenerateWhitespace(IRandomGenExtended ra, ByteWriter
-bs) {
+    private static void GenerateWhitespace(
+      IRandomGenExtended ra,
+      ByteWriter bs) {
       if (ra.GetInt32(10) == 0) {
         int len = ra.GetInt32(20);
-        int[] ws = {0x09, 0x0d, 0x0a, 0x20 };
+        int[] ws = { 0x09, 0x0d, 0x0a, 0x20 };
         if (ra.GetInt32(100) == 0) {
           len = ra.GetInt32(100);
         }

@@ -28,16 +28,16 @@ import com.upokecenter.util.*;
       }
     }
 
-    private void GenerateArgument(
+    private static void GenerateArgument(
       IRandomGenExtended r,
       int majorType,
       int len,
       ByteWriter bs) {
-      int minArg = 0;
       int maxArg = 4;
-      minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 : ((len <= 0xffff) ? 2 :
-            (3)));
-            int sh = 0; int arg = minArg + r.GetInt32(maxArg - minArg + 1);
+      int sh = 0;
+      int minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 :
+          ((len <= 0xffff) ? 2 : 3));
+      int arg = minArg + r.GetInt32(maxArg - minArg + 1);
       switch (arg) {
         case 0:
           bs.Write((majorType * 0x20) + len);
@@ -142,7 +142,7 @@ import com.upokecenter.util.*;
         // TODO: Ensure key uniqueness
         if (r.GetInt32(2) == 0) {
           // Indefinite length
-          bs.Write(0x1f + (majorType * 0x20));;
+          bs.Write(0x1f + (majorType * 0x20));
           while (len > 0) {
             int sublen = r.GetInt32(len + 1);
             this.GenerateArgument(r, majorType, sublen, bs);
@@ -176,7 +176,7 @@ import com.upokecenter.util.*;
         }
         boolean indefiniteLength = r.GetInt32(2) == 0;
         if (indefiniteLength) {
-          bs.Write(0x1f + (majorType * 0x20));;
+          bs.Write(0x1f + (majorType * 0x20));
         } else {
           this.GenerateArgument(r, majorType, len, bs);
         }
@@ -194,7 +194,7 @@ import com.upokecenter.util.*;
       int arg = r.GetInt32(5);
       switch (arg) {
         case 0:
-          bs.Write(majorType * 0x20 + r.GetInt32(0x18));
+          bs.Write((majorType * 0x20) + r.GetInt32(0x18));
           break;
         case 1:
           bs.Write((majorType * 0x20) + 0x18);
