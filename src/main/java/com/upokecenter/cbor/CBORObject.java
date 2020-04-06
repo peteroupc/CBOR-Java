@@ -157,6 +157,7 @@ CBORObject.FromObject(Double.NaN);
     private static final int CBORObjectTypeTagged = 6;
     private static final int CBORObjectTypeSimpleValue = 7;
     private static final int CBORObjectTypeDouble = 8;
+    private static final int CBORObjectTypeTextStringUtf8 = 9;
 
     private static final int StreamedStringBufferLength = 4096;
 
@@ -468,9 +469,9 @@ CBORObject.FromObject(Double.NaN);
           case CBORObjectTypeByteString:
             return CBORType.ByteString;
           case CBORObjectTypeTextString:
+          case CBORObjectTypeTextStringUtf8:
             return CBORType.TextString;
-          default:
-            throw new IllegalStateException("Unexpected data type");
+          default: throw new IllegalStateException("Unexpected data type");
         }
       }
 
@@ -1722,6 +1723,11 @@ if (value >= 0L && value < 24L) {
           size = (size + 9);
         }
         cbor = cbor.UntagOne();
+      }
+      if (cbor.getItemType() == CBORObjectTypeTextStringUtf8) {
+        byte[] bytes = (byte[])this.getThisItem();
+        size = (size + IntegerByteLength(bytes.length));
+        return size + bytes.length;
       }
       switch (cbor.getType()) {
         case Integer: {
@@ -4321,6 +4327,9 @@ public static void Write(
         case CBORObjectTypeTextString: {
           return (String)this.getThisItem();
         }
+        case CBORObjectTypeTextStringUtf8: {
+          return DataUtilities.GetUtf8String((byte[])this.getThisItem(), false);
+        }
         default: throw new IllegalStateException("Not a text String type");
       }
     }
@@ -4505,7 +4514,8 @@ public int compareTo(CBORObject other) {
                 other.EncodeToBytes());
             break;
           }
-          case CBORObjectTypeByteString: {
+          case CBORObjectTypeByteString:
+          case CBORObjectTypeTextStringUtf8: {
             cmp = CBORUtilities.ByteArrayCompareLengthFirst((byte[])objA,
                 (byte[])objB);
             break;
@@ -4561,10 +4571,16 @@ public int compareTo(CBORObject other) {
         cmp = CBORUtilities.ByteArrayCompare(
             this.EncodeToBytes(),
             other.EncodeToBytes());
+      } else if ((typeB == CBORObjectTypeTextString && typeA ==
+          CBORObjectTypeTextStringUtf8) ||
+          (typeA == CBORObjectTypeTextString && typeB ==
+          CBORObjectTypeTextStringUtf8)) {
+        throw new UnsupportedOperationException();
       } else {
         /* NOTE: itemtypeValue numbers are ordered such that they
         // correspond to the lexicographical order of their CBOR encodings
-        // (with the exception of Integer and EInteger together, which
+        // (with the exception of Integer and EInteger together,
+        // and TextString and TextStringUtf8 together which
         // are handled above) */
         cmp = (typeA < typeB) ? -1 : 1;
       }
@@ -4743,6 +4759,10 @@ public int compareTo(CBORObject other) {
             }
             break;
           }
+          case CBORObjectTypeTextStringUtf8: {
+            // TODO: Implement this case
+            break;
+          }
           case CBORObjectTypeSimpleValue: {
             if (tagged) {
               byte[] simpleBytes = new byte[] { tagbyte, (byte)0xf4 };
@@ -4851,11 +4871,24 @@ public boolean equals(CBORObject other) {
       if (this == otherValue) {
         return true;
       }
+      if (this.itemtypeValue == CBORObjectTypeTextString &&
+          otherValue.itemtypeValue == CBORObjectTypeTextStringUtf8) {
+         return CBORUtilities.StringEqualsUtf8(
+             (String)this.itemValue,
+             (byte[])otherValue.itemValue);
+      }
+      if (otherValue.itemtypeValue == CBORObjectTypeTextString &&
+          this.itemtypeValue == CBORObjectTypeTextStringUtf8) {
+         return CBORUtilities.StringEqualsUtf8(
+             (String)otherValue.itemValue,
+             (byte[])this.itemValue);
+      }
       if (this.itemtypeValue != otherValue.itemtypeValue) {
         return false;
       }
       switch (this.itemtypeValue) {
         case CBORObjectTypeByteString:
+        case CBORObjectTypeTextStringUtf8:
           return CBORUtilities.ByteArrayEquals(
               (byte[])this.itemValue,
               ((otherValue.itemValue instanceof byte[]) ? (byte[])otherValue.itemValue : null));
@@ -4920,6 +4953,8 @@ public boolean equals(CBORObject other) {
             case CBORObjectTypeTextString:
               itemHashCode = StringHashCode((String)this.itemValue);
               break;
+            case CBORObjectTypeTextStringUtf8:
+              throw new UnsupportedOperationException("TODO: Implement");
             case CBORObjectTypeSimpleValue:
               itemHashCode = ((Integer)this.itemValue).intValue();
               break;
@@ -6151,8 +6186,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Write((EInteger)this.getThisItem(), stream);
           break;
         }
-        case CBORObjectTypeByteString: {
-          byte[] arr = this.GetByteString();
+        case CBORObjectTypeByteString:
+        case CBORObjectTypeTextStringUtf8: {
+          byte[] arr = (byte[])this.getThisItem();
           WritePositiveInt(
             (this.getType() == CBORType.ByteString) ? 2 : 3,
             arr.length,
@@ -6198,6 +6234,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return new CBORObject(CBORObjectTypeByteString, bytes);
     }
 
+    static CBORObject FromRawUtf8(byte[] bytes) {
+      return new CBORObject(CBORObjectTypeTextStringUtf8, bytes);
+    }
+
     static CBORObject FromRaw(String str) {
       return new CBORObject(CBORObjectTypeTextString, str);
     }
@@ -6226,13 +6266,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return fixedObj;
       }
       int majortype = firstbyte >> 5;
-      if (firstbyte >= 0x61 && firstbyte < 0x78) {
-        // text String length 1 to 23
-        String s = GetOptimizedStringIfShortAscii(data, 0);
-        if (s != null) {
-          return new CBORObject(CBORObjectTypeTextString, s);
-        }
-      }
       if ((firstbyte & 0x1c) == 0x18) {
         // contains 1 to 8 extra bytes of additional information
         long uadditional = 0;
@@ -6321,14 +6354,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return new CBORObject(CBORObjectTypeByteString, ret);
       }
       if (majortype == 3) { // short text String
-        StringBuilder ret = new StringBuilder(firstbyte - 0x60);
-        DataUtilities.ReadUtf8FromBytes(
-          data,
-          1,
-          firstbyte - 0x60,
-          ret,
-          false);
-        return new CBORObject(CBORObjectTypeTextString, ret.toString());
+        byte[] ret = new byte[firstbyte - 0x60];
+        System.arraycopy(data, 1, ret, 0, firstbyte - 0x60);
+        return new CBORObject(CBORObjectTypeTextStringUtf8, ret);
       }
       if (firstbyte == 0x80) {
         // empty array

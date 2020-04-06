@@ -563,8 +563,7 @@ import com.upokecenter.numbers.*;
           Assert.fail(ObjectMessage(ed));
         }
         if (!ed.AsNumber().IsInfinity() && !ed.AsNumber().IsNaN()) {
-          ed2 = EDecimal.FromEInteger(AsED(ed).ToEInteger());
-          if ((AsED(ed).compareTo(ed2) == 0) != ed.AsNumber().IsInteger()) {
+          if (AsED(ed).IsInteger() != ed.AsNumber().IsInteger()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
