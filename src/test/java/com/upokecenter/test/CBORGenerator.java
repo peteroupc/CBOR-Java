@@ -145,7 +145,7 @@ import com.upokecenter.util.*;
           bs.Write(0x1f + (majorType * 0x20));
           while (len > 0) {
             int sublen = r.GetInt32(len + 1);
-            this.GenerateArgument(r, majorType, sublen, bs);
+            GenerateArgument(r, majorType, sublen, bs);
             if (majorType == 3) {
               GenerateUtf8(r, bs, sublen);
             } else {
@@ -158,7 +158,7 @@ import com.upokecenter.util.*;
           bs.Write(0xff);
         } else {
           // Definite length
-          this.GenerateArgument(r, majorType, len, bs);
+          GenerateArgument(r, majorType, len, bs);
           if (majorType == 3) {
             GenerateUtf8(r, bs, len);
           } else {
@@ -178,7 +178,7 @@ import com.upokecenter.util.*;
         if (indefiniteLength) {
           bs.Write(0x1f + (majorType * 0x20));
         } else {
-          this.GenerateArgument(r, majorType, len, bs);
+          GenerateArgument(r, majorType, len, bs);
         }
         for (int i = 0; i < len; ++i) {
           this.Generate(r, depth + 1, bs);

@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -565,7 +565,7 @@ import com.upokecenter.numbers.*;
       CBORObject obj;
       int[] nextChar = new int[1];
       boolean seenComma = false;
-      HashMap<CBORObject, CBORObject> myHashMap = new HashMap<CBORObject, CBORObject>();
+      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {
