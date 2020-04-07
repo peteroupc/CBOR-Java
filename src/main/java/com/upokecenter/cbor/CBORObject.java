@@ -6356,6 +6356,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (majortype == 3) { // short text String
         byte[] ret = new byte[firstbyte - 0x60];
         System.arraycopy(data, 1, ret, 0, firstbyte - 0x60);
+      if (!CBORUtilities.CheckUtf8(ret)) {
+          throw new CBORException("Invalid encoding");
+        }
         return new CBORObject(CBORObjectTypeTextStringUtf8, ret);
       }
       if (firstbyte == 0x80) {
