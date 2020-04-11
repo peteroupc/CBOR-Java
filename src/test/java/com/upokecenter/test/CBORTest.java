@@ -1920,8 +1920,7 @@ int startingAvailable = ms.available();
                 failString = failString.substring(
                     0, (
                     0)+(Math.min(2000, failString.length())));
-                Assert.fail(failString);
-                throw new IllegalStateException("", ex);
+                throw new IllegalStateException(failString);
               }
               String jsonString = "";
               try {
@@ -1942,13 +1941,11 @@ int startingAvailable = ms.available();
                 failString = failString.substring(
                     0, (
                     0)+(Math.min(2000, failString.length())));
-                Assert.fail(failString);
-                throw new IllegalStateException("", ex);
+                throw new IllegalStateException(failString);
               }
             } catch (CBORException ex) {
               // Expected exception
             } catch (Exception ex) {
-              // if (!ex.getMessage().equals("Not a number type")) {
               String failString = ex.toString() +
                 (ex.getCause() == null ? "" : "\n" +
                   ex.getCause().toString()) +
@@ -1956,9 +1953,7 @@ int startingAvailable = ms.available();
               failString = failString.substring(
                   0, (
                   0)+(Math.min(2000, failString.length())));
-              Assert.fail(failString);
-              throw new IllegalStateException("", ex);
-              // }
+              throw new IllegalStateException(failString);
             }
           }
 }
