@@ -141,9 +141,9 @@ private CBORUtilities() {
         if (sc < 0) {
           return false;
         }
-         if (sc >= 0x10000) {
+        if (sc >= 0x10000) {
           upos += 2;
-         } else {
+        } else {
            ++upos;
          }
       }
