@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -46,9 +46,7 @@ import com.upokecenter.numbers.*;
     }
 
     public void WriteString(String str, int index, int length) throws java.io.IOException {
-      if (this.outputStream == null) {
-        this.builder.append(str, index, (index)+(length));
-      } else {
+      if (this.outputStream != null) {
         if (length == 1) {
           this.WriteCodePoint((int)str.charAt(index));
         } else {
@@ -62,19 +60,12 @@ import com.upokecenter.numbers.*;
             throw new IllegalArgumentException("str has an unpaired surrogate");
           }
         }
+      } else {
+        this.builder.append(str, index, (index)+(length));
       }
     }
 
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
-      if ((codePoint >> 7) == 0) {
-        // Code point is in the Basic Latin range (U+0000 to U+007F)
-        if (this.outputStream == null) {
-          this.builder.append((char)codePoint);
-        } else {
- this.outputStream.write((byte)codePoint);
-}
-        return;
-      }
       if (codePoint < 0) {
         throw new IllegalArgumentException("codePoint(" + codePoint +
           ") is less than 0");
@@ -101,7 +92,7 @@ import com.upokecenter.numbers.*;
           this.outputStream.write((byte)(0x80 | (codePoint & 0x3f)));
         } else {
           this.outputStream.write((byte)(0xf0 | ((codePoint >> 18) &
-                0x07)));
+                0x08)));
           this.outputStream.write((byte)(0x80 | ((codePoint >> 12) &
                 0x3f)));
           this.outputStream.write((byte)(0x80 | ((codePoint >> 6) &

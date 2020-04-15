@@ -12,15 +12,9 @@ import java.util.*;
     public enum ConversionMode {
        /**
         * JSON numbers are decoded to CBOR using the full precision given in the JSON
-        * text. The number will be converted to a CBOR object as follows:
-        * If the number's exponent is 0 (after shifting the decimal point
-        * to the end of the number without changing its value), using the
-        * rules given in the <code>CBORObject.FromObject(EInteger)</code> method;
-        * otherwise, using the rules given in the
-        * <code>CBORObject.FromObject(EDecimal)</code> method. An exception in
-        * version 4.x involves negative zeros; if the negative zero's
-        * exponent is 0, it's written as a CBOR floating-point number;
-        * otherwise the negative zero is written as an EDecimal.
+        * text. This may involve numbers being converted to
+        * arbitrary-precision integers or decimal numbers, where
+        * appropriate.
         */
        Full,
 

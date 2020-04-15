@@ -14,7 +14,6 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
 // TODO: In next major version, make .Keys and .Values read-only
-// TODO: Consider storing text ((strings instanceof bytes) ? (bytes)strings : null), at least in some cases
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -157,7 +156,6 @@ CBORObject.FromObject(Double.NaN);
     private static final int CBORObjectTypeTagged = 6;
     private static final int CBORObjectTypeSimpleValue = 7;
     private static final int CBORObjectTypeDouble = 8;
-    private static final int CBORObjectTypeTextStringUtf8 = 9;
 
     private static final int StreamedStringBufferLength = 4096;
 
@@ -469,9 +467,9 @@ CBORObject.FromObject(Double.NaN);
           case CBORObjectTypeByteString:
             return CBORType.ByteString;
           case CBORObjectTypeTextString:
-          case CBORObjectTypeTextStringUtf8:
             return CBORType.TextString;
-          default: throw new IllegalStateException("Unexpected data type");
+          default:
+            throw new IllegalStateException("Unexpected data type");
         }
       }
 
@@ -1724,11 +1722,6 @@ if (value >= 0L && value < 24L) {
         }
         cbor = cbor.UntagOne();
       }
-      if (cbor.getItemType() == CBORObjectTypeTextStringUtf8) {
-        byte[] bytes = (byte[])this.getThisItem();
-        size = (size + IntegerByteLength(bytes.length));
-        return size + bytes.length;
-      }
       switch (cbor.getType()) {
         case Integer: {
           if (cbor.CanValueFitInInt64()) {
@@ -1851,27 +1844,23 @@ if (value >= 0L && value < 24L) {
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray(
-          CBORObject.FromObject(bigValue.getExponent()),
-          CBORObject.FromObject(bigValue.getUnsignedMantissa()),
-          CBORObject.FromObject(options));
+        cbor = CBORObject.NewArray().Add(bigValue.getExponent())
+          .Add(bigValue.getUnsignedMantissa()).Add(options);
         tag = 269;
       } else {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 5;
-          cbor = CBORObject.NewArray(
-                CBORObject.FromObject(exponent.ToInt64Checked()),
-                CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = CBORObject.NewArray()
+             .Add(exponent.ToInt64Checked()).Add(bigValue.getMantissa());
            } else {
           tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
             265 : 5;
-          cbor = CBORObject.NewArray(
-                CBORObject.FromObject(exponent),
-                CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = CBORObject.NewArray()
+            .Add(exponent).Add(bigValue.getMantissa());
         }
       }
-      return cbor.WithTag(tag);
+      return CBORObject.FromObjectAndTag(cbor, tag);
     }
 
     /**
@@ -1905,18 +1894,15 @@ if (value >= 0L && value < 24L) {
           options += 6;
         }
 
-        cbor = CBORObject.NewArray(
-          FromObject(bigValue.getUnsignedNumerator()),
-          FromObject(bigValue.getDenominator()),
-          FromObject(options));
+        cbor = CBORObject.NewArray().Add(bigValue.getUnsignedNumerator())
+          .Add(bigValue.getDenominator()).Add(options);
         tag = 270;
       } else {
         tag = 30;
-        cbor = CBORObject.NewArray(
-          CBORObject.FromObject(bigValue.getNumerator()),
-          CBORObject.FromObject(bigValue.getDenominator()));
+        cbor = CBORObject.NewArray()
+          .Add(bigValue.getNumerator()).Add(bigValue.getDenominator());
       }
-      return cbor.WithTag(tag);
+      return CBORObject.FromObjectAndTag(cbor, tag);
     }
 
     /**
@@ -1951,27 +1937,23 @@ if (value >= 0L && value < 24L) {
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray(
-          FromObject(bigValue.getExponent()),
-          FromObject(bigValue.getUnsignedMantissa()),
-          FromObject(options));
+        cbor = CBORObject.NewArray().Add(bigValue.getExponent())
+          .Add(bigValue.getUnsignedMantissa()).Add(options);
         tag = 268;
       } else {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 4;
-          cbor = CBORObject.NewArray(
-             CBORObject.FromObject(exponent.ToInt64Checked()),
-             CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = CBORObject.NewArray()
+             .Add(exponent.ToInt64Checked()).Add(bigValue.getMantissa());
            } else {
           tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
             264 : 4;
-          cbor = CBORObject.NewArray(
-             CBORObject.FromObject(exponent),
-             CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = CBORObject.NewArray()
+            .Add(exponent).Add(bigValue.getMantissa());
         }
       }
-      return cbor.WithTag(tag);
+      return CBORObject.FromObjectAndTag(cbor, tag);
     }
 
     /**
@@ -2088,12 +2070,11 @@ FromObject((long)value);
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
-Integer.MAX_VALUE ? array.length : (array.length + 1));
-      for (CBORObject cbor : array) {
-        list.add(cbor);
+      CBORObject cbor = CBORObject.NewArray();
+      for (CBORObject i : array) {
+        cbor.Add(i);
       }
-      return new CBORObject(CBORObjectTypeArray, list);
+      return cbor;
     }
 
     /**
@@ -2106,8 +2087,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
-Integer.MAX_VALUE ? array.length : (array.length + 1));
+      List<CBORObject> list = new ArrayList<CBORObject>();
       for (int i : array) {
         list.add(FromObject(i));
       }
@@ -2124,8 +2104,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
       if (array == null) {
         return CBORObject.Null;
       }
-      List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
-Integer.MAX_VALUE ? array.length : (array.length + 1));
+      List<CBORObject> list = new ArrayList<CBORObject>();
       for (long i : array) {
         list.add(FromObject(i));
       }
@@ -2473,34 +2452,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
      * @throws NullPointerException The parameter {@code bigintTag} is null.
      */
     public CBORObject WithTag(EInteger bigintTag) {
-      if (bigintTag == null) {
-        throw new NullPointerException("bigintTag");
-      }
-      if (bigintTag.signum() < 0) {
-        throw new IllegalArgumentException("tagEInt's sign(" + bigintTag.signum() +
-          ") is less than 0");
-      }
-      if (bigintTag.CanFitInInt32()) {
-        // Low-numbered, commonly used tags
-        return this.WithTag(bigintTag.ToInt32Checked());
-      } else {
-        if (bigintTag.compareTo(UInt64MaxValue) > 0) {
-          throw new IllegalArgumentException(
-            "tag more than 18446744073709551615 (" + bigintTag + ")");
-        }
-        int tagLow = 0;
-        int tagHigh = 0;
-        byte[] bytes = bigintTag.ToBytes(true);
-        for (int i = 0; i < Math.min(4, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagLow = (tagLow | (((int)b) << (i * 8)));
-        }
-        for (int i = 4; i < Math.min(8, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagHigh = (tagHigh | (((int)b) << (i * 8)));
-        }
-        return new CBORObject(this, tagLow, tagHigh);
-      }
+     return FromObjectAndTag(this, bigintTag);
     }
 
     /**
@@ -2542,7 +2494,25 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
         throw new IllegalArgumentException(
           "tag more than 18446744073709551615 (" + bigintTag + ")");
       }
-      return FromObject(valueOb).WithTag(bigintTag);
+      CBORObject c = FromObject(valueOb);
+      if (bigintTag.CanFitInInt32()) {
+        // Low-numbered, commonly used tags
+        return FromObjectAndTag(c, bigintTag.ToInt32Checked());
+      } else {
+        int tagLow = 0;
+        int tagHigh = 0;
+        byte[] bytes = bigintTag.ToBytes(true);
+        for (int i = 0; i < Math.min(4, bytes.length); ++i) {
+          int b = ((int)bytes[i]) & 0xff;
+          tagLow = (tagLow | (((int)b) << (i * 8)));
+        }
+        for (int i = 4; i < Math.min(8, bytes.length); ++i) {
+          int b = ((int)bytes[i]) & 0xff;
+          tagHigh = (tagHigh | (((int)b) << (i * 8)));
+        }
+        CBORObject c2 = new CBORObject(c, tagLow, tagHigh);
+        return c2;
+      }
     }
 
     /**
@@ -2561,11 +2531,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
      * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0.
      */
     public CBORObject WithTag(int smallTag) {
-      if (smallTag < 0) {
-        throw new IllegalArgumentException("smallTag(" + smallTag +
-          ") is less than 0");
-      }
-      return new CBORObject(this, smallTag, 0);
+     return FromObjectAndTag(this, smallTag);
     }
 
     /**
@@ -2599,7 +2565,9 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
         throw new IllegalArgumentException("smallTag(" + smallTag +
           ") is less than 0");
       }
-      return FromObject(valueObValue).WithTag(smallTag);
+      CBORObject c = FromObject(valueObValue);
+      c = new CBORObject(c, smallTag, 0);
+      return c;
     }
 
     /**
@@ -2672,24 +2640,6 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
       return new CBORObject(CBORObjectTypeArray, new ArrayList<CBORObject>());
     }
 
-    static CBORObject NewArray(CBORObject o1, CBORObject o2) {
-      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
-      list.add(o1);
-      list.add(o2);
-      return new CBORObject(CBORObjectTypeArray, list);
-    }
-
-    static CBORObject NewArray(
-      CBORObject o1,
-      CBORObject o2,
-      CBORObject o3) {
-      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
-      list.add(o1);
-      list.add(o2);
-      list.add(o3);
-      return new CBORObject(CBORObjectTypeArray, list);
-    }
-
     /**
      * Creates a new empty CBOR map.
      * @return A new CBOR map.
@@ -2697,7 +2647,7 @@ Integer.MAX_VALUE ? array.length : (array.length + 1));
     public static CBORObject NewMap() {
       return new CBORObject(
           CBORObjectTypeMap,
-          new TreeMap<CBORObject, CBORObject>());
+          new HashMap<CBORObject, CBORObject>());
     }
 
     /**
@@ -4327,9 +4277,6 @@ public static void Write(
         case CBORObjectTypeTextString: {
           return (String)this.getThisItem();
         }
-        case CBORObjectTypeTextStringUtf8: {
-          return DataUtilities.GetUtf8String((byte[])this.getThisItem(), false);
-        }
         default: throw new IllegalStateException("Not a text String type");
       }
     }
@@ -4514,8 +4461,7 @@ public int compareTo(CBORObject other) {
                 other.EncodeToBytes());
             break;
           }
-          case CBORObjectTypeByteString:
-          case CBORObjectTypeTextStringUtf8: {
+          case CBORObjectTypeByteString: {
             cmp = CBORUtilities.ByteArrayCompareLengthFirst((byte[])objA,
                 (byte[])objB);
             break;
@@ -4571,16 +4517,10 @@ public int compareTo(CBORObject other) {
         cmp = CBORUtilities.ByteArrayCompare(
             this.EncodeToBytes(),
             other.EncodeToBytes());
-      } else if ((typeB == CBORObjectTypeTextString && typeA ==
-          CBORObjectTypeTextStringUtf8) ||
-          (typeA == CBORObjectTypeTextString && typeB ==
-          CBORObjectTypeTextStringUtf8)) {
-        throw new UnsupportedOperationException();
       } else {
         /* NOTE: itemtypeValue numbers are ordered such that they
         // correspond to the lexicographical order of their CBOR encodings
-        // (with the exception of Integer and EInteger together,
-        // and TextString and TextStringUtf8 together which
+        // (with the exception of Integer and EInteger together, which
         // are handled above) */
         cmp = (typeA < typeB) ? -1 : 1;
       }
@@ -4759,10 +4699,6 @@ public int compareTo(CBORObject other) {
             }
             break;
           }
-          case CBORObjectTypeTextStringUtf8: {
-            // TODO: Implement this case
-            break;
-          }
           case CBORObjectTypeSimpleValue: {
             if (tagged) {
               byte[] simpleBytes = new byte[] { tagbyte, (byte)0xf4 };
@@ -4871,24 +4807,11 @@ public boolean equals(CBORObject other) {
       if (this == otherValue) {
         return true;
       }
-      if (this.itemtypeValue == CBORObjectTypeTextString &&
-          otherValue.itemtypeValue == CBORObjectTypeTextStringUtf8) {
-         return CBORUtilities.StringEqualsUtf8(
-             (String)this.itemValue,
-             (byte[])otherValue.itemValue);
-      }
-      if (otherValue.itemtypeValue == CBORObjectTypeTextString &&
-          this.itemtypeValue == CBORObjectTypeTextStringUtf8) {
-         return CBORUtilities.StringEqualsUtf8(
-             (String)otherValue.itemValue,
-             (byte[])this.itemValue);
-      }
       if (this.itemtypeValue != otherValue.itemtypeValue) {
         return false;
       }
       switch (this.itemtypeValue) {
         case CBORObjectTypeByteString:
-        case CBORObjectTypeTextStringUtf8:
           return CBORUtilities.ByteArrayEquals(
               (byte[])this.itemValue,
               ((otherValue.itemValue instanceof byte[]) ? (byte[])otherValue.itemValue : null));
@@ -4953,8 +4876,6 @@ public boolean equals(CBORObject other) {
             case CBORObjectTypeTextString:
               itemHashCode = StringHashCode((String)this.itemValue);
               break;
-            case CBORObjectTypeTextStringUtf8:
-              throw new UnsupportedOperationException("TODO: Implement");
             case CBORObjectTypeSimpleValue:
               itemHashCode = ((Integer)this.itemValue).intValue();
               break;
@@ -6186,9 +6107,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Write((EInteger)this.getThisItem(), stream);
           break;
         }
-        case CBORObjectTypeByteString:
-        case CBORObjectTypeTextStringUtf8: {
-          byte[] arr = (byte[])this.getThisItem();
+        case CBORObjectTypeByteString: {
+          byte[] arr = this.GetByteString();
           WritePositiveInt(
             (this.getType() == CBORType.ByteString) ? 2 : 3,
             arr.length,
@@ -6234,10 +6154,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return new CBORObject(CBORObjectTypeByteString, bytes);
     }
 
-    static CBORObject FromRawUtf8(byte[] bytes) {
-      return new CBORObject(CBORObjectTypeTextStringUtf8, bytes);
-    }
-
     static CBORObject FromRaw(String str) {
       return new CBORObject(CBORObjectTypeTextString, str);
     }
@@ -6266,6 +6182,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return fixedObj;
       }
       int majortype = firstbyte >> 5;
+      if (firstbyte >= 0x61 && firstbyte < 0x78) {
+        // text String length 1 to 23
+        String s = GetOptimizedStringIfShortAscii(data, 0);
+        if (s != null) {
+          return new CBORObject(CBORObjectTypeTextString, s);
+        }
+      }
       if ((firstbyte & 0x1c) == 0x18) {
         // contains 1 to 8 extra bytes of additional information
         long uadditional = 0;
@@ -6354,12 +6277,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return new CBORObject(CBORObjectTypeByteString, ret);
       }
       if (majortype == 3) { // short text String
-        byte[] ret = new byte[firstbyte - 0x60];
-        System.arraycopy(data, 1, ret, 0, firstbyte - 0x60);
-      if (!CBORUtilities.CheckUtf8(ret)) {
-          throw new CBORException("Invalid encoding");
-        }
-        return new CBORObject(CBORObjectTypeTextStringUtf8, ret);
+        StringBuilder ret = new StringBuilder(firstbyte - 0x60);
+        DataUtilities.ReadUtf8FromBytes(
+          data,
+          1,
+          firstbyte - 0x60,
+          ret,
+          false);
+        return new CBORObject(CBORObjectTypeTextString, ret.toString());
       }
       if (firstbyte == 0x80) {
         // empty array
@@ -6489,10 +6414,10 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       a) {
       // To simplify matters, we use just the count of
       // the map as the basis for the hash code. More complicated
-      // hash code calculation would involve the sum of the hash codes of
-      // the map's key-value pairs (an approach that works regardless of the order
-      // in which map keys are iterated), but this could take much more time
-      // to calculate, especially if the keys and values are very big.
+      // hash code calculation would generally involve defining
+      // how CBORObjects ought to be compared (since a stable
+      // sort order is necessary for two equal maps to have the
+      // same hash code), which is much too difficult to do.
       return a.size() * 19;
     }
 
@@ -6793,7 +6718,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       Object parent,
       Object child) {
       if (stack == null) {
-        stack = new ArrayList<Object>(4);
+        stack = new ArrayList<Object>();
         stack.add(parent);
       }
       for (Object o : stack) {

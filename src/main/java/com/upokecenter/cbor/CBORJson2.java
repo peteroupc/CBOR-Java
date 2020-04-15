@@ -34,80 +34,20 @@ import com.upokecenter.numbers.*;
     private StringBuilder sb;
     private int index;
     private int endPos;
-    private static byte[] valueEmptyBytes = new byte[0];
 
-    private byte[] NextJSONString() {
+    private String NextJSONString() {
       int c;
-      int startIndex = this.index;
-      byte[] jbytes = this.bytes;
-      for (int i = 0; i < 256; ++i) {
-        if (this.index >= this.endPos) {
-          this.RaiseError("Unterminated String");
-        }
-        c = ((int)jbytes[this.index++]) & 0xff;
-        if (c < 0x20) {
-          this.RaiseError("Invalid character in String literal");
-        }
-        if (c == '\\') {
-          break;
-        } else if (c == 0x22) {
-          int isize = (this.index - startIndex) - 1;
-          if (isize == 0) {
-            return valueEmptyBytes;
-          }
-          byte[] buf = new byte[isize];
-          System.arraycopy(jbytes, startIndex, buf, 0, isize);
-          return buf;
-        } else if (c < 0x80) {
-          continue;
-        } else if (c >= 0xc2 && c <= 0xdf) {
-              int c1 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              if (c1 < 0x80 || c1 > 0xbf) {
-                this.RaiseError("Invalid encoding");
-              }
-        } else if (c >= 0xe0 && c <= 0xef) {
-              int c1 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              int c2 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              int lower = (c == 0xe0) ? 0xa0 : 0x80;
-              int upper = (c == 0xed) ? 0x9f : 0xbf;
-              if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) {
-                this.RaiseError("Invalid encoding");
-              }
-        } else if (c >= 0xf0 && c <= 0xf4) {
-              int c1 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              int c2 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              int c3 = this.index < this.endPos ?
-                ((int)this.bytes[this.index++]) & 0xff : -1;
-              int lower = (c == 0xf0) ? 0x90 : 0x80;
-              int upper = (c == 0xf4) ? 0x8f : 0xbf;
-              if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
-                c3 < 0x80 || c3 > 0xbf) {
-                this.RaiseError("Invalid encoding");
-              }
-        } else {
-              this.RaiseError("Invalid encoding");
-        }
-      }
-      this.index = startIndex;
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
       this.sb.delete(0, this.sb.length());
       while (true) {
-        c = this.index < this.endPos ? ((int)jbytes[this.index++]) &
+        c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
           0xff : -1;
-        if (c == -1) {
+        if (c == -1 || c < 0x20) {
           this.RaiseError("Unterminated String");
-        }
-        if (c < 0x20) {
-          this.RaiseError("Invalid character in String literal");
         }
         switch (c) {
           case '\\':
-            c = this.index < this.endPos ? ((int)jbytes[this.index++]) &
+            c = this.index < this.endPos ? ((int)this.bytes[this.index++]) &
               0xff : -1;
             switch (c) {
               case '\\':
@@ -136,7 +76,7 @@ import com.upokecenter.numbers.*;
                 // Consists of 4 hex digits
                 for (int i = 0; i < 4; ++i) {
                   int ch = this.index < this.endPos ?
-                    (int)jbytes[this.index++] : -1;
+                    ((int)this.bytes[this.index++]) & 0xff : -1;
                   if (ch >= '0' && ch <= '9') {
                     c <<= 4;
                     c |= ch - '0';
@@ -155,17 +95,16 @@ import com.upokecenter.numbers.*;
                   // Non-surrogate
                   this.sb.append((char)c);
                 } else if ((c & 0xfc00) == 0xd800) {
-                  int ch;
-                  if (this.index >= this.endPos - 1 ||
-                    jbytes[this.index] != (byte)'\\' ||
-                    jbytes[this.index + 1] != (byte)0x75) {
+                  int ch = this.index < this.endPos ?
+                    ((int)this.bytes[this.index++]) & 0xff : -1;
+                  if (ch != '\\' || (this.index < this.endPos ?
+                      ((int)this.bytes[this.index++]) & 0xff : -1) != 'u') {
                     this.RaiseError("Invalid escaped character");
                   }
-                  this.index += 2;
                   int c2 = 0;
                   for (int i = 0; i < 4; ++i) {
                     ch = this.index < this.endPos ?
-                      ((int)jbytes[this.index++]) & 0xff : -1;
+                      ((int)this.bytes[this.index++]) & 0xff : -1;
                     if (ch >= '0' && ch <= '9') {
                       c2 <<= 4;
                       c2 |= ch - '0';
@@ -198,13 +137,13 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-            return DataUtilities.GetUtf8Bytes(this.sb.toString(), false);
+            return this.sb.toString();
           default: {
             if (c <= 0x7f) {
               this.sb.append((char)c);
             } else if (c >= 0xc2 && c <= 0xdf) {
               int c1 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               if (c1 < 0x80 || c1 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
@@ -212,34 +151,39 @@ import com.upokecenter.numbers.*;
               this.sb.append((char)c);
             } else if (c >= 0xe0 && c <= 0xef) {
               int c1 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               int c2 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               int lower = (c == 0xe0) ? 0xa0 : 0x80;
               int upper = (c == 0xed) ? 0x9f : 0xbf;
               if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
-              c = ((c - 0xc0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80);
+              c = ((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80);
               this.sb.append((char)c);
             } else if (c >= 0xf0 && c <= 0xf4) {
               int c1 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               int c2 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               int c3 = this.index < this.endPos ?
-                ((int)jbytes[this.index++]) & 0xff : -1;
+                ((int)this.bytes[this.index++]) & 0xff : -1;
               int lower = (c == 0xf0) ? 0x90 : 0x80;
               int upper = (c == 0xf4) ? 0x8f : 0xbf;
               if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
                 c3 < 0x80 || c3 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
-              c = ((c - 0xc0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
+              c = ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
                   6) | (c3 - 0x80);
-              this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                    0xd800));
-              this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              if (c <= 0xffff) {
+                { this.sb.append((char)c);
+                }
+              } else if (c <= 0x10ffff) {
+                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+0xd800));
+                this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+              }
             } else {
               this.RaiseError("Invalid encoding");
             }
@@ -393,7 +337,7 @@ import com.upokecenter.numbers.*;
           // The tokenizer already checked the String for invalid
           // surrogate pairs, so just call the CBORObject
           // constructor directly
-          obj = CBORObject.FromRawUtf8(this.NextJSONString());
+          obj = CBORObject.FromRaw(this.NextJSONString());
           nextChar[0] = this.SkipWhitespaceJSON();
           return obj;
         }
@@ -412,9 +356,9 @@ import com.upokecenter.numbers.*;
         case 't': {
           // Parse true
           if (this.endPos - this.index <= 2 ||
-            this.bytes[this.index] != (byte)0x72 ||
-            this.bytes[this.index + 1] != (byte)0x75 ||
-            this.bytes[this.index + 2] != (byte)0x65) {
+            (((int)this.bytes[this.index]) & 0xFF) != 'r' ||
+            (((int)this.bytes[this.index + 1]) & 0xFF) != 'u' ||
+            (((int)this.bytes[this.index + 2]) & 0xFF) != 'e') {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 3;
@@ -424,10 +368,10 @@ import com.upokecenter.numbers.*;
         case 'f': {
           // Parse false
           if (this.endPos - this.index <= 3 ||
-            this.bytes[this.index] != (byte)0x61 ||
-            this.bytes[this.index + 1] != (byte)0x6c ||
-            this.bytes[this.index + 2] != (byte)0x73 ||
-            this.bytes[this.index + 3] != (byte)0x65) {
+            (((int)this.bytes[this.index]) & 0xFF) != 'a' ||
+            (((int)this.bytes[this.index + 1]) & 0xFF) != 'l' ||
+            (((int)this.bytes[this.index + 2]) & 0xFF) != 's' ||
+            (((int)this.bytes[this.index + 3]) & 0xFF) != 'e') {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 4;
@@ -437,9 +381,9 @@ import com.upokecenter.numbers.*;
         case 'n': {
           // Parse null
           if (this.endPos - this.index <= 2 ||
-            this.bytes[this.index] != (byte)0x75 ||
-            this.bytes[this.index + 1] != (byte)0x6c ||
-            this.bytes[this.index + 2] != (byte)0x6c) {
+            (((int)this.bytes[this.index]) & 0xFF) != 'u' ||
+            (((int)this.bytes[this.index + 1]) & 0xFF) != 'l' ||
+            (((int)this.bytes[this.index + 2]) & 0xFF) != 'l') {
             this.RaiseError("Value can't be parsed.");
           }
           this.index += 3;
@@ -471,7 +415,7 @@ import com.upokecenter.numbers.*;
     }
 
     public CBORJson2(byte[] bytes, int index, int endPos, JSONOptions
-      options) {
+options) {
       this.sb = null;
       this.bytes = bytes;
       this.index = index;
@@ -530,7 +474,7 @@ import com.upokecenter.numbers.*;
       CBORObject obj;
       int[] nextchar = new int[1];
       boolean seenComma = false;
-      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
+      HashMap<CBORObject, CBORObject> myHashMap = new HashMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {
@@ -558,7 +502,7 @@ import com.upokecenter.numbers.*;
             // The tokenizer already checked the String for invalid
             // surrogate pairs, so just call the CBORObject
             // constructor directly
-            obj = CBORObject.FromRawUtf8(this.NextJSONString());
+            obj = CBORObject.FromRaw(this.NextJSONString());
             key = obj;
             if (!this.options.getAllowDuplicateKeys() &&
               myHashMap.containsKey(obj)) {

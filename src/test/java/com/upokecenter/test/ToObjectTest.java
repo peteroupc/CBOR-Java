@@ -360,9 +360,9 @@ import com.upokecenter.numbers.*;
         }
       }
       for (int i = 0; i < 255; ++i) {
-        Object
-o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
-        Assert.assertEquals((byte)i, ((Byte)o).byteValue());
+        Assert.assertEquals(
+          (byte)i,
+          ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class));
       }
       for (int i = -200; i < 0; ++i) {
         try {
@@ -710,8 +710,9 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         if ((boolean)numberinfo.get("int16").AsBoolean()) {
           short sh = (short)TestCommon.StringToInt(
              (String)numberinfo.get("integer").ToObject(String.class));
-          Object o = cbornumber.ToObject(short.class);
-          Assert.assertEquals(sh, ((Short)o).shortValue());
+          Assert.assertEquals(
+            sh,
+            cbornumber.ToObject(short.class));
         } else {
           try {
             cbornumber.ToObject(short.class);
@@ -800,28 +801,26 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if ((boolean)numberinfo.get("int32").AsBoolean()) {
-          Object o = cbornumber.ToObject(int.class);
           Assert.assertEquals(
             TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
               String.class)),
-            ((Integer)o).intValue());
+            cbornumber.ToObject(int.class));
           if (isdouble) {
-            o = cbornumberdouble.ToObject(int.class);
             Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
                 String.class)),
-              ((Integer)o).intValue());
+              cbornumberdouble.ToObject(int.class));
           }
           if (issingle) {
-            o = cbornumbersingle.ToObject(int.class);
             Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
                 String.class)),
-              ((Integer)o).intValue());
+              cbornumbersingle.ToObject(int.class));
           }
         } else {
           try {
-            System.out.println("" + cbornumber.ToObject(int.class));
+            System.out.println(cbornumber.ToObject(int.class));
+            System.out.println(cbornumber.ToObject(int.class));
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -927,26 +926,23 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if ((boolean)numberinfo.get("int64").AsBoolean()) {
-          Object o = cbornumber.ToObject(long.class);
           Assert.assertEquals(
             TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(
               String.class)),
-            (((Long)o).longValue()));
+            cbornumber.ToObject(long.class));
           if (isdouble) {
             long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
-            o = cbornumberdouble.ToObject(long.class);
             Assert.assertEquals(
               strlong,
-              (((Long)o).longValue()));
+              cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
             long strlong = TestCommon.StringToLong(
                 (String)numberinfo.get("integer").ToObject(String.class));
-            o = cbornumberdouble.ToObject(long.class);
             Assert.assertEquals(
               strlong,
-              (((Long)o).longValue()));
+              cbornumbersingle.ToObject(long.class));
           }
         } else {
           try {
