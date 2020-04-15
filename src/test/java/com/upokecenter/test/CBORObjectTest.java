@@ -1709,6 +1709,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       System.out.println(cbor2);
       TestCommon.CompareTestLess(cbor1.AsNumber(), cbor2.AsNumber());
     }
+
     private static String TrimStr(String str, int len) {
       return str.substring(0, Math.min(len, str.length()));
     }
@@ -2692,6 +2693,12 @@ CBOREncodeOptions(false, false, true));
       aba = "{\"a\":1,\"a\":4}";
       cbor = TestSucceedingJSON(aba, new JSONOptions("allowduplicatekeys=1"));
       Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(4), cbor.get("a"));
+      aba = "{\"a\" :1}";
+      cbor = TestSucceedingJSON(aba);
+      Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(1), cbor.get("a"));
+      aba = "{\"a\" : 1}";
+      cbor = TestSucceedingJSON(aba);
+      Assert.assertEquals(ToObjectTest.TestToFromObjectRoundTrip(1), cbor.get("a"));
       cbor = TestSucceedingJSON("\"\\t\"");
       {
         String stringTemp = cbor.AsString();
@@ -6050,6 +6057,27 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+
+    @Test
+    public void TestCompareToUnicodeString() {
+       CBORObject cbora;
+       CBORObject cborb;
+       cbora = CBORObject.FromObject("aa\ud200\ue000");
+       cborb = CBORObject.FromObject("aa\ud200\ue001");
+       TestCommon.CompareTestLess(cbora, cborb);
+       cbora = CBORObject.FromObject("aa\ud200\ue000");
+       cborb = CBORObject.FromObject("aa\ud201\ue000");
+       TestCommon.CompareTestLess(cbora, cborb);
+       cbora = CBORObject.FromObject("aa\ud800\udc00\ue000");
+       cborb = CBORObject.FromObject("aa\ue001\ue000");
+       TestCommon.CompareTestGreater(cbora, cborb);
+       cbora = CBORObject.FromObject("aa\ud800\udc00\ue000");
+       cborb = CBORObject.FromObject("aa\ud800\udc01\ue000");
+       TestCommon.CompareTestLess(cbora, cborb);
+       cbora = CBORObject.FromObject("aa\ud800\udc00\ue000");
+       cborb = CBORObject.FromObject("aa\ud801\udc00\ue000");
+       TestCommon.CompareTestLess(cbora, cborb);
     }
 
     @Test

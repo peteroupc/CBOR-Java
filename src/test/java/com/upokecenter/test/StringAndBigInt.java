@@ -21,12 +21,12 @@ import com.upokecenter.numbers.*;
         return this.bigintValue;
       }
 
-    public static StringAndBigInt Generate(RandomGenerator rand, int radix) {
+    public static StringAndBigInt Generate(IRandomGenExtended rand, int radix) {
       return Generate(rand, radix, 50);
     }
 
     public static StringAndBigInt Generate(
-      RandomGenerator rand,
+      IRandomGenExtended rand,
       int radix,
       int maxNumDigits) {
       if (radix < 2) {
@@ -39,10 +39,10 @@ import com.upokecenter.numbers.*;
       }
       EInteger bv = EInteger.FromInt32(0);
       StringAndBigInt sabi = new StringAndBigInt();
-      int numDigits = 1 + rand.UniformInt(maxNumDigits);
+      int numDigits = 1 + rand.GetInt32(maxNumDigits);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
-      if (rand.UniformInt(2) == 0) {
+      if (rand.GetInt32(2) == 0) {
         builder.append('-');
         negative = true;
       }
@@ -51,7 +51,7 @@ import com.upokecenter.numbers.*;
       EInteger radixpow1 = EInteger.FromInt32(radix);
       int count = 0;
       for (int i = 0; i < numDigits - 4; i += 4) {
-        int digitvalues = rand.UniformInt(radixpowint);
+        int digitvalues = rand.GetInt32(radixpowint);
         int digit = digitvalues % radix;
         digitvalues /= radix;
         int digit2 = digitvalues % radix;
@@ -61,7 +61,7 @@ import com.upokecenter.numbers.*;
         int digit4 = digitvalues % radix;
         digitvalues /= radix;
         count += 4;
-        int bits = rand.UniformInt(16);
+        int bits = rand.GetInt32(16);
         if ((bits & 0x01) == 0) {
           builder.append(ValueDigits.charAt(digit));
         } else {
@@ -89,8 +89,8 @@ import com.upokecenter.numbers.*;
         bv = bv.Add(bigintTmp);
       }
       for (int i = count; i < numDigits; ++i) {
-        int digit = rand.UniformInt(radix);
-        if (rand.UniformInt(2) == 0) {
+        int digit = rand.GetInt32(radix);
+        if (rand.GetInt32(2) == 0) {
           builder.append(ValueDigits.charAt(digit));
         } else {
           builder.append(ValueDigitsLower.charAt(digit));

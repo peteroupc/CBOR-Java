@@ -12,7 +12,7 @@ import org.junit.Assert;
   public final class TestCommon {
 private TestCommon() {
 }
-    private static final String ValueDigits = "0123456789";
+    private static final String Digits = "0123456789";
 
     public static int StringToInt(String str) {
       boolean neg = false;
@@ -409,32 +409,58 @@ private TestCommon() {
     }
 
     public static String IntToString(int value) {
-      if (value == Integer.MIN_VALUE) {
-        return "-2147483648";
-      }
       if (value == 0) {
         return "0";
       }
+      if (value == Integer.MIN_VALUE) {
+        return "-2147483648";
+      }
       boolean neg = value < 0;
-      char[] chars = new char[12];
-      int count = 11;
       if (neg) {
         value = -value;
       }
-      while (value > 43698) {
+      char[] chars;
+      int count;
+      if (value < 100000) {
+        if (neg) {
+         chars = new char[6];
+         count = 5;
+        } else {
+         chars = new char[5];
+         count = 4;
+        }
+        while (value > 9) {
+          int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
+          char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+          chars[count--] = digit;
+          value = intdivvalue;
+        }
+        if (value != 0) {
+          chars[count--] = Digits.charAt((int)value);
+        }
+        if (neg) {
+          chars[count] = '-';
+        } else {
+          ++count;
+        }
+        return new String(chars, count, chars.length - count);
+      }
+      chars = new char[12];
+      count = 11;
+      while (value >= 163840) {
         int intdivvalue = value / 10;
-        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
-        int intdivvalue = (value * 26215) >> 18;
-        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = ValueDigits.charAt((int)value);
+        chars[count--] = Digits.charAt((int)value);
       }
       if (neg) {
         chars[count] = '-';
@@ -451,62 +477,32 @@ private TestCommon() {
       if (longValue == 0L) {
         return "0";
       }
-      if (longValue == (long)Integer.MIN_VALUE) {
-        return "-2147483648";
-      }
       boolean neg = longValue < 0;
       int count = 0;
       char[] chars;
       int intlongValue = ((int)longValue);
       if ((long)intlongValue == longValue) {
-        chars = new char[12];
-        count = 11;
-        if (neg) {
-          intlongValue = -intlongValue;
-        }
-        while (intlongValue > 43698) {
-          int intdivValue = intlongValue / 10;
-          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue *
-10)));
-          chars[count--] = digit;
-          intlongValue = intdivValue;
-        }
-        while (intlongValue > 9) {
-          int intdivValue = (intlongValue * 26215) >> 18;
-          char digit = ValueDigits.charAt((int)(intlongValue - (intdivValue *
-10)));
-          chars[count--] = digit;
-          intlongValue = intdivValue;
-        }
-        if (intlongValue != 0) {
-          chars[count--] = ValueDigits.charAt((int)intlongValue);
-        }
-        if (neg) {
-          chars[count] = '-';
-        } else {
-          ++count;
-        }
-        return new String(chars, count, 12 - count);
+        return IntToString(intlongValue);
       } else {
         chars = new char[24];
         count = 23;
         if (neg) {
           longValue = -longValue;
         }
-        while (longValue > 43698) {
+        while (longValue >= 163840) {
           long divValue = longValue / 10;
-          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
         }
         while (longValue > 9) {
-          long divValue = (longValue * 26215) >> 18;
-          char digit = ValueDigits.charAt((int)(longValue - (divValue * 10)));
+          long divValue = ((((longValue >> 1) * 52429) >> 18) & 16383);
+          char digit = Digits.charAt((int)(longValue - (divValue * 10)));
           chars[count--] = digit;
           longValue = divValue;
         }
         if (longValue != 0) {
-          chars[count--] = ValueDigits.charAt((int)longValue);
+          chars[count--] = Digits.charAt((int)longValue);
         }
         if (neg) {
           chars[count] = '-';

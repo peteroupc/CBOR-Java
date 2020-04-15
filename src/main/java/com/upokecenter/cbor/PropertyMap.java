@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,10 +125,10 @@ class PropertyMap {
   }
 
   private static Map<Class<?>, List<MethodData>> propertyLists =
-      new TreeMap<Class<?>, List<MethodData>>();
+      new HashMap<Class<?>, List<MethodData>>();
 
   private static Map<Class<?>, List<MethodData>> setterPropertyList =
-      new TreeMap<Class<?>, List<MethodData>>();
+      new HashMap<Class<?>, List<MethodData>>();
 
   private static List<MethodData> GetPropertyList(final Class<?> t) {
     return GetPropertyList(t,false);
@@ -177,11 +177,11 @@ private static <T> List<T> Compact(List<T> list) {
       List<Method> setMethods=new ArrayList<Method>();
       List<Method> isMethods=new ArrayList<Method>();
       Map<String,Integer> getMethodNames=new
-         TreeMap<String,Integer>();
+         HashMap<String,Integer>();
       Map<String,Integer> setMethodNames=new
-         TreeMap<String,Integer>();
+         HashMap<String,Integer>();
       Map<String,Integer> methodNamesToIndices=new
-         TreeMap<String,Integer>();
+         HashMap<String,Integer>();
       boolean hasAmbiguousGetName=false;
       boolean hasAmbiguousSetName=false;
       for(Method pi : t.getMethods()) {
@@ -284,7 +284,7 @@ if(!setters){
   }
 
   public static <K, V> Collection<Map.Entry<K, V>>
-         GetEntries(Map<K, V> dict) {
+         GetEntries(Map<? extends K, ? extends V> dict) {
       return Collections.unmodifiableMap(dict).entrySet();
   }
 
@@ -330,7 +330,7 @@ if(!setters){
          int depth) {
       try {
       Object o = t.getDeclaredConstructor().newInstance();
-      Map<String, CBORObject> dict = new TreeMap<String, CBORObject>();
+      Map<String, CBORObject> dict = new HashMap<String, CBORObject>();
       for (Map.Entry<String, CBORObject> kv : keysValues) {
         String name = kv.getKey();
         dict.put(name,kv.getValue());
@@ -618,9 +618,9 @@ if(objThis.getType()==CBORType.Array){
 }
 if(objThis.getType()==CBORType.Map){
  if(rawType!=null &&
-    rawType.equals(TreeMap.class) || rawType.equals(Map.class)){
+    rawType.equals(HashMap.class) || rawType.equals(Map.class)){
   if(typeArguments==null || typeArguments.length<2){
-   TreeMap alist=new TreeMap();
+   HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
     alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
@@ -628,7 +628,7 @@ if(objThis.getType()==CBORType.Map){
    }
    return alist;
   } else {
-   TreeMap alist=new TreeMap();
+   HashMap alist=new HashMap();
    for(CBORObject cbor : objThis.getKeys()){
     CBORObject cborValue=objThis.get(cbor);
     alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),

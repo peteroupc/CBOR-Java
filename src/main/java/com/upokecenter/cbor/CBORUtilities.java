@@ -31,7 +31,15 @@ private CBORUtilities() {
       if (strB.length() == 0) {
         return strA.length() == 0 ? 0 : 1;
       }
-      if (strA.length() < 64 && strB.length() < 64) {
+      long strAUpperBound = strA.length() * 3;
+      if (strAUpperBound < strB.length()) {
+        return -1;
+      }
+      long strBUpperBound = strB.length() * 3;
+      if (strBUpperBound < strA.length()) {
+        return 1;
+      }
+      if (strA.length() < 128 && strB.length() < 128) {
         if (strA.length() == strB.length()) {
           boolean equalStrings = true;
           for (int i = 0; i < strA.length(); ++i) {
@@ -44,18 +52,33 @@ private CBORUtilities() {
             return 0;
           }
         }
+        boolean nonAscii = false;
         for (int i = 0; i < strA.length(); ++i) {
-          if ((strA.charAt(i) & ((byte)0x80)) != 0) {
-            return -2; // non-ASCII
+          if ((strA.charAt(i) & 0xf800) == 0xd800) {
+            return -2; // has surrogates
+          } else if (strA.charAt(i) > 0x80) {
+            nonAscii = true;
+            break;
           }
         }
         for (int i = 0; i < strB.length(); ++i) {
-          if ((strB.charAt(i) & ((byte)0x80)) != 0) {
-            return -2; // non-ASCII
+          if ((strB.charAt(i) & 0xf800) == 0xd800) {
+            return -2; // has surrogates
+          } else if (strB.charAt(i) > 0x80) {
+            nonAscii = true;
+            break;
           }
         }
-        if (strA.length() != strB.length()) {
-          return strA.length() < strB.length() ? -1 : 1;
+        if (nonAscii) {
+          long cplA = DataUtilities.GetUtf8Length(strA, true);
+          long cplB = DataUtilities.GetUtf8Length(strB, true);
+          if (cplA != cplB) {
+            return cplA < cplB ? -1 : 1;
+          }
+        } else {
+          if (strA.length() != strB.length()) {
+            return strA.length() < strB.length() ? -1 : 1;
+          }
         }
         for (int i = 0; i < strA.length(); ++i) {
           if (strA.charAt(i) != strB.charAt(i)) {
@@ -65,6 +88,132 @@ private CBORUtilities() {
         return 0;
       }
       return -2; // not short enough
+    }
+
+    public static int Utf8CodePointAt(byte[] utf8, int offset) {
+       int endPos = utf8.length;
+       if (offset < 0 || offset >= endPos) {
+         return -1;
+       }
+       int c = ((int)utf8[offset]) & 0xff;
+       if (c <= 0x7f) {
+         return c;
+       } else if (c >= 0xc2 && c <= 0xdf) {
+         ++offset;
+         int c1 = offset < endPos ?
+                ((int)utf8[offset]) & 0xff : -1;
+                return (
+                  c1 < 0x80 || c1 > 0xbf) ? -2 : (((c - 0xc0) << 6) |
+(c1 - 0x80));
+            } else if (c >= 0xe0 && c <= 0xef) {
+              ++offset;
+              int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+              int c2 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
+              int lower = (c == 0xe0) ? 0xa0 : 0x80;
+              int upper = (c == 0xed) ? 0x9f : 0xbf;
+              return (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) ?
+-2 : (((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80));
+            } else if (c >= 0xf0 && c <= 0xf4) {
+              ++offset;
+              int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+              int c2 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+              int c3 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
+              int lower = (c == 0xf0) ? 0x90 : 0x80;
+              int upper = (c == 0xf4) ? 0x8f : 0xbf;
+              if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
+                c3 < 0x80 || c3 > 0xbf) {
+                return -2;
+              }
+              return ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
+                  6) | (c3 - 0x80);
+            } else {
+                return -2;
+            }
+    }
+
+    public static boolean CheckUtf16(String str) {
+      int upos = 0;
+      while (true) {
+        if (upos == str.length()) {
+          return true;
+        }
+        int sc = DataUtilities.CodePointAt(str, upos, 1);
+        if (sc < 0) {
+          return false;
+        }
+        if (sc >= 0x10000) {
+          upos += 2;
+        } else {
+           ++upos;
+         }
+      }
+    }
+
+    public static boolean CheckUtf8(byte[] utf8) {
+      int upos = 0;
+      while (true) {
+         int sc = Utf8CodePointAt(utf8, upos);
+         if (sc == -1) {
+           return true;
+         }
+         if (sc == -2) {
+           return false;
+         }
+         if (sc >= 0x10000) {
+           upos += 4;
+         } else if (sc >= 0x800) {
+           upos += 3;
+         } else if (sc >= 0x80) {
+           upos += 2;
+         } else {
+           ++upos;
+         }
+      }
+    }
+
+    public static boolean StringEqualsUtf8(String str, byte[] utf8) {
+      if (str == null) {
+        return utf8 == null;
+      }
+      if (utf8 == null) {
+        return false;
+      }
+      long strAUpperBound = str.length() * 3;
+      if (strAUpperBound < utf8.length) {
+        return false;
+      }
+      long strBUpperBound = utf8.length * 3;
+      if (strBUpperBound < str.length()) {
+        return false;
+      }
+      int spos = 0;
+      int upos = 0;
+      while (true) {
+         int sc = DataUtilities.CodePointAt(str, spos, 1);
+         int uc = Utf8CodePointAt(utf8, upos);
+         if (uc == -2) {
+           throw new IllegalStateException("Invalid encoding");
+         }
+         if (sc == -1) {
+           return uc == -1;
+         }
+         if (sc != uc) {
+           return false;
+         }
+         if (sc >= 0x10000) {
+           spos += 2;
+           upos += 4;
+         } else if (sc >= 0x800) {
+           ++spos;
+           upos += 3;
+         } else if (sc >= 0x80) {
+           ++spos;
+           upos += 2;
+         } else {
+           ++spos;
+           ++upos;
+         }
+      }
     }
 
     public static boolean ByteArrayEquals(byte[] a, byte[] b) {
