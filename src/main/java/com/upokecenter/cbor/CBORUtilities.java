@@ -10,9 +10,6 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Contains utility methods that may have use outside of the CBORObject class.
-   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
@@ -41,11 +38,13 @@ strB) {
         return 1;
       }
       if (strA.length() < 128 && strB.length() < 128) {
+        int cmp = 0;
         if (strA.length() == strB.length()) {
           boolean equalStrings = true;
           for (int i = 0; i < strA.length(); ++i) {
             if (strA.charAt(i) != strB.charAt(i)) {
               equalStrings = false;
+              cmp = (strA.charAt(i) < strB.charAt(i)) ? -1 : 1;
               break;
             }
           }
@@ -70,8 +69,12 @@ strB) {
           if (strA.length() != strB.length()) {
             return strA.length() < strB.length() ? -1 : 1;
           }
+          if (strA.length() == strB.length()) {
+            return cmp;
+          }
         }
       }
+      System.out.println("slow path "+strA.length()+","+strB.length());
       int sapos = 0;
       int sbpos = 0;
       long sautf8 = 0L;
