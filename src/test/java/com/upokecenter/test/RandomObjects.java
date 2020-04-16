@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import java.io.*;
+
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
@@ -20,6 +22,73 @@ private RandomObjects() {
     private static final int MaxExclusiveShortStringLength = 50;
     private static final int MaxNumberLength = 50000;
     private static final int MaxShortNumberLength = 40;
+
+public static byte[] RandomUtf8Bytes(
+      IRandomGenExtended rg) {
+  return RandomUtf8Bytes(rg, false);
+}
+
+public static byte[] RandomUtf8Bytes(
+  IRandomGenExtended rg,
+  boolean jsonSafe) {
+    {
+      java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+      if (rg == null) {
+        throw new NullPointerException("rg");
+      }
+      int length = 1 + rg.GetInt32(6);
+      for (int i = 0; i < length; ++i) {
+       int v = rg.GetInt32(4);
+       if (v == 0) {
+         int b = 0xe0 + rg.GetInt32(0xee - 0xe1);
+         ms.write((byte)b);
+       if (b == 0xe0) {
+         ms.write((byte)(0xa0 + rg.GetInt32(0x20)));
+       } else if (b == 0xed) {
+         ms.write((byte)(0x80 + rg.GetInt32(0x20)));
+ } else {
+ ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+}
+         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+       } else if (v == 1) {
+         int b = 0xf0 + rg.GetInt32(0xf5 - 0xf0);
+         ms.write((byte)b);
+       if (b == 0xf0) {
+         ms.write((byte)(0x90 + rg.GetInt32(0x30)));
+       } else if (b == 0xf4) {
+         ms.write((byte)(0x80 + rg.GetInt32(0x10)));
+ } else {
+ ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+}
+         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+       } else if (v == 2) {
+         if (rg.GetInt32(100) < 5) {
+           // 0x80, to help detect ASCII off-by-one errors
+           ms.write((byte)0xc2);
+           ms.write((byte)0x80);
+         } else {
+           ms.write((byte)(0xc2 + rg.GetInt32(0xe0 - 0xc2)));
+           ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+         }
+       } else {
+         int ch = rg.GetInt32(0x80);
+         if (jsonSafe && (ch == (int)'\\' || ch == (int)'\"' || ch < 0x20)) {
+           ch = (int)'?';
+         }
+         ms.write((byte)ch);
+       }
+       }
+      return ms.toByteArray();
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+}
 
     public static byte[] RandomByteString(IRandomGenExtended rand) {
       if (rand == null) {
@@ -75,6 +144,9 @@ private RandomObjects() {
           sb.append((char)x);
           x = rand.GetInt32(0x400) + 0xdc00;
           sb.append((char)x);
+        } else if (rand.GetInt32(100) < 5) {
+          // 0x80, to help detect ASCII off-by-one errors
+          sb.append((char)0x80);
         } else {
           // BMP character
           x = 0x20 + rand.GetInt32(0xffe0);

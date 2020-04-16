@@ -15,56 +15,71 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORTest {
-  @Test
-private static byte[] RandomUtf8Bytes(IRandomGenExtended rg) {
-    {
-      java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-      for (int i = 0; i < 5; ++i) {
-       int v = rg.GetInt32(4);
-       if (v == 0) {
-         int b = 0xe0 + rg.GetInt32(0xee - 0xe1);
-         ms.write((byte)b);
-       if (b == 0xe0) {
-         ms.write((byte)(0xa0 + rg.GetInt32(0x20)));
-       } else if (b == 0xed) {
-         ms.write((byte)(0x80 + rg.GetInt32(0x20)));
- } else {
- ms.write((byte)(0x80 + rg.GetInt32(0x40)));
+    public static int ByteArrayCompareLengthFirst(byte[] a, byte[] b) {
+      if (a == null) {
+        return (b == null) ? 0 : -1;
+      }
+      if (b == null) {
+        return 1;
+      }
+      if (a.length != b.length) {
+        return a.length < b.length ? -1 : 1;
+      }
+      for (int i = 0; i < a.length; ++i) {
+        if (a[i] != b[i]) {
+          return (a[i] < b[i]) ? -1 : 1;
+        }
+      }
+      return 0;
+    }
+/*
+@Test
+public static void TestCompareLengthFirst() {
+  RandomGenerator rg = new RandomGenerator();
+  for (int i = 0; i < 500; ++i) {
+    byte[] b1 = RandomObjects.RandomUtf8Bytes(rg);
+    byte[] b2 = RandomObjects.RandomUtf8Bytes(rg);
+    int cmp = ByteArrayCompareLengthFirst(b1, b2);
+    String s1 = DataUtilities.GetUtf8String(b1, true);
+    String s2 = DataUtilities.GetUtf8String(b2, true);
+    String sb=TestCommon.ToByteArrayString(b1)+", "+
+      TestCommon.ToByteArrayString(b2);
+    Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b1));
+    Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b2));
+    if (cmp == 0) {
+      Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s1, s2));
+      Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s2, s1));
+      Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s1, s2));
+      Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s2, s1));
+      if (!(StringEqualsUtf8(s1, b1))) {
+ Assert.fail(sb);
+ }
+      if (!(StringEqualsUtf8(s1, b2))) {
+ Assert.fail(sb);
+ }
+      if (!(StringEqualsUtf8(s2, b1))) {
+ Assert.fail(sb);
+ }
+      if (!(StringEqualsUtf8(s2, b2))) {
+ Assert.fail(sb);
+ }
+      Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b2));
+      Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b1));
+    } else {
+      if (!(!StringEqualsUtf8(s1, b2))) {
+ Assert.fail(sb);
+ }
+      if (!(!StringEqualsUtf8(s2, b1))) {
+ Assert.fail(sb);
+ }
+      Assert.assertEquals(sb, cmp, CompareStringsAsUtf8LengthFirst(s1, s2));
+      Assert.assertEquals(sb, -cmp, CompareStringsAsUtf8LengthFirst(s2, s1));
+      Assert.assertEquals(sb, cmp, CompareUtf16Utf8LengthFirst(s1, b2));
+      Assert.assertEquals(sb, -cmp, CompareUtf16Utf8LengthFirst(s2, b1));
+    }
+  }
 }
-         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
-       } else if (v == 1) {
-         int b = 0xf0 + rg.GetInt32(0xf5 - 0xf0);
-         ms.write((byte)b);
-       if (b == 0xf0) {
-         ms.write((byte)(0x90 + rg.GetInt32(0x30)));
-       } else if (b == 0xf4) {
-         ms.write((byte)(0x80 + rg.GetInt32(0x10)));
- } else {
- ms.write((byte)(0x80 + rg.GetInt32(0x40)));
-}
-         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
-         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
-       } else if (v == 2) {
-         ms.write((byte)(0xc2 + rg.GetInt32(0xe0 - 0xc2)));
-         ms.write((byte)(0x80 + rg.GetInt32(0x40)));
-       } else {
-         int ch = rg.GetInt32(0x80);
-         if (ch == (int)'\\' || ch== (int)'\"' || ch < 0x20) {
-           ch = (int)'?';
-         }
-         ms.write((byte)ch);
-       }
-       }
-      return ms.toByteArray();
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
-}
+*/
 
 @Test
 public void TestCorrectUtf8Specific() {
@@ -162,10 +177,11 @@ public static void TestJsonUtf8One(byte[] bytes) {
 public void TestCorrectUtf8() {
   RandomGenerator rg = new RandomGenerator();
   for (int i = 0; i < 500; ++i) {
-    TestJsonUtf8One(RandomUtf8Bytes(rg));
+    TestJsonUtf8One(RandomObjects.RandomUtf8Bytes(rg, true));
   }
 }
 
+  @Test
     public void TestLexOrderSpecific1() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 27, 0, 0, 65, 2, 0, 0, (byte)144, (byte)172, 71,

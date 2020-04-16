@@ -4523,14 +4523,9 @@ public int compareTo(CBORObject other) {
           case CBORObjectTypeTextString: {
             String strA = (String)objA;
             String strB = (String)objB;
-            cmp = CBORUtilities.FastPathStringCompare(
+            cmp = CBORUtilities.CompareStringsAsUtf8LengthFirst(
                 strA,
                 strB);
-            if (cmp < -1) {
-              cmp = CBORUtilities.ByteArrayCompare(
-                  this.EncodeToBytes(),
-                  other.EncodeToBytes());
-            }
             break;
           }
           case CBORObjectTypeArray: {
@@ -4571,11 +4566,16 @@ public int compareTo(CBORObject other) {
         cmp = CBORUtilities.ByteArrayCompare(
             this.EncodeToBytes(),
             other.EncodeToBytes());
-      } else if ((typeB == CBORObjectTypeTextString && typeA ==
-          CBORObjectTypeTextStringUtf8) ||
-          (typeA == CBORObjectTypeTextString && typeB ==
-          CBORObjectTypeTextStringUtf8)) {
-        throw new UnsupportedOperationException();
+      } else if (typeB == CBORObjectTypeTextString && typeA ==
+          CBORObjectTypeTextStringUtf8) {
+        cmp = -CBORUtilities.CompareUtf16Utf8LengthFirst(
+          (String)objB,
+          (byte[])objA);
+      } else if (typeA == CBORObjectTypeTextString && typeB ==
+          CBORObjectTypeTextStringUtf8) {
+        cmp = CBORUtilities.CompareUtf16Utf8LengthFirst(
+          (String)objA,
+          (byte[])objB);
       } else {
         /* NOTE: itemtypeValue numbers are ordered such that they
         // correspond to the lexicographical order of their CBOR encodings
@@ -4944,6 +4944,10 @@ public boolean equals(CBORObject other) {
               itemHashCode =
                 CBORUtilities.ByteArrayHashCode(this.GetByteString());
               break;
+            case CBORObjectTypeTextStringUtf8:
+              itemHashCode =
+                CBORUtilities.ByteArrayHashCode((byte[])this.getThisItem());
+              break;
             case CBORObjectTypeMap:
               itemHashCode = CBORMapHashCode(this.AsMap());
               break;
@@ -4953,8 +4957,6 @@ public boolean equals(CBORObject other) {
             case CBORObjectTypeTextString:
               itemHashCode = StringHashCode((String)this.itemValue);
               break;
-            case CBORObjectTypeTextStringUtf8:
-              throw new UnsupportedOperationException("TODO: Implement");
             case CBORObjectTypeSimpleValue:
               itemHashCode = ((Integer)this.itemValue).intValue();
               break;
