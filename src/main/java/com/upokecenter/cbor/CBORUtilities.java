@@ -10,6 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+  /**
+   * Contains utility methods that may have use outside of the CBORObject class.
+   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
@@ -29,16 +32,17 @@ strB) {
       if (strB.length() == 0) {
         return strA.length() == 0 ? 0 : 1;
       }
-      long strAUpperBound = strA.length() * 3;
-      if (strAUpperBound < strB.length()) {
-        return -1;
-      }
-      long strBUpperBound = strB.length() * 3;
-      if (strBUpperBound < strA.length()) {
-        return 1;
-      }
+      int cmp = 0;
       if (strA.length() < 128 && strB.length() < 128) {
-        int cmp = 0;
+        int istrAUpperBound = strA.length() * 3;
+        if (istrAUpperBound < strB.length()) {
+          return -1;
+        }
+        int istrBUpperBound = strB.length() * 3;
+        if (istrBUpperBound < strA.length()) {
+          return 1;
+        }
+        cmp = 0;
         if (strA.length() == strB.length()) {
           boolean equalStrings = true;
           for (int i = 0; i < strA.length(); ++i) {
@@ -73,13 +77,22 @@ strB) {
             return cmp;
           }
         }
+      } else {
+        long strAUpperBound = strA.length() * 3;
+        if (strAUpperBound < strB.length()) {
+          return -1;
+        }
+        long strBUpperBound = strB.length() * 3;
+        if (strBUpperBound < strA.length()) {
+          return 1;
+        }
       }
-      System.out.println("slow path "+strA.length()+","+strB.length());
+      // System.out.println("slow path "+strA.length()+","+strB.length());
       int sapos = 0;
       int sbpos = 0;
       long sautf8 = 0L;
       long sbutf8 = 0L;
-      int cmp = 0;
+      cmp = 0;
       boolean haveboth = true;
       while (true) {
         int sa = 0, sb = 0;
@@ -99,7 +112,7 @@ strB) {
           }
           if (sa >= 0x10000) {
             sautf8 += 4;
-  sapos += 2;
+            sapos += 2;
           } else if (sa >= 0x800) {
             sautf8 += 3;
             ++sapos;
@@ -127,7 +140,7 @@ strB) {
           }
           if (sb >= 0x10000) {
             sbutf8 += 4;
-  sbpos += 2;
+            sbpos += 2;
           } else if (sb >= 0x800) {
             sbutf8 += 3;
             ++sbpos;
@@ -190,7 +203,7 @@ strB) {
           }
           if (u16 >= 0x10000) {
             u16u8length += 4;
-  u16pos += 2;
+            u16pos += 2;
           } else if (u16 >= 0x800) {
             u16u8length += 3;
             ++u16pos;

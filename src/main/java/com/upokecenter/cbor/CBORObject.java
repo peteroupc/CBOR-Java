@@ -1864,7 +1864,7 @@ if (value >= 0L && value < 24L) {
                 CBORObject.FromObject(exponent.ToInt64Checked()),
                 CBORObject.FromObject(bigValue.getMantissa()));
            } else {
-          tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
+          tag = (exponent.GetSignedBitLengthAsInt64() > 64) ?
             265 : 5;
           cbor = CBORObject.NewArray(
                 CBORObject.FromObject(exponent),
@@ -1964,7 +1964,7 @@ if (value >= 0L && value < 24L) {
              CBORObject.FromObject(exponent.ToInt64Checked()),
              CBORObject.FromObject(bigValue.getMantissa()));
            } else {
-          tag = (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) ?
+          tag = (exponent.GetSignedBitLengthAsInt64() > 64) ?
             264 : 4;
           cbor = CBORObject.NewArray(
              CBORObject.FromObject(exponent),
@@ -3332,7 +3332,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (exponent.CanFitInInt64()) {
         stream.write(0xc5); // tag 5
         stream.write(0x82); // array, length 2
-      } else if (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) {
+      } else if (exponent.GetSignedBitLengthAsInt64() > 64) {
         stream.write(0xd9); // tag 265
         stream.write(0x01);
         stream.write(0x09);
@@ -3402,7 +3402,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (exponent.CanFitInInt64()) {
         stream.write(0xc4); // tag 4
         stream.write(0x82); // array, length 2
-      } else if (exponent.GetSignedBitLengthAsEInteger().compareTo(64) > 0) {
+      } else if (exponent.GetSignedBitLengthAsInt64() > 64) {
         stream.write(0xd9); // tag 264
         stream.write(0x01);
         stream.write(0x08);

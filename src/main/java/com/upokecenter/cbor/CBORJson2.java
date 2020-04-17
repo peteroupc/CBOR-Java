@@ -8,6 +8,7 @@ at: http://peteroupc.github.io/
  */
 
 import java.util.*;
+import java.io.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
@@ -39,8 +40,10 @@ import com.upokecenter.numbers.*;
     private byte[] NextJSONString() {
       int c;
       int startIndex = this.index;
+      int batchIndex = startIndex;
+      int batchEnd = startIndex;
       byte[] jbytes = this.bytes;
-      for (int i = 0; i < 256; ++i) {
+      while (true) {
         if (this.index >= this.endPos) {
           this.RaiseError("Unterminated String");
         }
@@ -49,6 +52,7 @@ import com.upokecenter.numbers.*;
           this.RaiseError("Invalid character in String literal");
         }
         if (c == '\\') {
+          batchEnd = this.index - 1;
           break;
         } else if (c == 0x22) {
           int isize = (this.index - startIndex) - 1;
@@ -93,10 +97,21 @@ import com.upokecenter.numbers.*;
               this.RaiseError("Invalid encoding");
         }
       }
-      this.index = startIndex;
-      this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb.delete(0, this.sb.length());
+      {
+        java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+        if (batchEnd > batchIndex) {
+        ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+        this.index = batchEnd;
+        batchIndex = batchEnd;
+      } else {
+        this.index = startIndex;
+        batchIndex = startIndex;
+      }
       while (true) {
+        batchEnd = this.index;
         c = this.index < this.endPos ? ((int)jbytes[this.index++]) &
           0xff : -1;
         if (c == -1) {
@@ -114,22 +129,46 @@ import com.upokecenter.numbers.*;
               case '/':
               case '\"':
                 // Slash is now allowed to be escaped under RFC 8259
-                this.sb.append((char)c);
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)c);
                 break;
               case 'b':
-                this.sb.append('\b');
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)'\b');
                 break;
               case 'f':
-                this.sb.append('\f');
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)'\f');
                 break;
               case 'n':
-                this.sb.append('\n');
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)'\n');
                 break;
               case 'r':
-                this.sb.append('\r');
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)'\r');
                 break;
               case 't':
-                this.sb.append('\t');
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                batchIndex = this.index;
+                ms.write((byte)'\t');
                 break;
               case 'u': { // Unicode escape
                 c = 0;
@@ -153,7 +192,21 @@ import com.upokecenter.numbers.*;
                 }
                 if ((c & 0xf800) != 0xd800) {
                   // Non-surrogate
-                  this.sb.append((char)c);
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                  batchIndex = this.index;
+                  int ic = c;
+                  if (c >= 0x800) {
+                     ms.write((byte)(0xe0 | ((ic >> 12) & 0x0f)));
+                     ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
+                     ms.write((byte)(0x80 | (ic & 0x3f)));
+                  } else if (c >= 0x80) {
+                    ms.write((byte)(0xc0 | ((ic >> 6) & 0x1f)));
+                     ms.write((byte)(0x80 | (ic & 0x3f)));
+                  } else {
+                     ms.write((byte)ic);
+                  }
                 } else if ((c & 0xfc00) == 0xd800) {
                   int ch;
                   if (this.index >= this.endPos - 1 ||
@@ -183,8 +236,16 @@ import com.upokecenter.numbers.*;
                   if ((c2 & 0xfc00) != 0xdc00) {
                     this.RaiseError("Unpaired surrogate code point");
                   } else {
-                    this.sb.append((char)c);
-                    this.sb.append((char)c2);
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+                    batchIndex = this.index;
+                    int ic = 0x10000 + (((int)c & 0x3ff) << 10) +
+                      ((int)c2 & 0x3ff);
+                    ms.write((byte)(0xf0 | ((ic >> 18) & 0x07)));
+                    ms.write((byte)(0x80 | ((ic >> 12) & 0x3f)));
+                    ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
+                    ms.write((byte)(0x80 | (ic & 0x3f)));
                   }
                 } else {
                   this.RaiseError("Unpaired surrogate code point");
@@ -198,18 +259,20 @@ import com.upokecenter.numbers.*;
             }
             break;
           case 0x22: // double quote
-            return DataUtilities.GetUtf8Bytes(this.sb.toString(), false);
+            // System.out.println("slowpath "+this.sb.length());
+if (batchEnd > batchIndex) {
+  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+}
+            return ms.toByteArray();
           default: {
             if (c <= 0x7f) {
-              this.sb.append((char)c);
+              // Deliberately empty
             } else if (c >= 0xc2 && c <= 0xdf) {
               int c1 = this.index < this.endPos ?
                 ((int)jbytes[this.index++]) & 0xff : -1;
               if (c1 < 0x80 || c1 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
-              c = ((c - 0xc0) << 6) | (c1 - 0x80);
-              this.sb.append((char)c);
             } else if (c >= 0xe0 && c <= 0xef) {
               int c1 = this.index < this.endPos ?
                 ((int)jbytes[this.index++]) & 0xff : -1;
@@ -220,8 +283,6 @@ import com.upokecenter.numbers.*;
               if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
-              c = ((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80);
-              this.sb.append((char)c);
             } else if (c >= 0xf0 && c <= 0xf4) {
               int c1 = this.index < this.endPos ?
                 ((int)jbytes[this.index++]) & 0xff : -1;
@@ -235,18 +296,18 @@ import com.upokecenter.numbers.*;
                 c3 < 0x80 || c3 > 0xbf) {
                 this.RaiseError("Invalid encoding");
               }
-              c = ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
-                  6) | (c3 - 0x80);
-              this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                    0xd800));
-              this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             } else {
               this.RaiseError("Invalid encoding");
             }
             break;
           }
         }
-      }
+        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
     }
 
     private CBORObject NextJSONNegativeNumber(
