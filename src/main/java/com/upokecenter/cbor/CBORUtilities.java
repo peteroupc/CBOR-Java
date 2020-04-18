@@ -19,7 +19,7 @@ private CBORUtilities() {
     private static final String HexAlphabet = "0123456789ABCDEF";
 
     public static int CompareStringsAsUtf8LengthFirst(String strA, String
-strB) {
+      strB) {
       if (strA == null) {
         return (strB == null) ? 0 : -1;
       }
@@ -247,44 +247,44 @@ strB) {
     }
 
     public static int Utf8CodePointAt(byte[] utf8, int offset) {
-       int endPos = utf8.length;
-       if (offset < 0 || offset >= endPos) {
-         return -1;
-       }
-       int c = ((int)utf8[offset]) & 0xff;
-       if (c <= 0x7f) {
-         return c;
-       } else if (c >= 0xc2 && c <= 0xdf) {
-         ++offset;
-         int c1 = offset < endPos ?
-                ((int)utf8[offset]) & 0xff : -1;
-                return (
-                  c1 < 0x80 || c1 > 0xbf) ? -2 : (((c - 0xc0) << 6) |
-(c1 - 0x80));
-            } else if (c >= 0xe0 && c <= 0xef) {
-              ++offset;
-              int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
-              int c2 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
-              int lower = (c == 0xe0) ? 0xa0 : 0x80;
-              int upper = (c == 0xed) ? 0x9f : 0xbf;
-              return (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) ?
--2 : (((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80));
-            } else if (c >= 0xf0 && c <= 0xf4) {
-              ++offset;
-              int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
-              int c2 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
-              int c3 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
-              int lower = (c == 0xf0) ? 0x90 : 0x80;
-              int upper = (c == 0xf4) ? 0x8f : 0xbf;
-              if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
-                c3 < 0x80 || c3 > 0xbf) {
-                return -2;
-              }
-              return ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
-                  6) | (c3 - 0x80);
-            } else {
-                return -2;
-            }
+      int endPos = utf8.length;
+      if (offset < 0 || offset >= endPos) {
+        return -1;
+      }
+      int c = ((int)utf8[offset]) & 0xff;
+      if (c <= 0x7f) {
+        return c;
+      } else if (c >= 0xc2 && c <= 0xdf) {
+        ++offset;
+        int c1 = offset < endPos ?
+          ((int)utf8[offset]) & 0xff : -1;
+        return (
+            c1 < 0x80 || c1 > 0xbf) ? -2 : (((c - 0xc0) << 6) |
+            (c1 - 0x80));
+      } else if (c >= 0xe0 && c <= 0xef) {
+        ++offset;
+        int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c2 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
+        int lower = (c == 0xe0) ? 0xa0 : 0x80;
+        int upper = (c == 0xed) ? 0x9f : 0xbf;
+        return (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) ?
+          -2 : (((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80));
+      } else if (c >= 0xf0 && c <= 0xf4) {
+        ++offset;
+        int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c2 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c3 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
+        int lower = (c == 0xf0) ? 0x90 : 0x80;
+        int upper = (c == 0xf4) ? 0x8f : 0xbf;
+        if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
+          c3 < 0x80 || c3 > 0xbf) {
+          return -2;
+        }
+        return ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
+            6) | (c3 - 0x80);
+      } else {
+        return -2;
+      }
     }
 
     // NOTE: StringHashCode and Utf8HashCode must
@@ -307,8 +307,8 @@ strB) {
         if (sc >= 0x10000) {
           upos += 2;
         } else {
-           ++upos;
-         }
+          ++upos;
+        }
       }
     }
 
@@ -316,23 +316,23 @@ strB) {
       int upos = 0;
       int code = 0x7edede19;
       while (true) {
-         int sc = Utf8CodePointAt(utf8, upos);
-         if (sc == -1) {
-           return code;
-         }
-         if (sc == -2) {
-           return code;
-         }
-         code = ((code * 31) + sc);
-         if (sc >= 0x10000) {
-           upos += 4;
-         } else if (sc >= 0x800) {
-           upos += 3;
-         } else if (sc >= 0x80) {
-           upos += 2;
-         } else {
-           ++upos;
-         }
+        int sc = Utf8CodePointAt(utf8, upos);
+        if (sc == -1) {
+          return code;
+        }
+        if (sc == -2) {
+          return code;
+        }
+        code = ((code * 31) + sc);
+        if (sc >= 0x10000) {
+          upos += 4;
+        } else if (sc >= 0x800) {
+          upos += 3;
+        } else if (sc >= 0x80) {
+          upos += 2;
+        } else {
+          ++upos;
+        }
       }
     }
 
@@ -349,30 +349,30 @@ strB) {
         if (sc >= 0x10000) {
           upos += 2;
         } else {
-           ++upos;
-         }
+          ++upos;
+        }
       }
     }
 
     public static boolean CheckUtf8(byte[] utf8) {
       int upos = 0;
       while (true) {
-         int sc = Utf8CodePointAt(utf8, upos);
-         if (sc == -1) {
-           return true;
-         }
-         if (sc == -2) {
-           return false;
-         }
-         if (sc >= 0x10000) {
-           upos += 4;
-         } else if (sc >= 0x800) {
-           upos += 3;
-         } else if (sc >= 0x80) {
-           upos += 2;
-         } else {
-           ++upos;
-         }
+        int sc = Utf8CodePointAt(utf8, upos);
+        if (sc == -1) {
+          return true;
+        }
+        if (sc == -2) {
+          return false;
+        }
+        if (sc >= 0x10000) {
+          upos += 4;
+        } else if (sc >= 0x800) {
+          upos += 3;
+        } else if (sc >= 0x80) {
+          upos += 2;
+        } else {
+          ++upos;
+        }
       }
     }
 
@@ -394,30 +394,30 @@ strB) {
       int spos = 0;
       int upos = 0;
       while (true) {
-         int sc = DataUtilities.CodePointAt(str, spos, 1);
-         int uc = Utf8CodePointAt(utf8, upos);
-         if (uc == -2) {
-           throw new IllegalStateException("Invalid encoding");
-         }
-         if (sc == -1) {
-           return uc == -1;
-         }
-         if (sc != uc) {
-           return false;
-         }
-         if (sc >= 0x10000) {
-           spos += 2;
-           upos += 4;
-         } else if (sc >= 0x800) {
-           ++spos;
-           upos += 3;
-         } else if (sc >= 0x80) {
-           ++spos;
-           upos += 2;
-         } else {
-           ++spos;
-           ++upos;
-         }
+        int sc = DataUtilities.CodePointAt(str, spos, 1);
+        int uc = Utf8CodePointAt(utf8, upos);
+        if (uc == -2) {
+          throw new IllegalStateException("Invalid encoding");
+        }
+        if (sc == -1) {
+          return uc == -1;
+        }
+        if (sc != uc) {
+          return false;
+        }
+        if (sc >= 0x10000) {
+          spos += 2;
+          upos += 4;
+        } else if (sc >= 0x800) {
+          ++spos;
+          upos += 3;
+        } else if (sc >= 0x80) {
+          ++spos;
+          upos += 2;
+        } else {
+          ++spos;
+          ++upos;
+        }
       }
     }
     public static boolean ByteArrayEquals(byte[] a, byte[] b) {
@@ -633,8 +633,7 @@ strB) {
       }
       int[] dayArray = (year.Remainder(4).signum() != 0 || (
             year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
-0)) ?
-        ValueNormalDays : ValueLeapDays;
+            0)) ? ValueNormalDays : ValueLeapDays;
       if (day.compareTo(101) > 0) {
         EInteger count = day.Subtract(100).Divide(146097);
         day = day.Subtract(count.Multiply(146097));
@@ -654,7 +653,7 @@ strB) {
                   year.Remainder(100).signum() == 0 &&
                   year.Remainder(400).signum() != 0)) ? ValueNormalDays :
               ValueLeapDays;
-            } else {
+          } else {
             ++month;
           }
         }
@@ -729,14 +728,14 @@ strB) {
             year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0)) {
           numDays = numDays.Subtract(365 - ValueNormalToMonth[month])
             .Subtract(ValueNormalDays[month] - mday + 1);
-          } else {
+        } else {
           numDays = numDays
             .Subtract(366 - ValueLeapToMonth[month])
             .Subtract(ValueLeapDays[month] - mday + 1);
         }
       } else {
         boolean isNormalYear = year.Remainder(4).signum() != 0 ||
-(year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
+          (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
 
         EInteger ei = EInteger.FromInt32(startYear);
         if (ei.Add(401).compareTo(year) < 0) {
@@ -806,8 +805,7 @@ strB) {
     public static boolean NameStartsWithWord(String name, String word) {
       int wl = word.length();
       return name.length() > wl && name.substring(0,wl).equals(word) && !(name.charAt(wl) >= 'a' && name.charAt(wl) <=
-'z') &&
-        !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
+          'z') && !(name.charAt(wl) >= '0' && name.charAt(wl) <= '9');
     }
 
     public static String FirstCharLower(String name) {
@@ -1116,7 +1114,7 @@ strB) {
         int newmant = ((int)(mant >> 42));
         return ((mant & ((1L << 42) - 1)) == 0) ? (sign | 0x7c00 | newmant) :
           -1;
-        } else if (sexp >= 31) { // overflow
+      } else if (sexp >= 31) { // overflow
         return -1;
       } else if (sexp < -10) { // underflow
         return -1;
@@ -1156,7 +1154,7 @@ strB) {
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
-        } else if (sexp >= 31) { // overflow
+      } else if (sexp >= 31) { // overflow
         return sign | 0x7c00;
       } else if (sexp < -10) { // underflow
         return sign;
@@ -1178,7 +1176,7 @@ strB) {
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
-        } else if (sexp >= 31) { // overflow
+      } else if (sexp >= 31) { // overflow
         return sign | 0x7c00;
       } else if (sexp < -10) { // underflow
         return sign;
@@ -1200,7 +1198,7 @@ strB) {
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7f800001) : (sign | 0x7f800000 | newmant);
-        } else if (sexp >= 255) { // overflow
+      } else if (sexp >= 255) { // overflow
         return sign | 0x7f800000;
       } else if (sexp < -23) { // underflow
         return sign;
@@ -1227,7 +1225,7 @@ strB) {
         int shift = 126 - exp;
         return (bits & ((1 << shift) - 1)) == 0 ? sign +
           (1024 >> (145 - exp)) + (mant >> shift) : -1;
-        } else {
+      } else {
         return (bits & 0x1fff) == 0 ? sign + ((exp - 112) << 10) +
           (mant >> 13) : -1;
       }

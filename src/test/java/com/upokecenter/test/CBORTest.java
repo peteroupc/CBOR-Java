@@ -32,156 +32,156 @@ import com.upokecenter.numbers.*;
       }
       return 0;
     }
-/*
-@Test
-public static void TestCompareLengthFirst() {
-  RandomGenerator rg = new RandomGenerator();
-  for (int i = 0; i < 500; ++i) {
-    byte[] b1 = RandomObjects.RandomUtf8Bytes(rg);
-    byte[] b2 = RandomObjects.RandomUtf8Bytes(rg);
-    int cmp = ByteArrayCompareLengthFirst(b1, b2);
-    String s1 = DataUtilities.GetUtf8String(b1, true);
-    String s2 = DataUtilities.GetUtf8String(b2, true);
-    String sb=TestCommon.ToByteArrayString(b1)+", "+
-      TestCommon.ToByteArrayString(b2);
-    Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b1));
-    Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b2));
-    if (cmp == 0) {
-      Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s1, s2));
-      Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s2, s1));
-      Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s1, s2));
-      Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s2, s1));
-      if (!(StringEqualsUtf8(s1, b1))) {
+    /*
+    @Test
+    public static void TestCompareLengthFirst() {
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 500; ++i) {
+        byte[] b1 = RandomObjects.RandomUtf8Bytes(rg);
+        byte[] b2 = RandomObjects.RandomUtf8Bytes(rg);
+        int cmp = ByteArrayCompareLengthFirst(b1, b2);
+        String s1 = DataUtilities.GetUtf8String(b1, true);
+        String s2 = DataUtilities.GetUtf8String(b2, true);
+        String sb=TestCommon.ToByteArrayString(b1)+", "+
+          TestCommon.ToByteArrayString(b2);
+        Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b1));
+        Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b2));
+        if (cmp == 0) {
+          Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s1, s2));
+          Assert.assertEquals(sb, 0, DataUtilities.CodePointCompare(s2, s1));
+          Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s1, s2));
+          Assert.assertEquals(sb, 0, CompareStringsAsUtf8LengthFirst(s2, s1));
+          if (!(StringEqualsUtf8(s1, b1))) {
  Assert.fail(sb);
  }
-      if (!(StringEqualsUtf8(s1, b2))) {
+          if (!(StringEqualsUtf8(s1, b2))) {
  Assert.fail(sb);
  }
-      if (!(StringEqualsUtf8(s2, b1))) {
+          if (!(StringEqualsUtf8(s2, b1))) {
  Assert.fail(sb);
  }
-      if (!(StringEqualsUtf8(s2, b2))) {
+          if (!(StringEqualsUtf8(s2, b2))) {
  Assert.fail(sb);
  }
-      Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b2));
-      Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b1));
-    } else {
-      if (!(!StringEqualsUtf8(s1, b2))) {
+          Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s1, b2));
+          Assert.assertEquals(sb, 0, CompareUtf16Utf8LengthFirst(s2, b1));
+        } else {
+          if (!(!StringEqualsUtf8(s1, b2))) {
  Assert.fail(sb);
  }
-      if (!(!StringEqualsUtf8(s2, b1))) {
+          if (!(!StringEqualsUtf8(s2, b1))) {
  Assert.fail(sb);
  }
-      Assert.assertEquals(sb, cmp, CompareStringsAsUtf8LengthFirst(s1, s2));
-      Assert.assertEquals(sb, -cmp, CompareStringsAsUtf8LengthFirst(s2, s1));
-      Assert.assertEquals(sb, cmp, CompareUtf16Utf8LengthFirst(s1, b2));
-      Assert.assertEquals(sb, -cmp, CompareUtf16Utf8LengthFirst(s2, b1));
+          Assert.assertEquals(sb, cmp, CompareStringsAsUtf8LengthFirst(s1, s2));
+          Assert.assertEquals(sb, -cmp, CompareStringsAsUtf8LengthFirst(s2, s1));
+          Assert.assertEquals(sb, cmp, CompareUtf16Utf8LengthFirst(s1, b2));
+          Assert.assertEquals(sb, -cmp, CompareUtf16Utf8LengthFirst(s2, b1));
+        }
+      }
     }
-  }
-}
-*/
+    */
 
-@Test
-public void TestCorrectUtf8Specific() {
-TestJsonUtf8One(new byte[] {
-  (byte)0xe8,
-  (byte)0xad,
-  (byte)0xbd,
-  (byte)0xf1,
-  (byte)0x81,
-  (byte)0x95,
-  (byte)0xb9,
-  (byte)0xc3, (byte)0x84, (byte)0xcc, (byte)0xb6, (byte)0xcd, (byte)0xa3,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xe8,
-  (byte)0x89,
-  (byte)0xa0,
-  (byte)0xf2,
-  (byte)0x97,
-  (byte)0x84, (byte)0xbb, 0x3f, (byte)0xd1, (byte)0x83, (byte)0xd1,
-  (byte)0xb9,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xf3,
-  (byte)0xbb,
-  (byte)0x98,
-  (byte)0x8a,
-  (byte)0xc3,
-  (byte)0x9f,
-  (byte)0xe7,
-  (byte)0xa5,
-  (byte)0x96, (byte)0xd9, (byte)0x92, (byte)0xe1, (byte)0xa3, (byte)0xad,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xf0,
-  (byte)0xa7,
-  (byte)0xbf,
-  (byte)0x84, 0x70, 0x55,
-  (byte)0xd0, (byte)0x91, (byte)0xe8, (byte)0xbe, (byte)0x9f,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xd9,
-  (byte)0xae,
-  (byte)0xe4,
-  (byte)0xa1,
-  (byte)0xa0,
-  (byte)0xf3,
-  (byte)0x90,
-  (byte)0x94,
-  (byte)0x99,
-  (byte)0xf3,
-  (byte)0xab,
-  (byte)0x8a, (byte)0xad, (byte)0xf4, (byte)0x88, (byte)0x9a, (byte)0x9a,
- });
-TestJsonUtf8One(new byte[] {
-  0x3d,
-  (byte)0xf2,
-  (byte)0x83,
-  (byte)0xa9,
-  (byte)0xbe,
-  (byte)0xea,
-  (byte)0xb9,
-  (byte)0xbd, (byte)0xd7, (byte)0x8b, (byte)0xe7, (byte)0xbc, (byte)0x83,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xc4,
-  (byte)0xab, (byte)0xf4, (byte)0x8e, (byte)0x8a, (byte)0x91, 0x61, 0x4d,
-  0x3b,
- });
-TestJsonUtf8One(new byte[] {
-  (byte)0xf1,
-  (byte)0xae,
-  (byte)0x86, (byte)0xad, 0x5f, (byte)0xd0, (byte)0xb7, 0x6e, (byte)0xda,
-  (byte)0x85,
- });
-}
-
-public static void TestJsonUtf8One(byte[] bytes) {
-    if (bytes == null) {
-      throw new NullPointerException("bytes");
+    @Test
+    public void TestCorrectUtf8Specific() {
+      TestJsonUtf8One(new byte[] {
+        (byte)0xe8,
+        (byte)0xad,
+        (byte)0xbd,
+        (byte)0xf1,
+        (byte)0x81,
+        (byte)0x95,
+        (byte)0xb9,
+        (byte)0xc3, (byte)0x84, (byte)0xcc, (byte)0xb6, (byte)0xcd, (byte)0xa3,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xe8,
+        (byte)0x89,
+        (byte)0xa0,
+        (byte)0xf2,
+        (byte)0x97,
+        (byte)0x84, (byte)0xbb, 0x3f, (byte)0xd1, (byte)0x83, (byte)0xd1,
+        (byte)0xb9,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xf3,
+        (byte)0xbb,
+        (byte)0x98,
+        (byte)0x8a,
+        (byte)0xc3,
+        (byte)0x9f,
+        (byte)0xe7,
+        (byte)0xa5,
+        (byte)0x96, (byte)0xd9, (byte)0x92, (byte)0xe1, (byte)0xa3, (byte)0xad,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xf0,
+        (byte)0xa7,
+        (byte)0xbf,
+        (byte)0x84, 0x70, 0x55,
+        (byte)0xd0, (byte)0x91, (byte)0xe8, (byte)0xbe, (byte)0x9f,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xd9,
+        (byte)0xae,
+        (byte)0xe4,
+        (byte)0xa1,
+        (byte)0xa0,
+        (byte)0xf3,
+        (byte)0x90,
+        (byte)0x94,
+        (byte)0x99,
+        (byte)0xf3,
+        (byte)0xab,
+        (byte)0x8a, (byte)0xad, (byte)0xf4, (byte)0x88, (byte)0x9a, (byte)0x9a,
+       });
+      TestJsonUtf8One(new byte[] {
+        0x3d,
+        (byte)0xf2,
+        (byte)0x83,
+        (byte)0xa9,
+        (byte)0xbe,
+        (byte)0xea,
+        (byte)0xb9,
+        (byte)0xbd, (byte)0xd7, (byte)0x8b, (byte)0xe7, (byte)0xbc, (byte)0x83,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xc4,
+        (byte)0xab, (byte)0xf4, (byte)0x8e, (byte)0x8a, (byte)0x91, 0x61, 0x4d,
+        0x3b,
+       });
+      TestJsonUtf8One(new byte[] {
+        (byte)0xf1,
+        (byte)0xae,
+        (byte)0x86, (byte)0xad, 0x5f, (byte)0xd0, (byte)0xb7, 0x6e, (byte)0xda,
+        (byte)0x85,
+       });
     }
-    String str = DataUtilities.GetUtf8String(bytes, false);
-    byte[] bytes2 = new byte[bytes.length + 2];
-    bytes2[0] = 0x22;
-    System.arraycopy(bytes, 0, bytes2, 1, bytes.length);
-    bytes2[bytes2.length - 1] = 0x22;
-    String str2 = CBORObject.FromJSONBytes(bytes2)
-         .AsString();
-    if (!str.equals(str2)) {
-      Assert.assertEquals(TestCommon.ToByteArrayString(bytes), str, str2);
+
+    public static void TestJsonUtf8One(byte[] bytes) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      String str = DataUtilities.GetUtf8String(bytes, false);
+      byte[] bytes2 = new byte[bytes.length + 2];
+      bytes2[0] = 0x22;
+      System.arraycopy(bytes, 0, bytes2, 1, bytes.length);
+      bytes2[bytes2.length - 1] = 0x22;
+      String str2 = CBORObject.FromJSONBytes(bytes2)
+        .AsString();
+      if (!str.equals(str2)) {
+        Assert.assertEquals(TestCommon.ToByteArrayString(bytes), str, str2);
+      }
     }
-}
 
-@Test
-public void TestCorrectUtf8() {
-  RandomGenerator rg = new RandomGenerator();
-  for (int i = 0; i < 500; ++i) {
-    TestJsonUtf8One(RandomObjects.RandomUtf8Bytes(rg, true));
-  }
-}
+    @Test
+    public void TestCorrectUtf8() {
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 500; ++i) {
+        TestJsonUtf8One(RandomObjects.RandomUtf8Bytes(rg, true));
+      }
+    }
 
-  @Test
+    @Test
     public void TestLexOrderSpecific1() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 27, 0, 0, 65, 2, 0, 0, (byte)144, (byte)172, 71,
@@ -738,31 +738,31 @@ public void TestCorrectUtf8() {
           EDecimal edec = AsED(ed);
           EInteger bi = null;
           try {
-             bi = edec.ToSizedEInteger(128);
+            bi = edec.ToSizedEInteger(128);
           } catch (ArithmeticException ex) {
-             bi = null;
+            bi = null;
           }
           if (edNumber.IsInteger()) {
             if ((bi != null &&
-bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
+                bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
               edNumber.CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
           if ((bi != null &&
-bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
+              bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
             edNumber.CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
           if (edNumber.IsInteger()) {
             if ((bi != null &&
-bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
+                bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
               edNumber.CanFitInInt64()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
           if ((bi != null &&
-bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
+              bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
             edNumber.CanTruncatedIntFitInInt64()) {
             Assert.fail(ObjectMessage(ed));
           }
@@ -1234,7 +1234,7 @@ bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
           new byte[] { (byte)0xc5, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1 });
       {
         long numberTemp = EFloat.FromString("8").compareTo(
-  (EFloat)o.ToObject(EFloat.class));
+            (EFloat)o.ToObject(EFloat.class));
 
         Assert.assertEquals(0, numberTemp);
       }
@@ -1297,7 +1297,7 @@ bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
             Double.NEGATIVE_INFINITY)
           .ToObject(EDecimal.class)).IsNegativeInfinity());
       Assert.assertTrue(
-  ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
+        ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
 
           .ToObject(EDecimal.class)).IsNaN());
       for (int i = -65539; i <= 65539; ++i) {
@@ -1388,7 +1388,7 @@ bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
             Float.NEGATIVE_INFINITY)
           .ToObject(EDecimal.class)).IsNegativeInfinity());
       Assert.assertTrue(
-  ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
+        ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
 
           .ToObject(EDecimal.class)).IsNaN());
       for (int i = -65539; i <= 65539; ++i) {
@@ -1583,7 +1583,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       {
-        String stringTemp = CBORObject.FromJSONString("true").ToJSONString();
+        String stringTemp = CBORObject.FromJSONString(" true ").ToJSONString();
         Assert.assertEquals(
           "true",
           stringTemp);
@@ -1638,11 +1638,11 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
     public void TestLong() {
       long[] ranges = {
         -65539, 65539, 0xfffff000L, 0x100000400L,
-        Long.MAX_VALUE - 1000,
-        Long.MAX_VALUE,
-        Long.MIN_VALUE,
-        Long.MIN_VALUE + 1000,
-      };
+          Long.MAX_VALUE - 1000,
+          Long.MAX_VALUE,
+          Long.MIN_VALUE,
+          Long.MIN_VALUE + 1000,
+        };
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
         while (true) {
@@ -1744,12 +1744,12 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       CBORTestCommon.AssertRoundTrip(oo);
     }
 
-public static void TestParseDecimalStringsOne(String r) {
-        CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(
-            EDecimal.FromString(r));
-        CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
-        TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
-}
+    public static void TestParseDecimalStringsOne(String r) {
+      CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(
+          EDecimal.FromString(r));
+      CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
+      TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
+    }
 
     @Test
     public void TestParseDecimalStrings() {
@@ -4522,7 +4522,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     public static void TestCtap2CanonicalDecodeEncodeOne(
-       CBORObject cbor) {
+      CBORObject cbor) {
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       if (cbor == null) {
         throw new NullPointerException("cbor");
@@ -4532,36 +4532,36 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       cbor = CBORObject.DecodeFromBytes(bytes);
       CBORObject cbor2 = null;
       try {
-          bytes = cbor.EncodeToBytes(options);
-          try {
-            cbor2 = CBORObject.DecodeFromBytes(bytes, options);
-          } catch (Exception ex2) {
-            Assert.fail(ex2.toString());
-            throw new IllegalStateException("", ex2);
-          }
-          byte[] bytes2 = cbor2.EncodeToBytes(options);
-          TestCommon.AssertByteArraysEqual(bytes, bytes2);
-        } catch (CBORException ex4) {
-          // Canonical encoding failed, so DecodeFromBytes must fail
-          bytes = CBORTestCommon.CheckEncodeToBytes(cbor);
-          try {
-            CBORObject.DecodeFromBytes(bytes, options);
-            Assert.fail("Should have failed");
-          } catch (CBORException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex3) {
-            Assert.fail(ex3.toString() + "\n" + ex4.toString());
-            throw new IllegalStateException("", ex3);
-          }
+        bytes = cbor.EncodeToBytes(options);
+        try {
+          cbor2 = CBORObject.DecodeFromBytes(bytes, options);
+        } catch (Exception ex2) {
+          Assert.fail(ex2.toString());
+          throw new IllegalStateException("", ex2);
         }
+        byte[] bytes2 = cbor2.EncodeToBytes(options);
+        TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      } catch (CBORException ex4) {
+        // Canonical encoding failed, so DecodeFromBytes must fail
+        bytes = CBORTestCommon.CheckEncodeToBytes(cbor);
+        try {
+          CBORObject.DecodeFromBytes(bytes, options);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex3) {
+          Assert.fail(ex3.toString() + "\n" + ex4.toString());
+          throw new IllegalStateException("", ex3);
+        }
+      }
     }
 
     @Test
     public void TestCtap2CanonicalDecodeEncode() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
-       TestCtap2CanonicalDecodeEncodeOne(
-         CBORTestCommon.RandomCBORObject(r));
+        TestCtap2CanonicalDecodeEncodeOne(
+          CBORTestCommon.RandomCBORObject(r));
       }
     }
 
@@ -4601,30 +4601,32 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObjectTest.CompareDecimals(o1, o2);
     }
 
-public static boolean CheckUtf16(String str) {
-  if (str == null) { return false;
-}
-  for (int i = 0; i < str.length(); ++i) {
-    char c = str.charAt(i);
-    if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
-       (str.charAt(i) & 0xfc00) == 0xdc00) {
-      ++i;
-    } else if ((c & 0xf800) == 0xd800) {
-      return false;
+    public static boolean CheckUtf16(String str) {
+      if (str == null) {
+        return false;
+      }
+      for (int i = 0; i < str.length(); ++i) {
+        char c = str.charAt(i);
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
+          (str.charAt(i) & 0xfc00) == 0xdc00) {
+          ++i;
+        } else if ((c & 0xf800) == 0xd800) {
+          return false;
+        }
+      }
+      return true;
     }
-  }
-  return true;
-}
 
     public static boolean TestTextStringStreamOne(String longString) {
-      if (!CheckUtf16(longString)) { return false;
-}
+      if (!CheckUtf16 (longString)) {
+        return false;
+      }
       CBORObject cbor, cbor2;
       cbor = ToObjectTest.TestToFromObjectRoundTrip(longString);
       cbor2 = CBORTestCommon.FromBytesTestAB(
-  CBORTestCommon.CheckEncodeToBytes(
+          CBORTestCommon.CheckEncodeToBytes(
             cbor));
-          {
+      {
         Object objectTemp = longString;
         Object objectTemp2 = CBORObject.DecodeFromBytes(
             CBORTestCommon.CheckEncodeToBytes(cbor)).AsString();
@@ -4637,8 +4639,8 @@ public static boolean CheckUtf16(String str) {
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       TestCommon.AssertEqualsHashCode(cbor, cbor2);
-    Assert.assertEquals(longString, cbor2.AsString());
-  return true;
+      Assert.assertEquals(longString, cbor2.AsString());
+      return true;
     }
 
     public static void TestWriteToJSON(CBORObject obj) {
@@ -4665,7 +4667,7 @@ ms = new java.io.ByteArrayOutputStream();
         } catch (IOException ex) {
           throw new IllegalStateException(
             "IOException\n" + ex.toString(),
-          ex);
+            ex);
         }
 }
 finally {

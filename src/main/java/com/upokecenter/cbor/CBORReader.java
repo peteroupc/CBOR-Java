@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -162,19 +162,19 @@ untagged.AsNumber().IsNegative()) {
         if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
           throw new CBORException("Premature end of data");
         }
-        StringBuilder builder = new StringBuilder();
-        switch (
-          DataUtilities.ReadUtf8(
-            this.stream,
-            (int)uadditional,
-            builder,
-            false)) {
-          case -1:
-            throw new CBORException("Invalid UTF-8");
-          case -2:
+        CBORObject cbor = null;
+        if (uadditional == 0) {
+          cbor = CBORObject.FromObject("");
+        } else {
+          byte[] utf8string = new byte[(int)uadditional];
+          if (this.stream.read(utf8string, 0, (int)uadditional) != (int)uadditional) {
             throw new CBORException("Premature end of data");
+          }
+          if (!CBORUtilities.CheckUtf8(utf8string)) {
+            throw new CBORException("Invalid UTF-8");
+          }
+          cbor = CBORObject.FromRawUtf8(utf8string);
         }
-        CBORObject cbor = CBORObject.FromRaw(builder.toString());
         if (this.stringRefs != null) {
           int hint = (uadditional > Integer.MAX_VALUE || (uadditional >> 63) !=
               0) ? Integer.MAX_VALUE : (int)uadditional;
