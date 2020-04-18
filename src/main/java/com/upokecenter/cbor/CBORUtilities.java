@@ -287,6 +287,55 @@ strB) {
             }
     }
 
+    // NOTE: StringHashCode and Utf8HashCode must
+    // return the same hash code for the same sequence
+    // of Unicode code points. Both must treat an illegally
+    // encoded subsequence as ending the sequence for
+    // this purpose.
+    public static int StringHashCode(String str) {
+      int upos = 0;
+      int code = 0x7edede19;
+      while (true) {
+        if (upos == str.length()) {
+          return code;
+        }
+        int sc = DataUtilities.CodePointAt(str, upos, 1);
+        if (sc < 0) {
+          return code;
+        }
+        code = ((code * 31) + sc);
+        if (sc >= 0x10000) {
+          upos += 2;
+        } else {
+           ++upos;
+         }
+      }
+    }
+
+    public static int Utf8HashCode(byte[] utf8) {
+      int upos = 0;
+      int code = 0x7edede19;
+      while (true) {
+         int sc = Utf8CodePointAt(utf8, upos);
+         if (sc == -1) {
+           return code;
+         }
+         if (sc == -2) {
+           return code;
+         }
+         code = ((code * 31) + sc);
+         if (sc >= 0x10000) {
+           upos += 4;
+         } else if (sc >= 0x800) {
+           upos += 3;
+         } else if (sc >= 0x80) {
+           upos += 2;
+         } else {
+           ++upos;
+         }
+      }
+    }
+
     public static boolean CheckUtf16(String str) {
       int upos = 0;
       while (true) {

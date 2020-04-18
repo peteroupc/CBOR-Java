@@ -134,42 +134,42 @@ if (batchEnd > batchIndex) {
 }
                 batchIndex = this.index;
                 ms.write((byte)c);
-                break;
+              break;
               case 'b':
 if (batchEnd > batchIndex) {
   ms.write(jbytes, batchIndex, batchEnd - batchIndex);
 }
                 batchIndex = this.index;
                 ms.write((byte)'\b');
-                break;
+              break;
               case 'f':
 if (batchEnd > batchIndex) {
   ms.write(jbytes, batchIndex, batchEnd - batchIndex);
 }
                 batchIndex = this.index;
                 ms.write((byte)'\f');
-                break;
+              break;
               case 'n':
 if (batchEnd > batchIndex) {
   ms.write(jbytes, batchIndex, batchEnd - batchIndex);
 }
                 batchIndex = this.index;
                 ms.write((byte)'\n');
-                break;
+              break;
               case 'r':
 if (batchEnd > batchIndex) {
   ms.write(jbytes, batchIndex, batchEnd - batchIndex);
 }
                 batchIndex = this.index;
                 ms.write((byte)'\r');
-                break;
+              break;
               case 't':
 if (batchEnd > batchIndex) {
   ms.write(jbytes, batchIndex, batchEnd - batchIndex);
 }
                 batchIndex = this.index;
                 ms.write((byte)'\t');
-                break;
+              break;
               case 'u': { // Unicode escape
                 c = 0;
                 // Consists of 4 hex digits
@@ -203,7 +203,7 @@ if (batchEnd > batchIndex) {
                      ms.write((byte)(0x80 | (ic & 0x3f)));
                   } else if (c >= 0x80) {
                     ms.write((byte)(0xc0 | ((ic >> 6) & 0x1f)));
-                     ms.write((byte)(0x80 | (ic & 0x3f)));
+                  ms.write((byte)(0x80 | (ic & 0x3f)));
                   } else {
                      ms.write((byte)ic);
                   }
@@ -243,9 +243,9 @@ if (batchEnd > batchIndex) {
                     int ic = 0x10000 + (((int)c & 0x3ff) << 10) +
                       ((int)c2 & 0x3ff);
                     ms.write((byte)(0xf0 | ((ic >> 18) & 0x07)));
-                    ms.write((byte)(0x80 | ((ic >> 12) & 0x3f)));
-                    ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
-                    ms.write((byte)(0x80 | (ic & 0x3f)));
+                  ms.write((byte)(0x80 | ((ic >> 12) & 0x3f)));
+                ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
+              ms.write((byte)(0x80 | (ic & 0x3f)));
                   }
                 } else {
                   this.RaiseError("Unpaired surrogate code point");
@@ -260,9 +260,9 @@ if (batchEnd > batchIndex) {
             break;
           case 0x22: // double quote
             // System.out.println("slowpath "+this.sb.length());
-if (batchEnd > batchIndex) {
-  ms.write(jbytes, batchIndex, batchEnd - batchIndex);
-}
+          if (batchEnd > batchIndex) {
+            ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+          }
             return ms.toByteArray();
           default: {
             if (c <= 0x7f) {
