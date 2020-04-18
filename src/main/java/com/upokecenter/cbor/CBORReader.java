@@ -68,6 +68,17 @@ import com.upokecenter.numbers.*;
       }
       return cbor;
     }
+
+    private CBORObject ObjectFromUtf8Array(byte[] data, int lengthHint) {
+      CBORObject cbor = data.length == 0 ?
+         CBORObject.FromObject("") :
+         CBORObject.FromRawUtf8(data);
+      if (this.stringRefs != null) {
+        this.stringRefs.AddStringIfNeeded(cbor, lengthHint);
+      }
+      return cbor;
+    }
+
     private static CBORObject ResolveSharedRefs(
       CBORObject obj,
       SharedRefs sharedRefs) {
@@ -142,7 +153,7 @@ untagged.AsNumber().IsNegative()) {
 
     private CBORObject ReadStringArrayMap(int type, long uadditional) throws java.io.IOException {
       boolean canonical = this.options.getCtap2Canonical();
-      if (type == 2) { // Byte String
+      if (type == 2 || type == 3) { // Byte String or text String
         if ((uadditional >> 31) != 0) {
           throw new CBORException("Length of " +
             ToUnsignedEInteger(uadditional).toString() + " is bigger" +
@@ -151,36 +162,14 @@ untagged.AsNumber().IsNegative()) {
         int hint = (uadditional > Integer.MAX_VALUE ||
             (uadditional >> 63) != 0) ? Integer.MAX_VALUE : (int)uadditional;
         byte[] data = ReadByteData(this.stream, uadditional, null);
-        return this.ObjectFromByteArray(data, hint);
-      }
-      if (type == 3) { // Text String
-        if ((uadditional >> 31) != 0) {
-          throw new CBORException("Length of " +
-            ToUnsignedEInteger(uadditional).toString() + " is bigger" +
-            "\u0020than supported");
-        }
-        if (PropertyMap.ExceedsKnownLength(this.stream, uadditional)) {
-          throw new CBORException("Premature end of data");
-        }
-        CBORObject cbor = null;
-        if (uadditional == 0) {
-          cbor = CBORObject.FromObject("");
-        } else {
-          byte[] utf8string = new byte[(int)uadditional];
-          if (this.stream.read(utf8string, 0, (int)uadditional) != (int)uadditional) {
-            throw new CBORException("Premature end of data");
-          }
-          if (!CBORUtilities.CheckUtf8(utf8string)) {
+        if (type == 3) {
+          if (!CBORUtilities.CheckUtf8(data)) {
             throw new CBORException("Invalid UTF-8");
           }
-          cbor = CBORObject.FromRawUtf8(utf8string);
+          return this.ObjectFromUtf8Array(data, hint);
+        } else {
+          return this.ObjectFromByteArray(data, hint);
         }
-        if (this.stringRefs != null) {
-          int hint = (uadditional > Integer.MAX_VALUE || (uadditional >> 63) !=
-              0) ? Integer.MAX_VALUE : (int)uadditional;
-          this.stringRefs.AddStringIfNeeded(cbor, hint);
-        }
-        return cbor;
       }
       if (type == 4) { // Array
         if (this.options.getCtap2Canonical() && this.depth >= 4) {
@@ -514,12 +503,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       throw new CBORException("Unexpected data encountered");
     }
 
+    private static final byte[] EmptyByteArray = new byte[0];
+
     private static byte[] ReadByteData(
       InputStream stream,
       long uadditional,
       OutputStream outputStream) throws java.io.IOException {
       if (uadditional == 0) {
-        return new byte[0];
+        return EmptyByteArray;
       }
       if ((uadditional >> 63) != 0 || uadditional > Integer.MAX_VALUE) {
         throw new CBORException("Length" + ToUnsignedEInteger(uadditional) +
