@@ -32,8 +32,6 @@ import java.io.*;
   public final class DataUtilities {
 private DataUtilities() {
 }
-// TODO: In CodePointAt/CodePointBefore, consider adding
-// mode to return -2 or throw an exception on unpaired surrogate
     private static final int StreamedStringBufferLength = 4096;
 
     /**

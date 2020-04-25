@@ -13,21 +13,14 @@ private CBORJsonWriter() {
       String str,
       StringOutput sb,
       JSONOptions options) throws java.io.IOException {
-      int i = 0;
-      for (; i < str.length(); ++i) {
-        char c = str.charAt(i);
-        if (c < 0x20 || c >= 0x7f || c == '\\' || c == '"') {
-           sb.WriteString(str, 0, i);
-           break;
-        }
-      }
-      if (i == str.length()) {
-        sb.WriteString(str, 0, i);
-        return;
-      }
-      for (; i < str.length(); ++i) {
+      boolean first = true;
+      for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c == '\\' || c == '"') {
+          if (first) {
+            first = false;
+            sb.WriteString(str, 0, i);
+          }
           sb.WriteCodePoint((int)'\\');
           sb.WriteCodePoint((int)c);
         } else if (c < 0x20 || (c >= 0x7f && (c == 0x2028 || c == 0x2029 ||
@@ -36,6 +29,10 @@ private CBORJsonWriter() {
           // Control characters, and also the line and paragraph separators
           // which apparently can't appear in JavaScript (as opposed to
           // JSON) strings
+          if (first) {
+            first = false;
+            sb.WriteString(str, 0, i);
+          }
           if (c == 0x0d) {
             sb.WriteString("\\r");
           } else if (c == 0x0a) {
@@ -59,24 +56,36 @@ private CBORJsonWriter() {
             sb.WriteCodePoint((int)Hex16.charAt((int)(c >> 4)));
             sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
           }
-        } else if ((c & 0xfc00) == 0xd800) {
+        } else {
+          if ((c & 0xfc00) == 0xd800) {
             if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
               // NOTE: RFC 8259 doesn't prohibit any particular
               // error-handling behavior when a writer of JSON
               // receives a String with an unpaired surrogate.
               if (options.getReplaceSurrogates()) {
+                if (first) {
+                  first = false;
+                  sb.WriteString(str, 0, i);
+                }
                 // Replace unpaired surrogate with U+FFFD
-                sb.WriteCodePoint(0xfffd);
+                c = (char)0xfffd;
               } else {
                 throw new CBORException("Unpaired surrogate in String");
               }
-            } else {
+            }
+          }
+          if (!first) {
+            if ((c & 0xfc00) == 0xd800) {
               sb.WriteString(str, i, 2);
               ++i;
+            } else {
+              sb.WriteCodePoint((int)c);
             }
-        } else {
-          sb.WriteCodePoint((int)c);
+          }
         }
+      }
+      if (first) {
+        sb.WriteString(str);
       }
     }
 

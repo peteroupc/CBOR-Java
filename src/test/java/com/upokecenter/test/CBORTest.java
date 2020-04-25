@@ -91,7 +91,8 @@ import com.upokecenter.numbers.*;
         (byte)0x81,
         (byte)0x95,
         (byte)0xb9,
-        (byte)0xc3, (byte)0x84, (byte)0xcc, (byte)0xb6, (byte)0xcd, (byte)0xa3,
+        (byte)0xc3, (byte)0x84, (byte)0xcc, (byte)0xb6, (byte)0xcd,
+        (byte)0xa3,
        });
       TestJsonUtf8One(new byte[] {
         (byte)0xe8,
@@ -111,7 +112,8 @@ import com.upokecenter.numbers.*;
         (byte)0x9f,
         (byte)0xe7,
         (byte)0xa5,
-        (byte)0x96, (byte)0xd9, (byte)0x92, (byte)0xe1, (byte)0xa3, (byte)0xad,
+        (byte)0x96, (byte)0xd9, (byte)0x92, (byte)0xe1, (byte)0xa3,
+        (byte)0xad,
        });
       TestJsonUtf8One(new byte[] {
         (byte)0xf0,
@@ -132,7 +134,8 @@ import com.upokecenter.numbers.*;
         (byte)0x99,
         (byte)0xf3,
         (byte)0xab,
-        (byte)0x8a, (byte)0xad, (byte)0xf4, (byte)0x88, (byte)0x9a, (byte)0x9a,
+        (byte)0x8a, (byte)0xad, (byte)0xf4, (byte)0x88, (byte)0x9a,
+        (byte)0x9a,
        });
       TestJsonUtf8One(new byte[] {
         0x3d,
@@ -142,7 +145,8 @@ import com.upokecenter.numbers.*;
         (byte)0xbe,
         (byte)0xea,
         (byte)0xb9,
-        (byte)0xbd, (byte)0xd7, (byte)0x8b, (byte)0xe7, (byte)0xbc, (byte)0x83,
+        (byte)0xbd, (byte)0xd7, (byte)0x8b, (byte)0xe7, (byte)0xbc,
+        (byte)0x83,
        });
       TestJsonUtf8One(new byte[] {
         (byte)0xc4,
@@ -1638,11 +1642,11 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
     public void TestLong() {
       long[] ranges = {
         -65539, 65539, 0xfffff000L, 0x100000400L,
-          Long.MAX_VALUE - 1000,
-          Long.MAX_VALUE,
-          Long.MIN_VALUE,
-          Long.MIN_VALUE + 1000,
-        };
+        Long.MAX_VALUE - 1000,
+        Long.MAX_VALUE,
+        Long.MIN_VALUE,
+        Long.MIN_VALUE + 1000,
+      };
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
         while (true) {
@@ -4618,7 +4622,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     public static boolean TestTextStringStreamOne(String longString) {
-      if (!CheckUtf16 (longString)) {
+      if (!CheckUtf16(longString)) {
         return false;
       }
       CBORObject cbor, cbor2;

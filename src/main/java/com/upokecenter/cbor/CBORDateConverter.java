@@ -1,6 +1,6 @@
 package com.upokecenter.cbor;
 /*
-Written by Peter O. in 2014.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -15,13 +15,6 @@ import com.upokecenter.numbers.*;
       EInteger[] year = new EInteger[1];
       PropertyMap.BreakDownDateTime(bi, year, lesserFields);
       return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
-    }
-
-    public CBORObject ValidateObject(CBORObject obj) {
-      if (obj.getType() != CBORType.TextString) {
-        throw new CBORException("Not a text String");
-      }
-      return obj;
     }
 
     public java.util.Date FromCBORObject(CBORObject obj) {

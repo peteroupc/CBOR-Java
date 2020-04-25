@@ -8,7 +8,7 @@ at: http://peteroupc.github.io/
  */
 
   class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID> {
-    private CBORObject ValidateObject(CBORObject obj) {
+    private static CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.ByteString) {
         throw new CBORException("UUID must be a byte String");
       }
@@ -33,7 +33,7 @@ at: http://peteroupc.github.io/
       if (!obj.HasMostOuterTag(37)) {
         throw new CBORException("Must have outermost tag 37");
       }
-      this.ValidateObject(obj);
+      ValidateObject(obj);
       byte[] bytes = obj.GetByteString();
       char[] guidChars = new char[36];
       String hex = "0123456789abcdef";
