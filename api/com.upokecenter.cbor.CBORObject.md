@@ -172,10 +172,10 @@ Instead, use.getToObject()&lt;PeterO.Numbers.ERational&gt;() in
  in Java.
 * `short AsInt16()`<br>
  Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject&lt;short&gt;() in .getNET().
- Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject&lt;short&gt;() in .getNET().
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
+ or .getToObject()&lt;short&gt;() in .getNET().
+ Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
+ or .getToObject()&lt;short&gt;() in .getNET().
 * `int AsInt32()`<br>
  Converts this object to a 32-bit signed integer.
 * `int AsInt32Value()`<br>
@@ -982,8 +982,8 @@ Gets the outermost tag for this CBOR data item, or -1 if the item is
     @Deprecated public final int signum()
 Deprecated.
 Instead, convert this object to a number with.AsNumber(),   and use the
- Sign property in.NET or the signum method in Java. Either will treat
- not-a-number (NaN) values differently than here.
+ Sign property in.NET or the signum method in Java. Either will
+ treat not-a-number (NaN) values differently than here.
 
 **Returns:**
 
@@ -1965,10 +1965,11 @@ Generates a CBOR object from a CBOR object.
     public long CalcEncodedSize()
 Calculates the number of bytes this CBOR object takes when serialized as a
  byte array using the <code>EncodeToBytes()</code> method. This calculation
- assumes that integers, lengths of maps and arrays, lengths of text and
- byte strings, and tag numbers are encoded in their shortest form; that
- floating-point numbers are encoded in their shortest value-preserving
- form; and that no indefinite-length encodings are used.
+ assumes that integers, lengths of maps and arrays, lengths of text
+ and byte strings, and tag numbers are encoded in their shortest
+ form; that floating-point numbers are encoded in their shortest
+ value-preserving form; and that no indefinite-length encodings are
+ used.
 
 **Returns:**
 
@@ -1978,8 +1979,8 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 **Throws:**
 
 * <code>CBORException</code> - The CBOR object has an extremely
- deep level of nesting, including if the CBOR object is or has an array
- or map that includes itself.
+ deep level of nesting, including if the CBOR object is or has an
+ array or map that includes itself.
 
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
@@ -3605,8 +3606,8 @@ Instead, use.getToObject()&amp;lt;PeterO.Numbers.ERational&amp;gt;() in
 ### AsInt16
     @Deprecated public short AsInt16()
 Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
-.ToObject&amp;lt;short&amp;gt;() in .getNET().
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
+ or .getToObject()&amp;lt;short&amp;gt;() in .getNET().
 
 **Returns:**
 

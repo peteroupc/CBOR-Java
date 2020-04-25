@@ -565,7 +565,7 @@ import com.upokecenter.numbers.*;
       CBORObject obj;
       int[] nextChar = new int[1];
       boolean seenComma = false;
-      HashMap<CBORObject, CBORObject> myHashMap = new HashMap<CBORObject, CBORObject>();
+      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {

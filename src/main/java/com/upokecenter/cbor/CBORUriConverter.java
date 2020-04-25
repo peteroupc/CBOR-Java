@@ -8,7 +8,7 @@ at: http://peteroupc.github.io/
  */
 
   class CBORUriConverter implements ICBORToFromConverter<java.net.URI> {
-    private static CBORObject ValidateObject(CBORObject obj) {
+    private CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.TextString) {
         throw new CBORException("URI/IRI must be a text String");
       }
@@ -40,7 +40,7 @@ at: http://peteroupc.github.io/
       if (obj.HasMostOuterTag(32) ||
              obj.HasMostOuterTag(266) ||
              obj.HasMostOuterTag(267)) {
-        ValidateObject(obj);
+        this.ValidateObject(obj);
         try {
           return new java.net.URI(obj.AsString());
         } catch (Exception ex) {
