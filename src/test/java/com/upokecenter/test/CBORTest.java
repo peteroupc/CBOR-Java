@@ -717,29 +717,28 @@ import com.upokecenter.numbers.*;
         .append("); /").append("/ ").append(obj.ToJSONString()).toString();
     }
 
-    @Test
-    public void TestCanFitIn() {
-      RandomGenerator r = new RandomGenerator();
-      for (int i = 0; i < 5000; ++i) {
-        CBORObject ed = CBORTestCommon.RandomNumber(r);
+    public static void TestCanFitInOne(CBORObject ed) {
         EDecimal ed2;
+        if (ed == null) {
+          throw new NullPointerException("ed");
+        }
         CBORNumber edNumber = ed.AsNumber();
-
-        ed2 = EDecimal.FromDouble(AsED(ed).ToDouble());
-        if ((AsED(ed).compareTo(ed2) == 0) != edNumber.CanFitInDouble()) {
+        EDecimal edNumberED = AsED(ed);
+        ed2 = EDecimal.FromDouble(edNumberED.ToDouble());
+        if ((edNumberED.compareTo(ed2) == 0) != edNumber.CanFitInDouble()) {
           Assert.fail(ObjectMessage(ed));
         }
         ed2 = EDecimal.FromSingle(AsED(ed).ToSingle());
-        if ((AsED(ed).compareTo(ed2) == 0) != edNumber.CanFitInSingle()) {
+        if ((edNumberED.compareTo(ed2) == 0) != edNumber.CanFitInSingle()) {
           Assert.fail(ObjectMessage(ed));
         }
         if (!edNumber.IsInfinity() && !edNumber.IsNaN()) {
-          if (AsED(ed).IsInteger() != edNumber.IsInteger()) {
+          if (edNumberED.IsInteger() != edNumber.IsInteger()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
         if (!edNumber.IsInfinity() && !edNumber.IsNaN()) {
-          EDecimal edec = AsED(ed);
+          EDecimal edec = edNumberED;
           EInteger bi = null;
           try {
             bi = edec.ToSizedEInteger(128);
@@ -747,30 +746,34 @@ import com.upokecenter.numbers.*;
             bi = null;
           }
           if (edNumber.IsInteger()) {
-            if ((bi != null &&
-                bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
+            if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 31) !=
               edNumber.CanFitInInt32()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
-          if ((bi != null &&
-              bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 31) !=
+          if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 31) !=
             edNumber.CanTruncatedIntFitInInt32()) {
             Assert.fail(ObjectMessage(ed));
           }
           if (edNumber.IsInteger()) {
-            if ((bi != null &&
-                bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
+            if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 63) !=
               edNumber.CanFitInInt64()) {
               Assert.fail(ObjectMessage(ed));
             }
           }
-          if ((bi != null &&
-              bi.GetSignedBitLengthAsEInteger().ToInt32Checked() <= 63) !=
+          if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 63) !=
             edNumber.CanTruncatedIntFitInInt64()) {
             Assert.fail(ObjectMessage(ed));
           }
         }
+    }
+
+    @Test
+    public void TestCanFitIn() {
+      RandomGenerator r = new RandomGenerator();
+      for (int i = 0; i < 5000; ++i) {
+        CBORObject ed = CBORTestCommon.RandomNumber(r);
+        TestCanFitInOne(ed);
       }
     }
 
@@ -785,7 +788,7 @@ import com.upokecenter.numbers.*;
         cbor.ToObject(EInteger.class));
 
       if (
-        AsEI(cbor).GetSignedBitLengthAsEInteger().ToInt32Checked()
+        AsEI(cbor).GetSignedBitLengthAsInt64()
         <= 31) {
  Assert.fail();
  }
@@ -796,11 +799,9 @@ import com.upokecenter.numbers.*;
         (byte)0xc5, (byte)0x82,
         0x18, 0x2f, 0x32,
        }); // -2674012278751232
-      {
-        int intTemp = AsEI(cbor)
-        .GetSignedBitLengthAsEInteger().ToInt32Checked();
-        Assert.assertEquals(52, intTemp);
-      }
+      Assert.assertEquals(
+            52L,
+            AsEI(cbor).GetSignedBitLengthAsInt64());
       if (!(cbor.AsNumber().CanFitInInt64())) {
  Assert.fail();
  }
@@ -2588,7 +2589,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         while (true) {
           EInteger ei = bigintTemp;
           EInteger bigintNext = ei.Add(EInteger.FromInt32(1));
-          if (bigintTemp.GetSignedBitLengthAsEInteger().ToInt32Checked() <=
+          if (bigintTemp.GetSignedBitLengthAsInt64() <=
             31) {
             int bc = ei.ToInt32Checked();
             if (bc >= -1 && bc <= 37) {
