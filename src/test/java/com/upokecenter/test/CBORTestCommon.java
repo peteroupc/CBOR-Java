@@ -36,24 +36,24 @@ private CBORTestCommon() {
           o = RandomObjects.RandomDouble(
             rand,
             Integer.MAX_VALUE);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 1:
           o = RandomObjects.RandomSingle(
             rand,
             Integer.MAX_VALUE);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 5:
           o = RandomObjects.RandomInt64(rand);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         default: throw new IllegalStateException();
       }
     }
@@ -65,27 +65,27 @@ private CBORTestCommon() {
           o = RandomObjects.RandomDouble(
             rand,
             Integer.MAX_VALUE);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 1:
           o = RandomObjects.RandomSingle(
             rand,
             Integer.MAX_VALUE);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 2:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 5:
           o = RandomObjects.RandomInt64(rand);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         case 6:
           o = RandomObjects.RandomERational(rand);
-          return ToObjectTest.TestToFromObjectRoundTrip(o);
+          return CBORObject.FromObject(o);
         default: throw new IllegalStateException();
       }
     }
@@ -111,7 +111,8 @@ private CBORTestCommon() {
       return ei;
     }
 
-    public static EInteger RandomEIntegerMajorType0Or1(IRandomGenExtended rand) {
+    public static EInteger RandomEIntegerMajorType0Or1(IRandomGenExtended
+rand) {
       int v = rand.GetInt32(0x10000);
       EInteger ei = EInteger.FromInt32(v);
       ei = ei.ShiftLeft(16).Add(rand.GetInt32(0x10000));
@@ -147,7 +148,7 @@ private CBORTestCommon() {
       }
       if (tag == 30) {
         Object o = RandomObjects.RandomByteString(rand);
-        return ToObjectTest.TestToFromObjectRoundTrip(o);
+        return CBORObject.FromObject(o);
       }
       {
         CBORObject cbor;
@@ -157,19 +158,19 @@ private CBORTestCommon() {
         }
         if (tag == 2 || tag == 3) {
           Object o = RandomObjects.RandomByteStringShort(rand);
-          cbor = ToObjectTest.TestToFromObjectRoundTrip(o);
+          cbor = CBORObject.FromObject(o);
         } else if (tag == 4 || tag == 5) {
           cbor = CBORObject.NewArray();
           Object o = RandomObjects.RandomSmallIntegral(rand);
-          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          cbor.Add(o);
           o = RandomObjects.RandomEInteger(rand);
-          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          cbor.Add(o);
         } else if (tag == 30) {
           cbor = CBORObject.NewArray();
           Object o = RandomObjects.RandomSmallIntegral(rand);
-          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          cbor.Add(o);
           o = RandomObjects.RandomEInteger(rand);
-          cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(o));
+          cbor.Add(o);
         } else {
           cbor = RandomCBORObject(rand, depth + 1);
         }
@@ -177,7 +178,8 @@ private CBORTestCommon() {
       }
     }
 
-    public static CBORObject RandomCBORArray(IRandomGenExtended rand, int depth) {
+    public static CBORObject RandomCBORArray(IRandomGenExtended rand, int
+depth) {
       int x = rand.GetInt32(100);
       int count = (x < 80) ? 2 : ((x < 93) ? 1 : ((x < 98) ? 0 : 10));
       CBORObject cborRet = CBORObject.NewArray();
@@ -206,10 +208,10 @@ private CBORTestCommon() {
           return rand.GetInt32(2) == 0 ? CBORObject.Null :
             CBORObject.Undefined;
         case 6:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomTextString(rand));
         case 7:
-          return ToObjectTest.TestToFromObjectRoundTrip(
+          return CBORObject.FromObject(
               RandomObjects.RandomByteString(rand));
         case 8:
           return RandomCBORArray(rand, depth);
