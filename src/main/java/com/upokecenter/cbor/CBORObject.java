@@ -4763,8 +4763,11 @@ public int compareTo(CBORObject other) {
             break;
           }
           case CBORObjectTypeTextStringUtf8: {
-            // TODO: Implement this case
-            break;
+         if (!tagged && !options.getUseIndefLengthStrings()) {
+           byte[] bytes = (byte[])this.getThisItem();
+           return SerializeUtf8(bytes);
+         }
+         break;
           }
           case CBORObjectTypeSimpleValue: {
             if (tagged) {
@@ -5725,7 +5728,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         case 4:
 
           value = CBORUtilities.SingleToDoublePrecision(
-              ((int)(floatingBits & 0xffffL)));
+              ((int)(floatingBits & 0xffffffffL)));
           return new CBORObject(CBORObjectTypeDouble, value);
         case 8:
           return new CBORObject(CBORObjectTypeDouble, floatingBits);
@@ -6588,6 +6591,36 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         }
       }
       return null;
+    }
+
+    private static byte[] SerializeUtf8(byte[] utf8) {
+      byte[] bytes;
+      if (utf8.length < 24) {
+         bytes = new byte[utf8.length + 1];
+         bytes[0] = (byte)(utf8.length | 0x60);
+         System.arraycopy(utf8, 0, bytes, 1, utf8.length);
+       return bytes;
+      }
+      if (utf8.length <= 0xffL) {
+        bytes = new byte[utf8.length + 2];
+        bytes[0] = (byte)0x78;
+        bytes[1] = (byte)utf8.length;
+        System.arraycopy(utf8, 0, bytes, 2, utf8.length);
+      return bytes;
+      }
+      if (utf8.length <= 0xffffL) {
+        bytes = new byte[utf8.length + 3];
+        bytes[0] = (byte)0x79;
+        bytes[1] = (byte)((utf8.length >> 8) & 0xff);
+        bytes[2] = (byte)(utf8.length & 0xff);
+        System.arraycopy(utf8, 0, bytes, 3, utf8.length);
+      return bytes;
+      }
+      byte[] posbytes = GetPositiveInt64Bytes(3, utf8.length);
+      bytes = new byte[utf8.length + posbytes.length];
+      System.arraycopy(posbytes, 0, bytes, 0, posbytes.length);
+      System.arraycopy(utf8, 0, bytes, posbytes.length, utf8.length);
+      return bytes;
     }
 
     private static byte[] GetPositiveInt64Bytes(int type, long value) {

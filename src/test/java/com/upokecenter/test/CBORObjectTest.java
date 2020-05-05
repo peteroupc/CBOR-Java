@@ -6397,6 +6397,89 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     }
 
     @Test
+    public void TestToFloatingPointBits() {
+      try {
+ CBORObject.FromFloatingPointBits(0, 0);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 1);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 3);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 5);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 6);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 7);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.FromFloatingPointBits(0, 9);
+ Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+    }
+
+    @Test
+    public void TestToFloatingPointBitsSingle() {
+      // Regression test
+      CBORObject o;
+      o = CBORObject.FromFloatingPointBits(2140148306L, 4);
+      if (!(Double.isNaN(o.AsDoubleValue())))Assert.fail();
+      o = CBORObject.FromFloatingPointBits(1651724151L, 4);
+      if (!(o.AsDoubleValue() == 1.1220712138406615E21)) {
+ Assert.fail();
+ }
+      o = CBORObject.FromFloatingPointBits(-1566356128L, 4);
+      if (!(o.AsDoubleValue() == -4.426316249665156E-18)) {
+ Assert.fail();
+ }
+    }
+
+    @Test
     public void TestToJSONString_ByteArray_Padding() {
       CBORObject o;
       JSONOptions options = new JSONOptions("");
