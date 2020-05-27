@@ -107,11 +107,23 @@ private CBORDataUtilities() {
           break;
         }
         case TextString: {
-          if (sb == null) {
-            return "\"" + obj.AsString() + "\"";
-          }
+          sb = sb == null ? new StringBuilder() : sb;
           sb.append('\"');
-          sb.append(obj.AsString());
+          String ostring = obj.AsString();
+          sb.append(ostring);
+          /*
+          for (int i = 0; i < ostring.length(); ++i) {
+            if (ostring.charAt(i) >= 0x20 && ostring.charAt(i) <= 0x7f) {
+              sb.append(ostring.charAt(i));
+            } else {
+                 sb.append("\\u");
+                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 12) & 15));
+                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 8) & 15));
+                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 4) & 15));
+                 sb.append(HexAlphabet.charAt(ostring.charAt(i) & 15));
+             }
+          }
+          */
           sb.append('\"');
           break;
         }

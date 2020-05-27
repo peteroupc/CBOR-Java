@@ -40,17 +40,41 @@ import com.upokecenter.numbers.*;
 
     private String NextJSONString() {
       int c;
+      int startIndex = this.index;
+      int endIndex = -1;
+      int ep = this.endPos;
+      String js = this.jstring;
+      int idx = this.index;
+      while (true) {
+        c = idx < ep ? ((int)js.charAt(idx++)) & 0xffff : -1;
+        if (c == -1 || c < 0x20) {
+          this.index = idx;
+          this.RaiseError("Unterminated String");
+        } else if (c == '"') {
+          int iend = idx - 1;
+          this.index = idx;
+          return js.substring(
+              startIndex, (
+              startIndex)+(iend - startIndex));
+        } else if (c == '\\' || (c & 0xf800) == 0xd800) {
+          this.index = idx - 1;
+          endIndex = this.index;
+          break;
+        }
+      }
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
       this.sb.delete(0, this.sb.length());
+      this.sb.append(js, startIndex, (startIndex)+(endIndex - startIndex));
       while (true) {
-        c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
+        c = this.index < ep ? ((int)js.charAt(this.index++)) &
           0xffff : -1;
         if (c == -1 || c < 0x20) {
           this.RaiseError("Unterminated String");
         }
         switch (c) {
           case '\\':
-            c = this.index < this.endPos ? ((int)this.jstring.charAt(this.index++)) &
+            endIndex = this.index - 1;
+            c = this.index < ep ? ((int)js.charAt(this.index++)) &
               0xffff : -1;
             switch (c) {
               case '\\':
@@ -78,8 +102,8 @@ import com.upokecenter.numbers.*;
                 c = 0;
                 // Consists of 4 hex digits
                 for (int i = 0; i < 4; ++i) {
-                  int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) : -1;
+                  int ch = this.index < ep ?
+                    ((int)js.charAt(this.index++)) : -1;
                   if (ch >= '0' && ch <= '9') {
                     c <<= 4;
                     c |= ch - '0';
@@ -98,16 +122,15 @@ import com.upokecenter.numbers.*;
                   // Non-surrogate
                   this.sb.append((char)c);
                 } else if ((c & 0xfc00) == 0xd800) {
-                  int ch = this.index < this.endPos ?
-                    ((int)this.jstring.charAt(this.index++)) : -1;
-                  if (ch != '\\' || (this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) : -1) != 'u') {
+                  int ch = this.index < ep ? ((int)js.charAt(this.index++)) : -1;
+                  if (ch != '\\' || (this.index < ep ?
+                      ((int)js.charAt(this.index++)) : -1) != 'u') {
                     this.RaiseError("Invalid escaped character");
                   }
                   int c2 = 0;
                   for (int i = 0; i < 4; ++i) {
-                    ch = this.index < this.endPos ?
-                      ((int)this.jstring.charAt(this.index++)) : -1;
+                    ch = this.index < ep ?
+                      ((int)js.charAt(this.index++)) : -1;
                     if (ch >= '0' && ch <= '9') {
                       c2 <<= 4;
                       c2 |= ch - '0';
@@ -146,11 +169,11 @@ import com.upokecenter.numbers.*;
             if ((c & 0xf800) != 0xd800) {
               // Non-surrogate
               this.sb.append((char)c);
-            } else if ((c & 0xfc00) == 0xd800 && this.index < this.endPos &&
-              (this.jstring.charAt(this.index) & 0xfc00) == 0xdc00) {
+            } else if ((c & 0xfc00) == 0xd800 && this.index < ep &&
+              (js.charAt(this.index) & 0xfc00) == 0xdc00) {
               // Surrogate pair
               this.sb.append((char)c);
-              this.sb.append(this.jstring.charAt(this.index));
+              this.sb.append(js.charAt(this.index));
               ++this.index;
             } else {
               this.RaiseError("Unpaired surrogate code point");
@@ -178,15 +201,15 @@ import com.upokecenter.numbers.*;
         if (c2 == ',' || c2 == ']' || c2 == '}') {
           ++this.index;
           obj = CBORDataUtilities.ParseSmallNumberAsNegative(
-            c - '0',
-            this.options);
+              c - '0',
+              this.options);
           nextChar[0] = c2;
           return obj;
         } else if (c2 == 0x20 || c2 == 0x0a || c2 == 0x0d || c2 == 0x09) {
           ++this.index;
           obj = CBORDataUtilities.ParseSmallNumberAsNegative(
-            c - '0',
-            this.options);
+              c - '0',
+              this.options);
           nextChar[0] = this.SkipWhitespaceJSON();
           return obj;
         }
@@ -197,14 +220,14 @@ import com.upokecenter.numbers.*;
       int[] endIndex = new int[1];
       endIndex[0] = numberStartIndex;
       obj = CBORDataUtilities.ParseJSONNumber(
-              this.jstring,
-              numberStartIndex,
-              this.endPos - numberStartIndex,
-              this.options,
-              endIndex);
+          this.jstring,
+          numberStartIndex,
+          this.endPos - numberStartIndex,
+          this.options,
+          endIndex);
       int numberEndIndex = endIndex[0];
       this.index = numberEndIndex >= this.endPos ? this.endPos :
-         (numberEndIndex + 1);
+        (numberEndIndex + 1);
       if (obj == null) {
         int strlen = numberEndIndex - numberStartIndex;
         String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
@@ -214,11 +237,10 @@ import com.upokecenter.numbers.*;
         this.RaiseError("JSON number can't be parsed. " + errstr);
       }
 
-      c = numberEndIndex >= this.endPos ? -1 :
-this.jstring.charAt(numberEndIndex);
+      c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
       // check if character can validly appear after a JSON number
       if (c != ',' && c != ']' && c != '}' && c != -1 &&
-          c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+        c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
         this.RaiseError("Invalid character after JSON number");
       }
       // System.out.println("endIndex="+endIndex[0]+", "+
@@ -285,14 +307,14 @@ this.jstring.charAt(numberEndIndex);
         int[] endIndex = new int[1];
         endIndex[0] = numberStartIndex;
         obj = CBORDataUtilities.ParseJSONNumber(
-              this.jstring,
-              numberStartIndex,
-              this.endPos - numberStartIndex,
-              this.options,
-              endIndex);
+            this.jstring,
+            numberStartIndex,
+            this.endPos - numberStartIndex,
+            this.options,
+            endIndex);
         int numberEndIndex = endIndex[0];
         this.index = numberEndIndex >= this.endPos ? this.endPos :
-           (numberEndIndex + 1);
+          (numberEndIndex + 1);
         if (obj == null) {
           int strlen = numberEndIndex - numberStartIndex;
           String errstr = this.jstring.substring(numberStartIndex, (numberStartIndex)+(Math.min(100, strlen)));
@@ -302,8 +324,7 @@ this.jstring.charAt(numberEndIndex);
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
 
-        c = numberEndIndex >= this.endPos ? -1 :
-this.jstring.charAt(numberEndIndex);
+        c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
         // check if character can validly appear after a JSON number
         if (c != ',' && c != ']' && c != '}' && c != -1 &&
           c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
@@ -472,7 +493,7 @@ this.jstring.charAt(numberEndIndex);
       CBORObject obj;
       int[] nextchar = new int[1];
       boolean seenComma = false;
-      HashMap<CBORObject, CBORObject> myHashMap = new HashMap<CBORObject, CBORObject>();
+      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {

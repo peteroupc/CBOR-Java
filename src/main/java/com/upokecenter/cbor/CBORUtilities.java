@@ -108,7 +108,7 @@ private CBORUtilities() {
         } else {
           sa = DataUtilities.CodePointAt(strA, sapos, 1);
           if (sa < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("strA has unpaired surrogate");
           }
           if (sa >= 0x10000) {
             sautf8 += 4;
@@ -136,7 +136,7 @@ private CBORUtilities() {
         } else {
           sb = DataUtilities.CodePointAt(strB, sbpos, 1);
           if (sb < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("strB has unpaired surrogate");
           }
           if (sb >= 0x10000) {
             sbutf8 += 4;
@@ -199,7 +199,7 @@ private CBORUtilities() {
         } else {
           u16 = DataUtilities.CodePointAt(utf16, u16pos, 1);
           if (u16 < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("utf16 has unpaired surrogate");
           }
           if (u16 >= 0x10000) {
             u16u8length += 4;
@@ -227,7 +227,7 @@ private CBORUtilities() {
         } else {
           u8 = Utf8CodePointAt(utf8, u8pos);
           if (u8 < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("utf8 has invalid encoding");
           }
           if (u8 >= 0x10000) {
             u8pos += 4;
