@@ -8,7 +8,8 @@ Interface implemented by classes that convert objects of arbitrary types to
 Classes that implement this interface can support conversions from CBOR
  objects to a custom type and back.
 
-* [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -  
+* [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
+Contains methods useful for reading and writing data, with a focus on CBOR.
 
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
@@ -41,7 +42,8 @@ Represents a type that a CBOR object can have.
 * [com.upokecenter.cbor.JSONOptions.ConversionMode](com.upokecenter.cbor.JSONOptions.ConversionMode.md) -
 Specifies how JSON numbers are converted to CBOR when decoding JSON.
 
-* [com.upokecenter.cbor.CBORException](com.upokecenter.cbor.CBORException.md) -  
+* [com.upokecenter.cbor.CBORException](com.upokecenter.cbor.CBORException.md) -
+Exception thrown for errors involving CBOR data.
 
 * [com.upokecenter.util.DataUtilities](com.upokecenter.util.DataUtilities.md) -
 Contains methods useful for reading and writing text strings.

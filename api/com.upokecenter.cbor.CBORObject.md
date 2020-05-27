@@ -143,10 +143,10 @@ Instead, use.getToObject()&lt;PeterO.Numbers.EDecimal&gt;()
  in Java.
 * `com.upokecenter.numbers.EFloat AsEFloat()`<br>
  Deprecated.
-Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.getNET()
+Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.NET
  or  .getToObject()(com.upokecenter.numbers.EFloat.class)
  in Java.
- Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.getNET()
+ Instead, use.getToObject()&lt;PeterO.Numbers.EFloat&gt;() in.NET
  or  .getToObject()(com.upokecenter.numbers.EFloat.class)
  in Java.
 * `com.upokecenter.numbers.EInteger AsEInteger()`<br>
@@ -172,10 +172,10 @@ Instead, use.getToObject()&lt;PeterO.Numbers.ERational&gt;() in
  in Java.
 * `short AsInt16()`<br>
  Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
- or .getToObject()&lt;short&gt;() in .getNET().
- Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
- or .getToObject()&lt;short&gt;() in .getNET().
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject&lt;short&gt;() in .NET.
+ Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject&lt;short&gt;() in .NET.
 * `int AsInt32()`<br>
  Converts this object to a 32-bit signed integer.
 * `int AsInt32Value()`<br>
@@ -184,9 +184,9 @@ Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
 * `long AsInt64()`<br>
  Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject&lt;long&gt;() in.getNET().
+.ToObject&lt;long&gt;() in.NET.
  Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject&lt;long&gt;() in.getNET().
+.ToObject&lt;long&gt;() in.NET.
 * `long AsInt64Value()`<br>
  Converts this object to a 64-bit signed integer if this CBOR object's type
  is Integer.
@@ -982,8 +982,8 @@ Gets the outermost tag for this CBOR data item, or -1 if the item is
     @Deprecated public final int signum()
 Deprecated.
 Instead, convert this object to a number with.AsNumber(),   and use the
- Sign property in.NET or the signum method in Java. Either will
- treat not-a-number (NaN) values differently than here.
+ Sign property in.NET or the signum method in Java. Either will treat
+ not-a-number (NaN) values differently than here.
 
 **Returns:**
 
@@ -1411,7 +1411,7 @@ Generates a list of CBOR objects from an array of bytes in JavaScript object
     public static CBORObject DecodeFromBytes​(byte[] data, CBOREncodeOptions options)
 Generates a CBOR object from an array of CBOR-encoded bytes, using the given
  <code>CBOREncodeOptions</code> object to control the decoding process.<p>
- </p><p>The following example (originally written in C# for the.getNET()
+ </p><p>The following example (originally written in C# for the.NET
  version) implements a method that decodes a text string from a CBOR
  byte array. It's successful only if the CBOR object contains an
   untagged text string.</p> <pre>private static string DecodeTextString(byte[] bytes) { if (bytes == null) { throw new NullPointerException("mapObj");} if (bytes.length == 0 || bytes[0]&lt;0x60 || bytes[0]&gt;0x7f) {throw new CBORException();} return CBORObject.DecodeFromBytes(bytes, CBOREncodeOptions.Default).AsString(); }</pre>.
@@ -1781,7 +1781,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  the same rules as for <code>long</code> are used, but the range is from 0
  through 2^63-1 and the return type is <code>ulong</code> .</li> <li>If the
  type is <code>int</code> or a primitive floating-point type (<code>float</code>
- , <code>double</code> , as well as <code>decimal</code> in.getNET()), returns the
+ , <code>double</code> , as well as <code>decimal</code> in.NET), returns the
  result of the corresponding As* method.</li> <li>If the type is
  <code>string</code> , returns the result of AsString.</li> <li>If the type
  is <code>EFloat</code> , <code>EDecimal</code> , <code>EInteger</code> , or
@@ -1965,11 +1965,10 @@ Generates a CBOR object from a CBOR object.
     public long CalcEncodedSize()
 Calculates the number of bytes this CBOR object takes when serialized as a
  byte array using the <code>EncodeToBytes()</code> method. This calculation
- assumes that integers, lengths of maps and arrays, lengths of text
- and byte strings, and tag numbers are encoded in their shortest
- form; that floating-point numbers are encoded in their shortest
- value-preserving form; and that no indefinite-length encodings are
- used.
+ assumes that integers, lengths of maps and arrays, lengths of text and
+ byte strings, and tag numbers are encoded in their shortest form; that
+ floating-point numbers are encoded in their shortest value-preserving
+ form; and that no indefinite-length encodings are used.
 
 **Returns:**
 
@@ -1979,8 +1978,8 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 **Throws:**
 
 * <code>CBORException</code> - The CBOR object has an extremely
- deep level of nesting, including if the CBOR object is or has an
- array or map that includes itself.
+ deep level of nesting, including if the CBOR object is or has an array
+ or map that includes itself.
 
 ### FromObject
     public static CBORObject FromObject​(com.upokecenter.numbers.EInteger bigintValue)
@@ -2311,9 +2310,9 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  <code>byte</code> is converted to a CBOR integer from 0 through 255.</li>
  <li>A primitive integer type (<code>int</code>, <code>short</code>,
  <code>long</code>, as well as <code>sbyte</code>, <code>ushort</code>, <code>uint</code> ,
- and <code>ulong</code> in.getNET()) is converted to the corresponding CBOR
+ and <code>ulong</code> in.NET) is converted to the corresponding CBOR
  integer.</li> <li>A primitive floating-point type (<code>float</code>,
- <code>double</code>, as well as <code>decimal</code> in.getNET()) is converted to the
+ <code>double</code>, as well as <code>decimal</code> in.NET) is converted to the
  corresponding CBOR number.</li> <li>A <code>string</code> is converted to
  a CBOR text string. To create a CBOR byte string object from
  <code>string</code>, see the example given in <see cref='PeterO.Cbor.CBORObject.FromObject(System.Byte[])'/>.</li>
@@ -3571,7 +3570,7 @@ Instead, use.getToObject()&amp;lt;PeterO.Numbers.EDecimal&amp;gt;()
 ### AsEFloat
     @Deprecated public com.upokecenter.numbers.EFloat AsEFloat()
 Deprecated.
-Instead, use.getToObject()&amp;lt;PeterO.Numbers.EFloat&amp;gt;() in.getNET()
+Instead, use.getToObject()&amp;lt;PeterO.Numbers.EFloat&amp;gt;() in.NET
  or  .getToObject()(com.upokecenter.numbers.EFloat.class)
  in Java.
 
@@ -3606,8 +3605,8 @@ Instead, use.getToObject()&amp;lt;PeterO.Numbers.ERational&amp;gt;() in
 ### AsInt16
     @Deprecated public short AsInt16()
 Deprecated.
-Instead, use the following: (cbor.AsNumber().ToInt16Checked()),
- or .getToObject()&amp;lt;short&amp;gt;() in .getNET().
+Instead, use the following: (cbor.AsNumber().ToInt16Checked()), or
+.ToObject&amp;lt;short&amp;gt;() in .NET.
 
 **Returns:**
 
@@ -3785,7 +3784,7 @@ Converts this object to a 32-bit signed integer. Non-integer number values
     @Deprecated public long AsInt64()
 Deprecated.
 Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
-.ToObject&amp;lt;long&amp;gt;() in.getNET().
+.ToObject&amp;lt;long&amp;gt;() in.NET.
 
 **Returns:**
 

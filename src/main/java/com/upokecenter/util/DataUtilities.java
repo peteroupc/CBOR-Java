@@ -32,8 +32,6 @@ import java.io.*;
   public final class DataUtilities {
 private DataUtilities() {
 }
-// TODO: In CodePointAt/CodePointBefore, consider adding
-// mode to return -2 or throw an exception on unpaired surrogate
     private static final int StreamedStringBufferLength = 4096;
 
     /**
@@ -135,7 +133,7 @@ private DataUtilities() {
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U+FEFF) at the beginning of the encoded byte
      * array.</p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
+     * <code>Encoding.UTF8.GetBytes</code> in.NET, or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable.</p>
@@ -156,7 +154,7 @@ private DataUtilities() {
      * <p>Encodes a string in UTF-8 as a byte array. This method does not insert a
      * byte-order mark (U+FEFF) at the beginning of the encoded byte
      * array.</p> <p>REMARK: It is not recommended to use
-     * <code>Encoding.UTF8.GetBytes</code> in.getNET(), or the <code>getBytes()</code>
+     * <code>Encoding.UTF8.GetBytes</code> in.NET, or the <code>getBytes()</code>
      * method in Java to do this. For instance, <code>getBytes()</code> encodes
      * text strings in a default (so not fixed) character encoding, which
      * can be undesirable.</p>
