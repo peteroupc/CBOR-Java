@@ -342,7 +342,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static EDecimal AsED(CBORObject obj) {
       return (EDecimal)obj.ToObject(EDecimal.class);
     }
-    @Test
+    @Test(timeout = 200000)
     public void TestAsNumberAdd() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
@@ -4065,7 +4065,7 @@ private final PODClass propVarpropvalue;
         Assert.fail();
       }
     }
-    @Test
+    @Test(timeout = 200000)
     public void TestAsNumberMultiply() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -6046,7 +6046,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         }
       }
     }
-    @Test
+    @Test(timeout = 200000)
     public void TestAsNumberSubtract() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip(2).AsNumber().Subtract(null);
@@ -8386,25 +8386,47 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return FromJSON(json, new JSONOptions("numberconversion=" + numconv));
     }
 
-    private static void AssertJSONDouble(
+    public static void AssertJSONDouble(
       String json,
       String numconv,
       double dbl) {
       CBORObject cbor = FromJSON(json, numconv);
-      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      Assert.assertEquals(json+" "+numconv+"
+" + dbl,CBORType.FloatingPoint,cbor.getType());
       double cbordbl = cbor.AsDoubleValue();
       if (dbl != cbordbl) {
         Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
       }
     }
 
-    private static void AssertJSONInteger(
+    public static void AssertJSONInteger(
+      String json,
+      String numconv,
+      long longval) {
+      CBORObject cbor = FromJSON(json, numconv);
+      if (cbor.getType() != CBORType.Integer) {
+        String msg = json+" "+numconv+" " + longval;
+        msg = msg.substring(0, Math.min(100, msg.length()));
+if (msg.length() > 100) {
+           { msg += "...";
+        } }
+        Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
+      }
+      Assert.assertEquals(longval, cbor.AsInt64Value());
+    }
+
+    public static void AssertJSONInteger(
       String json,
       String numconv,
       int intval) {
       CBORObject cbor = FromJSON(json, numconv);
       if (cbor.getType() != CBORType.Integer) {
-        Assert.assertEquals(CBORType.Integer, cbor.getType());
+        String msg = json+" "+numconv+" " + intval;
+        msg = msg.substring(0, Math.min(100, msg.length()));
+if (msg.length() > 100) {
+           { msg += "...";
+        } }
+        Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
       }
       Assert.assertEquals(intval, cbor.AsInt32Value());
     }
@@ -8440,92 +8462,82 @@ throw new IllegalStateException("", ex);
         "0e-" + manyzeros,
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         "0." + manyzeros,
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         "0." + manyzeros + "e-9999999999999",
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         manythrees + "e-9999999999999",
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         manythrees + "e-9999999999999",
         "intorfloat",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONInteger(
         manythrees + "e-9999999999999",
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         "0." + manyzeros + "e-99999999",
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         manythrees + "e-99999999",
         "double",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
+
       AssertJSONDouble(
         manythrees + "e-99999999",
         "intorfloat",
         0.0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         manythrees + "e-99999999",
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "0e-" + manyzeros,
         "intorfloat",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "0e-" + manyzeros,
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "-0e-" + manyzeros,
         "intorfloat",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "-0e-" + manyzeros,
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "0." + manyzeros,
         "intorfloat",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "0." + manyzeros,
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "-0." + manyzeros,
         "intorfloat",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
       AssertJSONInteger(
         "-0." + manyzeros,
         "intorfloatfromdouble",
         0);
-      // System.out.println("time: " + sw.getElapsedMilliseconds() + " ms");
     }
 
     @Test(timeout = 10000)

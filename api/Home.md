@@ -8,8 +8,7 @@ Interface implemented by classes that convert objects of arbitrary types to
 Classes that implement this interface can support conversions from CBOR
  objects to a custom type and back.
 
-* [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
-Contains methods useful for reading and writing data, with a focus on CBOR.
+* [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -  
 
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
@@ -17,9 +16,7 @@ Specifies options for encoding and decoding CBOR objects.
 * [com.upokecenter.cbor.CBORNumber](com.upokecenter.cbor.CBORNumber.md) -
 An instance of a number that CBOR or certain CBOR tags can represent.
 
-* [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -
-Represents an object in Concise Binary Object Representation (CBOR) and
- contains methods for reading and writing CBOR data.
+* [com.upokecenter.cbor.CBORObject](com.upokecenter.cbor.CBORObject.md) -  
 
 * [com.upokecenter.cbor.CBORTypeMapper](com.upokecenter.cbor.CBORTypeMapper.md) -
 Holds converters to customize the serialization and deserialization behavior

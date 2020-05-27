@@ -768,7 +768,7 @@ import com.upokecenter.numbers.*;
         }
     }
 
-    @Test
+    @Test(timeout = 200000)
     public void TestCanFitIn() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
@@ -2722,7 +2722,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test(timeout = 200000)
     public void TestAsNumberAdd() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -2741,7 +2741,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test(timeout = 200000)
     public void TestAsNumberSubtract() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {

@@ -12,9 +12,6 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Contains methods useful for reading and writing data, with a focus on CBOR.
-   */
   public final class CBORDataUtilities {
 private CBORDataUtilities() {
 }
@@ -191,42 +188,13 @@ private CBORDataUtilities() {
     private static final JSONOptions PreserveNegZeroYes =
       new JSONOptions("preservenegativezero=1");
 
-    /**
-     * Parses a number whose format follows the JSON specification. The method uses
-     * a JSONOptions with all default properties except for a
-     * PreserveNegativeZero property of false.
-     * @param str A text string to parse as a JSON string.
-     * @return A CBOR object that represents the parsed number. Returns positive
-     * zero if the number is a zero that starts with a minus sign (such as
-     *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
-     * string is null or empty.
-     */
     public static CBORObject ParseJSONNumber(String str) {
       // TODO: Preserve negative zeros in next major version
       return ParseJSONNumber(str, PreserveNegZeroNo);
     }
 
-    /**
-     * Parses a number whose format follows the JSON specification (RFC 8259). The
-     * method uses a JSONOptions with all default properties except for a
-     * PreserveNegativeZero property of false.<p>Roughly speaking, a valid
-     * JSON number consists of an optional minus sign, one or more basic
-     * digits (starting with 1 to 9 unless there is only one digit and that
-     *  digit is 0), an optional decimal point (".", full stop) with one or
-     * more basic digits, and an optional letter E or e with an optional
-     * plus or minus sign and one or more basic digits (the exponent). A
-     * string representing a valid JSON number is not allowed to contain
-     * white space characters, including spaces.</p>
-     * @param str A text string to parse as a JSON number.
-     * @param integersOnly If true, no decimal points or exponents are allowed in
-     * the string. The default is false.
-     * @param positiveOnly If true, only positive numbers are allowed (the leading
-     * minus is disallowed). The default is false.
-     * @return A CBOR object that represents the parsed number. Returns positive
-     * zero if the number is a zero that starts with a minus sign (such as
-     *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
-     * string is null or empty.
-     * @deprecated Call the one-argument version of this method instead. If this\u0020method
+/**
+ * @deprecated Call the one-argument version of this method instead. If this\u0020method
  * call used positiveOnly = true, check that the String\u0020does
  * not\u0020begin\u0020with '-' before calling that version. If this method
  * call used\u0020integersOnly\u0020 = true, check that the String does not
@@ -255,27 +223,8 @@ private CBORDataUtilities() {
           PreserveNegZeroNo);
     }
 
-    /**
-     * Parses a number whose format follows the JSON specification (RFC
-     * 8259).<p>Roughly speaking, a valid JSON number consists of an
-     * optional minus sign, one or more basic digits (starting with 1 to 9
-     * unless there is only one digit and that digit is 0), an optional
-     *  decimal point (".", full stop) with one or more basic digits, and an
-     * optional letter E or e with an optional plus or minus sign and one
-     * or more basic digits (the exponent). A string representing a valid
-     * JSON number is not allowed to contain white space characters,
-     * including spaces.</p>
-     * @param str A text string to parse as a JSON number.
-     * @param integersOnly If true, no decimal points or exponents are allowed in
-     * the string. The default is false.
-     * @param positiveOnly If true, the leading minus is disallowed in the string.
-     * The default is false.
-     * @param preserveNegativeZero If true, returns positive zero if the number is
-     *  a zero that starts with a minus sign (such as "-0" or "-0.0").
-     * Otherwise, returns negative zero in this case. The default is false.
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails, including if the string is null or empty.
-     * @deprecated Instead, call ParseJSONNumber(str, jsonoptions) with\u0020a JSONOptions that
+/**
+ * @deprecated Instead, call ParseJSONNumber(str, jsonoptions) with\u0020a JSONOptions that
  * sets preserveNegativeZero to the\u0020desired value, either true or
  * false. If this\u0020method call used positiveOnly = true, check that the
  * String\u0020does not\u0020begin\u0020with '-' before calling that
@@ -308,23 +257,6 @@ private CBORDataUtilities() {
           jo);
     }
 
-    /**
-     * Parses a number whose format follows the JSON specification (RFC 8259) and
-     * converts that number to a CBOR object.<p>Roughly speaking, a valid
-     * JSON number consists of an optional minus sign, one or more basic
-     * digits (starting with 1 to 9 unless there is only one digit and that
-     *  digit is 0), an optional decimal point (".", full stop) with one or
-     * more basic digits, and an optional letter E or e with an optional
-     * plus or minus sign and one or more basic digits (the exponent). A
-     * string representing a valid JSON number is not allowed to contain
-     * white space characters, including spaces.</p>
-     * @param str A text string to parse as a JSON number.
-     * @param options An object containing options to control how JSON numbers are
-     * decoded to CBOR objects. Can be null, in which case a JSONOptions
-     * object with all default properties is used instead.
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails, including if the string is null or empty.
-     */
     public static CBORObject ParseJSONNumber(
       String str,
       JSONOptions options) {
@@ -335,29 +267,6 @@ private CBORDataUtilities() {
           options);
     }
 
-    /**
-     * Parses a number whose format follows the JSON specification (RFC 8259) from
-     * a portion of a text string, and converts that number to a CBOR
-     * object.<p>Roughly speaking, a valid JSON number consists of an
-     * optional minus sign, one or more basic digits (starting with 1 to 9
-     * unless there is only one digit and that digit is 0), an optional
-     *  decimal point (".", full stop) with one or more basic digits, and an
-     * optional letter E or e with an optional plus or minus sign and one
-     * or more basic digits (the exponent). A string representing a valid
-     * JSON number is not allowed to contain white space characters,
-     * including spaces.</p>
-     * @param str A text string containing the portion to parse as a JSON number.
-     * @param offset An index, starting at 0, showing where the desired portion of
-     * {@code str} begins.
-     * @param count The length, in code units, of the desired portion of {@code
-     * str} (but not more than {@code str} 's length).
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails, including if the string is null or empty.
-     * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
-     * than 0 or greater than {@code str} 's length, or {@code str} 's
-     * length minus {@code offset} is less than {@code count}.
-     * @throws NullPointerException The parameter {@code str} is null.
-     */
     public static CBORObject ParseJSONNumber(
       String str,
       int offset,
@@ -399,30 +308,142 @@ private CBORDataUtilities() {
       }
     }
 
-    /**
-     * Parses a number whose format follows the JSON specification (RFC 8259) and
-     * converts that number to a CBOR object.<p>Roughly speaking, a valid
-     * JSON number consists of an optional minus sign, one or more basic
-     * digits (starting with 1 to 9 unless there is only one digit and that
-     *  digit is 0), an optional decimal point (".", full stop) with one or
-     * more basic digits, and an optional letter E or e with an optional
-     * plus or minus sign and one or more basic digits (the exponent). A
-     * string representing a valid JSON number is not allowed to contain
-     * white space characters, including spaces.</p>
-     * @param str A text string to parse as a JSON number.
-     * @param offset An index, starting at 0, showing where the desired portion of
-     * {@code str} begins.
-     * @param count The length, in code units, of the desired portion of {@code
-     * str} (but not more than {@code str} 's length).
-     * @param options An object containing options to control how JSON numbers are
-     * decoded to CBOR objects. Can be null, in which case a JSONOptions
-     * object with all default properties is used instead.
-     * @return A CBOR object that represents the parsed number. Returns null if the
-     * parsing fails, including if the string is null or empty or {@code
-     * count} is 0 or less.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException Unsupported conversion kind.
-     */
+    // TODO: Use EFloat.ToDoubleBits when next version of
+    // Numbers is available
+    private static long ToDoubleBits(EFloat ef) {
+      if (ef.IsPositiveInfinity()) {
+        return (long)0x7ff0000000000000L;
+      }
+      if (ef.IsNegativeInfinity()) {
+        return (long)0xfff0000000000000L;
+      }
+      if (ef.IsNaN()) {
+        int[] nan = { 0, 0x7ff00000 };
+        if (ef.isNegative()) {
+          nan[1] |= ((int)(1 << 31));
+        }
+        if (ef.IsQuietNaN()) {
+          // Quiet NaN is a NaN in which the highest bit of
+          // the mantissa area is set
+          nan[1] |= 0x80000;
+        } else if (ef.getUnsignedMantissa().isZero()) {
+          // Set the 0x40000 bit to keep the mantissa from
+          // being zero if this is a signaling NaN
+          nan[1] |= 0x40000;
+        }
+        if (!ef.getUnsignedMantissa().isZero()) {
+          // Copy diagnostic information
+          int[] words = new int[2];
+          EInteger um = ef.getUnsignedMantissa();
+          words[0]=um.ToInt32Unchecked();
+          words[1]=um.ShiftRight(32).ToInt32Unchecked();
+          nan[0] = words[0];
+          nan[1] |= words[1] & 0x7ffff;
+          if ((words[0] | (words[1] & 0x7ffff)) == 0 && !ef.IsQuietNaN()) {
+            // Set the 0x40000 bit to keep the mantissa from
+            // being zero if this is a signaling NaN
+            nan[1] |= 0x40000;
+          }
+        }
+        long lret = (((long)nan[0]) & 0xffffffffL);
+        lret |= (((long)nan[1]) << 32);
+        return lret;
+      }
+      EFloat thisValue = ef;
+      // Check whether rounding can be avoided for common cases
+      // where the value already fits a double
+      if (!thisValue.isFinite() ||
+        thisValue.getUnsignedMantissa().GetUnsignedBitLengthAsInt64() > 53 ||
+        thisValue.getExponent().compareTo(-900) < 0 ||
+        thisValue.getExponent().compareTo(900) > 0) {
+        thisValue = ef.RoundToPrecision(EContext.Binary64);
+      }
+      if (!thisValue.isFinite()) {
+        return ToDoubleBits(thisValue);
+      }
+      long longmant = thisValue.getUnsignedMantissa().ToInt64Checked();
+      if (thisValue.isNegative() && longmant == 0) {
+        return 1L << 63;
+      } else if (longmant == 0) {
+        return 0L;
+      }
+      // System.out.println("todouble -->" + this);
+      long longBitLength = EInteger.FromInt64(longmant)
+          .GetUnsignedBitLengthAsInt64();
+      int expo = thisValue.getExponent().ToInt32Checked();
+      boolean subnormal = false;
+      if (longBitLength < 53) {
+        int diff = 53 - (int)longBitLength;
+        expo -= diff;
+        if (expo < -1074) {
+          // System.out.println("Diff changed from " + diff + " to " + (diff -
+          // (-1074 - expo)));
+          diff -= -1074 - expo;
+          expo = -1074;
+          subnormal = true;
+        }
+        longmant <<= diff;
+      }
+              // Clear the high bits where the exponent and sign are
+              longmant &= 0xfffffffffffffL;
+              if (!subnormal) {
+                longmant |= (long)(expo + 1075) << 52;
+              }
+              if (thisValue.isNegative()) {
+                longmant |= ((long)(1L << 63));
+              }
+              return longmant;
+    }
+
+    private static boolean IsBeyondSafeRange(long bits) {
+       // Absolute value of double is greater than 9007199254740991.0,
+       // or value is NaN
+       return (bits&~(1L << 63)) > (0x7ffL << 52) ||
+                    (bits&~(1L << 63)) > 0x433fffffffffffffL;
+    }
+
+    private static boolean IsIntegerValue(long bits) {
+       bits&=~(1L << 63);
+       // Infinity and NaN
+       if (bits >= (0x7ffL << 52)) {
+         return false;
+       }
+       // Beyond non-integer range
+       if ((bits >> 52) >= 0x433) {
+         return true;
+       }
+       // Less than 1
+       if ((bits >> 52) <= 0x3fe) {
+         return false;
+       }
+       int exp=(int)(bits >> 52);
+       long mant = bits&((1L << 52)-1);
+       int shift = 52-(exp-0x3ff);
+       return ((mant >> shift) << shift) == mant;
+    }
+
+    private static long GetIntegerValue(long bits) {
+       long sign=((bits & (1L << 63)) != 0) ? -1 : 1;
+       bits&=~(1L << 63);
+       // Infinity and NaN
+       if (bits >= (0x7ffL << 52)) {
+         throw new UnsupportedOperationException();
+       }
+       // Beyond safe range
+       if ((bits >> 52) >= 0x434) {
+         throw new UnsupportedOperationException();
+       }
+       // Less than 1
+       if ((bits >> 52) <= 0x3fe) {
+         throw new UnsupportedOperationException();
+       }
+       int exp=(int)(bits >> 52);
+       long mant = bits&((1L << 52)-1);
+       mant|=(1L << 52);
+       int shift = 52-(exp-0x3ff);
+       return (mant >> shift) * sign;
+    }
+
     public static CBORObject ParseJSONNumber(
       String str,
       int offset,
@@ -569,7 +590,7 @@ private CBORDataUtilities() {
           if (kind == JSONOptions.ConversionMode.Double ||
             kind == JSONOptions.ConversionMode.IntOrFloat) {
             if (!negative) {
-              return CBORObject.FromObject((double)0.0);
+              return CBORObject.FromFloatingPointBits(0, 2);
             } else {
               return CBORObject.FromFloatingPointBits(0x8000, 2);
             }
@@ -582,8 +603,8 @@ private CBORDataUtilities() {
           if (kind == JSONOptions.ConversionMode.Double ||
             kind == JSONOptions.ConversionMode.IntOrFloatFromDouble ||
             kind == JSONOptions.ConversionMode.IntOrFloat) {
-            return CBORObject.FromObject(
-                negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
+            return CBORObject.FromFloatingPointBits(
+                negative ? (0xfffL << 52) : (0x7ffL << 52), 8);
           } else if (kind == JSONOptions.ConversionMode.Decimal128) {
             return CBORObject.FromObject(negative ?
                 EDecimal.NegativeInfinity : EDecimal.PositiveInfinity);
@@ -604,7 +625,7 @@ private CBORDataUtilities() {
             v = -v;
           }
           if (kind == JSONOptions.ConversionMode.Double) {
-            return CBORObject.FromObject((double)v);
+            return CBORObject.FromObject(ToDoubleBits(EFloat.FromInt64(v)));
           } else if (kind == JSONOptions.ConversionMode.Decimal128) {
             return CBORObject.FromObject(EDecimal.FromInt64(v));
           } else {
@@ -670,16 +691,16 @@ private CBORDataUtilities() {
 CBORObject.FromObject(ed);
         }
       } else if (kind == JSONOptions.ConversionMode.Double) {
-        // TODO: Avoid converting to double
-        double dbl = EFloat.FromString(
+        EFloat ef = EFloat.FromString(
             str,
             initialOffset,
             endPos - initialOffset,
-            EContext.Binary64).ToDouble();
-        if (!preserveNegativeZero && dbl == 0.0) {
-          dbl = 0.0;
+            EContext.Binary64);
+        long lb = ToDoubleBits(ef);
+        if (!preserveNegativeZero && (lb == 1L << 63 || lb == 0L)) {
+          lb = 0L;
         }
-        return CBORObject.FromObject(dbl);
+        return CBORObject.FromFloatingPointBits(lb, 8);
       } else if (kind == JSONOptions.ConversionMode.Decimal128) {
         EDecimal ed = EDecimal.FromString(
             str,
@@ -691,42 +712,38 @@ CBORObject.FromObject(ed);
         }
         return CBORObject.FromObject(ed);
       } else if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
-        // TODO: Avoid converting to double
-        double dbl = EFloat.FromString(
+        EFloat ef = EFloat.FromString(
             str,
             initialOffset,
             endPos - initialOffset,
-            EContext.Binary64).ToDouble();
-        if (!Double.isNaN(dbl) && dbl >= -9007199254740991.0 &&
-          dbl <= 9007199254740991.0 && Math.floor(dbl) == dbl) {
-          long idbl = (long)dbl;
-          return CBORObject.FromObject(idbl);
+            EContext.Binary64);
+        long lb = ToDoubleBits(ef);
+        if (!IsBeyondSafeRange(lb) && IsIntegerValue(lb)) {
+          return CBORObject.FromObject(GetIntegerValue(lb));
         }
-        return CBORObject.FromObject(dbl);
+        return CBORObject.FromFloatingPointBits(lb, 8);
       } else if (kind == JSONOptions.ConversionMode.IntOrFloat) {
         EContext ctx = EContext.Binary64.WithBlankFlags();
-        // TODO: Avoid converting to double
-        double dbl = EFloat.FromString(
+        EFloat ef = EFloat.FromString(
             str,
             initialOffset,
             endPos - initialOffset,
-            ctx).ToDouble();
+            ctx);
+        long lb = ToDoubleBits(ef);
         if ((ctx.getFlags() & EContext.FlagInexact) != 0) {
           // Inexact conversion to double, meaning that the String doesn't
           // represent an integer in [-(2^53)+1, 2^53), which is representable
           // ((exactly instanceof Double) ? (double)exactly : null), so treat as ConversionMode.Double
-          if (!preserveNegativeZero && dbl == 0.0) {
-            dbl = 0.0;
+          if (!preserveNegativeZero && (lb == 1L << 63 || lb == 0L)) {
+            lb = 0L;
           }
-          return CBORObject.FromObject(dbl);
+          return CBORObject.FromFloatingPointBits(lb, 8);
         } else {
           // Exact conversion; treat as ConversionMode.IntToFloatFromDouble
-          if (!Double.isNaN(dbl) && dbl >= -9007199254740991.0 &&
-            dbl <= 9007199254740991.0 && Math.floor(dbl) == dbl) {
-            long idbl = (long)dbl;
-            return CBORObject.FromObject(idbl);
+          if (!IsBeyondSafeRange(lb) && IsIntegerValue(lb)) {
+            return CBORObject.FromObject(GetIntegerValue(lb));
           }
-          return CBORObject.FromObject(dbl);
+          return CBORObject.FromFloatingPointBits(lb, 8);
         }
       } else {
         throw new IllegalArgumentException("Unsupported conversion kind.");
