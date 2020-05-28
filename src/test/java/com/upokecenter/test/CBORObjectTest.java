@@ -15,11 +15,14 @@ import com.upokecenter.numbers.*;
       "\"\\ud800\udc00\"",
       "\"\ud800\\udc00\"", "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
       "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
-      "trub", "falsb", "nulb", "[true", "[true,", "[true]!",
+      "trub", "falsb", "nulb", "[true", "[true,", "[true]!", "tr\u0020",
+      "tr", "fa", "nu",
+      "fa ", "nu ", "fa lse","nu ll","tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
       "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
       "[\"\\ud800\"]", "[1,2,", "[1,2,3", "{,\"0\":0,\"1\":1}",
-      "{\"0\":0,,\"1\":1}", "{\"0\":0,\"1\":1,}", "[,0,1,2]", "[0,,1,2]",
+      "{\"0\"::0}", "{\"0\":0,,\"1\":1}",
+      "{\"0\":0,\"1\":1,}", "[,0,1,2]", "[0,,1,2]", "[0:1]", "[0:1:2]",
       "[0,1,,2]", "[0,1,2,]", "[0001]", "{a:true}",
       "{\"a\"://comment\ntrue}", "{\"a\":/*comment*/true}", "{'a':true}",
       "{\"a\":'b'}", "{\"a\t\":true}", "{\"a\r\":true}", "{\"a\n\":true}",
@@ -38,6 +41,21 @@ import com.upokecenter.numbers.*;
       "[0xf]", "[0x20]", "[0x01]", "[.2]", "[.05]", "[-.2]", "[-.05]",
       "[23.]", "[23.e0]", "[23.e1]", "[0.]", "\"abc", "\"ab\u0004c\"",
       "\u0004\"abc\"",
+      "{\"x\":true \"y\":true}",
+      "{\"x\":true\n\"y\":true}",
+      "0,1,2,3", "\"x\",true",
+      "\"x\",true",
+      "\"x\":true",
+      "\"x\":true,\"y\":true",
+      "\"x\":true\n\"y\":true",
+      "\"x\":true \"y\":true",
+      "{\"x\":true,\"y\"}",
+      "{\"x\",\"y\":true}",
+      "{\"x\":true, \"y\"}",
+      "{\"x\", \"y\":true}",
+      "{[\"x\"]:true}",
+      "{null:true}", "{true:true}", "{false:true}",
+      "{[0]:true}", "{1:true}", "{{\"a\":true}:true}",
       "[1,\u0004" + "2]",
     };
 
@@ -8391,8 +8409,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String numconv,
       double dbl) {
       CBORObject cbor = FromJSON(json, numconv);
-      Assert.assertEquals(json+" "+numconv+"
-" + dbl,CBORType.FloatingPoint,cbor.getType());
+      Assert.assertEquals(json + " " + numconv + " " + dbl,CBORType.FloatingPoint,cbor.getType());
       double cbordbl = cbor.AsDoubleValue();
       if (dbl != cbordbl) {
         Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
@@ -8405,11 +8422,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       long longval) {
       CBORObject cbor = FromJSON(json, numconv);
       if (cbor.getType() != CBORType.Integer) {
-        String msg = json+" "+numconv+" " + longval;
+        String msg = json+" "+numconv + " " + longval;
         msg = msg.substring(0, Math.min(100, msg.length()));
-if (msg.length() > 100) {
-           { msg += "...";
-        } }
+        if (msg.length() > 100) {
+           msg += "...";
+        }
         Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
       }
       Assert.assertEquals(longval, cbor.AsInt64Value());
@@ -8421,9 +8438,9 @@ if (msg.length() > 100) {
       int intval) {
       CBORObject cbor = FromJSON(json, numconv);
       if (cbor.getType() != CBORType.Integer) {
-        String msg = json+" "+numconv+" " + intval;
+        String msg = json+" "+numconv + " " + intval;
         msg = msg.substring(0, Math.min(100, msg.length()));
-if (msg.length() > 100) {
+        if (msg.length() > 100) {
            { msg += "...";
         } }
         Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
