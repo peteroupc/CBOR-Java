@@ -17,7 +17,7 @@ import com.upokecenter.numbers.*;
       "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
       "trub", "falsb", "nulb", "[true", "[true,", "[true]!", "tr\u0020",
       "tr", "fa", "nu",
-      "fa ", "nu ", "fa lse","nu ll","tr ue",
+      "fa ", "nu ", "fa lse", "nu ll", "tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
       "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
       "[\"\\ud800\"]", "[1,2,", "[1,2,3", "{,\"0\":0,\"1\":1}",
@@ -35,7 +35,8 @@ import com.upokecenter.numbers.*;
       "true\u0005", "8024\"", "8024x", "8024}", "8024\u0300",
       "8024\u0005", "{\"test\":5}}", "{\"test\":5}{", "[5]]", "[5][",
       "0000", "0x1", "0xf", "0x20", "0x01",
-      "-3x", "-3e89x",
+      "-3x", "-3e89x", "\u0005true", "\"x\\u0005z\"",
+      "0,2", "0,05", "-0,2", "-0,05",
       "0X1", "0Xf", "0X20", "0X01", ".2", ".05", "-.2",
       "-.05", "23.", "23.e0", "23.e1", "0.", "[0000]", "[0x1]",
       "[0xf]", "[0x20]", "[0x01]", "[.2]", "[.05]", "[-.2]", "[-.05]",
@@ -64,7 +65,7 @@ import com.upokecenter.numbers.*;
       "[0.1]",
       "[0.1001]",
       "[0.0]",
-      "[-3 " + ",-5]",
+      "[-3 " + ",-5]", "\n\r\t\u0020true",
       "[0.00]", "[0.000]", "[0.01]", "[0.001]", "[0.5]", "[0E5]",
       "[0E+6]", "[\"\ud800\udc00\"]", "[\"\\ud800\\udc00\"]",
       "[\"\\ud800\\udc00\ud800\udc00\"]", "23.0e01", "23.0e00", "[23.0e01]",
@@ -8422,7 +8423,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       long longval) {
       CBORObject cbor = FromJSON(json, numconv);
       if (cbor.getType() != CBORType.Integer) {
-        String msg = json+" "+numconv + " " + longval;
+        String msg = json+ " " + numconv + " " + longval;
         msg = msg.substring(0, Math.min(100, msg.length()));
         if (msg.length() > 100) {
            msg += "...";
@@ -8438,7 +8439,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int intval) {
       CBORObject cbor = FromJSON(json, numconv);
       if (cbor.getType() != CBORType.Integer) {
-        String msg = json+" "+numconv + " " + intval;
+        String msg = json+ " " + numconv + " " + intval;
         msg = msg.substring(0, Math.min(100, msg.length()));
         if (msg.length() > 100) {
            { msg += "...";
