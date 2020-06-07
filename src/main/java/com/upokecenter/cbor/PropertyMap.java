@@ -587,8 +587,10 @@ ParameterizedType pt=(t instanceof ParameterizedType) ?
 Type rawType=(pt==null) ? t : pt.getRawType();
 Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
 if(objThis.getType()==CBORType.Array){
- if(rawType instanceof Class<?> && ((Class<?>)rawType).isArray()){
-   Class<?> ct=((Class<?>)rawType).getComponentType();
+ Class<?> rawClass=(rawType instanceof Class<?>) ?
+    ((Class<?>)rawType) : null;
+ if(rawClass!=null && rawClass.isArray()){
+   Class<?> ct=rawClass.getComponentType();
    Object objRet=Array.newInstance(ct,
       objThis.size());
    int i=0;
@@ -614,6 +616,26 @@ if(objThis.getType()==CBORType.Array){
    }
    return alist;
   }
+ } else if(rawClass!=null && !rawClass.isInterface()) {
+   if(List.class.isAssignableFrom(rawClass) && typeArguments!=null &&
+       typeArguments.length==1) {
+     List<?> list = null;
+     try {
+       list=(List<?>)rawClass.getDeclaredConstructor().newInstance();
+     } catch(NoSuchMethodException ex){
+       throw new CBORException("Failed to create object", ex);
+     } catch(InvocationTargetException ex){
+       throw new CBORException("Failed to create object", ex);
+     } catch(IllegalAccessException ex){
+       throw new CBORException("Failed to create object", ex);
+     } catch(InstantiationException ex){
+       throw new CBORException("Failed to create object", ex);
+     }
+     for(CBORObject cbor : objThis.getValues()){
+      list.add(cbor.ToObject(typeArguments[0],mapper,options,depth+1));
+     }
+     return list;
+   }
  }
 }
 if(objThis.getType()==CBORType.Map){

@@ -1159,7 +1159,8 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       Assert.assertEquals(999, fc.publicFieldA);
     }
 
-    @Test(timeout = 5000)
+    @Test
+    /* TIMEOUTOVERRIDE5000 */
     public void TestToObject() {
       PODClass ao = new PODClass();
       CBORObject co = CBORObject.FromObject(ao);
