@@ -701,7 +701,7 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
      * @return This number's value, truncated to a 16-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
      * number, once converted to an integer by discarding its fractional
-     * part, is less than -32768 or greater than 32767.
+     * part, is less than -32768 or greater tha 32767.
      */
     public short ToInt16Checked() {
       if (!this.IsFinite()) {
@@ -727,7 +727,7 @@ this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
      * value.
      * @return This number's value as a 16-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, is not
-     * an exact integer, or is less than -32768 or greater than 32767.
+     * an exact integer, or is less than -32768 or greater tha 32767.
      */
     public short ToInt16IfExact() {
       if (!this.IsFinite()) {
