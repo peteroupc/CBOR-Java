@@ -619,9 +619,9 @@ if(objThis.getType()==CBORType.Array){
  } else if(rawClass!=null && !rawClass.isInterface()) {
    if(List.class.isAssignableFrom(rawClass) && typeArguments!=null &&
        typeArguments.length==1) {
-     List<?> list = null;
+     List list = null;
      try {
-       list=(List<?>)rawClass.getDeclaredConstructor().newInstance();
+       list=(List)rawClass.getDeclaredConstructor().newInstance();
      } catch(NoSuchMethodException ex){
        throw new CBORException("Failed to create object", ex);
      } catch(InvocationTargetException ex){
