@@ -50,7 +50,7 @@ import com.upokecenter.numbers.*;
 
     private static final ICBORNumber[] NumberInterfaces = {
       new CBORInteger(),
-      new CBORDouble(),
+      new CBORDoubleBits(),
       new CBOREInteger(),
       new CBORExtendedDecimal(),
       new CBORExtendedFloat(),
@@ -903,6 +903,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
     String ToJSONString() {
       switch (this.kind) {
         case Double: {
+            // TODO: Avoid converting to double
             double f = ((Double)this.value).doubleValue();
             if (((f) == Double.NEGATIVE_INFINITY) ||
                          ((f) == Double.POSITIVE_INFINITY) ||
@@ -938,6 +939,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
               // Too inefficient to convert to a decimal number
               // from a bigfloat with a very high exponent,
               // so convert to double instead
+              // TODO: Avoid converting to double
               double f = flo.ToDouble();
               if (((f) == Double.NEGATIVE_INFINITY) ||
                              ((f) == Double.POSITIVE_INFINITY) ||
@@ -969,8 +971,17 @@ this.ToEIntegerIfExact().ToInt64Checked();
     static CBORNumber FromObject(long longValue) {
       return new CBORNumber(NumberKind.Integer, longValue);
     }
+    static CBORNumber FromDoubleBits(long doubleBits) {
+      return new CBORNumber(NumberKind.Double, doubleBits);
+    }
+
+/**
+ * @deprecated
+ */
+@Deprecated
     static CBORNumber FromObject(double doubleValue) {
-      return new CBORNumber(NumberKind.Double, doubleValue);
+      return new CBORNumber(NumberKind.Double,
+  CBORUtilities.DoubleToInt64Bits(doubleValue));
     }
     static CBORNumber FromObject(EInteger eivalue) {
       return new CBORNumber(NumberKind.EInteger, eivalue);

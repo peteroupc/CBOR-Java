@@ -10,6 +10,10 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+/**
+ * @deprecated TODO: Use CBORDoubleBits instead
+ */
+@Deprecated
   class CBORDouble implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((((Double)obj).doubleValue()) == Double.POSITIVE_INFINITY);

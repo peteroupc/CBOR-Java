@@ -2906,7 +2906,7 @@ CBOREncodeOptions(false, false, true));
       }
     }
 
-    private void CheckKeyValue(CBORObject o, String key, Object value) {
+    private static void CheckKeyValue(CBORObject o, String key, Object value) {
       if (!o.ContainsKey(key)) {
         Assert.fail("Expected " + key + " to exist: " + o.toString());
       }
@@ -3037,8 +3037,8 @@ CBOREncodeOptions(false, false, true));
       dict.put("TestKey","TestValue");
       dict.put("TestKey2","TestValue2");
       CBORObject c = CBORObject.FromObject(dict);
-      this.CheckKeyValue(c, "TestKey", "TestValue");
-      this.CheckKeyValue(c, "TestKey2", "TestValue2");
+      CheckKeyValue(c, "TestKey", "TestValue");
+      CheckKeyValue(c, "TestKey2", "TestValue2");
       dict = (Map<String, String>)c.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, dict.keySet().size());
@@ -4025,7 +4025,7 @@ private final PODClass propVarpropvalue;
       }
     }
 
-    private void Sink(Object obj) {
+    private static void Sink(Object obj) {
       System.out.println("Sink for " + obj);
       Assert.fail();
     }
@@ -4035,7 +4035,7 @@ private final PODClass propVarpropvalue;
       CBORObject co;
       try {
         co = CBORObject.True;
-        this.Sink(co.getKeys());
+        Sink(co.getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -4044,7 +4044,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       try {
-        this.Sink(ToObjectTest.TestToFromObjectRoundTrip(0).getKeys());
+        Sink(ToObjectTest.TestToFromObjectRoundTrip(0).getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -4053,7 +4053,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       try {
-        this.Sink(ToObjectTest.TestToFromObjectRoundTrip("String").getKeys());
+        Sink(ToObjectTest.TestToFromObjectRoundTrip("String").getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -4062,7 +4062,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       try {
-        this.Sink(CBORObject.NewArray().getKeys());
+        Sink(CBORObject.NewArray().getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -4071,7 +4071,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       try {
-        this.Sink(ToObjectTest.TestToFromObjectRoundTrip(
+        Sink(ToObjectTest.TestToFromObjectRoundTrip(
             new byte[] { 0 }).getKeys());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {

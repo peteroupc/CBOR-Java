@@ -3653,8 +3653,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       WriteFloatingPointBits(
         stream,
         CBORUtilities.SingleToInt32Bits(value),
-      4,
-      true);
+        4,
+        true);
     }
 
     /**
@@ -3673,8 +3673,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       WriteFloatingPointBits(
         stream,
         CBORUtilities.DoubleToInt64Bits(value),
-      8,
-      true);
+        8,
+        true);
     }
 
     /**
@@ -4597,9 +4597,9 @@ public int compareTo(CBORObject other) {
             (byte[])objB);
       } else {
         int ta = (typeA == CBORObjectTypeTextStringUtf8) ?
-             CBORObjectTypeTextString : typeA;
+          CBORObjectTypeTextString : typeA;
         int tb = (typeB == CBORObjectTypeTextStringUtf8) ?
-             CBORObjectTypeTextString : typeB;
+          CBORObjectTypeTextString : typeB;
         /* NOTE: itemtypeValue numbers are ordered such that they
         // correspond to the lexicographical order of their CBOR encodings
         // (with the exception of Integer and EInteger together,
@@ -4763,11 +4763,11 @@ public int compareTo(CBORObject other) {
             break;
           }
           case CBORObjectTypeTextStringUtf8: {
-         if (!tagged && !options.getUseIndefLengthStrings()) {
-           byte[] bytes = (byte[])this.getThisItem();
-           return SerializeUtf8(bytes);
-         }
-         break;
+            if (!tagged && !options.getUseIndefLengthStrings()) {
+              byte[] bytes = (byte[])this.getThisItem();
+              return SerializeUtf8(bytes);
+            }
+            break;
           }
           case CBORObjectTypeSimpleValue: {
             if (tagged) {
@@ -5760,10 +5760,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       long floatingBits,
       int byteCount) throws java.io.IOException {
       return WriteFloatingPointBits(
-        outputStream,
-        floatingBits,
-        byteCount,
-        false);
+          outputStream,
+          floatingBits,
+          byteCount,
+          false);
     }
 
     /**
@@ -5799,7 +5799,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (shortestForm) {
         if (byteCount == 8) {
           int bits =
-CBORUtilities.DoubleToHalfPrecisionIfSameValue(floatingBits);
+            CBORUtilities.DoubleToHalfPrecisionIfSameValue(floatingBits);
           if (bits != -1) {
             return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
           }
@@ -5808,11 +5808,11 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(floatingBits);
             return WriteFloatingPointBits(outputStream, (long)bits, 4, false);
           }
         } else if (byteCount == 4) {
-           int bits =
-CBORUtilities.SingleToHalfPrecisionIfSameValue(floatingBits);
-           if (bits != -1) {
-             return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
-           }
+          int bits =
+            CBORUtilities.SingleToHalfPrecisionIfSameValue(floatingBits);
+          if (bits != -1) {
+            return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
+          }
         }
       }
       byte[] bytes;
@@ -6648,17 +6648,17 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
     private static byte[] SerializeUtf8(byte[] utf8) {
       byte[] bytes;
       if (utf8.length < 24) {
-         bytes = new byte[utf8.length + 1];
-         bytes[0] = (byte)(utf8.length | 0x60);
-         System.arraycopy(utf8, 0, bytes, 1, utf8.length);
-       return bytes;
+        bytes = new byte[utf8.length + 1];
+        bytes[0] = (byte)(utf8.length | 0x60);
+        System.arraycopy(utf8, 0, bytes, 1, utf8.length);
+        return bytes;
       }
       if (utf8.length <= 0xffL) {
         bytes = new byte[utf8.length + 2];
         bytes[0] = (byte)0x78;
         bytes[1] = (byte)utf8.length;
         System.arraycopy(utf8, 0, bytes, 2, utf8.length);
-      return bytes;
+        return bytes;
       }
       if (utf8.length <= 0xffffL) {
         bytes = new byte[utf8.length + 3];
@@ -6666,7 +6666,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         bytes[1] = (byte)((utf8.length >> 8) & 0xff);
         bytes[2] = (byte)(utf8.length & 0xff);
         System.arraycopy(utf8, 0, bytes, 3, utf8.length);
-      return bytes;
+        return bytes;
       }
       byte[] posbytes = GetPositiveInt64Bytes(3, utf8.length);
       bytes = new byte[utf8.length + posbytes.length];
@@ -6863,9 +6863,9 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         // (cmp != 0 ? itemB.toString() : "~") +
         // " -> cmp=" + (cmp);
         // System.out.println(ot);
-      if (cmp != 0) {
-        return cmp;
-      }
+        if (cmp != 0) {
+          return cmp;
+        }
         // Both maps have the same key, so compare
         // the value under that key
         cmp = mapA.get(itemA).compareTo(mapB.get(itemB));
