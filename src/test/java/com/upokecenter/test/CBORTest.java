@@ -503,6 +503,16 @@ import com.upokecenter.numbers.*;
         (byte)0xc3, (byte)0x94, 0x19, 0x49,
        };
       TestWriteToJSON(CBORObject.DecodeFromBytes(bytes));
+      bytes = new byte[] {
+        (byte)0xfb, 0x61, (byte)0x90, 0x00, 0x00, 0x7c,
+        0x01, 0x5a, 0x0a,
+       };
+      TestWriteToJSON(CBORObject.DecodeFromBytes(bytes));
+      bytes = new byte[] {
+        (byte)0xfb, 0x36, (byte)0x90, 0x01, 0x00, 0x3f,
+        (byte)0xd9, 0x2b, (byte)0xdb,
+       };
+      TestWriteToJSON(CBORObject.DecodeFromBytes(bytes));
     }
 
     @Test
@@ -4978,7 +4988,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (!objA.equals(objB)) {
         Assert.fail("WriteJSONTo gives different results from " +
           "ToJSONString\nobj=" +
-          TestCommon.ToByteArrayString(obj.EncodeToBytes()));
+          TestCommon.ToByteArrayString(obj.EncodeToBytes()) +
+          "\nobjA=" + TestCommon.ToByteArrayString(objA.EncodeToBytes()) +
+          "\nobjB=" + TestCommon.ToByteArrayString(objB.EncodeToBytes()) +
+          "\nobj=" + obj.toString() + "\nobjA=" + objA.toString() +
+          "\nobjB=" + objB.toString() + "\njsonstring=" + jsonString +
+          "\ntojsonstring=" + obj.ToJSONString());
       }
     }
   }

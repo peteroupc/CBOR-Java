@@ -515,7 +515,7 @@ private CBORDataUtilities() {
       // Absolute value of double is greater than 9007199254740991.0,
       // or value is NaN
       bits &= ~(1L << 63);
-      return bits > DoublePosInfinity || bits > 0x433fffffffffffffL;
+      return bits >= DoublePosInfinity || bits > 0x433fffffffffffffL;
     }
 
     private static boolean IsIntegerValue(long bits) {

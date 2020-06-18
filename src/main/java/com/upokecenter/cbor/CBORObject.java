@@ -5550,7 +5550,9 @@ public boolean equals(CBORObject other) {
           return this.AsEIntegerValue().toString();
         }
         case FloatingPoint: {
-          return CBORNumber.FromObject(this.AsDoubleValue()).ToJSONString();
+          long dblbits = this.AsDoubleBits();
+          return CBORUtilities.DoubleBitsFinite(dblbits) ?
+               CBORUtilities.DoubleBitsToString(dblbits) : "null";
         }
         default: {
           StringBuilder sb = new StringBuilder();

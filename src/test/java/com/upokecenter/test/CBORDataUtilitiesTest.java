@@ -7,7 +7,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORDataUtilitiesTest {
-    private void AssertNegative(CBORObject obj) {
+    private static void AssertNegative(CBORObject obj) {
       if (!(obj.AsNumber().IsNegative())) {
  Assert.fail();
  }
@@ -78,7 +78,7 @@ import com.upokecenter.numbers.*;
       };
       for (String str : assertNegatives) {
         cbor = CBORDataUtilities.ParseJSONNumber(str, false, false, true);
-        this.AssertNegative(cbor);
+        AssertNegative(cbor);
       }
     }
 

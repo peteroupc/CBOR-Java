@@ -57,11 +57,39 @@ import com.upokecenter.numbers.*;
     }
     @Test
     public void TestCanFitInInt64() {
-      // not implemented yet
+      if (!(CBORObject.FromObject(0).AsNumber().CanFitInInt64())) {
+ Assert.fail();
+ }
+      if (!(CBORObject.FromObject(99).AsNumber().CanFitInInt64())) {
+ Assert.fail();
+ }
+      if (CBORObject.PositiveInfinity.AsNumber().CanFitInInt64()) {
+ Assert.fail();
+ }
+      if (CBORObject.NegativeInfinity.AsNumber().CanFitInInt64()) {
+ Assert.fail();
+ }
+      if (CBORObject.NaN.AsNumber().CanFitInInt64()) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestIsInfinity() {
-      // not implemented yet
+      if (CBORObject.FromObject(0).AsNumber().IsInfinity()) {
+ Assert.fail();
+ }
+      if (CBORObject.FromObject(99).AsNumber().IsInfinity()) {
+ Assert.fail();
+ }
+      if (!(CBORObject.PositiveInfinity.AsNumber().IsInfinity())) {
+ Assert.fail();
+ }
+      if (!(CBORObject.NegativeInfinity.AsNumber().IsInfinity())) {
+ Assert.fail();
+ }
+      if (CBORObject.NaN.AsNumber().IsInfinity()) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestIsNaN() {
@@ -78,6 +106,10 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       if (!(CBORObject.NaN.AsNumber().IsNaN())) {
+ Assert.fail();
+ }
+      if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
+        .AsNumber().IsNaN())) {
  Assert.fail();
  }
     }
@@ -572,10 +604,6 @@ import com.upokecenter.numbers.*;
           .AsNumber().ToEFloat();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-        .AsNumber().IsNaN())) {
- Assert.fail();
- }
     }
     @Test
     public void TestAsERational() {

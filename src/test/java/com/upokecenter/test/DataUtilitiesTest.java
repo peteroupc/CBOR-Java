@@ -382,7 +382,7 @@ import com.upokecenter.util.*;
       return sb.toString();
     }
 
-    private void TestUtf8RoundTrip(String str) {
+    private static void TestUtf8RoundTrip(String str) {
       {
         Object objectTemp = str;
         Object objectTemp2 = DataUtilities.GetUtf8String(
@@ -681,18 +681,18 @@ import com.upokecenter.util.*;
     }
     @Test
     public void TestGetUtf8String() {
-      this.TestUtf8RoundTrip("A" + Repeat("\u00e0", 10000));
-      this.TestUtf8RoundTrip("AA" + Repeat("\u00e0", 10000));
-      this.TestUtf8RoundTrip("AAA" + Repeat("\u00e0", 10000));
-      this.TestUtf8RoundTrip("AAAA" + Repeat("\u00e0", 10000));
-      this.TestUtf8RoundTrip("A" + Repeat("\u0ae0", 10000));
-      this.TestUtf8RoundTrip("AA" + Repeat("\u0ae0", 10000));
-      this.TestUtf8RoundTrip("AAA" + Repeat("\u0ae0", 10000));
-      this.TestUtf8RoundTrip("AAAA" + Repeat("\u0ae0", 10000));
-      this.TestUtf8RoundTrip("A" + Repeat("\ud800\udc00", 10000));
-      this.TestUtf8RoundTrip("AA" + Repeat("\ud800\udc00", 10000));
-      this.TestUtf8RoundTrip("AAA" + Repeat("\ud800\udc00", 10000));
-      this.TestUtf8RoundTrip("AAAA" + Repeat("\ud800\udc00", 10000));
+      TestUtf8RoundTrip("A" + Repeat("\u00e0", 10000));
+      TestUtf8RoundTrip("AA" + Repeat("\u00e0", 10000));
+      TestUtf8RoundTrip("AAA" + Repeat("\u00e0", 10000));
+      TestUtf8RoundTrip("AAAA" + Repeat("\u00e0", 10000));
+      TestUtf8RoundTrip("A" + Repeat("\u0ae0", 10000));
+      TestUtf8RoundTrip("AA" + Repeat("\u0ae0", 10000));
+      TestUtf8RoundTrip("AAA" + Repeat("\u0ae0", 10000));
+      TestUtf8RoundTrip("AAAA" + Repeat("\u0ae0", 10000));
+      TestUtf8RoundTrip("A" + Repeat("\ud800\udc00", 10000));
+      TestUtf8RoundTrip("AA" + Repeat("\ud800\udc00", 10000));
+      TestUtf8RoundTrip("AAA" + Repeat("\ud800\udc00", 10000));
+      TestUtf8RoundTrip("AAAA" + Repeat("\ud800\udc00", 10000));
 
       try {
         DataUtilities.GetUtf8String(null, 0, 1, false);

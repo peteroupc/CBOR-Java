@@ -158,7 +158,7 @@ this.GetNumberInterface().Sign(this.value);
           return new CBORNumber(NumberKind.EInteger, o.AsEIntegerValue());
         }
       } else if (!o.isTagged() && o.getType() == CBORType.FloatingPoint) {
-        return CBORNumber.FromObject(o.AsDoubleValue());
+        return CBORNumber.FromDoubleBits(o.AsDoubleBits());
       }
       if (o.HasOneTag(2) || o.HasOneTag(3)) {
         return BignumToNumber(o);
@@ -894,6 +894,10 @@ this.ToEIntegerIfExact().ToInt64Checked();
             long longItem = (((Long)this.value).longValue());
             return CBORUtilities.LongToString(longItem);
           }
+        case Double: {
+            long longItem = (((Long)this.value).longValue());
+            return CBORUtilities.DoubleBitsToString(longItem);
+          }
         default:
           return (this.value == null) ? "" :
             this.value.toString();
@@ -903,14 +907,11 @@ this.ToEIntegerIfExact().ToInt64Checked();
     String ToJSONString() {
       switch (this.kind) {
         case Double: {
-            // TODO: Avoid converting to double
-            double f = ((Double)this.value).doubleValue();
-            if (((f) == Double.NEGATIVE_INFINITY) ||
-                         ((f) == Double.POSITIVE_INFINITY) ||
-                         Double.isNaN(f)) {
+            long f = (((Long)this.value).longValue());
+            if (!CBORUtilities.DoubleBitsFinite(f)) {
               return "null";
             }
-            String dblString = CBORUtilities.DoubleToString(f);
+            String dblString = CBORUtilities.DoubleBitsToString(f);
             return CBORUtilities.TrimDotZero(dblString);
           }
         case Integer: {
@@ -939,14 +940,12 @@ this.ToEIntegerIfExact().ToInt64Checked();
               // Too inefficient to convert to a decimal number
               // from a bigfloat with a very high exponent,
               // so convert to double instead
-              // TODO: Avoid converting to double
-              double f = flo.ToDouble();
-              if (((f) == Double.NEGATIVE_INFINITY) ||
-                             ((f) == Double.POSITIVE_INFINITY) ||
-                             Double.isNaN(f)) {
+              // TODO: Use ToDoubleBits once available
+              long f = CBORUtilities.DoubleToInt64Bits(flo.ToDouble());
+              if (!CBORUtilities.DoubleBitsFinite(f)) {
                 return "null";
               }
-              String dblString = CBORUtilities.DoubleToString(f);
+              String dblString = CBORUtilities.DoubleBitsToString(f);
               return CBORUtilities.TrimDotZero(dblString);
             }
             return flo.toString();
@@ -973,15 +972,6 @@ this.ToEIntegerIfExact().ToInt64Checked();
     }
     static CBORNumber FromDoubleBits(long doubleBits) {
       return new CBORNumber(NumberKind.Double, doubleBits);
-    }
-
-/**
- * @deprecated
- */
-@Deprecated
-    static CBORNumber FromObject(double doubleValue) {
-      return new CBORNumber(NumberKind.Double,
-  CBORUtilities.DoubleToInt64Bits(doubleValue));
     }
     static CBORNumber FromObject(EInteger eivalue) {
       return new CBORNumber(NumberKind.EInteger, eivalue);
@@ -1486,13 +1476,17 @@ this.ToEIntegerIfExact().ToInt64Checked();
               break;
             }
           case Double: {
-              double a = ((Double)objA).doubleValue();
-              double b = ((Double)objB).doubleValue();
+              long a = (((Long)objA).longValue());
+              long b = (((Long)objB).longValue());
               // Treat NaN as greater than all other numbers
-              cmp = Double.isNaN(a) ? (Double.isNaN(b) ? 0 : 1) : (Double.isNaN(
-                  b) ? (-1) : ((a == b) ? 0 : ((a < b) ? -1 :
-
-                      1)));
+              if (CBORUtilities.DoubleBitsNaN(a)) {
+                cmp = CBORUtilities.DoubleBitsNaN(b) ? 0 : 1;
+              } else if (CBORUtilities.DoubleBitsNaN(a)) {
+                cmp = -1;
+              } else {
+ cmp = ((a < 0) != (b < 0)) ? ((a < b) ? -1 : 1) : (((a == b) ? 0 : (((a< b)
+^ (a < 0)) ? -1 : 1)));
+}
               break;
             }
           case EDecimal: {
