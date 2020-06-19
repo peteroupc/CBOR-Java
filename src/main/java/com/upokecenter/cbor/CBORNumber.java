@@ -1479,12 +1479,10 @@ this.ToEIntegerIfExact().ToInt64Checked();
               long a = (((Long)objA).longValue());
               long b = (((Long)objB).longValue());
               // Treat NaN as greater than all other numbers
-              if (CBORUtilities.DoubleBitsNaN(a)) {
-                cmp = CBORUtilities.DoubleBitsNaN(b) ? 0 : 1;
-              } else {
- cmp = (CBORUtilities.DoubleBitsNaN(a)) ? (-1) : (((a < 0) != (b < 0)) ? ((a<
-b) ? -1 : 1) : (((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1))));
-}
+              cmp = (CBORUtilities.DoubleBitsNaN(a)) ?
+(CBORUtilities.DoubleBitsNaN(b) ? 0 : 1) : (CBORUtilities.DoubleBitsNaN(a) ?
+(-1) : (((a < 0) != (b < 0)) ? ((a< b) ? -1 : 1) : (((a == b) ? 0 : (((a <
+b) ^ (a < 0)) ? -1 : 1)))));
               break;
             }
           case EDecimal: {
