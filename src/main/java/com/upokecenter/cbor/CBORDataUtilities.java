@@ -88,7 +88,8 @@ private CBORDataUtilities() {
           long bits = obj.AsDoubleBits();
           simvalue = bits == DoubleNegInfinity ? "-Infinity" : (
               bits == DoublePosInfinity ? "Infinity" : (
-                DoubleIsNaN(bits) ? "NaN" : obj.Untag().ToJSONString()));
+                CBORUtilities.DoubleBitsNaN(bits) ? "NaN" :
+obj.Untag().ToJSONString()));
           if (sb == null) {
             return simvalue;
           }
@@ -506,11 +507,6 @@ private CBORDataUtilities() {
       return longmant;
     }
 
-    private static boolean DoubleIsNaN(long bits) {
-      bits &= ~(1L << 63);
-      return bits > DoublePosInfinity && (bits & 0xfffffffffffffL) != 0L;
-    }
-
     private static boolean IsBeyondSafeRange(long bits) {
       // Absolute value of double is greater than 9007199254740991.0,
       // or value is NaN
@@ -518,7 +514,7 @@ private CBORDataUtilities() {
       return bits >= DoublePosInfinity || bits > 0x433fffffffffffffL;
     }
 
-    private static boolean IsIntegerValue(long bits) {
+    static boolean IsIntegerValue(long bits) {
       bits &= ~(1L << 63);
       if (bits == 0) {
         return true;
