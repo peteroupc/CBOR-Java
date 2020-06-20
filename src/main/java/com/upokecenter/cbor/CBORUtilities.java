@@ -10,9 +10,6 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Contains utility methods that may have use outside of the CBORObject class.
-   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
@@ -1043,11 +1040,11 @@ private CBORUtilities() {
  * @deprecated
  */
 @Deprecated
-    public static EInteger BigIntegerFromDouble(double dbl) {
-      return BigIntegerFromDoubleBits(Double.doubleToRawLongBits(dbl));
+    public static EInteger EIntegerFromDouble(double dbl) {
+      return EIntegerFromDoubleBits(Double.doubleToRawLongBits(dbl));
     }
 
-    public static EInteger BigIntegerFromDoubleBits(long lvalue) {
+    public static EInteger EIntegerFromDoubleBits(long lvalue) {
       int value0 = ((int)(lvalue & 0xffffffffL));
       int value1 = ((int)((lvalue >> 32) & 0xffffffffL));
       int floatExponent = (int)((value1 >> 20) & 0x7ff);

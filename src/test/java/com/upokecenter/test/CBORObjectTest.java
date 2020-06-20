@@ -1371,16 +1371,16 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-        CBORObject cbornumber =
-          ToObjectTest.TestToFromObjectRoundTrip(
-            EDecimal.FromString(numberinfo.get("number").AsString()));
+        String numberString = numberinfo.get("number").AsString();
+        CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(
+            EDecimal.FromString(numberString));
         if (numberinfo.get("int32").AsBoolean()) {
           if (!(cbornumber.CanTruncatedIntFitInInt32())) {
- Assert.fail();
+ Assert.fail(numberString);
  }
         } else {
           if (cbornumber.CanTruncatedIntFitInInt32()) {
- Assert.fail();
+ Assert.fail(numberString);
  }
         }
       }
