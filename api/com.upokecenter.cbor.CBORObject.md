@@ -1760,11 +1760,11 @@ Converts this CBOR object to an object of an arbitrary type. See the
  a not-a-number value, or does not represent a number (currently
  IllegalStateException, but may change in the next major version), or
  if the value, once converted to an integer by discarding its
- fractional part, is less than -32768 or greater tha 32767 (currently
- ArithmeticException, but may change in the next major version).</li>
- <li>If the type is <code>long</code> , returns this number as a 64-bit
- signed integer after converting its value to an integer by
- discarding its fractional part, and throws an exception if this
+ fractional part, is less than -32768 or greater than 32767
+ (currently ArithmeticException, but may change in the next major
+ version).</li> <li>If the type is <code>long</code> , returns this number
+ as a 64-bit signed integer after converting its value to an integer
+ by discarding its fractional part, and throws an exception if this
  object's value is infinity or a not-a-number value, or does not
  represent a number (currently IllegalStateException, but may change
  in the next major version), or if the value, once converted to an

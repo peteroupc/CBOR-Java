@@ -380,7 +380,7 @@ Converts this number's value to a 16-bit signed integer if it can fit in a
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, or the
  number, once converted to an integer by discarding its fractional
- part, is less than -32768 or greater tha 32767.
+ part, is less than -32768 or greater than 32767.
 
 ### ToInt16Unchecked
     public short ToInt16Unchecked()
@@ -406,7 +406,7 @@ Converts this number's value to a 16-bit signed integer if it can fit in a
 **Throws:**
 
 * <code>java.lang.ArithmeticException</code> - This value is infinity or not-a-number, is not
- an exact integer, or is less than -32768 or greater tha 32767.
+ an exact integer, or is less than -32768 or greater than 32767.
 
 ### FromInt16
     public static CBORNumber FromInt16​(short inputInt16)
