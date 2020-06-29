@@ -1484,8 +1484,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
                   (CBORUtilities.DoubleBitsNaN(a) ?
                   -1 : (((a < 0) != (b < 0)) ? ((a < b) ? -1 : 1) :
                  (((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1)))));
-                 break; }
-          case EDecimal: {
+                 break; } case EDecimal: {
               cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
               break;
             }
