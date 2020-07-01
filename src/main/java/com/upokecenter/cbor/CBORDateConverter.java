@@ -17,18 +17,13 @@ import com.upokecenter.numbers.*;
       return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
     }
 
-    public CBORObject ValidateObject(CBORObject obj) {
-      if (obj.getType() != CBORType.TextString) {
-        throw new CBORException("Not a text String");
-      }
-      return obj;
-    }
-
     public java.util.Date FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(0)) {
         try {
           return StringToDateTime(obj.AsString());
         } catch (ArithmeticException ex) {
+          throw new CBORException(ex.getMessage(), ex);
+        } catch (IllegalStateException ex) {
           throw new CBORException(ex.getMessage(), ex);
         } catch (IllegalArgumentException ex) {
           throw new CBORException(ex.getMessage(), ex);

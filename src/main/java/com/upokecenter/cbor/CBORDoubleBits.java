@@ -73,11 +73,11 @@ import com.upokecenter.numbers.*;
       if (shift < 0) {
         mant <<= -shift;
       } else {
- mant >>= shift;
-}
-if (neg) {
-  mant = -mant;
-}
+        mant >>= shift;
+      }
+      if (neg) {
+        mant = -mant;
+      }
       return mant;
     }
 
