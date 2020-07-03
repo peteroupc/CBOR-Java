@@ -10,6 +10,9 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
+  /**
+   * Contains utility methods that may have use outside of the CBORObject class.
+   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
