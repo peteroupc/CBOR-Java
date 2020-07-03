@@ -1,6 +1,6 @@
 package com.upokecenter.test;
 /*
-Written by Peter O. in 2014-2016.
+Written by Peter O.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -508,8 +508,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       long count = ((long)r.GetInt32(MaxNumberLength) *
           r.GetInt32(MaxNumberLength)) / MaxNumberLength;
-      count = ((long)count *
-          r.GetInt32(MaxNumberLength)) / MaxNumberLength;
+      count = ((long)count * r.GetInt32(MaxNumberLength)) / MaxNumberLength;
       count = Math.max(1, count);
       long afterPointCount = 0;
       long exponentCount = 0;

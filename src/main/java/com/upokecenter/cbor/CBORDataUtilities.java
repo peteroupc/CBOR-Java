@@ -786,22 +786,37 @@ obj.Untag().ToJSONString()));
           }
           return CBORObject.FromObject(ei);
         }
-        if (!haveExponent && haveDecimalPoint && (endPos - numOffset) <= 19) {
+        if (!haveExponent && haveDecimalPoint) {
           // No more than 18 digits plus one decimal point (which
           // should fit a long)
           long lv = 0L;
           int expo = -(endPos - (decimalPointPos + 1));
           int vi = numOffset;
+          int digitCount = 0;
           for (; vi < decimalPointPos; ++vi) {
+            if (digitCount < 0 || digitCount >= 18) {
+               { digitCount = -1;
+            }
+            break;
+            } else if (digitCount > 0 || str.charAt(vi) != '0') {
+    { digitCount++;
+ } }
             lv = ((lv * 10) + (int)(str.charAt(vi) - '0'));
           }
           for (vi = decimalPointPos + 1; vi < endPos; ++vi) {
+            if (digitCount < 0 || digitCount >= 18) {
+               { digitCount = -1;
+            }
+            break;
+            } else if (digitCount > 0 || str.charAt(vi) != '0') {
+    { digitCount++;
+ } }
             lv = ((lv * 10) + (int)(str.charAt(vi) - '0'));
           }
           if (negative) {
             lv = -lv;
           }
-          if (!negative || lv != 0) {
+          if (digitCount >= 0 && (!negative || lv != 0)) {
             if (expo == 0) {
               return CBORObject.FromObject(lv);
             } else {
@@ -814,6 +829,8 @@ obj.Untag().ToJSONString()));
             }
           }
         }
+        // System.out.println("convfull " + str.substring(initialOffset,(initialOffset)+(endPos -
+        // initialOffset)));
         EDecimal ed = EDecimal.FromString(
             str,
             initialOffset,

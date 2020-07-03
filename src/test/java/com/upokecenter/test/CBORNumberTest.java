@@ -39,22 +39,27 @@ import com.upokecenter.numbers.*;
         TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
     }
+
     @Test
     public void TestToCBORObject() {
       // not implemented yet
     }
+
     @Test
     public void TestFromCBORObject() {
       // not implemented yet
     }
+
     @Test
     public void TestToString() {
       // not implemented yet
     }
+
     @Test
     public void TestCanFitInInt32() {
       // not implemented yet
     }
+
     @Test
     public void TestCanFitInInt64() {
       if (!(CBORObject.FromObject(0).AsNumber().CanFitInInt64())) {
@@ -73,6 +78,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
     }
+
     @Test
     public void TestIsInfinity() {
       if (CBORObject.FromObject(0).AsNumber().IsInfinity()) {
@@ -91,6 +97,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
     }
+
     @Test
     public void TestIsNaN() {
       if (CBORObject.FromObject(0).AsNumber().IsNaN()) {
@@ -113,14 +120,17 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
     }
+
     @Test
     public void TestNegate() {
       // not implemented yet
     }
+
     @Test
     public void TestAdd() {
       // not implemented yet
     }
+
     @Test
     public void TestSubtract() {
       // not implemented yet
@@ -129,6 +139,7 @@ import com.upokecenter.numbers.*;
     private static EDecimal AsED(CBORObject obj) {
       return (EDecimal)obj.ToObject(EDecimal.class);
     }
+
     @Test
     public void TestMultiply() {
       try {
@@ -156,6 +167,7 @@ import com.upokecenter.numbers.*;
         CBORTestCommon.AssertRoundTrip(o2);
       }
     }
+
     @Test
     public void TestDivide() {
       try {
@@ -168,6 +180,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestRemainder() {
       try {
@@ -180,26 +193,32 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestCompareTo() {
       // not implemented yet
     }
+
     @Test
     public void TestLessThan() {
       // not implemented yet
     }
+
     @Test
     public void TestLessThanOrEqual() {
       // not implemented yet
     }
+
     @Test
     public void TestGreaterThan() {
       // not implemented yet
     }
+
     @Test
     public void TestGreaterThanOrEqual() {
       // not implemented yet
     }
+
     @Test
     public void TestGetType() {
       // not implemented yet
@@ -570,6 +589,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAsEFloat() {
       {
@@ -605,6 +625,7 @@ import com.upokecenter.numbers.*;
         Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
+
     @Test
     public void TestAsERational() {
       {

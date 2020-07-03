@@ -7,6 +7,7 @@ import com.upokecenter.util.*;
     private static final class ByteWriter {
       private byte[] bytes = new byte[64];
       private int pos = 0;
+
       public ByteWriter Write(int b) {
         if (this.pos < this.bytes.length) {
           this.bytes[this.pos++] = (byte)b;
@@ -18,9 +19,11 @@ import com.upokecenter.util.*;
         }
         return this;
       }
+
       public final int getByteLength() {
           return this.pos;
         }
+
       public byte[] ToBytes() {
         byte[] newbytes = new byte[this.pos];
         System.arraycopy(this.bytes, 0, newbytes, 0, this.pos);
@@ -81,6 +84,7 @@ import com.upokecenter.util.*;
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4,
       4, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
+
     private static int[] valueMajorTypesHighLength = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6,
       6, 7, 7, 7, 7, 7, 7,

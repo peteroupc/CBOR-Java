@@ -13,6 +13,7 @@ import com.upokecenter.numbers.*;
  }
       CBORTestCommon.AssertRoundTrip(obj);
     }
+
     // testing obsolete method
     @SuppressWarnings("deprecation")
     @Test
@@ -114,6 +115,7 @@ import com.upokecenter.numbers.*;
           jsonDecimal.toString());
       }
     }
+
     private static final String[] GoodJsonNumbers = {
       "5.2", "5e+1", "-5.2", "-5e+1",
       "5.2", "5e+01", "-5.2", "-5e+01",
@@ -121,6 +123,7 @@ import com.upokecenter.numbers.*;
       "5.000e-01", "-5e-01",
       "5.000e01", "-5e01",
     };
+
     private static final String[] BadJsonNumbers = {
       null, "100.", "-100.", "100.e+20", "-100.e+20",
       "100.e20", "+0.1", "0.", "-0.", "+0",

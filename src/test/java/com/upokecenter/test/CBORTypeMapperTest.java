@@ -33,6 +33,7 @@ import com.upokecenter.cbor.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAddTypePrefix() {
       CBORTypeMapper tm = new CBORTypeMapper();

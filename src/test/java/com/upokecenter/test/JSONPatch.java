@@ -177,7 +177,7 @@ private JSONPatch() {
         if (pointer.GetParent().getType() == CBORType.Array) {
           ((CBORObject)pointer.GetParent()).RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
-          ((CBORObject)pointer.GetParent()).Remove(
+((CBORObject)pointer.GetParent()).Remove(
             CBORObject.FromObject(pointer.GetKey()));
         }
         return o;

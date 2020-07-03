@@ -440,14 +440,16 @@ import com.upokecenter.numbers.*;
         (byte)0xc2, 0x41,
         (byte)0x88,
        });
-      Assert.assertEquals(EInteger.FromRadixString("88", 16),
+      Assert.assertEquals(
+        EInteger.FromRadixString("88", 16),
         o.ToObject(EInteger.class));
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
         (byte)0xc2, 0x42,
         (byte)0x88,
         0x77,
        });
-      Assert.assertEquals(EInteger.FromRadixString("8877", 16),
+      Assert.assertEquals(
+        EInteger.FromRadixString("8877", 16),
         o.ToObject(EInteger.class));
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
         (byte)0xc2, 0x44,
@@ -530,6 +532,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(CBORType.Map, cbor.getType());
       Assert.assertEquals(0, cbor.size());
     }
+
     @Test
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
       try {
@@ -701,6 +704,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestByteStringStreamNoTagsBeforeDefinite() {
       try {
@@ -1097,6 +1101,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
       return true;
     }
+
     public static boolean TestEquivJSONNumberOne(byte[] bytes) {
       // Assume the JSON begins and ends with a digit
       if (bytes == null) {
@@ -1128,6 +1133,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       Assert.assertEquals("[" + str + "] cbored",cbor,cbored);
       return true;
     }
+
     public static boolean TestEquivJSONNumberDecimal128One(byte[] bytes) {
       // Assume the JSON begins and ends with a digit
       if (bytes == null) {
@@ -1157,6 +1163,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       Assert.assertEquals("[" + str + "] cbored",cbor,cbored);
       return true;
     }
+
     public static void TestCompareToOne(byte[] bytes) {
       CBORObject cbor = CBORObject.DecodeFromBytes(bytes, new
           CBOREncodeOptions("allowduplicatekeys=1"));
@@ -1470,6 +1477,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestDecimalFracExactlyTwoElements() {
       CBORObject obj = CBORTestCommon.FromBytesTestAB(new byte[] {
@@ -1487,6 +1495,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestDecimalFracExponentMustNotBeBignum() {
       CBORObject obj = CBORObject.DecodeFromBytes(new byte[] {
@@ -1506,6 +1515,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestBigFloatExponentMustNotBeBignum() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
@@ -1623,6 +1633,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
           TestCommon.IntToString(i));
       }
     }
+
     @Test
     public void TestDoubleCompare() {
       CBORObject oldobj = null;
@@ -1707,6 +1718,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
           TestCommon.IntToString(i));
       }
     }
+
     @Test
     public void TestHalfPrecision() {
       CBORObject o = CBORObject.DecodeFromBytes(
@@ -2085,9 +2097,11 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     public static CBORObject ReferenceTestObject() {
       return ReferenceTestObject(50);
     }
+
     public static CBORObject ReferenceTestObject(int nests) {
       CBORObject root = CBORObject.NewArray();
       CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
@@ -2116,6 +2130,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         TestCtap2CanonicalReferenceTestOne(ReferenceTestObject(i));
       }
     }
+
     public static void TestCtap2CanonicalReferenceTestOne(CBORObject root) {
       if (root == null) {
         throw new NullPointerException("root");
@@ -2850,6 +2865,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(exp, act);
       }
     }
+
     private static void AssertEquals(Object oexp, Object oact) {
       // Much less overhead than Assert alone if the
       // two arguments are equal
@@ -2857,6 +2873,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(oexp, oact);
       }
     }
+
     private static void AssertEquals(Object oexp, Object oact, String str) {
       // Much less overhead than Assert alone if the
       // two arguments are equal
@@ -4254,6 +4271,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        });
       CBORTestCommon.AssertRoundTrip(cbor);
     }
+
     @Test
     public void TestTagThenBreak() {
       try {
@@ -4282,6 +4300,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestTextStringStreamOne(TestCommon.Repeat('\u3000', 200000));
       TestTextStringStreamOne(TestCommon.Repeat("\ud800\udc00", 200000));
     }
+
     @Test
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
       try {

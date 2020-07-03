@@ -249,6 +249,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAsBoolean() {
       Assert.assertEquals(true, CBORObject.True.ToObject(boolean.class));
@@ -560,6 +561,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAsEFloat() {
       {
@@ -601,6 +603,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
  Assert.fail();
  }
     }
+
     @Test
     public void TestAsERational() {
       {
@@ -643,6 +646,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
           ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
           .ToObject(ERational.class)).AsNumber().IsNaN());
     }
+
     @Test
     public void TestAsInt16() {
       try {
@@ -854,6 +858,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         }
       }
     }
+
     @Test
     public void TestAsInt64() {
       try {
@@ -983,6 +988,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         }
       }
     }
+
     @Test
     public void TestAsSingle() {
       try {
@@ -1055,6 +1061,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         }
       }
     }
+
     @Test
     public void TestAsString() {
       {
@@ -1159,8 +1166,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       Assert.assertEquals(999, fc.publicFieldA);
     }
 
-    @Test
-    /* TIMEOUTOVERRIDE5000 */
+    @Test(timeout = 5000)
     public void TestToObject() {
       PODClass ao = new PODClass();
       CBORObject co = CBORObject.FromObject(ao);
@@ -1320,6 +1326,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       dt[19] = 'Z';
       return new String(dt);
     }
+
     @Test
     public void TestDateRoundTrip() {
       RandomGenerator rand = new RandomGenerator();
@@ -1332,6 +1339,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         TestToFromObjectRoundTrip(dtime);
       }
     }
+
     @Test
     public void TestBadDate() {
       CBORObject cbor = CBORObject.FromObjectAndTag(

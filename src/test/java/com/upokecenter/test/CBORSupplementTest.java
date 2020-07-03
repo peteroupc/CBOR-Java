@@ -198,6 +198,7 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestCBORObjectArgumentValidation() {
       Assert.assertEquals(
@@ -1042,6 +1043,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
   "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
+
     @Test
     public void TestCPOD() {
       CPOD m = new CPOD();

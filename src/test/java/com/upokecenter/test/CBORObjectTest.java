@@ -344,6 +344,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return new String(charbuf, 0, index);
       }
     }
+
     @Test
     public void TestAdd() {
       CBORObject cbor = CBORObject.NewMap();
@@ -353,6 +354,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       cbor.Add("key", null);
       Assert.assertEquals(CBORObject.Null, cbor.get("key"));
     }
+
     @Test
     public void TestAddConverter() {
       // not implemented yet
@@ -361,6 +363,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static EDecimal AsED(CBORObject obj) {
       return (EDecimal)obj.ToObject(EDecimal.class);
     }
+
     @Test(timeout = 200000)
     public void TestAsNumberAdd() {
       RandomGenerator r = new RandomGenerator();
@@ -412,6 +415,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail();
  }
     }
+
     @Test
     public void TestAsByte() {
       try {
@@ -785,6 +789,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test
     public void TestAsInt64() {
       try {
@@ -902,10 +907,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test
     public void TestAsSByte() {
       // not implemented yet
     }
+
     @Test
     public void TestAsSingle() {
       try {
@@ -976,6 +983,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test
     public void TestAsString() {
       {
@@ -1040,18 +1048,22 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAsUInt16() {
       // not implemented yet
     }
+
     @Test
     public void TestAsUInt32() {
       // not implemented yet
     }
+
     @Test
     public void TestAsUInt64() {
       // not implemented yet
     }
+
     @Test
     public void TestCanFitInDouble() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
@@ -1107,6 +1119,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  }
       }
     }
+
     @Test
     public void TestCanFitInInt32() {
       if (!(CInt32(ToObjectTest.TestToFromObjectRoundTrip(0))))Assert.fail();
@@ -1154,6 +1167,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     private static boolean CInt64(CBORObject cbor) {
       return cbor.isNumber() && cbor.AsNumber().CanFitInInt64();
     }
@@ -1161,6 +1175,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static boolean CInt32(CBORObject cbor) {
       return cbor.isNumber() && cbor.AsNumber().CanFitInInt32();
     }
+
     @Test
     public void TestCanFitInInt64() {
       if (!(CInt64(ToObjectTest.TestToFromObjectRoundTrip(0))))Assert.fail();
@@ -1257,6 +1272,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test
     public void TestCanFitInSingle() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
@@ -1313,6 +1329,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               i)).CanFitInSingle()))Assert.fail();
       }
     }
+
     @Test
     public void TestCanTruncatedIntFitInInt32() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
@@ -1572,6 +1589,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test(timeout = 1000)
     public void TestSlowCompareTo2() {
       CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
@@ -1627,6 +1645,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       System.out.println(cbor2);
       TestCommon.CompareTestReciprocal(cbor1.AsNumber(), cbor2.AsNumber());
     }
+
     @Test(timeout = 1000)
     public void TestSlowCompareTo5() {
       CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
@@ -1732,6 +1751,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private static String TrimStr(String str, int len) {
       return str.substring(0, Math.min(len, str.length()));
     }
+
     @Test
     public void CompareLongDouble() {
       CBORObject cbor1 = CBORObject.FromObject(3.5E-15);
@@ -1886,10 +1906,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject.FromObject(10).AsNumber(),
         CBORObject.FromObject(ERational.Create(10, 1)).AsNumber());
     }
+
     @Test
     public void TestContainsKey() {
       // not implemented yet
     }
+
     @Test
     public void TestCount() {
       Assert.assertEquals(0, CBORObject.True.size());
@@ -2759,6 +2781,7 @@ CBOREncodeOptions(false, false, true));
       etags = obj.GetAllTags();
       Assert.assertEquals(0, etags.length);
     }
+
     @Test
     public void TestEI() {
       CBORObject cbor =
@@ -2798,6 +2821,7 @@ CBOREncodeOptions(false, false, true));
  Assert.fail();
  }
     }
+
     @Test
     public void TestFromObject() {
       CBORObject[] cborarray = new CBORObject[2];
@@ -3262,6 +3286,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestFromSimpleValue() {
       try {
@@ -3356,6 +3381,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestGetByteString() {
       try {
@@ -3413,14 +3439,17 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestGetHashCode() {
       // not implemented yet
     }
+
     @Test
     public void TestGetTags() {
       // not implemented yet
     }
+
     @Test
     public void TestHasTag() {
       try {
@@ -3458,18 +3487,22 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
     }
+
     @Test
     public void TestMostInnerTag() {
       // not implemented yet
     }
+
     @Test
     public void TestInsert() {
       // not implemented yet
     }
+
     @Test
     public void TestIsFalse() {
       // not implemented yet
     }
+
     @Test
     public void TestIsFinite() {
       CBORObject cbor;
@@ -3551,6 +3584,7 @@ private final PODClass propVarpropvalue;
         // NOTE: A nonintegral number is not necessarily non-finite
       }
     }
+
     @Test
     public void TestIsInfinity() {
       if (!(CBORObject.PositiveInfinity.AsNumber().IsInfinity())) {
@@ -3690,6 +3724,7 @@ private final PODClass propVarpropvalue;
         }
       }
     }
+
     @Test
     public void TestAsNumber() {
       try {
@@ -3756,6 +3791,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestAsNumberIsNegativeInfinity() {
       if (CBORObject.FromObject(
@@ -3776,6 +3812,7 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
     }
+
     @Test
     public void TestIsNull() {
       if (CBORObject.True.isNull()) {
@@ -3810,6 +3847,7 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
     }
+
     @Test
     public void TestAsNumberIsPositiveInfinity() {
       if (CBORObject.FromObject(
@@ -3830,14 +3868,17 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
     }
+
     @Test
     public void TestIsTagged() {
       // not implemented yet
     }
+
     @Test
     public void TestIsTrue() {
       // not implemented yet
     }
+
     @Test
     public void TestIsUndefined() {
       if (CBORObject.True.isUndefined()) {
@@ -3872,10 +3913,12 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
     }
+
     @Test
     public void TestIsZero() {
       // not implemented yet
     }
+
     @Test
     public void TestItem2() {
       CBORObject cbor = CBORObject.True;
@@ -4084,6 +4127,7 @@ private final PODClass propVarpropvalue;
         Assert.fail();
       }
     }
+
     @Test(timeout = 200000)
     public void TestAsNumberMultiply() {
       RandomGenerator r = new RandomGenerator();
@@ -4100,6 +4144,7 @@ private final PODClass propVarpropvalue;
         }
       }
     }
+
     @Test
     public void TestAsNumberNegate() {
       TestCommon.CompareTestEqual(
@@ -4133,34 +4178,42 @@ private final PODClass propVarpropvalue;
           EDecimal.FromString("-0"));
       CBORTestCommon.AssertRoundTrip(negzero);
     }
+
     @Test
     public void TestNewArray() {
       // not implemented yet
     }
+
     @Test
     public void TestNewMap() {
       // not implemented yet
     }
+
     @Test
     public void TestOperatorAddition() {
       // not implemented yet
     }
+
     @Test
     public void TestOperatorDivision() {
       // not implemented yet
     }
+
     @Test
     public void TestOperatorModulus() {
       // not implemented yet
     }
+
     @Test
     public void TestOperatorMultiply() {
       // not implemented yet
     }
+
     @Test
     public void TestOperatorSubtraction() {
       // not implemented yet
     }
+
     @Test
     public void TestMostOuterTag() {
       CBORObject cbor = CBORObject.FromObjectAndTag(CBORObject.True, 999);
@@ -4169,6 +4222,7 @@ private final PODClass propVarpropvalue;
       cbor = CBORObject.True;
       Assert.assertEquals(EInteger.FromString("-1"), cbor.getMostOuterTag());
     }
+
     @Test
     public void TestRead() {
       try {
@@ -5558,6 +5612,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.getMessage());
       }
     }
+
     private static void ReadJsonFail(byte[] msbytes) {
       {
         java.io.ByteArrayInputStream msjson = null;
@@ -5895,6 +5950,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestRemoveAt() {
       CBORObject cbor;
@@ -5948,6 +6004,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestSet() {
       CBORObject cbor = CBORObject.NewMap().Add("x", 0).Add("y", 1);
@@ -6002,6 +6059,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       cbor.Set(3, 199);
       Assert.assertEquals(199, cbor.get(3).AsInt32());
     }
+
     @Test
     public void TestSign() {
       try {
@@ -6065,6 +6123,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         }
       }
     }
+
     @Test(timeout = 200000)
     public void TestAsNumberSubtract() {
       try {
@@ -6760,6 +6819,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         CBORType.SimpleValue,
         cbor.getType());
     }
+
     @Test
     public void TestUntag() {
       CBORObject o = CBORObject.FromObjectAndTag("test", 999);
@@ -6767,10 +6827,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       o = o.Untag();
       Assert.assertEquals(EInteger.FromString("-1"), o.getMostInnerTag());
     }
+
     @Test
     public void TestUntagOne() {
       // not implemented yet
     }
+
     @Test
     public void TestValues() {
       // not implemented yet
@@ -7652,6 +7714,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
+
     @Test
     public void TestWriteJSON() {
       // not implemented yet
@@ -7717,10 +7780,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
+
     @Test
     public void TestWriteJSONTo() {
       // not implemented yet
     }
+
     @Test
     public void TestWriteTo() {
       // not implemented yet

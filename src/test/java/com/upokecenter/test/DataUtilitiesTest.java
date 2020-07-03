@@ -207,6 +207,7 @@ import com.upokecenter.util.*;
         Assert.assertEquals(objectTemp, objectTemp2);
 }
     }
+
     @Test
     public void TestCodePointBefore() {
       try {
@@ -255,6 +256,7 @@ import com.upokecenter.util.*;
 }
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A\udc00B", 2, 2));
     }
+
     @Test
     public void TestCodePointCompare() {
       int integerTemp3;
@@ -563,6 +565,7 @@ import com.upokecenter.util.*;
         new byte[] { (byte)0xf0, (byte)0x90, (byte)0x80, (byte)0x80 },
         DataUtilities.GetUtf8Bytes("\ud800\udc00", false));
     }
+
     @Test
     public void TestGetUtf8Length() {
       try {
@@ -679,6 +682,7 @@ import com.upokecenter.util.*;
         Assert.assertEquals(4, numberTemp);
       }
     }
+
     @Test
     public void TestGetUtf8String() {
       TestUtf8RoundTrip("A" + Repeat("\u00e0", 10000));
@@ -911,6 +915,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
     }
+
     @Test
     public void TestReadUtf8() {
       try {
@@ -1094,6 +1099,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         -1,
         null);
     }
+
     @Test
     public void TestReadUtf8FromBytes() {
       StringBuilder builder = new StringBuilder();
@@ -1222,6 +1228,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
     }
+
     @Test
     public void TestReadUtf8ToString() {
       try {
@@ -1286,6 +1293,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
       }
     }
+
     @Test
     public void TestToLowerCaseAscii() {
       if (DataUtilities.ToLowerCaseAscii(null) != null) {
@@ -1304,6 +1312,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
           stringTemp);
       }
     }
+
     @Test
     public void TestToUpperCaseAscii() {
       if (DataUtilities.ToUpperCaseAscii(null) != null) {
@@ -1322,6 +1331,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
           stringTemp);
       }
     }
+
     @Test
     public void TestWriteUtf8() {
       try {
