@@ -337,15 +337,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               - '0'),
             this.options);
       } else {
-        StringBuilder ssb = new StringBuilder(numberEndIndex - numberStartIndex);
-        int ki;
-        for (ki = numberStartIndex; ki < numberEndIndex; ++ki) {
-          ssb.append((char)(((int)this.bytes[ki]) & 0xff));
-        }
-        String str = ssb.toString();
-        obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+        obj = CBORDataUtilities.ParseJSONNumber(
+            this.bytes,
+            numberStartIndex,
+            numberEndIndex - numberStartIndex,
+            this.options);
+
         if (obj == null) {
-          String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");
+          String errstr = "";
+          // errstr = (str.length() <= 100) ? str : (str.substring(0, //      100) + "...");
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
       }
@@ -360,7 +360,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     private CBORObject NextJSONNonnegativeNumber(int c, int[] nextChar) {
       // Assumes the last character read was a digit
       CBORObject obj = null;
-      String str;
       int cval = c - '0';
       int cstart = c;
       int startIndex = this.index - 1;
@@ -395,6 +394,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 '9'))) {
             // All-digit number that's short enough
             obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
+
             needObj = false;
           }
         } else if (!(c == '-' || c == '+' || c == '.' || c == 'e' || c
@@ -402,6 +402,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           // Optimize for common case where JSON number
           // is two digits without sign, decimal point, or exponent
           obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
+
           needObj = false;
         }
       }
@@ -417,15 +418,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           this.RaiseError("Invalid character after JSON number");
         }
         int numberEndIndex = c < 0 ? this.endPos : this.index - 1;
-        StringBuilder ssb = new StringBuilder(numberEndIndex - startIndex);
-        int ki;
-        for (ki = startIndex; ki < numberEndIndex; ++ki) {
-          ssb.append((char)(((int)this.bytes[ki]) & 0xff));
-        }
-        str = ssb.toString();
-        obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+        obj = CBORDataUtilities.ParseJSONNumber(
+           this.bytes,
+           numberStartIndex,
+           numberEndIndex - numberStartIndex,
+           this.options);
+
         if (obj == null) {
-          String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");
+          String errstr = "";
+          // errstr = (str.length() <= 100) ? str : (str.substring(0, //      100) + "...");
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
       }

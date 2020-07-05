@@ -9,14 +9,15 @@ at: http://peteroupc.github.io/CBOR/
 
 import java.io.InputStream;
 import java.lang.reflect.*;
+import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
@@ -303,6 +304,45 @@ if(!setters){
      mapper, depth+1));
    }
    return obj;
+  }
+
+  static class CopyOnWriteList extends AbstractList<CBORObject> {
+     List<CBORObject> list;
+     CBORObject[] array;
+     public CopyOnWriteList(CBORObject[] array) {
+        this.array=array;
+     }
+     public CBORObject get(int i) {
+        return list!=null ? list.get(i) : array[i];
+     }
+     public int size() {
+        return list!=null ? list.size() : array.length;
+     }
+     public CBORObject set(int i, CBORObject v) {
+        if(list==null) {
+           list=new ArrayList<CBORObject>(Arrays.asList(array));
+           array=null;
+        }
+        return list.set(i, v);
+     }
+     public void add(int i, CBORObject v) {
+        if(list==null) {
+           list=new ArrayList<CBORObject>(Arrays.asList(array));
+           array=null;
+        }
+        list.add(i, v);
+     }
+     public CBORObject remove(int i) {
+        if(list==null) {
+           list=new ArrayList<CBORObject>(Arrays.asList(array));
+           array=null;
+        }
+        return list.remove(i);
+     }
+  }
+
+  public static List<CBORObject> ListFromArray(CBORObject[] array) {
+       return new CopyOnWriteList(array);
   }
 
   /**

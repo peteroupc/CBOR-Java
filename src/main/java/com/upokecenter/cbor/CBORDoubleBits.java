@@ -32,13 +32,11 @@ import com.upokecenter.numbers.*;
     }
 
     public EDecimal AsEDecimal(Object obj) {
-      // TODO: Use FromDoubleBits once available
-      return EDecimal.FromDouble(this.AsDouble(obj));
+      return EDecimal.FromDoubleBits((((Long)obj).longValue()));
     }
 
     public EFloat AsEFloat(Object obj) {
-      // TODO: Use FromDoubleBits once available
-      return EFloat.FromDouble(this.AsDouble(obj));
+      return EFloat.FromDoubleBits((((Long)obj).longValue()));
     }
 
     public float AsSingle(Object obj) {
@@ -190,8 +188,7 @@ return this.IsNaN(obj) ? (-2) : ((((((Long)obj).longValue())) >> 63) != 0 ? -1 :
     }
 
     public ERational AsERational(Object obj) {
-      // TODO: Use FromDoubleBits once available
-      return ERational.FromDouble(this.AsDouble(obj));
+      return ERational.FromDoubleBits((((Long)obj).longValue()));
     }
 
     public boolean IsNegative(Object obj) {
