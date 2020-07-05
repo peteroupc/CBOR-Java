@@ -123,11 +123,11 @@ import com.upokecenter.numbers.*;
       } else if (o.HasOneTag(2) || o.HasOneTag(3)) {
         return o.getType() == CBORType.ByteString;
       } else if (o.HasOneTag(4) ||
-        o.HasOneTag(5) ||
-        o.HasOneTag(264) ||
-        o.HasOneTag(265) ||
-        o.HasOneTag(268) ||
-        o.HasOneTag(269)) {
+   o.HasOneTag(5) ||
+   o.HasOneTag(264) ||
+   o.HasOneTag(265) ||
+   o.HasOneTag(268) ||
+   o.HasOneTag(269)) {
         return CheckBigFracToNumber(o,
             o.getMostOuterTag().ToInt32Checked());
       } else if (o.HasOneTag(30) ||
@@ -163,11 +163,11 @@ import com.upokecenter.numbers.*;
       if (o.HasOneTag(2) || o.HasOneTag(3)) {
         return BignumToNumber(o);
       } else if (o.HasOneTag(4) ||
-        o.HasOneTag(5) ||
-        o.HasOneTag(264) ||
-        o.HasOneTag(265) ||
-        o.HasOneTag(268) ||
-        o.HasOneTag(269)) {
+   o.HasOneTag(5) ||
+   o.HasOneTag(264) ||
+   o.HasOneTag(265) ||
+   o.HasOneTag(268) ||
+   o.HasOneTag(269)) {
         return BigFracToNumber(o,
             o.getMostOuterTag().ToInt32Checked());
       } else if (o.HasOneTag(30) ||
@@ -265,8 +265,7 @@ import com.upokecenter.numbers.*;
                 options >= 6,
                 options == 5 || options == 7);
             break;
-          default:
-            return null; // "Invalid options");
+          default: return null; // "Invalid options");
         }
       }
       return CBORNumber.FromObject(erat);
@@ -607,8 +606,7 @@ import com.upokecenter.numbers.*;
           long thisValue = (((Long)this.value).longValue());
           return thisValue == 0;
         }
-        default:
-          return this.GetNumberInterface().IsNumberZero (this.GetValue());
+        default: return this.GetNumberInterface().IsNumberZero(this.GetValue());
       }
     }
 
@@ -961,8 +959,7 @@ import com.upokecenter.numbers.*;
             return f.toString();
           }
         }
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -1129,8 +1126,7 @@ import com.upokecenter.numbers.*;
             return FromObject(eiValue.Negate());
           }
         }
-        default:
-          return new CBORNumber(this.kind,
+        default: return new CBORNumber(this.kind,
               this.GetNumberInterface().Negate(this.GetValue()));
       }
     }
@@ -1487,8 +1483,7 @@ import com.upokecenter.numbers.*;
               (CBORUtilities.DoubleBitsNaN(a) ?
                 -1 : (((a < 0) != (b < 0)) ? ((a < b) ? -1 : 1) :
                   (((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1)))));
-            break;
-          }
+                  break; }
           case EDecimal: {
             cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
             break;
@@ -1503,8 +1498,7 @@ import com.upokecenter.numbers.*;
                 (ERational)objB);
             break;
           }
-          default:
-            throw new IllegalStateException(
+          default: throw new IllegalStateException(
               "Unexpected data type");
         }
       } else {
