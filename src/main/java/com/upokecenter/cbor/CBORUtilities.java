@@ -517,9 +517,7 @@ private CBORUtilities() {
     }
 
     public static String DoubleBitsToString(long dblbits) {
-      // TODO: Use FromDoubleBits when available
-      return EFloat.FromDouble(Int64BitsToDouble(dblbits))
-           .ToShortestString(EContext.Binary64);
+      return EFloat.FromDoubleBits(dblbits).ToShortestString(EContext.Binary64);
     }
 
 /**

@@ -213,7 +213,6 @@ obj.Untag().ToJSONString()));
      * specification. The method uses a JSONOptions with all default
      * properties except for a PreserveNegativeZero property of false.
      * @param bytes A byte sequence to parse as a JSON number.
-     * @param bytes The parameter {@code bytes} is not documented yet.
      * @return A CBOR object that represents the parsed number. Returns positive
      * zero if the number is a zero that starts with a minus sign (such as
      *  "-0" or "-0.0"). Returns null if the parsing fails, including if the
@@ -535,6 +534,10 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
+     * @param bytes Not documented yet.
+     * @param offset Not documented yet.
+     * @param count Not documented yet.
+     * @param options Not documented yet.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty or
      * {@code count} is 0 or less.
@@ -560,6 +563,8 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
+     * @param bytes Not documented yet.
+     * @param options Not documented yet.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty.
      */
@@ -584,6 +589,9 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
+     * @param bytes Not documented yet.
+     * @param offset Not documented yet.
+     * @param count Not documented yet.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty.
      * @throws IllegalArgumentException Either {@code offset} or {@code count} is less

@@ -345,7 +345,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
         if (obj == null) {
           String errstr = "";
-          // errstr = (str.length() <= 100) ? str : (str.substring(0, //      100) + "...");
+          // errstr = (str.length() <= 100) ? str : (str.substring(0, // 100) + "...");
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
       }
@@ -426,7 +426,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
         if (obj == null) {
           String errstr = "";
-          // errstr = (str.length() <= 100) ? str : (str.substring(0, //      100) + "...");
+          // errstr = (str.length() <= 100) ? str : (str.substring(0, // 100) + "...");
           this.RaiseError("JSON number can't be parsed. " + errstr);
         }
       }

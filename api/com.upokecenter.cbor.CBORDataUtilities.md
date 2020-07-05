@@ -92,8 +92,6 @@ Parses a number from a byte sequence whose format follows the JSON
 
 * <code>bytes</code> - A byte sequence to parse as a JSON number.
 
-* <code>bytes</code> - The parameter <code>bytes</code> is not documented yet.
-
 **Returns:**
 
 * A CBOR object that represents the parsed number. Returns positive
@@ -269,6 +267,16 @@ Parses a number from a byte sequence whose format follows the JSON
  valid JSON number is not allowed to contain white space characters,
  including spaces.</p>
 
+**Parameters:**
+
+* <code>bytes</code> - Not documented yet.
+
+* <code>offset</code> - Not documented yet.
+
+* <code>count</code> - Not documented yet.
+
+* <code>options</code> - Not documented yet.
+
 **Returns:**
 
 * A CBOR object that represents the parsed number. Returns null if the
@@ -294,6 +302,12 @@ Parses a number from a byte sequence whose format follows the JSON
  valid JSON number is not allowed to contain white space characters,
  including spaces.</p>
 
+**Parameters:**
+
+* <code>bytes</code> - Not documented yet.
+
+* <code>options</code> - Not documented yet.
+
 **Returns:**
 
 * A CBOR object that represents the parsed number. Returns null if the
@@ -311,6 +325,14 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
  or more basic digits (the exponent). A byte sequence representing a
  valid JSON number is not allowed to contain white space characters,
  including spaces.</p>
+
+**Parameters:**
+
+* <code>bytes</code> - Not documented yet.
+
+* <code>offset</code> - Not documented yet.
+
+* <code>count</code> - Not documented yet.
 
 **Returns:**
 

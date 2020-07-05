@@ -940,8 +940,7 @@ this.ToEIntegerIfExact().ToInt64Checked();
               // Too inefficient to convert to a decimal number
               // from a bigfloat with a very high exponent,
               // so convert to double instead
-              // TODO: Use ToDoubleBits once available
-              long f = CBORUtilities.DoubleToInt64Bits(flo.ToDouble());
+              long f = flo.ToDoubleBits();
               if (!CBORUtilities.DoubleBitsFinite(f)) {
                 return "null";
               }
