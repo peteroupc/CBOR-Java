@@ -951,8 +951,16 @@ import com.upokecenter.numbers.*;
         }
         case ERational: {
           ERational dec = (ERational)this.value;
+          String nnstr = dec.getNumerator().toString();
+          String dnstr = dec.getDenominator().toString();
+          // System.out.println(
+          // "numlen="+nnstr.length() +
+          // " denlen="+dnstr.length() +
+          // "\nstart="+java.util.Date.UtcNow);
           EDecimal f = dec.ToEDecimalExactIfPossible(
               EContext.Decimal128.WithUnlimitedExponents());
+          // System.out.println(
+          // " end="+java.util.Date.UtcNow);
           if (!f.isFinite()) {
             return "null";
           } else {
@@ -1131,11 +1139,70 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    private static ERational CheckOverflow(
+      ERational e1,
+      ERational e2,
+      ERational eresult) {
+        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+           throw new OutOfMemoryError("Result might be too big to fit in" +
+"\u0020memory");
+        }
+        return eresult;
+    }
+
+    private static EDecimal CheckOverflow(EDecimal e1, EDecimal e2, EDecimal
+eresult) {
+        // System.out.println("ED e1.setExp("+e1.getExponent()));
+        // System.out.println("ED e2.setExp("+e2.getExponent()));
+        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+           throw new OutOfMemoryError("Result might be too big to fit in" +
+"\u0020memory");
+        }
+        return eresult;
+    }
+
+    private static EFloat CheckOverflow(EFloat e1, EFloat e2, EFloat eresult) {
+        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+           throw new OutOfMemoryError("Result might be too big to fit in" +
+"\u0020memory");
+        }
+        return eresult;
+    }
+
+    private static NumberKind GetConvertKind(CBORNumber a, CBORNumber b) {
+      NumberKind typeA = a.kind;
+      NumberKind typeB = b.kind;
+      NumberKind convertKind = NumberKind.EInteger;
+      if (!a.IsFinite()) {
+        convertKind = (typeB == NumberKind.Integer || typeB ==
+NumberKind.EInteger) ? ((typeA == NumberKind.Double) ? NumberKind.EFloat :
+typeA) : ((typeB == NumberKind.Double) ? NumberKind.EFloat : typeB);
+      } else if (!b.IsFinite()) {
+        convertKind = (typeA == NumberKind.Integer || typeA ==
+NumberKind.EInteger) ? ((typeB == NumberKind.Double) ? NumberKind.EFloat :
+typeB) : ((typeA == NumberKind.Double) ? NumberKind.EFloat : typeA);
+      } else if (typeA == NumberKind.ERational ||
+        typeB == NumberKind.ERational) {
+        convertKind = NumberKind.ERational;
+      } else if (typeA == NumberKind.EDecimal ||
+        typeB == NumberKind.EDecimal) {
+        convertKind = NumberKind.EDecimal;
+      }
+      else convertKind = (typeA == NumberKind.EFloat || typeB ==
+NumberKind.EFloat ||
+        typeA == NumberKind.Double || typeB == NumberKind.Double) ?
+NumberKind.EFloat : NumberKind.EInteger;
+      return convertKind;
+    }
+
     /**
      * Returns the sum of this number and another number.
      * @param b The number to add with this one.
      * @return The sum of this number and another number.
      * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory
+     * to store).
      */
     public CBORNumber Add(CBORNumber b) {
       if (b == null) {
@@ -1157,26 +1224,44 @@ import com.upokecenter.numbers.*;
         }
         return new CBORNumber(NumberKind.Integer, valueA + valueB);
       }
-      if (typeA == NumberKind.ERational ||
-        typeB == NumberKind.ERational) {
-        ERational e1 =
-          GetNumberInterface(typeA).AsERational(objA);
+      NumberKind convertKind = GetConvertKind(a, b);
+      if (convertKind == NumberKind.ERational) {
+        // System.out.println("Rational/Rational");
+        ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(NumberKind.ERational, e1.Add(e2));
+        // System.out.println("conv Rational/Rational");
+        return new CBORNumber(NumberKind.ERational,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Add(e2)));
       }
-      if (typeA == NumberKind.EDecimal ||
-        typeB == NumberKind.EDecimal) {
-        EDecimal e1 =
-          GetNumberInterface(typeA).AsEDecimal(objA);
+      if (convertKind == NumberKind.EDecimal) {
+        // System.out.println("Decimal/Decimal");
+        EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return new CBORNumber(NumberKind.EDecimal, e1.Add(e2));
+        // System.out.println("ED e1.setExp("+e1.getExponent()));
+        // System.out.println("ED e2.setExp("+e2.getExponent()));
+        return new CBORNumber(NumberKind.EDecimal,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Add(e2)));
       }
-      if (typeA == NumberKind.EFloat || typeB == NumberKind.EFloat ||
-        typeA == NumberKind.Double || typeB == NumberKind.Double) {
+      if (convertKind == NumberKind.EFloat) {
+        // System.out.println("Float/Float");
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(NumberKind.EFloat, e1.Add(e2));
+        // System.out.println("EF e1.setExp("+e1.getExponent()));
+        // System.out.println("EF e2.setExp("+e2.getExponent()));
+        return new CBORNumber(NumberKind.EFloat,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Add(e2)));
       } else {
+        // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
+        // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         return new CBORNumber(NumberKind.EInteger, b1.Add(b2));
@@ -1188,6 +1273,9 @@ import com.upokecenter.numbers.*;
      * @param b The second operand to the subtraction.
      * @return A CBOR number that expresses this number minus the given number.
      * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory
+     * to store).
      */
     public CBORNumber Subtract(CBORNumber b) {
       if (b == null) {
@@ -1210,22 +1298,36 @@ import com.upokecenter.numbers.*;
         }
         return new CBORNumber(NumberKind.Integer, valueA - valueB);
       }
-      if (typeA == NumberKind.ERational || typeB == NumberKind.ERational) {
+      NumberKind convertKind = GetConvertKind(a, b);
+      if (convertKind == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(NumberKind.ERational, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.ERational,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Subtract(e2)));
       }
-      if (typeA == NumberKind.EDecimal || typeB == NumberKind.EDecimal) {
+      if (convertKind == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return new CBORNumber(NumberKind.EDecimal, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.EDecimal,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Subtract(e2)));
       }
-      if (typeA == NumberKind.EFloat || typeB == NumberKind.EFloat ||
-        typeA == NumberKind.Double || typeB == NumberKind.Double) {
+      if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(NumberKind.EFloat, e1.Subtract(e2));
+        return new CBORNumber(NumberKind.EFloat,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Subtract(e2)));
       } else {
+        // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
+        // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         return new CBORNumber(NumberKind.EInteger, b1.Subtract(b2));
@@ -1238,6 +1340,9 @@ import com.upokecenter.numbers.*;
      * @param b The second operand to the multiplication operation.
      * @return A number expressing the product of this number and the given number.
      * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory
+     * to store).
      */
     public CBORNumber Multiply(CBORNumber b) {
       if (b == null) {
@@ -1266,28 +1371,28 @@ import com.upokecenter.numbers.*;
         }
         return CBORNumber.FromObject(valueA * valueB);
       }
-      if (typeA == NumberKind.ERational ||
-        typeB == NumberKind.ERational) {
-        ERational e1 =
-          GetNumberInterface(typeA).AsERational(objA);
+      NumberKind convertKind = GetConvertKind(a, b);
+      if (convertKind == NumberKind.ERational) {
+        ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return CBORNumber.FromObject(e1.Multiply(e2));
+        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Multiply(e2)));
       }
-      if (typeA == NumberKind.EDecimal ||
-        typeB == NumberKind.EDecimal) {
-        EDecimal e1 =
-          GetNumberInterface(typeA).AsEDecimal(objA);
+      if (convertKind == NumberKind.EDecimal) {
+        EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return CBORNumber.FromObject(e1.Multiply(e2));
+        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Multiply(e2)));
       }
-      if (typeA == NumberKind.EFloat || typeB ==
-        NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
-        NumberKind.Double) {
-        EFloat e1 =
-          GetNumberInterface(typeA).AsEFloat(objA);
+      if (convertKind == NumberKind.EFloat) {
+        EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return new CBORNumber(NumberKind.EFloat, e1.Multiply(e2));
+        return new CBORNumber(NumberKind.EFloat,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Multiply(e2)));
       } else {
+        // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
+        // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         return new CBORNumber(NumberKind.EInteger, b1.Multiply(b2));
@@ -1299,6 +1404,9 @@ import com.upokecenter.numbers.*;
      * @param b The right-hand side (divisor) to the division operation.
      * @return The quotient of this number and another one.
      * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory
+     * to store).
      */
     public CBORNumber Divide(CBORNumber b) {
       if (b == null) {
@@ -1329,15 +1437,18 @@ import com.upokecenter.numbers.*;
               EInteger.FromInt64(valueA),
               EInteger.FromInt64(valueB)));
       }
-      if (typeA == NumberKind.ERational || typeB == NumberKind.ERational) {
+      NumberKind convertKind = GetConvertKind(a, b);
+      if (convertKind == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(NumberKind.ERational, e1.Divide(e2));
+        return new CBORNumber(NumberKind.ERational,
+ CheckOverflow(
+          e1,
+          e2,
+          e1.Divide(e2)));
       }
-      if (typeA == NumberKind.EDecimal ||
-        typeB == NumberKind.EDecimal) {
-        EDecimal e1 =
-          GetNumberInterface(typeA).AsEDecimal(objA);
+      if (convertKind == NumberKind.EDecimal) {
+        EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         if (e1.isZero() && e2.isZero()) {
           return new CBORNumber(NumberKind.EDecimal, EDecimal.NaN);
@@ -1350,13 +1461,14 @@ import com.upokecenter.numbers.*;
         }
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(NumberKind.ERational, er1.Divide(er2));
+        return new CBORNumber(NumberKind.ERational,
+ CheckOverflow(
+          er1,
+          er2,
+          er1.Divide(er2)));
       }
-      if (typeA == NumberKind.EFloat || typeB ==
-        NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
-        NumberKind.Double) {
-        EFloat e1 =
-          GetNumberInterface(typeA).AsEFloat(objA);
+      if (convertKind == NumberKind.EFloat) {
+        EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
         if (e1.isZero() && e2.isZero()) {
           return CBORNumber.FromObject(EDecimal.NaN);
@@ -1369,8 +1481,14 @@ import com.upokecenter.numbers.*;
         }
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
-        return new CBORNumber(NumberKind.ERational, er1.Divide(er2));
+        return new CBORNumber(NumberKind.ERational,
+ CheckOverflow(
+          er1,
+          er2,
+          er1.Divide(er2)));
       } else {
+        // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
+        // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         if (b2.isZero()) {
@@ -1395,6 +1513,9 @@ import com.upokecenter.numbers.*;
      * @param b The right-hand side (dividend) of the remainder operation.
      * @return The remainder when this number is divided by the other number.
      * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory
+     * to store).
      */
     public CBORNumber Remainder(CBORNumber b) {
       if (b == null) {
@@ -1410,28 +1531,26 @@ import com.upokecenter.numbers.*;
         return (valueA == Long.MIN_VALUE && valueB == -1) ?
           CBORNumber.FromObject(0) : CBORNumber.FromObject(valueA % valueB);
       }
-      if (typeA == NumberKind.ERational ||
-        typeB == NumberKind.ERational) {
-        ERational e1 =
-          GetNumberInterface(typeA).AsERational(objA);
+      NumberKind convertKind = GetConvertKind(this, b);
+      if (convertKind == NumberKind.ERational) {
+        ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return CBORNumber.FromObject(e1.Remainder(e2));
+        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2)));
       }
-      if (typeA == NumberKind.EDecimal ||
-        typeB == NumberKind.EDecimal) {
-        EDecimal e1 =
-          GetNumberInterface(typeA).AsEDecimal(objA);
+      if (convertKind == NumberKind.EDecimal) {
+        EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return CBORNumber.FromObject(e1.Remainder(e2, null));
+        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
+  null)));
       }
-      if (typeA == NumberKind.EFloat ||
-        typeB == NumberKind.EFloat || typeA == NumberKind.Double || typeB ==
-        NumberKind.Double) {
-        EFloat e1 =
-          GetNumberInterface(typeA).AsEFloat(objA);
+      if (convertKind == NumberKind.EFloat) {
+        EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return CBORNumber.FromObject(e1.Remainder(e2, null));
+        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
+  null)));
       } else {
+        // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
+        // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         return CBORNumber.FromObject(b1.Remainder(b2));
@@ -1480,11 +1599,10 @@ import com.upokecenter.numbers.*;
             // Treat NaN as greater than all other numbers
             cmp = CBORUtilities.DoubleBitsNaN(a) ?
               (CBORUtilities.DoubleBitsNaN(b) ? 0 : 1) :
-              (CBORUtilities.DoubleBitsNaN(a) ?
+              (CBORUtilities.DoubleBitsNaN(b) ?
                 -1 : (((a < 0) != (b < 0)) ? ((a < b) ? -1 : 1) :
                   (((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1)))));
-                  break; }
-          case EDecimal: {
+                  break; } case EDecimal: {
             cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
             break;
           }

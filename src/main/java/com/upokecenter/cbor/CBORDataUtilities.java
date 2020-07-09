@@ -534,14 +534,18 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
-     * @param bytes Not documented yet.
-     * @param offset Not documented yet.
-     * @param count Not documented yet.
-     * @param options Not documented yet.
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code bytes} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * bytes} (but not more than {@code bytes} 's length).
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions
+     * object with all default properties is used instead.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty or
      * {@code count} is 0 or less.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws IllegalArgumentException Unsupported conversion kind.
      */
     public static CBORObject ParseJSONNumber(
@@ -563,8 +567,10 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
-     * @param bytes Not documented yet.
-     * @param options Not documented yet.
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions
+     * object with all default properties is used instead.
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty.
      */
@@ -589,15 +595,17 @@ obj.Untag().ToJSONString()));
      * or more basic digits (the exponent). A byte sequence representing a
      * valid JSON number is not allowed to contain white space characters,
      * including spaces.</p>
-     * @param bytes Not documented yet.
-     * @param offset Not documented yet.
-     * @param count Not documented yet.
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code bytes} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * bytes} (but not more than {@code bytes} 's length).
      * @return A CBOR object that represents the parsed number. Returns null if the
      * parsing fails, including if the byte sequence is null or empty.
      * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
-     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
      * length minus {@code offset} is less than {@code count}.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public static CBORObject ParseJSONNumber(
       byte[] bytes,

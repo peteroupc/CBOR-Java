@@ -269,13 +269,17 @@ Parses a number from a byte sequence whose format follows the JSON
 
 **Parameters:**
 
-* <code>bytes</code> - Not documented yet.
+* <code>bytes</code> - A sequence of bytes to parse as a JSON number.
 
-* <code>offset</code> - Not documented yet.
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>bytes</code> begins.
 
-* <code>count</code> - Not documented yet.
+* <code>count</code> - The length, in code units, of the desired portion of <code>
+ bytes</code> (but not more than <code>bytes</code> 's length).
 
-* <code>options</code> - Not documented yet.
+* <code>options</code> - An object containing options to control how JSON numbers are
+ decoded to CBOR objects. Can be null, in which case a JSONOptions
+ object with all default properties is used instead.
 
 **Returns:**
 
@@ -285,7 +289,7 @@ Parses a number from a byte sequence whose format follows the JSON
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
 * <code>java.lang.IllegalArgumentException</code> - Unsupported conversion kind.
 
@@ -304,9 +308,11 @@ Parses a number from a byte sequence whose format follows the JSON
 
 **Parameters:**
 
-* <code>bytes</code> - Not documented yet.
+* <code>bytes</code> - A sequence of bytes to parse as a JSON number.
 
-* <code>options</code> - Not documented yet.
+* <code>options</code> - An object containing options to control how JSON numbers are
+ decoded to CBOR objects. Can be null, in which case a JSONOptions
+ object with all default properties is used instead.
 
 **Returns:**
 
@@ -328,11 +334,13 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
 
 **Parameters:**
 
-* <code>bytes</code> - Not documented yet.
+* <code>bytes</code> - A sequence of bytes to parse as a JSON number.
 
-* <code>offset</code> - Not documented yet.
+* <code>offset</code> - An index, starting at 0, showing where the desired portion of
+ <code>bytes</code> begins.
 
-* <code>count</code> - Not documented yet.
+* <code>count</code> - The length, in code units, of the desired portion of <code>
+ bytes</code> (but not more than <code>bytes</code> 's length).
 
 **Returns:**
 
@@ -342,7 +350,7 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
 **Throws:**
 
 * <code>java.lang.IllegalArgumentException</code> - Either <code>offset</code> or <code>count</code> is less
- than 0 or greater than <code>str</code> 's length, or <code>str</code> 's
+ than 0 or greater than <code>bytes</code> 's length, or <code>bytes</code> 's
  length minus <code>offset</code> is less than <code>count</code>.
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.

@@ -80,7 +80,8 @@ import com.upokecenter.numbers.*;
     }
 
     public boolean CanFitInSingle(Object obj) {
-       throw new UnsupportedOperationException();
+      return this.IsNaN(obj) ||
+CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
     }
 
     public boolean CanFitInDouble(Object obj) {
@@ -180,11 +181,11 @@ return this.IsNaN(obj) ? (-2) : ((((((Long)obj).longValue())) >> 63) != 0 ? -1 :
     }
 
     public Object Negate(Object obj) {
-       throw new UnsupportedOperationException();
+       return ((((Long)obj).longValue())) ^ (1L << 63);
     }
 
     public Object Abs(Object obj) {
-       throw new UnsupportedOperationException();
+       return ((((Long)obj).longValue())) & ~(1L << 63);
     }
 
     public ERational AsERational(Object obj) {

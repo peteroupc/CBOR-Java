@@ -636,6 +636,10 @@ Returns the sum of this number and another number.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>b</code> is null.
 
+* <code>java.lang.OutOfMemoryError</code> - The exact result of the operation might be too big
+ to fit in memory (or might require more than 2 gigabytes of memory
+ to store).
+
 ### Subtract
     public CBORNumber Subtract​(CBORNumber b)
 Returns a number that expresses this number minus another.
@@ -651,6 +655,10 @@ Returns a number that expresses this number minus another.
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>b</code> is null.
+
+* <code>java.lang.OutOfMemoryError</code> - The exact result of the operation might be too big
+ to fit in memory (or might require more than 2 gigabytes of memory
+ to store).
 
 ### Multiply
     public CBORNumber Multiply​(CBORNumber b)
@@ -669,6 +677,10 @@ Returns a CBOR number expressing the product of this number and the given
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>b</code> is null.
 
+* <code>java.lang.OutOfMemoryError</code> - The exact result of the operation might be too big
+ to fit in memory (or might require more than 2 gigabytes of memory
+ to store).
+
 ### Divide
     public CBORNumber Divide​(CBORNumber b)
 Returns the quotient of this number and another number.
@@ -685,6 +697,10 @@ Returns the quotient of this number and another number.
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>b</code> is null.
 
+* <code>java.lang.OutOfMemoryError</code> - The exact result of the operation might be too big
+ to fit in memory (or might require more than 2 gigabytes of memory
+ to store).
+
 ### Remainder
     public CBORNumber Remainder​(CBORNumber b)
 Returns the remainder when this number is divided by another number.
@@ -700,6 +716,10 @@ Returns the remainder when this number is divided by another number.
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>b</code> is null.
+
+* <code>java.lang.OutOfMemoryError</code> - The exact result of the operation might be too big
+ to fit in memory (or might require more than 2 gigabytes of memory
+ to store).
 
 ### compareTo
     public int compareTo​(CBORNumber other)

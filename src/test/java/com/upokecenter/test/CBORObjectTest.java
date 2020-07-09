@@ -207,7 +207,7 @@ JSONOptions("allowduplicatekeys=false");
         // Check only FromJSONString
         try {
           CBORObject.FromJSONString(str, opt);
-          Assert.fail("Should have failed");
+          Assert.fail("Should have failed.get(str = " + str + ")");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
@@ -364,14 +364,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return (EDecimal)obj.ToObject(EDecimal.class);
     }
 
-    @Test(timeout = 200000)
+    @Test(timeout = 5000)
     public void TestAsNumberAdd() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
+        EDecimal cmpCobj = null;
+        try {
+           cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
+        } catch (OutOfMemoryError ex) {
+           continue;
+        }
         EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
         TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
         CBORTestCommon.AssertRoundTrip(o1);
         CBORTestCommon.AssertRoundTrip(o2);
@@ -1878,6 +1883,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestCommon.CompareTestLess(sp, dnan);
       TestCommon.CompareTestLess(dn, dp);
       TestCommon.CompareTestLess(dp, dnan);
+      TestCommon.CompareTestLess(dn, dnan);
       Assert.assertEquals(1, CBORObject.True.compareTo(null));
       Assert.assertEquals(1, CBORObject.False.compareTo(null));
       Assert.assertEquals(1, CBORObject.Null.compareTo(null));
@@ -2938,19 +2944,10 @@ CBOREncodeOptions(false, false, true));
     }
 
     public enum EnumClass {
-      /**
-       * Internal API.
-       */
       Value1,
 
-      /**
-       * Internal API.
-       */
       Value2,
 
-      /**
-       * Internal API.
-       */
       Value3,
     }
 
@@ -6101,9 +6098,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        String numberString = numberinfo.get("number").AsString();
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-              numberinfo.get("number").AsString()));
+              numberString));
         if (cbornumber.AsNumber().IsNaN()) {
           try {
             Assert.fail("" + cbornumber.signum());
@@ -6114,7 +6112,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-        } else if (numberinfo.get("number").AsString().indexOf('-') == 0) {
+        } else if (numberString.length() > 0 && numberString.charAt(0)=='-') {
           Assert.assertEquals(-1, cbornumber.signum());
         } else if (numberinfo.get("number").AsString().equals("0")) {
           Assert.assertEquals(0, cbornumber.signum());
@@ -6124,7 +6122,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       }
     }
 
-    @Test(timeout = 200000)
+    @Test(timeout = 1000)
     public void TestAsNumberSubtract() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip(2).AsNumber().Subtract(null);
@@ -7840,6 +7838,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    private static String Chop(String str) {
+       if (str.length()< 100) {
+ return str;
+ }
+       return str.substring(0,100)+"...";
+    }
+
     private static void AssertReadThree(byte[] bytes) {
       try {
         {
@@ -7890,8 +7895,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
       } catch (Exception ex) {
         Assert.fail(ex.toString() + "\r\n" +
-          TestCommon.ToByteArrayString(bytes) + "\r\n" +
-          "cbor = " + cbor.toString() + "\r\n");
+          Chop(TestCommon.ToByteArrayString(bytes)) + "\r\n" +
+          "cbor = " + Chop(cbor.toString()) + "\r\n");
         throw new IllegalStateException(ex.toString(), ex);
       }
     }
