@@ -2944,10 +2944,19 @@ CBOREncodeOptions(false, false, true));
     }
 
     public enum EnumClass {
+      /**
+       * Internal API.
+       */
       Value1,
 
+      /**
+       * Internal API.
+       */
       Value2,
 
+      /**
+       * Internal API.
+       */
       Value3,
     }
 
@@ -6112,7 +6121,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-        } else if (numberString.length() > 0 && numberString.charAt(0)=='-') {
+        } else if (numberString.length() > 0 && numberString.charAt(0) == '-') {
           Assert.assertEquals(-1, cbornumber.signum());
         } else if (numberinfo.get("number").AsString().equals("0")) {
           Assert.assertEquals(0, cbornumber.signum());
@@ -7839,10 +7848,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String Chop(String str) {
-       if (str.length()< 100) {
- return str;
- }
-       return str.substring(0,100)+"...";
+       return (str.length() < 100) ? (str) : (str.substring(0,100) + "...");
     }
 
     private static void AssertReadThree(byte[] bytes) {
