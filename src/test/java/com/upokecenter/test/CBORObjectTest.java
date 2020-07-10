@@ -7848,7 +7848,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String Chop(String str) {
-       return (str.length() < 100) ? (str) : (str.substring(0,100) + "...");
+       return (str.length() < 100) ? str : (str.substring(0,100) + "...");
     }
 
     private static void AssertReadThree(byte[] bytes) {

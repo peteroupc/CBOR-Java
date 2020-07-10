@@ -2669,7 +2669,8 @@ byte[] eb1 = new byte[] {
   (byte)0xdf, 0x5c, 0x66, 0x2f, 0x4d,
   (byte)0xbd, 0x7e, 0x57, (byte)0xdd, (byte)0x91, 0x6c,
  };
-System.out.println(CBORObject.DecodeFromBytes(eb1).getToObject()<ERational>());
+System.out.println("" +
+CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
@@ -2694,7 +2695,8 @@ byte[] eb1 = new byte[] {
   (byte)0xff, (byte)0xdb, 0x45, (byte)0x97, 0x0c, 0x56, 0x04, (byte)0xe3,
   0x21,
  };
-System.out.println(CBORObject.DecodeFromBytes(eb1).getToObject()<ERational>());
+System.out.println("" +
+CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
@@ -2716,7 +2718,8 @@ byte[] eb1 = new byte[] {
   (byte)0xc9, 0x15, (byte)0xe3, 0x34, (byte)0xa2, 0x16, 0x07, 0x07, 0x0d,
   (byte)0xd3,
  };
-System.out.println(CBORObject.DecodeFromBytes(eb1).getToObject()<ERational>());
+System.out.println("" +
+CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
@@ -2877,7 +2880,7 @@ TestRandomOne(eb1);
         // System.out.println(i+"");
         // System.out.println(i+" "+Chop(o1.toString()));
         // System.out.println(i+" "+Chop(o2.toString()));
-        System.out.println(i+ " " + Chop(onSum.toString()));
+        System.out.println(i + " " + Chop(onSum.toString()));
       if (!onSum.IsFinite()) {
         Assert.fail(o1.toString());
       }
