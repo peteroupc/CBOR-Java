@@ -2812,10 +2812,10 @@ TestRandomOne(eb1);
     @Test(timeout = 100000)
     public void TestAsNumberAddSubtract() {
       RandomGenerator r = new RandomGenerator();
-      // CBORNumber.SetWriter(s=>System.out.println(s));
       for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = CBORTestCommon.RandomNumber(r);
-        CBORObject o2 = CBORTestCommon.RandomNumber(r);
+        // NOTE: Avoid generating high-exponent numbers for this test
+        CBORObject o1 = CBORTestCommon.RandomNumber(r, true);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r, true);
         byte[] eb1 = o1.EncodeToBytes();
         byte[] eb2 = o2.EncodeToBytes();
         CBORTestCommon.AssertRoundTrip(o1);
@@ -2834,8 +2834,8 @@ TestRandomOne(eb1);
             continue;
         }
         if (!onSum.IsFinite()) {
-           System.out.println("on1=" + o1);
-           System.out.println("on2=" + o2);
+           //System.out.println("on1=" + o1);
+           //System.out.println("on2=" + o2);
            continue;
         }
         if (!onSum.IsFinite()) {
@@ -2873,14 +2873,14 @@ TestRandomOne(eb1);
             continue;
         }
         if (!onSum.IsFinite()) {
-           System.out.println("on1=" + o1);
-           System.out.println("on2=" + o2);
+           //System.out.println("on1=" + o1);
+           //System.out.println("on2=" + o2);
            continue;
         }
         // System.out.println(i+"");
         // System.out.println(i+" "+Chop(o1.toString()));
         // System.out.println(i+" "+Chop(o2.toString()));
-        System.out.println(i + " " + Chop(onSum.toString()));
+        // System.out.println(i + " " + Chop(onSum.toString()));
       if (!onSum.IsFinite()) {
         Assert.fail(o1.toString());
       }
@@ -5017,13 +5017,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static EDecimal AsED(CBORObject obj) {
-      return EDecimal.FromString(
-          obj.ToObject(EDecimal.class).toString());
+      Object o = obj.ToObject(EInteger.class);
+      return (EDecimal)o;
     }
 
     private static ERational AsER(CBORObject obj) {
-      return ERational.FromString(
-          obj.ToObject(ERational.class).toString());
+      Object o = obj.ToObject(EInteger.class);
+      return (ERational)o;
     }
 
     private static void AddSubCompare(CBORObject o1, CBORObject o2) {

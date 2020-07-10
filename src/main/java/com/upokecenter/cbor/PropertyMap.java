@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -125,11 +126,15 @@ class PropertyMap {
     }
   }
 
+  // NOTE: Must be HashMap, not TreeMap, since classes are not comparable.
+  // TreeMap is fine here since nothing here cares about key order for this map
   private static Map<Class<?>, List<MethodData>> propertyLists =
-      new TreeMap<Class<?>, List<MethodData>>();
+      new HashMap<Class<?>, List<MethodData>>();
 
+  // NOTE: Must be HashMap, not TreeMap, since classes are not comparable.
+  // HashMap is fine here since nothing here cares about key order for this map
   private static Map<Class<?>, List<MethodData>> setterPropertyList =
-      new TreeMap<Class<?>, List<MethodData>>();
+      new HashMap<Class<?>, List<MethodData>>();
 
   private static List<MethodData> GetPropertyList(final Class<?> t) {
     return GetPropertyList(t,false);
