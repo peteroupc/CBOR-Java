@@ -63,7 +63,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(b, newb);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestLong() {
       DoTestLong(0);
       DoTestLong(-1);
@@ -73,7 +73,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       DoTestLong(Long.MAX_VALUE);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestList() {
       CBORObject beo = CBORObject.NewArray();
       beo.Add(ToObjectTest.TestToFromObjectRoundTrip(1));
@@ -114,7 +114,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDictionary() {
       CBORObject beo = CBORObject.NewMap();
       beo.set("zero",ToObjectTest.TestToFromObjectRoundTrip(1));
@@ -155,7 +155,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestString() {
       DoTestString("");
       DoTestString(" ");

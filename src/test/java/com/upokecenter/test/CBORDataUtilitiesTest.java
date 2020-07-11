@@ -16,7 +16,7 @@ import com.upokecenter.numbers.*;
 
     // testing obsolete method
     @SuppressWarnings("deprecation")
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestPreserveNegativeZero() {
       CBORObject cbor;
       cbor = CBORDataUtilities.ParseJSONNumber("-0", false, false, true);
@@ -83,7 +83,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestParseJSONNumberSubstring() {
       String tstr =
 
@@ -100,7 +100,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestParseJSONNumberNegativeZero() {
       String[] strings = new String[] {
         "-0", "0", "-0E+0", "0", "-0E-0", "0", "-0E-1", "0.0",
@@ -150,7 +150,7 @@ import com.upokecenter.numbers.*;
       "23.", "23.e-2", "23.e0", "23.e1", "0.",
     };
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestParseJSONNumberObsolete() {
       for (String str : BadJsonNumbers) {
         if (CBORDataUtilities.ParseJSONNumber(str, false, false, true) !=
@@ -165,7 +165,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestParseJSONNumber() {
       for (String str : BadJsonNumbers) {
         if (CBORDataUtilities.ParseJSONNumber(str) != null) {

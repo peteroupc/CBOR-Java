@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.upokecenter.cbor.*;
 
   public class CBORExceptionTest {
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestConstructor() {
       try {
         throw new CBORException("Test exception");

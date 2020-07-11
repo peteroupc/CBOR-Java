@@ -33,7 +33,7 @@ import com.upokecenter.numbers.*;
       return 0;
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCorrectUtf8Specific() {
       TestJsonUtf8One(new byte[] {
         (byte)0xe8,
@@ -129,7 +129,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCorrectUtf8() {
       RandomGenerator rg = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
@@ -137,7 +137,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestLexOrderSpecific1() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 27, 0, 0, 65, 2, 0, 0, (byte)144, (byte)172, 71,
@@ -183,7 +183,7 @@ import com.upokecenter.numbers.*;
       TestCommon.CompareTestLess(cbor3, cbor4);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestLexOrderSpecific2() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 59, 72, 110, 0, 0, 122, (byte)250, (byte)251,
@@ -231,7 +231,7 @@ import com.upokecenter.numbers.*;
       TestCommon.CompareTestLess(cbor3, cbor4);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestLexOrderSpecific3() {
       byte[] bytes1 = new byte[] {
         (byte)129, (byte)165, 67, 62, (byte)217, 7, 69, 113, (byte)188, (byte)156,
@@ -275,7 +275,7 @@ import com.upokecenter.numbers.*;
       TestCommon.CompareTestLess(cbor3, cbor4);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBORMapAdd() {
       CBORObject cbor = CBORObject.NewMap();
       cbor.Add(1, 2);
@@ -309,7 +309,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals((int)3, cbor.get(cborone).AsInt32Value());
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestArray() {
       CBORObject cbor = CBORObject.FromJSONString("[]");
       cbor.Add(ToObjectTest.TestToFromObjectRoundTrip(3));
@@ -341,7 +341,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestEInteger() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
@@ -385,7 +385,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestBigNumBytes() {
       CBORObject o = null;
       o = CBORTestCommon.FromBytesTestAB(new byte[] {
@@ -423,7 +423,7 @@ import com.upokecenter.numbers.*;
         o.ToObject(EInteger.class));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestByte() {
       for (int i = 0; i <= 255; ++i) {
         CBORTestCommon.AssertJSONSer(
@@ -432,7 +432,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestByteArray() {
       CBORObject co = ToObjectTest.TestToFromObjectRoundTrip(
           new byte[] { 0x20, 0x78 });
@@ -444,13 +444,13 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(0x78, bytes[1]);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestByteStringStream() {
       CBORTestCommon.FromBytesTestAB(
         new byte[] { 0x5f, 0x41, 0x20, 0x41, 0x20, (byte)0xff });
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestWriteToJSONSpecific() {
       byte[] bytes = new byte[] {
         0x6a, 0x25, 0x7f, 0x41, 0x58, 0x11, 0x54,
@@ -469,7 +469,7 @@ import com.upokecenter.numbers.*;
       TestWriteToJSON(CBORObject.DecodeFromBytes(bytes));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestEmptyIndefiniteLength() {
       CBORObject cbor;
       cbor = CBORObject.DecodeFromBytes(new byte[] { 0x5f, (byte)0xff });
@@ -485,7 +485,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(0, cbor.size());
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestByteStringStreamNoIndefiniteWithinDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {
@@ -657,7 +657,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestByteStringStreamNoTagsBeforeDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {
@@ -734,8 +734,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(10000)]
+    @Test(timeout = 10000)
     public void TestCanFitIn() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
@@ -744,7 +743,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCanFitInSpecificCases() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb,
@@ -788,7 +787,7 @@ import com.upokecenter.numbers.*;
  }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBOREInteger() {
       CBORObject o = CBORObject.DecodeFromBytes(new byte[] {
         0x3b, (byte)0xce,
@@ -799,7 +798,7 @@ import com.upokecenter.numbers.*;
         o.ToObject(EInteger.class));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBORExceptions() {
       try {
         CBORObject.NewArray().Remove(null);
@@ -919,7 +918,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBORFromArray() {
       CBORObject o = CBORObject.FromObject(new int[] { 1, 2, 3 });
       Assert.assertEquals(3, o.size());
@@ -929,7 +928,7 @@ import com.upokecenter.numbers.*;
       CBORTestCommon.AssertRoundTrip(o);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBORInfinityRoundTrip() {
       CBORTestCommon.AssertRoundTrip(
         ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf));
@@ -1003,7 +1002,7 @@ import com.upokecenter.numbers.*;
         ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestEquivJSONSpecificA() {
       TestEquivJSONOne(new byte[] {
         0x2d, 0x37, 0x30, 0x31, 0x39, 0x34,
@@ -1144,13 +1143,13 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecificA() {
       byte[] bytes = new byte[] { (byte)0xfa, (byte)0xb3, 0x00, 0x00, 0x00 };
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecificE() {
       byte[] bytes = new byte[] {
         (byte)0xbf,
@@ -1175,7 +1174,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecificC() {
       byte[] bytes = new byte[] {
         (byte)0xb9, 0x00, 0x02,
@@ -1196,7 +1195,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecificD() {
       byte[] bytes = new byte[] {
         (byte)0xbf, 0x00, 0x00,
@@ -1211,7 +1210,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecificB() {
       byte[] bytes = new byte[] {
         (byte)0xa4,
@@ -1233,7 +1232,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareToSpecific() {
       byte[] bytes;
       bytes = new byte[] {
@@ -1257,7 +1256,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCompareToOne(bytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareB1() {
       byte[] bytes;
       CBORObject o;
@@ -1327,7 +1326,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       CBORTestCommon.AssertRoundTrip(o);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCompareB() {
       {
         String stringTemp = CBORObject.DecodeFromBytes(new byte[] {
@@ -1380,7 +1379,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       CBORTestCommon.AssertRoundTrip(cbor);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestEquivJSON() {
       byte[] jsonBytes = new byte[] {
         0x22, 0x48, 0x54, 0x30, 0x43, 0x5c, 0x75,
@@ -1400,7 +1399,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestEquivJSONOne(jsonBytes);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecFracCompareIntegerVsBigFraction() {
       CBORObject o1 = null;
       CBORObject o2 = null;
@@ -1419,7 +1418,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       AddSubCompare(o1, o2);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecimalFrac() {
       CBORObject obj = CBORTestCommon.FromBytesTestAB(
           new byte[] { (byte)0xc4, (byte)0x82, 0x3, 0x1a, 1, 2, 3, 4 });
@@ -1431,7 +1430,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecimalFracExactlyTwoElements() {
       CBORObject obj = CBORTestCommon.FromBytesTestAB(new byte[] {
         (byte)0xc4, (byte)0x81,
@@ -1449,7 +1448,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecimalFracExponentMustNotBeBignum() {
       CBORObject obj = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
@@ -1469,7 +1468,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestBigFloatExponentMustNotBeBignum() {
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
@@ -1489,7 +1488,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecimalFracMantissaMayBeBignum() {
       CBORObject o = CBORTestCommon.FromBytesTestAB(
           new byte[] { (byte)0xc4, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1 });
@@ -1498,7 +1497,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
         o.ToObject(EDecimal.class));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestBigFloatFracMantissaMayBeBignum() {
       CBORObject o = CBORTestCommon.FromBytesTestAB(
           new byte[] { (byte)0xc5, (byte)0x82, 0x3, (byte)0xc2, 0x41, 1 });
@@ -1510,7 +1509,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDivide() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -1536,7 +1535,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCBORCompareTo() {
       int cmp = CBORObject.FromObject(0).compareTo(null);
       if (cmp <= 0) {
@@ -1548,7 +1547,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDouble() {
       if (!ToObjectTest.TestToFromObjectRoundTrip(
           Double.POSITIVE_INFINITY).AsNumber().IsPositiveInfinity()) {
@@ -1587,7 +1586,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDoubleCompare() {
       CBORObject oldobj = null;
       for (int i = -65539; i <= 65539; ++i) {
@@ -1599,7 +1598,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestExample() {
       // The following creates a CBOR map and adds
       // several kinds of objects to it
@@ -1613,8 +1612,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       cbor.ToJSONString();
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(5000)]
+    @Test(timeout = 5000)
     public void TestExtendedExtremeExponent() {
       // Values with extremely high or extremely low exponents;
       // we just check whether this test method runs reasonably fast
@@ -1636,8 +1634,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       CBORTestCommon.AssertRoundTrip(obj);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(5000)]
+    @Test(timeout = 5000)
     public void TestExtendedExtremeExponentCompare() {
       CBORObject cbor1 = ToObjectTest.TestToFromObjectRoundTrip(
           EDecimal.FromString("333333e-2"));
@@ -1648,7 +1645,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       TestCommon.CompareTestGreater(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestFloat() {
       Assert.assertTrue(
         (
@@ -1674,7 +1671,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestHalfPrecision() {
       CBORObject o = CBORObject.DecodeFromBytes(
           new byte[] { (byte)0xf9, 0x7c, 0x00 });
@@ -1696,7 +1693,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       if (!(Float.isNaN(o.AsSingle())))Assert.fail();
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTag268() {
       CBORObject cbor;
       CBORObject cbortag;
@@ -1768,7 +1765,7 @@ TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestJSON() {
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
@@ -1888,7 +1885,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestJSONEscapedChars() {
       CBORObject o = CBORObject.FromJSONString(
           "[\"\\r\\n\\u0006\\u000E\\u001A\\\\\\\"\"]");
@@ -1908,8 +1905,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       CBORTestCommon.AssertRoundTrip(o);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(100000)]
+    @Test(timeout = 100000)
     public void TestLong() {
       long[] ranges = {
         -65539, 65539, 0xfffff000L, 0x100000400L,
@@ -1950,7 +1946,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestMap() {
       CBORObject cbor = CBORObject.FromJSONString("{\"a\":2,\"b\":4}");
       Assert.assertEquals(2, cbor.size());
@@ -1994,7 +1990,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestMapInMap() {
       CBORObject oo;
       oo = CBORObject.NewArray().Add(CBORObject.NewMap()
@@ -2026,7 +2022,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestParseDecimalStrings() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -2034,8 +2030,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(50000)]
+    @Test(timeout = 50000)
     public void TestRandomData() {
       RandomGenerator rand = new RandomGenerator();
       CBORObject obj;
@@ -2079,8 +2074,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       return root;
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(5000)]
+    @Test(timeout = 5000)
     public void TestCtap2CanonicalReferenceTest() {
       for (int i = 4; i <= 60; ++i) {
         // has high recursive reference depths, higher than
@@ -2124,8 +2118,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(50000)]
+    @Test(timeout = 50000)
     public void TestNoRecursiveExpansion() {
       for (int i = 5; i <= 60; ++i) {
         // has high recursive reference depths
@@ -2136,8 +2129,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(50000)]
+    @Test(timeout = 50000)
     public void TestNoRecursiveExpansionJSON() {
       for (int i = 5; i <= 60; ++i) {
         // has high recursive reference depths
@@ -2260,7 +2252,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestSharedRefValidInteger() {
       byte[] bytes;
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
@@ -2340,8 +2332,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
       return TestCommon.ToByteArrayString(newArray);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(500000)]
+    @Test(timeout = 500000)
     public void TestRandomNonsense() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
@@ -2438,7 +2429,7 @@ try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOExcep
 }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestRandomSlightlyModified() {
       RandomGenerator rand = new RandomGenerator();
       // Test slightly modified objects
@@ -2507,7 +2498,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestReadWriteInt() {
       RandomGenerator r = new RandomGenerator();
       for (int i = -70000; i < 70000; ++i) {
@@ -2519,7 +2510,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestShort() {
       for (int i = Short.MIN_VALUE; i <= Short.MAX_VALUE; ++i) {
         CBORTestCommon.AssertJSONSer(
@@ -2528,7 +2519,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestSimpleValues() {
       CBORTestCommon.AssertJSONSer(
         ToObjectTest.TestToFromObjectRoundTrip(true),
@@ -2541,7 +2532,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         "null");
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2NestingLevel() {
       CBORObject o;
       CBOREncodeOptions ctap = new CBOREncodeOptions("ctap2canonical=true");
@@ -2641,7 +2632,7 @@ Chop(o2.toString());
         }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestRational1() {
 byte[] eb1 = new byte[] {
   (byte)0xd8, 0x1e,
@@ -2683,7 +2674,7 @@ CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestRational2() {
 byte[] eb1 = new byte[] {
   (byte)0xd8, 0x1e,
@@ -2709,7 +2700,7 @@ CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestRational3() {
 byte[] eb1 = new byte[] {
   (byte)0xd8, 0x1e,
@@ -2732,8 +2723,7 @@ CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(20000)]
+    @Test(timeout = 20000)
     public void TestAsNumberAddSubtractSpecific() {
        byte[] eb1 = new byte[] {
          (byte)0xd9, 0x01, 0x08,
@@ -2797,8 +2787,7 @@ TestRandomOne(eb1);
  }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(20000)]
+    @Test(timeout = 20000)
     public void TestAsNumberAddSubtractSpecific2() {
        byte[] eb1 = new byte[] {
          (byte)0xc4,
@@ -2820,8 +2809,7 @@ TestRandomOne(eb1);
  }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(100000)]
+    @Test(timeout = 100000)
     public void TestAsNumberAddSubtract() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -2866,8 +2854,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(100000)]
+    @Test(timeout = 100000)
     public void TestAsNumberMultiplyDivide() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -2910,8 +2897,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(10000)]
+    @Test(timeout = 10000)
     public void TestTaggedUntagged() {
       for (int i = 200; i < 1000; ++i) {
         CBORObject o, o2;
@@ -3000,8 +2986,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(15000)]
+    @Test(timeout = 15000)
     public void TestTags() {
       EInteger maxuint = EInteger.FromString("18446744073709551615");
       EInteger[] ranges = {
@@ -3104,7 +3089,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestOverlongSimpleValues() {
       for (int i = 0; i <= 0x1f; ++i) {
         byte[] bytes = new byte[] { (byte)0xf8, (byte)i };
@@ -3120,7 +3105,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDecodeCtap2Canonical() {
       // Tests that the code rejects noncanonical data
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=1");
@@ -3544,7 +3529,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestIndefLengthMore() {
       byte[] bytes;
       bytes = new byte[] { 0x5f, 0x41, 0x30, 0x41, 0x31, (byte)0xff };
@@ -4372,7 +4357,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTags264And265() {
       CBORObject cbor;
       // Tag 264
@@ -4391,7 +4376,7 @@ TestRandomOne(eb1);
       CBORTestCommon.AssertRoundTrip(cbor);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTagThenBreak() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] { (byte)0xd1, (byte)0xff });
@@ -4404,7 +4389,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTextStringStream() {
       CBORObject cbor = CBORTestCommon.FromBytesTestAB(
           new byte[] { 0x7f, 0x61, 0x2e, 0x61, 0x2e, (byte)0xff });
@@ -4420,7 +4405,7 @@ TestRandomOne(eb1);
       TestTextStringStreamOne(TestCommon.Repeat("\ud800\udc00", 200000));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTextStringStreamNoIndefiniteWithinDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {
@@ -4436,7 +4421,7 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestIntegerFloatingEquivalence() {
       CBORObject cbor;
       // 0 versus 0.0
@@ -4511,14 +4496,14 @@ TestRandomOne(eb1);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestRoundTripESignalingNaN() {
       ToObjectTest.TestToFromObjectRoundTrip(EDecimal.SignalingNaN);
       ToObjectTest.TestToFromObjectRoundTrip(ERational.SignalingNaN);
       ToObjectTest.TestToFromObjectRoundTrip(EFloat.SignalingNaN);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestBigNumberThresholds() {
       EInteger maxCborInteger = EInteger.FromString("18446744073709551615");
       EInteger maxInt64 = EInteger.FromString("9223372036854775807");
@@ -4691,7 +4676,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAllowEmpty() {
       CBOREncodeOptions options;
       byte[] bytes = new byte[0];
@@ -4741,7 +4726,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncodeSpecific1() {
       byte[] bytes = new byte[] {
         (byte)0xa2, (byte)0x82, (byte)0xf6,
@@ -4793,7 +4778,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncodeSpecific2() {
       byte[] bytes = new byte[] {
         (byte)0x82,
@@ -4837,7 +4822,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncodeSpecific3() {
       byte[] bytes = new byte[] {
         (byte)0x82,
@@ -4884,7 +4869,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncodeSpecific4() {
       byte[] bytes = new byte[] {
         (byte)0x81,
@@ -4926,7 +4911,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncodeSpecific5() {
       byte[] bytes = new byte[] {
         (byte)0xa2,
@@ -5001,7 +4986,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCtap2CanonicalDecodeEncode() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -5010,7 +4995,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestTextStringStreamNoTagsBeforeDefinite() {
       try {
         CBORTestCommon.FromBytesTestAB(new byte[] {

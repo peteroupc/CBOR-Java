@@ -62,7 +62,7 @@ import com.upokecenter.util.*;
       return list;
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCodePointAt() {
       try {
         DataUtilities.CodePointAt(null, 0);
@@ -208,7 +208,7 @@ import com.upokecenter.util.*;
 }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCodePointBefore() {
       try {
         DataUtilities.CodePointBefore(null, 0);
@@ -257,7 +257,7 @@ import com.upokecenter.util.*;
       Assert.assertEquals(-1, DataUtilities.CodePointBefore("A\udc00B", 2, 2));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCodePointCompare() {
       int integerTemp3;
       {
@@ -394,7 +394,7 @@ import com.upokecenter.util.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestGetUtf8Bytes() {
       try {
         DataUtilities.GetUtf8Bytes("\ud800", false);
@@ -566,7 +566,7 @@ import com.upokecenter.util.*;
         DataUtilities.GetUtf8Bytes("\ud800\udc00", false));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestGetUtf8Length() {
       try {
         DataUtilities.GetUtf8Length(null, true);
@@ -683,7 +683,7 @@ import com.upokecenter.util.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestGetUtf8String() {
       TestUtf8RoundTrip("A" + Repeat("\u00e0", 10000));
       TestUtf8RoundTrip("AA" + Repeat("\u00e0", 10000));
@@ -916,7 +916,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestReadUtf8() {
       try {
         DataUtilities.ReadUtf8(null, 1, null, true);
@@ -1100,7 +1100,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         null);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestReadUtf8FromBytes() {
       StringBuilder builder = new StringBuilder();
       try {
@@ -1229,7 +1229,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestReadUtf8ToString() {
       try {
         DataUtilities.ReadUtf8ToString(null);
@@ -1294,7 +1294,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestToLowerCaseAscii() {
       if (DataUtilities.ToLowerCaseAscii(null) != null) {
         Assert.fail();
@@ -1313,7 +1313,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestToUpperCaseAscii() {
       if (DataUtilities.ToUpperCaseAscii(null) != null) {
         Assert.fail();
@@ -1332,7 +1332,7 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestWriteUtf8() {
       try {
         try {

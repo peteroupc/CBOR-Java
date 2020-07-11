@@ -10,7 +10,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class ToObjectTest {
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsEInteger() {
       if (CBORObject.Null.ToObject(EInteger.class) != null) {
         Assert.fail();
@@ -250,7 +250,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsBoolean() {
       Assert.assertEquals(true, CBORObject.True.ToObject(boolean.class));
       {
@@ -272,14 +272,14 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(true, CBORObject.NewMap().ToObject(boolean.class));
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestNullBoolean() {
       if (CBORObject.Null.ToObject(boolean.class) != null) {
         Assert.fail();
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsByte() {
       try {
         CBORObject.NewArray().ToObject(byte.class);
@@ -387,7 +387,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsDouble() {
       try {
         CBORObject.NewArray().ToObject(double.class);
@@ -461,7 +461,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsEDecimal() {
       {
         Object objectTemp = CBORTestCommon.DecPosInf;
@@ -562,7 +562,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsEFloat() {
       {
         Object objectTemp = CBORTestCommon.FloatPosInf;
@@ -604,7 +604,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
  }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsERational() {
       {
         Object objectTemp = CBORTestCommon.RatPosInf;
@@ -647,7 +647,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
           .ToObject(ERational.class)).AsNumber().IsNaN());
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsInt16() {
       try {
         CBORObject.NewArray().ToObject(short.class);
@@ -730,7 +730,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsInt32() {
       try {
         CBORObject.NewArray().ToObject(int.class);
@@ -859,7 +859,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsInt64() {
       try {
         CBORObject.NewArray().ToObject(long.class);
@@ -989,7 +989,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsSingle() {
       try {
         CBORObject.NewArray().ToObject(float.class);
@@ -1062,7 +1062,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestAsString() {
       {
         String stringTemp = (String)ToObjectTest.TestToFromObjectRoundTrip("test")
@@ -1123,7 +1123,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestToObjectFieldClass() {
       FieldClass fc = new FieldClass();
       CBORObject co = CBORObject.FromObject(fc);
@@ -1166,8 +1166,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       Assert.assertEquals(999, fc.publicFieldA);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
-    [Timeout(5000)]
+    @Test(timeout = 5000)
     public void TestToObject() {
       PODClass ao = new PODClass();
       CBORObject co = CBORObject.FromObject(ao);
@@ -1281,7 +1280,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestShortRoundTrip() {
       for (int i = -32768; i < 32768; ++i) {
         short c = (short)i;
@@ -1289,7 +1288,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestCharRoundTrip() {
       for (int i = 0; i < 0x10000; ++i) {
         char c = (char)i;
@@ -1328,7 +1327,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       return new String(dt);
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestDateRoundTrip() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
@@ -1341,7 +1340,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestBadDate() {
       CBORObject cbor = CBORObject.FromObjectAndTag(
         "2000-1-01T00:00:00Z",
@@ -1417,7 +1416,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestUriRoundTrip() {
       try {
         java.net.URI uri = new java.net.URI("http://example.com/path/path2?query#fragment");
@@ -1427,7 +1426,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
-    @Test[/*TEMP*/Timeout(20000000)]
+    @Test
     public void TestUUIDRoundTrip() {
       RandomGenerator rng = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
