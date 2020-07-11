@@ -32,18 +32,18 @@ private CBORTestCommon() {
     private static EFloat RandomEFloatLowExponent(IRandomGenExtended rand) {
       while (true) {
          EFloat ef = RandomObjects.RandomEFloat(rand);
-         if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
- return ef;
- }
+if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
+  return ef;
+}
        }
     }
 
     private static EDecimal RandomEDecimalLowExponent(IRandomGenExtended rand) {
       while (true) {
          EDecimal ef = RandomObjects.RandomEDecimal(rand);
-         if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
- return ef;
- }
+if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
+  return ef;
+}
        }
     }
 
@@ -51,7 +51,8 @@ private CBORTestCommon() {
       return RandomNumber(rand, false);
     }
 
-    public static CBORObject RandomNumber(IRandomGenExtended rand, boolean lowExponent) {
+    public static CBORObject RandomNumber(IRandomGenExtended rand, boolean
+lowExponent) {
       Object o = null;
       switch (rand.GetInt32(6)) {
         case 0:

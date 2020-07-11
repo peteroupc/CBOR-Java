@@ -2834,8 +2834,8 @@ TestRandomOne(eb1);
             continue;
         }
         if (!onSum.IsFinite()) {
-           //System.out.println("on1=" + o1);
-           //System.out.println("on2=" + o2);
+           // System.out.println("on1=" + o1);
+           // System.out.println("on2=" + o2);
            continue;
         }
         if (!onSum.IsFinite()) {
@@ -2873,8 +2873,8 @@ TestRandomOne(eb1);
             continue;
         }
         if (!onSum.IsFinite()) {
-           //System.out.println("on1=" + o1);
-           //System.out.println("on2=" + o2);
+           // System.out.println("on1=" + o1);
+           // System.out.println("on2=" + o2);
            continue;
         }
         // System.out.println(i+"");
@@ -5017,12 +5017,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static EDecimal AsED(CBORObject obj) {
-      Object o = obj.ToObject(EInteger.class);
+      Object o = obj.ToObject(EDecimal.class);
       return (EDecimal)o;
     }
 
     private static ERational AsER(CBORObject obj) {
-      Object o = obj.ToObject(EInteger.class);
+      Object o = obj.ToObject(ERational.class);
       return (ERational)o;
     }
 
