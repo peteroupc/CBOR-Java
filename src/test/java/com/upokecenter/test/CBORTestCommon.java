@@ -32,18 +32,22 @@ private CBORTestCommon() {
     private static EFloat RandomEFloatLowExponent(IRandomGenExtended rand) {
       while (true) {
          EFloat ef = RandomObjects.RandomEFloat(rand);
-if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
-  return ef;
-}
+         if (
+           ef.getExponent().compareTo(-20000) >= 0 &&
+ef.getExponent().compareTo(20000) <= 0) {
+           return ef;
+         }
        }
     }
 
     private static EDecimal RandomEDecimalLowExponent(IRandomGenExtended rand) {
       while (true) {
          EDecimal ef = RandomObjects.RandomEDecimal(rand);
-if (ef.getExponent().compareTo(-20000) >= 0 && ef.getExponent().compareTo(20000) <= 0) {
-  return ef;
-}
+         if (
+           ef.getExponent().compareTo(-20000) >= 0 &&
+ef.getExponent().compareTo(20000) <= 0) {
+           return ef;
+         }
        }
     }
 
