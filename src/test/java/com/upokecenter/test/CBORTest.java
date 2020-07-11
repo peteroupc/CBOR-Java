@@ -2723,7 +2723,7 @@ CBORObject.DecodeFromBytes(eb1).ToObject(ERational.class));
 TestRandomOne(eb1);
     }
 
-    @Test(timeout = 20000)
+    @Test(timeout = 60000)
     public void TestAsNumberAddSubtractSpecific() {
        byte[] eb1 = new byte[] {
          (byte)0xd9, 0x01, 0x08,
@@ -2787,7 +2787,7 @@ TestRandomOne(eb1);
  }
     }
 
-    @Test(timeout = 20000)
+    @Test(timeout = 60000)
     public void TestAsNumberAddSubtractSpecific2() {
        byte[] eb1 = new byte[] {
          (byte)0xc4,
