@@ -15,7 +15,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class CBORSupplementTest {
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void IncorrectDecimalFrac() {
       byte[] bytes;
       CBORObject cbor;
@@ -107,7 +107,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void IncorrectBigFloat() {
       byte[] bytes;
       CBORObject cbor;
@@ -199,7 +199,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCBORObjectArgumentValidation() {
       Assert.assertEquals(
         CBORObject.Null,
@@ -255,7 +255,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestIncompleteCBORString() {
       byte[] bytes = { 0x65, 0x41, 0x41, 0x41, 0x41 };
       try {
@@ -270,7 +270,7 @@ import com.upokecenter.numbers.*;
     }
 
     @SuppressWarnings("deprecation")
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestObsoleteAbs() {
       try {
         CBORObject.True.Abs();
@@ -310,7 +310,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestIncompleteIndefLengthArray() {
       byte[] bytes;
       bytes = new byte[] { (byte)0x9f, 0, 0, 0, 0, 0 };
@@ -332,7 +332,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestIncompleteIndefLengthMap() {
       // Premature end after value
       byte[] bytes = { (byte)0xbf, 0x61, 0x41, 0, 0x61, 0x42, 0 };
@@ -365,7 +365,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCyclicRefs() {
       CBORObject cbor = CBORObject.NewArray();
       cbor.Add(CBORObject.NewArray());
@@ -392,7 +392,7 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestNestingDepth() {
       try {
         {
@@ -458,7 +458,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCBOREInteger() {
       EInteger bi = EInteger.FromString("9223372036854775808");
       try {
@@ -510,7 +510,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestEquivalentInfinities() {
       CBORObject co, co2;
       co = ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecPosInf);
@@ -524,7 +524,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestSharedRefs() {
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
       byte[] bytes;
@@ -560,7 +560,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestBuiltInTags() {
       // As of 4.0, nearly all tags are no longer converted to native objects; thus,
       // DecodeFromBytes no longer fails when such tags are encountered but
@@ -725,7 +725,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestUUID() {
       CBORObject obj =
         ToObjectTest.TestToFromObjectRoundTrip(java.util.UUID.fromString(
@@ -752,7 +752,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals((byte)0xff, bytes[15]);
     }
 
-    // @Test
+    // @Test[/*TEMP*/Timeout(20000000)]
     public static void TestMiniCBOR() {
       byte[] bytes;
       bytes = new byte[] { 0x19, 2 };
@@ -931,7 +931,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestNegativeBigInts() {
       {
         Object objectTemp = EInteger.FromString("-257");
@@ -1018,7 +1018,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestStringRefs() {
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
       CBORObject cbor = CBORObject.DecodeFromBytes(
@@ -1044,7 +1044,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCPOD() {
       CPOD m = new CPOD();
       m.setAa("Test");

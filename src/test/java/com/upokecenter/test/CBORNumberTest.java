@@ -11,7 +11,7 @@ import com.upokecenter.numbers.*;
       return ToObjectTest.TestToFromObjectRoundTrip(o).AsNumber();
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAbs() {
       TestCommon.CompareTestEqual(
         ToCN(2),
@@ -40,27 +40,27 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestToCBORObject() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestFromCBORObject() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestToString() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCanFitInInt32() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCanFitInInt64() {
       if (!(CBORObject.FromObject(0).AsNumber().CanFitInInt64())) {
  Assert.fail();
@@ -79,7 +79,7 @@ import com.upokecenter.numbers.*;
  }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestIsInfinity() {
       if (CBORObject.FromObject(0).AsNumber().IsInfinity()) {
  Assert.fail();
@@ -98,7 +98,7 @@ import com.upokecenter.numbers.*;
  }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestIsNaN() {
       if (CBORObject.FromObject(0).AsNumber().IsNaN()) {
  Assert.fail();
@@ -121,17 +121,17 @@ import com.upokecenter.numbers.*;
  }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestNegate() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAdd() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestSubtract() {
       // not implemented yet
     }
@@ -140,7 +140,7 @@ import com.upokecenter.numbers.*;
       return (EDecimal)obj.ToObject(EDecimal.class);
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestMultiply() {
       try {
         ToCN(2).Multiply(null);
@@ -168,7 +168,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestDivide() {
       try {
         ToCN(2).Divide(null);
@@ -181,7 +181,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestRemainder() {
       try {
         ToCN(2).Remainder(null);
@@ -194,37 +194,37 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestCompareTo() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestLessThan() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestLessThanOrEqual() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestGreaterThan() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestGreaterThanOrEqual() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestGetType() {
       // not implemented yet
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAsEInteger() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip(
@@ -488,7 +488,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAsEDecimal() {
       {
         Object objectTemp = CBORTestCommon.DecPosInf;
@@ -590,7 +590,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAsEFloat() {
       {
         Object objectTemp = CBORTestCommon.FloatPosInf;
@@ -626,7 +626,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test[/*TEMP*/Timeout(20000000)]
     public void TestAsERational() {
       {
         Object objectTemp = CBORTestCommon.RatPosInf;
