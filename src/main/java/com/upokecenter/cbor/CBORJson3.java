@@ -219,7 +219,7 @@ import com.upokecenter.numbers.*;
       // is a JSON number
       int[] endIndex = new int[1];
       endIndex[0] = numberStartIndex;
-      obj = CBORDataUtilities.ParseJSONNumber(
+      obj = CBORDataUtilitiesTextString.ParseJSONNumber(
           this.jstring,
           numberStartIndex,
           this.endPos - numberStartIndex,
@@ -306,7 +306,7 @@ import com.upokecenter.numbers.*;
         // is a JSON number
         int[] endIndex = new int[1];
         endIndex[0] = numberStartIndex;
-        obj = CBORDataUtilities.ParseJSONNumber(
+        obj = CBORDataUtilitiesTextString.ParseJSONNumber(
             this.jstring,
             numberStartIndex,
             this.endPos - numberStartIndex,
