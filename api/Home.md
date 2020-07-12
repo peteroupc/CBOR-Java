@@ -11,15 +11,6 @@ Classes that implement this interface can support conversions from CBOR
 * [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
 Contains methods useful for reading and writing data, with a focus on CBOR.
 
-* [com.upokecenter.cbor.CBORDataUtilitiesByteArrayString](com.upokecenter.cbor.CBORDataUtilitiesByteArrayString.md) -
-Contains methods useful for reading and writing data, with a focus on CBOR.
-
-* [com.upokecenter.cbor.CBORDataUtilitiesCharArrayString](com.upokecenter.cbor.CBORDataUtilitiesCharArrayString.md) -
-Contains methods useful for reading and writing data, with a focus on CBOR.
-
-* [com.upokecenter.cbor.CBORDataUtilitiesTextString](com.upokecenter.cbor.CBORDataUtilitiesTextString.md) -
-Contains methods useful for reading and writing data, with a focus on CBOR.
-
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
 

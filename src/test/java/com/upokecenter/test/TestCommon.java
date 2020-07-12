@@ -105,6 +105,48 @@ private TestCommon() {
       }
     }
 
+    public static void AssertByteArraysEqual(
+      byte[] arr1,
+      int offset,
+      int length,
+      byte[] arr2) {
+      if (!ByteArraysEqual(arr1, offset, length, arr2, 0, arr2 == null ? 0 :
+arr2.length)) {
+        Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
+          ToByteArrayString(arr2));
+      }
+    }
+
+    public static void AssertByteArraysEqual(
+      byte[] arr1,
+      byte[] arr2,
+      int offset2,
+      int length2) {
+      if (!ByteArraysEqual(
+        arr1,
+        0,
+        arr1 == null ? 0 : arr1.length,
+        arr2,
+        offset2,
+        length2)) {
+        Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
+          ToByteArrayString(arr2));
+      }
+    }
+
+    public static void AssertByteArraysEqual(
+      byte[] arr1,
+      int offset,
+      int length,
+      byte[] arr2,
+      int offset2,
+      int length2) {
+      if (!ByteArraysEqual(arr1, offset, length, arr2, offset2, length2)) {
+        Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
+          ToByteArrayString(arr2));
+      }
+    }
+
     public static void AssertNotEqual(Object o, Object o2, String msg) {
       if (o == null) {
         throw new NullPointerException("o");
@@ -573,25 +615,124 @@ private TestCommon() {
     }
 
     public static String ToByteArrayString(byte[] bytes) {
+      return (bytes == null) ? "null" : (ToByteArrayString(bytes, 0,
+  bytes.length));
+    }
+
+    public static String ToByteArrayString(byte[] bytes, int offset, int
+length) {
       if (bytes == null) {
         return "null";
+      }
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      if (offset < 0) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
+"\u0020greater or equal to 0");
+      }
+      if (offset > bytes.length) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
+"\u0020or equal to " + bytes.length);
+      }
+      if (length < 0) {
+        throw new IllegalArgumentException(" (" + length + ") is not greater or" +
+"\u0020equal to 0");
+      }
+      if (length > bytes.length) {
+        throw new IllegalArgumentException(" (" + length + ") is not less or equal" +
+"\u0020to " + bytes.length);
+      }
+      if (bytes.length - offset < length) {
+        throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
+"\u0020offset (" + (bytes.length - offset) + ") is not greater or equal to " +
+length);
       }
       StringBuilder sb = new StringBuilder();
       String ValueHex = "0123456789ABCDEF";
       sb.append("new byte[] { ");
-      for (int i = 0; i < bytes.length; ++i) {
+      for (int i = 0; i < length; ++i) {
         if (i > 0) {
           sb.append(","); }
-        if ((bytes[i] & 0x80) != 0) {
+        if ((bytes[offset + i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {
           sb.append("0x");
         }
-        sb.append(ValueHex.charAt((bytes[i] >> 4) & 0xf));
-        sb.append(ValueHex.charAt(bytes[i] & 0xf));
+        sb.append(ValueHex.charAt((bytes[offset + i] >> 4) & 0xf));
+        sb.append(ValueHex.charAt(bytes[offset + i] & 0xf));
       }
       sb.append("}");
       return sb.toString();
+    }
+
+    private static boolean ByteArraysEqual(
+      byte[] arr1,
+      int offset,
+      int length,
+      byte[] arr2,
+      int offset2,
+      int length2) {
+      if (arr1 == null) {
+        return arr2 == null;
+      }
+      if (arr2 == null) {
+        return false;
+      }
+      if (offset < 0) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
+"\u0020greater or equal to 0");
+      }
+      if (offset > arr1.length) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
+"\u0020or equal to " + arr1.length);
+      }
+      if (length < 0) {
+        throw new IllegalArgumentException(" (" + length + ") is not greater or" +
+"\u0020equal to 0");
+      }
+      if (length > arr1.length) {
+        throw new IllegalArgumentException(" (" + length + ") is not less or equal" +
+"\u0020to " + arr1.length);
+      }
+      if (arr1.length - offset < length) {
+        throw new IllegalArgumentException("\"arr1\" + \"'s length minus \" +" +
+"\u0020offset (" + (arr1.length - offset) + ") is not greater or equal to " +
+length);
+      }
+      if (arr2 == null) {
+        throw new NullPointerException("arr2");
+      }
+      if (offset2 < 0) {
+        throw new IllegalArgumentException("\"offset2\" (" + offset2 + ") is not" +
+"\u0020greater or equal to 0");
+      }
+      if (offset2 > arr2.length) {
+        throw new IllegalArgumentException("\"offset2\" (" + offset2 + ") is not" +
+"\u0020less or equal to " + arr2.length);
+      }
+      if (length2 < 0) {
+        throw new IllegalArgumentException(" (" + length2 + ") is not greater or" +
+"\u0020equal to 0");
+      }
+      if (length2 > arr2.length) {
+        throw new IllegalArgumentException(" (" + length2 + ") is not less or equal" +
+"\u0020to " + arr2.length);
+      }
+      if (arr2.length - offset2 < length2) {
+        throw new IllegalArgumentException("\"arr2\"'s length minus " +
+"\u0020offset2 (" + (arr2.length - offset2) + ") is not greater or equal to " +
+length2);
+      }
+      if (length != length2) {
+        return false;
+      }
+      for (int i = 0; i < length; ++i) {
+        if (arr1[offset + i] != arr2[offset + i]) {
+          return false;
+        }
+      }
+      return true;
     }
 
     private static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {

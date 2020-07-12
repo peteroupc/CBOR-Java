@@ -401,6 +401,7 @@ obj.Untag().ToJSONString()));
       }
     }
 
+    // TODO: Move to CBORUtilities
     static long IntegerToDoubleBits(int i) {
       if (i == Integer.MIN_VALUE) {
         return (long)0xc1e0000000000000L;
@@ -420,6 +421,7 @@ obj.Untag().ToJSONString()));
       return longmant;
     }
 
+    // TODO: Move to CBORUtilities
     static boolean IsBeyondSafeRange(long bits) {
       // Absolute value of double is greater than 9007199254740991.0,
       // or value is NaN
@@ -427,6 +429,7 @@ obj.Untag().ToJSONString()));
       return bits >= DoublePosInfinity || bits > 0x433fffffffffffffL;
     }
 
+    // TODO: Move to CBORUtilities
     static boolean IsIntegerValue(long bits) {
       bits &= ~(1L << 63);
       if (bits == 0) {
@@ -450,6 +453,7 @@ obj.Untag().ToJSONString()));
       return ((mant >> shift) << shift) == mant;
     }
 
+    // TODO: Move to CBORUtilities
     static long GetIntegerValue(long bits) {
       long sgn;
       sgn = ((bits >> 63) != 0) ? -1L : 1L;

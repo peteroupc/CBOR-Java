@@ -1143,30 +1143,30 @@ import com.upokecenter.numbers.*;
       ERational e1,
       ERational e2,
       ERational eresult) {
-        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
-           throw new OutOfMemoryError("Result might be too big to fit in" +
-"\u0020memory");
-        }
-        return eresult;
+      if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+        throw new OutOfMemoryError("Result might be too big to fit in" +
+          "\u0020memory");
+      }
+      return eresult;
     }
 
     private static EDecimal CheckOverflow(EDecimal e1, EDecimal e2, EDecimal
-eresult) {
-        // System.out.println("ED e1.setExp("+e1.getExponent()));
-        // System.out.println("ED e2.setExp("+e2.getExponent()));
-        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
-           throw new OutOfMemoryError("Result might be too big to fit in" +
-"\u0020memory");
-        }
-        return eresult;
+      eresult) {
+      // System.out.println("ED e1.setExp("+e1.getExponent()));
+      // System.out.println("ED e2.setExp("+e2.getExponent()));
+      if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+        throw new OutOfMemoryError("Result might be too big to fit in" +
+          "\u0020memory");
+      }
+      return eresult;
     }
 
     private static EFloat CheckOverflow(EFloat e1, EFloat e2, EFloat eresult) {
-        if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
-           throw new OutOfMemoryError("Result might be too big to fit in" +
-"\u0020memory");
-        }
-        return eresult;
+      if (e1.isFinite() && e2.isFinite() && eresult.IsNaN()) {
+        throw new OutOfMemoryError("Result might be too big to fit in" +
+          "\u0020memory");
+      }
+      return eresult;
     }
 
     private static NumberKind GetConvertKind(CBORNumber a, CBORNumber b) {
@@ -1175,23 +1175,25 @@ eresult) {
       NumberKind convertKind = NumberKind.EInteger;
       if (!a.IsFinite()) {
         convertKind = (typeB == NumberKind.Integer || typeB ==
-NumberKind.EInteger) ? ((typeA == NumberKind.Double) ? NumberKind.EFloat :
-typeA) : ((typeB == NumberKind.Double) ? NumberKind.EFloat : typeB);
+            NumberKind.EInteger) ? ((typeA == NumberKind.Double) ?
+NumberKind.EFloat :
+            typeA) : ((typeB == NumberKind.Double) ? NumberKind.EFloat : typeB);
       } else if (!b.IsFinite()) {
         convertKind = (typeA == NumberKind.Integer || typeA ==
-NumberKind.EInteger) ? ((typeB == NumberKind.Double) ? NumberKind.EFloat :
-typeB) : ((typeA == NumberKind.Double) ? NumberKind.EFloat : typeA);
-      } else if (typeA == NumberKind.ERational ||
-        typeB == NumberKind.ERational) {
+            NumberKind.EInteger) ? ((typeB == NumberKind.Double) ?
+NumberKind.EFloat :
+            typeB) : ((typeA == NumberKind.Double) ? NumberKind.EFloat : typeA);
+      } else if (typeA == NumberKind.ERational || typeB ==
+NumberKind.ERational) {
         convertKind = NumberKind.ERational;
-      } else if (typeA == NumberKind.EDecimal ||
-        typeB == NumberKind.EDecimal) {
+      } else if (typeA == NumberKind.EDecimal || typeB == NumberKind.EDecimal) {
         convertKind = NumberKind.EDecimal;
+      } else {
+        convertKind = (typeA == NumberKind.EFloat || typeB ==
+            NumberKind.EFloat ||
+            typeA == NumberKind.Double || typeB == NumberKind.Double) ?
+            NumberKind.EFloat : NumberKind.EInteger;
       }
-      else convertKind = (typeA == NumberKind.EFloat || typeB ==
-NumberKind.EFloat ||
-        typeA == NumberKind.Double || typeB == NumberKind.Double) ?
-NumberKind.EFloat : NumberKind.EInteger;
       return convertKind;
     }
 
@@ -1231,10 +1233,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
         // System.out.println("conv Rational/Rational");
         return new CBORNumber(NumberKind.ERational,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Add(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Add(e2)));
       }
       if (convertKind == NumberKind.EDecimal) {
         // System.out.println("Decimal/Decimal");
@@ -1243,10 +1245,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         // System.out.println("ED e1.setExp("+e1.getExponent()));
         // System.out.println("ED e2.setExp("+e2.getExponent()));
         return new CBORNumber(NumberKind.EDecimal,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Add(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Add(e2)));
       }
       if (convertKind == NumberKind.EFloat) {
         // System.out.println("Float/Float");
@@ -1255,10 +1257,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         // System.out.println("EF e1.setExp("+e1.getExponent()));
         // System.out.println("EF e2.setExp("+e2.getExponent()));
         return new CBORNumber(NumberKind.EFloat,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Add(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Add(e2)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
@@ -1303,28 +1305,28 @@ NumberKind.EFloat : NumberKind.EInteger;
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
         return new CBORNumber(NumberKind.ERational,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Subtract(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Subtract(e2)));
       }
       if (convertKind == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         return new CBORNumber(NumberKind.EDecimal,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Subtract(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Subtract(e2)));
       }
       if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
         return new CBORNumber(NumberKind.EFloat,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Subtract(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Subtract(e2)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
@@ -1386,10 +1388,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
         return new CBORNumber(NumberKind.EFloat,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Multiply(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Multiply(e2)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
@@ -1442,10 +1444,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
         return new CBORNumber(NumberKind.ERational,
- CheckOverflow(
-          e1,
-          e2,
-          e1.Divide(e2)));
+            CheckOverflow(
+              e1,
+              e2,
+              e1.Divide(e2)));
       }
       if (convertKind == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
@@ -1462,10 +1464,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
         return new CBORNumber(NumberKind.ERational,
- CheckOverflow(
-          er1,
-          er2,
-          er1.Divide(er2)));
+            CheckOverflow(
+              er1,
+              er2,
+              er1.Divide(er2)));
       }
       if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
@@ -1482,10 +1484,10 @@ NumberKind.EFloat : NumberKind.EInteger;
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
         return new CBORNumber(NumberKind.ERational,
- CheckOverflow(
-          er1,
-          er2,
-          er1.Divide(er2)));
+            CheckOverflow(
+              er1,
+              er2,
+              er1.Divide(er2)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
@@ -1541,13 +1543,13 @@ NumberKind.EFloat : NumberKind.EInteger;
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
         return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
-  null)));
+                null)));
       }
       if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
         return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
-  null)));
+                null)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
@@ -1601,8 +1603,10 @@ NumberKind.EFloat : NumberKind.EInteger;
               (CBORUtilities.DoubleBitsNaN(b) ? 0 : 1) :
               (CBORUtilities.DoubleBitsNaN(b) ?
                 -1 : (((a < 0) != (b < 0)) ? ((a < b) ? -1 : 1) :
-                  (((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1)))));
-                  break; } case EDecimal: {
+                  ((a == b) ? 0 : (((a < b) ^ (a < 0)) ? -1 : 1))));
+            break;
+          }
+          case EDecimal: {
             cmp = ((EDecimal)objA).compareTo((EDecimal)objB);
             break;
           }
