@@ -16,6 +16,8 @@ import com.upokecenter.numbers.*;
   final class CBORUtilities {
 private CBORUtilities() {
 }
+    private static final long DoubleNegInfinity = ((long)(0xfffL << 52));
+    private static final long DoublePosInfinity = ((long)(0x7ffL << 52));
     private static final String HexAlphabet = "0123456789ABCDEF";
 
     public static int CompareStringsAsUtf8LengthFirst(String strA, String
@@ -1035,6 +1037,81 @@ private CBORUtilities() {
         ++charbufLength;
       }
       return new String(charbuf, 0, charbufLength);
+    }
+
+    public static long IntegerToDoubleBits(int i) {
+      if (i == Integer.MIN_VALUE) {
+        return (long)0xc1e0000000000000L;
+      }
+      long longmant = Math.abs(i);
+      int expo = 0;
+      while (longmant < (1 << 52)) {
+        longmant <<= 1;
+        --expo;
+      }
+      // Clear the high bits where the exponent and sign are
+      longmant &= 0xfffffffffffffL;
+      longmant |= (long)(expo + 1075) << 52;
+      if (i < 0) {
+        longmant |= ((long)(1L << 63));
+      }
+      return longmant;
+    }
+
+    public static boolean IsBeyondSafeRange(long bits) {
+      // Absolute value of double is greater than 9007199254740991.0,
+      // or value is NaN
+      bits &= ~(1L << 63);
+      return bits >= DoublePosInfinity || bits > 0x433fffffffffffffL;
+    }
+
+    public static boolean IsIntegerValue(long bits) {
+      bits &= ~(1L << 63);
+      if (bits == 0) {
+        return true;
+      }
+      // Infinity and NaN
+      if (bits >= DoublePosInfinity) {
+        return false;
+      }
+      // Beyond non-integer range
+      if ((bits >> 52) >= 0x433) {
+        return true;
+      }
+      // Less than 1
+      if ((bits >> 52) <= 0x3fe) {
+        return false;
+      }
+      int exp = (int)(bits >> 52);
+      long mant = bits & ((1L << 52) - 1);
+      int shift = 52 - (exp - 0x3ff);
+      return ((mant >> shift) << shift) == mant;
+    }
+
+    public static long GetIntegerValue(long bits) {
+      long sgn;
+      sgn = ((bits >> 63) != 0) ? -1L : 1L;
+      bits &= ~(1L << 63);
+      if (bits == 0) {
+        return 0;
+      }
+      // Infinity and NaN
+      if (bits >= DoublePosInfinity) {
+        throw new UnsupportedOperationException();
+      }
+      // Beyond safe range
+      if ((bits >> 52) >= 0x434) {
+        throw new UnsupportedOperationException();
+      }
+      // Less than 1
+      if ((bits >> 52) <= 0x3fe) {
+        throw new UnsupportedOperationException();
+      }
+      int exp = (int)(bits >> 52);
+      long mant = bits & ((1L << 52) - 1);
+      mant |= 1L << 52;
+      int shift = 52 - (exp - 0x3ff);
+      return (mant >> shift) * sgn;
     }
 
 /**
