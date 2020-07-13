@@ -110,8 +110,13 @@ private TestCommon() {
       int offset,
       int length,
       byte[] arr2) {
-      if (!ByteArraysEqual(arr1, offset, length, arr2, 0, arr2 == null ? 0 :
-arr2.length)) {
+      if (!ByteArraysEqual(
+         arr1,
+         offset,
+         length,
+         arr2,
+         0,
+         arr2 == null ? 0 : arr2.length)) {
         Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
           ToByteArrayString(arr2));
       }
@@ -615,12 +620,16 @@ arr2.length)) {
     }
 
     public static String ToByteArrayString(byte[] bytes) {
-      return (bytes == null) ? "null" : (ToByteArrayString(bytes, 0,
-  bytes.length));
+      return (bytes == null) ? "null" : ToByteArrayString(
+         bytes,
+         0,
+         bytes.length);
     }
 
-    public static String ToByteArrayString(byte[] bytes, int offset, int
-length) {
+    public static String ToByteArrayString(
+       byte[] bytes,
+       int offset,
+       int length) {
       if (bytes == null) {
         return "null";
       }

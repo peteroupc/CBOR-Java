@@ -16,7 +16,6 @@ import com.upokecenter.numbers.*;
   final class CBORUtilities {
 private CBORUtilities() {
 }
-    private static final long DoubleNegInfinity = ((long)(0xfffL << 52));
     private static final long DoublePosInfinity = ((long)(0x7ffL << 52));
     private static final String HexAlphabet = "0123456789ABCDEF";
 
