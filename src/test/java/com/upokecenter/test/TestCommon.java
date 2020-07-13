@@ -737,7 +737,7 @@ length2);
         return false;
       }
       for (int i = 0; i < length; ++i) {
-        if (arr1[offset + i] != arr2[offset + i]) {
+        if (arr1[offset + i] != arr2[offset2 + i]) {
           return false;
         }
       }
