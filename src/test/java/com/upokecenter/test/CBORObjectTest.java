@@ -2945,10 +2945,19 @@ CBOREncodeOptions(false, false, true));
     }
 
     public enum EnumClass {
+      /**
+       * Internal API.
+       */
       Value1,
 
+      /**
+       * Internal API.
+       */
       Value2,
 
+      /**
+       * Internal API.
+       */
       Value3,
     }
 
