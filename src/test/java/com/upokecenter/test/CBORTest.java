@@ -743,7 +743,7 @@ import com.upokecenter.numbers.*;
       }
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
        });
       TestCanFitInOne(cbor);
     }
@@ -2862,6 +2862,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public static boolean TestAsNumberMultiplyDivideOne(
       CBORObject o1,
       CBORObject o2) {
+        if (o1 == null) {
+          throw new NullPointerException("o1");
+        }
+        if (o2 == null) {
+          throw new NullPointerException("o2");
+        }
         if (!o1.isNumber() || !o2.isNumber()) {
           return false;
         }
@@ -2910,7 +2916,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             "ecodeFromBytes(bytes1),\n" +
             "CBORObject.DecodeFromBytes(bytes2));\n}\n");
         }
-        if (!o1.IsZero() && !o2.IsZero()) {
+        if (!on1.IsZero() && !on2.IsZero()) {
           VerifyEqual(on1a, on1, o1, o2);
         }
         return true;
@@ -2919,8 +2925,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test(timeout = 100000)
     public void TestAsNumberMultiplyDivide() {
       byte[] bo1 = new byte[] {
-        0x1b, 0x75, (byte)0xdd, (byte)0xb0, (byte)0xcc,
-        0x50, (byte)0x9b, (byte)0xd0, 0x2b,
+        0x1b, 0x75, (byte)0xdd, (byte)0xb0,
+        (byte)0xcc, 0x50, (byte)0x9b, (byte)0xd0, 0x2b
        };
       byte[] bo2 = new byte[] { (byte)0xc5, (byte)0x82, 0x23, 0x00 };
       CBORObject cbor1 = CBORObject.DecodeFromBytes(bo1);

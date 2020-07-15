@@ -685,6 +685,26 @@ if(objThis.getType()==CBORType.Array){
 }
 if(objThis.getType()==CBORType.Map){
  if(rawType!=null &&
+    rawType.equals(HashMap.class)){
+  if(typeArguments==null || typeArguments.length<2){
+   HashMap alist=new HashMap();
+   for(CBORObject cbor : objThis.getKeys()){
+    CBORObject cborValue=objThis.get(cbor);
+    alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
+      cborValue.ToObject(Object.class,mapper,options,depth+1));
+   }
+   return alist;
+  } else {
+   HashMap alist=new HashMap();
+   for(CBORObject cbor : objThis.getKeys()){
+    CBORObject cborValue=objThis.get(cbor);
+    alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),
+      cborValue.ToObject(typeArguments[1],mapper,options,depth+1));
+   }
+   return alist;
+  }
+ }
+ if(rawType!=null &&
     rawType.equals(TreeMap.class) || rawType.equals(Map.class)){
   if(typeArguments==null || typeArguments.length<2){
    TreeMap alist=new TreeMap();
