@@ -692,15 +692,15 @@ import com.upokecenter.numbers.*;
       EDecimal edNumberED = AsED(ed);
       ed2 = EDecimal.FromDouble(edNumberED.ToDouble());
       if ((edNumberED.compareTo(ed2) == 0) != edNumber.CanFitInDouble()) {
-        Assert.fail(ObjectMessage(ed));
+        Assert.fail(ObjectMessage(ed) + "\n// CanFitInDouble");
       }
       ed2 = EDecimal.FromSingle(AsED(ed).ToSingle());
       if ((edNumberED.compareTo(ed2) == 0) != edNumber.CanFitInSingle()) {
-        Assert.fail(ObjectMessage(ed));
+        Assert.fail(ObjectMessage(ed) + "\n// CanFitInSingle");
       }
       if (!edNumber.IsInfinity() && !edNumber.IsNaN()) {
         if (edNumberED.IsInteger() != edNumber.IsInteger()) {
-          Assert.fail(ObjectMessage(ed));
+          Assert.fail(ObjectMessage(ed) + "\n// IsInteger");
         }
       }
       if (!edNumber.IsInfinity() && !edNumber.IsNaN()) {
@@ -714,22 +714,22 @@ import com.upokecenter.numbers.*;
         if (edNumber.IsInteger()) {
           if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 31) !=
             edNumber.CanFitInInt32()) {
-            Assert.fail(ObjectMessage(ed));
+            Assert.fail(ObjectMessage(ed) + "\n// Int32");
           }
         }
         if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 31) !=
           edNumber.CanTruncatedIntFitInInt32()) {
-          Assert.fail(ObjectMessage(ed));
+          Assert.fail(ObjectMessage(ed) + "\n// TruncInt32");
         }
         if (edNumber.IsInteger()) {
           if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 63) !=
             edNumber.CanFitInInt64()) {
-            Assert.fail(ObjectMessage(ed));
+            Assert.fail(ObjectMessage(ed) + "\n// Int64");
           }
         }
         if ((bi != null && bi.GetSignedBitLengthAsInt64() <= 63) !=
           edNumber.CanTruncatedIntFitInInt64()) {
-          Assert.fail(ObjectMessage(ed));
+          Assert.fail(ObjectMessage(ed) + "\n// TruncInt64");
         }
       }
     }
@@ -741,6 +741,11 @@ import com.upokecenter.numbers.*;
         CBORObject ed = CBORTestCommon.RandomNumber(r);
         TestCanFitInOne(ed);
       }
+      CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
+        (byte)0xfb,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+       });
+      TestCanFitInOne(cbor);
     }
 
     @Test
@@ -2854,12 +2859,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test(timeout = 100000)
-    public void TestAsNumberMultiplyDivide() {
-      RandomGenerator r = new RandomGenerator();
-      for (int i = 0; i < 3000; ++i) {
-        CBORObject o1 = CBORTestCommon.RandomNumber(r);
-        CBORObject o2 = CBORTestCommon.RandomNumber(r);
+    public static boolean TestAsNumberMultiplyDivideOne(
+      CBORObject o1,
+      CBORObject o2) {
+        if (!o1.isNumber() || !o2.isNumber()) {
+          return false;
+        }
         byte[] eb1 = o1.EncodeToBytes();
         byte[] eb2 = o2.EncodeToBytes();
         CBORTestCommon.AssertRoundTrip(o1);
@@ -2870,12 +2875,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         try {
           onSum = on1.Multiply(on2);
         } catch (OutOfMemoryError ex) {
-          continue;
+            return false;
         }
         if (!onSum.IsFinite()) {
           // System.out.println("on1=" + o1);
           // System.out.println("on2=" + o2);
-          continue;
+            return false;
         }
         // System.out.println(i+"");
         // System.out.println(i+" "+Chop(o1.toString()));
@@ -2887,19 +2892,45 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
         }
         CBORNumber on2a = onSum.Divide(on1);
-        if (!on2a.IsFinite()) {
+        // NOTE: Ignore if divisor is zero
+        if (!on1.IsZero() && !on2a.IsFinite()) {
           Assert.fail("on2a is not finite\n" +
             "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
             "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
         }
         VerifyEqual(on2a, on2, o1, o2);
         CBORNumber on1a = onSum.Divide(on2);
-        if (!on1a.IsFinite()) {
+        // NOTE: Ignore if divisor is zero
+        if (!on2.IsZero() && !on1a.IsFinite()) {
           Assert.fail("on1a is not finite\n" +
-            "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
-            "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
+            "o1=" + on1 + "\n" + "o2=" + on2 + "\n" +
+            "{\nbyte[] bytes1 = " + TestCommon.ToByteArrayString(eb1) + ";\n" +
+            "byte[] bytes2 =" + TestCommon.ToByteArrayString(eb2) + ";\n" +
+            "TestAsNumberMultiplyDivideOne(\nCBORObject.D" +
+            "ecodeFromBytes(bytes1),\n" +
+            "CBORObject.DecodeFromBytes(bytes2));\n}\n");
         }
-        VerifyEqual(on1a, on1, o1, o2);
+        if (!o1.IsZero() && !o2.IsZero()) {
+          VerifyEqual(on1a, on1, o1, o2);
+        }
+        return true;
+    }
+
+    @Test(timeout = 100000)
+    public void TestAsNumberMultiplyDivide() {
+      byte[] bo1 = new byte[] {
+        0x1b, 0x75, (byte)0xdd, (byte)0xb0, (byte)0xcc,
+        0x50, (byte)0x9b, (byte)0xd0, 0x2b,
+       };
+      byte[] bo2 = new byte[] { (byte)0xc5, (byte)0x82, 0x23, 0x00 };
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(bo1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bo2);
+      TestAsNumberMultiplyDivideOne(cbor1, cbor2);
+      RandomGenerator r = new RandomGenerator();
+      for (int i = 0; i < 3000; ++i) {
+        CBORObject o1 = CBORTestCommon.RandomNumber(r);
+        CBORObject o2 = CBORTestCommon.RandomNumber(r);
+        TestAsNumberMultiplyDivideOne(o1, o2);
       }
     }
 

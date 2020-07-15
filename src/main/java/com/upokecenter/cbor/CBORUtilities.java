@@ -10,9 +10,6 @@ at: http://peteroupc.github.io/
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Contains utility methods that may have use outside of the CBORObject class.
-   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
@@ -1240,6 +1237,9 @@ private CBORUtilities() {
     }
 
     public static boolean DoubleRetainsSameValueInSingle(long bits) {
+      if ((bits & ~(1L << 63)) == 0) {
+        return true;
+      }
       int exp = ((int)((bits >> 52) & 0x7ffL));
       long mant = bits & 0xfffffffffffffL;
       int sexp = exp - 896;
