@@ -8535,7 +8535,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(intval, cbor.AsInt32Value());
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongSpecific1() {
       JSONOptions jsonop = JSONOptions.Default;
       String json = "{\"x\":-9.2574033594381E-7962\u002c\"1\":" +
@@ -8664,7 +8664,7 @@ throw new IllegalStateException("", ex);
  }
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindFullBad() {
       System.out.println("FullBad 1");
       JSONOptions jsonop = new JSONOptions("numberconversion=full");
@@ -8701,7 +8701,7 @@ throw new IllegalStateException("", ex);
       }
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindsBad() {
       JSONOptions jsonop;
       String json = TestCommon.Repeat("7", 1000000) + "x";
@@ -8768,7 +8768,7 @@ throw new IllegalStateException("", ex);
       }
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindIntOrFloatFromDouble() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
       String manysevens = TestCommon.Repeat("7", 1000000);
@@ -8792,7 +8792,7 @@ throw new IllegalStateException("", ex);
  }
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindIntOrFloat() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
       String json = TestCommon.Repeat("7", 1000000);
@@ -8803,7 +8803,7 @@ throw new IllegalStateException("", ex);
  }
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindIntOrFloat2() {
       JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
       String json = "-" + TestCommon.Repeat("7", 1000000);
