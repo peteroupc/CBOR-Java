@@ -743,7 +743,7 @@ import com.upokecenter.numbers.*;
       }
       CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
        });
       TestCanFitInOne(cbor);
     }
@@ -2904,7 +2904,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
             "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
         }
-        VerifyEqual(on2a, on2, o1, o2);
+        if (!on1.IsZero() && !on2.IsZero()) {
+          VerifyEqual(on2a, on2, o1, o2);
+        }
         CBORNumber on1a = onSum.Divide(on2);
         // NOTE: Ignore if divisor is zero
         if (!on2.IsZero() && !on1a.IsFinite()) {
@@ -2926,7 +2928,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestAsNumberMultiplyDivide() {
       byte[] bo1 = new byte[] {
         0x1b, 0x75, (byte)0xdd, (byte)0xb0,
-        (byte)0xcc, 0x50, (byte)0x9b, (byte)0xd0, 0x2b
+        (byte)0xcc, 0x50, (byte)0x9b, (byte)0xd0, 0x2b,
        };
       byte[] bo2 = new byte[] { (byte)0xc5, (byte)0x82, 0x23, 0x00 };
       CBORObject cbor1 = CBORObject.DecodeFromBytes(bo1);
