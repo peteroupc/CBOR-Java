@@ -2381,8 +2381,8 @@ int startingAvailable = inputStream.available();
             o = CBORObject.Read(inputStream);
             long cborlen = (startingAvailable - inputStream.available()) - oldPos;
             if (cborlen > 3000) {
-               System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
-startingAvailable + ", cborlen=" + cborlen);
+              System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
+                startingAvailable + ", cborlen=" + cborlen);
             }
             byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
             try {
@@ -2400,11 +2400,11 @@ startingAvailable + ", cborlen=" + cborlen);
               }
               if (o != null) {
                 try {
-if (cborlen > 3000) {
+                  if (cborlen > 3000) {
                     System.out.println("toJSONString " + java.util.Date.UtcNow);
                   }
                   jsonString = o.ToJSONString();
-if (cborlen > 3000) {
+                  if (cborlen > 3000) {
                     System.out.println("jsonStringLen = " + jsonString.length());
                   }
                 } catch (CBORException ex) {
@@ -2877,66 +2877,66 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public static boolean TestAsNumberMultiplyDivideOne(
       CBORObject o1,
       CBORObject o2) {
-        if (o1 == null) {
-          throw new NullPointerException("o1");
-        }
-        if (o2 == null) {
-          throw new NullPointerException("o2");
-        }
-        if (!o1.isNumber() || !o2.isNumber()) {
-          return false;
-        }
-        byte[] eb1 = o1.EncodeToBytes();
-        byte[] eb2 = o2.EncodeToBytes();
-        CBORTestCommon.AssertRoundTrip(o1);
-        CBORTestCommon.AssertRoundTrip(o2);
-        CBORNumber on1 = o1.AsNumber();
-        CBORNumber on2 = o2.AsNumber();
-        CBORNumber onSum = null;
-        try {
-          onSum = on1.Multiply(on2);
-        } catch (OutOfMemoryError ex) {
-            return false;
-        }
-        if (!onSum.IsFinite()) {
-          // System.out.println("on1=" + o1);
-          // System.out.println("on2=" + o2);
-            return false;
-        }
-        // System.out.println(i+"");
-        // System.out.println(i+" "+Chop(o1.toString()));
-        // System.out.println(i+" "+Chop(o2.toString()));
-        // System.out.println(i + " " + Chop(onSum.toString()));
-        if (!onSum.IsFinite()) {
-          Assert.fail("onSum is not finite\n" +
-            "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
-            "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
-        }
-        CBORNumber on2a = onSum.Divide(on1);
-        // NOTE: Ignore if divisor is zero
-        if (!on1.IsZero() && !on2a.IsFinite()) {
-          Assert.fail("on2a is not finite\n" +
-            "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
-            "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
-        }
-        if (!on1.IsZero() && !on2.IsZero()) {
-          VerifyEqual(on2a, on2, o1, o2);
-        }
-        CBORNumber on1a = onSum.Divide(on2);
-        // NOTE: Ignore if divisor is zero
-        if (!on2.IsZero() && !on1a.IsFinite()) {
-          Assert.fail("on1a is not finite\n" +
-            "o1=" + on1 + "\n" + "o2=" + on2 + "\n" +
-            "{\nbyte[] bytes1 = " + TestCommon.ToByteArrayString(eb1) + ";\n" +
-            "byte[] bytes2 =" + TestCommon.ToByteArrayString(eb2) + ";\n" +
-            "TestAsNumberMultiplyDivideOne(\nCBORObject.D" +
-            "ecodeFromBytes(bytes1),\n" +
-            "CBORObject.DecodeFromBytes(bytes2));\n}\n");
-        }
-        if (!on1.IsZero() && !on2.IsZero()) {
-          VerifyEqual(on1a, on1, o1, o2);
-        }
-        return true;
+      if (o1 == null) {
+        throw new NullPointerException("o1");
+      }
+      if (o2 == null) {
+        throw new NullPointerException("o2");
+      }
+      if (!o1.isNumber() || !o2.isNumber()) {
+        return false;
+      }
+      byte[] eb1 = o1.EncodeToBytes();
+      byte[] eb2 = o2.EncodeToBytes();
+      CBORTestCommon.AssertRoundTrip(o1);
+      CBORTestCommon.AssertRoundTrip(o2);
+      CBORNumber on1 = o1.AsNumber();
+      CBORNumber on2 = o2.AsNumber();
+      CBORNumber onSum = null;
+      try {
+        onSum = on1.Multiply(on2);
+      } catch (OutOfMemoryError ex) {
+        return false;
+      }
+      if (!onSum.IsFinite()) {
+        // System.out.println("on1=" + o1);
+        // System.out.println("on2=" + o2);
+        return false;
+      }
+      // System.out.println(i+"");
+      // System.out.println(i+" "+Chop(o1.toString()));
+      // System.out.println(i+" "+Chop(o2.toString()));
+      // System.out.println(i + " " + Chop(onSum.toString()));
+      if (!onSum.IsFinite()) {
+        Assert.fail("onSum is not finite\n" +
+          "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
+          "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
+      }
+      CBORNumber on2a = onSum.Divide(on1);
+      // NOTE: Ignore if divisor is zero
+      if (!on1.IsZero() && !on2a.IsFinite()) {
+        Assert.fail("on2a is not finite\n" +
+          "o1=" + TestCommon.ToByteArrayString(eb1) + "\n" +
+          "o2=" + TestCommon.ToByteArrayString(eb2) + "\n");
+      }
+      if (!on1.IsZero() && !on2.IsZero()) {
+        VerifyEqual(on2a, on2, o1, o2);
+      }
+      CBORNumber on1a = onSum.Divide(on2);
+      // NOTE: Ignore if divisor is zero
+      if (!on2.IsZero() && !on1a.IsFinite()) {
+        Assert.fail("on1a is not finite\n" +
+          "o1=" + on1 + "\n" + "o2=" + on2 + "\n" +
+          "{\nbyte[] bytes1 = " + TestCommon.ToByteArrayString(eb1) + ";\n" +
+          "byte[] bytes2 =" + TestCommon.ToByteArrayString(eb2) + ";\n" +
+          "TestAsNumberMultiplyDivideOne(\nCBORObject.D" +
+          "ecodeFromBytes(bytes1),\n" +
+          "CBORObject.DecodeFromBytes(bytes2));\n}\n");
+      }
+      if (!on1.IsZero() && !on2.IsZero()) {
+        VerifyEqual(on1a, on1, o1, o2);
+      }
+      return true;
     }
 
     @Test(timeout = 100000)
