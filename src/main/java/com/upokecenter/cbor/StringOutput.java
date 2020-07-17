@@ -93,10 +93,10 @@ length);
       if (this.outputStream == null) {
           DataUtilities.ReadUtf8FromBytes(
             bytes,
- index,
- length,
- this.builder,
- false);
+            index,
+            length,
+            this.builder,
+            false);
       } else {
           for (int i = 0; i < length; ++i) {
              byte b = bytes[i + index];
