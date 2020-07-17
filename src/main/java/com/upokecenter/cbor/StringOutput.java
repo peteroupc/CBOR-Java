@@ -65,6 +65,49 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    public void WriteAscii(byte[] bytes, int index, int length) throws java.io.IOException {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      if (index < 0) {
+        throw new IllegalArgumentException("\"index\" (" + index + ") is not" +
+"\u0020greater or equal to 0");
+      }
+      if (index > bytes.length) {
+        throw new IllegalArgumentException("\"index\" (" + index + ") is not less" +
+"\u0020or equal to " + bytes.length);
+      }
+      if (length < 0) {
+        throw new IllegalArgumentException(" (" + length + ") is not greater or" +
+"\u0020equal to 0");
+      }
+      if (length > bytes.length) {
+        throw new IllegalArgumentException(" (" + length + ") is not less or equal" +
+"\u0020to " + bytes.length);
+      }
+      if (bytes.length - index < length) {
+        throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
+"\u0020index (" + (bytes.length - index) + ") is not greater or equal to " +
+length);
+      }
+      if (this.outputStream == null) {
+          DataUtilities.ReadUtf8FromBytes(
+            bytes,
+ index,
+ length,
+ this.builder,
+ false);
+      } else {
+          for (int i = 0; i < length; ++i) {
+             byte b = bytes[i + index];
+             if ((((int)b) & 0x7f) != b) {
+                throw new IllegalArgumentException("str is non-ASCII");
+             }
+          }
+          this.outputStream.write(bytes, index, length);
+      }
+    }
+
     public void WriteCodePoint(int codePoint) throws java.io.IOException {
       if ((codePoint >> 7) == 0) {
         // Code point is in the Basic Latin range (U+0000 to U+007F)

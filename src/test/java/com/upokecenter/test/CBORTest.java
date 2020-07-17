@@ -2035,7 +2035,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    @Test(timeout = 50000)
+    @Test(timeout = 200000)
     public void TestRandomData() {
       RandomGenerator rand = new RandomGenerator();
       CBORObject obj;
@@ -2341,18 +2341,9 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
     public void TestRandomNonsense() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
+        System.out.println(i + ": " + java.util.Date.UtcNow);
         byte[] array = new byte[rand.UniformInt(1000000) + 1];
-        for (int j = 0; j < array.length; ++j) {
-          if (j + 3 <= array.length) {
-            int r = rand.UniformInt(0x1000000);
-            array[j] = (byte)(r & (byte)0xff);
-            array[j + 1] = (byte)((r >> 8) & (byte)0xff);
-            array[j + 2] = (byte)((r >> 16) & (byte)0xff);
-            j += 2;
-          } else {
-            array[j] = (byte)rand.UniformInt(256);
-          }
-        }
+        rand.GetBytes(array, 0, array.length);
         TestRandomOne(array);
       }
     }
@@ -2386,10 +2377,18 @@ int startingAvailable = inputStream.available();
         while ((startingAvailable - inputStream.available()) != startingAvailable) {
           try {
             CBORObject o;
+            long oldPos=(startingAvailable - inputStream.available());
             o = CBORObject.Read(inputStream);
+            long cborlen=(startingAvailable - inputStream.available())-oldPos;
+            if (cborlen>3000) {
+ System.out.println("pos={0} of {1}",(startingAvailable - inputStream.available()),startingAvailable);
+ }
             byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
             try {
               CBORObject.DecodeFromBytes(encodedBytes);
+              if (cborlen>3000) {
+ System.out.println("end DecodeFromBytes");
+ }
             } catch (Exception ex) {
               throw new IllegalStateException(ex.getMessage(), ex);
             }
@@ -2400,14 +2399,29 @@ int startingAvailable = inputStream.available();
               }
               if (o != null) {
                 try {
+                  if (cborlen>3000) {
+ System.out.println("toJSONString " + java.util.Date.UtcNow);
+ }
                   jsonString = o.ToJSONString();
+                  if (cborlen>3000) {
+ System.out.println("jsonStringLen = " + jsonString.length());
+ }
                 } catch (CBORException ex) {
                   System.out.println(ex.getMessage());
                   jsonString = "";
                 }
                 if (jsonString.length() > 0) {
+                  if (cborlen>3000) {
+ System.out.println("fromJSONString " + java.util.Date.UtcNow);
+ }
                   CBORObject.FromJSONString(jsonString);
+                  if (cborlen>3000) {
+ System.out.println("writeToJSON " + java.util.Date.UtcNow);
+ }
                   TestWriteToJSON(o);
+                  if (cborlen>3000) {
+ System.out.println("endJSON " + java.util.Date.UtcNow);
+ }
                 }
               }
             } catch (Exception ex) {
