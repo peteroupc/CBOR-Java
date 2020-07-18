@@ -2341,7 +2341,6 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
     public void TestRandomNonsense() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
-        System.out.println(i + ": " + java.util.Date.UtcNow);
         byte[] array = new byte[rand.UniformInt(100000) + 1];
         rand.GetBytes(array, 0, array.length);
         TestRandomOne(array);
