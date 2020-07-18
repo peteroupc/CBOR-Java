@@ -8548,7 +8548,7 @@ throw new IllegalStateException("", ex);
 }
     }
 
-    @Test(timeout = 10000)
+    @Test
     public void TestFromJsonStringFastCases() {
       JSONOptions op = new JSONOptions("numberconversion=double");
       Assert.assertEquals(
