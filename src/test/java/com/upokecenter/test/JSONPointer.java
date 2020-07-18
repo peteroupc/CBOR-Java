@@ -319,6 +319,30 @@ import com.upokecenter.numbers.*;
       return list;
     }
 
+    private static String Replace(String str, char c, String srep) {
+      int j = -1;
+      for (int i = 0; i < str.length(); ++i) {
+        if (str.charAt(i) == c) {
+          j = i;
+          break;
+        }
+      }
+      if (j == -1) {
+        return str;
+      }
+      StringBuilder sb = new StringBuilder();
+      sb.append(str.substring(0, j));
+      sb.append(srep);
+      for (int i = j + 1; i < str.length(); ++i) {
+        if (str.charAt(i) == c) {
+          sb.append(srep);
+        } else {
+          sb.append(str.charAt(i));
+        }
+      }
+      return sb.toString();
+    }
+
     private static void GetPointersWithKey(
       CBORObject root,
       String keyToFind,
@@ -341,8 +365,8 @@ import com.upokecenter.numbers.*;
         // Search the key's values
         for (CBORObject key : rootObj.getKeys()) {
           String ptrkey = key.AsString();
-          ptrkey = ptrkey.replace("~", "~0");
-          ptrkey = ptrkey.replace("/", "~1");
+          ptrkey = Replace(ptrkey, '~', "~0");
+          ptrkey = Replace(ptrkey, '/', "~1");
           GetPointersWithKey(
             rootObj.get(key),
             keyToFind,

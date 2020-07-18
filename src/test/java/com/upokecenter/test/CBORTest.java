@@ -2380,16 +2380,13 @@ int startingAvailable = inputStream.available();
             long oldPos = (startingAvailable - inputStream.available());
             o = CBORObject.Read(inputStream);
             long cborlen = (startingAvailable - inputStream.available()) - oldPos;
-            if (cborlen > 3000) {
-              System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
-                startingAvailable + ", cborlen=" + cborlen);
-            }
+            // if (cborlen > 3000) {
+            //  System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
+            //    startingAvailable + ", cborlen=" + cborlen);
+            // }
             byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
             try {
               CBORObject.DecodeFromBytes(encodedBytes);
-            if (cborlen > 3000) {
-                System.out.println("end DecodeFromBytes");
-              }
             } catch (Exception ex) {
               throw new IllegalStateException(ex.getMessage(), ex);
             }
@@ -2400,29 +2397,14 @@ int startingAvailable = inputStream.available();
               }
               if (o != null) {
                 try {
-                  if (cborlen > 3000) {
-                    System.out.println("toJSONString " + java.util.Date.UtcNow);
-                  }
                   jsonString = o.ToJSONString();
-                  if (cborlen > 3000) {
-                    System.out.println("jsonStringLen = " + jsonString.length());
-                  }
                 } catch (CBORException ex) {
                   System.out.println(ex.getMessage());
                   jsonString = "";
                 }
                 if (jsonString.length() > 0) {
-                  if (cborlen > 3000) {
-                    System.out.println("fromJSONString " + java.util.Date.UtcNow);
-                  }
                   CBORObject.FromJSONString(jsonString);
-                if (cborlen > 3000) {
-                    System.out.println("writeToJSON " + java.util.Date.UtcNow);
-                  }
                   TestWriteToJSON(o);
-                if (cborlen > 3000) {
-                    System.out.println("endJSON " + java.util.Date.UtcNow);
-                  }
                 }
               }
             } catch (Exception ex) {
