@@ -1792,10 +1792,11 @@ Converts this CBOR object to an object of an arbitrary type. See the
  is <code>EFloat</code> , <code>EDecimal</code> , <code>EInteger</code> , or
  <code>ERational</code> in the <code>PeterO.Numbers</code>
   library (in .NET) or the <code>com.github.peteroupc/numbers</code>
-  artifact (in Java), converts the given object to a number of
- the corresponding type and throws an exception (currently
- IllegalStateException) if the object does not represent a number
- (for this purpose, infinity and not-a-number values, but not
+  artifact (in Java), or if the type is <code>BigInteger</code> or
+ <code>BigDecimal</code> in the Java version, converts the given object to
+ a number of the corresponding type and throws an exception
+ (currently IllegalStateException) if the object does not represent a
+ number (for this purpose, infinity and not-a-number values, but not
  <code>CBORObject.Null</code> , are considered numbers). Currently, this is
  equivalent to the result of <code>AsEFloat()</code> , <code>AsEDecimal()</code>
  , <code>AsEInteger</code> , or <code>AsERational()</code> , respectively, but
@@ -2325,7 +2326,9 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  <li>In the.NET version, a nullable is converted to
  <code>CBORObject.Null</code> if the nullable's value is <code>null</code>, or
  converted according to the nullable's underlying type, if that type
- is supported by this method.</li> <li>A number of type
+ is supported by this method.</li> <li>In the Java version, a number
+ of type <code>BigInteger</code> or <code>BigDecimal</code> is converted to the
+ corresponding CBOR number.</li> <li>A number of type
  <code>EDecimal</code>, <code>EFloat</code>, <code>EInteger</code>, and
  <code>ERational</code> in the <code>PeterO.Numbers</code>
  library (in .NET) or the <code>com.github.peteroupc/numbers</code>

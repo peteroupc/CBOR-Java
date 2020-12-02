@@ -644,14 +644,20 @@ private CBORUtilities() {
       if (month <= 0 || month > 12) {
         throw new IllegalArgumentException("month");
       }
-      // System.out.println("year=" + year + " month=" + month + " day=" + (day));
       int[] dayArray = (year.Remainder(4).signum() != 0 || (
             year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
             0)) ? ValueNormalDays : ValueLeapDays;
-      if (day.compareTo(101) > 0) {
-        EInteger count = day.Subtract(100).Divide(146097);
+      if (day.compareTo(100) > 0) {
+        // Number of days in a 400-year block
+        EInteger count = day.Divide(146097);
         day = day.Subtract(count.Multiply(146097));
         year = year.Add(count.Multiply(400));
+      }
+      if (day.compareTo(-101) < 0) {
+        // Number of days in a 400-year block
+        EInteger count = day.Abs().Divide(146097);
+        day = day.Add(count.Multiply(146097));
+        year = year.Subtract(count.Multiply(400));
       }
       while (true) {
         EInteger days = EInteger.FromInt32(dayArray[month]);
@@ -714,26 +720,27 @@ private CBORUtilities() {
       EInteger numDays = EInteger.FromInt32(0);
       int startYear = 1970;
       if (year.compareTo(startYear) < 0) {
-        EInteger ei = EInteger.FromInt32(startYear - 1);
-        EInteger diff = ei.Subtract(year);
+        EInteger currentYear = EInteger.FromInt32(startYear - 1);
+        EInteger diff = currentYear.Subtract(year);
 
         if (diff.compareTo(401) > 0) {
           EInteger blocks = diff.Subtract(401).Divide(400);
           numDays = numDays.Subtract(blocks.Multiply(146097));
           diff = diff.Subtract(blocks.Multiply(400));
-          ei = ei.Subtract(blocks.Multiply(400));
+          currentYear = currentYear.Subtract(blocks.Multiply(400));
         }
 
         numDays = numDays.Subtract(diff.Multiply(365));
         int decrement = 1;
         for (;
-          ei.compareTo(year) > 0;
-          ei = ei.Subtract(decrement)) {
-          if (decrement == 1 && ei.Remainder(4).signum() == 0) {
+          currentYear.compareTo(year) > 0;
+          currentYear = currentYear.Subtract(decrement)) {
+          if (decrement == 1 && currentYear.Remainder(4).signum() == 0) {
             decrement = 4;
           }
-          if (!(ei.Remainder(4).signum() != 0 || (
-                ei.Remainder(100).signum() == 0 && ei.Remainder(400).signum() !=
+          if (!(currentYear.Remainder(4).signum() != 0 || (
+                currentYear.Remainder(100).signum() == 0 &&
+currentYear.Remainder(400).signum() !=
                 0))) {
             numDays = numDays.Subtract(1);
           }
@@ -751,30 +758,31 @@ private CBORUtilities() {
         boolean isNormalYear = year.Remainder(4).signum() != 0 ||
           (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
 
-        EInteger ei = EInteger.FromInt32(startYear);
-        if (ei.Add(401).compareTo(year) < 0) {
+        EInteger currentYear = EInteger.FromInt32(startYear);
+        if (currentYear.Add(401).compareTo(year) < 0) {
           EInteger y2 = year.Subtract(2);
           numDays = numDays.Add(
               y2.Subtract(startYear).Divide(400).Multiply(146097));
-          ei = y2.Subtract(
+          currentYear = y2.Subtract(
               y2.Subtract(startYear).Remainder(400));
         }
 
-        EInteger diff = year.Subtract(ei);
+        EInteger diff = year.Subtract(currentYear);
         numDays = numDays.Add(diff.Multiply(365));
-        EInteger eileap = ei;
-        if (ei.Remainder(4).signum() != 0) {
+        EInteger eileap = currentYear;
+        if (currentYear.Remainder(4).signum() != 0) {
           eileap = eileap.Add(4 - eileap.Remainder(4).ToInt32Checked());
         }
         numDays = numDays.Add(year.Subtract(eileap).Add(3).Divide(4));
-        if (ei.Remainder(100).signum() != 0) {
-          ei = ei.Add(100 - ei.Remainder(100).ToInt32Checked());
+        if (currentYear.Remainder(100).signum() != 0) {
+          currentYear = currentYear.Add(100 -
+currentYear.Remainder(100).ToInt32Checked());
         }
-        while (ei.compareTo(year) < 0) {
-          if (ei.Remainder(400).signum() != 0) {
+        while (currentYear.compareTo(year) < 0) {
+          if (currentYear.Remainder(400).signum() != 0) {
             numDays = numDays.Subtract(1);
           }
-          ei = ei.Add(100);
+          currentYear = currentYear.Add(100);
         }
         int yearToMonth = isNormalYear ? ValueNormalToMonth[month - 1] :
           ValueLeapToMonth[month - 1];

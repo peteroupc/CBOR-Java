@@ -8483,8 +8483,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        // Test speed
        EInteger ei = EInteger.FromString("-14261178672295354872");
        CBORObject cbornum = CBORObject.FromObjectAndTag(ei, 1);
-       java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
-       ToObjectTest.TestToFromObjectRoundTrip(dtx);
+       try {
+           java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+           ToObjectTest.TestToFromObjectRoundTrip(dtx);
+       } catch (CBORException ex) {
+           System.out.println("Not supported: " + ei);
+       }
     }
 
     @Test(timeout = 20000)
@@ -8494,7 +8498,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       java.util.Date dt, dt2;
       for (int i = 0; i < 1000; ++i) {
         EInteger ei = CBORTestCommon.RandomEIntegerMajorType0Or1(rg);
-        ei = ei.Abs(); // TODO: Eventually support negative dates
         cbornum = CBORObject.FromObjectAndTag(ei, 1);
         try {
            java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
@@ -8505,7 +8508,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       for (int i = 0; i < 1000; ++i) {
         double dbl = RandomObjects.RandomFiniteDouble(rg);
-        dbl = Math.abs(dbl); // TODO: Eventually support negative dates
         cbornum = CBORObject.FromObjectAndTag(dbl, 1);
         try {
            java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);

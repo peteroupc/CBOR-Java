@@ -9,6 +9,8 @@ at: http://peteroupc.github.io/CBOR/
 
 import java.io.InputStream;
 import java.lang.reflect.*;
+import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -502,6 +504,21 @@ if(!setters){
       return bytes2;
   }
 
+    public static CBORObject FromObjectOther(Object obj) {
+      if (obj instanceof BigDecimal) {
+        BigDecimal bd = ((BigDecimal)obj);
+        EInteger ei = EInteger.FromBytes(bd.unscaledValue().toByteArray(),false);
+        EInteger scale = EInteger.FromInt32(bd.scale()).Negate();
+        return CBORObject.FromObject(EDecimal.Create(ei, scale));
+      }
+      if (obj instanceof BigInteger) {
+        BigInteger bi = ((BigInteger)obj);
+        EInteger ei = EInteger.FromBytes(bi.toByteArray(),false);
+        return CBORObject.FromObject(ei);
+      }
+      return null;
+    }
+
 private static boolean IsProblematicForSerialization(Class<?> cls){
 String name=cls.getName();
 if((name.startsWith("java.")||
@@ -524,7 +541,6 @@ if(Type.class.isAssignableFrom(cls) ||
        Constructor.class.isAssignableFrom(cls)){
       return true;
 }
-//System.err.println(name);
 if((name.startsWith("org.springframework.") ||
    name.startsWith("java.io.") ||
    name.startsWith("java.lang.annotation.") ||
@@ -589,6 +605,18 @@ throw new CBORException("Can't convert to char");
       if (t.equals(java.net.URI.class)) {
         return new CBORUriConverter().FromCBORObject(objThis);
       }
+
+      if (t.equals(java.math.BigDecimal.class)) {
+        EDecimal ei = objThis.AsEDecimal();
+        return new BigDecimal(
+            new BigInteger(ei.getMantissa().ToBytes(false)),
+            ei.getExponent().Negate().ToInt32Checked());
+      }
+      if (t.equals(java.math.BigInteger.class)) {
+        EInteger ei = objThis.AsEInteger();
+        return new BigInteger(ei.ToBytes(false));
+      }
+
       if (t.equals(EInteger.class)) {
         return objThis.AsEInteger();
       }
@@ -802,6 +830,9 @@ public static java.util.Date BuildUpDateTime(EInteger year, int[] dt){
  // Time zone offset in minutes
  frac=frac.Subtract(EInteger.FromInt32(dt[6]*60000));
  dateMS=dateMS.Add(frac);
+ if(!dateMS.CanFitInInt64()) {
+   throw new CBORException("Value too big or too small for Java Date");
+ }
  return new java.util.Date(dateMS.ToInt64Checked());
 }
 
