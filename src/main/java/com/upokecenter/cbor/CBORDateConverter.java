@@ -29,11 +29,12 @@ import com.upokecenter.numbers.*;
           throw new CBORException(ex.getMessage(), ex);
         }
       } else if (obj.HasMostOuterTag(1)) {
-        if (!obj.isNumber() || !obj.AsNumber().IsFinite()) {
+        CBORObject untagobj = obj.UntagOne();
+        if (!untagobj.isNumber() || !untagobj.AsNumber().IsFinite()) {
           throw new CBORException("Not a finite number");
         }
         EDecimal dec;
-        dec = (EDecimal)obj.ToObject(EDecimal.class);
+        dec = (EDecimal)untagobj.ToObject(EDecimal.class);
         int[] lesserFields = new int[7];
         EInteger[] year = new EInteger[1];
         CBORUtilities.BreakDownSecondsSinceEpoch(

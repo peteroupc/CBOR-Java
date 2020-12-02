@@ -662,7 +662,8 @@ length);
       sb.append("new byte[] { ");
       for (int i = 0; i < length; ++i) {
         if (i > 0) {
-          sb.append(","); }
+          sb.append(',');
+        }
         if ((bytes[offset + i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {
@@ -671,7 +672,7 @@ length);
         sb.append(ValueHex.charAt((bytes[offset + i] >> 4) & 0xf));
         sb.append(ValueHex.charAt(bytes[offset + i] & 0xf));
       }
-      sb.append("}");
+      sb.append('}');
       return sb.toString();
     }
 

@@ -207,6 +207,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return Double.longBitsToDouble(r);
     }
 
+    public static double RandomFiniteDouble(IRandomGenExtended rand) {
+      long r = 0;
+      do {
+        r = RandomInt64(rand);
+      } while (((r >> 52) & 0x7ff) == 0x7ff);
+      return Double.longBitsToDouble(r);
+    }
+
     public static double RandomDouble(IRandomGenExtended rand) {
       long r = RandomInt64(rand);
       return Double.longBitsToDouble(r);
@@ -615,7 +623,7 @@ maxExc) {
       if (exponentCount > 0) {
         int rr = r.GetInt32(3);
         if (rr == 0) {
-          sb.append("E");
+          sb.append('E');
         } else if (rr == 1) {
           sb.append("E+");
         } else if (rr == 2) {

@@ -8478,6 +8478,42 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    @Test(timeout = 10000)
+    public void TestDateTimeTag1One() {
+       // Test speed
+       EInteger ei = EInteger.FromString("-14261178672295354872");
+       CBORObject cbornum = CBORObject.FromObjectAndTag(ei, 1);
+       java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+       ToObjectTest.TestToFromObjectRoundTrip(dtx);
+    }
+
+    @Test(timeout = 20000)
+    public void TestDateTimeTag1() {
+      CBORObject cbornum;
+      RandomGenerator rg = new RandomGenerator();
+      java.util.Date dt, dt2;
+      for (int i = 0; i < 1000; ++i) {
+        EInteger ei = CBORTestCommon.RandomEIntegerMajorType0Or1(rg);
+        ei = ei.Abs(); // TODO: Eventually support negative dates
+        cbornum = CBORObject.FromObjectAndTag(ei, 1);
+        java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+        ToObjectTest.TestToFromObjectRoundTrip(dtx);
+      }
+      for (int i = 0; i < 1000; ++i) {
+        double dbl = RandomObjects.RandomFiniteDouble(rg);
+        dbl = Math.abs(dbl); // TODO: Eventually support negative dates
+        cbornum = CBORObject.FromObjectAndTag(dbl, 1);
+        java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+        ToObjectTest.TestToFromObjectRoundTrip(dtx);
+      }
+      String dateStr = "1970-01-01T00.00:00.000Z";
+      CBORObject cbor = CBORObject.FromObjectAndTag(dateStr, 0);
+      dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
+      CBORObject cbor2 = CBORObject.FromObjectAndTag(0, 1);
+      dt2 = (java.util.Date)cbor.ToObject(java.util.Date.class);
+      Assert.assertEquals(dt2, dt);
+    }
+
     private static CBORObject FromJSON(String json, JSONOptions jsonop) {
       // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
       // sw.Start();

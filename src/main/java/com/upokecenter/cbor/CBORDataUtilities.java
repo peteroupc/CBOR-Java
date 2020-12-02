@@ -73,7 +73,7 @@ private CBORDataUtilities() {
               c = (char)(0x30 + thisItemInt);
             }
             sb.append(c);
-            sb.append(")");
+            sb.append(')');
           }
           break;
         case Boolean:
@@ -105,7 +105,7 @@ obj.Untag().ToJSONString()));
             sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
             sb.append(HexAlphabet.charAt(data[i] & 15));
           }
-          sb.append("'");
+          sb.append((char)0x27);
           break;
         }
         case TextString: {
@@ -113,26 +113,13 @@ obj.Untag().ToJSONString()));
           sb.append('\"');
           String ostring = obj.AsString();
           sb.append(ostring);
-          /*
-          for (int i = 0; i < ostring.length(); ++i) {
-            if (ostring.charAt(i) >= 0x20 && ostring.charAt(i) <= 0x7f) {
-              sb.append(ostring.charAt(i));
-            } else {
-                 sb.append("\\u");
-                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 12) & 15));
-                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 8) & 15));
-                 sb.append(HexAlphabet.charAt((ostring.charAt(i) >> 4) & 15));
-                 sb.append(HexAlphabet.charAt(ostring.charAt(i) & 15));
-             }
-          }
-          */
           sb.append('\"');
           break;
         }
         case Array: {
           sb = (sb == null) ? (new StringBuilder()) : sb;
           boolean first = true;
-          sb.append("[");
+          sb.append('[');
           if (depth >= 50) {
             sb.append("...");
           } else {
@@ -144,13 +131,13 @@ obj.Untag().ToJSONString()));
               first = false;
             }
           }
-          sb.append("]");
+          sb.append(']');
           break;
         }
         case Map: {
           sb = (sb == null) ? (new StringBuilder()) : sb;
           boolean first = true;
-          sb.append("{");
+          sb.append('{');
           if (depth >= 50) {
             sb.append("...");
           } else {
@@ -168,7 +155,7 @@ obj.Untag().ToJSONString()));
               first = false;
             }
           }
-          sb.append("}");
+          sb.append('}');
           break;
         }
         default: {
