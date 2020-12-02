@@ -8496,17 +8496,25 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         EInteger ei = CBORTestCommon.RandomEIntegerMajorType0Or1(rg);
         ei = ei.Abs(); // TODO: Eventually support negative dates
         cbornum = CBORObject.FromObjectAndTag(ei, 1);
-        java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
-        ToObjectTest.TestToFromObjectRoundTrip(dtx);
+        try {
+           java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+           ToObjectTest.TestToFromObjectRoundTrip(dtx);
+        } catch (CBORException ex) {
+           // System.out.println("Not supported: "+ei);
+        }
       }
       for (int i = 0; i < 1000; ++i) {
         double dbl = RandomObjects.RandomFiniteDouble(rg);
         dbl = Math.abs(dbl); // TODO: Eventually support negative dates
         cbornum = CBORObject.FromObjectAndTag(dbl, 1);
-        java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
-        ToObjectTest.TestToFromObjectRoundTrip(dtx);
+        try {
+           java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+           ToObjectTest.TestToFromObjectRoundTrip(dtx);
+        } catch (CBORException ex) {
+           // System.out.println("Not supported: "+dbl);
+        }
       }
-      String dateStr = "1970-01-01T00.00:00.000Z";
+      String dateStr = "1970-01-01T00:00:00.000Z";
       CBORObject cbor = CBORObject.FromObjectAndTag(dateStr, 0);
       dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
       CBORObject cbor2 = CBORObject.FromObjectAndTag(0, 1);

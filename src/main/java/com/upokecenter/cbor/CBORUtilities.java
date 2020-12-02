@@ -644,6 +644,7 @@ private CBORUtilities() {
       if (month <= 0 || month > 12) {
         throw new IllegalArgumentException("month");
       }
+      // System.out.println("year=" + year + " month=" + month + " day=" + (day));
       int[] dayArray = (year.Remainder(4).signum() != 0 || (
             year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
             0)) ? ValueNormalDays : ValueLeapDays;
