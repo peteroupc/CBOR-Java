@@ -30,9 +30,14 @@ import com.upokecenter.numbers.*;
         }
       } else if (obj.HasMostOuterTag(1)) {
         CBORObject untagobj = obj.UntagOne();
-        if (!untagobj.isNumber() || !untagobj.AsNumber().IsFinite()) {
+        if (!untagobj.isNumber()) {
           throw new CBORException("Not a finite number");
         }
+        CBORNumber num = untagobj.AsNumber();
+        if (!num.IsFinite()) {
+          throw new CBORException("Not a finite number");
+        }
+        // TODO: Compare num with max possible value for java.util.Date
         EDecimal dec;
         dec = (EDecimal)untagobj.ToObject(EDecimal.class);
         int[] lesserFields = new int[7];

@@ -608,9 +608,13 @@ throw new CBORException("Can't convert to char");
 
       if (t.equals(java.math.BigDecimal.class)) {
         EDecimal ei = objThis.AsEDecimal();
-        return new BigDecimal(
-            new BigInteger(ei.getMantissa().ToBytes(false)),
-            ei.getExponent().Negate().ToInt32Checked());
+        try {
+          return new BigDecimal(
+              new BigInteger(ei.getMantissa().ToBytes(false)),
+              ei.getExponent().Negate().ToInt32Checked());
+        } catch(Exception ex) {
+          throw new CBORException("Can't convert to BigDecimal", ex);
+        }
       }
       if (t.equals(java.math.BigInteger.class)) {
         EInteger ei = objThis.AsEInteger();
