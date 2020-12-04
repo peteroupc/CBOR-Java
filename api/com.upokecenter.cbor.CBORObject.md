@@ -4900,7 +4900,14 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  a 64-bit signed integer. This is a low-level method that is useful
  for implementing custom CBOR encoding methodologies. This method
  encodes the given major type and value in the shortest form allowed
- for the major type.
+ for the major type.<p>There are other useful things to note when
+ encoding CBOR that are not covered by this WriteValue method. To
+ mark the start of an indefinite-length array, write the 8-bit byte
+ 0x9f to the output stream. To mark the start of an indefinite-length
+ map, write the 8-bit byte 0xbf to the output stream. To mark the end
+ of an indefinite-length array or map, write the 8-bit byte 0xff to
+ the output stream. For examples, see the WriteValue(InputStream, int,
+ int) overload.</p>
 
 **Parameters:**
 
@@ -4938,7 +4945,13 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  a 32-bit signed integer. This is a low-level method that is useful
  for implementing custom CBOR encoding methodologies. This method
  encodes the given major type and value in the shortest form allowed
- for the major type.<p> </p><p>In the following example, an array of
+ for the major type.<p>There are other useful things to note when
+ encoding CBOR that are not covered by this WriteValue method. To
+ mark the start of an indefinite-length array, write the 8-bit byte
+ 0x9f to the output stream. To mark the start of an indefinite-length
+ map, write the 8-bit byte 0xbf to the output stream. To mark the end
+ of an indefinite-length array or map, write the 8-bit byte 0xff to
+ the output stream.</p><p> </p><p>In the following example, an array of
  three objects is written as CBOR to a data stream.</p>
   <pre>/* array, length 3*/ CBORObject.WriteValue(stream, 4, 3); /* item 1 */ CBORObject.Write("hello world", stream); CBORObject.Write(25, stream); /* item 2*/ CBORObject.Write(false, stream); /* item 3*/</pre> <p>In the following
  example, a map consisting of two key-value pairs is written as CBOR
@@ -4982,7 +4995,13 @@ Writes a CBOR major type number and an integer 0 or greater associated with
  an arbitrary-precision integer. This is a low-level method that is
  useful for implementing custom CBOR encoding methodologies. This
  method encodes the given major type and value in the shortest form
- allowed for the major type.
+ allowed for the major type.<p>There are other useful things to note
+ when encoding CBOR that are not covered by this WriteValue method.
+ To mark the start of an indefinite-length array, write the 8-bit
+ byte 0x9f to the output stream. To mark the start of an
+ indefinite-length map, write the 8-bit byte 0xbf to the output
+ stream. To mark the end of an indefinite-length array or map, write
+ the 8-bit byte 0xff to the output stream.</p>
 
 **Parameters:**
 
