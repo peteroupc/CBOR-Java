@@ -1560,9 +1560,37 @@ NumberKind.ERational) {
     }
 
     /**
-     * Compares two CBOR numbers. In this implementation, the two numbers'
-     * mathematical values are compared. Here, NaN (not-a-number) is
-     * considered greater than any number.
+     * Compares this CBOR number with a 32-bit signed integer. In this
+     * implementation, the two numbers' mathematical values are compared.
+     * Here, NaN (not-a-number) is considered greater than any number.
+     * @param other A value to compare with. Can be null.
+     * @return A negative number, if this value is less than the other object; or
+     * 0, if both values are equal; or a positive number, if this value is
+     * less than the other object or if the other object is null. This
+     * implementation returns a positive number if.
+     */
+    public int compareTo(int other) {
+      return this.compareTo(CBORObject.FromObject(other).AsNumber());
+    }
+
+    /**
+     * Compares this CBOR number with a 64-bit signed integer. In this
+     * implementation, the two numbers' mathematical values are compared.
+     * Here, NaN (not-a-number) is considered greater than any number.
+     * @param other A value to compare with. Can be null.
+     * @return A negative number, if this value is less than the other object; or
+     * 0, if both values are equal; or a positive number, if this value is
+     * less than the other object or if the other object is null. This
+     * implementation returns a positive number if.
+     */
+    public int compareTo(long other) {
+      return this.compareTo(CBORObject.FromObject(other).AsNumber());
+    }
+
+    /**
+     * Compares this CBOR number with another. In this implementation, the two
+     * numbers' mathematical values are compared. Here, NaN (not-a-number)
+     * is considered greater than any number.
      * @param other A value to compare with. Can be null.
      * @return A negative number, if this value is less than the other object; or
      * 0, if both values are equal; or a positive number, if this value is

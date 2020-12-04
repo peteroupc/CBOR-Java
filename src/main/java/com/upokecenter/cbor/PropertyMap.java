@@ -1,7 +1,9 @@
 package com.upokecenter.cbor;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/CBOR/
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -294,6 +297,10 @@ if(!setters){
   public static <K, V> Collection<Map.Entry<K, V>>
          GetEntries(Map<K, V> dict) {
       return Collections.unmodifiableMap(dict).entrySet();
+  }
+
+  public static Map<CBORObject,CBORObject> NewOrderedDict() {
+      return new LinkedHashMap<CBORObject,CBORObject>();
   }
 
   /**

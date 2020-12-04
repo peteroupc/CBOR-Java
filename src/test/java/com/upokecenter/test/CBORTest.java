@@ -1,12 +1,15 @@
 package com.upokecenter.test;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import java.util.*;
 import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -2936,6 +2939,38 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         TestAsNumberMultiplyDivideOne(o1, o2);
       }
+    }
+
+    @Test
+    public void TestOrderedMap() {
+CBORObject cbor;
+List<CBORObject> list;
+cbor=CBORObject.NewOrderedMap().Add("a",1).Add("b",2).Add("c",3);
+list = new ArrayList<CBORObject>();
+for (CBORObject obj : cbor.getKeys()) {
+  list.add(obj);
+}
+Assert.assertEquals(3, list.size());
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"),list.get(0));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("b"),list.get(1));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"),list.get(2));
+cbor=CBORObject.NewOrderedMap().Add("c",1).Add("a",2).Add("vv",3);
+list = new ArrayList<CBORObject>();
+for (CBORObject obj : cbor.getKeys()) {
+  list.add(obj);
+}
+Assert.assertEquals(3, list.size());
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"),list.get(0));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"),list.get(1));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("vv"),list.get(2));
+list = new ArrayList<CBORObject>();
+for (CBORObject obj : cbor.getValues()) {
+  list.add(obj);
+}
+Assert.assertEquals(3, list.size());
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject(1), list.get(0));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject(2), list.get(1));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject(3), list.get(2));
     }
 
     @Test(timeout = 10000)

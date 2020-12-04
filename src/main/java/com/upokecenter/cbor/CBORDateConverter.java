@@ -1,7 +1,9 @@
 package com.upokecenter.cbor;
 /*
 Written by Peter O.
-Any copyright is dedicated to the Public Domain.
+Any copyright to this work is released to the Public Domain.
+In case this is not possible, this work is also
+licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
@@ -37,7 +39,10 @@ import com.upokecenter.numbers.*;
         if (!num.IsFinite()) {
           throw new CBORException("Not a finite number");
         }
-        // TODO: Compare num with max possible value for java.util.Date
+        if (num.compareTo(Long.MIN_VALUE) < 0 ||
+            num.compareTo(Long.MAX_VALUE) > 0) {
+          throw new CBORException("Too big or small to fit a java.util.Date");
+        }
         EDecimal dec;
         dec = (EDecimal)untagobj.ToObject(EDecimal.class);
         int[] lesserFields = new int[7];

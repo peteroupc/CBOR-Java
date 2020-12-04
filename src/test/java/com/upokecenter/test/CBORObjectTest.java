@@ -5715,7 +5715,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     }
 
     @Test
-    public void TestCalcEncodedSizeCircularRefs() {
+    public void TestCalcEncodedSizeCircularRefs1() {
       CBORObject cbor = CBORObject.NewArray().Add(1).Add(2);
       cbor.Add(cbor);
       try {
@@ -5727,29 +5727,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
-      cbor.Add(cbor, "test");
-      try {
-        cbor.CalcEncodedSize();
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
-      cbor.Add("test", cbor);
-      try {
-        cbor.CalcEncodedSize();
-        Assert.fail("Should have failed");
-      } catch (CBORException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      cbor = CBORObject.NewArray().Add(1).Add(2);
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs4() {
+      CBORObject cbor = CBORObject.NewArray().Add(1).Add(2);
       cbor.Add(CBORObject.NewArray().Add(cbor));
       try {
         cbor.CalcEncodedSize();
@@ -5760,7 +5741,38 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs2() {
+      CBORObject cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+      cbor.Add(cbor, "test");
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs3() {
+      CBORObject cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+      cbor.Add("test", cbor);
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs5() {
+      CBORObject cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
       cbor.Add(CBORObject.NewArray().Add(cbor), "test");
       try {
         cbor.CalcEncodedSize();
@@ -5771,7 +5783,251 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs6() {
+      CBORObject cbor = CBORObject.NewMap().Add(1, 2).Add(3, 4);
+      cbor.Add("test", CBORObject.NewArray().Add(cbor));
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test
+    public void TestCalcEncodedSizeCircularRefs2a() {
+      CBORObject cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
+      cbor.Add(cbor, "test");
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs3a() {
+      CBORObject cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
+      cbor.Add("test", cbor);
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs3b() {
+      CBORObject cbor;
+      cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
+      cbor.Add("test", cbor);
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("abc", 2).Add("def", 4);
+      cbor.Add("test", cbor);
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test", cbor);
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add(CBORObject.NewOrderedMap().Add("jkl",cbor),"test");
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test",CBORObject.NewOrderedMap().Add("jkl",cbor));
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add(CBORObject.NewOrderedMap().Add(cbor,"jkl"),"test");
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test",CBORObject.NewOrderedMap().Add(cbor,"jkl"));
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add(CBORObject.NewOrderedMap().Add(cbor,"jkl").Add("mno",1),"test");
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test",CBORObject.NewOrderedMap().Add(cbor,"jkl").Add("mno",1));
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test",CBORObject.NewOrderedMap().Add("mno",1).Add(cbor,"jkl"));
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add(CBORObject.NewOrderedMap().Add("mno",1).Add(cbor,"jkl"),"test");
+      try {
+ cbor.CalcEncodedSize();
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      // No circular refs
+      cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
+      cbor.Add("test", CBORObject.NewOrderedMap());
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("abc", 2).Add("def", 4);
+      cbor.Add("test", CBORObject.NewOrderedMap());
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      cbor.Add("test", CBORObject.NewOrderedMap());
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+
+  cbor.Add(CBORObject.NewOrderedMap().Add("jkl",CBORObject.NewOrderedMap()),"test");
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+
+  cbor.Add("test",CBORObject.NewOrderedMap().Add("jkl",CBORObject.NewOrderedMap()));
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+
+  cbor.Add(CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl"),"test");
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+
+  cbor.Add("test",CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl"));
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      {
+        Object objectTemp =
+  CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl").Add("mno",1);
+        Object objectTemp2 = "test";
+        cbor.Add(objectTemp, objectTemp2);
+      }
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      {
+        String stringTemp = "test";
+        String stringTemp2 =
+  CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl").Add("mno",1);
+        cbor.Add(stringTemp, stringTemp2);
+      }
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      {
+        String stringTemp = "test";
+        String stringTemp2 =
+  CBORObject.NewOrderedMap().Add("mno",1).Add(CBORObject.NewOrderedMap(),"jkl");
+        cbor.Add(stringTemp, stringTemp2);
+      }
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
+      {
+        Object objectTemp =
+  CBORObject.NewOrderedMap().Add("mno",1).Add(CBORObject.NewOrderedMap(),"jkl");
+        Object objectTemp2 = "test";
+        cbor.Add(objectTemp, objectTemp2);
+      }
+      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+    }
+
+    @Test
+    public void TestCalcEncodedSizeCircularRefs5a() {
+      CBORObject cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
+      cbor.Add(CBORObject.NewArray().Add(cbor), "test");
+      try {
+        cbor.CalcEncodedSize();
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+    @Test
+    public void TestCalcEncodedSizeCircularRefs6a() {
+      CBORObject cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
       cbor.Add("test", CBORObject.NewArray().Add(cbor));
       try {
         cbor.CalcEncodedSize();
@@ -8496,9 +8752,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        }
        if (ei.CanFitInInt64()) {
          cbornum = CBORObject.FromObjectAndTag(ei.ToInt64Checked(), 1);
-         dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
-         TestCommon.AssertEqualsHashCode(dtx, dtx2);
-       ToObjectTest.TestToFromObjectRoundTrip(dtx2);
+          dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
+          TestCommon.AssertEqualsHashCode(dtx, dtx2);
+          ToObjectTest.TestToFromObjectRoundTrip(dtx2);
        }
        EFloat ef1 = EFloat.FromEInteger(ei).Plus(EContext.Binary64);
        EFloat ef2 = EFloat.FromEInteger(ei);
