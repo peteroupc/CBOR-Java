@@ -6003,20 +6003,20 @@ throw new IllegalStateException("", ex);
  }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
-        String stringTemp = "test";
-        String stringTemp2 =
+        Object objectTemp = "test";
+        Object objectTemp2 =
   CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl").Add("mno",1);
-        cbor.Add(stringTemp, stringTemp2);
+        cbor.Add(objectTemp, objectTemp2);
       }
       if (!(2 < cbor.CalcEncodedSize())) {
  Assert.fail();
  }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
-        String stringTemp = "test";
-        String stringTemp2 =
+        Object objectTemp = "test";
+        Object objectTemp2 =
   CBORObject.NewOrderedMap().Add("mno",1).Add(CBORObject.NewOrderedMap(),"jkl");
-        cbor.Add(stringTemp, stringTemp2);
+        cbor.Add(objectTemp, objectTemp2);
       }
       if (!(2 < cbor.CalcEncodedSize())) {
  Assert.fail();
