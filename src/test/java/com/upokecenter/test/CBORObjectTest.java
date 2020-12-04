@@ -5954,29 +5954,43 @@ throw new IllegalStateException("", ex);
       // No circular refs
       cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
       cbor.Add("test", CBORObject.NewOrderedMap());
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("abc", 2).Add("def", 4);
       cbor.Add("test", CBORObject.NewOrderedMap());
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       cbor.Add("test", CBORObject.NewOrderedMap());
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
 
   cbor.Add(CBORObject.NewOrderedMap().Add("jkl",CBORObject.NewOrderedMap()),"test");
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
 
   cbor.Add("test",CBORObject.NewOrderedMap().Add("jkl",CBORObject.NewOrderedMap()));
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
 
   cbor.Add(CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl"),"test");
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
 
   cbor.Add("test",CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl"));
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp =
@@ -5984,7 +5998,9 @@ throw new IllegalStateException("", ex);
         Object objectTemp2 = "test";
         cbor.Add(objectTemp, objectTemp2);
       }
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         String stringTemp = "test";
@@ -5992,7 +6008,9 @@ throw new IllegalStateException("", ex);
   CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),"jkl").Add("mno",1);
         cbor.Add(stringTemp, stringTemp2);
       }
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         String stringTemp = "test";
@@ -6000,7 +6018,9 @@ throw new IllegalStateException("", ex);
   CBORObject.NewOrderedMap().Add("mno",1).Add(CBORObject.NewOrderedMap(),"jkl");
         cbor.Add(stringTemp, stringTemp2);
       }
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp =
@@ -6008,7 +6028,9 @@ throw new IllegalStateException("", ex);
         Object objectTemp2 = "test";
         cbor.Add(objectTemp, objectTemp2);
       }
-      TestCommon.CompareTestLess(2, cbor.CalcEncodedSize());
+      if (!(2 < cbor.CalcEncodedSize())) {
+ Assert.fail();
+ }
     }
 
     @Test
