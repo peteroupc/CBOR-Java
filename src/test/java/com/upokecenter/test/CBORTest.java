@@ -2048,6 +2048,9 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         String jsonString = "";
         try {
           jsonString = obj.ToJSONString();
+        } catch (IllegalStateException ex) {
+          System.out.println(TestCommon.ToByteArrayString(obj.EncodeToBytes()));
+          throw new IllegalStateException(ex.getMessage(), ex);
         } catch (CBORException ex) {
           jsonString = "";
         }
@@ -4750,6 +4753,25 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalStateException(ioe.getMessage(), ioe);
         }
       }
+    }
+
+    @Test
+    public void TestRationalJSONSpecificA() {
+ERational er =
+  ERational.FromString("1088692579850251977918382727683876451288883451475551838663907953515213777772897669/734154292316019508508581520803142368704146796235662433292652");
+CBORObject.FromObject(er).ToJSONString();
+    }
+    @Test
+    public void TestRationalJSONSpecificB() {
+ERational
+  er2=ERational.FromString("1117037884940373468269515037592447741921166676191625235424/13699696515096285881634845839085271311137");
+CBORObject.FromObject(er).ToJSONString();
+    }
+    @Test
+    public void TestRationalJSONSpecificC() {
+ERational
+  er2=ERational.FromString("42595158956667/1216724793801972483341765319799605241541780250657492435");
+CBORObject.FromObject(er).ToJSONString();
     }
 
     @Test
