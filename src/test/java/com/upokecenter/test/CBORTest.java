@@ -1777,6 +1777,7 @@ import com.upokecenter.numbers.*;
     public void TestPlist() {
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
+      o.Add(new byte[] { 32, 33, 44, 55 });
       System.out.println(o.ToJSONString());
       System.out.println(CBORPlistWriter.ToPlistString(o));
     }
