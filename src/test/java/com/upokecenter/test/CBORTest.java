@@ -2395,8 +2395,8 @@ int startingAvailable = inputStream.available();
             o = CBORObject.Read(inputStream);
             long cborlen = (startingAvailable - inputStream.available()) - oldPos;
             // if (cborlen > 3000) {
-            //  System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
-            //    startingAvailable + ", cborlen=" + cborlen);
+            // System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
+            // startingAvailable + ", cborlen=" + cborlen);
             // }
             byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
             try {
@@ -2957,24 +2957,24 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestOrderedMap() {
 CBORObject cbor;
 List<CBORObject> list;
-cbor=CBORObject.NewOrderedMap().Add("a",1).Add("b",2).Add("c",3);
+cbor = CBORObject.NewOrderedMap().Add("a", 1).Add("b", 2).Add("c",3);
 list = new ArrayList<CBORObject>();
 for (CBORObject obj : cbor.getKeys()) {
   list.add(obj);
 }
 Assert.assertEquals(3, list.size());
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"),list.get(0));
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("b"),list.get(1));
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"),list.get(2));
-cbor=CBORObject.NewOrderedMap().Add("c",1).Add("a",2).Add("vv",3);
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"), list.get(0));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("b"), list.get(1));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"), list.get(2));
+cbor = CBORObject.NewOrderedMap().Add("c", 1).Add("a", 2).Add("vv",3);
 list = new ArrayList<CBORObject>();
 for (CBORObject obj : cbor.getKeys()) {
   list.add(obj);
 }
 Assert.assertEquals(3, list.size());
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"),list.get(0));
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"),list.get(1));
-TestCommon.AssertEqualsHashCode(CBORObject.FromObject("vv"),list.get(2));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"), list.get(0));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"), list.get(1));
+TestCommon.AssertEqualsHashCode(CBORObject.FromObject("vv"), list.get(2));
 list = new ArrayList<CBORObject>();
 for (CBORObject obj : cbor.getValues()) {
   list.add(obj);
@@ -4767,19 +4767,22 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestRationalJSONSpecificA() {
 ERational er =
+
   ERational.FromString("1088692579850251977918382727683876451288883451475551838663907953515213777772897669/734154292316019508508581520803142368704146796235662433292652");
 CBORObject.FromObject(er).ToJSONString();
     }
     @Test
     public void TestRationalJSONSpecificB() {
 ERational
-  er2=ERational.FromString("1117037884940373468269515037592447741921166676191625235424/13699696515096285881634845839085271311137");
+  er2 =
+  ERational.FromString("1117037884940373468269515037592447741921166676191625235424/13699696515096285881634845839085271311137");
 CBORObject.FromObject(er2).ToJSONString();
     }
     @Test
     public void TestRationalJSONSpecificC() {
 ERational
-  er2=ERational.FromString("42595158956667/1216724793801972483341765319799605241541780250657492435");
+  er2 =
+  ERational.FromString("42595158956667/1216724793801972483341765319799605241541780250657492435");
 CBORObject.FromObject(er2).ToJSONString();
     }
 
