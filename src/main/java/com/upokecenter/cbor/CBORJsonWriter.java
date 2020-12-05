@@ -25,9 +25,6 @@ private CBORJsonWriter() {
         sb.WriteString(str, 0, i);
         return;
       }
-      // int bufferlen = Math.min(Math.max(4, str.length()), 64);
-      // byte[] buffer = new byte[bufferlen];
-      // int bufferpos = 0;
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c == '\\' || c == '"') {

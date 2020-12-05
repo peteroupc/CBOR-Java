@@ -2,9 +2,9 @@
 
     public class PODOptions extends java.lang.Object
 
-Options for controlling how certain.NET or Java objects, such as so-called
-  "plain old data" objects (better known as POCOs in.NET or POJOs in
- Java), are converted to CBOR objects.
+Options for controlling how certain DotNET or Java objects, such as
+  so-called "plain old data" objects (better known as POCOs in DotNET or
+ POJOs in Java), are converted to CBOR objects.
 
 ## Fields
 

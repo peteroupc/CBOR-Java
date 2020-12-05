@@ -1774,6 +1774,14 @@ import com.upokecenter.numbers.*;
     }
 
     @Test
+    public void TestPlist() {
+      CBORObject o;
+      o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
+      System.out.println(o.ToJSONString());
+      System.out.println(CBORPlistWriter.ToPlistString(o));
+    }
+
+    @Test
     public void TestJSON() {
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
