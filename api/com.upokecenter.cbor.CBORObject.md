@@ -4,7 +4,7 @@
 
 <p>Represents an object in Concise Binary Object Representation (CBOR) and
  contains methods for reading and writing CBOR data. CBOR is defined in
- RFC 7049.</p><p> </p><p><b>Converting CBOR objects</b></p> <p>There are
+ RFC 8949.</p><p> </p><p><b>Converting CBOR objects</b></p> <p>There are
  many ways to get a CBOR object, including from bytes, objects, streams
  and JSON, as described below.</p> <p><b>To and from byte arrays:</b>
  The CBORObject.DecodeFromBytes method converts a byte array in CBOR
@@ -4569,7 +4569,7 @@ Converts this object to a text string in JavaScript object Notation (JSON)
  specification) forbids placing a byte-order mark at the beginning of
  a JSON string.</li> <li>Byte strings are converted to Base64 URL
  without whitespace or padding by default (see section 4.1 of RFC
- 7049). A byte string will instead be converted to traditional base64
+ 8949). A byte string will instead be converted to traditional base64
  without whitespace and with padding if it has tag 22, or base16 for
  tag 23. (To create a CBOR object with a given tag, call the
  <code>CBORObject.FromObjectAndTag</code> method and pass the CBOR object
@@ -4916,7 +4916,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
 * <code>majorType</code> - The CBOR major type to write. This is a number from 0
  through 7 as follows. 0: integer 0 or greater; 1: negative integer;
  2: byte string; 3: UTF-8 text string; 4: array; 5: map; 6: tag; 7:
- simple value. See RFC 7049 for details on these major types.
+ simple value. See RFC 8949 for details on these major types.
 
 * <code>value</code> - An integer 0 or greater associated with the major type, as
  follows. 0: integer 0 or greater; 1: the negative integer's absolute
@@ -4966,7 +4966,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
 * <code>majorType</code> - The CBOR major type to write. This is a number from 0
  through 7 as follows. 0: integer 0 or greater; 1: negative integer;
  2: byte string; 3: UTF-8 text string; 4: array; 5: map; 6: tag; 7:
- simple value. See RFC 7049 for details on these major types.
+ simple value. See RFC 8949 for details on these major types.
 
 * <code>value</code> - An integer 0 or greater associated with the major type, as
  follows. 0: integer 0 or greater; 1: the negative integer's absolute
@@ -5010,7 +5010,7 @@ Writes a CBOR major type number and an integer 0 or greater associated with
 * <code>majorType</code> - The CBOR major type to write. This is a number from 0
  through 7 as follows. 0: integer 0 or greater; 1: negative integer;
  2: byte string; 3: UTF-8 text string; 4: array; 5: map; 6: tag; 7:
- simple value. See RFC 7049 for details on these major types.
+ simple value. See RFC 8949 for details on these major types.
 
 * <code>bigintValue</code> - An integer 0 or greater associated with the major type,
  as follows. 0: integer 0 or greater; 1: the negative integer's
