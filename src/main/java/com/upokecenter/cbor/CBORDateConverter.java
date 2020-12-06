@@ -13,10 +13,14 @@ import com.upokecenter.numbers.*;
 
   class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
     private static String DateTimeToString(java.util.Date bi) {
-      int[] lesserFields = new int[7];
-      EInteger[] year = new EInteger[1];
-      PropertyMap.BreakDownDateTime(bi, year, lesserFields);
-      return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
+      try {
+        int[] lesserFields = new int[7];
+        EInteger[] year = new EInteger[1];
+        PropertyMap.BreakDownDateTime(bi, year, lesserFields);
+        return CBORUtilities.ToAtomDateTimeString(year[0], lesserFields);
+      } catch (IllegalArgumentException ex) {
+          throw new CBORException(ex.getMessage(), ex);
+      }
     }
 
     public java.util.Date FromCBORObject(CBORObject obj) {

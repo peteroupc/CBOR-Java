@@ -400,6 +400,8 @@ if(!setters){
         }
       }
       return o;
+    } catch(IllegalArgumentException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
     } catch(InvocationTargetException ex) {
       throw (RuntimeException)new CBORException("").initCause(ex);
     } catch(NoSuchMethodException ex) {

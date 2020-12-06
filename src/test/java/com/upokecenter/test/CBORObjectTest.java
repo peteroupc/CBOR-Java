@@ -5911,8 +5911,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
-      cbor.Add(CBORObject.NewOrderedMap().Add(cbor, "jkl").Add("mno",
-  1),"test");
+      {
+        Object objectTemp = CBORObject.NewOrderedMap().Add(cbor, "jkl").Add("mno",
+  1);
+Object objectTemp2 = "test";
+cbor.Add(objectTemp, objectTemp2);
+}
       try {
         cbor.CalcEncodedSize();
         Assert.fail("Should have failed");
@@ -5923,8 +5927,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
-      cbor.Add("test", CBORObject.NewOrderedMap().Add(cbor,
-  "jkl").Add("mno",1));
+      {
+        Object objectTemp = "test";
+Object objectTemp2 = CBORObject.NewOrderedMap().Add(cbor,
+  "jkl").Add("mno",1);
+cbor.Add(objectTemp, objectTemp2);
+}
       try {
         cbor.CalcEncodedSize();
         Assert.fail("Should have failed");
@@ -5935,8 +5943,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
-      cbor.Add("test", CBORObject.NewOrderedMap().Add("mno",
-  1).Add(cbor,"jkl"));
+      {
+        Object objectTemp = "test";
+Object objectTemp2 = CBORObject.NewOrderedMap().Add("mno",
+  1).Add(cbor,"jkl");
+cbor.Add(objectTemp, objectTemp2);
+}
       try {
         cbor.CalcEncodedSize();
         Assert.fail("Should have failed");
@@ -5947,8 +5959,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
-      cbor.Add(CBORObject.NewOrderedMap().Add("mno", 1).Add(cbor,
-  "jkl"),"test");
+      {
+        Object objectTemp = CBORObject.NewOrderedMap().Add("mno", 1).Add(cbor,
+  "jkl");
+Object objectTemp2 = "test";
+cbor.Add(objectTemp, objectTemp2);
+}
       try {
         cbor.CalcEncodedSize();
         Assert.fail("Should have failed");
@@ -5998,7 +6014,8 @@ cbor.Add(objectTemp, objectTemp2);
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
 
       {
-        Object objectTemp = CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),
+        Object objectTemp =
+CBORObject.NewOrderedMap().Add(CBORObject.NewOrderedMap(),
   "jkl");
 Object objectTemp2 = "test";
 cbor.Add(objectTemp, objectTemp2);
