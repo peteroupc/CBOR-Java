@@ -1721,6 +1721,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       if (depth > 1000) {
         throw new CBORException("Too deeply nested");
       }
+      //System.out.println("type="+this.getType()+" depth="+depth);
       long size = 0L;
       CBORObject cbor = this;
       while (cbor.isTagged()) {
@@ -1768,11 +1769,19 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
           Collection<Map.Entry<CBORObject, CBORObject>> entries =
             this.getEntries();
           size = (size + IntegerByteLength(entries.size()));
-          for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-            CBORObject key = entry.getKey();
-            CBORObject value = entry.getValue();
-            size = (size + key.CalcEncodedSize(depth + 1));
-            size = (size + value.CalcEncodedSize(depth + 1));
+          try {
+            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+              CBORObject key = entry.getKey();
+              CBORObject value = entry.getValue();
+              size = (size + key.CalcEncodedSize(depth + 1));
+              size = (size + value.CalcEncodedSize(depth + 1));
+            }
+          } catch (IllegalStateException ex) {
+            // Additional error that may occur in iteration
+            throw new CBORException(ex.getMessage(), ex);
+          } catch (IllegalArgumentException ex) {
+            // Additional error that may occur in iteration
+            throw new CBORException(ex.getMessage(), ex);
           }
           return size;
         }
