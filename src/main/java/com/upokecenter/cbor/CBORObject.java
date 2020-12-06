@@ -1721,7 +1721,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
       if (depth > 1000) {
         throw new CBORException("Too deeply nested");
       }
-      //System.out.println("type="+this.getType()+" depth="+depth);
+      // System.out.println("type="+this.getType()+" depth="+depth);
       long size = 0L;
       CBORObject cbor = this;
       while (cbor.isTagged()) {
