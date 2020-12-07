@@ -617,6 +617,9 @@ throw new CBORException("Can't convert to char");
 
       if (t.equals(java.math.BigDecimal.class)) {
         EDecimal ei = objThis.AsEDecimal();
+        if (!ei.isFinite()) {
+          throw new CBORException("Can't convert to BigDecimal");
+        }
         try {
           return new BigDecimal(
               new BigInteger(ei.getMantissa().ToBytes(false)),

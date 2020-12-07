@@ -67,9 +67,17 @@ import com.upokecenter.numbers.*;
         CBORObject numberinfo = numbers.get(i);
         String numberString = (String)numberinfo.get("number")
           .ToObject(String.class);
-        CBORObject cbornumber =
-          ToObjectTest.TestToFromObjectRoundTrip(
+        CBORObject cbornumber = null;
+        try {
+          cbornumber = ToObjectTest.TestToFromObjectRoundTrip(
             new BigDecimal(numberString));
+        } catch(NumberFormatException nfe) {
+          EDecimal ed=EDecimal.FromString(numberString);
+          if(ed.isFinite()) {
+              Assert.fail();
+          }
+          continue;
+        }
         if (!numberinfo.get("integer").equals(CBORObject.Null)) {
           Assert.assertEquals(
             numberinfo.get("integer").ToObject(String.class),
@@ -252,15 +260,58 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    public static BigDecimal RandomBigDecimal(IRandomGenExtended r) {
+      return RandomBigDecimal(r, null);
+    }
+
+    public static BigDecimal RandomBigDecimal(IRandomGenExtended r, String[]
+      decimalString) {
+      if (r == null) {
+        throw new NullPointerException("r");
+      }
+      if (r.GetInt32(100) < 30) {
+        String str = RandomObjects.RandomDecimalString(r);
+        if (str.length() < 500) {
+          if (decimalString != null) {
+            decimalString[0] = str;
+          }
+          return new BigDecimal(str);
+        }
+      }
+      EInteger emant = RandomObjects.RandomEInteger(r);
+      int exp = (r.GetInt32(100) < 80) ? (r.GetInt32(50) - 25) :
+          (r.GetInt32(5000) - 2500);
+      BigDecimal ed = new BigDecimal(new BigInteger(emant.ToBytes(false)), -exp);
+      if (decimalString != null) {
+        decimalString[0] = emant.toString() + "E" + EInteger.FromInt32(-exp).toString();
+      }
+      return ed;
+    }
+
     @Test
     public void TestAsBigDecimal() {
+      BigDecimal bd=new BigDecimal("334.337");
+      CBORObject cborObject=CBORObject.FromObject(bd);
+      EDecimal ed=cborObject.ToObject(EDecimal.class);
+      Assert.assertEquals("334.337",ed.toString());
+      bd=cborObject.ToObject(BigDecimal.class);
+      Assert.assertEquals("334.337",bd.toString());
+      RandomGenerator rg=new RandomGenerator();
+      for(int i=0;i<500;i++){
+        bd=RandomBigDecimal(rg,null);
+        String str=bd.toString();
+        cborObject=CBORObject.FromObject(bd);
+        ed=cborObject.ToObject(EDecimal.class);
+        Assert.assertEquals(str,ed.toString());
+        bd=cborObject.ToObject(BigDecimal.class);
+      }
       try {
         Object objectTemp = CBORTestCommon.DecPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
           .ToObject(BigDecimal.class);
-        Assert.assertEquals(objectTemp, objectTemp2);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -271,8 +322,8 @@ import com.upokecenter.numbers.*;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
           .ToObject(BigDecimal.class);
-        Assert.assertEquals(objectTemp, objectTemp2);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -281,10 +332,8 @@ import com.upokecenter.numbers.*;
       try {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
           .ToObject(BigDecimal.class).toString();
-        Assert.assertEquals(
-          "NaN",
-          stringTemp);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -295,8 +344,8 @@ import com.upokecenter.numbers.*;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
           .ToObject(BigDecimal.class);
-        Assert.assertEquals(objectTemp, objectTemp2);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -307,8 +356,8 @@ import com.upokecenter.numbers.*;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
           .ToObject(BigDecimal.class);
-        Assert.assertEquals(objectTemp, objectTemp2);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -319,8 +368,8 @@ import com.upokecenter.numbers.*;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
           .ToObject(BigDecimal.class).toString();
-        Assert.assertEquals(objectTemp, objectTemp2);
-      } catch (ArithmeticException ex) {
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
