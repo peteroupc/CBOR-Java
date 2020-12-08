@@ -67,8 +67,10 @@ private CBORPlistWriter() {
     static String ToPlistString(CBORObject obj) {
       StringBuilder builder = new StringBuilder();
       try {
-         WritePlistToInternal(obj, new StringOutput(builder),
-  JSONOptions.Default);
+         WritePlistToInternal(
+            obj,
+            new StringOutput(builder),
+            JSONOptions.Default);
          return builder.toString();
       } catch (IOException ex) {
          throw new CBORException(ex.getMessage(), ex);
