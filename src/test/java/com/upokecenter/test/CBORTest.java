@@ -2514,6 +2514,44 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    // TODO: Note this trick in FromObject documentation
+    public static EInteger UnsignedLongToEInteger(long v) {
+      if (v >= 0) {
+        return EInteger.FromInt64(v);
+      } else {
+        return EInteger.FromInt32(1).ShiftLeft(64).Add(v);
+      }
+    }
+
+    public static void TestUnsignedLongOne(long v, String expectedStr) {
+         EInteger ei = UnsignedLongToEInteger(v);
+
+         Assert.assertEquals(
+           expectedStr,
+           DataUtilities.ToLowerCaseAscii(ei.ToRadixString(16)));
+         CBORObject c1 = CBORObject.FromObject(ei);
+         if (!(c1.AsNumber().signum() >= 0)) {
+ Assert.fail();
+ }
+
+         TestCommon.AssertEqualsHashCode(
+           ei,
+           EInteger.FromInt64(c1.getToObject())(EInteger.class));
+    }
+
+    @Test
+    public void TestUnsignedLong() {
+       TestUnsignedLongOne(0x0L, "0");
+       TestUnsignedLongOne(0xFL, "f");
+       TestUnsignedLongOne(0xFFFFFFFFL, "ffffffff");
+       TestUnsignedLongOne(-1, "ffffffffffffffff");
+       TestUnsignedLongOne(-3, "fffffffffffffffd");
+       TestUnsignedLongOne(Long.MAX_VALUE, "7fffffffffffffff");
+       TestUnsignedLongOne(Long.MAX_VALUE - 1, "7ffffffffffffffe");
+       TestUnsignedLongOne(Long.MIN_VALUE, "8000000000000000");
+       TestUnsignedLongOne(Long.MIN_VALUE + 1, "8000000000000001");
+    }
+
     @Test
     public void TestReadWriteInt() {
       RandomGenerator r = new RandomGenerator();

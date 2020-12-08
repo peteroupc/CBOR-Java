@@ -260,6 +260,50 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    public static EInteger unsignedLongToEInteger(long v) {
+      if (v >= 0) {
+        return EInteger.FromInt64(v);
+      } else {
+        return EInteger.FromInt32(1).ShiftLeft(64).Add(v);
+      }
+    }
+
+    public static BigInteger unsignedLongToBigInteger(long v) {
+      if (v >= 0) {
+         return BigInteger.valueOf(v);
+      } else {
+         return BigInteger.valueOf(1).shiftLeft(64).add(
+             BigInteger.valueOf(v));
+      }
+    }
+
+    public static void TestUnsignedLongOne(long v, String expectedStr) {
+         EInteger ei=unsignedLongToEInteger(v);
+         Assert.assertEquals(expectedStr,DataUtilities.ToLowerCaseAscii(ei.ToRadixString(16)));
+         BigInteger bi=unsignedLongToBigInteger(v);
+         Assert.assertEquals(expectedStr,DataUtilities.ToLowerCaseAscii(bi.toString(16)));
+         CBORObject c1=CBORObject.FromObject(ei);
+         if(c1.AsNumber().signum() < 0)Assert.fail();
+         CBORObject c2=CBORObject.FromObject(bi);
+         if(c2.AsNumber().signum() < 0)Assert.fail();
+         TestCommon.AssertEqualsHashCode(c1,c2);
+         TestCommon.AssertEqualsHashCode(ei,(EInteger)c1.ToObject(EInteger.class));
+         TestCommon.AssertEqualsHashCode(bi,(BigInteger)c1.ToObject(BigInteger.class));
+    }
+
+    @Test
+    public void TestUnsignedLong() {
+       TestUnsignedLongOne(0x0L,"0");
+       TestUnsignedLongOne(0xFL,"f");
+       TestUnsignedLongOne(0xFFFFFFFFL,"ffffffff");
+       TestUnsignedLongOne(-1,"ffffffffffffffff");
+       TestUnsignedLongOne(-3,"fffffffffffffffd");
+       TestUnsignedLongOne(Long.MAX_VALUE,"7fffffffffffffff");
+       TestUnsignedLongOne(Long.MAX_VALUE-1,"7ffffffffffffffe");
+       TestUnsignedLongOne(Long.MIN_VALUE,"8000000000000000");
+       TestUnsignedLongOne(Long.MIN_VALUE+1,"8000000000000001");
+    }
+
     public static BigDecimal RandomBigDecimal(IRandomGenExtended r) {
       return RandomBigDecimal(r, null);
     }
