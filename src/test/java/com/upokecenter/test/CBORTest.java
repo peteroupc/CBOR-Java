@@ -2514,7 +2514,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    // TODO: Note this trick in FromObject documentation
     public static EInteger UnsignedLongToEInteger(long v) {
       if (v >= 0) {
         return EInteger.FromInt64(v);
