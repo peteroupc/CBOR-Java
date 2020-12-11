@@ -142,12 +142,21 @@ import com.upokecenter.numbers.*;
    */
     boolean CanFitInInt64(Object obj);
 
+    boolean CanFitInUInt64(Object obj);
+
   /**
    * This is an internal API.
    * @param obj The parameter {@code obj} is an arbitrary object.
    * @return The return value is an internal value.
    */
     boolean CanTruncatedIntFitInInt64(Object obj);
+
+  /**
+   * This is an internal API.
+   * @param obj The parameter {@code obj} is an arbitrary object.
+   * @return The return value is an internal value.
+   */
+    boolean CanTruncatedIntFitInUInt64(Object obj);
 
   /**
    * This is an internal API.

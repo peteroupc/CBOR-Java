@@ -93,6 +93,16 @@ import com.upokecenter.numbers.*;
       return val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE;
     }
 
+    public boolean CanTruncatedIntFitInUInt64(Object obj) {
+      long val = (((Long)obj).longValue());
+      return val >= 0;
+    }
+
+    public boolean CanFitInUInt64(Object obj) {
+      long val = (((Long)obj).longValue());
+      return val >= 0;
+    }
+
     public boolean CanTruncatedIntFitInInt64(Object obj) {
       return true;
     }

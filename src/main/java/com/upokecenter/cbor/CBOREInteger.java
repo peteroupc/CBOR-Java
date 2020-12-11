@@ -81,8 +81,17 @@ import com.upokecenter.numbers.*;
       return bi.CanFitInInt64();
     }
 
+    public boolean CanFitInUInt64(Object obj) {
+      EInteger bi = (EInteger)obj;
+      return bi.signum() >= 0 && bi.GetUnsignedBitLengthAsInt64() <= 64;
+    }
+
     public boolean CanTruncatedIntFitInInt64(Object obj) {
       return this.CanFitInInt64(obj);
+    }
+
+    public boolean CanTruncatedIntFitInUInt64(Object obj) {
+      return this.CanFitInUInt64(obj);
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {

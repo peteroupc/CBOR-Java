@@ -31,6 +31,9 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns whether this object's value can be converted to a 32-bit floating
  point number without its value being rounded to another numerical
  value.
+* `boolean CanFitInUInt64()`<br>
+ Returns whether this object's numerical value is an integer, is 0 or
+ greater, and is less than 2^64.
 * `boolean CanTruncatedIntFitInInt32()`<br>
  Returns whether this object's value, converted to an integer by discarding
  its fractional part, would be -(2^31) or greater, and less than
@@ -39,6 +42,9 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Returns whether this object's value, converted to an integer by discarding
  its fractional part, would be -(2^63) or greater, and less than
  2^63.
+* `boolean CanTruncatedIntFitInUInt64()`<br>
+ Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be 0 or greater, and less than 2^64.
 * `int compareTo​(int other)`<br>
  Compares this CBOR number with a 32-bit signed integer.
 * `int compareTo​(long other)`<br>
@@ -222,6 +228,17 @@ Returns whether this object's value, converted to an integer by discarding
 * <code>true</code> if this object's value, converted to an integer by
  discarding its fractional part, would be -(2^63) or greater, and
  less than 2^63; otherwise, <code>false</code>.
+
+### CanTruncatedIntFitInUInt64
+    public boolean CanTruncatedIntFitInUInt64()
+Returns whether this object's value, converted to an integer by discarding
+ its fractional part, would be 0 or greater, and less than 2^64.
+
+**Returns:**
+
+* <code>true</code> if this object's value, converted to an integer by
+ discarding its fractional part, would be 0 or greater, and less than
+ 2^64; otherwise, <code>false</code>.
 
 ### CanFitInSingle
     public boolean CanFitInSingle()
@@ -542,6 +559,16 @@ Returns whether this object's numerical value is an integer, is -(2^63) or
 
 * <code>true</code> if this object's numerical value is an integer, is
  -(2^63) or greater, and is less than 2^63; otherwise, <code>false</code>.
+
+### CanFitInUInt64
+    public boolean CanFitInUInt64()
+Returns whether this object's numerical value is an integer, is 0 or
+ greater, and is less than 2^64.
+
+**Returns:**
+
+* <code>true</code> if this object's numerical value is an integer, is 0 or
+ greater, and is less than 2^64; otherwise, <code>false</code>.
 
 ### IsInfinity
     public boolean IsInfinity()

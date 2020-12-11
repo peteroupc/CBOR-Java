@@ -91,6 +91,10 @@ import com.upokecenter.numbers.*;
       return this.IsIntegral(obj) && this.CanTruncatedIntFitInInt64(obj);
     }
 
+    public boolean CanFitInUInt64(Object obj) {
+      return this.IsIntegral(obj) && this.CanTruncatedIntFitInUInt64(obj);
+    }
+
     public boolean CanTruncatedIntFitInInt64(Object obj) {
       ERational ef = (ERational)obj;
       if (!ef.isFinite()) {
@@ -107,6 +111,15 @@ import com.upokecenter.numbers.*;
       }
       EInteger bi = ef.ToEInteger();
       return bi.CanFitInInt32();
+    }
+
+    public boolean CanTruncatedIntFitInUInt64(Object obj) {
+      ERational ef = (ERational)obj;
+      if (!ef.isFinite()) {
+        return false;
+      }
+      EInteger bi = ef.ToEInteger();
+      return bi.signum() >= 0 && bi.GetUnsignedBitLengthAsInt64() <= 64;
     }
 
     public boolean IsNumberZero(Object obj) {

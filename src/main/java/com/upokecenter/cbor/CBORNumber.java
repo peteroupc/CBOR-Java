@@ -527,6 +527,18 @@ import com.upokecenter.numbers.*;
     }
 
     /**
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be 0 or greater, and less than 2^64.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be 0 or greater, and less than
+     * 2^64; otherwise, {@code false}.
+     */
+    public boolean CanTruncatedIntFitInUInt64() {
+          return this.GetNumberInterface()
+            .CanTruncatedIntFitInUInt64(this.GetValue());
+    }
+
+    /**
      * Returns whether this object's value can be converted to a 32-bit floating
      * point number without its value being rounded to another numerical
      * value.
@@ -1017,6 +1029,16 @@ import com.upokecenter.numbers.*;
      */
     public boolean CanFitInInt64() {
       return this.GetNumberInterface().CanFitInInt64(this.GetValue());
+    }
+
+    /**
+     * Returns whether this object's numerical value is an integer, is 0 or
+     * greater, and is less than 2^64.
+     * @return {@code true} if this object's numerical value is an integer, is 0 or
+     * greater, and is less than 2^64; otherwise, {@code false}.
+     */
+    public boolean CanFitInUInt64() {
+      return this.GetNumberInterface().CanFitInUInt64(this.GetValue());
     }
 
     /**

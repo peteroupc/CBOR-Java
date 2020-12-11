@@ -98,6 +98,10 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
       return this.IsIntegral(obj) && this.CanTruncatedIntFitInInt64(obj);
     }
 
+    public boolean CanFitInUInt64(Object obj) {
+      return this.IsIntegral(obj) && this.CanTruncatedIntFitInUInt64(obj);
+    }
+
     private static long DoubleBitsRoundDown(long bits) {
       long origbits = bits;
       bits &= ~(1L << 63);
@@ -130,6 +134,16 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
       boolean neg = (b >> 63) != 0;
       b &= ~(1L << 63);
       return (neg && b == (0x43eL << 52)) || ((b >> 52) < 0x43e);
+    }
+
+    public boolean CanTruncatedIntFitInUInt64(Object obj) {
+      if (this.IsNaN(obj) || this.IsInfinity(obj)) {
+        return false;
+      }
+      long b = DoubleBitsRoundDown((((Long)obj).longValue()));
+      boolean neg = (b >> 63) != 0;
+      b &= ~(1L << 63);
+      return (neg && b == 0) || ((b >> 52) < 0x43f);
     }
 
     public boolean CanTruncatedIntFitInInt32(Object obj) {
