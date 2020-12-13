@@ -84,9 +84,10 @@ import com.upokecenter.numbers.*;
       if (!(CBORObject.FromObject(0).AsNumber().CanFitInUInt64())) {
  Assert.fail("0");
  }
-      if (!(CBORObject.FromObject(99).AsNumber().CanFitInUInt64())) {
+      if (!(
+        CBORObject.FromObject(99).AsNumber().CanFitInUInt64())) {
  Assert.fail(
-  "99");
+        "99");
  }
 
   if (!(CBORObject.FromObject(99.0).AsNumber().CanFitInUInt64())) {
@@ -160,14 +161,10 @@ b = CBORObject.FromObject(
  Assert.fail(
         "99.0");
  }
-      {
-        Object objectTemp = CBORObject.FromObject(
-        -0.0).AsNumber().CanTruncatedIntFitInUInt64();
-      Object objectTemp2 = "-0.0";
-      if (!(objectTemp)) {
- Assert.fail(objectTemp2);
+      if (!(CBORObject.FromObject(
+        -0.0).AsNumber().CanTruncatedIntFitInUInt64())) {
+ Assert.fail();
  }
-}
 
       if (
         CBORObject.FromObject(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
@@ -190,23 +187,14 @@ b = CBORObject.FromObject(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         CBORObject.FromObject(0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
-      {
-        Object objectTemp = CBORObject.FromObject(
-        -0.1).AsNumber().CanTruncatedIntFitInUInt64();
-      Object objectTemp2 = "-0.1";
-      if (!(objectTemp)) {
- Assert.fail(objectTemp2);
+      if (!(CBORObject.FromObject(
+        -0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
+ Assert.fail();
  }
-}
-
-      {
-        Object objectTemp = CBORObject.FromObject(
-        99.1).AsNumber().CanTruncatedIntFitInUInt64();
-        Object objectTemp2 = "99.1";
-        if (!(objectTemp)) {
- Assert.fail(objectTemp2);
+      if (!(CBORObject.FromObject(
+        99.1).AsNumber().CanTruncatedIntFitInUInt64())) {
+ Assert.fail();
  }
-      }
 
       if (
         CBORObject.PositiveInfinity.AsNumber()
