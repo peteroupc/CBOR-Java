@@ -1435,43 +1435,31 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
     }
 
     public static Object RandomUUID(RandomGenerator rand) {
-      String hex = "0123456789ABCDEF";
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < 8; ++i) {
         if (rand == null) {
           throw new NullPointerException("rand");
         }
-        sb.append(hex.charAt(rand.UniformInt(16)));
-      }
-      sb.append('-');
+        String hex = "0123456789ABCDEF";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; ++i) {
+          sb.append(hex.charAt(rand.UniformInt(16)));
+        }
+        sb.append('-');
       for (int i = 0; i < 4; ++i) {
-        if (rand == null) {
-          throw new NullPointerException("rand");
-        }
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
-      sb.append('-');
-      for (int i = 0; i < 4; ++i) {
-        if (rand == null) {
-          throw new NullPointerException("rand");
-        }
-        sb.append(hex.charAt(rand.UniformInt(16)));
-      }
-      sb.append('-');
-      for (int i = 0; i < 4; ++i) {
-        if (rand == null) {
-          throw new NullPointerException("rand");
-        }
-        sb.append(hex.charAt(rand.UniformInt(16)));
-      }
-      sb.append('-');
-      for (int i = 0; i < 12; ++i) {
-        if (rand == null) {
-          throw new NullPointerException("rand");
-        }
-        sb.append(hex.charAt(rand.UniformInt(16)));
-      }
-      return java.util.UUID.fromString(sb.toString());
+    sb.append('-');
+  for (int i = 0; i < 4; ++i) {
+    sb.append(hex.charAt(rand.UniformInt(16)));
+  }
+    sb.append('-');
+  for (int i = 0; i < 4; ++i) {
+    sb.append(hex.charAt(rand.UniformInt(16)));
+  }
+    sb.append('-');
+  for (int i = 0; i < 12; ++i) {
+    sb.append(hex.charAt(rand.UniformInt(16)));
+  }
+    return java.util.UUID.fromString(sb.toString());
     }
 
     public static CBORObject TestToFromObjectRoundTrip(Object obj) {
@@ -1495,6 +1483,14 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
             Assert.assertEquals(cbor + "\n" + obj.getClass(),obj,obj2);
           }
         }
+      // Tests for DecodeObjectFromBytes
+        byte[] encdata = cbor.EncodeToBytes();
+        Object obj3 =
+CBORObject.DecodeFromBytes(encdata).ToObject(obj.getClass());
+        Object obj4 = CBORObject.DecodeObjectFromBytes(encdata, obj.getClass());
+        TestCommon.AssertEqualsHashCode(obj, obj2);
+        TestCommon.AssertEqualsHashCode(obj, obj3);
+        TestCommon.AssertEqualsHashCode(obj, obj4);
       }
       return cbor;
     }

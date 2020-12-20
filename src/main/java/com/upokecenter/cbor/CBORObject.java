@@ -16,6 +16,8 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
 // TODO: In next major version, make .Keys and .Values read-only
+// TODO: Add ReadObject that combines Read and ToObject; similarly
+// for ReadJSON, FromJSONString, FromJSONBytes
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -40,53 +42,55 @@ import com.upokecenter.numbers.*;
    * <code>ArrayList</code> (or <code>ArrayList</code> in Java), or a CBOR integer to
    * an <code>int</code> or <code>long</code>.</p> <p><b>To and from JSON:</b> This
    * class also doubles as a reader and writer of JavaScript object
-   * Notation (JSON). The CBORObject.FromJSONString method converts JSON to
-   * a CBOR object, and the ToJSONString method converts a CBOR object to a
-   * JSON string. (Note that the conversion from CBOR to JSON is not always
-   * without loss and may make it impossible to recover the original object
-   * when converting the JSON back to CBOR. See the ToJSONString
-   * documentation.)</p> <p>In addition, the CBORObject.WriteJSON method
-   * writes many kinds of objects as JSON to a data stream, including
-   * numbers, CBOR objects, strings, and arrays of numbers and strings. The
-   * CBORObject.Read method reads a CBOR object from a JSON data
-   * stream.</p> <p><b>Comparison Considerations:</b></p> <p>Instances of
-   *  CBORObject should not be compared for equality using the "=="
-   * operator; it's possible to create two CBOR objects with the same value
-   *  but not the same reference. (The "==" operator might only check if
-   * each side of the operator is the same instance.)</p> <p>This class's
-   * natural ordering (under the compareTo method) is consistent with the
-   * Equals method, meaning that two values that compare as equal under the
-   * compareTo method are also equal under the Equals method; this is a
-   * change in version 4.0. Two otherwise equal objects with different tags
-   * are not treated as equal by both compareTo and Equals. To strip the
-   * tags from a CBOR object before comparing, use the <code>Untag</code>
-   * method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR objects are
-   * immutable (their values can't be changed), so they are inherently safe
-   * for use by multiple threads.</p> <p>CBOR objects that are arrays,
-   * maps, and byte strings (whether or not they are tagged) are mutable,
-   * but this class doesn't attempt to synchronize reads and writes to
-   * those objects by multiple threads, so those objects are not thread
-   * safe without such synchronization.</p> <p>One kind of CBOR object is
-   * called a map, or a list of key-value pairs. Keys can be any kind of
-   * CBOR object, including numbers, strings, arrays, and maps. However,
-   * untagged text strings (which means GetTags returns an empty array and
-   *  the Type property, or "getType()" in Java, returns TextString) are the
-   * most suitable to use as keys; other kinds of CBOR object are much
-   * better used as map values instead, keeping in mind that some of them
-   * are not thread safe without synchronizing reads and writes to
-   * them.</p> <p>To find the type of a CBOR object, call its Type property
-   *  (or "getType()" in Java). The return value can be Integer,
-   * FloatingPoint, Boolean, SimpleValue, or TextString for immutable CBOR
-   * objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
-   * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and Read methods
-   * can only read objects with a limited maximum depth of arrays and maps
-   * nested within other arrays and maps. The code sets this maximum depth
-   * to 500 (allowing more than enough nesting for most purposes), but it's
-   * possible that stack overflows in some runtimes might lower the
-   * effective maximum nesting depth. When the nesting depth goes above
-   * 500, the DecodeFromBytes and Read methods throw a CBORException.</p>
-   * <p>The ReadJSON and FromJSONString methods currently have nesting
-   * depths of 1000.</p></p>
+   * Notation (JSON). The CBORObject.FromJSONString method converts JSON in
+   * text string form to a CBOR object, and the ToJSONString method
+   * converts a CBOR object to a JSON string. (Note that the conversion
+   * from CBOR to JSON is not always without loss and may make it
+   * impossible to recover the original object when converting the JSON
+   * back to CBOR. See the ToJSONString documentation.) Likewise,
+   * ToJSONBytes and FromJSONBytes work with JSON in the form of byte
+   * arrays rather than text strings.</p> <p>In addition, the
+   * CBORObject.WriteJSON method writes many kinds of objects as JSON to a
+   * data stream, including numbers, CBOR objects, strings, and arrays of
+   * numbers and strings. The CBORObject.Read method reads a CBOR object
+   * from a JSON data stream.</p> <p><b>Comparison Considerations:</b></p>
+   * <p>Instances of CBORObject should not be compared for equality using
+   *  the "==" operator; it's possible to create two CBOR objects with the
+   *  same value but not the same reference. (The "==" operator might only
+   * check if each side of the operator is the same instance.)</p> <p>This
+   * class's natural ordering (under the compareTo method) is consistent
+   * with the Equals method, meaning that two values that compare as equal
+   * under the compareTo method are also equal under the Equals method;
+   * this is a change in version 4.0. Two otherwise equal objects with
+   * different tags are not treated as equal by both compareTo and Equals.
+   * To strip the tags from a CBOR object before comparing, use the
+   * <code>Untag</code> method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR
+   * objects are immutable (their values can't be changed), so they are
+   * inherently safe for use by multiple threads.</p> <p>CBOR objects that
+   * are arrays, maps, and byte strings (whether or not they are tagged)
+   * are mutable, but this class doesn't attempt to synchronize reads and
+   * writes to those objects by multiple threads, so those objects are not
+   * thread safe without such synchronization.</p> <p>One kind of CBOR
+   * object is called a map, or a list of key-value pairs. Keys can be any
+   * kind of CBOR object, including numbers, strings, arrays, and maps.
+   * However, untagged text strings (which means GetTags returns an empty
+   *  array and the Type property, or "getType()" in Java, returns
+   * TextString) are the most suitable to use as keys; other kinds of CBOR
+   * object are much better used as map values instead, keeping in mind
+   * that some of them are not thread safe without synchronizing reads and
+   * writes to them.</p> <p>To find the type of a CBOR object, call its
+   *  Type property (or "getType()" in Java). The return value can be
+   * Integer, FloatingPoint, Boolean, SimpleValue, or TextString for
+   * immutable CBOR objects, and Array, Map, or ByteString for mutable CBOR
+   * objects.</p> <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and
+   * Read methods can only read objects with a limited maximum depth of
+   * arrays and maps nested within other arrays and maps. The code sets
+   * this maximum depth to 500 (allowing more than enough nesting for most
+   * purposes), but it's possible that stack overflows in some runtimes
+   * might lower the effective maximum nesting depth. When the nesting
+   * depth goes above 500, the DecodeFromBytes and Read methods throw a
+   * CBORException.</p> <p>The ReadJSON and FromJSONString methods
+   * currently have nesting depths of 1000.</p></p>
    */
 
   public final class CBORObject implements Comparable<CBORObject> {
@@ -1576,6 +1580,182 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
         throw new NullPointerException("options");
       }
       return (T)(this.ToObject(t, mapper, options, 0));
+    }
+
+    /**
+     * Generates an object of an arbitrary type from an array of CBOR-encoded
+     * bytes, using the given <code>CBOREncodeOptions</code> object to control
+     * the decoding process. It is equivalent to DecodeFromBytes followed
+     * by ToObject. See the documentation for those methods for more
+     * information.
+     * @param data A byte array in which a single CBOR object is encoded.
+     * @param enc Specifies options to control how the CBOR object is decoded. See
+     * {@link com.upokecenter.cbor.CBOREncodeOptions} for more information.
+     * @param t The type, class, or interface that this method's return value will
+     * belong to. To express a generic type in Java, see the example.
+     * <b>Note:</b> For security reasons, an application should not base
+     * this parameter on user input or other externally supplied data.
+     * Whenever possible, this parameter should be either a type specially
+     * handled by this method, such as {@code int} or {@code string}, or a
+     * plain-old-data type (POCO or POJO type) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.
+     * @param mapper This parameter controls which data types are eligible for
+     * Plain-Old-Data deserialization and includes custom converters from
+     * CBOR objects to certain data types. Can be null.
+     * @param pod Specifies options for controlling deserialization of CBOR
+     * objects.
+     * @return An object of the given type decoded from the given byte array.
+     * Returns null (as opposed to CBORObject.Null) if {@code data} is
+     * empty and the AllowEmpty property is set on the given
+     * CBOREncodeOptions object.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte
+     * array represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty unless the AllowEmpty property is
+     * set on the given options object. Also thrown if the given type
+     * {@code t}, or this object's CBOR type, is not supported, or the
+     * given object's nesting is too deep, or another error occurred when
+     * serializing the object.
+     * @throws NullPointerException The parameter {@code data} is null, or the
+     * parameter {@code enc} is null, or the parameter {@code t} or {@code
+     * pod} is null.
+     */
+    @SuppressWarnings("unchecked")
+public static <T> T DecodeObjectFromBytes(
+      byte[] data,
+      CBOREncodeOptions enc,
+      java.lang.reflect.Type t,
+      CBORTypeMapper mapper,
+      PODOptions pod) {
+      if (pod == null) {
+        throw new NullPointerException("pod");
+      }
+      if (enc == null) {
+        throw new NullPointerException("enc");
+      }
+      return (T)(DecodeFromBytes(data, enc).ToObject(t, mapper, pod));
+    }
+
+    /**
+     * Generates an object of an arbitrary type from an array of CBOR-encoded
+     * bytes, using the given <code>CBOREncodeOptions</code> object to control
+     * the decoding process. It is equivalent to DecodeFromBytes followed
+     * by ToObject. See the documentation for those methods for more
+     * information.
+     * @param data A byte array in which a single CBOR object is encoded.
+     * @param enc Specifies options to control how the CBOR object is decoded. See
+     * {@link com.upokecenter.cbor.CBOREncodeOptions} for more information.
+     * @param t The type, class, or interface that this method's return value will
+     * belong to. To express a generic type in Java, see the example.
+     * <b>Note:</b> For security reasons, an application should not base
+     * this parameter on user input or other externally supplied data.
+     * Whenever possible, this parameter should be either a type specially
+     * handled by this method, such as {@code int} or {@code string}, or a
+     * plain-old-data type (POCO or POJO type) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.
+     * @return An object of the given type decoded from the given byte array.
+     * Returns null (as opposed to CBORObject.Null) if {@code data} is
+     * empty and the AllowEmpty property is set on the given
+     * CBOREncodeOptions object.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte
+     * array represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty unless the AllowEmpty property is
+     * set on the given options object. Also thrown if the given type
+     * {@code t}, or this object's CBOR type, is not supported, or the
+     * given object's nesting is too deep, or another error occurred when
+     * serializing the object.
+     * @throws NullPointerException The parameter {@code data} is null, or the
+     * parameter {@code enc} is null, or the parameter {@code t} or {@code
+     * pod} is null.
+     */
+    @SuppressWarnings("unchecked")
+public static <T> T DecodeObjectFromBytes(
+      byte[] data,
+      CBOREncodeOptions enc,
+      java.lang.reflect.Type t) {
+       return (T)(DecodeFromBytes(data, enc).ToObject(t));
+    }
+
+    /**
+     * Generates an object of an arbitrary type from an array of CBOR-encoded
+     * bytes. It is equivalent to DecodeFromBytes followed by ToObject. See
+     * the documentation for those methods for more information.
+     * @param data A byte array in which a single CBOR object is encoded.
+     * @param t The type, class, or interface that this method's return value will
+     * belong to. To express a generic type in Java, see the example.
+     * <b>Note:</b> For security reasons, an application should not base
+     * this parameter on user input or other externally supplied data.
+     * Whenever possible, this parameter should be either a type specially
+     * handled by this method, such as {@code int} or {@code string}, or a
+     * plain-old-data type (POCO or POJO type) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.
+     * @param mapper This parameter controls which data types are eligible for
+     * Plain-Old-Data deserialization and includes custom converters from
+     * CBOR objects to certain data types. Can be null.
+     * @param pod Specifies options for controlling deserialization of CBOR
+     * objects.
+     * @return An object of the given type decoded from the given byte array.
+     * Returns null (as opposed to CBORObject.Null) if {@code data} is
+     * empty and the AllowEmpty property is set on the given
+     * CBOREncodeOptions object.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte
+     * array represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty unless the AllowEmpty property is
+     * set on the given options object. Also thrown if the given type
+     * {@code t}, or this object's CBOR type, is not supported, or the
+     * given object's nesting is too deep, or another error occurred when
+     * serializing the object.
+     * @throws NullPointerException The parameter {@code data} is null, or the
+     * parameter {@code enc} is null, or the parameter {@code t} or {@code
+     * pod} is null.
+     */
+    @SuppressWarnings("unchecked")
+public static <T> T DecodeObjectFromBytes(
+      byte[] data,
+      java.lang.reflect.Type t,
+      CBORTypeMapper mapper,
+      PODOptions pod) {
+       return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t, mapper, pod));
+    }
+
+    /**
+     * Generates an object of an arbitrary type from an array of CBOR-encoded
+     * bytes. It is equivalent to DecodeFromBytes followed by ToObject. See
+     * the documentation for those methods for more information.
+     * @param data A byte array in which a single CBOR object is encoded.
+     * @param t The type, class, or interface that this method's return value will
+     * belong to. To express a generic type in Java, see the example.
+     * <b>Note:</b> For security reasons, an application should not base
+     * this parameter on user input or other externally supplied data.
+     * Whenever possible, this parameter should be either a type specially
+     * handled by this method, such as {@code int} or {@code string}, or a
+     * plain-old-data type (POCO or POJO type) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.
+     * @return An object of the given type decoded from the given byte array.
+     * Returns null (as opposed to CBORObject.Null) if {@code data} is
+     * empty and the AllowEmpty property is set on the given
+     * CBOREncodeOptions object.
+     * @throws com.upokecenter.cbor.CBORException There was an error in reading or
+     * parsing the data. This includes cases where not all of the byte
+     * array represents a CBOR object. This exception is also thrown if the
+     * parameter {@code data} is empty unless the AllowEmpty property is
+     * set on the given options object. Also thrown if the given type
+     * {@code t}, or this object's CBOR type, is not supported, or the
+     * given object's nesting is too deep, or another error occurred when
+     * serializing the object.
+     * @throws NullPointerException The parameter {@code data} is null, or the
+     * parameter {@code enc} is null, or the parameter {@code t} or {@code
+     * pod} is null.
+     */
+    @SuppressWarnings("unchecked")
+public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t) {
+       return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t));
     }
 
     @SuppressWarnings("unchecked")
