@@ -1447,19 +1447,19 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       for (int i = 0; i < 4; ++i) {
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
-    sb.append('-');
+      sb.append('-');
+    for (int i = 0; i < 4; ++i) {
+      sb.append(hex.charAt(rand.UniformInt(16)));
+    }
+  sb.append('-');
   for (int i = 0; i < 4; ++i) {
     sb.append(hex.charAt(rand.UniformInt(16)));
   }
-    sb.append('-');
-  for (int i = 0; i < 4; ++i) {
-    sb.append(hex.charAt(rand.UniformInt(16)));
-  }
-    sb.append('-');
+  sb.append('-');
   for (int i = 0; i < 12; ++i) {
     sb.append(hex.charAt(rand.UniformInt(16)));
   }
-    return java.util.UUID.fromString(sb.toString());
+  return java.util.UUID.fromString(sb.toString());
     }
 
     public static CBORObject TestToFromObjectRoundTrip(Object obj) {
