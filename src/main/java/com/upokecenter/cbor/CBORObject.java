@@ -2922,7 +2922,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
 
     /**
      * Creates a new empty CBOR map that ensures that keys are stored in the order
-     * in which they are inserted.
+     * in which they are first inserted.
      * @return A new CBOR map.
      */
     public static CBORObject NewOrderedMap() {

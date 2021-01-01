@@ -602,7 +602,7 @@ Instead, convert this object to a number (with .AsNumber()), and
  Creates a new empty CBOR map that stores its keys in an undefined order.
 * `static CBORObject NewOrderedMap()`<br>
  Creates a new empty CBOR map that ensures that keys are stored in the order
- in which they are inserted.
+ in which they are first inserted.
 * `static CBORObject Read​(java.io.InputStream stream)`<br>
  Reads an object in CBOR format from a data stream.
 * `static CBORObject Read​(java.io.InputStream stream,
@@ -2835,7 +2835,7 @@ Creates a new empty CBOR map that stores its keys in an undefined order.
 ### NewOrderedMap
     public static CBORObject NewOrderedMap()
 Creates a new empty CBOR map that ensures that keys are stored in the order
- in which they are inserted.
+ in which they are first inserted.
 
 **Returns:**
 
