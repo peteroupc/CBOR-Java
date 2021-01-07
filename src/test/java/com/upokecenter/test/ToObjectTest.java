@@ -1451,7 +1451,7 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
     for (int i = 0; i < 4; ++i) {
       sb.append(hex.charAt(rand.UniformInt(16)));
     }
-  sb.append('-');
+    sb.append('-');
   for (int i = 0; i < 4; ++i) {
     sb.append(hex.charAt(rand.UniformInt(16)));
   }

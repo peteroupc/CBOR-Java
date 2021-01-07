@@ -1668,8 +1668,7 @@ public static <T> T DecodeObjectFromBytes(
      * given object's nesting is too deep, or another error occurred when
      * serializing the object.
      * @throws NullPointerException The parameter {@code data} is null, or the
-     * parameter {@code enc} is null, or the parameter {@code t} or {@code
-     * pod} is null.
+     * parameter {@code enc} is null, or the parameter {@code t} is null.
      */
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(
@@ -1711,8 +1710,7 @@ public static <T> T DecodeObjectFromBytes(
      * given object's nesting is too deep, or another error occurred when
      * serializing the object.
      * @throws NullPointerException The parameter {@code data} is null, or the
-     * parameter {@code enc} is null, or the parameter {@code t} or {@code
-     * pod} is null.
+     * parameter {@code t} or {@code pod} is null.
      */
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(
@@ -1750,8 +1748,7 @@ public static <T> T DecodeObjectFromBytes(
      * given object's nesting is too deep, or another error occurred when
      * serializing the object.
      * @throws NullPointerException The parameter {@code data} is null, or the
-     * parameter {@code enc} is null, or the parameter {@code t} or {@code
-     * pod} is null.
+     * parameter {@code t} is null.
      */
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t) {
@@ -2507,9 +2504,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * integer that is treated as a 64-bit unsigned integer (such as.NET's
      * UInt64, which has no direct equivalent in the Java language), in the
      * sense that the value is treated as 2^64 plus the original value if
-     * it's negative.</p> <pre>long x = -40L; // Example 64-bit value treated as 2^64-40. CBORObject obj = CBORObject.FromObject(v &lt; 0 ? EInteger.FromInt32(1).ShiftLeft(64).Add(v) : EInteger.FromInt64(v));</pre> <p>In the Java version, which has
+     * it's negative.</p> <pre>long x = -40L; &#x2f;&#x2a; Example 64-bit value treated as 2^64-40.&#x2a;&#x2f; CBORObject obj = CBORObject.FromObject(v &lt; 0 ? EInteger.FromInt32(1).ShiftLeft(64).Add(v) : EInteger.FromInt64(v));</pre> <p>In the Java version, which has
      * java.math.getBigInteger(), the following can be used instead:</p>
-     * <pre>long x = -40L; // Example 64-bit value treated as 2^64-40. CBORObject obj = CBORObject.FromObject(v &lt; 0 ? BigInteger.valueOf(1).shiftLeft(64).add(BigInteger.valueOf(v)) : BigInteger.valueOf(v));</pre> </p>
+     * <pre>long x = -40L; &#x2f;&#x2a; Example 64-bit value treated as 2^64-40.&#x2a;&#x2f; CBORObject obj = CBORObject.FromObject(v &lt; 0 ? BigInteger.valueOf(1).shiftLeft(64).add(BigInteger.valueOf(v)) : BigInteger.valueOf(v));</pre> </p>
      * @param obj An arbitrary object to convert to a CBOR object. <p><b>NOTE:</b>
      * For security reasons, whenever possible, an application should not
      * base this parameter on user input or other externally supplied data
