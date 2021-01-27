@@ -41,7 +41,8 @@ Specifies the underlying form of this CBOR number object.
 Represents a type that a CBOR object can have.
 
 * [com.upokecenter.cbor.JSONOptions.ConversionMode](com.upokecenter.cbor.JSONOptions.ConversionMode.md) -
-Specifies how JSON numbers are converted to CBOR when decoding JSON.
+Specifies how JSON numbers are converted to CBOR objects when decoding JSON
+ (such as via FromJSONString or ReadJSON).
 
 * [com.upokecenter.cbor.CBORException](com.upokecenter.cbor.CBORException.md) -
 Exception thrown for errors involving CBOR data.

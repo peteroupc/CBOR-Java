@@ -6,15 +6,17 @@ Includes options to control how CBOR objects are converted to JSON.
 
 ## Fields
 
-* `static class  JSONOptions.ConversionMode`<br>
- Specifies how JSON numbers are converted to CBOR when decoding JSON.
+* `static class  JSONOptions.ConversionMode FromJSONString ReadJSON`<br>
+ Specifies how JSON numbers are converted to CBOR objects when decoding JSON
+ (such as via FromJSONString or ReadJSON).
 * `static JSONOptions Default`<br>
  The default options for converting CBOR objects to JSON.
 
 ## Nested Classes
 
-* `static class  JSONOptions.ConversionMode`<br>
- Specifies how JSON numbers are converted to CBOR when decoding JSON.
+* `static class  JSONOptions.ConversionMode FromJSONString ReadJSON`<br>
+ Specifies how JSON numbers are converted to CBOR objects when decoding JSON
+ (such as via FromJSONString or ReadJSON).
 
 ## Constructors
 
@@ -41,7 +43,7 @@ Use the String constructor instead.
 This property now has no effect.
  This property now has no effect.
 * `JSONOptions.ConversionMode getNumberConversion()`<br>
- Gets a value indicating how JSON numbers are decoded to CBOR.
+ Gets a value indicating how JSON numbers are decoded to CBOR objects.
 * `boolean getPreserveNegativeZero()`<br>
  Gets a value indicating whether the JSON decoder should preserve the
  distinction between positive zero and negative zero when the decoder
@@ -107,7 +109,9 @@ Gets a value indicating whether the JSON decoder should preserve the
 
 ### getNumberConversion
     public final JSONOptions.ConversionMode getNumberConversion()
-Gets a value indicating how JSON numbers are decoded to CBOR.
+Gets a value indicating how JSON numbers are decoded to CBOR objects. None
+ of the conversion modes affects how CBOR objects are later encoded
+ (such as via <code>EncodeToBytes</code>).
 
 **Returns:**
 

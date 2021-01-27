@@ -38,13 +38,13 @@ Specifies options for encoding and decoding CBOR objects.
 * `boolean getCtap2Canonical()`<br>
  Gets a value indicating whether CBOR objects:  When encoding, are
  written out using the CTAP2 canonical CBOR encoding form, which is
- useful for implementing Web Authentication. When decoding,
- are checked for compliance with the CTAP2 canonical encoding
- form. In this form, CBOR tags are not used, map keys are
- written out in a canonical order, a maximum depth of four levels of
- arrays and/or maps is allowed, duplicate map keys are not allowed
- when decoding, and floating-point numbers are written out in their
- 64-bit encoding form regardless of whether their value can be
+ useful for implementing Web Authentication (WebAuthn). When
+ decoding, are checked for compliance with the CTAP2 canonical
+ encoding form. In this form, CBOR tags are not used, map
+ keys are written out in a canonical order, a maximum depth of four
+ levels of arrays and/or maps is allowed, duplicate map keys are not
+ allowed when decoding, and floating-point numbers are written out in
+ their 64-bit encoding form regardless of whether their value can be
  encoded without loss in a smaller form.
 * `boolean getResolveReferences()`<br>
  Gets a value indicating whether to resolve references to sharable objects
@@ -182,13 +182,13 @@ Gets a value indicating whether to allow duplicate keys when reading CBOR
     public final boolean getCtap2Canonical()
 Gets a value indicating whether CBOR objects: <ul> <li>When encoding, are
  written out using the CTAP2 canonical CBOR encoding form, which is
- useful for implementing Web Authentication.</li> <li>When decoding,
- are checked for compliance with the CTAP2 canonical encoding
- form.</li></ul> In this form, CBOR tags are not used, map keys are
- written out in a canonical order, a maximum depth of four levels of
- arrays and/or maps is allowed, duplicate map keys are not allowed
- when decoding, and floating-point numbers are written out in their
- 64-bit encoding form regardless of whether their value can be
+ useful for implementing Web Authentication (WebAuthn).</li> <li>When
+ decoding, are checked for compliance with the CTAP2 canonical
+ encoding form.</li></ul> In this form, CBOR tags are not used, map
+ keys are written out in a canonical order, a maximum depth of four
+ levels of arrays and/or maps is allowed, duplicate map keys are not
+ allowed when decoding, and floating-point numbers are written out in
+ their 64-bit encoding form regardless of whether their value can be
  encoded without loss in a smaller form. This implementation allows
  CBOR objects whose canonical form exceeds 1024 bytes, the default
  maximum size for CBOR objects in that form according to the FIDO

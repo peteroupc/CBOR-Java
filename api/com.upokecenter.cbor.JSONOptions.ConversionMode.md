@@ -2,7 +2,10 @@
 
     public static enum JSONOptions.ConversionMode extends java.lang.Enum<JSONOptions.ConversionMode>
 
-Specifies how JSON numbers are converted to CBOR when decoding JSON.
+Specifies how JSON numbers are converted to CBOR objects when decoding JSON
+ (such as via <code>FromJSONString</code> or <code>ReadJSON</code>). None of
+ these conversion modes affects how CBOR objects are later encoded
+ (such as via <code>EncodeToBytes</code>).
 
 ## Enum Constants
 
@@ -18,15 +21,16 @@ Specifies how JSON numbers are converted to CBOR when decoding JSON.
  JSON numbers are decoded to CBOR using the full precision given in the JSON
  text.
 * `IntOrFloat`<br>
- A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
- 1) if the JSON number represents an integer at least -(2^53)+1
- and less than 2^53, or as their closest-rounded approximation as
- 64-bit binary floating-point numbers otherwise.
+ A JSON number is decoded to CBOR objects either as a CBOR integer (major
+ type 0 or 1) if the JSON number represents an integer at least
+ -(2^53)+1 and less than 2^53, or as their closest-rounded
+ approximation as 64-bit binary floating-point numbers otherwise.
 * `IntOrFloatFromDouble`<br>
- A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
- 1) if the number's closest-rounded approximation as a 64-bit
- binary floating-point number represents an integer at least
- -(2^53)+1 and less than 2^53, or as that approximation otherwise.
+ A JSON number is decoded to CBOR objects either as a CBOR integer (major
+ type 0 or 1) if the number's closest-rounded approximation as a
+ 64-bit binary floating-point number represents an integer at
+ least -(2^53)+1 and less than 2^53, or as that approximation
+ otherwise.
 
 ## Methods
 
@@ -72,32 +76,51 @@ JSON numbers are decoded to CBOR as their closest-rounded approximation as
  64-bit binary floating-point numbers. (In some cases, numbers
  extremely close to zero may underflow to positive or negative
  zero, and numbers of extremely large magnitude may overflow to
- infinity.).
+ infinity.). It's important to note that this mode affects only
+ how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+ affect how <code>EncodeToBytes</code> and other methods encode CBOR
+ objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
+ floating-point values to the CBOR format in their 16-bit
+  ("half-float"), 32-bit ("single-precision"), or 64-bit
+  ("double-precision") encoding form depending on the value.
 ### IntOrFloat
     public static final JSONOptions.ConversionMode IntOrFloat
-A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
- 1) if the JSON number represents an integer at least -(2^53)+1
- and less than 2^53, or as their closest-rounded approximation as
- 64-bit binary floating-point numbers otherwise. For example, the
- JSON number 0.99999999999999999999999999999999999 is not an
- integer, so it's converted to its closest 64-bit binary
- floating-point approximation, namely 1.0. (In some cases, numbers
- extremely close to zero may underflow to positive or negative
- zero, and numbers of extremely large magnitude may overflow to
- infinity.).
+A JSON number is decoded to CBOR objects either as a CBOR integer (major
+ type 0 or 1) if the JSON number represents an integer at least
+ -(2^53)+1 and less than 2^53, or as their closest-rounded
+ approximation as 64-bit binary floating-point numbers otherwise.
+ For example, the JSON number
+ 0.99999999999999999999999999999999999 is not an integer, so it's
+ converted to its closest 64-bit binary floating-point
+ approximation, namely 1.0. (In some cases, numbers extremely
+ close to zero may underflow to positive or negative zero, and
+ numbers of extremely large magnitude may overflow to infinity.).
+ It's important to note that this mode affects only how JSON
+ numbers are <code>decoded</code> to a CBOR object; it doesn't affect
+ how <code>EncodeToBytes</code> and other methods encode CBOR objects.
+ Notably, by default, <code>EncodeToBytes</code> encodes CBOR
+ floating-point values to the CBOR format in their 16-bit
+  ("half-float"), 32-bit ("single-precision"), or 64-bit
+  ("double-precision") encoding form depending on the value.
 ### IntOrFloatFromDouble
     public static final JSONOptions.ConversionMode IntOrFloatFromDouble
-A JSON number is decoded to CBOR either as a CBOR integer (major type 0 or
- 1) if the number's closest-rounded approximation as a 64-bit
- binary floating-point number represents an integer at least
- -(2^53)+1 and less than 2^53, or as that approximation otherwise.
- For example, the JSON number
+A JSON number is decoded to CBOR objects either as a CBOR integer (major
+ type 0 or 1) if the number's closest-rounded approximation as a
+ 64-bit binary floating-point number represents an integer at
+ least -(2^53)+1 and less than 2^53, or as that approximation
+ otherwise. For example, the JSON number
  0.99999999999999999999999999999999999 is the integer 1 when
  rounded to its closest 64-bit binary floating-point approximation
  (1.0), so it's converted to the CBOR integer 1 (major type 0).
  (In some cases, numbers extremely close to zero may underflow to
  zero, and numbers of extremely large magnitude may overflow to
- infinity.).
+ infinity.). It's important to note that this mode affects only
+ how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+ affect how <code>EncodeToBytes</code> and other methods encode CBOR
+ objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
+ floating-point values to the CBOR format in their 16-bit
+  ("half-float"), 32-bit ("single-precision"), or 64-bit
+  ("double-precision") encoding form depending on the value.
 ### Decimal128
     public static final JSONOptions.ConversionMode Decimal128
 JSON numbers are decoded to CBOR as their closest-rounded approximation to
