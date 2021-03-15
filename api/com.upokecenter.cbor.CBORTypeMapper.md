@@ -39,7 +39,12 @@ Initializes a new instance of the <code>CBORTypeMapper</code> class.
 ### AddConverter
     public <T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type, ICBORConverter<T> converter)
 Registers an object that converts objects of a given type to CBOR objects
- (called a CBOR converter).
+ (called a CBOR converter). If the CBOR converter converts to and
+ from CBOR objects, it should implement the ICBORToFromConverter
+ interface and provide ToCBORObject and FromCBORObject methods. If
+ the CBOR converter only supports converting to (not from) CBOR
+ objects, it should implement the ICBORConverter interface and
+ provide a ToCBORObject method.
 
 **Type Parameters:**
 
