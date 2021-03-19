@@ -1426,6 +1426,119 @@ o = ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
       }
     }
 
+    private static class CPOD3Converter implements ICBORToFromConverter<CPOD3> {
+       public CBORObject ToCBORObject(CPOD3 cpod) {
+          return CBORObject.NewMap().Add(0, cpod.getAa())
+             .Add(1, cpod.getBb()).Add(2, cpod.getCc());
+       }
+       public CPOD3 FromCBORObject(CBORObject obj) {
+          if (obj.getType() != CBORType.Map) {
+            throw new CBORException();
+          }
+          CPOD3 ret = new CPOD3();
+          ret.setAa(obj.get(0).AsString());
+          ret.setBb(obj.get(1).AsString());
+          ret.setCc(obj.get(2).AsString());
+          return ret;
+       }
+    }
+
+    @Test
+    public void TestCBORTypeMapper() {
+       CPOD3 cp = new CPOD3();
+       cp.setAa("aa");
+       cp.setBb("bb");
+       cp.setCc("cc");
+       CPOD3 cp2 = new CPOD3();
+       cp2.setAa("AA");
+       cp2.setBb("BB");
+       cp2.setCc("CC");
+       CBORTypeMapper tm = new CBORTypeMapper().AddConverter(
+           CPOD3.class,
+           new CPOD3Converter());
+       CBORObject cbor;
+       CBORObject cbor2;
+       cbor = CBORObject.FromObject(cp, tm);
+       Assert.assertEquals(CBORType.Map, cbor.getType());
+       Assert.assertEquals(3, cbor.size());
+       {
+         String stringTemp = cbor.get(0).AsString();
+         Assert.assertEquals(
+           "aa",
+           stringTemp);
+}
+       if (cbor.ContainsKey("aa")) {
+ Assert.fail();
+ }
+       if (cbor.ContainsKey("Aa")) {
+ Assert.fail();
+ }
+       {
+         String stringTemp = cbor.get(1).AsString();
+         Assert.assertEquals(
+           "bb",
+           stringTemp);
+}
+       {
+         String stringTemp = cbor.get(2).AsString();
+         Assert.assertEquals(
+           "cc",
+           stringTemp);
+}
+       CPOD3 cpx = (CPOD3)cbor.ToObject(CPOD3.class, tm);
+       Assert.assertEquals("aa", cpx.getAa());
+       Assert.assertEquals("bb", cpx.getBb());
+       Assert.assertEquals("cc", cpx.getCc());
+       cbor = CBORObject.FromObject(new CPOD3[] { cp, cp2}, tm);
+       Assert.assertEquals(CBORType.Array, cbor.getType());
+       Assert.assertEquals(2, cbor.size());
+       cbor2 = cbor.get(0);
+       {
+         String stringTemp = cbor2.get(0).AsString();
+         Assert.assertEquals(
+           "aa",
+           stringTemp);
+}
+       {
+         String stringTemp = cbor2.get(1).AsString();
+         Assert.assertEquals(
+           "bb",
+           stringTemp);
+}
+       {
+         String stringTemp = cbor2.get(2).AsString();
+         Assert.assertEquals(
+           "cc",
+           stringTemp);
+}
+       cbor2 = cbor.get(1);
+       {
+         String stringTemp = cbor2.get(0).AsString();
+         Assert.assertEquals(
+           "AA",
+           stringTemp);
+}
+       {
+         String stringTemp = cbor2.get(1).AsString();
+         Assert.assertEquals(
+           "BB",
+           stringTemp);
+}
+       {
+         String stringTemp = cbor2.get(2).AsString();
+         Assert.assertEquals(
+           "CC",
+           stringTemp);
+}
+       CPOD3[] cpa = (CPOD3[])cbor.ToObject(CPOD3[].class, tm);
+       Assert.assertEquals("aa", cpa[0].Aa);
+       Assert.assertEquals("bb", cpa[0].Bb);
+       Assert.assertEquals("cc", cpa[0].Cc);
+       Assert.assertEquals("AA", cpa[1].Aa);
+       Assert.assertEquals("BB", cpa[1].Bb);
+       Assert.assertEquals("CC", cpa[1].Cc);
+    }
+
     @Test
     public void TestUUIDRoundTrip() {
       RandomGenerator rng = new RandomGenerator();
