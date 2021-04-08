@@ -1,5 +1,8 @@
 package com.upokecenter.cbor;
 
+// TODO: Add option to encode/decode date-times as untagged CBOR,
+  // and add tests for this option
+
   /**
    * Specifies options for encoding and decoding CBOR objects.
    */

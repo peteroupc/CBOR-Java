@@ -11,6 +11,9 @@ Classes that implement this interface can support conversions from CBOR
 * [com.upokecenter.cbor.CBORDataUtilities](com.upokecenter.cbor.CBORDataUtilities.md) -
 Contains methods useful for reading and writing data, with a focus on CBOR.
 
+* [com.upokecenter.cbor.CBORDateConverter](com.upokecenter.cbor.CBORDateConverter.md) -
+Not documented yet.
+
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
 
@@ -33,6 +36,9 @@ Includes options to control how CBOR objects are converted to JSON.
 Options for controlling how certain DotNET or Java objects, such as
   so-called "plain old data" objects (better known as POCOs in DotNET or
  POJOs in Java), are converted to CBOR objects.
+
+* [com.upokecenter.cbor.CBORDateConverter.ConversionType](com.upokecenter.cbor.CBORDateConverter.ConversionType.md) -
+Not documented yet.
 
 * [com.upokecenter.cbor.CBORNumber.NumberKind](com.upokecenter.cbor.CBORNumber.NumberKind.md) -
 Specifies the underlying form of this CBOR number object.
