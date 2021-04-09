@@ -19,8 +19,8 @@ import com.upokecenter.numbers.*;
    * number of seconds assumes the use of a proleptic Gregorian calendar,
    * in which the rules regarding the number of days in each month and
    * which years are leap years are the same for all years as they were in
-   * 1970 (including without regard to transitions from other calendars to
-   * the Gregorian).</p>
+   * 1970 (including without regard to time zone differences or transitions
+   * from other calendars to the Gregorian).</p>
    */
   public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
     private final ConversionType convType;
@@ -108,14 +108,16 @@ import com.upokecenter.numbers.*;
     }
 
   /**
-   * Initializes a new instance of the {@link CBORDateConverter} class.
+   * Initializes a new instance of the {@link
+   * com.upokecenter.cbor.CBORDateConverter} class.
    */
     public CBORDateConverter() {
  this(ConversionType.TaggedString);
 }
 
   /**
-   * Initializes a new instance of the {@link CBORDateConverter} class.
+   * Initializes a new instance of the {@link
+   * com.upokecenter.cbor.CBORDateConverter} class.
    * @param convType The parameter {@code convType} is a
    * Cbor.CBORDateConverter.ConversionType object.
    */
