@@ -12,7 +12,8 @@ Classes that implement this interface can support conversions from CBOR
 Contains methods useful for reading and writing data, with a focus on CBOR.
 
 * [com.upokecenter.cbor.CBORDateConverter](com.upokecenter.cbor.CBORDateConverter.md) -
-Not documented yet.
+A class for converting date-time objects to and from tagged CBOR
+  objects.
 
 * [com.upokecenter.cbor.CBOREncodeOptions](com.upokecenter.cbor.CBOREncodeOptions.md) -
 Specifies options for encoding and decoding CBOR objects.
@@ -38,7 +39,7 @@ Options for controlling how certain DotNET or Java objects, such as
  POJOs in Java), are converted to CBOR objects.
 
 * [com.upokecenter.cbor.CBORDateConverter.ConversionType](com.upokecenter.cbor.CBORDateConverter.ConversionType.md) -
-Not documented yet.
+Conversion type for date-time conversion.
 
 * [com.upokecenter.cbor.CBORNumber.NumberKind](com.upokecenter.cbor.CBORNumber.NumberKind.md) -
 Specifies the underlying form of this CBOR number object.

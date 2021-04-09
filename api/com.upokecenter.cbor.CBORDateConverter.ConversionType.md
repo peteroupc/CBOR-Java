@@ -2,16 +2,23 @@
 
     public static enum CBORDateConverter.ConversionType extends java.lang.Enum<CBORDateConverter.ConversionType>
 
-Not documented yet.
+Conversion type for date-time conversion.
 
 ## Enum Constants
 
 * `TaggedNumber`<br>
- Not documented yet.
+ FromCBORObject accepts objects with tag 0 (date/time strings) and tag 1
+ (number of seconds since the start of 1970), and ToCBORObject
+ converts date/time objects to CBOR objects of tag 1.
 * `TaggedString`<br>
- Not documented yet.
+ FromCBORObject accepts CBOR objects with tag 0 (date/time strings) and tag 1
+ (number of seconds since the start of 1970), and ToCBORObject
+ converts date/time objects to CBOR objects of tag 0.
 * `UntaggedNumber`<br>
- Not documented yet.
+ FromCBORObject accepts untagged CBOR integer or CBOR floating-point objects
+ that give the number of seconds since the start of 1970, and
+ ToCBORObject converts date/time objects (java.util.Date in DotNet, and
+ Date in Java) to such untagged CBOR objects.
 
 ## Methods
 
@@ -37,10 +44,31 @@ the order they are declared.
 
 ### TaggedString
     public static final CBORDateConverter.ConversionType TaggedString
-Not documented yet.
+FromCBORObject accepts CBOR objects with tag 0 (date/time strings) and tag 1
+ (number of seconds since the start of 1970), and ToCBORObject
+ converts date/time objects to CBOR objects of tag 0.
 ### TaggedNumber
     public static final CBORDateConverter.ConversionType TaggedNumber
-Not documented yet.
+FromCBORObject accepts objects with tag 0 (date/time strings) and tag 1
+ (number of seconds since the start of 1970), and ToCBORObject
+ converts date/time objects to CBOR objects of tag 1. The
+ ToCBORObject conversion is lossless only if the number of seconds
+ since the start of 1970 can be represented exactly as an integer
+ in the interval [-(2^64), 2^64 - 1] or as a 64-bit floating-point
+ number in the IEEE 754r binary64 format; the conversion is lossy
+ otherwise. The ToCBORObject conversion will throw an exception if
+ the conversion to binary64 results in positive infinity, negative
+ infinity, or not-a-number.
 ### UntaggedNumber
     public static final CBORDateConverter.ConversionType UntaggedNumber
-Not documented yet.
+FromCBORObject accepts untagged CBOR integer or CBOR floating-point objects
+ that give the number of seconds since the start of 1970, and
+ ToCBORObject converts date/time objects (java.util.Date in DotNet, and
+ Date in Java) to such untagged CBOR objects. The ToCBORObject
+ conversion is lossless only if the number of seconds since the
+ start of 1970 can be represented exactly as an integer in the
+ interval [-(2^64), 2^64 - 1] or as a 64-bit floating-point number
+ in the IEEE 754r binary64 format; the conversion is lossy
+ otherwise. The ToCBORObject conversion will throw an exception if
+ the conversion to binary64 results in positive infinity, negative
+ infinity, or not-a-number.
