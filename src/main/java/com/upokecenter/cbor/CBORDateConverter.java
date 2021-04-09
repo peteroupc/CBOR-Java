@@ -111,7 +111,8 @@ import com.upokecenter.numbers.*;
    * Initializes a new instance of the {@link CBORDateConverter} class.
    */
     public CBORDateConverter() {
- this(ConversionType.TaggedString);}
+ this(ConversionType.TaggedString);
+}
 
   /**
    * Initializes a new instance of the {@link CBORDateConverter} class.

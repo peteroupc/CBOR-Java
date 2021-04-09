@@ -1608,11 +1608,11 @@ import com.upokecenter.numbers.*;
     }
 
     public static Object RandomUUID(RandomGenerator rand) {
+      String hex = "0123456789ABCDEF";
+      StringBuilder sb = new StringBuilder();
       if (rand == null) {
         throw new NullPointerException("rand");
       }
-      String hex = "0123456789ABCDEF";
-      StringBuilder sb = new StringBuilder();
       for (int i = 0; i < 8; ++i) {
         sb.append(hex.charAt(rand.UniformInt(16)));
       }
