@@ -29,16 +29,18 @@ import java.util.*;
 
        /**
         * JSON numbers are decoded to CBOR as their closest-rounded approximation as
-        * 64-bit binary floating-point numbers. (In some cases, numbers
-        * extremely close to zero may underflow to positive or negative
-        * zero, and numbers of extremely large magnitude may overflow to
-        * infinity.). It's important to note that this mode affects only
-        * how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
-        * affect how <code>EncodeToBytes</code> and other methods encode CBOR
-        * objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
-        * floating-point values to the CBOR format in their 16-bit
-        *  ("half-float"), 32-bit ("single-precision"), or 64-bit
-        *  ("double-precision") encoding form depending on the value.
+        * 64-bit binary floating-point numbers (using the
+        * round-to-nearest/ties-to-even rounding mode). (In some cases,
+        * numbers extremely close to zero may underflow to positive or
+        * negative zero, and numbers of extremely large absolute value may
+        * overflow to infinity.). It's important to note that this mode
+        * affects only how JSON numbers are <code>decoded</code> to a CBOR
+        * object; it doesn't affect how <code>EncodeToBytes</code> and other
+        * methods encode CBOR objects. Notably, by default,
+        * <code>EncodeToBytes</code> encodes CBOR floating-point values to the
+        *  CBOR format in their 16-bit ("half-float"), 32-bit
+        *  ("single-precision"), or 64-bit ("double-precision") encoding
+        * form depending on the value.
         */
        Double,
 
@@ -46,17 +48,17 @@ import java.util.*;
         * A JSON number is decoded to CBOR objects either as a CBOR integer (major
         * type 0 or 1) if the JSON number represents an integer at least
         * -(2^53)+1 and less than 2^53, or as their closest-rounded
-        * approximation as 64-bit binary floating-point numbers otherwise.
-        * For example, the JSON number
-        * 0.99999999999999999999999999999999999 is not an integer, so it's
-        * converted to its closest 64-bit binary floating-point
-        * approximation, namely 1.0. (In some cases, numbers extremely
-        * close to zero may underflow to positive or negative zero, and
-        * numbers of extremely large magnitude may overflow to infinity.).
-        * It's important to note that this mode affects only how JSON
-        * numbers are <code>decoded</code> to a CBOR object; it doesn't affect
-        * how <code>EncodeToBytes</code> and other methods encode CBOR objects.
-        * Notably, by default, <code>EncodeToBytes</code> encodes CBOR
+        * approximation as 64-bit binary floating-point numbers (using the
+        * round-to-nearest/ties-to-even rounding mode) otherwise. For
+        * example, the JSON number 0.99999999999999999999999999999999999 is
+        * not an integer, so it's converted to its closest 64-bit binary
+        * floating-point approximation, namely 1.0. (In some cases, numbers
+        * extremely close to zero may underflow to positive or negative
+        * zero, and numbers of extremely large absolute value may overflow
+        * to infinity.). It's important to note that this mode affects only
+        * how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+        * affect how <code>EncodeToBytes</code> and other methods encode CBOR
+        * objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
         * floating-point values to the CBOR format in their 16-bit
         *  ("half-float"), 32-bit ("single-precision"), or 64-bit
         *  ("double-precision") encoding form depending on the value.
@@ -66,15 +68,16 @@ import java.util.*;
        /**
         * A JSON number is decoded to CBOR objects either as a CBOR integer (major
         * type 0 or 1) if the number's closest-rounded approximation as a
-        * 64-bit binary floating-point number represents an integer at
-        * least -(2^53)+1 and less than 2^53, or as that approximation
-        * otherwise. For example, the JSON number
+        * 64-bit binary floating-point number (using the
+        * round-to-nearest/ties-to-even rounding mode) represents an
+        * integer at least -(2^53)+1 and less than 2^53, or as that
+        * approximation otherwise. For example, the JSON number
         * 0.99999999999999999999999999999999999 is the integer 1 when
         * rounded to its closest 64-bit binary floating-point approximation
         * (1.0), so it's converted to the CBOR integer 1 (major type 0).
         * (In some cases, numbers extremely close to zero may underflow to
-        * zero, and numbers of extremely large magnitude may overflow to
-        * infinity.). It's important to note that this mode affects only
+        * zero, and numbers of extremely large absolute value may overflow
+        * to infinity.). It's important to note that this mode affects only
         * how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
         * affect how <code>EncodeToBytes</code> and other methods encode CBOR
         * objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
@@ -90,7 +93,8 @@ import java.util.*;
         * form of that approximation as given in the
         * <code>CBORObject.FromObject(EDecimal)</code> method. (In some cases,
         * numbers extremely close to zero may underflow to zero, and
-        * numbers of extremely large magnitude may overflow to infinity.).
+        * numbers of extremely large absolute value may overflow to
+        * infinity.).
         */
        Decimal128,
     }

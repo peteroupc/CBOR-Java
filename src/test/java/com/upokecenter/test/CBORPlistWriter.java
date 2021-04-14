@@ -5,6 +5,7 @@ import java.io.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   final class CBORPlistWriter {
 private CBORPlistWriter() {
@@ -30,10 +31,14 @@ private CBORPlistWriter() {
       }
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        // TODO: XML doesn't support all Unicode code points, even if escaped.
-        // Therefore, replace all unsupported code points with replacement
-        // characters.
-        if (c == '\\' || c == '"') {
+        if ((c < 0x20 && (c != 0x09 || c != 0x0a || c != 0x0d)) || c ==
+0xfffe ||
+c == 0xffff) {
+          // XML doesn't support certain code points even if escaped.
+          // Therefore, replace all unsupported code points with replacement
+          // characters.
+          sb.WriteCodePoint(0xfffd);
+        } else if (c == '\\' || c == '"') {
           sb.WriteCodePoint((int)'\\');
           sb.WriteCodePoint((int)c);
         } else if (c < 0x20 || c == '&' || c == '<' || c == '>' || (c >= 0x7f &&
@@ -130,7 +135,58 @@ private CBORPlistWriter() {
       return true;
     }
 
-    // TODO: Support dates
+    private static String ToIso8601DateTimeString(
+      EInteger bigYear,
+      int[] lesserFields) {
+      if (bigYear == null) {
+        throw new NullPointerException("bigYear");
+      }
+      if (lesserFields == null) {
+        throw new NullPointerException("lesserFields");
+      }
+      if (lesserFields[6] != 0) {
+        throw new UnsupportedOperationException(
+          "Local time offsets not supported");
+      }
+      int smallYear = bigYear.ToInt32Checked();
+      if (smallYear < 0) {
+        throw new IllegalArgumentException("year(" + smallYear +
+          ") is not greater or equal to 0");
+      }
+      if (smallYear > 9999) {
+        throw new IllegalArgumentException("year(" + smallYear +
+          ") is not less or equal to 9999");
+      }
+      int month = lesserFields[0];
+      int day = lesserFields[1];
+      int hour = lesserFields[2];
+      int minute = lesserFields[3];
+      int second = lesserFields[4];
+      int fracSeconds = lesserFields[5];
+      char[] charbuf = new char[19];
+      charbuf[0] = (char)('0' + ((smallYear / 1000) % 10));
+      charbuf[1] = (char)('0' + ((smallYear / 100) % 10));
+      charbuf[2] = (char)('0' + ((smallYear / 10) % 10));
+      charbuf[3] = (char)('0' + (smallYear % 10));
+      charbuf[4] = '-';
+      charbuf[5] = (char)('0' + ((month / 10) % 10));
+      charbuf[6] = (char)('0' + (month % 10));
+      charbuf[7] = '-';
+      charbuf[8] = (char)('0' + ((day / 10) % 10));
+      charbuf[9] = (char)('0' + (day % 10));
+      charbuf[10] = 'T';
+      charbuf[11] = (char)('0' + ((hour / 10) % 10));
+      charbuf[12] = (char)('0' + (hour % 10));
+      charbuf[13] = ':';
+      charbuf[14] = (char)('0' + ((minute / 10) % 10));
+      charbuf[15] = (char)('0' + (minute % 10));
+      charbuf[16] = ':';
+      charbuf[17] = (char)('0' + ((second / 10) % 10));
+      charbuf[18] = (char)('0' + (second % 10));
+      // Fractional seconds ignored
+      return new String(charbuf, 0, 19);
+    }
+
     static void WritePlistToInternalCore(
       CBORObject obj,
       StringOutput writer,
@@ -146,6 +202,18 @@ private CBORPlistWriter() {
           writer.WriteString(obj.ToJSONString());
           writer.WriteString("</real>");
         }
+        return;
+      }
+      if (obj.HasMostOuterTag(0) || obj.HasMostOuterTag(1)) {
+        CBORDateConverter conv = CBORDateConverter.TaggedString;
+        EInteger[] year = new EInteger[1];
+        int[] lesserFields = new int[7];
+        if (!conv.TryGetDateTimeFields(obj, year, lesserFields)) {
+           throw new IllegalStateException("Unsupported date/time");
+        }
+        writer.WriteString("<date>");
+        writer.WriteString(ToIso8601DateTimeString(year[0], lesserFields));
+        writer.WriteString("</date>");
         return;
       }
       switch (obj.getType()) {
@@ -175,7 +243,13 @@ private CBORPlistWriter() {
           return;
         }
         case SimpleValue: {
-          writer.WriteString("<String>null</String>");
+          // Write all CBOR simple values (other than true and false) as the text String
+          // "null".
+          writer.WriteString("<str");
+          writer.WriteString("ing>");
+          writer.WriteString("null");
+          writer.WriteString("</str");
+          writer.WriteString("ing>");
           return;
         }
         case ByteString: {
@@ -195,13 +269,15 @@ private CBORPlistWriter() {
               true);
             writer.WriteString("</data>");
           } else if (obj.HasTag(23)) {
-            writer.WriteString("<String>");
+            writer.WriteString("<str");
+            writer.WriteString("ing>");
             // Write as base16
             for (int i = 0; i < byteArray.length; ++i) {
               writer.WriteCodePoint((int)Hex16.charAt((byteArray[i] >> 4) & 15));
               writer.WriteCodePoint((int)Hex16.charAt(byteArray[i] & 15));
             }
-            writer.WriteString("</String>");
+            writer.WriteString("</str");
+            writer.WriteString("ing>");
           } else {
             writer.WriteString("<data>");
             // Base64 with padding
@@ -218,12 +294,17 @@ private CBORPlistWriter() {
         case TextString: {
           String thisString = obj.AsString();
           if (thisString.length() == 0) {
-            writer.WriteString("<String></String>");
+            writer.WriteString("<str");
+            writer.WriteString("ing>");
+            writer.WriteString("</str");
+            writer.WriteString("ing>");
             return;
           }
-          writer.WriteString("<String>");
+          writer.WriteString("<str");
+        writer.WriteString("ing>");
           WritePlistStringUnquoted(thisString, writer, options);
-          writer.WriteString("</String>");
+        writer.WriteString("</str");
+      writer.WriteString("ing>");
           break;
         }
         case Array: {

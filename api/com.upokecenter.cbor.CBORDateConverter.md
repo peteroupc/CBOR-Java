@@ -3,7 +3,7 @@
     public final class CBORDateConverter extends java.lang.Object implements ICBORToFromConverter<java.util.Date>
 
 <p>A class for converting date-time objects to and from tagged CBOR
-  objects.</p> <p>In this method's documentation, the "number of seconds
+  objects.</p> <p>In this class's documentation, the "number of seconds
   since the start of 1970" is based on the POSIX definition of "seconds
   since the Epoch", a definition that does not count leap seconds. This
  number of seconds assumes the use of a proleptic Gregorian calendar,
@@ -47,10 +47,28 @@
 
 ## Methods
 
+* `CBORObject DateTimeFieldsToCBORObject​(int smallYear,
+                          int month,
+                          int day)`<br>
+ Not documented yet.
+* `CBORObject DateTimeFieldsToCBORObject​(int smallYear,
+                          int month,
+                          int day,
+                          int hour,
+                          int minute,
+                          int second)`<br>
+ Not documented yet.
+* `CBORObject DateTimeFieldsToCBORObject​(com.upokecenter.numbers.EInteger bigYear,
+                          int[] lesserFields)`<br>
+ Not documented yet.
 * `java.util.Date FromCBORObject​(CBORObject obj)`<br>
  Not documented yet.
 * `CBORObject ToCBORObject​(java.util.Date obj)`<br>
  Not documented yet.
+* `boolean TryGetDateTimeFields​(CBORObject obj,
+                    com.upokecenter.numbers.EInteger[] year,
+                    int[] lesserFields)`<br>
+ Tries to extract the fields of a date and time in the form of a CBOR object.
 
 ## Field Details
 
@@ -107,6 +125,105 @@ Not documented yet.
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>obj</code> is null.
+
+### TryGetDateTimeFields
+    public boolean TryGetDateTimeFields​(CBORObject obj, com.upokecenter.numbers.EInteger[] year, int[] lesserFields)
+Tries to extract the fields of a date and time in the form of a CBOR object.
+
+**Parameters:**
+
+* <code>obj</code> - The parameter <code>obj</code> is a Cbor.CBORObject object.
+
+* <code>year</code> - An array whose first element will store the year. The array's
+ length must be 1 or greater. If this function fails, the first element
+ is set to null.
+
+* <code>lesserFields</code> - An array that will store the fields (other than the
+ year) of the date and time. The array's length must be 7 or greater.
+ If this function fails, the first seven elements are set to 0. If this
+ method is successful, the first seven elements of the array (starting
+ at 0) will be as follows: <ul> <li>0 - Month of the year, from 1
+ (January) through 12 (December).</li> <li>1 - Day of the month, from 1
+ through 31.</li> <li>2 - Hour of the day, from 0 through 23.</li>
+ <li>3 - Minute of the hour, from 0 through 59.</li> <li>4 - Second of
+ the minute, from 0 through 59.</li> <li>5 - Fractional seconds,
+ expressed in nanoseconds. This value cannot be less than 0.</li> <li>6
+ - Number of minutes to subtract from this date and time to get global
+ time. This number can be positive or negative, but cannot be less than
+ -1439 or greater than 1439. For tags 0 and 1, this value is always
+ 0.</li></ul>.
+
+**Returns:**
+
+* Either <code>true</code> if the method is successful, or <code>false</code>
+ otherwise.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>year</code> or <code>
+ lesserFields</code> is null, or contains fewer elements than required.
+
+### DateTimeFieldsToCBORObject
+    public CBORObject DateTimeFieldsToCBORObject​(int smallYear, int month, int day)
+Not documented yet.
+
+**Parameters:**
+
+* <code>smallYear</code> - The year.
+
+* <code>month</code> - Month of the year, from 1 (January) through 12 (December).
+
+* <code>day</code> - Day of the month, from 1 through 31.
+
+**Returns:**
+
+* A CBOR object encoding the given date fields according to the
+ conversion type used to create this date converter.
+
+### DateTimeFieldsToCBORObject
+    public CBORObject DateTimeFieldsToCBORObject​(int smallYear, int month, int day, int hour, int minute, int second)
+Not documented yet.
+
+**Parameters:**
+
+* <code>smallYear</code> - The year.
+
+* <code>month</code> - Month of the year, from 1 (January) through 12 (December).
+
+* <code>day</code> - Day of the month, from 1 through 31.
+
+* <code>hour</code> - Hour of the day, from 0 through 23.
+
+* <code>minute</code> - Minute of the hour, from 0 through 59.
+
+* <code>second</code> - Second of the minute, from 0 through 59.
+
+**Returns:**
+
+* A CBOR object encoding the given date fields according to the
+ conversion type used to create this date converter.
+
+### DateTimeFieldsToCBORObject
+    public CBORObject DateTimeFieldsToCBORObject​(com.upokecenter.numbers.EInteger bigYear, int[] lesserFields)
+Not documented yet.
+
+**Parameters:**
+
+* <code>bigYear</code> - The parameter <code>bigYear</code> is a Numbers.EInteger object.
+
+* <code>lesserFields</code> - An array that will store the fields (other than the
+ year) of the date and time. See the TryGetDateTimeFields method for
+  information on the "lesserFields" parameter.
+
+**Returns:**
+
+* A CBOR object encoding the given date fields according to the
+ conversion type used to create this date converter.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>bigYear</code> or <code>
+ lesserFields</code> is null.
 
 ### ToCBORObject
     public CBORObject ToCBORObject​(java.util.Date obj)

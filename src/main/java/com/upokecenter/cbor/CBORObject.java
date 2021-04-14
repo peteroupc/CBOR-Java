@@ -16,6 +16,8 @@ import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
 // TODO: In next major version, make .Keys and .Values read-only
+// TODO: Add ReadObject that combines Read and ToObject; similarly
+// for ReadJSON, FromJSONString, FromJSONBytes
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -40,53 +42,55 @@ import com.upokecenter.numbers.*;
    * <code>ArrayList</code> (or <code>ArrayList</code> in Java), or a CBOR integer to
    * an <code>int</code> or <code>long</code>.</p> <p><b>To and from JSON:</b> This
    * class also doubles as a reader and writer of JavaScript object
-   * Notation (JSON). The CBORObject.FromJSONString method converts JSON to
-   * a CBOR object, and the ToJSONString method converts a CBOR object to a
-   * JSON string. (Note that the conversion from CBOR to JSON is not always
-   * without loss and may make it impossible to recover the original object
-   * when converting the JSON back to CBOR. See the ToJSONString
-   * documentation.)</p> <p>In addition, the CBORObject.WriteJSON method
-   * writes many kinds of objects as JSON to a data stream, including
-   * numbers, CBOR objects, strings, and arrays of numbers and strings. The
-   * CBORObject.Read method reads a CBOR object from a JSON data
-   * stream.</p> <p><b>Comparison Considerations:</b></p> <p>Instances of
-   *  CBORObject should not be compared for equality using the "=="
-   * operator; it's possible to create two CBOR objects with the same value
-   *  but not the same reference. (The "==" operator might only check if
-   * each side of the operator is the same instance.)</p> <p>This class's
-   * natural ordering (under the compareTo method) is consistent with the
-   * Equals method, meaning that two values that compare as equal under the
-   * compareTo method are also equal under the Equals method; this is a
-   * change in version 4.0. Two otherwise equal objects with different tags
-   * are not treated as equal by both compareTo and Equals. To strip the
-   * tags from a CBOR object before comparing, use the <code>Untag</code>
-   * method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR objects are
-   * immutable (their values can't be changed), so they are inherently safe
-   * for use by multiple threads.</p> <p>CBOR objects that are arrays,
-   * maps, and byte strings (whether or not they are tagged) are mutable,
-   * but this class doesn't attempt to synchronize reads and writes to
-   * those objects by multiple threads, so those objects are not thread
-   * safe without such synchronization.</p> <p>One kind of CBOR object is
-   * called a map, or a list of key-value pairs. Keys can be any kind of
-   * CBOR object, including numbers, strings, arrays, and maps. However,
-   * untagged text strings (which means GetTags returns an empty array and
-   *  the Type property, or "getType()" in Java, returns TextString) are the
-   * most suitable to use as keys; other kinds of CBOR object are much
-   * better used as map values instead, keeping in mind that some of them
-   * are not thread safe without synchronizing reads and writes to
-   * them.</p> <p>To find the type of a CBOR object, call its Type property
-   *  (or "getType()" in Java). The return value can be Integer,
-   * FloatingPoint, Boolean, SimpleValue, or TextString for immutable CBOR
-   * objects, and Array, Map, or ByteString for mutable CBOR objects.</p>
-   * <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and Read methods
-   * can only read objects with a limited maximum depth of arrays and maps
-   * nested within other arrays and maps. The code sets this maximum depth
-   * to 500 (allowing more than enough nesting for most purposes), but it's
-   * possible that stack overflows in some runtimes might lower the
-   * effective maximum nesting depth. When the nesting depth goes above
-   * 500, the DecodeFromBytes and Read methods throw a CBORException.</p>
-   * <p>The ReadJSON and FromJSONString methods currently have nesting
-   * depths of 1000.</p></p>
+   * Notation (JSON). The CBORObject.FromJSONString method converts JSON in
+   * text string form to a CBOR object, and the ToJSONString method
+   * converts a CBOR object to a JSON string. (Note that the conversion
+   * from CBOR to JSON is not always without loss and may make it
+   * impossible to recover the original object when converting the JSON
+   * back to CBOR. See the ToJSONString documentation.) Likewise,
+   * ToJSONBytes and FromJSONBytes work with JSON in the form of byte
+   * arrays rather than text strings.</p> <p>In addition, the
+   * CBORObject.WriteJSON method writes many kinds of objects as JSON to a
+   * data stream, including numbers, CBOR objects, strings, and arrays of
+   * numbers and strings. The CBORObject.Read method reads a CBOR object
+   * from a JSON data stream.</p> <p><b>Comparison Considerations:</b></p>
+   * <p>Instances of CBORObject should not be compared for equality using
+   *  the "==" operator; it's possible to create two CBOR objects with the
+   *  same value but not the same reference. (The "==" operator might only
+   * check if each side of the operator is the same instance.)</p> <p>This
+   * class's natural ordering (under the compareTo method) is consistent
+   * with the Equals method, meaning that two values that compare as equal
+   * under the compareTo method are also equal under the Equals method;
+   * this is a change in version 4.0. Two otherwise equal objects with
+   * different tags are not treated as equal by both compareTo and Equals.
+   * To strip the tags from a CBOR object before comparing, use the
+   * <code>Untag</code> method.</p> <p><b>Thread Safety:</b></p> <p>Certain CBOR
+   * objects are immutable (their values can't be changed), so they are
+   * inherently safe for use by multiple threads.</p> <p>CBOR objects that
+   * are arrays, maps, and byte strings (whether or not they are tagged)
+   * are mutable, but this class doesn't attempt to synchronize reads and
+   * writes to those objects by multiple threads, so those objects are not
+   * thread safe without such synchronization.</p> <p>One kind of CBOR
+   * object is called a map, or a list of key-value pairs. Keys can be any
+   * kind of CBOR object, including numbers, strings, arrays, and maps.
+   * However, untagged text strings (which means GetTags returns an empty
+   *  array and the Type property, or "getType()" in Java, returns
+   * TextString) are the most suitable to use as keys; other kinds of CBOR
+   * object are much better used as map values instead, keeping in mind
+   * that some of them are not thread safe without synchronizing reads and
+   * writes to them.</p> <p>To find the type of a CBOR object, call its
+   *  Type property (or "getType()" in Java). The return value can be
+   * Integer, FloatingPoint, Boolean, SimpleValue, or TextString for
+   * immutable CBOR objects, and Array, Map, or ByteString for mutable CBOR
+   * objects.</p> <p><b>Nesting Depth:</b></p> <p>The DecodeFromBytes and
+   * Read methods can only read objects with a limited maximum depth of
+   * arrays and maps nested within other arrays and maps. The code sets
+   * this maximum depth to 500 (allowing more than enough nesting for most
+   * purposes), but it's possible that stack overflows in some runtimes
+   * might lower the effective maximum nesting depth. When the nesting
+   * depth goes above 500, the DecodeFromBytes and Read methods throw a
+   * CBORException.</p> <p>The ReadJSON and FromJSONString methods
+   * currently have nesting depths of 1000.</p></p>
    */
 
   public final class CBORObject implements Comparable<CBORObject> {
@@ -1900,6 +1904,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       return this.CalcEncodedSize(0);
     }
 
+    // TODO: Use CBOREncodeOptions in CalcEncodedSize
     private long CalcEncodedSize(int depth) {
       if (depth > 1000) {
         throw new CBORException("Too deeply nested");
@@ -4911,6 +4916,21 @@ public int compareTo(CBORObject other) {
       return false;
     }
 
+    private static byte[] GetDoubleBytes64(long valueBits, int tagbyte) {
+      // Encode as double precision
+      return tagbyte != 0 ? new byte[] { (byte)tagbyte, (byte)0xfb,
+        (byte)((valueBits >> 56) & 0xff), (byte)((valueBits >> 48) & 0xff),
+        (byte)((valueBits >> 40) & 0xff), (byte)((valueBits >> 32) & 0xff),
+        (byte)((valueBits >> 24) & 0xff), (byte)((valueBits >> 16) & 0xff),
+        (byte)((valueBits >> 8) & 0xff), (byte)(valueBits & 0xff),
+       } : new byte[] { (byte)0xfb, (byte)((valueBits >> 56) & 0xff),
+   (byte)((valueBits >> 48) & 0xff), (byte)((valueBits >> 40) & 0xff),
+   (byte)((valueBits >> 32) & 0xff), (byte)((valueBits >> 24) & 0xff),
+   (byte)((valueBits >> 16) & 0xff), (byte)((valueBits >> 8) & 0xff),
+   (byte)(valueBits & 0xff),
+  };
+    }
+
     private static byte[] GetDoubleBytes(long valueBits, int tagbyte) {
       int bits = CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
       if (bits != -1) {
@@ -4930,18 +4950,7 @@ public int compareTo(CBORObject other) {
    (byte)(bits & 0xff),
   };
       }
-      // Encode as double precision
-      return tagbyte != 0 ? new byte[] { (byte)tagbyte, (byte)0xfb,
-        (byte)((valueBits >> 56) & 0xff), (byte)((valueBits >> 48) & 0xff),
-        (byte)((valueBits >> 40) & 0xff), (byte)((valueBits >> 32) & 0xff),
-        (byte)((valueBits >> 24) & 0xff), (byte)((valueBits >> 16) & 0xff),
-        (byte)((valueBits >> 8) & 0xff), (byte)(valueBits & 0xff),
-       } : new byte[] { (byte)0xfb, (byte)((valueBits >> 56) & 0xff),
-   (byte)((valueBits >> 48) & 0xff), (byte)((valueBits >> 40) & 0xff),
-   (byte)((valueBits >> 32) & 0xff), (byte)((valueBits >> 24) & 0xff),
-   (byte)((valueBits >> 16) & 0xff), (byte)((valueBits >> 8) & 0xff),
-   (byte)(valueBits & 0xff),
-  };
+      return GetDoubleBytes64(valueBits, tagbyte);
     }
 
     /**

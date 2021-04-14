@@ -1166,6 +1166,39 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(999, fc.publicFieldA);
     }
 
+    @Test
+    public void TestToObjectDictStringString() {
+      CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
+      HashMap<String, String> stringDict =
+        (HashMap<String, String>)cbor.ToObject(
+          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, stringDict.size());
+      if (!(stringDict.containsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(stringDict.containsKey("c"))) {
+ Assert.fail();
+ }
+      Assert.assertEquals("b", stringDict.get("a"));
+      Assert.assertEquals("d", stringDict.get("c"));
+    }
+    @Test
+    public void TestToObjectIDictStringString() {
+      CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
+      Map<String, String> stringDict2 =
+        (Map<String, String>)cbor.ToObject(
+          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+      Assert.assertEquals(2, stringDict2.size());
+      if (!(stringDict2.containsKey("a"))) {
+ Assert.fail();
+ }
+      if (!(stringDict2.containsKey("c"))) {
+ Assert.fail();
+ }
+      Assert.assertEquals("b", stringDict2.get("a"));
+      Assert.assertEquals("d", stringDict2.get("c"));
+    }
+
     @Test(timeout = 5000)
     public void TestToObject() {
       PODClass ao = new PODClass();
@@ -1608,6 +1641,9 @@ import com.upokecenter.numbers.*;
     }
 
     public static Object RandomUUID(RandomGenerator rand) {
+      if (rand == null) {
+        throw new NullPointerException("rand");
+      }
       String hex = "0123456789ABCDEF";
       StringBuilder sb = new StringBuilder();
       if (rand == null) {

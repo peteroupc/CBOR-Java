@@ -246,8 +246,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return Float.intBitsToFloat(r);
     }
 
-    public static String RandomDecimalStringShort(IRandomGenExtended
-      wrapper, boolean extended) {
+    public static String RandomDecimalStringShort(
+      IRandomGenExtended wrapper,
+      boolean extended) {
       StringBuilder sb = new StringBuilder();
       if (wrapper == null) {
         throw new NullPointerException("wrapper");

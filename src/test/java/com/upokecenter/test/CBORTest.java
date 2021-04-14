@@ -1778,6 +1778,7 @@ import com.upokecenter.numbers.*;
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
       o.Add(new byte[] { 32, 33, 44, 55 });
+      o.Add(CBORObject.FromObjectAndTag(9999, 1));
       System.out.println(o.ToJSONString());
       System.out.println(CBORPlistWriter.ToPlistString(o));
     }
@@ -2532,10 +2533,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (!(cbor.AsNumber().signum() >= 0)) {
  Assert.fail();
  }
-      EInteger c1ei = EInteger.FromInt64(cbor.getToObject())(EInteger.class);
       TestCommon.AssertEqualsHashCode(
         ei,
-        c1ei);
+        cbor.ToObject(EInteger.class));
     }
 
     @Test
