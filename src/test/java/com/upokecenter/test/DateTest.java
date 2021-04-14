@@ -24,19 +24,25 @@ import com.upokecenter.numbers.*;
        if (lesserFields == null) {
          throw new NullPointerException("lesserFields");
        }
-       String fieldsString = ("".Add(year) + "," + lesserFields[0] +
-"," + lesserFields[1] + "," + lesserFields[2] + "," + lesserFields[3] + ","+
+       if (year == null) {
+         throw new NullPointerException("year");
+       }
+       String yearString = year.toString();
+       String fieldsString = (yearString + "," + lesserFields[0] + "," +
+lesserFields[1] + "," + lesserFields[2] + "," + lesserFields[3] + ","+
 lesserFields[4] + "," + lesserFields[5] + "," + lesserFields[6]);
        try {
        if (dtc == null) {
          throw new NullPointerException("dtc");
        }
        CBORObject obj = dtc.DateTimeFieldsToCBORObject(year, lesserFields);
-       fieldsString += "\n" +obj.toString();
+       fieldsString += "\n" + obj.toString();
        EInteger[] newYear = new EInteger[1];
        int[] newLesserFields = new int[7];
        if (dtc.TryGetDateTimeFields(obj, newYear, newLesserFields)) {
-         Assert.assertEquals("lesserFields\n" + fieldsString,lesserFields,newLesserFields);
+         for (int i = 0; i < lesserFields.length; ++i) {
+           Assert.assertEquals(fieldsString, lesserFields[i], newLesserFields[i]);
+         }
          Assert.assertEquals("year\n" + fieldsString,year,newYear[0]);
        } else {
          Assert.fail(fieldsString);
@@ -50,6 +56,10 @@ lesserFields[4] + "," + lesserFields[5] + "," + lesserFields[6]);
 
     private static EInteger RandomYear(IRandomGenExtended irg) {
        return EInteger.FromInt32(irg.GetInt32(9998) + 1);
+    }
+
+    private static EInteger RandomExpandedYear(IRandomGenExtended irg) {
+       return EInteger.FromInt32(irg.GetInt32(1000000) - 500000);
     }
 
     private static boolean IsLeapYear(EInteger bigYear) {
@@ -108,8 +118,8 @@ ValueNormalDays[month];
          CBORDateConverter.TaggedNumber,
          CBORDateConverter.UntaggedNumber,
        };
-       for (int i = 0; i < 10000; ++i) {
-          EInteger year = RandomYear(rg);
+       for (int i = 0; i < 30000; ++i) {
+          EInteger year = RandomExpandedYear(rg);
           int[] lesserFields = RandomLesserFields(rg, year);
           // Don't check fractional seconds because conversion is lossy
           lesserFields[5] = 0;
