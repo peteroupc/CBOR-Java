@@ -81,7 +81,7 @@ JSON numbers are decoded to CBOR as their closest-rounded approximation as
  numbers extremely close to zero may underflow to positive or
  negative zero, and numbers of extremely large absolute value may
  overflow to infinity.). It's important to note that this mode
- affects only how JSON numbers are <code>decoded</code> to a CBOR
+ affects only how JSON numbers are <i>decoded</i> to a CBOR
  object; it doesn't affect how <code>EncodeToBytes</code> and other
  methods encode CBOR objects. Notably, by default,
  <code>EncodeToBytes</code> encodes CBOR floating-point values to the
@@ -101,7 +101,7 @@ A JSON number is decoded to CBOR objects either as a CBOR integer (major
  extremely close to zero may underflow to positive or negative
  zero, and numbers of extremely large absolute value may overflow
  to infinity.). It's important to note that this mode affects only
- how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+ how JSON numbers are <i>decoded</i> to a CBOR object; it doesn't
  affect how <code>EncodeToBytes</code> and other methods encode CBOR
  objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
  floating-point values to the CBOR format in their 16-bit
@@ -121,7 +121,7 @@ A JSON number is decoded to CBOR objects either as a CBOR integer (major
  (In some cases, numbers extremely close to zero may underflow to
  zero, and numbers of extremely large absolute value may overflow
  to infinity.). It's important to note that this mode affects only
- how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+ how JSON numbers are <i>decoded</i> to a CBOR object; it doesn't
  affect how <code>EncodeToBytes</code> and other methods encode CBOR
  objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
  floating-point values to the CBOR format in their 16-bit

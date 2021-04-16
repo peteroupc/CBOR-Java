@@ -34,7 +34,7 @@ import java.util.*;
         * numbers extremely close to zero may underflow to positive or
         * negative zero, and numbers of extremely large absolute value may
         * overflow to infinity.). It's important to note that this mode
-        * affects only how JSON numbers are <code>decoded</code> to a CBOR
+        * affects only how JSON numbers are <i>decoded</i> to a CBOR
         * object; it doesn't affect how <code>EncodeToBytes</code> and other
         * methods encode CBOR objects. Notably, by default,
         * <code>EncodeToBytes</code> encodes CBOR floating-point values to the
@@ -56,7 +56,7 @@ import java.util.*;
         * extremely close to zero may underflow to positive or negative
         * zero, and numbers of extremely large absolute value may overflow
         * to infinity.). It's important to note that this mode affects only
-        * how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+        * how JSON numbers are <i>decoded</i> to a CBOR object; it doesn't
         * affect how <code>EncodeToBytes</code> and other methods encode CBOR
         * objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
         * floating-point values to the CBOR format in their 16-bit
@@ -78,7 +78,7 @@ import java.util.*;
         * (In some cases, numbers extremely close to zero may underflow to
         * zero, and numbers of extremely large absolute value may overflow
         * to infinity.). It's important to note that this mode affects only
-        * how JSON numbers are <code>decoded</code> to a CBOR object; it doesn't
+        * how JSON numbers are <i>decoded</i> to a CBOR object; it doesn't
         * affect how <code>EncodeToBytes</code> and other methods encode CBOR
         * objects. Notably, by default, <code>EncodeToBytes</code> encodes CBOR
         * floating-point values to the CBOR format in their 16-bit
@@ -112,7 +112,7 @@ import java.util.*;
      * class with the given value for the Base64Padding option.
      * @param base64Padding Whether padding is included when writing data in
      * base64url or traditional base64 format to JSON.
-     * @deprecated Use the String constructor instead.
+     * @deprecated Use the more readable String constructor instead.
  */
 @Deprecated
     public JSONOptions(boolean base64Padding) {
@@ -133,7 +133,7 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 
 /**
- * @deprecated Use the String constructor instead.
+ * @deprecated Use the more readable String constructor instead.
  */
 @Deprecated
     public JSONOptions(boolean base64Padding, boolean replaceSurrogates) {
@@ -156,23 +156,23 @@ import java.util.*;
      * upper-case and/or basic lower-case letters: {@code base64padding},
      * {@code replacesurrogates}, {@code allowduplicatekeys}, {@code
      * preservenegativezero}, {@code numberconversion}. Other keys are
-     * ignored. (Keys are compared using a basic case-insensitive
-     * comparison, in which two strings are equal if they match after
-     * converting the basic upper-case letters A to Z (U+0041 to U+005A) in
-     * both strings to basic lower-case letters.) If two or more key/value
-     * pairs have equal keys (in a basic case-insensitive comparison), the
-     * value given for the last such key is used. The first four keys just
-     * given can have a value of {@code 1}, {@code true}, {@code yes}, or
-     * {@code on} (where the letters can be any combination of basic
-     * upper-case and/or basic lower-case letters), which means true, and
-     * any other value meaning false. The last key, {@code
-     * numberconversion}, can have a value of any name given in the {@code
-     * JSONOptions.ConversionMode} enumeration (where the letters can be
-     * any combination of basic upper-case and/or basic lower-case
-     * letters), and any other value is unrecognized. (If the {@code
-     * numberconversion} key is not given, its value is treated as {@code
-     * full}. If that key is given, but has an unrecognized value, an
-     * exception is thrown.) For example, {@code base64padding = Yes} and
+     * ignored in this version of the CBOR library. (Keys are compared
+     * using a basic case-insensitive comparison, in which two strings are
+     * equal if they match after converting the basic upper-case letters A
+     * to Z (U+0041 to U+005A) in both strings to basic lower-case
+     * letters.) If two or more key/value pairs have equal keys (in a basic
+     * case-insensitive comparison), the value given for the last such key
+     * is used. The first four keys just given can have a value of {@code
+     * 1}, {@code true}, {@code yes}, or {@code on} (where the letters can
+     * be any combination of basic upper-case and/or basic lower-case
+     * letters), which means true, and any other value meaning false. The
+     * last key, {@code numberconversion}, can have a value of any name
+     * given in the {@code JSONOptions.ConversionMode} enumeration (where
+     * the letters can be any combination of basic upper-case and/or basic
+     * lower-case letters), and any other value is unrecognized. (If the
+     * {@code numberconversion} key is not given, its value is treated as
+     * {@code full}. If that key is given, but has an unrecognized value,
+     * an exception is thrown.) For example, {@code base64padding = Yes} and
      * {@code base64padding = 1} both set the {@code Base64Padding} property
      * to true, and {@code numberconversion = double} sets the {@code
      * NumberConversion} property to {@code ConversionMode.Double} .

@@ -1001,7 +1001,7 @@ currentYear.Remainder(100).ToInt32Checked());
         throw new IllegalArgumentException(" (" + 7 + ") is not greater or equal to" +
 "\u00200");
       }
-      if (7 > lesserFields.length) {
+      if (lesserFields.length < 7) {
         throw new IllegalArgumentException(" (" + 7 + ") is not less or equal to " +
 lesserFields.length);
       }
@@ -1016,7 +1016,7 @@ lesserFields.length + ") is not greater or equal to 7");
         throw new IllegalArgumentException(" (" + 1 + ") is not greater or equal to" +
 "\u00200");
       }
-      if (1 > status.length) {
+      if (status.length < 1) {
         throw new IllegalArgumentException(" (" + 1 + ") is not less or equal to " +
 status.length);
       }

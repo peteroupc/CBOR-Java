@@ -20,7 +20,7 @@ private CBORPlistWriter() {
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c < 0x20 || c >= 0x7f || c == '\\' || c == '"' || c == '&' ||
-            c == '<' || c == '>') {
+          c == '<' || c == '>') {
           sb.WriteString(str, 0, i);
           break;
         }
@@ -32,8 +32,7 @@ private CBORPlistWriter() {
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
         if ((c < 0x20 && (c != 0x09 || c != 0x0a || c != 0x0d)) || c ==
-0xfffe ||
-c == 0xffff) {
+          0xfffe || c == 0xffff) {
           // XML doesn't support certain code points even if escaped.
           // Therefore, replace all unsupported code points with replacement
           // characters.
@@ -72,13 +71,13 @@ c == 0xffff) {
     static String ToPlistString(CBORObject obj) {
       StringBuilder builder = new StringBuilder();
       try {
-         WritePlistToInternal(
-            obj,
-            new StringOutput(builder),
-            JSONOptions.Default);
-         return builder.toString();
+        WritePlistToInternal(
+          obj,
+          new StringOutput(builder),
+          JSONOptions.Default);
+        return builder.toString();
       } catch (IOException ex) {
-         throw new CBORException(ex.getMessage(), ex);
+        throw new CBORException(ex.getMessage(), ex);
       }
     }
 
@@ -135,58 +134,6 @@ c == 0xffff) {
       return true;
     }
 
-    private static String ToIso8601DateTimeString(
-      EInteger bigYear,
-      int[] lesserFields) {
-      if (bigYear == null) {
-        throw new NullPointerException("bigYear");
-      }
-      if (lesserFields == null) {
-        throw new NullPointerException("lesserFields");
-      }
-      if (lesserFields[6] != 0) {
-        throw new UnsupportedOperationException(
-          "Local time offsets not supported");
-      }
-      int smallYear = bigYear.ToInt32Checked();
-      if (smallYear < 0) {
-        throw new IllegalArgumentException("year(" + smallYear +
-          ") is not greater or equal to 0");
-      }
-      if (smallYear > 9999) {
-        throw new IllegalArgumentException("year(" + smallYear +
-          ") is not less or equal to 9999");
-      }
-      int month = lesserFields[0];
-      int day = lesserFields[1];
-      int hour = lesserFields[2];
-      int minute = lesserFields[3];
-      int second = lesserFields[4];
-      int fracSeconds = lesserFields[5];
-      char[] charbuf = new char[19];
-      charbuf[0] = (char)('0' + ((smallYear / 1000) % 10));
-      charbuf[1] = (char)('0' + ((smallYear / 100) % 10));
-      charbuf[2] = (char)('0' + ((smallYear / 10) % 10));
-      charbuf[3] = (char)('0' + (smallYear % 10));
-      charbuf[4] = '-';
-      charbuf[5] = (char)('0' + ((month / 10) % 10));
-      charbuf[6] = (char)('0' + (month % 10));
-      charbuf[7] = '-';
-      charbuf[8] = (char)('0' + ((day / 10) % 10));
-      charbuf[9] = (char)('0' + (day % 10));
-      charbuf[10] = 'T';
-      charbuf[11] = (char)('0' + ((hour / 10) % 10));
-      charbuf[12] = (char)('0' + (hour % 10));
-      charbuf[13] = ':';
-      charbuf[14] = (char)('0' + ((minute / 10) % 10));
-      charbuf[15] = (char)('0' + (minute % 10));
-      charbuf[16] = ':';
-      charbuf[17] = (char)('0' + ((second / 10) % 10));
-      charbuf[18] = (char)('0' + (second % 10));
-      // Fractional seconds ignored
-      return new String(charbuf, 0, 19);
-    }
-
     static void WritePlistToInternalCore(
       CBORObject obj,
       StringOutput writer,
@@ -209,10 +156,16 @@ c == 0xffff) {
         EInteger[] year = new EInteger[1];
         int[] lesserFields = new int[7];
         if (!conv.TryGetDateTimeFields(obj, year, lesserFields)) {
-           throw new IllegalStateException("Unsupported date/time");
+          throw new IllegalStateException("Unsupported date/time");
         }
+        // Set fractional seconds and offset to 0, since
+        // they're not needed
+        lesserFields[5] = 0;
+        lesserFields[6] = 0;
+        CBORObject newobj = conv.DateTimeFieldsToCBORObject(year[0],
+  lesserFields);
         writer.WriteString("<date>");
-        writer.WriteString(ToIso8601DateTimeString(year[0], lesserFields));
+        writer.WriteString(newobj.AsString());
         writer.WriteString("</date>");
         return;
       }
@@ -301,10 +254,10 @@ c == 0xffff) {
             return;
           }
           writer.WriteString("<str");
-        writer.WriteString("ing>");
+          writer.WriteString("ing>");
           WritePlistStringUnquoted(thisString, writer, options);
-        writer.WriteString("</str");
-      writer.WriteString("ing>");
+          writer.WriteString("</str");
+          writer.WriteString("ing>");
           break;
         }
         case Array: {

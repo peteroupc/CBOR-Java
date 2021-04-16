@@ -2292,6 +2292,126 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     @Test
+    public void TestEncodeFloat64() {
+       RandomGenerator rg = new RandomGenerator();
+       CBOREncodeOptions options = new CBOREncodeOptions("float64=true");
+       for (int i = 0; i < 10000; ++i) {
+         double dbl = 0.0;
+         dbl = (i == 0) ? Double.POSITIVE_INFINITY : ((i == 1) ?
+(Double.NEGATIVE_INFINITY) : (RandomObjects.RandomDouble(rg)));
+CBORObject cbor = CBORObject.FromObject(dbl); byte[] bytes =
+cbor.EncodeToBytes(options);
+         Assert.assertEquals(9, bytes.length);
+         TestCommon.AssertEqualsHashCode(
+           cbor,
+           CBORObject.DecodeFromBytes(bytes));
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           cbor.WriteTo(ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(9, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           CBORObject.write(dbl, ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(9, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           CBORObject.write(cbor, ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(9, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         CBORObject cbor2 = CBORObject.NewArray().Add(cbor);
+         bytes = cbor2.EncodeToBytes(options);
+         TestCommon.AssertEqualsHashCode(
+           cbor2,
+           CBORObject.DecodeFromBytes(bytes));
+         Assert.assertEquals(10, bytes.length);
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           cbor2.WriteTo(ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(10, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           CBORObject.write(cbor2, ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(10, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         cbor2 = cbor.WithTag(1);
+         bytes = cbor2.EncodeToBytes(options);
+         Assert.assertEquals(10, bytes.length);
+         TestCommon.AssertEqualsHashCode(
+           cbor2,
+           CBORObject.DecodeFromBytes(bytes));
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           cbor2.WriteTo(ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(10, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+         {
+           java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+           CBORObject.write(cbor2, ms, options);
+           bytes = ms.toByteArray();
+           Assert.assertEquals(10, bytes.length);
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+       }
+    }
+
+    @Test
     public void TestEncodeToBytes() {
       // Test minimum data length
       int[] ranges = {

@@ -25,8 +25,8 @@ Includes options to control how CBOR objects are converted to JSON.
  class with default options.
 * `JSONOptions​(boolean base64Padding)`<br>
  Deprecated.
-Use the String constructor instead.
- Use the String constructor instead.
+Use the more readable String constructor instead.
+ Use the more readable String constructor instead.
 * `JSONOptions​(boolean base64Padding,
            boolean replaceSurrogates)`<br>
  Deprecated.

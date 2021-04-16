@@ -15,11 +15,12 @@ Options for controlling how certain DotNET or Java objects, such as
 
 * `PODOptions() PODOptions`<br>
  Initializes a new instance of the PODOptions
- class.
+ class with all the default options.
 * `PODOptions​(boolean removeIsPrefix,
-          boolean useCamelCase) PODOptions`<br>
- Initializes a new instance of the PODOptions
- class.
+          boolean useCamelCase)`<br>
+ Deprecated.
+Use the more readable String constructor instead.
+ Use the more readable String constructor instead.
 * `PODOptions​(java.lang.String paramString) PODOptions`<br>
  Initializes a new instance of the PODOptions
  class.

@@ -1,7 +1,5 @@
 package com.upokecenter.cbor;
 
-// TODO: Add option to encode CBOR floating point in 64-bit form only
-
   /**
    * Specifies options for encoding and decoding CBOR objects.
    */
@@ -11,7 +9,7 @@ package com.upokecenter.cbor;
      * strings using definite-length encoding.
      */
     public static final CBOREncodeOptions Default =
-      new CBOREncodeOptions(false, false);
+      new CBOREncodeOptions();
 
     /**
      * Default options for CBOR objects serialized using the CTAP2 canonicalization
@@ -20,14 +18,15 @@ package com.upokecenter.cbor;
      * encoding.
      */
     public static final CBOREncodeOptions DefaultCtap2Canonical =
-      new CBOREncodeOptions(false, false, true);
+      new CBOREncodeOptions("ctap2canonical=true");
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.cbor.CBOREncodeOptions} class.
+     * com.upokecenter.cbor.CBOREncodeOptions} class with all the default
+     * options.
      */
     public CBOREncodeOptions() {
- this(false, false);
+ this("");
     }
 
     /**
@@ -37,7 +36,9 @@ package com.upokecenter.cbor;
      * strings with a definite-length encoding.
      * @param allowDuplicateKeys A value indicating whether to disallow duplicate
      * keys when reading CBOR objects from a data stream.
-     */
+     * @deprecated Use the more readable String constructor instead.
+ */
+@Deprecated
     public CBOREncodeOptions(
       boolean useIndefLengthStrings,
       boolean allowDuplicateKeys) {
@@ -54,13 +55,16 @@ package com.upokecenter.cbor;
      * @param ctap2Canonical A value indicating whether CBOR objects are written
      * out using the CTAP2 canonical CBOR encoding form, which is useful
      * for implementing Web Authentication.
-     */
+     * @deprecated Use the more readable String constructor instead.
+ */
+@Deprecated
     public CBOREncodeOptions(
       boolean useIndefLengthStrings,
       boolean allowDuplicateKeys,
       boolean ctap2Canonical) {
       this.propVarresolvereferences = false;
       this.propVarallowempty = false;
+      this.propVarfloat64 = false;
       this.propVaruseindeflengthstrings = useIndefLengthStrings;
       this.propVarallowduplicatekeys = allowDuplicateKeys;
       this.propVarctap2canonical = ctap2Canonical;
@@ -81,11 +85,13 @@ package com.upokecenter.cbor;
      * upper-case and/or basic lower-case letters: {@code
      * allowduplicatekeys}, {@code ctap2canonical}, {@code
      * resolvereferences}, {@code useindeflengthstrings}, {@code
-     * allowempty}. Keys other than these are ignored. (Keys are compared
-     * using a basic case-insensitive comparison, in which two strings are
-     * equal if they match after converting the basic upper-case letters A
-     * to Z (U+0041 to U+005A) in both strings to basic lower-case
-     * letters.) If two or more key/value pairs have equal keys (in a basic
+     * allowempty}, {@code float64}. Keys other than these are ignored in
+     * this version of the CBOR library. The key {@code float64} was
+     * introduced in version 4.4 of this library. (Keys are compared using
+     * a basic case-insensitive comparison, in which two strings are equal
+     * if they match after converting the basic upper-case letters A to Z
+     * (U+0041 to U+005A) in both strings to basic lower-case letters.) If
+     * two or more key/value pairs have equal keys (in a basic
      * case-insensitive comparison), the value given for the last such key
      * is used. The four keys just given can have a value of {@code 1},
      * {@code true}, {@code yes}, or {@code on} (where the letters can be
@@ -107,6 +113,9 @@ package com.upokecenter.cbor;
       this.propVaruseindeflengthstrings = parser.GetBoolean(
         "useindeflengthstrings",
         false);
+      this.propVarfloat64 = parser.GetBoolean(
+        "float64",
+        false);
       this.propVarallowduplicatekeys = parser.GetBoolean("allowduplicatekeys",
           false);
       this.propVarallowempty = parser.GetBoolean("allowempty", false);
@@ -125,6 +134,7 @@ package com.upokecenter.cbor;
         .append(this.getAllowDuplicateKeys() ? "true" : "false")
         .append(";useindeflengthstrings=")
         .append(this.getUseIndefLengthStrings() ? "true" : "false")
+        .append(";float64=").append(this.getFloat64() ? "true" : "false")
         .append(";ctap2canonical=")
         .append(this.getCtap2Canonical() ? "true" : "false")
         .append(";resolvereferences=")
@@ -223,6 +233,19 @@ private final boolean propVarallowempty;
      */
     public final boolean getAllowDuplicateKeys() { return propVarallowduplicatekeys; }
 private final boolean propVarallowduplicatekeys;
+
+    /**
+     * Gets a value indicating whether to encode floating-point numbers in a CBOR
+     * object in their 64-bit encoding form regardless of whether their
+     * value can be encoded without loss in a smaller form. Used only when
+     * encoding CBOR objects.
+     * @return Gets a value indicating whether to encode floating-point numbers in
+     * a CBOR object in their 64-bit encoding form regardless of whether
+     * their value can be encoded without loss in a smaller form. Used only
+     * when encoding CBOR objects. The default is false.
+     */
+    public final boolean getFloat64() { return propVarfloat64; }
+private final boolean propVarfloat64;
 
     /**
      * Gets a value indicating whether CBOR objects: <ul> <li>When encoding, are

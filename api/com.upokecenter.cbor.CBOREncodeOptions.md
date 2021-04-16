@@ -15,14 +15,19 @@ Specifies options for encoding and decoding CBOR objects.
 ## Constructors
 
 * `CBOREncodeOptions() CBOREncodeOptions`<br>
- Initializes a new instance of the CBOREncodeOptions class.
+ Initializes a new instance of the CBOREncodeOptions class with all the default
+ options.
 * `CBOREncodeOptions​(boolean useIndefLengthStrings,
-                 boolean allowDuplicateKeys) CBOREncodeOptions`<br>
- Initializes a new instance of the CBOREncodeOptions class.
+                 boolean allowDuplicateKeys)`<br>
+ Deprecated.
+Use the more readable String constructor instead.
+ Use the more readable String constructor instead.
 * `CBOREncodeOptions​(boolean useIndefLengthStrings,
                  boolean allowDuplicateKeys,
-                 boolean ctap2Canonical) CBOREncodeOptions`<br>
- Initializes a new instance of the CBOREncodeOptions class.
+                 boolean ctap2Canonical)`<br>
+ Deprecated.
+Use the more readable String constructor instead.
+ Use the more readable String constructor instead.
 * `CBOREncodeOptions​(java.lang.String paramString) CBOREncodeOptions`<br>
  Initializes a new instance of the CBOREncodeOptions class.
 
@@ -46,6 +51,10 @@ Specifies options for encoding and decoding CBOR objects.
  allowed when decoding, and floating-point numbers are written out in
  their 64-bit encoding form regardless of whether their value can be
  encoded without loss in a smaller form.
+* `boolean getFloat64()`<br>
+ Gets a value indicating whether to encode floating-point numbers in a CBOR
+ object in their 64-bit encoding form regardless of whether their
+ value can be encoded without loss in a smaller form.
 * `boolean getResolveReferences()`<br>
  Gets a value indicating whether to resolve references to sharable objects
  and sharable strings in the process of decoding a CBOR object.
@@ -177,6 +186,20 @@ Gets a value indicating whether to allow duplicate keys when reading CBOR
 
 * A value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. The default is false.
+
+### getFloat64
+    public final boolean getFloat64()
+Gets a value indicating whether to encode floating-point numbers in a CBOR
+ object in their 64-bit encoding form regardless of whether their
+ value can be encoded without loss in a smaller form. Used only when
+ encoding CBOR objects.
+
+**Returns:**
+
+* Gets a value indicating whether to encode floating-point numbers in
+ a CBOR object in their 64-bit encoding form regardless of whether
+ their value can be encoded without loss in a smaller form. Used only
+ when encoding CBOR objects. The default is false.
 
 ### getCtap2Canonical
     public final boolean getCtap2Canonical()

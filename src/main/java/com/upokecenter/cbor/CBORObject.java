@@ -5076,9 +5076,15 @@ public int compareTo(CBORObject other) {
             return ret2;
           }
           case CBORObjectTypeDouble: {
+            if (options.getFloat64()) {
+            return GetDoubleBytes64(
+                this.AsDoubleBits(),
+                ((int)tagbyte) & 0xff);
+            } else {
             return GetDoubleBytes(
                 this.AsDoubleBits(),
                 ((int)tagbyte) & 0xff);
+            }
           }
         }
       }
@@ -6559,7 +6565,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           break;
         }
         case CBORObjectTypeDouble: {
-          WriteFloatingPointBits(stream, this.AsDoubleBits(), 8, true);
+          WriteFloatingPointBits(stream, this.AsDoubleBits(), 8,
+             !options.getFloat64());
           break;
         }
         default: {
