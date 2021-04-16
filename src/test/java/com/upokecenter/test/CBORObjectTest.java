@@ -2293,14 +2293,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestEncodeFloat64() {
+       try {
        RandomGenerator rg = new RandomGenerator();
        CBOREncodeOptions options = new CBOREncodeOptions("float64=true");
        for (int i = 0; i < 10000; ++i) {
          double dbl = 0.0;
          dbl = (i == 0) ? Double.POSITIVE_INFINITY : ((i == 1) ?
-(Double.NEGATIVE_INFINITY) : (RandomObjects.RandomDouble(rg)));
-CBORObject cbor = CBORObject.FromObject(dbl); byte[] bytes =
-cbor.EncodeToBytes(options);
+            Double.NEGATIVE_INFINITY : RandomObjects.RandomDouble(rg));
+         CBORObject cbor = CBORObject.FromObject(dbl);
+         byte[] bytes = cbor.EncodeToBytes(options);
          Assert.assertEquals(9, bytes.length);
          TestCommon.AssertEqualsHashCode(
            cbor,
@@ -2409,6 +2410,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
        }
+        } catch (IOException ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
     }
 
     @Test
