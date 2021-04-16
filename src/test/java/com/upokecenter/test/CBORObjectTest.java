@@ -2323,7 +2323,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.write(dbl, ms, options);
+           CBORObject.Write(dbl, ms, options);
            bytes = ms.toByteArray();
            Assert.assertEquals(9, bytes.length);
 }
@@ -2336,7 +2336,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.write(cbor, ms, options);
+           CBORObject.Write(cbor, ms, options);
            bytes = ms.toByteArray();
            Assert.assertEquals(9, bytes.length);
 }
@@ -2368,7 +2368,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.write(cbor2, ms, options);
+           CBORObject.Write(cbor2, ms, options);
            bytes = ms.toByteArray();
            Assert.assertEquals(10, bytes.length);
 }
@@ -2400,7 +2400,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.write(cbor2, ms, options);
+           CBORObject.Write(cbor2, ms, options);
            bytes = ms.toByteArray();
            Assert.assertEquals(10, bytes.length);
 }
