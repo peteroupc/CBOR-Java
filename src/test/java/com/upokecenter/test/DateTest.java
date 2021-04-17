@@ -106,10 +106,11 @@ ValueNormalDays[month];
        CBORDateConverter[] dtcs = new CBORDateConverter[] {
          CBORDateConverter.TaggedString,
        };
+       int[] lesserFields;
        RandomGenerator rg = new RandomGenerator();
        for (int i = 0; i < 10000; ++i) {
           EInteger year = RandomYear(rg);
-          int[] lesserFields = RandomLesserFields(rg, year);
+          lesserFields = RandomLesserFields(rg, year);
           for (int j = 0; j < dtcs.length; ++j) {
             DateConverterRoundTripOne(dtcs[j], year, lesserFields);
           }
@@ -118,7 +119,6 @@ ValueNormalDays[month];
          CBORDateConverter.TaggedNumber,
          CBORDateConverter.UntaggedNumber,
        };
-       int[] lesserFields;
        for (int i = 0; i < 30000; ++i) {
           EInteger year = RandomExpandedYear(rg);
           lesserFields = RandomLesserFields(rg, year);

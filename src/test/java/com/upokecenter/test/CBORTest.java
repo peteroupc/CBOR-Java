@@ -5215,12 +5215,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
+        String cc="useindeflengthstrings";
+        cc+="=";
+        cc+="false,allowduplicatekeys";
+        cc+="=";
+        cc+="true";
         Object objectTemp = longString;
         Object objectTemp2 = CBORObject.DecodeFromBytes(cbor.EncodeToBytes(
-              new CBOREncodeOptions(
-                "useindeflengthstrings=false," +
-"                " + "                " + " allowduplicatekeys=true")" +" +
-"\u0020")).AsString();
+              new CBOREncodeOptions(cc))).AsString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       TestCommon.AssertEqualsHashCode(cbor, cbor2);
