@@ -5217,7 +5217,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       {
         Object objectTemp = longString;
         Object objectTemp2 = CBORObject.DecodeFromBytes(cbor.EncodeToBytes(
-              new CBOREncodeOptions(false, true))).AsString();
+              new CBOREncodeOptions(
+                "useindeflengthstrings=false," +
+"                " + "                " + " allowduplicatekeys=true")" +" +
+"\u0020")).AsString();
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       TestCommon.AssertEqualsHashCode(cbor, cbor2);

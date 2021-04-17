@@ -6565,7 +6565,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           break;
         }
         case CBORObjectTypeDouble: {
-          WriteFloatingPointBits(stream, this.AsDoubleBits(), 8,
+          WriteFloatingPointBits(
+             stream,
+             this.AsDoubleBits(),
+             8,
              !options.getFloat64());
           break;
         }

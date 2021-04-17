@@ -28,9 +28,9 @@ import com.upokecenter.numbers.*;
          throw new NullPointerException("year");
        }
        String yearString = year.toString();
-       String fieldsString = (yearString + "," + lesserFields[0] + "," +
-lesserFields[1] + "," + lesserFields[2] + "," + lesserFields[3] + ","+
-lesserFields[4] + "," + lesserFields[5] + "," + lesserFields[6]);
+       String fieldsString = yearString + "," + lesserFields[0] + "," +
+lesserFields[1] + "," + lesserFields[2] + "," + lesserFields[3] + "," +
+lesserFields[4] + "," + lesserFields[5] + "," + lesserFields[6];
        try {
        if (dtc == null) {
          throw new NullPointerException("dtc");
@@ -118,38 +118,32 @@ ValueNormalDays[month];
          CBORDateConverter.TaggedNumber,
          CBORDateConverter.UntaggedNumber,
        };
+       int[] lesserFields;
        for (int i = 0; i < 30000; ++i) {
           EInteger year = RandomExpandedYear(rg);
-          int[] lesserFields = RandomLesserFields(rg, year);
+          lesserFields = RandomLesserFields(rg, year);
           // Don't check fractional seconds because conversion is lossy
           lesserFields[5] = 0;
           for (int j = 0; j < dtcs.length; ++j) {
             DateConverterRoundTripOne(dtcs[j], year, lesserFields);
           }
        }
+       lesserFields = new int[] {
+         2,
+         11,
+         7,
+         59,
+         3,
+         0,
+         0,
+       };
        DateConverterRoundTripOne(
          CBORDateConverter.TaggedString,
          9328,
-         new int[] {
-           2,
-           11,
-           7,
-           59,
-           3,
-           0,
-           0,
-         });
+         lesserFields);
        DateConverterRoundTripOne(
          CBORDateConverter.UntaggedNumber,
          9328,
-         new int[] {
-           2,
-           11,
-           7,
-           59,
-           3,
-           0,
-           0,
-         });
+         lesserFields);
     }
   }
