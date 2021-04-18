@@ -5215,11 +5215,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
-        String cc="useindeflengthstrings";
-        cc+="=";
-        cc+="false,allowduplicatekeys";
-        cc+="=";
-        cc+="true";
+        String cc = "useindeflengthstrings";
+        cc += "=";
+        cc += "false,allowduplicatekeys";
+        cc += "=";
+        cc += "true";
         Object objectTemp = longString;
         Object objectTemp2 = CBORObject.DecodeFromBytes(cbor.EncodeToBytes(
               new CBOREncodeOptions(cc))).AsString();
