@@ -1904,7 +1904,6 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       return this.CalcEncodedSize(0);
     }
 
-    // TODO: Use CBOREncodeOptions in CalcEncodedSize
     private long CalcEncodedSize(int depth) {
       if (depth > 1000) {
         throw new CBORException("Too deeply nested");
@@ -5902,12 +5901,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * in Java for the Java version) shows how to use a subclassed
      * <code>OutputStream</code> together with a <code>ByteArrayOutputStream</code> to
      * limit the size of supported JSON serializations of CBOR objects.</p>
-     * <pre> &#x2f;&#x2a; maximum supported JSON size in bytes&#x2a;&#x2f; final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); &#x2f;&#x2a; throws UnsupportedOperationException if too big&#x2a;&#x2f; cborObject.WriteJSONTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len>(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size >= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
-     * following example (originally written in C# for the.NET version)
-     * shows how to use a.NET MemoryStream to limit the size of supported
-     * JSON serializations of CBOR objects. The disadvantage is that the
-     * extra memory needed to do so can be wasteful, especially if the
-     * average serialized object is much smaller than the maximum size
+     * <pre> &#x2f;&#x2a; maximum supported JSON size in bytes&#x2a;&#x2f; final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); &#x2f;&#x2a; throws UnsupportedOperationException if too big&#x2a;&#x2f; cborObject.WriteJSONTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len&gt;(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size &gt;= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre>
+     * <p>The following example (originally written in C# for the.NET
+     * version) shows how to use a.NET MemoryStream to limit the size of
+     * supported JSON serializations of CBOR objects. The disadvantage is
+     * that the extra memory needed to do so can be wasteful, especially if
+     * the average serialized object is much smaller than the maximum size
      * given (for example, if the maximum size is 20000 bytes, but the
      * average serialized object has a size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; &#x2f;&#x2a; maximum supported JSON size in bytes&#x2a;&#x2f; byte[] bytes1, bytes2; {
 java.io.ByteArrayOutputStream ms = null;
@@ -6466,11 +6465,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 } </pre> <p>The following example (written in Java for
      * the Java version) shows how to use a subclassed <code>OutputStream</code>
      * together with a <code>ByteArrayOutputStream</code> to limit the size of
-     * supported CBOR serializations.</p> <pre> &#x2f;&#x2a; maximum supported CBOR size in bytes&#x2a;&#x2f; final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); &#x2f;&#x2a; throws UnsupportedOperationException if too big&#x2a;&#x2f; cborObject.WriteTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len>(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size >= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre> <p>The
-     * following example (originally written in C# for the.NET version)
-     * shows how to use a.NET MemoryStream to limit the size of supported
-     * CBOR serializations. The disadvantage is that the extra memory
-     * needed to do so can be wasteful, especially if the average
+     * supported CBOR serializations.</p> <pre> &#x2f;&#x2a; maximum supported CBOR size in bytes&#x2a;&#x2f; final int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); &#x2f;&#x2a; throws UnsupportedOperationException if too big&#x2a;&#x2f; cborObject.WriteTo(new FilterOutputStream(ba) { private int size = 0; public void write(byte[] b, int off, int len) { if (len&gt;(maxSize-size)) { throw new UnsupportedOperationException(); } size+=len; out.write(b, off, len); } public void write(byte b) { if (size &gt;= maxSize) { throw new UnsupportedOperationException(); } size++; out.write(b); } }); byte[] bytes = ba.toByteArray(); </pre>
+     * <p>The following example (originally written in C# for the.NET
+     * version) shows how to use a.NET MemoryStream to limit the size of
+     * supported CBOR serializations. The disadvantage is that the extra
+     * memory needed to do so can be wasteful, especially if the average
      * serialized object is much smaller than the maximum size given (for
      * example, if the maximum size is 20000 bytes, but the average
      * serialized object has a size of 50 bytes).</p> <pre> byte[] backing = new byte[20000]; &#x2f;&#x2a; maximum supported CBOR size in bytes&#x2a;&#x2f; byte[] bytes1, bytes2; {
