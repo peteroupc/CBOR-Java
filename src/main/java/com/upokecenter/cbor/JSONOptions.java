@@ -89,8 +89,9 @@ import java.util.*;
 
        /**
         * JSON numbers are decoded to CBOR as their closest-rounded approximation to
-        * an IEEE 854 decimal128 value, using the rules for the EDecimal
-        * form of that approximation as given in the
+        * an IEEE 854 decimal128 value, using the
+        * round-to-nearest/ties-to-even rounding mode and the rules for the
+        * EDecimal form of that approximation as given in the
         * <code>CBORObject.FromObject(EDecimal)</code> method. (In some cases,
         * numbers extremely close to zero may underflow to zero, and
         * numbers of extremely large absolute value may overflow to
