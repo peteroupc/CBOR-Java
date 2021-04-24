@@ -3,59 +3,65 @@
     public class PODOptions extends java.lang.Object
 
 Options for controlling how certain DotNET or Java objects, such as
-  so-called "plain old data" objects (better known as POCOs in DotNET or
- POJOs in Java), are converted to CBOR objects.
+so-called "plain old data" objects (better known as POCOs in DotNET or
+POJOs in Java), are converted to CBOR objects.
 
 ## Fields
 
-* `static PODOptions Default`<br>
- The default settings for "plain old data" options.
+- `static PODOptions Default`<br>
+  The default settings for "plain old data" options.
 
 ## Constructors
 
-* `PODOptions() PODOptions`<br>
- Initializes a new instance of the PODOptions
- class with all the default options.
-* `PODOptions​(boolean removeIsPrefix,
-          boolean useCamelCase)`<br>
- Deprecated.
-Use the more readable String constructor instead.
- Use the more readable String constructor instead.
-* `PODOptions​(java.lang.String paramString) PODOptions`<br>
- Initializes a new instance of the PODOptions
- class.
+- `PODOptions() PODOptions`<br>
+  Initializes a new instance of the PODOptions
+  class with all the default options.
+- `PODOptions​(boolean removeIsPrefix, boolean useCamelCase)`<br>
+  Deprecated.
+  Use the more readable String constructor instead.
+  Use the more readable String constructor instead.
+- `PODOptions​(java.lang.String paramString) PODOptions`<br>
+  Initializes a new instance of the PODOptions
+  class.
 
 ## Methods
 
-* `boolean getUseCamelCase()`<br>
- Gets a value indicating whether property, field, and method names are
- converted to camel case before they are used as keys.
-* `java.lang.String toString()`<br>
- Gets the values of this options object's properties in text form.
+- `boolean getUseCamelCase()`<br>
+  Gets a value indicating whether property, field, and method names are
+  converted to camel case before they are used as keys.
+- `java.lang.String toString()`<br>
+  Gets the values of this options object's properties in text form.
 
 ## Field Details
 
 ### Default
+
     public static final PODOptions Default
+
 The default settings for "plain old data" options.
+
 ## Method Details
 
 ### toString
+
     public java.lang.String toString()
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
 
-* <code>toString</code> in class <code>java.lang.Object</code>
+- <code>toString</code> in class <code>java.lang.Object</code>
 
 **Returns:**
 
-* A text string containing the values of this options object's
- properties. The format of the string is the same as the one
- described in the string constructor for this class.
+- A text string containing the values of this options object's
+  properties. The format of the string is the same as the one
+  described in the string constructor for this class.
 
 ### getUseCamelCase
+
     public final boolean getUseCamelCase()
+
 <p>Gets a value indicating whether property, field, and method names are
  converted to camel case before they are used as keys. This option
  changes the behavior of key name serialization as follows. If
@@ -88,5 +94,5 @@ Gets the values of this options object's properties in text form.
 
 **Returns:**
 
-* <code>true</code> If the names are converted to camel case; otherwise,
- <code>false</code>. This property is <code>true</code> by default.
+- <code>true</code> If the names are converted to camel case; otherwise,
+  <code>false</code>. This property is <code>true</code> by default.

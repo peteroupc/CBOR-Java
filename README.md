@@ -1,11 +1,10 @@
-CBOR
-====
+# CBOR
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.upokecenter/cbor.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22cbor%22)
 
 If you like this software, consider donating to me at this link: [http://peteroupc.github.io/](http://peteroupc.github.io/)
 
-----
+---
 
 A Java implementation of Concise Binary Object Representation, a general-purpose binary data format defined in RFC 7049. According to that RFC, CBOR's data model "is an extended version of the JSON data model", supporting many more types of data than JSON. "CBOR was inspired by MessagePack", but "is not intended as a version of or replacement for MessagePack."
 
@@ -15,8 +14,8 @@ This implementation also doubles as a reader and writer of JSON, and can convert
 
 Finally, this implementation supports arbitrary-precision binary and decimal floating-point numbers and rational numbers with arbitrary-precision components.
 
-How to Install
----------
+## How to Install
+
 Starting with version 0.23.0, the Java implementation is available
 as an [artifact](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22cbor%22) in the Central Repository. To add this library to a Maven
 project, add the following to the `dependencies` section in your `pom.xml` file:
@@ -32,8 +31,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 In other Java-based environments, the library can be referred to by its
 group ID (`com.upokecenter`), artifact ID (`cbor`), and version, as given above.
 
-Documentation
-------------
+## Documentation
 
 This library defines one class, called CBORObject, that allows you to read and
 write CBOR objects to and from data streams and byte arrays, and to convert JSON
@@ -41,8 +39,7 @@ text to CBOR objects and back.
 
 **See the [Java API documentation](https://peteroupc.github.io/CBOR/api/).**
 
-Examples
-----------
+## Examples
 
 Reading data from a file.
 
@@ -84,12 +81,11 @@ try (FileOutputStream stream = new FileOutputStream("object.cbor")) {
 NOTE: All code samples in this section are released to the Public Domain,
 as explained in <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-Source Code
----------
+## Source Code
+
 Source code is available in the [project page](https://github.com/peteroupc/CBOR-Java).
 
-About
------------
+## About
 
 Written in 2013-2016 by Peter O.
 
@@ -101,34 +97,33 @@ licensed under Creative Commons Zero (CC0):
 If you like this, you should donate to Peter O.
 at: [http://peteroupc.github.io/CBOR/](http://peteroupc.github.io/CBOR/)
 
-Clarifications
-------------------
+## Clarifications
 
 The following are some clarifications to RFC 7049.
 
-* Section 2.4.2 doesn't specify what happens if a bignum's byte
-  string has a length of 0.  This implementation treats a positive
+- Section 2.4.2 doesn't specify what happens if a bignum's byte
+  string has a length of 0. This implementation treats a positive
   bignum with length 0 as having a value of 0 and a negative
   bignum with length 0 as having a value of -1.
-* Section 2.4.1 specifies the number of seconds since the start of 1970.  It is
+- Section 2.4.1 specifies the number of seconds since the start of 1970. It is
   based on the POSIX definition of "seconds since the Epoch", which
-  the RFC cites as a normative reference.  This definition does not
-  count leap seconds.  When this implementation supports date
-  conversion, it won't count leap seconds, either.  This implementation
+  the RFC cites as a normative reference. This definition does not
+  count leap seconds. When this implementation supports date
+  conversion, it won't count leap seconds, either. This implementation
   treats values of infinity and NaN as invalid.
-* For tag 32, this implementation accepts strings that are valid
+- For tag 32, this implementation accepts strings that are valid
   Internationalized Resource Identifiers (IRIs) in addition to URIs.
   IRI are like URIs except that they also allow non-ASCII characters.
 
-Release Notes
------------
+## Release Notes
+
 For release notes, see the [CBOR .NET repository](https://github.com/peteroupc/CBOR).
 
 The [commit history](https://github.com/peteroupc/CBOR-Java/commits/master)
 contains details on code changes in previous versions.
 
-Acknowledgments
------------
+## Acknowledgments
+
 For acknowledgments, see the [CBOR .NET repository](https://github.com/peteroupc/CBOR).
 
 I thank all users who sent issues to this repository.
