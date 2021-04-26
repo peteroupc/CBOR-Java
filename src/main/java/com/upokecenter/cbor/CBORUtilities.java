@@ -1128,6 +1128,10 @@ status.length + ") is not greater or equal to 1");
       }
       long longmant = Math.abs(i);
       int expo = 0;
+      while (longmant < (1L << 10)) {
+        longmant <<= 42;
+        expo -= 42;
+      }
       while (longmant < (1L << 52)) {
         longmant <<= 1;
         --expo;

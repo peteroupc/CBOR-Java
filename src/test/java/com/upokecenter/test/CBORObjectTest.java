@@ -9490,24 +9490,35 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test(timeout = 10000)
     public void TestFromJsonStringSmallDouble() {
        CBORObject cbor;
-       AssertJSONDouble("0","double",0.0);
-       cbor=FromJSON("[0, 1, 2, 3]", "double");
+       AssertJSONDouble("0", "double", 0.0);
+       cbor = FromJSON("[0, 1, 2, 3]", "double");
        Assert.assertEquals(4, cbor.size());
        Assert.assertEquals(0.0, cbor.get(0).AsDouble());
        Assert.assertEquals(1.0, cbor.get(1).AsDouble());
        Assert.assertEquals(2.0, cbor.get(2).AsDouble());
        Assert.assertEquals(3.0, cbor.get(3).AsDouble());
-       cbor=FromJSON("[0]", "double");
+       cbor = FromJSON("[0]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(0.0, cbor.get(0).AsDouble());
-       cbor=FromJSON("[-0]", "double");
+       cbor = FromJSON("[-0]", "double");
        Assert.assertEquals(1, cbor.size());
-       cbor=FromJSON("[1]", "double");
+       cbor = FromJSON("[1]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(1.0, cbor.get(0).AsDouble());
-       cbor=FromJSON("[-1]", "double");
+       cbor = FromJSON("[-1]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
+       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
+  "double");
+       Assert.assertEquals(8, cbor.size());
+       Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
+       Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
+       Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
+       Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
+       Assert.assertEquals(1022.0, cbor.get(0).AsDouble());
+       Assert.assertEquals(1023.0, cbor.get(1).AsDouble());
+       Assert.assertEquals(1024.0, cbor.get(2).AsDouble());
+       Assert.assertEquals(1025.0, cbor.get(3).AsDouble());
     }
 
     @Test(timeout = 10000)

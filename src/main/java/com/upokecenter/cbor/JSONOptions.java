@@ -214,6 +214,7 @@ import java.util.*;
         .append("base64padding=").append(this.getBase64Padding() ? "true" : "false")
         .append(";replacesurrogates=")
         .append(this.getReplaceSurrogates() ? "true" : "false")
+        .append(";preservenegativezero=")
         .append(this.getPreserveNegativeZero() ? "true" : "false")
         .append(";numberconversion=").append(this.FromNumberConversion())
         .append(";allowduplicatekeys=")

@@ -5199,6 +5199,89 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return true;
     }
 
+    @Test
+    public void TestJSONOptions() {
+       JSONOptions jsonop1 = new JSONOptions("numberconversion=intorfloat");
+       {
+         Object objectTemp = jsonop1.toString();
+         Object objectTemp2 = new
+JSONOptions(jsonop1.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+       JSONOptions jsonop2 = new JSONOptions("numberconversion=decimal128");
+       {
+         Object objectTemp = jsonop2.toString();
+         Object objectTemp2 = new
+JSONOptions(jsonop2.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+       JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
+       {
+         Object objectTemp = jsonop3.toString();
+         Object objectTemp2 = new
+JSONOptions(jsonop3.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+       JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
+       {
+         Object objectTemp = jsonop4.toString();
+         Object objectTemp2 = new
+JSONOptions(jsonop4.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+    }
+
+    @Test
+    public void TestPODOptions() {
+       PODOptions podop = PODOptions.Default;
+       {
+         Object objectTemp = podop.toString();
+         Object objectTemp2 = new
+PODOptions(podop.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+    }
+
+    @Test
+    public void TestCBOREncodeOptions() {
+       CBOREncodeOptions encodeop = CBOREncodeOptions.Default;
+       {
+         Object objectTemp = encodeop.toString();
+         Object objectTemp2 = new
+CBOREncodeOptions(encodeop.toString()).toString();
+         Assert.assertEquals(objectTemp, objectTemp2);
+       }
+    }
+
+    @Test
+    public void TestRandomJSON() {
+       JSONGenerator jsongen = new JSONGenerator();
+       RandomGenerator rg = new RandomGenerator();
+       JSONOptions jsonop1 = new JSONOptions("numberconversion=intorfloat");
+       JSONOptions jsonop2 = new JSONOptions("numberconversion=decimal128");
+       JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
+       JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
+       for (int i = 0; i < 1000; ++i) {
+          byte[] json = jsongen.Generate(rg);
+          System.out.println("" + i + " len=" + json.length);
+          JSONOptions currop = null;
+          try {
+             currop = jsonop1;
+             CBORObject.FromJSONBytes(json, jsonop1);
+             currop = jsonop2;
+             CBORObject.FromJSONBytes(json, jsonop2);
+             currop = jsonop3;
+             CBORObject.FromJSONBytes(json, jsonop3);
+             currop = jsonop4;
+             CBORObject.FromJSONBytes(json, jsonop4);
+           } catch (CBORException ex) {
+              String msg = ex.getMessage() + "\n" +
+                 DataUtilities.GetUtf8String(json, true) + "\n" + currop;
+              throw new IllegalStateException(msg, ex);
+           }
+       }
+    }
+
     public static boolean TestTextStringStreamOne(String longString) {
       if (!CheckUtf16(longString)) {
         return false;
