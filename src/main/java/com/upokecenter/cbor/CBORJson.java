@@ -222,6 +222,7 @@ import com.upokecenter.numbers.*;
       str = this.sb.toString();
       // System.out.println("negb=" + sw.getElapsedMilliseconds() + " ms");
       obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+      // System.out.println("str=" + str + " obj=" + (obj));
       // System.out.println("negc=" + sw.getElapsedMilliseconds() + " ms");
       if (obj == null) {
         String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");

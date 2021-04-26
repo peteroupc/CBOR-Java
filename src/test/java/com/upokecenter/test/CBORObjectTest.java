@@ -9337,11 +9337,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       double dbl) {
-      CBORObject cbor = FromJSON(json, numconv);
-      Assert.assertEquals(json + " " + numconv + " " + dbl,CBORType.FloatingPoint,cbor.getType());
-      double cbordbl = cbor.AsDoubleValue();
-      if (dbl != cbordbl) {
-        Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
+      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      CBORObject[] cbors = {
+        FromJSON(json, numconv),
+        CBORDataUtilities.ParseJSONNumber(json, opt)
+      };
+      for (CBORObject cbor : cbors) {
+        if (cbor.getType() != CBORType.FloatingPoint) {
+          Assert.assertEquals(json + " " + numconv + " " + dbl,CBORType.FloatingPoint,cbor.getType());
+        }
+        double cbordbl = cbor.AsDoubleValue();
+        if (dbl != cbordbl) {
+          Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
+        }
       }
     }
 
@@ -9349,33 +9357,44 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       long longval) {
-      CBORObject cbor = FromJSON(json, numconv);
-      if (cbor.getType() != CBORType.Integer) {
+      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      CBORObject[] cbors = {
+        FromJSON(json, numconv),
+        CBORDataUtilities.ParseJSONNumber(json, opt)
+      };
+      for (CBORObject cbor : cbors) {
+        if (cbor.getType() != CBORType.Integer) {
         String msg = json + " " + numconv + " " + longval;
         msg = msg.substring(0, Math.min(100, msg.length()));
         if (msg.length() > 100) {
           msg += "...";
         }
         Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
+       }
+       Assert.assertEquals(longval, cbor.AsInt64Value());
       }
-      Assert.assertEquals(longval, cbor.AsInt64Value());
     }
 
     public static void AssertJSONInteger(
       String json,
       String numconv,
       int intval) {
-      CBORObject cbor = FromJSON(json, numconv);
-      if (cbor.getType() != CBORType.Integer) {
+      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      CBORObject[] cbors = {
+        FromJSON(json, numconv),
+        CBORDataUtilities.ParseJSONNumber(json, opt)
+      };
+      for (CBORObject cbor : cbors) {
+        if (cbor.getType() != CBORType.Integer) {
         String msg = json + " " + numconv + " " + intval;
         msg = msg.substring(0, Math.min(100, msg.length()));
         if (msg.length() > 100) {
-          { msg += "...";
-          }
+          msg += "...";
         }
         Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
+       }
+       Assert.assertEquals(intval, cbor.AsInt32Value());
       }
-      Assert.assertEquals(intval, cbor.AsInt32Value());
     }
 
     @Test(timeout = 10000)
@@ -9487,38 +9506,107 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         0);
     }
 
+    @Test
+    public void TestFromJsonStringFiniteDoubleSpec() {
+       RandomGenerator rg = new RandomGenerator();
+       for (int i = 0; i < 10000; ++i) {
+          double dbl = RandomObjects.RandomFiniteDouble(rg);
+          EFloat efd = EFloat.FromDouble(dbl);
+          AssertJSONDouble(
+             efd.ToShortestString(EContext.Binary64),
+             "double",
+             dbl);
+          AssertJSONDouble(
+             efd.toString(),
+             "double",
+             dbl);
+       }
+    }
+
+    @Test
+    public void TestFromJsonStringEDecimalSpec() {
+       RandomGenerator rg = new RandomGenerator();
+       for (int i = 0; i < 1000; ++i) {
+          String[] decstring = new String[1];
+          EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
+          if ((decstring[0]) == null) {
+            Assert.fail();
+          }
+          double dbl = ed.ToDouble();
+          if (((dbl) == Double.POSITIVE_INFINITY) ||
+                     ((dbl) == Double.NEGATIVE_INFINITY) ||
+                     Double.isNaN(dbl)) {
+            continue;
+          }
+          AssertJSONDouble(
+             decstring[0],
+             "double",
+             dbl);
+       }
+    }
+
+    @Test
+    public void TestFromJsonStringSmallDoubleSpec() {
+       RandomGenerator rg = new RandomGenerator();
+       for (int i = 0; i < 10000; ++i) {
+          int rv = rg.GetInt32(Integer.MAX_VALUE) * (rg.GetInt32(2)*2-1);
+          String rvstring = TestCommon.IntToString(rv);
+          AssertJSONDouble(
+             rvstring,
+             "double",
+             (double)rv);
+          AssertJSONInteger(
+             rvstring,
+             "intorfloat",
+             rv);
+       }
+       AssertJSONDouble("511","double",511);
+       AssertJSONDouble("-511","double",-511);
+       AssertJSONDouble(
+             TestCommon.IntToString(Integer.MAX_VALUE),
+             "double",
+             (double)Integer.MAX_VALUE);
+       AssertJSONDouble(
+             TestCommon.IntToString(Integer.MAX_VALUE),
+             "double",
+             (double)Integer.MAX_VALUE);
+       AssertJSONDouble(
+             TestCommon.IntToString(Integer.MIN_VALUE),
+             "double",
+             (double)Integer.MIN_VALUE);
+    }
+
     @Test(timeout = 10000)
     public void TestFromJsonStringSmallDouble() {
        CBORObject cbor;
-       AssertJSONDouble("0", "double", 0.0);
-       cbor = FromJSON("[0, 1, 2, 3]", "double");
+       AssertJSONDouble("0","double",0.0);
+       cbor=FromJSON("[0, 1, 2, 3]", "double");
        Assert.assertEquals(4, cbor.size());
        Assert.assertEquals(0.0, cbor.get(0).AsDouble());
        Assert.assertEquals(1.0, cbor.get(1).AsDouble());
        Assert.assertEquals(2.0, cbor.get(2).AsDouble());
        Assert.assertEquals(3.0, cbor.get(3).AsDouble());
-       cbor = FromJSON("[0]", "double");
+       cbor=FromJSON("[0]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(0.0, cbor.get(0).AsDouble());
-       cbor = FromJSON("[-0]", "double");
+       cbor=FromJSON("[-0]", "double");
        Assert.assertEquals(1, cbor.size());
-       cbor = FromJSON("[1]", "double");
+       cbor=FromJSON("[1]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(1.0, cbor.get(0).AsDouble());
-       cbor = FromJSON("[-1]", "double");
+       cbor=FromJSON("[-1]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
-       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
-  "double");
+       cbor=FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]", "double");
        Assert.assertEquals(8, cbor.size());
        Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
        Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
        Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
        Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
-       Assert.assertEquals(1022.0, cbor.get(0).AsDouble());
-       Assert.assertEquals(1023.0, cbor.get(1).AsDouble());
-       Assert.assertEquals(1024.0, cbor.get(2).AsDouble());
-       Assert.assertEquals(1025.0, cbor.get(3).AsDouble());
+       Assert.assertEquals(1022.0, cbor.get(4).AsDouble());
+       Assert.assertEquals(1023.0, cbor.get(5).AsDouble());
+       Assert.assertEquals(1024.0, cbor.get(6).AsDouble());
+       Assert.assertEquals(1025.0, cbor.get(7).AsDouble());
     }
 
     @Test(timeout = 10000)

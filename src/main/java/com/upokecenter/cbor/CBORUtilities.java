@@ -1142,7 +1142,9 @@ status.length + ") is not greater or equal to 1");
       if (i < 0) {
         longmant |= ((long)(1L << 63));
       }
-      return longmant;
+      /*
+      System.out.println("" + i + "->" + (longmant==DoubleToInt64Bits(i)));
+      */ return longmant;
     }
 
     public static boolean IsBeyondSafeRange(long bits) {

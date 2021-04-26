@@ -5202,55 +5202,31 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestJSONOptions() {
        JSONOptions jsonop1 = new JSONOptions("numberconversion=intorfloat");
-       {
-         Object objectTemp = jsonop1.toString();
-         Object objectTemp2 = new
-JSONOptions(jsonop1.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(jsonop1.toString(), new
+JSONOptions(jsonop1.toString()).toString());
        JSONOptions jsonop2 = new JSONOptions("numberconversion=decimal128");
-       {
-         Object objectTemp = jsonop2.toString();
-         Object objectTemp2 = new
-JSONOptions(jsonop2.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(jsonop2.toString(), new
+JSONOptions(jsonop2.toString()).toString());
        JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
-       {
-         Object objectTemp = jsonop3.toString();
-         Object objectTemp2 = new
-JSONOptions(jsonop3.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(jsonop3.toString(), new
+JSONOptions(jsonop3.toString()).toString());
        JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
-       {
-         Object objectTemp = jsonop4.toString();
-         Object objectTemp2 = new
-JSONOptions(jsonop4.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(jsonop4.toString(), new
+JSONOptions(jsonop4.toString()).toString());
     }
 
     @Test
     public void TestPODOptions() {
        PODOptions podop = PODOptions.Default;
-       {
-         Object objectTemp = podop.toString();
-         Object objectTemp2 = new
-PODOptions(podop.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(podop.toString(), new
+PODOptions(podop.toString()).toString());
     }
 
     @Test
     public void TestCBOREncodeOptions() {
        CBOREncodeOptions encodeop = CBOREncodeOptions.Default;
-       {
-         Object objectTemp = encodeop.toString();
-         Object objectTemp2 = new
-CBOREncodeOptions(encodeop.toString()).toString();
-         Assert.assertEquals(objectTemp, objectTemp2);
-       }
+       Assert.assertEquals(encodeop.toString(), new
+CBOREncodeOptions(encodeop.toString()).toString());
     }
 
     @Test
@@ -5261,9 +5237,9 @@ CBOREncodeOptions(encodeop.toString()).toString();
        JSONOptions jsonop2 = new JSONOptions("numberconversion=decimal128");
        JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
        JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
-       for (int i = 0; i < 1000; ++i) {
+       for (int i = 0; i < 200; ++i) {
           byte[] json = jsongen.Generate(rg);
-          System.out.println("" + i + " len=" + json.length);
+          System.out.println("" + i + " len=" + (json.length));
           JSONOptions currop = null;
           try {
              currop = jsonop1;
@@ -5276,7 +5252,7 @@ CBOREncodeOptions(encodeop.toString()).toString();
              CBORObject.FromJSONBytes(json, jsonop4);
            } catch (CBORException ex) {
               String msg = ex.getMessage() + "\n" +
-                 DataUtilities.GetUtf8String(json, true) + "\n" + currop;
+                 DataUtilities.GetUtf8String(json,true) + "\n" + currop;
               throw new IllegalStateException(msg, ex);
            }
        }
