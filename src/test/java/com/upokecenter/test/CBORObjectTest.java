@@ -9488,6 +9488,29 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     @Test(timeout = 10000)
+    public void TestFromJsonStringSmallDouble() {
+       CBORObject cbor;
+       AssertJSONDouble("0","double",0.0);
+       cbor=FromJSON("[0, 1, 2, 3]", "double");
+       Assert.assertEquals(4, cbor.size());
+       Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+       Assert.assertEquals(1.0, cbor.get(1).AsDouble());
+       Assert.assertEquals(2.0, cbor.get(2).AsDouble());
+       Assert.assertEquals(3.0, cbor.get(3).AsDouble());
+       cbor=FromJSON("[0]", "double");
+       Assert.assertEquals(1, cbor.size());
+       Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+       cbor=FromJSON("[-0]", "double");
+       Assert.assertEquals(1, cbor.size());
+       cbor=FromJSON("[1]", "double");
+       Assert.assertEquals(1, cbor.size());
+       Assert.assertEquals(1.0, cbor.get(0).AsDouble());
+       cbor=FromJSON("[-1]", "double");
+       Assert.assertEquals(1, cbor.size());
+       Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
+    }
+
+    @Test(timeout = 10000)
     public void TestFromJsonStringLongKindFull() {
       JSONOptions jsonop = new JSONOptions("numberconversion=full");
       String json = TestCommon.Repeat("7", 100000);

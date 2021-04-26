@@ -1123,9 +1123,12 @@ status.length + ") is not greater or equal to 1");
       if (i == Integer.MIN_VALUE) {
         return (long)0xc1e0000000000000L;
       }
+      if (i == 0) {
+        return 0L;
+      }
       long longmant = Math.abs(i);
       int expo = 0;
-      while (longmant < (1 << 52)) {
+      while (longmant < (1L << 52)) {
         longmant <<= 1;
         --expo;
       }
