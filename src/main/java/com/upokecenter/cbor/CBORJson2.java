@@ -425,12 +425,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
            numberStartIndex,
            numberEndIndex - numberStartIndex,
            this.options);
-        /*
-        System.out.println("ParseJSONNumber
-{0}->{1}",EDecimal.FromString(this.bytes,
-           numberStartIndex,
-           numberEndIndex - numberStartIndex), obj);
-        */
+
         if (obj == null) {
           String errstr = "";
           // errstr = (str.length() <= 100) ? str : (str.substring(0, // 100) + "...");

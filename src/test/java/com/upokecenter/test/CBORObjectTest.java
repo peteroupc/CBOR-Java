@@ -9337,10 +9337,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       double dbl) {
-      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      JSONOptions opt = new JSONOptions("numberconversion=" + numconv);
       CBORObject[] cbors = {
         FromJSON(json, numconv),
-        CBORDataUtilities.ParseJSONNumber(json, opt)
+        CBORDataUtilities.ParseJSONNumber(json, opt),
       };
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.FloatingPoint) {
@@ -9357,10 +9357,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       long longval) {
-      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      JSONOptions opt = new JSONOptions("numberconversion=" + numconv);
       CBORObject[] cbors = {
         FromJSON(json, numconv),
-        CBORDataUtilities.ParseJSONNumber(json, opt)
+        CBORDataUtilities.ParseJSONNumber(json, opt),
       };
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
@@ -9379,10 +9379,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String json,
       String numconv,
       int intval) {
-      JSONOptions opt=new JSONOptions("numberconversion=" + numconv);
+      JSONOptions opt = new JSONOptions("numberconversion=" + numconv);
       CBORObject[] cbors = {
         FromJSON(json, numconv),
-        CBORDataUtilities.ParseJSONNumber(json, opt)
+        CBORDataUtilities.ParseJSONNumber(json, opt),
       };
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
@@ -9529,7 +9529,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        for (int i = 0; i < 1000; ++i) {
           String[] decstring = new String[1];
           EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
-          if ((decstring[0]) == null) {
+          if (decstring[0] == null) {
             Assert.fail();
           }
           double dbl = ed.ToDouble();
@@ -9549,7 +9549,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestFromJsonStringSmallDoubleSpec() {
        RandomGenerator rg = new RandomGenerator();
        for (int i = 0; i < 10000; ++i) {
-          int rv = rg.GetInt32(Integer.MAX_VALUE) * (rg.GetInt32(2)*2-1);
+          int rv = rg.GetInt32(Integer.MAX_VALUE) * (rg.GetInt32(2) * 2 - 1);
           String rvstring = TestCommon.IntToString(rv);
           AssertJSONDouble(
              rvstring,
@@ -9560,8 +9560,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
              "intorfloat",
              rv);
        }
-       AssertJSONDouble("511","double",511);
-       AssertJSONDouble("-511","double",-511);
+       AssertJSONDouble("511", "double", 511);
+       AssertJSONDouble("-511", "double", -511);
        AssertJSONDouble(
              TestCommon.IntToString(Integer.MAX_VALUE),
              "double",
@@ -9579,34 +9579,35 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test(timeout = 10000)
     public void TestFromJsonStringSmallDouble() {
        CBORObject cbor;
-       AssertJSONDouble("0","double",0.0);
-       cbor=FromJSON("[0, 1, 2, 3]", "double");
+       AssertJSONDouble("0", "double", 0.0);
+       cbor = FromJSON("[0, 1, 2, 3]", "double");
        Assert.assertEquals(4, cbor.size());
-       Assert.assertEquals(0.0, cbor.get(0).AsDouble());
-       Assert.assertEquals(1.0, cbor.get(1).AsDouble());
-       Assert.assertEquals(2.0, cbor.get(2).AsDouble());
-       Assert.assertEquals(3.0, cbor.get(3).AsDouble());
-       cbor=FromJSON("[0]", "double");
+       Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
+       Assert.assertEquals((double)1.0, cbor.get(1).AsDouble(), 0);
+       Assert.assertEquals((double)2.0, cbor.get(2).AsDouble(), 0);
+       Assert.assertEquals((double)3.0, cbor.get(3).AsDouble(), 0);
+       cbor = FromJSON("[0]", "double");
        Assert.assertEquals(1, cbor.size());
        Assert.assertEquals(0.0, cbor.get(0).AsDouble());
-       cbor=FromJSON("[-0]", "double");
+       cbor = FromJSON("[-0]", "double");
        Assert.assertEquals(1, cbor.size());
-       cbor=FromJSON("[1]", "double");
+       cbor = FromJSON("[1]", "double");
        Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals(1.0, cbor.get(0).AsDouble());
-       cbor=FromJSON("[-1]", "double");
+       Assert.assertEquals((double)1.0, cbor.get(0).AsDouble(), 0);
+       cbor = FromJSON("[-1]", "double");
        Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
-       cbor=FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]", "double");
+       Assert.assertEquals((double)-1.0, cbor.get(0).AsDouble(), 0);
+       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
+  "double");
        Assert.assertEquals(8, cbor.size());
-       Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
-       Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
-       Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
-       Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
-       Assert.assertEquals(1022.0, cbor.get(4).AsDouble());
-       Assert.assertEquals(1023.0, cbor.get(5).AsDouble());
-       Assert.assertEquals(1024.0, cbor.get(6).AsDouble());
-       Assert.assertEquals(1025.0, cbor.get(7).AsDouble());
+       Assert.assertEquals((double)-1022.0, cbor.get(0).AsDouble(), 0);
+       Assert.assertEquals((double)-1023.0, cbor.get(1).AsDouble(), 0);
+       Assert.assertEquals((double)-1024.0, cbor.get(2).AsDouble(), 0);
+       Assert.assertEquals((double)-1025.0, cbor.get(3).AsDouble(), 0);
+       Assert.assertEquals((double)1022.0, cbor.get(4).AsDouble(), 0);
+       Assert.assertEquals((double)1023.0, cbor.get(5).AsDouble(), 0);
+       Assert.assertEquals((double)1024.0, cbor.get(6).AsDouble(), 0);
+       Assert.assertEquals((double)1025.0, cbor.get(7).AsDouble(), 0);
     }
 
     @Test(timeout = 10000)
