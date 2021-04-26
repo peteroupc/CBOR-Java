@@ -878,17 +878,23 @@ import com.upokecenter.numbers.*;
         ++neededLength;
         extended = true;
       }
-      bytes = new byte[neededLength];
-      for (int i = 0; i < data.length; ++i) {
-        bytes[i] = data[data.length - 1 - i];
+      if (extended || negative) {
+        bytes = new byte[neededLength];
+        System.arraycopy(data, 0, bytes, neededLength - data.length, data.length);
         if (negative) {
-          bytes[i] = (byte)((~((int)bytes[i])) & 0xff);
+          int i;
+          for (i = neededLength - data.length; i < neededLength; ++i) {
+            bytes[i] ^= (byte)0xff;
+          }
         }
+        if (extended) {
+          bytes[0] = negative ? (byte)0xff : (byte)0;
+        }
+        bi = EInteger.FromBytes(bytes, false);
+      } else {
+        // No data conversion needed
+        bi = EInteger.FromBytes(data, false);
       }
-      if (extended) {
-        bytes[bytes.length - 1] = negative ? (byte)0xff : (byte)0;
-      }
-      bi = EInteger.FromBytes(bytes, true);
       if (bi.CanFitInInt64()) {
         return new CBORNumber(NumberKind.Integer, bi.ToInt64Checked());
       } else {
