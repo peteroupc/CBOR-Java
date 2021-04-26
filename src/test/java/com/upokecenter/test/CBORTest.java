@@ -5202,28 +5202,28 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestJSONOptions() {
        JSONOptions jsonop1 = new JSONOptions("numberconversion=intorfloat");
-{
+       {
          Object objectTemp = jsonop1.toString();
          Object objectTemp2 = new
 JSONOptions(jsonop1.toString()).toString();
          Assert.assertEquals(objectTemp, objectTemp2);
        }
        JSONOptions jsonop2 = new JSONOptions("numberconversion=decimal128");
-{
+       {
          Object objectTemp = jsonop2.toString();
          Object objectTemp2 = new
 JSONOptions(jsonop2.toString()).toString();
          Assert.assertEquals(objectTemp, objectTemp2);
        }
        JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
-{
+       {
          Object objectTemp = jsonop3.toString();
          Object objectTemp2 = new
 JSONOptions(jsonop3.toString()).toString();
          Assert.assertEquals(objectTemp, objectTemp2);
        }
        JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
-{
+       {
          Object objectTemp = jsonop4.toString();
          Object objectTemp2 = new
 JSONOptions(jsonop4.toString()).toString();
@@ -5234,7 +5234,7 @@ JSONOptions(jsonop4.toString()).toString();
     @Test
     public void TestPODOptions() {
        PODOptions podop = PODOptions.Default;
-{
+       {
          Object objectTemp = podop.toString();
          Object objectTemp2 = new
 PODOptions(podop.toString()).toString();
@@ -5245,7 +5245,7 @@ PODOptions(podop.toString()).toString();
     @Test
     public void TestCBOREncodeOptions() {
        CBOREncodeOptions encodeop = CBOREncodeOptions.Default;
-{
+       {
          Object objectTemp = encodeop.toString();
          Object objectTemp2 = new
 CBOREncodeOptions(encodeop.toString()).toString();

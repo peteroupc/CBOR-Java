@@ -9588,7 +9588,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
        Assert.assertEquals((double)3.0, cbor.get(3).AsDouble(), 0);
        cbor = FromJSON("[0]", "double");
        Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+       Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
        cbor = FromJSON("[-0]", "double");
        Assert.assertEquals(1, cbor.size());
        cbor = FromJSON("[1]", "double");
