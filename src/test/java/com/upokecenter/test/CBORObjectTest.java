@@ -2293,127 +2293,127 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestEncodeFloat64() {
-       try {
-       RandomGenerator rg = new RandomGenerator();
-       CBOREncodeOptions options = new CBOREncodeOptions("float64=true");
-       for (int i = 0; i < 10000; ++i) {
-         double dbl = 0.0;
-         dbl = (i == 0) ? Double.POSITIVE_INFINITY : ((i == 1) ?
-            Double.NEGATIVE_INFINITY : RandomObjects.RandomDouble(rg));
-         CBORObject cbor = CBORObject.FromObject(dbl);
-         byte[] bytes = cbor.EncodeToBytes(options);
-         Assert.assertEquals(9, bytes.length);
-         TestCommon.AssertEqualsHashCode(
-           cbor,
-           CBORObject.DecodeFromBytes(bytes));
-         {
-           java.io.ByteArrayOutputStream ms = null;
+      try {
+        RandomGenerator rg = new RandomGenerator();
+        CBOREncodeOptions options = new CBOREncodeOptions("float64=true");
+        for (int i = 0; i < 10000; ++i) {
+          double dbl = 0.0;
+          dbl = (i == 0) ? Double.POSITIVE_INFINITY : ((i == 1) ?
+              Double.NEGATIVE_INFINITY : RandomObjects.RandomDouble(rg));
+          CBORObject cbor = CBORObject.FromObject(dbl);
+          byte[] bytes = cbor.EncodeToBytes(options);
+          Assert.assertEquals(9, bytes.length);
+          TestCommon.AssertEqualsHashCode(
+            cbor,
+            CBORObject.DecodeFromBytes(bytes));
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           cbor.WriteTo(ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(9, bytes.length);
+            cbor.WriteTo(ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(9, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.Write(dbl, ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(9, bytes.length);
+            CBORObject.Write(dbl, ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(9, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.Write(cbor, ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(9, bytes.length);
+            CBORObject.Write(cbor, ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(9, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         CBORObject cbor2 = CBORObject.NewArray().Add(cbor);
-         bytes = cbor2.EncodeToBytes(options);
-         TestCommon.AssertEqualsHashCode(
-           cbor2,
-           CBORObject.DecodeFromBytes(bytes));
-         Assert.assertEquals(10, bytes.length);
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          CBORObject cbor2 = CBORObject.NewArray().Add(cbor);
+          bytes = cbor2.EncodeToBytes(options);
+          TestCommon.AssertEqualsHashCode(
+            cbor2,
+            CBORObject.DecodeFromBytes(bytes));
+          Assert.assertEquals(10, bytes.length);
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           cbor2.WriteTo(ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(10, bytes.length);
+            cbor2.WriteTo(ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(10, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.Write(cbor2, ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(10, bytes.length);
+            CBORObject.Write(cbor2, ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(10, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         cbor2 = cbor.WithTag(1);
-         bytes = cbor2.EncodeToBytes(options);
-         Assert.assertEquals(10, bytes.length);
-         TestCommon.AssertEqualsHashCode(
-           cbor2,
-           CBORObject.DecodeFromBytes(bytes));
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          cbor2 = cbor.WithTag(1);
+          bytes = cbor2.EncodeToBytes(options);
+          Assert.assertEquals(10, bytes.length);
+          TestCommon.AssertEqualsHashCode(
+            cbor2,
+            CBORObject.DecodeFromBytes(bytes));
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           cbor2.WriteTo(ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(10, bytes.length);
+            cbor2.WriteTo(ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(10, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-         {
-           java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-           CBORObject.Write(cbor2, ms, options);
-           bytes = ms.toByteArray();
-           Assert.assertEquals(10, bytes.length);
+            CBORObject.Write(cbor2, ms, options);
+            bytes = ms.toByteArray();
+            Assert.assertEquals(10, bytes.length);
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-       }
-        } catch (IOException ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
         }
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     @Test
@@ -4624,9 +4624,9 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
           java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xef, (byte)0xbb, (byte)0xbf,
-          0x7b, 0x7d,
-         });
+        (byte)0xef, (byte)0xbb, (byte)0xbf,
+        0x7b, 0x7d,
+       });
 
           try {
             CBORObject.ReadJSON(ms);
@@ -4644,9 +4644,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] {
-          0x20, (byte)0xef, (byte)0xbb,
-          (byte)0xbf, 0x7b, 0x7d,
-         });
+        0x20, (byte)0xef, (byte)0xbb,
+        (byte)0xbf, 0x7b, 0x7d,
+       });
 
           try {
             CBORObject.ReadJSON(ms2);
@@ -4705,9 +4705,9 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
           java.io.ByteArrayInputStream ms3 = null;
 try {
 ms3 = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xef, (byte)0xbb, (byte)0xbf,
-          (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b, 0x7d,
-         });
+        (byte)0xef, (byte)0xbb, (byte)0xbf,
+        (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b, 0x7d,
+       });
 
           try {
             CBORObject.ReadJSON(ms3);
@@ -4727,12 +4727,12 @@ try { if (ms3 != null) { ms3.close(); } } catch (java.io.IOException ex) {}
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, (byte)0xfe, (byte)0xff, 0,
-          0,
-          0,
-          0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
-          0x65,
-         });
+        0, 0, (byte)0xfe, (byte)0xff, 0,
+        0,
+        0,
+        0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
+        0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4744,10 +4744,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, 0, 0x74, 0, 0,
-          0, 0x72, 0,
-          0, 0, 0x75, 0, 0, 0, 0x65,
-         });
+        0, 0, 0, 0x74, 0, 0,
+        0, 0x72, 0,
+        0, 0, 0x75, 0, 0, 0, 0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4759,10 +4759,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0, 0,
-          0x74, 0, 0, 0,
-          0x72, 0, 0, 0, 0x75, 0, 0, 0, 0x65, 0, 0, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0, 0,
+        0x74, 0, 0, 0,
+        0x72, 0, 0, 0, 0x75, 0, 0, 0, 0x65, 0, 0, 0,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4774,12 +4774,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x74, 0, 0, 0, 0x72,
-          0,
-          0,
-          0,
-          0x75, 0, 0, 0, 0x65, 0, 0, 0,
-         });
+        0x74, 0, 0, 0, 0x72,
+        0,
+        0,
+        0,
+        0x75, 0, 0, 0, 0x65, 0, 0, 0,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4791,10 +4791,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, 0, 0x74,
-          0, 0x72, 0,
-          0x75, 0, 0x65,
-         });
+        (byte)0xfe, (byte)0xff, 0, 0x74,
+        0, 0x72, 0,
+        0x75, 0, 0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4806,9 +4806,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0x74, 0, 0x72, 0,
-          0x75, 0, 0x65,
-         });
+        0, 0x74, 0, 0x72, 0,
+        0x75, 0, 0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4820,12 +4820,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x74, 0,
-          0x72,
-          0,
-          0x75,
-          0, 0x65, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0x74, 0,
+        0x72,
+        0,
+        0x75,
+        0, 0x65, 0,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4837,9 +4837,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x74, 0, 0x72, 0,
-          0x75, 0, 0x65, 0,
-         });
+        0x74, 0, 0x72, 0,
+        0x75, 0, 0x65, 0,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4851,9 +4851,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xef, (byte)0xbb, (byte)0xbf,
-          0x74, 0x72, 0x75, 0x65,
-         });
+        (byte)0xef, (byte)0xbb, (byte)0xbf,
+        0x74, 0x72, 0x75, 0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4865,9 +4865,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x74, 0x72, 0x75,
-          0x65,
-         });
+        0x74, 0x72, 0x75,
+        0x65,
+       });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -4879,10 +4879,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, (byte)0xfe, (byte)0xff, 0,
-          0, 0, 0x22,
-          0, 1, 0, 0, 0, 0, 0, 0x22,
-         });
+        0, 0, (byte)0xfe, (byte)0xff, 0,
+        0, 0, 0x22,
+        0, 1, 0, 0, 0, 0, 0, 0x22,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -4899,10 +4899,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, 0, 0x22, 0, 1,
-          0, 0, 0, 0,
-          0, 0x22,
-         });
+        0, 0, 0, 0x22, 0, 1,
+        0, 0, 0, 0,
+        0, 0x22,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -4919,10 +4919,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0, 0,
-          0x22, 0, 0, 0,
-          0, 0, 1, 0, 0x22, 0, 0, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0, 0,
+        0x22, 0, 0, 0,
+        0, 0, 1, 0, 0x22, 0, 0, 0,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -4939,11 +4939,11 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x22, 0, 0, 0, 0, 0,
-          1, 0, 0x22,
-          0,
-          0, 0,
-         });
+        0x22, 0, 0, 0, 0, 0,
+        1, 0, 0x22,
+        0,
+        0, 0,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -4960,11 +4960,11 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, 0,
-          0x22, (byte)0xd8,
-          0,
-          (byte)0xdc, 0, 0, 0x22,
-         });
+        (byte)0xfe, (byte)0xff, 0,
+        0x22, (byte)0xd8,
+        0,
+        (byte)0xdc, 0, 0, 0x22,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -4981,9 +4981,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0x22, (byte)0xd8, 0,
-          (byte)0xdc, 0, 0, 0x22,
-         });
+        0, 0x22, (byte)0xd8, 0,
+        (byte)0xdc, 0, 0, 0x22,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5000,10 +5000,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x22, 0,
-          0, (byte)0xd8, 0,
-          (byte)0xdc, 0x22, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0x22, 0,
+        0, (byte)0xd8, 0,
+        (byte)0xdc, 0x22, 0,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5020,9 +5020,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x22, 0, 0, (byte)0xd8, 0,
-          (byte)0xdc, 0x22, 0,
-         });
+        0x22, 0, 0, (byte)0xd8, 0,
+        (byte)0xdc, 0x22, 0,
+       });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5039,10 +5039,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, (byte)0xfe, (byte)0xff, 0,
-          0, 0, 0x22,
-          0, 0, (byte)0xd8, 0, 0, 0, 0, 0x22,
-         });
+        0, 0, (byte)0xfe, (byte)0xff, 0,
+        0, 0, 0x22,
+        0, 0, (byte)0xd8, 0, 0, 0, 0, 0x22,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5062,11 +5062,11 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, 0, 0x22, 0, 0,
-          (byte)0xd8, 0, 0,
-          0,
-          0, 0x22,
-         });
+        0, 0, 0, 0x22, 0, 0,
+        (byte)0xd8, 0, 0,
+        0,
+        0, 0x22,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5086,10 +5086,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0, 0,
-          0x22, 0, 0, 0,
-          0, (byte)0xd8, 0, 0, 0x22, 0, 0, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0, 0,
+        0x22, 0, 0, 0,
+        0, (byte)0xd8, 0, 0, 0x22, 0, 0, 0,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5109,12 +5109,12 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x22, 0, 0, 0, 0,
-          (byte)0xd8,
-          0,
-          0,
-          0x22, 0, 0, 0,
-         });
+        0x22, 0, 0, 0, 0,
+        (byte)0xd8,
+        0,
+        0,
+        0x22, 0, 0, 0,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5134,10 +5134,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, 0, 0x22,
-          0, (byte)0xdc, 0,
-          (byte)0xdc, 0, 0, 0x22,
-         });
+        (byte)0xfe, (byte)0xff, 0, 0x22,
+        0, (byte)0xdc, 0,
+        (byte)0xdc, 0, 0, 0x22,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5157,10 +5157,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0x22, 0, (byte)0xdc, 0,
-          (byte)0xdc, 0, 0,
-          0x22,
-         });
+        0, 0x22, 0, (byte)0xdc, 0,
+        (byte)0xdc, 0, 0,
+        0x22,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5180,10 +5180,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x22, 0,
-          0, (byte)0xdc, 0,
-          (byte)0xdc, 0x22, 0,
-         });
+        (byte)0xff, (byte)0xfe, 0x22, 0,
+        0, (byte)0xdc, 0,
+        (byte)0xdc, 0x22, 0,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5203,9 +5203,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0x22, 0, 0, (byte)0xdc, 0,
-          (byte)0xdc, 0x22, 0,
-         });
+        0x22, 0, 0, (byte)0xdc, 0,
+        (byte)0xdc, 0x22, 0,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5264,9 +5264,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, 0x20,
-          0x20, 0x20,
-         });
+        (byte)0xfe, (byte)0xff, 0x20,
+        0x20, 0x20,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5286,9 +5286,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x20,
-          0x20, 0x20,
-         });
+        (byte)0xff, (byte)0xfe, 0x20,
+        0x20, 0x20,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5308,9 +5308,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xd8,
-          0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xd8,
+        0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5330,9 +5330,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xdc,
-          0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xdc,
+        0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5352,9 +5352,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xd8,
-          0x00, 0x20, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xd8,
+        0x00, 0x20, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5374,9 +5374,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xdc,
-          0x00, 0x20, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xdc,
+        0x00, 0x20, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5396,9 +5396,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xd8,
-          0x00, (byte)0xd8, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xd8,
+        0x00, (byte)0xd8, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5418,9 +5418,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xdc,
-          0x00, (byte)0xd8, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xdc,
+        0x00, (byte)0xd8, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5440,9 +5440,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xdc,
-          0x00, (byte)0xd8, 0x00, (byte)0xdc, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xdc,
+        0x00, (byte)0xd8, 0x00, (byte)0xdc, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5462,9 +5462,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xfe, (byte)0xff, (byte)0xdc,
-          0x00, (byte)0xdc, 0x00,
-         });
+        (byte)0xfe, (byte)0xff, (byte)0xdc,
+        0x00, (byte)0xdc, 0x00,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5485,9 +5485,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xd8,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xd8,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5507,9 +5507,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xdc,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xdc,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5529,9 +5529,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xd8, 0x00, 0x20,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xd8, 0x00, 0x20,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5551,9 +5551,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xdc, 0x00, 0x20,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xdc, 0x00, 0x20,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5573,9 +5573,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xd8, 0x00, (byte)0xd8,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xd8, 0x00, (byte)0xd8,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5595,9 +5595,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xdc, 0x00, (byte)0xd8,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xdc, 0x00, (byte)0xd8,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5617,9 +5617,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xdc, 0x00, (byte)0xd8, 0x00, (byte)0xdc,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xdc, 0x00, (byte)0xd8, 0x00, (byte)0xdc,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5639,9 +5639,9 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          (byte)0xff, (byte)0xfe, 0x00,
-          (byte)0xdc, 0x00, (byte)0xdc,
-         });
+        (byte)0xff, (byte)0xfe, 0x00,
+        (byte)0xdc, 0x00, (byte)0xdc,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5663,8 +5663,8 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           java.io.ByteArrayInputStream msjson = null;
 try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
-          0, 0, 0, 0x20, 0,
-         });
+        0, 0, 0, 0x20, 0,
+       });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -6038,7 +6038,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = CBORObject.NewOrderedMap().Add(cbor,
-  "jkl").Add("mno",
+            "jkl").Add("mno",
             1);
         Object objectTemp2 = "test";
         cbor.Add(objectTemp, objectTemp2);
@@ -9364,14 +9364,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
-        String msg = json + " " + numconv + " " + longval;
-        msg = msg.substring(0, Math.min(100, msg.length()));
-        if (msg.length() > 100) {
-          msg += "...";
+          String msg = json + " " + numconv + " " + longval;
+          msg = msg.substring(0, Math.min(100, msg.length()));
+          if (msg.length() > 100) {
+            msg += "...";
+          }
+          Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
         }
-        Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
-       }
-       Assert.assertEquals(longval, cbor.AsInt64Value());
+        Assert.assertEquals(longval, cbor.AsInt64Value());
       }
     }
 
@@ -9386,14 +9386,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
-        String msg = json + " " + numconv + " " + intval;
-        msg = msg.substring(0, Math.min(100, msg.length()));
-        if (msg.length() > 100) {
-          msg += "...";
+          String msg = json + " " + numconv + " " + intval;
+          msg = msg.substring(0, Math.min(100, msg.length()));
+          if (msg.length() > 100) {
+            msg += "...";
+          }
+          Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
         }
-        Assert.assertEquals(msg, CBORType.Integer, cbor.getType());
-       }
-       Assert.assertEquals(intval, cbor.AsInt32Value());
+        Assert.assertEquals(intval, cbor.AsInt32Value());
       }
     }
 
@@ -9508,106 +9508,106 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestFromJsonStringFiniteDoubleSpec() {
-       RandomGenerator rg = new RandomGenerator();
-       for (int i = 0; i < 10000; ++i) {
-          double dbl = RandomObjects.RandomFiniteDouble(rg);
-          EFloat efd = EFloat.FromDouble(dbl);
-          AssertJSONDouble(
-             efd.ToShortestString(EContext.Binary64),
-             "double",
-             dbl);
-          AssertJSONDouble(
-             efd.toString(),
-             "double",
-             dbl);
-       }
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 10000; ++i) {
+        double dbl = RandomObjects.RandomFiniteDouble(rg);
+        EFloat efd = EFloat.FromDouble(dbl);
+        AssertJSONDouble(
+          efd.ToShortestString(EContext.Binary64),
+          "double",
+          dbl);
+        AssertJSONDouble(
+          efd.toString(),
+          "double",
+          dbl);
+      }
     }
 
     @Test
     public void TestFromJsonStringEDecimalSpec() {
-       RandomGenerator rg = new RandomGenerator();
-       for (int i = 0; i < 1000; ++i) {
-          String[] decstring = new String[1];
-          EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
-          if (decstring[0] == null) {
-            Assert.fail();
-          }
-          double dbl = ed.ToDouble();
-          if (((dbl) == Double.POSITIVE_INFINITY) ||
-                     ((dbl) == Double.NEGATIVE_INFINITY) ||
-                     Double.isNaN(dbl)) {
-            continue;
-          }
-          AssertJSONDouble(
-             decstring[0],
-             "double",
-             dbl);
-       }
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 1000; ++i) {
+        String[] decstring = new String[1];
+        EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
+        if (decstring[0] == null) {
+          Assert.fail();
+        }
+        double dbl = ed.ToDouble();
+        if (((dbl) == Double.POSITIVE_INFINITY) ||
+          ((dbl) == Double.NEGATIVE_INFINITY) ||
+          Double.isNaN(dbl)) {
+          continue;
+        }
+        AssertJSONDouble(
+          decstring[0],
+          "double",
+          dbl);
+      }
     }
 
     @Test
     public void TestFromJsonStringSmallDoubleSpec() {
-       RandomGenerator rg = new RandomGenerator();
-       for (int i = 0; i < 10000; ++i) {
-          int rv = rg.GetInt32(Integer.MAX_VALUE) * (rg.GetInt32(2) * 2 - 1);
-          String rvstring = TestCommon.IntToString(rv);
-          AssertJSONDouble(
-             rvstring,
-             "double",
-             (double)rv);
-          AssertJSONInteger(
-             rvstring,
-             "intorfloat",
-             rv);
-       }
-       AssertJSONDouble("511", "double", 511);
-       AssertJSONDouble("-511", "double", -511);
-       AssertJSONDouble(
-             TestCommon.IntToString(Integer.MAX_VALUE),
-             "double",
-             (double)Integer.MAX_VALUE);
-       AssertJSONDouble(
-             TestCommon.IntToString(Integer.MAX_VALUE),
-             "double",
-             (double)Integer.MAX_VALUE);
-       AssertJSONDouble(
-             TestCommon.IntToString(Integer.MIN_VALUE),
-             "double",
-             (double)Integer.MIN_VALUE);
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 10000; ++i) {
+        int rv = rg.GetInt32(Integer.MAX_VALUE) * ((rg.GetInt32(2) * 2) - 1);
+        String rvstring = TestCommon.IntToString(rv);
+        AssertJSONDouble(
+          rvstring,
+          "double",
+          (double)rv);
+        AssertJSONInteger(
+          rvstring,
+          "intorfloat",
+          rv);
+      }
+      AssertJSONDouble("511", "double", 511);
+      AssertJSONDouble("-511", "double", -511);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MAX_VALUE),
+        "double",
+        (double)Integer.MAX_VALUE);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MAX_VALUE),
+        "double",
+        (double)Integer.MAX_VALUE);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MIN_VALUE),
+        "double",
+        (double)Integer.MIN_VALUE);
     }
 
     @Test(timeout = 10000)
     public void TestFromJsonStringSmallDouble() {
-       CBORObject cbor;
-       AssertJSONDouble("0", "double", 0.0);
-       cbor = FromJSON("[0, 1, 2, 3]", "double");
-       Assert.assertEquals(4, cbor.size());
-       Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
-       Assert.assertEquals((double)1.0, cbor.get(1).AsDouble(), 0);
-       Assert.assertEquals((double)2.0, cbor.get(2).AsDouble(), 0);
-       Assert.assertEquals((double)3.0, cbor.get(3).AsDouble(), 0);
-       cbor = FromJSON("[0]", "double");
-       Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
-       cbor = FromJSON("[-0]", "double");
-       Assert.assertEquals(1, cbor.size());
-       cbor = FromJSON("[1]", "double");
-       Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals((double)1.0, cbor.get(0).AsDouble(), 0);
-       cbor = FromJSON("[-1]", "double");
-       Assert.assertEquals(1, cbor.size());
-       Assert.assertEquals((double)-1.0, cbor.get(0).AsDouble(), 0);
-       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
-  "double");
-       Assert.assertEquals(8, cbor.size());
-       Assert.assertEquals((double)-1022.0, cbor.get(0).AsDouble(), 0);
-       Assert.assertEquals((double)-1023.0, cbor.get(1).AsDouble(), 0);
-       Assert.assertEquals((double)-1024.0, cbor.get(2).AsDouble(), 0);
-       Assert.assertEquals((double)-1025.0, cbor.get(3).AsDouble(), 0);
-       Assert.assertEquals((double)1022.0, cbor.get(4).AsDouble(), 0);
-       Assert.assertEquals((double)1023.0, cbor.get(5).AsDouble(), 0);
-       Assert.assertEquals((double)1024.0, cbor.get(6).AsDouble(), 0);
-       Assert.assertEquals((double)1025.0, cbor.get(7).AsDouble(), 0);
+      CBORObject cbor;
+      AssertJSONDouble("0", "double", 0.0);
+      cbor = FromJSON("[0, 1, 2, 3]", "double");
+      Assert.assertEquals(4, cbor.size());
+      Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
+      Assert.assertEquals((double)1.0, cbor.get(1).AsDouble(), 0);
+      Assert.assertEquals((double)2.0, cbor.get(2).AsDouble(), 0);
+      Assert.assertEquals((double)3.0, cbor.get(3).AsDouble(), 0);
+      cbor = FromJSON("[0]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
+      cbor = FromJSON("[-0]", "double");
+      Assert.assertEquals(1, cbor.size());
+      cbor = FromJSON("[1]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals((double)1.0, cbor.get(0).AsDouble(), 0);
+      cbor = FromJSON("[-1]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals((double)-1.0, cbor.get(0).AsDouble(), 0);
+      cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
+          "double");
+      Assert.assertEquals(8, cbor.size());
+      Assert.assertEquals((double)-1022.0, cbor.get(0).AsDouble(), 0);
+      Assert.assertEquals((double)-1023.0, cbor.get(1).AsDouble(), 0);
+      Assert.assertEquals((double)-1024.0, cbor.get(2).AsDouble(), 0);
+      Assert.assertEquals((double)-1025.0, cbor.get(3).AsDouble(), 0);
+      Assert.assertEquals((double)1022.0, cbor.get(4).AsDouble(), 0);
+      Assert.assertEquals((double)1023.0, cbor.get(5).AsDouble(), 0);
+      Assert.assertEquals((double)1024.0, cbor.get(6).AsDouble(), 0);
+      Assert.assertEquals((double)1025.0, cbor.get(7).AsDouble(), 0);
     }
 
     @Test(timeout = 10000)
