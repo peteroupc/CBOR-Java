@@ -1781,6 +1781,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         return (T)(this);
       }
       if (this.isNull()) {
+        // TODO: In next major version, consider returning null
+        // here only if this object is untagged, to allow behavior
+        // to be customizable by CBORTypeMapper
         return null;
       }
       if (mapper != null) {
@@ -4565,7 +4568,16 @@ public static void Write(
     }
 
     /**
-     * Gets the value of this object as a text string.
+     * Gets the value of this object as a text string.<p>This method is not the
+     *  "reverse" of the <code>FromObject</code> method in the sense that
+     * FromObject can take either a text string or <code>null</code>, but this
+     * method can accept only text strings. The <code>ToObject</code> method is
+     *  closer to a "reverse" version to <code>FromObject</code> than the
+     * <code>AsString</code> method: <code>ToObject&lt;string&gt;(cbor)</code> in
+     * DotNet, or <code>ToObject(string.class)</code> in Java, will convert a
+     * CBOR object to a DotNet or Java string if it represents a text
+     * string, or to <code>null</code> if <code>IsNull</code> returns <code>true</code> for
+     * the CBOR object, and will fail in other cases.</p>
      * @return Gets this object's string.
      * @throws IllegalStateException This object's type is not a text string (for
      * the purposes of this method, infinity and not-a-number values, but
