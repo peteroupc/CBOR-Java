@@ -198,6 +198,9 @@ import com.upokecenter.numbers.*;
      */
     public boolean TryGetDateTimeFields(CBORObject obj, EInteger[] year, int[]
       lesserFields) {
+      // TODO: In next major version, return false instead of throwing an
+      // exception if the arguments are invalid, to conform to convention
+      // with Try* methods in DotNet
       if (year == null) {
         throw new NullPointerException("year");
       }
