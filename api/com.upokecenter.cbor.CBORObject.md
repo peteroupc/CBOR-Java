@@ -4087,7 +4087,16 @@ Converts this object to a 32-bit floating point number.
 
 ### AsString
     public java.lang.String AsString()
-Gets the value of this object as a text string.
+Gets the value of this object as a text string.<p>This method is not the
+  "reverse" of the <code>FromObject</code> method in the sense that
+ FromObject can take either a text string or <code>null</code>, but this
+ method can accept only text strings. The <code>ToObject</code> method is
+  closer to a "reverse" version to <code>FromObject</code> than the
+ <code>AsString</code> method: <code>ToObject&lt;string&gt;(cbor)</code> in
+ DotNet, or <code>ToObject(string.class)</code> in Java, will convert a
+ CBOR object to a DotNet or Java string if it represents a text
+ string, or to <code>null</code> if <code>IsNull</code> returns <code>true</code> for
+ the CBOR object, and will fail in other cases.</p>
 
 **Returns:**
 

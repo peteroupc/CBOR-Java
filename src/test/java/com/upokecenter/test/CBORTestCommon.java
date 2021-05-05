@@ -368,6 +368,40 @@ depth) {
     }
 
     // Tests the equivalence of the DecodeFromBytes and Read methods.
+    public static CBORObject FromBytesTestAB(byte[] b, CBOREncodeOptions
+options) {
+      CBORObject oa = FromBytesA(b, options);
+      CBORObject ob = FromBytesB(b, options);
+      if (!oa.equals(ob)) {
+        Assert.assertEquals(oa, ob);
+      }
+      return oa;
+    }
+
+    private static CBORObject FromBytesA(byte[] b, CBOREncodeOptions options) {
+      return CBORObject.DecodeFromBytes(b, options);
+    }
+
+    private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) {
+      {
+        java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(b);
+int startingAvailable = ms.available();
+
+        CBORObject o = CBORObject.Read(ms, options);
+        if ((startingAvailable - ms.available()) != startingAvailable) {
+          throw new CBORException("not at EOF");
+        }
+        return o;
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+    }
+
+    // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
       CBORObject oa = FromBytesA(b);
       CBORObject ob = FromBytesB(b);
