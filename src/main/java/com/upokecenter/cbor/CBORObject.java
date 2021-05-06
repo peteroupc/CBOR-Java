@@ -18,6 +18,9 @@ import com.upokecenter.numbers.*;
 // TODO: In next major version, make .Keys and .Values read-only
 // TODO: Add ReadObject that combines Read and ToObject; similarly
 // for ReadJSON, FromJSONString, FromJSONBytes
+// TODO: In Java version add overloads for Class<T> in overloads
+// that take java.lang.reflect.getType()
+// TODO: Add TryGetValue method
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and

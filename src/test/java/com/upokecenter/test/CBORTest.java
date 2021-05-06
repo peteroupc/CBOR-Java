@@ -121,9 +121,9 @@ import com.upokecenter.numbers.*;
         throw new NullPointerException("bytes");
       }
       String str = DataUtilities.GetUtf8String(bytes, false);
-      byte[] bytes2 = new byte[bytes.length() + 2];
+      byte[] bytes2 = new byte[bytes.length + 2];
       bytes2[0] = 0x22;
-      System.arraycopy(bytes, 0, bytes2, 1, bytes.length());
+      System.arraycopy(bytes, 0, bytes2, 1, bytes.length);
       bytes2[bytes2.length - 1] = 0x22;
       String str2 = CBORObject.FromJSONBytes(bytes2)
         .AsString();
@@ -442,9 +442,9 @@ import com.upokecenter.numbers.*;
       EInteger[] tags = co.GetAllTags();
       Assert.assertEquals(0, tags.length);
       byte[] bytes = co.GetByteString();
-      Assert.assertEquals(2, bytes.length());
-      Assert.assertEquals(0x20, bytes.charAt(0));
-      Assert.assertEquals(0x78, bytes.charAt(1));
+      Assert.assertEquals(2, bytes.length);
+      Assert.assertEquals(0x20, bytes[0]);
+      Assert.assertEquals(0x78, bytes[1]);
     }
 
     @Test
@@ -1022,7 +1022,7 @@ import com.upokecenter.numbers.*;
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
-      if (!(bytes.length() > 0)) {
+      if (!(bytes.length > 0)) {
         return false;
       }
       CBORObject cbo = CBORObject.FromJSONBytes(bytes);
@@ -1067,13 +1067,13 @@ import com.upokecenter.numbers.*;
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
-      if (!(bytes.length() > 0)) {
+      if (!(bytes.length > 0)) {
         return false;
       }
-      if (!((bytes.charAt(0) >= 0x30 && bytes.charAt(0) <= 0x39) || bytes.charAt(0) == (byte)'-')) {
+      if (!((bytes[0] >= 0x30 && bytes[0] <= 0x39) || bytes[0] == (byte)'-')) {
         return false;
       }
-      if (!(bytes.charAt(bytes.length() - 1) >= 0x30 && bytes.charAt(bytes.length() - 1) <=
+      if (!(bytes[bytes.length - 1] >= 0x30 && bytes[bytes.length - 1] <=
           0x39)) {
         return false;
       }
@@ -1099,13 +1099,13 @@ import com.upokecenter.numbers.*;
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
-      if (!(bytes.length() > 0)) {
+      if (!(bytes.length > 0)) {
         return false;
       }
-      if (!((bytes.charAt(0) >= 0x30 && bytes.charAt(0) <= 0x39) || bytes.charAt(0) == (byte)'-')) {
+      if (!((bytes[0] >= 0x30 && bytes[0] <= 0x39) || bytes[0] == (byte)'-')) {
         return false;
       }
-      if (!(bytes.charAt(bytes.length() - 1) >= 0x30 && bytes.charAt(bytes.length() - 1) <=
+      if (!(bytes[bytes.length - 1] >= 0x30 && bytes[bytes.length - 1] <=
           0x39)) {
         return false;
       }
@@ -2960,8 +2960,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (!on2.IsZero() && !on1a.IsFinite()) {
         Assert.fail("on1a is not finite\n" +
           "o1=" + on1 + "\n" + "o2=" + on2 + "\n" +
-          "{\nbyte[] bytes1 = " + TestCommon.ToByteArrayString(eb1) + ";\n" +
-          "byte[] bytes2 =" + TestCommon.ToByteArrayString(eb2) + ";\n" +
+          "{\nbyte[] by" +
+          "tes1 = " + TestCommon.ToByteArrayString(eb1) + ";\n" +
+          "byte[] by" + "tes2 =" + TestCommon.ToByteArrayString(eb2) + ";\n" +
           "TestAsNumberMultiplyDivideOne(\nCBORObject.D" +
           "ecodeFromBytes(bytes1),\n" +
           "CBORObject.DecodeFromBytes(bytes2));\n}\n");
@@ -3776,10 +3777,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestSucceedingDecode(bytes);
       bytes = new byte[] { 0x7f, 0x63, (byte)0xe2, (byte)0x80, (byte)0x80, (byte)0xff };
       TestSucceedingDecode(bytes);
-      bytes = new byte[] { 0x7f, 0x64, (byte)0xe2, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff };
+      bytes = new byte[] { 0x7f, 0x64, (byte)0xf2, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff };
       TestSucceedingDecode(bytes);
-      // Disallow splitting code points in an indefinite-length
-      // text String
+      // Disallow splitting code points in indefinite-length
+      // text strings
       bytes = new byte[] { 0x7f, 0x61, (byte)0xc2, 0x61, (byte)0x80, (byte)0xff };
       TestFailingDecode(bytes);
       bytes = new byte[] { 0x7f, 0x61, (byte)0xe2, 0x62, (byte)0x80, (byte)0x80, (byte)0xff };
@@ -3802,7 +3803,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestFailingDecode(bytes);
       bytes = new byte[] { 0x7f, 0x62, (byte)0xe2, (byte)0x80, 0x62, (byte)0x80, 0x20, (byte)0xff };
       TestFailingDecode(bytes);
-      bytes = new byte[] { 0x7f, 0x63, (byte)0xf2, (byte)0x80, (byte)0x80, 0x62, (byte)0x80, 0x20, (byte)0xff };
+      bytes = new byte[] {
+        0x7f, 0x63, (byte)0xf2, (byte)0x80, (byte)0x80, 0x62, (byte)0x80, 0x20,
+        (byte)0xff,
+       };
       TestFailingDecode(bytes);
     }
 

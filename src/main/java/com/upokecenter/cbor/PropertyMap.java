@@ -732,16 +732,18 @@ if(objThis.getType()==CBORType.Map){
     rawType.equals(HashMap.class)){
   if(typeArguments==null || typeArguments.length<2){
    HashMap alist=new HashMap();
-   for(CBORObject cbor : objThis.getKeys()){
-    CBORObject cborValue=objThis.get(cbor);
+   for(Map.Entry<CBORObject, CBORObject> entry : objThis.getEntries()){
+    CBORObject cbor=entry.getKey();
+    CBORObject cborValue=entry.getValue();
     alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
       cborValue.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    HashMap alist=new HashMap();
-   for(CBORObject cbor : objThis.getKeys()){
-    CBORObject cborValue=objThis.get(cbor);
+   for(Map.Entry<CBORObject, CBORObject> entry : objThis.getEntries()){
+    CBORObject cbor=entry.getKey();
+    CBORObject cborValue=entry.getValue();
     alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),
       cborValue.ToObject(typeArguments[1],mapper,options,depth+1));
    }
@@ -752,16 +754,18 @@ if(objThis.getType()==CBORType.Map){
     rawType.equals(TreeMap.class) || rawType.equals(Map.class)){
   if(typeArguments==null || typeArguments.length<2){
    TreeMap alist=new TreeMap();
-   for(CBORObject cbor : objThis.getKeys()){
-    CBORObject cborValue=objThis.get(cbor);
+   for(Map.Entry<CBORObject, CBORObject> entry : objThis.getEntries()){
+    CBORObject cbor=entry.getKey();
+    CBORObject cborValue=entry.getValue();
     alist.put(cbor.ToObject(Object.class,mapper,options,depth+1),
       cborValue.ToObject(Object.class,mapper,options,depth+1));
    }
    return alist;
   } else {
    TreeMap alist=new TreeMap();
-   for(CBORObject cbor : objThis.getKeys()){
-    CBORObject cborValue=objThis.get(cbor);
+   for(Map.Entry<CBORObject, CBORObject> entry : objThis.getEntries()){
+    CBORObject cbor=entry.getKey();
+    CBORObject cborValue=entry.getValue();
     alist.put(cbor.ToObject(typeArguments[0],mapper,options,depth+1),
       cborValue.ToObject(typeArguments[1],mapper,options,depth+1));
    }
@@ -833,9 +837,8 @@ if(IsProblematicForSerialization((Class<?>)rawType)){
     int nanoseconds=((int)(time%1000L));
     if(nanoseconds<0)nanoseconds=1000+nanoseconds;
     nanoseconds*=TicksDivFracSeconds;
-    EDecimal edec=EDecimal.FromInt64(time).Divide(
-      EDecimal.FromInt32(1000));
-    CBORUtilities.BreakDownSecondsSinceEpoch(edec,year,lf);
+    long seconds=time/1000;
+    CBORUtilities.BreakDownSecondsSinceEpoch(seconds,year,lf);
     lf[5]=nanoseconds;
    }
 
