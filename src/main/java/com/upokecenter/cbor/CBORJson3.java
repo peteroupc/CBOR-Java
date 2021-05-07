@@ -525,22 +525,24 @@ import com.upokecenter.numbers.*;
             // constructor directly
             obj = CBORObject.FromRaw(this.NextJSONString());
             key = obj;
-            if (!this.options.getAllowDuplicateKeys() &&
-              myHashMap.containsKey(obj)) {
-              this.RaiseError("Key already exists: " + key);
-              return null;
-            }
             break;
           }
         }
         if (this.SkipWhitespaceJSON() != ':') {
           this.RaiseError("Expected a ':' after a key");
         }
+        int oldCount = myHashMap.size();
         // NOTE: Will overwrite existing value
         myHashMap.put(key, this.NextJSONValue(
             this.SkipWhitespaceJSON(),
             nextchar,
             depth));
+        int newCount = myHashMap.size();
+        if (!this.options.getAllowDuplicateKeys() &&
+              oldCount == newCount) {
+              this.RaiseError("Duplicate key already exists");
+              return null;
+        }
         switch (nextchar[0]) {
           case ',':
             seenComma = true;

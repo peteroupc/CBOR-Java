@@ -1076,42 +1076,63 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           0).CanFitInDouble())) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleA() {
       if (CBORObject.True.CanFitInDouble()) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleB() {
       if (ToObjectTest.TestToFromObjectRoundTrip("")
         .CanFitInDouble()) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleC() {
       if (CBORObject.NewArray().CanFitInDouble()) {
  Assert.fail();
  }
       if (CBORObject.NewMap().CanFitInDouble()) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleD() {
       if (CBORObject.False.CanFitInDouble()) {
  Assert.fail();
  }
       if (CBORObject.Null.CanFitInDouble()) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleE() {
       if (CBORObject.Undefined.CanFitInDouble()) {
  Assert.fail();
  }
+    }
+    @Test
+    public void TestCanFitInDoubleF() {
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
+        if (cbornumber == null) {
+          Assert.fail();
+        }
         if (numberinfo.get("double").AsBoolean()) {
-          if (!(cbornumber.CanFitInDouble())) {
- Assert.fail();
- }
+          if (!cbornumber.CanFitInDouble()) {
+            Assert.fail(cbornumber.toString());
+          }
         } else {
-          if (cbornumber.CanFitInDouble()) {
- Assert.fail();
- }
+if (cbornumber.CanFitInDouble()) {
+  Assert.fail(cbornumber.toString());
+}
         }
       }
       RandomGenerator rand = new RandomGenerator();
@@ -1120,6 +1141,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // exponent
         Object o = RandomObjects.RandomDouble(rand, i);
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(o);
+        if (cbornumber == null) {
+          Assert.fail();
+        }
         if (!(cbornumber.CanFitInDouble())) {
  Assert.fail();
  }
@@ -1154,15 +1178,26 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        if (numberinfo.get("number") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("int32") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("isintegral") == null) {
+          Assert.fail();
+        }
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
+        if (cbornumber == null) {
+          Assert.fail();
+        }
         if (numberinfo.get("int32").AsBoolean() &&
           numberinfo.get("isintegral").AsBoolean()) {
           if (!(CInt32(cbornumber))) {
  Assert.fail();
  }
-
           Assert.assertTrue(
             CInt32(ToObjectTest.TestToFromObjectRoundTrip(
                 cbornumber.AsInt32())));
@@ -1175,11 +1210,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static boolean CInt64(CBORObject cbor) {
-      return cbor.isNumber() && cbor.AsNumber().CanFitInInt64();
+      return cbor != null && cbor.isNumber() && cbor.AsNumber().CanFitInInt64();
     }
 
     private static boolean CInt32(CBORObject cbor) {
-      return cbor.isNumber() && cbor.AsNumber().CanFitInInt32();
+      return cbor != null && cbor.isNumber() && cbor.AsNumber().CanFitInInt32();
     }
 
     @Test
@@ -1259,6 +1294,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        if (numberinfo.get("number") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("int64") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("isintegral") == null) {
+          Assert.fail();
+        }
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
@@ -1310,6 +1354,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        if (numberinfo.get("number") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("single") == null) {
+          Assert.fail();
+        }
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
@@ -1394,6 +1444,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
+        if (numberinfo.get("number") == null) {
+          Assert.fail();
+        }
+        if (numberinfo.get("int32") == null) {
+          Assert.fail();
+        }
         String numberString = numberinfo.get("number").AsString();
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString(numberString));

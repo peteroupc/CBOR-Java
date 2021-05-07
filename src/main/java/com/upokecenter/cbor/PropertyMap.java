@@ -33,11 +33,15 @@ import com.upokecenter.numbers.*;
  */
 class PropertyMap {
   private static class MethodData {
-    private String name;
-    private Member method;
+    private final String name;
+    private final Member method;
+    private final String adjustedName;
+    private final String adjustedNameCamelCase;
     public MethodData(String name, Member method) {
         this.name=name;
         this.method=method;
+        this.adjustedName=GetAdjustedNameInternal(false);
+        this.adjustedNameCamelCase=GetAdjustedNameInternal(true);
     }
     public String getName() {
         return this.name;
@@ -114,7 +118,10 @@ class PropertyMap {
       if(IsIsMethod(name))return name.substring(2);
       return name;
     }
-    public String GetAdjustedName(boolean useCamelCase){
+    private String GetAdjustedName(boolean useCamelCase){
+       return useCamelCase ? this.adjustedNameCamelCase : this.adjustedName;
+    }
+    private String GetAdjustedNameInternal(boolean useCamelCase){
       if(method instanceof Field) {
        if(useCamelCase){
          return CBORUtilities.FirstCharLower(RemoveIs(this.name));
@@ -176,6 +183,11 @@ private static <T> List<T> Compact(List<T> list) {
   }
 }
 
+public static CBORObject GetOrDefault(Map<CBORObject, CBORObject> map,
+    CBORObject key, CBORObject defaultValue){
+  return map.getOrDefault(key, defaultValue);
+}
+
   private static List<MethodData> GetPropertyList(final Class<?> t, boolean setters) {
     synchronized(setters ? setterPropertyList : propertyLists) {
       List<MethodData> ret;
@@ -184,6 +196,11 @@ private static <T> List<T> Compact(List<T> list) {
         return ret;
       }
       ret = new ArrayList<MethodData>();
+      if (IsProblematicForSerialization(t)) {
+         ret.add(null);
+         (setters ? setterPropertyList : propertyLists).put(t, ret);
+         return null;
+      }
       List<Method> getMethods=new ArrayList<Method>();
       List<Method> setMethods=new ArrayList<Method>();
       List<Method> isMethods=new ArrayList<Method>();
@@ -377,50 +394,16 @@ if(!setters){
      return GetProperties(o, true);
   }
 
-  public static Object ObjectWithProperties(
-         Class<?> t,
-         Iterable<Map.Entry<String, CBORObject>> keysValues,
-         CBORTypeMapper mapper, PODOptions options,
-         int depth) {
-      try {
-      Object o = t.getDeclaredConstructor().newInstance();
-      Map<String, CBORObject> dict = new TreeMap<String, CBORObject>();
-      for (Map.Entry<String, CBORObject> kv : keysValues) {
-        String name = kv.getKey();
-        dict.put(name,kv.getValue());
-      }
-      for (MethodData key : GetPropertyList(o.getClass(),true)) {
-        String name = key.GetAdjustedName(
-            options==null ? true : options.getUseCamelCase());
-        if (dict.containsKey(name)) {
-          CBORObject dget=dict.get(name);
-          Object dobj = dget.ToObject(
-             key.GetValueType(),mapper,options, depth+1);
-          key.SetValue(o, dobj);
-        }
-      }
-      return o;
-    } catch(IllegalArgumentException ex) {
-      throw (RuntimeException)new CBORException("").initCause(ex);
-    } catch(InvocationTargetException ex) {
-      throw (RuntimeException)new CBORException("").initCause(ex);
-    } catch(NoSuchMethodException ex) {
-      throw (RuntimeException)new CBORException("").initCause(ex);
-    } catch(InstantiationException ex) {
-      throw (RuntimeException)new CBORException("").initCause(ex);
-    } catch (IllegalAccessException ex) {
-      throw (RuntimeException)new CBORException("").initCause(ex);
-    }
-    }
-
   public static Iterable<Map.Entry<String, Object>> GetProperties(
        final Object o, boolean useCamelCase) {
-    List<Map.Entry<String, Object>> ret =
-        new ArrayList<Map.Entry<String, Object>>();
-    if(IsProblematicForSerialization(o.getClass())){
-       return ret;
-    }
-      for(MethodData key : GetPropertyList(o.getClass())) {
+      List<MethodData> list=GetPropertyList(o.getClass());
+      if(list.size()==1 && list.get(0)==null) {
+         // problematic for serialization
+         return new ArrayList<Map.Entry<String, Object>>();
+      }
+      List<Map.Entry<String, Object>> ret =
+        new ArrayList<Map.Entry<String, Object>>(list.size());
+      for(MethodData key : list) {
         ret.add(new AbstractMap.SimpleEntry<String, Object>(
             key.GetAdjustedName(useCamelCase),
             key.GetValue(o)));
@@ -515,12 +498,23 @@ if(!setters){
 
     public static CBORObject FromObjectOther(Object obj) {
       if (obj instanceof BigDecimal) {
+        // TODO: Avoid going through EDecimal
         BigDecimal bd = ((BigDecimal)obj);
         EInteger ei = EInteger.FromBytes(bd.unscaledValue().toByteArray(),false);
-        EInteger scale = EInteger.FromInt32(bd.scale()).Negate();
-        return CBORObject.FromObject(EDecimal.Create(ei, scale));
+        int iscale=bd.scale();
+        if(iscale==Integer.MIN_VALUE) {
+           long longscale=-((long)iscale);
+           return CBORObject.NewArray(
+                CBORObject.FromObject(longscale),
+                CBORObject.FromObject(ei)).WithTag(4);
+        } else {
+           return CBORObject.NewArray(
+                CBORObject.FromObject(-iscale),
+                CBORObject.FromObject(ei)).WithTag(4);
+        }
       }
       if (obj instanceof BigInteger) {
+        // TODO: Avoid going through EInteger
         BigInteger bi = ((BigInteger)obj);
         EInteger ei = EInteger.FromBytes(bi.toByteArray(),false);
         return CBORObject.FromObject(ei);
@@ -550,20 +544,26 @@ if(Type.class.isAssignableFrom(cls) ||
        Constructor.class.isAssignableFrom(cls)){
       return true;
 }
-if((name.startsWith("org.springframework.") ||
+//System.out.println(name);
+if(name.startsWith("com.")) {
+if(name.startsWith("com.sun.rowset") ||
+   name.startsWith("com.sun.org.apache.") ||
+   name.startsWith("com.sun.jndi.") ||
+   name.startsWith("com.mchange.v2.c3p0.")) {
+     return true;
+   }
+} else {
+if(name.startsWith("org.springframework.") ||
    name.startsWith("java.io.") ||
    name.startsWith("java.lang.annotation.") ||
    name.startsWith("java.security.SignedObject") ||
-   name.startsWith("com.sun.rowset") ||
-   name.startsWith("com.sun.org.apache.") ||
    name.startsWith("org.apache.xalan.") ||
    name.startsWith("org.apache.xpath.") ||
    name.startsWith("org.codehaus.groovy.") ||
-   name.startsWith("com.sun.jndi.") ||
    name.startsWith("groovy.util.Expando") ||
-   name.startsWith("java.util.logging.") ||
-   name.startsWith("com.mchange.v2.c3p0."))){
+   name.startsWith("java.util.logging.")){
    return true;
+}
 }
 return false;
 }
@@ -779,30 +779,80 @@ String name=((Class<?>)rawType).getName();
 if(name==null ){
   throw new CBORException();
 }
-if(IsProblematicForSerialization((Class<?>)rawType)){
-  throw new CBORException(name);
-}
-
         ArrayList<Map.Entry<String, CBORObject>> values =
           new ArrayList<Map.Entry<String, CBORObject>>();
-        for (MethodData method : GetPropertyList(
-             (Class<?>)rawType,true/* getting list of setters*/)) {
+        ArrayList<MethodData> methods=new ArrayList<MethodData>();
+        List<MethodData> proplist=GetPropertyList(
+             (Class<?>)rawType,true/* getting list of setters*/);
+        if(proplist.size()==1 && proplist.get(0)==null){
+           // problematic for serialization
+          throw new CBORException();
+        }
+        for (MethodData method : proplist) {
           String key = method.GetAdjustedName(
-             options==null ? true : options.getUseCamelCase());
-          if (objThis.ContainsKey(key)) {
-            CBORObject cborValue = objThis.get(key);
+             options==null || options.getUseCamelCase());
+          CBORObject cborValue = objThis.GetOrDefault(key, null);
+          if (cborValue != null) {
             Map.Entry<String, CBORObject> dict =
                 new AbstractMap.SimpleEntry<String, CBORObject>(
               key,
               cborValue);
             values.add(dict);
+            methods.add(method);
           }
         }
-        return PropertyMap.ObjectWithProperties(
-    (Class<?>)rawType,
-    values,
-    mapper,
-    options,depth);
+
+      try {
+      Class<?> rawClass=(Class<?>)rawType;
+      Object o = rawClass.getDeclaredConstructor().newInstance();
+      Class<?> realClass=o.getClass();
+      if(rawClass==realClass) {
+      int index=0;
+      for (Map.Entry<String, CBORObject> kv : values) {
+          MethodData method=methods.get(index);
+          Object dobj = kv.getValue().ToObject(
+             method.GetValueType(),mapper,options, depth+1);
+          method.SetValue(o, dobj);
+          index++;
+      }
+      } else {
+      System.out.println("class="+rawClass+","+realClass);
+      Map<String, CBORObject> dict;
+      dict = new HashMap<String, CBORObject>();
+      for (Map.Entry<String, CBORObject> kv : values) {
+        dict.put(kv.getKey(),kv.getValue());
+        if(dict.size()==50) {
+           dict=new TreeMap<String, CBORObject>(dict);
+        }
+      }
+         proplist=GetPropertyList(o.getClass(),true/* getting list of setters*/);
+        if(proplist.size()==1 && proplist.get(0)==null){
+           // problematic for serialization
+          throw new CBORException();
+        }
+              for (MethodData key : proplist) {
+        String kname = key.GetAdjustedName(
+            options==null || options.getUseCamelCase());
+        if (dict.containsKey(kname)) {
+          CBORObject dget=dict.get(kname);
+          Object dobj = dget.ToObject(
+             key.GetValueType(),mapper,options, depth+1);
+          key.SetValue(o, dobj);
+        }
+      }
+      }
+      return o;
+    } catch(IllegalArgumentException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
+    } catch(InvocationTargetException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
+    } catch(NoSuchMethodException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
+    } catch(InstantiationException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
+    } catch (IllegalAccessException ex) {
+      throw (RuntimeException)new CBORException("").initCause(ex);
+    }
 }
        throw new CBORException();
     }

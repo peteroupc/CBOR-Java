@@ -440,12 +440,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               CBORObject key = this.ReadForFirstByte(headByte);
               CBORObject value = this.ReadInternal();
               --this.depth;
-              if (!this.options.getAllowDuplicateKeys()) {
-                if (cbor.ContainsKey(key)) {
-                  throw new CBORException("Duplicate key already exists");
-                }
-              }
+              int oldCount = cbor.size();
               cbor.set(key, value);
+              int newCount = cbor.size();
+              if (!this.options.getAllowDuplicateKeys() && oldCount == newCount) {
+                  throw new CBORException("Duplicate key already exists");
+              }
             }
             return cbor;
           }

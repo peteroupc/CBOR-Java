@@ -31,29 +31,33 @@ private CBORUtilities() {
       if (strB == null) {
         return 1;
       }
-      if (strA.length() == 0) {
-        return strB.length() == 0 ? 0 : -1;
+      int alen = strA.length();
+      int blen = strB.length();
+      if (alen == 0) {
+        return blen == 0 ? 0 : -1;
       }
-      if (strB.length() == 0) {
-        return strA.length() == 0 ? 0 : 1;
+      if (blen == 0) {
+        return alen == 0 ? 0 : 1;
       }
       int cmp = 0;
-      if (strA.length() < 128 && strB.length() < 128) {
-        int istrAUpperBound = strA.length() * 3;
-        if (istrAUpperBound < strB.length()) {
+      if (alen < 128 && blen < 128) {
+        int istrAUpperBound = alen * 3;
+        if (istrAUpperBound < blen) {
           return -1;
         }
-        int istrBUpperBound = strB.length() * 3;
-        if (istrBUpperBound < strA.length()) {
+        int istrBUpperBound = blen * 3;
+        if (istrBUpperBound < alen) {
           return 1;
         }
         cmp = 0;
-        if (strA.length() == strB.length()) {
+        if (alen == blen) {
           boolean equalStrings = true;
-          for (int i = 0; i < strA.length(); ++i) {
-            if (strA.charAt(i) != strB.charAt(i)) {
+          for (int i = 0; i < alen; ++i) {
+            char sai = strA.charAt(i);
+            char sbi = strB.charAt(i);
+            if (sai != sbi) {
               equalStrings = false;
-              cmp = (strA.charAt(i) < strB.charAt(i)) ? -1 : 1;
+              cmp = (sai < sbi) ? -1 : 1;
               break;
             }
           }
@@ -62,37 +66,37 @@ private CBORUtilities() {
           }
         }
         boolean nonAscii = false;
-        for (int i = 0; i < strA.length(); ++i) {
+        for (int i = 0; i < alen; ++i) {
           if (strA.charAt(i) >= 0x80) {
             nonAscii = true;
             break;
           }
         }
-        for (int i = 0; i < strB.length(); ++i) {
+        for (int i = 0; i < blen; ++i) {
           if (strB.charAt(i) >= 0x80) {
             nonAscii = true;
             break;
           }
         }
         if (!nonAscii) {
-          if (strA.length() != strB.length()) {
-            return strA.length() < strB.length() ? -1 : 1;
+          if (alen != blen) {
+            return alen < blen ? -1 : 1;
           }
-          if (strA.length() == strB.length()) {
+          if (alen == blen) {
             return cmp;
           }
         }
       } else {
-        long strAUpperBound = strA.length() * 3;
-        if (strAUpperBound < strB.length()) {
+        long strAUpperBound = alen * 3;
+        if (strAUpperBound < blen) {
           return -1;
         }
-        long strBUpperBound = strB.length() * 3;
-        if (strBUpperBound < strA.length()) {
+        long strBUpperBound = blen * 3;
+        if (strBUpperBound < alen) {
           return 1;
         }
       }
-      // System.out.println("slow path "+strA.length()+","+strB.length());
+      // System.out.println("slow path "+alen+","+blen);
       int sapos = 0;
       int sbpos = 0;
       long sautf8 = 0L;
@@ -101,11 +105,11 @@ private CBORUtilities() {
       boolean haveboth = true;
       while (true) {
         int sa = 0, sb = 0;
-        if (sapos == strA.length()) {
+        if (sapos == alen) {
           haveboth = false;
           if (sbutf8 > sautf8) {
             return -1;
-          } else if (sbpos == strB.length()) {
+          } else if (sbpos == blen) {
             break;
           } else if (cmp == 0) {
             cmp = -1;
@@ -129,11 +133,11 @@ private CBORUtilities() {
             ++sapos;
           }
         }
-        if (sbpos == strB.length()) {
+        if (sbpos == blen) {
           haveboth = false;
           if (sautf8 > sbutf8) {
             return 1;
-          } else if (sapos == strA.length()) {
+          } else if (sapos == alen) {
             break;
           } else if (cmp == 0) {
             cmp = 1;
@@ -612,7 +616,7 @@ private CBORUtilities() {
     }
 
     private static long FloorDiv(long longA, int longN) {
-      return longA >= 0 ? longA / longN : (-1-longA) /longN;
+      return longA >= 0 ? longA / longN : (-1 - longA) / longN;
     }
 
     private static EInteger FloorMod(EInteger a, EInteger n) {
@@ -658,24 +662,26 @@ private CBORUtilities() {
       if (month <= 0 || month > 12) {
         throw new IllegalArgumentException("month");
       }
-      int[] dayArray = (year.Remainder(4).signum() != 0 || (
-            year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
-            0)) ? ValueNormalDays : ValueLeapDays;
-      if (day.compareTo(100) > 0) {
-        // Number of days in a 400-year block
-        EInteger count = day.Divide(146097);
-        day = day.Subtract(count.Multiply(146097));
-        year = year.Add(count.Multiply(400));
-      }
-      if (day.compareTo(-101) < 0) {
-        // Number of days in a 400-year block
-        EInteger count = day.Abs().Divide(146097);
-        day = day.Add(count.Multiply(146097));
-        year = year.Subtract(count.Multiply(400));
-      }
+      int[] dayArray;
       if (year.CanFitInInt32() && day.CanFitInInt32()) {
         long longYear = year.ToInt32Checked();
         int intDay = day.ToInt32Checked();
+        if (intDay > 100) {
+          // Number of days in a 400-year block
+          int intCount = intDay / 146097;
+          intDay = (intDay - (intCount * 146097));
+          longYear = (longYear + (intCount * 400));;
+        }
+        if (intDay < -101) {
+        // Number of days in a 400-year block
+        int intCount = (intDay == Integer.MIN_VALUE) ? 14699 : Math.abs(intDay)
+/ 146097;
+        intDay = (intDay + (intCount * 146097));
+        longYear = (longYear - (intCount * 400));
+      }
+        dayArray = ((longYear & 3) != 0 || (
+            (longYear % 100) == 0 && (longYear % 400) !=
+            0)) ? ValueNormalDays : ValueLeapDays;
         if (longYear == 1970 && month == 1 && intDay > 0 && intDay >= 10957) {
            // Add enough days to move from 1/1970 to 1/2000
            longYear = 2000;
@@ -693,6 +699,16 @@ private CBORUtilities() {
            dayArray = ((longYear & 0x03) != 0 || (
                 longYear % 100 == 0 && longYear % 400 != 0)) ? ValueNormalDays :
               ValueLeapDays;
+         }
+         while (intDay > 366) {
+           if ((longYear & 0x03) != 0 || (longYear % 100 == 0 && longYear %
+400 != 0)) {
+                ++longYear;
+                intDay -= 365;
+            } else {
+                ++longYear;
+                intDay -= 366;
+            }
          }
          while (true) {
         int intDays = dayArray[month];
@@ -726,6 +742,21 @@ private CBORUtilities() {
       year = EInteger.FromInt64(longYear);
       day = EInteger.FromInt32(intDay);
       } else {
+      if (day.compareTo(100) > 0) {
+        // Number of days in a 400-year block
+        EInteger count = day.Divide(146097);
+        day = day.Subtract(count.Multiply(146097));
+        year = year.Add(count.Multiply(400));
+      }
+      if (day.compareTo(-101) < 0) {
+        // Number of days in a 400-year block
+        EInteger count = day.Abs().Divide(146097);
+        day = day.Add(count.Multiply(146097));
+        year = year.Subtract(count.Multiply(400));
+      }
+      dayArray = (year.Remainder(4).signum() != 0 || (
+            year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
+            0)) ? ValueNormalDays : ValueLeapDays;
       while (true) {
         EInteger days = EInteger.FromInt32(dayArray[month]);
         if (day.signum() > 0 && day.compareTo(days) <= 0) {

@@ -20,7 +20,6 @@ import com.upokecenter.numbers.*;
 // for ReadJSON, FromJSONString, FromJSONBytes
 // TODO: In Java version add overloads for Class<T> in overloads
 // that take java.lang.reflect.getType()
-// TODO: Add TryGetValue method
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -166,6 +165,7 @@ import com.upokecenter.numbers.*;
     private static final int CBORObjectTypeSimpleValue = 7;
     private static final int CBORObjectTypeDouble = 8;
     private static final int CBORObjectTypeTextStringUtf8 = 9;
+    private static final int CBORObjectTypeTextStringAscii = 10;
 
     private static final int StreamedStringBufferLength = 4096;
 
@@ -480,6 +480,7 @@ import com.upokecenter.numbers.*;
             return CBORType.ByteString;
           case CBORObjectTypeTextString:
           case CBORObjectTypeTextStringUtf8:
+          case CBORObjectTypeTextStringAscii:
             return CBORType.TextString;
           default: throw new IllegalStateException("Unexpected data type");
         }
@@ -645,7 +646,7 @@ import com.upokecenter.numbers.*;
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> map = this.AsMap();
         CBORObject ckey = CBORObject.FromObject(key);
-        return (!map.containsKey(ckey)) ? defaultValue : map.get(ckey);
+        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
       }
       return defaultValue;
     }
@@ -1932,6 +1933,11 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         size = (size + IntegerByteLength(bytes.length));
         return size + bytes.length;
       }
+      if (cbor.getItemType() == CBORObjectTypeTextStringAscii) {
+        String str = (String)this.getThisItem();
+        size = (size + IntegerByteLength(str.length()));
+        return size + str.length();
+      }
       switch (cbor.getType()) {
         case Integer: {
           if (cbor.CanValueFitInInt64()) {
@@ -2200,11 +2206,14 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       if (strValue.length() == 0) {
         return GetFixedObject(0x60);
       }
-      if (DataUtilities.GetUtf8Length(strValue, false) < 0) {
+      long utf8Length = DataUtilities.GetUtf8Length(strValue, false);
+      if (utf8Length < 0) {
         throw new IllegalArgumentException("String contains an unpaired " +
           "surrogate code point.");
       }
-      return new CBORObject(CBORObjectTypeTextString, strValue);
+      return new CBORObject(
+        strValue.length() == utf8Length ? CBORObjectTypeTextStringAscii : CBORObjectTypeTextString,
+        strValue);
     }
 
     /**
@@ -4592,7 +4601,8 @@ public static void Write(
     public String AsString() {
       int type = this.getItemType();
       switch (type) {
-        case CBORObjectTypeTextString: {
+        case CBORObjectTypeTextString:
+        case CBORObjectTypeTextStringAscii: {
           return (String)this.getThisItem();
         }
         case CBORObjectTypeTextStringUtf8: {
@@ -4801,6 +4811,15 @@ public int compareTo(CBORObject other) {
                 (byte[])objB);
             break;
           }
+          case CBORObjectTypeTextStringAscii: {
+            String strA = (String)objA;
+            String strB = (String)objB;
+            int alen = strA.length();
+            int blen = strB.length();
+            cmp = (alen < blen) ? (-1) : ((alen > blen) ? 1 :
+strA.compareTo(strB));
+            break;
+          }
           case CBORObjectTypeTextString: {
             String strA = (String)objA;
             String strB = (String)objB;
@@ -4847,20 +4866,37 @@ public int compareTo(CBORObject other) {
         cmp = CBORUtilities.ByteArrayCompare(
             this.EncodeToBytes(),
             other.EncodeToBytes());
-      } else if (typeB == CBORObjectTypeTextString && typeA ==
+      } else if ((typeB == CBORObjectTypeTextString || typeB ==
+CBORObjectTypeTextStringAscii) && typeA ==
         CBORObjectTypeTextStringUtf8) {
         cmp = -CBORUtilities.CompareUtf16Utf8LengthFirst(
             (String)objB,
             (byte[])objA);
-      } else if (typeA == CBORObjectTypeTextString && typeB ==
+      } else if ((typeA == CBORObjectTypeTextString || typeA ==
+CBORObjectTypeTextStringAscii) && typeB ==
+        CBORObjectTypeTextStringUtf8) {
+        cmp = CBORUtilities.CompareUtf16Utf8LengthFirst(
+            (String)objA,
+            (byte[])objB);
+      } else if ((typeA == CBORObjectTypeTextString && typeB ==
+CBORObjectTypeTextStringAscii) ||
+         (typeB == CBORObjectTypeTextString && typeA ==
+CBORObjectTypeTextStringAscii)) {
+        cmp = -CBORUtilities.CompareStringsAsUtf8LengthFirst(
+            (String)objB,
+            (String)objA);
+      } else if ((typeA == CBORObjectTypeTextString || typeA ==
+CBORObjectTypeTextStringAscii) && typeB ==
         CBORObjectTypeTextStringUtf8) {
         cmp = CBORUtilities.CompareUtf16Utf8LengthFirst(
             (String)objA,
             (byte[])objB);
       } else {
-        int ta = (typeA == CBORObjectTypeTextStringUtf8) ?
+        int ta = (typeA == CBORObjectTypeTextStringUtf8 || typeA ==
+CBORObjectTypeTextStringAscii) ?
           CBORObjectTypeTextString : typeA;
-        int tb = (typeB == CBORObjectTypeTextStringUtf8) ?
+        int tb = (typeB == CBORObjectTypeTextStringUtf8 || typeB ==
+CBORObjectTypeTextStringAscii) ?
           CBORObjectTypeTextString : typeB;
         /* NOTE: itemtypeValue numbers are ordered such that they
         // correspond to the lexicographical order of their CBOR encodings
@@ -5021,7 +5057,8 @@ public int compareTo(CBORObject other) {
       }
       if (!hasComplexTag) {
         switch (this.getItemType()) {
-          case CBORObjectTypeTextString: {
+          case CBORObjectTypeTextString:
+          case CBORObjectTypeTextStringAscii: {
             byte[] ret = GetOptimizedBytesIfShortAscii(
                 this.AsString(), tagged ? (((int)tagbyte) & 0xff) : -1);
             if (ret != null) {
@@ -5150,13 +5187,15 @@ public boolean equals(CBORObject other) {
       if (this == otherValue) {
         return true;
       }
-      if (this.itemtypeValue == CBORObjectTypeTextString &&
+      if ((this.itemtypeValue == CBORObjectTypeTextString ||
+this.itemtypeValue == CBORObjectTypeTextStringAscii) &&
         otherValue.itemtypeValue == CBORObjectTypeTextStringUtf8) {
         return CBORUtilities.StringEqualsUtf8(
             (String)this.itemValue,
             (byte[])otherValue.itemValue);
       }
-      if (otherValue.itemtypeValue == CBORObjectTypeTextString &&
+      if ((otherValue.itemtypeValue == CBORObjectTypeTextString ||
+otherValue.itemtypeValue == CBORObjectTypeTextStringAscii) &&
         this.itemtypeValue == CBORObjectTypeTextStringUtf8) {
         return CBORUtilities.StringEqualsUtf8(
             (String)otherValue.itemValue,
@@ -5234,6 +5273,7 @@ public boolean equals(CBORObject other) {
               itemHashCode = CBORArrayHashCode(this.AsList());
               break;
             case CBORObjectTypeTextString:
+            case CBORObjectTypeTextStringAscii:
               itemHashCode = CBORUtilities.StringHashCode(
                   (String)this.itemValue);
               break;
@@ -6555,7 +6595,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           stream.write(arr, 0, arr.length);
           break;
         }
-        case CBORObjectTypeTextString: {
+        case CBORObjectTypeTextString:
+        case CBORObjectTypeTextStringAscii: {
           Write((String)this.getThisItem(), stream, options);
           break;
         }
