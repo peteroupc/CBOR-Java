@@ -5201,6 +5201,12 @@ otherValue.itemtypeValue == CBORObjectTypeTextStringAscii) &&
             (String)otherValue.itemValue,
             (byte[])this.itemValue);
       }
+      if ((otherValue.itemtypeValue == CBORObjectTypeTextString &&
+this.itemtypeValue == CBORObjectTypeTextStringAscii) || (this.itemtypeValue
+== CBORObjectTypeTextString && otherValue.itemtypeValue ==
+CBORObjectTypeTextStringAscii)) {
+        return ((this.itemValue) == null) ? ((otherValue.itemValue) == null) : (this.itemValue).equals(otherValue.itemValue);
+      }
       if (this.itemtypeValue != otherValue.itemtypeValue) {
         return false;
       }

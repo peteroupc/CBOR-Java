@@ -22,6 +22,8 @@ private CBORUtilities() {
     private static final String HexAlphabet = "0123456789ABCDEF";
     // Fractional seconds used in date conversion methods
     public static final int FractionalSeconds = 1000 * 1000 * 1000;
+    private static final EInteger EInteger1970 = EInteger.FromInt32(1970);
+    private static final EInteger EInteger86400 = EInteger.FromInt32(86400);
 
     public static int CompareStringsAsUtf8LengthFirst(String strA, String
       strB) {
@@ -625,7 +627,7 @@ private CBORUtilities() {
 
     private static long FloorModLong(long longA, int longN) {
       {
-         return longA - FloorDiv(longA, longN) * longN;
+        return longA - FloorDiv(longA, longN) * longN;
       }
     }
 
@@ -657,7 +659,8 @@ private CBORUtilities() {
       EInteger year,
       int month,
       EInteger day,
-      EInteger[] dest) {
+      EInteger[] outYear,
+      int[] outMonthDay) {
       // NOTE: This method assumes month is 1 to 12
       if (month <= 0 || month > 12) {
         throw new IllegalArgumentException("month");
@@ -670,128 +673,124 @@ private CBORUtilities() {
           // Number of days in a 400-year block
           int intCount = intDay / 146097;
           intDay = (intDay - (intCount * 146097));
-          longYear = (longYear + (intCount * 400));;
+          longYear = (longYear + (intCount * 400));
         }
         if (intDay < -101) {
-        // Number of days in a 400-year block
-        int intCount = (intDay == Integer.MIN_VALUE) ? 14699 : Math.abs(intDay)
-/ 146097;
-        intDay = (intDay + (intCount * 146097));
-        longYear = (longYear - (intCount * 400));
-      }
-        dayArray = ((longYear & 3) != 0 || (
-            (longYear % 100) == 0 && (longYear % 400) !=
-            0)) ? ValueNormalDays : ValueLeapDays;
+          // Number of days in a 400-year block
+          int intCount = (intDay == Integer.MIN_VALUE) ? 14699 : Math.abs(intDay)
+            / 146097;
+          intDay = (intDay + (intCount * 146097));
+          longYear = (longYear - (intCount * 400));
+        }
         if (longYear == 1970 && month == 1 && intDay > 0 && intDay >= 10957) {
-           // Add enough days to move from 1/1970 to 1/2000
-           longYear = 2000;
-           intDay -= 10957;
-           dayArray = ((longYear & 0x03) != 0 || (
-                  longYear % 100 == 0 &&
-                longYear % 400 != 0)) ? ValueNormalDays : ValueLeapDays;
+          // Add enough days to move from 1/1970 to 1/2000
+          longYear = 2000;
+          intDay -= 10957;
         }
         if (longYear == 2000 && month == 1 && intDay > 0 && intDay < 35064) {
-           // Add enough days to move from 1/2000 to closest 4-year block
-           // in the century.
-           int intCount = intDay / 1461;
-           intDay += intCount * 1461;
-           longYear -= intCount * 4;
-           dayArray = ((longYear & 0x03) != 0 || (
-                longYear % 100 == 0 && longYear % 400 != 0)) ? ValueNormalDays :
-              ValueLeapDays;
-         }
-         while (intDay > 366) {
-           if ((longYear & 0x03) != 0 || (longYear % 100 == 0 && longYear %
-400 != 0)) {
-                ++longYear;
-                intDay -= 365;
-            } else {
-                ++longYear;
-                intDay -= 366;
-            }
-         }
-         while (true) {
-        int intDays = dayArray[month];
-        if (intDay > 0 && intDay <= intDays) {
-          break;
+          // Add enough days to move from 1/2000 to closest 4-year block
+          // in the century.
+          int intCount = intDay / 1461;
+          intDay += intCount * 1461;
+          longYear -= intCount * 4;
         }
-        if (intDay > intDays) {
-          intDay -= intDays;
-          if (month == 12) {
-            month = 1;
+        while (intDay > 366) {
+          if ((longYear & 0x03) != 0 || (longYear % 100 == 0 && longYear %
+              400 != 0)) {
             ++longYear;
-            dayArray = ((longYear & 0x03) != 0 || (
-                  longYear % 100 == 0 &&
-                longYear % 400 != 0)) ? ValueNormalDays : ValueLeapDays;
+            intDay -= 365;
           } else {
-            ++month;
+            ++longYear;
+            intDay -= 366;
           }
         }
-        if (intDay <= 0) {
-          --month;
-          if (month <= 0) {
-            --longYear;
-            month = 12;
-            dayArray = ((longYear & 0x03) != 0 || (
-                longYear % 100 == 0 && longYear % 400 != 0)) ? ValueNormalDays :
-            ValueLeapDays;
+        dayArray = ((longYear & 0x03) != 0 || (
+              longYear % 100 == 0 && longYear % 400 != 0)) ? ValueNormalDays :
+          ValueLeapDays;
+        while (true) {
+          int intDays = dayArray[month];
+          if (intDay > 0 && intDay <= intDays) {
+            break;
           }
-          intDay += dayArray[month];
+          if (intDay > intDays) {
+            intDay -= intDays;
+            if (month == 12) {
+              month = 1;
+              ++longYear;
+              dayArray = ((longYear & 0x03) != 0 || (
+                    longYear % 100 == 0 &&
+                    longYear % 400 != 0)) ? ValueNormalDays : ValueLeapDays;
+            } else {
+              ++month;
+            }
+          }
+          if (intDay <= 0) {
+            --month;
+            if (month <= 0) {
+              --longYear;
+              month = 12;
+              dayArray = ((longYear & 0x03) != 0 || (
+                    longYear % 100 == 0 && longYear % 400 != 0)) ?
+ValueNormalDays :
+                ValueLeapDays;
+            }
+            intDay += dayArray[month];
+          }
         }
-      }
-      year = EInteger.FromInt64(longYear);
-      day = EInteger.FromInt32(intDay);
+        outMonthDay[0] = month;
+        outMonthDay[1] = intDay;
+        outYear[0] = EInteger.FromInt64(longYear);
       } else {
-      if (day.compareTo(100) > 0) {
-        // Number of days in a 400-year block
-        EInteger count = day.Divide(146097);
-        day = day.Subtract(count.Multiply(146097));
-        year = year.Add(count.Multiply(400));
-      }
-      if (day.compareTo(-101) < 0) {
-        // Number of days in a 400-year block
-        EInteger count = day.Abs().Divide(146097);
-        day = day.Add(count.Multiply(146097));
-        year = year.Subtract(count.Multiply(400));
-      }
-      dayArray = (year.Remainder(4).signum() != 0 || (
-            year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
-            0)) ? ValueNormalDays : ValueLeapDays;
-      while (true) {
-        EInteger days = EInteger.FromInt32(dayArray[month]);
-        if (day.signum() > 0 && day.compareTo(days) <= 0) {
-          break;
+        if (day.compareTo(100) > 0) {
+          // Number of days in a 400-year block
+          EInteger count = day.Divide(146097);
+          day = day.Subtract(count.Multiply(146097));
+          year = year.Add(count.Multiply(400));
         }
-        if (day.compareTo(days) > 0) {
-          day = day.Subtract(days);
-          if (month == 12) {
-            month = 1;
-            year = year.Add(1);
-            dayArray = (year.Remainder(4).signum() != 0 || (
-                  year.Remainder(100).signum() == 0 &&
-                  year.Remainder(400).signum() != 0)) ? ValueNormalDays :
-              ValueLeapDays;
-          } else {
-            ++month;
+        if (day.compareTo(-101) < 0) {
+          // Number of days in a 400-year block
+          EInteger count = day.Abs().Divide(146097);
+          day = day.Add(count.Multiply(146097));
+          year = year.Subtract(count.Multiply(400));
+        }
+        dayArray = (year.Remainder(4).signum() != 0 || (
+              year.Remainder(100).signum() == 0 && year.Remainder(400).signum() !=
+              0)) ? ValueNormalDays : ValueLeapDays;
+        while (true) {
+          EInteger days = EInteger.FromInt32(dayArray[month]);
+          if (day.signum() > 0 && day.compareTo(days) <= 0) {
+            break;
+          }
+          if (day.compareTo(days) > 0) {
+            day = day.Subtract(days);
+            if (month == 12) {
+              month = 1;
+              year = year.Add(1);
+              dayArray = (year.Remainder(4).signum() != 0 || (
+                    year.Remainder(100).signum() == 0 &&
+                    year.Remainder(400).signum() != 0)) ? ValueNormalDays :
+                ValueLeapDays;
+            } else {
+              ++month;
+            }
+          }
+          if (day.signum() <= 0) {
+            --month;
+            if (month <= 0) {
+              year = year.Add(-1);
+              month = 12;
+              dayArray = (year.Remainder(4).signum() != 0 || (
+                    year.Remainder(100).signum() == 0 &&
+                    year.Remainder(400).signum() != 0)) ? ValueNormalDays :
+                ValueLeapDays;
+            }
+            day = day.Add(dayArray[month]);
           }
         }
-        if (day.signum() <= 0) {
-          --month;
-          if (month <= 0) {
-            year = year.Add(-1);
-            month = 12;
-            dayArray = (year.Remainder(4).signum() != 0 || (
-                year.Remainder(100).signum() == 0 &&
-                year.Remainder(400).signum() != 0)) ? ValueNormalDays :
-              ValueLeapDays;
-          }
-          day = day.Add(dayArray[month]);
-        }
+        outMonthDay[0] = month;
+        outMonthDay[1] = day.ToInt32Checked();
+        outYear[0] = year;
       }
-      }
-      dest[0] = year;
-      dest[1] = EInteger.FromInt32(month);
-      dest[2] = day;
     }
 
     /*
@@ -839,7 +838,7 @@ private CBORUtilities() {
           }
           if (!(currentYear.Remainder(4).signum() != 0 || (
                 currentYear.Remainder(100).signum() == 0 &&
-currentYear.Remainder(400).signum() !=
+                currentYear.Remainder(400).signum() !=
                 0))) {
             numDays = numDays.Subtract(1);
           }
@@ -875,7 +874,7 @@ currentYear.Remainder(400).signum() !=
         numDays = numDays.Add(year.Subtract(eileap).Add(3).Divide(4));
         if (currentYear.Remainder(100).signum() != 0) {
           currentYear = currentYear.Add(100 -
-currentYear.Remainder(100).ToInt32Checked());
+              currentYear.Remainder(100).ToInt32Checked());
         }
         while (currentYear.compareTo(year) < 0) {
           if (currentYear.Remainder(400).signum() != 0) {
@@ -900,18 +899,16 @@ currentYear.Remainder(100).ToInt32Checked());
       long longSecondsInDay = FloorModLong(seconds, 86400);
       int secondsInDay = ((int)longSecondsInDay);
       GetNormalizedPartProlepticGregorian(
-        EInteger.FromInt32(1970),
+        EInteger1970,
         1,
         EInteger.FromInt64(longDays),
-        normPart);
-      lesserFields[0] = normPart[1].ToInt32Checked();
-      lesserFields[1] = normPart[2].ToInt32Checked();
+        year,
+        lesserFields); // Fills out month and day in lesserFields[0]/[1]
       lesserFields[2] = secondsInDay / 3600;
       lesserFields[3] = (secondsInDay % 3600) / 60;
       lesserFields[4] = secondsInDay % 60;
       lesserFields[5] = 0;
       lesserFields[6] = 0;
-      year[0] = normPart[0];
     }
 
     public static void BreakDownSecondsSinceEpoch(
@@ -924,26 +921,23 @@ currentYear.Remainder(100).ToInt32Checked());
         .Subtract(EDecimal.FromEInteger(integerPart).Abs());
       int fractionalSeconds = fractionalPart.Multiply(FractionalSeconds)
         .ToInt32Checked();
-      EInteger[] normPart = new EInteger[3];
       EInteger days = FloorDiv(
           integerPart,
-          EInteger.FromInt32(86400)).Add(1);
+          EInteger86400).Add(1);
       int secondsInDay = FloorMod(
           integerPart,
-          EInteger.FromInt32(86400)).ToInt32Checked();
+          EInteger86400).ToInt32Checked();
       GetNormalizedPartProlepticGregorian(
-        EInteger.FromInt32(1970),
+        EInteger1970,
         1,
         days,
-        normPart);
-      lesserFields[0] = normPart[1].ToInt32Checked();
-      lesserFields[1] = normPart[2].ToInt32Checked();
+        year,
+        lesserFields); // Fills out month and day in lesserFields[0]/[1]
       lesserFields[2] = secondsInDay / 3600;
       lesserFields[3] = (secondsInDay % 3600) / 60;
       lesserFields[4] = secondsInDay % 60;
       lesserFields[5] = fractionalSeconds;
       lesserFields[6] = 0;
-      year[0] = normPart[0];
     }
 
     public static boolean NameStartsWithWord(String name, String word) {
@@ -1117,30 +1111,30 @@ currentYear.Remainder(100).ToInt32Checked());
       }
       if (7 < 0) {
         throw new IllegalArgumentException(" (" + 7 + ") is not greater or equal to" +
-"\u00200");
+          "\u00200");
       }
       if (lesserFields.length < 7) {
         throw new IllegalArgumentException(" (" + 7 + ") is not less or equal to " +
-lesserFields.length);
+          lesserFields.length);
       }
       if (lesserFields.length < 7) {
         throw new IllegalArgumentException("\"lesserFields\" + \"'s length\" (" +
-lesserFields.length + ") is not greater or equal to 7");
+          lesserFields.length + ") is not greater or equal to 7");
       }
       if (status == null) {
         throw new NullPointerException("status");
       }
       if (1 < 0) {
         throw new IllegalArgumentException(" (" + 1 + ") is not greater or equal to" +
-"\u00200");
+          "\u00200");
       }
       if (status.length < 1) {
         throw new IllegalArgumentException(" (" + 1 + ") is not less or equal to " +
-status.length);
+          status.length);
       }
       if (status.length < 1) {
         throw new IllegalArgumentException("\"status\" + \"'s length\" (" +
-status.length + ") is not greater or equal to 1");
+          status.length + ") is not greater or equal to 1");
       }
       // Status is 0 for integer, 1 for (lossy) double, 2 for failure
       if (lesserFields[6] != 0) {
@@ -1148,25 +1142,25 @@ status.length + ") is not greater or equal to 1");
           "Local time offsets not supported");
       }
       EInteger seconds = GetNumberOfDaysProlepticGregorian(
-        bigYear,
-        lesserFields[0],
-        lesserFields[1]);
+          bigYear,
+          lesserFields[0],
+          lesserFields[1]);
       seconds = seconds.Multiply(24).Add(lesserFields[2])
-          .Multiply(60).Add(lesserFields[3]).Multiply(60).Add(lesserFields[4]);
+        .Multiply(60).Add(lesserFields[3]).Multiply(60).Add(lesserFields[4]);
       if (lesserFields[5] == 0 && seconds.GetUnsignedBitLengthAsInt64() <= 64) {
-         // Can fit in major type 1 or 2
-         status[0] = 0;
-         return EFloat.FromEInteger(seconds);
+        // Can fit in major type 1 or 2
+        status[0] = 0;
+        return EFloat.FromEInteger(seconds);
       }
       // Add seconds and incorporate nanoseconds
       EDecimal d = EDecimal.FromInt32(lesserFields[5]).Divide(FractionalSeconds)
-         .Add(EDecimal.FromEInteger(seconds));
+        .Add(EDecimal.FromEInteger(seconds));
       double dbl = d.ToDouble();
       if (((dbl) == Double.POSITIVE_INFINITY) ||
              ((dbl) == Double.NEGATIVE_INFINITY) ||
              Double.isNaN(dbl)) {
-         status[0] = 2;
-         return null;
+        status[0] = 2;
+        return null;
       }
       status[0] = 1;
       return EFloat.FromDouble(dbl);
@@ -1443,7 +1437,7 @@ status.length + ") is not greater or equal to 1");
           return -1;
         }
         return ((mant & ((1L << (42 - (sexp - 1))) - 1)) == 0) ? (sign | rs) :
--1;
+          -1;
       }
     }
 
@@ -1463,7 +1457,7 @@ status.length + ") is not greater or equal to 1");
         return (mant & ((1L << 29) - 1)) == 0;
       } else if (sexp == -23) {
         return (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0 &&
-           RoundedShift(mant | (1L << 52), 29 - (sexp - 1)) != 0;
+          RoundedShift(mant | (1L << 52), 29 - (sexp - 1)) != 0;
       } else { // subnormal and zero
         return (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0;
       }
@@ -1551,10 +1545,10 @@ status.length + ") is not greater or equal to 1");
         int shift = 126 - exp;
         int rs = (1024 >> (145 - exp)) + (mant >> shift);
         return (mant != 0 && exp == 103) ? (-1) : ((bits & ((1 << shift) -
-1)) == 0 ? sign + rs : -1);
+                1)) == 0 ? sign + rs : -1);
       } else {
         return (bits & 0x1fff) == 0 ? sign + ((exp - 112) << 10) +
--(mant >> 13) : -1;
+          -(mant >> 13) : -1;
       }
     }
 
