@@ -369,6 +369,8 @@ import com.upokecenter.numbers.*;
      */
     public CBORObject DateTimeFieldsToCBORObject(EInteger bigYear, int[]
       lesserFields) {
+      // TODO: In next minor version, add overload that takes int rather than
+      // EInteger
       if (bigYear == null) {
         throw new NullPointerException("bigYear");
       }

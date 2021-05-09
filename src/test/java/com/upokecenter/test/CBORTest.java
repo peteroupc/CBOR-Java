@@ -3895,7 +3895,7 @@ options) {
        new int[] { 1, 1, 0, 0, Integer.MAX_VALUE, 0, 0 },
        new int[] { 1, 1, 0, 0, 0, -1, 0 },
        new int[] { 1, 1, 0, 0, 0, Integer.MIN_VALUE, 0 },
-       new int[] { 1, 1, 0, 0, 0, 1000*1000* 1000, 0 },
+       new int[] { 1, 1, 0, 0, 0, 1000 * 1000 * 1000, 0 },
        new int[] { 1, 1, 0, 0, 0, Integer.MAX_VALUE, 0 },
        new int[] { 1, 1, 0, 0, 0, 0, -1440 },
        new int[] { 1, 1, 0, 0, 0, 0, Integer.MIN_VALUE },
@@ -3909,12 +3909,13 @@ options) {
       for (int i = 0; i < valueBadLesserFields.length; ++i) {
          lesserFields = valueBadLesserFields.get(i);
          Assert.assertEquals("" + i,7,lesserFields.length);
-         if (lesserFields[3] ==0 && lesserFields[4]==0 && lesserFields[5]==0 &&
-lesserFields[6] ==0 && lesserFields[2]==0) {
+         if (lesserFields[3] == 0 && lesserFields[4] ==0 &&
+lesserFields[5]==0 &&
+lesserFields[6] == 0 && lesserFields[2] == 0) {
              try {
  conv.DateTimeFieldsToCBORObject(2000, lesserFields[0], lesserFields[1]);
  Assert.fail(
-  ("Should have failed: " + lesserFields[0] + " " + (lesserFields[1]))); }
+  "Should have failed: " + lesserFields[0] + " " + (lesserFields[1])); }
 catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -3922,7 +3923,7 @@ catch (CBORException ex) {
  throw new IllegalStateException("", ex);
 }
          }
-         if (lesserFields[5] ==0 && lesserFields[6]==0) {
+         if (lesserFields[5] == 0 && lesserFields[6] == 0) {
              try {
  conv.DateTimeFieldsToCBORObject(
    2000,
@@ -3931,10 +3932,7 @@ catch (CBORException ex) {
    lesserFields[2],
    lesserFields[3],
    lesserFields[4]);
- Assert.fail(
-  String.Format("Should have failed: {0} {1} {2} {3}" +
-"\u0020 {4}",
-  lesserFields[0], lesserFields[1], lesserFields[2], lesserFields[3], lesserFields[4]));
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -3944,10 +3942,7 @@ catch (CBORException ex) {
          }
          try {
  conv.DateTimeFieldsToCBORObject(eint, lesserFields);
- Assert.fail(
-  String.Format("Should have failed: {0} {1} {2} {3} {4} {5}" +
-"\u0020 {6}",
-  lesserFields[0], lesserFields[1], lesserFields[2], lesserFields[3], lesserFields[4], lesserFields[5], lesserFields[6]));
+ Assert.fail("Should have failed");
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
@@ -3957,7 +3952,7 @@ catch (CBORException ex) {
       }
       lesserFields = null;
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 // NOTE: Intentionally empty
@@ -3968,7 +3963,7 @@ catch (CBORException ex) {
       // TODO: Make into CBORException in next major version
       lesserFields = new int[] { 1 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -3978,7 +3973,7 @@ catch (CBORException ex) {
 }
       lesserFields = new int[] { 1, 1 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -3988,7 +3983,7 @@ catch (CBORException ex) {
 }
       lesserFields = new int[] { 1, 1, 0 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -3998,7 +3993,7 @@ catch (CBORException ex) {
 }
       lesserFields = new int[] { 1, 1, 0, 0 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -4008,7 +4003,7 @@ catch (CBORException ex) {
 }
       lesserFields = new int[] { 1, 1, 0, 0, 0 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
@@ -4018,7 +4013,7 @@ catch (CBORException ex) {
 }
       lesserFields = new int[] { 1, 1, 0, 0, 0, 0 };
       try {
- conv.DateTimeFieldsToCBORObject(2000, lesserFields);
+ conv.DateTimeFieldsToCBORObject(eint, lesserFields);
  Assert.fail("Should have failed: 6");
 } catch (IllegalArgumentException ex) {
 // NOTE: Intentionally empty
