@@ -187,10 +187,11 @@ import com.upokecenter.numbers.*;
      * through 23.</li> <li>3 - Minute of the hour, from 0 through 59.</li>
      * <li>4 - Second of the minute, from 0 through 59.</li> <li>5 -
      * Fractional seconds, expressed in nanoseconds. This value cannot be
-     * less than 0.</li> <li>6 - Number of minutes to subtract from this
-     * date and time to get global time. This number can be positive or
-     * negative, but cannot be less than -1439 or greater than 1439. For
-     * tags 0 and 1, this value is always 0.</li></ul>.
+     * less than 0 and must be less than 1000*1000*1000.</li> <li>6 -
+     * Number of minutes to subtract from this date and time to get global
+     * time. This number can be positive or negative, but cannot be less
+     * than -1439 or greater than 1439. For tags 0 and 1, this value is
+     * always 0.</li></ul>.
      * @return Either {@code true} if the method is successful, or {@code false}
      * otherwise.
      * @throws NullPointerException The parameter {@code year} or {@code
@@ -374,11 +375,13 @@ import com.upokecenter.numbers.*;
       if (lesserFields == null) {
         throw new NullPointerException("lesserFields");
       }
+      // TODO: Make into CBORException in next major version
       if (lesserFields.length < 7) {
         throw new IllegalArgumentException("\"lesserFields\" + \"'s length\" (" +
           lesserFields.length + ") is not greater or equal to 7");
       }
       try {
+        CBORUtilities.CheckYearAndLesserFields(bigYear, lesserFields);
         switch (this.convType) {
           case TaggedString: {
             String str = CBORUtilities.ToAtomDateTimeString(bigYear,
