@@ -199,7 +199,7 @@ public static CBORObject GetOrDefault(Map<CBORObject, CBORObject> map,
       if (IsProblematicForSerialization(t)) {
          ret.add(null);
          (setters ? setterPropertyList : propertyLists).put(t, ret);
-         return null;
+         return ret;
       }
       List<Method> getMethods=new ArrayList<Method>();
       List<Method> setMethods=new ArrayList<Method>();
@@ -887,7 +887,7 @@ if(name==null ){
     int nanoseconds=((int)(time%1000L));
     if(nanoseconds<0)nanoseconds=1000+nanoseconds;
     nanoseconds*=TicksDivFracSeconds;
-    long seconds=time/1000;
+    long seconds=time/1000L;
     CBORUtilities.BreakDownSecondsSinceEpoch(seconds,year,lf);
     lf[5]=nanoseconds;
    }
