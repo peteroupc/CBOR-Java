@@ -969,12 +969,6 @@ import com.upokecenter.numbers.*;
         }
         case ERational: {
           ERational dec = (ERational)this.value;
-          String nnstr = dec.getNumerator().toString();
-          String dnstr = dec.getDenominator().toString();
-          // System.out.println(
-          // "numlen="+nnstr.length() +
-          // " denlen="+dnstr.length() +
-          // "\nstart="+java.util.Date.UtcNow);
           EDecimal f = dec.ToEDecimalExactIfPossible(
               EContext.Decimal128.WithUnlimitedExponents());
           // System.out.println(

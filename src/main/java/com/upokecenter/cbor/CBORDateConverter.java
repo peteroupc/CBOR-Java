@@ -201,7 +201,9 @@ import com.upokecenter.numbers.*;
       lesserFields) {
       // TODO: In next major version, return false instead of throwing an
       // exception if the arguments are invalid, to conform to convention
-      // with Try* methods in DotNet
+      // with Try* methods in DotNet.
+      // TODO: In next minor version, add overload that takes an out parameter
+      // for year to DotNet version.
       if (year == null) {
         throw new NullPointerException("year");
       }
@@ -272,12 +274,19 @@ import com.upokecenter.numbers.*;
           num.compareTo(Long.MAX_VALUE) > 0) {
           return "Too big or small to fit a java.util.Date";
         }
-        EDecimal dec;
-        dec = (EDecimal)untagobj.ToObject(EDecimal.class);
-        CBORUtilities.BreakDownSecondsSinceEpoch(
-          dec,
-          outYear,
-          lesserFields);
+        if (num.CanFitInInt64()) {
+          CBORUtilities.BreakDownSecondsSinceEpoch(
+            num.ToInt64Checked(),
+            outYear,
+            lesserFields);
+        } else {
+           EDecimal dec;
+           dec = (EDecimal)untagobj.ToObject(EDecimal.class);
+           CBORUtilities.BreakDownSecondsSinceEpoch(
+             dec,
+             outYear,
+             lesserFields);
+        }
         return null; // no error
       }
       if (obj.HasMostOuterTag(0)) {
@@ -301,12 +310,19 @@ import com.upokecenter.numbers.*;
         if (!num.IsFinite()) {
           return "Not a finite number";
         }
-        EDecimal dec;
-        dec = (EDecimal)untagobj.ToObject(EDecimal.class);
-        CBORUtilities.BreakDownSecondsSinceEpoch(
-          dec,
-          outYear,
-          lesserFields);
+        if (num.CanFitInInt64()) {
+          CBORUtilities.BreakDownSecondsSinceEpoch(
+            num.ToInt64Checked(),
+            outYear,
+            lesserFields);
+        } else {
+           EDecimal dec;
+           dec = (EDecimal)untagobj.ToObject(EDecimal.class);
+           CBORUtilities.BreakDownSecondsSinceEpoch(
+             dec,
+             outYear,
+             lesserFields);
+        }
         return null; // No error
       }
       return "Not tag 0 or 1";

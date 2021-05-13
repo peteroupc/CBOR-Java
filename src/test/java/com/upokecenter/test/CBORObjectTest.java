@@ -8976,6 +8976,67 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return new String(charbuf);
     }
 
+    private static void TestDateTimeStringNumberOne(String str, long num) {
+        CBORObject dtstring = CBORObject.FromObject(str).WithTag(0);
+        CBORObject dtnum = CBORObject.FromObject(num).WithTag(1);
+        TestDateTimeStringNumberOne(dtstring, dtnum);
+    }
+    private static void TestDateTimeStringNumberOne(String str, double num) {
+        CBORObject dtstring = CBORObject.FromObject(str).WithTag(0);
+        CBORObject dtnum = CBORObject.FromObject(num).WithTag(1);
+        TestDateTimeStringNumberOne(dtstring, dtnum);
+    }
+    private static void TestDateTimeStringNumberOne(CBORObject dtstring,
+  CBORObject dtnum) {
+        CBORDateConverter convNumber = CBORDateConverter.TaggedNumber;
+        CBORDateConverter convString = CBORDateConverter.TaggedString;
+        CBORObject cbor;
+        EInteger[] eiYear = new EInteger[1];
+        int[] lesserFields = new int[7];
+        String strnum = dtstring + ", " + dtnum;
+        cbor = convNumber.ToCBORObject(convNumber.FromCBORObject(dtstring));
+        Assert.assertEquals(strnum, dtnum, cbor);
+        if (!convNumber.TryGetDateTimeFields(dtstring, eiYear, lesserFields)) {
+          Assert.fail(strnum);
+        }
+        cbor = convNumber.DateTimeFieldsToCBORObject(eiYear[0], lesserFields);
+        Assert.assertEquals(strnum, dtnum, cbor);
+        cbor = convString.DateTimeFieldsToCBORObject(eiYear[0], lesserFields);
+        Assert.assertEquals(strnum, dtstring, cbor);
+        cbor = convString.ToCBORObject(convString.FromCBORObject(dtnum));
+        Assert.assertEquals(strnum, dtstring, cbor);
+        if (!convString.TryGetDateTimeFields(dtnum, eiYear, lesserFields)) {
+          Assert.fail(strnum);
+        }
+        cbor = convNumber.DateTimeFieldsToCBORObject(eiYear[0], lesserFields);
+        Assert.assertEquals(strnum, dtnum, cbor);
+        cbor = convString.DateTimeFieldsToCBORObject(eiYear[0], lesserFields);
+        Assert.assertEquals(strnum, dtstring, cbor);
+    }
+
+    @Test
+    public void TestDateTimeStringNumber() {
+        TestDateTimeStringNumberOne("1970-01-01T00:00:00.25Z", 0.25);
+        TestDateTimeStringNumberOne("1970-01-01T00:00:00.75Z", 0.75);
+        TestDateTimeStringNumberOne("1969-12-31T23:59:59.75Z", -0.25);
+        TestDateTimeStringNumberOne("1969-12-31T23:59:59.25Z", -0.75);
+        TestDateTimeStringNumberOne("1970-01-03T00:00:00Z", 172800);
+        TestDateTimeStringNumberOne("1970-01-03T00:00:00Z", 172800);
+        TestDateTimeStringNumberOne("1970-01-03T00:00:00Z", 172800);
+        TestDateTimeStringNumberOne("2001-01-03T00:00:00Z", 978480000);
+        TestDateTimeStringNumberOne("2001-01-03T00:00:00.25Z", 978480000.25);
+        TestDateTimeStringNumberOne("1960-01-03T00:00:00Z", -315446400);
+        TestDateTimeStringNumberOne("1400-01-03T00:00:00Z", -17987270400L);
+        TestDateTimeStringNumberOne("2100-01-03T00:00:00Z", 4102617600L);
+        TestDateTimeStringNumberOne("1970-01-03T00:00:01Z", 172801);
+        TestDateTimeStringNumberOne("2001-01-03T00:00:01Z", 978480001);
+        TestDateTimeStringNumberOne("1960-01-03T00:00:01Z", -315446399);
+        TestDateTimeStringNumberOne("1960-01-03T00:00:00.25Z", -315446399.75);
+        TestDateTimeStringNumberOne("1960-01-03T00:00:00.75Z", -315446399.25);
+        TestDateTimeStringNumberOne("1400-01-03T00:00:01Z", -17987270399L);
+        TestDateTimeStringNumberOne("2100-01-03T00:00:01Z", 4102617601L);
+    }
+
     @Test
     public void TestDateTime() {
       ArrayList<String> dateList = new ArrayList<String>();

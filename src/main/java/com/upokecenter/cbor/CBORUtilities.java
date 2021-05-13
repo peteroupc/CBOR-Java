@@ -618,7 +618,7 @@ private CBORUtilities() {
     }
 
     private static long FloorDiv(long longA, int longN) {
-      return longA >= 0 ? longA / longN : (-1 - longA) / longN;
+      return longA >= 0 ? longA / longN : (-1 - ((-1 - longA) / longN));
     }
 
     private static EInteger FloorMod(EInteger a, EInteger n) {
@@ -627,7 +627,7 @@ private CBORUtilities() {
 
     private static long FloorModLong(long longA, int longN) {
       {
-        return longA - FloorDiv(longA, longN) * longN;
+        return longA - (FloorDiv(longA, longN) * longN);
       }
     }
 
@@ -897,7 +897,9 @@ ValueNormalDays :
       EInteger[] normPart = new EInteger[3];
       long longDays = FloorDiv(seconds, 86400) + 1;
       long longSecondsInDay = FloorModLong(seconds, 86400);
+
       int secondsInDay = ((int)longSecondsInDay);
+
       GetNormalizedPartProlepticGregorian(
         EInteger1970,
         1,
@@ -917,8 +919,8 @@ ValueNormalDays :
       int[] lesserFields) {
       EInteger integerPart = edec.Quantize(0, ERounding.Floor)
         .ToEInteger();
-      EDecimal fractionalPart = edec.Abs()
-        .Subtract(EDecimal.FromEInteger(integerPart).Abs());
+      EDecimal fractionalPart = edec.Subtract(
+          EDecimal.FromEInteger(integerPart)).Abs();
       int fractionalSeconds = fractionalPart.Multiply(FractionalSeconds)
         .ToInt32Checked();
       EInteger days = FloorDiv(
@@ -927,6 +929,7 @@ ValueNormalDays :
       int secondsInDay = FloorMod(
           integerPart,
           EInteger86400).ToInt32Checked();
+
       GetNormalizedPartProlepticGregorian(
         EInteger1970,
         1,

@@ -330,6 +330,35 @@ if(!setters){
       CBORTypeMapper mapper, int depth) {
    int length = Array.getLength(arr);
    CBORObject obj = CBORObject.NewArray();
+   if(arr instanceof int[]) {
+     int[] iarr=(int[])arr;
+     if(mapper==null && options==null) {
+       for(int i = 0;i < length;i++) {
+        obj.Add(CBORObject.FromObject((int)iarr[i]));
+       }
+     } else {
+     for(int i = 0;i < length;i++) {
+      obj.Add(CBORObject.FromObject((int)iarr[i], options,
+       mapper, depth+1));
+     }
+     }
+     return obj;
+   }
+   if(arr instanceof Integer[]) {
+     Integer[] iarr=(Integer[])arr;
+     if(mapper==null && options==null) {
+       for(int i = 0;i < length;i++) {
+        obj.Add(CBORObject.FromObject((int)iarr[i]));
+       }
+     } else {
+     for(int i = 0;i < length;i++) {
+      obj.Add(CBORObject.FromObject((int)iarr[i], options,
+       mapper, depth+1));
+     }
+     }
+     return obj;
+   }
+   System.out.println("Array length "+length);
    for(int i = 0;i < length;i++) {
     obj.Add(CBORObject.FromObject(Array.get(arr,i), options,
      mapper, depth+1));
@@ -880,14 +909,24 @@ if(name==null ){
     // Fractional seconds divided by milliseconds
     private static final int TicksDivFracSeconds = CBORUtilities.FractionalSeconds/1000;
 
+    private static long FloorDiv(long longA, int longN) {
+      return longA >= 0 ? longA / longN : (-1 - ((-1 - longA) / longN));
+    }
+
+    private static long FloorModLong(long longA, int longN) {
+        return longA - (FloorDiv(longA, longN) * longN);
+    }
+
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
     if(TicksDivFracSeconds == 0)throw new IllegalStateException();
     long time=bi.getTime();
-    int nanoseconds=((int)(time%1000L));
-    if(nanoseconds<0)nanoseconds=1000+nanoseconds;
+    int nanoseconds=(int)FloorModLong(time,1000);
+    if(time<0 && nanoseconds!=0){
+       // nanoseconds=1000-nanoseconds;
+    }
     nanoseconds*=TicksDivFracSeconds;
-    long seconds=time/1000L;
+    long seconds=FloorDiv(time,1000);
     CBORUtilities.BreakDownSecondsSinceEpoch(seconds,year,lf);
     lf[5]=nanoseconds;
    }
