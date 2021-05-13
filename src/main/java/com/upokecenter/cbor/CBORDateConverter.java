@@ -202,8 +202,6 @@ import com.upokecenter.numbers.*;
       // TODO: In next major version, return false instead of throwing an
       // exception if the arguments are invalid, to conform to convention
       // with Try* methods in DotNet.
-      // TODO: In next minor version, add overload that takes an out parameter
-      // for year to DotNet version.
       if (year == null) {
         throw new NullPointerException("year");
       }
@@ -373,7 +371,24 @@ import com.upokecenter.numbers.*;
     /**
      * Converts a date/time in the form of a year, month, day, hour, minute,
      * second, fractional seconds, and time offset to a CBOR object.
-     * @param bigYear The parameter {@code bigYear} is a Numbers.EInteger object.
+     * @param year Not documented yet.
+     * @param lesserFields Not documented yet.
+     * @return A CBOR object encoding the given date fields according to the
+     * conversion type used to create this date converter.
+     * @throws NullPointerException The parameter {@code bigYear} or {@code
+     * lesserFields} is null.
+     * @throws com.upokecenter.cbor.CBORException An error occurred in conversion.
+     */
+    public CBORObject DateTimeFieldsToCBORObject(int year, int[]
+      lesserFields) {
+      return this.DateTimeFieldsToCBORObject(EInteger.FromInt32(year),
+  lesserFields);
+    }
+
+    /**
+     * Converts a date/time in the form of a year, month, day, hour, minute,
+     * second, fractional seconds, and time offset to a CBOR object.
+     * @param bigYear The year.
      * @param lesserFields An array that will store the fields (other than the
      * year) of the date and time. See the TryGetDateTimeFields method for
      *  information on the "lesserFields" parameter.
@@ -385,8 +400,6 @@ import com.upokecenter.numbers.*;
      */
     public CBORObject DateTimeFieldsToCBORObject(EInteger bigYear, int[]
       lesserFields) {
-      // TODO: In next minor version, add overload that takes int rather than
-      // EInteger
       if (bigYear == null) {
         throw new NullPointerException("bigYear");
       }
