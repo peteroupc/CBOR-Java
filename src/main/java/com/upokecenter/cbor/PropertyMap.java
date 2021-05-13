@@ -358,7 +358,6 @@ if(!setters){
      }
      return obj;
    }
-   System.out.println("Array length "+length);
    for(int i = 0;i < length;i++) {
     obj.Add(CBORObject.FromObject(Array.get(arr,i), options,
      mapper, depth+1));
@@ -845,7 +844,7 @@ if(name==null ){
           index++;
       }
       } else {
-      System.out.println("class="+rawClass+","+realClass);
+      // System.out.println("class="+rawClass+","+realClass);
       Map<String, CBORObject> dict;
       dict = new HashMap<String, CBORObject>();
       for (Map.Entry<String, CBORObject> kv : values) {
@@ -916,6 +915,7 @@ if(name==null ){
     private static long FloorModLong(long longA, int longN) {
         return longA - (FloorDiv(longA, longN) * longN);
     }
+
 
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
