@@ -916,7 +916,6 @@ if(name==null ){
         return longA - (FloorDiv(longA, longN) * longN);
     }
 
-
    public static void BreakDownDateTime(java.util.Date bi,
         EInteger[] year, int[] lf) {
     if(TicksDivFracSeconds == 0)throw new IllegalStateException();
