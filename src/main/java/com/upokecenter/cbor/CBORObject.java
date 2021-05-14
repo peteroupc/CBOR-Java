@@ -6898,7 +6898,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         throw new CBORException("Premature end of data");
       }
       if (actualLength > expectedLength) {
-        throw new CBORException("Too many bytes");
+        throw new CBORException(
+            "Too many bytes. There is data beyond the decoded CBOR Object.");
       }
     }
 
@@ -6908,7 +6909,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         throw new CBORException("Premature end of data");
       }
       if (actualLength > expectedLength) {
-        throw new CBORException("Too many bytes");
+        throw new CBORException(
+            "Too many bytes. There is data beyond the decoded CBOR Object.");
       }
     }
 
