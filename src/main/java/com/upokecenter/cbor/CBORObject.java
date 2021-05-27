@@ -5160,6 +5160,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
   /**
    * Not documented yet.
    * @param pointer Not documented yet.
+   * @return The return value is not documented yet.
    * @throws NullPointerException The parameter {@code pointer} is null.
    */
     public CBORObject AtJSONPointer(String pointer) {
@@ -5172,6 +5173,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
   /**
    * Not documented yet.
    * @param patch Not documented yet.
+   * @return The return value is not documented yet.
    */
     public CBORObject ApplyJSONPatch(CBORObject patch) {
       return JSONPatch.Patch(this, patch);

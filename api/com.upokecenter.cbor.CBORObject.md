@@ -4343,6 +4343,10 @@ Not documented yet.
 
 * <code>pointer</code> - Not documented yet.
 
+**Returns:**
+
+* The return value is not documented yet.
+
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>pointer</code> is null.
@@ -4354,6 +4358,10 @@ Not documented yet.
 **Parameters:**
 
 * <code>patch</code> - Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
 
 ### equals
     public boolean equals​(java.lang.Object obj)
