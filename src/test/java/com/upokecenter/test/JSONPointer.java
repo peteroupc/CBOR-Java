@@ -13,7 +13,6 @@ at: http://peteroupc.github.io/
 import java.util.*;
 
 import com.upokecenter.cbor.*;
-import com.upokecenter.numbers.*;
 
   public final class JSONPointer {
     public static JSONPointer FromPointer(CBORObject obj, String pointer) {
@@ -266,7 +265,7 @@ import com.upokecenter.numbers.*;
      * key; the method will remove matching keys. As an example, consider
      *  this object: <pre>[{"key":"value1","foo":"foovalue"}, {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
      * getPointersToKey is called on this object with a keyToFind called
-     *  "key", we get the following Map as the return value: <pre>{ "/0" => "value1", /* "/0" points to {"foo":"foovalue"} &#x2a;&#x2f; "/1" => "value2" /* "/1" points to {"bar":"barvalue"} &#x2a;&#x2f; }</pre> and the JSON object
+     *  "key", we get the following Map as the return value: <pre>{ "/0" => "value1", // "/0" points to {"foo":"foovalue"} "/1" => "value2" /* "/1" points to {"bar":"barvalue"} &#x2a;&#x2f; }</pre> and the JSON object
      *  will change to the following: <pre>[{"foo":"foovalue"}, {"bar":"barvalue"}, {"baz","bazvalue"}]</pre>.
      * @param root The object to search.
      * @param keyToFind The key to search for.

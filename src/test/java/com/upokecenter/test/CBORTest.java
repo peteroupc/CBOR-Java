@@ -2043,25 +2043,34 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestJSONWithComments() {
-      String str="[\n {\n # Bm\n\"a\":1,\n\"b\":2\n},{\n #" +
+      Map<String, String> dict;
+      String str = "[\n {\n # Bm\n\"a\":1,\n\"b\":2\n},{\n #" +
 "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
       CBORObject obj = JSONWithComments.FromJSONString(str);
       System.out.println(obj);
-      str="[\n {\n # B\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+      str = "[\n {\n # B\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
        obj = JSONWithComments.FromJSONString(str);
       System.out.println(obj);
-      str="[\n {\n # B A C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+      str = "[\n {\n # B A C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
        obj = JSONWithComments.FromJSONString(str);
       System.out.println(obj);
-      str="[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+      str = "[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
        obj = JSONWithComments.FromJSONString(str);
       System.out.println(obj);
-      str="{\"f\":[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]}";
+      dict = new HashMap<String, String>();
+      str = "{\"f\":[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]}";
        obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
+    obj = JSONWithComments.FromJSONStringWithPointers(str, dict);
+    for (String key : dict.keySet()) {
+         System.out.println(key);
+         System.out.println(dict.get(key));
+         System.out.println(JSONPointer.GetObject(obj, dict.get(key)));
+       }
       System.out.println(obj);
     }
 
