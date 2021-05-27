@@ -5157,6 +5157,26 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+  /**
+   * Not documented yet.
+   * @param pointer Not documented yet.
+   * @throws NullPointerException The parameter {@code pointer} is null.
+   */
+    public CBORObject AtJSONPointer(String pointer) {
+      if (pointer == null) {
+        throw new NullPointerException("pointer");
+      }
+      throw new UnsupportedOperationException();
+    }
+
+  /**
+   * Not documented yet.
+   * @param patch Not documented yet.
+   */
+    public CBORObject ApplyJSONPatch(CBORObject patch) {
+      return JSONPatch.Patch(this, patch);
+    }
+
     /**
      * Determines whether this object and another object are equal and have the
      * same type. Not-a-number values can be considered equal by this

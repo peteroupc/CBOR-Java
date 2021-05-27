@@ -117,6 +117,8 @@ Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Add() method.
  Instead, convert both CBOR objects to numbers (with .AsNumber()), and
  use the first number's.Add() method.
+* `CBORObject ApplyJSONPatch​(CBORObject patch)`<br>
+ Not documented yet.
 * `boolean AsBoolean()`<br>
  Returns false if this object is a CBOR false, null, or undefined value
  (whether or not the object has tags); otherwise, true.
@@ -199,6 +201,8 @@ Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
  Converts this object to a 32-bit floating point number.
 * `java.lang.String AsString()`<br>
  Gets the value of this object as a text string.
+* `CBORObject AtJSONPointer​(java.lang.String pointer)`<br>
+ Not documented yet.
 * `long CalcEncodedSize() EncodeToBytes()`<br>
  Calculates the number of bytes this CBOR object takes when serialized as a
  byte array using the EncodeToBytes() method.
@@ -4330,6 +4334,26 @@ Writes the binary representation of this CBOR object and returns a byte
 **Throws:**
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>options</code> is null.
+
+### AtJSONPointer
+    public CBORObject AtJSONPointer​(java.lang.String pointer)
+Not documented yet.
+
+**Parameters:**
+
+* <code>pointer</code> - Not documented yet.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>pointer</code> is null.
+
+### ApplyJSONPatch
+    public CBORObject ApplyJSONPatch​(CBORObject patch)
+Not documented yet.
+
+**Parameters:**
+
+* <code>patch</code> - Not documented yet.
 
 ### equals
     public boolean equals​(java.lang.Object obj)

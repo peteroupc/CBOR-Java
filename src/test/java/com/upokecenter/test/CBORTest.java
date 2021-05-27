@@ -2069,7 +2069,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
     for (String key : dict.keySet()) {
          System.out.println(key);
          System.out.println(dict.get(key));
-         System.out.println(JSONPointer.GetObject(obj, dict.get(key)));
+         System.out.println(obj.AtJSONPointer(dict.get(key)));
        }
       System.out.println(obj);
     }
