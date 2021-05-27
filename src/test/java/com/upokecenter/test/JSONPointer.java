@@ -13,6 +13,7 @@ at: http://peteroupc.github.io/
 import java.util.*;
 
 import com.upokecenter.cbor.*;
+import com.upokecenter.numbers.*;
 
   public final class JSONPointer {
     public static JSONPointer FromPointer(CBORObject obj, String pointer) {
