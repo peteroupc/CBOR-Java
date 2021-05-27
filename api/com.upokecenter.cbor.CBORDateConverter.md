@@ -246,9 +246,11 @@ Converts a date/time in the form of a year, month, day, hour, minute,
 
 **Parameters:**
 
-* <code>year</code> - Not documented yet.
+* <code>year</code> - The year.
 
-* <code>lesserFields</code> - Not documented yet.
+* <code>lesserFields</code> - An array that will store the fields (other than the
+ year) of the date and time. See the TryGetDateTimeFields method for
+  information on the "lesserFields" parameter.
 
 **Returns:**
 
@@ -257,8 +259,7 @@ Converts a date/time in the form of a year, month, day, hour, minute,
 
 **Throws:**
 
-* <code>java.lang.NullPointerException</code> - The parameter <code>bigYear</code> or <code>
- lesserFields</code> is null.
+* <code>java.lang.NullPointerException</code> - The parameter <code>lesserFields</code> is null.
 
 * <code>CBORException</code> - An error occurred in conversion.
 

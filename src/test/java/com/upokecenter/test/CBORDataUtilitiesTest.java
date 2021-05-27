@@ -171,6 +171,10 @@ import com.upokecenter.numbers.*;
         if (CBORDataUtilities.ParseJSONNumber(str) != null) {
           Assert.fail(str);
         }
+        if (CBORDataUtilities.ParseJSONNumber(str, JSONOptions.Default) !=
+null) {
+          Assert.fail(str);
+        }
         if (CBORDataUtilities.ParseJSONNumber(str, false, false, true) !=
           null) {
           Assert.fail(str);

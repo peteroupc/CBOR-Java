@@ -371,12 +371,13 @@ import com.upokecenter.numbers.*;
     /**
      * Converts a date/time in the form of a year, month, day, hour, minute,
      * second, fractional seconds, and time offset to a CBOR object.
-     * @param year Not documented yet.
-     * @param lesserFields Not documented yet.
+     * @param year The year.
+     * @param lesserFields An array that will store the fields (other than the
+     * year) of the date and time. See the TryGetDateTimeFields method for
+     *  information on the "lesserFields" parameter.
      * @return A CBOR object encoding the given date fields according to the
      * conversion type used to create this date converter.
-     * @throws NullPointerException The parameter {@code bigYear} or {@code
-     * lesserFields} is null.
+     * @throws NullPointerException The parameter {@code lesserFields} is null.
      * @throws com.upokecenter.cbor.CBORException An error occurred in conversion.
      */
     public CBORObject DateTimeFieldsToCBORObject(int year, int[]

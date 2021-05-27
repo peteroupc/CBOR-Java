@@ -1804,7 +1804,7 @@ ms2a = new java.io.ByteArrayInputStream(new byte[] { });
 
         try {
           CBORObject.ReadJSON(ms2a);
-          Assert.fail("Should have failed");
+          Assert.fail("Should have failed A");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
@@ -1823,7 +1823,7 @@ ms2b = new java.io.ByteArrayInputStream(new byte[] { 0x20 });
 
         try {
           CBORObject.ReadJSON(ms2b);
-          Assert.fail("Should have failed");
+          Assert.fail("Should have failed B");
         } catch (CBORException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
@@ -1837,7 +1837,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 }
       try {
         CBORObject.FromJSONString("");
-        Assert.fail("Should have failed");
+        Assert.fail("Should have failed C");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -1846,7 +1846,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.FromJSONString("[.1]");
-        Assert.fail("Should have failed");
+        Assert.fail("Should have failed D");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -1855,7 +1855,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.FromJSONString("[-.1]");
-        Assert.fail("Should have failed");
+        Assert.fail("Should have failed E");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -1864,7 +1864,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       }
       try {
         CBORObject.FromJSONString("\u0020");
-        Assert.fail("Should have failed");
+        Assert.fail("Should have failed F");
       } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
@@ -2039,6 +2039,30 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
           EDecimal.FromString(r));
       CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
       TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
+    }
+
+    @Test
+    public void TestJSONWithComments() {
+      String str="[\n {\n # Bm\n\"a\":1,\n\"b\":2\n},{\n #" +
+"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+      CBORObject obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
+      str="[\n {\n # B\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+       obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
+      str="[\n {\n # B A C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+       obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
+      str="[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
+       obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
+      str="{\"f\":[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
+"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]}";
+       obj = JSONWithComments.FromJSONString(str);
+      System.out.println(obj);
     }
 
     @Test
