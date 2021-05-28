@@ -9044,7 +9044,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Object obj) {
       CBORObject actual = CBORObject.DecodeFromBytes(src.EncodeToBytes());
       CBORObject patch = CBORObject.NewMap().Add("op", "add")
-          .Add("path", path).Add("value",CBORObject.FromObject(obj));
+          .Add("path", path).Add("value", CBORObject.FromObject(obj));
       patch = CBORObject.NewArray().Add(patch);
       if (expected == null) {
        try {
@@ -9063,7 +9063,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-       Assert.assertEquals("add "+path+" " + obj,expected,actual);
+       Assert.assertEquals("add "+ path + " " + obj,expected,actual);
       }
     }
 
@@ -9125,6 +9125,11 @@ throw new IllegalStateException("", ex);
          CBORObject.NewMap().Add("foo", "bar"),
          "/foo",
          "baz");
+    }
+
+    @Test
+    public void TestAtJSONPointer() {
+      // TODO: Finish tests for AtJSONPointer
     }
 
     @Test

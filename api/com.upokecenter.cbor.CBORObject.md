@@ -203,6 +203,9 @@ Instead, use the following: (cbor.AsNumber().ToInt64Checked()), or
  Gets the value of this object as a text string.
 * `CBORObject AtJSONPointer​(java.lang.String pointer)`<br>
  Not documented yet.
+* `CBORObject AtJSONPointer​(java.lang.String pointer,
+             CBORObject defaultValue)`<br>
+ Not documented yet.
 * `long CalcEncodedSize() EncodeToBytes()`<br>
  Calculates the number of bytes this CBOR object takes when serialized as a
  byte array using the EncodeToBytes() method.
@@ -4343,14 +4346,9 @@ Not documented yet.
 
 * <code>pointer</code> - Not documented yet.
 
-**Returns:**
-
-* The return value is not documented yet.
-
-**Throws:**
-
-* <code>java.lang.NullPointerException</code> - The parameter <code>pointer</code> is null.
-
+### AtJSONPointer
+    public CBORObject AtJSONPointer​(java.lang.String pointer, CBORObject defaultValue)
+Not documented yet.
 ### ApplyJSONPatch
     public CBORObject ApplyJSONPatch​(CBORObject patch)
 Not documented yet.
@@ -4358,10 +4356,6 @@ Not documented yet.
 **Parameters:**
 
 * <code>patch</code> - Not documented yet.
-
-**Returns:**
-
-* The return value is not documented yet.
 
 ### equals
     public boolean equals​(java.lang.Object obj)
