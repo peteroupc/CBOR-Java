@@ -2,13 +2,11 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.upokecenter/cbor.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22cbor%22)
 
-If you like this software, consider donating to me at this link: [http://peteroupc.github.io/](http://peteroupc.github.io/)
-
 ---
 
 A Java implementation of Concise Binary Object Representation, a general-purpose binary data format defined in RFC 7049. According to that RFC, CBOR's data model "is an extended version of the JSON data model", supporting many more types of data than JSON. "CBOR was inspired by MessagePack", but "is not intended as a version of or replacement for MessagePack."
 
-This implementation was written by Peter O. and is released to the Public Domain under the [CC0 Declaration](http://creativecommons.org/publicdomain/zero/1.0/).
+This implementation was written by Peter O. and is released to the Public Domain under the [CC0 Declaration](https://creativecommons.org/publicdomain/zero/1.0/).
 
 This implementation also doubles as a reader and writer of JSON, and can convert data from JSON to CBOR and back.
 
@@ -79,7 +77,7 @@ try (FileOutputStream stream = new FileOutputStream("object.cbor")) {
 ```
 
 NOTE: All code samples in this section are released to the Public Domain,
-as explained in <http://creativecommons.org/publicdomain/zero/1.0/>.
+as explained in <https://creativecommons.org/publicdomain/zero/1.0/>.
 
 ## Source Code
 
@@ -92,7 +90,7 @@ Written in 2013-2016 by Peter O.
 Any copyright to this work is released to the Public Domain.
 In case this is not possible, this work is also
 licensed under Creative Commons Zero (CC0):
-[http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)
+[https://creativecommons.org/publicdomain/zero/1.0/](https://creativecommons.org/publicdomain/zero/1.0/)
 
 If you like this, you should donate to Peter O.
 at: [http://peteroupc.github.io/CBOR/](http://peteroupc.github.io/CBOR/)
