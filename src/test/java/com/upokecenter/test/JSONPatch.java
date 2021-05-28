@@ -6,8 +6,6 @@ In case this is not possible, this work is also
 licensed under Creative Commons Zero (CC0):
 http://creativecommons.org/publicdomain/zero/1.0/
 
-If you like this, you should donate to Peter O.
-at: http://peteroupc.github.io/
 */
 
 import java.util.*;
