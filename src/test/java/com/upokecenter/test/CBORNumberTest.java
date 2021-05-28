@@ -95,9 +95,10 @@ import com.upokecenter.numbers.*;
         "99.0");
  }
 
-      if (!(CBORObject.FromObject(1.0).AsNumber().CanFitInUInt64())) {
+      if (!(
+        CBORObject.FromObject(1.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
-  "99.0");
+        "99.0");
  }
 
       if (!(CBORObject.FromObject(-0.0).AsNumber().CanFitInUInt64())) {
@@ -111,9 +112,10 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
 
-      if (CBORObject.FromObject(-99).AsNumber().CanFitInUInt64()) {
+      if (
+        CBORObject.FromObject(-99).AsNumber().CanFitInUInt64()) {
  Assert.fail(
-  "-99");
+        "-99");
  }
 
       if (CBORObject.FromObject(-99.0).AsNumber().CanFitInUInt64()) {
@@ -121,9 +123,10 @@ import com.upokecenter.numbers.*;
         "-99.0");
  }
 
-      if (CBORObject.FromObject(0.1).AsNumber().CanFitInUInt64()) {
+      if (
+        CBORObject.FromObject(0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail(
-  "0.1");
+        "0.1");
  }
       if (CBORObject.FromObject(-0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();

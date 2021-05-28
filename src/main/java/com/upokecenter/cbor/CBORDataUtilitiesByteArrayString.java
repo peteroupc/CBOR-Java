@@ -194,7 +194,8 @@ private CBORDataUtilitiesByteArrayString() {
             v = -v;
           }
           if (kind == JSONOptions.ConversionMode.Double) {
-            return CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8);
+            return
+CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8);
           } else if (kind == JSONOptions.ConversionMode.Decimal128) {
             return CBORObject.FromObject(EDecimal.FromInt64(v));
           } else {

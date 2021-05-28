@@ -5159,6 +5159,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
   /**
    * Not documented yet.
    * @param pointer Not documented yet.
+   * @return The return value is not documented yet.
    */
     public CBORObject AtJSONPointer(String pointer) {
       CBORObject ret = this.AtJSONPointer(pointer, null);
@@ -5170,6 +5171,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
   /**
    * Not documented yet.
+   * @param pointer Not documented yet.
+   * @param defaultValue Not documented yet.
+   * @return The return value is not documented yet.
    */
     public CBORObject AtJSONPointer(String pointer, CBORObject defaultValue) {
       return JSONPointer.GetObject(this, pointer, null);
@@ -5178,6 +5182,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
   /**
    * Not documented yet.
    * @param patch Not documented yet.
+   * @return The return value is not documented yet.
    */
     public CBORObject ApplyJSONPatch(CBORObject patch) {
       return JSONPatch.Patch(this, patch);

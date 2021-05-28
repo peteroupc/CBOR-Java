@@ -9063,7 +9063,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-       Assert.assertEquals("add "+ path + " " + obj,expected,actual);
+       Assert.assertEquals("add " + path + " " + obj,expected,actual);
       }
     }
 

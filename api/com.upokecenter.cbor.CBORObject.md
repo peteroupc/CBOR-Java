@@ -4346,9 +4346,24 @@ Not documented yet.
 
 * <code>pointer</code> - Not documented yet.
 
+**Returns:**
+
+* The return value is not documented yet.
+
 ### AtJSONPointer
     public CBORObject AtJSONPointer​(java.lang.String pointer, CBORObject defaultValue)
 Not documented yet.
+
+**Parameters:**
+
+* <code>pointer</code> - Not documented yet.
+
+* <code>defaultValue</code> - Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
+
 ### ApplyJSONPatch
     public CBORObject ApplyJSONPatch​(CBORObject patch)
 Not documented yet.
@@ -4356,6 +4371,10 @@ Not documented yet.
 **Parameters:**
 
 * <code>patch</code> - Not documented yet.
+
+**Returns:**
+
+* The return value is not documented yet.
 
 ### equals
     public boolean equals​(java.lang.Object obj)
