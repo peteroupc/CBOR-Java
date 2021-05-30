@@ -9048,7 +9048,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       this.TestApplyJSONPatchOp(expected, src, patch);
     }
 
-    public void TestApplyJSONPatchReplace(
+    public void TestApplyJSONPatchOpReplace(
       CBORObject expected,
       CBORObject src,
       String path,
@@ -9094,6 +9094,70 @@ throw new IllegalStateException("", ex);
        Assert.assertEquals(expected, actual);
       }
     }
+    private static final String JSONPatchTests = "[]";
+
+    @Test
+    public void TestApplyJSONPatchJSONTests() {
+      CBORObject tests = CBORObject.FromJSONString(JSONPatchTests,
+         new JSONOptions("allowduplicatekeys=1"));
+      for (CBORObject testcbor : tests.getValues()) {
+        String
+err = testcbor.GetOrDefault("error",
+  CBORObject.FromObject("")).AsString();
+        String
+  comment = testcbor.GetOrDefault("comment",
+  CBORObject.FromObject("")).AsString();
+        try {
+          if (testcbor.ContainsKey("error")) {
+            this.TestApplyJSONPatchOp(null, testcbor.get("doc"), testcbor.get("patch"));
+          } else {
+            this.TestApplyJSONPatchOp(
+              testcbor.get("expected"),
+              testcbor.get("doc"),
+              testcbor.get("patch"));
+          }
+        } catch (Exception ex) {
+          String exmsg = ex.getClass()+"\n"+comment+"\n" +err;
+          System.out.println(exmsg);
+          // throw new IllegalStateException(exmsg, ex);
+        }
+      }
+    }
+
+    @Test
+    public void TestApplyJSONPatchTest() {
+      CBORObject patch, testval;
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value",
+  CBORObject.NewArray().Add(1).Add(2));
+      patch = CBORObject.NewArray().Add(patch);
+      CBORObject exp;
+      exp = CBORObject.NewArray().Add(1).Add(2);
+      this.TestApplyJSONPatchOp(exp, exp, patch);
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value",
+  CBORObject.NewArray().Add(1).Add(3));
+      patch = CBORObject.NewArray().Add(patch);
+      this.TestApplyJSONPatchOp(null, exp, patch);
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value",
+  CBORObject.NewArray().Add(2).Add(2));
+      patch = CBORObject.NewArray().Add(patch);
+      this.TestApplyJSONPatchOp(null, exp, patch);
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value", CBORObject.NewMap().Add(2,
+  2));
+      patch = CBORObject.NewArray().Add(patch);
+      this.TestApplyJSONPatchOp(null, exp, patch);
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value", CBORObject.True);
+      patch = CBORObject.NewArray().Add(patch);
+      this.TestApplyJSONPatchOp(null, exp, patch);
+      patch = CBORObject.NewMap().Add("op", "test")
+          .Add("path", "").Add("value", CBORObject.Null);
+      patch = CBORObject.NewArray().Add(patch);
+      this.TestApplyJSONPatchOp(null, exp, patch);
+    }
 
     @Test
     public void TestApplyJSONPatch() {
@@ -9107,14 +9171,15 @@ throw new IllegalStateException("", ex);
          patch);
 
       patch = CBORObject.NewArray().Add(
-         CBORObject.NewMap().Add("op", "ADD").Add("path", "/0").Add("value",3));
+         CBORObject.NewMap().Add("op", "ADD").Add("path", "/0").Add("value",
+  3));
       this.TestApplyJSONPatchOp(
          null,
          CBORObject.NewArray().Add(1),
          patch);
 
       patch = CBORObject.NewArray().Add(
-  CBORObject.NewMap().Add("op", "RePlAcE").Add("path", "/0").Add("value",3));
+  CBORObject.NewMap().Add("op", "RePlAcE").Add("path", "/0").Add("value", 3));
       this.TestApplyJSONPatchOp(
          null,
          CBORObject.NewArray().Add(1),
@@ -9126,6 +9191,20 @@ throw new IllegalStateException("", ex);
          null,
          CBORObject.NewArray().Add(1),
          patch);
+      patch = CBORObject.NewArray().Add(
+         CBORObject.NewMap().Add("op", "add").Add("path", "")
+            .Add("value", CBORObject.True));
+      this.TestApplyJSONPatchOp(
+         CBORObject.True,
+         CBORObject.NewArray().Add(1),
+         patch);
+      patch = CBORObject.NewArray().Add(
+         CBORObject.NewMap().Add("op", "add").Add("path", "")
+             .Add("value", CBORObject.NewMap()));
+      this.TestApplyJSONPatchOp(
+         CBORObject.NewMap(),
+         CBORObject.NewArray().Add(1),
+         patch);
 
       patch = CBORObject.NewArray().Add(
          CBORObject.NewMap().Add("op", "add").Add("path", "/0"));
@@ -9134,7 +9213,8 @@ throw new IllegalStateException("", ex);
          CBORObject.NewArray().Add(1),
          patch);
       patch = CBORObject.NewArray().Add(
-         CBORObject.NewMap().Add("op", "add").Add("path", null).Add("value",2));
+         CBORObject.NewMap().Add("op", "add").Add("path", null).Add("value",
+  2));
       this.TestApplyJSONPatchOp(
          null,
          CBORObject.NewArray().Add(1),
@@ -9192,6 +9272,16 @@ throw new IllegalStateException("", ex);
          "/0",
          3);
       this.TestApplyJSONPatchOpReplace(
+         null,
+         CBORObject.NewArray().Add(1).Add(2),
+         "/00",
+         3);
+      this.TestApplyJSONPatchOpReplace(
+         null,
+         CBORObject.NewArray().Add(1).Add(2),
+         "/00000",
+         3);
+      this.TestApplyJSONPatchOpReplace(
          CBORObject.NewMap().Add("f1", "f2").Add("f3", 3),
          CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
          "/f3",
@@ -9240,6 +9330,10 @@ throw new IllegalStateException("", ex);
          CBORObject.NewArray().Add(1),
          CBORObject.NewArray().Add(1).Add(2),
          "/1");
+      this.TestApplyJSONPatchOpRemove(
+         null,
+         CBORObject.NewArray().Add(1).Add(2),
+         "/01");
       this.TestApplyJSONPatchOpRemove(
          CBORObject.NewArray().Add(2),
          CBORObject.NewArray().Add(1).Add(2),
