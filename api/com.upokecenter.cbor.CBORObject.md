@@ -4359,10 +4359,11 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
 
 **Throws:**
 
-* <code>CBORException</code> - Thrown if the pointer is null, or if the pointer is
- invalid, or if there is no object at the given pointer, or the
-  special key "-" appears in the pointer, or if the pointer is
- non-empty and this object has a CBOR type other than array or map.
+* <code>CBORException</code> - Thrown if the pointer is null, or
+ if the pointer is invalid, or if there is no object at the given
+  pointer, or the special key "-" appears in the pointer, or if the
+ pointer is non-empty and this object has a CBOR type other than
+ array or map.
 
 ### AtJSONPointer
     public CBORObject AtJSONPointer​(java.lang.String pointer, CBORObject defaultValue)
@@ -4385,7 +4386,8 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901, or
 
 * <code>pointer</code> - A JSON pointer according to RFC 6901.
 
-* <code>defaultValue</code> -
+* <code>defaultValue</code> - The parameter <code>defaultValue</code> is a Cbor.CBORObject
+ object.
 
 **Returns:**
 
@@ -4430,8 +4432,8 @@ Returns a copy of this object after applying the operations in a JSON patch,
 
 **Throws:**
 
-* <code>CBORException</code> - The parameter "patch" is null or the patch operation
- failed.
+* <code>CBORException</code> - The parameter <code>patch</code> is
+ null or the patch operation failed.
 
 ### equals
     public boolean equals​(java.lang.Object obj)

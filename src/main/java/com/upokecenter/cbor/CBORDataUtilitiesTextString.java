@@ -48,6 +48,7 @@ private CBORDataUtilitiesTextString() {
       boolean haveDecimalPoint = false;
       boolean haveDigits = false;
       boolean haveDigitsAfterDecimal = false;
+      boolean haveNonzeroDigits = false;
       boolean haveExponent = false;
       int i = offset;
       int decimalPointPos = -1;
@@ -62,9 +63,13 @@ private CBORDataUtilitiesTextString() {
       }
       for (; k < endPos; ++k) {
         char c = chars.charAt(k);
-        if (c >= '0' && c <= '9') {
+        if (c == '0') {
           haveDigits = true;
           haveDigitsAfterDecimal |= haveDecimalPoint;
+        } else if (c >= '1' && c <= '9') {
+          haveDigits = true;
+          haveDigitsAfterDecimal |= haveDecimalPoint;
+          haveNonzeroDigits = true;
         } else if (c == '.') {
           if (!haveDigits || haveDecimalPoint) {
             // no digits before the decimal point,
@@ -153,7 +158,20 @@ private CBORDataUtilitiesTextString() {
         // Exponent too high for precision to overcome (which
         // has a length no bigger than Integer.MAX_VALUE, which is 10 digits
         // long)
-        if (negativeExp) {
+        if (!haveNonzeroDigits) {
+          // zero
+          if (kind == JSONOptions.ConversionMode.Double) {
+            if (!negative) {
+              return CBORObject.FromFloatingPointBits(0, 2);
+            } else {
+              return CBORObject.FromFloatingPointBits(0x8000, 2);
+            }
+          } else if (kind ==
+            JSONOptions.ConversionMode.IntOrFloatFromDouble ||
+            kind == JSONOptions.ConversionMode.IntOrFloat) {
+            return CBORObject.FromObject(0);
+          }
+        } else if (negativeExp) {
           // underflow
           if (kind == JSONOptions.ConversionMode.Double ||
             kind == JSONOptions.ConversionMode.IntOrFloat) {

@@ -9123,7 +9123,7 @@ err = testcbor.GetOrDefault("error",
               testcbor.get("patch"));
           }
         } catch (Exception ex) {
-          String exmsg = ex.getClass()+"\n"+comment +"\n" + err;
+          String exmsg = ex.getClass()+"\n" +comment + "\n" + err;
           throw new IllegalStateException(exmsg, ex);
         }
       }
@@ -9870,7 +9870,8 @@ err = testcbor.GetOrDefault("error",
         }
         double cbordbl = cbor.AsDoubleValue();
         if (dbl != cbordbl) {
-          Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl);
+          Assert.fail("dbl = " + dbl + ", cbordbl = " + cbordbl + ", " +
+             json + " " + numconv + " " + dbl);
         }
       }
     }
@@ -10046,9 +10047,104 @@ err = testcbor.GetOrDefault("error",
     }
 
     @Test
+    public void TestEDecimalEFloatWithHighExponent() {
+      String decstr = "0E100441809235791722330759976";
+      Assert.assertEquals(0L, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(0L, EFloat.FromString(decstr).ToDoubleBits());
+    {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+  EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EFloat.FromString(decstr,
+  EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "0E-100441809235791722330759976";
+      Assert.assertEquals(0L, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(0L, EFloat.FromString(decstr).ToDoubleBits());
+    {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+  EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EFloat.FromString(decstr,
+  EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "-0E100441809235791722330759976";
+      long negzero = 1L << 63;
+      Assert.assertEquals(negzero, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(negzero, EFloat.FromString(decstr).ToDoubleBits());
+    {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+  EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EFloat.FromString(decstr,
+  EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "-0E-100441809235791722330759976";
+      Assert.assertEquals(negzero, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(negzero, EFloat.FromString(decstr).ToDoubleBits());
+    {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+  EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EFloat.FromString(decstr,
+  EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+    }
+
+    @Test
+    public void TestFromJsonStringZeroWithHighExponent() {
+      String decstr = "0E100441809235791722330759976";
+      EDecimal ed = EDecimal.FromString(decstr);
+      double dbl = ed.ToDouble();
+      Assert.assertEquals((double)0, dbl, 0);
+      AssertJSONDouble(decstr, "double", dbl);
+      AssertJSONInteger(decstr, "intorfloat", 0);
+      decstr = "0E1321909565013040040586";
+      ed = EDecimal.FromString(decstr);
+      dbl = ed.ToDouble();
+      Assert.assertEquals((double)0, dbl, 0);
+      AssertJSONDouble(decstr, "double", dbl);
+      AssertJSONInteger(decstr, "intorfloat", 0);
+      double dblnegzero = EFloat.FromString("-0").ToDouble();
+      AssertJSONDouble("0E-1321909565013040040586", "double", 0.0);
+      AssertJSONInteger("0E-1321909565013040040586", "intorfloat", 0);
+      AssertJSONDouble("-0E1321909565013040040586", "double", dblnegzero);
+      AssertJSONInteger("-0E1321909565013040040586", "intorfloat", 0);
+      AssertJSONDouble("-0E-1321909565013040040586", "double", dblnegzero);
+      AssertJSONInteger("-0E-1321909565013040040586", "intorfloat", 0);
+
+      AssertJSONDouble("0E-100441809235791722330759976", "double", 0.0);
+      AssertJSONInteger("0E-100441809235791722330759976", "intorfloat", 0);
+      AssertJSONDouble("-0E100441809235791722330759976", "double", dblnegzero);
+      AssertJSONInteger("-0E100441809235791722330759976", "intorfloat", 0);
+      AssertJSONDouble("-0E-100441809235791722330759976", "double", dblnegzero);
+      AssertJSONInteger("-0E-100441809235791722330759976", "intorfloat", 0);
+    }
+
+    @Test
     public void TestFromJsonStringEDecimalSpec() {
       RandomGenerator rg = new RandomGenerator();
-      for (int i = 0; i < 1000; ++i) {
+      for (int i = 0; i < 2000; ++i) {
         String[] decstring = new String[1];
         EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
         if (decstring[0] == null) {

@@ -5167,10 +5167,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @return An object within this CBOR object. Returns this object if pointer is
      * the empty string (even if this object has a CBOR type other than
      * array or map).
-     * @throws CBORException Thrown if the pointer is null, or if the pointer is
-     * invalid, or if there is no object at the given pointer, or the
-     *  special key "-" appears in the pointer, or if the pointer is
-     * non-empty and this object has a CBOR type other than array or map.
+     * @throws com.upokecenter.cbor.CBORException Thrown if the pointer is null, or
+     * if the pointer is invalid, or if there is no object at the given
+     *  pointer, or the special key "-" appears in the pointer, or if the
+     * pointer is non-empty and this object has a CBOR type other than
+     * array or map.
      */
     public CBORObject AtJSONPointer(String pointer) {
       CBORObject ret = this.AtJSONPointer(pointer, null);
@@ -5196,7 +5197,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * published before JSON was extended to support top-level values other
      * than arrays and key-value dictionaries.).
      * @param pointer A JSON pointer according to RFC 6901.
-     * @param defaultValue
+     * @param defaultValue The parameter {@code defaultValue} is a Cbor.CBORObject
+     * object.
      * @return An object within the specified JSON object. Returns this object if
      * pointer is the empty string (even if this object has a CBOR type
      * other than array or map). Returns {@code defaultValue} if the
@@ -5232,8 +5234,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
    * @param patch A JSON patch in the form of a CBOR object; it has the form
    * summarized in the remarks.
    * @return The result of the patch operation.
-   * @throws CBORException The parameter "patch" is null or the patch operation
-   * failed.
+   * @throws com.upokecenter.cbor.CBORException The parameter {@code patch} is
+   * null or the patch operation failed.
    */
     public CBORObject ApplyJSONPatch(CBORObject patch) {
       return JSONPatch.Patch(this, patch);
