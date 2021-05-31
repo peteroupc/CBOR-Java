@@ -556,7 +556,9 @@ import com.upokecenter.numbers.*;
      * integer, even a negative one.).
      * @return The CBOR object referred to by index or key in this array or map. If
      * this is a CBOR map, returns {@code null} (not {@code
-     * CBORObject.Null}) if an item with the given key doesn't exist.
+     * CBORObject.Null}) if an item with the given key doesn't exist (but
+     * this behavior may change to throwing an exception in version 5.0 or
+     * later).
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is less than
      * 0 or at least the size of the array.
@@ -574,6 +576,8 @@ import com.upokecenter.numbers.*;
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
           CBORObject key = CBORObject.FromObject(index);
+          // TODO: In next major version, consider throwing an exception
+          // instead if key does not exist.
           return (!map.containsKey(key)) ? null : map.get(key);
         }
         throw new IllegalStateException("Not an array or map");
@@ -5180,9 +5184,28 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
   /**
-   * Not documented yet.
-   * @param patch Not documented yet.
-   * @return The return value is not documented yet.
+   * Returns a copy of this object after applying the operations in a JSON patch,
+   * in the form of a CBOR object. JSON patches are specified in RFC 6902
+   * and their format is summarized in the remarks below.<p><b>Remarks:</b>
+   * A JSON patch is an array with one or more maps. Each map has the
+   *  following keys: <ul> <li>"op" - Required. This key's value is the
+   *  patch operation and must be "add", "remove", "move", "copy", "test",
+   *  or "replace", in lower case and no other case combination.</li>
+   *  <li>"value" - Required if the operation is "add", "replace", or "test"
+   * and specifies the item to add (insert), or that will replace the
+   * existing item, or to check an existing item for equality,
+   *  respectively. (For "test", the operation fails if the existing item
+   *  doesn't match the specified value.)</li> <li>"path" - Required for all
+   * operations. A JSON Pointer (RFC 6901) specifying the target path in
+   *  the CBOR object for the operation.</li> <li>"from" - Required if the
+   *  operation is "move" or "copy". A JSON Pointer (RFC 6901) specifying
+   * the target path in the CBOR object where the source value is
+   * located.</li></ul></p>
+   * @param patch A JSON patch in the form of a CBOR object; it has the form
+   * summarized in the remarks.
+   * @return The result of the patch operation.
+   * @throws CBORException The parameter "patch" is null or the patch operation
+   * failed.
    */
     public CBORObject ApplyJSONPatch(CBORObject patch) {
       return JSONPatch.Patch(this, patch);

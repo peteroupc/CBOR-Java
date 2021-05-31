@@ -9085,7 +9085,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
       } else {
        try {
- actual = actual.ApplyJSONPatch(patch);
+          byte[] oldactualbytes = actual.EncodeToBytes();
+          CBORObject oldactual = actual;
+          actual = actual.ApplyJSONPatch(patch);
+          byte[] newactualbytes = oldactual.EncodeToBytes();
+          // Check whether the patch didn't change the existing Object
+          TestCommon.AssertByteArraysEqual(oldactualbytes, newactualbytes);
 } catch (Exception ex) {
 throw new IllegalStateException(ex.toString() + "\n" + patch);
 }
@@ -9118,13 +9123,8 @@ err = testcbor.GetOrDefault("error",
               testcbor.get("patch"));
           }
         } catch (Exception ex) {
-          System.out.println("*********");
           String exmsg = ex.getClass()+"\n"+comment +"\n" + err;
-          System.out.println(exmsg);
-          System.out.println(testcbor + "");
-          System.out.println(ex);
-          System.out.println("*********");
-          // throw new IllegalStateException(exmsg, ex);
+          throw new IllegalStateException(exmsg, ex);
         }
       }
     }
