@@ -9123,7 +9123,7 @@ err = testcbor.GetOrDefault("error",
               testcbor.get("patch"));
           }
         } catch (Exception ex) {
-          String exmsg = ex.getClass()+"\n" +comment + "\n" + err;
+          String exmsg = ex.getClass() + "\n" + comment + "\n" + err;
           throw new IllegalStateException(exmsg, ex);
         }
       }
