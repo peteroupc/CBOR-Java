@@ -9081,15 +9081,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 } catch (CBORException ex) {
 // NOTE: Intentionally empty
 } catch (Exception ex) {
- Assert.fail(ex.toString() + "\n" + patch);
- throw new IllegalStateException("", ex);
+ throw new IllegalStateException(ex.toString() + "\n" + patch);
 }
       } else {
        try {
  actual = actual.ApplyJSONPatch(patch);
 } catch (Exception ex) {
-Assert.fail(ex.toString() + "\n" + patch);
-throw new IllegalStateException("", ex);
+throw new IllegalStateException(ex.toString() + "\n" + patch);
 }
        Assert.assertEquals(expected, actual);
       }
@@ -9101,6 +9099,9 @@ throw new IllegalStateException("", ex);
       CBORObject tests = CBORObject.FromJSONString(JSONPatchTests,
          new JSONOptions("allowduplicatekeys=1"));
       for (CBORObject testcbor : tests.getValues()) {
+        if (testcbor.GetOrDefault("disabled", CBORObject.False).AsBoolean()) {
+          continue;
+        }
         String
 err = testcbor.GetOrDefault("error",
   CBORObject.FromObject("")).AsString();
@@ -9117,8 +9118,12 @@ err = testcbor.GetOrDefault("error",
               testcbor.get("patch"));
           }
         } catch (Exception ex) {
-          String exmsg = ex.getClass()+"\n"+comment+"\n" +err;
+          System.out.println("*********");
+          String exmsg = ex.getClass()+"\n"+comment +"\n" + err;
           System.out.println(exmsg);
+          System.out.println(testcbor + "");
+          System.out.println(ex);
+          System.out.println("*********");
           // throw new IllegalStateException(exmsg, ex);
         }
       }
@@ -9126,7 +9131,7 @@ err = testcbor.GetOrDefault("error",
 
     @Test
     public void TestApplyJSONPatchTest() {
-      CBORObject patch, testval;
+      CBORObject patch;
       patch = CBORObject.NewMap().Add("op", "test")
           .Add("path", "").Add("value",
   CBORObject.NewArray().Add(1).Add(2));
