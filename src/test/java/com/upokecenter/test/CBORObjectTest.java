@@ -2,6 +2,7 @@ package com.upokecenter.test;
 
 import java.util.*;
 import java.io.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
@@ -20,9 +21,8 @@ import com.upokecenter.numbers.*;
       "truE", "falsE", "nulL", "tRUE", "fALSE", "nULL", "tRuE", "fAlSe", "nUlL",
       "[tr]", "[fa]",
       "[nu]", "[True]", "[False]", "[Null]", "[TRUE]", "[FALSE]", "[NULL]",
-
-  "[truE]", "[falsE]",
-  "[nulL]","[tRUE]","[fALSE]","[nULL]","[tRuE]","[fAlSe]","[nUlL]",
+      "[truE]", "[falsE]",
+      "[nulL]", "[tRUE]", "[fALSE]","[nULL]","[tRuE]","[fAlSe]","[nUlL]",
       "fa ", "nu ", "fa lse", "nu ll", "tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
       "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
@@ -9857,14 +9857,56 @@ err = testcbor.GetOrDefault("error",
       Assert.assertEquals(dt2, dt);
     }
 
+    private static String RandomQueryStringLike(IRandomGenExtended irg) {
+       StringBuilder sb = new StringBuilder();
+       while (true) {
+          int x = irg.GetInt32(100);
+          if (x == 0) {
+            break;
+          } else if (x < 10) {
+            sb.append('&');
+          } else if (x < 20) {
+            sb.append('=');
+          } else if (x < 25) {
+            String hex = "0123456789ABCDEF";
+            sb.append('%');
+            sb.append(hex.charAt(irg.GetInt32(hex.length())));
+            sb.append(hex.charAt(irg.GetInt32(hex.length())));
+          } else if (x < 30) {
+            String hex = "0123456789abcdef";
+            sb.append('%');
+            sb.append(hex.charAt(irg.GetInt32(hex.length())));
+            sb.append(hex.charAt(irg.GetInt32(hex.length())));
+          } else if (x < 95) {
+            sb.append((char)(irg.GetInt32(0x5e) + 0x21));
+          } else {
+            sb.append((char)irg.GetInt32(0x80));
+          }
+       }
+       return sb.toString();
+    }
+
     @Test
     public void TestQueryStrings() {
+      // TODO: Add utility to create query strings
       String test = "a=b&c=d&e=f&g.set(0,h&g.get(1)=j&g.get(2)[a]=k&g.get(2)[b]=m");
-      CBORObject
-cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
+      CBORObject cbor =
+CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
       System.out.println(cbor.ToJSONString());
       cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToCBOR(test));
       System.out.println(cbor.ToJSONString());
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 100000; ++i) {
+        String str = RandomQueryStringLike(rg);
+        try {
+          cbor = QueryStringHelper.QueryStringToCBOR(str);
+          System.out.println("succ: " + str);
+          System.out.println(cbor.ToJSONString());
+        } catch (IllegalStateException ex) {
+          // System.out.println("throws: "+str);
+        }
+      }
+      throw new IllegalStateException();
     }
 
     private static CBORObject FromJSON(String json, JSONOptions jsonop) {
