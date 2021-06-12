@@ -9857,6 +9857,16 @@ err = testcbor.GetOrDefault("error",
       Assert.assertEquals(dt2, dt);
     }
 
+    @Test
+    public void TestQueryStrings() {
+      String test = "a=b&c=d&e=f&g.set(0,h&g.get(1)=j&g.get(2)[a]=k&g.get(2)[b]=m");
+      CBORObject
+cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
+      System.out.println(cbor.ToJSONString());
+      cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToCBOR(test));
+      System.out.println(cbor.ToJSONString());
+    }
+
     private static CBORObject FromJSON(String json, JSONOptions jsonop) {
       // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
       // sw.Start();
