@@ -22,7 +22,7 @@ import com.upokecenter.numbers.*;
       "[tr]", "[fa]",
       "[nu]", "[True]", "[False]", "[Null]", "[TRUE]", "[FALSE]", "[NULL]",
       "[truE]", "[falsE]",
-      "[nulL]", "[tRUE]", "[fALSE]","[nULL]","[tRuE]","[fAlSe]","[nUlL]",
+      "[nulL]", "[tRUE]", "[fALSE]", "[nULL]", "[tRuE]", "[fAlSe]", "[nUlL]",
       "fa ", "nu ", "fa lse", "nu ll", "tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
       "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
@@ -9906,7 +9906,6 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
           // System.out.println("throws: "+str);
         }
       }
-      throw new IllegalStateException();
     }
 
     private static CBORObject FromJSON(String json, JSONOptions jsonop) {
