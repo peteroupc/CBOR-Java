@@ -61,8 +61,8 @@ import com.upokecenter.numbers.*;
           if (escaped) {
             return CBORObject.FromJSONString(js.substring(
                 startIndex - 1, (
-                startIndex - 1)+((endIndex - (startIndex - 1))))); }
-                return CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - startIndex)));
+                startIndex - 1)+((endIndex - (startIndex - 1))))); } return
+CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - startIndex)));
         } else if (c == '\\') {
           this.index = idx++;
           escaped = true;

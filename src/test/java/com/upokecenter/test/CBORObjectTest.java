@@ -22,7 +22,7 @@ import com.upokecenter.numbers.*;
       "[tr]", "[fa]",
       "[nu]", "[True]", "[False]", "[Null]", "[TRUE]", "[FALSE]", "[NULL]",
       "[truE]", "[falsE]",
-      "[nulL]", "[tRUE]", "[fALSE]", "[nULL]", "[tRuE]", "[fAlSe]", "[nUlL]",
+      "[nulL]", "[tRUE]", "[fALSE]", "[nULL]","[tRuE]","[fAlSe]","[nUlL]",
       "fa ", "nu ", "fa lse", "nu ll", "tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
       "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
@@ -9900,8 +9900,8 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
         String str = RandomQueryStringLike(rg);
         try {
           cbor = QueryStringHelper.QueryStringToCBOR(str);
-          System.out.println("succ: " + str);
-          System.out.println(cbor.ToJSONString());
+          // System.out.println("succ: " + str);
+          // System.out.println(cbor.ToJSONString());
         } catch (IllegalStateException ex) {
           // System.out.println("throws: "+str);
         }
@@ -10636,3 +10636,63 @@ throw new IllegalStateException("", ex);
       }
     }
   }
+}
+
+    public class Tests {
+        @Test
+        public void ToObjectWithReadOnly() {
+            Foo { foo = new Foo {
+                Bars = new ArrayList<Bar> {new Bar {Strings = new ArrayList<String> {,
+  "Mumbo"}}, }
+            };
+
+            CBORTypeMapper typeMapper = new CBORTypeMapper();
+            typeMapper.AddTypeName(Foo.class.getFullName());
+            typeMapper.AddTypeName(Bar.class.getFullName());
+            {
+              Object objectTemp = (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { Bar.class };}public java.lang.reflect.Type getRawType() { return IReadOnlyCollection.class; } public java.lang.reflect.Type getOwnerType() { return null; }});
+Object objectTemp2 = new
+ReadOnlyCollectionConverter<Bar>(typeMapper);
+typeMapper.AddConverter(objectTemp, objectTemp2);
+}
+            // typeMapper.AddConverter((new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class };}public java.lang.reflect.Type getRawType() { return IReadOnlyCollection.class; } public java.lang.reflect.Type getOwnerType() { return null; }}), new
+            // ReadOnlyCollectionConverter<String>(typeMapper));
+            java.io.ByteArrayOutputStream stream = new java.io.ByteArrayOutputStream();
+            CBORObject.FromObject(foo, typeMapper).WriteTo(stream);
+            stream.setPosition(0);
+            CBORObject.Read(stream).ToObject(foo.getClass(), typeMapper);
+        }
+    }
+
+    public class Foo {
+        public final IReadOnlyCollection<Bar> getBars() { return propVarbars; }
+public final void setBars(IReadOnlyCollection<Bar> value) { propVarbars = value; }
+private IReadOnlyCollection<Bar> propVarbars;
+    }
+
+    public class Bar {
+        public final IReadOnlyCollection<String> getStrings() { return propVarstrings; }
+public final void setStrings(IReadOnlyCollection<String> value) { propVarstrings = value; }
+private IReadOnlyCollection<String> propVarstrings;
+    }
+
+    public class ReadOnlyCollectionConverter<T> implements ICBORToFromConverter<IReadOnlyCollection<T>>
+    {
+        private CBORTypeMapper tm;
+
+        public ReadOnlyCollectionConverter(CBORTypeMapper tm) {
+            this.tm = tm;
+        }
+
+        public CBORObject ToCBORObject(IReadOnlyCollection<T> obj) {
+            var array = CBORObject.NewArray();
+            for (Object item : obj) {
+              array.Add(CBORObject.FromObject(item, this.tm));
+            }
+
+            return array;
+        }
+
+        public IReadOnlyCollection<T> FromCBORObject(CBORObject obj) {
+            return obj.getValues().Select(x => x.getToObject()<T>(this.tm)).ToList();
+        }
