@@ -10034,7 +10034,8 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
       int f32,
       long f64,
       String line) {
-       if (str.charAt(0) == '.') {
+       if (str.charAt(0) == '.' || str.charAt(str.length() - 1) =='.' ||
+            str.contains(".e") || str.contains(".E")) {
           // Not a valid JSON number, so skip
           // System.out.println(str);
           return;
@@ -10067,6 +10068,35 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
        // TODO: Test f16
     }
 
+     @Test
+     public void TestCloseToPowerOfTwo() {
+        for (int i = 31; i < 129; ++i) {
+           EInteger ei = EInteger.FromInt32(1).ShiftLeft(i);
+           {
+              AssertJSONDouble(
+                 ei.toString(),
+                 "double",
+                 EFloat.FromEInteger(ei).ToDouble());
+              AssertJSONDouble(
+                 ei.Add(1).toString(),
+                 "double",
+                 EFloat.FromEInteger(ei.Add(1)).ToDouble());
+              AssertJSONDouble(
+                 ei.Subtract(2).toString(),
+                 "double",
+                 EFloat.FromEInteger(ei.Subtract(2)).ToDouble());
+              AssertJSONDouble(
+                 ei.Add(2).toString(),
+                 "double",
+                 EFloat.FromEInteger(ei.Add(2)).ToDouble());
+              AssertJSONDouble(
+                 ei.Subtract(2).toString(),
+                 "double",
+                 EFloat.FromEInteger(ei.Subtract(2)).ToDouble());
+           }
+        }
+     }
+
     @Test
     public void TestFromJsonStringFastCases() {
       JSONOptions op = new JSONOptions("numberconversion=double");
@@ -10077,8 +10107,6 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
       Assert.assertEquals(
         JSONOptions.ConversionMode.IntOrFloat,
         op.getNumberConversion());
-      // System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-      // sw.Start();
       String manyzeros = TestCommon.Repeat("0", 1000000);
       String manythrees = TestCommon.Repeat("3", 1000000);
       AssertJSONDouble(
