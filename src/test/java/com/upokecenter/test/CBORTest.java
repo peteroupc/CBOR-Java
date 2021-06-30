@@ -1773,6 +1773,28 @@ import com.upokecenter.numbers.*;
     }
 
     @Test
+    public void TestRoundTripNaN() {
+      long doublennan = ((long)0xfff8000000000000L);
+      long doublepnan = ((long)0x7ff8000000000000L);
+      int singlennan = ((int)0xffc00000);
+      int singlepnan = ((int)0x7fc00000);
+      int halfnnan = 0xfe00;
+      int halfpnan = 0x7e00;
+      Assert.assertEquals(doublennan,
+  CBORObject.FromFloatingPointBits(doublennan, 8).AsDoubleBits());
+      Assert.assertEquals(doublepnan,
+  CBORObject.FromFloatingPointBits(doublepnan, 8).AsDoubleBits());
+      Assert.assertEquals(doublennan,
+  CBORObject.FromFloatingPointBits(singlennan, 4).AsDoubleBits());
+      Assert.assertEquals(doublepnan,
+  CBORObject.FromFloatingPointBits(singlepnan, 4).AsDoubleBits());
+      Assert.assertEquals(doublennan,
+  CBORObject.FromFloatingPointBits(halfnnan, 2).AsDoubleBits());
+      Assert.assertEquals(doublepnan,
+  CBORObject.FromFloatingPointBits(halfpnan, 2).AsDoubleBits());
+    }
+
+    @Test
     public void TestPlist() {
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
@@ -2038,39 +2060,6 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
           EDecimal.FromString(r));
       CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
       TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
-    }
-
-    @Test
-    public void TestJSONWithComments() {
-      Map<String, String> dict;
-      String str = "[\n {\n # Bm\n\"a\":1,\n\"b\":2\n},{\n #" +
-"\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
-      CBORObject obj = JSONWithComments.FromJSONString(str);
-      System.out.println(obj);
-      str = "[\n {\n # B\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
-       obj = JSONWithComments.FromJSONString(str);
-      System.out.println(obj);
-      str = "[\n {\n # B A C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
-       obj = JSONWithComments.FromJSONString(str);
-      System.out.println(obj);
-      str = "[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]";
-       obj = JSONWithComments.FromJSONString(str);
-      System.out.println(obj);
-      dict = new HashMap<String, String>();
-      str = "{\"f\":[\n {\n # B\t \tA C\n # Dm\n\"a\":1,\n\"b\":2\n},{\n #" +
-       "\u0020Sm\n\"a\":3,\n\"b\":4\n}\n]}";
-       obj = JSONWithComments.FromJSONString(str);
-      System.out.println(obj);
-    obj = JSONWithComments.FromJSONStringWithPointers(str, dict);
-    for (String key : dict.keySet()) {
-         System.out.println(key);
-         System.out.println(dict.get(key));
-         System.out.println(obj.AtJSONPointer(dict.get(key)));
-       }
-      System.out.println(obj);
     }
 
     @Test
