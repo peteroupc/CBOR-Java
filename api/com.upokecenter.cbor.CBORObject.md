@@ -2372,7 +2372,17 @@ Generates a CBOR object from a byte (0 to 255).
 
 ### FromObject
     public static CBORObject FromObject​(float value)
-Generates a CBOR object from a 32-bit floating-point number.
+Generates a CBOR object from a 32-bit floating-point number. The input value
+ can be a not-a-number (NaN) value (such as <code>Float.NaN</code> in
+ DotNet or Float.NaN in Java); however, NaN values have multiple
+ forms that are equivalent for many applications' purposes, and
+ <code>Float.NaN</code> / <code>Float.NaN</code> is only one of these equivalent
+ forms. In fact, <code>CBORObject.FromObject(Float.NaN)</code> or
+ <code>CBORObject.FromObject(Float.NaN)</code> could produce a CBOR-encoded
+ object that differs between DotNet and Java, because
+ <code>Float.NaN</code> / <code>Float.NaN</code> may have a different form in
+ DotNet and Java (for example, the NaN value's sign may be negative
+ in DotNet, but positive in Java).
 
 **Parameters:**
 
@@ -2384,7 +2394,15 @@ Generates a CBOR object from a 32-bit floating-point number.
 
 ### FromObject
     public static CBORObject FromObject​(double value)
-Generates a CBOR object from a 64-bit floating-point number.
+Generates a CBOR object from a 64-bit floating-point number. The input value
+ can be a not-a-number (NaN) value (such as <code>Double.NaN</code>);
+ however, NaN values have multiple forms that are equivalent for many
+ applications' purposes, and <code>Double.NaN</code> is only one of these
+ equivalent forms. In fact, <code>CBORObject.FromObject(Double.NaN)</code>
+ could produce a CBOR-encoded object that differs between DotNet and
+ Java, because <code>Double.NaN</code> may have a different form in DotNet
+ and Java (for example, the NaN value's sign may be negative in
+ DotNet, but positive in Java).
 
 **Parameters:**
 

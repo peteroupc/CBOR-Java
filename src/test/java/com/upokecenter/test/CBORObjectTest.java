@@ -9613,7 +9613,7 @@ CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
         Assert.fail(line);
       }
       String f64 = line.substring(4 + 1 + 8 + 1, (4 + 1 + 8 + 1)+(16));
-      if (line.charAt(4+ 1 + 25) != ' ') {
+      if (line.charAt(4 + 26) != ' ') {
         Assert.fail(line);
       }
       String str = line.substring(4 + 1 + 8 + 1 + 16 + 1);

@@ -478,13 +478,6 @@ import com.upokecenter.numbers.*;
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
-          .ToObject(EDecimal.class).toString();
-        Assert.assertEquals(
-          "NaN",
-          stringTemp);
-      }
-      {
         Object objectTemp = CBORTestCommon.DecPosInf;
         Object objectTemp2 =
           ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
@@ -499,11 +492,18 @@ import com.upokecenter.numbers.*;
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
-        Object objectTemp = "NaN";
-        Object objectTemp2 =
-          ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-          .ToObject(EDecimal.class).toString();
-        Assert.assertEquals(objectTemp, objectTemp2);
+        boolean bo = ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
+          .ToObject(EDecimal.class)).IsNaN();
+        if (!(bo)) {
+ Assert.fail();
+ }
+      }
+      {
+        boolean bo = ((EDecimal)ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
+          .ToObject(EDecimal.class)).IsNaN();
+        if (!(bo)) {
+ Assert.fail();
+ }
       }
       try {
         CBORObject.NewArray().ToObject(EDecimal.class);
