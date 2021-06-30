@@ -9,13 +9,13 @@ import com.upokecenter.cbor.*;
 
   public final class QueryStringHelper {
     private QueryStringHelper() {
-}
+    }
     private static String[] SplitAt(String s, String delimiter) {
       if (delimiter == null || delimiter.length() == 0) {
         throw new IllegalArgumentException();
       }
       if (s == null || s.length() == 0) {
-        return new String[] { ""};
+        return new String[] { "" };
       }
       int index = 0;
       boolean first = true;
@@ -25,7 +25,7 @@ import com.upokecenter.cbor.*;
         int index2 = s.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s};
+            return new String[] { s };
           }
           strings.add(s.substring(index));
           break;
@@ -138,9 +138,9 @@ import com.upokecenter.cbor.*;
                   }
                 } else {
                   retString.append((char)((((ret - 0x10000) >> 10) &
-                     0x3ff) | 0xd800));
+                        0x3ff) | 0xd800));
                   retString.append((char)(((ret - 0x10000) & 0x3ff) |
-                     0xdc00));
+                      0xdc00));
                 }
                 continue;
               }
@@ -159,9 +159,9 @@ import com.upokecenter.cbor.*;
       }
       if (bytesNeeded > 0) {
         // we expected further bytes here,
-          // so throw an exception
-          throw new IllegalStateException();
-        }
+        // so throw an exception
+        throw new IllegalStateException();
+      }
       return retString.toString();
     }
     public static List<String[]> ParseQueryString(
@@ -202,7 +202,7 @@ import com.upokecenter.cbor.*;
         }
         name = name.replace('+', ' ');
         value = value.replace('+', ' ');
-        String[] pair = new String[] { name, value};
+        String[] pair = new String[] { name, value };
         pairs.add(pair);
       }
       for (String[] pair : pairs) {
@@ -216,7 +216,7 @@ import com.upokecenter.cbor.*;
     private static String[] GetKeyPath(String s) {
       int index = s.indexOf('[');
       if (index < 0) { // start bracket not found
-        return new String[] { s};
+        return new String[] { s };
       }
       ArrayList<String> path = new ArrayList<String>();
       path.add(s.substring(0, index - 0));
@@ -255,11 +255,11 @@ import com.upokecenter.cbor.*;
       int count;
       if (value < 100000) {
         if (neg) {
-         chars = new char[6];
-         count = 5;
+          chars = new char[6];
+          count = 5;
         } else {
-         chars = new char[5];
-         count = 4;
+          chars = new char[5];
+          count = 4;
         }
         while (value > 9) {
           int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
@@ -363,7 +363,7 @@ private static CBORObject ConvertListsToCBOR(List<Object> dict) {
 
     @SuppressWarnings("unchecked")
 private static CBORObject ConvertListsToCBOR(Map<String, Object>
-dict) {
+      dict) {
       CBORObject cbor = CBORObject.NewMap();
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
@@ -405,7 +405,7 @@ private static void ConvertLists(List<Object> list) {
 
     @SuppressWarnings("unchecked")
 private static Map<String, Object> ConvertLists(
-  Map<String, Object> dict) {
+      Map<String, Object> dict) {
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
         Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
@@ -468,15 +468,15 @@ private static Map<String, Object> QueryStringToDictInternal(
         }
       }
       return root;
-      }
+    }
 
-   public static Map<String, Object> QueryStringToDict(String query,
+    public static Map<String, Object> QueryStringToDict(String query,
       String delimiter) {
       // Convert array-like dictionaries to ILists
       return ConvertLists(QueryStringToDictInternal(query, delimiter));
     }
 
-   public static CBORObject QueryStringToCBOR(String query,
+    public static CBORObject QueryStringToCBOR(String query,
       String delimiter) {
       // Convert array-like dictionaries to ILists
       return ConvertListsToCBOR(QueryStringToDictInternal(query, delimiter));

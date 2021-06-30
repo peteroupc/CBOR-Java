@@ -37,8 +37,8 @@ import com.upokecenter.numbers.*;
 
     private final String jstring;
     private final List<CBORObject> currPointer;
-    private int currPointerStackSize;
     private final JSONOptions options;
+    private int currPointerStackSize;
     private List<String[]> pointers;
     private int index;
     private int endPos;
@@ -60,9 +60,11 @@ import com.upokecenter.numbers.*;
           this.index = idx;
           if (escaped) {
             return CBORObject.FromJSONString(js.substring(
-                startIndex - 1, (
-                startIndex - 1)+((endIndex - (startIndex - 1))))); } return
-CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - startIndex)));
+                  startIndex - 1, (
+                  startIndex - 1)+(endIndex - (startIndex - 1))));
+          }
+          return
+            CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - startIndex)));
         } else if (c == '\\') {
           this.index = idx++;
           escaped = true;
@@ -81,16 +83,16 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
           0xffff : -1;
         if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
             c == 'e' || c == 'E')) {
-           numberEndIndex = c < 0 ? this.index : this.index - 1;
-           obj = CBORDataUtilities.ParseJSONNumber(
-             this.jstring.substring(
-               numberStartIndex, (
-               numberStartIndex)+(numberEndIndex - numberStartIndex)),
-             this.options);
-           if (obj == null) {
-              this.RaiseError("Invalid JSON number");
-           }
-           break;
+          numberEndIndex = c < 0 ? this.index : this.index - 1;
+          obj = CBORDataUtilities.ParseJSONNumber(
+              this.jstring.substring(
+                numberStartIndex, (
+                numberStartIndex)+(numberEndIndex - numberStartIndex)),
+              this.options);
+          if (obj == null) {
+            this.RaiseError("Invalid JSON number");
+          }
+          break;
         }
       }
       c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
@@ -189,7 +191,8 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
           // Parse a nonnegative number
           return this.NextJSONNumber(nextChar);
         }
-        default: this.RaiseError("Value can't be parsed.");
+        default:
+          this.RaiseError("Value can't be parsed.");
           break;
       }
       return null;
@@ -247,9 +250,9 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
         throw new NullPointerException("jstring");
       }
       return FromJSONStringWithPointers(
-        jstring,
-        JSONOptions.Default,
-        valpointers);
+          jstring,
+          JSONOptions.Default,
+          valpointers);
     }
 
     public static CBORObject FromJSONStringWithPointers(
@@ -260,16 +263,16 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
         throw new NullPointerException("jstring");
       }
       return ParseJSONValueWithPointers(
-        jstring,
-        0,
-        jstring.length(),
-        options,
-        valpointers);
+          jstring,
+          0,
+          jstring.length(),
+          options,
+          valpointers);
     }
 
     final List<String[]> getPointers() {
-  return this.pointers;
- }
+        return this.pointers;
+      }
 
     static CBORObject ParseJSONValueWithPointers(
       String jstring,
@@ -282,9 +285,10 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
       int i = 0;
       for (i = index; i < endPos; ++i) {
         if (jstring.charAt(i) == '#') {
-           {hasHash = true;
+          { hasHash = true;
+          }
+          break;
         }
-        break; }
       }
       // No nonstandard comments, so just use FromJSONString
       if (!hasHash) {
@@ -317,9 +321,10 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
       int i = 0;
       for (i = index; i < endPos; ++i) {
         if (jstring.charAt(i) == '#') {
-           {hasHash = true;
+          { hasHash = true;
+          }
+          break;
         }
-        break; }
       }
       // No nonstandard comments, so just use FromJSONString
       if (!hasHash) {
@@ -356,31 +361,31 @@ CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - st
         if (c < 0x10000) {
           ++this.index;
         } else {
- this.index += 2;
-}
+          this.index += 2;
+        }
         if (c == 0x0d || c == 0x09 || c == 0x20) {
           while (this.index < this.endPos) {
-             c = this.jstring.charAt(this.index++);
-             if (c != 0x0d && c != 0x09 && c != 0x20) {
-                --this.index;
-                break;
-             }
-           }
-           sb.append((char)0x20);
+            c = this.jstring.charAt(this.index++);
+            if (c != 0x0d && c != 0x09 && c != 0x20) {
+              --this.index;
+              break;
+            }
+          }
+          sb.append((char)0x20);
         } else if (c == 0x0a) {
           c = this.SkipWhitespaceJSON();
           if (c != 0x23) { // '#' character
-              // System.out.println("last: " + ((char)c));
-              return c;
-           }
+            // System.out.println("last: " + ((char)c));
+            return c;
+          }
         } else {
-if (c <= 0xffff) {
-              { sb.append((char)c);
-           }
-} else if (c <= 0x10ffff) {
-  sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
-  sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-}
+          if (c <= 0xffff) {
+            { sb.append((char)c);
+            }
+          } else if (c <= 0x10ffff) {
+            sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) | 0xd800));
+            sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+          }
         }
       }
       return -1;
@@ -406,7 +411,7 @@ if (c <= 0xffff) {
             }
           }
         } else {
-           this.RaiseError("Internal error");
+          this.RaiseError("Internal error");
         }
       }
       return sb.toString();
@@ -428,14 +433,14 @@ if (c <= 0xffff) {
       while (true) {
         c = this.SkipWhitespaceJSON();
         if (c == '#') {
-            // Nonstandard comment
-            if (myHashMap.size() == 0) {
-              StringBuilder sb = new StringBuilder();
-              c = this.NextComment(sb);
-              commentKey = sb.toString();
-            } else {
-              this.RaiseError("Unexpected comment");
-            }
+          // Nonstandard comment
+          if (myHashMap.size() == 0) {
+            StringBuilder sb = new StringBuilder();
+            c = this.NextComment(sb);
+            commentKey = sb.toString();
+          } else {
+            this.RaiseError("Unexpected comment");
+          }
         }
         switch (c) {
           case -1:
@@ -448,8 +453,8 @@ if (c <= 0xffff) {
               return null;
             }
             if (commentKey != null) {
-               String[] keyptr = { commentKey, this.GetJSONPointer() };
-               this.pointers.add(keyptr);
+              String[] keyptr = { commentKey, this.GetJSONPointer() };
+              this.pointers.add(keyptr);
             }
             this.PopPointer();
             return CBORObject.FromObject(myHashMap);
@@ -481,9 +486,9 @@ if (c <= 0xffff) {
             depth));
         int newCount = myHashMap.size();
         if (!this.options.getAllowDuplicateKeys() &&
-              oldCount == newCount) {
-              this.RaiseError("Duplicate key already exists");
-              return null;
+          oldCount == newCount) {
+          this.RaiseError("Duplicate key already exists");
+          return null;
         }
         switch (nextchar[0]) {
           case ',':
@@ -492,36 +497,37 @@ if (c <= 0xffff) {
           case '}':
             this.PopPointer();
             if (commentKey != null) {
-               String[] keyptr = { commentKey, this.GetJSONPointer() };
-               this.pointers.add(keyptr);
+              String[] keyptr = { commentKey, this.GetJSONPointer() };
+              this.pointers.add(keyptr);
             }
             return CBORObject.FromObject(myHashMap);
-          default: this.RaiseError("Expected a ',' or '}'");
+          default:
+            this.RaiseError("Expected a ',' or '}'");
             break;
         }
       }
     }
 
     private void SetPointer(CBORObject obj) {
-       this.currPointer.set(this.currPointerStackSize - 1, obj);
+      this.currPointer.set(this.currPointerStackSize - 1, obj);
     }
 
     private void PushPointer() {
-if (this.currPointerStackSize > this.currPointer.size()) {
-         this.RaiseError("Internal error");
-       };
-       if (this.currPointerStackSize == this.currPointer.size()) {
-         this.currPointer.add(CBORObject.Null);
-       } else {
-          this.currPointer.set(this.currPointerStackSize, CBORObject.Null);
-       }
-       ++this.currPointerStackSize;
+      if (this.currPointerStackSize > this.currPointer.size()) {
+        this.RaiseError("Internal error");
+      }
+      if (this.currPointerStackSize == this.currPointer.size()) {
+        this.currPointer.add(CBORObject.Null);
+      } else {
+        this.currPointer.set(this.currPointerStackSize, CBORObject.Null);
+      }
+      ++this.currPointerStackSize;
     }
     private void PopPointer() {
-if (this.currPointerStackSize < 0) {
-         this.RaiseError("Internal error");
-       };
-       --this.currPointerStackSize;
+      if (this.currPointerStackSize < 0) {
+        this.RaiseError("Internal error");
+      }
+      --this.currPointerStackSize;
     }
 
     CBORObject ParseJSONArray(int depth) {
@@ -562,7 +568,8 @@ if (this.currPointerStackSize < 0) {
             break;
           case ']':
             return myArrayList;
-          default: this.RaiseError("Expected a ',' or ']'");
+          default:
+            this.RaiseError("Expected a ',' or ']'");
             break;
         }
       }
