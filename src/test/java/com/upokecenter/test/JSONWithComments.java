@@ -37,8 +37,8 @@ import com.upokecenter.numbers.*;
 
     private final String jstring;
     private final List<CBORObject> currPointer;
-    private final JSONOptions options;
     private int currPointerStackSize;
+    private final JSONOptions options;
     private List<String[]> pointers;
     private int index;
     private int endPos;
@@ -61,9 +61,7 @@ import com.upokecenter.numbers.*;
           if (escaped) {
             return CBORObject.FromJSONString(js.substring(
                   startIndex - 1, (
-                  startIndex - 1)+(endIndex - (startIndex - 1))));
-          }
-          return
+                  startIndex - 1)+((endIndex - (startIndex - 1))))); } return
             CBORObject.FromObject(js.substring(startIndex, (startIndex)+((endIndex - 1) - startIndex)));
         } else if (c == '\\') {
           this.index = idx++;
@@ -191,8 +189,7 @@ import com.upokecenter.numbers.*;
           // Parse a nonnegative number
           return this.NextJSONNumber(nextChar);
         }
-        default:
-          this.RaiseError("Value can't be parsed.");
+        default: this.RaiseError("Value can't be parsed.");
           break;
       }
       return null;
@@ -515,7 +512,7 @@ import com.upokecenter.numbers.*;
     private void PushPointer() {
       if (this.currPointerStackSize > this.currPointer.size()) {
         this.RaiseError("Internal error");
-      }
+      };
       if (this.currPointerStackSize == this.currPointer.size()) {
         this.currPointer.add(CBORObject.Null);
       } else {
@@ -526,7 +523,7 @@ import com.upokecenter.numbers.*;
     private void PopPointer() {
       if (this.currPointerStackSize < 0) {
         this.RaiseError("Internal error");
-      }
+      };
       --this.currPointerStackSize;
     }
 

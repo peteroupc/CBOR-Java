@@ -15,7 +15,7 @@ import com.upokecenter.cbor.*;
         throw new IllegalArgumentException();
       }
       if (s == null || s.length() == 0) {
-        return new String[] { "" };
+        return new String[] { ""};
       }
       int index = 0;
       boolean first = true;
@@ -25,7 +25,7 @@ import com.upokecenter.cbor.*;
         int index2 = s.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s };
+            return new String[] { s};
           }
           strings.add(s.substring(index));
           break;
@@ -202,7 +202,7 @@ import com.upokecenter.cbor.*;
         }
         name = name.replace('+', ' ');
         value = value.replace('+', ' ');
-        String[] pair = new String[] { name, value };
+        String[] pair = new String[] { name, value};
         pairs.add(pair);
       }
       for (String[] pair : pairs) {
@@ -216,7 +216,7 @@ import com.upokecenter.cbor.*;
     private static String[] GetKeyPath(String s) {
       int index = s.indexOf('[');
       if (index < 0) { // start bracket not found
-        return new String[] { s };
+        return new String[] { s};
       }
       ArrayList<String> path = new ArrayList<String>();
       path.add(s.substring(0, index - 0));

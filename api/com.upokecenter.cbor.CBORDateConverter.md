@@ -47,6 +47,10 @@
 
 ## Methods
 
+* `CBORObject DateTimeFieldsToCBORObject​(int year,
+                          int[] lesserFields)`<br>
+ Converts a date/time in the form of a year, month, day, hour, minute,
+ second, fractional seconds, and time offset to a CBOR object.
 * `CBORObject DateTimeFieldsToCBORObject​(int smallYear,
                           int month,
                           int day)`<br>
@@ -236,13 +240,37 @@ Converts a date/time in the form of a year, month, day, hour, minute, and
 * <code>CBORException</code> - An error occurred in conversion.
 
 ### DateTimeFieldsToCBORObject
+    public CBORObject DateTimeFieldsToCBORObject​(int year, int[] lesserFields)
+Converts a date/time in the form of a year, month, day, hour, minute,
+ second, fractional seconds, and time offset to a CBOR object.
+
+**Parameters:**
+
+* <code>year</code> - The year.
+
+* <code>lesserFields</code> - An array that will store the fields (other than the
+ year) of the date and time. See the TryGetDateTimeFields method for
+  information on the "lesserFields" parameter.
+
+**Returns:**
+
+* A CBOR object encoding the given date fields according to the
+ conversion type used to create this date converter.
+
+**Throws:**
+
+* <code>java.lang.NullPointerException</code> - The parameter <code>lesserFields</code> is null.
+
+* <code>CBORException</code> - An error occurred in conversion.
+
+### DateTimeFieldsToCBORObject
     public CBORObject DateTimeFieldsToCBORObject​(com.upokecenter.numbers.EInteger bigYear, int[] lesserFields)
 Converts a date/time in the form of a year, month, day, hour, minute,
  second, fractional seconds, and time offset to a CBOR object.
 
 **Parameters:**
 
-* <code>bigYear</code> - The parameter <code>bigYear</code> is a Numbers.EInteger object.
+* <code>bigYear</code> - The year.
 
 * <code>lesserFields</code> - An array that will store the fields (other than the
  year) of the date and time. See the TryGetDateTimeFields method for

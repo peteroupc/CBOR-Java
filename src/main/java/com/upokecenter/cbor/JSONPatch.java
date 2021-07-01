@@ -52,7 +52,7 @@ private JSONPatch() {
         case ByteString:
         case Map:
         case Array:
-           return CBORObject.DecodeFromBytes(o.EncodeToBytes());
+          return CBORObject.DecodeFromBytes(o.EncodeToBytes());
         default: return o;
       }
     }
@@ -95,10 +95,10 @@ private JSONPatch() {
           }
           value = patchOp.get("value");
           o = AddOperation(
-            o,
-            valueOpStr,
-            GetString(patchOp, "path"),
-          value);
+              o,
+              valueOpStr,
+              GetString(patchOp, "path"),
+              value);
         } else if ("replace".equals(valueOpStr)) {
           // operation
           CBORObject value = patchOp.GetOrDefault("value", null);
@@ -134,9 +134,9 @@ private JSONPatch() {
           if (path.equals(fromPath)) {
             JSONPointer pointer = JSONPointer.FromPointer(o, path);
             if (pointer.Exists()) {
-                // Moving to the same path, so return
-                return o;
-             }
+              // Moving to the same path, so return
+              return o;
+            }
           }
           // if (path.startsWith(fromPath)) {
           // throw new CBORException("Patch " + valueOpStr + ": startsWith failed " +
@@ -185,7 +185,7 @@ private JSONPatch() {
             throw new CBORException("Patch " + valueOpStr);
           }
         } else {
-            throw new CBORException("Unrecognized op");
+          throw new CBORException("Unrecognized op");
         }
       }
       return (o == null) ? CBORObject.Null : o;
@@ -210,8 +210,8 @@ private JSONPatch() {
         if (pointer.GetParent().getType() == CBORType.Array) {
           ((CBORObject)pointer.GetParent()).RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
-           ((CBORObject)pointer.GetParent()).Remove(
-               CBORObject.FromObject(pointer.GetKey()));
+          ((CBORObject)pointer.GetParent()).Remove(
+            CBORObject.FromObject(pointer.GetKey()));
         }
         return o;
       }

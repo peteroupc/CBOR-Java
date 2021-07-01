@@ -556,7 +556,9 @@ import com.upokecenter.numbers.*;
      * integer, even a negative one.).
      * @return The CBOR object referred to by index or key in this array or map. If
      * this is a CBOR map, returns {@code null} (not {@code
-     * CBORObject.Null}) if an item with the given key doesn't exist.
+     * CBORObject.Null}) if an item with the given key doesn't exist (but
+     * this behavior may change to throwing an exception in version 5.0 or
+     * later).
      * @throws IllegalStateException This object is not an array or map.
      * @throws IllegalArgumentException This object is an array and the index is less than
      * 0 or at least the size of the array.
@@ -574,6 +576,8 @@ import com.upokecenter.numbers.*;
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
           CBORObject key = CBORObject.FromObject(index);
+          // TODO: In next major version, consider throwing an exception
+          // instead if key does not exist.
           return (!map.containsKey(key)) ? null : map.get(key);
         }
         throw new IllegalStateException("Not an array or map");
@@ -3102,7 +3106,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * UTF-16, or UTF-32 encoding; the encoding is detected by assuming
      * that the first character read must be a byte-order mark or a nonzero
      * basic character (U+0001 to U+007F). (In previous versions, only
-     * UTF-8 was allowed.).
+     * UTF-8 was allowed.). (This behavior may change to supporting only
+     * UTF-8, with or without a byte order mark, in version 5.0 or later,
+     * perhaps with an option to restore the previous behavior of also
+     * supporting UTF-16 and UTF-32.).
      * @param stream A readable data stream. The sequence of bytes read from the
      * data stream must contain a single JSON object and not multiple
      * objects.
@@ -3240,7 +3247,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * UTF-32 encoding; the encoding is detected by assuming that the first
      * character read must be a byte-order mark or a nonzero basic
      * character (U+0001 to U+007F). (In previous versions, only UTF-8 was
-     * allowed.).
+     * allowed.). (This behavior may change to supporting only UTF-8, with
+     * or without a byte order mark, in version 5.0 or later, perhaps with
+     * an option to restore the previous behavior of also supporting UTF-16
+     * and UTF-32.).
      * @param stream A readable data stream. The sequence of bytes read from the
      * data stream must contain a single JSON object and not multiple
      * objects.
@@ -3297,13 +3307,17 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * begin with a byte-order mark (U+FEFF). The byte array can be in
      * UTF-8, UTF-16, or UTF-32 encoding; the encoding is detected by
      * assuming that the first character read must be a byte-order mark or
-     * a nonzero basic character (U+0001 to U+007F).
+     * a nonzero basic character (U+0001 to U+007F). (This behavior may
+     * change to supporting only UTF-8, with or without a byte order mark,
+     * in version 5.0 or later, perhaps with an option to restore the
+     * previous behavior of also supporting UTF-16 and UTF-32.).
      * @return A CBOR object containing the JSON data decoded.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws com.upokecenter.cbor.CBORException The byte array contains invalid
      * encoding or is not in JSON format.
      */
     public static CBORObject FromJSONBytes(byte[] bytes) {
+      // TODO: In next major version, consider supporting UTF-8 only
       return FromJSONBytes(bytes, JSONOptions.Default);
     }
 
@@ -3320,7 +3334,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * begin with a byte-order mark (U+FEFF). The byte array can be in
      * UTF-8, UTF-16, or UTF-32 encoding; the encoding is detected by
      * assuming that the first character read must be a byte-order mark or
-     * a nonzero basic character (U+0001 to U+007F).
+     * a nonzero basic character (U+0001 to U+007F). (This behavior may
+     * change to supporting only UTF-8, with or without a byte order mark,
+     * in version 5.0 or later, perhaps with an option to restore the
+     * previous behavior of also supporting UTF-16 and UTF-32.).
      * @param jsonoptions Specifies options to control how the JSON data is decoded
      * to CBOR. See the JSONOptions class.
      * @return A CBOR object containing the JSON data decoded.
@@ -3332,6 +3349,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
     public static CBORObject FromJSONBytes(
       byte[] bytes,
       JSONOptions jsonoptions) {
+      // TODO: In next major version, consider supporting UTF-8 only
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
@@ -3359,7 +3377,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * byte-order mark (U+FEFF). The portion can be in UTF-8, UTF-16, or
      * UTF-32 encoding; the encoding is detected by assuming that the first
      * character read must be a byte-order mark or a nonzero basic
-     * character (U+0001 to U+007F).
+     * character (U+0001 to U+007F). (This behavior may change to
+     * supporting only UTF-8, with or without a byte order mark, in version
+     * 5.0 or later, perhaps with an option to restore the previous
+     * behavior of also supporting UTF-16 and UTF-32.).
      * @param offset An index, starting at 0, showing where the desired portion of
      * {@code bytes} begins.
      * @param count The length, in bytes, of the desired portion of {@code bytes}
@@ -3391,7 +3412,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * byte-order mark (U+FEFF). The portion can be in UTF-8, UTF-16, or
      * UTF-32 encoding; the encoding is detected by assuming that the first
      * character read must be a byte-order mark or a nonzero basic
-     * character (U+0001 to U+007F).
+     * character (U+0001 to U+007F). (This behavior may change to
+     * supporting only UTF-8, with or without a byte order mark, in version
+     * 5.0 or later, perhaps with an option to restore the previous
+     * behavior of also supporting UTF-16 and UTF-32.).
      * @param offset An index, starting at 0, showing where the desired portion of
      * {@code bytes} begins.
      * @param count The length, in bytes, of the desired portion of {@code bytes}
@@ -5175,6 +5199,87 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
+     * Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
+     * more information, see the overload taking a default value parameter.
+     * @param pointer A JSON pointer according to RFC 6901.
+     * @return An object within this CBOR object. Returns this object if pointer is
+     * the empty string (even if this object has a CBOR type other than
+     * array or map).
+     * @throws com.upokecenter.cbor.CBORException Thrown if the pointer is null, or
+     * if the pointer is invalid, or if there is no object at the given
+     *  pointer, or the special key "-" appears in the pointer, or if the
+     * pointer is non-empty and this object has a CBOR type other than
+     * array or map.
+     */
+    public CBORObject AtJSONPointer(String pointer) {
+      CBORObject ret = this.AtJSONPointer(pointer, null);
+      if (ret == null) {
+         throw new CBORException("Invalid JSON pointer");
+      }
+      return ret;
+    }
+
+    /**
+     * Gets the CBOR object referred to by a JSON Pointer according to RFC6901, or
+     * a default value if the operation fails. The syntax for a JSON
+     * Pointer is: <pre>'/' KEY '/' KEY.get(...)</pre> where KEY represents
+     * a key into the JSON object or its sub-objects in the hierarchy. For
+     * example, <pre>/foo/2/bar</pre> means the same as
+     *  <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
+     *  occurs in a key, it must be escaped with "~0" or "~1", respectively,
+     *  in a JSON pointer. JSON pointers also support the special key "-"
+     *  (as in "/foo/-") to indicate the end of an array, but this method
+     * treats this key as an error since it refers to a nonexistent item.
+     * Indices to arrays (such as 2 in the example) must contain only basic
+     * digits 0 to 9 and no leading zeros. (Note that RFC 6901 was
+     * published before JSON was extended to support top-level values other
+     * than arrays and key-value dictionaries.).
+     * @param pointer A JSON pointer according to RFC 6901.
+     * @param defaultValue The parameter {@code defaultValue} is a Cbor.CBORObject
+     * object.
+     * @return An object within the specified JSON object. Returns this object if
+     * pointer is the empty string (even if this object has a CBOR type
+     * other than array or map). Returns {@code defaultValue} if the
+     * pointer is null, or if the pointer is invalid, or if there is no
+     *  object at the given pointer, or the special key "-" appears in the
+     * pointer, or if the pointer is non-empty and this object has a CBOR
+     * type other than array or map.
+     */
+    public CBORObject AtJSONPointer(String pointer, CBORObject defaultValue) {
+      return JSONPointer.GetObject(this, pointer, null);
+    }
+
+  /**
+   * Returns a copy of this object after applying the operations in a JSON patch,
+   * in the form of a CBOR object. JSON patches are specified in RFC 6902
+   * and their format is summarized in the remarks below.<p><b>Remarks:</b>
+   * A JSON patch is an array with one or more maps. Each map has the
+   *  following keys: <ul> <li>"op" - Required. This key's value is the
+   *  patch operation and must be "add", "remove", "move", "copy", "test",
+   *  or "replace", in basic lower case letters and no other case
+   *  combination.</li> <li>"value" - Required if the operation is "add",
+   *  "replace", or "test" and specifies the item to add (insert), or that
+   * will replace the existing item, or to check an existing item for
+   *  equality, respectively. (For "test", the operation fails if the
+   *  existing item doesn't match the specified value.)</li> <li>"path" -
+   * Required for all operations. A JSON Pointer (RFC 6901) specifying the
+   * destination path in the CBOR object for the operation. For more
+   * information, see RFC 6901 or the documentation for
+   *  AtJSONPointer(pointer, defaultValue).</li> <li>"from" - Required if
+   *  the operation is "move" or "copy". A JSON Pointer (RFC 6901)
+   * specifying the path in the CBOR object where the source value is
+   * located.</li></ul></p>
+   * @param patch A JSON patch in the form of a CBOR object; it has the form
+   * summarized in the remarks.
+   * @return The result of the patch operation.
+   * @throws com.upokecenter.cbor.CBORException The parameter {@code patch} is
+   * null or the patch operation failed.
+   */
+    public CBORObject ApplyJSONPatch(CBORObject patch) {
+      return JSONPatch.Patch(this, patch);
+    }
+
+    /**
      * Determines whether this object and another object are equal and have the
      * same type. Not-a-number values can be considered equal by this
      * method.
@@ -6915,7 +7020,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         throw new CBORException("Premature end of data");
       }
       if (actualLength > expectedLength) {
-        throw new CBORException("Too many bytes");
+        throw new CBORException(
+            "Too many bytes. There is data beyond the decoded CBOR Object.");
       }
     }
 
@@ -6925,7 +7031,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         throw new CBORException("Premature end of data");
       }
       if (actualLength > expectedLength) {
-        throw new CBORException("Too many bytes");
+        throw new CBORException(
+            "Too many bytes. There is data beyond the decoded CBOR Object.");
       }
     }
 
