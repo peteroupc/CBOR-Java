@@ -1,21 +1,12 @@
 # com.upokecenter.cbor.CBORDateConverter
 
-    public final class CBORDateConverter extends java.lang.Object implements ICBORToFromConverter<java.util.Date>
-
-<p>A class for converting date-time objects to and from tagged CBOR
-  objects.</p> <p>In this class's documentation, the "number of seconds
-  since the start of 1970" is based on the POSIX definition of "seconds
-  since the Epoch", a definition that does not count leap seconds. This
- number of seconds assumes the use of a proleptic Gregorian calendar,
- in which the rules regarding the number of days in each month and
- which years are leap years are the same for all years as they were in
- 1970 (including without regard to time zone differences or transitions
- from other calendars to the Gregorian).</p>
-
-## Fields
+## Nested Classes
 
 * `static class  CBORDateConverter.ConversionType`<br>
  Conversion type for date-time conversion.
+
+## Fields
+
 * `static CBORDateConverter TaggedNumber`<br>
  A converter object where FromCBORObject accepts CBOR objects with tag 0
  (date/time strings) and tag 1 (number of seconds since the start of
@@ -33,11 +24,6 @@
  (java.util.Date in DotNet, and Date in Java) to such untagged CBOR
  objects.
 
-## Nested Classes
-
-* `static class  CBORDateConverter.ConversionType`<br>
- Conversion type for date-time conversion.
-
 ## Constructors
 
 * `CBORDateConverter() CBORDateConverter`<br>
@@ -48,23 +34,23 @@
 ## Methods
 
 * `CBORObject DateTimeFieldsToCBORObject​(int year,
-                          int[] lesserFields)`<br>
+int[] lesserFields)`<br>
  Converts a date/time in the form of a year, month, day, hour, minute,
  second, fractional seconds, and time offset to a CBOR object.
 * `CBORObject DateTimeFieldsToCBORObject​(int smallYear,
-                          int month,
-                          int day)`<br>
+int month,
+int day)`<br>
  Converts a date/time in the form of a year, month, and day to a CBOR object.
 * `CBORObject DateTimeFieldsToCBORObject​(int smallYear,
-                          int month,
-                          int day,
-                          int hour,
-                          int minute,
-                          int second)`<br>
+int month,
+int day,
+int hour,
+int minute,
+int second)`<br>
  Converts a date/time in the form of a year, month, day, hour, minute, and
  second to a CBOR object.
 * `CBORObject DateTimeFieldsToCBORObject​(com.upokecenter.numbers.EInteger bigYear,
-                          int[] lesserFields)`<br>
+int[] lesserFields)`<br>
  Converts a date/time in the form of a year, month, day, hour, minute,
  second, fractional seconds, and time offset to a CBOR object.
 * `java.util.Date FromCBORObject​(CBORObject obj)`<br>
@@ -75,20 +61,20 @@
  Converts a java.util.Date (in DotNet) or Date (in Java) to a CBOR object in a
  manner specified by this converter's conversion type.
 * `boolean TryGetDateTimeFields​(CBORObject obj,
-                    com.upokecenter.numbers.EInteger[] year,
-                    int[] lesserFields)`<br>
+com.upokecenter.numbers.EInteger[] year,
+int[] lesserFields)`<br>
  Tries to extract the fields of a date and time in the form of a CBOR object.
 
 ## Field Details
 
-### TaggedString
-    public static final CBORDateConverter TaggedString
+### <a id='TaggedString'>TaggedString</a>
+
 A converter object where FromCBORObject accepts CBOR objects with tag 0
  (date/time strings) and tag 1 (number of seconds since the start of
  1970), and ToCBORObject converts date/time objects (java.util.Date in
  DotNet, and Date in Java) to CBOR objects of tag 0.
-### TaggedNumber
-    public static final CBORDateConverter TaggedNumber
+### <a id='TaggedNumber'>TaggedNumber</a>
+
 A converter object where FromCBORObject accepts CBOR objects with tag 0
  (date/time strings) and tag 1 (number of seconds since the start of
  1970), and ToCBORObject converts date/time objects (java.util.Date in
@@ -100,8 +86,8 @@ A converter object where FromCBORObject accepts CBOR objects with tag 0
  ToCBORObject conversion will throw an exception if the conversion to
  binary64 results in positive infinity, negative infinity, or
  not-a-number.
-### UntaggedNumber
-    public static final CBORDateConverter UntaggedNumber
+### <a id='UntaggedNumber'>UntaggedNumber</a>
+
 A converter object where FromCBORObject accepts untagged CBOR integer or
  CBOR floating-point objects that give the number of seconds since
  the start of 1970, and where ToCBORObject converts date/time objects
@@ -115,16 +101,16 @@ A converter object where FromCBORObject accepts untagged CBOR integer or
  infinity, negative infinity, or not-a-number.
 ## Method Details
 
-### getType
-    public final CBORDateConverter.ConversionType getType()
+### <a id='getType()'>getType</a>
+
 Gets the conversion type for this date converter.
 
 **Returns:**
 
 * The conversion type for this date converter.
 
-### FromCBORObject
-    public java.util.Date FromCBORObject​(CBORObject obj)
+### <a id='FromCBORObject(com.upokecenter.cbor.CBORObject)'>FromCBORObject</a>
+
 Converts a CBOR object to a java.util.Date (in DotNet) or a Date (in Java).
 
 **Specified by:**
@@ -148,8 +134,8 @@ Converts a CBOR object to a java.util.Date (in DotNet) or a Date (in Java).
 * <code>CBORException</code> - The format of the CBOR object is
  not supported, or another error occurred in conversion.
 
-### TryGetDateTimeFields
-    public boolean TryGetDateTimeFields​(CBORObject obj, com.upokecenter.numbers.EInteger[] year, int[] lesserFields)
+### <a id='TryGetDateTimeFields(com.upokecenter.cbor.CBORObject,com.upokecenter.numbers.EInteger[],int[])'>TryGetDateTimeFields</a>
+
 Tries to extract the fields of a date and time in the form of a CBOR object.
 
 **Parameters:**
@@ -187,8 +173,8 @@ Tries to extract the fields of a date and time in the form of a CBOR object.
 * <code>java.lang.NullPointerException</code> - The parameter <code>year</code> or <code>
  lesserFields</code> is null, or contains fewer elements than required.
 
-### DateTimeFieldsToCBORObject
-    public CBORObject DateTimeFieldsToCBORObject​(int smallYear, int month, int day)
+### <a id='DateTimeFieldsToCBORObject(int,int,int)'>DateTimeFieldsToCBORObject</a>
+
 Converts a date/time in the form of a year, month, and day to a CBOR object.
  The hour, minute, and second are treated as 00:00:00 by this method,
  and the time offset is treated as 0 by this method.
@@ -210,8 +196,8 @@ Converts a date/time in the form of a year, month, and day to a CBOR object.
 
 * <code>CBORException</code> - An error occurred in conversion.
 
-### DateTimeFieldsToCBORObject
-    public CBORObject DateTimeFieldsToCBORObject​(int smallYear, int month, int day, int hour, int minute, int second)
+### <a id='DateTimeFieldsToCBORObject(int,int,int,int,int,int)'>DateTimeFieldsToCBORObject</a>
+
 Converts a date/time in the form of a year, month, day, hour, minute, and
  second to a CBOR object. The time offset is treated as 0 by this
  method.
@@ -239,8 +225,8 @@ Converts a date/time in the form of a year, month, day, hour, minute, and
 
 * <code>CBORException</code> - An error occurred in conversion.
 
-### DateTimeFieldsToCBORObject
-    public CBORObject DateTimeFieldsToCBORObject​(int year, int[] lesserFields)
+### <a id='DateTimeFieldsToCBORObject(int,int[])'>DateTimeFieldsToCBORObject</a>
+
 Converts a date/time in the form of a year, month, day, hour, minute,
  second, fractional seconds, and time offset to a CBOR object.
 
@@ -263,8 +249,8 @@ Converts a date/time in the form of a year, month, day, hour, minute,
 
 * <code>CBORException</code> - An error occurred in conversion.
 
-### DateTimeFieldsToCBORObject
-    public CBORObject DateTimeFieldsToCBORObject​(com.upokecenter.numbers.EInteger bigYear, int[] lesserFields)
+### <a id='DateTimeFieldsToCBORObject(com.upokecenter.numbers.EInteger,int[])'>DateTimeFieldsToCBORObject</a>
+
 Converts a date/time in the form of a year, month, day, hour, minute,
  second, fractional seconds, and time offset to a CBOR object.
 
@@ -288,8 +274,8 @@ Converts a date/time in the form of a year, month, day, hour, minute,
 
 * <code>CBORException</code> - An error occurred in conversion.
 
-### ToCBORObject
-    public CBORObject ToCBORObject​(java.util.Date obj)
+### <a id='ToCBORObject(java.util.Date)'>ToCBORObject</a>
+
 Converts a java.util.Date (in DotNet) or Date (in Java) to a CBOR object in a
  manner specified by this converter's conversion type.
 

@@ -1,9 +1,5 @@
 # com.upokecenter.cbor.CBOREncodeOptions
 
-    public final class CBOREncodeOptions extends java.lang.Object
-
-Specifies options for encoding and decoding CBOR objects.
-
 ## Fields
 
 * `static CBOREncodeOptions Default`<br>
@@ -18,13 +14,13 @@ Specifies options for encoding and decoding CBOR objects.
  Initializes a new instance of the CBOREncodeOptions class with all the default
  options.
 * `CBOREncodeOptions​(boolean useIndefLengthStrings,
-                 boolean allowDuplicateKeys)`<br>
+boolean allowDuplicateKeys)`<br>
  Deprecated.
 Use the more readable String constructor instead.
  Use the more readable String constructor instead.
 * `CBOREncodeOptions​(boolean useIndefLengthStrings,
-                 boolean allowDuplicateKeys,
-                 boolean ctap2Canonical)`<br>
+boolean allowDuplicateKeys,
+boolean ctap2Canonical)`<br>
  Deprecated.
 Use the more readable String constructor instead.
  Use the more readable String constructor instead.
@@ -66,20 +62,20 @@ Use the more readable String constructor instead.
 
 ## Field Details
 
-### Default
-    public static final CBOREncodeOptions Default
+### <a id='Default'>Default</a>
+
 Default options for CBOR objects. Disallow duplicate keys, and always encode
  strings using definite-length encoding.
-### DefaultCtap2Canonical
-    public static final CBOREncodeOptions DefaultCtap2Canonical
+### <a id='DefaultCtap2Canonical'>DefaultCtap2Canonical</a>
+
 Default options for CBOR objects serialized using the CTAP2 canonicalization
  (used in Web Authentication, among other specifications). Disallow
  duplicate keys, and always encode strings using definite-length
  encoding.
 ## Method Details
 
-### toString
-    public java.lang.String toString()
+### <a id='toString()'>toString</a>
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
@@ -92,8 +88,8 @@ Gets the values of this options object's properties in text form.
  properties. The format of the string is the same as the one
  described in the string constructor for this class.
 
-### getResolveReferences
-    public final boolean getResolveReferences()
+### <a id='getResolveReferences()'>getResolveReferences</a>
+
 Gets a value indicating whether to resolve references to sharable objects
  and sharable strings in the process of decoding a CBOR object.
  Enabling this property, however, can cause a security risk if a
@@ -149,8 +145,8 @@ Gets a value indicating whether to resolve references to sharable objects
 * A value indicating whether to resolve references to sharable objects
  and sharable strings. The default is false.
 
-### getUseIndefLengthStrings
-    public final boolean getUseIndefLengthStrings()
+### <a id='getUseIndefLengthStrings()'>getUseIndefLengthStrings</a>
+
 Gets a value indicating whether to encode strings with an indefinite-length
  encoding under certain circumstances.
 
@@ -160,8 +156,8 @@ Gets a value indicating whether to encode strings with an indefinite-length
  indefinite-length encoding under certain circumstances. The default
  is false.
 
-### getAllowEmpty
-    public final boolean getAllowEmpty()
+### <a id='getAllowEmpty()'>getAllowEmpty</a>
+
 Gets a value indicating whether decoding a CBOR object will return
  <code>null</code> instead of a CBOR object if the stream has no content or
  the end of the stream is reached before decoding begins. Used only
@@ -174,8 +170,8 @@ Gets a value indicating whether decoding a CBOR object will return
  end of the stream is reached before decoding begins. The default is
  false.
 
-### getAllowDuplicateKeys
-    public final boolean getAllowDuplicateKeys()
+### <a id='getAllowDuplicateKeys()'>getAllowDuplicateKeys</a>
+
 Gets a value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. Used only when decoding CBOR objects. If
  this property is <code>true</code> and a CBOR map has two or more values
@@ -187,8 +183,8 @@ Gets a value indicating whether to allow duplicate keys when reading CBOR
 * A value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. The default is false.
 
-### getFloat64
-    public final boolean getFloat64()
+### <a id='getFloat64()'>getFloat64</a>
+
 Gets a value indicating whether to encode floating-point numbers in a CBOR
  object in their 64-bit encoding form regardless of whether their
  value can be encoded without loss in a smaller form. Used only when
@@ -201,8 +197,8 @@ Gets a value indicating whether to encode floating-point numbers in a CBOR
  their value can be encoded without loss in a smaller form. Used only
  when encoding CBOR objects. The default is false.
 
-### getCtap2Canonical
-    public final boolean getCtap2Canonical()
+### <a id='getCtap2Canonical()'>getCtap2Canonical</a>
+
 Gets a value indicating whether CBOR objects: <ul> <li>When encoding, are
  written out using the CTAP2 canonical CBOR encoding form, which is
  useful for implementing Web Authentication (WebAuthn).</li> <li>When

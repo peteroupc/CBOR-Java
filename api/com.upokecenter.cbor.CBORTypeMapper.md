@@ -1,17 +1,14 @@
 # com.upokecenter.cbor.CBORTypeMapper
 
-    public final class CBORTypeMapper extends java.lang.Object
-
-Holds converters to customize the serialization and deserialization behavior
- of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
- well as type filters for <code>ToObject</code>.
-
-## Methods
+## Constructors
 
 * `CBORTypeMapper() CBORTypeMapper`<br>
  Initializes a new instance of the CBORTypeMapper class.
+
+## Methods
+
 * `<T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type,
-            ICBORConverter<T> converter)`<br>
+ICBORConverter<T> converter)`<br>
  Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter).
 * `CBORTypeMapper AddTypeName​(java.lang.String name)`<br>
@@ -23,21 +20,10 @@ Holds converters to customize the serialization and deserialization behavior
  Returns whether the given Java or.NET type name fits the filters given in
  this mapper.
 
-## Constructors
-
-* `CBORTypeMapper() CBORTypeMapper`<br>
- Initializes a new instance of the CBORTypeMapper class.
-
 ## Method Details
 
-### CBORTypeMapper
-    public CBORTypeMapper()
-Initializes a new instance of the <code>CBORTypeMapper</code> class.
-### CBORTypeMapper
-    public CBORTypeMapper()
-Initializes a new instance of the <code>CBORTypeMapper</code> class.
-### AddConverter
-    public <T> CBORTypeMapper AddConverter​(java.lang.reflect.Type type, ICBORConverter<T> converter)
+### <a id='AddConverter(java.lang.reflect.Type,com.upokecenter.cbor.ICBORConverter)'>AddConverter</a>
+
 Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter). If the CBOR converter converts to and
  from CBOR objects, it should implement the ICBORToFromConverter
@@ -70,8 +56,8 @@ Registers an object that converts objects of a given type to CBOR objects
 * <code>java.lang.IllegalArgumentException</code> - Converter doesn't contain a proper ToCBORObject
   method".
 
-### FilterTypeName
-    public boolean FilterTypeName​(java.lang.String typeName)
+### <a id='FilterTypeName(java.lang.String)'>FilterTypeName</a>
+
 Returns whether the given Java or.NET type name fits the filters given in
  this mapper.
 
@@ -86,8 +72,8 @@ Returns whether the given Java or.NET type name fits the filters given in
 * Either <code>true</code> if the given Java or.NET type name fits the
  filters given in this mapper, or <code>false</code> otherwise.
 
-### AddTypePrefix
-    public CBORTypeMapper AddTypePrefix​(java.lang.String prefix)
+### <a id='AddTypePrefix(java.lang.String)'>AddTypePrefix</a>
+
 Adds a prefix of a Java or.NET type for use in type matching. A type matches
  a prefix if its fully qualified name is or begins with that prefix,
  using codepoint-by-codepoint (case-sensitive) matching.
@@ -107,8 +93,8 @@ Adds a prefix of a Java or.NET type for use in type matching. A type matches
 
 * <code>java.lang.IllegalArgumentException</code> - The parameter <code>prefix</code> is empty.
 
-### AddTypeName
-    public CBORTypeMapper AddTypeName​(java.lang.String name)
+### <a id='AddTypeName(java.lang.String)'>AddTypeName</a>
+
 Adds the fully qualified name of a Java or.NET type for use in type
  matching.
 

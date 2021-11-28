@@ -1,11 +1,6 @@
 # com.upokecenter.cbor.JSONOptions.ConversionMode
 
-    public static enum JSONOptions.ConversionMode extends java.lang.Enum<JSONOptions.ConversionMode>
-
-Specifies how JSON numbers are converted to CBOR objects when decoding JSON
- (such as via <code>FromJSONString</code> or <code>ReadJSON</code>). None of
- these conversion modes affects how CBOR objects are later encoded
- (such as via <code>EncodeToBytes</code>).
+## Nested Classes
 
 ## Enum Constants
 
@@ -44,26 +39,10 @@ Specifies how JSON numbers are converted to CBOR objects when decoding JSON
  Returns an array containing the constants of this enum type, in
 the order they are declared.
 
-## Method Details
-
-### Full
-    public static final JSONOptions.ConversionMode Full
-### Double
-    public static final JSONOptions.ConversionMode Double
-### IntOrFloat
-    public static final JSONOptions.ConversionMode IntOrFloat
-### IntOrFloatFromDouble
-    public static final JSONOptions.ConversionMode IntOrFloatFromDouble
-### Decimal128
-    public static final JSONOptions.ConversionMode Decimal128
-### values
-    public static JSONOptions.ConversionMode[] values()
-### valueOf
-    public static JSONOptions.ConversionMode valueOf​(java.lang.String name)
 ## Enum Constant Details
 
-### Full
-    public static final JSONOptions.ConversionMode Full
+### <a id='Full'>Full</a>
+
 JSON numbers are decoded to CBOR using the full precision given in the JSON
  text. The number will be converted to a CBOR object as follows:
  If the number's exponent is 0 (after shifting the decimal point
@@ -74,8 +53,8 @@ JSON numbers are decoded to CBOR using the full precision given in the JSON
  version 4.x involves negative zeros; if the negative zero's
  exponent is 0, it's written as a CBOR floating-point number;
  otherwise the negative zero is written as an EDecimal.
-### Double
-    public static final JSONOptions.ConversionMode Double
+### <a id='Double'>Double</a>
+
 JSON numbers are decoded to CBOR as their closest-rounded approximation as
  64-bit binary floating-point numbers (using the
  round-to-nearest/ties-to-even rounding mode). (In some cases,
@@ -89,8 +68,8 @@ JSON numbers are decoded to CBOR as their closest-rounded approximation as
   CBOR format in their 16-bit ("half-float"), 32-bit
   ("single-precision"), or 64-bit ("double-precision") encoding
  form depending on the value.
-### IntOrFloat
-    public static final JSONOptions.ConversionMode IntOrFloat
+### <a id='IntOrFloat'>IntOrFloat</a>
+
 A JSON number is decoded to CBOR objects either as a CBOR integer (major
  type 0 or 1) if the JSON number represents an integer at least
  -(2^53)+1 and less than 2^53, or as their closest-rounded
@@ -108,8 +87,8 @@ A JSON number is decoded to CBOR objects either as a CBOR integer (major
  floating-point values to the CBOR format in their 16-bit
   ("half-float"), 32-bit ("single-precision"), or 64-bit
   ("double-precision") encoding form depending on the value.
-### IntOrFloatFromDouble
-    public static final JSONOptions.ConversionMode IntOrFloatFromDouble
+### <a id='IntOrFloatFromDouble'>IntOrFloatFromDouble</a>
+
 A JSON number is decoded to CBOR objects either as a CBOR integer (major
  type 0 or 1) if the number's closest-rounded approximation as a
  64-bit binary floating-point number (using the
@@ -128,8 +107,8 @@ A JSON number is decoded to CBOR objects either as a CBOR integer (major
  floating-point values to the CBOR format in their 16-bit
   ("half-float"), 32-bit ("single-precision"), or 64-bit
   ("double-precision") encoding form depending on the value.
-### Decimal128
-    public static final JSONOptions.ConversionMode Decimal128
+### <a id='Decimal128'>Decimal128</a>
+
 JSON numbers are decoded to CBOR as their closest-rounded approximation to
  an IEEE 854 decimal128 value, using the
  round-to-nearest/ties-to-even rounding mode and the rules for the
@@ -138,3 +117,8 @@ JSON numbers are decoded to CBOR as their closest-rounded approximation to
  numbers extremely close to zero may underflow to zero, and
  numbers of extremely large absolute value may overflow to
  infinity.).
+## Method Details
+
+### <a id='values()'>values</a>
+
+### <a id='valueOf(java.lang.String)'>valueOf</a>

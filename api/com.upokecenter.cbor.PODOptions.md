@@ -1,11 +1,5 @@
 # com.upokecenter.cbor.PODOptions
 
-    public class PODOptions extends java.lang.Object
-
-Options for controlling how certain DotNET or Java objects, such as
-  so-called "plain old data" objects (better known as POCOs in DotNET or
- POJOs in Java), are converted to CBOR objects.
-
 ## Fields
 
 * `static PODOptions Default`<br>
@@ -17,7 +11,7 @@ Options for controlling how certain DotNET or Java objects, such as
  Initializes a new instance of the PODOptions
  class with all the default options.
 * `PODOptions​(boolean removeIsPrefix,
-          boolean useCamelCase)`<br>
+boolean useCamelCase)`<br>
  Deprecated.
 Use the more readable String constructor instead.
  Use the more readable String constructor instead.
@@ -35,13 +29,13 @@ Use the more readable String constructor instead.
 
 ## Field Details
 
-### Default
-    public static final PODOptions Default
+### <a id='Default'>Default</a>
+
 The default settings for "plain old data" options.
 ## Method Details
 
-### toString
-    public java.lang.String toString()
+### <a id='toString()'>toString</a>
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
@@ -54,8 +48,8 @@ Gets the values of this options object's properties in text form.
  properties. The format of the string is the same as the one
  described in the string constructor for this class.
 
-### getUseCamelCase
-    public final boolean getUseCamelCase()
+### <a id='getUseCamelCase()'>getUseCamelCase</a>
+
 <p>Gets a value indicating whether property, field, and method names are
  converted to camel case before they are used as keys. This option
  changes the behavior of key name serialization as follows. If

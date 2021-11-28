@@ -1,8 +1,6 @@
 # com.upokecenter.cbor.CBORType
 
-    public enum CBORType extends java.lang.Enum<CBORType>
-
-Represents a type that a CBOR object can have.
+## Nested Classes
 
 ## Enum Constants
 
@@ -40,67 +38,38 @@ Since version 4.0, CBORObject.Type no longer returns this value for any
  Returns an array containing the constants of this enum type, in
 the order they are declared.
 
-## Method Details
-
-### Number
-    @Deprecated public static final CBORType Number
-### Boolean
-    public static final CBORType Boolean
-### SimpleValue
-    public static final CBORType SimpleValue
-### ByteString
-    public static final CBORType ByteString
-### TextString
-    public static final CBORType TextString
-### Array
-    public static final CBORType Array
-### Map
-    public static final CBORType Map
-### Integer
-    public static final CBORType Integer
-### FloatingPoint
-    public static final CBORType FloatingPoint
-### values
-    public static CBORType[] values()
-### valueOf
-    public static CBORType valueOf​(java.lang.String name)
 ## Enum Constant Details
 
-### Number
-    @Deprecated public static final CBORType Number
-Deprecated.
-Since version 4.0, CBORObject.Type no longer returns this value for any
- CBOR Object - this is a breaking change from earlier
- versions. Instead, use the IsNumber property of CBORObject to
- determine whether a CBOR Object represents a number, or use the two new
- CBORType values instead. CBORType.Integer covers CBOR objects
- representing integers of major type 0 and 1.
- CBORType.FloatingPoint covers CBOR objects representing 16-, 32-, and
- 64-bit floating-point numbers. CBORType.Number may be removed in version
- 5.0 or later.
+### <a id='Number'>Number</a>
 
-### Boolean
-    public static final CBORType Boolean
+This property is no longer used.
+### <a id='Boolean'>Boolean</a>
+
 The simple values true and false.
-### SimpleValue
-    public static final CBORType SimpleValue
+### <a id='SimpleValue'>SimpleValue</a>
+
 A "simple value" other than floating point values, true, and false.
-### ByteString
-    public static final CBORType ByteString
+### <a id='ByteString'>ByteString</a>
+
 An array of bytes.
-### TextString
-    public static final CBORType TextString
+### <a id='TextString'>TextString</a>
+
 A text string.
-### Array
-    public static final CBORType Array
+### <a id='Array'>Array</a>
+
 An array of CBOR objects.
-### Map
-    public static final CBORType Map
+### <a id='Map'>Map</a>
+
 A map of CBOR objects.
-### Integer
-    public static final CBORType Integer
+### <a id='Integer'>Integer</a>
+
 An integer in the interval [-(2^64), 2^64 - 1], or an integer of major type
  0 and 1.
-### FloatingPoint
-    public static final CBORType FloatingPoint
+### <a id='FloatingPoint'>FloatingPoint</a>
+
 A 16-, 32-, or 64-bit binary floating-point number.
+## Method Details
+
+### <a id='values()'>values</a>
+
+### <a id='valueOf(java.lang.String)'>valueOf</a>

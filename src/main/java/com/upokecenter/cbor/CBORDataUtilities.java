@@ -113,7 +113,28 @@ obj.Untag().ToJSONString()));
           sb = sb == null ? new StringBuilder() : sb;
           sb.append('\"');
           String ostring = obj.AsString();
-          sb.append(ostring);
+          int length = ostring.length();
+          for (int i = 0; i < length; ++i) {
+            int cp = DataUtilities.CodePointAt(ostring, i, 0);
+            if (cp >= 0x10000) {
+              sb.append("\\U");
+              sb.append(HexAlphabet.charAt((cp >> 20) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 16) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 12) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 8) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 4) & 15));
+              sb.append(HexAlphabet.charAt(cp & 15));
+            } else if (cp >= 0x7F || cp < 0x20 || cp == (int)'\\' || cp ==
+(int)'\"') {
+              sb.append("\\u");
+              sb.append(HexAlphabet.charAt((cp >> 12) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 8) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 4) & 15));
+              sb.append(HexAlphabet.charAt(cp & 15));
+            } else {
+              sb.append((char)cp);
+            }
+          }
           sb.append('\"');
           break;
         }

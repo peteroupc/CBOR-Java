@@ -4915,6 +4915,32 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     @Test
+    public void TestWriteBasic() {
+      JSONOptions jsonop1 = new JSONOptions("writebasic=true");
+      String json=CBORObject.FromObject("\uD800\uDC00").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\uD800\\uDC00\"",json);
+      json=CBORObject.FromObject("\u0800\u0C00").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\u0800\\u0C00\"",json);
+      json=CBORObject.FromObject("\u0085\uFFFF").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\u0085\\uFFFF\"",json);
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 1000; ++i) {
+        String rts = RandomObjects.RandomTextString(rg);
+        CBORObject cbor = CBORObject.FromObject(rts);
+        json = cbor.ToJSONString(jsonop1);
+        // Check that the JSON contains only ASCII code points
+        for (int j = 0;j<json.length(); ++j) {
+          char c = json.charAt(j);
+          if ((c<0x20 && c != 0x09 && c != 0x0a && c != 0x0d) || c >= 0x7f) {
+            Assert.fail(rts);
+          }
+        }
+        // Round-trip check
+        Assert.assertEquals(cbor, CBORObject.FromJSONString(json));
+      }
+    }
+
+    @Test
     public void TestJSONOptions() {
       JSONOptions jsonop1 = new JSONOptions("numberconversion=intorfloat");
       {
@@ -4972,18 +4998,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       JSONOptions jsonop3 = new JSONOptions("numberconversion=intorfloatfromdouble");
       JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
       for (int i = 0; i < 200; ++i) {
-        byte[] json = jsongen.Generate(rg);
-        System.out.println("" + i + " len=" + json.length);
+        byte[] jsonbytes = jsongen.Generate(rg);
+        //System.out.println("" + i + " len=" + jsonbytes.length);
         JSONOptions currop = null;
         try {
           currop = jsonop1;
-          CBORObject.FromJSONBytes(json, jsonop1);
+          CBORObject.FromJSONBytes(jsonbytes, jsonop1);
           currop = jsonop2;
-          CBORObject.FromJSONBytes(json, jsonop2);
+          CBORObject.FromJSONBytes(jsonbytes, jsonop2);
           currop = jsonop3;
-          CBORObject.FromJSONBytes(json, jsonop3);
+          CBORObject.FromJSONBytes(jsonbytes, jsonop3);
           currop = jsonop4;
-          CBORObject.FromJSONBytes(json, jsonop4);
+          CBORObject.FromJSONBytes(jsonbytes, jsonop4);
         } catch (CBORException ex) {
           String msg = ex.getMessage() + "\n" +
             DataUtilities.GetUtf8String(json, true) + "\n" + currop;

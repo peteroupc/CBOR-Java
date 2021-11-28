@@ -1,8 +1,6 @@
 # com.upokecenter.cbor.CBORDateConverter.ConversionType
 
-    public static enum CBORDateConverter.ConversionType extends java.lang.Enum<CBORDateConverter.ConversionType>
-
-Conversion type for date-time conversion.
+## Nested Classes
 
 ## Enum Constants
 
@@ -28,27 +26,15 @@ Conversion type for date-time conversion.
  Returns an array containing the constants of this enum type, in
 the order they are declared.
 
-## Method Details
-
-### TaggedString
-    public static final CBORDateConverter.ConversionType TaggedString
-### TaggedNumber
-    public static final CBORDateConverter.ConversionType TaggedNumber
-### UntaggedNumber
-    public static final CBORDateConverter.ConversionType UntaggedNumber
-### values
-    public static CBORDateConverter.ConversionType[] values()
-### valueOf
-    public static CBORDateConverter.ConversionType valueOf​(java.lang.String name)
 ## Enum Constant Details
 
-### TaggedString
-    public static final CBORDateConverter.ConversionType TaggedString
+### <a id='TaggedString'>TaggedString</a>
+
 FromCBORObject accepts CBOR objects with tag 0 (date/time strings) and tag 1
  (number of seconds since the start of 1970), and ToCBORObject
  converts date/time objects to CBOR objects of tag 0.
-### TaggedNumber
-    public static final CBORDateConverter.ConversionType TaggedNumber
+### <a id='TaggedNumber'>TaggedNumber</a>
+
 FromCBORObject accepts objects with tag 0 (date/time strings) and tag 1
  (number of seconds since the start of 1970), and ToCBORObject
  converts date/time objects to CBOR objects of tag 1. The
@@ -59,8 +45,8 @@ FromCBORObject accepts objects with tag 0 (date/time strings) and tag 1
  otherwise. The ToCBORObject conversion will throw an exception if
  the conversion to binary64 results in positive infinity, negative
  infinity, or not-a-number.
-### UntaggedNumber
-    public static final CBORDateConverter.ConversionType UntaggedNumber
+### <a id='UntaggedNumber'>UntaggedNumber</a>
+
 FromCBORObject accepts untagged CBOR integer or CBOR floating-point objects
  that give the number of seconds since the start of 1970, and
  ToCBORObject converts date/time objects (java.util.Date in DotNet, and
@@ -72,3 +58,8 @@ FromCBORObject accepts untagged CBOR integer or CBOR floating-point objects
  otherwise. The ToCBORObject conversion will throw an exception if
  the conversion to binary64 results in positive infinity, negative
  infinity, or not-a-number.
+## Method Details
+
+### <a id='values()'>values</a>
+
+### <a id='valueOf(java.lang.String)'>valueOf</a>

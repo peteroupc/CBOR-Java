@@ -1,10 +1,5 @@
 # com.upokecenter.cbor.ICBORConverter
 
-    public interface ICBORConverter<T>
-
-Interface implemented by classes that convert objects of arbitrary types to
- CBOR objects.
-
 ## Methods
 
 * `CBORObject ToCBORObject​(T obj)`<br>
@@ -12,20 +7,10 @@ Interface implemented by classes that convert objects of arbitrary types to
 
 ## Method Details
 
-### ToCBORObject
-    CBORObject ToCBORObject​(T obj)
-Converts an object to a CBOR object.
+### <a id='ToCBORObject(java.lang.Object)'>
+<!--   -->
+</a><a id='ToCBORObject(T)'>ToCBORObject</a>
 
-**Parameters:**
-
-* <code>obj</code> - An object to convert to a CBOR object.
-
-**Returns:**
-
-* A CBOR object.
-
-### ToCBORObject
-    CBORObject ToCBORObject​(T obj)
 Converts an object to a CBOR object.
 
 **Parameters:**

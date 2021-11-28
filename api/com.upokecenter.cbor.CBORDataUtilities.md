@@ -1,29 +1,25 @@
 # com.upokecenter.cbor.CBORDataUtilities
 
-    public final class CBORDataUtilities extends java.lang.Object
-
-Contains methods useful for reading and writing data, with a focus on CBOR.
-
 ## Methods
 
 * `static CBORObject ParseJSONNumber​(byte[] bytes)`<br>
  Parses a number from a byte sequence whose format follows the JSON
  specification.
 * `static CBORObject ParseJSONNumber​(byte[] bytes,
-               int offset,
-               int count)`<br>
+int offset,
+int count)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a byte sequence, and converts that number to a CBOR
  object.
 * `static CBORObject ParseJSONNumber​(byte[] bytes,
-               int offset,
-               int count,
-               JSONOptions options)`<br>
+int offset,
+int count,
+JSONOptions options)`<br>
  Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR
  object.
 * `static CBORObject ParseJSONNumber​(byte[] bytes,
-               JSONOptions options)`<br>
+JSONOptions options)`<br>
  Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR
  object.
@@ -31,35 +27,35 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
  Parses a number from a sequence of char s whose format follows the
  JSON specification.
 * `static CBORObject ParseJSONNumber​(char[] chars,
-               int offset,
-               int count) char`<br>
+int offset,
+int count) char`<br>
  Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a sequence of char s, and converts that number
  to a CBOR object.
 * `static CBORObject ParseJSONNumber​(char[] chars,
-               int offset,
-               int count,
-               JSONOptions options) char`<br>
+int offset,
+int count,
+JSONOptions options) char`<br>
  Parses a number from a sequence of char s whose format follows the
  JSON specification (RFC 8259) and converts that number to a CBOR
  object.
 * `static CBORObject ParseJSONNumber​(char[] chars,
-               JSONOptions options) char`<br>
+JSONOptions options) char`<br>
  Parses a number from a sequence of char s whose format follows the
  JSON specification (RFC 8259) and converts that number to a CBOR
  object.
 * `static CBORObject ParseJSONNumber​(java.lang.String str)`<br>
  Parses a number whose format follows the JSON specification.
 * `static CBORObject ParseJSONNumber​(java.lang.String str,
-               boolean integersOnly,
-               boolean positiveOnly)`<br>
+boolean integersOnly,
+boolean positiveOnly)`<br>
  Deprecated.
 Call the one-argument version of this method instead.
  Call the one-argument version of this method instead.
 * `static CBORObject ParseJSONNumber​(java.lang.String str,
-               boolean integersOnly,
-               boolean positiveOnly,
-               boolean preserveNegativeZero)`<br>
+boolean integersOnly,
+boolean positiveOnly,
+boolean preserveNegativeZero)`<br>
  Deprecated.
 Instead, call ParseJSONNumber(str, jsonoptions) with a JSONOptions that
  sets preserveNegativeZero to the desired value, either true or
@@ -68,26 +64,26 @@ Instead, call ParseJSONNumber(str, jsonoptions) with a JSONOptions that
  sets preserveNegativeZero to the desired value, either true or
  false.
 * `static CBORObject ParseJSONNumber​(java.lang.String str,
-               int offset,
-               int count)`<br>
+int offset,
+int count)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a text string, and converts that number to a CBOR
  object.
 * `static CBORObject ParseJSONNumber​(java.lang.String str,
-               int offset,
-               int count,
-               JSONOptions options)`<br>
+int offset,
+int count,
+JSONOptions options)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259) and
  converts that number to a CBOR object.
 * `static CBORObject ParseJSONNumber​(java.lang.String str,
-               JSONOptions options)`<br>
+JSONOptions options)`<br>
  Parses a number whose format follows the JSON specification (RFC 8259) and
  converts that number to a CBOR object.
 
 ## Method Details
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(java.lang.String str)
+### <a id='ParseJSONNumber(java.lang.String)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification. The method uses
  a JSONOptions with all default properties except for a
  PreserveNegativeZero property of false.
@@ -103,14 +99,18 @@ Parses a number whose format follows the JSON specification. The method uses
   "-0" or "-0.0"). Returns null if the parsing fails, including if the
  string is null or empty.
 
-### ParseJSONNumber
-    @Deprecated public static CBORObject ParseJSONNumber​(java.lang.String str, boolean integersOnly, boolean positiveOnly)
-Deprecated.
-Call the one-argument version of this method instead. If this method
- call used positiveOnly = true, check that the String does
- not begin with '-' before calling that version. If this method
- call used integersOnly  = true, check that the String does not
- contain '.', 'E', or 'e' before calling that version.
+### <a id='ParseJSONNumber(java.lang.String,boolean,boolean)'>ParseJSONNumber</a>
+
+Parses a number whose format follows the JSON specification (RFC 8259). The
+ method uses a JSONOptions with all default properties except for a
+ PreserveNegativeZero property of false.<p>Roughly speaking, a valid
+ JSON number consists of an optional minus sign, one or more basic
+ digits (starting with 1 to 9 unless there is only one digit and that
+  digit is 0), an optional decimal point (".", full stop) with one or
+ more basic digits, and an optional letter E or e with an optional
+ plus or minus sign and one or more basic digits (the exponent). A
+ text string representing a valid JSON number is not allowed to
+ contain white space characters, including spaces.</p>
 
 **Parameters:**
 
@@ -129,16 +129,17 @@ Call the one-argument version of this method instead. If this method
   "-0" or "-0.0"). Returns null if the parsing fails, including if the
  string is null or empty.
 
-### ParseJSONNumber
-    @Deprecated public static CBORObject ParseJSONNumber​(java.lang.String str, boolean integersOnly, boolean positiveOnly, boolean preserveNegativeZero)
-Deprecated.
-Instead, call ParseJSONNumber(str, jsonoptions) with a JSONOptions that
- sets preserveNegativeZero to the desired value, either true or
- false. If this method call used positiveOnly = true, check that the
- String does not begin with '-' before calling that
- version. If this method call used integersOnly  = true, check
- that the String does not contain '.', 'E',
- or 'e' before calling that version.
+### <a id='ParseJSONNumber(java.lang.String,boolean,boolean,boolean)'>ParseJSONNumber</a>
+
+Parses a number whose format follows the JSON specification (RFC
+ 8259).<p>Roughly speaking, a valid JSON number consists of an
+ optional minus sign, one or more basic digits (starting with 1 to 9
+ unless there is only one digit and that digit is 0), an optional
+  decimal point (".", full stop) with one or more basic digits, and an
+ optional letter E or e with an optional plus or minus sign and one
+ or more basic digits (the exponent). A text string representing a
+ valid JSON number is not allowed to contain white space characters,
+ including spaces.</p>
 
 **Parameters:**
 
@@ -159,8 +160,8 @@ Instead, call ParseJSONNumber(str, jsonoptions) with a JSONOptions that
 * A CBOR object that represents the parsed number. Returns null if the
  parsing fails, including if the string is null or empty.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(java.lang.String str, JSONOptions options)
+### <a id='ParseJSONNumber(java.lang.String,com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification (RFC 8259) and
  converts that number to a CBOR object.<p>Roughly speaking, a valid
  JSON number consists of an optional minus sign, one or more basic
@@ -184,8 +185,8 @@ Parses a number whose format follows the JSON specification (RFC 8259) and
 * A CBOR object that represents the parsed number. Returns null if the
  parsing fails, including if the string is null or empty.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(java.lang.String str, int offset, int count)
+### <a id='ParseJSONNumber(java.lang.String,int,int)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a text string, and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -220,8 +221,8 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>str</code> is null.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(java.lang.String str, int offset, int count, JSONOptions options)
+### <a id='ParseJSONNumber(java.lang.String,int,int,com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification (RFC 8259) and
  converts that number to a CBOR object.<p>Roughly speaking, a valid
  JSON number consists of an optional minus sign, one or more basic
@@ -258,8 +259,8 @@ Parses a number whose format follows the JSON specification (RFC 8259) and
 
 * <code>java.lang.IllegalArgumentException</code> - Unsupported conversion kind.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(byte[] bytes, int offset, int count, JSONOptions options)
+### <a id='ParseJSONNumber(byte[],int,int,com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -297,8 +298,8 @@ Parses a number from a byte sequence whose format follows the JSON
 
 * <code>java.lang.IllegalArgumentException</code> - Unsupported conversion kind.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(byte[] bytes, JSONOptions options)
+### <a id='ParseJSONNumber(byte[],com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -323,8 +324,8 @@ Parses a number from a byte sequence whose format follows the JSON
 * A CBOR object that represents the parsed number. Returns null if the
  parsing fails, including if the byte sequence is null or empty.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(byte[] bytes, int offset, int count)
+### <a id='ParseJSONNumber(byte[],int,int)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a byte sequence, and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -359,8 +360,8 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>bytes</code> is null.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(byte[] bytes)
+### <a id='ParseJSONNumber(byte[])'>ParseJSONNumber</a>
+
 Parses a number from a byte sequence whose format follows the JSON
  specification. The method uses a JSONOptions with all default
  properties except for a PreserveNegativeZero property of false.
@@ -376,8 +377,8 @@ Parses a number from a byte sequence whose format follows the JSON
   "-0" or "-0.0"). Returns null if the parsing fails, including if the
  byte sequence is null or empty.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(char[] chars, int offset, int count, JSONOptions options)
+### <a id='ParseJSONNumber(char[],int,int,com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number from a sequence of <code>char</code> s whose format follows the
  JSON specification (RFC 8259) and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -415,8 +416,8 @@ Parses a number from a sequence of <code>char</code> s whose format follows the
 
 * <code>java.lang.IllegalArgumentException</code> - Unsupported conversion kind.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(char[] chars, JSONOptions options)
+### <a id='ParseJSONNumber(char[],com.upokecenter.cbor.JSONOptions)'>ParseJSONNumber</a>
+
 Parses a number from a sequence of <code>char</code> s whose format follows the
  JSON specification (RFC 8259) and converts that number to a CBOR
  object.<p>Roughly speaking, a valid JSON number consists of an
@@ -442,8 +443,8 @@ Parses a number from a sequence of <code>char</code> s whose format follows the
  parsing fails, including if the sequence of <code>char</code> s is null
  or empty.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(char[] chars, int offset, int count)
+### <a id='ParseJSONNumber(char[],int,int)'>ParseJSONNumber</a>
+
 Parses a number whose format follows the JSON specification (RFC 8259) from
  a portion of a sequence of <code>char</code> s, and converts that number
  to a CBOR object.<p>Roughly speaking, a valid JSON number consists
@@ -479,8 +480,8 @@ Parses a number whose format follows the JSON specification (RFC 8259) from
 
 * <code>java.lang.NullPointerException</code> - The parameter <code>chars</code> is null.
 
-### ParseJSONNumber
-    public static CBORObject ParseJSONNumber​(char[] chars)
+### <a id='ParseJSONNumber(char[])'>ParseJSONNumber</a>
+
 Parses a number from a sequence of <code>char</code> s whose format follows the
  JSON specification. The method uses a JSONOptions with all default
  properties except for a PreserveNegativeZero property of false.
