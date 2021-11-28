@@ -5012,7 +5012,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           CBORObject.FromJSONBytes(jsonbytes, jsonop4);
         } catch (CBORException ex) {
           String msg = ex.getMessage() + "\n" +
-            DataUtilities.GetUtf8String(json, true) + "\n" + currop;
+            DataUtilities.GetUtf8String(jsonbytes, true) + "\n" + currop;
           throw new IllegalStateException(msg, ex);
         }
       }
