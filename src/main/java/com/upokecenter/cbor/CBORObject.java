@@ -720,7 +720,7 @@ import com.upokecenter.numbers.*;
 
     public void set(CBORObject key, CBORObject value) {
         if (key == null) {
-          throw new NullPointerException("value");
+          throw new NullPointerException("key");
         }
         if (value == null) {
           throw new NullPointerException("value");
@@ -772,7 +772,7 @@ import com.upokecenter.numbers.*;
      */
     public void set(String key, CBORObject value) {
         if (key == null) {
-          throw new NullPointerException("value");
+          throw new NullPointerException("key");
         }
         if (value == null) {
           throw new NullPointerException("value");
