@@ -8770,6 +8770,100 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+@Test
+public void TestKeepKeyOrder() {
+  byte[] bytes;
+  byte[] bytes2;
+  CBORObject cbor;
+  ArrayList<CBORObject> list = new ArrayList<CBORObject>();
+  CBOREncodeOptions options = new CBOREncodeOptions("keepkeyorder=true");
+  if (!(options.getKeepKeyOrder())) {
+ Assert.fail();
+ }
+  bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
+  cbor = CBORObject.DecodeFromBytes(bytes, options);
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
+  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+  Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
+  bytes2 = cbor.EncodeToBytes();
+  TestCommon.AssertByteArraysEqual(bytes, bytes2);
+  list = new ArrayList<CBORObject>();
+  bytes = new byte[] { (byte)0xbf, 0x01, 0, 0x02, 0, 0x03, 0, (byte)0xff };
+  cbor = CBORObject.DecodeFromBytes(bytes, options);
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
+  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+  Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
+  bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
+  bytes2 = cbor.EncodeToBytes();
+  TestCommon.AssertByteArraysEqual(bytes, bytes2);
+   list = new ArrayList<CBORObject>();
+  bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
+  cbor = CBORObject.DecodeFromBytes(bytes, options);
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
+  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+  Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
+  bytes2 = cbor.EncodeToBytes();
+  TestCommon.AssertByteArraysEqual(bytes, bytes2);
+   list = new ArrayList<CBORObject>();
+  bytes = new byte[] { (byte)0xbf, 0x03, 0, 0x02, 0, 0x01, 0, (byte)0xff };
+  cbor = CBORObject.DecodeFromBytes(bytes, options);
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
+  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+  Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
+  bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
+  bytes2 = cbor.EncodeToBytes();
+  TestCommon.AssertByteArraysEqual(bytes, bytes2);
+
+  // JSON
+  JSONOptions joptions = new JSONOptions("keepkeyorder=true");
+  if (!(joptions.getKeepKeyOrder())) {
+ Assert.fail();
+ }
+  String jsonstring;
+  jsonstring="{\"1\":0,\"2\":0,\"3\":0}";
+  cbor = CBORObject.FromJSONString(jsonstring, joptions);
+   list = new ArrayList<CBORObject>();
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject("1"),list.get(0));
+  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+  Assert.assertEquals(CBORObject.FromObject("3"),list.get(2));
+
+  jsonstring="{\"3\":0,\"2\":0,\"1\":0}";
+  cbor = CBORObject.FromJSONString(jsonstring, joptions);
+   list = new ArrayList<CBORObject>();
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
+  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+  Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+
+  jsonstring="{\"3\":0,\"2\":0,\"1\":0}";
+  bytes = DataUtilities.GetUtf8Bytes(jsonstring, false);
+  cbor = CBORObject.FromJSONBytes(bytes, joptions);
+   list = new ArrayList<CBORObject>();
+  for (CBORObject key : cbor.getKeys()) {
+    list.add(key);
+  }
+  Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
+  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+  Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+}
+
     @Test
     public void TestWriteFloatingPointValue() {
       RandomGenerator r = new RandomGenerator();

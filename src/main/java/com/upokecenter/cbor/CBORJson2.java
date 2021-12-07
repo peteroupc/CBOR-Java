@@ -596,7 +596,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject obj;
       int[] nextchar = new int[1];
       boolean seenComma = false;
-      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
+      Map<CBORObject, CBORObject> myHashMap =
+this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
+TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {

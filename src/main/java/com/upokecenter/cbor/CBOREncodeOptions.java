@@ -65,6 +65,7 @@ package com.upokecenter.cbor;
       this.propVarresolvereferences = false;
       this.propVarallowempty = false;
       this.propVarfloat64 = false;
+      this.propVarkeepkeyorder = false;
       this.propVaruseindeflengthstrings = useIndefLengthStrings;
       this.propVarallowduplicatekeys = allowDuplicateKeys;
       this.propVarctap2canonical = ctap2Canonical;
@@ -85,20 +86,21 @@ package com.upokecenter.cbor;
      * upper-case and/or basic lower-case letters: {@code
      * allowduplicatekeys}, {@code ctap2canonical}, {@code
      * resolvereferences}, {@code useindeflengthstrings}, {@code
-     * allowempty}, {@code float64}. Keys other than these are ignored in
-     * this version of the CBOR library. The key {@code float64} was
-     * introduced in version 4.4 of this library. (Keys are compared using
-     * a basic case-insensitive comparison, in which two strings are equal
-     * if they match after converting the basic upper-case letters A to Z
-     * (U+0041 to U+005A) in both strings to basic lower-case letters.) If
-     * two or more key/value pairs have equal keys (in a basic
-     * case-insensitive comparison), the value given for the last such key
-     * is used. The four keys just given can have a value of {@code 1},
-     * {@code true}, {@code yes}, or {@code on} (where the letters can be
-     * any combination of basic upper-case and/or basic lower-case
-     * letters), which means true, and any other value meaning false. For
-     * example, {@code allowduplicatekeys = Yes} and {@code
-     * allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
+     * allowempty}, {@code float64}, {@code keepkeyorder}. Keys other than
+     * these are ignored in this version of the CBOR library. The key
+     * {@code float64} was introduced in version 4.4 of this library. The
+     * key {@code keepkeyorder} was introduced in version 4.5 of this
+     * library.(Keys are compared using a basic case-insensitive
+     * comparison, in which two strings are equal if they match after
+     * converting the basic upper-case letters A to Z (U+0041 to U+005A) in
+     * both strings to basic lower-case letters.) If two or more key/value
+     * pairs have equal keys (in a basic case-insensitive comparison), the
+     * value given for the last such key is used. The four keys just given
+     * can have a value of {@code 1}, {@code true}, {@code yes}, or {@code
+     * on} (where the letters can be any combination of basic upper-case
+     * and/or basic lower-case letters), which means true, and any other
+     * value meaning false. For example, {@code allowduplicatekeys = Yes} and
+     * {@code allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
      * property to true. In the future, this class may allow other keys to
      * store other kinds of values, not just true or false.
      * @throws NullPointerException The parameter {@code paramString} is null.
@@ -117,6 +119,8 @@ package com.upokecenter.cbor;
         "float64",
         false);
       this.propVarallowduplicatekeys = parser.GetBoolean("allowduplicatekeys",
+          false);
+      this.propVarkeepkeyorder = parser.GetBoolean("keepkeyorder",
           false);
       this.propVarallowempty = parser.GetBoolean("allowempty", false);
       this.propVarctap2canonical = parser.GetBoolean("ctap2canonical", false);
@@ -137,6 +141,7 @@ package com.upokecenter.cbor;
         .append(";float64=").append(this.getFloat64() ? "true" : "false")
         .append(";ctap2canonical=")
         .append(this.getCtap2Canonical() ? "true" : "false")
+        .append(";keepkeyorder=").append(this.getKeepKeyOrder() ? "true" : "false")
         .append(";resolvereferences=")
         .append(this.getResolveReferences() ? "true" : "false")
         .append(";allowempty=").append(this.getAllowEmpty() ? "true" : "false")
@@ -208,6 +213,17 @@ private final boolean propVarresolvereferences;
      */
     public final boolean getUseIndefLengthStrings() { return propVaruseindeflengthstrings; }
 private final boolean propVaruseindeflengthstrings;
+
+    /**
+     * Gets a value indicating whether to preserve the order in which a CBOR map's
+     * keys appear when decoding a CBOR object, by using maps created as
+     * though by CBORObject.NewOrderedMap. If false, key order is not
+     * guaranteed to be preserved when decoding CBOR.
+     * @return A value indicating whether to preserve the order in which a CBOR
+     * map's keys appear when decoding a CBOR object. The default is false.
+     */
+    public final boolean getKeepKeyOrder() { return propVarkeepkeyorder; }
+private final boolean propVarkeepkeyorder;
 
     /**
      * Gets a value indicating whether decoding a CBOR object will return

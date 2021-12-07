@@ -197,7 +197,8 @@ untagged.AsNumber().IsNegative()) {
         if (this.options.getCtap2Canonical() && this.depth >= 4) {
           throw new CBORException("Depth too high in canonical CBOR");
         }
-        CBORObject cbor = CBORObject.NewMap();
+        CBORObject cbor = this.options.getKeepKeyOrder() ?
+               CBORObject.NewOrderedMap() : CBORObject.NewMap();
         if ((uadditional >> 31) != 0) {
           throw new CBORException("Length of " +
             ToUnsignedEInteger(uadditional).toString() + " is bigger than" +
@@ -424,7 +425,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             return cbor;
           }
           case 5: {
-            CBORObject cbor = CBORObject.NewMap();
+            CBORObject cbor = this.options.getKeepKeyOrder() ?
+               CBORObject.NewOrderedMap() : CBORObject.NewMap();
             // Indefinite-length map
             while (true) {
               int headByte = this.stream.read();

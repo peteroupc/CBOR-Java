@@ -6898,7 +6898,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if (firstbyte == 0xa0) {
         // empty map
-        return CBORObject.NewMap();
+        return CBORObject.NewOrderedMap();
       }
       throw new CBORException("Unexpected data encountered");
     }

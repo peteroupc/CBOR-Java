@@ -35,6 +35,10 @@ boolean replaceSurrogates)`<br>
  Deprecated.
 This property now has no effect.
  This property now has no effect.
+* `boolean getKeepKeyOrder()`<br>
+ Gets a value indicating whether to preserve the order in which a map's keys
+ appear when decoding JSON, by using maps created as though by
+ CBORObject.NewOrderedMap.
 * `JSONOptions.ConversionMode getNumberConversion()`<br>
  Gets a value indicating how JSON numbers are decoded to CBOR objects.
 * `boolean getPreserveNegativeZero()`<br>
@@ -123,6 +127,18 @@ Gets a value indicating whether JSON is written using only code points from
 * A value indicating whether JSON is written using only code points
  from the Basic Latin block (U+0000 to U+007F), also known as ASCII.
  Default is false.
+
+### <a id='getKeepKeyOrder()'>getKeepKeyOrder</a>
+
+Gets a value indicating whether to preserve the order in which a map's keys
+ appear when decoding JSON, by using maps created as though by
+ CBORObject.NewOrderedMap. If false, key order is not guaranteed to
+ be preserved when decoding JSON.
+
+**Returns:**
+
+* A value indicating whether to preserve the order in which a CBOR
+ map's keys appear when decoding JSON. The default is false.
 
 ### <a id='getAllowDuplicateKeys()'>getAllowDuplicateKeys</a>
 

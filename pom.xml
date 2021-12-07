@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.github.peteroupc</groupId>
       <artifactId>numbers</artifactId>
-      <version>1.8.0</version>
+      <version>1.8.2</version>
     </dependency>
   </dependencies>
 </project>

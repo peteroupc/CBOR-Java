@@ -51,6 +51,10 @@ Use the more readable String constructor instead.
  Gets a value indicating whether to encode floating-point numbers in a CBOR
  object in their 64-bit encoding form regardless of whether their
  value can be encoded without loss in a smaller form.
+* `boolean getKeepKeyOrder()`<br>
+ Gets a value indicating whether to preserve the order in which a CBOR map's
+ keys appear when decoding a CBOR object, by using maps created as
+ though by CBORObject.NewOrderedMap.
 * `boolean getResolveReferences()`<br>
  Gets a value indicating whether to resolve references to sharable objects
  and sharable strings in the process of decoding a CBOR object.
@@ -155,6 +159,18 @@ Gets a value indicating whether to encode strings with an indefinite-length
 * A value indicating whether to encode strings with an
  indefinite-length encoding under certain circumstances. The default
  is false.
+
+### <a id='getKeepKeyOrder()'>getKeepKeyOrder</a>
+
+Gets a value indicating whether to preserve the order in which a CBOR map's
+ keys appear when decoding a CBOR object, by using maps created as
+ though by CBORObject.NewOrderedMap. If false, key order is not
+ guaranteed to be preserved when decoding CBOR.
+
+**Returns:**
+
+* A value indicating whether to preserve the order in which a CBOR
+ map's keys appear when decoding a CBOR object. The default is false.
 
 ### <a id='getAllowEmpty()'>getAllowEmpty</a>
 

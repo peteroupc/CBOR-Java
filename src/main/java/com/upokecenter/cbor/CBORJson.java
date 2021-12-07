@@ -573,7 +573,9 @@ import com.upokecenter.numbers.*;
       CBORObject obj;
       int[] nextChar = new int[1];
       boolean seenComma = false;
-      TreeMap<CBORObject, CBORObject> myHashMap = new TreeMap<CBORObject, CBORObject>();
+      Map<CBORObject, CBORObject> myHashMap =
+this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
+TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {

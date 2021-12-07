@@ -156,28 +156,28 @@ import java.util.*;
      * of the following where the letters can be any combination of basic
      * upper-case and/or basic lower-case letters: {@code base64padding},
      * {@code replacesurrogates}, {@code allowduplicatekeys}, {@code
-     * preservenegativezero}, {@code numberconversion}, {@code writebasic}.
-     * Other keys are ignored in this version of the CBOR library. (Keys
-     * are compared using a basic case-insensitive comparison, in which two
-     * strings are equal if they match after converting the basic
-     * upper-case letters A to Z (U+0041 to U+005A) in both strings to
-     * basic lower-case letters.) If two or more key/value pairs have equal
-     * keys (in a basic case-insensitive comparison), the value given for
-     * the last such key is used. The first four keys just given can have a
-     * value of {@code 1}, {@code true}, {@code yes}, or {@code on} (where
-     * the letters can be any combination of basic upper-case and/or basic
-     * lower-case letters), which means true, and any other value meaning
-     * false. The last key, {@code numberconversion}, can have a value of
-     * any name given in the {@code JSONOptions.ConversionMode} enumeration
-     * (where the letters can be any combination of basic upper-case and/or
-     * basic lower-case letters), and any other value is unrecognized. (If
-     * the {@code numberconversion} key is not given, its value is treated
-     * as {@code full}. If that key is given, but has an unrecognized
-     * value, an exception is thrown.) For example, {@code
-     * base64padding = Yes} and {@code base64padding = 1} both set the {@code
-     * Base64Padding} property to true, and {@code numberconversion = double}
-     * sets the {@code NumberConversion} property to {@code
-     * ConversionMode.Double}.
+     * preservenegativezero}, {@code numberconversion}, {@code writebasic},
+     * {@code keepkeyorder}. Other keys are ignored in this version of the
+     * CBOR library. (Keys are compared using a basic case-insensitive
+     * comparison, in which two strings are equal if they match after
+     * converting the basic upper-case letters A to Z (U+0041 to U+005A) in
+     * both strings to basic lower-case letters.) If two or more key/value
+     * pairs have equal keys (in a basic case-insensitive comparison), the
+     * value given for the last such key is used. The first four keys just
+     * given can have a value of {@code 1}, {@code true}, {@code yes}, or
+     * {@code on} (where the letters can be any combination of basic
+     * upper-case and/or basic lower-case letters), which means true, and
+     * any other value meaning false. The last key, {@code
+     * numberconversion}, can have a value of any name given in the {@code
+     * JSONOptions.ConversionMode} enumeration (where the letters can be
+     * any combination of basic upper-case and/or basic lower-case
+     * letters), and any other value is unrecognized. (If the {@code
+     * numberconversion} key is not given, its value is treated as {@code
+     * full}. If that key is given, but has an unrecognized value, an
+     * exception is thrown.) For example, {@code base64padding = Yes} and
+     * {@code base64padding = 1} both set the {@code Base64Padding} property
+     * to true, and {@code numberconversion = double} sets the {@code
+     * NumberConversion} property to {@code ConversionMode.Double} .
      * @throws NullPointerException The parameter {@code paramString} is null. In
      * the future, this class may allow other keys to store other kinds of
      * values, not just true or false.
@@ -194,6 +194,9 @@ import java.util.*;
         true);
       this.propVarallowduplicatekeys = parser.GetBoolean(
         "allowduplicatekeys",
+        false);
+      this.propVarkeepkeyorder = parser.GetBoolean(
+        "keepkeyorder",
         false);
       this.propVarbase64padding = parser.GetBoolean("base64padding", true);
       this.propVarreplacesurrogates = parser.GetBoolean(
@@ -220,6 +223,7 @@ import java.util.*;
         .append(this.getReplaceSurrogates() ? "true" : "false")
         .append(";preservenegativezero=")
         .append(this.getPreserveNegativeZero() ? "true" : "false")
+        .append(";keepkeyorder=").append(this.getKeepKeyOrder() ? "true" : "false")
         .append(";numberconversion=").append(this.FromNumberConversion())
         .append(";allowduplicatekeys=")
         .append(this.getAllowDuplicateKeys() ? "true" : "false")
@@ -323,6 +327,17 @@ private final ConversionMode propVarnumberconversion;
      */
     public final boolean getWriteBasic() { return propVarwritebasic; }
 private final boolean propVarwritebasic;
+
+    /**
+     * Gets a value indicating whether to preserve the order in which a map's keys
+     * appear when decoding JSON, by using maps created as though by
+     * CBORObject.NewOrderedMap. If false, key order is not guaranteed to
+     * be preserved when decoding JSON.
+     * @return A value indicating whether to preserve the order in which a CBOR
+     * map's keys appear when decoding JSON. The default is false.
+     */
+    public final boolean getKeepKeyOrder() { return propVarkeepkeyorder; }
+private final boolean propVarkeepkeyorder;
 
     /**
      * Gets a value indicating whether to allow duplicate keys when reading JSON.
