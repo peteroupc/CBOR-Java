@@ -19,6 +19,14 @@ import com.upokecenter.numbers.*;
 // only the standard JSON format
 
   final class JSONWithComments {
+    private final String jstring;
+    private final List<CBORObject> currPointer;
+    private final JSONOptions options;
+    private int currPointerStackSize;
+    private List<String[]> pointers;
+    private int index;
+    private int endPos;
+
     // JSON parsing method
     private int SkipWhitespaceJSON() {
       while (this.index < this.endPos) {
@@ -34,14 +42,6 @@ import com.upokecenter.numbers.*;
       throw new CBORException(str + " (approx. offset: " +
         Math.max(0, this.index - 1) + ")");
     }
-
-    private final String jstring;
-    private final List<CBORObject> currPointer;
-    private int currPointerStackSize;
-    private final JSONOptions options;
-    private List<String[]> pointers;
-    private int index;
-    private int endPos;
 
     private CBORObject NextJSONString() {
       int c;
