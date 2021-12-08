@@ -8770,99 +8770,99 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-@Test
-public void TestKeepKeyOrder() {
-  byte[] bytes;
-  byte[] bytes2;
-  CBORObject cbor;
-  ArrayList<CBORObject> list = new ArrayList<CBORObject>();
-  CBOREncodeOptions options = new CBOREncodeOptions("keepkeyorder=true");
-  if (!(options.getKeepKeyOrder())) {
+    @Test
+    public void TestKeepKeyOrder() {
+      byte[] bytes;
+      byte[] bytes2;
+      CBORObject cbor;
+      ArrayList<CBORObject> list = new ArrayList<CBORObject>();
+      CBOREncodeOptions options = new CBOREncodeOptions("keepkeyorder=true");
+      if (!(options.getKeepKeyOrder())) {
  Assert.fail();
  }
-  bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
-  cbor = CBORObject.DecodeFromBytes(bytes, options);
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
-  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
-  Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
-  bytes2 = cbor.EncodeToBytes();
-  TestCommon.AssertByteArraysEqual(bytes, bytes2);
-  list = new ArrayList<CBORObject>();
-  bytes = new byte[] { (byte)0xbf, 0x01, 0, 0x02, 0, 0x03, 0, (byte)0xff };
-  cbor = CBORObject.DecodeFromBytes(bytes, options);
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
-  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
-  Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
-  bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
-  bytes2 = cbor.EncodeToBytes();
-  TestCommon.AssertByteArraysEqual(bytes, bytes2);
-   list = new ArrayList<CBORObject>();
-  bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
-  cbor = CBORObject.DecodeFromBytes(bytes, options);
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
-  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
-  Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
-  bytes2 = cbor.EncodeToBytes();
-  TestCommon.AssertByteArraysEqual(bytes, bytes2);
-   list = new ArrayList<CBORObject>();
-  bytes = new byte[] { (byte)0xbf, 0x03, 0, 0x02, 0, 0x01, 0, (byte)0xff };
-  cbor = CBORObject.DecodeFromBytes(bytes, options);
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
-  Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
-  Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
-  bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
-  bytes2 = cbor.EncodeToBytes();
-  TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
+      cbor = CBORObject.DecodeFromBytes(bytes, options);
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
+      bytes2 = cbor.EncodeToBytes();
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      list = new ArrayList<CBORObject>();
+      bytes = new byte[] { (byte)0xbf, 0x01, 0, 0x02, 0, 0x03, 0, (byte)0xff };
+      cbor = CBORObject.DecodeFromBytes(bytes, options);
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject(1), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject(3), list.get(2));
+      bytes = new byte[] { (byte)0xa3, 0x01, 0, 0x02, 0, 0x03, 0 };
+      bytes2 = cbor.EncodeToBytes();
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      list = new ArrayList<CBORObject>();
+      bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
+      cbor = CBORObject.DecodeFromBytes(bytes, options);
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
+      bytes2 = cbor.EncodeToBytes();
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      list = new ArrayList<CBORObject>();
+      bytes = new byte[] { (byte)0xbf, 0x03, 0, 0x02, 0, 0x01, 0, (byte)0xff };
+      cbor = CBORObject.DecodeFromBytes(bytes, options);
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject(3), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject(2), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject(1), list.get(2));
+      bytes = new byte[] { (byte)0xa3, 0x03, 0, 0x02, 0, 0x01, 0 };
+      bytes2 = cbor.EncodeToBytes();
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
 
-  // JSON
-  JSONOptions joptions = new JSONOptions("keepkeyorder=true");
-  if (!(joptions.getKeepKeyOrder())) {
+      // JSON
+      JSONOptions joptions = new JSONOptions("keepkeyorder=true");
+      if (!(joptions.getKeepKeyOrder())) {
  Assert.fail();
  }
-  String jsonstring;
-  jsonstring="{\"1\":0,\"2\":0,\"3\":0}";
-  cbor = CBORObject.FromJSONString(jsonstring, joptions);
-   list = new ArrayList<CBORObject>();
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject("1"),list.get(0));
-  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-  Assert.assertEquals(CBORObject.FromObject("3"),list.get(2));
+      String jsonstring;
+      jsonstring = "{\"1\":0,\"2\":0,\"3\":0}";
+      cbor = CBORObject.FromJSONString(jsonstring, joptions);
+      list = new ArrayList<CBORObject>();
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject("1"),list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("3"),list.get(2));
 
-  jsonstring="{\"3\":0,\"2\":0,\"1\":0}";
-  cbor = CBORObject.FromJSONString(jsonstring, joptions);
-   list = new ArrayList<CBORObject>();
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
-  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-  Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+      jsonstring = "{\"3\":0,\"2\":0,\"1\":0}";
+      cbor = CBORObject.FromJSONString(jsonstring, joptions);
+      list = new ArrayList<CBORObject>();
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
 
-  jsonstring="{\"3\":0,\"2\":0,\"1\":0}";
-  bytes = DataUtilities.GetUtf8Bytes(jsonstring, false);
-  cbor = CBORObject.FromJSONBytes(bytes, joptions);
-   list = new ArrayList<CBORObject>();
-  for (CBORObject key : cbor.getKeys()) {
-    list.add(key);
-  }
-  Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
-  Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-  Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
-}
+      jsonstring = "{\"3\":0,\"2\":0,\"1\":0}";
+      bytes = DataUtilities.GetUtf8Bytes(jsonstring, false);
+      cbor = CBORObject.FromJSONBytes(bytes, joptions);
+      list = new ArrayList<CBORObject>();
+      for (CBORObject key : cbor.getKeys()) {
+        list.add(key);
+      }
+      Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+    }
 
     @Test
     public void TestWriteFloatingPointValue() {
@@ -9292,7 +9292,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
       patch = CBORObject.NewArray().Add(
           CBORObject.NewMap().Add("op", "RePlAcE").Add("path",
-  "/0").Add("value", 3));
+            "/0").Add("value", 3));
       this.TestApplyJSONPatchOp(
         null,
         CBORObject.NewArray().Add(1),
@@ -9546,7 +9546,245 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestAtJSONPointer() {
-      // TODO: Finish tests for AtJSONPointer
+    CBORObject cbor;
+    cbor=CBORObject.FromObject("xyz");
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor = CBORObject.FromObject(0);
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor = CBORObject.FromObject(0.5);
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor = CBORObject.NewMap();
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor = CBORObject.NewArray();
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor.Add(3);
+    Assert.assertEquals(cbor.get(0),cbor.AtJSONPointer("/0"));
+    try {
+ cbor.AtJSONPointer("/1");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/-");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor=CBORObject.NewMap().Add("foo",0);
+    Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
+    try {
+ cbor.AtJSONPointer(null);
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    Assert.assertEquals(cbor.get("foo"),cbor.AtJSONPointer("/foo"));
+    try {
+ cbor.AtJSONPointer("/bar");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor=CBORObject.NewMap().Add("f~o",0);
+    Assert.assertEquals(cbor.get("f~o"),cbor.AtJSONPointer("/f~0o"));
+    cbor=CBORObject.NewMap().Add("f~0o",0);
+    Assert.assertEquals(cbor.get("f~0o"),cbor.AtJSONPointer("/f~00o"));
+    cbor=CBORObject.NewMap().Add("f~1o",0);
+    Assert.assertEquals(cbor.get("f~1o"),cbor.AtJSONPointer("/f~01o"));
+    cbor=CBORObject.NewMap().Add("f/o",0);
+    Assert.assertEquals(cbor.get("f/o"),cbor.AtJSONPointer("/f~1o"));
+    cbor=CBORObject.NewMap().Add("foo",CBORObject.NewMap().Add("bar",345));
+    Assert.assertEquals(CBORObject.FromObject(345),cbor.AtJSONPointer("/foo/bar"));
+    cbor=CBORObject.NewMap().Add("foo",CBORObject.NewArray().Add(678));
+    Assert.assertEquals(CBORObject.FromObject(678),cbor.AtJSONPointer("/foo/0"));
+    try {
+ cbor.AtJSONPointer("/foo/1");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo/-");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ cbor.AtJSONPointer("/foo/-1");
+Assert.fail("Should have failed");
+} catch (CBORException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    cbor=CBORObject.NewMap().Add("-",0);
+    Assert.assertEquals(cbor.get("-"),cbor.AtJSONPointer("/-"));
+    cbor = CBORObject.NewMap().Add("", 0);
+    Assert.assertEquals(cbor.get(""),cbor.AtJSONPointer("/"));
     }
 
     @Test

@@ -13,6 +13,10 @@ import java.util.*;
 import com.upokecenter.numbers.*;
 
   final class JSONPointer {
+    private final String refValue;
+    private final boolean isRoot;
+    private final CBORObject jsonobj;
+
     public static JSONPointer FromPointer(CBORObject obj, String pointer) {
       int index = 0;
       if (pointer == null) {
@@ -22,7 +26,7 @@ import com.upokecenter.numbers.*;
         throw new NullPointerException("obj");
       }
       if (pointer.length() == 0) {
-        return new JSONPointer(obj, pointer);
+        return new JSONPointer(obj, pointer, true);
       }
       while (true) {
         if (obj == null) {
@@ -199,11 +203,12 @@ import com.upokecenter.numbers.*;
       return index;
     }
 
-    private String refValue;
-
-    private CBORObject jsonobj;
-
     private JSONPointer(CBORObject jsonobj, String refValue) {
+ this(jsonobj, refValue, false);
+    }
+
+    private JSONPointer(CBORObject jsonobj, String refValue, boolean isRoot) {
+      this.isRoot = isRoot;
       this.jsonobj = jsonobj;
       this.refValue = refValue;
     }
@@ -259,7 +264,7 @@ import com.upokecenter.numbers.*;
     }
 
     public CBORObject GetValue() {
-      if (this.refValue.length() == 0) {
+      if (this.isRoot) {
         // Root always exists
         return this.jsonobj;
       }

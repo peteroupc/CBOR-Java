@@ -4294,9 +4294,9 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
 
 * <code>CBORException</code> - Thrown if the pointer is null, or
  if the pointer is invalid, or if there is no object at the given
-  pointer, or the special key "-" appears in the pointer, or if the
- pointer is non-empty and this object has a CBOR type other than
- array or map.
+  pointer, or the special key "-" appears in the pointer in the
+ context of an array (not a map), or if the pointer is non-empty and
+ this object has a CBOR type other than array or map.
 
 ### <a id='AtJSONPointer(java.lang.String,com.upokecenter.cbor.CBORObject)'>AtJSONPointer</a>
     '/' KEY '/' KEY.get(...)
@@ -4329,8 +4329,8 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901, or
  other than array or map). Returns <code>defaultValue</code> if the
  pointer is null, or if the pointer is invalid, or if there is no
   object at the given pointer, or the special key "-" appears in the
- pointer, or if the pointer is non-empty and this object has a CBOR
- type other than array or map.
+ pointer in the context of an array (not a map), or if the pointer is
+ non-empty and this object has a CBOR type other than array or map.
 
 ### <a id='ApplyJSONPatch(com.upokecenter.cbor.CBORObject)'>ApplyJSONPatch</a>
 

@@ -17,8 +17,8 @@ private CBORJsonWriter() {
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c < 0x20 || c >= 0x7f || c == '\\' || c == '"') {
-           sb.WriteString(str, 0, i);
-           break;
+          sb.WriteString(str, 0, i);
+          break;
         }
       }
       if (i == str.length()) {
@@ -60,39 +60,39 @@ private CBORJsonWriter() {
             sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
           }
         } else if ((c & 0xfc00) == 0xd800) {
-            if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
-              // NOTE: RFC 8259 doesn't prohibit any particular
-              // error-handling behavior when a writer of JSON
-              // receives a String with an unpaired surrogate.
-              if (options.getReplaceSurrogates()) {
-                // Replace unpaired surrogate with U+FFFD
-                sb.WriteCodePoint(0xfffd);
-              } else {
-                throw new CBORException("Unpaired surrogate in String");
-              }
-            } else if (c >= 0x80 && options.getWriteBasic()) {
-              c = str.charAt(i);
-              sb.WriteString("\\u");
-            sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
-          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
-        sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
-      sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
-    c = str.charAt(i + 1);
-    sb.WriteString("\\u");
-  sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
-  sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
-  sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
-  sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
+          if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
+            // NOTE: RFC 8259 doesn't prohibit any particular
+            // error-handling behavior when a writer of JSON
+            // receives a String with an unpaired surrogate.
+            if (options.getReplaceSurrogates()) {
+              // Replace unpaired surrogate with U+FFFD
+              sb.WriteCodePoint(0xfffd);
             } else {
-              sb.WriteString(str, i, 2);
+              throw new CBORException("Unpaired surrogate in String");
             }
-            ++i;
-        } else if (c >= 0x80 && options.getWriteBasic()) {
+          } else if (c >= 0x80 && options.getWriteBasic()) {
+            c = str.charAt(i);
             sb.WriteString("\\u");
             sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
             sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
             sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
             sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
+            c = str.charAt(i + 1);
+            sb.WriteString("\\u");
+            sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
+            sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
+            sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
+            sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
+          } else {
+            sb.WriteString(str, i, 2);
+          }
+          ++i;
+        } else if (c >= 0x80 && options.getWriteBasic()) {
+          sb.WriteString("\\u");
+          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
+          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
+          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
+          sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
         } else {
           sb.WriteCodePoint((int)c);
         }
@@ -112,8 +112,8 @@ private CBORJsonWriter() {
     }
 
     private static void PopRefIfNeeded(
-        List<CBORObject> stack,
-        boolean pop) {
+      List<CBORObject> stack,
+      boolean pop) {
       if (pop && stack != null) {
         stack.remove(stack.size() - 1);
       }

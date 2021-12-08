@@ -5209,9 +5209,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * array or map).
      * @throws com.upokecenter.cbor.CBORException Thrown if the pointer is null, or
      * if the pointer is invalid, or if there is no object at the given
-     *  pointer, or the special key "-" appears in the pointer, or if the
-     * pointer is non-empty and this object has a CBOR type other than
-     * array or map.
+     *  pointer, or the special key "-" appears in the pointer in the
+     * context of an array (not a map), or if the pointer is non-empty and
+     * this object has a CBOR type other than array or map.
      */
     public CBORObject AtJSONPointer(String pointer) {
       CBORObject ret = this.AtJSONPointer(pointer, null);
@@ -5244,8 +5244,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * other than array or map). Returns {@code defaultValue} if the
      * pointer is null, or if the pointer is invalid, or if there is no
      *  object at the given pointer, or the special key "-" appears in the
-     * pointer, or if the pointer is non-empty and this object has a CBOR
-     * type other than array or map.
+     * pointer in the context of an array (not a map), or if the pointer is
+     * non-empty and this object has a CBOR type other than array or map.
      */
     public CBORObject AtJSONPointer(String pointer, CBORObject defaultValue) {
       return JSONPointer.GetObject(this, pointer, null);
