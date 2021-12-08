@@ -2488,20 +2488,22 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    public static final int[] EtbRanges = {
+      -24, 23, 1,
+      -256, -25, 2,
+      24, 255, 2,
+      256, 266, 3,
+      -266, -257, 3,
+      65525, 65535, 3,
+      -65536, -65525, 3,
+      65536, 65546, 5,
+      -65547, -65537, 5,
+    };
+
     @Test
     public void TestEncodeToBytes() {
       // Test minimum data length
-      int[] ranges = {
-        -24, 23, 1,
-        -256, -25, 2,
-        24, 255, 2,
-        256, 266, 3,
-        -266, -257, 3,
-        65525, 65535, 3,
-        -65536, -65525, 3,
-        65536, 65546, 5,
-        -65547, -65537, 5,
-      };
+      int[] ranges = EtbRanges;
       String[] bigRanges = {
         "4294967285", "4294967295",
         "4294967296", "4294967306",
@@ -9749,9 +9751,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       cbor = CBORObject.NewMap().Add("f/o", 0);
       Assert.assertEquals(cbor.get("f/o"), cbor.AtJSONPointer("/f~1o"));
       cbor = CBORObject.NewMap().Add("foo", CBORObject.NewMap().Add("bar",
-  345));
+            345));
 
-  Assert.assertEquals(CBORObject.FromObject(345), cbor.AtJSONPointer("/foo/bar"));
+      Assert.assertEquals(
+        CBORObject.FromObject(345),
+        cbor.AtJSONPointer("/foo/bar"));
       cbor = CBORObject.NewMap().Add("foo", CBORObject.NewArray().Add(678));
       Assert.assertEquals(CBORObject.FromObject(678), cbor.AtJSONPointer("/foo/0"));
       try {
@@ -10360,7 +10364,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void TestParseNumberFxx(
       String str,
-      short _f16,
+      short f16,
       int f32,
       long f64,
       String line) {
@@ -10369,6 +10373,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // Not a valid JSON number, so skip
         // System.out.println(str);
         return;
+      }
+      if (CBORObject.FromObject(f16) == null) {
+        Assert.fail();
       }
       CBORObject cbor = CBORDataUtilities.ParseJSONNumber(str,
           JSONOptionsDouble);
@@ -10608,13 +10615,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String decstr = "0E100441809235791722330759976";
       EDecimal ed = EDecimal.FromString(decstr);
       double dbl = ed.ToDouble();
-      Assert.assertEquals((double)0, dbl, 0);
+      Assert.assertEquals((double)0.0d, dbl, 0);
       AssertJSONDouble(decstr, "double", dbl);
       AssertJSONInteger(decstr, "intorfloat", 0);
       decstr = "0E1321909565013040040586";
       ed = EDecimal.FromString(decstr);
       dbl = ed.ToDouble();
-      Assert.assertEquals((double)0, dbl, 0);
+      Assert.assertEquals((double)0.0d, dbl, 0);
       AssertJSONDouble(decstr, "double", dbl);
       AssertJSONInteger(decstr, "intorfloat", 0);
       double dblnegzero = EFloat.FromString("-0").ToDouble();
@@ -10770,7 +10777,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
         }
         // Trailing CTL
-        chars = new char[] { (char)0x31, (char)i};
+        chars = new char[] { (char)0x31, (char)i };
         str = new String(chars, 0, chars.length);
         if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
