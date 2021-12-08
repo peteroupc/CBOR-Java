@@ -3,7 +3,8 @@ package com.upokecenter.cbor;
 import java.util.*;
 
   /**
-   * Includes options to control how CBOR objects are converted to JSON.
+   * Includes options to control how CBOR objects are converted to and from
+   * JavaScript object Notation (JSON).
    */
   public final class JSONOptions {
     /**
