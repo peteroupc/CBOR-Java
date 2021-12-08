@@ -4917,21 +4917,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestWriteBasic() {
       JSONOptions jsonop1 = new JSONOptions("writebasic=true");
-      String json=CBORObject.FromObject("\uD800\uDC00").ToJSONString(jsonop1);
-      Assert.assertEquals("\"\\uD800\\uDC00\"",json);
-      json=CBORObject.FromObject("\u0800\u0C00").ToJSONString(jsonop1);
-      Assert.assertEquals("\"\\u0800\\u0C00\"",json);
-      json=CBORObject.FromObject("\u0085\uFFFF").ToJSONString(jsonop1);
-      Assert.assertEquals("\"\\u0085\\uFFFF\"",json);
+      String json = CBORObject.FromObject("\uD800\uDC00").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\uD800\\uDC00\"", json);
+      json = CBORObject.FromObject("\u0800\u0C00").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\u0800\\u0C00\"", json);
+      json = CBORObject.FromObject("\u0085\uFFFF").ToJSONString(jsonop1);
+      Assert.assertEquals("\"\\u0085\\uFFFF\"", json);
       RandomGenerator rg = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
         String rts = RandomObjects.RandomTextString(rg);
         CBORObject cbor = CBORObject.FromObject(rts);
         json = cbor.ToJSONString(jsonop1);
         // Check that the JSON contains only ASCII code points
-        for (int j = 0;j<json.length(); ++j) {
+        for (int j = 0; j < json.length(); ++j) {
           char c = json.charAt(j);
-          if ((c<0x20 && c != 0x09 && c != 0x0a && c != 0x0d) || c >= 0x7f) {
+          if ((c < 0x20 && c != 0x09 && c != 0x0a && c != 0x0d) || c >= 0x7f) {
             Assert.fail(rts);
           }
         }
@@ -4999,7 +4999,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       JSONOptions jsonop4 = new JSONOptions("numberconversion=double");
       for (int i = 0; i < 200; ++i) {
         byte[] jsonbytes = jsongen.Generate(rg);
-        //System.out.println("" + i + " len=" + jsonbytes.length);
+        // System.out.println("" + i + " len=" + jsonbytes.length);
         JSONOptions currop = null;
         try {
           currop = jsonop1;

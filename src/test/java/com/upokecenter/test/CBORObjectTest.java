@@ -8838,9 +8838,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (CBORObject key : cbor.getKeys()) {
         list.add(key);
       }
-      Assert.assertEquals(CBORObject.FromObject("1"),list.get(0));
-      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-      Assert.assertEquals(CBORObject.FromObject("3"),list.get(2));
+      Assert.assertEquals(CBORObject.FromObject("1"), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("3"), list.get(2));
 
       jsonstring = "{\"3\":0,\"2\":0,\"1\":0}";
       cbor = CBORObject.FromJSONString(jsonstring, joptions);
@@ -8848,9 +8848,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (CBORObject key : cbor.getKeys()) {
         list.add(key);
       }
-      Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
-      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-      Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+      Assert.assertEquals(CBORObject.FromObject("3"), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("1"), list.get(2));
 
       jsonstring = "{\"3\":0,\"2\":0,\"1\":0}";
       bytes = DataUtilities.GetUtf8Bytes(jsonstring, false);
@@ -8859,9 +8859,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (CBORObject key : cbor.getKeys()) {
         list.add(key);
       }
-      Assert.assertEquals(CBORObject.FromObject("3"),list.get(0));
-      Assert.assertEquals(CBORObject.FromObject("2"),list.get(1));
-      Assert.assertEquals(CBORObject.FromObject("1"),list.get(2));
+      Assert.assertEquals(CBORObject.FromObject("3"), list.get(0));
+      Assert.assertEquals(CBORObject.FromObject("2"), list.get(1));
+      Assert.assertEquals(CBORObject.FromObject("1"), list.get(2));
     }
 
     @Test
@@ -9372,67 +9372,67 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject.NewArray().Add(1),
         patch);
 
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         CBORObject.NewArray().Add(1).Add(3),
         CBORObject.NewArray().Add(1).Add(2),
         "/1",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         CBORObject.NewArray().Add(3).Add(2),
         CBORObject.NewArray().Add(1).Add(2),
         "/0",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewArray().Add(1).Add(2),
         "/00",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewArray().Add(1).Add(2),
         "/00000",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         CBORObject.NewMap().Add("f1", "f2").Add("f3", 3),
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/f3",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         CBORObject.NewMap().Add("f1", 3).Add("f3", "f4"),
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/f1",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/foo",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/f1/xyz",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/f1/",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/0",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewMap().Add("f1", "f2").Add("f3", "f4"),
         "/-",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewArray().Add(1).Add(2),
         "/-",
         3);
-      TestApplyJSONPatchOpReplace(
+      this.TestApplyJSONPatchOpReplace(
         null,
         CBORObject.NewArray().Add(1).Add(2),
         "/foo",
@@ -9545,7 +9545,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestAtJSONPointer() {
       CBORObject cbor;
-      cbor=CBORObject.FromObject("xyz");
+      cbor = CBORObject.FromObject("xyz");
       Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
       try {
         cbor.AtJSONPointer(null);
@@ -9691,7 +9691,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       cbor.Add(3);
-      Assert.assertEquals(cbor.get(0),cbor.AtJSONPointer("/0"));
+      Assert.assertEquals(cbor.get(0), cbor.AtJSONPointer("/0"));
       try {
         cbor.AtJSONPointer("/1");
         Assert.fail("Should have failed");
@@ -9710,7 +9710,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor=CBORObject.NewMap().Add("foo",0);
+      cbor = CBORObject.NewMap().Add("foo", 0);
       Assert.assertEquals(cbor, cbor.AtJSONPointer(""));
       try {
         cbor.AtJSONPointer(null);
@@ -9730,7 +9730,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      Assert.assertEquals(cbor.get("foo"),cbor.AtJSONPointer("/foo"));
+      Assert.assertEquals(cbor.get("foo"), cbor.AtJSONPointer("/foo"));
       try {
         cbor.AtJSONPointer("/bar");
         Assert.fail("Should have failed");
@@ -9740,19 +9740,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor=CBORObject.NewMap().Add("f~o",0);
-      Assert.assertEquals(cbor.get("f~o"),cbor.AtJSONPointer("/f~0o"));
-      cbor=CBORObject.NewMap().Add("f~0o",0);
-      Assert.assertEquals(cbor.get("f~0o"),cbor.AtJSONPointer("/f~00o"));
-      cbor=CBORObject.NewMap().Add("f~1o",0);
-      Assert.assertEquals(cbor.get("f~1o"),cbor.AtJSONPointer("/f~01o"));
-      cbor=CBORObject.NewMap().Add("f/o",0);
-      Assert.assertEquals(cbor.get("f/o"),cbor.AtJSONPointer("/f~1o"));
-      cbor=CBORObject.NewMap().Add("foo",CBORObject.NewMap().Add("bar",345));
+      cbor = CBORObject.NewMap().Add("f~o", 0);
+      Assert.assertEquals(cbor.get("f~o"), cbor.AtJSONPointer("/f~0o"));
+      cbor = CBORObject.NewMap().Add("f~0o", 0);
+      Assert.assertEquals(cbor.get("f~0o"), cbor.AtJSONPointer("/f~00o"));
+      cbor = CBORObject.NewMap().Add("f~1o", 0);
+      Assert.assertEquals(cbor.get("f~1o"), cbor.AtJSONPointer("/f~01o"));
+      cbor = CBORObject.NewMap().Add("f/o", 0);
+      Assert.assertEquals(cbor.get("f/o"), cbor.AtJSONPointer("/f~1o"));
+      cbor = CBORObject.NewMap().Add("foo", CBORObject.NewMap().Add("bar",
+  345));
 
-  Assert.assertEquals(CBORObject.FromObject(345),cbor.AtJSONPointer("/foo/bar"));
-      cbor=CBORObject.NewMap().Add("foo",CBORObject.NewArray().Add(678));
-      Assert.assertEquals(CBORObject.FromObject(678),cbor.AtJSONPointer("/foo/0"));
+  Assert.assertEquals(CBORObject.FromObject(345), cbor.AtJSONPointer("/foo/bar"));
+      cbor = CBORObject.NewMap().Add("foo", CBORObject.NewArray().Add(678));
+      Assert.assertEquals(CBORObject.FromObject(678), cbor.AtJSONPointer("/foo/0"));
       try {
         cbor.AtJSONPointer("/foo/1");
         Assert.fail("Should have failed");
@@ -9780,10 +9781,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor=CBORObject.NewMap().Add("-",0);
-      Assert.assertEquals(cbor.get("-"),cbor.AtJSONPointer("/-"));
+      cbor = CBORObject.NewMap().Add("-", 0);
+      Assert.assertEquals(cbor.get("-"), cbor.AtJSONPointer("/-"));
       cbor = CBORObject.NewMap().Add("", 0);
-      Assert.assertEquals(cbor.get(""),cbor.AtJSONPointer("/"));
+      Assert.assertEquals(cbor.get(""), cbor.AtJSONPointer("/"));
     }
 
     @Test
