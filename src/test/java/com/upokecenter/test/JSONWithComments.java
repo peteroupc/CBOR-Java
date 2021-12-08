@@ -514,7 +514,7 @@ import com.upokecenter.numbers.*;
     private void PushPointer() {
       if (this.currPointerStackSize > this.currPointer.size()) {
         this.RaiseError("Internal error");
-      };
+      }
       if (this.currPointerStackSize == this.currPointer.size()) {
         this.currPointer.add(CBORObject.Null);
       } else {
@@ -525,7 +525,7 @@ import com.upokecenter.numbers.*;
     private void PopPointer() {
       if (this.currPointerStackSize < 0) {
         this.RaiseError("Internal error");
-      };
+      }
       --this.currPointerStackSize;
     }
 
