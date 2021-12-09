@@ -4,7 +4,7 @@
   <groupId>com.upokecenter</groupId>
   <artifactId>cbor</artifactId>
   <packaging>jar</packaging>
-  <version>4.5-SNAPSHOT</version>
+  <version>4.5</version>
   <name>CBOR (Concise Binary Object Representation)</name>
   <description>A Java implementation of Concise Binary Object Representation (CBOR), a general-purpose binary data format defined in RFC 8949.</description>
   <url>https://github.com/peteroupc/CBOR-Java</url>
