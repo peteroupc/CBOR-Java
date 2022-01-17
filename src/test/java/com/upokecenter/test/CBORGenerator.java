@@ -85,6 +85,11 @@ import com.upokecenter.util.*;
       4, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
 
+    private static int[]
+    valueMajorTypesHighDepth = {
+      0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7,
+    };
+
     private static int[] valueMajorTypesHighLength = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6,
       6, 7, 7, 7, 7, 7, 7,
@@ -130,11 +135,15 @@ import com.upokecenter.util.*;
 
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
       int majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
+      if (depth > 6) {
+        majorType = valueMajorTypesHighDepth[r.GetInt32(
+              valueMajorTypesHighDepth.length)];
+      }
       if (bs.getByteLength() > 2000000) {
         majorType = valueMajorTypesHighLength[r.GetInt32(
               valueMajorTypesHighLength.length)];
       }
-      if (majorType == 3 || majorType == 2) {
+      if (majorType == 3 || majorType == 2) { // Byte and text strings
         int len = r.GetInt32(1000);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(100000) * r.GetInt32(100000);
@@ -172,11 +181,14 @@ import com.upokecenter.util.*;
           }
         }
         return;
-      } else if (majorType == 4 || majorType == 5) {
+      } else if (majorType == 4 || majorType == 5) { // Arrays and maps
         int len = r.GetInt32(8);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(1000) * r.GetInt32(1000);
           len = (int)(v / 1000);
+        }
+        if (depth > 6) {
+          len = r.GetInt32(100) < 50 ? 1 : 0;
         }
         boolean indefiniteLength = r.GetInt32(2) == 0;
         if (indefiniteLength) {
@@ -227,7 +239,7 @@ import com.upokecenter.util.*;
           }
           break;
       }
-      if (majorType == 6) {
+      if (majorType == 6) { // Tags
         this.Generate(r, depth + 1, bs);
       }
     }
