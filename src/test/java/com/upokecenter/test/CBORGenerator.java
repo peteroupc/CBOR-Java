@@ -82,12 +82,13 @@ import com.upokecenter.util.*;
     private static int[]
     valueMajorTypes = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4,
-      4, 5, 6, 6, 7, 7, 7, 7, 7, 7,
+      4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
 
     private static int[]
     valueMajorTypesHighDepth = {
-      0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7,
+      0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+      5, 5, 5, 5, 5, 5, 6, 7,
     };
 
     private static int[] valueMajorTypesHighLength = {
@@ -133,6 +134,31 @@ import com.upokecenter.util.*;
       }
     }
 
+    private void GenerateSmall(IRandomGenExtended r, int depth, ByteWriter bs) {
+      int v = r.GetInt32(100);
+      if (v < 25) {
+        GenerateArgument(r, 0, r.GetInt32(100), bs);
+      } else if (v < 35) {
+        bs.Write(0x41);
+      bs.Write(0x20);
+      } else if (v < 45) {
+        bs.Write(0x41);
+      bs.Write(0x20);
+      } else if (v < 50) {
+        bs.Write(0x81);
+      this.GenerateSmall(r, depth + 1, bs);
+      } else if (v < 53) {
+        bs.Write(0xa2);
+      bs.Write(0xf7);
+    bs.Write(0xf6);
+  this.GenerateSmall(r, depth + 1, bs);
+  bs.Write(0xf5);
+      } else if (v < 80) {
+        bs.Write(r.GetInt32(0x40));
+      } else if (v < 100) {
+        bs.Write(r.GetInt32(0x60));
+      }
+    }
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
       int majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
       if (depth > 6) {
@@ -148,9 +174,10 @@ import com.upokecenter.util.*;
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(100000) * r.GetInt32(100000);
           len = (int)(v / 100000);
-        }
-        if (depth > 6) {
+        } else if (depth > 6) {
           len = r.GetInt32(100) == 0 ? 1 : 0;
+        } else if (depth > 2) {
+          len = r.GetInt32(16);
         }
         // TODO: Ensure key uniqueness
         if (r.GetInt32(2) == 0) {
@@ -186,9 +213,13 @@ import com.upokecenter.util.*;
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(1000) * r.GetInt32(1000);
           len = (int)(v / 1000);
+        } else if (depth > 6) {
+          len = r.GetInt32(100) == 0 ? 1 : 0;
+        } else if (depth > 2) {
+          len = r.GetInt32(3);
         }
         if (depth > 6) {
-          len = r.GetInt32(100) < 50 ? 1 : 0;
+          len = r.GetInt32(100) < 50 ? 1 : (r.GetInt32(100) < 10 ? 2 : 0);
         }
         boolean indefiniteLength = r.GetInt32(2) == 0;
         if (indefiniteLength) {
@@ -197,7 +228,11 @@ import com.upokecenter.util.*;
           GenerateArgument(r, majorType, len, bs);
         }
         for (int i = 0; i < len; ++i) {
-          this.Generate(r, depth + 1, bs);
+          if (depth > 6) {
+            this.GenerateSmall(r, depth + 1, bs);
+          } else {
+            this.Generate(r, depth + 1, bs);
+          }
           if (majorType == 5) {
             this.Generate(r, depth + 1, bs);
           }
