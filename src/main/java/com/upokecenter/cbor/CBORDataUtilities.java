@@ -124,6 +124,7 @@ obj.Untag().ToJSONString()));
               sb.append(HexAlphabet.charAt((cp >> 8) & 15));
               sb.append(HexAlphabet.charAt((cp >> 4) & 15));
               sb.append(HexAlphabet.charAt(cp & 15));
+              ++i;
             } else if (cp >= 0x7F || cp < 0x20 || cp == (int)'\\' || cp ==
 (int)'\"') {
               sb.append("\\u");

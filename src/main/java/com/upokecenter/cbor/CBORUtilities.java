@@ -471,8 +471,10 @@ private CBORUtilities() {
       }
       int c = Math.min(a.length, b.length);
       for (int i = 0; i < c; ++i) {
-        if (a[i] != b[i]) {
-          return (a[i] < b[i]) ? -1 : 1;
+        byte ai = a[i];
+        byte bi = b[i];
+        if (ai != bi) {
+          return ((((int)ai) & 0xff) < (((int)bi) & 0xff)) ? -1 : 1;
         }
       }
       return (a.length != b.length) ? ((a.length < b.length) ? -1 : 1) : 0;
@@ -489,8 +491,10 @@ private CBORUtilities() {
         return a.length < b.length ? -1 : 1;
       }
       for (int i = 0; i < a.length; ++i) {
-        if (a[i] != b[i]) {
-          return (a[i] < b[i]) ? -1 : 1;
+        byte ai = a[i];
+        byte bi = b[i];
+        if (ai != bi) {
+          return ((((int)ai) & 0xff) < (((int)bi) & 0xff)) ? -1 : 1;
         }
       }
       return 0;
