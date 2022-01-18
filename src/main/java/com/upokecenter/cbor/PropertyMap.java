@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.lang.reflect.*;
 import java.math.BigInteger;
 import java.math.BigDecimal;
+import java.util.*;
 import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -316,9 +317,144 @@ if(!setters){
       return Collections.unmodifiableMap(dict).entrySet();
   }
 
-  public static Map<CBORObject,CBORObject> NewOrderedDict() {
-      return new LinkedHashMap<CBORObject,CBORObject>();
+  private static final class LinkedListKeySet<TKey>
+     extends AbstractSet<TKey> {
+     private final LinkedList list;
+     public LinkedListKeySet(LinkedList<TKey> list){
+       this.list=list;
+     }
+     public int size() {
+        return this.list.size();
+     }
+     public Iterator<TKey> iterator() {
+        return this.list.iterator();
+     }
   }
+
+  public static final class OrderedMapSet<TKey, TValue>
+       extends AbstractSet<Map.Entry<TKey, TValue>> {
+      private final Map<TKey, TValue> dict;
+      private final LinkedList<TKey> list;
+      public OrderedMapSet(LinkedList<TKey> list, Map<TKey, TValue> dict){
+       this.list=list;
+       this.dict=dict;
+      }
+      public Iterator<Map.Entry<TKey, TValue>> iterator() {
+        return new OrderedMapIterator<TKey, TValue>(list.iterator(), dict);
+      }
+      public int size() {
+        return list.size();
+      }
+  }
+
+  public static final class OrderedMapIterator<TKey, TValue>
+        implements Iterator<Map.Entry<TKey, TValue>> {
+      private final Map<TKey, TValue> dict;
+      private final Iterator<TKey> iter;
+      public OrderedMapIterator(Iterator<TKey> iter, Map<TKey, TValue> dict){
+       this.iter=iter;
+       this.dict=dict;
+      }
+      public boolean hasNext() {
+        return this.iter.hasNext();
+      }
+      public Map.Entry<TKey, TValue> next() {
+        TKey k=iter.next();
+        return new AbstractMap.SimpleImmutableEntry<TKey, TValue>(k,dict.get(k));
+      }
+      public void remove() {
+        this.iter.remove();
+      }
+  }
+
+  public static final class OrderedMap<TKey, TValue>
+        implements Map<TKey, TValue> {
+      private final SortedMap<TKey, TValue> dict;
+      private final LinkedList<TKey> list;
+      public OrderedMap() {
+        this.dict = new TreeMap<TKey, TValue>();
+        this.list = new LinkedList<TKey>();
+      }
+      public Set<Map.Entry<TKey, TValue>> entrySet() {
+        return new OrderedMapSet(list,dict);
+      }
+      public Set<TKey> keySet() {
+        return new LinkedListKeySet(list);
+      }
+      public Set<TKey> sortedKeys() {
+        return dict.keySet();
+      }
+      public void clear() {
+         this.list.clear();
+         this.dict.clear();
+      }
+      public boolean containsKey(Object k) {
+         return this.dict.containsKey(k);
+      }
+      public boolean containsValue(Object v) {
+         return this.dict.containsValue(v);
+      }
+      public boolean equals(Object v) {
+         return this.dict.equals(v);
+      }
+      public int hashCode() {
+         return this.dict.hashCode();
+      }
+      public boolean isEmpty() {
+         return this.dict.isEmpty();
+      }
+      public TValue remove(Object k) {
+         TValue ret=this.dict.remove(k);
+         this.list.remove(k);
+         return ret;
+      }
+      public int size() {
+         return this.dict.size();
+      }
+      public String toString() {
+         return this.dict.toString();
+      }
+      public Collection<TValue> values() {
+         List<TValue> ret=new ArrayList<TValue>();
+         for(Map.Entry<TKey,TValue> entry : this.entrySet()){
+           ret.add(entry.getValue());
+         }
+         return ret;
+      }
+      public TValue get(Object k) {
+         return this.dict.get(k);
+      }
+      public TValue put(TKey k, TValue v) {
+         if (this.containsKey(k)){
+            return this.dict.put(k,v);
+         } else {
+            TValue ret=this.dict.put(k,v);
+            this.list.add(k);
+            return ret;
+         }
+      }
+      public void putAll(Map<? extends TKey,? extends TValue> m) {
+         for(TKey k : m.keySet()){
+            this.put(k,m.get(k));
+         }
+      }
+  }
+
+  public static Map<CBORObject,CBORObject> NewOrderedDict() {
+      return new OrderedMap<CBORObject,CBORObject>();
+  }
+
+    public static <TKey, TValue> Collection<TKey> GetSortedKeys(
+      Map<TKey, TValue> dict) {
+      if (dict instanceof OrderedMap<?, ?>) {
+        return ((OrderedMap<TKey, TValue>)dict).sortedKeys();
+      }
+      if (dict instanceof SortedMap<?, ?>) {
+        return ((SortedMap<TKey, TValue>)dict).keySet();
+      }
+      throw new IllegalStateException("Internal error: Map doesn't" +
+"\u0020support sorted keys");
+    }
 
   /**
    * <p>FromArray.</p>

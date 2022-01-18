@@ -177,7 +177,7 @@ import com.upokecenter.util.*;
         } else if (depth > 6) {
           len = r.GetInt32(100) == 0 ? 1 : 0;
         } else if (depth > 2) {
-          len = r.GetInt32(16);
+          len = r.GetInt32(16) + 1;
         }
         // TODO: Ensure key uniqueness
         if (r.GetInt32(2) == 0) {
@@ -216,7 +216,7 @@ import com.upokecenter.util.*;
         } else if (depth > 6) {
           len = r.GetInt32(100) == 0 ? 1 : 0;
         } else if (depth > 2) {
-          len = r.GetInt32(3);
+          len = r.GetInt32(3) + 1;
         }
         if (depth > 6) {
           len = r.GetInt32(100) < 50 ? 1 : (r.GetInt32(100) < 10 ? 2 : 0);

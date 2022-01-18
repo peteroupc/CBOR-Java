@@ -7309,12 +7309,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       if (listACount != listBCount) {
         return listACount < listBCount ? -1 : 1;
       }
-      ArrayList<CBORObject> sortedASet = new ArrayList<CBORObject>(mapA.keySet());
-      ArrayList<CBORObject> sortedBSet = new ArrayList<CBORObject>(mapB.keySet());
-      // System.out.println("---sorting mapA's keys");
-      // java.util.Collections.sort(sortedASet);
-      // System.out.println("---sorting mapB's keys");
-      // java.util.Collections.sort(sortedBSet);
+      ArrayList<CBORObject> sortedASet = new ArrayList<CBORObject>(PropertyMap.GetSortedKeys(mapA));
+      ArrayList<CBORObject> sortedBSet = new ArrayList<CBORObject>(PropertyMap.GetSortedKeys(mapB));
       // System.out.println("---done sorting");
       listACount = sortedASet.size();
       listBCount = sortedBSet.size();

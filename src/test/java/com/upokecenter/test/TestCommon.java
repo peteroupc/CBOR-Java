@@ -746,7 +746,7 @@ length2);
       return true;
     }
 
-    private static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {
+    public static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {
       if (arr1 == null) {
         return arr2 == null;
       }
