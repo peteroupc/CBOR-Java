@@ -2391,12 +2391,12 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param obj The parameter {@code obj} is an arbitrary object, which can be
      * null. <p><b>NOTE:</b> For security reasons, whenever possible, an
      * application should not base this parameter on user input or other
-     * externally supplied data unless the application limits this
-     * parameter's inputs to types specially handled by this method (such
-     * as {@code int} or {@code string}) and/or to plain-old-data types
-     * (POCO or POJO types) within the control of the application. If the
-     * plain-old-data type references other data types, those types should
-     * likewise meet either criterion above.</p>.
+     * externally supplied data, and whenever possible, the application
+     * should limit this parameter's inputs to types specially handled by
+     * this method (such as {@code int} or {@code string}) and/or to
+     * plain-old-data types (POCO or POJO types) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.</p>.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      */
@@ -2409,13 +2409,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * method that takes CBORTypeMapper and PODOptions arguments.
      * @param obj The parameter {@code obj} is an arbitrary object. <p><b>NOTE:</b>
      * For security reasons, whenever possible, an application should not
-     * base this parameter on user input or other externally supplied data
-     * unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code
-     * string}) and/or to plain-old-data types (POCO or POJO types) within
-     * the control of the application. If the plain-old-data type
-     * references other data types, those types should likewise meet either
-     * criterion above.</p>.
+     * base this parameter on user input or other externally supplied data,
+     * and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code
+     * int} or {@code string}) and/or to plain-old-data types (POCO or
+     * POJO types) within the control of the application. If the
+     * plain-old-data type references other data types, those types should
+     * likewise meet either criterion above.</p>.
      * @param options An object containing options to control how certain objects
      * are converted to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
@@ -2433,13 +2433,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * method that takes CBORTypeMapper and PODOptions arguments.
      * @param obj The parameter {@code obj} is an arbitrary object. <p><b>NOTE:</b>
      * For security reasons, whenever possible, an application should not
-     * base this parameter on user input or other externally supplied data
-     * unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code
-     * string}) and/or to plain-old-data types (POCO or POJO types) within
-     * the control of the application. If the plain-old-data type
-     * references other data types, those types should likewise meet either
-     * criterion above.</p>.
+     * base this parameter on user input or other externally supplied data,
+     * and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code
+     * int} or {@code string}) and/or to plain-old-data types (POCO or
+     * POJO types) within the control of the application. If the
+     * plain-old-data type references other data types, those types should
+     * likewise meet either criterion above.</p>.
      * @param mapper An object containing optional converters to convert objects of
      * certain types to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
@@ -2565,13 +2565,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * <pre>long x = -40L; &#x2f;&#x2a; Example 64-bit value treated as 2^64-40.&#x2a;&#x2f; CBORObject obj = CBORObject.FromObject(v &lt; 0 ? BigInteger.valueOf(1).shiftLeft(64).add(BigInteger.valueOf(v)) : BigInteger.valueOf(v));</pre> </p>
      * @param obj An arbitrary object to convert to a CBOR object. <p><b>NOTE:</b>
      * For security reasons, whenever possible, an application should not
-     * base this parameter on user input or other externally supplied data
-     * unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code
-     * string}) and/or to plain-old-data types (POCO or POJO types) within
-     * the control of the application. If the plain-old-data type
-     * references other data types, those types should likewise meet either
-     * criterion above.</p>.
+     * base this parameter on user input or other externally supplied data,
+     * and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code
+     * int} or {@code string}) and/or to plain-old-data types (POCO or
+     * POJO types) within the control of the application. If the
+     * plain-old-data type references other data types, those types should
+     * likewise meet either criterion above.</p>.
      * @param mapper An object containing optional converters to convert objects of
      * certain types to CBOR objects. Can be null.
      * @param options An object containing options to control how certain objects
@@ -2783,12 +2783,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param valueOb The parameter {@code valueOb} is an arbitrary object, which
      * can be null. <p><b>NOTE:</b> For security reasons, whenever
      * possible, an application should not base this parameter on user
-     * input or other externally supplied data unless the application
-     * limits this parameter's inputs to types specially handled by this
-     * method (such as {@code int} or {@code string}) and/or to
-     * plain-old-data types (POCO or POJO types) within the control of the
-     * application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * input or other externally supplied data, and whenever possible, the
+     * application should limit this parameter's inputs to types specially
+     * handled by this method (such as {@code int} or {@code string})
+     * and/or to plain-old-data types (POCO or POJO types) within the
+     * control of the application. If the plain-old-data type references
+     * other data types, those types should likewise meet either criterion
+     * above.</p>.
      * @param bigintTag Tag number. The tag number 55799 can be used to mark a
      *  "self-described CBOR" object. This document does not attempt to list
      * all CBOR tags and their meanings. An up-to-date list can be found at
@@ -2848,12 +2849,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param valueObValue The parameter {@code valueObValue} is an arbitrary
      * object, which can be null. <p><b>NOTE:</b> For security reasons,
      * whenever possible, an application should not base this parameter on
-     * user input or other externally supplied data unless the application
-     * limits this parameter's inputs to types specially handled by this
-     * method (such as {@code int} or {@code string}) and/or to
-     * plain-old-data types (POCO or POJO types) within the control of the
-     * application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * user input or other externally supplied data, and whenever possible,
+     * the application should limit this parameter's inputs to types
+     * specially handled by this method (such as {@code int} or {@code
+     * string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type
+     * references other data types, those types should likewise meet either
+     * criterion above.</p>.
      * @param smallTag A 32-bit integer that specifies a tag number. The tag number
      *  55799 can be used to mark a "self-described CBOR" object. This
      * document does not attempt to list all CBOR tags and their meanings.
@@ -4027,12 +4029,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @param objValue The arbitrary object to be serialized. Can be null.
      * <p><b>NOTE:</b> For security reasons, whenever possible, an
      * application should not base this parameter on user input or other
-     * externally supplied data unless the application limits this
-     * parameter's inputs to types specially handled by this method (such
-     * as {@code int} or {@code string}) and/or to plain-old-data types
-     * (POCO or POJO types) within the control of the application. If the
-     * plain-old-data type references other data types, those types should
-     * likewise meet either criterion above.</p>.
+     * externally supplied data, and whenever possible, the application
+     * should limit this parameter's inputs to types specially handled by
+     * this method (such as {@code int} or {@code string}) and/or to
+     * plain-old-data types (POCO or POJO types) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.</p>.
      * @param output A writable data stream.
      * @param options CBOR options for encoding the CBOR object to bytes.
      * @throws IllegalArgumentException The object's type is not supported.
@@ -4095,12 +4097,12 @@ public static void Write(
      * @param obj The parameter {@code obj} is an arbitrary object. Can be null.
      * <p><b>NOTE:</b> For security reasons, whenever possible, an
      * application should not base this parameter on user input or other
-     * externally supplied data unless the application limits this
-     * parameter's inputs to types specially handled by this method (such
-     * as {@code int} or {@code string}) and/or to plain-old-data types
-     * (POCO or POJO types) within the control of the application. If the
-     * plain-old-data type references other data types, those types should
-     * likewise meet either criterion above.</p>.
+     * externally supplied data, and whenever possible, the application
+     * should limit this parameter's inputs to types specially handled by
+     * this method (such as {@code int} or {@code string}) and/or to
+     * plain-old-data types (POCO or POJO types) within the control of the
+     * application. If the plain-old-data type references other data types,
+     * those types should likewise meet either criterion above.</p>.
      * @param outputStream A writable data stream.
      * @throws NullPointerException The parameter {@code outputStream} is null.
      */

@@ -2406,12 +2406,12 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 * <code>obj</code> - The parameter <code>obj</code> is an arbitrary object, which can be
  null. <p><b>NOTE:</b> For security reasons, whenever possible, an
  application should not base this parameter on user input or other
- externally supplied data unless the application limits this
- parameter's inputs to types specially handled by this method (such
- as <code>int</code> or <code>string</code>) and/or to plain-old-data types
- (POCO or POJO types) within the control of the application. If the
- plain-old-data type references other data types, those types should
- likewise meet either criterion above.</p>.
+ externally supplied data, and whenever possible, the application
+ should limit this parameter's inputs to types specially handled by
+ this method (such as <code>int</code> or <code>string</code>) and/or to
+ plain-old-data types (POCO or POJO types) within the control of the
+ application. If the plain-old-data type references other data types,
+ those types should likewise meet either criterion above.</p>.
 
 **Returns:**
 
@@ -2427,13 +2427,13 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 
 * <code>obj</code> - The parameter <code>obj</code> is an arbitrary object. <p><b>NOTE:</b>
  For security reasons, whenever possible, an application should not
- base this parameter on user input or other externally supplied data
- unless the application limits this parameter's inputs to types
- specially handled by this method (such as <code>int</code> or <code>
- string</code>) and/or to plain-old-data types (POCO or POJO types) within
- the control of the application. If the plain-old-data type
- references other data types, those types should likewise meet either
- criterion above.</p>.
+ base this parameter on user input or other externally supplied data,
+ and whenever possible, the application should limit this parameter's
+ inputs to types specially handled by this method (such as <code>
+ int</code> or <code>string</code>) and/or to plain-old-data types (POCO or
+ POJO types) within the control of the application. If the
+ plain-old-data type references other data types, those types should
+ likewise meet either criterion above.</p>.
 
 * <code>options</code> - An object containing options to control how certain objects
  are converted to CBOR objects.
@@ -2456,13 +2456,13 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 
 * <code>obj</code> - The parameter <code>obj</code> is an arbitrary object. <p><b>NOTE:</b>
  For security reasons, whenever possible, an application should not
- base this parameter on user input or other externally supplied data
- unless the application limits this parameter's inputs to types
- specially handled by this method (such as <code>int</code> or <code>
- string</code>) and/or to plain-old-data types (POCO or POJO types) within
- the control of the application. If the plain-old-data type
- references other data types, those types should likewise meet either
- criterion above.</p>.
+ base this parameter on user input or other externally supplied data,
+ and whenever possible, the application should limit this parameter's
+ inputs to types specially handled by this method (such as <code>
+ int</code> or <code>string</code>) and/or to plain-old-data types (POCO or
+ POJO types) within the control of the application. If the
+ plain-old-data type references other data types, those types should
+ likewise meet either criterion above.</p>.
 
 * <code>mapper</code> - An object containing optional converters to convert objects of
  certain types to CBOR objects.
@@ -2586,13 +2586,13 @@ Generates a CBORObject from an arbitrary object. See the overload of this
 
 * <code>obj</code> - An arbitrary object to convert to a CBOR object. <p><b>NOTE:</b>
  For security reasons, whenever possible, an application should not
- base this parameter on user input or other externally supplied data
- unless the application limits this parameter's inputs to types
- specially handled by this method (such as <code>int</code> or <code>
- string</code>) and/or to plain-old-data types (POCO or POJO types) within
- the control of the application. If the plain-old-data type
- references other data types, those types should likewise meet either
- criterion above.</p>.
+ base this parameter on user input or other externally supplied data,
+ and whenever possible, the application should limit this parameter's
+ inputs to types specially handled by this method (such as <code>
+ int</code> or <code>string</code>) and/or to plain-old-data types (POCO or
+ POJO types) within the control of the application. If the
+ plain-old-data type references other data types, those types should
+ likewise meet either criterion above.</p>.
 
 * <code>mapper</code> - An object containing optional converters to convert objects of
  certain types to CBOR objects. Can be null.
@@ -2650,12 +2650,13 @@ Generates a CBOR object from an arbitrary object and gives the resulting
 * <code>valueOb</code> - The parameter <code>valueOb</code> is an arbitrary object, which
  can be null. <p><b>NOTE:</b> For security reasons, whenever
  possible, an application should not base this parameter on user
- input or other externally supplied data unless the application
- limits this parameter's inputs to types specially handled by this
- method (such as <code>int</code> or <code>string</code>) and/or to
- plain-old-data types (POCO or POJO types) within the control of the
- application. If the plain-old-data type references other data types,
- those types should likewise meet either criterion above.</p>.
+ input or other externally supplied data, and whenever possible, the
+ application should limit this parameter's inputs to types specially
+ handled by this method (such as <code>int</code> or <code>string</code>)
+ and/or to plain-old-data types (POCO or POJO types) within the
+ control of the application. If the plain-old-data type references
+ other data types, those types should likewise meet either criterion
+ above.</p>.
 
 * <code>bigintTag</code> - Tag number. The tag number 55799 can be used to mark a
   "self-described CBOR" object. This document does not attempt to list
@@ -2712,12 +2713,13 @@ Generates a CBOR object from an arbitrary object and gives the resulting
 * <code>valueObValue</code> - The parameter <code>valueObValue</code> is an arbitrary
  object, which can be null. <p><b>NOTE:</b> For security reasons,
  whenever possible, an application should not base this parameter on
- user input or other externally supplied data unless the application
- limits this parameter's inputs to types specially handled by this
- method (such as <code>int</code> or <code>string</code>) and/or to
- plain-old-data types (POCO or POJO types) within the control of the
- application. If the plain-old-data type references other data types,
- those types should likewise meet either criterion above.</p>.
+ user input or other externally supplied data, and whenever possible,
+ the application should limit this parameter's inputs to types
+ specially handled by this method (such as <code>int</code> or <code>
+ string</code>) and/or to plain-old-data types (POCO or POJO types) within
+ the control of the application. If the plain-old-data type
+ references other data types, those types should likewise meet either
+ criterion above.</p>.
 
 * <code>smallTag</code> - A 32-bit integer that specifies a tag number. The tag number
   55799 can be used to mark a "self-described CBOR" object. This
@@ -3561,12 +3563,12 @@ Writes an arbitrary object to a CBOR data stream, using the specified
 * <code>objValue</code> - The arbitrary object to be serialized. Can be null.
  <p><b>NOTE:</b> For security reasons, whenever possible, an
  application should not base this parameter on user input or other
- externally supplied data unless the application limits this
- parameter's inputs to types specially handled by this method (such
- as <code>int</code> or <code>string</code>) and/or to plain-old-data types
- (POCO or POJO types) within the control of the application. If the
- plain-old-data type references other data types, those types should
- likewise meet either criterion above.</p>.
+ externally supplied data, and whenever possible, the application
+ should limit this parameter's inputs to types specially handled by
+ this method (such as <code>int</code> or <code>string</code>) and/or to
+ plain-old-data types (POCO or POJO types) within the control of the
+ application. If the plain-old-data type references other data types,
+ those types should likewise meet either criterion above.</p>.
 
 * <code>output</code> - A writable data stream.
 
@@ -3599,12 +3601,12 @@ Converts an arbitrary object to a text string in JavaScript object Notation
 * <code>obj</code> - The parameter <code>obj</code> is an arbitrary object. Can be null.
  <p><b>NOTE:</b> For security reasons, whenever possible, an
  application should not base this parameter on user input or other
- externally supplied data unless the application limits this
- parameter's inputs to types specially handled by this method (such
- as <code>int</code> or <code>string</code>) and/or to plain-old-data types
- (POCO or POJO types) within the control of the application. If the
- plain-old-data type references other data types, those types should
- likewise meet either criterion above.</p>.
+ externally supplied data, and whenever possible, the application
+ should limit this parameter's inputs to types specially handled by
+ this method (such as <code>int</code> or <code>string</code>) and/or to
+ plain-old-data types (POCO or POJO types) within the control of the
+ application. If the plain-old-data type references other data types,
+ those types should likewise meet either criterion above.</p>.
 
 * <code>outputStream</code> - A writable data stream.
 
