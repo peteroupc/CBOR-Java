@@ -11565,19 +11565,19 @@ public void TestStringCompareBug() {
     (byte)0xa1,
     (byte)0xff,
    };
-   b = CBORObject.DecodeFromBytes(bytes);
-   TestCommon.CompareTestEqual(a, b);
- TestCommon.CompareTestLess(c, a);
- TestCommon.CompareTestLess(c, b);
- TestCommon.CompareTestLess(d, a);
- TestCommon.CompareTestLess(d, b);
- CBORObject o1 = CBORObject.NewMap();
- o1.Add(b, CBORObject.FromObject(0));
- o1.Add(c, CBORObject.FromObject(0));
- CBORObject o2 = CBORObject.NewMap();
- o2.Add(c, CBORObject.FromObject(0));
- o2.Add(b, CBORObject.FromObject(0));
- TestCommon.CompareTestEqual(a, b);
+  b = CBORObject.DecodeFromBytes(bytes);
+  TestCommon.CompareTestEqual(a, b);
+  TestCommon.CompareTestLess(c, a);
+  TestCommon.CompareTestLess(c, b);
+  TestCommon.CompareTestLess(d, a);
+  TestCommon.CompareTestLess(d, b);
+  CBORObject o1 = CBORObject.NewMap();
+  o1.Add(b, CBORObject.FromObject(0));
+  o1.Add(c, CBORObject.FromObject(0));
+  CBORObject o2 = CBORObject.NewMap();
+  o2.Add(c, CBORObject.FromObject(0));
+  o2.Add(b, CBORObject.FromObject(0));
+  TestCommon.CompareTestEqual(a, b);
 }
 
 @Test(timeout = 2000)
@@ -12031,8 +12031,8 @@ byte[] bytes = new byte[] {
   (byte)0xf5,
   (byte)0xa0,
   (byte)0xf5,
-  (byte)0xa3, 0x00, (
-  byte)0xf6, 0x01, (byte)0xf6, 0x02, (byte)0xa0, (byte)0xf4, 0x40,
+  (byte)0xa3, 0x00,
+  (byte)0xf6, 0x01, (byte)0xf6, 0x02, (byte)0xa0, (byte)0xf4, 0x40,
   (byte)0xf7,
  };
 CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
