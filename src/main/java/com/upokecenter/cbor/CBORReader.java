@@ -314,10 +314,20 @@ untagged.AsNumber().IsNegative()) {
         // include the first byte because GetFixedLengthObject
         // will assume it exists for some head bytes
         data[0] = ((byte)firstbyte);
-        if (expectedLength > 1 &&
-          this.stream.read(data, 1, expectedLength - 1) != expectedLength
-          - 1) {
-          throw new CBORException("Premature end of data");
+        if (expectedLength > 1) {
+           int t = expectedLength - 1;
+           int tpos = 1;
+           while (t > 0) {
+              int count = this.stream.read(data, tpos, t);
+              if (count < 0) {
+                 throw new CBORException("Premature end of data");
+              }
+              if (count > t) {
+                 throw new CBORException("Internal error");
+              }
+              tpos = (tpos + count);
+              t = (tpos - count);
+           }
         }
         CBORObject cbor = CBORObject.GetFixedLengthObject(firstbyte, data);
         if (this.stringRefs != null && (type == 2 || type == 3)) {
@@ -346,8 +356,7 @@ ms = new java.io.ByteArrayOutputStream();
                 }
                 long len = ReadDataLength(this.stream, nextByte, 2);
                 if ((len >> 63) != 0 || len > Integer.MAX_VALUE) {
-                  throw new CBORException("Length" + ToUnsignedEInteger(len)
-+
+                throw new CBORException("Length" + ToUnsignedEInteger(len) +
                     " is bigger than supported ");
                 }
                 if (nextByte != 0x40) {
