@@ -2594,7 +2594,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
         }
       } catch (IOException ioex) {
-        Assert.fail(ioex.getMessage()+ " val=" + val);
+        Assert.fail(ioex.getMessage() + " val=" + val);
       }
     }
 
