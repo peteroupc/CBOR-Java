@@ -24,6 +24,30 @@ private MiniCBOR() {
       return Double.longBitsToDouble(value);
     }
 
+    private static void ReadHelper(
+      InputStream stream,
+      byte[] bytes,
+      int offset,
+      int count) throws java.io.IOException {
+      // Assert.CheckBuffer(bytes, offset, count);
+           int t = count;
+           var tpos = offset;
+           while (t > 0) {
+              int rcount = stream.read(bytes, tpos, t);
+              if (rcount <= 0) {
+                 throw new IOException("Premature end of data");
+              }
+              if (rcount > t) {
+                 throw new IOException("Internal error");
+              }
+              tpos = (tpos + rcount);
+              t = (t - rcount);
+           }
+           if (t != 0) {
+             throw new IOException("Internal error");
+           }
+    }
+
     private static float HalfPrecisionToSingle(int value) {
       int negvalue = (value >= 0x8000) ? (1 << 31) : 0;
       value &= 0x7fff;
@@ -134,9 +158,7 @@ private MiniCBOR() {
       }
       if (kind == 0x19) {
         byte[] bytes = new byte[2];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         int b = ((int)bytes[0]) & 0xff;
         b <<= 8;
         b |= ((int)bytes[1]) & 0xff;
@@ -144,9 +166,7 @@ private MiniCBOR() {
       }
       if (kind == 0x1a || kind == 0x3a) {
         byte[] bytes = new byte[4];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         long b = ((long)bytes[0]) & 0xff;
         b <<= 8;
         b |= ((long)bytes[1]) & 0xff;
@@ -161,9 +181,7 @@ private MiniCBOR() {
       }
       if (headByte == 0x1b || headByte == 0x3b) {
         byte[] bytes = new byte[8];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         long b;
         if (check32bit && (bytes[0] != 0 || bytes[1] != 0 || bytes[2] != 0 ||
             bytes[3] != 0)) {
@@ -199,9 +217,7 @@ private MiniCBOR() {
       if (headByte == 0xf9) {
         // Half-precision
         byte[] bytes = new byte[2];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         b = ((int)bytes[0]) & 0xff;
         b <<= 8;
         b |= ((int)bytes[1]) & 0xff;
@@ -209,9 +225,7 @@ private MiniCBOR() {
       }
       if (headByte == 0xfa) {
         byte[] bytes = new byte[4];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         b = ((int)bytes[0]) & 0xff;
         b <<= 8;
         b |= ((int)bytes[1]) & 0xff;
@@ -223,9 +237,7 @@ private MiniCBOR() {
       }
       if (headByte == 0xfb) {
         byte[] bytes = new byte[8];
-        if (stream.read(bytes, 0, bytes.length) != bytes.length) {
-          throw new IOException("Premature end of stream");
-        }
+        ReadHelper(stream, bytes, 0, bytes.length);
         long lb;
         lb = ((long)bytes[0]) & 0xff;
         lb <<= 8;
