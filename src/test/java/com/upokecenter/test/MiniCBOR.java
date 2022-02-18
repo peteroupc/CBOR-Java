@@ -31,7 +31,7 @@ private MiniCBOR() {
       int count) throws java.io.IOException {
       // Assert.CheckBuffer(bytes, offset, count);
            int t = count;
-           var tpos = offset;
+           int tpos = offset;
            while (t > 0) {
               int rcount = stream.read(bytes, tpos, t);
               if (rcount <= 0) {
