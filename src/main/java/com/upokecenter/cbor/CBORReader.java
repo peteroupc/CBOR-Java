@@ -241,10 +241,33 @@ untagged.AsNumber().IsNegative()) {
       byte[] bytes,
       int offset,
       int count) throws java.io.IOException {
-      // Assert.CheckBuffer(bytes, offset, count);
-           int t = count;
-           int tpos = offset;
-           while (t > 0) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      if (offset < 0) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
+"\u0020greater or equal to 0");
+      }
+      if (offset > bytes.length) {
+        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
+"\u0020or equal to " + bytes.length);
+      }
+      if (count < 0) {
+        throw new IllegalArgumentException(" (" + count + ") is not greater or" +
+"\u0020equal to 0");
+      }
+      if (count > bytes.length) {
+        throw new IllegalArgumentException(" (" + count + ") is not less or equal" +
+"\u0020to " + bytes.length);
+      }
+      if (bytes.length - offset < count) {
+        throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
+"\u0020offset (" + (bytes.length - offset) + ") is not greater or equal to " +
+count);
+      }
+      int t = count;
+      int tpos = offset;
+      while (t > 0) {
               int rcount = stream.read(bytes, tpos, t);
               if (rcount <= 0) {
                  throw new CBORException("Premature end of data");
