@@ -1053,7 +1053,7 @@ public void TestPodCompareTo() {
   cpod.setBb("Jj");
   cpod.setCc("Hh");
   cbor = CBORObject.FromObject(cpod);
-  cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb","Jj").Add("cc","Hh");
+  cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc", "Hh");
   TestCommon.CompareTestEqual(cbor, cbor2);
   cbor2 = CBORObject.FromObject(100);
   TestCommon.CompareTestGreater(cbor, cbor2);
