@@ -1045,6 +1045,22 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 
+@Test
+public void TestPodCompareTo() {
+  CPOD3 cpod = new CPOD3();
+  CBORObject cbor, cbor2;
+  cpod.setAa("Gg");
+  cpod.setBb("Jj");
+  cpod.setCc("Hh");
+  cbor = CBORObject.FromObject(cpod);
+  cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb","Jj").Add("cc","Hh");
+  TestCommon.CompareTestEqual(cbor, cbor2);
+  cbor2 = CBORObject.FromObject(100);
+  TestCommon.CompareTestGreater(cbor, cbor2);
+  cbor2 = CBORObject.FromSimpleValue(10);
+  TestCommon.CompareTestLess(cbor, cbor2);
+}
+
     @Test
     public void TestCPOD() {
       CPOD m = new CPOD();
