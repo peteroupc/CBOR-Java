@@ -8,8 +8,8 @@ import com.upokecenter.numbers.*;
    * this purpose, infinities and not-a-number or NaN values are considered
    * numbers. Currently, this class can store one of the following kinds of
    * numbers: 64-bit signed integers or binary floating-point numbers; or
-   * arbitrary-precision integers, decimal numbers, binary numbers, or
-   * rational numbers.
+   * arbitrary-precision integers, decimal numbers, binary numbers, or rational
+   * numbers.
    */
 
   public final class CBORNumber implements Comparable<CBORNumber> {
@@ -106,8 +106,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
-     * positive; 0 if zero. Not-a-number (NaN) values are positive or
-     * negative depending on what sign is stored in their underlying forms.
+     * positive; 0 if zero. Not-a-number (NaN) values are positive or negative
+     * depending on what sign is stored in their underlying forms.
      * @return This value's sign.
      */
     public final int signum() {
@@ -141,8 +141,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Creates a CBOR number object from a CBOR object representing a number (that
-     * is, one for which the IsNumber property in.NET or the isNumber()
-     * method in Java returns true).
+     * is, one for which the IsNumber property in.NET or the isNumber() method in
+     * Java returns true).
      * @param o The parameter is a CBOR object representing a number.
      * @return A CBOR number object, or null if the given CBOR object is null or
      * does not represent a number.
@@ -495,11 +495,10 @@ import com.upokecenter.numbers.*;
 
     /**
      * Returns whether this object's value, converted to an integer by discarding
-     * its fractional part, would be -(2^31) or greater, and less than
-     * 2^31.
+     * its fractional part, would be -(2^31) or greater, and less than 2^31.
      * @return {@code true} if this object's value, converted to an integer by
-     * discarding its fractional part, would be -(2^31) or greater, and
-     * less than 2^31; otherwise, {@code false}.
+     * discarding its fractional part, would be -(2^31) or greater, and less than
+     * 2^31; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt32() {
       return
@@ -508,11 +507,10 @@ import com.upokecenter.numbers.*;
 
     /**
      * Returns whether this object's value, converted to an integer by discarding
-     * its fractional part, would be -(2^63) or greater, and less than
-     * 2^63.
+     * its fractional part, would be -(2^63) or greater, and less than 2^63.
      * @return {@code true} if this object's value, converted to an integer by
-     * discarding its fractional part, would be -(2^63) or greater, and
-     * less than 2^63; otherwise, {@code false}.
+     * discarding its fractional part, would be -(2^63) or greater, and less than
+     * 2^63; otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInInt64() {
       switch (this.kind) {
@@ -530,8 +528,8 @@ import com.upokecenter.numbers.*;
      * Returns whether this object's value, converted to an integer by discarding
      * its fractional part, would be 0 or greater, and less than 2^64.
      * @return {@code true} if this object's value, converted to an integer by
-     * discarding its fractional part, would be 0 or greater, and less than
-     * 2^64; otherwise, {@code false}.
+     * discarding its fractional part, would be 0 or greater, and less than 2^64;
+     * otherwise, {@code false}.
      */
     public boolean CanTruncatedIntFitInUInt64() {
           return this.GetNumberInterface()
@@ -540,13 +538,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Returns whether this object's value can be converted to a 32-bit floating
-     * point number without its value being rounded to another numerical
-     * value.
+     * point number without its value being rounded to another numerical value.
      * @return {@code true} if this object's value can be converted to a 32-bit
-     * floating point number without its value being rounded to another
-     * numerical value, or if this is a not-a-number value, even if the
-     * value's diagnostic information can' t fit in a 32-bit floating point
-     * number; otherwise, {@code false}.
+     * floating point number without its value being rounded to another numerical
+     * value, or if this is a not-a-number value, even if the value's diagnostic
+     * information can' t fit in a 32-bit floating point number; otherwise, {@code
+     * false}.
      */
     public boolean CanFitInSingle() {
       return this.GetNumberInterface().CanFitInSingle(this.GetValue());
@@ -554,13 +551,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Returns whether this object's value can be converted to a 64-bit floating
-     * point number without its value being rounded to another numerical
-     * value.
+     * point number without its value being rounded to another numerical value.
      * @return {@code true} if this object's value can be converted to a 64-bit
-     * floating point number without its value being rounded to another
-     * numerical value, or if this is a not-a-number value, even if the
-     * value's diagnostic information can't fit in a 64-bit floating point
-     * number; otherwise, {@code false}.
+     * floating point number without its value being rounded to another numerical
+     * value, or if this is a not-a-number value, even if the value's diagnostic
+     * information can't fit in a 64-bit floating point number; otherwise, {@code
+     * false}.
      */
     public boolean CanFitInDouble() {
       return this.GetNumberInterface().CanFitInDouble(this.GetValue());
@@ -583,8 +579,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Gets a value indicating whether this object represents an integer number,
-     * that is, a number without a fractional part. Infinity and
-     * not-a-number are not considered integers.
+     * that is, a number without a fractional part. Infinity and not-a-number are
+     * not considered integers.
      * @return {@code true} if this object represents an integer number, that is, a
      * number without a fractional part; otherwise, {@code false}.
      */
@@ -650,12 +646,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a byte (from 0 to 255) if it can fit in a
-     * byte (from 0 to 255) after converting it to an integer by discarding
-     * its fractional part.
+     * byte (from 0 to 255) after converting it to an integer by discarding its
+     * fractional part.
      * @return This number's value, truncated to a byte (from 0 to 255).
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * number, once converted to an integer by discarding its fractional
-     * part, is less than 0 or greater than 255.
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than 0 or greater than 255.
      */
     public byte ToByteChecked() {
       if (!this.IsFinite()) {
@@ -666,8 +662,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to an integer by discarding its fractional
-     * part, and returns the least-significant bits of its two's-complement
-     * form as a byte (from 0 to 255).
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a byte (from 0 to 255).
      * @return This number, converted to a byte (from 0 to 255). Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -677,8 +673,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a byte (from 0 to 255) if it can fit in a
-     * byte (from 0 to 255) without rounding to a different numerical
-     * value.
+     * byte (from 0 to 255) without rounding to a different numerical value.
      * @return This number's value as a byte (from 0 to 255).
      * @throws ArithmeticException This value is infinity or not-a-number, is not
      * an exact integer, or is less than 0 or greater than 255.
@@ -708,12 +703,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 16-bit signed integer if it can fit in a
-     * 16-bit signed integer after converting it to an integer by
-     * discarding its fractional part.
+     * 16-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
      * @return This number's value, truncated to a 16-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * number, once converted to an integer by discarding its fractional
-     * part, is less than -32768 or greater than 32767.
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -32768 or greater than 32767.
      */
     public short ToInt16Checked() {
       if (!this.IsFinite()) {
@@ -724,8 +719,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to an integer by discarding its fractional
-     * part, and returns the least-significant bits of its two's-complement
-     * form as a 16-bit signed integer.
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 16-bit signed integer.
      * @return This number, converted to a 16-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -735,8 +730,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 16-bit signed integer if it can fit in a
-     * 16-bit signed integer without rounding to a different numerical
-     * value.
+     * 16-bit signed integer without rounding to a different numerical value.
      * @return This number's value as a 16-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, is not
      * an exact integer, or is less than -32768 or greater than 32767.
@@ -761,12 +755,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 32-bit signed integer if it can fit in a
-     * 32-bit signed integer after converting it to an integer by
-     * discarding its fractional part.
+     * 32-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
      * @return This number's value, truncated to a 32-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * number, once converted to an integer by discarding its fractional
-     * part, is less than -2147483648 or greater than 2147483647.
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -2147483648 or greater than 2147483647.
      */
     public int ToInt32Checked() {
       if (!this.IsFinite()) {
@@ -777,8 +771,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to an integer by discarding its fractional
-     * part, and returns the least-significant bits of its two's-complement
-     * form as a 32-bit signed integer.
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 32-bit signed integer.
      * @return This number, converted to a 32-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -788,12 +782,10 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 32-bit signed integer if it can fit in a
-     * 32-bit signed integer without rounding to a different numerical
-     * value.
+     * 32-bit signed integer without rounding to a different numerical value.
      * @return This number's value as a 32-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, is not
-     * an exact integer, or is less than -2147483648 or greater than
-     * 2147483647.
+     * an exact integer, or is less than -2147483648 or greater than 2147483647.
      */
     public int ToInt32IfExact() {
       if (!this.IsFinite()) {
@@ -805,13 +797,12 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 64-bit signed integer if it can fit in a
-     * 64-bit signed integer after converting it to an integer by
-     * discarding its fractional part.
+     * 64-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
      * @return This number's value, truncated to a 64-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, or the
-     * number, once converted to an integer by discarding its fractional
-     * part, is less than -9223372036854775808 or greater than
-     * 9223372036854775807.
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -9223372036854775808 or greater than 9223372036854775807.
      */
     public long ToInt64Checked() {
       if (!this.IsFinite()) {
@@ -822,8 +813,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to an integer by discarding its fractional
-     * part, and returns the least-significant bits of its two's-complement
-     * form as a 64-bit signed integer.
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 64-bit signed integer.
      * @return This number, converted to a 64-bit signed integer. Returns 0 if this
      * value is infinity or not-a-number.
      */
@@ -833,12 +824,11 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts this number's value to a 64-bit signed integer if it can fit in a
-     * 64-bit signed integer without rounding to a different numerical
-     * value.
+     * 64-bit signed integer without rounding to a different numerical value.
      * @return This number's value as a 64-bit signed integer.
      * @throws ArithmeticException This value is infinity or not-a-number, is not
-     * an exact integer, or is less than -9223372036854775808 or greater
-     * than 9223372036854775807.
+     * an exact integer, or is less than -9223372036854775808 or greater than
+     * 9223372036854775807.
      */
     public long ToInt64IfExact() {
       if (!this.IsFinite()) {
@@ -1225,8 +1215,8 @@ NumberKind.ERational) {
      * @return The sum of this number and another number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory
-     * to store).
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
      */
     public CBORNumber Add(CBORNumber b) {
       if (b == null) {
@@ -1298,8 +1288,8 @@ NumberKind.ERational) {
      * @return A CBOR number that expresses this number minus the given number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory
-     * to store).
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
      */
     public CBORNumber Subtract(CBORNumber b) {
       if (b == null) {
@@ -1365,8 +1355,8 @@ NumberKind.ERational) {
      * @return A number expressing the product of this number and the given number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory
-     * to store).
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
      */
     public CBORNumber Multiply(CBORNumber b) {
       if (b == null) {
@@ -1429,8 +1419,8 @@ NumberKind.ERational) {
      * @return The quotient of this number and another one.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory
-     * to store).
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
      */
     public CBORNumber Divide(CBORNumber b) {
       if (b == null) {
@@ -1538,8 +1528,8 @@ NumberKind.ERational) {
      * @return The remainder when this number is divided by the other number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory
-     * to store).
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
      */
     public CBORNumber Remainder(CBORNumber b) {
       if (b == null) {
@@ -1583,13 +1573,13 @@ NumberKind.ERational) {
 
     /**
      * Compares this CBOR number with a 32-bit signed integer. In this
-     * implementation, the two numbers' mathematical values are compared.
-     * Here, NaN (not-a-number) is considered greater than any number.
+     * implementation, the two numbers' mathematical values are compared. Here, NaN
+     * (not-a-number) is considered greater than any number.
      * @param other A value to compare with. Can be null.
      * @return A negative number, if this value is less than the other object; or
-     * 0, if both values are equal; or a positive number, if this value is
-     * less than the other object or if the other object is null. This
-     * implementation returns a positive number if.
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
      */
     public int compareTo(int other) {
       return this.compareTo(CBORObject.FromObject(other).AsNumber());
@@ -1597,13 +1587,13 @@ NumberKind.ERational) {
 
     /**
      * Compares this CBOR number with a 64-bit signed integer. In this
-     * implementation, the two numbers' mathematical values are compared.
-     * Here, NaN (not-a-number) is considered greater than any number.
+     * implementation, the two numbers' mathematical values are compared. Here, NaN
+     * (not-a-number) is considered greater than any number.
      * @param other A value to compare with. Can be null.
      * @return A negative number, if this value is less than the other object; or
-     * 0, if both values are equal; or a positive number, if this value is
-     * less than the other object or if the other object is null. This
-     * implementation returns a positive number if.
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
      */
     public int compareTo(long other) {
       return this.compareTo(CBORObject.FromObject(other).AsNumber());
@@ -1611,13 +1601,13 @@ NumberKind.ERational) {
 
     /**
      * Compares this CBOR number with another. In this implementation, the two
-     * numbers' mathematical values are compared. Here, NaN (not-a-number)
-     * is considered greater than any number.
+     * numbers' mathematical values are compared. Here, NaN (not-a-number) is
+     * considered greater than any number.
      * @param other A value to compare with. Can be null.
      * @return A negative number, if this value is less than the other object; or
-     * 0, if both values are equal; or a positive number, if this value is
-     * less than the other object or if the other object is null. This
-     * implementation returns a positive number if.
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
      */
     public int compareTo(CBORNumber other) {
       if (other == null) {

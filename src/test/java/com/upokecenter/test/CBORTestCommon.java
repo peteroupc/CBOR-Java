@@ -253,86 +253,6 @@ depth) {
       }
     }
 
-@SuppressWarnings("deprecation")
-    public static void TestNumber(CBORObject o) {
-      if (o.getType() != CBORType.Number) {
-        return;
-      }
-      if (o.IsPositiveInfinity() || o.IsNegativeInfinity() ||
-        o.IsNaN()) {
-        try {
-          o.AsByte();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex);
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt16();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex);
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt32();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex);
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsInt64();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex);
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsSingle();
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsDouble();
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-        try {
-          o.AsEInteger();
-          Assert.fail("Should have failed");
-        } catch (ArithmeticException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail("Object: " + o + ", " + ex);
-          throw new IllegalStateException("", ex);
-        }
-        return;
-      }
-      try {
-        o.AsSingle();
-      } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex);
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        o.AsDouble();
-      } catch (Exception ex) {
-        Assert.fail("Object: " + o + ", " + ex);
-        throw new IllegalStateException("", ex);
-      }
-    }
-
     public static byte[] CheckEncodeToBytes(CBORObject o) {
       byte[] bytes = o.EncodeToBytes();
       if (bytes.length != o.CalcEncodedSize()) {
@@ -346,7 +266,6 @@ depth) {
     public static void AssertRoundTrip(CBORObject o) {
       CBORObject o2 = FromBytesTestAB(CheckEncodeToBytes(o));
       TestCommon.CompareTestEqual(o, o2);
-      TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
@@ -364,7 +283,6 @@ depth) {
           "\no2string = " + o2.toString();
         Assert.assertEquals(msg, s, o2.ToJSONString());
       }
-      TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 

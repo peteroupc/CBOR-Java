@@ -825,6 +825,10 @@ if(objThis.getType()==CBORType.TextString){
  throw new CBORException("Invalid enum: "+objThis.toString());
 }
       }
+ParameterizedType pt=(t instanceof ParameterizedType) ?
+   ((ParameterizedType)t) : null;
+Type rawType=(pt==null) ? t : pt.getRawType();
+Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
       if (objThis.getType() == CBORType.ByteString) {
         if (t.equals(byte[].class)) {
           byte[] bytes = objThis.GetByteString();
@@ -833,10 +837,7 @@ if(objThis.getType()==CBORType.TextString){
           return byteret;
         }
       }
-ParameterizedType pt=(t instanceof ParameterizedType) ?
-   ((ParameterizedType)t) : null;
-Type rawType=(pt==null) ? t : pt.getRawType();
-Type[] typeArguments=(pt==null) ? null : pt.getActualTypeArguments();
+// TODO: Support more output types for bytestrings
 if(objThis.getType()==CBORType.Array){
  Class<?> rawClass=(rawType instanceof Class<?>) ?
     ((Class<?>)rawType) : null;
@@ -1027,6 +1028,16 @@ if(name==null ){
         return ((ICBORConverter)convinfo.getConverter()).ToCBORObject(obj);
       }
       return null;
+    }
+
+    public static <TKey, TValue> boolean
+        TryGetValue(Map<TKey, TValue> map, TKey key,
+        TValue[] outvalue) {
+        if (map.containsKey(key)) {
+          outvalue[0]=map[key];
+          return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")

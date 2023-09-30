@@ -4,8 +4,8 @@ import java.util.*;
 
   /**
    * Holds converters to customize the serialization and deserialization behavior
-   * of <code>CBORObject.FromObject</code> and <code>CBORObject#ToObject</code>, as
-   * well as type filters for <code>ToObject</code>.
+   * of {@code CBORObject.FromObject} and {@code CBORObject#ToObject}, as well as
+   * type filters for {@code ToObject}.
    */
   public final class CBORTypeMapper {
     private final List<String> typePrefixes;
@@ -25,12 +25,11 @@ import java.util.*;
 
     /**
      * Registers an object that converts objects of a given type to CBOR objects
-     * (called a CBOR converter). If the CBOR converter converts to and
-     * from CBOR objects, it should implement the ICBORToFromConverter
-     * interface and provide ToCBORObject and FromCBORObject methods. If
-     * the CBOR converter only supports converting to (not from) CBOR
-     * objects, it should implement the ICBORConverter interface and
-     * provide a ToCBORObject method.
+     * (called a CBOR converter). If the CBOR converter converts to and from CBOR
+     * objects, it should implement the ICBORToFromConverter interface and provide
+     * ToCBORObject and FromCBORObject methods. If the CBOR converter only supports
+     * converting to (not from) CBOR objects, it should implement the
+     * ICBORConverter interface and provide a ToCBORObject method.
      * @param type A Type object specifying the type that the converter converts to
      * CBOR objects.
      * @param converter The parameter {@code converter} is an ICBORConverter
@@ -40,7 +39,7 @@ import java.util.*;
      * @throws NullPointerException The parameter {@code type} or {@code
      * converter} is null.
      * @throws IllegalArgumentException Converter doesn't contain a proper ToCBORObject
-     *  method".
+     * method".
      */
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
@@ -72,10 +71,7 @@ import java.util.*;
  <T> T ConvertBackWithConverter(
       CBORObject cbor,
       java.lang.reflect.Type type) {
-      ConverterInfo convinfo = null;
-      if (this.converters.containsKey(type)) {
-        convinfo = this.converters.get(type);
-      } else {
+      ConverterInfo convinfo = null; if ((convinfo = this.converters.getOrDefault(type, null)) == null) {
         return null;
       }
       if (convinfo == null) {
@@ -87,10 +83,7 @@ import java.util.*;
 
     CBORObject ConvertWithConverter(Object obj) {
       Object type = obj.getClass();
-      ConverterInfo convinfo = null;
-      if (this.converters.containsKey(type)) {
-        convinfo = this.converters.get(type);
-      } else {
+      ConverterInfo convinfo = null; if ((convinfo = this.converters.getOrDefault(type, null)) == null) {
         return null;
       }
       return (convinfo == null) ? null :
@@ -101,8 +94,7 @@ import java.util.*;
      * Returns whether the given Java or.NET type name fits the filters given in
      * this mapper.
      * @param typeName The fully qualified name of a Java or.NET class (e.g.,
-     * {@code java.math.BigInteger} or {@code
-     * System.Globalization.CultureInfo}).
+     * {@code java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
      * @return Either {@code true} if the given Java or.NET type name fits the
      * filters given in this mapper, or {@code false} otherwise.
      */
@@ -126,8 +118,8 @@ import java.util.*;
 
     /**
      * Adds a prefix of a Java or.NET type for use in type matching. A type matches
-     * a prefix if its fully qualified name is or begins with that prefix,
-     * using codepoint-by-codepoint (case-sensitive) matching.
+     * a prefix if its fully qualified name is or begins with that prefix, using
+     * codepoint-by-codepoint (case-sensitive) matching.
      * @param prefix The prefix of a Java or.NET type (e.g., `java.math.` or
      * `System.Globalization`).
      * @return This object.

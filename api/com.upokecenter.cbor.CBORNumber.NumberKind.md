@@ -1,52 +1,43 @@
 # com.upokecenter.cbor.CBORNumber.NumberKind
 
+    public static enum CBORNumber.NumberKind extends Enum<CBORNumber.NumberKind>
+
+Specifies the underlying form of this CBOR number object.
+
 ## Nested Classes
 
 ## Enum Constants
 
-* `Double`<br>
+* `Double `<br>
  A 64-bit binary floating-point number.
-* `EDecimal`<br>
+
+* `EDecimal `<br>
  An arbitrary-precision decimal number.
-* `EFloat`<br>
+
+* `EFloat `<br>
  An arbitrary-precision binary number.
-* `EInteger`<br>
+
+* `EInteger `<br>
  An arbitrary-precision integer.
-* `ERational`<br>
+
+* `ERational `<br>
  An arbitrary-precision rational number.
-* `Integer`<br>
+
+* `Integer `<br>
  A 64-bit signed integer.
 
 ## Methods
 
-* `static CBORNumber.NumberKind valueOf​(java.lang.String name)`<br>
- Returns the enum constant of this type with the specified name.
+* `static CBORNumber.NumberKind valueOf(String name)`<br>
+ Returns the enum constant of this class with the specified name.
+
 * `static CBORNumber.NumberKind[] values()`<br>
- Returns an array containing the constants of this enum type, in
+ Returns an array containing the constants of this enum class, in
 the order they are declared.
 
-## Enum Constant Details
-
-### <a id='Integer'>Integer</a>
-
-A 64-bit signed integer.
-### <a id='Double'>Double</a>
-
-A 64-bit binary floating-point number.
-### <a id='EInteger'>EInteger</a>
-
-An arbitrary-precision integer.
-### <a id='EDecimal'>EDecimal</a>
-
-An arbitrary-precision decimal number.
-### <a id='EFloat'>EFloat</a>
-
-An arbitrary-precision binary number.
-### <a id='ERational'>ERational</a>
-
-An arbitrary-precision rational number.
 ## Method Details
 
-### <a id='values()'>values</a>
-
-### <a id='valueOf(java.lang.String)'>valueOf</a>
+### values
+    public static CBORNumber.NumberKind[] values()
+### valueOf
+    public static CBORNumber.NumberKind valueOf(String name)

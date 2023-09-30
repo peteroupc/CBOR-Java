@@ -270,47 +270,6 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @SuppressWarnings("deprecation")
-    @Test
-    public void TestObsoleteAbs() {
-      try {
-        CBORObject.True.Abs();
-        Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.False.Abs();
-        Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.NewArray().Abs();
-        Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        CBORObject.NewMap().Abs();
-        Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-    }
-
     @Test
     public void TestIncompleteIndefLengthArray() {
       byte[] bytes;

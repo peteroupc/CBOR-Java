@@ -12,38 +12,37 @@ import com.upokecenter.numbers.*;
 
   /**
    * <p>A class for converting date-time objects to and from tagged CBOR
-   *  objects.</p> <p>In this class's documentation, the "number of seconds
-   *  since the start of 1970" is based on the POSIX definition of "seconds
-   *  since the Epoch", a definition that does not count leap seconds. This
-   * number of seconds assumes the use of a proleptic Gregorian calendar,
-   * in which the rules regarding the number of days in each month and
-   * which years are leap years are the same for all years as they were in
-   * 1970 (including without regard to time zone differences or transitions
-   * from other calendars to the Gregorian).</p>
+   * objects.</p> <p>In this class's documentation, the "number of seconds since
+   * the start of 1970" is based on the POSIX definition of "seconds since the
+   * Epoch", a definition that does not count leap seconds. This number of
+   * seconds assumes the use of a proleptic Gregorian calendar, in which the
+   * rules regarding the number of days in each month and which years are leap
+   * years are the same for all years as they were in 1970 (including without
+   * regard to time zone differences or transitions from other calendars to the
+   * Gregorian).</p>
    */
   public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
     private final ConversionType convType;
 
     /**
      * A converter object where FromCBORObject accepts CBOR objects with tag 0
-     * (date/time strings) and tag 1 (number of seconds since the start of
-     * 1970), and ToCBORObject converts date/time objects (java.util.Date in
-     * DotNet, and Date in Java) to CBOR objects of tag 0.
+     * (date/time strings) and tag 1 (number of seconds since the start of 1970),
+     * and ToCBORObject converts date/time objects (java.util.Date in DotNet, and Date in
+     * Java) to CBOR objects of tag 0.
      */
     public static final CBORDateConverter TaggedString =
       new CBORDateConverter(ConversionType.TaggedString);
 
     /**
      * A converter object where FromCBORObject accepts CBOR objects with tag 0
-     * (date/time strings) and tag 1 (number of seconds since the start of
-     * 1970), and ToCBORObject converts date/time objects (java.util.Date in
-     * DotNet, and Date in Java) to CBOR objects of tag 1. The ToCBORObject
-     * conversion is lossless only if the number of seconds since the start
-     * of 1970 can be represented exactly as an integer in the interval
-     * [-(2^64), 2^64 - 1] or as a 64-bit floating-point number in the IEEE
-     * 754r binary64 format; the conversion is lossy otherwise. The
-     * ToCBORObject conversion will throw an exception if the conversion to
-     * binary64 results in positive infinity, negative infinity, or
+     * (date/time strings) and tag 1 (number of seconds since the start of 1970),
+     * and ToCBORObject converts date/time objects (java.util.Date in DotNet, and Date in
+     * Java) to CBOR objects of tag 1. The ToCBORObject conversion is lossless only
+     * if the number of seconds since the start of 1970 can be represented exactly
+     * as an integer in the interval [-(2^64), 2^64 - 1] or as a 64-bit
+     * floating-point number in the IEEE 754r binary64 format; the conversion is
+     * lossy otherwise. The ToCBORObject conversion will throw an exception if the
+     * conversion to binary64 results in positive infinity, negative infinity, or
      * not-a-number.
      */
     public static final CBORDateConverter TaggedNumber =
@@ -51,16 +50,15 @@ import com.upokecenter.numbers.*;
 
     /**
      * A converter object where FromCBORObject accepts untagged CBOR integer or
-     * CBOR floating-point objects that give the number of seconds since
-     * the start of 1970, and where ToCBORObject converts date/time objects
-     * (java.util.Date in DotNet, and Date in Java) to such untagged CBOR
-     * objects. The ToCBORObject conversion is lossless only if the number
-     * of seconds since the start of 1970 can be represented exactly as an
-     * integer in the interval [-(2^64), 2^64 - 1] or as a 64-bit
-     * floating-point number in the IEEE 754r binary64 format; the
-     * conversion is lossy otherwise. The ToCBORObject conversion will
-     * throw an exception if the conversion to binary64 results in positive
-     * infinity, negative infinity, or not-a-number.
+     * CBOR floating-point objects that give the number of seconds since the start
+     * of 1970, and where ToCBORObject converts date/time objects (java.util.Date in
+     * DotNet, and Date in Java) to such untagged CBOR objects. The ToCBORObject
+     * conversion is lossless only if the number of seconds since the start of 1970
+     * can be represented exactly as an integer in the interval [-(2^64), 2^64 - 1]
+     * or as a 64-bit floating-point number in the IEEE 754r binary64 format; the
+     * conversion is lossy otherwise. The ToCBORObject conversion will throw an
+     * exception if the conversion to binary64 results in positive infinity,
+     * negative infinity, or not-a-number.
      */
     public static final CBORDateConverter UntaggedNumber =
       new CBORDateConverter(ConversionType.UntaggedNumber);
@@ -71,37 +69,34 @@ import com.upokecenter.numbers.*;
     public enum ConversionType {
       /**
        * FromCBORObject accepts CBOR objects with tag 0 (date/time strings) and tag 1
-       * (number of seconds since the start of 1970), and ToCBORObject
-       * converts date/time objects to CBOR objects of tag 0.
+       * (number of seconds since the start of 1970), and ToCBORObject converts
+       * date/time objects to CBOR objects of tag 0.
        */
       TaggedString,
 
       /**
        * FromCBORObject accepts objects with tag 0 (date/time strings) and tag 1
-       * (number of seconds since the start of 1970), and ToCBORObject
-       * converts date/time objects to CBOR objects of tag 1. The
-       * ToCBORObject conversion is lossless only if the number of seconds
-       * since the start of 1970 can be represented exactly as an integer
-       * in the interval [-(2^64), 2^64 - 1] or as a 64-bit floating-point
-       * number in the IEEE 754r binary64 format; the conversion is lossy
-       * otherwise. The ToCBORObject conversion will throw an exception if
-       * the conversion to binary64 results in positive infinity, negative
-       * infinity, or not-a-number.
+       * (number of seconds since the start of 1970), and ToCBORObject converts
+       * date/time objects to CBOR objects of tag 1. The ToCBORObject conversion is
+       * lossless only if the number of seconds since the start of 1970 can be
+       * represented exactly as an integer in the interval [-(2^64), 2^64 - 1] or as
+       * a 64-bit floating-point number in the IEEE 754r binary64 format; the
+       * conversion is lossy otherwise. The ToCBORObject conversion will throw an
+       * exception if the conversion to binary64 results in positive infinity,
+       * negative infinity, or not-a-number.
        */
       TaggedNumber,
 
       /**
        * FromCBORObject accepts untagged CBOR integer or CBOR floating-point objects
-       * that give the number of seconds since the start of 1970, and
-       * ToCBORObject converts date/time objects (java.util.Date in DotNet, and
-       * Date in Java) to such untagged CBOR objects. The ToCBORObject
-       * conversion is lossless only if the number of seconds since the
-       * start of 1970 can be represented exactly as an integer in the
-       * interval [-(2^64), 2^64 - 1] or as a 64-bit floating-point number
-       * in the IEEE 754r binary64 format; the conversion is lossy
-       * otherwise. The ToCBORObject conversion will throw an exception if
-       * the conversion to binary64 results in positive infinity, negative
-       * infinity, or not-a-number.
+       * that give the number of seconds since the start of 1970, and ToCBORObject
+       * converts date/time objects (java.util.Date in DotNet, and Date in Java) to such
+       * untagged CBOR objects. The ToCBORObject conversion is lossless only if the
+       * number of seconds since the start of 1970 can be represented exactly as an
+       * integer in the interval [-(2^64), 2^64 - 1] or as a 64-bit floating-point
+       * number in the IEEE 754r binary64 format; the conversion is lossy otherwise.
+       * The ToCBORObject conversion will throw an exception if the conversion to
+       * binary64 results in positive infinity, negative infinity, or not-a-number.
        */
       UntaggedNumber,
     }
@@ -174,23 +169,21 @@ import com.upokecenter.numbers.*;
      * @param obj A CBOR object that specifies a date/time according to the
      * conversion type used to create this date converter.
      * @param year An array whose first element will store the year. The array's
-     * length must be 1 or greater. If this function fails, the first
-     * element is set to null.
-     * @param lesserFields An array that will store the fields (other than the
-     * year) of the date and time. The array's length must be 7 or greater.
-     * If this function fails, the first seven elements are set to 0. If
-     * this method is successful, the first seven elements of the array
-     * (starting at 0) will be as follows: <ul> <li>0 - Month of the year,
-     * from 1 (January) through 12 (December).</li> <li>1 - Day of the
-     * month, from 1 through 31.</li> <li>2 - Hour of the day, from 0
-     * through 23.</li> <li>3 - Minute of the hour, from 0 through 59.</li>
-     * <li>4 - Second of the minute, from 0 through 59.</li> <li>5 -
-     * Fractional seconds, expressed in nanoseconds. This value cannot be
-     * less than 0 and must be less than 1000*1000*1000.</li> <li>6 -
-     * Number of minutes to subtract from this date and time to get global
-     * time. This number can be positive or negative, but cannot be less
-     * than -1439 or greater than 1439. For tags 0 and 1, this value is
-     * always 0.</li></ul>.
+     * length must be 1 or greater. If this function fails, the first element is
+     * set to null.
+     * @param lesserFields <p>An array that will store the fields (other than the
+     * year) of the date and time. The array's length must be 7 or greater. If this
+     * function fails, the first seven elements are set to 0. If this method is
+     * successful, the first seven elements of the array (starting at 0) will be as
+     * follows: </p><ul> <li>0 - Month of the year, from 1 (January) through 12
+     * (December).</li><li>1 - Day of the month, from 1 through 31.</li><li>2 -
+     * Hour of the day, from 0 through 23.</li><li>3 - Minute of the hour, from 0
+     * through 59.</li><li>4 - Second of the minute, from 0 through 59.</li><li>5 -
+     * Fractional seconds, expressed in nanoseconds. This value cannot be less than
+     * 0 and must be less than 1000*1000*1000.</li><li>6 - Number of minutes to
+     * subtract from this date and time to get global time. This number can be
+     * positive or negative, but cannot be less than -1439 or greater than 1439.
+     * For tags 0 and 1, this value is always 0.</li></ul>.
      * @return Either {@code true} if the method is successful, or {@code false}
      * otherwise.
      * @throws NullPointerException The parameter {@code year} or {@code
@@ -327,8 +320,8 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts a date/time in the form of a year, month, and day to a CBOR object.
-     * The hour, minute, and second are treated as 00:00:00 by this method,
-     * and the time offset is treated as 0 by this method.
+     * The hour, minute, and second are treated as 00:00:00 by this method, and the
+     * time offset is treated as 0 by this method.
      * @param smallYear The year.
      * @param month Month of the year, from 1 (January) through 12 (December).
      * @param day Day of the month, from 1 through 31.
@@ -344,8 +337,7 @@ import com.upokecenter.numbers.*;
 
     /**
      * Converts a date/time in the form of a year, month, day, hour, minute, and
-     * second to a CBOR object. The time offset is treated as 0 by this
-     * method.
+     * second to a CBOR object. The time offset is treated as 0 by this method.
      * @param smallYear The year.
      * @param month Month of the year, from 1 (January) through 12 (December).
      * @param day Day of the month, from 1 through 31.
@@ -373,7 +365,7 @@ import com.upokecenter.numbers.*;
      * @param year The year.
      * @param lesserFields An array that will store the fields (other than the
      * year) of the date and time. See the TryGetDateTimeFields method for
-     *  information on the "lesserFields" parameter.
+     * information on the "lesserFields" parameter.
      * @return A CBOR object encoding the given date fields according to the
      * conversion type used to create this date converter.
      * @throws NullPointerException The parameter {@code lesserFields} is null.
@@ -391,7 +383,7 @@ import com.upokecenter.numbers.*;
      * @param bigYear The year.
      * @param lesserFields An array that will store the fields (other than the
      * year) of the date and time. See the TryGetDateTimeFields method for
-     *  information on the "lesserFields" parameter.
+     * information on the "lesserFields" parameter.
      * @return A CBOR object encoding the given date fields according to the
      * conversion type used to create this date converter.
      * @throws NullPointerException The parameter {@code bigYear} or {@code

@@ -5,7 +5,7 @@ import com.upokecenter.cbor.*;
 
   /**
    * Helper class to write CBOR objects using a "fluent" interface. Inspired by
-   *  suggestions by GitHub user "sbernard31".
+   * suggestions by GitHub user "sbernard31".
    */
   public final class CBORWriterHelper {
     private OutputStream outputStream;

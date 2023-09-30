@@ -19,8 +19,8 @@ package com.upokecenter.cbor;
      * @return Either a Unicode code point (from 0-0xd7ff or from 0xe000 to
      * 0x10ffff), or the value -1 indicating the end of the source.
      * @throws IllegalArgumentException Either "index" or "length" is less than 0 or
-     *  greater than "chars"'s length, or "chars"'s length minus "index" is
-     *  less than "length".
+     * greater than "chars"'s length, or "chars"'s length minus "index" is less
+     * than "length".
      * @throws NullPointerException The parameter {@code chars} is null.
      */
     int Read(int[] chars, int index, int length);

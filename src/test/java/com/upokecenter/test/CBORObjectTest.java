@@ -440,7 +440,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestAsByte() {
       try {
-        CBORObject.NewArray().AsByte();
+        CBORObject.NewArray().ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -449,7 +449,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsByte();
+        CBORObject.NewMap().ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -458,7 +458,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsByte();
+        CBORObject.True.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -467,7 +467,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsByte();
+        CBORObject.False.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -476,7 +476,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Undefined.AsByte();
+        CBORObject.Undefined.ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -485,7 +485,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip("").AsByte();
+        ToObjectTest.TestToFromObjectRoundTrip(
+          "").ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -500,12 +501,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
         if (numberinfo.get("byte").AsBoolean()) {
+          byte bb = (byte)cbornumber.ToObject(byte.class);
+          int ibb = ((int)bb) & 0xff;
           Assert.assertEquals(
             TestCommon.StringToInt(numberinfo.get("integer").AsString()),
-            ((int)cbornumber.AsByte()) & 0xff);
+            ibb);
         } else {
           try {
-            cbornumber.AsByte();
+            cbornumber.ToObject(byte.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -516,13 +519,16 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
       for (int i = 0; i < 255; ++i) {
-        Assert.assertEquals(
-          (byte)i,
-          ToObjectTest.TestToFromObjectRoundTrip(i).AsByte());
+        {
+          byte varbyteTemp = (byte)i;
+          byte varbyteTemp2 = (byte)ToObjectTest.TestToFromObjectRoundTrip(
+              i).ToObject(byte.class);
+          Assert.assertEquals(varbyteTemp, varbyteTemp2);
+}
       }
       for (int i = -200; i < 0; ++i) {
         try {
-          ToObjectTest.TestToFromObjectRoundTrip(i).AsByte();
+          ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
@@ -532,7 +538,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       for (int i = 256; i < 512; ++i) {
         try {
-          ToObjectTest.TestToFromObjectRoundTrip(i).AsByte();
+          ToObjectTest.TestToFromObjectRoundTrip(i).ToObject(byte.class);
         } catch (ArithmeticException ex) {
           // NOTE: Intentionally empty
         } catch (Exception ex) {
@@ -616,7 +622,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestAsInt16() {
       try {
-        CBORObject.NewArray().AsInt16();
+        CBORObject.NewArray().ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -625,7 +631,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsInt16();
+        CBORObject.NewMap().ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -634,7 +640,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsInt16();
+        CBORObject.True.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -643,7 +649,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsInt16();
+        CBORObject.False.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -652,7 +658,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Undefined.AsInt16();
+        CBORObject.Undefined.ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -661,7 +667,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip("").AsInt16();
+        ToObjectTest.TestToFromObjectRoundTrip(
+          "").ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -678,10 +685,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (numberinfo.get("int16").AsBoolean()) {
           Assert.assertEquals(
             TestCommon.StringToInt(numberinfo.get("integer").AsString()),
-            cbornumber.AsInt16());
+            cbornumber.ToObject(short.class));
         } else {
           try {
-            cbornumber.AsInt16();
+            cbornumber.ToObject(short.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -814,7 +821,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestAsInt64() {
       try {
-        CBORObject.NewArray().AsInt64();
+        CBORObject.NewArray().ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -823,7 +830,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.NewMap().AsInt64();
+        CBORObject.NewMap().ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -832,7 +839,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.True.AsInt64();
+        CBORObject.True.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -841,7 +848,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.False.AsInt64();
+        CBORObject.False.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -850,7 +857,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.Undefined.AsInt64();
+        CBORObject.Undefined.ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -859,7 +866,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip("").AsInt64();
+        ToObjectTest.TestToFromObjectRoundTrip(
+          "").ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -882,20 +890,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (numberinfo.get("int64").AsBoolean()) {
           Assert.assertEquals(
             TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-            cbornumber.AsInt64());
+            cbornumber.ToObject(long.class));
           if (isdouble) {
             Assert.assertEquals(
               TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-              cbornumberdouble.AsInt64());
+              cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
             Assert.assertEquals(
               TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-              cbornumbersingle.AsInt64());
+              cbornumbersingle.ToObject(long.class));
           }
         } else {
           try {
-            cbornumber.AsInt64();
+            cbornumber.ToObject(long.class);
             Assert.fail("Should have failed " + cbornumber);
           } catch (ArithmeticException ex) {
             // NOTE: Intentionally empty
@@ -905,7 +913,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
           if (isdouble) {
             try {
-              cbornumberdouble.AsInt64();
+              cbornumberdouble.ToObject(long.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
               // NOTE: Intentionally empty
@@ -916,7 +924,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
           if (issingle) {
             try {
-              cbornumbersingle.AsInt64();
+              cbornumbersingle.ToObject(long.class);
               Assert.fail("Should have failed");
             } catch (ArithmeticException ex) {
               // NOTE: Intentionally empty
@@ -1088,46 +1096,88 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestCanFitInDouble() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
-          0).CanFitInDouble())) {
+          0).AsNumber().CanFitInDouble())) {
  Assert.fail();
  }
     }
     @Test
     public void TestCanFitInDoubleA() {
-      if (CBORObject.True.CanFitInDouble()) {
- Assert.fail();
- }
+      try {
+ CBORObject.True.AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestCanFitInDoubleB() {
-      if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .CanFitInDouble()) {
- Assert.fail();
- }
+      try {
+ ToObjectTest.TestToFromObjectRoundTrip("")
+        .AsNumber().CanFitInDouble();
+      Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestCanFitInDoubleC() {
-      if (CBORObject.NewArray().CanFitInDouble()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().CanFitInDouble()) {
- Assert.fail();
- }
+      try {
+ CBORObject.NewArray().AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestCanFitInDoubleD() {
-      if (CBORObject.False.CanFitInDouble()) {
- Assert.fail();
- }
-      if (CBORObject.Null.CanFitInDouble()) {
- Assert.fail();
- }
+      try {
+ CBORObject.False.AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Null.AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestCanFitInDoubleE() {
-      if (CBORObject.Undefined.CanFitInDouble()) {
- Assert.fail();
- }
+      try {
+ CBORObject.Undefined.AsNumber().CanFitInDouble();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestCanFitInDoubleF() {
@@ -1141,11 +1191,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Assert.fail();
         }
         if (numberinfo.get("double").AsBoolean()) {
-          if (!cbornumber.CanFitInDouble()) {
+          if (!cbornumber.AsNumber().CanFitInDouble()) {
             Assert.fail(cbornumber.toString());
           }
         } else {
-          if (cbornumber.CanFitInDouble()) {
+          if (cbornumber.AsNumber().CanFitInDouble()) {
             Assert.fail(cbornumber.toString());
           }
         }
@@ -1159,7 +1209,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (cbornumber == null) {
           Assert.fail();
         }
-        if (!(cbornumber.CanFitInDouble())) {
+        if (!(cbornumber.AsNumber().CanFitInDouble())) {
  Assert.fail();
  }
       }
@@ -1329,7 +1379,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
           Assert.assertTrue(
             CInt64(ToObjectTest.TestToFromObjectRoundTrip(
-                cbornumber.AsInt64())));
+                cbornumber.ToObject(long.class))));
         } else {
           if (CInt64(cbornumber)) {
  Assert.fail();
@@ -1341,31 +1391,73 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestCanFitInSingle() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
-          0).CanFitInSingle())) {
+          0).AsNumber().CanFitInSingle())) {
  Assert.fail();
  }
-      if (CBORObject.True.CanFitInSingle()) {
- Assert.fail();
- }
-      if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .CanFitInSingle()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().CanFitInSingle()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().CanFitInSingle()) {
- Assert.fail();
- }
-      if (CBORObject.False.CanFitInSingle()) {
- Assert.fail();
- }
-      if (CBORObject.Null.CanFitInSingle()) {
- Assert.fail();
- }
-      if (CBORObject.Undefined.CanFitInSingle()) {
- Assert.fail();
- }
+      try {
+ CBORObject.True.AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ ToObjectTest.TestToFromObjectRoundTrip("")
+        .AsNumber().CanFitInSingle();
+      Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewArray().AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.False.AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Null.AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Undefined.AsNumber().CanFitInSingle();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
@@ -1379,11 +1471,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
         if (numberinfo.get("single").AsBoolean()) {
-          if (!(cbornumber.CanFitInSingle())) {
+          if (!(cbornumber.AsNumber().CanFitInSingle())) {
  Assert.fail();
  }
         } else {
-          if (cbornumber.CanFitInSingle()) {
+          if (cbornumber.AsNumber().CanFitInSingle()) {
  Assert.fail();
  }
         }
@@ -1397,7 +1489,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(
             RandomObjects.RandomSingle(
               rand,
-              i)).CanFitInSingle()))Assert.fail();
+              i)).AsNumber().CanFitInSingle()))Assert.fail();
       }
     }
 
@@ -1405,57 +1497,99 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestCanTruncatedIntFitInInt32() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            11)).CanTruncatedIntFitInInt32()))Assert.fail();
+            11)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            12)).CanTruncatedIntFitInInt32()))Assert.fail();
+            12)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            13)).CanTruncatedIntFitInInt32()))Assert.fail();
+            13)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            14)).CanTruncatedIntFitInInt32()))Assert.fail();
+            14)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            15)).CanTruncatedIntFitInInt32()))Assert.fail();
+            15)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            16)).CanTruncatedIntFitInInt32()))Assert.fail();
+            16)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            17)).CanTruncatedIntFitInInt32()))Assert.fail();
+            17)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            18)).CanTruncatedIntFitInInt32()))Assert.fail();
+            18)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            19)).CanTruncatedIntFitInInt32()))Assert.fail();
+            19)).AsNumber().CanTruncatedIntFitInInt32()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(0)
-        .CanTruncatedIntFitInInt32())) {
+        .AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
-      if (CBORObject.True.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.False.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.Null.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.Undefined.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
+      try {
+ CBORObject.True.AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ ToObjectTest.TestToFromObjectRoundTrip("")
+        .AsNumber().CanTruncatedIntFitInInt32();
+      Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.False.AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Null.AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt32();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
@@ -1469,42 +1603,31 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString(numberString));
         if (numberinfo.get("int32").AsBoolean()) {
-          if (!(cbornumber.CanTruncatedIntFitInInt32())) {
- Assert.fail(numberString);
+          if (!(cbornumber.AsNumber().CanTruncatedIntFitInInt32())) {
+ Assert.fail(
+  numberString);
  }
         } else {
-          if (cbornumber.CanTruncatedIntFitInInt32()) {
- Assert.fail(numberString);
+          if (cbornumber.AsNumber().CanTruncatedIntFitInInt32()) {
+ Assert.fail(
+  numberString);
  }
         }
       }
-
-      if (CBORObject.True.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.False.CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().CanTruncatedIntFitInInt32()) {
- Assert.fail();
- }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(0)
-        .CanTruncatedIntFitInInt32())) {
+        .AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(2.5)
-        .CanTruncatedIntFitInInt32())) {
+        .AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(Integer.MIN_VALUE)
-        .CanTruncatedIntFitInInt32())) {
+        .AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(Integer.MAX_VALUE)
-        .CanTruncatedIntFitInInt32())) {
+        .AsNumber().CanTruncatedIntFitInInt32())) {
  Assert.fail();
  }
       Object[] negint32 = new Object[] {
@@ -1517,7 +1640,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (Object obj : negint32) {
         boolean bval = ToObjectTest.TestToFromObjectRoundTrip(obj)
-          .CanTruncatedIntFitInInt32();
+          .AsNumber().CanTruncatedIntFitInInt32();
         if (bval) {
  Assert.fail(obj.toString());
  }
@@ -1528,94 +1651,147 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestCanTruncatedIntFitInInt64() {
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            11)).CanTruncatedIntFitInInt64()))Assert.fail();
+            11)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            12)).CanTruncatedIntFitInInt64()))Assert.fail();
+            12)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            13)).CanTruncatedIntFitInInt64()))Assert.fail();
+            13)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            14)).CanTruncatedIntFitInInt64()))Assert.fail();
+            14)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            15)).CanTruncatedIntFitInInt64()))Assert.fail();
+            15)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            16)).CanTruncatedIntFitInInt64()))Assert.fail();
+            16)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            17)).CanTruncatedIntFitInInt64()))Assert.fail();
+            17)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            18)).CanTruncatedIntFitInInt64()))Assert.fail();
+            18)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(EFloat.Create(
             -2,
-            19)).CanTruncatedIntFitInInt64()))Assert.fail();
+            19)).AsNumber().CanTruncatedIntFitInInt64()))Assert.fail();
       if (!(ToObjectTest.TestToFromObjectRoundTrip(0)
-        .CanTruncatedIntFitInInt64())) {
+        .AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail();
  }
-      if (CBORObject.True.CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (CBORObject.False.CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (CBORObject.Null.CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-      if (CBORObject.Undefined.CanTruncatedIntFitInInt64()) {
- Assert.fail();
- }
-
+      try {
+ CBORObject.True.AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ ToObjectTest.TestToFromObjectRoundTrip("")
+        .AsNumber().CanTruncatedIntFitInInt64();
+      Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.False.AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Null.AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt64();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       EInteger ei;
       ei = EInteger.FromString("9223372036854775807");
       {
         boolean btemp = CBORObject.FromObject(ei)
-          .CanTruncatedIntFitInInt64();
+          .AsNumber().CanTruncatedIntFitInInt64();
         if (!(btemp)) {
  Assert.fail(ei.toString());
  }
       }
       ei = EInteger.FromString("9223372036854775808");
-      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+      if (
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775807");
-      if (!(CBORObject.FromObject(ei).CanTruncatedIntFitInInt64())) {
+
+      if (!(
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775808");
-      if (!(CBORObject.FromObject(ei).CanTruncatedIntFitInInt64())) {
+
+      if (!(
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775809");
-      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+      if (
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223373136366403584");
-      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+      if (
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("9223373136366403584");
-      if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+      if (
+        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
@@ -1635,11 +1811,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (String str : strings) {
         ei = EInteger.FromRadixString(str, 16);
-        if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+        if (
+          CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail();
  }
         ei = ei.Negate();
-        if (CBORObject.FromObject(ei).CanTruncatedIntFitInInt64()) {
+
+        if (
+          CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail();
  }
       }
@@ -1653,13 +1833,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               numberString));
         if (numberinfo.get("int64").AsBoolean()) {
           if (!(
-            cbornumber.CanTruncatedIntFitInInt64())) {
+            cbornumber.AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail(
             numberString);
  }
         } else {
           if (
-            cbornumber.CanTruncatedIntFitInInt64()) {
+            cbornumber.AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
             numberString);
  }
@@ -2915,15 +3095,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromJSONString("[]", (CBOREncodeOptions)null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
         CBORObject.FromJSONString("[]", (JSONOptions)null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
@@ -3061,17 +3232,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-
-      try {
-        CBORObject.FromObject(CBORObject.FromObject(Double.NaN)
-          .signum());
-        Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
-        // NOTE: Intentionally empty
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
       cbor = CBORObject.True;
       try {
         CBORObject.FromObject(cbor.get(0));
@@ -3117,7 +3277,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(CBORObject.NewArray().signum());
+        CBORObject.FromObject(CBORObject.NewArray().AsNumber().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -3126,7 +3286,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(CBORObject.NewMap().signum());
+        CBORObject.FromObject(CBORObject.NewMap().AsNumber().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -3712,69 +3872,122 @@ private final PODClass propVarpropvalue;
     @Test
     public void TestIsFinite() {
       CBORObject cbor;
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(0).isFinite())) {
+
+      if (!(
+        ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber().IsFinite())) {
  Assert.fail();
  }
-      if (ToObjectTest.TestToFromObjectRoundTrip("")
-        .isFinite()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().isFinite()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().isFinite()) {
- Assert.fail();
- }
+      try {
+ ToObjectTest.TestToFromObjectRoundTrip("").AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewArray().AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       cbor = CBORObject.True;
-      if (cbor.isFinite()) {
- Assert.fail();
- }
+      try {
+ cbor.AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       cbor = CBORObject.False;
-      if (cbor.isFinite()) {
- Assert.fail();
- }
+      try {
+ cbor.AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       cbor = CBORObject.Null;
-      if (cbor.isFinite()) {
- Assert.fail();
- }
+      try {
+ cbor.AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
       cbor = CBORObject.Undefined;
-      if (cbor.isFinite()) {
+      try {
+ cbor.AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+      try {
+ CBORObject.NewMap().AsNumber().IsFinite();
+ Assert.fail("Should have failed");
+} catch (IllegalStateException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+ throw new IllegalStateException("", ex);
+}
+
+      if (!(
+        ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber().IsFinite())) {
  Assert.fail();
  }
-      if (CBORObject.NewMap().isFinite()) {
- Assert.fail();
- }
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(0).isFinite())) {
- Assert.fail();
- }
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(2.5).isFinite())) {
+
+      if (!(
+        ToObjectTest.TestToFromObjectRoundTrip(2.5).AsNumber().IsFinite())) {
  Assert.fail();
  }
       if (
         ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-        .isFinite()) {
+        .AsNumber().IsFinite()) {
  Assert.fail();
  }
 
       if (
         ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-        .isFinite()) {
+        .AsNumber().IsFinite()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-        .isFinite()) {
+        .AsNumber().IsFinite()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          CBORTestCommon.DecPosInf).isFinite()) {
+          CBORTestCommon.DecPosInf).AsNumber().IsFinite()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          CBORTestCommon.DecNegInf).isFinite()) {
+          CBORTestCommon.DecNegInf).AsNumber().IsFinite()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(EDecimal.NaN)
-        .isFinite()) {
+        .AsNumber().IsFinite()) {
  Assert.fail();
  }
       CBORObject numbers = GetNumberData();
@@ -3783,8 +3996,9 @@ private final PODClass propVarpropvalue;
         EDecimal ed = EDecimal.FromString(numberinfo.get("number").AsString());
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(ed);
         if (numberinfo.get("isintegral").AsBoolean()) {
-          if (!(cbornumber.isFinite())) {
- Assert.fail(numberinfo.get("number").AsString());
+          if (!(cbornumber.AsNumber().IsFinite())) {
+ Assert.fail(
+  numberinfo.get("number").AsString());
  }
         }
         // NOTE: A nonintegral number is not necessarily non-finite
@@ -3808,97 +4022,76 @@ private final PODClass propVarpropvalue;
     @Test
     public void TestIsIntegral() {
       CBORObject cbor;
-      if (!(ToObjectTest.TestToFromObjectRoundTrip(0).isIntegral())) {
+
+      if (!(
+        ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber().IsInteger())) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip("");
-      if (cbor.isIntegral()) {
- Assert.fail();
- }
-      if (CBORObject.NewArray().isIntegral()) {
- Assert.fail();
- }
-      if (CBORObject.NewMap().isIntegral()) {
- Assert.fail();
- }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(
           EInteger.FromRadixString(
             "8000000000000000",
             16));
-      if (!(cbor.isIntegral())) {
+      if (!(cbor.AsNumber().IsInteger())) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(
           EInteger.FromRadixString(
             "80000000000000000000",
             16));
-      if (!(cbor.isIntegral())) {
+      if (!(cbor.AsNumber().IsInteger())) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(
           EInteger.FromRadixString(
             "8000000000000000000000000",
             16));
-      if (!(cbor.isIntegral())) {
+      if (!(cbor.AsNumber().IsInteger())) {
  Assert.fail();
  }
       if (!(ToObjectTest.TestToFromObjectRoundTrip(
-          EDecimal.FromString("4444e+800")).isIntegral()))Assert.fail();
+          EDecimal.FromString("4444e+800")).AsNumber().IsInteger()))Assert.fail();
 
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          EDecimal.FromString("4444e-800")).isIntegral()) {
+          EDecimal.FromString("4444e-800")).AsNumber().IsInteger()) {
  Assert.fail();
  }
-      if (ToObjectTest.TestToFromObjectRoundTrip(2.5).isIntegral()) {
+
+      if (
+        ToObjectTest.TestToFromObjectRoundTrip(2.5).AsNumber().IsInteger()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          999.99).isIntegral()) {
+          999.99).AsNumber().IsInteger()) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY);
 
-      if (cbor.isIntegral()) {
+      if (cbor.AsNumber().IsInteger()) {
  Assert.fail();
  }
 
       cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY);
 
-      if (cbor.isIntegral()) {
+      if (cbor.AsNumber().IsInteger()) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(Double.NaN);
 
-      if (cbor.isIntegral()) {
+      if (cbor.AsNumber().IsInteger()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          CBORTestCommon.DecPosInf).isIntegral()) {
+          CBORTestCommon.DecPosInf).AsNumber().IsInteger()) {
  Assert.fail();
  }
       if (ToObjectTest.TestToFromObjectRoundTrip(
-          CBORTestCommon.DecNegInf).isIntegral()) {
+          CBORTestCommon.DecNegInf).AsNumber().IsInteger()) {
  Assert.fail();
  }
       cbor = ToObjectTest.TestToFromObjectRoundTrip(EDecimal.NaN);
 
-      if (cbor.isIntegral()) {
- Assert.fail();
- }
-      cbor = CBORObject.True;
-      if (cbor.isIntegral()) {
- Assert.fail();
- }
-      cbor = CBORObject.False;
-      if (cbor.isIntegral()) {
- Assert.fail();
- }
-      cbor = CBORObject.Null;
-      if (cbor.isIntegral()) {
- Assert.fail();
- }
-      cbor = CBORObject.Undefined;
-      if (cbor.isIntegral()) {
+      if (cbor.AsNumber().IsInteger()) {
  Assert.fail();
  }
       CBORObject numbers = GetNumberData();
@@ -3908,7 +4101,7 @@ private final PODClass propVarpropvalue;
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberinfo.get("number").AsString()));
         if (numberinfo.get("isintegral").AsBoolean()) {
-          if (!(cbornumber.isIntegral())) {
+          if (!(cbornumber.AsNumber().IsInteger())) {
  Assert.fail();
  }
           if (cbornumber.AsNumber().IsPositiveInfinity()) {
@@ -3924,7 +4117,7 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
         } else {
-          if (cbornumber.isIntegral()) {
+          if (cbornumber.AsNumber().IsInteger()) {
  Assert.fail();
  }
         }
@@ -4672,15 +4865,6 @@ try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x30 });
 
           try {
-            CBORObject.ReadJSON(ms2, (CBOREncodeOptions)null);
-            Assert.fail("Should have failed");
-          } catch (NullPointerException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
-          try {
             CBORObject.ReadJSON(ms2, (JSONOptions)null);
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
@@ -5015,12 +5199,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 1, 0, 0x22, 0, 0, 0,
          });
 
-          {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
             Assert.assertEquals(
               "\ud800\udc00",
               stringTemp);
-          }
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -5037,12 +5219,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0,
          });
 
-          {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
             Assert.assertEquals(
               "\ud800\udc00",
               stringTemp);
-          }
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -5058,12 +5238,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xdc, 0, 0, 0x22,
          });
 
-          {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
             Assert.assertEquals(
               "\ud800\udc00",
               stringTemp);
-          }
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -6639,7 +6817,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     @Test
     public void TestSign() {
       try {
-        int sign = CBORObject.True.signum();
+        int sign = CBORObject.True.AsNumber().signum();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -6648,7 +6826,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       try {
-        int sign = CBORObject.False.signum();
+        int sign = CBORObject.False.AsNumber().signum();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -6657,7 +6835,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       try {
-        int sign = CBORObject.NewArray().signum();
+        int sign = CBORObject.NewArray().AsNumber().signum();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -6666,7 +6844,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       try {
-        int sign = CBORObject.NewMap().signum();
+        int sign = CBORObject.NewMap().AsNumber().signum();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -6682,21 +6860,13 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               numberString));
         if (cbornumber.AsNumber().IsNaN()) {
-          try {
-            Assert.fail("" + cbornumber.signum());
-            Assert.fail("Should have failed");
-          } catch (IllegalStateException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
+          // skip
         } else if (numberString.length() > 0 && numberString.charAt(0) == '-') {
-          Assert.assertEquals(-1, cbornumber.signum());
+          Assert.assertEquals(-1, cbornumber.AsNumber().signum());
         } else if (numberinfo.get("number").AsString().equals("0")) {
-          Assert.assertEquals(0, cbornumber.signum());
+          Assert.assertEquals(0, cbornumber.AsNumber().signum());
         } else {
-          Assert.assertEquals(1, cbornumber.signum());
+          Assert.assertEquals(1, cbornumber.AsNumber().signum());
         }
       }
     }
@@ -7966,7 +8136,8 @@ ms = new java.io.ByteArrayOutputStream();
               CBORObject.Write(ef, ms);
               CBORObject.Write(cborTemp1, ms);
               cborTemp1.WriteTo(ms);
-              if (cborTemp1.isNegative() && cborTemp1.isZero()) {
+              if (cborTemp1.AsNumber().IsNegative() &&
+cborTemp1.AsNumber().IsZero()) {
                 AssertReadThree(ms.toByteArray());
               } else {
                 AssertReadThree(
@@ -8006,7 +8177,8 @@ ms = new java.io.ByteArrayOutputStream();
               CBORObject.Write(ed, ms);
               CBORObject.Write(cborTemp1, ms);
               cborTemp1.WriteTo(ms);
-              if (cborTemp1.isNegative() && cborTemp1.isZero()) {
+              if (cborTemp1.AsNumber().IsNegative() &&
+cborTemp1.AsNumber().IsZero()) {
                 AssertReadThree(ms.toByteArray());
               } else {
                 AssertReadThree(
@@ -8018,7 +8190,8 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            if (!(cborTemp1.isNegative() && cborTemp1.isZero())) {
+            if (!(cborTemp1.AsNumber().IsNegative() &&
+cborTemp1.AsNumber().IsZero())) {
   TestWriteObj((Object)ed, ed);
 }
           }
@@ -8201,7 +8374,8 @@ ms = new java.io.ByteArrayOutputStream();
             CBORObject.Write(er, ms);
             CBORObject.Write(cborTemp1, ms);
             cborTemp1.WriteTo(ms);
-            if (cborTemp1.isNegative() && cborTemp1.isZero()) {
+            if (cborTemp1.AsNumber().IsNegative() &&
+cborTemp1.AsNumber().IsZero()) {
               AssertReadThree(ms.toByteArray());
             } else {
               AssertReadThree(

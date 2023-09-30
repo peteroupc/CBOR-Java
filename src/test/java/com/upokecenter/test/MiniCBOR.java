@@ -336,8 +336,8 @@ count);
 
     /**
      * Reads a 32-bit integer in CBOR format from a data stream. If the object read
-     * is a floating-point number, it is converted to an integer by
-     * discarding the fractional part of the result of division.
+     * is a floating-point number, it is converted to an integer by discarding the
+     * fractional part of the result of division.
      * @param stream A data stream.
      * @return A 32-bit signed integer.
      * @throws java.io.IOException The end of the stream was reached, or the

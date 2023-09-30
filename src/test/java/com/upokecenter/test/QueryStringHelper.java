@@ -330,10 +330,10 @@ import com.upokecenter.cbor.*;
       int count = dict.size();
       while (index < count) {
         String indexString = IntToString(index);
-        if (!dict.containsKey(indexString)) {
+        Object o = null; if ((o = dict.getOrDefault(indexString, null)) == null) {
           throw new IllegalStateException();
         }
-        ret.add(dict.get(indexString));
+        ret.add(o);
         ++index;
       }
       return ret;
@@ -441,7 +441,7 @@ private static Map<String, Object> QueryStringToDictInternal(
         String[] path = GetKeyPath(keyvalue[0]);
         Map<String, Object> leaf = root;
         for (int i = 0; i < path.length - 1; ++i) {
-          if (!leaf.containsKey(path[i])) {
+          if (!leaf.TryGetValue(path[i], out Object di)) {
             // node doesn't exist so add it
             Map<String, Object> newLeaf = new HashMap<String, Object>();
             if (leaf.containsKey(path[i])) {
@@ -450,7 +450,6 @@ private static Map<String, Object> QueryStringToDictInternal(
             leaf.put(path[i], newLeaf);
             leaf = newLeaf;
           } else {
-            Object di = leaf.get(path[i]);
             Map<String, Object> o = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
             if (o != null) {
               leaf = o;
@@ -461,10 +460,11 @@ private static Map<String, Object> QueryStringToDictInternal(
           }
         }
         if (leaf != null) {
-          if (leaf.containsKey(path[path.length - 1])) {
+          String last = path[path.length - 1];
+          if (leaf.containsKey(last)) {
             throw new IllegalStateException();
           }
-          leaf.put(path[path.length - 1], keyvalue[1]);
+          leaf.put(last, keyvalue[1]);
         }
       }
       return root;

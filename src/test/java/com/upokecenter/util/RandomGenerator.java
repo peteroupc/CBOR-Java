@@ -1,13 +1,13 @@
 package com.upokecenter.util;
 
   /**
-   * A class that adapts a random byte generator to generate random numbers in a
-   * variety of statistical distributions. <p>The method descriptions in
-   * this class assume the underlying random byte generator generates
-   * uniformly distributed numbers that are independent of each other.</p>
-   * <p><b>Thread safety:</b> The methods in this class are safe for
-   * concurrent use by multiple threads, as long as the underlying random
-   * byte generator is as well.</p>
+   * <p>A class that adapts a random byte generator to generate random numbers in
+   * a variety of statistical distributions. </p><p>The method descriptions in
+   * this class assume the underlying random byte generator generates uniformly
+   * distributed numbers that are independent of each other.</p> <p><b>Thread
+   * safety:</b> The methods in this class are safe for concurrent use by
+   * multiple threads, as long as the underlying random byte generator is as
+   * well.</p>
    */
   public final class RandomGenerator implements IRandomGenExtended {
     private boolean valueHaveLastNormal;
@@ -56,8 +56,7 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, generates either 1 or 0 the given number of times, where
-     * either number is equally likely, and counts the number of 1's
-     * generated.
+     * either number is equally likely, and counts the number of 1's generated.
      * @param trials The number of times to generate a random number, conceptually.
      * @return A 32-bit signed integer.
      */
@@ -182,8 +181,8 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, generates either 1 or 0 until a 1 is generated, and counts the
-     * number of 0's generated. Either number has an equal probability of
-     * being generated.
+     * number of 0's generated. Either number has an equal probability of being
+     * generated.
      * @return The number of failures until a success happens.
      */
     public int Geometric() {
@@ -202,8 +201,8 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, given a set of tokens, some of which are labeled 1 and the
-     *  others labeled 0, draws "trials" tokens at random without
-     * replacement and then counts the number of 1's drawn.
+     * others labeled 0, draws "trials" tokens at random without replacement and
+     * then counts the number of 1's drawn.
      * @param trials The number of tokens drawn at random without replacement.
      * @param ones The number of tokens labeled 1.
      * @param count The number of tokens labeled 1 or 0.
@@ -253,8 +252,8 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, generates either 1 or 0 until the given number of 1's are
-     * generated, and counts the number of 0's generated. A 1 is generated
-     * at the given probability.
+     * generated, and counts the number of 0's generated. A 1 is generated at the
+     * given probability.
      * @param trials The number of 1's to generate before the process stops.
      * @param p The probability for each trial to succeed, from 0 (never) to 1
      * (always).
@@ -313,9 +312,8 @@ package com.upokecenter.util;
 
     /**
      * Conceptually, generates either 1 or 0 the given number of times until the
-     * given number of 1's are generated, and counts the number of 0's
-     * generated. Either number has an equal probability of being
-     * generated.
+     * given number of 1's are generated, and counts the number of 0's generated.
+     * Either number has an equal probability of being generated.
      * @param trials The number of 1's to generate before the process stops.
      * @return The number of 0's generated. Returns Integer.MAX_VALUE if "p" is 0.
      */
@@ -363,8 +361,8 @@ package com.upokecenter.util;
 
     /**
      * Generates a random integer such that the average of random numbers
-     * approaches the given mean number when this method is called
-     * repeatedly with the same mean.
+     * approaches the given mean number when this method is called repeatedly with
+     * the same mean.
      * @param mean The expected mean of the random numbers.
      * @return A 32-bit signed integer.
      */

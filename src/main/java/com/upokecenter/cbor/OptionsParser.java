@@ -66,8 +66,8 @@ import com.upokecenter.util.*;
 
     public String GetLCString(String key, String defaultValue) {
       String lckey = DataUtilities.ToLowerCaseAscii(key);
-      if (this.dict.containsKey(lckey)) {
-        String lcvalue = DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
+      String val = null; if ((val = this.dict.getOrDefault(lckey, null)) != null) {
+        String lcvalue = DataUtilities.ToLowerCaseAscii(val);
         return lcvalue;
       }
       return defaultValue;
@@ -75,8 +75,8 @@ import com.upokecenter.util.*;
 
     public boolean GetBoolean(String key, boolean defaultValue) {
       String lckey = DataUtilities.ToLowerCaseAscii(key);
-      if (this.dict.containsKey(lckey)) {
-        String lcvalue = DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
+      String val = null; if ((val = this.dict.getOrDefault(lckey, null)) != null) {
+        String lcvalue = DataUtilities.ToLowerCaseAscii(val);
         return lcvalue.equals("1") ||
           lcvalue.equals("yes") ||
           lcvalue.equals("on") ||

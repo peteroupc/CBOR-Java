@@ -1978,6 +1978,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
         Long.MIN_VALUE + 1000,
       };
       ranges[0] = -65539;
+      JSONOptions jso = new JSONOptions("numberconversion=full");
       for (int i = 0; i < ranges.length; i += 2) {
         long j = ranges[i];
         while (true) {
@@ -1991,17 +1992,19 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
           if (!(cn.CanTruncatedIntFitInInt64())) {
  Assert.fail();
  }
-          CBORTestCommon.AssertJSONSer(
-            ToObjectTest.TestToFromObjectRoundTrip(j),
-            TestCommon.LongToString(j));
+        String l2s = TestCommon.LongToString(j);
           Assert.assertEquals(
             ToObjectTest.TestToFromObjectRoundTrip(j),
             ToObjectTest.TestToFromObjectRoundTrip(EInteger.FromInt64(j)));
           CBORObject obj = CBORObject.FromJSONString(
-              "[" + TestCommon.LongToString(j) + "]");
+            "[" + l2s + "]",
+            jso);
           CBORTestCommon.AssertJSONSer(
-            obj,
-            "[" + TestCommon.LongToString(j) + "]");
+            ToObjectTest.TestToFromObjectRoundTrip(j),
+            l2s);
+          CBORTestCommon.AssertJSONSer(
+              obj,
+              "[" + l2s + "]");
           if (j == ranges[i + 1]) {
             break;
           }
@@ -2079,10 +2082,13 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       CBORTestCommon.AssertRoundTrip(oo);
     }
 
+    private static final JSONOptions FullJsonOptions = new
+JSONOptions("numberconversion=full;preservenegativezero=false");
+
     public static void TestParseDecimalStringsOne(String r) {
       CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(
           EDecimal.FromString(r));
-      CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r);
+      CBORObject o2 = CBORDataUtilities.ParseJSONNumber(r, FullJsonOptions);
       TestCommon.CompareTestEqual(o.AsNumber(), o2.AsNumber());
     }
 
