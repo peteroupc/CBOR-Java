@@ -315,6 +315,23 @@ if(!setters){
       return Collections.unmodifiableMap(dict).entrySet();
   }
 
+  public static <K, V> boolean
+         DictRemove(Map<K, V> dict, K key) {
+      // NOTE: No ambiguity since this method will
+      // only ever be called on maps that don't allow raw nulls
+      return dict.remove(key)!=null;
+  }
+
+  public static <K, V> Collection<K>
+         ReadOnlyKeys(Map<K, V> dict) {
+      return Collections.unmodifiableCollection(dict.keySet());
+  }
+
+  public static <K, V> Collection<V>
+         ReadOnlyValues(Map<K, V> dict) {
+      return Collections.unmodifiableCollection(dict.values());
+  }
+
   private static final class LinkedListKeySet<TKey>
      extends AbstractSet<TKey> {
      private final LinkedList list;
@@ -733,16 +750,20 @@ return false;
   public static Object TypeToObject(CBORObject objThis, Type t,
      CBORTypeMapper mapper, PODOptions options, int depth) {
       if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
-        return objThis.AsByte();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToByteChecked();
       }
       if (t.equals(Short.class) || t.equals(Short.TYPE)) {
-        return objThis.AsInt16();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToInt16Checked();
       }
       if (t.equals(Integer.class) || t.equals(Integer.TYPE)) {
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsInt32();
       }
       if (t.equals(Long.class) || t.equals(Long.TYPE)) {
-        return objThis.AsInt64();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToInt64Checked();
       }
       if (t.equals(Double.class) || t.equals(Double.TYPE)) {
         return objThis.AsDouble();
@@ -759,7 +780,7 @@ if(objThis.getType()==CBORType.TextString){
   if(s.length()!=1)throw new CBORException("Can't convert to char");
   return s.charAt(0);
 }
-if(objThis.isIntegral() && objThis.CanTruncatedIntFitInInt32()){
+if(objThis.isNumber() && objThis.AsNumber().IsInteger() && objThis.AsNumber().CanTruncatedIntFitInInt32()){
   int c=objThis.AsInt32();
   if(c<0 || c>=0x10000)
     throw new CBORException("Can't convert to char");
@@ -778,7 +799,8 @@ throw new CBORException("Can't convert to char");
       }
 
       if (t.equals(java.math.BigDecimal.class)) {
-        EDecimal ei = objThis.AsEDecimal();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        EDecimal ei = objThis.AsNumber().ToEDecimal();
         if (!ei.isFinite()) {
           throw new CBORException("Can't convert to BigDecimal");
         }
@@ -791,21 +813,26 @@ throw new CBORException("Can't convert to char");
         }
       }
       if (t.equals(java.math.BigInteger.class)) {
-        EInteger ei = objThis.AsEInteger();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        EInteger ei = objThis.AsNumber().ToEInteger();
         return new BigInteger(ei.ToBytes(false));
       }
 
       if (t.equals(EInteger.class)) {
-        return objThis.AsEInteger();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToEInteger();
       }
       if (t.equals(EDecimal.class)) {
-        return objThis.AsEDecimal();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToEDecimal();
       }
       if (t.equals(EFloat.class)) {
-        return objThis.AsEFloat();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToEFloat();
       }
       if (t.equals(ERational.class)) {
-        return objThis.AsERational();
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
+        return objThis.AsNumber().ToERational();
       }
       if(t instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>)t)){
 if(objThis.getType()==CBORType.TextString){
@@ -814,7 +841,7 @@ if(objThis.getType()==CBORType.TextString){
  } catch(Exception ex){
   throw new CBORException(ex.getMessage(),ex);
  }
-} else if(objThis.isNumber() && objThis.isIntegral()){
+} else if(objThis.isNumber() && objThis.AsNumber().IsInteger()){
  Object[] enumValues=EnumValues((Class<?>)t);
  int k=objThis.AsInt32();
  if(k<0 || k>=enumValues.length){
@@ -1030,6 +1057,7 @@ if(name==null ){
       return null;
     }
 
+    /*
     public static <TKey, TValue> boolean
         TryGetValue(Map<TKey, TValue> map, TKey key,
         TValue[] outvalue) {
@@ -1038,7 +1066,7 @@ if(name==null ){
           return true;
         }
         return false;
-    }
+    }*/
 
     @SuppressWarnings("unchecked")
     public static Object CallFromObject(

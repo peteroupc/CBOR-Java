@@ -5075,7 +5075,7 @@ CBORObjectTypeTextStringAscii)) {
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> dict = this.AsMap();
-        return dict.remove(obj);
+        return PropertyMap.DictRemove(dict, obj);
       }
       if (this.getType() == CBORType.Array) {
         List<CBORObject> list = this.AsList();
