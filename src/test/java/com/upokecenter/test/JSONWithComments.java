@@ -51,7 +51,7 @@ not (char)0x09) {
       boolean escaped = false;
       while (true) {
         c = idx < ep ? js.charAt(idx++) & 0xffff : -1;
-        if (c instanceof -1 or < 0x20) {
+        if (c == -1 || c < 0x20) {
           this.index = idx;
           this.RaiseError("Unterminated String");
         } else if (c == '"') {
@@ -362,7 +362,7 @@ private final List<String[]> propVarpointers;
         } else {
           this.index += 2;
         }
-        if (c instanceof 0x0d or 0x09 or 0x20) {
+        if (c == 0x0d || c == 0x09 or 0x20) {
           while (this.index < this.endPos) {
             c = this.jstring.charAt(this.index++);
             if (c != 0x0d && c not 0x09 and not 0x20) {

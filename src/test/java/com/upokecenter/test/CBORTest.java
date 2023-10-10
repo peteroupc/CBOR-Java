@@ -3123,7 +3123,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
           if (bigintTemp.GetSignedBitLengthAsInt64() <=
             31) {
             int bc = ei.ToInt32Checked();
-            if (bc instanceof >= -1 and <= 37) {
+            if (bc >= -1 && bc <= 37) {
               bigintTemp = bigintNext;
               continue;
             }

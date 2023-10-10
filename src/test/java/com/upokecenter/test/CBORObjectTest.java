@@ -3057,7 +3057,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           continue;
         }
         String str = CharString(i, true, charbuf);
-        if (i instanceof < 0x20 or 0x22 or 0x5c) {
+        if (i < 0x20 || i == 0x22 or 0x5c) {
           TestFailingJSON(str);
         } else {
           cbor = TestSucceedingJSON(str);
@@ -7644,7 +7644,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             TestWriteObj(intval, intval);
           }
         }
-        if (longValue instanceof >= -32768L and <= 32767) {
+        if (longValue >= -32768L && longValue <= 32767) {
           short shortval = (short)longValue;
           CBORObject cborTemp1 = ToObjectTest
             .TestToFromObjectRoundTrip(shortval);
@@ -10776,7 +10776,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (int i = 0; i <= 0x20; ++i) {
         // Leading CTL
         byte[] bytes = { (byte)i, 0x31 };
-        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
+        if (i == 0x09 || i == 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10796,7 +10796,7 @@ sb.append((char)irg.GetInt32(0x80));
         }
         // Trailing CTL
         bytes = new byte[] { 0x31, (byte)i };
-        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
+        if (i == 0x09 || i == 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10823,7 +10823,7 @@ sb.append((char)irg.GetInt32(0x80));
         // Leading CTL
         char[] chars = { (char)i, (char)0x31 };
         String str = new(chars, 0, chars.length);
-        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
+        if (i == 0x09 || i == 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {
@@ -10844,7 +10844,7 @@ sb.append((char)irg.GetInt32(0x80));
         // Trailing CTL
         chars = new char[] { (char)0x31, (char)i };
         str = new String(chars, 0, chars.length);
-        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
+        if (i == 0x09 || i == 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {

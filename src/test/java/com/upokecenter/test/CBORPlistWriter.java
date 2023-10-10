@@ -96,7 +96,7 @@ private CBORPlistWriter() {
       CBORObject obj,
       StringOutput writer,
       JSONOptions options) throws java.io.IOException {
-      if (obj.Type is CBORType.Array or CBORType.Map) {
+      if (obj.getType() == CBORType.Array || obj.getType() == CBORType.Map) {
         ArrayList<CBORObject> stack = new ArrayList<CBORObject>();
         WritePlistToInternalCore(obj, writer, options, stack);
       } else {

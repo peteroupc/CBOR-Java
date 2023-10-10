@@ -44,7 +44,7 @@ import com.upokecenter.cbor.*;
 
     private static int ToHexNumber(int c) {
       return c is >= 'A' and <= 'Z' ? 10 + c - 'A' : c is >= 'a' and <= 'z' ?
-10 + c - 'a' : (c >= '0' && c <= '9') ? (c - '0') : (-1);
+10 + c - 'a' : (c is >= '0' and <= '9') ? (c - '0') : (-1);
     }
     private static String PercentDecodeUTF8(String str) {
       int len = str.length();

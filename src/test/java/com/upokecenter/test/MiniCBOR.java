@@ -185,7 +185,7 @@ count);
         b |= bytes[1] & 0xff;
         return (headByte != 0x39) ? b : -1 - b;
       }
-      if (kind instanceof 0x1a or 0x3a) {
+      if (kind == 0x1a || kind == 0x3a) {
         byte[] bytes = new byte[4];
         ReadHelper(stream, bytes, 0, bytes.length);
         long b = ((long)bytes[0]) & 0xff;
@@ -201,7 +201,7 @@ count);
 }
  return (headByte != 0x3a) ? b : -1 - b;
       }
-      if (headByte instanceof 0x1b or 0x3b) {
+      if (headByte == 0x1b || headByte == 0x3b) {
         byte[] bytes = new byte[8];
         ReadHelper(stream, bytes, 0, bytes.length);
         long b;
@@ -319,7 +319,7 @@ count);
       if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
-      if (b instanceof 0xf9 or 0xfa or 0xfb) {
+      if (b == 0xf9 || b == 0xfa or 0xfb) {
         // Read a floating-point number
         return ReadFP(stream, b);
       }
@@ -372,7 +372,7 @@ count);
       if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
-      if (b instanceof 0xf9 or 0xfa or 0xfb) {
+      if (b == 0xf9 || b == 0xfa or 0xfb) {
         // Read a floating-point number
         double dbl = ReadFP(stream, b);
         // Truncate to a 32-bit integer
@@ -402,7 +402,7 @@ count);
       if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
-      if (b instanceof 0x18 or 0x38) {
+      if (b == 0x18 || b == 0x38) {
         int b1 = stream.read();
         int b2 = stream.read();
         if (b1 < 0 || b2 < 0) {
@@ -411,7 +411,7 @@ count);
         int c = (b1 << 8) | b2;
         return (b == 0x18) ? c : -1 - c;
       }
-      if (b instanceof 0x19 or 0x39 or 0x1a or 0x3a) {
+      if (b == 0x19 || b == 0x39 or 0x1a or 0x3a) {
         if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
             stream.read() != 0 || stream.read() != 0 ||
             stream.read() != 0)) {

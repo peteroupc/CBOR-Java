@@ -327,7 +327,7 @@ bs.Write('\\').Write(x) : bs.Write(x);
         }
       } else if (majorType == 3) {
         GenerateJsonString(r, bs, depth);
-      } else if (majorType instanceof 4 or 5) {
+      } else if (majorType == 4 || majorType == 5) {
         int len = r.GetInt32(8);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(1000) * r.GetInt32(1000);
