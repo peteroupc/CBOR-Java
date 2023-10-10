@@ -2,9 +2,17 @@ package com.upokecenter.test;
 import java.io.*;
 import com.upokecenter.cbor.*;
 
+  /**
+   * Helper class to write CBOR objects using a "fluent" interface. Inspired by
+   * suggestions by GitHub user "sbernard31".
+   */
   public final class CBORWriterHelper {
     private final OutputStream outputStream;
 
+    /**
+     * Initializes a new instance of the {@link CBORWriterHelper} class.
+     * @param outputStream
+     */
     public CBORWriterHelper(OutputStream outputStream) {
       this.outputStream = outputStream;
     }

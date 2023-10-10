@@ -22,6 +22,11 @@ https://creativecommons.org/publicdomain/zero/1.0/
  return obj;
     }
 
+    /**
+     * Internal API.
+     * @param obj The parameter {@code obj} is an internal parameter.
+     * @return A CBORObject object.
+     */
     public CBORObject ToCBORObject(java.util.UUID obj) {
       byte[] bytes = PropertyMap.UUIDToBytes(obj);
       return CBORObject.FromObjectAndTag(bytes, 37);

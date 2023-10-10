@@ -1,14 +1,30 @@
 package com.upokecenter.util;
 
+  /**
+   * <p>A class that implements a statistically-random byte generator, using
+   * Sebastiano Vigna's <a
+   * href="http://xorshift.di.unimi.it/xorshift128plus.c">xorshift128+</a> RNG as
+   * the underlying implementation. This class is safe for concurrent use among
+   * multiple threads.</p>
+   */
   public class XorShift128Plus implements IRandomGen
   {
     private final long[] s = new long[2];
     private final Object syncRoot = new();
 
+    /**
+     * Initializes a new instance of the {@link XorShift128Plus} class.
+     */
     public XorShift128Plus() {
       this.Seed();
     }
 
+    /**
+     * @param bytes Not documented yet.
+     * @param offset Not documented yet.
+     * @param length Not documented yet.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
         throw new NullPointerException("bytes");

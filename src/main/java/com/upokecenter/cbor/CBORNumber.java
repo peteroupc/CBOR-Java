@@ -2,18 +2,48 @@ package com.upokecenter.cbor;
 
 import com.upokecenter.numbers.*;
 
+  /**
+   * An instance of a number that CBOR or certain CBOR tags can represent. For
+   * this purpose, infinities and not-a-number or NaN values are considered
+   * numbers. Currently, this class can store one of the following kinds of
+   * numbers: 64-bit signed integers or binary floating-point numbers; or
+   * arbitrary-precision integers, decimal numbers, binary numbers, or rational
+   * numbers.
+   */
+
   public final class CBORNumber implements Comparable<CBORNumber> {
+    /**
+     * Specifies the underlying form of this CBOR number object.
+     */
     public enum NumberKind {
+      /**
+       * A 64-bit signed integer.
+       */
       Integer,
 
+      /**
+       * A 64-bit binary floating-point number.
+       */
       Double,
 
+      /**
+       * An arbitrary-precision integer.
+       */
       EInteger,
 
+      /**
+       * An arbitrary-precision decimal number.
+       */
       EDecimal,
 
+      /**
+       * An arbitrary-precision binary number.
+       */
       EFloat,
 
+      /**
+       * An arbitrary-precision rational number.
+       */
       ERational,
     }
 
@@ -63,10 +93,20 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    /**
+     * Converts this object's value to a CBOR object.
+     * @return A CBOR object that stores this object's value.
+     */
     public CBORObject ToCBORObject() {
       return CBORObject.FromObject(this.value);
     }
 
+    /**
+     * Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
+     * positive; 0 if zero. Not-a-number (NaN) values are positive or negative
+     * depending on what sign is stored in their underlying forms.
+     * @return This value's sign.
+     */
     public final int signum() { return this.IsNaN() ? (this.IsNegative() ? -1 : 1) :
           this.GetNumberInterface().Sign(this.value); }
 
@@ -88,6 +128,14 @@ import com.upokecenter.numbers.*;
       }
     }
 
+    /**
+     * Creates a CBOR number object from a CBOR object representing a number (that
+     * is, one for which the IsNumber property in.NET or the isNumber() method in
+     * Java returns true).
+     * @param o The parameter is a CBOR object representing a number.
+     * @return A CBOR number object, or null if the given CBOR object is null or
+     * does not represent a number.
+     */
     public static CBORNumber FromCBORObject(CBORObject o) {
       if (o == null) {
         return null;
@@ -414,14 +462,32 @@ import com.upokecenter.numbers.*;
 CBORNumber.FromObject(efloat);
     }
 
+    /**
+     * Gets the underlying form of this CBOR number object.
+     * @return The underlying form of this CBOR number object.
+     */
     public final NumberKind getKind() { return propVarkind; }
 private final NumberKind propVarkind;
 
+    /**
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be -(2^31) or greater, and less than 2^31.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be -(2^31) or greater, and less than
+     * 2^31; otherwise, {@code false}.
+     */
     public boolean CanTruncatedIntFitInInt32() {
       return
         this.GetNumberInterface().CanTruncatedIntFitInInt32(this.GetValue());
     }
 
+    /**
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be -(2^63) or greater, and less than 2^63.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be -(2^63) or greater, and less than
+     * 2^63; otherwise, {@code false}.
+     */
     public boolean CanTruncatedIntFitInInt64() {
       switch (this.getKind()) {
         case Integer:
@@ -434,19 +500,49 @@ private final NumberKind propVarkind;
       }
     }
 
+    /**
+     * Returns whether this object's value, converted to an integer by discarding
+     * its fractional part, would be 0 or greater, and less than 2^64.
+     * @return {@code true} if this object's value, converted to an integer by
+     * discarding its fractional part, would be 0 or greater, and less than 2^64;
+     * otherwise, {@code false}.
+     */
     public boolean CanTruncatedIntFitInUInt64() {
       return this.GetNumberInterface()
         .CanTruncatedIntFitInUInt64(this.GetValue());
     }
 
+    /**
+     * Returns whether this object's value can be converted to a 32-bit floating
+     * point number without its value being rounded to another numerical value.
+     * @return {@code true} if this object's value can be converted to a 32-bit
+     * floating point number without its value being rounded to another numerical
+     * value, or if this is a not-a-number value, even if the value's diagnostic
+     * information can' t fit in a 32-bit floating point number; otherwise, {@code
+     * false}.
+     */
     public boolean CanFitInSingle() {
       return this.GetNumberInterface().CanFitInSingle(this.GetValue());
     }
 
+    /**
+     * Returns whether this object's value can be converted to a 64-bit floating
+     * point number without its value being rounded to another numerical value.
+     * @return {@code true} if this object's value can be converted to a 64-bit
+     * floating point number without its value being rounded to another numerical
+     * value, or if this is a not-a-number value, even if the value's diagnostic
+     * information can't fit in a 64-bit floating point number; otherwise, {@code
+     * false}.
+     */
     public boolean CanFitInDouble() {
       return this.GetNumberInterface().CanFitInDouble(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this CBOR object represents a finite number.
+     * @return {@code true} if this CBOR object represents a finite number;
+     * otherwise, {@code false}.
+     */
     public boolean IsFinite() {
       switch (this.getKind()) {
         case Integer:
@@ -456,6 +552,13 @@ private final NumberKind propVarkind;
       }
     }
 
+    /**
+     * Gets a value indicating whether this object represents an integer number,
+     * that is, a number without a fractional part. Infinity and not-a-number are
+     * not considered integers.
+     * @return {@code true} if this object represents an integer number, that is, a
+     * number without a fractional part; otherwise, {@code false}.
+     */
     public boolean IsInteger() {
       switch (this.getKind()) {
         case Integer:
@@ -465,10 +568,20 @@ private final NumberKind propVarkind;
       }
     }
 
+    /**
+     * Gets a value indicating whether this object is a negative number.
+     * @return {@code true} if this object is a negative number; otherwise, {@code
+     * false}.
+     */
     public boolean IsNegative() {
       return this.GetNumberInterface().IsNegative(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this object's value equals 0.
+     * @return {@code true} if this object's value equals 0; otherwise, {@code
+     * false}.
+     */
     public boolean IsZero() {
       switch (this.getKind()) {
         case Integer: {
@@ -479,10 +592,23 @@ private final NumberKind propVarkind;
       }
     }
 
+    /**
+     * Converts this object to an arbitrary-precision integer. See the ToObject
+     * overload taking a type for more information.
+     * @return The closest arbitrary-precision integer to this object.
+     * @throws ArithmeticException This value is infinity or not-a-number.
+     */
     public EInteger ToEInteger() {
       return this.GetNumberInterface().AsEInteger(this.GetValue());
     }
 
+    /**
+     * Converts this object to an arbitrary-precision integer if its value is an
+     * integer.
+     * @return The arbitrary-precision integer given by object.
+     * @throws ArithmeticException This value is infinity or not-a-number or is not
+     * an exact integer.
+     */
     public EInteger ToEIntegerIfExact() {
       if (!this.IsInteger()) {
  throw new ArithmeticException("Not an" +
@@ -493,6 +619,15 @@ private final NumberKind propVarkind;
 
     // Begin integer conversions
 
+    /**
+     * Converts this number's value to a byte (from 0 to 255) if it can fit in a
+     * byte (from 0 to 255) after converting it to an integer by discarding its
+     * fractional part.
+     * @return This number's value, truncated to a byte (from 0 to 255).
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than 0 or greater than 255.
+     */
     public byte ToByteChecked() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is" +
@@ -501,10 +636,24 @@ private final NumberKind propVarkind;
  return this.ToEInteger().ToByteChecked();
     }
 
+    /**
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a byte (from 0 to 255).
+     * @return This number, converted to a byte (from 0 to 255). Returns 0 if this
+     * value is infinity or not-a-number.
+     */
     public byte ToByteUnchecked() {
       return this.IsFinite() ? this.ToEInteger().ToByteUnchecked() : (byte)0;
     }
 
+    /**
+     * Converts this number's value to a byte (from 0 to 255) if it can fit in a
+     * byte (from 0 to 255) without rounding to a different numerical value.
+     * @return This number's value as a byte (from 0 to 255).
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than 0 or greater than 255.
+     */
     public byte ToByteIfExact() {
 if (!this.IsFinite()) {
         throw new ArithmeticException("Value is infinity or NaN");
@@ -518,11 +667,25 @@ if (this.IsZero()) {
  return this.ToEIntegerIfExact().ToByteChecked();
     }
 
+    /**
+     * Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
+     * @param inputByte The number to convert as a byte (from 0 to 255).
+     * @return This number's value as an arbitrary-precision decimal number.
+     */
     public static CBORNumber FromByte(byte inputByte) {
       int val = inputByte & 0xff;
       return FromObject((long)val);
     }
 
+    /**
+     * Converts this number's value to a 16-bit signed integer if it can fit in a
+     * 16-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
+     * @return This number's value, truncated to a 16-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -32768 or greater than 32767.
+     */
     public short ToInt16Checked() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is" +
@@ -531,10 +694,24 @@ if (this.IsZero()) {
  return this.ToEInteger().ToInt16Checked();
     }
 
+    /**
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 16-bit signed integer.
+     * @return This number, converted to a 16-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
     public short ToInt16Unchecked() {
       return this.IsFinite() ? this.ToEInteger().ToInt16Unchecked() : (short)0;
     }
 
+    /**
+     * Converts this number's value to a 16-bit signed integer if it can fit in a
+     * 16-bit signed integer without rounding to a different numerical value.
+     * @return This number's value as a 16-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -32768 or greater than 32767.
+     */
     public short ToInt16IfExact() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is infinity or NaN");
@@ -542,11 +719,25 @@ if (this.IsZero()) {
  return this.IsZero() ? ((short)0) : this.ToEIntegerIfExact().ToInt16Checked();
     }
 
+    /**
+     * Converts a 16-bit signed integer to an arbitrary-precision decimal number.
+     * @param inputInt16 The number to convert as a 16-bit signed integer.
+     * @return This number's value as an arbitrary-precision decimal number.
+     */
     public static CBORNumber FromInt16(short inputInt16) {
       int val = inputInt16;
       return FromObject((long)val);
     }
 
+    /**
+     * Converts this number's value to a 32-bit signed integer if it can fit in a
+     * 32-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
+     * @return This number's value, truncated to a 32-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -2147483648 or greater than 2147483647.
+     */
     public int ToInt32Checked() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is" +
@@ -555,10 +746,24 @@ if (this.IsZero()) {
  return this.ToEInteger().ToInt32Checked();
     }
 
+    /**
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 32-bit signed integer.
+     * @return This number, converted to a 32-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
     public int ToInt32Unchecked() {
       return this.IsFinite() ? this.ToEInteger().ToInt32Unchecked() : 0;
     }
 
+    /**
+     * Converts this number's value to a 32-bit signed integer if it can fit in a
+     * 32-bit signed integer without rounding to a different numerical value.
+     * @return This number's value as a 32-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -2147483648 or greater than 2147483647.
+     */
     public int ToInt32IfExact() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is infinity or NaN");
@@ -566,6 +771,15 @@ if (this.IsZero()) {
  return this.IsZero() ? 0 : this.ToEIntegerIfExact().ToInt32Checked();
     }
 
+    /**
+     * Converts this number's value to a 64-bit signed integer if it can fit in a
+     * 64-bit signed integer after converting it to an integer by discarding its
+     * fractional part.
+     * @return This number's value, truncated to a 64-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, or the
+     * number, once converted to an integer by discarding its fractional part, is
+     * less than -9223372036854775808 or greater than 9223372036854775807.
+     */
     public long ToInt64Checked() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is" +
@@ -574,10 +788,25 @@ if (this.IsZero()) {
  return this.ToEInteger().ToInt64Checked();
     }
 
+    /**
+     * Converts this number's value to an integer by discarding its fractional
+     * part, and returns the least-significant bits of its two's-complement form as
+     * a 64-bit signed integer.
+     * @return This number, converted to a 64-bit signed integer. Returns 0 if this
+     * value is infinity or not-a-number.
+     */
     public long ToInt64Unchecked() {
       return this.IsFinite() ? this.ToEInteger().ToInt64Unchecked() : 0L;
     }
 
+    /**
+     * Converts this number's value to a 64-bit signed integer if it can fit in a
+     * 64-bit signed integer without rounding to a different numerical value.
+     * @return This number's value as a 64-bit signed integer.
+     * @throws ArithmeticException This value is infinity or not-a-number, is not
+     * an exact integer, or is less than -9223372036854775808 or greater than
+     * 9223372036854775807.
+     */
     public long ToInt64IfExact() {
       if (!this.IsFinite()) {
  throw new ArithmeticException("Value is infinity or NaN");
@@ -636,6 +865,10 @@ if (this.IsZero()) {
   bi.ToInt64Checked()) : new CBORNumber(NumberKind.EInteger, bi);
     }
 
+    /**
+     * Returns the value of this object in text form.
+     * @return A text string representing the value of this object.
+     */
     @Override public String toString() {
       switch (this.getKind()) {
         case Integer: {
@@ -727,6 +960,12 @@ if (this.IsZero()) {
       return new CBORNumber(NumberKind.ERational, value);
     }
 
+    /**
+     * Returns whether this object's numerical value is an integer, is -(2^31) or
+     * greater, and is less than 2^31.
+     * @return {@code true} if this object's numerical value is an integer, is
+     * -(2^31) or greater, and is less than 2^31; otherwise, {@code false}.
+     */
     public boolean CanFitInInt32() {
       ICBORNumber icn = this.GetNumberInterface();
       Object gv = this.GetValue();
@@ -737,42 +976,93 @@ if (this.IsZero()) {
       return v >= Integer.MIN_VALUE && v <= Integer.MAX_VALUE;
     }
 
+    /**
+     * Returns whether this object's numerical value is an integer, is -(2^63) or
+     * greater, and is less than 2^63.
+     * @return {@code true} if this object's numerical value is an integer, is
+     * -(2^63) or greater, and is less than 2^63; otherwise, {@code false}.
+     */
     public boolean CanFitInInt64() {
       return this.GetNumberInterface().CanFitInInt64(this.GetValue());
     }
 
+    /**
+     * Returns whether this object's numerical value is an integer, is 0 or
+     * greater, and is less than 2^64.
+     * @return {@code true} if this object's numerical value is an integer, is 0 or
+     * greater, and is less than 2^64; otherwise, {@code false}.
+     */
     public boolean CanFitInUInt64() {
       return this.GetNumberInterface().CanFitInUInt64(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this object represents infinity.
+     * @return {@code true} if this object represents infinity; otherwise, {@code
+     * false}.
+     */
     public boolean IsInfinity() {
       return this.GetNumberInterface().IsInfinity(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this object represents positive infinity.
+     * @return {@code true} if this object represents positive infinity; otherwise,
+     * {@code false}.
+     */
     public boolean IsPositiveInfinity() {
       return this.GetNumberInterface().IsPositiveInfinity(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this object represents negative infinity.
+     * @return {@code true} if this object represents negative infinity; otherwise,
+     * {@code false}.
+     */
     public boolean IsNegativeInfinity() {
       return this.GetNumberInterface().IsNegativeInfinity(this.GetValue());
     }
 
+    /**
+     * Gets a value indicating whether this object represents a not-a-number value.
+     * @return {@code true} if this object represents a not-a-number value;
+     * otherwise, {@code false}.
+     */
     public boolean IsNaN() {
       return this.GetNumberInterface().IsNaN(this.GetValue());
     }
 
+    /**
+     * Converts this object to a decimal number.
+     * @return A decimal number for this object's value.
+     */
     public EDecimal ToEDecimal() {
       return this.GetNumberInterface().AsEDecimal(this.GetValue());
     }
 
+    /**
+     * Converts this object to an arbitrary-precision binary floating point number.
+     * See the ToObject overload taking a type for more information.
+     * @return An arbitrary-precision binary floating-point number for this
+     * object's value.
+     */
     public EFloat ToEFloat() {
       return this.GetNumberInterface().AsEFloat(this.GetValue());
     }
 
+    /**
+     * Converts this object to a rational number. See the ToObject overload taking
+     * a type for more information.
+     * @return A rational number for this object's value.
+     */
     public ERational ToERational() {
       return this.GetNumberInterface().AsERational(this.GetValue());
     }
 
+    /**
+     * Returns the absolute value of this CBOR number.
+     * @return This object's absolute value without its negative sign.
+     */
     public CBORNumber Abs() {
       switch (this.getKind()) {
         case Integer: {
@@ -793,6 +1083,12 @@ if (this.IsZero()) {
       }
     }
 
+    /**
+     * Returns a CBOR number with the same value as this one but with the sign
+     * reversed.
+     * @return A CBOR number with the same value as this one but with the sign
+     * reversed.
+     */
     public CBORNumber Negate() {
       switch (this.getKind()) {
         case Integer: {
@@ -866,6 +1162,15 @@ NumberKind.Double) ?
       return convertKind;
     }
 
+    /**
+     * Returns the sum of this number and another number.
+     * @param b The number to add with this one.
+     * @return The sum of this number and another number.
+     * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
+     */
     public CBORNumber Add(CBORNumber b) {
       if (b == null) {
         throw new NullPointerException("b");
@@ -930,6 +1235,15 @@ NumberKind.Double) ?
       }
     }
 
+    /**
+     * Returns a number that expresses this number minus another.
+     * @param b The second operand to the subtraction.
+     * @return A CBOR number that expresses this number minus the given number.
+     * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
+     */
     public CBORNumber Subtract(CBORNumber b) {
       if (b == null) {
         throw new NullPointerException("b");
@@ -987,6 +1301,16 @@ NumberKind.Double) ?
       }
     }
 
+    /**
+     * Returns a CBOR number expressing the product of this number and the given
+     * number.
+     * @param b The second operand to the multiplication operation.
+     * @return A number expressing the product of this number and the given number.
+     * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
+     */
     public CBORNumber Multiply(CBORNumber b) {
       if (b == null) {
         throw new NullPointerException("b");
@@ -1042,6 +1366,15 @@ NumberKind.Double) ?
       }
     }
 
+    /**
+     * Returns the quotient of this number and another number.
+     * @param b The right-hand side (divisor) to the division operation.
+     * @return The quotient of this number and another one.
+     * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
+     */
     public CBORNumber Divide(CBORNumber b) {
       if (b == null) {
         throw new NullPointerException("b");
@@ -1142,6 +1475,15 @@ NumberKind.Double) ?
       }
     }
 
+    /**
+     * Returns the remainder when this number is divided by another number.
+     * @param b The right-hand side (dividend) of the remainder operation.
+     * @return The remainder when this number is divided by the other number.
+     * @throws NullPointerException The parameter {@code b} is null.
+     * @throws OutOfMemoryError The exact result of the operation might be too big
+     * to fit in memory (or might require more than 2 gigabytes of memory to
+     * store).
+     */
     public CBORNumber Remainder(CBORNumber b) {
       if (b == null) {
         throw new NullPointerException("b");
@@ -1182,14 +1524,44 @@ NumberKind.Double) ?
       }
     }
 
+    /**
+     * Compares this CBOR number with a 32-bit signed integer. In this
+     * implementation, the two numbers' mathematical values are compared. Here, NaN
+     * (not-a-number) is considered greater than any number.
+     * @param other A value to compare with. Can be null.
+     * @return A negative number, if this value is less than the other object; or
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
+     */
     public int compareTo(int other) {
       return this.compareTo(CBORObject.FromObject(other).AsNumber());
     }
 
+    /**
+     * Compares this CBOR number with a 64-bit signed integer. In this
+     * implementation, the two numbers' mathematical values are compared. Here, NaN
+     * (not-a-number) is considered greater than any number.
+     * @param other A value to compare with. Can be null.
+     * @return A negative number, if this value is less than the other object; or
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
+     */
     public int compareTo(long other) {
       return this.compareTo(CBORObject.FromObject(other).AsNumber());
     }
 
+    /**
+     * Compares this CBOR number with another. In this implementation, the two
+     * numbers' mathematical values are compared. Here, NaN (not-a-number) is
+     * considered greater than any number.
+     * @param other A value to compare with. Can be null.
+     * @return A negative number, if this value is less than the other object; or
+     * 0, if both values are equal; or a positive number, if this value is less
+     * than the other object or if the other object is null. This implementation
+     * returns a positive number if.
+     */
     public int compareTo(CBORNumber other) {
       if (other == null) {
         return 1;

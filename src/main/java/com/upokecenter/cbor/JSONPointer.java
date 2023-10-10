@@ -232,6 +232,12 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       }
     }
 
+    /**
+     * Gets an index into the specified object, if the object is an array and is
+     * not greater than the array's length.
+     * @return The index contained in this instance, or -1 if the object isn't a
+     * JSON array or is greater than the array's length.
+     */
     public int GetIndex() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
@@ -280,6 +286,22 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       }
     }
 
+    /**
+     * <p>Gets all children of the specified JSON object that contain the specified
+     * key; the method will remove matching keys. As an example, consider this
+     * object: </p><pre>[{"key":"value1","foo":"foovalue"},
+     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     * getPointersToKey is called on this object with a keyToFind called "key", we
+     * get the following Map as the return value: <pre>{ "/0" =&gt; "value1", //
+     * "/0" points to {"foo":"foovalue"} "/1" =&gt; "value2" /* "/1" points to
+     * {"bar":"barvalue"} &#x2a;&#x2f; }</pre> and the JSON object will change to the
+     * following: <pre>[{"foo":"foovalue"}, {"bar":"barvalue"},
+     * {"baz","bazvalue"}]</pre>.
+     * @param root The object to search.
+     * @param keyToFind The key to search for.
+     * @return A map: The JSON Pointers are relative to the root object.
+     * @throws NullPointerException The parameter {@code root} is null.
+     */
     public static Map<String, CBORObject> GetPointersWithKeyAndRemove(
       CBORObject root,
       String keyToFind) {
@@ -291,6 +313,26 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       return list;
     }
 
+    /**
+     * <p>Gets all children of the specified JSON object that contain the specified
+     * key; the method will not remove matching keys. As an example, consider this
+     * object: </p><pre>[{"key":"value1","foo":"foovalue"},
+     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
+     * getPointersToKey is called on this object with a keyToFind called "key", we
+     * get the following Map as the return value: <pre>{ "/0" =&gt; "value1", //
+     * "/0" points to {"key":"value1","foo":"foovalue"} "/1" =&gt; "value2" // "/1"
+     * points to {"key":"value2","bar":"barvalue"} }</pre> and the JSON object will
+     * remain unchanged. <ul> <li>The keys in the map are JSON Pointers to the
+     * objects within <i>root</i> that contained a key named <i>keyToFind</i>. To
+     * get the actual JSON object, call JSONPointer.GetObject, passing <i>root</i>
+     * and the pointer as arguments.</li><li>The values in the map are the values
+     * of each of those keys named <i>keyToFind</i>.</li></ul> The JSON Pointers
+     * are relative to the root object.
+     * @param root object to search.
+     * @param keyToFind The key to search for.
+     * @return A map:.
+     * @throws NullPointerException The parameter {@code root} is null.
+     */
     public static Map<String, CBORObject> GetPointersWithKey(
       CBORObject root,
       String keyToFind) {

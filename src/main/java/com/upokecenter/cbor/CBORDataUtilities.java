@@ -12,6 +12,9 @@ import java.util.*;
 
 import com.upokecenter.numbers.*;
 
+  /**
+   * Contains methods useful for reading and writing data, with a focus on CBOR.
+   */
   public final class CBORDataUtilities {
 private CBORDataUtilities() {
 }
@@ -199,10 +202,34 @@ private CBORDataUtilities() {
     private static final JSONOptions PreserveNegZeroYes =
       new JSONOptions("preservenegativezero=1");
 
+    /**
+     * Parses a number whose format follows the JSON specification. The method uses
+     * a JSONOptions with all default properties.
+     * @param str A text string to parse as a JSON number.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty.
+     */
     public static CBORObject ParseJSONNumber(String str) {
       return ParseJSONNumber(str, JSONOptions.Default);
     }
 
+    /**
+     * <p>Parses a number whose format follows the JSON specification (RFC 8259)
+     * and converts that number to a CBOR object.</p> <p>Roughly speaking, a valid
+     * JSON number consists of an optional minus sign, one or more basic digits
+     * (starting with 1 to 9 unless there is only one digit and that digit is 0),
+     * an optional decimal point (".", full stop) with one or more basic digits,
+     * and an optional letter E or e with an optional plus or minus sign and one or
+     * more basic digits (the exponent). A text string representing a valid JSON
+     * number is not allowed to contain white space characters, including
+     * spaces.</p>
+     * @param str A text string to parse as a JSON number.
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty.
+     */
     public static CBORObject ParseJSONNumber(
       String str,
       JSONOptions options) {
@@ -213,6 +240,28 @@ private CBORDataUtilities() {
           options);
     }
 
+    /**
+     * <p>Parses a number whose format follows the JSON specification (RFC 8259)
+     * from a portion of a text string, and converts that number to a CBOR
+     * object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
+     * minus sign, one or more basic digits (starting with 1 to 9 unless there is
+     * only one digit and that digit is 0), an optional decimal point (".", full
+     * stop) with one or more basic digits, and an optional letter E or e with an
+     * optional plus or minus sign and one or more basic digits (the exponent). A
+     * text string representing a valid JSON number is not allowed to contain white
+     * space characters, including spaces.</p>
+     * @param str A text string containing the portion to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code str} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty.
+     * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's length minus
+     * {@code offset} is less than {@code count}.
+     * @throws NullPointerException The parameter {@code str} is null.
+     */
     public static CBORObject ParseJSONNumber(
       String str,
       int offset,
@@ -258,6 +307,30 @@ private CBORDataUtilities() {
       }
     }
 
+    /**
+     * <p>Parses a number whose format follows the JSON specification (RFC 8259)
+     * and converts that number to a CBOR object.</p> <p>Roughly speaking, a valid
+     * JSON number consists of an optional minus sign, one or more basic digits
+     * (starting with 1 to 9 unless there is only one digit and that digit is 0),
+     * an optional decimal point (".", full stop) with one or more basic digits,
+     * and an optional letter E or e with an optional plus or minus sign and one or
+     * more basic digits (the exponent). A text string representing a valid JSON
+     * number is not allowed to contain white space characters, including
+     * spaces.</p>
+     * @param str A text string to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code str} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the string is null or empty or {@code count} is
+     * 0 or less.
+     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException Unsupported conversion kind.
+     */
     public static CBORObject ParseJSONNumber(
       String str,
       int offset,
@@ -271,6 +344,30 @@ private CBORDataUtilities() {
         null);
     }
 
+    /**
+     * <p>Parses a number from a byte sequence whose format follows the JSON
+     * specification (RFC 8259) and converts that number to a CBOR object.</p>
+     * <p>Roughly speaking, a valid JSON number consists of an optional minus sign,
+     * one or more basic digits (starting with 1 to 9 unless there is only one
+     * digit and that digit is 0), an optional decimal point (".", full stop) with
+     * one or more basic digits, and an optional letter E or e with an optional
+     * plus or minus sign and one or more basic digits (the exponent). A byte
+     * sequence representing a valid JSON number is not allowed to contain white
+     * space characters, including spaces.</p>
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code bytes} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * bytes} (but not more than {@code bytes} 's length).
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the byte sequence is null or empty or {@code
+     * count} is 0 or less.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws IllegalArgumentException Unsupported conversion kind.
+     */
     public static CBORObject ParseJSONNumber(
       byte[] bytes,
       int offset,
@@ -284,6 +381,23 @@ private CBORDataUtilities() {
         null);
     }
 
+    /**
+     * <p>Parses a number from a byte sequence whose format follows the JSON
+     * specification (RFC 8259) and converts that number to a CBOR object.</p>
+     * <p>Roughly speaking, a valid JSON number consists of an optional minus sign,
+     * one or more basic digits (starting with 1 to 9 unless there is only one
+     * digit and that digit is 0), an optional decimal point (".", full stop) with
+     * one or more basic digits, and an optional letter E or e with an optional
+     * plus or minus sign and one or more basic digits (the exponent). A byte
+     * sequence representing a valid JSON number is not allowed to contain white
+     * space characters, including spaces.</p>
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the byte sequence is null or empty.
+     */
     public static CBORObject ParseJSONNumber(
       byte[] bytes,
       JSONOptions options) {
@@ -294,6 +408,28 @@ private CBORDataUtilities() {
           options);
     }
 
+    /**
+     * <p>Parses a number whose format follows the JSON specification (RFC 8259)
+     * from a portion of a byte sequence, and converts that number to a CBOR
+     * object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
+     * minus sign, one or more basic digits (starting with 1 to 9 unless there is
+     * only one digit and that digit is 0), an optional decimal point (".", full
+     * stop) with one or more basic digits, and an optional letter E or e with an
+     * optional plus or minus sign and one or more basic digits (the exponent). A
+     * byte sequence representing a valid JSON number is not allowed to contain
+     * white space characters, including spaces.</p>
+     * @param bytes A sequence of bytes to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code bytes} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * bytes} (but not more than {@code bytes} 's length).
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the byte sequence is null or empty.
+     * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's length
+     * minus {@code offset} is less than {@code count}.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
     public static CBORObject ParseJSONNumber(
       byte[] bytes,
       int offset,
@@ -305,10 +441,41 @@ private CBORDataUtilities() {
           JSONOptions.Default);
     }
 
+    /**
+     * Parses a number from a byte sequence whose format follows the JSON
+     * specification. The method uses a JSONOptions with all default properties.
+     * @param bytes A byte sequence to parse as a JSON number.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the byte sequence is null or empty.
+     */
     public static CBORObject ParseJSONNumber(byte[] bytes) {
       return ParseJSONNumber(bytes, JSONOptions.Default);
     }
 
+    /**
+     * <p>Parses a number from a sequence of {@code char} s whose format follows
+     * the JSON specification (RFC 8259) and converts that number to a CBOR
+     * object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
+     * minus sign, one or more basic digits (starting with 1 to 9 unless there is
+     * only one digit and that digit is 0), an optional decimal point (".", full
+     * stop) with one or more basic digits, and an optional letter E or e with an
+     * optional plus or minus sign and one or more basic digits (the exponent). A
+     * sequence of {@code char} s representing a valid JSON number is not allowed
+     * to contain white space characters, including spaces.</p>
+     * @param chars A sequence of {@code char} s to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code chars} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * chars} (but not more than {@code chars} 's length).
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the sequence of {@code char} s is null or empty
+     * or {@code count} is 0 or less.
+     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Unsupported conversion kind.
+     */
     public static CBORObject ParseJSONNumber(
       char[] chars,
       int offset,
@@ -322,6 +489,23 @@ private CBORDataUtilities() {
         null);
     }
 
+    /**
+     * <p>Parses a number from a sequence of {@code char} s whose format follows
+     * the JSON specification (RFC 8259) and converts that number to a CBOR
+     * object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
+     * minus sign, one or more basic digits (starting with 1 to 9 unless there is
+     * only one digit and that digit is 0), an optional decimal point (".", full
+     * stop) with one or more basic digits, and an optional letter E or e with an
+     * optional plus or minus sign and one or more basic digits (the exponent). A
+     * sequence of {@code char} s representing a valid JSON number is not allowed
+     * to contain white space characters, including spaces.</p>
+     * @param chars A sequence of {@code char} s to parse as a JSON number.
+     * @param options An object containing options to control how JSON numbers are
+     * decoded to CBOR objects. Can be null, in which case a JSONOptions object
+     * with all default properties is used instead.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the sequence of {@code char} s is null or empty.
+     */
     public static CBORObject ParseJSONNumber(
       char[] chars,
       JSONOptions options) {
@@ -332,6 +516,28 @@ private CBORDataUtilities() {
           options);
     }
 
+    /**
+     * <p>Parses a number whose format follows the JSON specification (RFC 8259)
+     * from a portion of a sequence of {@code char} s, and converts that number to
+     * a CBOR object.</p> <p>Roughly speaking, a valid JSON number consists of an
+     * optional minus sign, one or more basic digits (starting with 1 to 9 unless
+     * there is only one digit and that digit is 0), an optional decimal point
+     * (".", full stop) with one or more basic digits, and an optional letter E or
+     * e with an optional plus or minus sign and one or more basic digits (the
+     * exponent). A sequence of {@code char} s representing a valid JSON number is
+     * not allowed to contain white space characters, including spaces.</p>
+     * @param chars A sequence of {@code char} s to parse as a JSON number.
+     * @param offset An index, starting at 0, showing where the desired portion of
+     * {@code chars} begins.
+     * @param count The length, in code units, of the desired portion of {@code
+     * chars} (but not more than {@code chars} 's length).
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the sequence of {@code char} s is null or empty.
+     * @throws IllegalArgumentException Either {@code offset} or {@code count} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's length
+     * minus {@code offset} is less than {@code count}.
+     * @throws NullPointerException The parameter {@code chars} is null.
+     */
     public static CBORObject ParseJSONNumber(
       char[] chars,
       int offset,
@@ -343,6 +549,14 @@ private CBORDataUtilities() {
           JSONOptions.Default);
     }
 
+    /**
+     * Parses a number from a sequence of {@code char} s whose format follows the
+     * JSON specification. The method uses a JSONOptions with all default
+     * properties.
+     * @param chars A sequence of {@code char} s to parse as a JSON number.
+     * @return A CBOR object that represents the parsed number. Returns null if the
+     * parsing fails, including if the sequence of {@code char} s is null or empty.
+     */
     public static CBORObject ParseJSONNumber(char[] chars) {
       return ParseJSONNumber(chars, JSONOptions.Default);
     }

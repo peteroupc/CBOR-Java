@@ -1,5 +1,14 @@
 package com.upokecenter.util;
 
+  /**
+   * <p>A class that adapts a random byte generator to generate random numbers in
+   * a variety of statistical distributions. </p><p>The method descriptions in
+   * this class assume the underlying random byte generator generates uniformly
+   * distributed numbers that are independent of each other.</p> <p><b>Thread
+   * safety:</b> The methods in this class are safe for concurrent use by
+   * multiple threads, as long as the underlying random byte generator is as
+   * well.</p>
+   */
   public final class RandomGenerator implements IRandomGenExtended
   {
     private final IRandomGen valueIrg;
@@ -7,14 +16,29 @@ package com.upokecenter.util;
     private boolean valueHaveLastNormal;
     private double valueLastNormal;
 
+    /**
+     * Initializes a new instance of the {@link RandomGenerator} class.getInitializes()
+     * a new instance of the RandomGenerator class.
+     */
     public RandomGenerator() {
  this(new XorShift128Plus());
     }
 
+    /**
+     * Initializes a new instance of the {@link RandomGenerator} class.getInitializes()
+     * a new instance of the RandomGenerator class.
+     * @param valueIrg An IRandomGen object.
+     */
     public RandomGenerator(IRandomGen valueIrg) {
       this.valueIrg = valueIrg;
     }
 
+    /**
+     * Returns either true or false, depending on the given probability.
+     * @param p A probability from 0 through 1. 0 means always false, and 1 means
+     * always true.
+     * @return A Boolean object.
+     */
     public boolean Bernoulli(double p) {
       if (p < 0) {
  throw new IllegalArgumentException("p(" + p + ") is less than 0");
@@ -25,18 +49,42 @@ package com.upokecenter.util;
  return this.Uniform() < p;
     }
 
+    /**
+     * Returns either true or false at a 50% chance each.
+     * @return A Boolean object.
+     */
     public boolean Bernoulli() {
       return this.UniformInt(2) == 0;
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 the given number of times, where
+     * either number is equally likely, and counts the number of 1's generated.
+     * @param trials The number of times to generate a random number, conceptually.
+     * @return A 32-bit signed integer.
+     */
     public int Binomial(int trials) {
       return this.Binomial(trials, 0.5);
     }
 
+    /**
+     * @param bytes Not documented yet.
+     * @param offset Not documented yet.
+     * @param count Not documented yet.
+     */
     public int GetBytes(byte[] bytes, int offset, int count) {
       return this.valueIrg.GetBytes(bytes, offset, count);
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 the given number of times, where a 1
+     * is generated at the given probability, and counts the number of 1's
+     * generated.
+     * @param trials The number of times to generate a random number, conceptually.
+     * @param p The probability for each trial to succeed, from 0 (never) to 1
+     * (always).
+     * @return The number of successes in a given number of trials.
+     */
     public int Binomial(int trials, double p) {
       if (p < 0) {
         throw new IllegalArgumentException("p(" + p + ") is less than 0");
@@ -75,6 +123,14 @@ package com.upokecenter.util;
       return count;
     }
 
+    /**
+     * Generates a random number that is the sum of the squares of "df"
+     * normally-distributed random numbers with a mean of 0 and a standard
+     * deviation of 1.
+     * @param df Degrees of freedom (the number of independently chosen
+     * normally-distributed numbers).
+     * @return A 64-bit floating-point number.
+     */
     public double ChiSquared(int df) {
       if (df <= 0) {
  throw new IllegalArgumentException("df(" + df + ") is not" +
@@ -83,10 +139,20 @@ package com.upokecenter.util;
  return this.Gamma(df * 0.5, 2);
     }
 
+    /**
+     * Not documented yet.
+     * @return A 64-bit floating-point number.
+     */
     public double Exponential() {
       return -Math.log(1.0 - this.Uniform());
     }
 
+    /**
+     * Not documented yet.
+     * @param a Another 64-bit floating-point number.
+     * @param b A 64-bit floating-point number. (3).
+     * @return A 64-bit floating-point number.
+     */
     public double Gamma(double a, double b) {
       if (b <= 0) {
  throw new IllegalArgumentException("b(" + b + ") is not" +
@@ -95,6 +161,11 @@ package com.upokecenter.util;
  return this.Gamma(a) * b;
     }
 
+    /**
+     * Not documented yet.
+     * @param a Another 64-bit floating-point number.
+     * @return A 64-bit floating-point number.
+     */
     public double Gamma(double a) {
       if (a <= 0) {
         throw new IllegalArgumentException("a(" + a + ") is not greater than 0");
@@ -114,14 +185,35 @@ package com.upokecenter.util;
       return a < 1 ? d * v * Math.exp(this.Exponential() / -a) : d * v;
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 until a 1 is generated, and counts the
+     * number of 0's generated. Either number has an equal probability of being
+     * generated.
+     * @return The number of failures until a success happens.
+     */
     public int Geometric() {
       return this.NegativeBinomial(1, 0.5);
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 until a 1 is generated, and counts the
+     * number of 0's generated. A 1 is generated at the given probability.
+     * @param p A 64-bit floating-point number.
+     * @return The number of failures until a success happens.
+     */
     public int Geometric(double p) {
       return this.NegativeBinomial(1, p);
     }
 
+    /**
+     * Conceptually, given a set of tokens, some of which are labeled 1 and the
+     * others labeled 0, draws "trials" tokens at random without replacement and
+     * then counts the number of 1's drawn.
+     * @param trials The number of tokens drawn at random without replacement.
+     * @param ones The number of tokens labeled 1.
+     * @param count The number of tokens labeled 1 or 0.
+     * @return A 32-bit signed integer.
+     */
     public int Hypergeometric(int trials, int ones, int count) {
       if (ones < 0) {
         throw new IllegalArgumentException("ones(" + ones + ") is less than 0");
@@ -153,10 +245,27 @@ package com.upokecenter.util;
       return ret;
     }
 
+    /**
+     * Generates a logarithmic normally-distributed number with the given mean and
+     * standard deviation.
+     * @param mean The desired mean.
+     * @param sd Standard deviation.
+     * @return A 64-bit floating-point number.
+     */
     public double LogNormal(double mean, double sd) {
       return Math.exp(this.Normal(mean, sd));
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 until the given number of 1's are
+     * generated, and counts the number of 0's generated. A 1 is generated at the
+     * given probability.
+     * @param trials The number of 1's to generate before the process stops.
+     * @param p The probability for each trial to succeed, from 0 (never) to 1
+     * (always).
+     * @return The number of 0's generated. Returns Integer.MAX_VALUE if {@code p}
+     * is 0.
+     */
     public int NegativeBinomial(int trials, double p) {
       if (p < 0) {
         throw new IllegalArgumentException("p(" + p + ") is less than 0");
@@ -207,6 +316,13 @@ package com.upokecenter.util;
       }
     }
 
+    /**
+     * Conceptually, generates either 1 or 0 the given number of times until the
+     * given number of 1's are generated, and counts the number of 0's generated.
+     * Either number has an equal probability of being generated.
+     * @param trials The number of 1's to generate before the process stops.
+     * @return The number of 0's generated. Returns Integer.MAX_VALUE if "p" is 0.
+     */
     public int NegativeBinomial(int trials) {
       return this.NegativeBinomial(trials, 0.5);
     }
@@ -214,6 +330,11 @@ package com.upokecenter.util;
     // single-argument Gamma methods were adapted
     // from a third-party public-domain JavaScript file.
 
+    /**
+     * Generates a normally-distributed number with mean 0 and standard deviation
+     * 1.
+     * @return A 64-bit floating-point number.
+     */
     public double Normal() {
       synchronized (this.valueNormalLock) {
         if (this.valueHaveLastNormal) {
@@ -233,10 +354,24 @@ package com.upokecenter.util;
       return s * Math.cos(t);
     }
 
+    /**
+     * Generates a normally-distributed number with the given mean and standard
+     * deviation.
+     * @param mean The desired mean.
+     * @param sd Standard deviation.
+     * @return A 64-bit floating-point number.
+     */
     public double Normal(double mean, double sd) {
       return (this.Normal() * sd) + mean;
     }
 
+    /**
+     * Generates a random integer such that the average of random numbers
+     * approaches the given mean number when this method is called repeatedly with
+     * the same mean.
+     * @param mean The expected mean of the random numbers.
+     * @return A 32-bit signed integer.
+     */
     public int Poisson(double mean) {
       if (mean < 0) {
         throw new IllegalArgumentException("mean(" + mean +
@@ -254,6 +389,12 @@ package com.upokecenter.util;
       }
     }
 
+    /**
+     * Not documented yet.
+     * @param min Smallest possible number that will be generated.
+     * @param max Number that the randomly-generated number will be less than.
+     * @return A 64-bit floating-point number.
+     */
     public double Uniform(double min, double max) {
       if (min >= max) {
  throw new IllegalArgumentException("min(" + min + ") is not less than " +
@@ -262,18 +403,41 @@ package com.upokecenter.util;
  return min + ((max - min) * this.Uniform());
     }
 
+    /**
+     * Returns a uniformly-distributed 64-bit floating-point number from 0 and up,
+     * but less than the given number.
+     * @param max Number that the randomly-generated number will be less than.
+     * @return A 64-bit floating-point number.
+     */
     public double Uniform(double max) {
       return this.Uniform(0.0, max);
     }
 
+    /**
+     * Returns a uniformly-distributed 64-bit floating-point number from 0 and up,
+     * but less than 1.
+     * @return A 64-bit floating-point number.
+     */
     public double Uniform() {
       return this.UniformLong(9007199254740992L) / 9007199254740992.0;
     }
 
+    /**
+     * Returns a uniformly-distributed 32-bit floating-point number from 0 and up,
+     * but less than 1.
+     * @return A 32-bit floating-point number.
+     */
     public double UniformSingle() {
       return this.UniformInt(16777216) / 16777216.0f;
     }
 
+    /**
+     * Generates a random 32-bit signed integer within a given range.
+     * @param minInclusive Smallest possible value of the random number.
+     * @param maxExclusive One plus the largest possible value of the random
+     * number.
+     * @return A 32-bit signed integer.
+     */
     public int UniformInt(int minInclusive, int maxExclusive) {
       if (minInclusive > maxExclusive) {
         throw new IllegalArgumentException("minInclusive(" + minInclusive +
@@ -291,6 +455,13 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
     }
 
+    /**
+     * Generates a random 64-bit signed integer within a given range.
+     * @param minInclusive Smallest possible value of the random number.
+     * @param maxExclusive One plus the largest possible value of the random
+     * number.
+     * @return A 64-bit signed integer.
+     */
     public long UniformLong(long minInclusive, long maxExclusive) {
       if (minInclusive > maxExclusive) {
         throw new IllegalArgumentException("minInclusive(" + minInclusive +
@@ -328,6 +499,13 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
     }
 
+    /**
+     * Generates a random 32-bit signed integer 0 or greater and less than the
+     * given number.
+     * @param maxExclusive One plus the largest possible value of the random
+     * number.
+     * @return A 32-bit signed integer.
+     */
     public int UniformInt(int maxExclusive) {
       if (maxExclusive < 0) {
         throw new IllegalArgumentException("maxExclusive(" + maxExclusive +
@@ -382,14 +560,27 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       }
     }
 
+    /**
+     * @param maxExclusive Not documented yet.
+     */
     public long GetInt64(long maxExclusive) {
       return this.UniformLong(maxExclusive);
     }
 
+    /**
+     * @param maxExclusive Not documented yet.
+     */
     public int GetInt32(int maxExclusive) {
       return this.UniformInt(maxExclusive);
     }
 
+    /**
+     * Generates a random 32-bit signed integer 0 or greater and less than the
+     * given number.
+     * @param maxExclusive One plus the largest possible value of the random
+     * number.
+     * @return A 64-bit signed integer.
+     */
     public long UniformLong(long maxExclusive) {
       if (maxExclusive < 0) {
         throw new IllegalArgumentException("maxExclusive(" + maxExclusive +

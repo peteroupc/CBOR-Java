@@ -10,6 +10,9 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 import com.upokecenter.numbers.*;
 
+  /**
+   * Contains utility methods that may have use outside of the CBORObject class.
+   */
   final class CBORUtilities {
 private CBORUtilities() {
 }
