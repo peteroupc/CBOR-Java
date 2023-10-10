@@ -347,7 +347,7 @@ private final List<String[]> propVarpointers;
     private int NextComment(StringBuilder sb) {
       while (this.index < this.endPos) {
         int c = this.jstring.charAt(this.index++);
-        if (c instanceof not 0x0d and not 0x09 and not 0x20) {
+        if (c != 0x0d && c not 0x09 and not 0x20) {
           --this.index;
           break;
         }
@@ -365,7 +365,7 @@ private final List<String[]> propVarpointers;
         if (c instanceof 0x0d or 0x09 or 0x20) {
           while (this.index < this.endPos) {
             c = this.jstring.charAt(this.index++);
-            if (c instanceof not 0x0d and not 0x09 and not 0x20) {
+            if (c != 0x0d && c not 0x09 and not 0x20) {
               --this.index;
               break;
             }

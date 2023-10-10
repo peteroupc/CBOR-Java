@@ -116,7 +116,7 @@ private CBORPlistWriter() {
       List<CBORObject> stack,
       CBORObject parent,
       CBORObject child) {
-      if (child.Type is not CBORType.Array and not CBORType.Map) {
+      if (child.getType() != CBORType.Array && child.Type not CBORType.Map) {
         return false;
       }
       CBORObject childUntag = child.Untag();
