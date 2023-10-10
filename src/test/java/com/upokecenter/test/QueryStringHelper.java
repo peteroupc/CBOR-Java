@@ -34,7 +34,7 @@ import com.upokecenter.cbor.*;
             strings = new ArrayList<String>();
             first = false;
           }
-          String newstr = s.charAt(index..index2);
+          String newstr = s.substring(index, (index2-index));
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -186,7 +186,7 @@ import com.upokecenter.cbor.*;
         String name = str;
         String value = ""; // value is empty if there is no key
         if (index >= 0) {
-          name = str.charAt(..index);
+          name = str.substring(, (index-));
           value = str.charAt((index + 1)..);
         }
         name = name.replace('+', ' ');
@@ -209,7 +209,7 @@ private static String[] GetKeyPath(String s) {
         return new String[] { s };
       }
       ArrayList<String> { path = new ArrayList<String> {
-        s.charAt(..index),
+        s.substring(, (index-)),
       };
       ++index; // move to after the bracket
       while (true) {
@@ -218,7 +218,7 @@ private static String[] GetKeyPath(String s) {
           path.Add(s.charAt(index..));
           break;
         }
-        path.Add(s.charAt(index..endBracket));
+        path.Add(s.substring(index, (endBracket-index)));
         index = endBracket + 1; // move to after the end bracket
         index = s.indexOf('[',index);
         if (index < 0) { // start bracket not found

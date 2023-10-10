@@ -58,8 +58,8 @@ not (char)0x09) {
           int endIndex = idx;
           this.index = idx;
           return escaped ?
-            CBORObject.FromJSONString(js.charAt((startIndex - 1)..endIndex)) :
-            CBORObject.FromObject(js.charAt(startIndex..(endIndex - 1)));
+            CBORObject.FromJSONString(js.substring((startIndex - 1), (endIndex-(startIndex - 1)))) :
+            CBORObject.FromObject(js.substring(startIndex, ((endIndex - 1)-startIndex)));
         } else if (c == '\\') {
           this.index = idx++;
           escaped = true;
@@ -80,7 +80,7 @@ not (char)0x09) {
             'e' or 'E')) {
           numberEndIndex = c < 0 ? this.index : this.index - 1;
           obj = CBORDataUtilities.ParseJSONNumber(
-            this.jstring.charAt(numberStartIndex..numberEndIndex),
+            this.jstring.substring(numberStartIndex, (numberEndIndex-numberStartIndex)),
             this.options);
           if (obj == null) {
             this.RaiseError("Invalid JSON number");
