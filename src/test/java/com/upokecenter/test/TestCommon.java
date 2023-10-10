@@ -32,7 +32,7 @@ private TestCommon() {
       while (i < str.length()) {
         int c = str.charAt(i);
         ++i;
-        if (c instanceof >= '0' and <= '9') {
+        if (c >= '0' && c <= '9') {
           int x = c - '0';
           if (ret > 214748364) {
             throw new NumberFormatException();
@@ -74,7 +74,7 @@ private TestCommon() {
       while (i < str.length()) {
         int c = str.charAt(i);
         ++i;
-        if (c instanceof >= '0' and <= '9') {
+        if (c >= '0' && c <= '9') {
           int x = c - '0';
           if (ret > 922337203685477580L) {
             throw new NumberFormatException();

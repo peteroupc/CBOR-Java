@@ -45,7 +45,7 @@ private BEncoding() {
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c instanceof >= '0' and <= '9') {
+        if (c >= '0' && c <= '9') {
           builder.append((char)c);
           start = false;
         } else if (c == 'e') {
@@ -118,7 +118,7 @@ EInteger.FromInt64(longValue).toString();
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c instanceof >= '0' and <= '9') {
+        if (c >= '0' && c <= '9') {
           builder.append((char)c);
         } else if (c == ':') {
           break;

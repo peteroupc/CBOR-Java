@@ -7598,7 +7598,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           TestWriteObj(bigintVal, bigintVal);
         }
 
-        if (longValue instanceof >= Integer.MIN_VALUE and <= Integer.MAX_VALUE) {
+        if (longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE) {
           int intval = (int)longValue;
           {
             CBORObject cborTemp1 =
@@ -7672,7 +7672,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
           TestWriteObj(shortval, shortval);
         }
-        if (longValue instanceof >= 0L and <= 255) {
+        if (longValue >= 0L && longValue <= 255) {
           byte byteval = (byte)longValue;
           {
             CBORObject cborTemp1 =

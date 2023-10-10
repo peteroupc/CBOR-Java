@@ -3127,7 +3127,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
               bigintTemp = bigintNext;
               continue;
             }
-            if (bc instanceof >= 264 and <= 270) {
+            if (bc >= 264 && bc <= 270) {
               bigintTemp = bigintNext;
               continue;
             }

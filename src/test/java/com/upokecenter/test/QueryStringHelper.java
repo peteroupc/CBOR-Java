@@ -44,7 +44,7 @@ import com.upokecenter.cbor.*;
 
     private static int ToHexNumber(int c) {
       return c is >= 'A' and <= 'Z' ? 10 + c - 'A' : c is >= 'a' and <= 'z' ?
-10 + c - 'a' : (c is >= '0' and <= '9') ? (c - '0') : (-1);
+10 + c - 'a' : (c >= '0' && c <= '9') ? (c - '0') : (-1);
     }
     private static String PercentDecodeUTF8(String str) {
       int len = str.length();
@@ -82,15 +82,15 @@ import com.upokecenter.cbor.*;
                 if (b < 0x80) {
                   retString.append((char)b);
                   continue;
-                } else if (b instanceof >= 0xc2 and <= 0xdf) {
+                } else if (b >= 0xc2 && b <= 0xdf) {
                   bytesNeeded = 1;
                   cp = b - 0xc0;
-                } else if (b instanceof >= 0xe0 and <= 0xef) {
+                } else if (b >= 0xe0 && b <= 0xef) {
                   lower = (b == 0xe0) ? 0xa0 : 0x80;
                   upper = (b == 0xed) ? 0x9f : 0xbf;
                   bytesNeeded = 2;
                   cp = b - 0xe0;
-                } else if (b instanceof >= 0xf0 and <= 0xf4) {
+                } else if (b >= 0xf0 && b <= 0xf4) {
                   lower = (b == 0xf0) ? 0x90 : 0x80;
                   upper = (b == 0xf4) ? 0x8f : 0xbf;
                   bytesNeeded = 3;
