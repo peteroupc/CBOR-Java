@@ -182,8 +182,8 @@ private static <T> List<T> Compact(List<T> list) {
   }
 }
 
-public static CBORObject GetOrDefault(Map<CBORObject, CBORObject> map,
-    CBORObject key, CBORObject defaultValue){
+public static <TKey, TValue> TValue GetOrDefault(Map<TKey, TValue> map,
+    TKey key, TValue defaultValue){
   return map.getOrDefault(key, defaultValue);
 }
 

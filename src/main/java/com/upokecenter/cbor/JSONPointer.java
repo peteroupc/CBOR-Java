@@ -30,7 +30,7 @@ import com.upokecenter.numbers.*;
       }
       while (true) {
         if (obj == null) {
-            throw new CBORException("Invalid pointer: obj is null");
+          throw new CBORException("Invalid pointer: obj is null");
         }
         if (obj.getType() == CBORType.Array) {
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
@@ -54,10 +54,10 @@ import com.upokecenter.numbers.*;
           } else if (value[0] > obj.size()) {
             throw new CBORException("Invalid array index in pointer");
           } else if (value[0] == obj.size()) {
-            if (newIndex + 1 == pointer.length()) {
-              return new JSONPointer(obj, pointer.substring(index));
-            }
-            throw new CBORException("Invalid array index in pointer");
+            if (!(newIndex + 1 == pointer.length())) {
+ throw new CBORException("Invalid array index in pointer");
+}
+ return new JSONPointer(obj, pointer.substring(index));
           } else {
             obj = obj.get(value[0]);
 
@@ -148,10 +148,10 @@ import com.upokecenter.numbers.*;
         return defaultValue;
       }
       try {
-         CBORObject cobj = JSONPointer.FromPointer(obj, pointer).GetValue();
-         return cobj == null ? defaultValue : cobj;
+        CBORObject cobj = JSONPointer.FromPointer(obj, pointer).GetValue();
+        return (cobj == null) ? (defaultValue) : cobj;
       } catch (CBORException ex) {
-         return defaultValue;
+        return defaultValue;
       }
     }
 
@@ -176,8 +176,8 @@ import com.upokecenter.numbers.*;
         return index + 1;
       }
       if (str.charAt(index) == '0') {
-         // NOTE: Leading zeros not allowed in JSON Pointer numbers
-         return index;
+        // NOTE: Leading zeros not allowed in JSON Pointer numbers
+        return index;
       }
       long lvalue = 0;
       while (index < str.length()) {
@@ -223,29 +223,22 @@ import com.upokecenter.numbers.*;
           return false;
         }
         EInteger eivalue = EInteger.FromString(this.refValue);
-        int icount = ((CBORObject)this.jsonobj).size();
+        int icount = this.jsonobj.size();
         return eivalue.signum() >= 0 &&
           eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
-        } else if (this.jsonobj.getType() == CBORType.Map) {
-          return ((CBORObject)this.jsonobj).ContainsKey(this.refValue);
-        } else {
-        return this.refValue.length() == 0;
+      } else {
+        return this.jsonobj.getType() == CBORType.Map ?
+this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       }
     }
 
-    /**
-     * Gets an index into the specified object, if the object is an array and is
-     * not greater than the array's length.
-     * @return The index contained in this instance, or -1 if the object isn't a
-     * JSON array or is greater than the array's length.
-     */
     public int GetIndex() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
-          return ((CBORObject)this.jsonobj).size();
+          return this.jsonobj.size();
         }
         EInteger value = EInteger.FromString(this.refValue);
-        int icount = ((CBORObject)this.jsonobj).size();
+        int icount = this.jsonobj.size();
         return (value.signum() < 0) ? (-1) :
 ((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
 
@@ -268,10 +261,10 @@ import com.upokecenter.numbers.*;
         // Root always exists
         return this.jsonobj;
       }
-      CBORObject tmpcbor = null;
+      CBORObject tmpcbor;
       if (this.jsonobj.getType() == CBORType.Array) {
         int index = this.GetIndex();
-        if (index >= 0 && index < ((CBORObject)this.jsonobj).size()) {
+        if (index >= 0 && index < this.jsonobj.size()) {
           tmpcbor = this.jsonobj;
           return tmpcbor.get(index);
         } else {
@@ -287,22 +280,6 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    /**
-     * <p>Gets all children of the specified JSON object that contain the specified
-     * key; the method will remove matching keys. As an example, consider this
-     * object: </p><pre>[{"key":"value1","foo":"foovalue"},
-     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
-     * getPointersToKey is called on this object with a keyToFind called "key", we
-     * get the following Map as the return value: <pre>{ "/0" =&gt; "value1", //
-     * "/0" points to {"foo":"foovalue"} "/1" =&gt; "value2" /* "/1" points to
-     * {"bar":"barvalue"} &#x2a;&#x2f; }</pre> and the JSON object will change to the
-     * following: <pre>[{"foo":"foovalue"}, {"bar":"barvalue"},
-     * {"baz","bazvalue"}]</pre>.
-     * @param root The object to search.
-     * @param keyToFind The key to search for.
-     * @return A map: The JSON Pointers are relative to the root object.
-     * @throws NullPointerException The parameter {@code root} is null.
-     */
     public static Map<String, CBORObject> GetPointersWithKeyAndRemove(
       CBORObject root,
       String keyToFind) {
@@ -314,26 +291,6 @@ import com.upokecenter.numbers.*;
       return list;
     }
 
-    /**
-     * <p>Gets all children of the specified JSON object that contain the specified
-     * key; the method will not remove matching keys. As an example, consider this
-     * object: </p><pre>[{"key":"value1","foo":"foovalue"},
-     * {"key":"value2","bar":"barvalue"}, {"baz":"bazvalue"}]</pre> If
-     * getPointersToKey is called on this object with a keyToFind called "key", we
-     * get the following Map as the return value: <pre>{ "/0" =&gt; "value1", //
-     * "/0" points to {"key":"value1","foo":"foovalue"} "/1" =&gt; "value2" // "/1"
-     * points to {"key":"value2","bar":"barvalue"} }</pre> and the JSON object will
-     * remain unchanged. <ul> <li>The keys in the map are JSON Pointers to the
-     * objects within <i>root</i> that contained a key named <i>keyToFind</i>. To
-     * get the actual JSON object, call JSONPointer.GetObject, passing <i>root</i>
-     * and the pointer as arguments.</li><li>The values in the map are the values
-     * of each of those keys named <i>keyToFind</i>.</li></ul> The JSON Pointers
-     * are relative to the root object.
-     * @param root object to search.
-     * @param keyToFind The key to search for.
-     * @return A map:.
-     * @throws NullPointerException The parameter {@code root} is null.
-     */
     public static Map<String, CBORObject> GetPointersWithKey(
       CBORObject root,
       String keyToFind) {
@@ -360,11 +317,7 @@ import com.upokecenter.numbers.*;
       sb.append(str.substring(0, j));
       sb.append(srep);
       for (int i = j + 1; i < str.length(); ++i) {
-        if (str.charAt(i) == c) {
-          sb.append(srep);
-        } else {
-          sb.append(str.charAt(i));
-        }
+        sb = str.charAt(i) == c ? sb.append(srep) : sb.append(str.charAt(i));
       }
       return sb.toString();
     }
@@ -376,7 +329,7 @@ import com.upokecenter.numbers.*;
       Map<String, CBORObject> pointerList,
       boolean remove) {
       if (root.getType() == CBORType.Map) {
-        CBORObject rootObj = (CBORObject)root;
+        CBORObject rootObj = root;
         if (rootObj.ContainsKey(keyToFind)) {
           // Key found in this object,
           // add this object's JSON pointer

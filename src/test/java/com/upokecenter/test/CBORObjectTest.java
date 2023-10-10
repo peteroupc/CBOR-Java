@@ -88,7 +88,7 @@ import com.upokecenter.numbers.*;
     };
 
     private static final JSONOptions ValueNoDuplicateKeys = new
-    JSONOptions("allowduplicatekeys=false");
+("allowduplicatekeys=false");
 
     static void CheckPropertyNames(
       Object ao,
@@ -214,9 +214,9 @@ import com.upokecenter.numbers.*;
     }
 
     public static void TestFailingJSON(String str, JSONOptions opt) {
-      byte[] bytes = null;
+      byte[] bytes;
       try {
-        bytes = DataUtilities.GetUtf8Bytes(str, false);
+        bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
       } catch (IllegalArgumentException ex2) {
         System.out.println(ex2.getMessage());
         // Check only FromJSONString
@@ -268,58 +268,49 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public static CBORObject TestSucceedingJSON(
       String str,
       JSONOptions options) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+      byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          CBORObject obj = options == null ? CBORObject.ReadJSON(ms) :
-            CBORObject.ReadJSON(ms, options);
-          CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
-            CBORObject.FromJSONString(str, options);
-          if (!obj.equals(obj2)) {
-            TestCommon.CompareTestEqualAndConsistent(
-              obj,
-              obj2);
-          }
-          if (str == null) {
-            throw new NullPointerException("str");
-          }
-          CBORObject obj3 = options == null ? CBORObject.FromJSONString(
-              str,
-              0,
-              str.length()) :
-            CBORObject.FromJSONString(str, 0, str.length(), options);
-          if (!obj.equals(obj3)) {
-            Assert.assertEquals(obj, obj3);
-          }
-          obj3 = options == null ? CBORObject.FromJSONString(
-              "xyzxyz" + str,
-              6,
-              str.length()) :
-            CBORObject.FromJSONString("xyzxyz" + str, 6, str.length(), options);
-          if (!obj.equals(obj3)) {
-            Assert.assertEquals(obj, obj3);
-          }
-          obj3 = options == null ? CBORObject.FromJSONString(
-              "xyzxyz" + str + "xyzxyz",
-              6,
-              str.length()) : CBORObject.FromJSONString(
-              "xyzxyz" + str + "xyzxyz",
-              6,
-              str.length(),
-              options);
-          if (!obj.equals(obj3)) {
-            Assert.assertEquals(obj, obj3);
-          }
-          return obj;
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        CBORObject obj = options == null ? CBORObject.ReadJSON(ms) :
+          CBORObject.ReadJSON(ms, options);
+        CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
+          CBORObject.FromJSONString(str, options);
+        if (!obj.equals(obj2)) {
+          TestCommon.CompareTestEqualAndConsistent(
+            obj,
+            obj2);
+        }
+        if (str == null) {
+          throw new NullPointerException("str");
+        }
+        CBORObject obj3 = options == null ? CBORObject.FromJSONString(
+            str,
+            0,
+            str.length()) :
+          CBORObject.FromJSONString(str, 0, str.length(), options);
+        if (!obj.equals(obj3)) {
+          Assert.assertEquals(obj, obj3);
+        }
+        obj3 = options == null ? CBORObject.FromJSONString(
+            "xyzxyz" + str,
+            6,
+            str.length()) :
+          CBORObject.FromJSONString("xyzxyz" + str, 6, str.length(), options);
+        if (!obj.equals(obj3)) {
+          Assert.assertEquals(obj, obj3);
+        }
+        obj3 = options == null ? CBORObject.FromJSONString(
+            "xyzxyz" + str + "xyzxyz",
+            6,
+            str.length()) : CBORObject.FromJSONString(
+            "xyzxyz" + str + "xyzxyz",
+            6,
+            str.length(),
+            options);
+        if (!obj.equals(obj3)) {
+          Assert.assertEquals(obj, obj3);
+        }
+        return obj;
       } catch (Exception ex) {
         Assert.fail(ex.toString() + "\n" + str);
         throw new IllegalStateException("", ex);
@@ -335,7 +326,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         charbuf[index++] = (char)0x22;
       }
       if (cp < 0x10000) {
-        if (cp >= 0xd800 && cp < 0xe000) {
+        if (cp instanceof >= 0xd800 and < 0xe000) {
           return null;
         }
         if (charbuf == null) {
@@ -386,7 +377,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // NOTE: Avoid generating high-exponent numbers for this test
         CBORObject o1 = CBORTestCommon.RandomNumber(r, true);
         CBORObject o2 = CBORTestCommon.RandomNumber(r, true);
-        EDecimal cmpCobj = null;
+        EDecimal cmpCobj;
         try {
           cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
         } catch (OutOfMemoryError ex) {
@@ -502,7 +493,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               numberinfo.get("number").AsString()));
         if (numberinfo.get("byte").AsBoolean()) {
           byte bb = (byte)cbornumber.ToObject(byte.class);
-          int ibb = ((int)bb) & 0xff;
+          int ibb = bb & 0xff;
           Assert.assertEquals(
             TestCommon.StringToInt(numberinfo.get("integer").AsString()),
             ibb);
@@ -524,7 +515,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           byte varbyteTemp2 = (byte)ToObjectTest.TestToFromObjectRoundTrip(
               i).ToObject(byte.class);
           Assert.assertEquals(varbyteTemp, varbyteTemp2);
-}
+        }
       }
       for (int i = -200; i < 0; ++i) {
         try {
@@ -759,8 +750,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-        EDecimal edec =
-          EDecimal.FromString(numberinfo.get("number").AsString());
+        EDecimal edec = EDecimal.FromString(numberinfo.get("number").AsString());
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
         boolean isdouble = numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
@@ -878,8 +868,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-        EDecimal edec =
-          EDecimal.FromString(numberinfo.get("number").AsString());
+        EDecimal edec = EDecimal.FromString(numberinfo.get("number").AsString());
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
         boolean isdouble = numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
@@ -1103,81 +1092,81 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestCanFitInDoubleA() {
       try {
- CBORObject.True.AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.True.AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCanFitInDoubleB() {
       try {
- ToObjectTest.TestToFromObjectRoundTrip("")
-        .AsNumber().CanFitInDouble();
-      Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        ToObjectTest.TestToFromObjectRoundTrip("")
+               .AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCanFitInDoubleC() {
       try {
- CBORObject.NewArray().AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCanFitInDoubleD() {
       try {
- CBORObject.False.AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.False.AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Null.AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Null.AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCanFitInDoubleE() {
       try {
- CBORObject.Undefined.AsNumber().CanFitInDouble();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Undefined.AsNumber().CanFitInDouble();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestCanFitInDoubleF() {
@@ -1395,69 +1384,69 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail();
  }
       try {
- CBORObject.True.AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.True.AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- ToObjectTest.TestToFromObjectRoundTrip("")
-        .AsNumber().CanFitInSingle();
-      Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        ToObjectTest.TestToFromObjectRoundTrip("")
+               .AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewArray().AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.False.AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.False.AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Null.AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Null.AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Undefined.AsNumber().CanFitInSingle();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Undefined.AsNumber().CanFitInSingle();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
@@ -1527,69 +1516,69 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail();
  }
       try {
- CBORObject.True.AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.True.AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- ToObjectTest.TestToFromObjectRoundTrip("")
-        .AsNumber().CanTruncatedIntFitInInt32();
-      Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        ToObjectTest.TestToFromObjectRoundTrip("")
+               .AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.False.AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.False.AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Null.AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Null.AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt32();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt32();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       CBORObject numbers = GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
@@ -1681,69 +1670,69 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  Assert.fail();
  }
       try {
- CBORObject.True.AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.True.AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- ToObjectTest.TestToFromObjectRoundTrip("")
-        .AsNumber().CanTruncatedIntFitInInt64();
-      Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        ToObjectTest.TestToFromObjectRoundTrip("")
+               .AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.False.AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.False.AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Null.AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Null.AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt64();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.Undefined.AsNumber().CanTruncatedIntFitInInt64();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       EInteger ei;
       ei = EInteger.FromString("9223372036854775807");
       {
@@ -1849,13 +1838,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo2() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, (byte)0xd3, (byte)0xe1, 0x26,
         (byte)0xf9, 0x3b, (byte)0xc2, 0x4c, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01,
         0x01, 0x00, 0x00, 0x01, 0x00, 0x00,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x56, (byte)0xe9, 0x21, (byte)0xda,
         (byte)0xe9, (byte)0xc2, 0x58, 0x2a, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1871,13 +1860,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo6() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x1b, 0x00, 0x00, 0x00, 0x7a, 0x50, (byte)0xe0, 0x1f,
         (byte)0xc6, (byte)0xc2, 0x4c, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x01, 0x01,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x19, 0x01, 0x60, (byte)0xc2, 0x58, (byte)0x87, (byte)0xbb,
         (byte)0xf8, 0x74, (byte)0xbe, (byte)0xcc, 0x46, 0x6b, 0x02, 0x3c,
@@ -1905,14 +1894,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo5() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x1b, 0x00, 0x00, 0x10, 0x57, (byte)0xa5, (byte)0x96,
         (byte)0xbe, 0x7b, (byte)0xc2, 0x53, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01,
         0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01,
         0x00,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x19, 0x01, (byte)0x84, (byte)0xc2, 0x53, 0x20, 0x44, 0x52,
         0x64, (byte)0x9d, (byte)0xea, (byte)0xe8, 0x57, 0x13, (byte)0xa3, 0x7c,
@@ -1926,7 +1915,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x15, (byte)0xfc, (byte)0xa0,
         (byte)0xd9, (byte)0xf9, (byte)0xc3, 0x58, 0x36, 0x02, (byte)0x83, 0x3b,
@@ -1938,7 +1927,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         0x34, (byte)0x84, (byte)0xb4, 0x22, (byte)0xa8, 0x26, (byte)0x9f, 0x35,
         (byte)0x8d,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x24, 0x26,
        });
@@ -1949,7 +1938,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo3() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x04, 0x55, 0x0a, 0x12, (byte)0x94, (byte)0xf8, 0x1f,
         (byte)0x9b, (byte)0xc2, 0x58, 0x1f, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00,
@@ -1957,7 +1946,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x01,
         0x00,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x39, 0x02, 0x03, (byte)0xc2, 0x58, 0x2d, 0x01, 0x00, 0x00,
         0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01,
@@ -1972,12 +1961,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo4() {
-      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x2f, 0x3b, 0x00, 0x1e, (byte)0xdc, 0x5d, 0x51, 0x5d, 0x26,
         (byte)0xb7,
        });
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x18, 0x72, 0x44, 0x49, (byte)0xd0, 0x0c,
         (byte)0xb6, (byte)0xc3, 0x58, (byte)0x88, 0x0a, (byte)0xd0, 0x12,
@@ -2006,7 +1995,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String TrimStr(String str, int len) {
-      return str.substring(0, Math.min(len, str.length()));
+      return str.charAt(..Math.min(len, str.length()));
     }
 
     @Test
@@ -2701,8 +2690,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             String i2s = TestCommon.IntToString(j);
             Assert.assertEquals(i2s, ranges[i + 2], bytes.length);
           }
-          bytes =
-            ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes(new
+          bytes = ToObjectTest.TestToFromObjectRoundTrip(j).EncodeToBytes(new
               CBOREncodeOptions(false, false, true));
           if (bytes.length != ranges[i + 2]) {
             String i2s = TestCommon.IntToString(j);
@@ -2939,10 +2927,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xd8, 0x1e, (byte)0x82, 0x00, 0x19,
         0x0f, 0x50,
        };
-      CBORObject cbor = CBORObject.DecodeFromBytes(cborbytes);
-      CBORObject cbor2 = CBORObject.DecodeFromBytes(cborbytes);
+      var cbor = CBORObject.DecodeFromBytes(cborbytes);
+      var cbor2 = CBORObject.DecodeFromBytes(cborbytes);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
-      ERational erat = ERational.Create(0, 3920);
+      var erat = ERational.Create(0, 3920);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(erat);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(cbor2);
@@ -2952,7 +2940,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           EInteger.FromInt32(0),
           EInteger.FromString("84170882933504200501581262010093"));
       cbor = ToObjectTest.TestToFromObjectRoundTrip(erat);
-      ERational erat2 = ERational.Create(
+      var erat2 = ERational.Create(
           EInteger.FromInt32(0),
           EInteger.FromString("84170882933504200501581262010093"));
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(erat2);
@@ -3065,11 +3053,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject cbor;
       // Test single-character strings
       for (int i = 0; i < 0x110000; ++i) {
-        if (i >= 0xd800 && i < 0xe000) {
+        if (i instanceof >= 0xd800 and < 0xe000) {
           continue;
         }
         String str = CharString(i, true, charbuf);
-        if (i < 0x20 || i == 0x22 || i == 0x5c) {
+        if (i instanceof < 0x20 or 0x22 or 0x5c) {
           TestFailingJSON(str);
         } else {
           cbor = TestSucceedingJSON(str);
@@ -3095,7 +3083,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromJSONString("[]", (JSONOptions)null);
+        CBORObject.FromJSONString("[]", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -3303,20 +3291,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestCommon.AssertEqualsHashCode(o.get(key), value);
     }
 
-    public enum EnumClass {
-      /**
-       * Internal API.
-       */
+    public enum EnumClass
+    {
       Value1,
 
-      /**
-       * Internal API.
-       */
       Value2,
 
-      /**
-       * Internal API.
-       */
       Value3,
     }
 
@@ -3382,20 +3362,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    private static final class TestConverter implements ICBORToFromConverter<String> {
+    private static final class TestConverter implements ICBORToFromConverter<String>
+    {
       public CBORObject ToCBORObject(String strValue) {
         return CBORObject.FromObject(
-            DataUtilities.ToLowerCaseAscii(strValue));
+            com.upokecenter.util.DataUtilities.ToLowerCaseAscii(strValue));
       }
 
       public String FromCBORObject(CBORObject cbor) {
         if (cbor == null) {
-          throw new NullPointerException("cbor");
-        }
-        if (cbor.getType() == CBORType.TextString) {
-          return DataUtilities.ToLowerCaseAscii(cbor.AsString());
-        }
-        throw new CBORException();
+ throw new NullPointerException("cbor");
+}
+ if (!(cbor.getType() == CBORType.TextString)) {
+  throw new CBORException();
+}
+ return com.upokecenter.util.DataUtilities.ToLowerCaseAscii(cbor.AsString());
       }
     }
 
@@ -3423,9 +3404,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestFromObject_Dictionary() {
-      Map<String, String> dict = new HashMap<String, String>();
-      dict.put("TestKey","TestValue");
-      dict.put("TestKey2","TestValue2");
+      Map<String, String> dict = new HashMap<String, String>
+      {
+        ["TestKey"] = "TestValue",
+        ["TestKey2"] = "TestValue2",
+      };
       CBORObject c = CBORObject.FromObject(dict);
       CheckKeyValue(c, "TestKey", "TestValue");
       CheckKeyValue(c, "TestKey2", "TestValue2");
@@ -3518,10 +3501,9 @@ private final PODClass propVarpropvalue;
       PODOptions valueCcFF = new PODOptions(false, false);
       PODOptions valueCcFT = new PODOptions(false, true);
       PODOptions valueCcTT = new PODOptions(true, true);
-      CBORObject co;
       CBORObjectTest.CheckPropertyNames(ao);
       PODClass[] arrao = new PODClass[] { ao, ao };
-      co = CBORObject.FromObject(arrao, valueCcTF);
+      CBORObject.FromObject(arrao, valueCcTF);
       CBORObjectTest.CheckArrayPropertyNames(
         CBORObject.FromObject(arrao, valueCcTF),
         2,
@@ -3559,8 +3541,10 @@ private final PODClass propVarpropvalue;
         "propA",
         "propB",
         "propC");
-      HashMap<String, Object> aodict = new HashMap<String, Object>();
-      aodict.put("PropValue",new PODClass());
+      HashMap<String, Object> aodict = new HashMap<String, Object>
+      {
+        ["PropValue"] = new PODClass(),
+      };
 
       CBORObjectTest.CheckPODInDictPropertyNames(
         CBORObject.FromObject(aodict, valueCcTF),
@@ -3674,7 +3658,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       for (int i = 0; i < 256; ++i) {
-        if (i >= 24 && i < 32) {
+        if (i instanceof >= 24 and < 32) {
           try {
             CBORObject.FromSimpleValue(i);
             Assert.fail("Should have failed");
@@ -3878,81 +3862,81 @@ private final PODClass propVarpropvalue;
  Assert.fail();
  }
       try {
- ToObjectTest.TestToFromObjectRoundTrip("").AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        ToObjectTest.TestToFromObjectRoundTrip("").AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewArray().AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewArray().AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       cbor = CBORObject.True;
       try {
- cbor.AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        cbor.AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       cbor = CBORObject.False;
       try {
- cbor.AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        cbor.AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       cbor = CBORObject.Null;
       try {
- cbor.AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        cbor.AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       cbor = CBORObject.Undefined;
       try {
- cbor.AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        cbor.AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- CBORObject.NewMap().AsNumber().IsFinite();
- Assert.fail("Should have failed");
-} catch (IllegalStateException ex) {
-// NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.fail(ex.toString());
- throw new IllegalStateException("", ex);
-}
+        CBORObject.NewMap().AsNumber().IsFinite();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
 
       if (!(
         ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber().IsFinite())) {
@@ -4027,7 +4011,7 @@ private final PODClass propVarpropvalue;
         ToObjectTest.TestToFromObjectRoundTrip(0).AsNumber().IsInteger())) {
  Assert.fail();
  }
-      cbor = ToObjectTest.TestToFromObjectRoundTrip("");
+      ToObjectTest.TestToFromObjectRoundTrip("");
       cbor = ToObjectTest.TestToFromObjectRoundTrip(
           EInteger.FromRadixString(
             "8000000000000000",
@@ -4534,7 +4518,7 @@ private final PODClass propVarpropvalue;
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
+        var cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual(
             cmpDecFrac,
@@ -4615,8 +4599,8 @@ private final PODClass propVarpropvalue;
 
     @Test
     public void TestMostOuterTag() {
-      CBORObject cbor = CBORObject.FromObjectAndTag(CBORObject.True, 999);
-      cbor = CBORObject.FromObjectAndTag(CBORObject.True, 1000);
+      CBORObject.FromObjectAndTag(CBORObject.True, 999);
+      CBORObject cbor = CBORObject.FromObjectAndTag(CBORObject.True, 1000);
       Assert.assertEquals(EInteger.FromString("1000"), cbor.getMostOuterTag());
       cbor = CBORObject.True;
       Assert.assertEquals(EInteger.FromString("-1"), cbor.getMostOuterTag());
@@ -4634,25 +4618,16 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       try {
-        {
-          java.io.ByteArrayInputStream ms2 = null;
-try {
-ms2 = new java.io.ByteArrayInputStream(new byte[] { 0 });
-
-          try {
-            CBORObject.Read(ms2, null);
-            Assert.fail("Should have failed");
-          } catch (NullPointerException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
-}
-finally {
-try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(new byte[] { 0 });
+        try {
+          CBORObject.Read(ms2, null);
+          Assert.fail("Should have failed");
+        } catch (NullPointerException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -4660,42 +4635,24 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
     }
 
     public static void ExpectJsonSequenceError(byte[] bytes) {
-      {
-        java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-        try {
-          CBORObject.ReadJSONSequence(ms);
-          Assert.fail("Should have failed");
-        } catch (CBORException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try {
+        CBORObject.ReadJSONSequence(ms);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     public static void ExpectJsonSequenceZero(byte[] bytes) {
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          String ss = TestCommon.ToByteArrayString(bytes);
-          CBORObject[] array = CBORObject.ReadJSONSequence(ms);
-          Assert.assertEquals(ss, 0, array.length);
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        String ss = TestCommon.ToByteArrayString(bytes);
+        CBORObject[] array = CBORObject.ReadJSONSequence(ms);
+        Assert.assertEquals(ss, 0, array.length);
       } catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
@@ -4703,20 +4660,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void ExpectJsonSequenceOne(byte[] bytes, CBORObject o1) {
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          String ss = TestCommon.ToByteArrayString(bytes);
-          CBORObject[] array = CBORObject.ReadJSONSequence(ms);
-          Assert.assertEquals(ss, 1, array.length);
-          Assert.assertEquals(ss, o1, array[0]);
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        String ss = TestCommon.ToByteArrayString(bytes);
+        CBORObject[] array = CBORObject.ReadJSONSequence(ms);
+        Assert.assertEquals(ss, 1, array.length);
+        Assert.assertEquals(ss, o1, array[0]);
       } catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
@@ -4727,21 +4675,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject o1,
       CBORObject o2) {
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          String ss = TestCommon.ToByteArrayString(bytes);
-          CBORObject[] array = CBORObject.ReadJSONSequence(ms);
-          Assert.assertEquals(ss, 2, array.length);
-          Assert.assertEquals(ss, o1, array[0]);
-          Assert.assertEquals(ss, o2, array[1]);
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        String ss = TestCommon.ToByteArrayString(bytes);
+        CBORObject[] array = CBORObject.ReadJSONSequence(ms);
+        Assert.assertEquals(ss, 2, array.length);
+        Assert.assertEquals(ss, o1, array[0]);
+        Assert.assertEquals(ss, o2, array[1]);
       } catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
@@ -4761,38 +4700,38 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       bytes = new byte[] { 0x1e, 0x22, 0x41, 0x22, 0x0d };
       ExpectJsonSequenceOne(bytes, CBORObject.FromObject("A"));
       bytes = new byte[] {
-        0x1e, (byte)0x66, (byte)0x61, (byte)0x6c, (byte)0x73,
-        (byte)0x65, 0x0a,
+        0x1e, 0x66, 0x61, 0x6c, 0x73,
+        0x65, 0x0a,
        };
       ExpectJsonSequenceOne(bytes, CBORObject.False);
       bytes = new byte[] {
-        0x1e, (byte)0x66, (byte)0x61, (byte)0x6c, (byte)0x73,
-        (byte)0x65,
+        0x1e, 0x66, 0x61, 0x6c, 0x73,
+        0x65,
        };
       ExpectJsonSequenceOne(bytes, null);
       bytes = new byte[] {
-        0x1e, (byte)0x66, (byte)0x61, (byte)0x6c, (byte)0x73,
-        (byte)0x65, (byte)0x74, (byte)0x72, (byte)0x75, (byte)0x65, 0x0a,
+        0x1e, 0x66, 0x61, 0x6c, 0x73,
+        0x65, 0x74, 0x72, 0x75, 0x65, 0x0a,
        };
       ExpectJsonSequenceOne(bytes, null);
       bytes = new byte[] {
-        0x1e, (byte)0x74, (byte)0x72, (byte)0x75, (byte)0x65,
+        0x1e, 0x74, 0x72, 0x75, 0x65,
         0x0a,
        };
       ExpectJsonSequenceOne(bytes, CBORObject.True);
       bytes = new byte[] {
-        0x1e, (byte)0x74, (byte)0x72, (byte)0x75,
-        (byte)0x65,
+        0x1e, 0x74, 0x72, 0x75,
+        0x65,
        };
       ExpectJsonSequenceOne(bytes, null);
       bytes = new byte[] {
-        0x1e, (byte)0x6e, (byte)0x75, (byte)0x6c, (byte)0x6c,
+        0x1e, 0x6e, 0x75, 0x6c, 0x6c,
         0x0a,
        };
       ExpectJsonSequenceOne(bytes, CBORObject.Null);
       bytes = new byte[] {
-        0x1e, (byte)0x6e, (byte)0x75, (byte)0x6c,
-        (byte)0x6c,
+        0x1e, 0x6e, 0x75, 0x6c,
+        0x6c,
        };
       ExpectJsonSequenceOne(bytes, null);
       bytes = new byte[] { 0x1e, 0x22, 0x41, 0x22, 0x1e, (byte)'[', (byte)']' };
@@ -4865,7 +4804,7 @@ try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] { 0x30 });
 
           try {
-            CBORObject.ReadJSON(ms2, (JSONOptions)null);
+            CBORObject.ReadJSON(ms2, null);
             Assert.fail("Should have failed");
           } catch (NullPointerException ex) {
             // NOTE: Intentionally empty
@@ -5199,10 +5138,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 1, 0, 0x22, 0, 0, 0,
          });
 
-            String stringTemp = CBORObject.ReadJSON(msjson).AsString();
-            Assert.assertEquals(
-              "\ud800\udc00",
-              stringTemp);
+          String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+          Assert.assertEquals(
+            "\ud800\udc00",
+            stringTemp);
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -5219,10 +5158,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0,
          });
 
-            String stringTemp = CBORObject.ReadJSON(msjson).AsString();
-            Assert.assertEquals(
-              "\ud800\udc00",
-              stringTemp);
+          String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+          Assert.assertEquals(
+            "\ud800\udc00",
+            stringTemp);
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -5238,10 +5177,10 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xdc, 0, 0, 0x22,
          });
 
-            String stringTemp = CBORObject.ReadJSON(msjson).AsString();
-            Assert.assertEquals(
-              "\ud800\udc00",
-              stringTemp);
+          String stringTemp = CBORObject.ReadJSON(msjson).AsString();
+          Assert.assertEquals(
+            "\ud800\udc00",
+            stringTemp);
 }
 finally {
 try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
@@ -6028,25 +5967,16 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     }
 
     private static void ReadJsonFail(byte[] msbytes) {
-      {
-        java.io.ByteArrayInputStream msjson = null;
-try {
-msjson = new java.io.ByteArrayInputStream(msbytes);
-
-        try {
-          CBORObject.ReadJSON(msjson);
-          Assert.fail("Should have failed");
-        } catch (CBORException ex) {
-          // NOTE: Intentionally empty
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-}
-finally {
-try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
-}
-}
+      using java.io.ByteArrayInputStream msjson = new java.io.ByteArrayInputStream(msbytes);
+      try {
+        CBORObject.ReadJSON(msjson);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     // TODO: In next major version, consider using CBORException
@@ -6584,7 +6514,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
  Assert.fail();
  }
       try {
-        cbor.Remove((CBORObject)null);
+        cbor.Remove(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -6617,7 +6547,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
  Assert.fail();
  }
       try {
-        cbor.Remove((CBORObject)null);
+        cbor.Remove(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -7337,7 +7267,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           "\"9AD6F0E8\"",
           stringTemp);
       }
-      o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] {
+      ToObjectTest.TestToFromObjectRoundTrip(new byte[] {
         (byte)0x9a, (byte)0xd6,
         (byte)0xff, (byte)0xe8,
        });
@@ -7601,7 +7531,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           CBORObject cborTemp1 =
             ToObjectTest.TestToFromObjectRoundTrip(longValue);
           CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)longValue);
+            ToObjectTest.TestToFromObjectRoundTrip(longValue);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(longValue, null);
@@ -7629,7 +7559,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)longValue, longValue);
+          TestWriteObj(longValue, longValue);
         }
 
         EInteger bigintVal = EInteger.FromInt64(longValue);
@@ -7637,7 +7567,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           CBORObject cborTemp1 =
             ToObjectTest.TestToFromObjectRoundTrip(bigintVal);
           CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)bigintVal);
+            ToObjectTest.TestToFromObjectRoundTrip(bigintVal);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(bigintVal, null);
@@ -7665,17 +7595,16 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)bigintVal, bigintVal);
+          TestWriteObj(bigintVal, bigintVal);
         }
 
-        if (longValue >= (long)Integer.MIN_VALUE && longValue <=
-          (long)Integer.MAX_VALUE) {
+        if (longValue instanceof >= Integer.MIN_VALUE and <= Integer.MAX_VALUE) {
           int intval = (int)longValue;
           {
             CBORObject cborTemp1 =
               ToObjectTest.TestToFromObjectRoundTrip(intval);
             CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)intval);
+              ToObjectTest.TestToFromObjectRoundTrip(intval);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
             try {
               CBORObject.Write(intval, null);
@@ -7703,15 +7632,15 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            TestWriteObj((Object)intval, intval);
+            TestWriteObj(intval, intval);
           }
         }
-        if (longValue >= -32768L && longValue <= 32767) {
+        if (longValue instanceof >= -32768L and <= 32767) {
           short shortval = (short)longValue;
           CBORObject cborTemp1 = ToObjectTest
             .TestToFromObjectRoundTrip(shortval);
           CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)shortval);
+            ToObjectTest.TestToFromObjectRoundTrip(shortval);
           TestCommon.CompareTestEqualAndConsistent(
             cborTemp1,
             cborTemp2);
@@ -7741,15 +7670,15 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)shortval, shortval);
+          TestWriteObj(shortval, shortval);
         }
-        if (longValue >= 0L && longValue <= 255) {
+        if (longValue instanceof >= 0L and <= 255) {
           byte byteval = (byte)longValue;
           {
             CBORObject cborTemp1 =
               ToObjectTest.TestToFromObjectRoundTrip(byteval);
             CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)byteval);
+              ToObjectTest.TestToFromObjectRoundTrip(byteval);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1,
               cborTemp2);
             try {
@@ -7778,7 +7707,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            TestWriteObj((Object)byteval, byteval);
+            TestWriteObj(byteval, byteval);
           }
         }
       } catch (IOException ex) {
@@ -7793,8 +7722,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         String str = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(str);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)str);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(str);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(str, null);
@@ -7816,20 +7744,20 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)str, null);
+          TestWriteObj(str, null);
         }
 
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(
               "test");
           CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)"test");
+            ToObjectTest.TestToFromObjectRoundTrip("test");
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write("test", null);
@@ -7859,14 +7787,13 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)"test", "test");
+          TestWriteObj("test", "test");
         }
 
         str = TestCommon.Repeat("test", 4000);
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(str);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)str);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(str);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(str, null);
@@ -7894,7 +7821,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)str, str);
+          TestWriteObj(str, str);
         }
 
         long[] values = {
@@ -7911,8 +7838,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(0.0f);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)0.0f);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(0.0f);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(0.0f, null);
@@ -7940,13 +7866,12 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)0.0f, 0.0f);
+          TestWriteObj(0.0f, 0.0f);
         }
 
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(2.6);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)2.6);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(2.6);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(2.6, null);
@@ -7974,14 +7899,13 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)2.6, 2.6);
+          TestWriteObj(2.6, 2.6);
         }
 
         CBORObject cbor = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(cbor);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)cbor);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(cbor);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(cbor, null);
@@ -8003,20 +7927,19 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)cbor, null);
+          TestWriteObj(cbor, null);
         }
 
         Object aobj = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(aobj);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)aobj);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(aobj);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(aobj, null);
@@ -8038,13 +7961,13 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)aobj, null);
+          TestWriteObj(aobj, null);
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -8053,33 +7976,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     public static void TestWrite3() {
-      EFloat ef = null;
-      EDecimal ed = null;
       RandomGenerator fr = new RandomGenerator();
       try {
         for (int i = 0; i < 256; ++i) {
           byte b = (byte)(i & 0xff);
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write((byte)b, ms);
-            CBORObject cobj = CBORObject.DecodeFromBytes(ms.toByteArray());
-            Assert.assertEquals(i, cobj.AsInt32());
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          CBORObject.Write(b, ms);
+          var cobj = CBORObject.DecodeFromBytes(ms.toByteArray());
+          Assert.assertEquals(i, cobj.AsInt32());
         }
 
         for (int i = 0; i < 50; ++i) {
-          ef = RandomObjects.RandomEFloat(fr);
+          EFloat ef = RandomObjects.RandomEFloat(fr);
           if (!ef.IsNaN()) {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
-            CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)ef);
+            CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
             try {
               CBORObject.Write(ef, null);
@@ -8107,7 +8018,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            TestWriteObj((Object)ef, ef);
+            TestWriteObj(ef, ef);
           }
 
           ef = EFloat.Create(
@@ -8115,8 +8026,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               RandomObjects.RandomEInteger(fr));
           {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
-            CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)ef);
+            CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
             try {
               CBORObject.Write(ef, null);
@@ -8149,15 +8059,14 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            TestWriteObj((Object)ef, ef);
+            TestWriteObj(ef, ef);
           }
         }
         for (int i = 0; i < 50; ++i) {
-          ed = RandomObjects.RandomEDecimal(fr);
+          EDecimal ed = RandomObjects.RandomEDecimal(fr);
           if (!ed.IsNaN()) {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ed);
-            CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)ed);
+            CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ed);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
             try {
               CBORObject.Write(ed, null);
@@ -8192,7 +8101,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
             if (!(cborTemp1.AsNumber().IsNegative() &&
 cborTemp1.AsNumber().IsZero())) {
-  TestWriteObj((Object)ed, ed);
+  TestWriteObj(ed, ed);
 }
           }
 
@@ -8201,8 +8110,7 @@ cborTemp1.AsNumber().IsZero())) {
               RandomObjects.RandomEInteger(fr));
           {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ed);
-            CBORObject cborTemp2 =
-              ToObjectTest.TestToFromObjectRoundTrip((Object)ed);
+            CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ed);
             TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
             try {
               CBORObject.Write(ed, null);
@@ -8230,7 +8138,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            TestWriteObj((Object)ed, ed);
+            TestWriteObj(ed, ed);
           }
         }
       } catch (IOException ex) {
@@ -8247,8 +8155,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         EFloat ef = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)ef);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(ef, null);
@@ -8270,20 +8177,19 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)ef, null);
+          TestWriteObj(ef, null);
         }
 
         ef = EFloat.FromString("20");
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)ef);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(ef, null);
@@ -8311,14 +8217,13 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)ef, ef);
+          TestWriteObj(ef, ef);
         }
 
         ERational er = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(er);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)er);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(er);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(er, null);
@@ -8340,21 +8245,20 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)er, null);
+          TestWriteObj(er, null);
         }
         do {
           er = RandomObjects.RandomERational(fr);
         } while (er.isNegative() && er.isZero());
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(er);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)er);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(er);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(er, null);
@@ -8387,14 +8291,13 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)er, er);
+          TestWriteObj(er, er);
         }
 
         EDecimal ed = null;
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ed);
-          CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)ed);
+          CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ed);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(ed, null);
@@ -8416,13 +8319,13 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)ed, null);
+          TestWriteObj(ed, null);
         }
 
         EInteger bigint = null;
@@ -8430,7 +8333,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(
               bigint);
           CBORObject cborTemp2 =
-            ToObjectTest.TestToFromObjectRoundTrip((Object)bigint);
+            ToObjectTest.TestToFromObjectRoundTrip(bigint);
           TestCommon.CompareTestEqualAndConsistent(cborTemp1, cborTemp2);
           try {
             CBORObject.Write(bigint, null);
@@ -8452,13 +8355,13 @@ ms = new java.io.ByteArrayOutputStream();
             cborTemp1.WriteTo(ms);
             AssertReadThree(
               ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip((Object)null));
+              ToObjectTest.TestToFromObjectRoundTrip(null));
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-          TestWriteObj((Object)bigint, null);
+          TestWriteObj(bigint, null);
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -8477,7 +8380,7 @@ ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.WriteJSON(CBORObject.True, ms);
           byte[] bytes = ms.toByteArray();
-          String str = DataUtilities.GetUtf8String(bytes, false);
+          String str = com.upokecenter.util.DataUtilities.GetUtf8String(bytes, false);
           Assert.assertEquals("true", str);
 }
 finally {
@@ -8491,7 +8394,7 @@ ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.True.WriteJSONTo(ms);
           byte[] bytes = ms.toByteArray();
-          String str = DataUtilities.GetUtf8String(bytes, false);
+          String str = com.upokecenter.util.DataUtilities.GetUtf8String(bytes, false);
           Assert.assertEquals("true", str);
 }
 finally {
@@ -8505,7 +8408,7 @@ ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.WriteJSON(CBORObject.False, ms);
           byte[] bytes = ms.toByteArray();
-          String str = DataUtilities.GetUtf8String(bytes, false);
+          String str = com.upokecenter.util.DataUtilities.GetUtf8String(bytes, false);
           Assert.assertEquals("false", str);
 }
 finally {
@@ -8519,7 +8422,7 @@ ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.False.WriteJSONTo(ms);
           byte[] bytes = ms.toByteArray();
-          String str = DataUtilities.GetUtf8String(bytes, false);
+          String str = com.upokecenter.util.DataUtilities.GetUtf8String(bytes, false);
           Assert.assertEquals("false", str);
 }
 finally {
@@ -8592,29 +8495,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String Chop(String str) {
-      return (str.length() < 100) ? str : (str.substring(0,100) + "...");
+      return (str.length() < 100) ? str : (str.charAt(..100) + "...");
     }
 
     private static void AssertReadThree(byte[] bytes) {
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          CBORObject cbor1, cbor2, cbor3;
-          cbor1 = CBORObject.Read(ms);
-          cbor2 = CBORObject.Read(ms);
-          cbor3 = CBORObject.Read(ms);
-          TestCommon.CompareTestRelations(cbor1, cbor2, cbor3);
-          TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
-          TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
-          TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        CBORObject cbor1, cbor2, cbor3;
+        cbor1 = CBORObject.Read(ms);
+        cbor2 = CBORObject.Read(ms);
+        cbor3 = CBORObject.Read(ms);
+        TestCommon.CompareTestRelations(cbor1, cbor2, cbor3);
+        TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
+        TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
+        TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
       } catch (Exception ex) {
         Assert.fail(ex.toString() + "\r\n" +
           TestCommon.ToByteArrayString(bytes));
@@ -8624,25 +8518,16 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static void AssertReadThree(byte[] bytes, CBORObject cbor) {
       try {
-        {
-          java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(bytes);
-
-          CBORObject cbor1, cbor2, cbor3;
-          cbor1 = CBORObject.Read(ms);
-          cbor2 = CBORObject.Read(ms);
-          cbor3 = CBORObject.Read(ms);
-          TestCommon.CompareTestEqualAndConsistent(cbor1, cbor);
-          TestCommon.CompareTestRelations(cbor1, cbor2, cbor3);
-          TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
-          TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
-          TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+        CBORObject cbor1, cbor2, cbor3;
+        cbor1 = CBORObject.Read(ms);
+        cbor2 = CBORObject.Read(ms);
+        cbor3 = CBORObject.Read(ms);
+        TestCommon.CompareTestEqualAndConsistent(cbor1, cbor);
+        TestCommon.CompareTestRelations(cbor1, cbor2, cbor3);
+        TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
+        TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
+        TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
       } catch (Exception ex) {
         Assert.fail(ex.toString() + "\r\n" +
           Chop(TestCommon.ToByteArrayString(bytes)) + "\r\n" +
@@ -8685,9 +8570,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (String strexp : exponents) {
         EInteger bigexp = EInteger.FromString(strexp);
-        EDecimal ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
+        var ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
         TestWriteObj(ed);
-        EFloat ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
+        var ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
         TestWriteObj(ef);
         bigexp = bigexp.Negate();
         ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
@@ -8711,20 +8596,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(obj, ms);
-            CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
-            ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
-            AssertReadThree(ms.toByteArray());
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          CBORObject.Write(obj, ms);
+          CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
+          ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
+          AssertReadThree(ms.toByteArray());
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -8736,7 +8612,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestEMap() {
       CBORObject cbor = CBORObject.NewMap()
         .Add("name", "Example");
-      byte[] bytes = CBORTestCommon.CheckEncodeToBytes(cbor);
+      CBORTestCommon.CheckEncodeToBytes(cbor);
     }
 
     private static void TestWriteObj(Object obj, Object objTest) {
@@ -8753,22 +8629,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            CBORObject.Write(obj, ms);
-            CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
-            ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
-            AssertReadThree(
-              ms.toByteArray(),
-              ToObjectTest.TestToFromObjectRoundTrip(objTest));
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          CBORObject.Write(obj, ms);
+          CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
+          ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
+          AssertReadThree(
+            ms.toByteArray(),
+            ToObjectTest.TestToFromObjectRoundTrip(objTest));
         }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
@@ -8824,13 +8691,55 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
-        {
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
+        using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+        try {
+          CBORObject.WriteValue(ms, -1, 0);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(ms, 8, 0);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(ms, 7, 256);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(ms, 7, Integer.MAX_VALUE);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          CBORObject.WriteValue(ms, 7, Long.MAX_VALUE);
+          Assert.fail("Should have failed");
+        } catch (IllegalArgumentException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        for (int i = 0; i <= 7; ++i) {
           try {
-            CBORObject.WriteValue(ms, -1, 0);
+            CBORObject.WriteValue(ms, i, -1);
             Assert.fail("Should have failed");
           } catch (IllegalArgumentException ex) {
             // NOTE: Intentionally empty
@@ -8839,7 +8748,7 @@ ms = new java.io.ByteArrayOutputStream();
             throw new IllegalStateException("", ex);
           }
           try {
-            CBORObject.WriteValue(ms, 8, 0);
+            CBORObject.WriteValue(ms, i, Integer.MIN_VALUE);
             Assert.fail("Should have failed");
           } catch (IllegalArgumentException ex) {
             // NOTE: Intentionally empty
@@ -8848,7 +8757,7 @@ ms = new java.io.ByteArrayOutputStream();
             throw new IllegalStateException("", ex);
           }
           try {
-            CBORObject.WriteValue(ms, 7, 256);
+            CBORObject.WriteValue(ms, i, -1L);
             Assert.fail("Should have failed");
           } catch (IllegalArgumentException ex) {
             // NOTE: Intentionally empty
@@ -8857,119 +8766,68 @@ ms = new java.io.ByteArrayOutputStream();
             throw new IllegalStateException("", ex);
           }
           try {
-            CBORObject.WriteValue(ms, 7, Integer.MAX_VALUE);
+            CBORObject.WriteValue(ms, i, Long.MIN_VALUE);
             Assert.fail("Should have failed");
           } catch (IllegalArgumentException ex) {
             // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+        }
+        for (int i = 0; i <= 6; ++i) {
+          try {
+            CBORObject.WriteValue(ms, i, Integer.MAX_VALUE);
           } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
           try {
-            CBORObject.WriteValue(ms, 7, Long.MAX_VALUE);
-            Assert.fail("Should have failed");
-          } catch (IllegalArgumentException ex) {
-            // NOTE: Intentionally empty
+            CBORObject.WriteValue(ms, i, Long.MAX_VALUE);
           } catch (Exception ex) {
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-          for (int i = 0; i <= 7; ++i) {
-            try {
-              CBORObject.WriteValue(ms, i, -1);
-              Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
-              // NOTE: Intentionally empty
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            try {
-              CBORObject.WriteValue(ms, i, Integer.MIN_VALUE);
-              Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
-              // NOTE: Intentionally empty
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            try {
-              CBORObject.WriteValue(ms, i, -1L);
-              Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
-              // NOTE: Intentionally empty
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-            try {
-              CBORObject.WriteValue(ms, i, Long.MIN_VALUE);
-              Assert.fail("Should have failed");
-            } catch (IllegalArgumentException ex) {
-              // NOTE: Intentionally empty
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
+        }
+        // Test minimum data length
+        int[] ranges = {
+          0, 23, 1,
+          24, 255, 2,
+          256, 266, 3,
+          65525, 65535, 3,
+          65536, 65546, 5,
+        };
+        String[] bigRanges = {
+          "4294967285", "4294967295",
+          "4294967296", "4294967306",
+          "18446744073709551604", "18446744073709551615",
+        };
+        int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
+        for (int i = 0; i < ranges.length; i += 3) {
+          for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
+            for (int k = 0; k <= 6; ++k) {
+              int count;
+              count = CBORObject.WriteValue(ms, k, j);
+              Assert.assertEquals(ranges[i + 2], count);
+              count = CBORObject.WriteValue(ms, k, (long)j);
+              Assert.assertEquals(ranges[i + 2], count);
+              count = CBORObject.WriteValue(ms, k, EInteger.FromInt32(j));
+              Assert.assertEquals(ranges[i + 2], count);
             }
           }
-          for (int i = 0; i <= 6; ++i) {
-            try {
-              CBORObject.WriteValue(ms, i, Integer.MAX_VALUE);
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
+        }
+        for (int i = 0; i < bigRanges.length; i += 2) {
+          EInteger bj = EInteger.FromString(bigRanges[i]);
+          EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
+          while (bj.compareTo(valueBjEnd)< 0) {
+            for (int k = 0; k <= 6; ++k) {
+              int count;
+              count = CBORObject.WriteValue(ms, k, bj);
+              Assert.assertEquals(bigSizes[i / 2], count);
             }
-            try {
-              CBORObject.WriteValue(ms, i, Long.MAX_VALUE);
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
+            bj = bj.Add(EInteger.FromInt32(1));
           }
-          // Test minimum data length
-          int[] ranges = {
-            0, 23, 1,
-            24, 255, 2,
-            256, 266, 3,
-            65525, 65535, 3,
-            65536, 65546, 5,
-          };
-          String[] bigRanges = {
-            "4294967285", "4294967295",
-            "4294967296", "4294967306",
-            "18446744073709551604", "18446744073709551615",
-          };
-          int[] bigSizes = { 5, 9, 9, 5, 9, 9 };
-          for (int i = 0; i < ranges.length; i += 3) {
-            for (int j = ranges[i]; j <= ranges[i + 1]; ++j) {
-              for (int k = 0; k <= 6; ++k) {
-                int count;
-                count = CBORObject.WriteValue(ms, k, j);
-                Assert.assertEquals(ranges[i + 2], count);
-                count = CBORObject.WriteValue(ms, k, (long)j);
-                Assert.assertEquals(ranges[i + 2], count);
-                count = CBORObject.WriteValue(ms, k, EInteger.FromInt32(j));
-                Assert.assertEquals(ranges[i + 2], count);
-              }
-            }
-          }
-          for (int i = 0; i < bigRanges.length; i += 2) {
-            EInteger bj = EInteger.FromString(bigRanges[i]);
-            EInteger valueBjEnd = EInteger.FromString(bigRanges[i + 1]);
-            while (bj.compareTo(valueBjEnd)< 0) {
-              for (int k = 0; k <= 6; ++k) {
-                int count;
-                count = CBORObject.WriteValue(ms, k, bj);
-                Assert.assertEquals(bigSizes[i / 2], count);
-              }
-              bj = bj.Add(EInteger.FromInt32(1));
-            }
-          }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        }
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
@@ -9059,7 +8917,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(CBORObject.FromObject("1"), list.get(2));
 
       jsonstring = "{\"3\":0,\"2\":0,\"1\":0}";
-      bytes = DataUtilities.GetUtf8Bytes(jsonstring, false);
+      bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(jsonstring, false);
       cbor = CBORObject.FromJSONBytes(bytes, joptions);
       list = new ArrayList<CBORObject>();
       for (CBORObject key : cbor.getKeys()) {
@@ -9076,10 +8934,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       byte[] bytes = new byte[] { 0, 0, 0 };
       try {
         for (int i = 0; i < 0x10000; ++i) {
-          bytes[0] = (byte)0xf9;
+          bytes[0] = 0xf9;
           bytes[1] = (byte)((i >> 8) & 0xff);
           bytes[2] = (byte)(i & 0xff);
-          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          var cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9116,12 +8974,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // 32-bit values
         bytes = new byte[5];
         for (int i = 0; i < 100000; ++i) {
-          bytes[0] = (byte)0xfa;
+          bytes[0] = 0xfa;
           for (int j = 1; j <= 4; ++j) {
             bytes[j] = (byte)r.UniformInt(256);
           }
 
-          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          var cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9158,11 +9016,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // 64-bit values
         bytes = new byte[9];
         for (int i = 0; i < 100000; ++i) {
-          bytes[0] = (byte)0xfb;
+          bytes[0] = 0xfb;
           for (int j = 1; j <= 8; ++j) {
             bytes[j] = (byte)r.UniformInt(256);
           }
-          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
+          var cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9214,34 +9072,28 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
             if (i == 0) {
-              {
-                java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-                try {
-                  CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
-                  Assert.fail("Should have failed");
-                } catch (IllegalArgumentException ex) {
-                  // NOTE: Intentionally empty
-                } catch (Exception ex) {
-                  Assert.fail(ex.toString());
-                  throw new IllegalStateException("", ex);
-                }
-                try {
-                  CBORObject.WriteFloatingPointValue(null, cbor.AsSingle(), 4);
-                  Assert.fail("Should have failed");
-                } catch (NullPointerException ex) {
-                  // NOTE: Intentionally empty
-                } catch (Exception ex) {
-                  Assert.fail(ex.toString());
-                  throw new IllegalStateException("", ex);
-                }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+  using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+              try {
+                CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
+                Assert.fail("Should have failed");
+              } catch (IllegalArgumentException ex) {
+                // NOTE: Intentionally empty
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
+              try {
+                CBORObject.WriteFloatingPointValue(
+                  null,
+                  cbor.AsSingle(),
+                  4);
+                Assert.fail("Should have failed");
+              } catch (NullPointerException ex) {
+                // NOTE: Intentionally empty
+              } catch (Exception ex) {
+                Assert.fail(ex.toString());
+                throw new IllegalStateException("", ex);
+              }
             }
           }
         }
@@ -9388,7 +9240,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject expected,
       CBORObject src,
       CBORObject patch) {
-      CBORObject actual = CBORObject.DecodeFromBytes(src.EncodeToBytes());
+      var actual = CBORObject.DecodeFromBytes(src.EncodeToBytes());
       if (expected == null) {
         try {
           actual.ApplyJSONPatch(patch);
@@ -9997,9 +9849,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestDateTime() {
-      ArrayList<String> dateList = new ArrayList<String>();
-      dateList.add("0783-08-19T03:10:29.406Z");
-      dateList.add("1954-03-07T16:20:38.256Z");
+      ArrayList<String> dateList = new ArrayList<String>
+      {
+        "0783-08-19T03:10:29.406Z",
+        "1954-03-07T16:20:38.256Z",
+      };
       RandomGenerator rng = new RandomGenerator();
       for (int i = 0; i < 2000; ++i) {
         String dtstr = DateTimeToString(
@@ -10391,7 +10245,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String dateStr = "1970-01-01T00:00:00.000Z";
       CBORObject cbor = CBORObject.FromObjectAndTag(dateStr, 0);
       dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
-      CBORObject cbor2 = CBORObject.FromObjectAndTag(0, 1);
+      CBORObject.FromObjectAndTag(0, 1);
       dt2 = (java.util.Date)cbor.ToObject(java.util.Date.class);
       Assert.assertEquals(dt2, dt);
     }
@@ -10416,10 +10270,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           sb.append('%');
           sb.append(hex.charAt(irg.GetInt32(hex.length())));
           sb.append(hex.charAt(irg.GetInt32(hex.length())));
-        } else if (x < 95) {
-          sb.append((char)(irg.GetInt32(0x5e) + 0x21));
         } else {
-          sb.append((char)irg.GetInt32(0x80));
+          x < 95 ? sb.append((char)(irg.GetInt32(0x5e) + 0x21)) :
+sb.append((char)irg.GetInt32(0x80));
         }
       }
       return sb.toString();
@@ -10430,8 +10283,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       // TODO: Add utility to create query strings
       String test = "a=b&c=d&e=f&g\u005b0]=h&g\u005b1]=j&g\u005b2]\u005b";
       test += "a]=k&g\u005b2]\u005bb]=m";
-      CBORObject cbor =
-        CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
+      CBORObject cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToDict(test));
       System.out.println(cbor.ToJSONString());
       cbor = CBORObject.FromObject(QueryStringHelper.QueryStringToCBOR(test));
       System.out.println(cbor.ToJSONString());
@@ -10494,7 +10346,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
           String msg = json + " " + numconv + " " + longval;
-          msg = msg.substring(0, Math.min(100, msg.length()));
+          msg = msg[..Math.min(100, msg.length())];
           if (msg.length() > 100) {
             msg += "...";
           }
@@ -10516,7 +10368,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
           String msg = json + " " + numconv + " " + intval;
-          msg = msg.substring(0, Math.min(100, msg.length()));
+          msg = msg[..Math.min(100, msg.length())];
           if (msg.length() > 100) {
             msg += "...";
           }
@@ -10539,15 +10391,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
-    private static final JSONOptions JSONOptionsDouble = new JSONOptions(
+    private static final JSONOptions JSONOptionsDouble = new(
       "numberconversion=double");
-    private static final JSONOptions JSONOptionsFull = new JSONOptions(
+    private static final JSONOptions JSONOptionsFull = new(
       "numberconversion=full");
 
     public static void TestParseNumberFxxLine(String line) {
       // Parse test case format used in:
       // https://github.com/nigeltao/parse-number-fxx-test-data
-      String f16 = line.substring(0, 4);
+      String f16 = line.charAt(..4);
       if (line.charAt(4) != ' ') {
         Assert.fail(line);
       }
@@ -10559,7 +10411,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (line.charAt(4 + 26) != ' ') {
         Assert.fail(line);
       }
-      String str = line.substring(4 + 1 + 8 + 1 + 16 + 1);
+      String str = line.charAt((4 + 1 + 8 + 1 + 16 + 1)..);
       short sf16 = EInteger.FromRadixString(f16, 16).ToInt16Unchecked();
       int sf32 = EInteger.FromRadixString(f32, 16).ToInt32Unchecked();
       long sf64 = EInteger.FromRadixString(f64, 16).ToInt64Unchecked();
@@ -10572,7 +10424,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int f32,
       long f64,
       String line) {
-      if (str.charAt(0) == '.' || str.charAt(str.length() - 1) == '.' ||
+      if (str.charAt(0) == '.' || str.charAt(^1) == '.' ||
         str.contains(".e") || str.contains(".E")) {
         // Not a valid JSON number, so skip
         // System.out.println(str);
@@ -10591,7 +10443,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       cbor = CBORObject.FromJSONString(str, JSONOptionsDouble);
       Assert.assertEquals(line, f64, cbor.AsDoubleBits());
       cbor = CBORObject.FromJSONBytes(
-          DataUtilities.GetUtf8Bytes(str, false),
+          com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false),
           JSONOptionsDouble);
       Assert.assertEquals(line, f64, cbor.AsDoubleBits());
       float sing = CBORObject.FromFloatingPointBits(f32, 4).AsSingle();
@@ -10603,7 +10455,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       cbor = CBORObject.FromJSONString(str, JSONOptionsFull);
       Assert.assertEquals(line, sing, cbor.AsSingle());
       cbor = CBORObject.FromJSONBytes(
-          DataUtilities.GetUtf8Bytes(str, false),
+          com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false),
           JSONOptionsFull);
       Assert.assertEquals(line, sing, cbor.AsSingle());
       // TODO: Test f16
@@ -10871,7 +10723,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i <= 0x20; ++i) {
         byte[] bytes = { 0x22, (byte)i, 0x22 };
         char[] chars = { (char)0x22, (char)i, (char)0x22 };
-        String str = new String(chars, 0, chars.length);
+        String str = new(chars, 0, chars.length);
         if (i == 0x20) {
           try {
             CBORObject.FromJSONString(str);
@@ -10915,7 +10767,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i <= 0x20; ++i) {
         // Leading CTL
         byte[] bytes = { (byte)i, 0x31 };
-        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10935,7 +10787,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         // Trailing CTL
         bytes = new byte[] { 0x31, (byte)i };
-        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10961,8 +10813,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       for (int i = 0; i <= 0x20; ++i) {
         // Leading CTL
         char[] chars = { (char)i, (char)0x31 };
-        String str = new String(chars, 0, chars.length);
-        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+        String str = new(chars, 0, chars.length);
+        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {
@@ -10983,7 +10835,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // Trailing CTL
         chars = new char[] { (char)0x31, (char)i };
         str = new String(chars, 0, chars.length);
-        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+        if (i instanceof 0x09 or 0x0d or 0x0a or 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {
@@ -11013,7 +10865,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         AssertJSONDouble(
           rvstring,
           "double",
-          (double)rv);
+          rv);
         AssertJSONInteger(
           rvstring,
           "intorfloat",
@@ -11024,15 +10876,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       AssertJSONDouble(
         TestCommon.IntToString(Integer.MAX_VALUE),
         "double",
-        (double)Integer.MAX_VALUE);
+        Integer.MAX_VALUE);
       AssertJSONDouble(
         TestCommon.IntToString(Integer.MAX_VALUE),
         "double",
-        (double)Integer.MAX_VALUE);
+        Integer.MAX_VALUE);
       AssertJSONDouble(
         TestCommon.IntToString(Integer.MIN_VALUE),
         "double",
-        (double)Integer.MIN_VALUE);
+        Integer.MIN_VALUE);
     }
 
     @Test(timeout = 10000)
@@ -11041,32 +10893,32 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       AssertJSONDouble("0", "double", 0.0);
       cbor = FromJSON("[0, 1, 2, 3]", "double");
       Assert.assertEquals(4, cbor.size());
-      Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
-      Assert.assertEquals((double)1.0, cbor.get(1).AsDouble(), 0);
-      Assert.assertEquals((double)2.0, cbor.get(2).AsDouble(), 0);
-      Assert.assertEquals((double)3.0, cbor.get(3).AsDouble(), 0);
+      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+      Assert.assertEquals(1.0, cbor.get(1).AsDouble());
+      Assert.assertEquals(2.0, cbor.get(2).AsDouble());
+      Assert.assertEquals(3.0, cbor.get(3).AsDouble());
       cbor = FromJSON("[0]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals((double)0.0, cbor.get(0).AsDouble(), 0);
+      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-0]", "double");
       Assert.assertEquals(1, cbor.size());
       cbor = FromJSON("[1]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals((double)1.0, cbor.get(0).AsDouble(), 0);
+      Assert.assertEquals(1.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-1]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals((double)-1.0, cbor.get(0).AsDouble(), 0);
+      Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
           "double");
       Assert.assertEquals(8, cbor.size());
-      Assert.assertEquals((double)-1022.0, cbor.get(0).AsDouble(), 0);
-      Assert.assertEquals((double)-1023.0, cbor.get(1).AsDouble(), 0);
-      Assert.assertEquals((double)-1024.0, cbor.get(2).AsDouble(), 0);
-      Assert.assertEquals((double)-1025.0, cbor.get(3).AsDouble(), 0);
-      Assert.assertEquals((double)1022.0, cbor.get(4).AsDouble(), 0);
-      Assert.assertEquals((double)1023.0, cbor.get(5).AsDouble(), 0);
-      Assert.assertEquals((double)1024.0, cbor.get(6).AsDouble(), 0);
-      Assert.assertEquals((double)1025.0, cbor.get(7).AsDouble(), 0);
+      Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
+      Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
+      Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
+      Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
+      Assert.assertEquals(1022.0, cbor.get(4).AsDouble());
+      Assert.assertEquals(1023.0, cbor.get(5).AsDouble());
+      Assert.assertEquals(1024.0, cbor.get(6).AsDouble());
+      Assert.assertEquals(1025.0, cbor.get(7).AsDouble());
     }
 
     @Test(timeout = 10000)
@@ -11239,313 +11091,176 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  }
     }
 
-@Test
-public void TestRoundTripRegressions() {
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xba, 0x00, 0x00, 0x00, 0x03,
-  (byte)0xf9,
-  (byte)0x83, 0x1d,
-  (byte)0xda,
-  (byte)0xb6,
-  (byte)0xda, 0x50, 0x56, 0x1a, 0x50,
-  (byte)0xe3, 0x2c, 0x7a, 0x16,
-  (byte)0xfa, 0x50, 0x32, 0x73, 0x07,
-  (byte)0xfa, (byte)0xb9, 0x2d, 0x73, (byte)0xce, 0x38, (byte)0xd0,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xbf,
-  (byte)0x9f,
-  (byte)0xbf, 0x39, 0x20,
-  (byte)0x8f, 0x4a, 0x1f, 0x46, 0x26, 0x0b, 0x3e, 0x72, 0x2c, 0x7f, 0x11,
-  0x2e, 0x39,
-  (byte)0x9d,
-  (byte)0xba, 0x1a, 0x11,
-  (byte)0x8d,
-  (byte)0xc0,
-  (byte)0xb4, 0x38,
-  (byte)0xb6,
-  (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
-  (byte)0xd8, 0x3b,
-  (byte)0x99, 0x00, 0x02, 0x3b, 0x05,
-  (byte)0xbb,
-  (byte)0xea,
-  (byte)0x8e, 0x4b,
-  (byte)0xd3, 0x5e, 0x22,
-  (byte)0x9f, 0x59, 0x00, 0x00,
-  (byte)0xbb, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x41, 0x20,
-  (byte)0xbf, 0x1a, 0x00, 0x00, 0x00, 0x61,
-  (byte)0xb9, 0x00, 0x01, 0x1a, 0x00, 0x00, 0x00, 0x0e,
-  (byte)0xba, 0x00, 0x00, 0x00, 0x00,
-  (byte)0xff,
-  (byte)0xff,
-  (byte)0xff,
-  (byte)0xd8, 0x22,
-  (byte)0xf8,
-  (byte)0x93,
-  (byte)0xd9,
-  (byte)0xaf, 0x33, 0x19,
-  (byte)0xf0,
-  (byte)0xf0,
-  (byte)0xf9,
-  (byte)0x85,
-  (byte)0x93,
-  (byte)0x99, 0x00, 0x01, 0x3a,
-  (byte)0xb5,
-  (byte)0xfb, 0x4d, 0x43,
-  (byte)0x98, 0x00,
-  (byte)0xff, (byte)0xfa, (byte)0xb0, (byte)0xb4, (byte)0xdc, 0x6d,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xdb, 0x0d,
-  (byte)0xcb, 0x5d, 0x78,
-  (byte)0x92,
-  (byte)0xc2,
-  (byte)0xc7, 0x2b,
-  (byte)0xb9, 0x00, 0x02, 0x39,
-  (byte)0xee,
-  (byte)0xa0, (byte)0xa0, 0x1a, 0x0e, (byte)0xd9, (byte)0xec, (byte)0xca,
-  (byte)0xf2,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xbf,
-  (byte)0xfb,
-  (byte)0xb1, 0x21,
-  (byte)0x93,
-  (byte)0x8c,
-  (byte)0xc6,
-  (byte)0xf3,
-  (byte)0xcf,
-  (byte)0xb7, (byte)0xf8, 0x76, 0x18, (byte)0xda, 0x39, 0x60, (byte)0xf4,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xbb, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x02, (byte)0xf0, 0x0d, 0x2a, 0x21,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xba, 0x00, 0x00, 0x00, 0x02,
-  (byte)0xf9, 0x48, 0x37,
-  (byte)0xda,
-  (byte)0xb5, 0x72,
-  (byte)0xcf,
-  (byte)0xf8, 0x31, 0x3b, 0x06, 0x78,
-  (byte)0xdb, 0x44, 0x7d, (byte)0xba, (byte)0xbd, 0x7d, 0x39, (byte)0x98,
-  (byte)0xb9,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
-byte[] bytes = new byte[] {
-  (byte)0xbf, 0x0d,
-  (byte)0xdb, 0x7f, 0x53,
-  (byte)0xd5, 0x1e,
-  (byte)0xab, 0x1f,
-  (byte)0xb2,
-  (byte)0xc2,
-  (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0,
-  (byte)0x9d,
-  (byte)0x84,
-  (byte)0xa1,
-  (byte)0xff, 0x1a, 0x00, 0x46, 0x31,
-  (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
-byte[] bytes = new byte[] {
-  (byte)0xbf, 0x0d,
-  (byte)0xdb, 0x7f, 0x53,
-  (byte)0xd5, 0x1e,
-  (byte)0xab, 0x1f, 0x23,
-  (byte)0xc2,
-  (byte)0xb8, 0x02, 0x7f, 0x69,
-  (byte)0xc2,
-  (byte)0xa8, 0x7f, 0x39, 0x7f,
-  (byte)0xe4,
-  (byte)0xa1,
-  (byte)0xae, 0x1c,
-  (byte)0xff, 0x17, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xec,
-  (byte)0x90,
-  (byte)0xb2, 0x0a, (byte)0xff, (byte)0xfa, 0x12, 0x49, 0x20, 0x61,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
-byte[] bytes = new byte[] {
-  (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x01,
-  (byte)0xd8, 0x52,
-  (byte)0xbf, 0x0c,
-  (byte)0xf9, 0x68, 0x67, 0x3b,
-  (byte)0xdb,
-  (byte)0x85, 0x5b, 0x59,
-  (byte)0xfd, 0x03, 0x6c,
-  (byte)0x80,
-  (byte)0xf8,
-  (byte)0xc4, 0x7f, 0x67, 0x73, 0x2b, 0x51, 0x31, 0x5d, 0x26, 0x67,
-  (byte)0xff, 0x5f, 0x5b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08,
-  (byte)0xc7,
-  (byte)0xb9, 0x6b,
-  (byte)0xb0,
-  (byte)0xb6,
-  (byte)0xbe, 0x6d,
-  (byte)0x9e, 0x41, 0x34, 0x5a, 0x00, 0x00, 0x00, 0x02,
-  (byte)0xc4, 0x4a,
-  (byte)0xff, 0x67,
-  (byte)0xe1,
-  (byte)0x99,
-  (byte)0x92,
-  (byte)0xf0,
-  (byte)0xb5, (byte)0xa4, (byte)0xa2, 0x3a, 0x77, 0x11, 0x4c, 0x6f,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x01,
-  (byte)0x9f,
-  (byte)0xf9, 0x03,
-  (byte)0xf1, 0x3b, 0x1a, 0x6f,
-  (byte)0xc2, 0x1b,
-  (byte)0xce, 0x23,
-  (byte)0xcb, 0x2e,
-  (byte)0xbf,
-  (byte)0xf8, 0x25,
-  (byte)0xfb, 0x01, 0x54, 0x4a, 0x78, 0x13,
-  (byte)0xff, 0x12,
-  (byte)0x91,
-  (byte)0xff,
-  (byte)0xbf, 0x78, 0x04, 0x7a, 0x43, 0x30, 0x04, 0x41, 0x55, 0x7f, 0x7a,
-  0x00, 0x00, 0x00, 0x03,
-  (byte)0xda,
-  (byte)0xb3, 0x64, 0x7b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x58,
-  (byte)0xff, 0x39, (byte)0xa2, 0x48, (byte)0xff, (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
-byte[] bytes = new byte[] {
-  (byte)0x81,
-  (byte)0xda,
-  (byte)0x8a, 0x18, 0x00, 0x00,
-  (byte)0xda,
-  (byte)0xd5,
-  (byte)0xf5,
-  (byte)0x96, 0x10,
-  (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
-  (byte)0xbf, 0x6f, 0x22, 0x65, 0x65,
-  (byte)0xf1,
-  (byte)0x86,
-  (byte)0x9d,
-  (byte)0xad, 0x22, 0x42,
-  (byte)0xc5,
-  (byte)0xb1, 0x62, 0x58, 0x01, 0x5e,
-  (byte)0xda, 0x47, 0x47,
-  (byte)0x87,
-  (byte)0x94,
-  (byte)0xed, 0x7f, 0x6c,
-  (byte)0xf0,
-  (byte)0x9c,
-  (byte)0xbc,
-  (byte)0x96, 0x2f, 0x47, 0x7c, 0x00, 0x50, 0x67, 0x67, 0x10, 0x78, 0x03,
-  (byte)0xc3,
-  (byte)0x90, 0x17,
-  (byte)0xff, 0x19,
-  (byte)0xd2,
-  (byte)0xe7,
-  (byte)0x99, 0x00, 0x01, 0x1b, 0x2a, 0x6e, 0x6f, 0x67, 0x4b, 0x18, 0x60,
-  0x51, 0x1b, 0x46,
-  (byte)0x9f, (byte)0xd3, (byte)0xb7, (byte)0xf4, 0x74, (byte)0xad, 0x6c,
-  (byte)0xff,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-{
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
-byte[] bytes = new byte[] {
-  (byte)0xda,
-  (byte)0xcf,
-  (byte)0xf0,
-  (byte)0xbe, 0x18,
-  (byte)0x99, 0x00, 0x01,
-  (byte)0xb9, 0x00, 0x01,
-  (byte)0xbf, 0x7f, 0x61, 0x5d, 0x7a, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
-  0x20, 0x5a, 0x66, 0x1c, 0x7a, 0x00, 0x00, 0x00, 0x02, 0x7d, 0x7f, 0x60,
-  0x78, 0x01, 0x43,
-  (byte)0xff, 0x1a,
-  (byte)0xca, 0x5c,
-  (byte)0x83, 0x47, 0x7f, 0x79, 0x00, 0x0a,
-  (byte)0xcc,
-  (byte)0x88, 0x00, 0x73, 0x5f, 0x00, 0x26, 0x08, 0x72, 0x60,
-  (byte)0xff, 0x00,
-  (byte)0xff, 0x1b,
-  (byte)0xbb, 0x19, (byte)0xbf, (byte)0x9f, 0x55, (byte)0xee, 0x56, 0x09,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes, options));
-}
-}
-@Test
-public void TestMapCompareRegressions() {
-  CBORObject m1, m2;
-  m1 = CBORObject.NewMap().Add(3, 4).Add(1, 2);
-  m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
-  Assert.assertEquals(0, m1.compareTo(m2));
-  TestCommon.CompareTestEqualAndConsistent(m1, m2);
-  m1 = CBORObject.NewMap().Add(3, 2).Add(1, 2);
-  m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
-  TestCommon.CompareTestLess(m1, m2);
-  m1 = CBORObject.NewMap().Add(3, 7).Add(1, 2);
-  m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
-  TestCommon.CompareTestGreater(m1, m2);
-  m1 = CBORObject.NewMap().Add(3, 4).Add(1, 0);
-  m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
-  TestCommon.CompareTestLess(m1, m2);
-  m1 = CBORObject.NewMap().Add(3, 4).Add(1, 7);
-  m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
-  TestCommon.CompareTestGreater(m1, m2);
-}
+    @Test
+    public void TestRoundTripRegressions() {
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xba, 0x00, 0x00, 0x00, 0x03, (byte)0xf9, (byte)0x83,
+          0x1d, (byte)0xda, (byte)0xb6, (byte)0xda, 0x50, 0x56, 0x1a, 0x50, (byte)0xe3, 0x2c, 0x7a, 0x16,
+          (byte)0xfa, 0x50, 0x32, 0x73, 0x07, (byte)0xfa, (byte)0xb9, 0x2d, 0x73, (byte)0xce, 0x38, (byte)0xd0,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, (byte)0x9f, (byte)0xbf, 0x39, 0x20, (byte)0x8f, 0x4a,
+          0x1f, 0x46, 0x26, 0x0b, 0x3e, 0x72, 0x2c, 0x7f, 0x11, 0x2e, 0x39, (byte)0x9d,
+          (byte)0xba, 0x1a, 0x11, (byte)0x8d, (byte)0xc0, (byte)0xb4, 0x38, (byte)0xb6, (byte)0x9b, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x01, (byte)0xd8, 0x3b, (byte)0x99, 0x00, 0x02, 0x3b, 0x05,
+          (byte)0xbb, (byte)0xea, (byte)0x8e, 0x4b, (byte)0xd3, 0x5e, 0x22, (byte)0x9f, 0x59, 0x00, 0x00, (byte)0xbb,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x41, 0x20, (byte)0xbf, 0x1a,
+          0x00, 0x00, 0x00, 0x61, (byte)0xb9, 0x00, 0x01, 0x1a, 0x00, 0x00, 0x00, 0x0e,
+          (byte)0xba, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd8, 0x22, (byte)0xf8, (byte)0x93,
+          (byte)0xd9, (byte)0xaf, 0x33, 0x19, (byte)0xf0, (byte)0xf0, (byte)0xf9, (byte)0x85, (byte)0x93, (byte)0x99, 0x00, 0x01,
+          0x3a, (byte)0xb5, (byte)0xfb, 0x4d, 0x43, (byte)0x98, 0x00, (byte)0xff, (byte)0xfa, (byte)0xb0, (byte)0xb4, (byte)0xdc,
+          0x6d, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xdb, 0x0d, (byte)0xcb, 0x5d, 0x78, (byte)0x92, (byte)0xc2,
+          (byte)0xc7, 0x2b, (byte)0xb9, 0x00, 0x02, 0x39, (byte)0xee, (byte)0xa0, (byte)0xa0, 0x1a, 0x0e, (byte)0xd9,
+          (byte)0xec, (byte)0xca, (byte)0xf2,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, (byte)0xfb, (byte)0xb1, 0x21, (byte)0x93, (byte)0x8c, (byte)0xc6,
+          (byte)0xf3, (byte)0xcf, (byte)0xb7, (byte)0xf8, 0x76, 0x18, (byte)0xda, 0x39, 0x60, (byte)0xf4, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbb, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x02, (byte)0xf0, 0x0d, 0x2a, 0x21,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xba, 0x00, 0x00, 0x00, 0x02, (byte)0xf9, 0x48,
+          0x37, (byte)0xda, (byte)0xb5, 0x72, (byte)0xcf, (byte)0xf8, 0x31, 0x3b, 0x06, 0x78, (byte)0xdb, 0x44,
+          0x7d, (byte)0xba, (byte)0xbd, 0x7d, 0x39, (byte)0x98, (byte)0xb9,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+          (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a, 0x00,
+          0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80,
+          (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, 0x23, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x69, (byte)0xc2, (byte)0xa8, 0x7f, 0x39,
+          0x7f, (byte)0xe4, (byte)0xa1, (byte)0xae, 0x1c, (byte)0xff, 0x17, 0x7f, 0x69, 0x05, 0x47, 0x76,
+          0x4f, 0x01, (byte)0xec, (byte)0x90, (byte)0xb2, 0x0a, (byte)0xff, (byte)0xfa, 0x12, 0x49, 0x20, 0x61,
+          (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x01, (byte)0xd8, 0x52, (byte)0xbf, 0x0c, (byte)0xf9, 0x68, 0x67, 0x3b, (byte)0xdb, (byte)0x85,
+          0x5b, 0x59, (byte)0xfd, 0x03, 0x6c, (byte)0x80, (byte)0xf8, (byte)0xc4, 0x7f, 0x67, 0x73, 0x2b,
+          0x51, 0x31, 0x5d, 0x26, 0x67, (byte)0xff, 0x5f, 0x5b, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x08, (byte)0xc7, (byte)0xb9, 0x6b, (byte)0xb0, (byte)0xb6, (byte)0xbe, 0x6d, (byte)0x9e,
+          0x41, 0x34, 0x5a, 0x00, 0x00, 0x00, 0x02, (byte)0xc4, 0x4a, (byte)0xff, 0x67, (byte)0xe1,
+          (byte)0x99, (byte)0x92, (byte)0xf0, (byte)0xb5, (byte)0xa4, (byte)0xa2, 0x3a, 0x77, 0x11, 0x4c, 0x6f, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x01, (byte)0x9f, (byte)0xf9, 0x03, (byte)0xf1, 0x3b, 0x1a, 0x6f, (byte)0xc2, 0x1b, (byte)0xce,
+          0x23, (byte)0xcb, 0x2e, (byte)0xbf, (byte)0xf8, 0x25, (byte)0xfb, 0x01, 0x54, 0x4a, 0x78, 0x13,
+          (byte)0xff, 0x12, (byte)0x91, (byte)0xff, (byte)0xbf, 0x78, 0x04, 0x7a, 0x43, 0x30, 0x04, 0x41,
+          0x55, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x03, (byte)0xda, (byte)0xb3, 0x64, 0x7b, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x58, (byte)0xff, 0x39, (byte)0xa2, 0x48,
+          (byte)0xff, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0x81, (byte)0xda, (byte)0x8a, 0x18, 0x00, 0x00, (byte)0xda,
+          (byte)0xd5, (byte)0xf5, (byte)0x96, 0x10, (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x01, (byte)0xbf, 0x6f, 0x22, 0x65, 0x65, (byte)0xf1, (byte)0x86, (byte)0x9d, (byte)0xad, 0x22, 0x42,
+          (byte)0xc5, (byte)0xb1, 0x62, 0x58, 0x01, 0x5e, (byte)0xda, 0x47, 0x47, (byte)0x87, (byte)0x94, (byte)0xed,
+          0x7f, 0x6c, (byte)0xf0, (byte)0x9c, (byte)0xbc, (byte)0x96, 0x2f, 0x47, 0x7c, 0x00, 0x50, 0x67,
+          0x67, 0x10, 0x78, 0x03, (byte)0xc3, (byte)0x90, 0x17, (byte)0xff, 0x19, (byte)0xd2, (byte)0xe7, (byte)0x99,
+          0x00, 0x01, 0x1b, 0x2a, 0x6e, 0x6f, 0x67, 0x4b, 0x18, 0x60, 0x51, 0x1b,
+          0x46, (byte)0x9f, (byte)0xd3, (byte)0xb7, (byte)0xf4, 0x74, (byte)0xad, 0x6c, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xda, (byte)0xcf, (byte)0xf0, (byte)0xbe, 0x18, (byte)0x99, 0x00,
+          0x01, (byte)0xb9, 0x00, 0x01, (byte)0xbf, 0x7f, 0x61, 0x5d, 0x7a, 0x00, 0x00, 0x00,
+          0x06, 0x00, 0x00, 0x20, 0x5a, 0x66, 0x1c, 0x7a, 0x00, 0x00, 0x00, 0x02,
+          0x7d, 0x7f, 0x60, 0x78, 0x01, 0x43, (byte)0xff, 0x1a, (byte)0xca, 0x5c, (byte)0x83, 0x47,
+          0x7f, 0x79, 0x00, 0x0a, (byte)0xcc, (byte)0x88, 0x00, 0x73, 0x5f, 0x00, 0x26, 0x08,
+          0x72, 0x60, (byte)0xff, 0x00, (byte)0xff, 0x1b, (byte)0xbb, 0x19, (byte)0xbf, (byte)0x9f, 0x55, (byte)0xee,
+          0x56, 0x09,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+    }
+    @Test
+    public void TestMapCompareRegressions() {
+      CBORObject m1, m2;
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      Assert.assertEquals(0, m1.compareTo(m2));
+      TestCommon.CompareTestEqualAndConsistent(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 2).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestLess(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 7).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestGreater(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 0);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestLess(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 7);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestGreater(m1, m2);
+    }
     @Test
     public void TestToObject_TypeMapper() {
       CBORTypeMapper mapper = new CBORTypeMapper()
@@ -11580,668 +11295,603 @@ public void TestMapCompareRegressions() {
       }
     }
 
-@Test
-public void TestRegressionFour() {
-   CBORObject o1 = CBORObject.FromObject(new byte[] { (byte)5, (byte)2 });
-   CBORObject o2 = CBORObject.FromObject(new byte[] { (byte)0x85, (byte)2 });
-   TestCommon.CompareTestLess(o1, o2);
-}
+    @Test
+    public void TestRegressionFour() {
+      CBORObject o1 = CBORObject.FromObject(new byte[] { 5, 2 });
+      CBORObject o2 = CBORObject.FromObject(new byte[] { (byte)0x85, 2 });
+      TestCommon.CompareTestLess(o1, o2);
+    }
 
-@Test
-public void TestRegressionOne() {
-{
-CBOREncodeOptions options = new CBOREncodeOptions();
-byte[] bytes = new byte[] {
-  (byte)0xbf, 0x0d,
-  (byte)0xdb, 0x7f, 0x53,
-  (byte)0xd5, 0x1e,
-  (byte)0xab, 0x1f,
-  (byte)0xb2,
-  (byte)0xc2,
-  (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0,
-  (byte)0x9d,
-  (byte)0x84,
-  (byte)0xa1,
-  (byte)0xff, 0x1a, 0x00, 0x46, 0x31,
-  (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00,
-  (byte)0xff,
- };
-byte[] encodedBytes = new byte[] {
-  (byte)0xa1, 0x0d,
-  (byte)0xdb, 0x7f, 0x53,
-  (byte)0xd5, 0x1e,
-  (byte)0xab, 0x1f,
-  (byte)0xb2,
-  (byte)0xc2,
-  (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, 0x3a, 0x0a,
-  (byte)0xaa,
-  (byte)0xf2, 0x00, 0x69,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31,
-  (byte)0xdf,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(encodedBytes));
-}
-}
+    @Test
+    public void TestRegressionOne() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+          (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a, 0x00,
+          0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80,
+          (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, (byte)0xff,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa1, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5,
+          0x1e, (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, 0x69, (byte)0xf0, (byte)0xb8,
+          (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31, (byte)0xdf,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
 
-@Test
-public void TestRegressionTwo() {
-{
-CBOREncodeOptions options = new CBOREncodeOptions();
-byte[] bytes = new byte[] {
-  (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
-  0x09,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0,
-  (byte)0x9d,
-  (byte)0x84,
-  (byte)0xa1,
-  (byte)0xff, 0x1a, 0x00, 0x46, 0x31,
-  (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00,
- };
-byte[] encodedBytes = new byte[] {
-  (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
-  0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, 0x3a, 0x0a,
-  (byte)0xaa,
-  (byte)0xf2, 0x00, 0x69,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31,
-  (byte)0xdf,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(encodedBytes));
-}
-}
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
 
-@Test
-public void TestRegressionThree() {
-{
-CBOREncodeOptions options = new CBOREncodeOptions();
-byte[] bytes = new byte[] {
-  (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
-  0x09,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf,
-  (byte)0xbf, 0x00,
-  (byte)0xf0,
-  (byte)0x9d,
-  (byte)0x84,
-  (byte)0xa1,
-  (byte)0xff, 0, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, (byte)0xff, 0,
- };
-byte[] encodedBytes = new byte[] {
-  (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
-  0x01,
-  (byte)0xf4,
-  (byte)0x80,
-  (byte)0x80,
-  (byte)0x80, 0, 0x69,
-  (byte)0xf0,
-  (byte)0xb8,
-  (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84,
-  (byte)0xa1, 0,
- };
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
-CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(encodedBytes));
-}
-}
+    @Test
+    public void TestRegressionTwo() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
+          0x09, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a,
+          0x00, 0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4,
+          (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
+          0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, 0x69, (byte)0xf0,
+          (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31,
+          (byte)0xdf,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
 
-@Test
-public void TestStringCompareBug() {
-  CBORObject a, b, c, d;
-  byte[] bytes = new byte[] {
-    0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-    (byte)0xf4,
-    (byte)0x80,
-    (byte)0x80,
-    (byte)0x80,
-   };
-  a = CBORObject.DecodeFromBytes(bytes);
-  c = a;
-  bytes = new byte[] {
-    0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
-    (byte)0xf4,
-    (byte)0x80,
-    (byte)0x80,
-    (byte)0x80, (byte)0xff,
-   };
-  b = CBORObject.DecodeFromBytes(bytes);
-  d = b;
-  TestCommon.CompareTestEqual(a, b);
-  bytes = new byte[] {
-    0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
-    (byte)0xf0,
-    (byte)0xb8,
-    (byte)0xbf,
-    (byte)0xbf, 0x00,
-    (byte)0xf0,
-    (byte)0x9d,
-    (byte)0x84,
-    (byte)0xa1,
-    (byte)0xff,
-   };
-  a = CBORObject.DecodeFromBytes(bytes);
-  bytes = new byte[] {
-    0x7f, 0x69,
-    (byte)0xf0,
-    (byte)0xb8,
-    (byte)0xbf,
-    (byte)0xbf, 0x00,
-    (byte)0xf0,
-    (byte)0x9d,
-    (byte)0x84,
-    (byte)0xa1,
-    (byte)0xff,
-   };
-  b = CBORObject.DecodeFromBytes(bytes);
-  TestCommon.CompareTestEqual(a, b);
-  TestCommon.CompareTestLess(c, a);
-  TestCommon.CompareTestLess(c, b);
-  TestCommon.CompareTestLess(d, a);
-  TestCommon.CompareTestLess(d, b);
-  CBORObject o1 = CBORObject.NewMap();
-  o1.Add(b, CBORObject.FromObject(0));
-  o1.Add(c, CBORObject.FromObject(0));
-  CBORObject o2 = CBORObject.NewMap();
-  o2.Add(c, CBORObject.FromObject(0));
-  o2.Add(b, CBORObject.FromObject(0));
-  TestCommon.CompareTestEqual(a, b);
-}
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
 
-@Test(timeout = 2000)
-public void TestSlowDecode() {
-byte[] bytes = new byte[] {
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xf0, 0x02,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2, 0x02,
-  (byte)0xf7,
-  (byte)0xa0, 0x02,
-  (byte)0xa3,
-  (byte)0xf0, 0x01,
-  (byte)0xf1, 0x01,
-  (byte)0xf2,
-  (byte)0xf7,
-  (byte)0xf7,
-  (byte)0xf5,
-  (byte)0xa0, 0x01,
-  (byte)0xa3,
-  (byte)0xa3, 0x00,
-  (byte)0xf5, 0x01,
-  (byte)0xf4, 0x02, 0x02, 0x02,
-  (byte)0xa0, 0x01,
-  (byte)0xa3, 0x00,
-  (byte)0xa0, 0x01,
-  (byte)0xa0, 0x02, 0x02,
-  (byte)0xf6, 0x02, 0x40,
-  (byte)0xf5, 0x02,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf0, 0x02,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2,
-  (byte)0xf6, 0x00,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2, 0x02,
-  (byte)0xf3, 0x01, 0x02,
-  (byte)0xa0,
-  (byte)0xa0,
-  (byte)0xa3,
-  (byte)0xf0, 0x00,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2,
-  (byte)0xf5, 0x00, 0x40,
-  (byte)0xf4,
-  (byte)0xf4,
-  (byte)0xa4, 0x00,
-  (byte)0xf6, 0x01,
-  (byte)0xf4, 0x02, 0x00, 0x40, 0x01,
-  (byte)0xf5,
-  (byte)0xa4,
-  (byte)0xf0,
-  (byte)0xa0,
-  (byte)0xf1,
-  (byte)0xa0,
-  (byte)0xf2,
-  (byte)0xf4, 0x40, 0x00, 0x02, 0x01,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2,
-  (byte)0xf6,
-  (byte)0xf3,
-  (byte)0xf4,
-  (byte)0xa0,
-  (byte)0xa3, 0x00, 0x00, 0x01,
-  (byte)0xf4, 0x02,
-  (byte)0xf7,
-  (byte)0xf6,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xf6,
-  (byte)0xf3, 0x01, 0x40,
-  (byte)0xa0, 0x00,
-  (byte)0xa4, 0x00, 0x02, 0x01,
-  (byte)0xa0, 0x02, 0x01, 0x40, 0x00,
-  (byte)0xf4,
-  (byte)0xa4,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf5,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2,
-  (byte)0xf7,
-  (byte)0xf4,
-  (byte)0xa3, 0x00,
-  (byte)0xf6, 0x01, 0x02, 0x02,
-  (byte)0xf5,
-  (byte)0xf5,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf4,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xf6, 0x01,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf4,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2, 0x02, 0x01,
-  (byte)0xa0,
-  (byte)0xf6,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2, 0x00,
-  (byte)0xf3, 0x01, 0x01,
-  (byte)0xf4,
-  (byte)0xa3,
-  (byte)0xf1, 0x01,
-  (byte)0xf2, 0x00,
-  (byte)0xf3,
-  (byte)0xf6,
-  (byte)0xf5,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xa0,
-  (byte)0xf3,
-  (byte)0xf6,
-  (byte)0xf4, 0x40, 0x02, 0x02,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2,
-  (byte)0xf4,
-  (byte)0xf3,
-  (byte)0xf7, 0x40, 0x01, 0x00,
-  (byte)0xa4,
-  (byte)0xf0,
-  (byte)0xf6,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2, 0x00, 0x40,
-  (byte)0xf5,
-  (byte)0xa0,
-  (byte)0xa4,
-  (byte)0xa3, 0x00, 0x00, 0x01,
-  (byte)0xf5, 0x02,
-  (byte)0xf6, 0x00,
-  (byte)0xa0, 0x00,
-  (byte)0xa3, 0x00, 0x02, 0x01, 0x02, 0x02, 0x00, 0x02, 0x40, 0x02, 0x00,
-  (byte)0xf6,
-  (byte)0xa3, 0x00,
-  (byte)0xf7, 0x01, 0x00, 0x02, 0x01, 0x02,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa4, 0x00,
-  (byte)0xf4, 0x01,
-  (byte)0xf5, 0x02, 0x00, 0x40,
-  (byte)0xf7, 0x00,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2,
-  (byte)0xf4,
-  (byte)0xf3,
-  (byte)0xf5, 0x40,
-  (byte)0xa0,
-  (byte)0xf7,
-  (byte)0xa4, 0x00, 0x00, 0x01,
-  (byte)0xa0, 0x02,
-  (byte)0xf5, 0x40, 0x00, 0x02, 0x40, 0x01,
-  (byte)0xf7,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa3, 0x00,
-  (byte)0xf6, 0x01,
-  (byte)0xf4, 0x02,
-  (byte)0xf4, 0x02,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf6,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2, 0x01,
-  (byte)0xf4,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2,
-  (byte)0xa0,
-  (byte)0xf3, 0x01,
-  (byte)0xf6,
-  (byte)0xa0,
-  (byte)0xf6,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf5,
-  (byte)0xf1, 0x00,
-  (byte)0xf2,
-  (byte)0xf5, 0x02, 0x40,
-  (byte)0xf6,
-  (byte)0xf6,
-  (byte)0xa4,
-  (byte)0xf0, 0x01,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2,
-  (byte)0xf6, 0x40,
-  (byte)0xf4,
-  (byte)0xa0,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xa4, 0x00,
-  (byte)0xa0, 0x01, 0x00, 0x02,
-  (byte)0xf6, 0x40,
-  (byte)0xf4, 0x00,
-  (byte)0xa4,
-  (byte)0xa4,
-  (byte)0xf0,
-  (byte)0xf4,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2, 0x00, 0x40,
-  (byte)0xa0,
-  (byte)0xf6,
-  (byte)0xa4, 0x00, 0x00, 0x01, 0x02, 0x02, 0x02, 0x40,
-  (byte)0xf6,
-  (byte)0xa0,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xf4,
-  (byte)0xf3,
-  (byte)0xf4, 0x40,
-  (byte)0xf5,
-  (byte)0xa0, 0x40,
-  (byte)0xf7, 0x02,
-  (byte)0xa4,
-  (byte)0xa4, 0x00, 0x02, 0x01, 0x02, 0x02, 0x01, 0x40,
-  (byte)0xf5,
-  (byte)0xf7,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xa0,
-  (byte)0xf2,
-  (byte)0xf6,
-  (byte)0xf3,
-  (byte)0xf4, 0x40,
-  (byte)0xf6,
-  (byte)0xf4,
-  (byte)0xa4,
-  (byte)0xf0, 0x00,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2, 0x02, 0x40,
-  (byte)0xf4,
-  (byte)0xf4, 0x40, 0x02,
-  (byte)0xf4,
-  (byte)0xf6,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xf6,
-  (byte)0xf3, 0x00,
-  (byte)0xf7,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf7,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2, 0x00, 0x01, 0x40, 0x01, 0x01, 0x00,
-  (byte)0xf7,
-  (byte)0xa0, 0x00,
-  (byte)0xa3,
-  (byte)0xa4,
-  (byte)0xf1, 0x02,
-  (byte)0xf2,
-  (byte)0xf4,
-  (byte)0xf3,
-  (byte)0xf7, 0x40,
-  (byte)0xf6,
-  (byte)0xf7,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2,
-  (byte)0xf4,
-  (byte)0xf3,
-  (byte)0xf4, 0x40,
-  (byte)0xf6,
-  (byte)0xf6,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2, 0x00,
-  (byte)0xf3,
-  (byte)0xf4,
-  (byte)0xf5,
-  (byte)0xa0,
-  (byte)0xf6,
-  (byte)0xa3, 0x00, 0x01, 0x01,
-  (byte)0xa0, 0x02, 0x01,
-  (byte)0xa0, 0x40, 0x02, 0x00,
-  (byte)0xf5, 0x40,
-  (byte)0xf5,
-  (byte)0xa0,
-  (byte)0xa4,
-  (byte)0xa3, 0x00,
-  (byte)0xf5, 0x01, 0x02, 0x02, 0x00,
-  (byte)0xf6,
-  (byte)0xa0,
-  (byte)0xf6,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2,
-  (byte)0xf5,
-  (byte)0xf3,
-  (byte)0xf5, 0x00, 0x40,
-  (byte)0xf5,
-  (byte)0xf6, 0x02, 0x40, 0x01, 0x01,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xa0,
-  (byte)0xf2, 0x01,
-  (byte)0xf3,
-  (byte)0xf5, 0x40, 0x00, 0x02,
-  (byte)0xa0,
-  (byte)0xa0, 0x00,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf4,
-  (byte)0xf1,
-  (byte)0xa0,
-  (byte)0xf2, 0x00, 0x01, 0x40, 0x02, 0x00,
-  (byte)0xa4,
-  (byte)0xf0, 0x01,
-  (byte)0xf1, 0x02,
-  (byte)0xf2,
-  (byte)0xa0, 0x40,
-  (byte)0xf5, 0x02,
-  (byte)0xa4,
-  (byte)0xa3,
-  (byte)0xf0, 0x00,
-  (byte)0xf1, 0x01,
-  (byte)0xf2,
-  (byte)0xf5,
-  (byte)0xf7,
-  (byte)0xa3,
-  (byte)0xa3,
-  (byte)0xf1, 0x01,
-  (byte)0xf2, 0x01,
-  (byte)0xf3, 0x01,
-  (byte)0xa0,
-  (byte)0xa0, 0x01,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2, 0x00,
-  (byte)0xf3,
-  (byte)0xf4,
-  (byte)0xf6, 0x02,
-  (byte)0xa3,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2, 0x01,
-  (byte)0xf3,
-  (byte)0xf4, 0x02, 0x40, 0x00,
-  (byte)0xa0, 0x40,
-  (byte)0xa0,
-  (byte)0xf5,
-  (byte)0xa4,
-  (byte)0xf0,
-  (byte)0xf7,
-  (byte)0xf1,
-  (byte)0xf4,
-  (byte)0xf2,
-  (byte)0xa0, 0x40,
-  (byte)0xa0, 0x00,
-  (byte)0xa4, 0x00, 0x00, 0x01,
-  (byte)0xa0, 0x02,
-  (byte)0xf5, 0x40,
-  (byte)0xf7,
-  (byte)0xf7, 0x00,
-  (byte)0xa3, 0x00, 0x01, 0x01, 0x01, 0x02,
-  (byte)0xf4,
-  (byte)0xf7,
-  (byte)0xf7,
-  (byte)0xa0,
-  (byte)0xa0,
-  (byte)0xa3,
-  (byte)0xf0,
-  (byte)0xf6,
-  (byte)0xf1, 0x01,
-  (byte)0xf2, 0x01, 0x00,
-  (byte)0xf6, 0x40,
-  (byte)0xf6,
-  (byte)0xf6,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf7,
-  (byte)0xf2, 0x01,
-  (byte)0xf3, 0x01, 0x40,
-  (byte)0xf7,
-  (byte)0xf5,
-  (byte)0xa4,
-  (byte)0xf1,
-  (byte)0xf6,
-  (byte)0xf2, 0x00,
-  (byte)0xf3,
-  (byte)0xa0, 0x40, 0x01, 0x02, 0x40, 0x01,
-  (byte)0xa0,
-  (byte)0xa0, 0x02, 0x40, 0x01, 0x02,
-  (byte)0xa4,
-  (byte)0xf0,
-  (byte)0xf4,
-  (byte)0xf1,
-  (byte)0xf5,
-  (byte)0xf2,
-  (byte)0xf5, 0x40,
-  (byte)0xf7,
-  (byte)0xa0,
-  (byte)0xf5,
-  (byte)0xa0,
-  (byte)0xf5,
-  (byte)0xa3, 0x00,
-  (byte)0xf6, 0x01, (byte)0xf6, 0x02, (byte)0xa0, (byte)0xf4, 0x40,
-  (byte)0xf7,
- };
-CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
-for (int i = 0; i < 10; ++i) {
-  CBORObject.DecodeFromBytes(bytes, options);
-}
-}
+    @Test
+    public void TestRegressionThree() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
+          0x09, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0, 0x7f,
+          0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff, 0,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
+          0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0, 0x69, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00,
+          (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
+
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
+
+    @Test
+    public void TestStringCompareBug() {
+      CBORObject a, b, c, d;
+      byte[] bytes = new byte[] {
+        0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+        (byte)0xf4,
+        (byte)0x80,
+        (byte)0x80,
+        (byte)0x80,
+       };
+      a = CBORObject.DecodeFromBytes(bytes);
+      c = a;
+      bytes = new byte[] {
+        0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+        (byte)0xf4,
+        (byte)0x80,
+        (byte)0x80,
+        (byte)0x80, (byte)0xff,
+       };
+      b = CBORObject.DecodeFromBytes(bytes);
+      d = b;
+      TestCommon.CompareTestEqual(a, b);
+      bytes = new byte[] {
+        0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+        (byte)0xf0,
+        (byte)0xb8,
+        (byte)0xbf,
+        (byte)0xbf, 0x00,
+        (byte)0xf0,
+        (byte)0x9d,
+        (byte)0x84,
+        (byte)0xa1,
+        (byte)0xff,
+       };
+      a = CBORObject.DecodeFromBytes(bytes);
+      bytes = new byte[] {
+        0x7f, 0x69,
+        (byte)0xf0,
+        (byte)0xb8,
+        (byte)0xbf,
+        (byte)0xbf, 0x00,
+        (byte)0xf0,
+        (byte)0x9d,
+        (byte)0x84,
+        (byte)0xa1,
+        (byte)0xff,
+       };
+      b = CBORObject.DecodeFromBytes(bytes);
+      TestCommon.CompareTestEqual(a, b);
+      TestCommon.CompareTestLess(c, a);
+      TestCommon.CompareTestLess(c, b);
+      TestCommon.CompareTestLess(d, a);
+      TestCommon.CompareTestLess(d, b);
+      CBORObject o1 = CBORObject.NewMap();
+      o1.Add(b, CBORObject.FromObject(0));
+      o1.Add(c, CBORObject.FromObject(0));
+      CBORObject o2 = CBORObject.NewMap();
+      o2.Add(c, CBORObject.FromObject(0));
+      o2.Add(b, CBORObject.FromObject(0));
+      TestCommon.CompareTestEqual(a, b);
+    }
+
+    @Test(timeout = 2000)
+    public void TestSlowDecode() {
+      byte[] bytes = new byte[] {
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0, 0x02,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x02,
+        (byte)0xf7,
+        (byte)0xa0, 0x02,
+        (byte)0xa3,
+        (byte)0xf0, 0x01,
+        (byte)0xf1, 0x01,
+        (byte)0xf2,
+        (byte)0xf7,
+        (byte)0xf7,
+        (byte)0xf5,
+        (byte)0xa0, 0x01,
+        (byte)0xa3,
+        (byte)0xa3, 0x00,
+        (byte)0xf5, 0x01,
+        (byte)0xf4, 0x02, 0x02, 0x02,
+        (byte)0xa0, 0x01,
+        (byte)0xa3, 0x00,
+        (byte)0xa0, 0x01,
+        (byte)0xa0, 0x02, 0x02,
+        (byte)0xf6, 0x02, 0x40,
+        (byte)0xf5, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0, 0x02,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf6, 0x00,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x02,
+        (byte)0xf3, 0x01, 0x02,
+        (byte)0xa0,
+        (byte)0xa0,
+        (byte)0xa3,
+        (byte)0xf0, 0x00,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf5, 0x00, 0x40,
+        (byte)0xf4,
+        (byte)0xf4,
+        (byte)0xa4, 0x00,
+        (byte)0xf6, 0x01,
+        (byte)0xf4, 0x02, 0x00, 0x40, 0x01,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xa0,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2,
+        (byte)0xf4, 0x40, 0x00, 0x02, 0x01,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xa0,
+        (byte)0xa3, 0x00, 0x00, 0x01,
+        (byte)0xf4, 0x02,
+        (byte)0xf7,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3, 0x01, 0x40,
+        (byte)0xa0, 0x00,
+        (byte)0xa4, 0x00, 0x02, 0x01,
+        (byte)0xa0, 0x02, 0x01, 0x40, 0x00,
+        (byte)0xf4,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf5,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf7,
+        (byte)0xf4,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01, 0x02, 0x02,
+        (byte)0xf5,
+        (byte)0xf5,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6, 0x01,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x02, 0x01,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x00,
+        (byte)0xf3, 0x01, 0x01,
+        (byte)0xf4,
+        (byte)0xa3,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf6,
+        (byte)0xf5,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xa0,
+        (byte)0xf3,
+        (byte)0xf6,
+        (byte)0xf4, 0x40, 0x02, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf7, 0x40, 0x01, 0x00,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x40,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3, 0x00, 0x00, 0x01,
+        (byte)0xf5, 0x02,
+        (byte)0xf6, 0x00,
+        (byte)0xa0, 0x00,
+        (byte)0xa3, 0x00, 0x02, 0x01, 0x02, 0x02, 0x00, 0x02, 0x40, 0x02, 0x00,
+        (byte)0xf6,
+        (byte)0xa3, 0x00,
+        (byte)0xf7, 0x01, 0x00, 0x02, 0x01, 0x02,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa4, 0x00,
+        (byte)0xf4, 0x01,
+        (byte)0xf5, 0x02, 0x00, 0x40,
+        (byte)0xf7, 0x00,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf5, 0x40,
+        (byte)0xa0,
+        (byte)0xf7,
+        (byte)0xa4, 0x00, 0x00, 0x01,
+        (byte)0xa0, 0x02,
+        (byte)0xf5, 0x40, 0x00, 0x02, 0x40, 0x01,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01,
+        (byte)0xf4, 0x02,
+        (byte)0xf4, 0x02,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x01,
+        (byte)0xf4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xa0,
+        (byte)0xf3, 0x01,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf5,
+        (byte)0xf1, 0x00,
+        (byte)0xf2,
+        (byte)0xf5, 0x02, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xf0, 0x01,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xf6, 0x40,
+        (byte)0xf4,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4, 0x00,
+        (byte)0xa0, 0x01, 0x00, 0x02,
+        (byte)0xf6, 0x40,
+        (byte)0xf4, 0x00,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x40,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa4, 0x00, 0x00, 0x01, 0x02, 0x02, 0x02, 0x40,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf5,
+        (byte)0xa0, 0x40,
+        (byte)0xf7, 0x02,
+        (byte)0xa4,
+        (byte)0xa4, 0x00, 0x02, 0x01, 0x02, 0x02, 0x01, 0x40,
+        (byte)0xf5,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf6,
+        (byte)0xf4,
+        (byte)0xa4,
+        (byte)0xf0, 0x00,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x02, 0x40,
+        (byte)0xf4,
+        (byte)0xf4, 0x40, 0x02,
+        (byte)0xf4,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3, 0x00,
+        (byte)0xf7,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf7,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x01, 0x40, 0x01, 0x01, 0x00,
+        (byte)0xf7,
+        (byte)0xa0, 0x00,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1, 0x02,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf7, 0x40,
+        (byte)0xf6,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3, 0x00, 0x01, 0x01,
+        (byte)0xa0, 0x02, 0x01,
+        (byte)0xa0, 0x40, 0x02, 0x00,
+        (byte)0xf5, 0x40,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3, 0x00,
+        (byte)0xf5, 0x01, 0x02, 0x02, 0x00,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf5,
+        (byte)0xf3,
+        (byte)0xf5, 0x00, 0x40,
+        (byte)0xf5,
+        (byte)0xf6, 0x02, 0x40, 0x01, 0x01,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2, 0x01,
+        (byte)0xf3,
+        (byte)0xf5, 0x40, 0x00, 0x02,
+        (byte)0xa0,
+        (byte)0xa0, 0x00,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2, 0x00, 0x01, 0x40, 0x02, 0x00,
+        (byte)0xa4,
+        (byte)0xf0, 0x01,
+        (byte)0xf1, 0x02,
+        (byte)0xf2,
+        (byte)0xa0, 0x40,
+        (byte)0xf5, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0, 0x00,
+        (byte)0xf1, 0x01,
+        (byte)0xf2,
+        (byte)0xf5,
+        (byte)0xf7,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x01,
+        (byte)0xf3, 0x01,
+        (byte)0xa0,
+        (byte)0xa0, 0x01,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xf6, 0x02,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x01,
+        (byte)0xf3,
+        (byte)0xf4, 0x02, 0x40, 0x00,
+        (byte)0xa0, 0x40,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf7,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xa0, 0x40,
+        (byte)0xa0, 0x00,
+        (byte)0xa4, 0x00, 0x00, 0x01,
+        (byte)0xa0, 0x02,
+        (byte)0xf5, 0x40,
+        (byte)0xf7,
+        (byte)0xf7, 0x00,
+        (byte)0xa3, 0x00, 0x01, 0x01, 0x01, 0x02,
+        (byte)0xf4,
+        (byte)0xf7,
+        (byte)0xf7,
+        (byte)0xa0,
+        (byte)0xa0,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x01, 0x00,
+        (byte)0xf6, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x01,
+        (byte)0xf3, 0x01, 0x40,
+        (byte)0xf7,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xa0, 0x40, 0x01, 0x02, 0x40, 0x01,
+        (byte)0xa0,
+        (byte)0xa0, 0x02, 0x40, 0x01, 0x02,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf5, 0x40,
+        (byte)0xf7,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01, (byte)0xf6, 0x02, (byte)0xa0, (byte)0xf4, 0x40,
+        (byte)0xf7,
+       };
+      CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+      for (int i = 0; i < 10; ++i) {
+        CBORObject.DecodeFromBytes(bytes, options);
+      }
+    }
   }

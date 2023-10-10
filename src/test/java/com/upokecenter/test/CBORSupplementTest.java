@@ -11,7 +11,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
-import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
@@ -204,10 +203,10 @@ import com.upokecenter.numbers.*;
     public void TestCBORObjectArgumentValidation() {
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
+        ToObjectTest.TestToFromObjectRoundTrip(null));
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
+        ToObjectTest.TestToFromObjectRoundTrip(null));
       Assert.assertEquals(
         CBORObject.True,
         ToObjectTest.TestToFromObjectRoundTrip(true));
@@ -356,62 +355,44 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
     public void TestNestingDepth() {
       try {
         {
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            for (int i = 0; i < 2000; ++i) {
-              // Write beginning of indefinite-length array
-              ms.write((byte)0x9f);
-            }
-            for (int i = 0; i < 2000; ++i) {
-              // Write end of indefinite-length array
-              ms.write((byte)0xff);
-            }
-            // Assert throwing CBOR exception for reaching maximum
-            // nesting depth
-            try {
-              CBORObject.DecodeFromBytes(ms.toByteArray());
-              Assert.fail("Should have failed");
-            } catch (CBORException ex) {
-              // NOTE: Intentionally empty
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          for (int i = 0; i < 2000; ++i) {
+            // Write beginning of indefinite-length array
+            ms.write(0x9f);
+          }
+          for (int i = 0; i < 2000; ++i) {
+            // Write end of indefinite-length array
+            ms.write(0xff);
+          }
+          // Assert throwing CBOR exception for reaching maximum
+          // nesting depth
+          try {
+            CBORObject.DecodeFromBytes(ms.toByteArray());
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
         }
         {
-          {
-            java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-            for (int i = 0; i < 495; ++i) {
-              // Write beginning of indefinite-length array
-              ms.write((byte)0x9f);
-            }
-            for (int i = 0; i < 495; ++i) {
-              // Write end of indefinite-length array
-              ms.write((byte)0xff);
-            }
-            // Maximum nesting depth not reached, so shouldn't throw
-            try {
-              CBORObject.DecodeFromBytes(ms.toByteArray());
-            } catch (Exception ex) {
-              Assert.fail(ex.toString());
-              throw new IllegalStateException("", ex);
-            }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          for (int i = 0; i < 495; ++i) {
+            // Write beginning of indefinite-length array
+            ms.write(0x9f);
+          }
+          for (int i = 0; i < 495; ++i) {
+            // Write end of indefinite-length array
+            ms.write(0xff);
+          }
+          // Maximum nesting depth not reached, so shouldn't throw
+          try {
+            CBORObject.DecodeFromBytes(ms.toByteArray());
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
         }
       } catch (Exception ex) {
         throw new IllegalStateException(ex.getMessage(), ex);
@@ -875,17 +856,8 @@ try { if (ms5 != null) { ms5.close(); } } catch (java.io.IOException ex) {}
 }
 }
         bytes = new byte[] { 0x37 };
-        {
-          java.io.ByteArrayInputStream ms6 = null;
-try {
-ms6 = new java.io.ByteArrayInputStream(bytes);
-
-          Assert.assertEquals(-1 - 0x17, MiniCBOR.ReadInt32(ms6));
-}
-finally {
-try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream ms6 = new java.io.ByteArrayInputStream(bytes);
+        Assert.assertEquals(-1 - 0x17, MiniCBOR.ReadInt32(ms6));
       } catch (IOException ioex) {
         Assert.fail(ioex.getMessage());
       }
@@ -981,7 +953,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestStringRefs() {
       CBOREncodeOptions encodeOptions = new CBOREncodeOptions("resolvereferences=true");
-      CBORObject cbor = CBORObject.DecodeFromBytes(
+      var cbor = CBORObject.DecodeFromBytes(
       new byte[] {
         (byte)0xd9, 1, 0, (byte)0x9f, 0x64, 0x61, 0x62, 0x63, 0x64, (byte)0xd8,
         0x19, 0x00, (byte)0xd8, 0x19, 0x00, 0x64, 0x62, 0x62, 0x63, 0x64, (byte)0xd8, 0x19,
@@ -1004,26 +976,29 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 
-@Test
-public void TestPodCompareTo() {
-  CPOD3 cpod = new CPOD3();
-  CBORObject cbor, cbor2;
-  cpod.setAa("Gg");
-  cpod.setBb("Jj");
-  cpod.setCc("Hh");
-  cbor = CBORObject.FromObject(cpod);
-  cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc", "Hh");
-  TestCommon.CompareTestEqual(cbor, cbor2);
-  cbor2 = CBORObject.FromObject(100);
-  TestCommon.CompareTestGreater(cbor, cbor2);
-  cbor2 = CBORObject.FromSimpleValue(10);
-  TestCommon.CompareTestLess(cbor, cbor2);
-}
+    @Test
+    public void TestPodCompareTo() {
+      CPOD3 cpod = new CPOD3();
+      CBORObject cbor, cbor2;
+      cpod.setAa("Gg");
+      cpod.setBb("Jj");
+      cpod.setCc("Hh");
+      cbor = CBORObject.FromObject(cpod);
+      cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc",
+  "Hh");
+      TestCommon.CompareTestEqual(cbor, cbor2);
+      cbor2 = CBORObject.FromObject(100);
+      TestCommon.CompareTestGreater(cbor, cbor2);
+      cbor2 = CBORObject.FromSimpleValue(10);
+      TestCommon.CompareTestLess(cbor, cbor2);
+    }
 
     @Test
     public void TestCPOD() {
-      CPOD m = new CPOD();
-      m.setAa("Test");
+      CPOD m = new CPOD
+      {
+        Aa = "Test",
+      };
       CBORObject cbor = CBORObject.FromObject(m);
       if (cbor.ContainsKey("bb")) {
  Assert.fail(cbor.toString());

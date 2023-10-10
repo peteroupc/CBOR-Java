@@ -295,7 +295,7 @@ import com.upokecenter.numbers.*;
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
         EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        EDecimal cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
+        var cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual(
             cmpDecFrac,
@@ -367,7 +367,7 @@ import com.upokecenter.numbers.*;
     public void TestAsEInteger() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip(
-          (Object)null).AsNumber().ToEInteger();
+          null).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -505,7 +505,7 @@ import com.upokecenter.numbers.*;
         String stringTemp =
 
           ToObjectTest.TestToFromObjectRoundTrip(
-            (float)328323f).AsNumber().ToEInteger().toString();
+            328323f).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
@@ -513,7 +513,7 @@ import com.upokecenter.numbers.*;
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(
-            (double)0.75).AsNumber().ToEInteger()
+            0.75).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -521,14 +521,14 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            (double)0.99).AsNumber().ToEInteger().toString();
+            0.99).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip((double)0.0000000000000001)
+          ToObjectTest.TestToFromObjectRoundTrip(0.0000000000000001)
           .AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
@@ -536,23 +536,21 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            (double)0.5).AsNumber().ToEInteger().toString();
+            0.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
-        String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(
-            (double)1.5).AsNumber().ToEInteger()
-          .toString();
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
+            1.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "1",
           stringTemp);
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            (double)2.5).AsNumber().ToEInteger().toString();
+            2.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "2",
           stringTemp);

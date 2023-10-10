@@ -9,13 +9,8 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
-import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Implements CBOR string references, described at {@code
-   * http://cbor.schmorp.de/stringref}.
-   */
   class StringRefs {
     private final ArrayList<ArrayList<CBORObject>> stack;
 

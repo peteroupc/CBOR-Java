@@ -9,24 +9,16 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
-
 import java.io.*;
 
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
-  /**
-   * Contains methods for reading and writing objects represented in BEncode, a
-   * serialization format used in the BitTorrent protocol. For more information,
-   * see: http://wiki.theory.org/BitTorrentSpecification This class accepts
-   * BEncoded strings in UTF-8, and outputs BEncoded strings in UTF-8. This class
-   * also demonstrates how CBORObject supports predefined serialization formats.
-   */
   public final class BEncoding {
 private BEncoding() {
 }
     private static void WriteUtf8(String s, OutputStream stream) throws java.io.IOException {
-      if (DataUtilities.WriteUtf8(s, stream, false) != 0) {
+      if (com.upokecenter.util.DataUtilities.WriteUtf8(s, stream, false) != 0) {
         throw new CBORException("invalid surrogate");
       }
     }
@@ -53,10 +45,10 @@ private BEncoding() {
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c >= (int)'0' && c <= (int)'9') {
+        if (c instanceof >= '0' and <= '9') {
           builder.append((char)c);
           start = false;
-        } else if (c == (int)'e') {
+        } else if (c == 'e') {
           break;
         } else if (start && c == '-') {
           start = false;
@@ -67,12 +59,12 @@ private BEncoding() {
       }
       String s = builder.toString();
       if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
-          throw new CBORException("Invalid integer encoding");
-      }
-      if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) == '0') {
-          throw new CBORException("Invalid integer encoding");
-      }
-      return CBORObject.FromObject(
+ throw new CBORException("Invalid integer encoding");
+}
+ if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) == '0') {
+ throw new CBORException("Invalid integer encoding");
+}
+ return CBORObject.FromObject(
           EInteger.FromString(s));
     }
 
@@ -90,9 +82,9 @@ private BEncoding() {
 
     public static CBORObject Read(InputStream stream) throws java.io.IOException {
       if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      return ReadObject(stream, false);
+ throw new NullPointerException("stream");
+}
+ return ReadObject(stream, false);
     }
 
     private static CBORObject ReadObject(InputStream stream, boolean allowEnd) throws java.io.IOException {
@@ -100,37 +92,24 @@ private BEncoding() {
       if (c == 'd') {
         return ReadDictionary(stream);
       }
-      if (c == 'l') {
-        return ReadList(stream);
-      }
-      if (allowEnd && c == 'e') {
-        return null;
-      }
-      if (c == 'i') {
-        return ReadInteger(stream);
-      }
-      if (c >= '0' && c <= '9') {
-        return ReadString(stream, (char)c);
-      }
-      throw new CBORException("Object expected");
+      return c == 'l' ? ReadList(stream) : allowEnd && c == 'e' ? null :
+        c == 'i' ? ReadInteger(stream) :
+        c is >= '0' and <= '9' ? ReadString(stream, (char)c) : throw new
+CBORException("Object expected");
     }
 
     private static final String ValueDigits = "0123456789";
 
     public static String LongToString(long longValue) {
-      if (longValue == Long.MIN_VALUE) {
-        return "-9223372036854775808";
-      }
-      if (longValue == 0L) {
-        return "0";
-      }
-      return (longValue == (long)Integer.MIN_VALUE) ? "-2147483648" :
+      return longValue == Long.MIN_VALUE ?
+        "-9223372036854775808" : longValue == 0L ?
+        "0" : (longValue == Integer.MIN_VALUE) ? "-2147483648" :
 EInteger.FromInt64(longValue).toString();
     }
 
     private static CBORObject ReadString(InputStream stream, char firstChar) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
-      if (firstChar < (int)'0' && firstChar > (int)'9') {
+      if (firstChar instanceof < '0' or > '9') {
         throw new CBORException("Invalid integer encoding");
       }
       builder.append(firstChar);
@@ -139,9 +118,9 @@ EInteger.FromInt64(longValue).toString();
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c >= (int)'0' && c <= (int)'9') {
+        if (c instanceof >= '0' and <= '9') {
           builder.append((char)c);
-        } else if (c == (int)':') {
+        } else if (c == ':') {
           break;
         } else {
           throw new CBORException("Invalid integer encoding");
@@ -149,24 +128,22 @@ EInteger.FromInt64(longValue).toString();
       }
       String s = builder.toString();
       if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
-          throw new CBORException("Invalid integer encoding");
+        throw new CBORException("Invalid integer encoding");
       }
       EInteger numlength = EInteger.FromString(s);
       if (!numlength.CanFitInInt32()) {
         throw new CBORException("Length too long");
       }
       builder = new StringBuilder();
-      switch (DataUtilities.ReadUtf8(
+      return com.upokecenter.util.DataUtilities.ReadUtf8(
         stream,
         numlength.ToInt32Checked(),
         builder,
-        false)) {
-        case -2:
-          throw new CBORException("Premature end of data");
-        case -1:
-          throw new CBORException("Invalid UTF-8");
-      }
-      return CBORObject.FromObject(builder.toString());
+        false) switch {
+        -2 => throw new CBORException("Premature end of data"),
+        -1 => throw new CBORException("Invalid UTF-8"),
+        _ => CBORObject.FromObject(builder.toString()),
+      };
     }
 
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
@@ -177,12 +154,12 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)0x69)));
+        stream.write((0x69));
         WriteUtf8(obj.ToObject(EInteger.class).toString(), stream);
-        stream.write(((byte)((byte)0x65)));
+        stream.write((0x65));
       } else if (obj.getType() == CBORType.TextString) {
         String s = obj.AsString();
-        long length = DataUtilities.GetUtf8Length(s, false);
+        long length = com.upokecenter.util.DataUtilities.GetUtf8Length(s, false);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
@@ -190,7 +167,7 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)':')));
+        stream.write(((byte)':'));
         WriteUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
         boolean hasNonStringKeys = false;
@@ -214,52 +191,52 @@ EInteger.FromInt64(longValue).toString();
           if (stream == null) {
             throw new NullPointerException("stream");
           }
-          stream.write(((byte)((byte)0x64)));
+          stream.write((0x64));
           for (Map.Entry<String, CBORObject> entry : valueSMap.entrySet()) {
             String key = entry.getKey();
             CBORObject value = entry.getValue();
-            long length = DataUtilities.GetUtf8Length(key, false);
+            long length = com.upokecenter.util.DataUtilities.GetUtf8Length(key, false);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
             WriteUtf8(
               LongToString(length),
               stream);
-            stream.write(((byte)((byte)':')));
+            stream.write(((byte)':'));
             WriteUtf8(key, stream);
             Write(value, stream);
           }
-          stream.write(((byte)((byte)0x65)));
+          stream.write((0x65));
         } else {
           if (stream == null) {
             throw new NullPointerException("stream");
           }
-          stream.write(((byte)((byte)0x64)));
+          stream.write((0x64));
           for (CBORObject key : obj.getKeys()) {
             String str = key.AsString();
-            long length = DataUtilities.GetUtf8Length(str, false);
+            long length = com.upokecenter.util.DataUtilities.GetUtf8Length(str, false);
             if (length < 0) {
               throw new CBORException("invalid String");
             }
             WriteUtf8(LongToString(length), stream);
-            stream.write(((byte)((byte)':')));
+            stream.write(((byte)':'));
             WriteUtf8(str, stream);
             Write(obj.get(key), stream);
           }
-          stream.write(((byte)((byte)0x65)));
+          stream.write((0x65));
         }
       } else if (obj.getType() == CBORType.Array) {
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)0x6c)));
+        stream.write((0x6c));
         for (int i = 0; i < obj.size(); ++i) {
           Write(obj.get(i), stream);
         }
-        stream.write(((byte)((byte)0x65)));
+        stream.write((0x65));
       } else {
         String str = obj.ToJSONString();
-        long length = DataUtilities.GetUtf8Length(str, false);
+        long length = com.upokecenter.util.DataUtilities.GetUtf8Length(str, false);
         if (length < 0) {
           throw new CBORException("invalid String");
         }
@@ -267,7 +244,7 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)':')));
+        stream.write(((byte)':'));
         WriteUtf8(str, stream);
       }
     }

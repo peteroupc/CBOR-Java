@@ -67,13 +67,13 @@ private Base64() {
       }
       String alphabet = classic ? Base64Classic : Base64URL;
       int length = offset + count;
-      int i = offset;
       byte[] buffer = new byte[32];
       int bufferOffset = 0;
+      int i;
       for (i = offset; i < (length - 2); i += 3) {
         if (bufferOffset >= buffer.length) {
-           writer.WriteAscii(buffer, 0, bufferOffset);
-           bufferOffset = 0;
+          writer.WriteAscii(buffer, 0, bufferOffset);
+          bufferOffset = 0;
         }
         buffer[bufferOffset++] = (byte)alphabet.charAt((data[i] >> 2) & 63);
         buffer[bufferOffset++] = (byte)alphabet.charAt(((data[i] & 3) << 4) +
@@ -86,8 +86,8 @@ private Base64() {
       int lenmod3 = count % 3;
       if (lenmod3 != 0) {
         if (bufferOffset >= buffer.length) {
-           writer.WriteAscii(buffer, 0, bufferOffset);
-           bufferOffset = 0;
+          writer.WriteAscii(buffer, 0, bufferOffset);
+          bufferOffset = 0;
         }
         i = length - lenmod3;
         buffer[bufferOffset++] = (byte)alphabet.charAt((data[i] >> 2) & 63);

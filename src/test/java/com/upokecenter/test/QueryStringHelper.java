@@ -27,14 +27,14 @@ import com.upokecenter.cbor.*;
           if (first) {
             return new String[] { s };
           }
-          strings.add(s.substring(index));
+          strings.add(s.charAt(index..));
           break;
         } else {
           if (first) {
             strings = new ArrayList<String>();
             first = false;
           }
-          String newstr = s.substring(index, (index)+(index2 - index));
+          String newstr = s.charAt(index..index2);
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -43,13 +43,8 @@ import com.upokecenter.cbor.*;
     }
 
     private static int ToHexNumber(int c) {
-      if (c >= 'A' && c <= 'Z') {
-        return 10 + c - 'A';
-      } else if (c >= 'a' && c <= 'z') {
-        return 10 + c - 'a';
-      } else {
-        return (c >= '0' && c <= '9') ? (c - '0') : (-1);
-      }
+      return c is >= 'A' and <= 'Z' ? 10 + c - 'A' : c is >= 'a' and <= 'z' ?
+10 + c - 'a' : (c is >= '0' and <= '9') ? (c - '0') : (-1);
     }
     private static String PercentDecodeUTF8(String str) {
       int len = str.length();
@@ -71,7 +66,6 @@ import com.upokecenter.cbor.*;
       int bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
-      int markedPos = -1;
       StringBuilder retString = new StringBuilder();
       for (int i = 0; i < len; ++i) {
         int c = str.charAt(i);
@@ -88,18 +82,15 @@ import com.upokecenter.cbor.*;
                 if (b < 0x80) {
                   retString.append((char)b);
                   continue;
-                } else if (b >= 0xc2 && b <= 0xdf) {
-                  markedPos = i;
+                } else if (b instanceof >= 0xc2 and <= 0xdf) {
                   bytesNeeded = 1;
                   cp = b - 0xc0;
-                } else if (b >= 0xe0 && b <= 0xef) {
-                  markedPos = i;
+                } else if (b instanceof >= 0xe0 and <= 0xef) {
                   lower = (b == 0xe0) ? 0xa0 : 0x80;
                   upper = (b == 0xed) ? 0x9f : 0xbf;
                   bytesNeeded = 2;
                   cp = b - 0xe0;
-                } else if (b >= 0xf0 && b <= 0xf4) {
-                  markedPos = i;
+                } else if (b instanceof >= 0xf0 and <= 0xf4) {
                   lower = (b == 0xf0) ? 0x90 : 0x80;
                   upper = (b == 0xf4) ? 0x8f : 0xbf;
                   bytesNeeded = 3;
@@ -122,7 +113,6 @@ import com.upokecenter.cbor.*;
                 upper = 0xbf;
                 ++bytesSeen;
                 cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
-                markedPos = i;
                 if (bytesSeen != bytesNeeded) {
                   // continue if not all bytes needed
                   // were read yet
@@ -134,7 +124,8 @@ import com.upokecenter.cbor.*;
                 bytesNeeded = 0;
                 // append the Unicode character
                 if (ret <= 0xffff) {
-                  { retString.append((char)ret);
+                  {
+                    retString.append((char)ret);
                   }
                 } else {
                   retString.append((char)((((ret - 0x10000) >> 10) &
@@ -175,10 +166,8 @@ import com.upokecenter.cbor.*;
       if (input == null) {
         throw new NullPointerException("input");
       }
-      if (delimiter == null) {
-        // set default delimiter to ampersand
-        delimiter = "&";
-      }
+      // set default delimiter to ampersand
+      delimiter ??= "&";
       // Check input for non-ASCII characters
       for (int i = 0; i < input.length(); ++i) {
         if (input.charAt(i) > 0x7f) {
@@ -187,7 +176,7 @@ import com.upokecenter.cbor.*;
       }
       // split on delimiter
       String[] strings = SplitAt(input, delimiter);
-      ArrayList<String[]> pairs = new ArrayList<String[]>();
+      ArrayList<String[] pairs = new ArrayList<String[]>();
       for (String str : strings) {
         if (str.length() == 0) {
           continue;
@@ -197,13 +186,13 @@ import com.upokecenter.cbor.*;
         String name = str;
         String value = ""; // value is empty if there is no key
         if (index >= 0) {
-          name = str.substring(0, index - 0);
-          value = str.substring(index + 1);
+          name = str.charAt(..index);
+          value = str.charAt((index + 1)..);
         }
         name = name.replace('+', ' ');
         value = value.replace('+', ' ');
         String[] pair = new String[] { name, value };
-        pairs.add(pair);
+        pairs.Add(pair);
       }
       for (String[] pair : pairs) {
         // percent decode the key and value if necessary
@@ -213,21 +202,23 @@ import com.upokecenter.cbor.*;
       return pairs;
     }
 
-    private static String[] GetKeyPath(String s) {
+    @SuppressWarnings("unchecked")
+private static String[] GetKeyPath(String s) {
       int index = s.indexOf('[');
       if (index < 0) { // start bracket not found
         return new String[] { s };
       }
-      ArrayList<String> path = new ArrayList<String>();
-      path.add(s.substring(0, index - 0));
+      ArrayList<String> { path = new ArrayList<String> {
+        s.charAt(..index),
+      };
       ++index; // move to after the bracket
       while (true) {
         int endBracket = s.indexOf(']',index);
         if (endBracket < 0) { // end bracket not found
-          path.add(s.substring(index));
+          path.Add(s.charAt(index..));
           break;
         }
-        path.add(s.substring(index, (index)+(endBracket - index)));
+        path.Add(s.charAt(index..endBracket));
         index = endBracket + 1; // move to after the end bracket
         index = s.indexOf('[',index);
         if (index < 0) { // start bracket not found
@@ -235,7 +226,7 @@ import com.upokecenter.cbor.*;
         }
         ++index; // move to after the start bracket
       }
-      return path.toArray(new String[] { });
+      return path.ToArray();
     }
 
     private static final String Digits = "0123456789";
@@ -263,12 +254,12 @@ import com.upokecenter.cbor.*;
         }
         while (value > 9) {
           int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-          char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+          char digit = Digits.charAt(value - (intdivvalue * 10));
           chars[count--] = digit;
           value = intdivvalue;
         }
         if (value != 0) {
-          chars[count--] = Digits.charAt((int)value);
+          chars[count--] = Digits.charAt(value);
         }
         if (neg) {
           chars[count] = '-';
@@ -281,18 +272,18 @@ import com.upokecenter.cbor.*;
       count = 11;
       while (value >= 163840) {
         int intdivvalue = value / 10;
-        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt(value - (intdivvalue * 10));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt(value - (intdivvalue * 10));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = Digits.charAt((int)value);
+        chars[count--] = Digits.charAt(value);
       }
       if (neg) {
         chars[count] = '-';
@@ -339,12 +330,11 @@ import com.upokecenter.cbor.*;
       return ret;
     }
 
-    @SuppressWarnings("unchecked")
-private static CBORObject ConvertListsToCBOR(List<Object> dict) {
+    private static CBORObject ConvertListsToCBOR(List<Object> dict) {
       CBORObject cbor = CBORObject.NewArray();
       for (int i = 0; i < dict.size(); ++i) {
         Object di = dict.get(i);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -361,13 +351,12 @@ private static CBORObject ConvertListsToCBOR(List<Object> dict) {
       return cbor;
     }
 
-    @SuppressWarnings("unchecked")
-private static CBORObject ConvertListsToCBOR(Map<String, Object>
+    private static CBORObject ConvertListsToCBOR(Map<String, Object>
       dict) {
       CBORObject cbor = CBORObject.NewMap();
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -384,11 +373,10 @@ private static CBORObject ConvertListsToCBOR(Map<String, Object>
       return cbor;
     }
 
-    @SuppressWarnings("unchecked")
-private static void ConvertLists(List<Object> list) {
+    private static void ConvertLists(List<Object> list) {
       for (int i = 0; i < list.size(); ++i) {
         Object di = list.get(i);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -403,12 +391,11 @@ private static void ConvertLists(List<Object> list) {
       }
     }
 
-    @SuppressWarnings("unchecked")
-private static Map<String, Object> ConvertLists(
+    private static Map<String, Object> ConvertLists(
       Map<String, Object> dict) {
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -432,8 +419,7 @@ private static Map<String, Object> ConvertLists(
       return QueryStringToDict(query, "&");
     }
 
-    @SuppressWarnings("unchecked")
-private static Map<String, Object> QueryStringToDictInternal(
+    private static Map<String, Object> QueryStringToDictInternal(
       String query,
       String delimiter) {
       Map<String, Object> root = new HashMap<String, Object>();
@@ -450,8 +436,7 @@ private static Map<String, Object> QueryStringToDictInternal(
             leaf.put(path[i], newLeaf);
             leaf = newLeaf;
           } else {
-            Map<String, Object> o = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-            if (o != null) {
+            if (di instanceof Map<?, ?> o) {
               leaf = o;
             } else {
               // error, not a dictionary
@@ -460,7 +445,7 @@ private static Map<String, Object> QueryStringToDictInternal(
           }
         }
         if (leaf != null) {
-          String last = path[path.length - 1];
+          String last = path[^1];
           if (leaf.containsKey(last)) {
             throw new IllegalStateException();
           }

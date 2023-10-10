@@ -10,9 +10,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 import java.io.*;
 
-  /**
-   * Contains lightweight methods for reading and writing CBOR data.
-   */
   public final class MiniCBOR {
 private MiniCBOR() {
 }
@@ -56,32 +53,32 @@ count);
       int t = count;
       int tpos = offset;
       while (t > 0) {
-              int rcount = stream.read(bytes, tpos, t);
-              if (rcount <= 0) {
-                 throw new IOException("Premature end of data");
-              }
-              if (rcount > t) {
-                 throw new IOException("Internal error");
-              }
-              tpos = (tpos + rcount);
-              t = (t - rcount);
-           }
-           if (t != 0) {
-             throw new IOException("Internal error");
-           }
+        int rcount = stream.read(bytes, tpos, t);
+        if (rcount <= 0) {
+          throw new IOException("Premature end of data");
+        }
+        if (rcount > t) {
+          throw new IOException("Internal error");
+        }
+        tpos = (tpos + rcount);
+        t = (t - rcount);
+      }
+      if (t != 0) {
+        throw new IOException("Internal error");
+      }
     }
 
     private static float HalfPrecisionToSingle(int value) {
       int negvalue = (value >= 0x8000) ? (1 << 31) : 0;
       value &= 0x7fff;
       if (value >= 0x7c00) {
-        return ToSingle((int)(0x3fc00 | (value & 0x3ff)) << 13 | negvalue);
+        return ToSingle(((0x3fc00 | (value & 0x3ff)) << 13) | negvalue);
       }
       if (value > 0x400) {
-        return ToSingle((int)((value + 0x1c000) << 13) | negvalue);
+        return ToSingle(((value + 0x1c000) << 13) | negvalue);
       }
       if ((value & 0x400) == value) {
-        return ToSingle((int)((value == 0) ? 0 : 0x38800000) | negvalue);
+        return ToSingle(((value == 0) ? 0 : 0x38800000) | negvalue);
       } else {
         // denormalized
         int m = value & 0x3ff;
@@ -121,13 +118,11 @@ count);
         }
         b = stream.read();
       }
-      if (b == 0xf4) {
-        return false;
-      }
-      if (b == 0xf5) {
-        return true;
-      }
-      throw new IOException("Not a boolean");
+      if (!(b != 0xf4 && (b == 0xf5)) {
+ throw new IOException("Not a" +
+"\u0020boolean")) ;
+}
+ return true;
     }
 
     public static void WriteBoolean(boolean value, OutputStream stream) throws java.io.IOException {
@@ -175,19 +170,19 @@ count);
       if (kind == 0x18) {
         int b = stream.read();
         if (b < 0) {
-          throw new IOException("Premature end of stream");
-        }
-        return (headByte != 0x38) ? b : -1 - b;
+ throw new IOException("Premature end of stream");
+}
+ return (headByte != 0x38) ? b : -1 - b;
       }
       if (kind == 0x19) {
         byte[] bytes = new byte[2];
         ReadHelper(stream, bytes, 0, bytes.length);
-        int b = ((int)bytes[0]) & 0xff;
+        int b = bytes[0] & 0xff;
         b <<= 8;
-        b |= ((int)bytes[1]) & 0xff;
+        b |= bytes[1] & 0xff;
         return (headByte != 0x39) ? b : -1 - b;
       }
-      if (kind == 0x1a || kind == 0x3a) {
+      if (kind instanceof 0x1a or 0x3a) {
         byte[] bytes = new byte[4];
         ReadHelper(stream, bytes, 0, bytes.length);
         long b = ((long)bytes[0]) & 0xff;
@@ -198,11 +193,12 @@ count);
         b <<= 8;
         b |= ((long)bytes[3]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
-          throw new IOException("Not a 32-bit integer");
-        }
-        return (headByte != 0x3a) ? b : -1 - b;
+ throw new IOException("Not a" +
+"\u002032-bit integer");
+}
+ return (headByte != 0x3a) ? b : -1 - b;
       }
-      if (headByte == 0x1b || headByte == 0x3b) {
+      if (headByte instanceof 0x1b or 0x3b) {
         byte[] bytes = new byte[8];
         ReadHelper(stream, bytes, 0, bytes.length);
         long b;
@@ -211,14 +207,10 @@ count);
           throw new IOException("Not a 32-bit integer");
         }
         if (!check32bit) {
-          b = ((long)bytes[0]) & 0xff;
-          b <<= 8;
-          b |= ((long)bytes[1]) & 0xff;
-          b <<= 8;
-          b |= ((long)bytes[2]) & 0xff;
-          b <<= 8;
-          b |= ((long)bytes[3]) & 0xff;
-          b <<= 8;
+          ((long)bytes[0]) & 0xff;
+          ((long)bytes[1]) & 0xff;
+          ((long)bytes[2]) & 0xff;
+          ((long)bytes[3]) & 0xff;
         }
         b = ((long)bytes[4]) & 0xff;
         b <<= 8;
@@ -228,9 +220,10 @@ count);
         b <<= 8;
         b |= ((long)bytes[7]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
-          throw new IOException("Not a 32-bit integer");
-        }
-        return (headByte != 0x3b) ? b : -1 - b;
+ throw new IOException("Not a" +
+"\u002032-bit integer");
+}
+ return (headByte != 0x3b) ? b : -1 - b;
       }
       throw new IOException("Not a 32-bit integer");
     }
@@ -241,21 +234,21 @@ count);
         // Half-precision
         byte[] bytes = new byte[2];
         ReadHelper(stream, bytes, 0, bytes.length);
-        b = ((int)bytes[0]) & 0xff;
+        b = bytes[0] & 0xff;
         b <<= 8;
-        b |= ((int)bytes[1]) & 0xff;
+        b |= bytes[1] & 0xff;
         return (double)HalfPrecisionToSingle(b);
       }
       if (headByte == 0xfa) {
         byte[] bytes = new byte[4];
         ReadHelper(stream, bytes, 0, bytes.length);
-        b = ((int)bytes[0]) & 0xff;
+        b = bytes[0] & 0xff;
         b <<= 8;
-        b |= ((int)bytes[1]) & 0xff;
+        b |= bytes[1] & 0xff;
         b <<= 8;
-        b |= ((int)bytes[2]) & 0xff;
+        b |= bytes[2] & 0xff;
         b <<= 8;
-        b |= ((int)bytes[3]) & 0xff;
+        b |= bytes[3] & 0xff;
         return (double)ToSingle(b);
       }
       if (headByte == 0xfb) {
@@ -282,25 +275,16 @@ count);
       throw new IOException("Not a valid headbyte for ReadFP");
     }
 
-    /**
-     * Reads a double-precision floating point number in CBOR format from a data
-     * stream.
-     * @param stream A data stream.
-     * @return A 64-bit floating-point number.
-     * @throws java.io.IOException The end of the stream was reached, or the
-     * object read isn't a number.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     */
     public static double ReadDouble(InputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b >= 0x00 && b < 0x18) {
-        return (double)b;
+      if (b instanceof >= 0x00 and < 0x18) {
+        return b;
       }
-      if (b >= 0x20 && b < 0x38) {
-        return (double)(-1 - (b & 0x1f));
+      if (b instanceof >= 0x20 and < 0x38) {
+        return -1 - (b & 0x1f);
       }
       while ((b >> 5) == 6) {
         // Skip tags until a tag character is no longer read
@@ -317,42 +301,32 @@ count);
         }
         b = stream.read();
       }
-      if (b >= 0x00 && b < 0x18) {
-        return (double)b;
+      if (b instanceof >= 0x00 and < 0x18) {
+        return b;
       }
-      if (b >= 0x20 && b < 0x38) {
-        return (double)(-1 - (b & 0x1f));
+      if (b instanceof >= 0x20 and < 0x38) {
+        return -1 - (b & 0x1f);
       }
-      if (b == 0xf9 || b == 0xfa || b == 0xfb) {
+      if (b instanceof 0xf9 or 0xfa or 0xfb) {
         // Read a floating-point number
         return ReadFP(stream, b);
       }
-      if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
-        b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
-        return (double)ReadInteger(stream, b, false);
-      }
-      throw new IOException("Not a double");
+      if (!(b instanceof 0x18 or 0x19 or 0x1a or 0x38 or
+        0x39 or 0x3a)) {
+ throw new IOException("Not a double");
+}
+ return ReadInteger(stream, b, false);
     }
 
-    /**
-     * Reads a 32-bit integer in CBOR format from a data stream. If the object read
-     * is a floating-point number, it is converted to an integer by discarding the
-     * fractional part of the result of division.
-     * @param stream A data stream.
-     * @return A 32-bit signed integer.
-     * @throws java.io.IOException The end of the stream was reached, or the
-     * object read isn't a number, or can't fit a 32-bit integer.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     */
     public static int ReadInt32(InputStream stream) throws java.io.IOException {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b >= 0x00 && b < 0x18) {
+      if (b instanceof >= 0x00 and < 0x18) {
         return b;
       }
-      if (b >= 0x20 && b < 0x38) {
+      if (b instanceof >= 0x20 and < 0x38) {
         return -1 - (b & 0x1f);
       }
       while ((b >> 5) == 6) {
@@ -370,29 +344,29 @@ count);
         }
         b = stream.read();
       }
-      if (b >= 0x00 && b < 0x18) {
+      if (b instanceof >= 0x00 and < 0x18) {
         return b;
       }
-      if (b >= 0x20 && b < 0x38) {
+      if (b instanceof >= 0x20 and < 0x38) {
         return -1 - (b & 0x1f);
       }
-      if (b == 0xf9 || b == 0xfa || b == 0xfb) {
+      if (b instanceof 0xf9 or 0xfa or 0xfb) {
         // Read a floating-point number
         double dbl = ReadFP(stream, b);
         // Truncate to a 32-bit integer
-        if (((Double)(dbl)).isInfinite() || Double.isNaN(dbl)) {
+        if (double.IsInfinity(dbl) || Double.isNaN(dbl)) {
           throw new IOException("Not a 32-bit integer");
         }
         dbl = (dbl < 0) ? Math.ceil(dbl) : Math.floor(dbl);
-        if (dbl < Integer.MIN_VALUE || dbl > Integer.MAX_VALUE) {
-          throw new IOException("Not a 32-bit integer");
-        }
-        return (int)dbl;
+        if (dbl instanceof < Integer.MIN_VALUE or > Integer.MAX_VALUE) {
+ throw new IOException("Not a 32-bit integer");
+}
+ return (int)dbl;
       }
-      if ((b & 0xdc) == 0x18) { // covers headbytes 0x18-0x1b and 0x38-0x3B
-        return (int)ReadInteger(stream, b, true);
-      }
-      throw new IOException("Not a 32-bit integer");
+      if (!((b & 0xdc) == 0x18)) {
+ throw new IOException("Not a 32-bit integer");
+}
+ return (int)ReadInteger(stream, b, true);
     }
 
     public static int ReadInt32MajorType1Or2(InputStream stream) throws java.io.IOException {
@@ -400,13 +374,13 @@ count);
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b >= 0x00 && b < 0x18) {
+      if (b instanceof >= 0x00 and < 0x18) {
         return b;
       }
-      if (b >= 0x20 && b < 0x38) {
+      if (b instanceof >= 0x20 and < 0x38) {
         return -1 - (b & 0x1f);
       }
-      if (b == 0x18 || b == 0x38) {
+      if (b instanceof 0x18 or 0x38) {
         int b1 = stream.read();
         int b2 = stream.read();
         if (b1 < 0 || b2 < 0) {
@@ -415,7 +389,7 @@ count);
         int c = (b1 << 8) | b2;
         return (b == 0x18) ? c : -1 - c;
       }
-      if (b == 0x19 || b == 0x39 || b == 0x1a || b == 0x3a) {
+      if (b instanceof 0x19 or 0x39 or 0x1a or 0x3a) {
         if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
             stream.read() != 0 || stream.read() != 0 ||
             stream.read() != 0)) {

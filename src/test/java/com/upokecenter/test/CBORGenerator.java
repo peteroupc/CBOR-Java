@@ -1,32 +1,29 @@
 package com.upokecenter.test;
 
-import java.util.*;
 import com.upokecenter.util.*;
 
   public final class CBORGenerator {
     private static final class ByteWriter {
       private byte[] bytes = new byte[64];
-      private int pos;
 
       public ByteWriter Write(int b) {
-        if (this.pos < this.bytes.length) {
-          this.bytes[this.pos++] = (byte)b;
+        if (this.getByteLength() < this.bytes.length) {
+          this.bytes[this.getByteLength()++] = (byte)b;
         } else {
           byte[] newbytes = new byte[this.bytes.length * 2];
           System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
           this.bytes = newbytes;
-          this.bytes[this.pos++] = (byte)b;
+          this.bytes[this.getByteLength()++] = (byte)b;
         }
         return this;
       }
 
-      public final int getByteLength() {
-          return this.pos;
-        }
+      public final int getByteLength() { return propVarbytelength; }
+private final int propVarbytelength;
 
       public byte[] ToBytes() {
-        byte[] newbytes = new byte[this.pos];
-        System.arraycopy(this.bytes, 0, newbytes, 0, this.pos);
+        byte[] newbytes = new byte[this.getByteLength()];
+        System.arraycopy(this.bytes, 0, newbytes, 0, this.getByteLength());
         return newbytes;
       }
     }
@@ -37,10 +34,10 @@ import com.upokecenter.util.*;
       int len,
       ByteWriter bs) {
       int maxArg = 4;
-      int sh = 0;
       int minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 :
           ((len <= 0xffff) ? 2 : 3));
       int arg = minArg + r.GetInt32(maxArg - minArg + 1);
+      int sh;
       switch (arg) {
         case 0:
           bs.Write((majorType * 0x20) + len);
@@ -79,19 +76,19 @@ import com.upokecenter.util.*;
       }
     }
 
-    private static int[]
-    valueMajorTypes = {
+    private static final int[]
+    ValueMajorTypes = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4,
       4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
 
-    private static int[]
-    valueMajorTypesHighDepth = {
+    private static final int[]
+    ValueMajorTypesHighDepth = {
       0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
       5, 5, 5, 5, 5, 5, 6, 7,
     };
 
-    private static int[] valueMajorTypesHighLength = {
+    private static final int[] ValueMajorTypesHighLength = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6,
       6, 7, 7, 7, 7, 7, 7,
     };
@@ -106,7 +103,7 @@ import com.upokecenter.util.*;
         } else {
           r = ra.GetInt32(3);
           if (r == 0 && length - i >= 2) {
-            r = 0xc2 + ra.GetInt32((0xdf - 0xc2) + 1);
+            r = 0xc2 + ra.GetInt32(0xdf - 0xc2 + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             i += 2;
@@ -115,7 +112,7 @@ import com.upokecenter.util.*;
             bs.Write(r);
             int lower = (r == 0xe0) ? 0xa0 : 0x80;
             int upper = (r == 0xed) ? 0x9f : 0xbf;
-            r = lower + ra.GetInt32((upper - lower) + 1);
+            r = lower + ra.GetInt32(upper - lower + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             i += 3;
@@ -124,7 +121,7 @@ import com.upokecenter.util.*;
             bs.Write(r);
             int lower = (r == 0xf0) ? 0x90 : 0x80;
             int upper = (r == 0xf4) ? 0x8f : 0xbf;
-            r = lower + ra.GetInt32((upper - lower) + 1);
+            r = lower + ra.GetInt32(upper - lower + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             bs.Write(0x80 + ra.GetInt32(0x40));
@@ -140,19 +137,19 @@ import com.upokecenter.util.*;
         GenerateArgument(r, 0, r.GetInt32(100), bs);
       } else if (v < 35) {
         bs.Write(0x41);
-      bs.Write(0x20);
+        bs.Write(0x20);
       } else if (v < 45) {
         bs.Write(0x41);
-      bs.Write(0x20);
+        bs.Write(0x20);
       } else if (v < 50) {
         bs.Write(0x81);
-      this.GenerateSmall(r, depth + 1, bs);
+        this.GenerateSmall(r, depth + 1, bs);
       } else if (v < 53) {
         bs.Write(0xa2);
-      bs.Write(0xf7);
-    bs.Write(0xf6);
-  this.GenerateSmall(r, depth + 1, bs);
-  bs.Write(0xf5);
+        bs.Write(0xf7);
+        bs.Write(0xf6);
+        this.GenerateSmall(r, depth + 1, bs);
+        bs.Write(0xf5);
       } else if (v < 80) {
         bs.Write(0x40);
       } else if (v < 100) {
@@ -160,16 +157,16 @@ import com.upokecenter.util.*;
       }
     }
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
-      int majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
+      int majorType = ValueMajorTypes[r.GetInt32(ValueMajorTypes.length)];
       if (depth > 6) {
-        majorType = valueMajorTypesHighDepth[r.GetInt32(
-              valueMajorTypesHighDepth.length)];
+        majorType = ValueMajorTypesHighDepth[r.GetInt32(
+              ValueMajorTypesHighDepth.length)];
       }
       if (bs.getByteLength() > 2000000) {
-        majorType = valueMajorTypesHighLength[r.GetInt32(
-              valueMajorTypesHighLength.length)];
+        majorType = ValueMajorTypesHighLength[r.GetInt32(
+              ValueMajorTypesHighLength.length)];
       }
-      if (majorType == 3 || majorType == 2) { // Byte and text strings
+      if (majorType instanceof 3 or 2) { // Byte and text strings
         int len = r.GetInt32(1000);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(100000) * r.GetInt32(100000);
@@ -208,7 +205,7 @@ import com.upokecenter.util.*;
           }
         }
         return;
-      } else if (majorType == 4 || majorType == 5) { // Arrays and maps
+      } else if (majorType instanceof 4 or 5) { // Arrays and maps
         int len = r.GetInt32(8);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(1000) * r.GetInt32(1000);
@@ -249,11 +246,8 @@ import com.upokecenter.util.*;
           break;
         case 1:
           bs.Write((majorType * 0x20) + 0x18);
-          if (majorType == 7) {
-            bs.Write(32 + r.GetInt32(224));
-          } else {
-            bs.Write(r.GetInt32(256));
-          }
+          majorType == 7 ? bs.Write(32 + r.GetInt32(224)) :
+bs.Write(r.GetInt32(256));
           break;
         case 2:
           bs.Write((majorType * 0x20) + 0x19);

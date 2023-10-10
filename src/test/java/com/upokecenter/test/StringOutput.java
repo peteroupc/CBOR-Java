@@ -11,8 +11,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 import java.io.*;
 
 import com.upokecenter.util.*;
-import com.upokecenter.cbor.*;
-import com.upokecenter.numbers.*;
 
   final class StringOutput {
     private final StringBuilder builder;
@@ -31,9 +29,9 @@ import com.upokecenter.numbers.*;
     public void WriteString(String str) throws java.io.IOException {
       if (this.outputStream != null) {
         if (str.length() == 1) {
-          this.WriteCodePoint((int)str.charAt(0));
+          this.WriteCodePoint(str.charAt(0));
         } else {
-          if (DataUtilities.WriteUtf8(
+          if (com.upokecenter.util.DataUtilities.WriteUtf8(
             str,
             0,
             str.length(),
@@ -43,19 +41,19 @@ import com.upokecenter.numbers.*;
           }
         }
       } else {
-        this.builder.append(str);
+        this.builder = this.builder.append(str);
       }
     }
 
     public void WriteString(String str, int index, int length) throws java.io.IOException {
       if (this.outputStream == null) {
-        this.builder.append(str, index, (index)+(length));
+        this.builder = this.builder.append(str, index, (index)+(length));
       } else {
         if (length == 1) {
-          this.WriteCodePoint((int)str.charAt(index));
+          this.WriteCodePoint(str.charAt(index));
         } else {
           if (
-            DataUtilities.WriteUtf8(
+            com.upokecenter.util.DataUtilities.WriteUtf8(
               str,
               index,
               length,
@@ -93,20 +91,20 @@ import com.upokecenter.numbers.*;
 length);
       }
       if (this.outputStream == null) {
-          DataUtilities.ReadUtf8FromBytes(
-            bytes,
-            index,
-            length,
-            this.builder,
-            false);
+        com.upokecenter.util.DataUtilities.ReadUtf8FromBytes(
+          bytes,
+          index,
+          length,
+          this.builder,
+          false);
       } else {
-          for (int i = 0; i < length; ++i) {
-             byte b = bytes[i + index];
-             if ((((int)b) & 0x7f) != b) {
-                throw new IllegalArgumentException("str is non-ASCII");
-             }
+        for (int i = 0; i < length; ++i) {
+          byte b = bytes[i + index];
+          if ((b & 0x7f) != b) {
+            throw new IllegalArgumentException("str is non-ASCII");
           }
-          this.outputStream.write(bytes, index, length);
+        }
+        this.outputStream.write(bytes, index, length);
       }
     }
 
@@ -114,10 +112,10 @@ length);
       if ((codePoint >> 7) == 0) {
         // Code point is in the Basic Latin range (U+0000 to U+007F)
         if (this.outputStream == null) {
-          this.builder.append((char)codePoint);
+          this.builder = this.builder.append((char)codePoint);
         } else {
- this.outputStream.write((byte)codePoint);
-}
+          this.outputStream.write((byte)codePoint);
+        }
         return;
       }
       if (codePoint < 0) {
@@ -158,12 +156,14 @@ length);
           throw new IllegalArgumentException("ch is a surrogate");
         }
         if (codePoint <= 0xffff) {
-          { this.builder.append((char)codePoint);
+          {
+            this.builder = this.builder.append((char)codePoint);
           }
         } else if (codePoint <= 0x10ffff) {
-          this.builder.append((char)((((codePoint - 0x10000) >> 10) & 0x3ff) |
+          this.builder = this.builder.append((char)((((codePoint - 0x10000) >> 10) &
+0x3ff) |
               0xd800));
-          this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) |
+          this.builder = this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) |
               0xdc00));
         }
       }

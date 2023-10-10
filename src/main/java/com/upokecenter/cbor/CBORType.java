@@ -8,13 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-  /**
-   * Represents a type that a CBOR object can have.
-   */
-  public enum CBORType {
+  public enum CBORType
+  {
     /**
-     * This property is no longer used.
-     * @deprecated Since version 4.0, CBORObject.Type no longer returns this\u0020value for any
+ * @deprecated Since version 4.0, CBORObject.Type no longer returns this\u0020value for any
  * CBOR Object - this is a breaking change from earlier
  * versions.\u0020Instead, use the IsNumber property of CBORObject to
  * determine whether a CBOR Object represents a number, or use the two new
@@ -27,44 +24,19 @@ https://creativecommons.org/publicdomain/zero/1.0/
 @Deprecated
     Number,
 
-    /**
-     * The simple values true and false.
-     */
     Boolean,
 
-    /**
-     * A "simple value" other than floating point values, true, and false.
-     */
     SimpleValue,
 
-    /**
-     * An array of bytes.
-     */
     ByteString,
 
-    /**
-     * A text string.
-     */
     TextString,
 
-    /**
-     * An array of CBOR objects.
-     */
     Array,
 
-    /**
-     * A map of CBOR objects.
-     */
     Map,
 
-    /**
-     * An integer in the interval [-(2^64), 2^64 - 1], or an integer of major type
-     * 0 and 1.
-     */
     Integer,
 
-    /**
-     * A 16-, 32-, or 64-bit binary floating-point number.
-     */
     FloatingPoint,
   }

@@ -8,16 +8,13 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-import java.util.*;
-
-import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   final class CBORDataUtilitiesByteArrayString {
 private CBORDataUtilitiesByteArrayString() {
 }
-    private static final long DoubleNegInfinity = ((long)(0xfffL << 52));
-    private static final long DoublePosInfinity = ((long)(0x7ffL << 52));
+    private static final long DoubleNegInfinity = (0xfffL << 52);
+    private static final long DoublePosInfinity = (0x7ffL << 52);
 
     static CBORObject ParseJSONNumber(
       byte[] chars,
@@ -34,7 +31,8 @@ private CBORDataUtilitiesByteArrayString() {
       if (count > chars.length || chars.length - offset < count) {
         return null;
       }
-      JSONOptions opt = (options == null) ? (CBORDataUtilities.DefaultOptions) : options;
+
+      options = (options == null) ? (CBORDataUtilities.DefaultOptions) : options;
       boolean preserveNegativeZero = options.getPreserveNegativeZero();
       JSONOptions.ConversionMode kind = options.getNumberConversion();
       int endPos = offset + count;
@@ -161,13 +159,9 @@ private CBORDataUtilitiesByteArrayString() {
         if (!haveNonzeroDigits) {
           // zero
           if (kind == JSONOptions.ConversionMode.Double) {
-            if (!negative) {
-              return CBORObject.FromFloatingPointBits(0, 2);
-            } else {
-              return CBORObject.FromFloatingPointBits(0x8000, 2);
-            }
-          } else if (kind ==
-            JSONOptions.ConversionMode.IntOrFloatFromDouble ||
+            return !negative ? CBORObject.FromFloatingPointBits(0, 2) :
+CBORObject.FromFloatingPointBits(0x8000, 2);
+          } else if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble ||
             kind == JSONOptions.ConversionMode.IntOrFloat) {
             return CBORObject.FromObject(0);
           }
@@ -175,13 +169,9 @@ private CBORDataUtilitiesByteArrayString() {
           // underflow
           if (kind == JSONOptions.ConversionMode.Double ||
             kind == JSONOptions.ConversionMode.IntOrFloat) {
-            if (!negative) {
-              return CBORObject.FromFloatingPointBits(0, 2);
-            } else {
-              return CBORObject.FromFloatingPointBits(0x8000, 2);
-            }
-          } else if (kind ==
-            JSONOptions.ConversionMode.IntOrFloatFromDouble) {
+            return !negative ? CBORObject.FromFloatingPointBits(0, 2) :
+CBORObject.FromFloatingPointBits(0x8000, 2);
+          } else if (kind == JSONOptions.ConversionMode.IntOrFloatFromDouble) {
             return CBORObject.FromObject(0);
           }
         } else {
@@ -205,30 +195,25 @@ private CBORDataUtilitiesByteArrayString() {
         long v = 0L;
         int vi = numOffset;
         for (; vi < endPos; ++vi) {
-          v = (v * 10) + (int)(chars[vi] - '0');
+          v = (v * 10) + (chars[vi] - '0');
         }
         if ((v != 0 || !negative) && v < (1L << 53) - 1) {
           if (negative) {
             v = -v;
           }
-          if (kind == JSONOptions.ConversionMode.Double) {
-            return
-CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8);
-          } else if (kind == JSONOptions.ConversionMode.Decimal128) {
-            return CBORObject.FromObject(EDecimal.FromInt64(v));
-          } else {
-            return CBORObject.FromObject(v);
-          }
+          return kind == JSONOptions.ConversionMode.Double
+            ?
+CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8) :
+            kind == JSONOptions.ConversionMode.Decimal128 ?
+CBORObject.FromObject(EDecimal.FromInt64(v)) : CBORObject.FromObject(v);
         }
       }
       if (kind == JSONOptions.ConversionMode.Full) {
         if (!haveDecimalPoint && !haveExponent) {
           EInteger ei = EInteger.FromSubstring(chars, initialOffset, endPos);
-          if (preserveNegativeZero && ei.isZero() && negative) {
-            // TODO: In next major version, change to EDecimal.NegativeZero
-            return CBORObject.FromFloatingPointBits(0x8000, 2);
-          }
-          return CBORObject.FromObject(ei);
+          return (preserveNegativeZero && ei.isZero() && negative) ?
+CBORObject.FromObject(EDecimal.NegativeZero) :
+CBORObject.FromObject(ei);
         }
         if (!haveExponent && haveDecimalPoint) {
           // No more than 18 digits plus one decimal point (which
@@ -239,21 +224,21 @@ CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8);
           int digitCount = 0;
           for (; vi < decimalPointPos; ++vi) {
             if (digitCount < 0 || digitCount >= 18) {
-               digitCount = -1;
-               break;
+              digitCount = -1;
+              break;
             } else if (digitCount > 0 || chars[vi] != '0') {
               ++digitCount;
             }
-            lv = ((lv * 10) + (int)(chars[vi] - '0'));
+            lv = ((lv * 10) + (chars[vi] - '0'));
           }
           for (vi = decimalPointPos + 1; vi < endPos; ++vi) {
             if (digitCount < 0 || digitCount >= 18) {
-               digitCount = -1;
-               break;
+              digitCount = -1;
+              break;
             } else if (digitCount > 0 || chars[vi] != '0') {
               ++digitCount;
             }
-            lv = ((lv * 10) + (int)(chars[vi] - '0'));
+            lv = ((lv * 10) + (chars[vi] - '0'));
           }
           if (negative) {
             lv = -lv;
@@ -279,15 +264,12 @@ CBORObject.FromFloatingPointBits(EFloat.FromInt64(v).ToDoubleBits(), 8);
             endPos - initialOffset);
         if (ed.isZero() && negative) {
           if (ed.getExponent().isZero()) {
-            // TODO: In next major version, use EDecimal
-            // for preserveNegativeZero
             return preserveNegativeZero ?
-              CBORObject.FromFloatingPointBits(0x8000, 2) :
+              CBORObject.FromObject(EDecimal.NegativeZero) :
               CBORObject.FromObject(0);
-          } else if (!preserveNegativeZero) {
-            return CBORObject.FromObject(ed.Negate());
           } else {
-            return CBORObject.FromObject(ed);
+            return !preserveNegativeZero ?
+CBORObject.FromObject(ed.Negate()) : CBORObject.FromObject(ed);
           }
         } else {
           return ed.getExponent().isZero() ? CBORObject.FromObject(ed.getMantissa()) :

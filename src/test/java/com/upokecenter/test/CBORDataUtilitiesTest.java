@@ -2,7 +2,6 @@ package com.upokecenter.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
@@ -83,7 +82,6 @@ import com.upokecenter.numbers.*;
     }
 
     // testing obsolete method
-    @SuppressWarnings("deprecation")
     @Test
     public void TestParseJSONNumberSubstring() {
       String tstr =
@@ -197,15 +195,16 @@ JSONOptions("numberconversion=full;preservenegativezero=false")) ==
 ToObjectTest.TestToFromObjectRoundTrip(230).AsNumber();
         CBORNumber objectTemp2 = CBORDataUtilities.ParseJSONNumber("23.0e01",
   new JSONOptions("numberconversion=full")).AsNumber();
-  TestCommon.CompareTestEqual(objectTemp, objectTemp2);
-}
+        TestCommon.CompareTestEqual(objectTemp, objectTemp2);
+      }
       {
         CBORNumber objectTemp =
 ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber();
-CBORNumber objectTemp2 = CBORDataUtilities.ParseJSONNumber("23.0e00", new
-JSONOptions("numberconversion=full")).AsNumber();
-TestCommon.CompareTestEqual(objectTemp, objectTemp2);
-}
+        CBORNumber objectTemp2 =
+CBORDataUtilities.ParseJSONNumber("23.0e00", new
+        JSONOptions("numberconversion=full")).AsNumber();
+        TestCommon.CompareTestEqual(objectTemp, objectTemp2);
+      }
       cbor = CBORDataUtilities.ParseJSONNumber(
         "1e+99999999999999999999999999",
         new JSONOptions("numberconversion=full"));

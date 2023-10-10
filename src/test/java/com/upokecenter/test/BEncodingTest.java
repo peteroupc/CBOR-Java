@@ -1,7 +1,6 @@
 package com.upokecenter.test;
 
 import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
@@ -10,17 +9,8 @@ import com.upokecenter.cbor.*;
   public class BEncodingTest {
     private static CBORObject EncodingFromBytes(byte[] b) {
       try {
-        {
-          java.io.ByteArrayInputStream s = null;
-try {
-s = new java.io.ByteArrayInputStream(b);
-
-          return BEncoding.Read(s);
-}
-finally {
-try { if (s != null) { s.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayInputStream s = new java.io.ByteArrayInputStream(b);
+        return BEncoding.Read(s);
       } catch (IOException ex) {
         throw new CBORException("", ex);
       }
@@ -28,18 +18,9 @@ try { if (s != null) { s.close(); } } catch (java.io.IOException ex) {}
 
     private static byte[] EncodingToBytes(CBORObject b) {
       try {
-        {
-          java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-          BEncoding.Write(b, ms);
-          return ms.toByteArray();
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+        using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+        BEncoding.Write(b, ms);
+        return ms.toByteArray();
       } catch (IOException ex) {
         throw new CBORException("", ex);
       }
@@ -47,19 +28,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void DoTestLong(long value) {
       String b = "i" + TestCommon.LongToString(value) + "e";
-      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b,
+      CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b,
             false));
       Assert.assertEquals(value, beo.AsNumber().ToInt64Checked());
-      String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
+      String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
     }
 
     public static void DoTestString(String value) {
-      String b = DataUtilities.GetUtf8Length(value, false) + ":" + value;
-      CBORObject beo = EncodingFromBytes(DataUtilities.GetUtf8Bytes(b,
+      String b = com.upokecenter.util.DataUtilities.GetUtf8Length(value, false) + ":" + value;
+      CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b,
             false));
       Assert.assertEquals(value, beo.AsString());
-      String newb = DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
+      String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
     }
 

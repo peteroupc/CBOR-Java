@@ -1,7 +1,5 @@
 package com.upokecenter.test;
 
-import java.util.*;
-
 import org.junit.Assert;
 
 import com.upokecenter.util.*;
@@ -31,24 +29,24 @@ private CBORTestCommon() {
 
     private static EFloat RandomEFloatLowExponent(IRandomGenExtended rand) {
       while (true) {
-         EFloat ef = RandomObjects.RandomEFloat(rand);
-         if (
-           ef.getExponent().compareTo(-20000) >= 0 &&
+        EFloat ef = RandomObjects.RandomEFloat(rand);
+        if (
+          ef.getExponent().compareTo(-20000) >= 0 &&
 ef.getExponent().compareTo(20000) <= 0) {
-           return ef;
-         }
-       }
+          return ef;
+        }
+      }
     }
 
     private static EDecimal RandomEDecimalLowExponent(IRandomGenExtended rand) {
       while (true) {
-         EDecimal ef = RandomObjects.RandomEDecimal(rand);
-         if (
-           ef.getExponent().compareTo(-20000) >= 0 &&
+        EDecimal ef = RandomObjects.RandomEDecimal(rand);
+        if (
+          ef.getExponent().compareTo(-20000) >= 0 &&
 ef.getExponent().compareTo(20000) <= 0) {
-           return ef;
-         }
-       }
+          return ef;
+        }
+      }
     }
 
     public static CBORObject RandomNumber(IRandomGenExtended rand) {
@@ -57,7 +55,7 @@ ef.getExponent().compareTo(20000) <= 0) {
 
     public static CBORObject RandomNumber(IRandomGenExtended rand, boolean
 lowExponent) {
-      Object o = null;
+      Object o;
       switch (rand.GetInt32(6)) {
         case 0:
           o = RandomObjects.RandomDouble(
@@ -88,7 +86,7 @@ lowExponent) {
     }
 
     public static CBORObject RandomNumberOrRational(IRandomGenExtended rand) {
-      Object o = null;
+      Object o;
       switch (rand.GetInt32(7)) {
         case 0:
           o = RandomObjects.RandomDouble(
@@ -157,19 +155,18 @@ rand) {
     public static CBORObject RandomCBORTaggedObject(
       IRandomGenExtended rand,
       int depth) {
-      int tag = 0;
+      int tag;
       if (rand.GetInt32(2) == 0) {
         int[] tagselection = {
           2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
           30, 0, 1, 25, 26, 27,
         };
         tag = tagselection[rand.GetInt32(tagselection.length)];
-      } else if (rand.GetInt32(100) < 90) {
-        return CBORObject.FromObjectAndTag(
-            RandomCBORObject(rand, depth + 1),
-            rand.GetInt32(0x100000));
       } else {
-        return CBORObject.FromObjectAndTag(
+        return rand.GetInt32(100) < 90 ?
+          CBORObject.FromObjectAndTag(
+            RandomCBORObject(rand, depth + 1),
+            rand.GetInt32(0x100000)) : CBORObject.FromObjectAndTag(
             RandomCBORObject(rand, depth + 1),
             RandomEIntegerMajorType0(rand));
       }
@@ -183,13 +180,13 @@ rand) {
       {
         CBORObject cbor;
         // System.out.println("tag "+tag+" "+i);
-        if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
+        if (tag instanceof 0 or 1 or 28 or 29) {
           tag = 999;
         }
-        if (tag == 2 || tag == 3) {
+        if (tag instanceof 2 or 3) {
           Object o = RandomObjects.RandomByteStringShort(rand);
           cbor = CBORObject.FromObject(o);
-        } else if (tag == 4 || tag == 5) {
+        } else if (tag instanceof 4 or 5) {
           cbor = CBORObject.NewArray();
           Object o = RandomObjects.RandomSmallIntegral(rand);
           cbor.Add(o);
@@ -226,31 +223,20 @@ depth) {
     public static CBORObject RandomCBORObject(IRandomGenExtended rand, int
       depth) {
       int nextval = rand.GetInt32(11);
-      switch (nextval) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-          return RandomNumberOrRational(rand);
-        case 4:
-          return rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False;
-        case 5:
-          return rand.GetInt32(2) == 0 ? CBORObject.Null :
-            CBORObject.Undefined;
-        case 6:
-          return CBORObject.FromObject(
-              RandomObjects.RandomTextString(rand));
-        case 7:
-          return CBORObject.FromObject(
-              RandomObjects.RandomByteString(rand));
-        case 8:
-          return RandomCBORArray(rand, depth);
-        case 9:
-          return RandomCBORMap(rand, depth);
-        case 10:
-          return RandomCBORTaggedObject(rand, depth);
-        default: return RandomNumber(rand);
-      }
+      return nextval switch {
+        0 or 1 or 2 or 3 { get { return RandomNumberOrRational(rand),
+        4 => rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False,
+        5 => rand.GetInt32(2) == 0 ? CBORObject.Null :
+                    CBORObject.Undefined,
+        6 => CBORObject.FromObject(
+                      RandomObjects.RandomTextString(rand)),
+        7 => CBORObject.FromObject(
+                      RandomObjects.RandomByteString(rand)),
+        8 => RandomCBORArray(rand, depth),
+        9 => RandomCBORMap(rand, depth),
+        10 => RandomCBORTaggedObject(rand, depth),
+        _ => RandomNumber(rand),
+      }; } }
     }
 
     public static byte[] CheckEncodeToBytes(CBORObject o) {
@@ -302,22 +288,13 @@ options) {
     }
 
     private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) {
-      {
-        java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(b);
-int startingAvailable = ms.available();
-
-        CBORObject o = CBORObject.Read(ms, options);
-        if ((startingAvailable - ms.available()) != startingAvailable) {
-          throw new CBORException("not at EOF");
-        }
-        return o;
+      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(b);
+      var o = CBORObject.Read(ms, options);
+      if (ms.getPosition() != ms.length) {
+ throw new CBORException("not at" +
+"\u0020EOF");
 }
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+ return o;
     }
 
     // Tests the equivalence of the DecodeFromBytes and Read methods.
@@ -335,21 +312,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static CBORObject FromBytesB(byte[] b) {
-      {
-        java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(b);
-int startingAvailable = ms.available();
-
-        CBORObject o = CBORObject.Read(ms);
-        if ((startingAvailable - ms.available()) != startingAvailable) {
-          throw new CBORException("not at EOF");
-        }
-        return o;
+      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(b);
+      var o = CBORObject.Read(ms);
+      if (ms.getPosition() != ms.length) {
+ throw new CBORException("not at" +
+"\u0020EOF");
 }
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+ return o;
     }
   }
