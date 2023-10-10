@@ -326,7 +326,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         charbuf[index++] = (char)0x22;
       }
       if (cp < 0x10000) {
-        if (cp instanceof >= 0xd800 and < 0xe000) {
+        if (cp >= 0xd800 && cp < 0xe000) {
           return null;
         }
         if (charbuf == null) {
@@ -3053,7 +3053,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject cbor;
       // Test single-character strings
       for (int i = 0; i < 0x110000; ++i) {
-        if (i instanceof >= 0xd800 and < 0xe000) {
+        if (i >= 0xd800 && i < 0xe000) {
           continue;
         }
         String str = CharString(i, true, charbuf);
@@ -3667,7 +3667,7 @@ private final PODClass propVarpropvalue;
         throw new IllegalStateException("", ex);
       }
       for (int i = 0; i < 256; ++i) {
-        if (i instanceof >= 24 and < 32) {
+        if (i >= 24 && i < 32) {
           try {
             CBORObject.FromSimpleValue(i);
             Assert.fail("Should have failed");

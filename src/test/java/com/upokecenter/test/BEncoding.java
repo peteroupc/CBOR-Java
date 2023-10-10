@@ -116,7 +116,7 @@ EInteger.FromInt64(longValue).toString();
 
     private static CBORObject ReadString(InputStream stream, char firstChar) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
-      if (firstChar instanceof < '0' or > '9') {
+      if (firstChar < '0' || firstChar > '9') {
         throw new CBORException("Invalid integer encoding");
       }
       builder.append(firstChar);

@@ -292,10 +292,10 @@ count);
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b instanceof >= 0x00 and < 0x18) {
+      if (b >= 0x00 && b < 0x18) {
         return b;
       }
-      if (b instanceof >= 0x20 and < 0x38) {
+      if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
       while ((b >> 5) == 6) {
@@ -313,10 +313,10 @@ count);
         }
         b = stream.read();
       }
-      if (b instanceof >= 0x00 and < 0x18) {
+      if (b >= 0x00 && b < 0x18) {
         return b;
       }
-      if (b instanceof >= 0x20 and < 0x38) {
+      if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
       if (b instanceof 0xf9 or 0xfa or 0xfb) {
@@ -345,10 +345,10 @@ count);
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b instanceof >= 0x00 and < 0x18) {
+      if (b >= 0x00 && b < 0x18) {
         return b;
       }
-      if (b instanceof >= 0x20 and < 0x38) {
+      if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
       while ((b >> 5) == 6) {
@@ -366,10 +366,10 @@ count);
         }
         b = stream.read();
       }
-      if (b instanceof >= 0x00 and < 0x18) {
+      if (b >= 0x00 && b < 0x18) {
         return b;
       }
-      if (b instanceof >= 0x20 and < 0x38) {
+      if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
       if (b instanceof 0xf9 or 0xfa or 0xfb) {
@@ -396,10 +396,10 @@ count);
         throw new NullPointerException("stream");
       }
       int b = stream.read();
-      if (b instanceof >= 0x00 and < 0x18) {
+      if (b >= 0x00 && b < 0x18) {
         return b;
       }
-      if (b instanceof >= 0x20 and < 0x38) {
+      if (b >= 0x20 && b < 0x38) {
         return -1 - (b & 0x1f);
       }
       if (b instanceof 0x18 or 0x38) {

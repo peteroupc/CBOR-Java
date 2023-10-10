@@ -142,7 +142,7 @@ private RandomObjects() {
         } else {
           // BMP character
           x = 0x20 + rand.GetInt32(0xffe0);
-          if (x instanceof >= 0xd800 and < 0xe000) {
+          if (x >= 0xd800 && x < 0xe000) {
             // surrogate code unit, generate ASCII instead
             x = 0x20 + rand.GetInt32(0x60);
           }
