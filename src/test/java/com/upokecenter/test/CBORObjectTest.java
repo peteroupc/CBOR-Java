@@ -10503,7 +10503,7 @@ sb.append((char)irg.GetInt32(0x80));
       int f32,
       long f64,
       String line) {
-      if (str.charAt(0) == '.' || str.charAt(^1) == '.' ||
+      if (str.charAt(0) == '.' || str.charAt(str.length() - 1) == '.' ||
         str.contains(".e") || str.contains(".E")) {
         // Not a valid JSON number, so skip
         // System.out.println(str);

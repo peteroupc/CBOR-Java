@@ -123,7 +123,7 @@ import com.upokecenter.numbers.*;
       byte[] bytes2 = new byte[bytes.length + 2];
       bytes2[0] = 0x22;
       System.arraycopy(bytes, 0, bytes2, 1, bytes.length);
-      bytes2[^1] = 0x22;
+      bytes2[bytes2.length - 1] = 0x22;
       String str2 = CBORObject.FromJSONBytes(bytes2)
         .AsString();
       if (!str.equals(str2)) {
@@ -1061,10 +1061,10 @@ import com.upokecenter.numbers.*;
       if (!(bytes.length > 0)) {
         return false;
       }
-      if (bytes[0] is not ((>= 0x30 and <= 0x39) or (byte)'-')) {
+      if (!((bytes[0] >= 0x30 && bytes[0] <= 0x39) || bytes[0] == (byte)'-')) {
         return false;
       }
-      if (bytes[^1] is not (>= 0x30 and <= 0x39)) {
+      if (!(bytes[bytes.length - 1] >= 0x30 && bytes[bytes.length - 1] <= 0x39)) {
         return false;
       }
       CBORObject cbor, cbor2, cbored, cbor3;
@@ -1092,10 +1092,10 @@ import com.upokecenter.numbers.*;
       if (!(bytes.length > 0)) {
         return false;
       }
-      if (bytes[0] is not ((>= 0x30 and <= 0x39) or (byte)'-')) {
+      if (!((bytes[0] >= 0x30 && bytes[0] <= 0x39) || bytes[0] == (byte)'-')) {
         return false;
       }
-      if (bytes[^1] is not (>= 0x30 and <= 0x39)) {
+      if (!(bytes[bytes.length - 1] >= 0x30 && bytes[bytes.length - 1] <= 0x39)) {
         return false;
       }
       CBORObject cbor, cbor2, cbored, cbor3;

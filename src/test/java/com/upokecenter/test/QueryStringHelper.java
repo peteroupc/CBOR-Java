@@ -449,7 +449,7 @@ private static Map<String, Object> ConvertLists(
           }
         }
         if (leaf != null) {
-          String last = path[^1];
+          String last = path[path.length - 1];
           if (leaf.containsKey(last)) {
             throw new IllegalStateException();
           }
