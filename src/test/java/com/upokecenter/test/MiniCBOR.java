@@ -379,7 +379,7 @@ count);
           throw new IOException("Not a 32-bit integer");
         }
         dbl = (dbl < 0) ? Math.ceil(dbl) : Math.floor(dbl);
-        if (dbl instanceof < Integer.MIN_VALUE or > Integer.MAX_VALUE) {
+        if (dbl < Integer.MIN_VALUE || dbl > Integer.MAX_VALUE) {
  throw new IOException("Not a 32-bit integer");
 }
  return (int)dbl;

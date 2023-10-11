@@ -1379,15 +1379,13 @@ import com.upokecenter.numbers.*;
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
         CBORObject cborNumber = CBORObject.FromObject(dtime, typemapper);
-        if (!(cborNumber.Type is CBORType.Integer or
-           CBORType.FloatingPoint)) {
+        if (!(cborNumber.getType() == CBORType.Integer || cborNumber.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
   typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
-        if (!(cbor2.Type is CBORType.Integer or
-           CBORType.FloatingPoint)) {
+        if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         Assert.assertEquals(s, cbor2, cborNumber);
@@ -1408,15 +1406,13 @@ import com.upokecenter.numbers.*;
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
         CBORObject cborNumber = CBORObject.FromObject(dtime, typemapper);
-        if (!(cborNumber.Type is CBORType.Integer or
-           CBORType.FloatingPoint)) {
+        if (!(cborNumber.getType() == CBORType.Integer || cborNumber.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
   typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
-        if (!(cbor2.Type is CBORType.Integer or
-           CBORType.FloatingPoint)) {
+        if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         Assert.assertEquals(s, cbor2, cborNumber);

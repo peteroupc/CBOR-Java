@@ -7656,7 +7656,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           TestWriteObj(bigintVal, bigintVal);
         }
 
-        if (longValue instanceof >= Integer.MIN_VALUE and <= Integer.MAX_VALUE) {
+        if (longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE) {
           int intval = (int)longValue;
           {
             CBORObject cborTemp1 =
