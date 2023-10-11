@@ -431,7 +431,7 @@ private static Map<String, Object> QueryStringToDictInternal(
         String[] path = GetKeyPath(keyvalue[0]);
         Map<String, Object> leaf = root;
         for (int i = 0; i < path.length - 1; ++i) {
-          if (!leaf.TryGetValue(path[i], out Object di)) {
+          Object di = null; if ((di = leaf.getOrDefault(path[i], null)) == null) {
             // node doesn't exist so add it
             Map<String, Object> newLeaf = new HashMap<String, Object>();
             if (leaf.containsKey(path[i])) {

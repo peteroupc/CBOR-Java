@@ -655,10 +655,10 @@ private final NumberKind propVarkind;
      * an exact integer, or is less than 0 or greater than 255.
      */
     public byte ToByteIfExact() {
-if (!this.IsFinite()) {
+      if (!this.IsFinite()) {
         throw new ArithmeticException("Value is infinity or NaN");
       }
-if (this.IsZero()) {
+      if (this.IsZero()) {
         return (byte)0;
       }
       if (this.IsNegative()) {
