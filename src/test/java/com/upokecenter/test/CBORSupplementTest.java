@@ -875,12 +875,13 @@ try { if (ms5 != null) { ms5.close(); } } catch (java.io.IOException ex) {}
 try {
 ms6 = new java.io.ByteArrayInputStream(bytes);
 
-        Assert.assertEquals(-1 - 0x17, MiniCBOR.ReadInt32(ms6));
+          Assert.assertEquals(-1 - 0x17, MiniCBOR.ReadInt32(ms6));
 }
 finally {
 try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
 }
-} catch (IOException ioex) {
+}
+      } catch (IOException ioex) {
         Assert.fail(ioex.getMessage());
       }
     }

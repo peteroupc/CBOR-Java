@@ -8056,6 +8056,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+}
 
         for (int i = 0; i < 50; ++i) {
           EFloat ef = RandomObjects.RandomEFloat(fr);
@@ -8695,6 +8696,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
@@ -8736,6 +8738,7 @@ ms = new java.io.ByteArrayOutputStream();
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
 }
 }
       } catch (IOException ex) {

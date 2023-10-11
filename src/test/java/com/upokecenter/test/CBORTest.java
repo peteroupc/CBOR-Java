@@ -2540,6 +2540,11 @@ finally {
 try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
         {
           java.io.ByteArrayOutputStream ms = null;
 try {
@@ -2562,14 +2567,11 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
-} catch (IOException ioex) {
+}
+      } catch (IOException ioex) {
         Assert.fail(ioex.getMessage() + " val=" + val);
       }
-}
-finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
-}
-}
+    }
 
     public static EInteger UnsignedLongToEInteger(long v) {
       return v >= 0 ? EInteger.FromInt64(v) :
