@@ -3425,11 +3425,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestFromObject_Dictionary() {
-      Map<String, String> dict = new HashMap<String, String>
-      {
-        ["TestKey"] = "TestValue",
-        ["TestKey2"] = "TestValue2",
-      };
+      Map<String, String> dict = new HashMap<String, String>();
+dict.put("TestKey","TestValue");
+dict.put("TestKey2","TestValue2");
+
       CBORObject c = CBORObject.FromObject(dict);
       CheckKeyValue(c, "TestKey", "TestValue");
       CheckKeyValue(c, "TestKey2", "TestValue2");
@@ -3562,10 +3561,8 @@ private final PODClass propVarpropvalue;
         "propA",
         "propB",
         "propC");
-      HashMap<String, Object> aodict = new HashMap<String, Object>
-      {
-        ["PropValue"] = new PODClass(),
-      };
+      HashMap<String, Object> aodict = new HashMap<String, Object>();
+aodict.put("PropValue",new PODClass());
 
       CBORObjectTest.CheckPODInDictPropertyNames(
         CBORObject.FromObject(aodict, valueCcTF),

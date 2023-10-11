@@ -2489,7 +2489,8 @@ int startingAvailable = inputStream.available();
           }
         } catch (CBORException ex) {
           // Expected exception
-          System.out.print(ex.getMessage().get(..0));
+          String exmessage = ex.getMessage();
+          System.out.print(exmessage.substring(0, (0)));
         } catch (IllegalStateException ex) {
           String failString = ex.toString() +
             (ex.getCause() == null ? "" : "\n" +
@@ -2498,7 +2499,8 @@ int startingAvailable = inputStream.available();
           failString += "\nstart pos: " + oldPos + ", truelen=" +
             ((startingAvailable - inputStream.available()) - oldPos);
           failString += "\n" + TestCommon.ToByteArrayString(array);
-          failString = failString[..Math.min(2000, failString.length())];
+          int endPos = Math.min(2000, failString.length());
+          failString = failString.substring(0, (endpos));
           throw new IllegalStateException(failString, ex);
         }
       }
