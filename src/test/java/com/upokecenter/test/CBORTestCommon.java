@@ -223,20 +223,32 @@ depth) {
     public static CBORObject RandomCBORObject(IRandomGenExtended rand, int
       depth) {
       int nextval = rand.GetInt32(11);
-      return nextval switch {
-        0 or 1 or 2 or 3 { get { return RandomNumberOrRational(rand),
-        4 => rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False,
-        5 => rand.GetInt32(2) == 0 ? CBORObject.Null :
-                    CBORObject.Undefined,
-        6 => CBORObject.FromObject(
-                      RandomObjects.RandomTextString(rand)),
-        7 => CBORObject.FromObject(
-                      RandomObjects.RandomByteString(rand)),
-        8 => RandomCBORArray(rand, depth),
-        9 => RandomCBORMap(rand, depth),
-        10 => RandomCBORTaggedObject(rand, depth),
-        _ => RandomNumber(rand),
-      }; } }
+      switch (nextval) {
+case 0:
+ case 1:
+ case 2:
+ case 3:
+return RandomNumberOrRational(rand);
+case 4:
+return rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False;
+case 5:
+return rand.GetInt32(2) == 0 ? CBORObject.Null :
+                    CBORObject.Undefined;
+case 6:
+return CBORObject.FromObject(
+                      RandomObjects.RandomTextString(rand));
+case 7:
+return CBORObject.FromObject(
+                      RandomObjects.RandomByteString(rand));
+case 8:
+return RandomCBORArray(rand, depth);
+case 9:
+return RandomCBORMap(rand, depth);
+case 10:
+return RandomCBORTaggedObject(rand, depth);
+default:
+return RandomNumber(rand);
+}
     }
 
     public static byte[] CheckEncodeToBytes(CBORObject o) {
