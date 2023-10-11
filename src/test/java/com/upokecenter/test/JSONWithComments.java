@@ -75,8 +75,7 @@ import com.upokecenter.cbor.*;
       while (true) {
         c = this.index < this.endPos ? this.jstring.charAt(this.index++) &
           0xffff : -1;
-        if (c instanceof not ('-' or '+' or '.' or (>= '0' and <= '9') or
-            'e' or 'E')) {
+        if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') || c == 'e' || c == 'E')) {
           numberEndIndex = c < 0 ? this.index : this.index - 1;
           obj = CBORDataUtilities.ParseJSONNumber(
             this.jstring.substring(numberStartIndex, (numberEndIndex)),
@@ -89,12 +88,10 @@ import com.upokecenter.cbor.*;
       }
       c = numberEndIndex >= this.endPos ? -1 : this.jstring.charAt(numberEndIndex);
       // check if character can validly appear after a JSON number
-      if (c instanceof not ',' and not ']' and not '}' and not -1 and
-        not 0x20 and not 0x0a and not 0x0d and not 0x09) {
+      if (c != ',' && c != ']' && c != '}' && c != -1 && c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
         this.RaiseError("Invalid character after JSON number");
       }
-      nextChar[0] = c is -1 or (not 0x20 and not 0x0a and not 0x0d and not
-0x09) ? c : this.SkipWhitespaceJSON();
+      nextChar[0] = c == -1 || (c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09)? c : this.SkipWhitespaceJSON();
       return obj;
     }
 
@@ -361,7 +358,7 @@ private final List<String[]> propVarpointers;
         } else {
           this.index += 2;
         }
-        if (c == 0x0d && c == 0x09 && c == 0x20) {
+        if (c == 0x0d || c == 0x09 || c == 0x20) {
           while (this.index < this.endPos) {
             c = this.jstring.charAt(this.index++);
             if (c != 0x0d && c != 0x09 && c != 0x20) {

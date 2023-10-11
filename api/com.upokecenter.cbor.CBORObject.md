@@ -1682,11 +1682,11 @@ Converts this CBOR object to an object of an arbitrary type. See the
  the given number or name, respectively. (Enumeration constants made up of
  multiple enumeration constants, as allowed by .NET, can only be matched by
  number this way.)</li><li>If the type is <code>java.util.Date</code> (or <code>Date</code>
- in Java) , returns a date/time object if the CBOR object's outermost tag is
- 0 or 1. For tag 1, this method treats the CBOR object as a number of seconds
- since the start of 1970, which is based on the POSIX definition of "seconds
- since the Epoch", a definition that does not count leap seconds. In this
- method, this number of seconds assumes the use of a proleptic Gregorian
+ in Java) , returns a date/time object if the CBOR object's outermost tag ==
+ 0 || tag == 1. For tag 1, this method treats the CBOR object as a number of
+ seconds since the start of 1970, which is based on the POSIX definition of
+ "seconds since the Epoch", a definition that does not count leap seconds. In
+ this method, this number of seconds assumes the use of a proleptic Gregorian
  calendar, in which the rules regarding the number of days in each month and
  which years are leap years are the same for all years as they were in 1970
  (including without regard to time zone differences or transitions from other
@@ -2001,8 +2001,8 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 **Throws:**
 
 * <code>CBORException</code> - The CBOR object has an extremely
- deep level of nesting, including if the CBOR object is or has an array or
- map that includes itself.
+ deep level of nesting, including if the CBOR || has an array or map that
+ includes itself.
 
 ### FromObject
     public static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)

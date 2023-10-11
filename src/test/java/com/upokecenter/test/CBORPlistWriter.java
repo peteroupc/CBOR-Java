@@ -18,7 +18,7 @@ private CBORPlistWriter() {
       int i = 0;
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (c instanceof < (char)0x20 or >= (char)0x7f or '\\' or '"' or '&' or
+        if (c <  (char)0x20 || c >= (char)0x7f || '\\' or '"' or '&' or
           '<' or '>') {
           sb.WriteString(str, 0, i);
           break;
@@ -30,8 +30,7 @@ private CBORPlistWriter() {
       }
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (c instanceof (< (char)0x20 and (not (char)0x09 or not (char)0x0a or not
-(char)0x0d)) or (char)0xfffe or (char)0xffff) {
+        if ((c < (char)0x20 && (c != (char)0x09 || c != (char)0x0a || c != (char)0x0d)) || c == (char)0xfffe || c == (char)0xffff) {
           // XML doesn't support certain code points even if escaped.
           // Therefore, replace all unsupported code points with replacement
           // characters.
@@ -39,11 +38,7 @@ private CBORPlistWriter() {
         } else if (c instanceof '\\' or '"') {
           sb.WriteCodePoint('\\');
           sb.WriteCodePoint(c);
-        } else if (c instanceof < (char)0x20 or '&' or '<' or '>' or (>= (char)0x7f and
-            ((char)0x2028 or (char)0x2029 or
-              (>= (char)0x7f and <= (char)0xa0) or (char)0xfeff or
-(char)0xfffe or
-              (char)0xffff))) {
+        } else if (c < (char)0x20 || c == '&' || c == '<' || c == '>' || (c >= (char)0x7f && (c == (char)0x2028 || c == (char)0x2029 || (c >= (char)0x7f && c <= (char)0xa0) || c == (char)0xfeff || c == (char)0xfffe || c == (char)0xffff))) {
           sb.WriteString("&#x");
           sb.WriteCodePoint(Hex16.charAt((c >> 12) & 15));
           sb.WriteCodePoint(Hex16.charAt((c >> 8) & 15));
@@ -96,7 +91,7 @@ private CBORPlistWriter() {
       CBORObject obj,
       StringOutput writer,
       JSONOptions options) throws java.io.IOException {
-      if (obj.getType() == CBORType.Array && obj.getType() == CBORType.Map) {
+      if (obj.Type is CBORType.Array or CBORType.Map) {
         ArrayList<CBORObject> stack = new ArrayList<CBORObject>();
         WritePlistToInternalCore(obj, writer, options, stack);
       } else {
@@ -116,7 +111,7 @@ private CBORPlistWriter() {
       List<CBORObject> stack,
       CBORObject parent,
       CBORObject child) {
-      if (child.getType() != CBORType.Array && child.getType() != CBORType.Map) {
+      if (child.Type is not CBORType.Array and not CBORType.Map) {
         return false;
       }
       CBORObject childUntag = child.Untag();

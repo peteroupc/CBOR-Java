@@ -101,7 +101,7 @@ private BEncoding() {
       }
       return c == 'l' ? ReadList(stream) : allowEnd && c == 'e' ? null :
         c == 'i' ? ReadInteger(stream) :
-        c is >= '0' and <= '9' ? ReadString(stream, (char)c) : throw new
+        c >= '0' && c <= '9' ? ReadString(stream, (char)c) : throw new
 CBORException("Object expected");
     }
 

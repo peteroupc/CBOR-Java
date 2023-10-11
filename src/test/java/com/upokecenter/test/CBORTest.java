@@ -4814,8 +4814,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // Check that the JSON contains only ASCII code points
         for (int j = 0; j < json.length(); ++j) {
           char c = json.charAt(j);
-          if (c instanceof (< (char)0x20 and not (char)0x09 and not (char)0x0a and
-not (char)0x0d) or >= (char)0x7f) {
+          if ((c < (char)0x20 && c != (char)0x09 && c != (char)0x0a && c != (char)0x0d) || c >= (char)0x7f) {
             Assert.fail(rts);
           }
         }

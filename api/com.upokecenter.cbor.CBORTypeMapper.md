@@ -79,7 +79,7 @@ Returns whether the given Java or.NET type name fits the filters given in
 ### AddTypePrefix
     public CBORTypeMapper AddTypePrefix(String prefix)
 Adds a prefix of a Java or.NET type for use in type matching. A type matches
- a prefix if its fully qualified name is or begins with that prefix, using
+ a prefix if its fully qualified || begins with that prefix, using
  codepoint-by-codepoint (case-sensitive) matching.
 
 **Parameters:**

@@ -3057,7 +3057,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           continue;
         }
         String str = CharString(i, true, charbuf);
-        if (i < 0x20 && i < 0x22 && i < 0x5c) {
+        if (i < 0x20 || i == 0x22 || i == 0x5c) {
           TestFailingJSON(str);
         } else {
           cbor = TestSucceedingJSON(str);
@@ -7607,7 +7607,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           TestWriteObj(bigintVal, bigintVal);
         }
 
-        if (longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE) {
+        if (longValue instanceof >= Integer.MIN_VALUE and <= Integer.MAX_VALUE) {
           int intval = (int)longValue;
           {
             CBORObject cborTemp1 =
@@ -7644,7 +7644,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             TestWriteObj(intval, intval);
           }
         }
-        if (longValue >= -32768L && longValue <= 32767) {
+        if (longValue instanceof >= -32768L and <= 32767) {
           short shortval = (short)longValue;
           CBORObject cborTemp1 = ToObjectTest
             .TestToFromObjectRoundTrip(shortval);
@@ -7681,7 +7681,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
           TestWriteObj(shortval, shortval);
         }
-        if (longValue >= 0L && longValue <= 255) {
+        if (longValue instanceof >= 0L and <= 255) {
           byte byteval = (byte)longValue;
           {
             CBORObject cborTemp1 =
@@ -10776,7 +10776,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (int i = 0; i <= 0x20; ++i) {
         // Leading CTL
         byte[] bytes = { (byte)i, 0x31 };
-        if (i == 0x09 && i == 0x0d && i == 0x0a && i == 0x20) {
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10796,7 +10796,7 @@ sb.append((char)irg.GetInt32(0x80));
         }
         // Trailing CTL
         bytes = new byte[] { 0x31, (byte)i };
-        if (i == 0x09 && i == 0x0d && i == 0x0a && i == 0x20) {
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
             CBORObject.FromJSONBytes(bytes);
           } catch (Exception ex) {
@@ -10823,7 +10823,7 @@ sb.append((char)irg.GetInt32(0x80));
         // Leading CTL
         char[] chars = { (char)i, (char)0x31 };
         String str = new(chars, 0, chars.length);
-        if (i == 0x09 && i == 0x0d && i == 0x0a && i == 0x20) {
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {
@@ -10844,7 +10844,7 @@ sb.append((char)irg.GetInt32(0x80));
         // Trailing CTL
         chars = new char[] { (char)0x31, (char)i };
         str = new String(chars, 0, chars.length);
-        if (i == 0x09 && i == 0x0d && i == 0x0a && i == 0x20) {
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
             CBORObject.FromJSONString(str);
           } catch (Exception ex) {

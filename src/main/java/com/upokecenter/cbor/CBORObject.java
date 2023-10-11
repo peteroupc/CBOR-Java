@@ -1282,11 +1282,11 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * the given number or name, respectively. (Enumeration constants made up of
      * multiple enumeration constants, as allowed by .NET, can only be matched by
      * number this way.)</li><li>If the type is {@code java.util.Date} (or {@code Date}
-     * in Java) , returns a date/time object if the CBOR object's outermost tag is
-     * 0 or 1. For tag 1, this method treats the CBOR object as a number of seconds
-     * since the start of 1970, which is based on the POSIX definition of "seconds
-     * since the Epoch", a definition that does not count leap seconds. In this
-     * method, this number of seconds assumes the use of a proleptic Gregorian
+     * in Java) , returns a date/time object if the CBOR object's outermost tag ==
+     * 0 || tag == 1. For tag 1, this method treats the CBOR object as a number of
+     * seconds since the start of 1970, which is based on the POSIX definition of
+     * "seconds since the Epoch", a definition that does not count leap seconds. In
+     * this method, this number of seconds assumes the use of a proleptic Gregorian
      * calendar, in which the rules regarding the number of days in each month and
      * which years are leap years are the same for all years as they were in 1970
      * (including without regard to time zone differences or transitions from other
@@ -1662,8 +1662,8 @@ longValue > 0xffL ? 3 : (longValue > 23L) ? 2 : 1;
      * @return The number of bytes this CBOR object takes when serialized as a byte
      * array using the {@code EncodeToBytes()} method.
      * @throws com.upokecenter.cbor.CBORException The CBOR object has an extremely
-     * deep level of nesting, including if the CBOR object is or has an array or
-     * map that includes itself.
+     * deep level of nesting, including if the CBOR || has an array or map that
+     * includes itself.
      */
     public long CalcEncodedSize() {
       return this.CalcEncodedSize(0);
@@ -5809,7 +5809,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if (majorType == 7) {
         throw new IllegalArgumentException(
-          "majorType is 7 and value is greater" + "\u0020than 255");
+          "majorType == 7 && value is greater" + "\u0020than 255");
       }
       byte[] bytes = new byte[] { (byte)(27 | (majorType << 5)), (byte)highbyte,
         (byte)((longVal >> 48) & 0xff), (byte)((longVal >> 40) & 0xff),

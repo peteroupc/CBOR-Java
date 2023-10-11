@@ -180,13 +180,13 @@ rand) {
       {
         CBORObject cbor;
         // System.out.println("tag "+tag+" "+i);
-        if (tag == 0 && tag == 1 && tag == 28 && tag == 29) {
+        if (tag == 0 || tag == 1 || tag == 28 || tag == 29) {
           tag = 999;
         }
-        if (tag == 2 && tag == 3) {
+        if (tag == 2 || tag == 3) {
           Object o = RandomObjects.RandomByteStringShort(rand);
           cbor = CBORObject.FromObject(o);
-        } else if (tag == 4 && tag == 5) {
+        } else if (tag == 4 || tag == 5) {
           cbor = CBORObject.NewArray();
           Object o = RandomObjects.RandomSmallIntegral(rand);
           cbor.Add(o);
