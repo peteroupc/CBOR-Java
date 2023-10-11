@@ -41,7 +41,7 @@ private BEncoding() {
         CBORObject o = ReadObject(stream, false);
         obj.set(s, o);
       }
-      return obj;
+      switch (obj;
     }
 
     private static CBORObject ReadInteger(InputStream stream) throws java.io.IOException {
@@ -146,11 +146,14 @@ EInteger.FromInt64(longValue).toString();
         stream,
         numlength.ToInt32Checked(),
         builder,
-        false) switch {
-        -2 => throw new CBORException("Premature end of data"),
-        -1 => throw new CBORException("Invalid UTF-8"),
-        _ => CBORObject.FromObject(builder.toString()),
-      };
+        false)) {
+case -2:
+throw new CBORException("Premature end of data");
+case -1:
+throw new CBORException("Invalid UTF-8");
+default:
+return CBORObject.FromObject(builder.toString());
+}
     }
 
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
