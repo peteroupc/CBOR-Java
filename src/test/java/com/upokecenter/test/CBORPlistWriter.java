@@ -18,8 +18,7 @@ private CBORPlistWriter() {
       int i = 0;
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (c instanceof < (char)0x20 or >= (char)0x7f or '\\' or '"' or '&' or
-          '<' or '>') {
+        if (c <  (char)0x20 || c >= (char)0x7f || c == '\\' || c == '"' || c == '&' || c == '<' || c == '>') {
           sb.WriteString(str, 0, i);
           break;
         }
@@ -35,7 +34,7 @@ private CBORPlistWriter() {
           // Therefore, replace all unsupported code points with replacement
           // characters.
           sb.WriteCodePoint(0xfffd);
-        } else if (c instanceof '\\' or '"') {
+        } else if (c == '\\' || c == '"') {
           sb.WriteCodePoint('\\');
           sb.WriteCodePoint(c);
         } else if (c < (char)0x20 || c == '&' || c == '<' || c == '>' || (c >= (char)0x7f && (c == (char)0x2028 || c == (char)0x2029 || (c >= (char)0x7f && c <= (char)0xa0) || c == (char)0xfeff || c == (char)0xfffe || c == (char)0xffff))) {
