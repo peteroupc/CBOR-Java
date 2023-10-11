@@ -2007,7 +2007,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String TrimStr(String str, int len) {
-      return str[..Math.min(len, str.length())];
+      return str.substring(0, (Math.min(len, str.length())));
     }
 
     @Test
@@ -10452,7 +10452,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
           String msg = json + " " + numconv + " " + longval;
-          msg = msg[..Math.min(100, msg.length())];
+          msg = msg.substring(0, (Math.min(100, msg.length())));
           if (msg.length() > 100) {
             msg += "...";
           }
@@ -10474,7 +10474,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (CBORObject cbor : cbors) {
         if (cbor.getType() != CBORType.Integer) {
           String msg = json + " " + numconv + " " + intval;
-          msg = msg[..Math.min(100, msg.length())];
+          msg = msg.substring(0, (Math.min(100, msg.length())));
           if (msg.length() > 100) {
             msg += "...";
           }

@@ -4686,7 +4686,7 @@ Writes a 32-bit binary floating-point number in CBOR format to a data
  is 1 plus this number; 2: length in bytes of the byte string; 3: length in
  bytes of the UTF-8 text string; 4: number of items in the array; 5: number
  of key-value pairs in the map; 6: tag number; 7: simple value number, which
- must be in the interval [0, 23] or [32, 255].
+ must be in the interval [0, 23] or.charAt(32, 255).
 
 **Returns:**
 
@@ -4741,7 +4741,7 @@ Writes a 32-bit binary floating-point number in CBOR format to a data
  is 1 plus this number; 2: length in bytes of the byte string; 3: length in
  bytes of the UTF-8 text string; 4: number of items in the array; 5: number
  of key-value pairs in the map; 6: tag number; 7: simple value number, which
- must be in the interval [0, 23] or [32, 255].
+ must be in the interval [0, 23] or.charAt(32, 255).
 
 **Returns:**
 
@@ -4783,8 +4783,8 @@ Writes a 32-bit binary floating-point number in CBOR format to a data
  value is 1 plus this number; 2: length in bytes of the byte string; 3:
  length in bytes of the UTF-8 text string; 4: number of items in the array;
  5: number of key-value pairs in the map; 6: tag number; 7: simple value
- number, which must be in the interval [0, 23] or [32, 255]. For major types
- 0 to 6, this number may not be greater than 2^64 - 1.
+ number, which must be in the interval [0, 23] or.charAt(32, 255). For major
+ types 0 to 6, this number may not be greater than 2^64 - 1.
 
 **Returns:**
 

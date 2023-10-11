@@ -5618,7 +5618,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * is 1 plus this number; 2: length in bytes of the byte string; 3: length in
      * bytes of the UTF-8 text string; 4: number of items in the array; 5: number
      * of key-value pairs in the map; 6: tag number; 7: simple value number, which
-     * must be in the interval [0, 23] or [32, 255].
+     * must be in the interval [0, 23] or.charAt(32, 255).
      * @return The number of bytes ordered to be written to the data stream.
      * @throws IllegalArgumentException Value is from 24 to 31 and major type is 7.
      * @throws NullPointerException The parameter {@code outputStream} is null.
@@ -5698,7 +5698,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * is 1 plus this number; 2: length in bytes of the byte string; 3: length in
      * bytes of the UTF-8 text string; 4: number of items in the array; 5: number
      * of key-value pairs in the map; 6: tag number; 7: simple value number, which
-     * must be in the interval [0, 23] or [32, 255].
+     * must be in the interval [0, 23] or.charAt(32, 255).
      * @return The number of bytes ordered to be written to the data stream.
      * @throws IllegalArgumentException Value is from 24 to 31 and major type is 7.
      * @throws NullPointerException The parameter {@code outputStream} is null.
@@ -5765,8 +5765,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * value is 1 plus this number; 2: length in bytes of the byte string; 3:
      * length in bytes of the UTF-8 text string; 4: number of items in the array;
      * 5: number of key-value pairs in the map; 6: tag number; 7: simple value
-     * number, which must be in the interval [0, 23] or [32, 255]. For major types
-     * 0 to 6, this number may not be greater than 2^64 - 1.
+     * number, which must be in the interval [0, 23] or.charAt(32, 255). For major
+     * types 0 to 6, this number may not be greater than 2^64 - 1.
      * @return The number of bytes ordered to be written to the data stream.
      * @throws IllegalArgumentException The parameter {@code majorType} is 7 and value is
      * greater than 255.
