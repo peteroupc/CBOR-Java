@@ -55,13 +55,13 @@ private final EInteger propVarbigintvalue;
         int digit4 = digitvalues % radix;
         count += 4;
         int bits = rand.GetInt32(16);
-        (bits & 0x01) == 0 ? builder.append(ValueDigits.charAt(digit)) :
+        builder = (bits & 0x01) == 0 ? builder.append(ValueDigits.charAt(digit)) :
 builder.append(ValueDigitsLower.charAt(digit));
-        (bits & 0x02) == 0 ? builder.append(ValueDigits.charAt(digit2)) :
+        builder = (bits & 0x02) == 0 ? builder.append(ValueDigits.charAt(digit2)) :
 builder.append(ValueDigitsLower.charAt(digit2));
-        (bits & 0x04) == 0 ? builder.append(ValueDigits.charAt(digit3)) :
+        builder = (bits & 0x04) == 0 ? builder.append(ValueDigits.charAt(digit3)) :
 builder.append(ValueDigitsLower.charAt(digit3));
-        (bits & 0x08) == 0 ? builder.append(ValueDigits.charAt(digit4)) :
+        builder = (bits & 0x08) == 0 ? builder.append(ValueDigits.charAt(digit4)) :
 builder.append(ValueDigitsLower.charAt(digit4));
         int digits = (((((digit * radix) + digit2) *
                 radix) + digit3) * radix) + digit4;
