@@ -57,8 +57,9 @@ private final int propVarbytelength;
       int shift = 12;
       for (int i = 0; i < 4; ++i) {
         c = (cu >> shift) & 0xf;
-        c < 10 ? bs.Write(0x30 + c) : bs.Write(0x41 + (c - 10) +
-(ra.GetInt32(2) * 0x20));
+        int bw = c < 10 ? (0x30 + c) : (0x41 + (c - 10) +
+          (ra.GetInt32(2) * 0x20));
+        bs.Write(bw);
         shift -= 4;
       }
     }
@@ -279,8 +280,10 @@ private final int propVarbytelength;
         int r = ra.GetInt32(10);
         if (r > 2) {
           int x = 0x20 + ra.GetInt32(60);
-          x == '\"' ? bs.Write('\\').Write(x) : x == '\\' ?
-bs.Write('\\').Write(x) : bs.Write(x);
+          if (x == '\"' || x == '\\') {
+            bs.Write('\\');
+          }
+          bs.Write(x);
           ++i;
         } else if (r == 1) {
           bs.Write('\\');

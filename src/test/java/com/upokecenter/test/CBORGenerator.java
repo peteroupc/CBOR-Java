@@ -246,8 +246,11 @@ private final int propVarbytelength;
           break;
         case 1:
           bs.Write((majorType * 0x20) + 0x18);
-          majorType == 7 ? bs.Write(32 + r.GetInt32(224)) :
-bs.Write(r.GetInt32(256));
+          if (majorType == 7) {
+            bs.Write(32 + r.GetInt32(224));
+          } else {
+            bs.Write(r.GetInt32(256));
+          }
           break;
         case 2:
           bs.Write((majorType * 0x20) + 0x19);
