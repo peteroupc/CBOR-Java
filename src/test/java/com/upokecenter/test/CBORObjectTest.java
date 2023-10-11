@@ -8504,7 +8504,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String Chop(String str) {
-      return (str.length() < 100) ? str : (str.substring(, (100-)) + "...");
+      return (str.length() < 100) ? str : (str.charAt(..100) + "...");
     }
 
     private static void AssertReadThree(byte[] bytes) {
@@ -10408,7 +10408,7 @@ sb.append((char)irg.GetInt32(0x80));
     public static void TestParseNumberFxxLine(String line) {
       // Parse test case format used in:
       // https://github.com/nigeltao/parse-number-fxx-test-data
-      String f16 = line.substring(, (4-));
+      String f16 = line.charAt(..4);
       if (line.charAt(4) != ' ') {
         Assert.fail(line);
       }
@@ -10420,7 +10420,7 @@ sb.append((char)irg.GetInt32(0x80));
       if (line.charAt(4 + 26) != ' ') {
         Assert.fail(line);
       }
-      String str = line.charAt((4 + 1 + 8 + 1 + 16 + 1)..);
+      String str = line.substring((4 + 1 + 8 + 1 + 16 + 1), (line.length()));
       short sf16 = EInteger.FromRadixString(f16, 16).ToInt16Unchecked();
       int sf32 = EInteger.FromRadixString(f32, 16).ToInt32Unchecked();
       long sf64 = EInteger.FromRadixString(f64, 16).ToInt64Unchecked();

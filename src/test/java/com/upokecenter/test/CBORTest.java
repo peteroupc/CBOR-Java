@@ -2652,7 +2652,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
     }
 
     private static String Chop(String str) {
-      return (str.length() < 100) ? str : (str.substring(, (100-)) + "...");
+      return (str.length() < 100) ? str : (str.charAt(..100) + "...");
     }
 
     private static void VerifyEqual(

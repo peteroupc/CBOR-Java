@@ -27,14 +27,14 @@ import com.upokecenter.cbor.*;
           if (first) {
             return new String[] { s };
           }
-          strings.add(s.charAt(index..));
+          strings.add(s.substring(index, (s.length())));
           break;
         } else {
           if (first) {
             strings = new ArrayList<String>();
             first = false;
           }
-          String newstr = s.substring(index, (index2-index));
+          String newstr = s.charAt(index..index2);
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -167,7 +167,7 @@ import com.upokecenter.cbor.*;
         throw new NullPointerException("input");
       }
       // set default delimiter to ampersand
-      delimiter ??= "&";
+      delimiter = (delimiter == null) ? ("&") : delimiter;
       // Check input for non-ASCII characters
       for (int i = 0; i < input.length(); ++i) {
         if (input.charAt(i) > 0x7f) {
@@ -176,7 +176,7 @@ import com.upokecenter.cbor.*;
       }
       // split on delimiter
       String[] strings = SplitAt(input, delimiter);
-      ArrayList<String[] pairs = new ArrayList<String[]>();
+      ArrayList<String[]> pairs = new ArrayList<String[]>();
       for (String str : strings) {
         if (str.length() == 0) {
           continue;
@@ -186,13 +186,13 @@ import com.upokecenter.cbor.*;
         String name = str;
         String value = ""; // value is empty if there is no key
         if (index >= 0) {
-          name = str.substring(, (index-));
-          value = str.charAt((index + 1)..);
+          name = str.charAt(..index);
+          value = str.substring((index + 1), (str.length()));
         }
         name = name.replace('+', ' ');
         value = value.replace('+', ' ');
         String[] pair = new String[] { name, value };
-        pairs.Add(pair);
+        pairs.add(pair);
       }
       for (String[] pair : pairs) {
         // percent decode the key and value if necessary
@@ -202,23 +202,22 @@ import com.upokecenter.cbor.*;
       return pairs;
     }
 
-    @SuppressWarnings("unchecked")
-private static String[] GetKeyPath(String s) {
+    private static String[] GetKeyPath(String s) {
       int index = s.indexOf('[');
       if (index < 0) { // start bracket not found
         return new String[] { s };
       }
-      ArrayList<String> { path = new ArrayList<String> {
-        s.substring(, (index-)),
+      ArrayList<String> path = new ArrayList<String> {
+        s.charAt(..index),
       };
       ++index; // move to after the bracket
       while (true) {
         int endBracket = s.indexOf(']',index);
         if (endBracket < 0) { // end bracket not found
-          path.Add(s.charAt(index..));
+          path.add(s.substring(index, (s.length())));
           break;
         }
-        path.Add(s.substring(index, (endBracket-index)));
+        path.add(s.charAt(index..endBracket));
         index = endBracket + 1; // move to after the end bracket
         index = s.indexOf('[',index);
         if (index < 0) { // start bracket not found
@@ -330,7 +329,8 @@ private static String[] GetKeyPath(String s) {
       return ret;
     }
 
-    private static CBORObject ConvertListsToCBOR(List<Object> dict) {
+    @SuppressWarnings("unchecked")
+private static CBORObject ConvertListsToCBOR(List<Object> dict) {
       CBORObject cbor = CBORObject.NewArray();
       for (int i = 0; i < dict.size(); ++i) {
         Object di = dict.get(i);
@@ -351,7 +351,8 @@ private static String[] GetKeyPath(String s) {
       return cbor;
     }
 
-    private static CBORObject ConvertListsToCBOR(Map<String, Object>
+    @SuppressWarnings("unchecked")
+private static CBORObject ConvertListsToCBOR(Map<String, Object>
       dict) {
       CBORObject cbor = CBORObject.NewMap();
       for (String key : new ArrayList<String>(dict.keySet())) {
@@ -373,7 +374,8 @@ private static String[] GetKeyPath(String s) {
       return cbor;
     }
 
-    private static void ConvertLists(List<Object> list) {
+    @SuppressWarnings("unchecked")
+private static void ConvertLists(List<Object> list) {
       for (int i = 0; i < list.size(); ++i) {
         Object di = list.get(i);
         var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
@@ -391,7 +393,8 @@ private static String[] GetKeyPath(String s) {
       }
     }
 
-    private static Map<String, Object> ConvertLists(
+    @SuppressWarnings("unchecked")
+private static Map<String, Object> ConvertLists(
       Map<String, Object> dict) {
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
