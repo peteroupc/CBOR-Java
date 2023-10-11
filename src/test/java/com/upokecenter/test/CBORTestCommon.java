@@ -213,7 +213,7 @@ depth) {
       for (int i = 0; i < count; ++i) {
         cborRet.Add(RandomCBORObject(rand, depth + 1));
       }
-      switch (cborRet;
+      return cborRet;
     }
 
     public static CBORObject RandomCBORObject(IRandomGenExtended rand) {
@@ -223,7 +223,7 @@ depth) {
     public static CBORObject RandomCBORObject(IRandomGenExtended rand, int
       depth) {
       int nextval = rand.GetInt32(11);
-      return nextval) {
+      switch (nextval) {
 case 0:
  case 1:
  case 2:

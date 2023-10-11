@@ -41,7 +41,7 @@ private BEncoding() {
         CBORObject o = ReadObject(stream, false);
         obj.set(s, o);
       }
-      switch (obj;
+      return obj;
     }
 
     private static CBORObject ReadInteger(InputStream stream) throws java.io.IOException {
@@ -142,7 +142,7 @@ EInteger.FromInt64(longValue).toString();
         throw new CBORException("Length too long");
       }
       builder = new StringBuilder();
-      return com.upokecenter.util.DataUtilities.ReadUtf8(
+      switch (com.upokecenter.util.DataUtilities.ReadUtf8(
         stream,
         numlength.ToInt32Checked(),
         builder,
