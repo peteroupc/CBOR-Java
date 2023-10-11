@@ -287,14 +287,23 @@ options) {
       return CBORObject.DecodeFromBytes(b, options);
     }
 
-    private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) using () {
+    private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(b);
+int startingAvailable = ms.available();
+
       var o = CBORObject.Read(ms, options);
-      if (ms.getPosition() != ms.length) {
+      if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
 "\u0020EOF");
 }
  return o;
-    }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
     // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
@@ -310,12 +319,21 @@ options) {
       return CBORObject.DecodeFromBytes(b);
     }
 
-    private static CBORObject FromBytesB(byte[] b) using () {
+    private static CBORObject FromBytesB(byte[] b) {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(b);
+int startingAvailable = ms.available();
+
       var o = CBORObject.Read(ms);
-      if (ms.getPosition() != ms.length) {
+      if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
 "\u0020EOF");
 }
  return o;
-    }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
   }

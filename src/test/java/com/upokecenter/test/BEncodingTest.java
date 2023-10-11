@@ -8,18 +8,34 @@ import com.upokecenter.cbor.*;
 
   public class BEncodingTest {
     private static CBORObject EncodingFromBytes(byte[] b) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream s = null;
+try {
+s = new java.io.ByteArrayInputStream(b);
+
         return BEncoding.Read(s);
-      } catch (IOException ex) {
+}
+finally {
+try { if (s != null) { s.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ex) {
         throw new CBORException("", ex);
       }
     }
 
     private static byte[] EncodingToBytes(CBORObject b) {
-      try using () {
+      try {
+java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
         BEncoding.Write(b, ms);
         return ms.toByteArray();
-      } catch (IOException ex) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ex) {
         throw new CBORException("", ex);
       }
     }

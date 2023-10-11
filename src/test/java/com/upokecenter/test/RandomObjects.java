@@ -31,7 +31,11 @@ private RandomObjects() {
 
     public static byte[] RandomUtf8Bytes(
       IRandomGenExtended rg,
-      boolean jsonSafe) using () {
+      boolean jsonSafe) {
+java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
       if (rg == null) {
         throw new NullPointerException("rg");
       }
@@ -79,7 +83,11 @@ private RandomObjects() {
         }
       }
       return ms.toByteArray();
-    }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
     public static byte[] RandomByteString(IRandomGenExtended rand) {
       if (rand == null) {

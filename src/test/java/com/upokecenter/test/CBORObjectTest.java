@@ -269,7 +269,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String str,
       JSONOptions options) {
       byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         CBORObject obj = options == null ? CBORObject.ReadJSON(ms) :
           CBORObject.ReadJSON(ms, options);
         CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
@@ -310,7 +314,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Assert.assertEquals(obj, obj3);
         }
         return obj;
-      } catch (Exception ex) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString() + "\n" + str);
         throw new IllegalStateException("", ex);
       }
@@ -4625,7 +4633,11 @@ private final PODClass propVarpropvalue;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms2 = null;
+try {
+ms2 = new java.io.ByteArrayInputStream(new byte[] { 0 });
+
         try {
           CBORObject.Read(ms2, null);
           Assert.fail("Should have failed");
@@ -4635,13 +4647,21 @@ private final PODClass propVarpropvalue;
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
-      } catch (Exception ex) {
+}
+finally {
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
     }
 
-    public static void ExpectJsonSequenceError(byte[] bytes) using () {
+    public static void ExpectJsonSequenceError(byte[] bytes) {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
       try {
         CBORObject.ReadJSONSequence(ms);
         Assert.fail("Should have failed");
@@ -4651,25 +4671,45 @@ private final PODClass propVarpropvalue;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-    }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
     public static void ExpectJsonSequenceZero(byte[] bytes) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 0, array.length);
-      } catch (IOException ioe) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
     }
 
     public static void ExpectJsonSequenceOne(byte[] bytes, CBORObject o1) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 1, array.length);
         Assert.assertEquals(ss, o1, array[0]);
-      } catch (IOException ioe) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
     }
@@ -4678,13 +4718,21 @@ private final PODClass propVarpropvalue;
       byte[] bytes,
       CBORObject o1,
       CBORObject o2) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 2, array.length);
         Assert.assertEquals(ss, o1, array[0]);
         Assert.assertEquals(ss, o2, array[1]);
-      } catch (IOException ioe) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ioe) {
         throw new IllegalStateException(ioe.getMessage(), ioe);
       }
     }
@@ -5969,7 +6017,11 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       }
     }
 
-    private static void ReadJsonFail(byte[] msbytes) using () {
+    private static void ReadJsonFail(byte[] msbytes) {
+java.io.ByteArrayInputStream msjson = null;
+try {
+msjson = new java.io.ByteArrayInputStream(msbytes);
+
       try {
         CBORObject.ReadJSON(msjson);
         Assert.fail("Should have failed");
@@ -5979,7 +6031,11 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-    }
+}
+finally {
+try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
     // TODO: In next major version, consider using CBORException
     // for circular refs in EncodeToBytes
@@ -8501,7 +8557,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void AssertReadThree(byte[] bytes) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         CBORObject cbor1, cbor2, cbor3;
         cbor1 = CBORObject.Read(ms);
         cbor2 = CBORObject.Read(ms);
@@ -8510,7 +8570,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
         TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
         TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
-      } catch (Exception ex) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString() + "\r\n" +
           TestCommon.ToByteArrayString(bytes));
         throw new IllegalStateException(ex.toString(), ex);
@@ -8518,7 +8582,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void AssertReadThree(byte[] bytes, CBORObject cbor) {
-      try using () {
+      try {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytes);
+
         CBORObject cbor1, cbor2, cbor3;
         cbor1 = CBORObject.Read(ms);
         cbor2 = CBORObject.Read(ms);
@@ -8528,7 +8596,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         TestCommon.CompareTestEqualAndConsistent(cbor1, cbor2);
         TestCommon.CompareTestEqualAndConsistent(cbor2, cbor3);
         TestCommon.CompareTestEqualAndConsistent(cbor3, cbor1);
-      } catch (Exception ex) {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString() + "\r\n" +
           Chop(TestCommon.ToByteArrayString(bytes)) + "\r\n" +
           "cbor = " + Chop(cbor.toString()) + "\r\n");
@@ -9071,7 +9143,11 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            if (i == 0) using () {
+            if (i == 0) {
+  java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
               try {
                 CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
                 Assert.fail("Should have failed");
@@ -9093,7 +9169,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 Assert.fail(ex.toString());
                 throw new IllegalStateException("", ex);
               }
-            }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
           }
         }
       } catch (Exception ex) {

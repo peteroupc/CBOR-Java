@@ -354,7 +354,11 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
     @Test
     public void TestNestingDepth() {
       try {
-        using () {
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           for (int i = 0; i < 2000; ++i) {
             // Write beginning of indefinite-length array
             ms.write(0x9f);
@@ -374,8 +378,16 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-        }
-        using () {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           for (int i = 0; i < 495; ++i) {
             // Write beginning of indefinite-length array
             ms.write(0x9f);
@@ -391,7 +403,11 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
             Assert.fail(ex.toString());
             throw new IllegalStateException("", ex);
           }
-        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (Exception ex) {
         throw new IllegalStateException(ex.getMessage(), ex);
       }

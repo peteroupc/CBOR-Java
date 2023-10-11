@@ -2191,10 +2191,18 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       if (root == null) {
         Assert.fail();
       }
-      try using () {
+      try {
+java.io.ByteArrayOutputStream lms = null;
+try {
+lms = new java.io.ByteArrayOutputStream();
+
         root.WriteTo(lms, encodeOptions);
         Assert.fail("Should have failed");
-      } catch (CBORException ex) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -2243,18 +2251,34 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       if (root == null) {
         Assert.fail();
       }
-      try using () {
+      try {
+LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
         root.WriteTo(lms);
         Assert.fail("Should have failed");
-      } catch (UnsupportedOperationException ex) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      try using () {
+      try {
+LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
         origroot.WriteTo(lms);
-      } catch (Exception ex) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -2279,18 +2303,34 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       if (root == null) {
         Assert.fail();
       }
-      try using () {
+      try {
+LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
         root.WriteJSONTo(lms);
         Assert.fail("Should have failed");
-      } catch (UnsupportedOperationException ex) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (UnsupportedOperationException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      try using () {
+      try {
+LimitedMemoryStream lms = null;
+try {
+lms = new LimitedMemoryStream(100000);
+
         origroot.WriteJSONTo(lms);
-      } catch (Exception ex) {
+}
+finally {
+try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -2405,17 +2445,22 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       return array;
     }
 
-    public static void TestRandomOne(byte[] array) using () {
-      while (inputStream.getPosition() != inputStream.length) {
+    public static void TestRandomOne(byte[] array) {
+java.io.ByteArrayInputStream inputStream = null;
+try {
+inputStream = new java.io.ByteArrayInputStream(array);
+int startingAvailable = inputStream.available();
+
+      while ((startingAvailable - inputStream.available()) != startingAvailable) {
         long oldPos = 0L;
         try {
           CBORObject o;
-          oldPos = inputStream.getPosition();
+          oldPos = (startingAvailable - inputStream.available());
           o = CBORObject.Read(inputStream);
-          long cborlen = inputStream.getPosition() - oldPos;
+          long cborlen = (startingAvailable - inputStream.available()) - oldPos;
           // if (cborlen > 3000) {
-          // System.out.println("pos=" + inputStream.getPosition() + " of " +
-          // inputStream.length + ", cborlen=" + cborlen);
+          // System.out.println("pos=" + (startingAvailable - inputStream.available()) + " of " +
+          // startingAvailable + ", cborlen=" + cborlen);
           // }
           byte[] encodedBytes = (o == null) ? null : o.EncodeToBytes();
           try {
@@ -2452,14 +2497,18 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
               ex.getCause().toString());
           failString += "\nlength: " + array.length + " bytes";
           failString += "\nstart pos: " + oldPos + ", truelen=" +
-            (inputStream.getPosition() - oldPos);
+            ((startingAvailable - inputStream.available()) - oldPos);
           failString += "\n" + TestCommon.ToByteArrayString(array);
           failString = failString[
 ..Math.min(2000, failString.length())];
           throw new IllegalStateException(failString, ex);
         }
       }
-    }
+}
+finally {
+try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
     @Test
     public void TestRandomSlightlyModified() {
@@ -2475,18 +2524,34 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
 
     private static void TestReadWriteIntOne(int val) {
       try {
-        using () {
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           MiniCBOR.WriteInt32(val, ms);
           byte[] msarray = ms.toByteArray();
           using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(msarray);
           Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
-        }
-        using () {
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           CBORObject.Write(val, ms);
           byte[] msarray = ms.toByteArray();
           using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(msarray);
           Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
-        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (IOException ioex) {
         Assert.fail(ioex.getMessage() + " val=" + val);
       }
