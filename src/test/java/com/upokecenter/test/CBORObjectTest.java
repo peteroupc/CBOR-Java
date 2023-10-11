@@ -2008,7 +2008,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static String TrimStr(String str, int len) {
-      return str.charAt(..Math.min(len, str.length()));
+      return str[..Math.min(len, str.length())];
     }
 
     @Test
@@ -7699,7 +7699,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             TestWriteObj(intval, intval);
           }
         }
-        if (longValue instanceof >= -32768L and <= 32767) {
+        if (longValue >= -32768L && longValue <= 32767) {
           short shortval = (short)longValue;
           CBORObject cborTemp1 = ToObjectTest
             .TestToFromObjectRoundTrip(shortval);
@@ -7736,7 +7736,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
           TestWriteObj(shortval, shortval);
         }
-        if (longValue instanceof >= 0L and <= 255) {
+        if (longValue >= 0L && longValue <= 255) {
           byte byteval = (byte)longValue;
           {
             CBORObject cborTemp1 =
