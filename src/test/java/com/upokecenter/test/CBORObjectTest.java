@@ -269,8 +269,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String str,
       JSONOptions options) {
       byte[] bytes = com.upokecenter.util.DataUtilities.GetUtf8Bytes(str, false);
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         CBORObject obj = options == null ? CBORObject.ReadJSON(ms) :
           CBORObject.ReadJSON(ms, options);
         CBORObject obj2 = options == null ? CBORObject.FromJSONString(str) :
@@ -4626,8 +4625,7 @@ private final PODClass propVarpropvalue;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      try {
-        using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(new byte[] { 0 });
+      try using () {
         try {
           CBORObject.Read(ms2, null);
           Assert.fail("Should have failed");
@@ -4643,8 +4641,7 @@ private final PODClass propVarpropvalue;
       }
     }
 
-    public static void ExpectJsonSequenceError(byte[] bytes) {
-      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+    public static void ExpectJsonSequenceError(byte[] bytes) using () {
       try {
         CBORObject.ReadJSONSequence(ms);
         Assert.fail("Should have failed");
@@ -4657,8 +4654,7 @@ private final PODClass propVarpropvalue;
     }
 
     public static void ExpectJsonSequenceZero(byte[] bytes) {
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 0, array.length);
@@ -4668,8 +4664,7 @@ private final PODClass propVarpropvalue;
     }
 
     public static void ExpectJsonSequenceOne(byte[] bytes, CBORObject o1) {
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 1, array.length);
@@ -4683,8 +4678,7 @@ private final PODClass propVarpropvalue;
       byte[] bytes,
       CBORObject o1,
       CBORObject o2) {
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         String ss = TestCommon.ToByteArrayString(bytes);
         CBORObject[] array = CBORObject.ReadJSONSequence(ms);
         Assert.assertEquals(ss, 2, array.length);
@@ -5975,8 +5969,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       }
     }
 
-    private static void ReadJsonFail(byte[] msbytes) {
-      using java.io.ByteArrayInputStream msjson = new java.io.ByteArrayInputStream(msbytes);
+    private static void ReadJsonFail(byte[] msbytes) using () {
       try {
         CBORObject.ReadJSON(msjson);
         Assert.fail("Should have failed");
@@ -8508,8 +8501,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void AssertReadThree(byte[] bytes) {
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         CBORObject cbor1, cbor2, cbor3;
         cbor1 = CBORObject.Read(ms);
         cbor2 = CBORObject.Read(ms);
@@ -8526,8 +8518,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void AssertReadThree(byte[] bytes, CBORObject cbor) {
-      try {
-        using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(bytes);
+      try using () {
         CBORObject cbor1, cbor2, cbor3;
         cbor1 = CBORObject.Read(ms);
         cbor2 = CBORObject.Read(ms);
@@ -9080,8 +9071,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-            if (i == 0) {
-  using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+            if (i == 0) using () {
               try {
                 CBORObject.WriteFloatingPointValue(ms, cbor.AsSingle(), 5);
                 Assert.fail("Should have failed");

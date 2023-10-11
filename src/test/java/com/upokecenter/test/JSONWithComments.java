@@ -398,7 +398,7 @@ private final List<String[]> propVarpointers;
           sb.append("/");
           String str = obj.AsString();
           for (int j = 0; j < str.length(); ++j) {
-            str.charAt(j) == '/' ? sb.append("~1") : str.charAt(j) == '~' ?
+            sb = str.charAt(j) == '/' ? sb.append("~1") : str.charAt(j) == '~' ?
 sb.append("~0") : sb.append(str.charAt(j));
           }
         } else {

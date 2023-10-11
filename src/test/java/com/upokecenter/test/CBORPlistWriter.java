@@ -18,7 +18,7 @@ private CBORPlistWriter() {
       int i = 0;
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (c <  (char)0x20 || c >= (char)0x7f || '\\' or '"' or '&' or
+        if (c instanceof < (char)0x20 or >= (char)0x7f or '\\' or '"' or '&' or
           '<' or '>') {
           sb.WriteString(str, 0, i);
           break;

@@ -287,8 +287,7 @@ options) {
       return CBORObject.DecodeFromBytes(b, options);
     }
 
-    private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) {
-      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(b);
+    private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) using () {
       var o = CBORObject.Read(ms, options);
       if (ms.getPosition() != ms.length) {
  throw new CBORException("not at" +
@@ -311,8 +310,7 @@ options) {
       return CBORObject.DecodeFromBytes(b);
     }
 
-    private static CBORObject FromBytesB(byte[] b) {
-      using java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(b);
+    private static CBORObject FromBytesB(byte[] b) using () {
       var o = CBORObject.Read(ms);
       if (ms.getPosition() != ms.length) {
  throw new CBORException("not at" +

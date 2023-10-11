@@ -31,8 +31,7 @@ private RandomObjects() {
 
     public static byte[] RandomUtf8Bytes(
       IRandomGenExtended rg,
-      boolean jsonSafe) {
-      using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+      boolean jsonSafe) using () {
       if (rg == null) {
         throw new NullPointerException("rg");
       }

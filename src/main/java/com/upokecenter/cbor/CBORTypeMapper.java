@@ -117,7 +117,7 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
 
     /**
      * Adds a prefix of a Java or.NET type for use in type matching. A type matches
-     * a prefix if its fully qualified || begins with that prefix, using
+     * a prefix if its fully qualified name is or begins with that prefix, using
      * codepoint-by-codepoint (case-sensitive) matching.
      * @param prefix The prefix of a Java or.NET type (e.g., `java.math.` or
      * `System.Globalization`).

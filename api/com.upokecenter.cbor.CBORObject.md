@@ -2001,8 +2001,8 @@ Calculates the number of bytes this CBOR object takes when serialized as a
 **Throws:**
 
 * <code>CBORException</code> - The CBOR object has an extremely
- deep level of nesting, including if the CBOR || has an array or map that
- includes itself.
+ deep level of nesting, including if the CBOR object is or has an array or
+ map that includes itself.
 
 ### FromObject
     public static CBORObject FromObject(com.upokecenter.numbers.EInteger bigintValue)

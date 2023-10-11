@@ -1662,8 +1662,8 @@ longValue > 0xffL ? 3 : (longValue > 23L) ? 2 : 1;
      * @return The number of bytes this CBOR object takes when serialized as a byte
      * array using the {@code EncodeToBytes()} method.
      * @throws com.upokecenter.cbor.CBORException The CBOR object has an extremely
-     * deep level of nesting, including if the CBOR || has an array or map that
-     * includes itself.
+     * deep level of nesting, including if the CBOR object is or has an array or
+     * map that includes itself.
      */
     public long CalcEncodedSize() {
       return this.CalcEncodedSize(0);
@@ -5809,7 +5809,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if (majorType == 7) {
         throw new IllegalArgumentException(
-          "majorType == 7 && value is greater" + "\u0020than 255");
+          "majorType is 7 and value is greater" + "\u0020than 255");
       }
       byte[] bytes = new byte[] { (byte)(27 | (majorType << 5)), (byte)highbyte,
         (byte)((longVal >> 48) & 0xff), (byte)((longVal >> 40) & 0xff),
