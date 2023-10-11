@@ -2071,8 +2071,7 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       CBORTestCommon.AssertRoundTrip(oo);
     }
 
-    private static final JSONOptions FullJsonOptions = new
-("numberconversion=full;preservenegativezero=false");
+    private static final JSONOptions FullJsonOptions = new JSONOptions("numberconversion=full;preservenegativezero=false");
 
     public static void TestParseDecimalStringsOne(String r) {
       CBORObject o = ToObjectTest.TestToFromObjectRoundTrip(

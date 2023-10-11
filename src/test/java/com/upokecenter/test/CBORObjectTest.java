@@ -93,8 +93,7 @@ import com.upokecenter.numbers.*;
       "[23.0e00]", "0", "1", "0.2", "0.05", "-0.2", "-0.05",
     };
 
-    private static final JSONOptions ValueNoDuplicateKeys = new
-("allowduplicatekeys=false");
+    private static final JSONOptions ValueNoDuplicateKeys = new JSONOptions("allowduplicatekeys=false");
 
     static void CheckPropertyNames(
       Object ao,
@@ -10476,9 +10475,9 @@ sb.append((char)irg.GetInt32(0x80));
       }
     }
 
-    private static final JSONOptions JSONOptionsDouble = new(
+    private static final JSONOptions JSONOptionsDouble = new JSONOptions(
       "numberconversion=double");
-    private static final JSONOptions JSONOptionsFull = new(
+    private static final JSONOptions JSONOptionsFull = new JSONOptions(
       "numberconversion=full");
 
     public static void TestParseNumberFxxLine(String line) {
@@ -10808,7 +10807,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (int i = 0; i <= 0x20; ++i) {
         byte[] bytes = { 0x22, (byte)i, 0x22 };
         char[] chars = { (char)0x22, (char)i, (char)0x22 };
-        String str = new(chars, 0, chars.length);
+        String str = new String(chars, 0, chars.length);
         if (i == 0x20) {
           try {
             CBORObject.FromJSONString(str);
@@ -10898,7 +10897,7 @@ sb.append((char)irg.GetInt32(0x80));
       for (int i = 0; i <= 0x20; ++i) {
         // Leading CTL
         char[] chars = { (char)i, (char)0x31 };
-        String str = new(chars, 0, chars.length);
+        String str = new String(chars, 0, chars.length);
         if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
           try {
             CBORObject.FromJSONString(str);

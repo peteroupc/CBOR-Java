@@ -1516,30 +1516,27 @@ import com.upokecenter.numbers.*;
         if (obj.getType() != CBORType.Map) {
           throw new CBORException();
         }
-        CPOD3 ret = new CPOD3
-        {
-          Aa = obj.get(0).AsString(),
-          Bb = obj.get(1).AsString(),
-          Cc = obj.get(2).AsString(),
-        };
+        var new();
+.Aa = obj.get(0).AsString();
+.Bb = obj.get(1).AsString();
+.Cc = obj.get(2).AsString();
+
         return ret;
       }
     }
 
     @Test
     public void TestCBORTypeMapper() {
-      CPOD3 cp = new CPOD3
-      {
-        Aa = "aa",
-        Bb = "bb",
-        Cc = "cc",
-      };
-      CPOD3 cp2 = new CPOD3
-      {
-        Aa = "AA",
-        Bb = "BB",
-        Cc = "CC",
-      };
+      var new();
+.Aa = "aa";
+.Bb = "bb";
+.Cc = "cc";
+
+      var new();
+.Aa = "AA";
+.Bb = "BB";
+.Cc = "CC";
+
       CBORTypeMapper tm = new CBORTypeMapper().AddConverter(
         CPOD3.class,
         new CPOD3Converter());

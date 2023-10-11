@@ -1009,10 +1009,9 @@ try { if (ms5 != null) { ms5.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestCPOD() {
-      CPOD m = new CPOD
-      {
-        Aa = "Test",
-      };
+      var new();
+.Aa = "Test";
+
       CBORObject cbor = CBORObject.FromObject(m);
       if (cbor.ContainsKey("bb")) {
  Assert.fail(cbor.toString());
