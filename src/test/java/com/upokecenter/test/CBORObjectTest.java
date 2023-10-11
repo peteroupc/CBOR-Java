@@ -8043,11 +8043,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       try {
         for (int i = 0; i < 256; ++i) {
           byte b = (byte)(i & 0xff);
-          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           CBORObject.Write(b, ms);
           var cobj = CBORObject.DecodeFromBytes(ms.toByteArray());
           Assert.assertEquals(i, cobj.AsInt32());
-        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
 
         for (int i = 0; i < 50; ++i) {
           EFloat ef = RandomObjects.RandomEFloat(fr);
@@ -8673,12 +8681,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           CBORObject.Write(obj, ms);
           CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
           ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
           AssertReadThree(ms.toByteArray());
-        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
@@ -8706,14 +8722,22 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             throw new IllegalStateException("", ex);
           }
           AssertWriteThrow(cborTemp1);
-          using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+          {
+            java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
           CBORObject.Write(obj, ms);
           CBORObject.Write(ToObjectTest.TestToFromObjectRoundTrip(obj), ms);
           ToObjectTest.TestToFromObjectRoundTrip(obj).WriteTo(ms);
           AssertReadThree(
             ms.toByteArray(),
             ToObjectTest.TestToFromObjectRoundTrip(objTest));
-        }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);

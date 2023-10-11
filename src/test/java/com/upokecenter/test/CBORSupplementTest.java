@@ -870,9 +870,17 @@ try { if (ms5 != null) { ms5.close(); } } catch (java.io.IOException ex) {}
 }
 }
         bytes = new byte[] { 0x37 };
-        using java.io.ByteArrayInputStream ms6 = new java.io.ByteArrayInputStream(bytes);
+        {
+          java.io.ByteArrayInputStream ms6 = null;
+try {
+ms6 = new java.io.ByteArrayInputStream(bytes);
+
         Assert.assertEquals(-1 - 0x17, MiniCBOR.ReadInt32(ms6));
-      } catch (IOException ioex) {
+}
+finally {
+try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ioex) {
         Assert.fail(ioex.getMessage());
       }
     }

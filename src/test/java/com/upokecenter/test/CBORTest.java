@@ -2530,11 +2530,15 @@ ms = new java.io.ByteArrayOutputStream();
 
           MiniCBOR.WriteInt32(val, ms);
           byte[] msarray = ms.toByteArray();
-          using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(msarray);
+          {
+            java.io.ByteArrayInputStream ms2 = null;
+try {
+ms2 = new java.io.ByteArrayInputStream(msarray);
+
           Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
 }
 finally {
-try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
 }
 }
         {
@@ -2544,17 +2548,29 @@ ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.Write(val, ms);
           byte[] msarray = ms.toByteArray();
-          using java.io.ByteArrayInputStream ms2 = new java.io.ByteArrayInputStream(msarray);
+          {
+            java.io.ByteArrayInputStream ms2 = null;
+try {
+ms2 = new java.io.ByteArrayInputStream(msarray);
+
           Assert.assertEquals(TestCommon.ToByteArrayString(msarray), val, MiniCBOR.ReadInt32(ms2));
+}
+finally {
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
+}
+}
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+} catch (IOException ioex) {
+        Assert.fail(ioex.getMessage() + " val=" + val);
+      }
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-      } catch (IOException ioex) {
-        Assert.fail(ioex.getMessage() + " val=" + val);
-      }
-    }
 
     public static EInteger UnsignedLongToEInteger(long v) {
       return v >= 0 ? EInteger.FromInt64(v) :
