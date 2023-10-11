@@ -514,8 +514,8 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       if (maxExclusive <= 1) {
         return 0;
       }
-      if (this.valueIrg instanceof IRandomGenExtended) {
-        return ((IRandomGenExtended)this.valueIrg).GetInt32(maxExclusive);
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null); if (rge != null) {
+        return rge.GetInt32(maxExclusive);
       }
       byte[] b = new byte[4];
       switch (maxExclusive) {
@@ -589,8 +589,8 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       if (maxExclusive <= Integer.MAX_VALUE) {
         return this.UniformInt((int)maxExclusive);
       }
-      if (this.valueIrg instanceof IRandomGenExtended) {
-        return ((IRandomGenExtended)this.valueIrg).GetInt64(maxExclusive);
+      IRandomGenExtended rge = ((this.valueIrg instanceof IRandomGenExtended) ? (IRandomGenExtended)this.valueIrg : null); if (rge != null) {
+        return rge.GetInt64(maxExclusive);
       }
 
       long maxexc;

@@ -208,9 +208,8 @@ import com.upokecenter.cbor.*;
       if (index < 0) { // start bracket not found
         return new String[] { s };
       }
-      ArrayList<String> path = new ArrayList<String> {
-        s.substring(0, (index)),
-      };
+      java.util.ArrayList<String> path = new java.util.ArrayList<String>(java.util.Arrays.asList(
+        s.substring(0, (index))));
       ++index; // move to after the bracket
       while (true) {
         int endBracket = s.indexOf(']',index);
@@ -423,7 +422,8 @@ private static Map<String, Object> ConvertLists(
       return QueryStringToDict(query, "&");
     }
 
-    private static Map<String, Object> QueryStringToDictInternal(
+    @SuppressWarnings("unchecked")
+private static Map<String, Object> QueryStringToDictInternal(
       String query,
       String delimiter) {
       Map<String, Object> root = new HashMap<String, Object>();
@@ -440,7 +440,7 @@ private static Map<String, Object> ConvertLists(
             leaf.put(path[i], newLeaf);
             leaf = newLeaf;
           } else {
-            if (di instanceof Map<?, ?> o) {
+            Map<String, Object> o = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null); if (o != null) {
               leaf = o;
             } else {
               // error, not a dictionary

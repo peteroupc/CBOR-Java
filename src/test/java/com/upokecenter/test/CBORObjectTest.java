@@ -9960,11 +9960,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestDateTime() {
-      ArrayList<String> dateList = new ArrayList<String>
-      {
+      java.util.ArrayList<String> dateList = new java.util.ArrayList<String>(java.util.Arrays.asList(
         "0783-08-19T03:10:29.406Z",
-        "1954-03-07T16:20:38.256Z",
-      };
+        "1954-03-07T16:20:38.256Z"));
       RandomGenerator rng = new RandomGenerator();
       for (int i = 0; i < 2000; ++i) {
         String dtstr = DateTimeToString(

@@ -2360,17 +2360,17 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
       if (obj instanceof Long) {
         return FromObject((((Long)obj).longValue()));
       }
-      if (obj instanceof EInteger) {
-        return FromObject(((EInteger)obj));
+      EInteger eif = ((obj instanceof EInteger) ? (EInteger)obj : null); if (eif != null) {
+        return FromObject(eif);
       }
-      if (obj instanceof EDecimal) {
-        return FromObject(((EDecimal)obj));
+      EDecimal edf = ((obj instanceof EDecimal) ? (EDecimal)obj : null); if (edf != null) {
+        return FromObject(edf);
       }
-      if (obj instanceof EFloat) {
-        return FromObject(((EFloat)obj));
+      EFloat eff = ((obj instanceof EFloat) ? (EFloat)obj : null); if (eff != null) {
+        return FromObject(eff);
       }
-      if (obj instanceof ERational) {
-        return FromObject(((ERational)obj));
+      ERational erf = ((obj instanceof ERational) ? (ERational)obj : null); if (erf != null) {
+        return FromObject(erf);
       }
       if (obj instanceof Short) {
         return FromObject(((Short)obj).shortValue());
@@ -2879,8 +2879,8 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
         }
         return objlist;
       } catch (CBORException ex) {
-        if (ex.getCause() instanceof IOException) {
-          throw ((IOException)ex.getCause());
+        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null); if (ioex != null) {
+          throw ioex;
         }
         throw ex;
       }
@@ -2930,8 +2930,8 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
         }
         return obj;
       } catch (CBORException ex) {
-        if (ex.getCause() instanceof IOException) {
-          throw ((IOException)ex.getCause());
+        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null); if (ioex != null) {
+          throw ioex;
         }
         throw ex;
       }

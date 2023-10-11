@@ -1018,8 +1018,8 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestCPOD() {
-      var new();
-.Aa = "Test";
+      CPOD m = new CPOD();
+m.setAa("Test");
 
       CBORObject cbor = CBORObject.FromObject(m);
       if (cbor.ContainsKey("bb")) {

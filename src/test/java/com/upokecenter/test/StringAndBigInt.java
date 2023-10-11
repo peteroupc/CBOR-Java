@@ -71,7 +71,7 @@ builder.append(ValueDigitsLower.charAt(digit4));
       }
       for (int i = count; i < numDigits; ++i) {
         int digit = rand.GetInt32(radix);
-        rand.GetInt32(2) == 0 ? builder.append(ValueDigits.charAt(digit)) :
+        builder = rand.GetInt32(2) == 0 ? builder.append(ValueDigits.charAt(digit)) :
 builder.append(ValueDigitsLower.charAt(digit));
         bv = bv.Multiply(radixpow1);
         EInteger bigintTmp = EInteger.FromInt32(digit);
