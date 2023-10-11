@@ -121,11 +121,14 @@ count);
         }
         b = stream.read();
       }
-      if (!(b != 0xf4 && (b == 0xf5)) {
- throw new IOException("Not a" +
-"\u0020boolean")) ;
+      switch (b) {
+case 0xf4:
+return false;
+case 0xf5:
+return true;
+default:
+throw new IOException("Not a boolean");
 }
- return true;
     }
 
     public static void WriteBoolean(boolean value, OutputStream stream) throws java.io.IOException {
@@ -208,12 +211,6 @@ count);
         if (check32bit && (bytes[0] != 0 || bytes[1] != 0 || bytes[2] != 0 ||
             bytes[3] != 0)) {
           throw new IOException("Not a 32-bit integer");
-        }
-        if (!check32bit) {
-          ((long)bytes[0]) & 0xff;
-          ((long)bytes[1]) & 0xff;
-          ((long)bytes[2]) & 0xff;
-          ((long)bytes[3]) & 0xff;
         }
         b = ((long)bytes[4]) & 0xff;
         b <<= 8;
@@ -375,7 +372,7 @@ count);
         // Read a floating-point number
         double dbl = ReadFP(stream, b);
         // Truncate to a 32-bit integer
-        if (double.IsInfinity(dbl) || Double.isNaN(dbl)) {
+        if (((Double)(double)).isInfinite() || Double.isNaN(dbl)) {
           throw new IOException("Not a 32-bit integer");
         }
         dbl = (dbl < 0) ? Math.ceil(dbl) : Math.floor(dbl);
