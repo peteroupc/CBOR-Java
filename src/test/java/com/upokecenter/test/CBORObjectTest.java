@@ -11,6 +11,14 @@ import com.upokecenter.numbers.*;
 
 @SuppressWarnings("deprecation")
   public class CBORObjectTest {
+    /*
+    private static final String[] ValueJsonSurrogateFails = {
+      "\"\\ud800-udc00\"",
+      "\"-ud800\\udc00\"",
+      "[\"-ud800\\udc00\"]", "[\"\\ud800-udc00\"]",
+    }
+    */
+
     private static final String[] ValueJsonFails = {
       "\"\\uxxxx\"",
       "\"\\ud800\udc00\"",
@@ -22,6 +30,7 @@ import com.upokecenter.numbers.*;
       "[tr]", "[fa]",
       "[nu]", "[True]", "[False]", "[Null]", "[TRUE]", "[FALSE]", "[NULL]",
       "[truE]", "[falsE]",
+      "[\"\\udc00\ud800\udc00\"]", "[\"\\ud800\ud800\udc00\"]",
       "[nulL]", "[tRUE]", "[fALSE]", "[nULL]", "[tRuE]", "[fAlSe]", "[nUlL]",
       "fa ", "nu ", "fa lse", "nu ll", "tr ue",
       "[\"\ud800\\udc00\"]", "[\"\\ud800\udc00\"]",
