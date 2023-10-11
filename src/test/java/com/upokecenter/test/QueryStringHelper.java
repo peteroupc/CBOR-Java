@@ -10,11 +10,11 @@ import com.upokecenter.cbor.*;
   public final class QueryStringHelper {
     private QueryStringHelper() {
     }
-    private static String[] SplitAt(String s, String delimiter) {
+    private static String[] SplitAt(String stringToSplit, String delimiter) {
       if (delimiter == null || delimiter.length() == 0) {
         throw new IllegalArgumentException();
       }
-      if (s == null || s.length() == 0) {
+      if (stringToSplit == null || stringToSplit.length() == 0) {
         return new String[] { "" };
       }
       int index = 0;
@@ -22,19 +22,20 @@ import com.upokecenter.cbor.*;
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = s.indexOf(delimiter, index);
+        int index2 = stringToSplit.indexOf(
+          delimiter, index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s };
+            return new String[] { stringToSplit };
           }
-          strings.add(s.substring(index, (s.length())));
+          strings.add(stringToSplit.substring(index, (stringToSplit.length())));
           break;
         } else {
           if (first) {
             strings = new ArrayList<String>();
             first = false;
           }
-          String newstr = s.charAt(index..index2);
+          String newstr = stringToSplit.substring(index, (index2));
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -186,7 +187,7 @@ import com.upokecenter.cbor.*;
         String name = str;
         String value = ""; // value is empty if there is no key
         if (index >= 0) {
-          name = str.charAt(..index);
+          name = str.substring(0, (index));
           value = str.substring((index + 1), (str.length()));
         }
         name = name.replace('+', ' ');
@@ -208,7 +209,7 @@ import com.upokecenter.cbor.*;
         return new String[] { s };
       }
       ArrayList<String> path = new ArrayList<String> {
-        s.charAt(..index),
+        s.substring(0, (index)),
       };
       ++index; // move to after the bracket
       while (true) {
@@ -217,7 +218,7 @@ import com.upokecenter.cbor.*;
           path.add(s.substring(index, (s.length())));
           break;
         }
-        path.add(s.charAt(index..endBracket));
+        path.add(s.substring(index, (endBracket)));
         index = endBracket + 1; // move to after the end bracket
         index = s.indexOf('[',index);
         if (index < 0) { // start bracket not found

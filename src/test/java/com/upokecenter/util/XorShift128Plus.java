@@ -10,7 +10,7 @@ package com.upokecenter.util;
   public class XorShift128Plus implements IRandomGen
   {
     private final long[] s = new long[2];
-    private final Object syncRoot = new();
+    private final Object syncRoot = new Object();
 
     /**
      * Initializes a new instance of the {@link XorShift128Plus} class.

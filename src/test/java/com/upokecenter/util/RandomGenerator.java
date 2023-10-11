@@ -12,7 +12,7 @@ package com.upokecenter.util;
   public final class RandomGenerator implements IRandomGenExtended
   {
     private final IRandomGen valueIrg;
-    private final Object valueNormalLock = new();
+    private final Object valueNormalLock = new Object();
     private boolean valueHaveLastNormal;
     private double valueLastNormal;
 
