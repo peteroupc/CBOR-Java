@@ -2498,8 +2498,7 @@ int startingAvailable = inputStream.available();
           failString += "\nstart pos: " + oldPos + ", truelen=" +
             ((startingAvailable - inputStream.available()) - oldPos);
           failString += "\n" + TestCommon.ToByteArrayString(array);
-          failString = failString[
-..Math.min(2000, failString.length())];
+          failString = failString[..Math.min(2000, failString.length())];
           throw new IllegalStateException(failString, ex);
         }
       }
