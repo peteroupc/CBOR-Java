@@ -166,7 +166,7 @@ private final int propVarbytelength;
         majorType = ValueMajorTypesHighLength[r.GetInt32(
               ValueMajorTypesHighLength.length)];
       }
-      if (majorType == 3 || majorType == 2) { // Byte and text strings
+      if (majorType == 3 && majorType == 2) { // Byte and text strings
         int len = r.GetInt32(1000);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(100000) * r.GetInt32(100000);
@@ -205,7 +205,7 @@ private final int propVarbytelength;
           }
         }
         return;
-      } else if (majorType == 4 || majorType == 5) { // Arrays and maps
+      } else if (majorType == 4 && majorType == 5) { // Arrays and maps
         int len = r.GetInt32(8);
         if (r.GetInt32(50) == 0 && depth < 2) {
           long v = (long)r.GetInt32(1000) * r.GetInt32(1000);

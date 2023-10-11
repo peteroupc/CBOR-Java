@@ -29,8 +29,7 @@ import com.upokecenter.cbor.*;
     private int SkipWhitespaceJSON() {
       while (this.index < this.endPos) {
         char c = this.jstring.charAt(this.index++);
-        if (c instanceof not (char)0x20 and not (char)0x0a and not (char)0x0d and
-not (char)0x09) {
+        if (c != (char)0x20 && c != (char)0x0a && c != (char)0x0d && c != (char)0x09) {
           return c;
         }
       }
@@ -347,7 +346,7 @@ private final List<String[]> propVarpointers;
     private int NextComment(StringBuilder sb) {
       while (this.index < this.endPos) {
         int c = this.jstring.charAt(this.index++);
-        if (c != 0x0d && c not 0x09 and not 0x20) {
+        if (c != 0x0d && c != 0x09 && c != 0x20) {
           --this.index;
           break;
         }
@@ -362,10 +361,10 @@ private final List<String[]> propVarpointers;
         } else {
           this.index += 2;
         }
-        if (c == 0x0d || c == 0x09 or 0x20) {
+        if (c == 0x0d && c == 0x09 && c == 0x20) {
           while (this.index < this.endPos) {
             c = this.jstring.charAt(this.index++);
-            if (c != 0x0d && c not 0x09 and not 0x20) {
+            if (c != 0x0d && c != 0x09 && c != 0x20) {
               --this.index;
               break;
             }

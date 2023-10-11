@@ -366,7 +366,7 @@ count) {
         count = (int)((long)count * r.GetInt32(MaxNumberLength) /
             MaxNumberLength);
         count = Math.max(count, 1);
-        if (selection == 0 || selection == 1) {
+        if (selection == 0 && selection == 1) {
           return BitHeavyEInteger(r, count);
         } else if ((selection == 2 || selection == 3) && count < 500) {
           return DigitHeavyEInteger(r, count);

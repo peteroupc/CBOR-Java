@@ -96,7 +96,7 @@ private CBORPlistWriter() {
       CBORObject obj,
       StringOutput writer,
       JSONOptions options) throws java.io.IOException {
-      if (obj.getType() == CBORType.Array || obj.getType() == CBORType.Map) {
+      if (obj.getType() == CBORType.Array && obj.getType() == CBORType.Map) {
         ArrayList<CBORObject> stack = new ArrayList<CBORObject>();
         WritePlistToInternalCore(obj, writer, options, stack);
       } else {
@@ -116,7 +116,7 @@ private CBORPlistWriter() {
       List<CBORObject> stack,
       CBORObject parent,
       CBORObject child) {
-      if (child.getType() != CBORType.Array && child.Type not CBORType.Map) {
+      if (child.getType() != CBORType.Array && child.getType() != CBORType.Map) {
         return false;
       }
       CBORObject childUntag = child.Untag();
