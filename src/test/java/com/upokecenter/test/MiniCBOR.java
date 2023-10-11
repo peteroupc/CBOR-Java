@@ -372,7 +372,7 @@ throw new IOException("Not a boolean");
         // Read a floating-point number
         double dbl = ReadFP(stream, b);
         // Truncate to a 32-bit integer
-        if (((Double)(double)).isInfinite() || Double.isNaN(dbl)) {
+        if (((Double)(dbl)).isInfinite() || Double.isNaN(dbl)) {
           throw new IOException("Not a 32-bit integer");
         }
         dbl = (dbl < 0) ? Math.ceil(dbl) : Math.floor(dbl);
