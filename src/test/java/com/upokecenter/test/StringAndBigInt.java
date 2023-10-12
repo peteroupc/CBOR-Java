@@ -15,6 +15,11 @@ private final String propVarstringvalue;
     public final EInteger getBigIntValue() { return propVarbigintvalue; }
 private final EInteger propVarbigintvalue;
 
+    private StringAndBigInt(String sv, EInteger biv) {
+      this.propVarstringvalue = sv;
+      this.propVarbigintvalue = biv;
+    }
+
     public static StringAndBigInt Generate(IRandomGenExtended rand, int radix) {
       return Generate(rand, radix, 50);
     }
@@ -32,7 +37,6 @@ private final EInteger propVarbigintvalue;
           ") is more than 36");
       }
       EInteger bv = EInteger.FromInt32(0);
-      StringAndBigInt sabi = new StringAndBigInt();
       int numDigits = 1 + rand.GetInt32(maxNumDigits);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
@@ -80,8 +84,6 @@ builder.append(ValueDigitsLower.charAt(digit));
       if (negative) {
         bv = bv.Negate();
       }
-      sabi.propVarbigintvalue = bv;
-      sabi.propVarstringvalue = builder.toString();
-      return sabi;
+      return new StringAndBigInt(builder.toString(), bv);
     }
   }
