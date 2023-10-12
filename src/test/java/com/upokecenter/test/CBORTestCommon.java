@@ -305,7 +305,7 @@ try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
 
-      var o = CBORObject.Read(ms, options);
+      CBORObject o = CBORObject.Read(ms, options);
       if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
 "\u0020EOF");
@@ -337,7 +337,7 @@ try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
 
-      var o = CBORObject.Read(ms);
+      CBORObject o = CBORObject.Read(ms);
       if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
 "\u0020EOF");
