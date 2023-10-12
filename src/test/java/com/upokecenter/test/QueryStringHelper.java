@@ -225,7 +225,7 @@ import com.upokecenter.cbor.*;
         }
         ++index; // move to after the start bracket
       }
-      return path.ToArray();
+      return strings.toArray(new String[] { });
     }
 
     private static final String Digits = "0123456789";
@@ -334,7 +334,7 @@ private static CBORObject ConvertListsToCBOR(List<Object> dict) {
       CBORObject cbor = CBORObject.NewArray();
       for (int i = 0; i < dict.size(); ++i) {
         Object di = dict.get(i);
-        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -357,7 +357,7 @@ private static CBORObject ConvertListsToCBOR(Map<String, Object>
       CBORObject cbor = CBORObject.NewMap();
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
-        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -378,7 +378,7 @@ private static CBORObject ConvertListsToCBOR(Map<String, Object>
 private static void ConvertLists(List<Object> list) {
       for (int i = 0; i < list.size(); ++i) {
         Object di = list.get(i);
-        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
@@ -398,7 +398,7 @@ private static Map<String, Object> ConvertLists(
       Map<String, Object> dict) {
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
-        var value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
+        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
         // A list contains only indexes 0, 1, 2, and so on,
         // with no gaps.
         if (IsList(value)) {
