@@ -4535,8 +4535,9 @@ aodict.put("PropValue",new PODClass());
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
-        EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        var cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
+        EDecimal cmpDecFrac, cmpCobj;
+        cmpDecFrac = AsED(o1).Multiply(AsED(o2));
+        cmpCobj = o1.AsNumber().Multiply(o2.AsNumber()).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual(
             cmpDecFrac,
@@ -9044,9 +9045,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       byte[] bytes = new byte[] { 0, 0, 0 };
       try {
         for (int i = 0; i < 0x10000; ++i) {
-          bytes[0] = 0xf9;
-          bytes[1] = (byte)((i >> 8) & 0xff);
-          bytes[2] = (byte)(i & 0xff);
+          bytes[0] = (byte)0xf9;
+          bytes[1] = (byte) (byte)((i >> 8) & 0xff);
+          bytes[2] = (byte) (byte)(i & 0xff);
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
@@ -9084,9 +9085,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // 32-bit values
         bytes = new byte[5];
         for (int i = 0; i < 100000; ++i) {
-          bytes[0] = 0xfa;
+          bytes[0] = (byte)0xfa;
           for (int j = 1; j <= 4; ++j) {
-            bytes[j] = (byte)r.UniformInt(256);
+            bytes[j] = (byte) (byte)r.UniformInt(256);
           }
 
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
@@ -9126,9 +9127,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // 64-bit values
         bytes = new byte[9];
         for (int i = 0; i < 100000; ++i) {
-          bytes[0] = 0xfb;
+          bytes[0] = (byte)0xfb;
           for (int j = 1; j <= 8; ++j) {
-            bytes[j] = (byte)r.UniformInt(256);
+            bytes[j] = (byte) (byte)r.UniformInt(256);
           }
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {

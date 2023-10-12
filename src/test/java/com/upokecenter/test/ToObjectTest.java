@@ -1053,7 +1053,7 @@ import com.upokecenter.numbers.*;
             (String)numberinfo.get("number").ToObject(
               String.class)).ToSingle();
         f2 = (float)cbornumber.ToObject(float.class);
-        if (!f1.equals(f2)) {
+        if (f1 != f2) {
           Assert.fail();
         }
       }
