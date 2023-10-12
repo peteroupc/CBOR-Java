@@ -1694,7 +1694,7 @@ cp2.setCc("CC");
           cbor2 = CBORObject.DecodeFromBytes(encdata);
         } catch (Exception ex) {
           throw new IllegalStateException(
-            TestCommon.ByteArrayToString(encdata),
+            TestCommon.ToByteArrayString(encdata),
             ex);
         }
         if (cbor2 == null) {
