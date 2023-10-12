@@ -96,13 +96,32 @@ private BEncoding() {
 
     private static CBORObject ReadObject(InputStream stream, boolean allowEnd) throws java.io.IOException {
       int c = stream.read();
-      if (c == 'd') {
-        return ReadDictionary(stream);
-      }
-      return c == 'l' ? ReadList(stream) : allowEnd && c == 'e' ? null :
-        c == 'i' ? ReadInteger(stream) :
-        c >= '0' && c <= '9' ? ReadString(stream, (char)c) : throw new
-CBORException("Object expected");
+      switch (c) {
+case 'd':
+return ReadDictionary(stream);
+case 'l':
+return ReadList(stream);
+case 'i':
+return ReadInteger(stream);
+case 'e':
+if (!(allowEnd)) {
+ throw new CBORException("Object expected");
+}
+ return null;
+case '0':
+ case '1':
+ case '2':
+ case '3':
+ case '4':
+ case '5':
+ case '6':
+ case '7':
+ case '8':
+ case '9':
+return ReadString(stream, (char)c);
+default:
+throw new CBORException("Object expected");
+}
     }
 
     private static final String ValueDigits = "0123456789";
