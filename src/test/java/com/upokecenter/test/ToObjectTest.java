@@ -1166,13 +1166,13 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestToObjectDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
-      var stringDict = (HashMap<String, String>)cbor.ToObject(
+      HashMap<String, String> stringDict = (HashMap<String, String>)cbor.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict.size());
-      if (!(stringDict.ContainsKey("a"))) {
+      if (!(stringDict.containsKey("a"))) {
  Assert.fail();
  }
-      if (!(stringDict.ContainsKey("c"))) {
+      if (!(stringDict.containsKey("c"))) {
  Assert.fail();
  }
       Assert.assertEquals("b", stringDict.get("a"));
@@ -1181,13 +1181,13 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestToObjectIDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
-      var stringDict2 = (Map<String, String>)cbor.ToObject(
+      Map<String, String> stringDict2 = (Map<String, String>)cbor.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict2.size());
-      if (!(stringDict2.ContainsKey("a"))) {
+      if (!(stringDict2.containsKey("a"))) {
  Assert.fail();
  }
-      if (!(stringDict2.ContainsKey("c"))) {
+      if (!(stringDict2.containsKey("c"))) {
  Assert.fail();
  }
       Assert.assertEquals("b", stringDict2.get("a"));
@@ -1266,14 +1266,13 @@ import com.upokecenter.numbers.*;
       co = CBORObject.NewMap();
       co.Add("a", 1);
       co.Add("b", 2);
-      var intDict =
-        (HashMap<String, Integer>)co.ToObject(
+      HashMap<String, Integer> intDict = (HashMap<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, intDict.size());
-      if (!(intDict.ContainsKey("a"))) {
+      if (!(intDict.containsKey("a"))) {
  Assert.fail();
  }
-      if (!(intDict.ContainsKey("b"))) {
+      if (!(intDict.containsKey("b"))) {
  Assert.fail();
  }
       if (intDict.get("a") != 1) {
@@ -1282,13 +1281,13 @@ import com.upokecenter.numbers.*;
       if (intDict.get("b") != 2) {
         Assert.fail();
       }
-      var iintDict = (Map<String, Integer>)co.ToObject(
+      Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, iintDict.size());
-      if (!(iintDict.ContainsKey("a"))) {
+      if (!(iintDict.containsKey("a"))) {
  Assert.fail();
  }
-      if (!(iintDict.ContainsKey("b"))) {
+      if (!(iintDict.containsKey("b"))) {
  Assert.fail();
  }
       if (iintDict.get("a") != 1) {

@@ -8,18 +8,21 @@ import com.upokecenter.util.*;
 
       public ByteWriter Write(int b) {
         if (this.getByteLength() < this.bytes.length) {
-          this.bytes[this.getByteLength()++] = (byte)b;
+          this.bytes[this.getByteLength()] = (byte)b;
+          ++this.getByteLength();
         } else {
           byte[] newbytes = new byte[this.bytes.length * 2];
           System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
           this.bytes = newbytes;
-          this.bytes[this.getByteLength()++] = (byte)b;
+          this.bytes[this.getByteLength()] = (byte)b;
+          ++this.getByteLength();
         }
         return this;
       }
 
       public final int getByteLength() { return propVarbytelength; }
-private final int propVarbytelength;
+public final void setByteLength(int value) { propVarbytelength = value; }
+private int propVarbytelength;
 
       public byte[] ToBytes() {
         byte[] newbytes = new byte[this.getByteLength()];

@@ -225,7 +225,7 @@ import com.upokecenter.cbor.*;
         }
         ++index; // move to after the start bracket
       }
-      return strings.toArray(new String[] { });
+      return path.toArray(new String[] { });
     }
 
     private static final String Digits = "0123456789";
