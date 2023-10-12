@@ -1850,13 +1850,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo2() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, (byte)0xd3, (byte)0xe1, 0x26,
         (byte)0xf9, 0x3b, (byte)0xc2, 0x4c, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01,
         0x01, 0x00, 0x00, 0x01, 0x00, 0x00,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x56, (byte)0xe9, 0x21, (byte)0xda,
         (byte)0xe9, (byte)0xc2, 0x58, 0x2a, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1872,13 +1872,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo6() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x1b, 0x00, 0x00, 0x00, 0x7a, 0x50, (byte)0xe0, 0x1f,
         (byte)0xc6, (byte)0xc2, 0x4c, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x01,
         0x00, 0x00, 0x00, 0x01, 0x01,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x19, 0x01, 0x60, (byte)0xc2, 0x58, (byte)0x87, (byte)0xbb,
         (byte)0xf8, 0x74, (byte)0xbe, (byte)0xcc, 0x46, 0x6b, 0x02, 0x3c,
@@ -1906,14 +1906,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo5() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x1b, 0x00, 0x00, 0x10, 0x57, (byte)0xa5, (byte)0x96,
         (byte)0xbe, 0x7b, (byte)0xc2, 0x53, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01,
         0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01,
         0x00,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x19, 0x01, (byte)0x84, (byte)0xc2, 0x53, 0x20, 0x44, 0x52,
         0x64, (byte)0x9d, (byte)0xea, (byte)0xe8, 0x57, 0x13, (byte)0xa3, 0x7c,
@@ -1927,7 +1927,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x00, 0x00, 0x15, (byte)0xfc, (byte)0xa0,
         (byte)0xd9, (byte)0xf9, (byte)0xc3, 0x58, 0x36, 0x02, (byte)0x83, 0x3b,
@@ -1939,7 +1939,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         0x34, (byte)0x84, (byte)0xb4, 0x22, (byte)0xa8, 0x26, (byte)0x9f, 0x35,
         (byte)0x8d,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x24, 0x26,
        });
@@ -1950,7 +1950,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo3() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x04, 0x55, 0x0a, 0x12, (byte)0x94, (byte)0xf8, 0x1f,
         (byte)0x9b, (byte)0xc2, 0x58, 0x1f, 0x01, 0x00, 0x00, 0x01, 0x01, 0x00,
@@ -1958,7 +1958,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x01,
         0x00,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x39, 0x02, 0x03, (byte)0xc2, 0x58, 0x2d, 0x01, 0x00, 0x00,
         0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01,
@@ -1973,12 +1973,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test(timeout = 1000)
     public void TestSlowCompareTo4() {
-      var cbor1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82, 0x2f, 0x3b, 0x00, 0x1e, (byte)0xdc, 0x5d, 0x51, 0x5d, 0x26,
         (byte)0xb7,
        });
-      var cbor2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82, 0x3b, 0x00, 0x18, 0x72, 0x44, 0x49, (byte)0xd0, 0x0c,
         (byte)0xb6, (byte)0xc3, 0x58, (byte)0x88, 0x0a, (byte)0xd0, 0x12,
@@ -2939,8 +2939,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xd8, 0x1e, (byte)0x82, 0x00, 0x19,
         0x0f, 0x50,
        };
-      var cbor = CBORObject.DecodeFromBytes(cborbytes);
-      var cbor2 = CBORObject.DecodeFromBytes(cborbytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(cborbytes);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(cborbytes);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
       var erat = ERational.Create(0, 3920);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(erat);
@@ -8046,7 +8046,7 @@ try {
 ms = new java.io.ByteArrayOutputStream();
 
           CBORObject.Write(b, ms);
-          var cobj = CBORObject.DecodeFromBytes(ms.toByteArray());
+          CBORObject cobj = CBORObject.DecodeFromBytes(ms.toByteArray());
           Assert.assertEquals(i, cobj.AsInt32());
 }
 finally {
@@ -9047,7 +9047,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           bytes[0] = 0xf9;
           bytes[1] = (byte)((i >> 8) & 0xff);
           bytes[2] = (byte)(i & 0xff);
-          var cbor = CBORObject.DecodeFromBytes(bytes);
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9089,7 +9089,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             bytes[j] = (byte)r.UniformInt(256);
           }
 
-          var cbor = CBORObject.DecodeFromBytes(bytes);
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9130,7 +9130,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           for (int j = 1; j <= 8; ++j) {
             bytes[j] = (byte)r.UniformInt(256);
           }
-          var cbor = CBORObject.DecodeFromBytes(bytes);
+          CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
               java.io.ByteArrayOutputStream ms = null;
@@ -9357,7 +9357,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject expected,
       CBORObject src,
       CBORObject patch) {
-      var actual = CBORObject.DecodeFromBytes(src.EncodeToBytes());
+      CBORObject actual = CBORObject.DecodeFromBytes(src.EncodeToBytes());
       if (expected == null) {
         try {
           actual.ApplyJSONPatch(patch);

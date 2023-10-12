@@ -175,10 +175,10 @@ import com.upokecenter.numbers.*;
         90, 113, 66, (byte)187, 69, 101, 82, 117, 82, 46, 80, 69, (byte)150, 80, (byte)162, (byte)211,
         (byte)214,
        };
-      var cbor1 = CBORObject.DecodeFromBytes(bytes1);
-      var cbor2 = CBORObject.DecodeFromBytes(bytes2);
-      var cbor3 = CBORObject.DecodeFromBytes(bytes3);
-      var cbor4 = CBORObject.DecodeFromBytes(bytes4);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(bytes1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bytes2);
+      CBORObject cbor3 = CBORObject.DecodeFromBytes(bytes3);
+      CBORObject cbor4 = CBORObject.DecodeFromBytes(bytes4);
       TestCommon.CompareTestLess(cbor1, cbor2);
       TestCommon.CompareTestLess(cbor1, cbor4);
       TestCommon.CompareTestLess(cbor3, cbor2);
@@ -223,10 +223,10 @@ import com.upokecenter.numbers.*;
         69, 32,
         101, (byte)130, (byte)188, (byte)201, 27, 122, (byte)228, 0, 0, 0, 0, (byte)186, 9,
        };
-      var cbor1 = CBORObject.DecodeFromBytes(bytes1);
-      var cbor2 = CBORObject.DecodeFromBytes(bytes2);
-      var cbor3 = CBORObject.DecodeFromBytes(bytes3);
-      var cbor4 = CBORObject.DecodeFromBytes(bytes4);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(bytes1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bytes2);
+      CBORObject cbor3 = CBORObject.DecodeFromBytes(bytes3);
+      CBORObject cbor4 = CBORObject.DecodeFromBytes(bytes4);
       TestCommon.CompareTestLess(cbor1, cbor2);
       TestCommon.CompareTestLess(cbor1, cbor4);
       TestCommon.CompareTestLess(cbor3, cbor2);
@@ -267,10 +267,10 @@ import com.upokecenter.numbers.*;
         40, 93,
         54, 59, 73, 68, 43, 68, 5, (byte)219, 27, 0, 0, 126, (byte)173, 36, (byte)137, (byte)166, 19,
        };
-      var cbor1 = CBORObject.DecodeFromBytes(bytes1);
-      var cbor2 = CBORObject.DecodeFromBytes(bytes2);
-      var cbor3 = CBORObject.DecodeFromBytes(bytes3);
-      var cbor4 = CBORObject.DecodeFromBytes(bytes4);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(bytes1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bytes2);
+      CBORObject cbor3 = CBORObject.DecodeFromBytes(bytes3);
+      CBORObject cbor4 = CBORObject.DecodeFromBytes(bytes4);
       TestCommon.CompareTestLess(cbor1, cbor2);
       TestCommon.CompareTestLess(cbor1, cbor4);
       TestCommon.CompareTestLess(cbor3, cbor2);
@@ -735,7 +735,7 @@ import com.upokecenter.numbers.*;
         CBORObject ed = CBORTestCommon.RandomNumber(r);
         TestCanFitInOne(ed);
       }
-      var cbor = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
        });
@@ -744,7 +744,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCanFitInSpecificCases() {
-      var cbor = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb,
         0x41, (byte)0xe0, (byte)0x85, 0x48, 0x2d, 0x14, 0x47, 0x7a,
        }); // 2217361768.63373
@@ -788,7 +788,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCBOREInteger() {
-      var o = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject o = CBORObject.DecodeFromBytes(new byte[] {
         0x3b, (byte)0xce,
         (byte)0xe2, 0x5a, 0x57, (byte)0xd8, 0x21, (byte)0xb9, (byte)0xa7,
        });
@@ -1114,10 +1114,10 @@ import com.upokecenter.numbers.*;
     }
 
     public static void TestCompareToOne(byte[] bytes) {
-      var cbor = CBORObject.DecodeFromBytes(bytes, new
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes, new
           CBOREncodeOptions("allowduplicatekeys=1"));
       byte[] bytes2 = cbor.EncodeToBytes();
-      var cbor2 = CBORObject.DecodeFromBytes(bytes2);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bytes2);
       if (!cbor.equals(cbor2)) {
         String sbytes = TestCommon.ToByteArrayString(bytes) +
           "\ncbor=" + cbor +
@@ -1335,22 +1335,22 @@ import com.upokecenter.numbers.*;
           stringTemp);
       }
       {
-        var objectTemp = CBORObject.DecodeFromBytes(new byte[] {
+        CBORObject objectTemp = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xc5, (byte)0x82,
           0x38, (byte)0xc7, 0x3b, 0x00, 0x00, 0x08, (byte)0xbf, (byte)0xda, (byte)0xaf, 0x73, 0x46,
          });
-        var objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
+        CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
           0x3b,
           0x5a, (byte)0x9b, (byte)0x9a, (byte)0x9c, (byte)0xb4, (byte)0x95, (byte)0xbf, 0x71,
          });
         AddSubCompare(objectTemp, objectTemp2);
       }
       {
-        var objectTemp = CBORObject.DecodeFromBytes(new byte[] {
+        CBORObject objectTemp = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xfa, 0x1f,
           (byte)0x80, (byte)0xdb, (byte)0x9b,
          });
-        var objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
+        CBORObject objectTemp2 = CBORObject.DecodeFromBytes(new byte[] {
           (byte)0xfb,
           0x31, (byte)0x90, (byte)0xea, 0x16, (byte)0xbe, (byte)0x80, 0x0b, 0x37,
          });
@@ -1400,12 +1400,12 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestDecFracCompareIntegerVsBigFraction() {
-      var o1 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject o1 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xfb, (byte)0x8b,
         0x44,
         (byte)0xf2, (byte)0xa9, 0x0c, 0x27, 0x42, 0x28,
        });
-      var o2 = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject o2 = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5, (byte)0x82,
         0x38,
         (byte)0xa4, (byte)0xc3, 0x50, 0x02, (byte)0x98, (byte)0xc5, (byte)0xa8,
@@ -1447,7 +1447,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestDecimalFracExponentMustNotBeBignum() {
-      var obj = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject obj = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc4,
         (byte)0x82,
         (byte)0xc2, 0x41, 1,
@@ -1467,7 +1467,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestBigFloatExponentMustNotBeBignum() {
-      var cbor = CBORObject.DecodeFromBytes(new byte[] {
+      CBORObject cbor = CBORObject.DecodeFromBytes(new byte[] {
         (byte)0xc5,
         (byte)0x82,
         (byte)0xc2, 0x41, 1,
@@ -1669,7 +1669,7 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestHalfPrecision() {
-      var o = CBORObject.DecodeFromBytes(
+      CBORObject o = CBORObject.DecodeFromBytes(
           new byte[] { (byte)0xf9, 0x7c, 0x00 });
       if (o.AsSingle() != Float.POSITIVE_INFINITY) {
         Assert.fail();
@@ -2886,8 +2886,8 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
         (byte)0x80, (byte)0xef, (byte)0xa3, 0x65, (byte)0xca, 0x7d, 0x4f,
         (byte)0xa8, 0x27,
        };
-      var cbor1 = CBORObject.DecodeFromBytes(eb1);
-      var cbor2 = CBORObject.DecodeFromBytes(eb2);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(eb1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(eb2);
       EDecimal ed1 = AsED(cbor1);
       EDecimal ed2 = AsED(cbor2);
       // Should return NaN due to memory issues
@@ -2908,8 +2908,8 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
         (byte)0xae, 0x43,
        };
       byte[] eb2 = new byte[] { (byte)0xfa, 0x75, 0x00, 0x57, (byte)0xbe };
-      var cbor1 = CBORObject.DecodeFromBytes(eb1);
-      var cbor2 = CBORObject.DecodeFromBytes(eb2);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(eb1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(eb2);
       EDecimal ed1 = AsED(cbor1);
       EDecimal ed2 = AsED(cbor2);
       // Should return NaN due to memory issues
@@ -3037,8 +3037,8 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
         (byte)0xcc, 0x50, (byte)0x9b, (byte)0xd0, 0x2b,
        };
       byte[] bo2 = new byte[] { (byte)0xc5, (byte)0x82, 0x23, 0x00 };
-      var cbor1 = CBORObject.DecodeFromBytes(bo1);
-      var cbor2 = CBORObject.DecodeFromBytes(bo2);
+      CBORObject cbor1 = CBORObject.DecodeFromBytes(bo1);
+      CBORObject cbor2 = CBORObject.DecodeFromBytes(bo2);
       TestAsNumberMultiplyDivideOne(cbor1, cbor2);
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
@@ -4554,7 +4554,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0x97, 0x42, 0x00, 0x01, 0x65, 0x62, 0x7d, 0x45, 0x20, 0x6c, 0x41,
         0x00,
        };
-      var cbor = CBORObject.DecodeFromBytes(bytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       System.out.println("" + cbor);
       try {
@@ -4598,7 +4598,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xd8, 0x1e, (byte)0x82, 0x29, 0x01, (byte)0x80, 0x43, 0x01, 0x01,
         0x00,
        };
-      var cbor = CBORObject.DecodeFromBytes(bytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       System.out.println("" + cbor);
       try {
@@ -4645,7 +4645,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xf7, (byte)0xa2, (byte)0xa0, (byte)0xf7, 0x60, 0x41, 0x00,
         (byte)0xf4,
        };
-      var cbor = CBORObject.DecodeFromBytes(bytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       System.out.println("" + cbor);
       try {
@@ -4687,7 +4687,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xf4, (byte)0x82, (byte)0x82, (byte)0xf4, (byte)0xa0,
         (byte)0xf6,
        };
-      var cbor = CBORObject.DecodeFromBytes(bytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       System.out.println("" + cbor);
       try {
@@ -4727,7 +4727,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         (byte)0xda, 0x00, 0x03, 0x69,
         (byte)0x95, (byte)0xf6, (byte)0xf7, (byte)0xf6, (byte)0xf4,
        };
-      var cbor = CBORObject.DecodeFromBytes(bytes);
+      CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
       CBOREncodeOptions options = new CBOREncodeOptions("ctap2canonical=true");
       System.out.println("" + cbor);
       try {

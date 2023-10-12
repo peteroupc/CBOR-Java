@@ -1048,9 +1048,11 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               (String)numberinfo.get("number").ToObject(String.class)));
 
-        float f1 = (float)EDecimal.FromString((String)numberinfo.get("number").ToObject(
+        float f1, f2;
+        f1 = (float)EDecimal.FromString(
+            (String)numberinfo.get("number").ToObject(
               String.class)).ToSingle();
-        Object f2 = cbornumber.ToObject(float.class);
+        f2 = (float)cbornumber.ToObject(float.class);
         if (!f1.equals(f2)) {
           Assert.fail();
         }
