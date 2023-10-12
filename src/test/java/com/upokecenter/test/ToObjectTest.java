@@ -1693,9 +1693,12 @@ cp2.setCc("CC");
         try {
           cbor2 = CBORObject.DecodeFromBytes(encdata);
         } catch (Exception ex) {
-          throw new IllegalStateException(
-            TestCommon.ToByteArrayString(encdata),
-            ex);
+          String failString = "" + encdata.length;
+          if (encdata.length < 200) {
+            failString += " ";
+            failString += TestCommon.ToByteArrayString(encdata);
+          }
+          throw new IllegalStateException(failString, ex);
         }
         if (cbor2 == null) {
           Assert.fail();
