@@ -8792,7 +8792,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           Assert.fail(ex.toString());
           throw new IllegalStateException("", ex);
         }
-        using java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
+        {
+          java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
         try {
           CBORObject.WriteValue(ms, -1, 0);
           Assert.fail("Should have failed");
@@ -8929,6 +8933,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             bj = bj.Add(EInteger.FromInt32(1));
           }
         }
+}
+finally {
+try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
+}
+}
       } catch (IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException(ex.toString(), ex);
@@ -10377,8 +10386,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           sb.append(hex.charAt(irg.GetInt32(hex.length())));
           sb.append(hex.charAt(irg.GetInt32(hex.length())));
         } else {
-          x < 95 ? sb.append((char)(irg.GetInt32(0x5e) + 0x21)) :
-sb.append((char)irg.GetInt32(0x80));
+          char charToAppend = x < 95 ? ((char)(irg.GetInt32(0x5e) + 0x21)) :
+            ((char)irg.GetInt32(0x80));
+          sb.append(charToAppend);
         }
       }
       return sb.toString();

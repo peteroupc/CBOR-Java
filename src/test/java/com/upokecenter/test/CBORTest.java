@@ -4321,10 +4321,6 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
         false, false, false, false, true, false, true,
         false,
       };
-      new boolean[] {
-        false, false, false, false, true, true, true,
-        true,
-      };
       for (int i = 0; i < eints.length; ++i) {
         CBORObject cbor;
         boolean isNegative = eints[i].signum() < 0;
@@ -4432,9 +4428,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             Assert.assertEquals(CBORType.Integer, cbor.get(0).getType());
             Assert.assertEquals(0, cbor.get(0).getTagCount());
           }
-          using java.io.ByteArrayOutputStream ms2 = new java.io.ByteArrayOutputStream();
-          CBORObject.Write(ed, ms2);
-          cbor = CBORObject.DecodeFromBytes(ms2.toByteArray());
+          {
+            java.io.ByteArrayOutputStream ms2 = null;
+try {
+ms2 = new java.io.ByteArrayOutputStream();
+
+            CBORObject.Write(ed, ms2);
+            cbor = CBORObject.DecodeFromBytes(ms2.toByteArray());
+}
+finally {
+try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
+}
+}
           if (!(cbor.isNumber())) {
  Assert.fail(cbor.toString());
  }
