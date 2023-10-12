@@ -1870,6 +1870,15 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       TestCommon.CompareTestGreater(cbor1.AsNumber(), cbor2.AsNumber());
     }
 
+    @Test
+    public void TestSuccessfulDecode() {
+      CBORObject.DecodeFromBytes(new byte[] {
+        (byte)0xc0, 0x78, 0x18, 0x31,
+        0x39, 0x36, 0x39, 0x2d, 0x31, 0x32, 0x2d, 0x33, 0x31, 0x54, 0x32, 0x33,
+        0x3a, 0x35, 0x39, 0x3a, 0x35, 0x39, 0x2e, 0x39, 0x39, 0x39, 0x5a,
+       });
+    }
+
     @Test(timeout = 1000)
     public void TestSlowCompareTo6() {
       CBORObject cbor1 = CBORObject.DecodeFromBytes(new byte[] {

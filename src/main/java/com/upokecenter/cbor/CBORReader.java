@@ -63,16 +63,18 @@ import com.upokecenter.numbers.*;
 
     private CBORObject ObjectFromByteArray(byte[] data, int lengthHint) {
       CBORObject cbor = CBORObject.FromRaw(data);
-      if (this.stringRefs == null) { throw new NullPointerException("this"); }
+      if (this.stringRefs != null) {
  this.stringRefs.AddStringIfNeeded(cbor, lengthHint);
+ }
       return cbor;
     }
 
     private CBORObject ObjectFromUtf8Array(byte[] data, int lengthHint) {
       CBORObject cbor = data.length == 0 ? CBORObject.FromObject("") :
          CBORObject.FromRawUtf8(data);
-      if (this.stringRefs == null) { throw new NullPointerException("this"); }
+      if (this.stringRefs != null) {
  this.stringRefs.AddStringIfNeeded(cbor, lengthHint);
+ }
       return cbor;
     }
 
