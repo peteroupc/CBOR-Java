@@ -2500,7 +2500,7 @@ int startingAvailable = inputStream.available();
             ((startingAvailable - inputStream.available()) - oldPos);
           failString += "\n" + TestCommon.ToByteArrayString(array);
           int endPos = Math.min(2000, failString.length());
-          failString = failString.substring(0, (endpos));
+          failString = failString.substring(0, (endPos));
           throw new IllegalStateException(failString, ex);
         }
       }
@@ -4836,8 +4836,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static void AddSubCompare(CBORObject o1, CBORObject o2) {
-      EDecimal cmpDecFrac = AsED(o1).Add(AsED(o2));
-      var cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
+      EDecimal cmpDecFrac, cmpCobj;
+      cmpDecFrac = AsED(o1).Add(AsED(o2));
+      cmpCobj = o1.AsNumber().Add(o2.AsNumber()).ToEDecimal();
       TestCommon.CompareTestEqual(cmpDecFrac, cmpCobj);
       cmpDecFrac = AsED(o1).Subtract(AsED(o2));
       cmpCobj = o1.AsNumber().Subtract(o2.AsNumber()).ToEDecimal();
