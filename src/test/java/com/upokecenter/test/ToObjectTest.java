@@ -1689,8 +1689,18 @@ cp2.setCc("CC");
         }
         // Tests for DecodeObjectFromBytes
         byte[] encdata = cbor.EncodeToBytes();
-        Object obj3 =
-          CBORObject.DecodeFromBytes(encdata).ToObject(obj.getClass());
+        CBORObject cbor2 = null;
+        try {
+          cbor2 = CBORObject.DecodeFromBytes(encdata);
+        } catch (Exception ex) {
+          throw new IllegalStateException(
+            TestCommon.ByteArrayToString(encdata),
+            ex);
+        }
+        if (cbor2 == null) {
+          Assert.fail();
+        }
+        Object obj3 = cbor2.ToObject(obj.getClass());
         Object obj4 = CBORObject.DecodeObjectFromBytes(encdata, obj.getClass());
         TestCommon.AssertEqualsHashCode(obj, obj2);
         TestCommon.AssertEqualsHashCode(obj, obj3);
