@@ -9046,8 +9046,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       try {
         for (int i = 0; i < 0x10000; ++i) {
           bytes[0] = (byte)0xf9;
-          bytes[1] = (byte) (byte)((i >> 8) & 0xff);
-          bytes[2] = (byte) (byte)(i & 0xff);
+          bytes[1] = (byte)((i >> 8) & 0xff);
+          bytes[2] = (byte)(i & 0xff);
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {
             {
@@ -9087,7 +9087,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         for (int i = 0; i < 100000; ++i) {
           bytes[0] = (byte)0xfa;
           for (int j = 1; j <= 4; ++j) {
-            bytes[j] = (byte) (byte)r.UniformInt(256);
+            bytes[j] = (byte)r.UniformInt(256);
           }
 
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
@@ -9129,7 +9129,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         for (int i = 0; i < 100000; ++i) {
           bytes[0] = (byte)0xfb;
           for (int j = 1; j <= 8; ++j) {
-            bytes[j] = (byte) (byte)r.UniformInt(256);
+            bytes[j] = (byte)r.UniformInt(256);
           }
           CBORObject cbor = CBORObject.DecodeFromBytes(bytes);
           if (!cbor.AsNumber().IsNaN()) {

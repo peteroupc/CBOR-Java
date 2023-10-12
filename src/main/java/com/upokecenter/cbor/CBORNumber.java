@@ -854,7 +854,7 @@ private final NumberKind propVarkind;
           }
         }
         if (extended) {
-          bytes[0] = (byte)negative ? (byte)0xff : (byte)0;
+          bytes[0] = negative ? (byte)0xff : (byte)0;
         }
         bi = EInteger.FromBytes(bytes, false);
       } else {

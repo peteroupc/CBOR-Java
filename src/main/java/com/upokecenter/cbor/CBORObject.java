@@ -3352,8 +3352,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             // NOTE: Swapping syntax can't be used in netstandard1.0
             // because it relies on System.ValueTuple
             byte tmp = bytes[i];
-            bytes[i] = (byte)bytes[right];
-            bytes[right] = (byte)tmp;
+            bytes[i] = bytes[right];
+            bytes[right] = tmp;
           }
         }
         switch (byteCount) {
@@ -6300,15 +6300,15 @@ private Map<CBORObject, CBORObject> AsMap() {
         }
         bytes = new byte[length + extra];
         if (tagbyteInt >= 0) {
-          bytes[offset] = (byte) (byte)tagbyteInt;
+          bytes[offset] = (byte)tagbyteInt;
           ++offset;
         }
         if (length < 24) {
-          bytes[offset] = (byte) (byte)(0x60 + str.length());
+          bytes[offset] = (byte)(0x60 + str.length());
           ++offset;
         } else {
           bytes[offset] = (byte)0x78;
-          bytes[offset + 1] = (byte) (byte)str.length();
+          bytes[offset + 1] = (byte)str.length();
           offset += 2;
         }
         boolean issimple = true;
@@ -6318,7 +6318,7 @@ private Map<CBORObject, CBORObject> AsMap() {
             issimple = false;
             break;
           }
-          bytes[i + offset] = (byte)((byte)c);
+          bytes[i + offset] = ((byte)c);
         }
         if (issimple) {
           return bytes;
@@ -6363,22 +6363,22 @@ private Map<CBORObject, CBORObject> AsMap() {
       byte[] bytes;
       if (utf8.length < 24) {
         bytes = new byte[utf8.length + 1];
-        bytes[0] = (byte) (byte)(utf8.length | 0x60);
+        bytes[0] = (byte)(utf8.length | 0x60);
         System.arraycopy(utf8, 0, bytes, 1, utf8.length);
         return bytes;
       }
       if (utf8.length <= 0xffL) {
         bytes = new byte[utf8.length + 2];
         bytes[0] = (byte)0x78;
-        bytes[1] = (byte) (byte)utf8.length;
+        bytes[1] = (byte)utf8.length;
         System.arraycopy(utf8, 0, bytes, 2, utf8.length);
         return bytes;
       }
       if (utf8.length <= 0xffffL) {
         bytes = new byte[utf8.length + 3];
         bytes[0] = (byte)0x79;
-        bytes[1] = (byte) (byte)((utf8.length >> 8) & 0xff);
-        bytes[2] = (byte) (byte)(utf8.length & 0xff);
+        bytes[1] = (byte)((utf8.length >> 8) & 0xff);
+        bytes[2] = (byte)(utf8.length & 0xff);
         System.arraycopy(utf8, 0, bytes, 3, utf8.length);
         return bytes;
       }
@@ -6477,24 +6477,24 @@ private Map<CBORObject, CBORObject> AsMap() {
       byte[] uabytes;
       if (tagHigh != 0) {
         uabytes = new byte[9];
-        uabytes[7] = (byte) (byte)((tagHigh >> 24) & 0xff);
-        uabytes[6] = (byte) (byte)((tagHigh >> 16) & 0xff);
-        uabytes[5] = (byte) (byte)((tagHigh >> 8) & 0xff);
-        uabytes[4] = (byte) (byte)(tagHigh & 0xff);
-        uabytes[3] = (byte) (byte)((tagLow >> 24) & 0xff);
-        uabytes[2] = (byte) (byte)((tagLow >> 16) & 0xff);
-        uabytes[1] = (byte) (byte)((tagLow >> 8) & 0xff);
-        uabytes[0] = (byte) (byte)(tagLow & 0xff);
-        uabytes[8] = (byte)0;
+        uabytes[7] = (byte)((tagHigh >> 24) & 0xff);
+        uabytes[6] = (byte)((tagHigh >> 16) & 0xff);
+        uabytes[5] = (byte)((tagHigh >> 8) & 0xff);
+        uabytes[4] = (byte)(tagHigh & 0xff);
+        uabytes[3] = (byte)((tagLow >> 24) & 0xff);
+        uabytes[2] = (byte)((tagLow >> 16) & 0xff);
+        uabytes[1] = (byte)((tagLow >> 8) & 0xff);
+        uabytes[0] = (byte)(tagLow & 0xff);
+        uabytes[8] = 0;
         return EInteger.FromBytes(uabytes, true);
       }
       if (tagLow != 0) {
         uabytes = new byte[5];
-        uabytes[3] = (byte) (byte)((tagLow >> 24) & 0xff);
-        uabytes[2] = (byte) (byte)((tagLow >> 16) & 0xff);
-        uabytes[1] = (byte) (byte)((tagLow >> 8) & 0xff);
-        uabytes[0] = (byte) (byte)(tagLow & 0xff);
-        uabytes[4] = (byte)0;
+        uabytes[3] = (byte)((tagLow >> 24) & 0xff);
+        uabytes[2] = (byte)((tagLow >> 16) & 0xff);
+        uabytes[1] = (byte)((tagLow >> 8) & 0xff);
+        uabytes[0] = (byte)(tagLow & 0xff);
+        uabytes[4] = 0;
         return EInteger.FromBytes(uabytes, true);
       }
       return EInteger.FromInt32(0);
@@ -6731,7 +6731,7 @@ private Map<CBORObject, CBORObject> AsMap() {
             byteIndex = 0;
             streaming = true;
           }
-          bytes[byteIndex++] = (byte) (byte)c;
+          bytes[byteIndex++] = (byte)c;
         } else if (c <= 0x7ff) {
           if (byteIndex + 2 > StreamedStringBufferLength) {
             // Write bytes retrieved so far - the next two bytes
@@ -6745,8 +6745,8 @@ private Map<CBORObject, CBORObject> AsMap() {
             byteIndex = 0;
             streaming = true;
           }
-          bytes[byteIndex++] = (byte) (byte)(0xc0 | ((c >> 6) & 0x1f));
-          bytes[byteIndex++] = (byte) (byte)(0x80 | (c & 0x3f));
+          bytes[byteIndex++] = (byte)(0xc0 | ((c >> 6) & 0x1f));
+          bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
         } else {
           if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
             (str.charAt(index + 1) & 0xfc00) == 0xdc00) {
@@ -6770,9 +6770,9 @@ private Map<CBORObject, CBORObject> AsMap() {
               byteIndex = 0;
               streaming = true;
             }
-            bytes[byteIndex++] = (byte) (byte)(0xe0 | ((c >> 12) & 0x0f));
-            bytes[byteIndex++] = (byte) (byte)(0x80 | ((c >> 6) & 0x3f));
-            bytes[byteIndex++] = (byte) (byte)(0x80 | (c & 0x3f));
+            bytes[byteIndex++] = (byte)(0xe0 | ((c >> 12) & 0x0f));
+            bytes[byteIndex++] = (byte)(0x80 | ((c >> 6) & 0x3f));
+            bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
           } else {
             if (byteIndex + 4 > StreamedStringBufferLength) {
               // Write bytes retrieved so far - the next four bytes
@@ -6786,10 +6786,10 @@ private Map<CBORObject, CBORObject> AsMap() {
               byteIndex = 0;
               streaming = true;
             }
-            bytes[byteIndex++] = (byte) (byte)(0xf0 | ((c >> 18) & 0x07));
-            bytes[byteIndex++] = (byte) (byte)(0x80 | ((c >> 12) & 0x3f));
-            bytes[byteIndex++] = (byte) (byte)(0x80 | ((c >> 6) & 0x3f));
-            bytes[byteIndex++] = (byte) (byte)(0x80 | (c & 0x3f));
+            bytes[byteIndex++] = (byte)(0xf0 | ((c >> 18) & 0x07));
+            bytes[byteIndex++] = (byte)(0x80 | ((c >> 12) & 0x3f));
+            bytes[byteIndex++] = (byte)(0x80 | ((c >> 6) & 0x3f));
+            bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
           }
         }
       }
