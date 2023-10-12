@@ -2942,7 +2942,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject cbor = CBORObject.DecodeFromBytes(cborbytes);
       CBORObject cbor2 = CBORObject.DecodeFromBytes(cborbytes);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
-      var erat = ERational.Create(0, 3920);
+      ERational erat = ERational.Create(0, 3920);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(erat);
       TestCommon.CompareTestEqualAndConsistent(cbor, cbor2);
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(cbor2);
@@ -2952,7 +2952,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           EInteger.FromInt32(0),
           EInteger.FromString("84170882933504200501581262010093"));
       cbor = ToObjectTest.TestToFromObjectRoundTrip(erat);
-      var erat2 = ERational.Create(
+      ERational erat2 = ERational.Create(
           EInteger.FromInt32(0),
           EInteger.FromString("84170882933504200501581262010093"));
       cbor2 = ToObjectTest.TestToFromObjectRoundTrip(erat2);
@@ -8653,9 +8653,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (String strexp : exponents) {
         EInteger bigexp = EInteger.FromString(strexp);
-        var ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
+        EDecimal ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);
         TestWriteObj(ed);
-        var ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
+        EFloat ef = EFloat.Create(EInteger.FromInt32(99), bigexp);
         TestWriteObj(ef);
         bigexp = bigexp.Negate();
         ed = EDecimal.Create(EInteger.FromInt32(99), bigexp);

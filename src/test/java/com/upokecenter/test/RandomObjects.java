@@ -327,7 +327,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       } else {
         eexp = RandomEInteger(r);
       }
-      var ed = EDecimal.Create(emant, eexp);
+      EDecimal ed = EDecimal.Create(emant, eexp);
       if (decimalString != null) {
         decimalString[0] = emant.toString() + "E" + eexp.toString();
       }
