@@ -191,7 +191,6 @@ import java.util.*;
         this.RaiseError("JSON number can't be parsed.");
       }
 
-      c = -(c - '0');
       int cstart = c;
       c = this.ReadChar();
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
