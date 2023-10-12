@@ -66,7 +66,7 @@ import java.util.*;
     private String NextJSONString() {
       int c;
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb = this.sb.delete(0, this.sb.length());
+      this.sb.delete(0, this.sb.length());
       while (true) {
         c = this.ReadChar();
         if (c == -1 || c < 0x20) {
@@ -80,22 +80,22 @@ import java.util.*;
               case '/':
               case '\"':
                 // Slash is now allowed to be escaped under RFC 8259
-                this.sb = this.sb.append((char)c);
+                this.sb.append((char)c);
                 break;
               case 'b':
-                this.sb = this.sb.append('\b');
+                this.sb.append('\b');
                 break;
               case 'f':
-                this.sb = this.sb.append('\f');
+                this.sb.append('\f');
                 break;
               case 'n':
-                this.sb = this.sb.append('\n');
+                this.sb.append('\n');
                 break;
               case 'r':
-                this.sb = this.sb.append('\r');
+                this.sb.append('\r');
                 break;
               case 't':
-                this.sb = this.sb.append('\t');
+                this.sb.append('\t');
                 break;
               case 'u':
                 { // Unicode escape
@@ -119,7 +119,7 @@ import java.util.*;
                   }
                   if ((c & 0xf800) != 0xd800) {
                     // Non-surrogate
-                    this.sb = this.sb.append((char)c);
+                    this.sb.append((char)c);
                   } else if ((c & 0xfc00) == 0xd800) {
                     int ch = this.ReadChar();
                     if (ch != '\\' || this.ReadChar() != 'u') {
@@ -145,8 +145,8 @@ import java.util.*;
                     if ((c2 & 0xfc00) != 0xdc00) {
                       this.RaiseError("Unpaired surrogate code point");
                     } else {
-                      this.sb = this.sb.append((char)c);
-                      this.sb = this.sb.append((char)c2);
+                      this.sb.append((char)c);
+                      this.sb.append((char)c2);
                     }
                   } else {
                     this.RaiseError("Unpaired surrogate code point");
@@ -169,11 +169,11 @@ import java.util.*;
               // pairs in the String or invalid encoding
               // in the stream
               if ((c >> 16) == 0) {
-                this.sb = this.sb.append((char)c);
+                this.sb.append((char)c);
               } else {
-                this.sb = this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
                     0xd800));
-                this.sb = this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
+                this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
               }
               break;
             }
@@ -195,22 +195,22 @@ import java.util.*;
       int cstart = c;
       c = this.ReadChar();
       this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-      this.sb = this.sb.delete(0, this.sb.length());
-      this.sb = this.sb.append('-');
-      this.sb = this.sb.append((char)cstart);
+      this.sb.delete(0, this.sb.length());
+      this.sb.append('-');
+      this.sb.append((char)cstart);
       char[] charbuf = new char[32];
       int charbufptr = 0;
       while (c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
         c == 'e' || c == 'E') {
         charbuf[charbufptr++] = (char)c;
         if (charbufptr >= 32) {
-          this.sb = this.sb.append(charbuf, 0, 32);
+          this.sb.append(charbuf, 0, 32);
           charbufptr = 0;
         }
         c = this.ReadChar();
       }
       if (charbufptr > 0) {
-        this.sb = this.sb.append(charbuf, 0, charbufptr);
+        this.sb.append(charbuf, 0, charbufptr);
       }
       // System.out.println("--nega=" + sw.getElapsedMilliseconds() + " ms");
       // check if character can validly appear after a JSON number
@@ -380,9 +380,9 @@ this.ReadChar() != 'l') {
 '9')) {
                   // Not an all-digit number, or too long
                   this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-                  this.sb = this.sb.delete(0, this.sb.length());
+                  this.sb.delete(0, this.sb.length());
                   for (int vi = 0; vi < digits; ++vi) {
-                    this.sb = this.sb.append((char)ctmp[vi]);
+                    this.sb.append((char)ctmp[vi]);
                   }
                 } else {
                   obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
@@ -396,14 +396,14 @@ this.ReadChar() != 'l') {
                 needObj = false;
               } else {
                 this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-                this.sb = this.sb.delete(0, this.sb.length());
-                this.sb = this.sb.append((char)cstart);
-                this.sb = this.sb.append((char)csecond);
+                this.sb.delete(0, this.sb.length());
+                this.sb.append((char)cstart);
+                this.sb.append((char)csecond);
               }
             } else {
               this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-              this.sb = this.sb.delete(0, this.sb.length());
-              this.sb = this.sb.append((char)cstart);
+              this.sb.delete(0, this.sb.length());
+              this.sb.append((char)cstart);
             }
             if (needObj) {
               char[] charbuf = new char[32];
@@ -413,13 +413,13 @@ this.ReadChar() != 'l') {
                 c == 'e' || c == 'E') {
                 charbuf[charbufptr++] = (char)c;
                 if (charbufptr >= 32) {
-                  this.sb = this.sb.append(charbuf, 0, 32);
+                  this.sb.append(charbuf, 0, 32);
                   charbufptr = 0;
                 }
                 c = this.ReadChar();
               }
               if (charbufptr > 0) {
-                this.sb = this.sb.append(charbuf, 0, charbufptr);
+                this.sb.append(charbuf, 0, charbufptr);
               }
               // check if character can validly appear after a JSON number
               if (c != ',' && c != ']' && c != '}' && c != -1 &&

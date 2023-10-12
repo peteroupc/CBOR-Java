@@ -41,13 +41,13 @@ import com.upokecenter.util.*;
           }
         }
       } else {
-        this.builder = this.builder.append(str);
+        this.builder.append(str);
       }
     }
 
     public void WriteString(String str, int index, int length) throws java.io.IOException {
       if (this.outputStream == null) {
-        this.builder = this.builder.append(str, index, (index)+(length));
+        this.builder.append(str, index, (index)+(length));
       } else {
         if (length == 1) {
           this.WriteCodePoint(str.charAt(index));
@@ -112,7 +112,7 @@ length);
       if ((codePoint >> 7) == 0) {
         // Code point is in the Basic Latin range (U+0000 to U+007F)
         if (this.outputStream == null) {
-          this.builder = this.builder.append((char)codePoint);
+          this.builder.append((char)codePoint);
         } else {
           this.outputStream.write((byte)codePoint);
         }
@@ -157,13 +157,13 @@ length);
         }
         if (codePoint <= 0xffff) {
           {
-            this.builder = this.builder.append((char)codePoint);
+            this.builder.append((char)codePoint);
           }
         } else if (codePoint <= 0x10ffff) {
-          this.builder = this.builder.append((char)((((codePoint - 0x10000) >> 10) &
+          this.builder.append((char)((((codePoint - 0x10000) >> 10) &
 0x3ff) |
               0xd800));
-          this.builder = this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) |
+          this.builder.append((char)(((codePoint - 0x10000) & 0x3ff) |
               0xdc00));
         }
       }

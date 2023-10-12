@@ -76,22 +76,22 @@ import java.util.*;
               case '/':
               case '\"':
                 // Slash is now allowed to be escaped under RFC 8259
-                this.sb = this.sb.append((char)c);
+                this.sb.append((char)c);
                 break;
               case 'b':
-                this.sb = this.sb.append('\b');
+                this.sb.append('\b');
                 break;
               case 'f':
-                this.sb = this.sb.append('\f');
+                this.sb.append('\f');
                 break;
               case 'n':
-                this.sb = this.sb.append('\n');
+                this.sb.append('\n');
                 break;
               case 'r':
-                this.sb = this.sb.append('\r');
+                this.sb.append('\r');
                 break;
               case 't':
-                this.sb = this.sb.append('\t');
+                this.sb.append('\t');
                 break;
               case 'u':
                 { // Unicode escape
@@ -115,7 +115,7 @@ import java.util.*;
                   }
                   if ((c & 0xf800) != 0xd800) {
                     // Non-surrogate
-                    this.sb = this.sb.append((char)c);
+                    this.sb.append((char)c);
                   } else if ((c & 0xfc00) == 0xd800) {
                     int ch = this.index < ep ? js.charAt(this.index++) : -1;
                     if (ch != '\\' || (this.index < ep ?
@@ -142,8 +142,8 @@ import java.util.*;
                     if ((c2 & 0xfc00) != 0xdc00) {
                       this.RaiseError("Unpaired surrogate code point");
                     } else {
-                      this.sb = this.sb.append((char)c);
-                      this.sb = this.sb.append((char)c2);
+                      this.sb.append((char)c);
+                      this.sb.append((char)c2);
                     }
                   } else {
                     this.RaiseError("Unpaired surrogate code point");
@@ -164,12 +164,12 @@ import java.util.*;
               // NOTE: Differs from CBORJson2
               if ((c & 0xf800) != 0xd800) {
                 // Non-surrogate
-                this.sb = this.sb.append((char)c);
+                this.sb.append((char)c);
               } else if ((c & 0xfc00) == 0xd800 && this.index < ep &&
                 (js.charAt(this.index) & 0xfc00) == 0xdc00) {
                 // Surrogate pair
-                this.sb = this.sb.append((char)c);
-                this.sb = this.sb.append(js.charAt(this.index));
+                this.sb.append((char)c);
+                this.sb.append(js.charAt(this.index));
                 ++this.index;
               } else {
                 this.RaiseError("Unpaired surrogate code point");

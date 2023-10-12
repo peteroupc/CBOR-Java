@@ -103,7 +103,7 @@ package com.upokecenter.util;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         for (int i = 0; i < trials && i >= 0;) {
-          this.valueIrg = this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
           while (i < trials && i >= 0) {
             if ((b & 1) == 1) {
@@ -287,7 +287,7 @@ package com.upokecenter.util;
       if (p == 0.5) {
         byte[] bytes = new byte[1];
         while (true) {
-          this.valueIrg = this.valueIrg.GetBytes(bytes, 0, 1);
+          this.valueIrg.GetBytes(bytes, 0, 1);
           int b = bytes[0];
           for (int i = 0; i < 8; ++i) {
             if ((b & 1) == 1) {
@@ -479,7 +479,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
           minInclusive - maxExclusive < 0) {
           byte[] b = new byte[8];
           while (true) {
-            this.valueIrg = this.valueIrg.GetBytes(b, 0, 8);
+            this.valueIrg.GetBytes(b, 0, 8);
             // Difference is greater than MaxValue
             long lb = b[0] & 0xffL;
             lb |= (b[1] & 0xffL) << 8;
@@ -520,25 +520,25 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       byte[] b = new byte[4];
       switch (maxExclusive) {
         case 2: {
-            this.valueIrg = this.valueIrg.GetBytes(b, 0, 1);
+            this.valueIrg.GetBytes(b, 0, 1);
             return b[0] & 1;
           }
         case 256: {
-            this.valueIrg = this.valueIrg.GetBytes(b, 0, 1);
+            this.valueIrg.GetBytes(b, 0, 1);
             return b[0] & 1;
           }
         default: {
             while (true) {
               int ib;
               if (maxExclusive == 0x1000000) {
-                this.valueIrg = this.valueIrg.GetBytes(b, 0, 3);
+                this.valueIrg.GetBytes(b, 0, 3);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 ib |= (b[2] & 0xff) << 16;
                 return ib;
               }
               if (maxExclusive == 0x10000) {
-                this.valueIrg = this.valueIrg.GetBytes(b, 0, 2);
+                this.valueIrg.GetBytes(b, 0, 2);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 return ib;
@@ -546,7 +546,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
               int maxexc;
               maxexc = Integer.MAX_VALUE / maxExclusive * maxExclusive;
               while (true) {
-                this.valueIrg = this.valueIrg.GetBytes(b, 0, 4);
+                this.valueIrg.GetBytes(b, 0, 4);
                 ib = b[0] & 0xff;
                 ib |= (b[1] & 0xff) << 8;
                 ib |= (b[2] & 0xff) << 16;
@@ -597,7 +597,7 @@ this.UniformInt((int)diff) : (int)(minInclusive + this.UniformLong(diff));
       byte[] b = new byte[8];
       maxexc = Long.MAX_VALUE / maxExclusive * maxExclusive;
       while (true) {
-        this.valueIrg = this.valueIrg.GetBytes(b, 0, 8);
+        this.valueIrg.GetBytes(b, 0, 8);
         long lb = b[0] & 0xffL;
         lb |= (b[1] & 0xffL) << 8;
         lb |= (b[2] & 0xffL) << 16;
