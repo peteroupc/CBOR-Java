@@ -261,6 +261,43 @@ import com.upokecenter.numbers.*;
     }
 
     @Test
+    public void TestEncodingZeros() {
+        TestCommon.CompareTestEqual(ToCN(0.0), ToCN(-0.0).Abs());
+        TestCommon.CompareTestEqual(ToCN(0.0f), ToCN(-0.0f).Abs());
+
+        if (!CBORObject.FromObject(0.0).AsNumber().CanFitInSingle()) {
+            Assert.fail();
+        }
+        if (!CBORObject.FromObject(-0.0).AsNumber().CanFitInSingle()) {
+            Assert.fail();
+        }
+        if (!CBORObject.FromObject(0.0f).AsNumber().CanFitInSingle()) {
+            Assert.fail();
+        }
+        if (!CBORObject.FromObject(-0.0f).AsNumber().CanFitInSingle()) {
+            Assert.fail();
+        }
+
+        ToObjectTest.TestToFromObjectRoundTrip(0.0);
+        ToObjectTest.TestToFromObjectRoundTrip(0.0f);
+        ToObjectTest.TestToFromObjectRoundTrip(-0.0);
+        ToObjectTest.TestToFromObjectRoundTrip(-0.0f);
+
+        TestCommon.CompareTestEqual(ToCN(0.0), CBORObject.FromObject(-0.0).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(-0.0), CBORObject.FromObject(0.0).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(0.0f), CBORObject.FromObject(-0.0f).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(-0.0f), CBORObject.FromObject(0.0f).AsNumber().Negate());
+
+        assert (CBORObject.FromObject(1.0f).EncodeToBytes().length == 3);
+        assert (CBORObject.FromObject(1.0).EncodeToBytes().length == 3);
+        assert (CBORObject.FromObject(0.0f).EncodeToBytes().length == 3);
+        assert (CBORObject.FromObject(-0.0f).EncodeToBytes().length == 3);
+        assert (CBORObject.FromObject(0.0).EncodeToBytes().length == 3);
+        assert (CBORObject.FromObject(-0.0).EncodeToBytes().length == 3);
+    }
+
+
+    @Test
     public void TestNegate() {
       // not implemented yet
     }
