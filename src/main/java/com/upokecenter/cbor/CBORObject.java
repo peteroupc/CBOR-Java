@@ -2180,15 +2180,15 @@ FromString(strValue);
      * Float.NaN in Java); however, NaN values have multiple forms that are
      * equivalent for many applications' purposes, and {@code Float.NaN} / {@code
      * Float.NaN} is only one of these equivalent forms. In fact, {@code
-     * CBORObject.FromSingle(Float.NaN)} or {@code CBORObject.FromFloat(Float.NaN)}
-     * could produce a CBOR-encoded object that differs between DotNet and Java,
-     * because {@code Float.NaN} / {@code Float.NaN} may have a different form in
-     * DotNet and Java (for example, the NaN value's sign may be negative in
-     * DotNet, but positive in Java).
+     * CBORObject.FromSingle(Float.NaN)} or {@code
+     * CBORObject.FromSingle(Float.NaN)} could produce a CBOR-encoded object that
+     * differs between DotNet and Java, because {@code Float.NaN} / {@code
+     * Float.NaN} may have a different form in DotNet and Java (for example, the
+     * NaN value's sign may be negative in DotNet, but positive in Java).
      * @param value The parameter {@code value} is a 32-bit floating-point number.
      * @return A CBOR object generated from the given number.
      */
-    public static CBORObject FromFloat(float value) {
+    public static CBORObject FromSingle(float value) {
       long doubleBits = CBORUtilities.SingleToDoublePrecision(
           CBORUtilities.SingleToInt32Bits(value));
       return new CBORObject(CBORObjectTypeDouble, doubleBits);
@@ -2201,7 +2201,7 @@ FromString(strValue);
      * @deprecated Use FromFloat instead.
  */
 @Deprecated
-    public static CBORObject FromObject(float value) => FromFloat(value);
+    public static CBORObject FromObject(float value) => FromSingle(value);
 
     /**
      * Generates a CBOR object from a 64-bit floating-point number. The input value
@@ -2591,7 +2591,7 @@ FromCBORArray(array);
         return FromByte(((Byte)obj).byteValue());
       }
       if (obj instanceof Float) {
-        return FromFloat(((Float)obj).floatValue());
+        return FromSingle(((Float)obj).floatValue());
       }
 
       if (obj instanceof Double) {

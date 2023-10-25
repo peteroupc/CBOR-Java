@@ -176,8 +176,7 @@ import com.upokecenter.numbers.*;
         CBORObject.FromInt32(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
  Assert.fail();
  }
-      boolean
-      b =
+      boolean b =
 CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         .CanTruncatedIntFitInUInt64();
       if (b) {
@@ -805,5 +804,52 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         .AsNumber().ToERational().IsNaN())) {
  Assert.fail();
  }
+    }
+
+    @Test
+    public void TestEncodingZeros() {
+        TestCommon.CompareTestEqual(ToCN(0.0), ToCN(-0.0).Abs());
+        TestCommon.CompareTestEqual(ToCN(0.0f), ToCN(-0.0f).Abs());
+
+        if (!CBORObject.FromDouble(0.0).AsNumber().CanFitInSingle()) {
+          Assert.fail();
+        }
+        if (!CBORObject.FromDouble(-0.0).AsNumber().CanFitInSingle()) {
+          Assert.fail();
+        }
+        if (!CBORObject.FromSingle(0.0f).AsNumber().CanFitInSingle()) {
+          Assert.fail();
+        }
+        if (!CBORObject.FromSingle(-0.0f).AsNumber().CanFitInSingle()) {
+          Assert.fail();
+        }
+
+        ToObjectTest.TestToFromObjectRoundTrip(0.0);
+        ToObjectTest.TestToFromObjectRoundTrip(0.0f);
+        ToObjectTest.TestToFromObjectRoundTrip(-0.0);
+        ToObjectTest.TestToFromObjectRoundTrip(-0.0f);
+
+        TestCommon.CompareTestEqual(ToCN(0.0),
+  CBORObject.FromDouble(-0.0).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(-0.0),
+  CBORObject.FromDouble(0.0).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(0.0f),
+  CBORObject.FromSingle(-0.0f).AsNumber().Negate());
+        TestCommon.CompareTestEqual(ToCN(-0.0f),
+  CBORObject.FromSingle(0.0f).AsNumber().Negate());
+
+        byte[] bytes;
+        bytes = CBORObject.FromSingle(1.0f).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
+        bytes = CBORObject.FromSingle(0.0f).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
+        bytes = CBORObject.FromSingle(-0.0f).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
+        bytes = CBORObject.FromDouble(1.0).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
+        bytes = CBORObject.FromDouble(0.0).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
+        bytes = CBORObject.FromDouble(-0.0).EncodeToBytes();
+        Assert.assertEquals(3, bytes.length);
     }
   }
