@@ -8,6 +8,8 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 */
 
+using System.Diagnostics.CodeAnalysis;
+
   final class JSONPatch {
 private JSONPatch() {
 }
@@ -37,7 +39,7 @@ private JSONPatch() {
           // System.out.println("after "+parent+"");
         } else if (pointer.GetParent().getType() == CBORType.Map) {
           String key = pointer.GetKey();
-          parent.Set(key, value);
+          parent.Set(CBORObject.FromString(key), value);
         } else {
           throw new CBORException("Patch " + valueOpStr + " path");
         }
@@ -207,7 +209,7 @@ private JSONPatch() {
           pointer.GetParent().RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
           pointer.GetParent().Remove(
-            CBORObject.FromObject(pointer.GetKey()));
+            CBORObject.FromString(pointer.GetKey()));
         }
         return o;
       }
@@ -237,7 +239,7 @@ private JSONPatch() {
           pointer.GetParent().Set(index, value);
         } else if (pointer.GetParent().getType() == CBORType.Map) {
           String key = pointer.GetKey();
-          pointer.GetParent().Set(key, value);
+          pointer.GetParent().Set(CBORObject.FromString(key), value);
         } else {
           throw new CBORException("Patch " + valueOpStr + " path");
         }

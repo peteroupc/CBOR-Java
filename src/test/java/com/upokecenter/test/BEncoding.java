@@ -71,7 +71,7 @@ private BEncoding() {
  if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) == '0') {
  throw new CBORException("Invalid integer encoding");
 }
- return CBORObject.FromObject(
+ return CBORObject.FromEInteger(
           EInteger.FromString(s));
     }
 
@@ -171,7 +171,7 @@ throw new CBORException("Premature end of data");
 case -1:
 throw new CBORException("Invalid UTF-8");
 default:
-return CBORObject.FromObject(builder.toString());
+return CBORObject.FromString(builder.toString());
 }
     }
 

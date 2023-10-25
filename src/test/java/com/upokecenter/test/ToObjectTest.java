@@ -1053,8 +1053,8 @@ import com.upokecenter.numbers.*;
             (String)numberinfo.get("number").ToObject(
               String.class)).ToSingle();
         f2 = (float)cbornumber.ToObject(float.class);
-        if (f1 != f2) {
-          Assert.fail();
+        if (!EFloat.FromSingle(f1).equals(EFloat.FromSingle(f2))) {
+          Assert.fail("f1=" + f1 + "\nf2=" + f2);
         }
       }
     }
@@ -1296,8 +1296,8 @@ import com.upokecenter.numbers.*;
       if (iintDict.get("b") != 2) {
         Assert.fail();
       }
-      co = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:00:00Z",
+      co = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:00:00Z"),
           0);
       try {
         co.ToObject(java.util.Date.class);
@@ -1359,7 +1359,7 @@ import com.upokecenter.numbers.*;
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
@@ -1375,7 +1375,7 @@ import com.upokecenter.numbers.*;
          CBORDateConverter.TaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
@@ -1402,7 +1402,7 @@ import com.upokecenter.numbers.*;
          CBORDateConverter.UntaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
@@ -1423,8 +1423,8 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestBadDate() {
-      CBORObject cbor = CBORObject.FromObjectAndTag(
-          "2000-1-01T00:00:00Z",
+      CBORObject cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-1-01T00:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1435,8 +1435,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-1T00:00:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-1T00:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1447,8 +1447,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T0:00:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T0:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1459,8 +1459,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:0:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:0:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1471,8 +1471,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:00:0Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:00:0Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1483,8 +1483,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "T01:01:01Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("T01:01:01Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);

@@ -8,6 +8,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+using System.Diagnostics.CodeAnalysis;
 import com.upokecenter.numbers.*;
 
   /**
@@ -124,17 +125,6 @@ private final ConversionType propVartype;
      */
     public CBORDateConverter(ConversionType convType) {
       this.propVartype = convType;
-    }
-
-    private static String DateTimeToString(java.util.Date bi) {
-      try {
-        int[] lesserFields = new int[7];
-        EInteger[] outYear = new EInteger[1];
-        PropertyMap.BreakDownDateTime(bi, outYear, lesserFields);
-        return CBORUtilities.ToAtomDateTimeString(outYear[0], lesserFields);
-      } catch (IllegalArgumentException ex) {
-        throw new CBORException(ex.getMessage(), ex);
-      }
     }
 
     /**
@@ -265,7 +255,7 @@ private final ConversionType propVartype;
             lesserFields);
         } else {
           EDecimal dec;
-          dec = (EDecimal)untagobj.ToObject(EDecimal.class);
+          dec = untagobj.ToEDecimal();
           CBORUtilities.BreakDownSecondsSinceEpoch(
             dec,
             outYear,
@@ -301,7 +291,7 @@ private final ConversionType propVartype;
             lesserFields);
         } else {
           EDecimal dec;
-          dec = (EDecimal)untagobj.ToObject(EDecimal.class);
+          dec = untagobj.ToEDecimal();
           CBORUtilities.BreakDownSecondsSinceEpoch(
             dec,
             outYear,
@@ -404,7 +394,7 @@ private final ConversionType propVartype;
           case TaggedString: {
               String str = CBORUtilities.ToAtomDateTimeString(bigYear,
                   lesserFields);
-              return CBORObject.FromObjectAndTag(str, 0);
+              return CBORObject.FromString(str).WithTag(0);
             }
           case TaggedNumber:
           case UntaggedNumber:
@@ -415,10 +405,12 @@ private final ConversionType propVartype;
                   lesserFields,
                   status);
               switch (status[0]) {
-                case 0:
-                  return thisType == ConversionType.TaggedNumber ?
-                    CBORObject.FromObjectAndTag(ef.ToEInteger(), 1) :
-                    CBORObject.FromObject(ef.ToEInteger());
+                case 0: {
+                    CBORObject cbor = CBORObject.FromEInteger(ef.ToEInteger());
+                    return thisType == ConversionType.TaggedNumber ?
+                      CBORObject.FromCBORObjectAndTag(cbor, 1) :
+                      cbor;
+                  }
                 case 1:
                   return thisType == ConversionType.TaggedNumber ?
                     CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8)

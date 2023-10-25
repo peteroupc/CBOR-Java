@@ -70,7 +70,7 @@ import com.upokecenter.numbers.*;
     }
 
     private CBORObject ObjectFromUtf8Array(byte[] data, int lengthHint) {
-      CBORObject cbor = data.length == 0 ? CBORObject.FromObject("") :
+      CBORObject cbor = data.length == 0 ? CBORObject.FromString("") :
          CBORObject.FromRawUtf8(data);
       if (this.stringRefs != null) {
  this.stringRefs.AddStringIfNeeded(cbor, lengthHint);
@@ -316,12 +316,12 @@ count);
           type == 7);
         if (type == 0) {
           return (uadditional >> 63) != 0 ?
-            CBORObject.FromObject(ToUnsignedEInteger(uadditional)) :
-            CBORObject.FromObject(uadditional);
+            CBORObject.FromEInteger(ToUnsignedEInteger(uadditional)) :
+            CBORObject.FromInt64(uadditional);
         } else if (type == 1) {
-          return (uadditional >> 63) != 0 ? CBORObject.FromObject(
+          return (uadditional >> 63) != 0 ? CBORObject.FromEInteger(
               ToUnsignedEInteger(uadditional).Add(1).Negate()) :
-            CBORObject.FromObject((-uadditional) - 1L);
+            CBORObject.FromInt64((-uadditional) - 1L);
         } else if (type == 7) {
           if (additional < 24) {
             return CBORObject.FromSimpleValue(additional);
@@ -516,7 +516,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             newFirstByte) : this.ReadInternal();
         --this.depth;
         if ((uadditional >> 63) != 0) {
-          return CBORObject.FromObjectAndTag(o,
+          return CBORObject.FromCBORObjectAndTag(o,
               ToUnsignedEInteger(uadditional));
         }
         if (uadditional < 65536) {
@@ -537,11 +537,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                 return this.stringRefs.GetString(o.AsEIntegerValue());
             }
           }
-          return CBORObject.FromObjectAndTag(
+          return CBORObject.FromCBORObjectAndTag(
               o,
               (int)uadditional);
         }
-        return CBORObject.FromObjectAndTag(
+        return CBORObject.FromCBORObjectAndTag(
             o,
             EInteger.FromInt64(uadditional));
       }

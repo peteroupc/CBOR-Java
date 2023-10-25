@@ -63,6 +63,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
       if (!URIUtility.HasScheme(uriString)) {
         tag = 267;
       }
-      return CBORObject.FromObjectAndTag(uriString, tag);
+      return CBORObject.FromString(uriString).WithTag(tag);
     }
   }

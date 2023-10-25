@@ -315,8 +315,10 @@ private CBORPlistWriter() {
                       str = sb.toString();
                       break;
                     }
-                    default: str = key.ToJSONString(options);
-                    break;
+                    default: {
+                      str = key.ToJSONString(options);
+                      break;
+                    }
                 }
                 if (stringMap.containsKey(str)) {
                   throw new CBORException(

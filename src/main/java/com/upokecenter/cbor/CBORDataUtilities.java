@@ -283,11 +283,11 @@ private CBORDataUtilities() {
            8);
       } else if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Decimal128) {
-        return CBORObject.FromObject(EDecimal.FromInt32(-digit));
+        return CBORObject.FromEDecimal(EDecimal.FromInt32(-digit));
       } else {
         // NOTE: Assumes digit is greater than zero, so PreserveNegativeZeros is
         // irrelevant
-        return CBORObject.FromObject(-digit);
+        return CBORObject.FromInt32(-digit);
       }
     }
 
@@ -300,10 +300,10 @@ private CBORDataUtilities() {
            8);
       } else if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Decimal128) {
-        return CBORObject.FromObject(EDecimal.FromInt32(digit));
+        return CBORObject.FromEDecimal(EDecimal.FromInt32(digit));
       } else {
         // NOTE: Assumes digit is nonnegative, so PreserveNegativeZeros is irrelevant
-        return CBORObject.FromObject(digit);
+        return CBORObject.FromInt32(digit);
       }
     }
 

@@ -56,7 +56,7 @@ import com.upokecenter.numbers.*;
       new CBORExtendedRational(),
     };
     private final Object value;
-    CBORNumber(NumberKind kind, Object value) {
+    private CBORNumber(NumberKind kind, Object value) {
       this.propVarkind = kind;
       this.value = value;
     }
@@ -98,7 +98,23 @@ import com.upokecenter.numbers.*;
      * @return A CBOR object that stores this object's value.
      */
     public CBORObject ToCBORObject() {
-      return CBORObject.FromObject(this.value);
+      Object obj = this.value;
+      long l = ((obj instanceof Long) ? (long)obj : null); if (l != null) {
+        return CBORObject.FromInt64(l);
+      }
+      EInteger eif = ((obj instanceof EInteger) ? (EInteger)obj : null); if (eif != null) {
+        return CBORObject.FromEInteger(eif);
+      }
+      EDecimal edf = ((obj instanceof EDecimal) ? (EDecimal)obj : null); if (edf != null) {
+        return CBORObject.FromEDecimal(edf);
+      }
+      EFloat eff = ((obj instanceof EFloat) ? (EFloat)obj : null); if (eff != null) {
+        return CBORObject.FromEFloat(eff);
+      }
+      ERational erf = ((obj instanceof ERational) ? (ERational)obj : null); if (erf != null) {
+        return CBORObject.FromERational(erf);
+      }
+      throw new Exception("Unexpected type: " + obj.getClass());
     }
 
     /**
@@ -246,9 +262,10 @@ import com.upokecenter.numbers.*;
             break;
           default: return null; // "Invalid options");
         }
-        return CBORNumber.FromObject(erat);
+        return CBORNumber.FromERational(erat);
       } else {
-        return CBORNumber.FromObject(ERational.Create(numerator, denominator));
+        return CBORNumber.FromERational(ERational.Create(numerator,
+  denominator));
       }
     }
 
@@ -458,8 +475,7 @@ import com.upokecenter.numbers.*;
           default: return null; // "Invalid options");
         }
       }
-      return isdec ? CBORNumber.FromObject(edec) :
-CBORNumber.FromObject(efloat);
+      return isdec ? FromEDecimal(edec) : FromEFloat(efloat);
     }
 
     /**
@@ -674,7 +690,7 @@ private final NumberKind propVarkind;
      */
     public static CBORNumber FromByte(byte inputByte) {
       int val = inputByte & 0xff;
-      return FromObject((long)val);
+      return FromInt64((long)val);
     }
 
     /**
@@ -726,7 +742,7 @@ private final NumberKind propVarkind;
      */
     public static CBORNumber FromInt16(short inputInt16) {
       int val = inputInt16;
-      return FromObject((long)val);
+      return FromInt64((long)val);
     }
 
     /**
@@ -938,25 +954,25 @@ private final NumberKind propVarkind;
       }
     }
 
-    static CBORNumber FromObject(int intValue) {
+    static CBORNumber FromInt(int intValue) {
       return new CBORNumber(NumberKind.Integer, (long)intValue);
     }
-    static CBORNumber FromObject(long longValue) {
+    static CBORNumber FromInt64(long longValue) {
       return new CBORNumber(NumberKind.Integer, longValue);
     }
     static CBORNumber FromDoubleBits(long doubleBits) {
       return new CBORNumber(NumberKind.Double, doubleBits);
     }
-    static CBORNumber FromObject(EInteger eivalue) {
+    static CBORNumber FromEInteger(EInteger eivalue) {
       return new CBORNumber(NumberKind.EInteger, eivalue);
     }
-    static CBORNumber FromObject(EFloat value) {
+    static CBORNumber FromEFloat(EFloat value) {
       return new CBORNumber(NumberKind.EFloat, value);
     }
-    static CBORNumber FromObject(EDecimal value) {
+    static CBORNumber FromEDecimal(EDecimal value) {
       return new CBORNumber(NumberKind.EDecimal, value);
     }
-    static CBORNumber FromObject(ERational value) {
+    static CBORNumber FromERational(ERational value) {
       return new CBORNumber(NumberKind.ERational, value);
     }
 
@@ -1068,14 +1084,14 @@ private final NumberKind propVarkind;
         case Integer: {
             long longValue = (((Long)this.value).longValue());
             return longValue == Long.MIN_VALUE ?
-              FromObject(EInteger.FromInt64(longValue).Negate()) :
+              FromEInteger(EInteger.FromInt64(longValue).Negate()) :
               longValue >= 0 ? this : new CBORNumber(
                   this.getKind(),
                   Math.abs(longValue));
           }
         case EInteger: {
             EInteger eivalue = (EInteger)this.value;
-            return eivalue.signum() >= 0 ? this : FromObject(eivalue.Abs());
+            return eivalue.signum() >= 0 ? this : FromEInteger(eivalue.Abs());
           }
         default:
           return new CBORNumber(this.getKind(),
@@ -1093,15 +1109,16 @@ private final NumberKind propVarkind;
       switch (this.getKind()) {
         case Integer: {
             long longValue = (((Long)this.value).longValue());
-            return longValue == 0 ? FromObject(EDecimal.NegativeZero) :
+            return longValue == 0 ? FromEDecimal(EDecimal.NegativeZero) :
               longValue == Long.MIN_VALUE ?
-FromObject(EInteger.FromInt64(longValue).Negate()) : new
-CBORNumber(this.getKind(), -longValue);
+              FromEInteger(EInteger.FromInt64(longValue).Negate()) : new
+              CBORNumber(this.getKind(), -longValue);
           }
         case EInteger: {
             EInteger eiValue = (EInteger)this.value;
-            return eiValue.isZero() ? FromObject(EDecimal.NegativeZero) :
-FromObject(eiValue.Negate());
+            return eiValue.isZero() ?
+              FromEDecimal(EDecimal.NegativeZero) :
+              FromEInteger(eiValue.Negate());
           }
         default:
           return new CBORNumber(this.getKind(),
@@ -1186,7 +1203,7 @@ NumberKind.Double) ?
         if ((valueA < 0 && valueB < Long.MIN_VALUE - valueA) ||
           (valueA > 0 && valueB > Long.MAX_VALUE - valueA)) {
           // would overflow, convert to EInteger
-          return CBORNumber.FromObject(
+          return CBORNumber.FromEInteger(
               EInteger.FromInt64(valueA).Add(EInteger.FromInt64(valueB)));
         }
         return new CBORNumber(NumberKind.Integer, valueA + valueB);
@@ -1259,7 +1276,7 @@ NumberKind.Double) ?
         if ((valueB < 0 && Long.MAX_VALUE + valueB < valueA) ||
           (valueB > 0 && Long.MIN_VALUE + valueB > valueA)) {
           // would overflow, convert to EInteger
-          return CBORNumber.FromObject(
+          return CBORNumber.FromEInteger(
               EInteger.FromInt64(valueA).Subtract(EInteger.FromInt64(
                   valueB)));
         }
@@ -1334,20 +1351,20 @@ NumberKind.Double) ?
           // would overflow, convert to EInteger
           EInteger bvalueA = EInteger.FromInt64(valueA);
           EInteger bvalueB = EInteger.FromInt64(valueB);
-          return CBORNumber.FromObject(bvalueA.Multiply(bvalueB));
+          return CBORNumber.FromEInteger(bvalueA.Multiply(bvalueB));
         }
-        return CBORNumber.FromObject(valueA * valueB);
+        return CBORNumber.FromInt64(valueA * valueB);
       }
       NumberKind convertKind = GetConvertKind(a, b);
       if (convertKind == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Multiply(e2)));
+        return CBORNumber.FromERational(CheckOverflow(e1, e2, e1.Multiply(e2)));
       }
       if (convertKind == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Multiply(e2)));
+        return CBORNumber.FromEDecimal(CheckOverflow(e1, e2, e1.Multiply(e2)));
       }
       if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
@@ -1388,10 +1405,10 @@ NumberKind.Double) ?
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         if (valueB == 0) {
-          return (valueA == 0) ? CBORNumber.FromObject(EDecimal.NaN) :
-            ((valueA < 0) ? CBORNumber.FromObject(EDecimal.NegativeInfinity) :
+          return (valueA == 0) ? FromEDecimal(EDecimal.NaN) :
+            ((valueA < 0) ? FromEDecimal(EDecimal.NegativeInfinity) :
 
-              CBORNumber.FromObject(EDecimal.PositiveInfinity));
+              FromEDecimal(EDecimal.PositiveInfinity));
         }
         if (valueA == Long.MIN_VALUE && valueB == -1) {
           return new CBORNumber(NumberKind.Integer, valueA).Negate();
@@ -1438,13 +1455,13 @@ NumberKind.Double) ?
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
         if (e1.isZero() && e2.isZero()) {
-          return CBORNumber.FromObject(EDecimal.NaN);
+          return CBORNumber.FromEDecimal(EDecimal.NaN);
         }
         EFloat eret = e1.Divide(e2, null);
         // If either operand is infinity or NaN, the result
         // is already exact. Likewise if the result is a finite number.
         if (!e1.isFinite() || !e2.isFinite() || eret.isFinite()) {
-          return CBORNumber.FromObject(eret);
+          return CBORNumber.FromEFloat(eret);
         }
         ERational er1 = GetNumberInterface(typeA).AsERational(objA);
         ERational er2 = GetNumberInterface(typeB).AsERational(objB);
@@ -1459,9 +1476,9 @@ NumberKind.Double) ?
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
         if (b2.isZero()) {
-          return b1.isZero() ? CBORNumber.FromObject(EDecimal.NaN) : ((b1.signum() <
-                0) ? CBORNumber.FromObject(EDecimal.NegativeInfinity) :
-              CBORNumber.FromObject(EDecimal.PositiveInfinity));
+          return b1.isZero() ? CBORNumber.FromEDecimal(EDecimal.NaN) : ((b1.signum() <
+                0) ? CBORNumber.FromEDecimal(EDecimal.NegativeInfinity) :
+              CBORNumber.FromEDecimal(EDecimal.PositiveInfinity));
         }
         EInteger bigrem;
         EInteger bigquo;
@@ -1470,7 +1487,7 @@ NumberKind.Double) ?
           bigquo = divrem[0];
           bigrem = divrem[1];
         }
-        return bigrem.isZero() ? CBORNumber.FromObject(bigquo) :
+        return bigrem.isZero() ? CBORNumber.FromEInteger(bigquo) :
           new CBORNumber(NumberKind.ERational, ERational.Create(b1, b2));
       }
     }
@@ -1496,31 +1513,34 @@ NumberKind.Double) ?
         long valueA = (((Long)objA).longValue());
         long valueB = (((Long)objB).longValue());
         return (valueA == Long.MIN_VALUE && valueB == -1) ?
-          CBORNumber.FromObject(0) : CBORNumber.FromObject(valueA % valueB);
+          CBORNumber.FromInt(0) : CBORNumber.FromInt64(valueA % valueB);
       }
       NumberKind convertKind = GetConvertKind(this, b);
       if (convertKind == NumberKind.ERational) {
         ERational e1 = GetNumberInterface(typeA).AsERational(objA);
         ERational e2 = GetNumberInterface(typeB).AsERational(objB);
-        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2)));
+        return CBORNumber.FromERational(CheckOverflow(
+          e1,
+          e2,
+          e1.Remainder(e2)));
       }
       if (convertKind == NumberKind.EDecimal) {
         EDecimal e1 = GetNumberInterface(typeA).AsEDecimal(objA);
         EDecimal e2 = GetNumberInterface(typeB).AsEDecimal(objB);
-        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
+        return CBORNumber.FromEDecimal(CheckOverflow(e1, e2, e1.Remainder(e2,
                 null)));
       }
       if (convertKind == NumberKind.EFloat) {
         EFloat e1 = GetNumberInterface(typeA).AsEFloat(objA);
         EFloat e2 = GetNumberInterface(typeB).AsEFloat(objB);
-        return CBORNumber.FromObject(CheckOverflow(e1, e2, e1.Remainder(e2,
+        return CBORNumber.FromEFloat(CheckOverflow(e1, e2, e1.Remainder(e2,
                 null)));
       } else {
         // System.out.println("type=" + typeA + "/" + typeB + " finite=" +
         // (// this.IsFinite()) + "/" + (b.IsFinite()));
         EInteger b1 = GetNumberInterface(typeA).AsEInteger(objA);
         EInteger b2 = GetNumberInterface(typeB).AsEInteger(objB);
-        return CBORNumber.FromObject(b1.Remainder(b2));
+        return CBORNumber.FromEInteger(b1.Remainder(b2));
       }
     }
 
@@ -1535,7 +1555,7 @@ NumberKind.Double) ?
      * returns a positive number if.
      */
     public int compareTo(int other) {
-      return this.compareTo(CBORObject.FromObject(other).AsNumber());
+      return this.compareTo(CBORObject.FromInt32(other).AsNumber());
     }
 
     /**
@@ -1549,7 +1569,7 @@ NumberKind.Double) ?
      * returns a positive number if.
      */
     public int compareTo(long other) {
-      return this.compareTo(CBORObject.FromObject(other).AsNumber());
+      return this.compareTo(CBORObject.FromInt64(other).AsNumber());
     }
 
     /**

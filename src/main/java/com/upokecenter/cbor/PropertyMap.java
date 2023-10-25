@@ -750,19 +750,15 @@ return false;
   public static Object TypeToObject(CBORObject objThis, Type t,
      CBORTypeMapper mapper, PODOptions options, int depth) {
       if (t.equals(Byte.class) || t.equals(Byte.TYPE)) {
-        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToByteChecked();
       }
       if (t.equals(Short.class) || t.equals(Short.TYPE)) {
-        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToInt16Checked();
       }
       if (t.equals(Integer.class) || t.equals(Integer.TYPE)) {
-        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsInt32();
       }
       if (t.equals(Long.class) || t.equals(Long.TYPE)) {
-        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToInt64Checked();
       }
       if (t.equals(Double.class) || t.equals(Double.TYPE)) {

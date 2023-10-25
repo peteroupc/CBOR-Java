@@ -1,6 +1,7 @@
 package com.upokecenter.cbor;
 
 import java.util.*;
+using System.Diagnostics.CodeAnalysis;
 
   /**
    * Holds converters to customize the serialization and deserialization behavior
@@ -41,6 +42,7 @@ import java.util.*;
      * @throws IllegalArgumentException Converter doesn't contain a proper ToCBORObject
      * method".
      */
+
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
       if (type == null) {
@@ -52,7 +54,7 @@ import java.util.*;
       ConverterInfo ci = new ConverterInfo();
 ci.setConverter(converter);
 ci.setToObject(PropertyMap.FindOneArgumentMethod(
-          converter,
+          converter.getClass(),
           "ToCBORObject",
           type));;
       if (ci.getToObject() == null) {
@@ -60,7 +62,7 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
           "Converter doesn't contain a proper ToCBORObject method");
       }
       ci.setFromObject(PropertyMap.FindOneArgumentMethod(
-          converter,
+          converter.getClass(),
           "FromCBORObject",
           CBORObject.class));
       this.converters.put(type, ci);

@@ -62,10 +62,10 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCanFitInInt64() {
-      if (!(CBORObject.FromObject(0).AsNumber().CanFitInInt64())) {
+      if (!(CBORObject.FromInt32(0).AsNumber().CanFitInInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromObject(99).AsNumber().CanFitInInt64())) {
+      if (!(CBORObject.FromInt32(99).AsNumber().CanFitInInt64())) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().CanFitInInt64()) {
@@ -81,60 +81,60 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCanFitInUInt64() {
-      if (!(CBORObject.FromObject(0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromInt32(0).AsNumber().CanFitInUInt64())) {
  Assert.fail("0");
  }
       if (!(
-        CBORObject.FromObject(99).AsNumber().CanFitInUInt64())) {
+        CBORObject.FromInt32(99).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99");
  }
 
-      if (!(CBORObject.FromObject(99.0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromDouble(99.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
 
       if (!(
-        CBORObject.FromObject(1.0).AsNumber().CanFitInUInt64())) {
+        CBORObject.FromDouble(1.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
 
-      if (!(CBORObject.FromObject(-0.0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromDouble(-0.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "-0.0");
  }
       boolean
-      b = CBORObject.FromObject(
+      b = CBORObject.FromEInteger(
           EInteger.FromInt32(1).ShiftLeft(65)).AsNumber().CanFitInUInt64();
       if (b) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromObject(-99).AsNumber().CanFitInUInt64()) {
+        CBORObject.FromInt32(-99).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "-99");
  }
 
-      if (CBORObject.FromObject(-99.0).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromDouble(-99.0).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "-99.0");
  }
 
       if (
-        CBORObject.FromObject(0.1).AsNumber().CanFitInUInt64()) {
+        CBORObject.FromDouble(0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "0.1");
  }
-      if (CBORObject.FromObject(-0.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromDouble(-0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
-      if (CBORObject.FromObject(99.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromDouble(99.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
-      if (CBORObject.FromObject(-99.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromDouble(-99.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().CanFitInUInt64()) {
@@ -151,53 +151,54 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCanTruncatedIntFitInUInt64() {
       if (!(
-        CBORObject.FromObject(0).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromInt32(0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "0");
  }
 
       if (!(
-        CBORObject.FromObject(99).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromInt32(99).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "99");
  }
 
       if (!(
-        CBORObject.FromObject(99.0).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromDouble(99.0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
-      if (!(CBORObject.FromObject(
+      if (!(CBORObject.FromDouble(
           -0.0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromObject(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
+        CBORObject.FromInt32(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
  Assert.fail();
  }
       boolean
-      b = CBORObject.FromObject(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
+      b =
+CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         .CanTruncatedIntFitInUInt64();
       if (b) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromObject(
+        CBORObject.FromDouble(
           -99.0).AsNumber().CanTruncatedIntFitInUInt64()) {
  Assert.fail();
  }
 
       if (!(
-        CBORObject.FromObject(0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromDouble(0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromObject(
+      if (!(CBORObject.FromDouble(
           -0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromObject(
+      if (!(CBORObject.FromDouble(
           99.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
@@ -220,10 +221,10 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestIsInfinity() {
-      if (CBORObject.FromObject(0).AsNumber().IsInfinity()) {
+      if (CBORObject.FromInt32(0).AsNumber().IsInfinity()) {
  Assert.fail();
  }
-      if (CBORObject.FromObject(99).AsNumber().IsInfinity()) {
+      if (CBORObject.FromInt32(99).AsNumber().IsInfinity()) {
  Assert.fail();
  }
       if (!(CBORObject.PositiveInfinity.AsNumber().IsInfinity())) {
@@ -239,10 +240,10 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestIsNaN() {
-      if (CBORObject.FromObject(0).AsNumber().IsNaN()) {
+      if (CBORObject.FromInt32(0).AsNumber().IsNaN()) {
  Assert.fail();
  }
-      if (CBORObject.FromObject(99).AsNumber().IsNaN()) {
+      if (CBORObject.FromInt32(99).AsNumber().IsNaN()) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().IsNaN()) {

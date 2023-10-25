@@ -1311,25 +1311,25 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
       EInteger ei;
       ei = EInteger.FromString("9223372036854775807");
-      if (!(CInt64(CBORObject.FromObject(ei))))Assert.fail(ei.toString());
+      if (!(CInt64(CBORObject.FromEInteger(ei))))Assert.fail(ei.toString());
       ei = EInteger.FromString("9223372036854775808");
-      if (CInt64(CBORObject.FromObject(ei))) {
+      if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail(ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775807");
-      if (!(CInt64(CBORObject.FromObject(ei))))Assert.fail(ei.toString());
+      if (!(CInt64(CBORObject.FromEInteger(ei))))Assert.fail(ei.toString());
       ei = EInteger.FromString("-9223372036854775808");
-      if (!(CInt64(CBORObject.FromObject(ei))))Assert.fail(ei.toString());
+      if (!(CInt64(CBORObject.FromEInteger(ei))))Assert.fail(ei.toString());
       ei = EInteger.FromString("-9223372036854775809");
-      if (CInt64(CBORObject.FromObject(ei))) {
+      if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail(ei.toString());
  }
       ei = EInteger.FromString("-9223373136366403584");
-      if (CInt64(CBORObject.FromObject(ei))) {
+      if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail(ei.toString());
  }
       ei = EInteger.FromString("9223373136366403584");
-      if (CInt64(CBORObject.FromObject(ei))) {
+      if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail(ei.toString());
  }
       String[] strings = new String[] {
@@ -1348,11 +1348,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       };
       for (String str : strings) {
         ei = EInteger.FromRadixString(str, 16);
-        if (CInt64(CBORObject.FromObject(ei))) {
+        if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail();
  }
         ei = ei.Negate();
-        if (CInt64(CBORObject.FromObject(ei))) {
+        if (CInt64(CBORObject.FromEInteger(ei))) {
  Assert.fail();
  }
       }
@@ -1748,7 +1748,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       EInteger ei;
       ei = EInteger.FromString("9223372036854775807");
       {
-        boolean btemp = CBORObject.FromObject(ei)
+        boolean btemp = CBORObject.FromEInteger(ei)
           .AsNumber().CanTruncatedIntFitInInt64();
         if (!(btemp)) {
  Assert.fail(ei.toString());
@@ -1757,42 +1757,42 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       ei = EInteger.FromString("9223372036854775808");
 
       if (
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775807");
 
       if (!(
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64())) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775808");
 
       if (!(
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64())) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64())) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223372036854775809");
 
       if (
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("-9223373136366403584");
 
       if (
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
       ei = EInteger.FromString("9223373136366403584");
 
       if (
-        CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+        CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail(
         ei.toString());
  }
@@ -1814,13 +1814,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         ei = EInteger.FromRadixString(str, 16);
 
         if (
-          CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+          CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail();
  }
         ei = ei.Negate();
 
         if (
-          CBORObject.FromObject(ei).AsNumber().CanTruncatedIntFitInInt64()) {
+          CBORObject.FromEInteger(ei).AsNumber().CanTruncatedIntFitInInt64()) {
  Assert.fail();
  }
       }
@@ -2022,7 +2022,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void CompareLongDouble() {
       CBORObject cbor1 = CBORObject.FromObject(3.5E-15);
-      CBORObject cbor2 = CBORObject.FromObject(281479271677953L);
+      CBORObject cbor2 = CBORObject.FromInt64(281479271677953L);
       TestCommon.CompareTestLess(cbor1.AsDouble(), cbor2.AsDouble());
     }
 
@@ -2849,7 +2849,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject.FromObject(9), CBORObject.True,
         CBORObject.FromObject(bytes),
         CBORObject.False, CBORObject.Null, CBORObject.FromObject("test"),
-        CBORObject.FromObject(99999), CBORObject.FromObject(-1),
+        CBORObject.FromInt32(99999), CBORObject.FromObject(-1),
       };
       for (CBORObject c2 : othercbor) {
         try {
@@ -3159,7 +3159,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     @Test
     public void TestTagArray() {
-      CBORObject obj = CBORObject.FromObjectAndTag("test", 999);
+      CBORObject obj = CBORObject.FromCBORObjectAndTag(CBORObject.FromString("test"), 999);
       EInteger[] etags = obj.GetAllTags();
       Assert.assertEquals(1, etags.length);
       Assert.assertEquals(999, etags[0].ToInt32Checked());
@@ -3286,7 +3286,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(CBORObject.NewArray().AsNumber().signum());
+        CBORObject.FromInt32(CBORObject.NewArray().AsNumber().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -3295,7 +3295,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObject(CBORObject.NewMap().AsNumber().signum());
+        CBORObject.FromInt32(CBORObject.NewMap().AsNumber().signum());
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -3469,8 +3469,8 @@ private final PODClass propVarpropvalue;
     public void TestBase64Extras() {
       // Base64 tests
       CBORObject o;
-      o = CBORObject.FromObjectAndTag(
-          new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 },
+      o = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }),
           23);
       {
         String stringTemp = o.ToJSONString();
@@ -3489,8 +3489,8 @@ private final PODClass propVarpropvalue;
           "\"mtb_6A\"",
           stringTemp);
       }
-      o = CBORObject.FromObjectAndTag(
-          new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 },
+      o = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 }),
           22);
       // Encode with Base64
       {
@@ -3511,8 +3511,8 @@ private final PODClass propVarpropvalue;
           "\"mtb_6A\"",
           stringTemp);
       }
-      o = CBORObject.FromObjectAndTag(
-          new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 },
+      o = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xff, (byte)0xe8 }),
           22);
       // Encode with Base64
       {
@@ -3611,7 +3611,7 @@ aodict.put("PropValue",new PODClass());
     public void TestFromObjectAndTag() {
       EInteger bigvalue = EInteger.FromString("99999999999999999999999999999");
       try {
-        CBORObject.FromObjectAndTag(2, bigvalue);
+        CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(2), bigvalue);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -3620,7 +3620,7 @@ aodict.put("PropValue",new PODClass());
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(2, -1);
+        CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(2), -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -3629,7 +3629,7 @@ aodict.put("PropValue",new PODClass());
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(CBORObject.Null, -1);
+        CBORObject.FromCBORObjectAndTag(CBORObject.Null, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -3638,14 +3638,14 @@ aodict.put("PropValue",new PODClass());
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(CBORObject.Null, 999999);
+        CBORObject.FromCBORObjectAndTag(CBORObject.Null, 999999);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       EInteger eintNull = null;
       try {
-        CBORObject.FromObjectAndTag(2, eintNull);
+        CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(2), eintNull);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -3654,7 +3654,8 @@ aodict.put("PropValue",new PODClass());
         throw new IllegalStateException("", ex);
       }
       try {
-        CBORObject.FromObjectAndTag(2, EInteger.FromString("-1"));
+        CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(2),
+  EInteger.FromString("-1"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         // NOTE: Intentionally empty
@@ -4627,8 +4628,8 @@ aodict.put("PropValue",new PODClass());
 
     @Test
     public void TestMostOuterTag() {
-      CBORObject.FromObjectAndTag(CBORObject.True, 999);
-      CBORObject cbor = CBORObject.FromObjectAndTag(CBORObject.True, 1000);
+      CBORObject.FromCBORObjectAndTag(CBORObject.True, 999);
+      CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.True, 1000);
       Assert.assertEquals(EInteger.FromString("1000"), cbor.getMostOuterTag());
       cbor = CBORObject.True;
       Assert.assertEquals(EInteger.FromString("-1"), cbor.getMostOuterTag());
@@ -7182,7 +7183,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         throw new IllegalStateException("", ex);
       }
       cbor = CBORObject.NewMap().Add("9999-01-01T00:00:00Z", 1)
-        .Add(CBORObject.FromObjectAndTag("9999-01-01T00:00:00Z", 0), 1);
+
+  .Add(CBORObject.FromCBORObjectAndTag(CBORObject.FromString("9999-01-01T00:00:00Z"),
+  0),
+ 1);
       try {
         cbor.ToJSONString();
         Assert.fail("Should have failed");
@@ -7308,8 +7312,8 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     public void TestToJSONString_ByteArray_Padding() {
       CBORObject o;
       JSONOptions options = new JSONOptions("");
-      o = CBORObject.FromObjectAndTag(
-          new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }, 22);
+      o = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }), 22);
       {
         String stringTemp = o.ToJSONString(options);
         Assert.assertEquals(
@@ -7328,8 +7332,8 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
           stringTemp);
       }
       // tagged 23, so base16
-      o = CBORObject.FromObjectAndTag(
-          new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 },
+      o = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(new byte[] { (byte)0x9a, (byte)0xd6, (byte)0xf0, (byte)0xe8 }),
           23);
       {
         String stringTemp = o.ToJSONString(options);
@@ -7545,7 +7549,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       Assert.assertEquals(
         CBORType.Boolean,
         cbor.getType());
-      cbor = CBORObject.FromObjectAndTag(CBORObject.True, 999);
+      cbor = CBORObject.FromCBORObjectAndTag(CBORObject.True, 999);
       Assert.assertEquals(
         CBORType.Boolean,
         cbor.getType());
@@ -7569,7 +7573,8 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
 
     @Test
     public void TestUntag() {
-      CBORObject o = CBORObject.FromObjectAndTag("test", 999);
+      CBORObject o = CBORObject.FromCBORObjectAndTag(CBORObject.FromString("test"),
+  999);
       Assert.assertEquals(EInteger.FromString("999"), o.getMostInnerTag());
       o = o.Untag();
       Assert.assertEquals(EInteger.FromString("-1"), o.getMostInnerTag());
@@ -9272,7 +9277,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     private static void TestDateTimeStringNumberOne(String str, long num) {
       CBORObject dtstring = CBORObject.FromObject(str).WithTag(0);
-      CBORObject dtnum = CBORObject.FromObject(num).WithTag(1);
+      CBORObject dtnum = CBORObject.FromInt64(num).WithTag(1);
       TestDateTimeStringNumberOne(dtstring, dtnum);
     }
     private static void TestDateTimeStringNumberOne(String str, double num) {
@@ -9992,7 +9997,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         dateList.add(dtstr);
       }
       for (String dtstr : dateList) {
-        CBORObject cbor = CBORObject.FromObjectAndTag(dtstr, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(dtstr), 0);
         java.util.Date dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
         ToObjectTest.TestToFromObjectRoundTrip(dt);
       }
@@ -10004,10 +10009,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void TestDateTimeTag1One(String str, EInteger ei) {
       CBORObject cbornum;
-      cbornum = CBORObject.FromObjectAndTag(str, 0);
+      cbornum = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(str), 0);
       java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
       ToObjectTest.TestToFromObjectRoundTrip(dtx);
-      cbornum = CBORObject.FromObjectAndTag(ei, 1);
+      cbornum = CBORObject.FromCBORObjectAndTag(CBORObject.FromEInteger(ei), 1);
       java.util.Date dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
       ToObjectTest.TestToFromObjectRoundTrip(dtx2);
       TestCommon.AssertEqualsHashCode(dtx, dtx2);
@@ -10015,7 +10020,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new NullPointerException("ei");
       }
       if (ei.CanFitInInt64()) {
-        cbornum = CBORObject.FromObjectAndTag(ei.ToInt64Checked(), 1);
+        cbornum =
+CBORObject.FromCBORObjectAndTag(CBORObject.FromInt64(ei.ToInt64Checked()),
+  1);
         dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
         TestCommon.AssertEqualsHashCode(dtx, dtx2);
         ToObjectTest.TestToFromObjectRoundTrip(dtx2);
@@ -10023,11 +10030,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       EFloat ef1 = EFloat.FromEInteger(ei).Plus(EContext.Binary64);
       EFloat ef2 = EFloat.FromEInteger(ei);
       if (ef1.compareTo(ef2) == 0) {
-        cbornum = CBORObject.FromObjectAndTag(ef1, 1);
+        cbornum =
+CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(ef1), 1);
         dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
         TestCommon.AssertEqualsHashCode(dtx, dtx2);
         ToObjectTest.TestToFromObjectRoundTrip(dtx2);
-        cbornum = CBORObject.FromObjectAndTag(ef1.ToDouble(), 1);
+        cbornum =
+CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(ef1.ToDouble()), 1);
         dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
         TestCommon.AssertEqualsHashCode(dtx, dtx2);
         ToObjectTest.TestToFromObjectRoundTrip(dtx2);
@@ -10036,10 +10045,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     public static void TestDateTimeTag1One(String str, double dbl) {
       CBORObject cbornum;
-      cbornum = CBORObject.FromObjectAndTag(str, 0);
+      cbornum = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(str), 0);
       java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
       ToObjectTest.TestToFromObjectRoundTrip(dtx);
-      cbornum = CBORObject.FromObjectAndTag(dbl, 1);
+      cbornum = CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(dbl), 1);
       java.util.Date dtx2 = (java.util.Date)cbornum.ToObject(java.util.Date.class);
       ToObjectTest.TestToFromObjectRoundTrip(dtx2);
       TestCommon.AssertEqualsHashCode(dtx, dtx2);
@@ -10049,7 +10058,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestDateTimeTag1Specific1() {
       // Test speed
       EInteger ei = EInteger.FromString("-14261178672295354872");
-      CBORObject cbornum = CBORObject.FromObjectAndTag(ei, 1);
+      CBORObject cbornum = CBORObject.FromCBORObjectAndTag(CBORObject.FromEInteger(ei), 1);
       try {
         java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
         ToObjectTest.TestToFromObjectRoundTrip(dtx);
@@ -10349,7 +10358,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       java.util.Date dt, dt2;
       for (int i = 0; i < 1000; ++i) {
         EInteger ei = CBORTestCommon.RandomEIntegerMajorType0Or1(rg);
-        cbornum = CBORObject.FromObjectAndTag(ei, 1);
+        cbornum =
+CBORObject.FromCBORObjectAndTag(CBORObject.FromEInteger(ei), 1);
         try {
           java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
           ToObjectTest.TestToFromObjectRoundTrip(dtx);
@@ -10359,7 +10369,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       for (int i = 0; i < 1000; ++i) {
         double dbl = RandomObjects.RandomFiniteDouble(rg);
-        cbornum = CBORObject.FromObjectAndTag(dbl, 1);
+        cbornum =
+CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(dbl), 1);
         try {
           java.util.Date dtx = (java.util.Date)cbornum.ToObject(java.util.Date.class);
           ToObjectTest.TestToFromObjectRoundTrip(dtx);
@@ -10368,9 +10379,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
       String dateStr = "1970-01-01T00:00:00.000Z";
-      CBORObject cbor = CBORObject.FromObjectAndTag(dateStr, 0);
+      CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(dateStr), 0);
       dt = (java.util.Date)cbor.ToObject(java.util.Date.class);
-      CBORObject.FromObjectAndTag(0, 1);
+      CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(0), 1);
       dt2 = (java.util.Date)cbor.ToObject(java.util.Date.class);
       Assert.assertEquals(dt2, dt);
     }

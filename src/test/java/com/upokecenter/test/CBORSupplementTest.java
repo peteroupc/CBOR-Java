@@ -1010,7 +1010,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc",
   "Hh");
       TestCommon.CompareTestEqual(cbor, cbor2);
-      cbor2 = CBORObject.FromObject(100);
+      cbor2 = CBORObject.FromInt32(100);
       TestCommon.CompareTestGreater(cbor, cbor2);
       cbor2 = CBORObject.FromSimpleValue(10);
       TestCommon.CompareTestLess(cbor, cbor2);

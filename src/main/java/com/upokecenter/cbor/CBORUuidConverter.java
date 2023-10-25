@@ -29,7 +29,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {
       byte[] bytes = PropertyMap.UUIDToBytes(obj);
-      return CBORObject.FromObjectAndTag(bytes, 37);
+      return CBORObject.FromByteArray(bytes).WithTag(37);
     }
 
     public java.util.UUID FromCBORObject(CBORObject obj) {

@@ -303,7 +303,7 @@ import com.upokecenter.numbers.*;
       if (!(cbor.ContainsKey(ToObjectTest.TestToFromObjectRoundTrip(
             "hello"))))Assert.fail();
       Assert.assertEquals(2, cbor.get("hello").AsInt32Value());
-      cbor.Set(1, 3);
+      cbor.Set(1, CBORObject.FromInt32(3));
       CBORObject cborone = ToObjectTest.TestToFromObjectRoundTrip(1);
       if (!(cbor.ContainsKey(cborone))) {
  Assert.fail();
@@ -1077,7 +1077,7 @@ import com.upokecenter.numbers.*;
       cbor3 = CBORObject.FromJSONString(str, jsoptions);
       cbored = (ed.getExponent().compareTo(0) == 0 && !(ed.isNegative() && ed.signum()
             == 0)) ?
-        CBORObject.FromObject(ed.getMantissa()) : CBORObject.FromObject(ed);
+        CBORObject.FromEInteger(ed.getMantissa()) : CBORObject.FromEDecimal(ed);
       Assert.assertEquals("[" + str + "] cbor2",cbor,cbor2);
       Assert.assertEquals("[" + str + "] cbor3",cbor,cbor3);
       Assert.assertEquals("[" + str + "] cbored",cbor,cbored);
@@ -1106,7 +1106,7 @@ import com.upokecenter.numbers.*;
       cbor = CBORObject.FromJSONBytes(bytes, jsoptions);
       cbor2 = CBORDataUtilities.ParseJSONNumber(str, jsoptions);
       cbor3 = CBORObject.FromJSONString(str, jsoptions);
-      cbored = CBORObject.FromObject(ed);
+      cbored = CBORObject.FromEDecimal(ed);
       Assert.assertEquals("[" + str + "] cbor2",cbor,cbor2);
       Assert.assertEquals("[" + str + "] cbor3",cbor,cbor3);
       Assert.assertEquals("[" + str + "] cbored",cbor,cbored);
@@ -1356,23 +1356,23 @@ import com.upokecenter.numbers.*;
          });
         AddSubCompare(objectTemp, objectTemp2);
       }
-      CBORObject cbor = CBORObject.FromObjectAndTag(
-          Double.NEGATIVE_INFINITY,
+      CBORObject cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromDouble(Double.NEGATIVE_INFINITY),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
-      cbor = CBORObject.FromObjectAndTag(
+      cbor = CBORObject.FromCBORObjectAndTag(
           ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
-      cbor = CBORObject.FromObjectAndTag(
+      cbor = CBORObject.FromCBORObjectAndTag(
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
-      cbor = CBORObject.FromObjectAndTag(
+      cbor = CBORObject.FromCBORObjectAndTag(
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.DecNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
-      cbor = CBORObject.FromObjectAndTag(
+      cbor = CBORObject.FromCBORObjectAndTag(
           ToObjectTest.TestToFromObjectRoundTrip(CBORTestCommon.FloatNegInf),
           1956611);
       CBORTestCommon.AssertRoundTrip(cbor);
@@ -1523,8 +1523,8 @@ import com.upokecenter.numbers.*;
         {
           ERational objectTemp = er;
           ERational objectTemp2;
-          CBORNumber cn = CBORObject.FromObject(o1).AsNumber()
-            .Divide(CBORObject.FromObject(o2).AsNumber());
+          CBORNumber cn = o1.AsNumber()
+            .Divide(o2.AsNumber());
           objectTemp2 = cn.ToERational();
           TestCommon.CompareTestEqual(objectTemp, objectTemp2);
         }
@@ -1533,11 +1533,11 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCBORCompareTo() {
-      int cmp = CBORObject.FromObject(0).compareTo(null);
+      int cmp = CBORObject.FromInt32(0).compareTo(null);
       if (cmp <= 0) {
         Assert.fail();
       }
-      cmp = CBORObject.FromObject(0).AsNumber().compareTo(null);
+      cmp = CBORObject.FromInt32(0).AsNumber().compareTo(null);
       if (cmp <= 0) {
         Assert.fail();
       }
@@ -1695,12 +1695,12 @@ import com.upokecenter.numbers.*;
       CBORObject cbortag;
       for (int tag = 268; tag <= 269; ++tag) {
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(0);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         if (cbortag.AsNumber().IsNegative()) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         try {
           System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
@@ -1711,12 +1711,12 @@ import com.upokecenter.numbers.*;
           throw new IllegalStateException("", ex);
         }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(1);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         if (!(cbortag.AsNumber().IsNegative())) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(-1);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         try {
           System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
@@ -1727,7 +1727,7 @@ import com.upokecenter.numbers.*;
           throw new IllegalStateException("", ex);
         }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(2);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         try {
           System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
@@ -1738,17 +1738,17 @@ import com.upokecenter.numbers.*;
           throw new IllegalStateException("", ex);
         }
         cbor = CBORObject.NewArray().Add(0).Add(0).Add(2);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         if (cbortag.AsNumber().IsNegative()) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(0).Add(0).Add(3);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         if (!(cbortag.AsNumber().IsNegative())) {
  Assert.fail();
  }
         cbor = CBORObject.NewArray().Add(-3).Add(99999).Add(8);
-        cbortag = CBORObject.FromObjectAndTag(cbor, tag);
+        cbortag = CBORObject.FromCBORObjectAndTag(cbor, tag);
         try {
           System.out.println("" + cbortag.ToObject(EDecimal.class));
           Assert.fail("Should have failed " + cbortag.toString());
@@ -1812,7 +1812,7 @@ import com.upokecenter.numbers.*;
       CBORObject o;
       o = CBORObject.FromJSONString("[1,2,null,true,false,\"\"]");
       o.Add(new byte[] { 32, 33, 44, 55 });
-      o.Add(CBORObject.FromObjectAndTag(9999, 1));
+      o.Add(CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(9999), 1));
       System.out.println(o.ToJSONString());
       System.out.println(CBORPlistWriter.ToPlistString(o));
     }
@@ -2153,16 +2153,16 @@ try { if (ms2b != null) { ms2b.close(); } } catch (java.io.IOException ex) {}
       CBORObject arr = CBORObject.NewArray().Add("xxx").Add("yyy");
       arr.Add("zzz")
       .Add("wwww").Add("iiiiiii").Add("aaa").Add("bbb").Add("ccc");
-      arr = CBORObject.FromObjectAndTag(arr, 28);
+      arr = CBORObject.FromCBORObjectAndTag(arr, 28);
       root.Add(arr);
       CBORObject refobj;
       for (int i = 0; i <= nests; ++i) {
-        refobj = CBORObject.FromObjectAndTag(i, 29);
-        arr = CBORObject.FromObject(new CBORObject[] {
+        refobj = CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(i), 29);
+        arr = CBORObject.FromCBORArray(new CBORObject[] {
           refobj, refobj, refobj, refobj, refobj, refobj, refobj, refobj,
           refobj,
         });
-        arr = CBORObject.FromObjectAndTag(arr, 28);
+        arr = CBORObject.FromCBORObjectAndTag(arr, 28);
         root.Add(arr);
       }
       return root;
@@ -2586,7 +2586,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
       Assert.assertEquals(
         expectedStr,
         com.upokecenter.util.DataUtilities.ToLowerCaseAscii(ei.ToRadixString(16)));
-      CBORObject cbor = CBORObject.FromObject(ei);
+      CBORObject cbor = CBORObject.FromEInteger(ei);
       if (!(cbor.AsNumber().signum() >= 0)) {
  Assert.fail();
  }
@@ -3058,26 +3058,26 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
         list.add(obj);
       }
       Assert.assertEquals(3, list.size());
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"), list.get(0));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("b"), list.get(1));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"), list.get(2));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("a"), list.get(0));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("b"), list.get(1));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("c"), list.get(2));
       cbor = CBORObject.NewOrderedMap().Add("c", 1).Add("a", 2).Add("vv", 3);
       list = new ArrayList<CBORObject>();
       for (CBORObject obj : cbor.getKeys()) {
         list.add(obj);
       }
       Assert.assertEquals(3, list.size());
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("c"), list.get(0));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("a"), list.get(1));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject("vv"), list.get(2));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("c"), list.get(0));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("a"), list.get(1));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromString("vv"), list.get(2));
       list = new ArrayList<CBORObject>();
       for (CBORObject obj : cbor.getValues()) {
         list.add(obj);
       }
       Assert.assertEquals(3, list.size());
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject(1), list.get(0));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject(2), list.get(1));
-      TestCommon.AssertEqualsHashCode(CBORObject.FromObject(3), list.get(2));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromInt32(1), list.get(0));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromInt32(2), list.get(1));
+      TestCommon.AssertEqualsHashCode(CBORObject.FromInt32(3), list.get(2));
     }
 
     @Test(timeout = 10000)
@@ -3085,62 +3085,62 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
       for (int i = 200; i < 1000; ++i) {
         CBORObject o, o2;
         o = ToObjectTest.TestToFromObjectRoundTrip(0);
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o =
           ToObjectTest.TestToFromObjectRoundTrip(EInteger.FromString(
               "999999999999999999999999999999999"));
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = ToObjectTest.TestToFromObjectRoundTrip(new byte[] { 1, 2, 3 });
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.NewArray();
         o.Add(ToObjectTest.TestToFromObjectRoundTrip(0));
         o.Add(ToObjectTest.TestToFromObjectRoundTrip(1));
         o.Add(ToObjectTest.TestToFromObjectRoundTrip(2));
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.NewMap();
         o.Add("a", ToObjectTest.TestToFromObjectRoundTrip(0));
         o.Add("b", ToObjectTest.TestToFromObjectRoundTrip(1));
         o.Add("c", ToObjectTest.TestToFromObjectRoundTrip(2));
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = ToObjectTest.TestToFromObjectRoundTrip("a");
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.False;
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.True;
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.Null;
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
         o = CBORObject.Undefined;
-        o2 = CBORObject.FromObjectAndTag(o, i);
+        o2 = CBORObject.FromCBORObjectAndTag(o, i);
         TestCommon.AssertEqualsHashCode(o, o2);
-        o = CBORObject.FromObjectAndTag(o, i + 1);
+        o = CBORObject.FromCBORObjectAndTag(o, i + 1);
         TestCommon.AssertEqualsHashCode(o, o2);
       }
     }
@@ -3207,7 +3207,8 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
               continue;
             }
           }
-          CBORObject obj = CBORObject.FromObjectAndTag(0, bigintTemp);
+          CBORObject obj = CBORObject.FromCBORObjectAndTag(CBORObject.FromInt32(0),
+  bigintTemp);
           if (!obj.isTagged()) {
             Assert.fail("obj not tagged");
           }
@@ -3229,7 +3230,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
           if (!bigintTemp.equals(maxuint)) {
             EInteger bigintNew = bigintNext;
             // Test multiple tags
-            CBORObject obj2 = CBORObject.FromObjectAndTag(obj, bigintNew);
+            CBORObject obj2 = CBORObject.FromCBORObjectAndTag(obj, bigintNew);
             EInteger[] bi = obj2.GetAllTags();
             if (bi.length != 2) {
               {
@@ -4224,34 +4225,36 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
       CBORObject cbor;
       // 0 versus 0.0
       cbor = CBORObject.NewMap();
-      cbor.Set(0, CBORObject.FromObject("testzero"));
-      cbor.Set(0.0, CBORObject.FromObject("testpointzero"));
+      cbor.Set(0, CBORObject.FromString("testzero"));
+      cbor.Set(CBORObject.FromDouble(0.0),
+  CBORObject.FromString("testpointzero"));
       Assert.assertEquals(2, cbor.size());
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(0)).AsString();
+        String stringTemp = cbor.get(CBORObject.FromInt32(0)).AsString();
         Assert.assertEquals(
           "testzero",
           stringTemp);
       }
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(
+        String stringTemp = cbor.get(CBORObject.FromDouble(
               (double)0.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
       }
       cbor = CBORObject.NewMap();
-      cbor.Set(0.0, CBORObject.FromObject("testpointzero"));
-      cbor.Set(0, CBORObject.FromObject("testzero"));
+      cbor.Set(CBORObject.FromDouble(0.0),
+  CBORObject.FromString("testpointzero"));
+      cbor.Set(0, CBORObject.FromString("testzero"));
       Assert.assertEquals(2, cbor.size());
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(0)).AsString();
+        String stringTemp = cbor.get(CBORObject.FromInt32(0)).AsString();
         Assert.assertEquals(
           "testzero",
           stringTemp);
       }
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(
+        String stringTemp = cbor.get(CBORObject.FromDouble(
               (double)0.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
@@ -4259,34 +4262,36 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
       }
       // 3 versus 3.0
       cbor = CBORObject.NewMap();
-      cbor.Set(3, CBORObject.FromObject("testzero"));
-      cbor.Set(3.0, CBORObject.FromObject("testpointzero"));
+      cbor.Set(3, CBORObject.FromString("testzero"));
+      cbor.Set(CBORObject.FromDouble(3.0),
+  CBORObject.FromString("testpointzero"));
       Assert.assertEquals(2, cbor.size());
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(3)).AsString();
+        String stringTemp = cbor.get(CBORObject.FromInt32(3)).AsString();
         Assert.assertEquals(
           "testzero",
           stringTemp);
       }
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(
+        String stringTemp = cbor.get(CBORObject.FromDouble(
               (double)3.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
           stringTemp);
       }
       cbor = CBORObject.NewMap();
-      cbor.Set(3.0, CBORObject.FromObject("testpointzero"));
-      cbor.Set(3, CBORObject.FromObject("testzero"));
+      cbor.Set(CBORObject.FromDouble(3.0),
+  CBORObject.FromString("testpointzero"));
+      cbor.Set(3, CBORObject.FromString("testzero"));
       Assert.assertEquals(2, cbor.size());
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(3)).AsString();
+        String stringTemp = cbor.get(CBORObject.FromInt32(3)).AsString();
         Assert.assertEquals(
           "testzero",
           stringTemp);
       }
       {
-        String stringTemp = cbor.get(CBORObject.FromObject(
+        String stringTemp = cbor.get(CBORObject.FromDouble(
               (double)3.0)).AsString();
         Assert.assertEquals(
           "testpointzero",
@@ -4324,7 +4329,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
       for (int i = 0; i < eints.length; ++i) {
         CBORObject cbor;
         boolean isNegative = eints[i].signum() < 0;
-        cbor = CBORObject.FromObject(eints[i]);
+        cbor = CBORObject.FromEInteger(eints[i]);
         if (!(cbor.isNumber())) {
  Assert.fail(cbor.toString());
  }
@@ -4343,7 +4348,7 @@ EInteger.FromInt32(1).ShiftLeft(64).Add(v);
           Assert.assertEquals(0, cbor.getTagCount());
         }
         EFloat ef = EFloat.Create(EInteger.FromInt32(1), eints[i]);
-        cbor = CBORObject.FromObject(ef);
+        cbor = CBORObject.FromEFloat(ef);
         if (!(cbor.isNumber())) {
  Assert.fail(cbor.toString());
  }
@@ -4404,7 +4409,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
           EDecimal ed = EDecimal.Create(EInteger.FromInt32(1), eints[i]);
-          cbor = CBORObject.FromObject(ed);
+          cbor = CBORObject.FromEDecimal(ed);
           if (!(cbor.isNumber())) {
  Assert.fail(cbor.toString());
  }
@@ -4472,17 +4477,17 @@ try { if (ms2 != null) { ms2.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestRationalJSONSpecificA() {
       ERational er = ERational.FromString("1088692579850251977918382727683876451288883451475551838663907953515213777772897669/734154292316019508508581520803142368704146796235662433292652");
-      CBORObject.FromObject(er).ToJSONString();
+      CBORObject.FromERational(er).ToJSONString();
     }
     @Test
     public void TestRationalJSONSpecificB() {
       ERational er2 = ERational.FromString("1117037884940373468269515037592447741921166676191625235424/13699696515096285881634845839085271311137");
-      CBORObject.FromObject(er2).ToJSONString();
+      CBORObject.FromERational(er2).ToJSONString();
     }
     @Test
     public void TestRationalJSONSpecificC() {
       ERational er2 = ERational.FromString("42595158956667/1216724793801972483341765319799605241541780250657492435");
-      CBORObject.FromObject(er2).ToJSONString();
+      CBORObject.FromERational(er2).ToJSONString();
     }
 
     @Test
@@ -4858,7 +4863,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       ERational er = ERational.Create(
           EInteger.FromString(s1),
           EInteger.FromString(s2));
-      CBORObject cbor = CBORObject.FromObject(er);
+      CBORObject cbor = CBORObject.FromERational(er);
       cbor.ToJSONString();
     }
 
@@ -4881,16 +4886,16 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test
     public void TestWriteBasic() {
       JSONOptions jsonop1 = new JSONOptions("writebasic=true");
-      String json = CBORObject.FromObject("\uD800\uDC00").ToJSONString(jsonop1);
+      String json = CBORObject.FromString("\uD800\uDC00").ToJSONString(jsonop1);
       Assert.assertEquals("\"\\uD800\\uDC00\"", json);
-      json = CBORObject.FromObject("\u0800\u0C00").ToJSONString(jsonop1);
+      json = CBORObject.FromString("\u0800\u0C00").ToJSONString(jsonop1);
       Assert.assertEquals("\"\\u0800\\u0C00\"", json);
-      json = CBORObject.FromObject("\u0085\uFFFF").ToJSONString(jsonop1);
+      json = CBORObject.FromString("\u0085\uFFFF").ToJSONString(jsonop1);
       Assert.assertEquals("\"\\u0085\\uFFFF\"", json);
       RandomGenerator rg = new RandomGenerator();
       for (int i = 0; i < 1000; ++i) {
         String rts = RandomObjects.RandomTextString(rg);
-        CBORObject cbor = CBORObject.FromObject(rts);
+        CBORObject cbor = CBORObject.FromString(rts);
         json = cbor.ToJSONString(jsonop1);
         // Check that the JSON contains only ASCII code points
         for (int j = 0; j < json.length(); ++j) {

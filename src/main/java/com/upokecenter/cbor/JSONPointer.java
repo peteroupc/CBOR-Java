@@ -9,6 +9,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 */
 
 import java.util.*;
+using System.Diagnostics.CodeAnalysis;
 
 import com.upokecenter.numbers.*;
 
@@ -130,7 +131,6 @@ import com.upokecenter.numbers.*;
         }
       }
     }
-
     public static CBORObject GetObject(
       CBORObject obj,
       String pointer,
@@ -380,7 +380,7 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
           // and remove the key from the Object
           // if necessary
           if (remove) {
-            rootObj.Remove(CBORObject.FromObject(keyToFind));
+            rootObj.Remove(CBORObject.FromString(keyToFind));
           }
         }
         // Search the key's values
