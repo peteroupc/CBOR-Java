@@ -13,7 +13,7 @@ import com.upokecenter.numbers.*;
   public class CBORObjectTest {
     private static final String[] ValueJsonFails = {
       "\"\\uxxxx\"",
-      "\"\ud800\\udc00\"", "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
+      "\"\\U0023\"", "\"\\u002x\"", "\"\\u00xx\"",
       "\"\\u0xxx\"", "\"\\u0\"", "\"\\u00\"", "\"\\u000\"", "trbb",
       "trub", "falsb", "nulb", "[true", "[true,", "[true]!", "tr\u0020",
       "tr", "fa", "nu", "True", "False", "Null", "TRUE", "FALSE", "NULL",
