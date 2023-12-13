@@ -1,32 +1,32 @@
 package com.upokecenter.test;
 
+import java.util.*;
 import com.upokecenter.util.*;
 
   public final class CBORGenerator {
     private static final class ByteWriter {
       private byte[] bytes = new byte[64];
+      private int pos;
 
       public ByteWriter Write(int b) {
-        if (this.getByteLength() < this.bytes.length) {
-          this.bytes[this.getByteLength()] = (byte)b;
-          this.setByteLength(1 + this.getByteLength());
+        if (this.pos < this.bytes.length) {
+          this.bytes[this.pos++] = (byte)b;
         } else {
           byte[] newbytes = new byte[this.bytes.length * 2];
           System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
           this.bytes = newbytes;
-          this.bytes[this.getByteLength()] = (byte)b;
-          this.setByteLength(1 + this.getByteLength());
+          this.bytes[this.pos++] = (byte)b;
         }
         return this;
       }
 
-      public final int getByteLength() { return propVarbytelength; }
-public final void setByteLength(int value) { propVarbytelength = value; }
-private int propVarbytelength;
+      public final int getByteLength() {
+          return this.pos;
+        }
 
       public byte[] ToBytes() {
-        byte[] newbytes = new byte[this.getByteLength()];
-        System.arraycopy(this.bytes, 0, newbytes, 0, this.getByteLength());
+        byte[] newbytes = new byte[this.pos];
+        System.arraycopy(this.bytes, 0, newbytes, 0, this.pos);
         return newbytes;
       }
     }
@@ -37,10 +37,10 @@ private int propVarbytelength;
       int len,
       ByteWriter bs) {
       int maxArg = 4;
+      int sh = 0;
       int minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 :
           ((len <= 0xffff) ? 2 : 3));
       int arg = minArg + r.GetInt32(maxArg - minArg + 1);
-      int sh;
       switch (arg) {
         case 0:
           bs.Write((majorType * 0x20) + len);
@@ -79,19 +79,19 @@ private int propVarbytelength;
       }
     }
 
-    private static final int[]
-    ValueMajorTypes = {
+    private static int[]
+    valueMajorTypes = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4,
       4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7,
     };
 
-    private static final int[]
-    ValueMajorTypesHighDepth = {
+    private static int[]
+    valueMajorTypesHighDepth = {
       0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
       5, 5, 5, 5, 5, 5, 6, 7,
     };
 
-    private static final int[] ValueMajorTypesHighLength = {
+    private static int[] valueMajorTypesHighLength = {
       0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 6,
       6, 7, 7, 7, 7, 7, 7,
     };
@@ -106,7 +106,7 @@ private int propVarbytelength;
         } else {
           r = ra.GetInt32(3);
           if (r == 0 && length - i >= 2) {
-            r = 0xc2 + ra.GetInt32(0xdf - 0xc2 + 1);
+            r = 0xc2 + ra.GetInt32((0xdf - 0xc2) + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             i += 2;
@@ -115,7 +115,7 @@ private int propVarbytelength;
             bs.Write(r);
             int lower = (r == 0xe0) ? 0xa0 : 0x80;
             int upper = (r == 0xed) ? 0x9f : 0xbf;
-            r = lower + ra.GetInt32(upper - lower + 1);
+            r = lower + ra.GetInt32((upper - lower) + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             i += 3;
@@ -124,7 +124,7 @@ private int propVarbytelength;
             bs.Write(r);
             int lower = (r == 0xf0) ? 0x90 : 0x80;
             int upper = (r == 0xf4) ? 0x8f : 0xbf;
-            r = lower + ra.GetInt32(upper - lower + 1);
+            r = lower + ra.GetInt32((upper - lower) + 1);
             bs.Write(r);
             bs.Write(0x80 + ra.GetInt32(0x40));
             bs.Write(0x80 + ra.GetInt32(0x40));
@@ -160,14 +160,14 @@ private int propVarbytelength;
       }
     }
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
-      int majorType = ValueMajorTypes[r.GetInt32(ValueMajorTypes.length)];
+      int majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
       if (depth > 6) {
-        majorType = ValueMajorTypesHighDepth[r.GetInt32(
-              ValueMajorTypesHighDepth.length)];
+        majorType = valueMajorTypesHighDepth[r.GetInt32(
+              valueMajorTypesHighDepth.length)];
       }
       if (bs.getByteLength() > 2000000) {
-        majorType = ValueMajorTypesHighLength[r.GetInt32(
-              ValueMajorTypesHighLength.length)];
+        majorType = valueMajorTypesHighLength[r.GetInt32(
+              valueMajorTypesHighLength.length)];
       }
       if (majorType == 3 || majorType == 2) { // Byte and text strings
         int len = r.GetInt32(1000);

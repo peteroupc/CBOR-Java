@@ -1,7 +1,6 @@
 package com.upokecenter.cbor;
 
 import java.util.*;
-using System.Diagnostics.CodeAnalysis;
 
   /**
    * Holds converters to customize the serialization and deserialization behavior
@@ -42,7 +41,6 @@ using System.Diagnostics.CodeAnalysis;
      * @throws IllegalArgumentException Converter doesn't contain a proper ToCBORObject
      * method".
      */
-
     public <T> CBORTypeMapper AddConverter(java.lang.reflect.Type type,
       ICBORConverter<T> converter) {
       if (type == null) {
@@ -52,17 +50,17 @@ using System.Diagnostics.CodeAnalysis;
         throw new NullPointerException("converter");
       }
       ConverterInfo ci = new ConverterInfo();
-ci.setConverter(converter);
-ci.setToObject(PropertyMap.FindOneArgumentMethod(
-          converter.getClass(),
-          "ToCBORObject",
-          type));;
+      ci.setConverter(converter);
+      ci.setToObject(PropertyMap.FindOneArgumentMethod(
+        converter,
+        "ToCBORObject",
+        type));
       if (ci.getToObject() == null) {
         throw new IllegalArgumentException(
           "Converter doesn't contain a proper ToCBORObject method");
       }
       ci.setFromObject(PropertyMap.FindOneArgumentMethod(
-          converter.getClass(),
+          converter,
           "FromCBORObject",
           CBORObject.class));
       this.converters.put(type, ci);
@@ -73,20 +71,27 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
  <T> T ConvertBackWithConverter(
       CBORObject cbor,
       java.lang.reflect.Type type) {
-      ConverterInfo convinfo = PropertyMap.GetOrDefault(
-        this.converters,
-        type,
-        null);
-      return (T)(convinfo == null ? null : (convinfo.getFromObject() == null) ? null :
+      ConverterInfo convinfo = null;
+      if (this.converters.containsKey(type)) {
+        convinfo = this.converters.get(type);
+      } else {
+        return null;
+      }
+      if (convinfo == null) {
+        return null;
+      }
+      return (T)((convinfo.getFromObject() == null) ? null :
         PropertyMap.CallFromObject(convinfo, cbor));
     }
 
     CBORObject ConvertWithConverter(Object obj) {
       Object type = obj.getClass();
-      ConverterInfo convinfo = PropertyMap.GetOrDefault(
-        this.converters,
-        type,
-        null);
+      ConverterInfo convinfo = null;
+      if (this.converters.containsKey(type)) {
+        convinfo = this.converters.get(type);
+      } else {
+        return null;
+      }
       return (convinfo == null) ? null :
         PropertyMap.CallToObject(convinfo, obj);
     }

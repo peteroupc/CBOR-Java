@@ -62,10 +62,10 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCanFitInInt64() {
-      if (!(CBORObject.FromInt32(0).AsNumber().CanFitInInt64())) {
+      if (!(CBORObject.FromObject(0).AsNumber().CanFitInInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromInt32(99).AsNumber().CanFitInInt64())) {
+      if (!(CBORObject.FromObject(99).AsNumber().CanFitInInt64())) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().CanFitInInt64()) {
@@ -81,60 +81,60 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestCanFitInUInt64() {
-      if (!(CBORObject.FromInt32(0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromObject(0).AsNumber().CanFitInUInt64())) {
  Assert.fail("0");
  }
       if (!(
-        CBORObject.FromInt32(99).AsNumber().CanFitInUInt64())) {
+        CBORObject.FromObject(99).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99");
  }
 
-      if (!(CBORObject.FromDouble(99.0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromObject(99.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
 
       if (!(
-        CBORObject.FromDouble(1.0).AsNumber().CanFitInUInt64())) {
+        CBORObject.FromObject(1.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
 
-      if (!(CBORObject.FromDouble(-0.0).AsNumber().CanFitInUInt64())) {
+      if (!(CBORObject.FromObject(-0.0).AsNumber().CanFitInUInt64())) {
  Assert.fail(
         "-0.0");
  }
       boolean
-      b = CBORObject.FromEInteger(
+      b = CBORObject.FromObject(
           EInteger.FromInt32(1).ShiftLeft(65)).AsNumber().CanFitInUInt64();
       if (b) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromInt32(-99).AsNumber().CanFitInUInt64()) {
+        CBORObject.FromObject(-99).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "-99");
  }
 
-      if (CBORObject.FromDouble(-99.0).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromObject(-99.0).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "-99.0");
  }
 
       if (
-        CBORObject.FromDouble(0.1).AsNumber().CanFitInUInt64()) {
+        CBORObject.FromObject(0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail(
         "0.1");
  }
-      if (CBORObject.FromDouble(-0.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromObject(-0.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
-      if (CBORObject.FromDouble(99.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromObject(99.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
-      if (CBORObject.FromDouble(-99.1).AsNumber().CanFitInUInt64()) {
+      if (CBORObject.FromObject(-99.1).AsNumber().CanFitInUInt64()) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().CanFitInUInt64()) {
@@ -151,53 +151,53 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCanTruncatedIntFitInUInt64() {
       if (!(
-        CBORObject.FromInt32(0).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromObject(0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "0");
  }
 
       if (!(
-        CBORObject.FromInt32(99).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromObject(99).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "99");
  }
 
       if (!(
-        CBORObject.FromDouble(99.0).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromObject(99.0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail(
         "99.0");
  }
-      if (!(CBORObject.FromDouble(
+      if (!(CBORObject.FromObject(
           -0.0).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromInt32(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
+        CBORObject.FromObject(-99).AsNumber().CanTruncatedIntFitInUInt64()) {
  Assert.fail();
  }
-      boolean b =
-CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
+      boolean
+      b = CBORObject.FromObject(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         .CanTruncatedIntFitInUInt64();
       if (b) {
  Assert.fail();
  }
 
       if (
-        CBORObject.FromDouble(
+        CBORObject.FromObject(
           -99.0).AsNumber().CanTruncatedIntFitInUInt64()) {
  Assert.fail();
  }
 
       if (!(
-        CBORObject.FromDouble(0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
+        CBORObject.FromObject(0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromDouble(
+      if (!(CBORObject.FromObject(
           -0.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
-      if (!(CBORObject.FromDouble(
+      if (!(CBORObject.FromObject(
           99.1).AsNumber().CanTruncatedIntFitInUInt64())) {
  Assert.fail();
  }
@@ -220,10 +220,10 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
 
     @Test
     public void TestIsInfinity() {
-      if (CBORObject.FromInt32(0).AsNumber().IsInfinity()) {
+      if (CBORObject.FromObject(0).AsNumber().IsInfinity()) {
  Assert.fail();
  }
-      if (CBORObject.FromInt32(99).AsNumber().IsInfinity()) {
+      if (CBORObject.FromObject(99).AsNumber().IsInfinity()) {
  Assert.fail();
  }
       if (!(CBORObject.PositiveInfinity.AsNumber().IsInfinity())) {
@@ -239,10 +239,10 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
 
     @Test
     public void TestIsNaN() {
-      if (CBORObject.FromInt32(0).AsNumber().IsNaN()) {
+      if (CBORObject.FromObject(0).AsNumber().IsNaN()) {
  Assert.fail();
  }
-      if (CBORObject.FromInt32(99).AsNumber().IsNaN()) {
+      if (CBORObject.FromObject(99).AsNumber().IsNaN()) {
  Assert.fail();
  }
       if (CBORObject.PositiveInfinity.AsNumber().IsNaN()) {
@@ -294,9 +294,8 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = CBORTestCommon.RandomNumber(r);
         CBORObject o2 = CBORTestCommon.RandomNumber(r);
-        EDecimal cmpDecFrac, cmpCobj;
-        cmpDecFrac = AsED(o1).Multiply(AsED(o2));
-        cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
+        EDecimal cmpDecFrac = AsED(o1).Multiply(AsED(o2));
+        EDecimal cmpCobj = ToCN(o1).Multiply(ToCN(o2)).ToEDecimal();
         if (!cmpDecFrac.equals(cmpCobj)) {
           TestCommon.CompareTestEqual(
             cmpDecFrac,
@@ -368,7 +367,7 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
     public void TestAsEInteger() {
       try {
         ToObjectTest.TestToFromObjectRoundTrip(
-          null).AsNumber().ToEInteger();
+          (Object)null).AsNumber().ToEInteger();
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -506,7 +505,7 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         String stringTemp =
 
           ToObjectTest.TestToFromObjectRoundTrip(
-            328323f).AsNumber().ToEInteger().toString();
+            (float)328323f).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
@@ -514,7 +513,7 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
       {
         String stringTemp =
           ToObjectTest.TestToFromObjectRoundTrip(
-            0.75).AsNumber().ToEInteger()
+            (double)0.75).AsNumber().ToEInteger()
           .toString();
         Assert.assertEquals(
           "0",
@@ -522,14 +521,14 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            0.99).AsNumber().ToEInteger().toString();
+            (double)0.99).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip(0.0000000000000001)
+          ToObjectTest.TestToFromObjectRoundTrip((double)0.0000000000000001)
           .AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
@@ -537,21 +536,23 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            0.5).AsNumber().ToEInteger().toString();
+            (double)0.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            1.5).AsNumber().ToEInteger().toString();
+        String stringTemp =
+          ToObjectTest.TestToFromObjectRoundTrip(
+            (double)1.5).AsNumber().ToEInteger()
+          .toString();
         Assert.assertEquals(
           "1",
           stringTemp);
       }
       {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(
-            2.5).AsNumber().ToEInteger().toString();
+            (double)2.5).AsNumber().ToEInteger().toString();
         Assert.assertEquals(
           "2",
           stringTemp);
@@ -804,52 +805,5 @@ CBORObject.FromEInteger(EInteger.FromInt32(1).ShiftLeft(65)).AsNumber()
         .AsNumber().ToERational().IsNaN())) {
  Assert.fail();
  }
-    }
-
-    @Test
-    public void TestEncodingZeros() {
-        TestCommon.CompareTestEqual(ToCN(0.0), ToCN(-0.0).Abs());
-        TestCommon.CompareTestEqual(ToCN(0.0f), ToCN(-0.0f).Abs());
-
-        if (!CBORObject.FromDouble(0.0).AsNumber().CanFitInSingle()) {
-          Assert.fail();
-        }
-        if (!CBORObject.FromDouble(-0.0).AsNumber().CanFitInSingle()) {
-          Assert.fail();
-        }
-        if (!CBORObject.FromSingle(0.0f).AsNumber().CanFitInSingle()) {
-          Assert.fail();
-        }
-        if (!CBORObject.FromSingle(-0.0f).AsNumber().CanFitInSingle()) {
-          Assert.fail();
-        }
-
-        ToObjectTest.TestToFromObjectRoundTrip(0.0);
-        ToObjectTest.TestToFromObjectRoundTrip(0.0f);
-        ToObjectTest.TestToFromObjectRoundTrip(-0.0);
-        ToObjectTest.TestToFromObjectRoundTrip(-0.0f);
-
-        TestCommon.CompareTestEqual(ToCN(0.0),
-  CBORObject.FromDouble(-0.0).AsNumber().Negate());
-        TestCommon.CompareTestEqual(ToCN(-0.0),
-  CBORObject.FromDouble(0.0).AsNumber().Negate());
-        TestCommon.CompareTestEqual(ToCN(0.0f),
-  CBORObject.FromSingle(-0.0f).AsNumber().Negate());
-        TestCommon.CompareTestEqual(ToCN(-0.0f),
-  CBORObject.FromSingle(0.0f).AsNumber().Negate());
-
-        byte[] bytes;
-        bytes = CBORObject.FromSingle(1.0f).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
-        bytes = CBORObject.FromSingle(0.0f).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
-        bytes = CBORObject.FromSingle(-0.0f).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
-        bytes = CBORObject.FromDouble(1.0).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
-        bytes = CBORObject.FromDouble(0.0).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
-        bytes = CBORObject.FromDouble(-0.0).EncodeToBytes();
-        Assert.assertEquals(3, bytes.length);
     }
   }

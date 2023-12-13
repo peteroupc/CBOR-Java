@@ -3,8 +3,7 @@ package com.upokecenter.cbor;
   /**
    * An interface for reading Unicode characters from a data source.
    */
-  interface ICharacterInput
-  {
+  interface ICharacterInput {
     /**
      * Reads a Unicode character from a data source.
      * @return Either a Unicode code point (from 0-0xd7ff or from 0xe000 to

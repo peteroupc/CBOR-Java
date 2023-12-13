@@ -43,7 +43,7 @@ private TestCommon() {
               if (i != str.length()) {
                 throw new NumberFormatException();
               }
- return Integer.MIN_VALUE;
+              return Integer.MIN_VALUE;
             }
             if (x > 7) {
               throw new NumberFormatException();
@@ -76,16 +76,16 @@ private TestCommon() {
         ++i;
         if (c >= '0' && c <= '9') {
           int x = c - '0';
-          if (ret > 922337203685477580L) {
+          if ((long)ret > 922337203685477580L) {
             throw new NumberFormatException();
           }
           ret *= 10;
-          if (ret == 9223372036854775800L) {
+          if ((long)ret == 9223372036854775800L) {
             if (neg && x == 8) {
               if (i != str.length()) {
                 throw new NumberFormatException();
               }
- return Long.MIN_VALUE;
+              return Long.MIN_VALUE;
             }
             if (x > 7) {
               throw new NumberFormatException();
@@ -471,20 +471,20 @@ private TestCommon() {
       int count;
       if (value < 100000) {
         if (neg) {
-          chars = new char[6];
-          count = 5;
+         chars = new char[6];
+         count = 5;
         } else {
-          chars = new char[5];
-          count = 4;
+         chars = new char[5];
+         count = 4;
         }
         while (value > 9) {
           int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-          char digit = Digits.charAt(value - (intdivvalue * 10));
+          char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
           chars[count--] = digit;
           value = intdivvalue;
         }
         if (value != 0) {
-          chars[count--] = Digits.charAt(value);
+          chars[count--] = Digits.charAt((int)value);
         }
         if (neg) {
           chars[count] = '-';
@@ -497,18 +497,18 @@ private TestCommon() {
       count = 11;
       while (value >= 163840) {
         int intdivvalue = value / 10;
-        char digit = Digits.charAt(value - (intdivvalue * 10));
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-        char digit = Digits.charAt(value - (intdivvalue * 10));
+        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = Digits.charAt(value);
+        chars[count--] = Digits.charAt((int)value);
       }
       if (neg) {
         chars[count] = '-';
@@ -526,13 +526,14 @@ private TestCommon() {
         return "0";
       }
       boolean neg = longValue < 0;
+      int count = 0;
       char[] chars;
       int intlongValue = ((int)longValue);
-      if (intlongValue == longValue) {
+      if ((long)intlongValue == longValue) {
         return IntToString(intlongValue);
       } else {
         chars = new char[24];
-        int count = 23;
+        count = 23;
         if (neg) {
           longValue = -longValue;
         }
@@ -665,9 +666,10 @@ length);
           sb.append(',');
         }
         if ((bytes[offset + i] & 0x80) != 0) {
-          sb.append("(byte)");
+          sb.append("(byte)0x");
+        } else {
+          sb.append("0x");
         }
-        sb.append("0x");
         sb.append(ValueHex.charAt((bytes[offset + i] >> 4) & 0xf));
         sb.append(ValueHex.charAt(bytes[offset + i] & 0xf));
       }

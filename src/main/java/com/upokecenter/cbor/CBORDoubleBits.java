@@ -8,28 +8,28 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORDoubleBits implements ICBORNumber
-  {
+  class CBORDoubleBits implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
-      return ((((Long)obj).longValue())) == (0x7ffL << 52);
+       return ((((Long)obj).longValue())) == (0x7ffL << 52);
     }
 
     public boolean IsInfinity(Object obj) {
-      return (((((Long)obj).longValue())) & ~(1L << 63)) == (0x7ffL << 52);
+       return (((((Long)obj).longValue())) & ~(1L << 63)) == (0x7ffL << 52);
     }
 
     public boolean IsNegativeInfinity(Object obj) {
-      return ((((Long)obj).longValue())) == (0xfffL << 52);
+       return ((((Long)obj).longValue())) == (0xfffL << 52);
     }
 
     public boolean IsNaN(Object obj) {
-      return CBORUtilities.DoubleBitsNaN((((Long)obj).longValue()));
+       return CBORUtilities.DoubleBitsNaN((((Long)obj).longValue()));
     }
 
     public double AsDouble(Object obj) {
-      return CBORUtilities.Int64BitsToDouble((((Long)obj).longValue()));
+       return CBORUtilities.Int64BitsToDouble((((Long)obj).longValue()));
     }
 
     public EDecimal AsEDecimal(Object obj) {
@@ -41,8 +41,8 @@ import com.upokecenter.numbers.*;
     }
 
     public float AsSingle(Object obj) {
-      return CBORUtilities.Int32BitsToSingle(
-        CBORUtilities.DoubleToRoundedSinglePrecision((((Long)obj).longValue())));
+       return CBORUtilities.Int32BitsToSingle(
+         CBORUtilities.DoubleToRoundedSinglePrecision((((Long)obj).longValue())));
     }
 
     public EInteger AsEInteger(Object obj) {
@@ -108,7 +108,7 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
         return origbits;
       }
       // Infinity and NaN
-      if (bits >= (0x7ffL << 52)) {
+      if (bits >= ((long)(0x7ffL << 52))) {
         return origbits;
       }
       // Beyond non-integer range
@@ -178,17 +178,17 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
         mant = -mant;
       }
       if (mant < minValue || mant > maxValue) {
- throw new ArithmeticException("This Object's value is out of range");
-}
- return (int)mant;
+        throw new ArithmeticException("This Object's value is out of range");
+      }
+      return (int)mant;
     }
 
     public boolean IsNumberZero(Object obj) {
-      return (((((Long)obj).longValue())) & ~(1L << 63)) == 0;
+       return (((((Long)obj).longValue())) & ~(1L << 63)) == 0;
     }
 
     public int Sign(Object obj) {
-      return this.IsNaN(obj) ? (-2) : ((((((Long)obj).longValue())) >> 63) != 0 ? -1 : 1);
+return this.IsNaN(obj) ? (-2) : ((((((Long)obj).longValue())) >> 63) != 0 ? -1 : 1);
     }
 
     public boolean IsIntegral(Object obj) {
@@ -196,11 +196,11 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
     }
 
     public Object Negate(Object obj) {
-      return ((((Long)obj).longValue())) ^ (1L << 63);
+       return ((((Long)obj).longValue())) ^ (1L << 63);
     }
 
     public Object Abs(Object obj) {
-      return ((((Long)obj).longValue())) & ~(1L << 63);
+       return ((((Long)obj).longValue())) & ~(1L << 63);
     }
 
     public ERational AsERational(Object obj) {
@@ -208,6 +208,6 @@ CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
     }
 
     public boolean IsNegative(Object obj) {
-      return (((((Long)obj).longValue())) >> 63) != 0;
+       return (((((Long)obj).longValue())) >> 63) != 0;
     }
   }

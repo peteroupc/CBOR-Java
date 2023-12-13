@@ -8,32 +8,33 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-  class CBORUriConverter implements ICBORToFromConverter<java.net.URI>
-  {
+  class CBORUriConverter implements ICBORToFromConverter<java.net.URI> {
     private static CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.TextString) {
         throw new CBORException("URI/IRI must be a text String");
       }
       boolean isiri = obj.HasMostOuterTag(266);
       boolean isiriref = obj.HasMostOuterTag(267);
-      if (isiriref && !URIUtility.IsValidIRI(
+      if (
+        isiriref && !URIUtility.IsValidIRI(
           obj.AsString(),
           URIUtility.ParseMode.IRIStrict)) {
- throw new CBORException("String is not a valid IRI Reference");
-}
- if (isiri && (!URIUtility.IsValidIRI(
+        throw new CBORException("String is not a valid IRI Reference");
+      }
+      if (
+        isiri && (!URIUtility.IsValidIRI(
             obj.AsString(),
             URIUtility.ParseMode.IRIStrict) ||
           !URIUtility.HasScheme(obj.AsString()))) {
- throw new CBORException("String is not a valid IRI");
-}
- if (!URIUtility.IsValidIRI(
+        throw new CBORException("String is not a valid IRI");
+      }
+      if (!URIUtility.IsValidIRI(
           obj.AsString(),
           URIUtility.ParseMode.URIStrict) ||
         !URIUtility.HasScheme(obj.AsString())) {
- throw new CBORException("String is not a valid URI");
-}
- return obj;
+        throw new CBORException("String is not a valid URI");
+      }
+      return obj;
     }
 
     public java.net.URI FromCBORObject(CBORObject obj) {
@@ -63,6 +64,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
       if (!URIUtility.HasScheme(uriString)) {
         tag = 267;
       }
-      return CBORObject.FromString(uriString).WithTag(tag);
+      return CBORObject.FromObjectAndTag(uriString, (int)tag);
     }
   }

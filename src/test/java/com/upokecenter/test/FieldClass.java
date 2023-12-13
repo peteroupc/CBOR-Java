@@ -6,5 +6,5 @@ package com.upokecenter.test;
     public final int ReadonlyFieldA = 33;
     private final int privateFieldB = 44;
     public int publicFieldA = 66;
-    private final int privateFieldA = 67;
+    private int privateFieldA = 67;
   }

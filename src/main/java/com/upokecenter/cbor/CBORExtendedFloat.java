@@ -8,10 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedFloat implements ICBORNumber
-  {
+  class CBORExtendedFloat implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       EFloat ef = (EFloat)obj;
       return ef.IsPositiveInfinity();

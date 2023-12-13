@@ -8,10 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedRational implements ICBORNumber
-  {
+  class CBORExtendedRational implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((ERational)obj).IsPositiveInfinity();
     }

@@ -9,6 +9,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   /**
@@ -69,7 +70,7 @@ import com.upokecenter.numbers.*;
       CBORObject ret = lastList.get(index);
       // Byte strings are mutable, so make a copy
       return (ret.getType() == CBORType.ByteString) ?
-        CBORObject.FromByteArray(ret.GetByteString()) : ret;
+        CBORObject.FromObject(ret.GetByteString()) : ret;
     }
 
     public CBORObject GetString(EInteger bigIndex) {
@@ -88,6 +89,6 @@ import com.upokecenter.numbers.*;
       CBORObject ret = lastList.get(index);
       // Byte strings are mutable, so make a copy
       return (ret.getType() == CBORType.ByteString) ?
-        CBORObject.FromByteArray(ret.GetByteString()) : ret;
+        CBORObject.FromObject(ret.GetByteString()) : ret;
     }
   }

@@ -11,8 +11,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
   /**
    * Represents a type that a CBOR object can have.
    */
-  public enum CBORType
-  {
+  public enum CBORType {
     /**
      * This property is no longer used.
      * @deprecated Since version 4.0, CBORObject.Type no longer returns this\u0020value for any
