@@ -1,7 +1,6 @@
 package com.upokecenter.test;
 
 import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
@@ -10,37 +9,33 @@ import com.upokecenter.cbor.*;
   public class BEncodingTest {
     private static CBORObject EncodingFromBytes(byte[] b) {
       try {
-        {
-          java.io.ByteArrayInputStream s = null;
+java.io.ByteArrayInputStream s = null;
 try {
 s = new java.io.ByteArrayInputStream(b);
 
-          return BEncoding.Read(s);
+        return BEncoding.Read(s);
 }
 finally {
 try { if (s != null) { s.close(); } } catch (java.io.IOException ex) {}
 }
-}
-      } catch (IOException ex) {
+} catch (IOException ex) {
         throw new CBORException("", ex);
       }
     }
 
     private static byte[] EncodingToBytes(CBORObject b) {
       try {
-        {
-          java.io.ByteArrayOutputStream ms = null;
+java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          BEncoding.Write(b, ms);
-          return ms.toByteArray();
+        BEncoding.Write(b, ms);
+        return ms.toByteArray();
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
-}
-      } catch (IOException ex) {
+} catch (IOException ex) {
         throw new CBORException("", ex);
       }
     }

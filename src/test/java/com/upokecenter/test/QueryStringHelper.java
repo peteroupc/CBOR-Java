@@ -10,11 +10,11 @@ import com.upokecenter.cbor.*;
   public final class QueryStringHelper {
     private QueryStringHelper() {
     }
-    private static String[] SplitAt(String s, String delimiter) {
+    private static String[] SplitAt(String stringToSplit, String delimiter) {
       if (delimiter == null || delimiter.length() == 0) {
         throw new IllegalArgumentException();
       }
-      if (s == null || s.length() == 0) {
+      if (stringToSplit == null || stringToSplit.length() == 0) {
         return new String[] { "" };
       }
       int index = 0;
@@ -22,34 +22,30 @@ import com.upokecenter.cbor.*;
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = s.indexOf(delimiter, index);
+        int index2 = stringToSplit.indexOf(
+          delimiter, index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s };
+            return new String[] { stringToSplit };
           }
-          strings.add(s.substring(index));
+          strings.add(stringToSplit.substring(index, (stringToSplit.length())));
           break;
         } else {
           if (first) {
             strings = new ArrayList<String>();
             first = false;
           }
-          String newstr = s.substring(index, (index)+(index2 - index));
+          String newstr = stringToSplit.substring(index, (index2));
           strings.add(newstr);
           index = index2 + delimLength;
         }
       }
-      return (String[])strings.toArray(new String[] { });
+      return strings.toArray(new String[] { });
     }
 
     private static int ToHexNumber(int c) {
-      if (c >= 'A' && c <= 'Z') {
-        return 10 + c - 'A';
-      } else if (c >= 'a' && c <= 'z') {
-        return 10 + c - 'a';
-      } else {
-        return (c >= '0' && c <= '9') ? (c - '0') : (-1);
-      }
+      return c >= 'A' && c <= 'Z' ? 10 + c - 'A' : c >= 'a' && c <= 'z' ?
+10 + c - 'a' : (c >= '0' && c <= '9') ? (c - '0') : (-1);
     }
     private static String PercentDecodeUTF8(String str) {
       int len = str.length();
@@ -71,7 +67,6 @@ import com.upokecenter.cbor.*;
       int bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
-      int markedPos = -1;
       StringBuilder retString = new StringBuilder();
       for (int i = 0; i < len; ++i) {
         int c = str.charAt(i);
@@ -89,17 +84,14 @@ import com.upokecenter.cbor.*;
                   retString.append((char)b);
                   continue;
                 } else if (b >= 0xc2 && b <= 0xdf) {
-                  markedPos = i;
                   bytesNeeded = 1;
                   cp = b - 0xc0;
                 } else if (b >= 0xe0 && b <= 0xef) {
-                  markedPos = i;
                   lower = (b == 0xe0) ? 0xa0 : 0x80;
                   upper = (b == 0xed) ? 0x9f : 0xbf;
                   bytesNeeded = 2;
                   cp = b - 0xe0;
                 } else if (b >= 0xf0 && b <= 0xf4) {
-                  markedPos = i;
                   lower = (b == 0xf0) ? 0x90 : 0x80;
                   upper = (b == 0xf4) ? 0x8f : 0xbf;
                   bytesNeeded = 3;
@@ -122,7 +114,6 @@ import com.upokecenter.cbor.*;
                 upper = 0xbf;
                 ++bytesSeen;
                 cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
-                markedPos = i;
                 if (bytesSeen != bytesNeeded) {
                   // continue if not all bytes needed
                   // were read yet
@@ -134,7 +125,8 @@ import com.upokecenter.cbor.*;
                 bytesNeeded = 0;
                 // append the Unicode character
                 if (ret <= 0xffff) {
-                  { retString.append((char)ret);
+                  {
+                    retString.append((char)ret);
                   }
                 } else {
                   retString.append((char)((((ret - 0x10000) >> 10) &
@@ -175,10 +167,8 @@ import com.upokecenter.cbor.*;
       if (input == null) {
         throw new NullPointerException("input");
       }
-      if (delimiter == null) {
-        // set default delimiter to ampersand
-        delimiter = "&";
-      }
+      // set default delimiter to ampersand
+      delimiter = (delimiter == null) ? ("&") : delimiter;
       // Check input for non-ASCII characters
       for (int i = 0; i < input.length(); ++i) {
         if (input.charAt(i) > 0x7f) {
@@ -197,8 +187,8 @@ import com.upokecenter.cbor.*;
         String name = str;
         String value = ""; // value is empty if there is no key
         if (index >= 0) {
-          name = str.substring(0, index - 0);
-          value = str.substring(index + 1);
+          name = str.substring(0, (index));
+          value = str.substring((index + 1), (str.length()));
         }
         name = name.replace('+', ' ');
         value = value.replace('+', ' ');
@@ -218,16 +208,16 @@ import com.upokecenter.cbor.*;
       if (index < 0) { // start bracket not found
         return new String[] { s };
       }
-      ArrayList<String> path = new ArrayList<String>();
-      path.add(s.substring(0, index - 0));
+      java.util.ArrayList<String> path = new java.util.ArrayList<String>(java.util.Arrays.asList(
+        s.substring(0, (index))));
       ++index; // move to after the bracket
       while (true) {
         int endBracket = s.indexOf(']',index);
         if (endBracket < 0) { // end bracket not found
-          path.add(s.substring(index));
+          path.add(s.substring(index, (s.length())));
           break;
         }
-        path.add(s.substring(index, (index)+(endBracket - index)));
+        path.add(s.substring(index, (endBracket)));
         index = endBracket + 1; // move to after the end bracket
         index = s.indexOf('[',index);
         if (index < 0) { // start bracket not found
@@ -235,7 +225,7 @@ import com.upokecenter.cbor.*;
         }
         ++index; // move to after the start bracket
       }
-      return (String[])path.toArray(new String[] { });
+      return path.toArray(new String[] { });
     }
 
     private static final String Digits = "0123456789";
@@ -263,12 +253,12 @@ import com.upokecenter.cbor.*;
         }
         while (value > 9) {
           int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-          char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+          char digit = Digits.charAt(value - (intdivvalue * 10));
           chars[count--] = digit;
           value = intdivvalue;
         }
         if (value != 0) {
-          chars[count--] = Digits.charAt((int)value);
+          chars[count--] = Digits.charAt(value);
         }
         if (neg) {
           chars[count] = '-';
@@ -281,18 +271,18 @@ import com.upokecenter.cbor.*;
       count = 11;
       while (value >= 163840) {
         int intdivvalue = value / 10;
-        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt(value - (intdivvalue * 10));
         chars[count--] = digit;
         value = intdivvalue;
       }
       while (value > 9) {
         int intdivvalue = ((((value >> 1) * 52429) >> 18) & 16383);
-        char digit = Digits.charAt((int)(value - (intdivvalue * 10)));
+        char digit = Digits.charAt(value - (intdivvalue * 10));
         chars[count--] = digit;
         value = intdivvalue;
       }
       if (value != 0) {
-        chars[count--] = Digits.charAt((int)value);
+        chars[count--] = Digits.charAt(value);
       }
       if (neg) {
         chars[count] = '-';
@@ -330,10 +320,10 @@ import com.upokecenter.cbor.*;
       int count = dict.size();
       while (index < count) {
         String indexString = IntToString(index);
-        if (!dict.containsKey(indexString)) {
+        Object o = null; if ((o = dict.getOrDefault(indexString, null)) == null) {
           throw new IllegalStateException();
         }
-        ret.add(dict.get(indexString));
+        ret.add(o);
         ++index;
       }
       return ret;
@@ -441,7 +431,7 @@ private static Map<String, Object> QueryStringToDictInternal(
         String[] path = GetKeyPath(keyvalue[0]);
         Map<String, Object> leaf = root;
         for (int i = 0; i < path.length - 1; ++i) {
-          if (!leaf.containsKey(path[i])) {
+          Object di = null; if ((di = leaf.getOrDefault(path[i], null)) == null) {
             // node doesn't exist so add it
             Map<String, Object> newLeaf = new HashMap<String, Object>();
             if (leaf.containsKey(path[i])) {
@@ -450,9 +440,7 @@ private static Map<String, Object> QueryStringToDictInternal(
             leaf.put(path[i], newLeaf);
             leaf = newLeaf;
           } else {
-            Object di = leaf.get(path[i]);
-            Map<String, Object> o = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-            if (o != null) {
+            Map<String, Object> o = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null); if (o != null) {
               leaf = o;
             } else {
               // error, not a dictionary
@@ -461,10 +449,11 @@ private static Map<String, Object> QueryStringToDictInternal(
           }
         }
         if (leaf != null) {
-          if (leaf.containsKey(path[path.length - 1])) {
+          String last = path[path.length - 1];
+          if (leaf.containsKey(last)) {
             throw new IllegalStateException();
           }
-          leaf.put(path[path.length - 1], keyvalue[1]);
+          leaf.put(last, keyvalue[1]);
         }
       }
       return root;

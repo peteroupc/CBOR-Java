@@ -8,7 +8,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 */
 
-import java.util.*;
+using System.Diagnostics.CodeAnalysis;
 
   final class JSONPatch {
 private JSONPatch() {
@@ -39,7 +39,7 @@ private JSONPatch() {
           // System.out.println("after "+parent+"");
         } else if (pointer.GetParent().getType() == CBORType.Map) {
           String key = pointer.GetKey();
-          parent.Set(key, value);
+          parent.Set(CBORObject.FromString(key), value);
         } else {
           throw new CBORException("Patch " + valueOpStr + " path");
         }
@@ -60,12 +60,13 @@ private JSONPatch() {
     private static String GetString(CBORObject o, String str) {
       CBORObject co = o.GetOrDefault(str, null);
       if (co == null) {
-        throw new CBORException(str + " not found");
-      }
-      if (co.getType() != CBORType.TextString) {
-        throw new CBORException("Not a text String type");
-      }
-      return co.AsString();
+ throw new CBORException(str + " not found");
+}
+ if (co.getType() != CBORType.TextString) {
+ throw new CBORException("Not a" +
+"\u0020text String type");
+}
+ return co.AsString();
     }
 
     public static CBORObject Patch(CBORObject o, CBORObject ptch) {
@@ -155,8 +156,7 @@ private JSONPatch() {
           }
           JSONPointer pointer = JSONPointer.FromPointer(o, fromPath);
           if (!pointer.Exists()) {
-            throw new CBORException("Patch " +
-              valueOpStr + " " + fromPath);
+            throw new CBORException("Patch " + valueOpStr + " " + fromPath);
           }
           CBORObject copiedObj = pointer.GetValue();
           o = AddOperation(
@@ -176,8 +176,7 @@ private JSONPatch() {
           value = patchOp.get("value");
           JSONPointer pointer = JSONPointer.FromPointer(o, path);
           if (!pointer.Exists()) {
-            throw new CBORException("Patch " +
-              valueOpStr + " " + path);
+            throw new CBORException("Patch " + valueOpStr + " " + path);
           }
           Object testedObj = pointer.GetValue();
           if ((testedObj == null) ? (value != null) :
@@ -188,7 +187,7 @@ private JSONPatch() {
           throw new CBORException("Unrecognized op");
         }
       }
-      return (o == null) ? CBORObject.Null : o;
+      return (o == null) ? (CBORObject.Null) : o;
     }
 
     private static CBORObject RemoveOperation(
@@ -203,15 +202,14 @@ private JSONPatch() {
       } else {
         JSONPointer pointer = JSONPointer.FromPointer(o, path);
         if (!pointer.Exists()) {
-          throw new CBORException("Patch " +
-            valueOpStr + " " + path);
+          throw new CBORException("Patch " + valueOpStr + " " + path);
         }
         o = pointer.GetValue();
         if (pointer.GetParent().getType() == CBORType.Array) {
-          ((CBORObject)pointer.GetParent()).RemoveAt(pointer.GetIndex());
+          pointer.GetParent().RemoveAt(pointer.GetIndex());
         } else if (pointer.GetParent().getType() == CBORType.Map) {
-          ((CBORObject)pointer.GetParent()).Remove(
-            CBORObject.FromObject(pointer.GetKey()));
+          pointer.GetParent().Remove(
+            CBORObject.FromString(pointer.GetKey()));
         }
         return o;
       }
@@ -231,18 +229,17 @@ private JSONPatch() {
       } else {
         JSONPointer pointer = JSONPointer.FromPointer(o, path);
         if (!pointer.Exists()) {
-          throw new CBORException("Patch " +
-            valueOpStr + " " + path);
+          throw new CBORException("Patch " + valueOpStr + " " + path);
         }
         if (pointer.GetParent().getType() == CBORType.Array) {
           int index = pointer.GetIndex();
           if (index < 0) {
             throw new CBORException("Patch " + valueOpStr + " path");
           }
-          ((CBORObject)pointer.GetParent()).Set(index, value);
+          pointer.GetParent().Set(index, value);
         } else if (pointer.GetParent().getType() == CBORType.Map) {
           String key = pointer.GetKey();
-          ((CBORObject)pointer.GetParent()).Set(key, value);
+          pointer.GetParent().Set(CBORObject.FromString(key), value);
         } else {
           throw new CBORException("Patch " + valueOpStr + " path");
         }

@@ -9,17 +9,16 @@ import com.upokecenter.numbers.*;
     private static final String ValueDigitsLower =
       "0123456789abcdefghijklmnopqrstuvwxyz";
 
-    private String stringValue;
+    public final String getStringValue() { return propVarstringvalue; }
+private final String propVarstringvalue;
 
-    public final String getStringValue() {
-        return this.stringValue;
-      }
+    public final EInteger getBigIntValue() { return propVarbigintvalue; }
+private final EInteger propVarbigintvalue;
 
-    private EInteger bigintValue;
-
-    public final EInteger getBigIntValue() {
-        return this.bigintValue;
-      }
+    private StringAndBigInt(String sv, EInteger biv) {
+      this.propVarstringvalue = sv;
+      this.propVarbigintvalue = biv;
+    }
 
     public static StringAndBigInt Generate(IRandomGenExtended rand, int radix) {
       return Generate(rand, radix, 50);
@@ -38,7 +37,6 @@ import com.upokecenter.numbers.*;
           ") is more than 36");
       }
       EInteger bv = EInteger.FromInt32(0);
-      StringAndBigInt sabi = new StringAndBigInt();
       int numDigits = 1 + rand.GetInt32(maxNumDigits);
       boolean negative = false;
       StringBuilder builder = new StringBuilder();
@@ -59,29 +57,16 @@ import com.upokecenter.numbers.*;
         int digit3 = digitvalues % radix;
         digitvalues /= radix;
         int digit4 = digitvalues % radix;
-        digitvalues /= radix;
         count += 4;
         int bits = rand.GetInt32(16);
-        if ((bits & 0x01) == 0) {
-          builder.append(ValueDigits.charAt(digit));
-        } else {
-          builder.append(ValueDigitsLower.charAt(digit));
-        }
-        if ((bits & 0x02) == 0) {
-          builder.append(ValueDigits.charAt(digit2));
-        } else {
-          builder.append(ValueDigitsLower.charAt(digit2));
-        }
-        if ((bits & 0x04) == 0) {
-          builder.append(ValueDigits.charAt(digit3));
-        } else {
-          builder.append(ValueDigitsLower.charAt(digit3));
-        }
-        if ((bits & 0x08) == 0) {
-          builder.append(ValueDigits.charAt(digit4));
-        } else {
-          builder.append(ValueDigitsLower.charAt(digit4));
-        }
+        builder = (bits & 0x01) == 0 ? builder.append(ValueDigits.charAt(digit)) :
+builder.append(ValueDigitsLower.charAt(digit));
+        builder = (bits & 0x02) == 0 ? builder.append(ValueDigits.charAt(digit2)) :
+builder.append(ValueDigitsLower.charAt(digit2));
+        builder = (bits & 0x04) == 0 ? builder.append(ValueDigits.charAt(digit3)) :
+builder.append(ValueDigitsLower.charAt(digit3));
+        builder = (bits & 0x08) == 0 ? builder.append(ValueDigits.charAt(digit4)) :
+builder.append(ValueDigitsLower.charAt(digit4));
         int digits = (((((digit * radix) + digit2) *
                 radix) + digit3) * radix) + digit4;
         bv = bv.Multiply(radixpow4);
@@ -90,11 +75,8 @@ import com.upokecenter.numbers.*;
       }
       for (int i = count; i < numDigits; ++i) {
         int digit = rand.GetInt32(radix);
-        if (rand.GetInt32(2) == 0) {
-          builder.append(ValueDigits.charAt(digit));
-        } else {
-          builder.append(ValueDigitsLower.charAt(digit));
-        }
+        builder = rand.GetInt32(2) == 0 ? builder.append(ValueDigits.charAt(digit)) :
+builder.append(ValueDigitsLower.charAt(digit));
         bv = bv.Multiply(radixpow1);
         EInteger bigintTmp = EInteger.FromInt32(digit);
         bv = bv.Add(bigintTmp);
@@ -102,8 +84,6 @@ import com.upokecenter.numbers.*;
       if (negative) {
         bv = bv.Negate();
       }
-      sabi.bigintValue = bv;
-      sabi.stringValue = builder.toString();
-      return sabi;
+      return new StringAndBigInt(builder.toString(), bv);
     }
   }

@@ -18,7 +18,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
    * change at any time between versions of this library.</p>
    */
 
-public final class CBORException extends RuntimeException {
+  public final class CBORException extends RuntimeException {
 private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.CBORException}

@@ -8,6 +8,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+using System.Diagnostics.CodeAnalysis;
 import com.upokecenter.numbers.*;
 
   /**
@@ -21,9 +22,8 @@ import com.upokecenter.numbers.*;
    * regard to time zone differences or transitions from other calendars to the
    * Gregorian).</p>
    */
-  public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
-    private final ConversionType convType;
-
+  public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date>
+  {
     /**
      * A converter object where FromCBORObject accepts CBOR objects with tag 0
      * (date/time strings) and tag 1 (number of seconds since the start of 1970),
@@ -66,7 +66,8 @@ import com.upokecenter.numbers.*;
     /**
      * Conversion type for date-time conversion.
      */
-    public enum ConversionType {
+    public enum ConversionType
+    {
       /**
        * FromCBORObject accepts CBOR objects with tag 0 (date/time strings) and tag 1
        * (number of seconds since the start of 1970), and ToCBORObject converts
@@ -113,9 +114,8 @@ import com.upokecenter.numbers.*;
      * Gets the conversion type for this date converter.
      * @return The conversion type for this date converter.
      */
-    public final ConversionType getType() {
-        return this.convType;
-      }
+    public final ConversionType getType() { return propVartype; }
+private final ConversionType propVartype;
 
     /**
      * Initializes a new instance of the {@link
@@ -124,18 +124,7 @@ import com.upokecenter.numbers.*;
      * times to and from CBOR objects.
      */
     public CBORDateConverter(ConversionType convType) {
-      this.convType = convType;
-    }
-
-    private static String DateTimeToString(java.util.Date bi) {
-      try {
-        int[] lesserFields = new int[7];
-        EInteger[] outYear = new EInteger[1];
-        PropertyMap.BreakDownDateTime(bi, outYear, lesserFields);
-        return CBORUtilities.ToAtomDateTimeString(outYear[0], lesserFields);
-      } catch (IllegalArgumentException ex) {
-        throw new CBORException(ex.getMessage(), ex);
-      }
+      this.propVartype = convType;
     }
 
     /**
@@ -158,10 +147,11 @@ import com.upokecenter.numbers.*;
           obj,
           outYear,
           lesserFields);
-      if (str == null) {
-        return PropertyMap.BuildUpDateTime(outYear[0], lesserFields);
+      if (!(str == null)) {
+        throw new CBORException(str);
       }
-      throw new CBORException(str);
+ return PropertyMap.BuildUpDateTime(outYear[0],
+  lesserFields);
     }
 
     /**
@@ -186,28 +176,21 @@ import com.upokecenter.numbers.*;
      * For tags 0 and 1, this value is always 0.</li></ul>.
      * @return Either {@code true} if the method is successful, or {@code false}
      * otherwise.
-     * @throws NullPointerException The parameter {@code year} or {@code
-     * lesserFields} is null, or contains fewer elements than required.
      */
     public boolean TryGetDateTimeFields(CBORObject obj, EInteger[] year, int[]
       lesserFields) {
-      // TODO: In next major version, return false instead of throwing an
-      // exception if the arguments are invalid, to conform to convention
-      // with Try* methods in DotNet.
       if (year == null) {
-        throw new NullPointerException("year");
+        return false;
       }
       EInteger[] outYear = year;
       if (outYear.length < 1) {
-        throw new IllegalArgumentException("\"year\" + \"'s length\" (" +
-          outYear.length + ") is not greater or equal to 1");
+        return false;
       }
       if (lesserFields == null) {
-        throw new NullPointerException("lesserFields");
+        return false;
       }
       if (lesserFields.length < 7) {
-        throw new IllegalArgumentException("\"lesserFields\" + \"'s length\" (" +
-          lesserFields.length + ") is not greater or equal to 7");
+        return false;
       }
       String str = this.TryGetDateTimeFieldsInternal(
           obj,
@@ -234,21 +217,22 @@ import com.upokecenter.numbers.*;
         return "Object is null";
       }
       if (year == null) {
-        throw new NullPointerException("year");
+        return "Year is null";
       }
       EInteger[] outYear = year;
       if (outYear.length < 1) {
-        throw new IllegalArgumentException("\"year\" + \"'s length\" (" +
-          outYear.length + ") is not greater or equal to 1");
+        return "\"year\" + \"'s length\" (" +
+          outYear.length + ") is not greater or equal to 1";
       }
       if (lesserFields == null) {
-        throw new NullPointerException("lesserFields");
+        return "Lesser fields is null";
       }
       if (lesserFields.length < 7) {
-        throw new IllegalArgumentException("\"lesserFields\" + \"'s length\" (" +
-          lesserFields.length + ") is not greater or equal to 7");
+        return "\"lesserFields\" + \"'s length\" (" +
+          lesserFields.length + ") is not greater or equal to 7";
       }
-      if (this.convType == ConversionType.UntaggedNumber) {
+      ConversionType thisType = this.getType();
+      if (thisType == ConversionType.UntaggedNumber) {
         if (obj.isTagged()) {
           return "May not be tagged";
         }
@@ -270,12 +254,12 @@ import com.upokecenter.numbers.*;
             outYear,
             lesserFields);
         } else {
-           EDecimal dec;
-           dec = (EDecimal)untagobj.ToObject(EDecimal.class);
-           CBORUtilities.BreakDownSecondsSinceEpoch(
-             dec,
-             outYear,
-             lesserFields);
+          EDecimal dec;
+          dec = untagobj.ToEDecimal();
+          CBORUtilities.BreakDownSecondsSinceEpoch(
+            dec,
+            outYear,
+            lesserFields);
         }
         return null; // no error
       }
@@ -306,12 +290,12 @@ import com.upokecenter.numbers.*;
             outYear,
             lesserFields);
         } else {
-           EDecimal dec;
-           dec = (EDecimal)untagobj.ToObject(EDecimal.class);
-           CBORUtilities.BreakDownSecondsSinceEpoch(
-             dec,
-             outYear,
-             lesserFields);
+          EDecimal dec;
+          dec = untagobj.ToEDecimal();
+          CBORUtilities.BreakDownSecondsSinceEpoch(
+            dec,
+            outYear,
+            lesserFields);
         }
         return null; // No error
       }
@@ -405,12 +389,13 @@ import com.upokecenter.numbers.*;
       }
       try {
         CBORUtilities.CheckYearAndLesserFields(bigYear, lesserFields);
-        switch (this.convType) {
+        ConversionType thisType = this.getType();
+        switch (thisType) {
           case TaggedString: {
-            String str = CBORUtilities.ToAtomDateTimeString(bigYear,
-                lesserFields);
-            return CBORObject.FromObjectAndTag(str, 0);
-          }
+              String str = CBORUtilities.ToAtomDateTimeString(bigYear,
+                  lesserFields);
+              return CBORObject.FromString(str).WithTag(0);
+            }
           case TaggedNumber:
           case UntaggedNumber:
             try {
@@ -419,24 +404,25 @@ import com.upokecenter.numbers.*;
                   bigYear,
                   lesserFields,
                   status);
-              if (status[0] == 0) {
-                return this.convType == ConversionType.TaggedNumber ?
-                  CBORObject.FromObjectAndTag(ef.ToEInteger(), 1) :
-                  CBORObject.FromObject(ef.ToEInteger());
-              } else if (status[0] == 1) {
-                return this.convType == ConversionType.TaggedNumber ?
-                  CBORObject.FromFloatingPointBits(ef.ToDoubleBits(),
-  8).WithTag(1) : CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8);
-              } else {
-                throw new CBORException("Too big or small to fit an integer" +
-"\u0020or" +
-                  "\u0020floating-point number");
+              switch (status[0]) {
+                case 0: {
+                    CBORObject cbor = CBORObject.FromEInteger(ef.ToEInteger());
+                    return thisType == ConversionType.TaggedNumber ?
+                      CBORObject.FromCBORObjectAndTag(cbor, 1) :
+                      cbor;
+                  }
+                case 1:
+                  return thisType == ConversionType.TaggedNumber ?
+                    CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8)
+                    .WithTag(1) :
+                    CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8);
+                default: throw new CBORException("Too big or small to fit an" +
+                    "\u0020integer" + "\u0020or floating-point number");
               }
             } catch (IllegalArgumentException ex) {
               throw new CBORException(ex.getMessage(), ex);
             }
-          default:
-            throw new CBORException("Internal error");
+          default: throw new CBORException("Internal error");
         }
       } catch (IllegalArgumentException ex) {
         throw new CBORException(ex.getMessage(), ex);

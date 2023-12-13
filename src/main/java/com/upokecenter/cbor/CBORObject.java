@@ -9,16 +9,16 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
+using System.Diagnostics.CodeAnalysis;
 import java.io.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-// TODO: In next major version, make .Keys and .Values read-only
+// TODO: Consider making CBORTypeMapper and PODOptions obsolete
 // TODO: Add ReadObject that combines Read and ToObject; similarly
 // for ReadJSON, FromJSONString, FromJSONBytes
-// TODO: In Java version add overloads for Class<T> in overloads
-// that take java.lang.reflect.getType()
+// TODO: Let certain methods support integers as map keys, such as Set/Add/Get
 
   /**
    * <p>Represents an object in Concise Binary Object Representation (CBOR) and
@@ -33,21 +33,24 @@ import com.upokecenter.numbers.*;
    * data stream, including numbers, CBOR objects, strings, and arrays of numbers
    * and strings. The CBORObject.Read method reads a CBOR object from a data
    * stream.</p> <p><b>To and from other objects:</b> The {@code
-   * CBORObject.FromObject} method converts many kinds of objects to a CBOR
+   * CBORObject.From.get(Type)} method converts many kinds of objects to a CBOR
    * object, including numbers, strings, and arrays and maps of numbers and
    * strings. Methods like AsNumber and AsString convert a CBOR object to
    * different types of object. The {@code CBORObject.ToObject} method converts a
    * CBOR object to an object of a given type; for example, a CBOR array to a
    * native {@code ArrayList} (or {@code ArrayList} in Java), or a CBOR integer
-   * to an {@code int} or {@code long}.</p> <p><b>To and from JSON:</b> This
-   * class also doubles as a reader and writer of JavaScript object Notation
-   * (JSON). The CBORObject.FromJSONString method converts JSON in text string
-   * form to a CBOR object, and the ToJSONString method converts a CBOR object to
-   * a JSON string. (Note that the conversion from CBOR to JSON is not always
-   * without loss and may make it impossible to recover the original object when
-   * converting the JSON back to CBOR. See the ToJSONString documentation.)
-   * Likewise, ToJSONBytes and FromJSONBytes work with JSON in the form of byte
-   * arrays rather than text strings.</p> <p>In addition, the
+   * to an {@code int} or {@code long}. Of these methods, the.NET versions of the
+   * methods {@code CBORObject.FromObject} and {@code CBORObject.ToObject} are
+   * not compatible with any context that disallows reflection, such as
+   * ahead-of-time compilation or self-contained app deployment.</p> <p><b>To and
+   * from JSON:</b> This class also doubles as a reader and writer of JavaScript
+   * object Notation (JSON). The CBORObject.FromJSONString method converts JSON
+   * in text string form to a CBOR object, and the ToJSONString method converts a
+   * CBOR object to a JSON string. (Note that the conversion from CBOR to JSON is
+   * not always without loss and may make it impossible to recover the original
+   * object when converting the JSON back to CBOR. See the ToJSONString
+   * documentation.) Likewise, ToJSONBytes and FromJSONBytes work with JSON in
+   * the form of byte arrays rather than text strings.</p> <p>In addition, the
    * CBORObject.WriteJSON method writes many kinds of objects as JSON to a data
    * stream, including numbers, CBOR objects, strings, and arrays of numbers and
    * strings. The CBORObject.Read method reads a CBOR object from a JSON data
@@ -88,7 +91,8 @@ import com.upokecenter.numbers.*;
    * FromJSONString methods currently have nesting depths of 1000.</p>
    */
 
-  public final class CBORObject implements Comparable<CBORObject> {
+  public final class CBORObject implements Comparable<CBORObject>
+  {
     private static CBORObject ConstructSimpleValue(int v) {
       return new CBORObject(CBORObjectTypeSimpleValue, v);
     }
@@ -107,13 +111,13 @@ import com.upokecenter.numbers.*;
     /**
      * A not-a-number value.
      */
-    public static final CBORObject NaN = CBORObject.FromObject(Double.NaN);
+    public static final CBORObject NaN = FromDouble(Double.NaN);
 
     /**
      * The value negative infinity.
      */
     public static final CBORObject NegativeInfinity =
-      CBORObject.FromObject(Double.NEGATIVE_INFINITY);
+      FromDouble(Double.NEGATIVE_INFINITY);
 
     /**
      * Represents the value null.
@@ -126,7 +130,7 @@ import com.upokecenter.numbers.*;
      * The value positive infinity.
      */
     public static final CBORObject PositiveInfinity =
-      CBORObject.FromObject(Double.POSITIVE_INFINITY);
+      FromDouble(Double.POSITIVE_INFINITY);
 
     /**
      * Represents the value true.
@@ -226,10 +230,8 @@ import com.upokecenter.numbers.*;
      * @return The number of keys in this map, or the number of items in this
      * array, or 0 if this item is neither an array nor a map.
      */
-    public final int size() {
-        return (this.getType() == CBORType.Array) ? this.AsList().size() :
-          ((this.getType() == CBORType.Map) ? this.AsMap().size() : 0);
-      }
+    public final int size() { return (this.getType() == CBORType.Array) ? this.AsList().size() :
+          ((this.getType() == CBORType.Map) ? this.AsMap().size() : 0); }
 
     /**
      * Gets the last defined tag for this CBOR data item, or -1 if the item is
@@ -247,11 +249,9 @@ import com.upokecenter.numbers.*;
           previtem = curitem;
           curitem = (CBORObject)curitem.itemValue;
         }
-        if (previtem.tagHigh == 0 && previtem.tagLow >= 0 &&
-          previtem.tagLow < 0x10000) {
-          return EInteger.FromInt64(previtem.tagLow);
-        }
-        return LowHighToEInteger(
+        return previtem.tagHigh == 0 && previtem.tagLow >= 0 &&
+          previtem.tagLow < 0x10000 ? EInteger.FromInt64(previtem.tagLow) :
+          LowHighToEInteger(
             previtem.tagLow,
             previtem.tagHigh);
       }
@@ -262,43 +262,9 @@ import com.upokecenter.numbers.*;
      * @return {@code true} if this value is a CBOR false value; otherwise, {@code
      * false}.
      */
-    public final boolean isFalse() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
-          == 20;
-      }
-
-    /**
-     * Gets a value indicating whether this CBOR object represents a finite number.
-     * @return {@code true} if this CBOR object represents a finite number;
-     * otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsFinite()).
- */
-@Deprecated
-    public final boolean isFinite() {
-        if (this.isNumber()) {
-          CBORNumber cn = this.AsNumber();
-          return !cn.IsInfinity() && !cn.IsNaN();
-        } else {
-          return false;
-        }
-      }
-
-    /**
-     * Gets a value indicating whether this object represents an integer number,
-     * that is, a number without a fractional part. Infinity and not-a-number are
-     * not considered integers.
-     * @return {@code true} if this object represents an integer number, that is, a
-     * number without a fractional part; otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsInteger()).
- */
-@Deprecated
-    public final boolean isIntegral() {
-        CBORNumber cn = CBORNumber.FromCBORObject(this);
-        return (cn != null) &&
-          cn.GetNumberInterface().IsIntegral(cn.GetValue());
-      }
+    public final boolean isFalse() { return this.getItemType() == CBORObjectTypeSimpleValue &&
+((Integer)this.getThisItem()).intValue()
+          == 20; }
 
     /**
      * Gets a value indicating whether this CBOR object is a CBOR null value,
@@ -306,19 +272,16 @@ import com.upokecenter.numbers.*;
      * @return {@code true} if this value is a CBOR null value; otherwise, {@code
      * false}.
      */
-    public final boolean isNull() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
-          == 22;
-      }
+    public final boolean isNull() { return this.getItemType() == CBORObjectTypeSimpleValue &&
+((Integer)this.getThisItem()).intValue()
+          == 22; }
 
     /**
      * Gets a value indicating whether this data item has at least one tag.
      * @return {@code true} if this data item has at least one tag; otherwise,
      * {@code false}.
      */
-    public final boolean isTagged() {
-        return this.itemtypeValue == CBORObjectTypeTagged;
-      }
+    public final boolean isTagged() { return this.itemtypeValue == CBORObjectTypeTagged; }
 
     /**
      * Gets a value indicating whether this value is a CBOR true value, whether
@@ -326,10 +289,9 @@ import com.upokecenter.numbers.*;
      * @return {@code true} if this value is a CBOR true value; otherwise, {@code
      * false}.
      */
-    public final boolean isTrue() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
-          == 21;
-      }
+    public final boolean isTrue() { return this.getItemType() == CBORObjectTypeSimpleValue &&
+((Integer)this.getThisItem()).intValue()
+          == 21; }
 
     /**
      * Gets a value indicating whether this value is a CBOR undefined value,
@@ -337,54 +299,25 @@ import com.upokecenter.numbers.*;
      * @return {@code true} if this value is a CBOR undefined value; otherwise,
      * {@code false}.
      */
-    public final boolean isUndefined() {
-        return this.getItemType() == CBORObjectTypeSimpleValue && ((Integer)this.getThisItem()).intValue()
-          == 23;
-      }
-
-    /**
-     * Gets a value indicating whether this object's value equals 0.
-     * @return {@code true} if this object's value equals 0; otherwise, {@code
-     * false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsZero()).
- */
-@Deprecated
-    public final boolean isZero() {
-        CBORNumber cn = CBORNumber.FromCBORObject(this);
-        return cn != null &&
-          cn.GetNumberInterface().IsNumberZero(cn.GetValue());
-      }
+    public final boolean isUndefined() { return this.getItemType() == CBORObjectTypeSimpleValue &&
+((Integer)this.getThisItem()).intValue()
+          == 23; }
 
     /**
      * Gets a collection of the keys of this CBOR object. In general, the order in
      * which those keys occur is undefined unless this is a map created using the
      * NewOrderedMap method.
-     * @return A collection of the keys of this CBOR object. To avoid potential
-     * problems, the calling code should not modify the CBOR map or the returned
-     * collection while iterating over the returned collection.
+     * @return A read-only collection of the keys of this CBOR object. To avoid
+     * potential problems, the calling code should not modify the CBOR map while
+     * iterating over the returned collection.
      * @throws IllegalStateException This object is not a map.
      */
     public final Collection<CBORObject> getKeys() {
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> dict = this.AsMap();
-          return dict.keySet();
+          return PropertyMap.ReadOnlyKeys(dict);
         }
         throw new IllegalStateException("Not a map");
-      }
-
-    /**
-     * Gets a value indicating whether this object is a negative number.
-     * @return {@code true} if this object is a negative number; otherwise, {@code
-     * false}.
-     * @deprecated Instead, use \u0028cbor.IsNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsNegative()).
- */
-@Deprecated
-    public final boolean isNegative() {
-        CBORNumber cn = CBORNumber.FromCBORObject(this);
-        return (cn != null) &&
-          cn.GetNumberInterface().IsNegative(cn.GetValue());
       }
 
     /**
@@ -393,38 +326,12 @@ import com.upokecenter.numbers.*;
      * @return The outermost tag for this CBOR data item, or -1 if the item is
      * untagged.
      */
-    public final EInteger getMostOuterTag() {
-        if (!this.isTagged()) {
-          return EInteger.FromInt32(-1);
-        }
-        if (this.tagHigh == 0 &&
-          this.tagLow >= 0 && this.tagLow < 0x10000) {
-          return EInteger.FromInt32(this.tagLow);
-        }
-        return LowHighToEInteger(
+    public final EInteger getMostOuterTag() { return !this.isTagged() ?
+          EInteger.FromInt32(-1) : this.tagHigh == 0 &&
+          this.tagLow >= 0 && this.tagLow < 0x10000 ?
+          EInteger.FromInt32(this.tagLow) : LowHighToEInteger(
             this.tagLow,
-            this.tagHigh);
-      }
-
-    /**
-     * Gets this value's sign: -1 if negative; 1 if positive; 0 if zero. Throws an
-     * exception if this is a not-a-number value.
-     * @return This value's sign: -1 if negative; 1 if positive; 0 if zero.
-     * @throws IllegalStateException This object does not represent a number, or
-     * this object is a not-a-number (NaN) value.
-     * @deprecated Instead, convert this object to a number with.AsNumber(), \u0020 and use the
- * Sign property in.NET or the signum method in\u0020Java. Either will
- * treat not-a-number (NaN) values differently than here.
- */
-@Deprecated
-    public final int signum() {
-        CBORNumber cn = CBORNumber.FromCBORObject(this);
-        if (cn == null || cn.IsNaN()) {
-          throw new IllegalStateException(
-            "This Object is not a number.");
-        }
-        return cn.GetNumberInterface().Sign(cn.GetValue());
-      }
+            this.tagHigh); }
 
     /**
      * Gets the simple value ID of this CBOR object, or -1 if the object is not a
@@ -433,10 +340,8 @@ import com.upokecenter.numbers.*;
      * @return The simple value ID of this object if it's a simple value, or -1 if
      * this object is not a simple value.
      */
-    public final int getSimpleValue() {
-        return (this.getItemType() == CBORObjectTypeSimpleValue) ?
-          (((Integer)this.getThisItem()).intValue()) : -1;
-      }
+    public final int getSimpleValue() { return (this.getItemType() == CBORObjectTypeSimpleValue) ?
+          (((Integer)this.getThisItem()).intValue()) : -1; }
 
     /**
      * Gets a value indicating whether this CBOR object stores a number (including
@@ -446,9 +351,7 @@ import com.upokecenter.numbers.*;
      * 270 with the right data type.
      * @return A value indicating whether this CBOR object stores a number.
      */
-    public final boolean isNumber() {
-        return CBORNumber.IsNumber(this);
-      }
+    public final boolean isNumber() { return CBORNumber.IsNumber(this); }
 
     /**
      * Gets the general data type of this CBOR object. This method disregards the
@@ -505,15 +408,15 @@ import com.upokecenter.numbers.*;
      * all the values of the array in the order they are listed. (This method can't
      * be used to get the bytes in a CBOR byte string; for that, use the
      * GetByteString method instead.).
-     * @return A collection of the values of this CBOR map or array. To avoid
-     * potential problems, the calling code should not modify the CBOR map or array
-     * or the returned collection while iterating over the returned collection.
+     * @return A read-only collection of the values of this CBOR map or array. To
+     * avoid potential problems, the calling code should not modify the CBOR map or
+     * array while iterating over the returned collection.
      * @throws IllegalStateException This object is not a map or an array.
      */
     public final Collection<CBORObject> getValues() {
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> dict = this.AsMap();
-          return dict.values();
+          return PropertyMap.ReadOnlyValues(dict);
         }
         if (this.getType() == CBORType.Array) {
           List<CBORObject> list = this.AsList();
@@ -559,16 +462,16 @@ import com.upokecenter.numbers.*;
         if (this.getType() == CBORType.Array) {
           List<CBORObject> list = this.AsList();
           if (index < 0 || index >= list.size()) {
-            throw new IllegalArgumentException("index");
-          }
-          return list.get(index);
+ throw new IllegalArgumentException("index");
+}
+ return list.get(index);
         }
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
-          CBORObject key = CBORObject.FromObject(index);
+          CBORObject key = CBORObject.FromInt32(index);
           // TODO: In next major version, consider throwing an exception
           // instead if key does not exist.
-          return (!map.containsKey(key)) ? null : map.get(key);
+          return PropertyMap.GetOrDefault(map, key, null);
         }
         throw new IllegalStateException("Not an array or map");
       }
@@ -597,7 +500,7 @@ import com.upokecenter.numbers.*;
           list.set(index, value);
         } else if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
-          CBORObject key = CBORObject.FromObject(index);
+          CBORObject key = CBORObject.FromInt32(index);
           map.put(key, value);
         } else {
           throw new IllegalStateException("Not an array or map");
@@ -607,6 +510,40 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the value of a CBOR object by integer index in this array or by CBOR
      * object key in this map, or a default value if that value is not found.
+     * @param cborkey An arbitrary CBORObject. If this is a CBOR map, this
+     * parameter is converted to a CBOR object serving as the key to the map or
+     * index to the array, and can be null. If this is a CBOR array, the key must
+     * be an integer 0 or greater and less than the size of the array, and may be
+     * any object convertible to a CBOR integer.
+     * @param defaultValue A value to return if an item with the given key doesn't
+     * exist, or if the CBOR object is an array and the key is not an integer 0 or
+     * greater and less than the size of the array.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns {@code null} (not {@code CBORObject.Null}) if
+     * an item with the given key doesn't exist.
+     */
+    public CBORObject GetOrDefault(CBORObject cborkey, CBORObject
+defaultValue) {
+      if (this.getType() == CBORType.Array) {
+        if (!cborkey.isNumber() || !cborkey.AsNumber().CanFitInInt32()) {
+          return defaultValue;
+        }
+        int index = cborkey.AsNumber().ToInt32Checked();
+        List<CBORObject> list = this.AsList();
+        return (index < 0 || index >= list.size()) ? defaultValue :
+          list.get(index);
+      }
+      if (this.getType() == CBORType.Map) {
+        Map<CBORObject, CBORObject> map = this.AsMap();
+        var ckey = cborkey;
+        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
+      }
+      return defaultValue;
+    }
+
+    /**
+     * Gets the value of a CBOR object by integer index in this array, or a default
+     * value if that value is not found.
      * @param key An arbitrary object. If this is a CBOR map, this parameter is
      * converted to a CBOR object serving as the key to the map or index to the
      * array, and can be null. If this is a CBOR array, the key must be an integer
@@ -619,25 +556,40 @@ import com.upokecenter.numbers.*;
      * this is a CBOR map, returns {@code null} (not {@code CBORObject.Null}) if
      * an item with the given key doesn't exist.
      */
-    public CBORObject GetOrDefault(Object key, CBORObject defaultValue) {
+    public CBORObject GetOrDefault(int key, CBORObject defaultValue) {
       if (this.getType() == CBORType.Array) {
-        int index = 0;
-        if (key instanceof Integer) {
-          index = ((Integer)key).intValue();
-        } else {
-          CBORObject cborkey = CBORObject.FromObject(key);
-          if (!cborkey.isNumber() || !cborkey.AsNumber().CanFitInInt32()) {
-            return defaultValue;
-          }
-          index = cborkey.AsNumber().ToInt32Checked();
-        }
+        int index = key;
         List<CBORObject> list = this.AsList();
         return (index < 0 || index >= list.size()) ? defaultValue :
           list.get(index);
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> map = this.AsMap();
-        CBORObject ckey = CBORObject.FromObject(key);
+        var ckey = FromInt32(key);
+        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
+      }
+      return defaultValue;
+    }
+
+    /**
+     * Gets the value of a CBOR object by string key in a map, or a default value
+     * if that value is not found.
+     * @param key An arbitrary string. If this is a CBOR map, this parameter is
+     * converted to a CBOR object serving as the key to the map or index to the
+     * array, and can be null. If this is a CBOR array, defaultValue is returned.
+     * @param defaultValue A value to return if an item with the given key doesn't
+     * exist, or if the CBOR object is an array.
+     * @return The CBOR object referred to by index or key in this array or map. If
+     * this is a CBOR map, returns {@code null} (not {@code CBORObject.Null}) if
+     * an item with the given key doesn't exist.
+     */
+    public CBORObject GetOrDefault(String key, CBORObject defaultValue) {
+      if (this.getType() == CBORType.Array) {
+        return defaultValue;
+      }
+      if (this.getType() == CBORType.Map) {
+        Map<CBORObject, CBORObject> map = this.AsMap();
+        var ckey = FromString(key);
         return PropertyMap.GetOrDefault(map, ckey, defaultValue);
       }
       return defaultValue;
@@ -675,7 +627,7 @@ import com.upokecenter.numbers.*;
         }
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
-          return (!map.containsKey(key)) ? null : map.get(key);
+          return PropertyMap.GetOrDefault(map, key, null);
         }
         if (this.getType() == CBORType.Array) {
           if (!key.isNumber() || !key.AsNumber().IsInteger()) {
@@ -687,9 +639,9 @@ import com.upokecenter.numbers.*;
           List<CBORObject> list = this.AsList();
           int index = key.AsNumber().ToInt32Checked();
           if (index < 0 || index >= list.size()) {
-            throw new IllegalArgumentException("key");
-          }
-          return list.get(index);
+ throw new IllegalArgumentException("key");
+}
+ return list.get(index);
         }
         throw new IllegalStateException("Not an array or map");
       }
@@ -749,7 +701,7 @@ import com.upokecenter.numbers.*;
         if (key == null) {
           throw new NullPointerException("key");
         }
-        CBORObject objkey = CBORObject.FromObject(key);
+        var objkey = FromString(key);
         return this.get(objkey);
       }
 
@@ -766,7 +718,7 @@ import com.upokecenter.numbers.*;
         if (value == null) {
           throw new NullPointerException("value");
         }
-        CBORObject objkey = CBORObject.FromObject(key);
+        var objkey = FromString(key);
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
           map.put(objkey, value);
@@ -774,39 +726,6 @@ import com.upokecenter.numbers.*;
           throw new IllegalStateException("Not a map");
         }
       }
-
-    /**
-     * Finds the sum of two CBOR numbers.
-     * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBOR object.
-     * @return A CBOR object.
-     * @throws IllegalArgumentException Either or both operands are not numbers (as
-     * opposed to Not-a-Number, NaN).
-     * @throws NullPointerException The parameter {@code first} or {@code second}
-     * is null.
-     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
- * use the first number's.Add() method.
- */
-@Deprecated
-    public static CBORObject Addition(CBORObject first, CBORObject second) {
-      if (first == null) {
-        throw new NullPointerException("first");
-      }
-      if (second == null) {
-        throw new NullPointerException("second");
-      }
-      CBORNumber numberA = CBORNumber.FromCBORObject(first);
-      if (numberA == null) {
-        throw new IllegalArgumentException("first" + "does not represent a" +
-          "\u0020number");
-      }
-      CBORNumber b = CBORNumber.FromCBORObject(second);
-      if (b == null) {
-        throw new IllegalArgumentException("second" + "does not represent a" +
-          "\u0020number");
-      }
-      return numberA.Add(b).ToCBORObject();
-    }
 
     /**
      * Generates a CBOR object from an array of CBOR-encoded bytes.
@@ -889,7 +808,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-      return (CBORObject[])cborList.toArray(new CBORObject[] { });
+      return cborList.toArray(new CBORObject[] { });
     }
 
     /**
@@ -1037,12 +956,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         throw new NullPointerException("data");
       }
       if (data.length == 0) {
-        if (options.getAllowEmpty()) {
-          return null;
-        }
-        throw new CBORException("data is empty.");
+        if (!(options.getAllowEmpty())) {
+ throw new CBORException("data is empty.");
+}
+ return (CBORObject)null;
       }
-      int firstbyte = (int)(data[0] & (int)0xff);
+      int firstbyte = data[0] & 0xff;
       int expectedLength = ValueExpectedLengths[firstbyte];
       // if invalid
       if (expectedLength == -1) {
@@ -1061,7 +980,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         // value with tag 0
         String s = GetOptimizedStringIfShortAscii(data, 1);
         if (s != null) {
-          return new CBORObject(FromObject(s), 0, 0);
+          return new CBORObject(FromString(s), 0, 0);
         }
       }
       // For objects with variable length,
@@ -1075,45 +994,14 @@ int startingAvailable = ms.available();
 
         CBORObject o = Read(ms, options);
         CheckCBORLength(
-          (long)data.length,
-          (long)(startingAvailable - ms.available()));
+          data.length,
+          (startingAvailable - ms.available()));
         return o;
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
-    }
-
-    /**
-     * Divides a CBORObject object by the value of a CBORObject object.
-     * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBOR object.
-     * @return The quotient of the two objects.
-     * @throws NullPointerException The parameter {@code first} or {@code second}
-     * is null.
-     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
- * use the first number's.Divide() method.
- */
-@Deprecated
-    public static CBORObject Divide(CBORObject first, CBORObject second) {
-      if (first == null) {
-        throw new NullPointerException("first");
-      }
-      if (second == null) {
-        throw new NullPointerException("second");
-      }
-      CBORNumber a = CBORNumber.FromCBORObject(first);
-      if (a == null) {
-        throw new IllegalArgumentException("first" + "does not represent a" +
-          "\u0020number");
-      }
-      CBORNumber b = CBORNumber.FromCBORObject(second);
-      if (b == null) {
-        throw new IllegalArgumentException("second" + "does not represent a" +
-          "\u0020number");
-      }
-      return a.Divide(b).ToCBORObject();
     }
 
     /**
@@ -1141,9 +1029,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      */
     public static CBORObject FromJSONString(String str, int offset, int count) {
       if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return FromJSONString(str, offset, count, JSONOptions.Default);
+ throw new NullPointerException("str");
+}
+ return FromJSONString(str, offset, count, JSONOptions.Default);
     }
 
     /**
@@ -1167,12 +1055,12 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       String str,
       JSONOptions jsonoptions) {
       if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (jsonoptions == null) {
-        throw new NullPointerException("jsonoptions");
-      }
-      return FromJSONString(str, 0, str.length(), jsonoptions);
+ throw new NullPointerException("str");
+}
+ if (jsonoptions == null) {
+ throw new NullPointerException("jsonoptions");
+}
+ return FromJSONString(str, 0, str.length(), jsonoptions);
     }
 
     /**
@@ -1193,43 +1081,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      */
     public static CBORObject FromJSONString(String str) {
       return FromJSONString(str, JSONOptions.Default);
-    }
-
-    /**
-     * <p>Generates a CBOR object from a text string in JavaScript object Notation
-     * (JSON) format, using the specified options to control the decoding process.
-     * </p> <p>Note that if a CBOR object is converted to JSON with {@code
-     * ToJSONString}, then the JSON is converted back to CBOR with this method, the
-     * new CBOR object will not necessarily be the same as the old CBOR object,
-     * especially if the old CBOR object uses data types not supported in JSON,
-     * such as integers in map keys.</p>
-     * @param str A text string in JSON format. The entire string must contain a
-     * single JSON object and not multiple objects. The string may not begin with a
-     * byte-order mark (U+FEFF).
-     * @param options Specifies options to control the decoding process. This
-     * method uses only the AllowDuplicateKeys property of this object.
-     * @return A CBOR object containing the JSON data decoded.
-     * @throws NullPointerException The parameter {@code str} or {@code options}
-     * is null.
-     * @throws com.upokecenter.cbor.CBORException The string is not in JSON format.
-     * @deprecated Instead, use.getFromJSONString()\u0028str,
- * new\u0020JSONOptions\u0028\allowduplicatekeys = true\))
- * or\u0020.getFromJSONString()\u0028str, \u0020 new
- * JSONOptions\u0028\allowduplicatekeys = false\)), as\u0020appropriate.
- */
-@Deprecated
-    public static CBORObject FromJSONString(
-      String str,
-      CBOREncodeOptions options) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (options == null) {
-        throw new NullPointerException("options");
-      }
-      JSONOptions jsonoptions = new JSONOptions(options.getAllowDuplicateKeys() ?
-        "allowduplicatekeys=1" : "allowduplicatekeys=0");
-      return FromJSONString(str, jsonoptions);
     }
 
     /**
@@ -1261,19 +1112,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int count,
       JSONOptions jsonoptions) {
       if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (jsonoptions == null) {
-        throw new NullPointerException("jsonoptions");
-      }
-      if (count > 0 && str.charAt(offset) == 0xfeff) {
-        throw new CBORException(
+ throw new NullPointerException("str");
+}
+ if (jsonoptions == null) {
+ throw new NullPointerException("jsonoptions");
+}
+ if (count > 0 && str.charAt(offset) == 0xfeff) {
+ throw new CBORException(
           "JSON Object began with a byte order mark (U+FEFF) (offset 0)");
-      }
-      if (count == 0) {
-        throw new CBORException("String is empty");
-      }
-      return CBORJson3.ParseJSONValue(str, offset, offset + count, jsonoptions);
+}
+ if (count == 0) {
+ throw new CBORException("String is empty");
+}
+ return CBORJson3.ParseJSONValue(str, offset, offset + count, jsonoptions);
     }
 
     /**
@@ -1308,6 +1159,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * too deep, or another error occurred when serializing the object.
      * @throws NullPointerException The parameter {@code t} is null.
      */
+
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t) {
       return (T)(this.ToObject(t, null, null, 0));
@@ -1335,12 +1187,13 @@ public <T> T ToObject(java.lang.reflect.Type t) {
      * deep, or another error occurred when serializing the object.
      * @throws NullPointerException The parameter {@code t} is null.
      */
+
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
       if (mapper == null) {
-        throw new NullPointerException("mapper");
-      }
-      return (T)(this.ToObject(t, mapper, null, 0));
+ throw new NullPointerException("mapper");
+}
+ return (T)(this.ToObject(t, mapper, null, 0));
     }
 
     /**
@@ -1367,12 +1220,13 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
      * @throws com.upokecenter.cbor.CBORException The given object's nesting is too
      * deep, or another error occurred when serializing the object.
      */
+
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
       if (options == null) {
-        throw new NullPointerException("options");
-      }
-      return (T)(this.ToObject(t, null, options, 0));
+ throw new NullPointerException("options");
+}
+ return (T)(this.ToObject(t, null, options, 0));
     }
 
     /**
@@ -1570,13 +1424,14 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * @throws NullPointerException The parameter {@code t} or {@code options} is
      * null.
      */
+
     @SuppressWarnings("unchecked")
 public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOptions
       options) {
       if (options == null) {
-        throw new NullPointerException("options");
-      }
-      return (T)(this.ToObject(t, mapper, options, 0));
+ throw new NullPointerException("options");
+}
+ return (T)(this.ToObject(t, mapper, options, 0));
     }
 
     /**
@@ -1615,6 +1470,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * parameter {@code enc} is null, or the parameter {@code t} or {@code pod} is
      * null.
      */
+
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(
       byte[] data,
@@ -1623,12 +1479,12 @@ public static <T> T DecodeObjectFromBytes(
       CBORTypeMapper mapper,
       PODOptions pod) {
       if (pod == null) {
-        throw new NullPointerException("pod");
-      }
-      if (enc == null) {
-        throw new NullPointerException("enc");
-      }
-      return (T)(DecodeFromBytes(data, enc).ToObject(t, mapper, pod));
+ throw new NullPointerException("pod");
+}
+ if (enc == null) {
+ throw new NullPointerException("enc");
+}
+ return (T)(DecodeFromBytes(data, enc).ToObject(t, mapper, pod));
     }
 
     /**
@@ -1661,12 +1517,13 @@ public static <T> T DecodeObjectFromBytes(
      * @throws NullPointerException The parameter {@code data} is null, or the
      * parameter {@code enc} is null, or the parameter {@code t} is null.
      */
+
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(
       byte[] data,
       CBOREncodeOptions enc,
       java.lang.reflect.Type t) {
-       return (T)(DecodeFromBytes(data, enc).ToObject(t));
+      return (T)(DecodeFromBytes(data, enc).ToObject(t));
     }
 
     /**
@@ -1701,13 +1558,14 @@ public static <T> T DecodeObjectFromBytes(
      * @throws NullPointerException The parameter {@code data} is null, or the
      * parameter {@code t} or {@code pod} is null.
      */
+
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(
       byte[] data,
       java.lang.reflect.Type t,
       CBORTypeMapper mapper,
       PODOptions pod) {
-       return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t, mapper, pod));
+      return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t, mapper, pod));
     }
 
     /**
@@ -1737,9 +1595,14 @@ public static <T> T DecodeObjectFromBytes(
      * @throws NullPointerException The parameter {@code data} is null, or the
      * parameter {@code t} is null.
      */
+
     @SuppressWarnings("unchecked")
 public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t) {
-       return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t));
+      return (T)(DecodeObjectFromBytes(data, CBOREncodeOptions.Default, t));
+    }
+    EDecimal ToEDecimal() {
+      CBORNumber cn = this.AsNumber();
+      return cn.GetNumberInterface().AsEDecimal(cn.GetValue());
     }
 
     @SuppressWarnings("unchecked")
@@ -1785,16 +1648,18 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       if (t.equals(EFloat.class)) {
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         if (cn == null) {
-          throw new IllegalStateException("Not a number type");
-        }
-        return (T)(cn.GetNumberInterface().AsEFloat(cn.GetValue()));
+ throw new IllegalStateException("Not a" +
+"\u0020number type");
+}
+ return (T)((Object)cn.GetNumberInterface().AsEFloat(cn.GetValue()));
       }
       if (t.equals(EInteger.class)) {
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         if (cn == null) {
-          throw new IllegalStateException("Not a number type");
-        }
-        return (T)(cn.GetNumberInterface().AsEInteger(cn.GetValue()));
+ throw new IllegalStateException("Not a" +
+"\u0020number type");
+}
+ return (T)((Object)cn.GetNumberInterface().AsEInteger(cn.GetValue()));
       }
       if (t.equals(ERational.class)) {
         // NOTE: Will likely be simplified in version 5.0 and later
@@ -1806,9 +1671,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
         CBORNumber cn = CBORNumber.FromCBORObject(this);
         if (cn == null) {
-          throw new IllegalStateException("Not a number type");
-        }
-        return (T)(cn.GetNumberInterface().AsERational(cn.GetValue()));
+ throw new IllegalStateException("Not a" +
+"\u0020number type");
+}
+ return (T)((Object)cn.GetNumberInterface().AsERational(cn.GetValue()));
       }
       return (T)(t.equals(String.class) ? this.AsString() :
         PropertyMap.TypeToObject(this, t, mapper, options, depth));
@@ -1819,51 +1685,48 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param value The parameter {@code value} is a 64-bit signed integer.
      * @return A CBOR object.
      */
-    public static CBORObject FromObject(long value) {
-      if (value >= 0L && value < 24L) {
-        return FixedObjects[(int)value];
-      } else {
-        return (value >= -24L && value < 0L) ? FixedObjects[0x20 - (int)(value +
+    public static CBORObject FromInt64(long value) {
+      return value >= 0L && value < 24L ? FixedObjects[(int)value] :
+        (value >= -24L && value < 0L) ? FixedObjects[0x20 - (int)(value +
               1L)] : new CBORObject(CBORObjectTypeInteger, value);
-      }
     }
+
+    /**
+     * Generates a CBOR object from a 64-bit signed integer.
+     * @param value The parameter {@code value} is a 64-bit signed integer.
+     * @return A CBOR object.
+     * @deprecated Use FromInt64 instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(long value) => FromInt64(value);
 
     /**
      * Generates a CBOR object from a CBOR object.
      * @param value The parameter {@code value} is a CBOR object.
      * @return Same as {@code value}, or "CBORObject.Null" is {@code value} is
      * null.
-     */
+     * @deprecated Don't use a function and use Nullable Reference Types to\u0020guard against
+ * nulls.
+ */
+@Deprecated
     public static CBORObject FromObject(CBORObject value) {
-      return (value == null) ? (CBORObject.Null) : value;
+      return (value == null) ? (Null) : value;
     }
 
     private static int IntegerByteLength(int intValue) {
       if (intValue < 0) {
         intValue = -(intValue + 1);
       }
-      if (intValue > 0xffff) {
-        return 5;
-      } else if (intValue > 0xff) {
-        return 3;
-      } else {
-        return (intValue > 23) ? 2 : 1;
-      }
+      return intValue > 0xffff ? 5 : intValue > 0xff ? 3 : (intValue > 23) ?
+2 : 1;
     }
 
     private static int IntegerByteLength(long longValue) {
       if (longValue < 0) {
         longValue = -(longValue + 1);
       }
-      if (longValue > 0xffffffffL) {
-        return 9;
-      } else if (longValue > 0xffffL) {
-        return 5;
-      } else if (longValue > 0xffL) {
-        return 3;
-      } else {
-        return (longValue > 23L) ? 2 : 1;
-      }
+      return longValue > 0xffffffffL ? 9 : longValue > 0xffffL ? 5 :
+longValue > 0xffL ? 3 : (longValue > 23L) ? 2 : 1;
     }
 
     /**
@@ -1912,23 +1775,22 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       }
       switch (cbor.getType()) {
         case Integer: {
-          if (cbor.CanValueFitInInt64()) {
-            long tag = cbor.AsInt64Value();
-            size = (size + IntegerByteLength(tag));
-            return size;
-          } else {
-            return size + 9;
+            if (cbor.CanValueFitInInt64()) {
+              long tag = cbor.AsInt64Value();
+              size = (size + IntegerByteLength(tag));
+              return size;
+            } else {
+              return size + 9;
+            }
           }
-        }
         case FloatingPoint: {
-          long valueBits = cbor.AsDoubleBits();
-          int bits = CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
-          if (bits != -1) {
-            return size + 3;
+            long valueBits = cbor.AsDoubleBits();
+            int bits =
+CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
+            return bits != -1 ? size + 3 :
+              CBORUtilities.DoubleRetainsSameValueInSingle(valueBits) ?
+              (size + 5) : (size + 9);
           }
-          return CBORUtilities.DoubleRetainsSameValueInSingle(valueBits) ?
-            (size + 5) : (size + 9);
-        }
         case Array:
           size = (size + IntegerByteLength(cbor.size()));
           for (int i = 0; i < cbor.size(); ++i) {
@@ -1937,35 +1799,35 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           }
           return size;
         case Map: {
-          Collection<Map.Entry<CBORObject, CBORObject>> entries =
-            this.getEntries();
-          size = (size + IntegerByteLength(entries.size()));
-          try {
-            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-              CBORObject key = entry.getKey();
-              CBORObject value = entry.getValue();
-              size = (size + key.CalcEncodedSize(depth + 1));
-              size = (size + value.CalcEncodedSize(depth + 1));
+            Collection<Map.Entry<CBORObject, CBORObject>> entries =
+              this.getEntries();
+            size = (size + IntegerByteLength(entries.size()));
+            try {
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+                CBORObject key = entry.getKey();
+                CBORObject value = entry.getValue();
+                size = (size + key.CalcEncodedSize(depth + 1));
+                size = (size + value.CalcEncodedSize(depth + 1));
+              }
+            } catch (IllegalStateException ex) {
+              // Additional error that may occur in iteration
+              throw new CBORException(ex.getMessage(), ex);
+            } catch (IllegalArgumentException ex) {
+              // Additional error that may occur in iteration
+              throw new CBORException(ex.getMessage(), ex);
             }
-          } catch (IllegalStateException ex) {
-            // Additional error that may occur in iteration
-            throw new CBORException(ex.getMessage(), ex);
-          } catch (IllegalArgumentException ex) {
-            // Additional error that may occur in iteration
-            throw new CBORException(ex.getMessage(), ex);
+            return size;
           }
-          return size;
-        }
         case TextString: {
-          long ulength = com.upokecenter.util.DataUtilities.GetUtf8Length(this.AsString(), false);
-          size = (size + IntegerByteLength(ulength));
-          return size + ulength;
-        }
+            long ulength = com.upokecenter.util.DataUtilities.GetUtf8Length(this.AsString(), false);
+            size = (size + IntegerByteLength(ulength));
+            return size + ulength;
+          }
         case ByteString: {
-          byte[] bytes = cbor.GetByteString();
-          size = (size + IntegerByteLength(bytes.length));
-          return size + bytes.length;
-        }
+            byte[] bytes = cbor.GetByteString();
+            size = (size + IntegerByteLength(bytes.length));
+            return size + bytes.length;
+          }
         case Boolean:
           return size + 1;
         case SimpleValue:
@@ -1986,12 +1848,12 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @return The given number encoded as a CBOR object. Returns CBORObject.Null
      * if {@code bigintValue} is null.
      */
-    public static CBORObject FromObject(EInteger bigintValue) {
-      if ((Object)bigintValue == (Object)null) {
+    public static CBORObject FromEInteger(EInteger bigintValue) {
+      if (bigintValue == null) {
         return CBORObject.Null;
       }
       if (bigintValue.CanFitInInt64()) {
-        return CBORObject.FromObject(bigintValue.ToInt64Checked());
+        return CBORObject.FromInt64(bigintValue.ToInt64Checked());
       } else {
         EInteger bitLength = bigintValue.GetSignedBitLengthAsEInteger();
         if (bitLength.compareTo(64) <= 0) {
@@ -1999,12 +1861,21 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           return new CBORObject(CBORObjectTypeEInteger, bigintValue);
         } else {
           int tag = (bigintValue.signum() < 0) ? 3 : 2;
-          return CBORObject.FromObjectAndTag(
-              EIntegerBytes(bigintValue),
-              tag);
+          return FromByteArray(EIntegerBytes(bigintValue)).WithTag(tag);
         }
       }
     }
+
+    /**
+     * Generates a CBOR object from an arbitrary-precision integer.
+     * @param bigintValue An arbitrary-precision integer. Can be null.
+     * @return The given number encoded as a CBOR object. Returns CBORObject.Null
+     * if {@code bigintValue} is null.
+     * @deprecated Use FromEInteger instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(EInteger bigintValue) =>
+FromEInteger(bigintValue);
 
     /**
      * <p>Generates a CBOR object from an arbitrary-precision binary floating-point
@@ -2021,9 +1892,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @return The given number encoded as a CBOR object. Returns CBORObject.Null
      * if {@code bigValue} is null.
      */
-    public static CBORObject FromObject(EFloat bigValue) {
-      if ((Object)bigValue == (Object)null) {
-        return CBORObject.Null;
+    public static CBORObject FromEFloat(EFloat bigValue) {
+      if (bigValue == null) {
+        return Null;
       }
       CBORObject cbor;
       int tag;
@@ -2039,28 +1910,39 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray(
-            CBORObject.FromObject(bigValue.getExponent()),
-            CBORObject.FromObject(bigValue.getUnsignedMantissa()),
-            CBORObject.FromObject(options));
+        cbor = NewArray(
+            FromEInteger(bigValue.getExponent()),
+            FromEInteger(bigValue.getUnsignedMantissa()),
+            FromInt32(options));
         tag = 269;
       } else {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 5;
-          cbor = CBORObject.NewArray(
-              CBORObject.FromObject(exponent.ToInt64Checked()),
-              CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = NewArray(
+              FromInt64(exponent.ToInt64Checked()),
+              FromEInteger(bigValue.getMantissa()));
         } else {
           tag = (exponent.GetSignedBitLengthAsInt64() > 64) ?
             265 : 5;
-          cbor = CBORObject.NewArray(
-              CBORObject.FromObject(exponent),
-              CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = NewArray(
+              FromEInteger(exponent),
+              FromEInteger(bigValue.getMantissa()));
         }
       }
       return cbor.WithTag(tag);
     }
+
+    /**
+     * Generates a CBOR object from an arbitrary-precision binary floating-point
+     * number.
+     * @param bigValue An arbitrary-precision binary floating-point number.
+     * @return The given number encoded as a CBOR object.
+     * @deprecated Use FromEFloat instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(EFloat bigValue) =>
+FromEFloat(bigValue);
 
     /**
      * <p>Generates a CBOR object from an arbitrary-precision rational number. The
@@ -2073,9 +1955,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @return The given number encoded as a CBOR object. Returns CBORObject.Null
      * if {@code bigValue} is null.
      */
-    public static CBORObject FromObject(ERational bigValue) {
-      if ((Object)bigValue == (Object)null) {
-        return CBORObject.Null;
+    public static CBORObject FromERational(ERational bigValue) {
+      if (bigValue == null) {
+        return Null;
       }
       CBORObject cbor;
       int tag;
@@ -2092,19 +1974,29 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           options += 6;
         }
 
-        cbor = CBORObject.NewArray(
-            FromObject(bigValue.getUnsignedNumerator()),
-            FromObject(bigValue.getDenominator()),
-            FromObject(options));
+        cbor = NewArray(
+            FromEInteger(bigValue.getUnsignedNumerator()),
+            FromEInteger(bigValue.getDenominator()),
+            FromInt32(options));
         tag = 270;
       } else {
         tag = 30;
-        cbor = CBORObject.NewArray(
-            CBORObject.FromObject(bigValue.getNumerator()),
-            CBORObject.FromObject(bigValue.getDenominator()));
+        cbor = NewArray(
+            FromEInteger(bigValue.getNumerator()),
+            FromEInteger(bigValue.getDenominator()));
       }
       return cbor.WithTag(tag);
     }
+
+    /**
+     * Generates a CBOR object from an arbitrary-precision rational number.
+     * @param bigValue An arbitrary-precision rational number.
+     * @return The given number encoded as a CBOR object.
+     * @deprecated Use FromERational instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(ERational bigValue) =>
+FromERational(bigValue);
 
     /**
      * <p>Generates a CBOR object from a decimal number. The CBOR object is
@@ -2119,9 +2011,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @return The given number encoded as a CBOR object. Returns CBORObject.Null
      * if {@code bigValue} is null.
      */
-    public static CBORObject FromObject(EDecimal bigValue) {
-      if ((Object)bigValue == (Object)null) {
-        return CBORObject.Null;
+    public static CBORObject FromEDecimal(EDecimal bigValue) {
+      if (bigValue == null) {
+        return Null;
       }
       CBORObject cbor;
       int tag;
@@ -2137,28 +2029,38 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         if (bigValue.IsSignalingNaN()) {
           options += 6;
         }
-        cbor = CBORObject.NewArray(
-            FromObject(bigValue.getExponent()),
-            FromObject(bigValue.getUnsignedMantissa()),
-            FromObject(options));
+        cbor = NewArray(
+            FromEInteger(bigValue.getExponent()),
+            FromEInteger(bigValue.getUnsignedMantissa()),
+            FromInt32(options));
         tag = 268;
       } else {
         EInteger exponent = bigValue.getExponent();
         if (exponent.CanFitInInt64()) {
           tag = 4;
-          cbor = CBORObject.NewArray(
-              CBORObject.FromObject(exponent.ToInt64Checked()),
-              CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = NewArray(
+              FromInt64(exponent.ToInt64Checked()),
+              FromEInteger(bigValue.getMantissa()));
         } else {
           tag = (exponent.GetSignedBitLengthAsInt64() > 64) ?
             264 : 4;
-          cbor = CBORObject.NewArray(
-              CBORObject.FromObject(exponent),
-              CBORObject.FromObject(bigValue.getMantissa()));
+          cbor = NewArray(
+              FromEInteger(exponent),
+              FromEInteger(bigValue.getMantissa()));
         }
       }
       return cbor.WithTag(tag);
     }
+
+    /**
+     * Generates a CBOR object from a decimal number.
+     * @param bigValue An arbitrary-precision decimal number.
+     * @return The given number encoded as a CBOR object.
+     * @deprecated Use FromEDecimal instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(EDecimal bigValue) =>
+FromEDecimal(bigValue);
 
     /**
      * Generates a CBOR object from a text string.
@@ -2168,7 +2070,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @throws IllegalArgumentException The string contains an unpaired surrogate code
      * point.
      */
-    public static CBORObject FromObject(String strValue) {
+    public static CBORObject FromString(String strValue) {
       if (strValue == null) {
         return CBORObject.Null;
       }
@@ -2177,59 +2079,100 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       }
       long utf8Length = com.upokecenter.util.DataUtilities.GetUtf8Length(strValue, false);
       if (utf8Length < 0) {
-        throw new IllegalArgumentException("String contains an unpaired " +
+ throw new IllegalArgumentException("String contains an unpaired " +
           "surrogate code point.");
-      }
-      return new CBORObject(
-        strValue.length() == utf8Length ? CBORObjectTypeTextStringAscii : CBORObjectTypeTextString,
-        strValue);
+}
+ return new CBORObject(
+            strValue.length() == utf8Length ? CBORObjectTypeTextStringAscii : CBORObjectTypeTextString,
+            strValue);
     }
+
+    /**
+     * Generates a CBOR object from a text string.
+     * @param strValue A text string value. Can be null.
+     * @return A CBOR object representing the string, or CBORObject.Null if
+     * stringValue is null.
+     * @deprecated Use FromString instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(String strValue) =>
+FromString(strValue);
 
     /**
      * Generates a CBOR object from a 32-bit signed integer.
      * @param value The parameter {@code value} is a 32-bit signed integer.
      * @return A CBOR object.
      */
-    public static CBORObject FromObject(int value) {
-      if (value >= 0 && value < 24) {
-        return FixedObjects[value];
-      } else {
-        return (value >= -24 && value < 0) ? FixedObjects[0x20 - (value + 1)] :
-          FromObject((long)value);
-      }
+    public static CBORObject FromInt32(int value) {
+      return value >= 0 && value < 24 ? FixedObjects[value] :
+        (value >= -24 && value < 0) ? FixedObjects[0x20 - (value + 1)] :
+          FromInt64((long)value);
     }
+
+    /**
+     * Generates a CBOR object from a 32-bit signed integer.
+     * @param value The parameter {@code value} is a 32-bit signed integer.
+     * @return A CBOR object.
+     * @deprecated Use FromInt instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(int value) => FromInt32(value);
 
     /**
      * Generates a CBOR object from a 16-bit signed integer.
      * @param value The parameter {@code value} is a 16-bit signed integer.
      * @return A CBOR object generated from the given integer.
      */
-    public static CBORObject FromObject(short value) {
-      if (value >= 0 && value < 24) {
-        return FixedObjects[value];
-      } else {
-        return (value >= -24 && value < 0) ? FixedObjects[0x20 - (value + 1)] :
-          FromObject((long)value);
-      }
+    public static CBORObject FromInt16(short value) {
+      return value >= 0 && value < 24 ? FixedObjects[value] :
+        (value >= -24 && value < 0) ? FixedObjects[0x20 - (value + 1)] :
+          FromInt64((long)value);
     }
+
+    /**
+     * Generates a CBOR object from a 16-bit signed integer.
+     * @param value A 16-bit signed integer.
+     * @return A CBOR object generated from the given integer.
+     * @deprecated Use FromInt16 instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(short value) => FromInt16(value);
 
     /**
      * Returns the CBOR true value or false value, depending on "value".
      * @param value Either {@code true} or {@code false}.
      * @return CBORObject.True if value is true; otherwise CBORObject.False.
      */
-    public static CBORObject FromObject(boolean value) {
-      return value ? CBORObject.True : CBORObject.False;
+    public static CBORObject FromBool(boolean value) {
+      return value ? True : False;
     }
+
+    /**
+     * Returns the CBOR true value or false value, depending on "value".
+     * @param value Either {@code true} or {@code false}.
+     * @return CBORObject.True if value is true; otherwise CBORObject.False.
+     * @deprecated Use FromBool instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(boolean value) => FromBool(value);
 
     /**
      * Generates a CBOR object from a byte (0 to 255).
      * @param value The parameter {@code value} is a byte (from 0 to 255).
      * @return A CBOR object generated from the given integer.
      */
-    public static CBORObject FromObject(byte value) {
-      return FromObject(((int)value) & 0xff);
+    public static CBORObject FromByte(byte value) {
+      return FromInt32(value & 0xff);
     }
+
+    /**
+     * Generates a CBOR object from a byte.
+     * @param value A byte.
+     * @return A CBOR object.
+     * @deprecated Use FromByte instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(byte value) => FromByte(value);
 
     /**
      * Generates a CBOR object from a 32-bit floating-point number. The input value
@@ -2237,36 +2180,54 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * Float.NaN in Java); however, NaN values have multiple forms that are
      * equivalent for many applications' purposes, and {@code Float.NaN} / {@code
      * Float.NaN} is only one of these equivalent forms. In fact, {@code
-     * CBORObject.FromObject(Float.NaN)} or {@code
-     * CBORObject.FromObject(Float.NaN)} could produce a CBOR-encoded object that
+     * CBORObject.FromSingle(Float.NaN)} or {@code
+     * CBORObject.FromSingle(Float.NaN)} could produce a CBOR-encoded object that
      * differs between DotNet and Java, because {@code Float.NaN} / {@code
      * Float.NaN} may have a different form in DotNet and Java (for example, the
      * NaN value's sign may be negative in DotNet, but positive in Java).
      * @param value The parameter {@code value} is a 32-bit floating-point number.
      * @return A CBOR object generated from the given number.
      */
-    public static CBORObject FromObject(float value) {
+    public static CBORObject FromSingle(float value) {
       long doubleBits = CBORUtilities.SingleToDoublePrecision(
           CBORUtilities.SingleToInt32Bits(value));
       return new CBORObject(CBORObjectTypeDouble, doubleBits);
     }
 
     /**
+     * Generates a CBOR object from a 32-bit floating-point number.
+     * @param value A 32-bit floating-point number.
+     * @return A CBOR object.
+     * @deprecated Use FromFloat instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(float value) => FromSingle(value);
+
+    /**
      * Generates a CBOR object from a 64-bit floating-point number. The input value
      * can be a not-a-number (NaN) value (such as {@code Double.NaN}); however,
      * NaN values have multiple forms that are equivalent for many applications'
      * purposes, and {@code Double.NaN} is only one of these equivalent forms. In
-     * fact, {@code CBORObject.FromObject(Double.NaN)} could produce a CBOR-encoded
+     * fact, {@code CBORObject.FromDouble(Double.NaN)} could produce a CBOR-encoded
      * object that differs between DotNet and Java, because {@code Double.NaN} may
      * have a different form in DotNet and Java (for example, the NaN value's sign
      * may be negative in DotNet, but positive in Java).
      * @param value The parameter {@code value} is a 64-bit floating-point number.
      * @return A CBOR object generated from the given number.
      */
-    public static CBORObject FromObject(double value) {
+    public static CBORObject FromDouble(double value) {
       long doubleBits = CBORUtilities.DoubleToInt64Bits(value);
       return new CBORObject(CBORObjectTypeDouble, doubleBits);
     }
+
+    /**
+     * Generates a CBOR object from a 64-bit floating-point number.
+     * @param value A 64-bit floating-point number.
+     * @return A CBOR object generated from the given number.
+     * @deprecated Use FromDouble instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(double value) => FromDouble(value);
 
     /**
      * <p>Generates a CBOR object from an array of 8-bit bytes; the byte array is
@@ -2277,7 +2238,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @return A CBOR object where each element of the given byte array is copied
      * to a new array, or CBORObject.Null if the value is null.
      */
-    public static CBORObject FromObject(byte[] bytes) {
+    public static CBORObject FromByteArray(byte[] bytes) {
       if (bytes == null) {
         return CBORObject.Null;
       }
@@ -2287,14 +2248,24 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
     }
 
     /**
+     * Generates a CBOR object from an array of 8-bit bytes.
+     * @param bytes An array of 8-bit bytes; can be null.
+     * @return A CBOR object where each element of the given byte array is copied
+     * to a new array, or CBORObject.Null if the value is null.
+     * @deprecated Use FromByteArray instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(byte[] bytes) => FromByteArray(bytes);
+
+    /**
      * Generates a CBOR object from an array of CBOR objects.
      * @param array An array of CBOR objects.
      * @return A CBOR object where each element of the given array is copied to a
      * new array, or CBORObject.Null if the value is null.
      */
-    public static CBORObject FromObject(CBORObject[] array) {
+    public static CBORObject FromCBORArray(CBORObject[] array) {
       if (array == null) {
-        return CBORObject.Null;
+        return Null;
       }
       List<CBORObject> list = new ArrayList<CBORObject>();
       for (CBORObject cbor : array) {
@@ -2302,6 +2273,16 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       }
       return new CBORObject(CBORObjectTypeArray, list);
     }
+
+    /**
+     * Generates a CBOR object from an array of CBOR objects.
+     * @param array An array of CBOR objects.
+     * @return A CBOR object.
+     * @deprecated Use FromCBORArray instead.
+ */
+@Deprecated
+    public static CBORObject FromObject(CBORObject[] array) =>
+FromCBORArray(array);
 
     static CBORObject FromArrayBackedObject(CBORObject[] array) {
       if (array == null) {
@@ -2324,7 +2305,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
         Integer.MAX_VALUE ? array.length : (array.length + 1));
       for (int i : array) {
-        list.add(FromObject(i));
+        list.add(FromInt32(i));
       }
       return new CBORObject(CBORObjectTypeArray, list);
     }
@@ -2342,7 +2323,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       List<CBORObject> list = new ArrayList<CBORObject>(array.length ==
         Integer.MAX_VALUE ? array.length : (array.length + 1));
       for (long i : array) {
-        list.add(FromObject(i));
+        list.add(FromInt64(i));
       }
       return new CBORObject(CBORObjectTypeArray, list);
     }
@@ -2353,14 +2334,16 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param obj <p>The parameter {@code obj} is an arbitrary object, which can be
      * null. </p><p><b>NOTE:</b> For security reasons, whenever possible, an
      * application should not base this parameter on user input or other externally
-     * supplied data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * supplied data, and whenever possible, the application should limit this
+     * parameter's inputs to types specially handled by this method (such as {@code
+     * int} or {@code string}) and/or to plain-old-data types (POCO or POJO types)
+     * within the control of the application. If the plain-old-data type references
+     * other data types, those types should likewise meet either criterion
+     * above.</p>.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      */
+
     public static CBORObject FromObject(Object obj) {
       return FromObject(obj, PODOptions.Default);
     }
@@ -2371,17 +2354,18 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param obj <p>The parameter {@code obj} is an arbitrary object.
      * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
      * should not base this parameter on user input or other externally supplied
-     * data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param options An object containing options to control how certain objects
      * are converted to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      * @throws NullPointerException The parameter {@code options} is null.
      */
+
     public static CBORObject FromObject(
       Object obj,
       PODOptions options) {
@@ -2394,24 +2378,25 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param obj <p>The parameter {@code obj} is an arbitrary object.
      * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
      * should not base this parameter on user input or other externally supplied
-     * data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param mapper An object containing optional converters to convert objects of
      * certain types to CBOR objects.
      * @return A CBOR object corresponding to the given object. Returns
      * CBORObject.Null if the object is null.
      * @throws NullPointerException The parameter {@code mapper} is null.
      */
+
     public static CBORObject FromObject(
       Object obj,
       CBORTypeMapper mapper) {
       if (mapper == null) {
-        throw new NullPointerException("mapper");
-      }
-      return FromObject(obj, PODOptions.Default, mapper, 0);
+ throw new NullPointerException("mapper");
+}
+ return FromObject(obj, PODOptions.Default, mapper, 0);
     }
 
     /**
@@ -2522,11 +2507,11 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @param obj <p>An arbitrary object to convert to a CBOR object.
      * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
      * should not base this parameter on user input or other externally supplied
-     * data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param mapper An object containing optional converters to convert objects of
      * certain types to CBOR objects. Can be null.
      * @param options An object containing options to control how certain objects
@@ -2537,14 +2522,15 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @throws com.upokecenter.cbor.CBORException An error occurred while
      * converting the given object to a CBOR object.
      */
+
     public static CBORObject FromObject(
       Object obj,
       CBORTypeMapper mapper,
       PODOptions options) {
       if (mapper == null) {
-        throw new NullPointerException("mapper");
-      }
-      return FromObject(obj, options, mapper, 0);
+ throw new NullPointerException("mapper");
+}
+ return FromObject(obj, options, mapper, 0);
     }
 
     static CBORObject FromObject(
@@ -2559,10 +2545,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         throw new CBORException("Nesting depth too high");
       }
       if (obj == null) {
-        return CBORObject.Null;
+        return Null;
       }
       if (obj instanceof CBORObject) {
-        return FromObject((CBORObject)obj);
+        return (CBORObject)obj;
       }
       CBORObject objret;
       if (mapper != null) {
@@ -2572,61 +2558,54 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
       }
       if (obj instanceof String) {
-        return FromObject((String)obj);
+        return FromString((String)obj);
       }
       if (obj instanceof Integer) {
-        return FromObject(((Integer)obj).intValue());
+        return FromInt32(((Integer)obj).intValue());
       }
       if (obj instanceof Long) {
-        return FromObject((((Long)obj).longValue()));
+        return FromInt64((((Long)obj).longValue()));
       }
-      EInteger eif = ((obj instanceof EInteger) ? (EInteger)obj : null);
-      if (eif != null) {
-        return FromObject(eif);
+      EInteger eif = ((obj instanceof EInteger) ? (EInteger)obj : null); if (eif != null) {
+        return FromEInteger(eif);
       }
-      EDecimal edf = ((obj instanceof EDecimal) ? (EDecimal)obj : null);
-      if (edf != null) {
-        return FromObject(edf);
+      EDecimal edf = ((obj instanceof EDecimal) ? (EDecimal)obj : null); if (edf != null) {
+        return FromEDecimal(edf);
       }
-      EFloat eff = ((obj instanceof EFloat) ? (EFloat)obj : null);
-      if (eff != null) {
-        return FromObject(eff);
+      EFloat eff = ((obj instanceof EFloat) ? (EFloat)obj : null); if (eff != null) {
+        return FromEFloat(eff);
       }
-      ERational erf = ((obj instanceof ERational) ? (ERational)obj : null);
-      if (erf != null) {
-        return FromObject(erf);
+      ERational erf = ((obj instanceof ERational) ? (ERational)obj : null); if (erf != null) {
+        return FromERational(erf);
       }
       if (obj instanceof Short) {
-        return FromObject(((Short)obj).shortValue());
+        return FromInt16(((Short)obj).shortValue());
       }
       if (obj instanceof Character) {
-        return FromObject((int)((Character)obj).charValue());
+        return FromInt32((int)((Character)obj).charValue());
       }
       if (obj instanceof Boolean) {
-        return FromObject(((Boolean)obj).booleanValue());
+        return FromBool(((Boolean)obj).booleanValue());
       }
       if (obj instanceof Byte) {
-        return FromObject(((Byte)obj).byteValue());
+        return FromByte(((Byte)obj).byteValue());
       }
       if (obj instanceof Float) {
-        return FromObject(((Float)obj).floatValue());
+        return FromSingle(((Float)obj).floatValue());
       }
 
       if (obj instanceof Double) {
-        return FromObject(((Double)obj).doubleValue());
+        return FromDouble(((Double)obj).doubleValue());
       }
-      byte[] bytearr = ((obj instanceof byte[]) ? (byte[])obj : null);
-      if (bytearr != null) {
-        return FromObject(bytearr);
+      if (obj instanceof byte[]) {
+        return FromByteArray(((byte[])obj));
       }
       if (obj instanceof Map<?, ?>) {
         // Map appears first because Map includes Iterable
         objret = CBORObject.NewMap();
-        Map<?, ?> objdic =
-          (Map<?, ?>)obj;
+        Map<?, ?> objdic = (Map<?, ?>)obj;
         for (Object keyPair : objdic.entrySet()) {
-          Map.Entry<?, ?>
-          kvp = (Map.Entry<?, ?>)keyPair;
+          Map.Entry<?, ?> kvp = (Map.Entry<?, ?>)keyPair;
           CBORObject objKey = CBORObject.FromObject(
               kvp.getKey(),
               options,
@@ -2713,18 +2692,18 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       } else {
         if (bigintTag.compareTo(UInt64MaxValue) > 0) {
           throw new IllegalArgumentException(
-            "tag more than 18446744073709551615 (" + bigintTag + ")");
+            "tag more than 18446744073709551615");
         }
         int tagLow = 0;
         int tagHigh = 0;
         byte[] bytes = bigintTag.ToBytes(true);
         for (int i = 0; i < Math.min(4, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagLow = (tagLow | (((int)b) << (i * 8)));
+          int b = bytes[i] & 0xff;
+          tagLow = (tagLow | (b << (i * 8)));
         }
         for (int i = 4; i < Math.min(8, bytes.length); ++i) {
-          int b = ((int)bytes[i]) & 0xff;
-          tagHigh = (tagHigh | (((int)b) << (i * 8)));
+          int b = bytes[i] & 0xff;
+          tagHigh = (tagHigh | (b << (i * 8)));
         }
         return new CBORObject(this, tagLow, tagHigh);
       }
@@ -2734,43 +2713,60 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * Generates a CBOR object from an arbitrary object and gives the resulting
      * object a tag in addition to its existing tags (the new tag is made the
      * outermost tag).
-     * @param valueOb <p>The parameter {@code valueOb} is an arbitrary object,
-     * which can be null. </p><p><b>NOTE:</b> For security reasons, whenever
-     * possible, an application should not base this parameter on user input or
-     * other externally supplied data unless the application limits this
-     * parameter's inputs to types specially handled by this method (such as {@code
-     * int} or {@code string}) and/or to plain-old-data types (POCO or POJO types)
-     * within the control of the application. If the plain-old-data type references
-     * other data types, those types should likewise meet either criterion
-     * above.</p>.
+     * @param cborObj <p>The parameter {@code cborObj} is a CBORObject.
+     * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
+     * should not base this parameter on user input or other externally supplied
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param bigintTag <p>Tag number. The tag number 55799 can be used to mark a
      * "self-described CBOR" object. This document does not attempt to list all
      * CBOR tags and their meanings. An up-to-date list can be found at the CBOR
      * Tags registry maintained by the Internet Assigned Numbers Authority(
      * <i>iana.org/assignments/cbor-tags</i>).</p>
-     * @return A CBOR object where the object {@code valueOb} is converted to a
-     * CBOR object and given the tag {@code bigintTag}. If {@code valueOb} is null,
-     * returns a version of CBORObject.Null with the given tag.
+     * @return A CBOR object where the object {@code cborObj} is given the tag
+     * {@code bigintTag}.
      * @throws IllegalArgumentException The parameter {@code bigintTag} is less than 0 or
      * greater than 2^64-1.
      * @throws NullPointerException The parameter {@code bigintTag} is null.
      */
-    public static CBORObject FromObjectAndTag(
-      Object valueOb,
+    public static CBORObject FromCBORObjectAndTag(
+      CBORObject cborObj,
       EInteger bigintTag) {
+      if (cborObj == null) {
+        throw new NullPointerException("cborObj");
+      }
       if (bigintTag == null) {
-        throw new NullPointerException("bigintTag");
-      }
-      if (bigintTag.signum() < 0) {
-        throw new IllegalArgumentException("tagEInt's sign(" + bigintTag.signum() +
+ throw new NullPointerException("bigintTag");
+}
+ if (bigintTag.signum() < 0) {
+ throw new IllegalArgumentException("tagEInt's sign(" + bigintTag.signum() +
           ") is less than 0");
-      }
-      if (bigintTag.compareTo(UInt64MaxValue) > 0) {
-        throw new IllegalArgumentException(
-          "tag more than 18446744073709551615 (" + bigintTag + ")");
-      }
-      return FromObject(valueOb).WithTag(bigintTag);
+}
+ if (bigintTag.compareTo(UInt64MaxValue) > 0) {
+ throw new IllegalArgumentException(
+          "tag more than 18446744073709551615");
+}
+ return cborObj.WithTag(bigintTag);
     }
+
+    /**
+     * Generates a CBOR object from an arbitrary object and gives the resulting
+     * object a tag in addition to its existing tags (the new tag is made the
+     * outermost tag).
+     * @param valueObValue An arbitrary object, which can be null.
+     * @param bigintTag Tag number.
+     * @return A CBOR object where the object {@code valueObValue} is given the tag
+     * {@code bigintTag}.
+     * @deprecated Use FromCBORObjectAndTag instead.
+ */
+@Deprecated
+
+    public static CBORObject FromObjectAndTag(Object valueObValue, EInteger
+bigintTag) =>
+      FromCBORObjectAndTag(FromObject(valueObValue), bigintTag);
 
     /**
      * Generates a CBOR object from an arbitrary object and gives the resulting
@@ -2789,45 +2785,61 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      */
     public CBORObject WithTag(int smallTag) {
       if (smallTag < 0) {
-        throw new IllegalArgumentException("smallTag(" + smallTag +
+ throw new IllegalArgumentException("smallTag(" + smallTag +
           ") is less than 0");
-      }
-      return new CBORObject(this, smallTag, 0);
+}
+ return new CBORObject(this, smallTag, 0);
     }
 
     /**
      * Generates a CBOR object from an arbitrary object and gives the resulting
      * object a tag in addition to its existing tags (the new tag is made the
      * outermost tag).
-     * @param valueObValue <p>The parameter {@code valueObValue} is an arbitrary
-     * object, which can be null. </p><p><b>NOTE:</b> For security reasons,
-     * whenever possible, an application should not base this parameter on user
-     * input or other externally supplied data unless the application limits this
-     * parameter's inputs to types specially handled by this method (such as {@code
-     * int} or {@code string}) and/or to plain-old-data types (POCO or POJO types)
-     * within the control of the application. If the plain-old-data type references
-     * other data types, those types should likewise meet either criterion
-     * above.</p>.
+     * @param cborObj <p>The parameter {@code cborObj} is a CBORObject.
+     * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
+     * should not base this parameter on user input or other externally supplied
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param smallTag <p>A 32-bit integer that specifies a tag number. The tag
      * number 55799 can be used to mark a "self-described CBOR" object. This
      * document does not attempt to list all CBOR tags and their meanings. An
      * up-to-date list can be found at the CBOR Tags registry maintained by the
      * Internet Assigned Numbers Authority (<i>iana.org/assignments/cbor-tags</i>
      *).</p>
-     * @return A CBOR object where the object {@code valueObValue} is converted to
-     * a CBOR object and given the tag {@code smallTag}. If "valueOb" is null,
-     * returns a version of CBORObject.Null with the given tag.
+     * @return A CBOR object where the object {@code cborObj} is given the tag
+     * {@code smallTag}. If "valueOb" is null, returns a version of CBORObject.Null
+     * with the given tag.
      * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0.
      */
-    public static CBORObject FromObjectAndTag(
-      Object valueObValue,
+    public static CBORObject FromCBORObjectAndTag(
+      CBORObject cborObj,
       int smallTag) {
       if (smallTag < 0) {
-        throw new IllegalArgumentException("smallTag(" + smallTag +
+ throw new IllegalArgumentException("smallTag(" + smallTag +
           ") is less than 0");
-      }
-      return FromObject(valueObValue).WithTag(smallTag);
+}
+ return cborObj.WithTag(smallTag);
     }
+
+    /**
+     * Generates a CBOR object from an arbitrary object and gives the resulting
+     * object a tag in addition to its existing tags (the new tag is made the
+     * outermost tag).
+     * @param valueObValue The parameter, an arbitrary object, which can be null.
+     * @param smallTag A 32-bit integer that specifies a tag number.
+     * @return A CBOR object where the object {@code valueObValue} is given the tag
+     * {@code smallTag}.
+     * @throws IllegalArgumentException The parameter {@code smallTag} is less than 0.
+     * @deprecated Use FromCBORObjectAndTag instead.
+ */
+@Deprecated
+
+    public static CBORObject FromObjectAndTag(Object valueObValue, int
+smallTag) =>
+      FromCBORObjectAndTag(FromObject(valueObValue), smallTag);
 
     /**
      * Creates a CBOR object from a simple value number.
@@ -2847,48 +2859,13 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           ") is more than " + "255");
       }
       if (simpleValue >= 24 && simpleValue < 32) {
-        throw new IllegalArgumentException("Simple value is from 24 to 31: " +
+ throw new IllegalArgumentException("Simple value is from 24 to 31 - " +
           simpleValue);
-      }
-      if (simpleValue < 32) {
-        return FixedObjects[0xe0 + simpleValue];
-      }
-      return new CBORObject(
+}
+ return simpleValue < 32 ?
+        FixedObjects[0xe0 + simpleValue] : new CBORObject(
           CBORObjectTypeSimpleValue,
           simpleValue);
-    }
-
-    /**
-     * Multiplies two CBOR numbers.
-     * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBOR object.
-     * @return The product of the two numbers.
-     * @throws IllegalArgumentException Either or both operands are not numbers (as
-     * opposed to Not-a-Number, NaN).
-     * @throws NullPointerException The parameter {@code first} or {@code second}
-     * is null.
-     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
- * use the first number's.Multiply() method.
- */
-@Deprecated
-    public static CBORObject Multiply(CBORObject first, CBORObject second) {
-      if (first == null) {
-        throw new NullPointerException("first");
-      }
-      if (second == null) {
-        throw new NullPointerException("second");
-      }
-      CBORNumber a = CBORNumber.FromCBORObject(first);
-      if (a == null) {
-        throw new IllegalArgumentException("first" + "does not represent a" +
-          "\u0020number");
-      }
-      CBORNumber b = CBORNumber.FromCBORObject(second);
-      if (b == null) {
-        throw new IllegalArgumentException("second" + "does not represent a" +
-          "\u0020number");
-      }
-      return a.Multiply(b).ToCBORObject();
     }
 
     /**
@@ -2900,9 +2877,9 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
     }
 
     static CBORObject NewArray(CBORObject o1, CBORObject o2) {
-      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
-      list.add(o1);
-      list.add(o2);
+      java.util.ArrayList<CBORObject> list = new java.util.ArrayList<CBORObject>(java.util.Arrays.asList(
+        o1,
+        o2));
       return new CBORObject(CBORObjectTypeArray, list);
     }
 
@@ -2910,10 +2887,10 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       CBORObject o1,
       CBORObject o2,
       CBORObject o3) {
-      ArrayList<CBORObject> list = new ArrayList<CBORObject>(2);
-      list.add(o1);
-      list.add(o2);
-      list.add(o3);
+      java.util.ArrayList<CBORObject> list = new java.util.ArrayList<CBORObject>(java.util.Arrays.asList(
+        o1,
+        o2,
+        o3));
       return new CBORObject(CBORObjectTypeArray, list);
     }
 
@@ -2962,7 +2939,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
         cborList.add(obj);
       }
-      return (CBORObject[])cborList.toArray(new CBORObject[] { });
+      return cborList.toArray(new CBORObject[] { });
     }
 
     /**
@@ -3001,7 +2978,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
         cborList.add(obj);
       }
-      return (CBORObject[])cborList.toArray(new CBORObject[] { });
+      return cborList.toArray(new CBORObject[] { });
     }
 
     /**
@@ -3098,44 +3075,6 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
     }
 
     /**
-     * Generates a CBOR object from a data stream in JavaScript object Notation
-     * (JSON) format, using the specified options to control the decoding process.
-     * The JSON stream may begin with a byte-order mark (U+FEFF). Since version
-     * 2.0, the JSON stream can be in UTF-8, UTF-16, or UTF-32 encoding; the
-     * encoding is detected by assuming that the first character read must be a
-     * byte-order mark or a nonzero basic character (U+0001 to U+007F). (In
-     * previous versions, only UTF-8 was allowed.).
-     * @param stream A readable data stream. The sequence of bytes read from the
-     * data stream must contain a single JSON object and not multiple objects.
-     * @param options Contains options to control the JSON decoding process. This
-     * method uses only the AllowDuplicateKeys property of this object.
-     * @return A CBOR object containing the JSON data decoded.
-     * @throws NullPointerException The parameter {@code stream} is null.
-     * @throws java.io.IOException An I/O error occurred.
-     * @throws com.upokecenter.cbor.CBORException The data stream contains invalid
-     * encoding or is not in JSON format.
-     * @deprecated Instead, use.getReadJSON()\u0028stream,
- * new\u0020JSONOptions\u0028\allowduplicatekeys = true\))
- * or\u0020.getReadJSON()\u0028stream,
- * new\u0020JSONOptions\u0028\allowduplicatekeys = false\)),
- * as\u0020appropriate.
- */
-@Deprecated
-    public static CBORObject ReadJSON(
-      InputStream stream,
-      CBOREncodeOptions options) throws java.io.IOException {
-      if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      if (options == null) {
-        throw new NullPointerException("options");
-      }
-      JSONOptions jsonoptions = new JSONOptions(options.getAllowDuplicateKeys() ?
-        "allowduplicatekeys=1" : "allowduplicatekeys=0");
-      return ReadJSON(stream, jsonoptions);
-    }
-
-    /**
      * <p>Generates a list of CBOR objects from a data stream in JavaScript object
      * Notation (JSON) text sequence format (RFC 7464). The data stream must be in
      * UTF-8 encoding and may not begin with a byte-order mark (U+FEFF).</p>
@@ -3179,8 +3118,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
         return objlist;
       } catch (CBORException ex) {
-        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null);
-        if (ioex != null) {
+        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null); if (ioex != null) {
           throw ioex;
         }
         throw ex;
@@ -3231,8 +3169,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
         }
         return obj;
       } catch (CBORException ex) {
-        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null);
-        if (ioex != null) {
+        IOException ioex = ((ex.getCause() instanceof IOException) ? (IOException)ex.getCause() : null); if (ioex != null) {
           throw ioex;
         }
         throw ex;
@@ -3296,15 +3233,15 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       JSONOptions jsonoptions) {
       // TODO: In next major version, consider supporting UTF-8 only
       if (bytes == null) {
-        throw new NullPointerException("bytes");
-      }
-      if (jsonoptions == null) {
-        throw new NullPointerException("jsonoptions");
-      }
-      if (bytes.length == 0) {
-        throw new CBORException("Byte array is empty");
-      }
-      return FromJSONBytes(bytes, 0, bytes.length, jsonoptions);
+ throw new NullPointerException("bytes");
+}
+ if (jsonoptions == null) {
+ throw new NullPointerException("jsonoptions");
+}
+ if (bytes.length == 0) {
+ throw new CBORException("Byte array is empty");
+}
+ return FromJSONBytes(bytes, 0, bytes.length, jsonoptions);
     }
 
     /**
@@ -3384,9 +3321,6 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       if (jsonoptions == null) {
         throw new NullPointerException("jsonoptions");
       }
-      if (bytes == null) {
-        throw new NullPointerException("bytes");
-      }
       if (offset < 0) {
         throw new IllegalArgumentException("offset (" + offset + ") is not greater" +
           "\u0020or equal to 0");
@@ -3439,71 +3373,6 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Finds the remainder that results when a CBORObject object is divided by the
-     * value of a CBOR object.
-     * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBOR object.
-     * @return The remainder of the two numbers.
-     * @throws NullPointerException The parameter {@code first} or {@code second}
-     * is null.
-     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
- * use the first number's.Remainder() method.
- */
-@Deprecated
-    public static CBORObject Remainder(CBORObject first, CBORObject second) {
-      if (first == null) {
-        throw new NullPointerException("first");
-      }
-      if (second == null) {
-        throw new NullPointerException("second");
-      }
-      CBORNumber a = CBORNumber.FromCBORObject(first);
-      if (a == null) {
-        throw new IllegalArgumentException("first" + "does not represent a" +
-          "\u0020number");
-      }
-      CBORNumber b = CBORNumber.FromCBORObject(second);
-      if (b == null) {
-        throw new IllegalArgumentException("second" + "does not represent a" +
-          "\u0020number");
-      }
-      return a.Remainder(b).ToCBORObject();
-    }
-
-    /**
-     * Finds the difference between two CBOR number objects.
-     * @param first The parameter {@code first} is a CBOR object.
-     * @param second The parameter {@code second} is a CBOR object.
-     * @return The difference of the two objects.
-     * @throws IllegalArgumentException Either or both operands are not numbers (as
-     * opposed to Not-a-Number, NaN).
-     * @throws NullPointerException The parameter {@code first} or {@code second}
-     * is null.
-     * @deprecated Instead, convert both CBOR objects to numbers (with\u0020.AsNumber()), and
- * use the first number's.Subtract() method.
- */
-@Deprecated
-    public static CBORObject Subtract(CBORObject first, CBORObject second) {
-      if (first == null) {
-        throw new NullPointerException("first");
-      }
-      if (second == null) {
-        throw new NullPointerException("second");
-      }
-      CBORNumber a = CBORNumber.FromCBORObject(first);
-      if (a == null) {
-        throw new IllegalArgumentException("first" + "does not represent a" +
-          "\u0020number");
-      }
-      CBORNumber b = CBORNumber.FromCBORObject(second);
-      if (b == null) {
-        throw new IllegalArgumentException("second" + "does not represent a" +
-          "\u0020number");
-      }
-      return a.Subtract(b).ToCBORObject();
-    }
-
-    /**
      * Writes a text string in CBOR format to a data stream. The string will be
      * encoded using definite-length encoding regardless of its length.
      * @param str The string to write. Can be null.
@@ -3551,7 +3420,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * Writes a binary floating-point number in CBOR format to a data stream, as
-     * though it were converted to a CBOR object via CBORObject.FromObject(EFloat)
+     * though it were converted to a CBOR object via CBORObject.FromEFloat(EFloat)
      * and then written out.
      * @param bignum An arbitrary-precision binary floating-point number. Can be
      * null.
@@ -3569,7 +3438,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
       if ((bignum.isZero() && bignum.isNegative()) || bignum.IsInfinity() ||
         bignum.IsNaN()) {
-        Write(CBORObject.FromObject(bignum), stream);
+        Write(FromEFloat(bignum), stream);
         return;
       }
       EInteger exponent = bignum.getExponent();
@@ -3593,7 +3462,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 
     /**
      * Writes a rational number in CBOR format to a data stream, as though it were
-     * converted to a CBOR object via CBORObject.FromObject(ERational) and then
+     * converted to a CBOR object via CBORObject.FromERational(ERational) and then
      * written out.
      * @param rational An arbitrary-precision rational number. Can be null.
      * @param stream A writable data stream.
@@ -3609,7 +3478,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return;
       }
       if (!rational.isFinite() || (rational.isNegative() && rational.isZero())) {
-        Write(CBORObject.FromObject(rational), stream);
+        Write(FromERational(rational), stream);
         return;
       }
       stream.write(0xd8); // tag 30
@@ -3624,7 +3493,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     /**
      * Writes a decimal floating-point number in CBOR format to a data stream, as
      * though it were converted to a CBOR object via
-     * CBORObject.FromObject(EDecimal) and then written out.
+     * CBORObject.FromEDecimal(EDecimal) and then written out.
      * @param bignum The arbitrary-precision decimal number to write. Can be null.
      * @param stream InputStream to write to.
      * @throws NullPointerException The parameter {@code stream} is null.
@@ -3639,7 +3508,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         return;
       }
       if (!bignum.isFinite() || (bignum.isNegative() && bignum.isZero())) {
-        Write(CBORObject.FromObject(bignum), stream);
+        Write(FromEDecimal(bignum), stream);
         return;
       }
       EInteger exponent = bignum.getExponent();
@@ -3690,7 +3559,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (stream == null) {
         throw new NullPointerException("stream");
       }
-      if ((Object)bigint == (Object)null) {
+      if (bigint == null) {
         stream.write(0xf6);
         return;
       }
@@ -3698,7 +3567,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (bigint.signum() < 0) {
         datatype = 1;
         bigint = bigint.Add(EInteger.FromInt32(1));
-        bigint=(bigint).Negate();
+        bigint = bigint.Negate();
       }
       if (bigint.CanFitInInt64()) {
         // If the arbitrary-precision integer is representable as a long and in
@@ -3719,9 +3588,11 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           int half = byteCount >> 1;
           int right = byteCount - 1;
           for (int i = 0; i < half; ++i, --right) {
-            byte value = bytes[i];
+            // NOTE: Swapping syntax can't be used in netstandard1.0
+            // because it relies on System.ValueTuple
+            byte tmp = bytes[i];
             bytes[i] = bytes[right];
-            bytes[right] = value;
+            bytes[right] = tmp;
           }
         }
         switch (byteCount) {
@@ -3729,7 +3600,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             stream.write((byte)(datatype << 5));
             return;
           case 1:
-            WritePositiveInt(datatype, ((int)bytes[0]) & 0xff, stream);
+            WritePositiveInt(datatype, bytes[0] & 0xff, stream);
             break;
           case 2:
             stream.write((byte)((datatype << 5) | 25));
@@ -3737,7 +3608,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           case 3:
             stream.write((byte)((datatype << 5) | 26));
-            stream.write((byte)0);
+            stream.write(0);
             stream.write(bytes, 0, byteCount);
             break;
           case 4:
@@ -3746,20 +3617,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           case 5:
             stream.write((byte)((datatype << 5) | 27));
-            stream.write((byte)0);
-            stream.write((byte)0);
-            stream.write((byte)0);
+            stream.write(0);
+            stream.write(0);
+            stream.write(0);
             stream.write(bytes, 0, byteCount);
             break;
           case 6:
             stream.write((byte)((datatype << 5) | 27));
-            stream.write((byte)0);
-            stream.write((byte)0);
+            stream.write(0);
+            stream.write(0);
             stream.write(bytes, 0, byteCount);
             break;
           case 7:
             stream.write((byte)((datatype << 5) | 27));
-            stream.write((byte)0);
+            stream.write(0);
             stream.write(bytes, 0, byteCount);
             break;
           case 8:
@@ -3871,10 +3742,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (stream == null) {
         throw new NullPointerException("stream");
       }
-      if ((((int)value) & 0xff) < 24) {
+      if ((value & 0xff) < 24) {
         stream.write(value);
       } else {
-        stream.write((byte)24);
+        stream.write(24);
         stream.write(value);
       }
     }
@@ -3942,6 +3813,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * @param objValue The arbitrary object to be serialized. Can be null.
      * @param stream A writable data stream.
      */
+
     public static void Write(Object objValue, OutputStream stream) throws java.io.IOException {
       Write(objValue, stream, CBOREncodeOptions.Default);
     }
@@ -3962,21 +3834,22 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * which will always be written as definite-length byte strings.</li><li>string
      * objects. The strings will be encoded using definite-length encoding
      * regardless of their length.</li><li>Any object accepted by the FromObject
-     * static methods.</li></ul>
+     * method.</li></ul>
      * @param objValue <p>The arbitrary object to be serialized. Can be null.
      * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
      * should not base this parameter on user input or other externally supplied
-     * data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param output A writable data stream.
      * @param options CBOR options for encoding the CBOR object to bytes.
      * @throws IllegalArgumentException The object's type is not supported.
      * @throws NullPointerException The parameter {@code options} or {@code
      * output} is null.
      */
+
     @SuppressWarnings("unchecked")
 public static void Write(
       Object objValue,
@@ -3996,10 +3869,9 @@ public static void Write(
         FromObject(objValue).WriteTo(output, options);
         return;
       }
-      byte[] data = ((objValue instanceof byte[]) ? (byte[])objValue : null);
-      if (data != null) {
-        WritePositiveInt(3, data.length, output);
-        output.write(data, 0, data.length);
+      if (objValue instanceof byte[]) {
+        WritePositiveInt(3, ((byte[])objValue).length, output);
+        output.write(((byte[])objValue), 0, ((byte[])objValue).length);
         return;
       }
       if (objValue instanceof List<?>) {
@@ -4032,14 +3904,15 @@ public static void Write(
      * @param obj <p>The parameter {@code obj} is an arbitrary object. Can be null.
      * </p><p><b>NOTE:</b> For security reasons, whenever possible, an application
      * should not base this parameter on user input or other externally supplied
-     * data unless the application limits this parameter's inputs to types
-     * specially handled by this method (such as {@code int} or {@code string})
-     * and/or to plain-old-data types (POCO or POJO types) within the control of
-     * the application. If the plain-old-data type references other data types,
-     * those types should likewise meet either criterion above.</p>.
+     * data, and whenever possible, the application should limit this parameter's
+     * inputs to types specially handled by this method (such as {@code int} or
+     * {@code string}) and/or to plain-old-data types (POCO or POJO types) within
+     * the control of the application. If the plain-old-data type references other
+     * data types, those types should likewise meet either criterion above.</p>.
      * @param outputStream A writable data stream.
      * @throws NullPointerException The parameter {@code outputStream} is null.
      */
+
     public static void WriteJSON(Object obj, OutputStream outputStream) throws java.io.IOException {
       if (outputStream == null) {
         throw new NullPointerException("outputStream");
@@ -4060,45 +3933,11 @@ public static void Write(
     }
 
     /**
-     * Gets this object's absolute value.
-     * @return This object's absolute without its negative sign.
-     * @throws IllegalStateException This object does not represent a number (for
-     * this purpose, infinities and not-a-number or NaN values, but not
-     * CBORObject.Null, are considered numbers).
-     * @deprecated Instead, convert this object to a number \u0028with\u0020.getAsNumber()\u0028)),
- * and use that number's.getAbs()\u0028) method.
- */
-@Deprecated
-    public CBORObject Abs() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      if (cn == null) {
-        throw new IllegalStateException("This Object is not a number.");
-      }
-      Object oldItem = cn.GetValue();
-      Object newItem = cn.GetNumberInterface().Abs(oldItem);
-      if (oldItem == newItem) {
-        return this;
-      }
-      if (newItem instanceof EDecimal) {
-        return CBORObject.FromObject((EDecimal)newItem);
-      }
-      if (newItem instanceof EInteger) {
-        return CBORObject.FromObject((EInteger)newItem);
-      }
-      if (newItem instanceof EFloat) {
-        return CBORObject.FromObject((EFloat)newItem);
-      }
-      ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
-      return (rat != null) ? CBORObject.FromObject(rat) : ((oldItem ==
-            newItem) ? this : CBORObject.FromObject(newItem));
-    }
-
-    /**
      * <p>Adds a new key and its value to this CBOR map, or adds the value if the
      * key doesn't exist.</p> <p>NOTE: This method can't be used to add a tag to an
      * existing CBOR object. To create a CBOR object with a given tag, call the
-     * {@code CBORObject.FromObjectAndTag} method and pass the CBOR object and the
-     * desired tag number to that method.</p>
+     * {@code CBORObject.FromCBORObjectAndTag} method and pass the CBOR object and
+     * the desired tag number to that method.</p>
      * @param key An object representing the key, which will be converted to a
      * CBORObject. Can be null, in which case this value is converted to
      * CBORObject.Null.
@@ -4112,6 +3951,7 @@ public static void Write(
      * @throws IllegalArgumentException The parameter {@code key} or {@code valueOb} has
      * an unsupported type.
      */
+
     public CBORObject Add(Object key, Object valueOb) {
       if (this.getType() == CBORType.Map) {
         CBORObject mapKey;
@@ -4120,13 +3960,13 @@ public static void Write(
           mapKey = CBORObject.Null;
         } else {
           mapKey = ((key instanceof CBORObject) ? (CBORObject)key : null);
-          mapKey = (mapKey == null) ? (CBORObject.FromObject(key)) : mapKey;
+          mapKey = (mapKey == null) ? (FromObject(key)) : mapKey;
         }
         if (valueOb == null) {
-          mapValue = CBORObject.Null;
+          mapValue = Null;
         } else {
           mapValue = ((valueOb instanceof CBORObject) ? (CBORObject)valueOb : null);
-          mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
+          mapValue = (mapValue == null) ? (FromObject(valueOb)) : mapValue;
         }
         Map<CBORObject, CBORObject> map = this.AsMap();
         if (map.containsKey(mapKey)) {
@@ -4147,14 +3987,14 @@ public static void Write(
      * reference to CBORObject.Null, for convenience with the object overload of
      * this method).</p> <p>NOTE: This method can't be used to add a tag to an
      * existing CBOR object. To create a CBOR object with a given tag, call the
-     * {@code CBORObject.FromObjectAndTag} method and pass the CBOR object and the
-     * desired tag number to that method.</p><p>The following example creates a
+     * {@code CBORObject.FromCBORObjectAndTag} method and pass the CBOR object and
+     * the desired tag number to that method.</p><p>The following example creates a
      * CBOR array and adds several CBOR objects, one of which has a custom CBOR
      * tag, to that array. Note the chaining behavior made possible by this
      * method.</p> <pre>CBORObject obj = CBORObject.NewArray()
      * .Add(CBORObject.False) .Add(CBORObject.FromObject(5))
      * .Add(CBORObject.FromObject("text string"))
-     * .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
+     * .Add(CBORObject.FromCBORObjectAndTag(9999, 1));</pre> .
      * @param obj The parameter {@code obj} is a CBOR object.
      * @return This instance.
      * @throws IllegalStateException This object is not an array.
@@ -4172,44 +4012,27 @@ public static void Write(
      * <p>Converts an object to a CBOR object and adds it to the end of this
      * array.</p> <p>NOTE: This method can't be used to add a tag to an existing
      * CBOR object. To create a CBOR object with a given tag, call the {@code
-     * CBORObject.FromObjectAndTag} method and pass the CBOR object and the desired
-     * tag number to that method.</p><p>The following example creates a CBOR array
-     * and adds several CBOR objects, one of which has a custom CBOR tag, to that
-     * array. Note the chaining behavior made possible by this method.</p>
-     * <pre>CBORObject obj = CBORObject.NewArray() .Add(CBORObject.False) .Add(5)
-     * .Add("text string") .Add(CBORObject.FromObjectAndTag(9999, 1));</pre> .
+     * CBORObject.FromCBORObjectAndTag} method and pass the CBOR object and the
+     * desired tag number to that method.</p><p>The following example creates a
+     * CBOR array and adds several CBOR objects, one of which has a custom CBOR
+     * tag, to that array. Note the chaining behavior made possible by this
+     * method.</p> <pre>CBORObject obj = CBORObject.NewArray()
+     * .Add(CBORObject.False) .Add(5) .Add("text string")
+     * .Add(CBORObject.FromCBORObjectAndTag(9999, 1));</pre> .
      * @param obj A CBOR object (or an object convertible to a CBOR object) to add
      * to this CBOR array.
      * @return This instance.
      * @throws IllegalStateException This instance is not an array.
      * @throws IllegalArgumentException The type of {@code obj} is not supported.
      */
+
     public CBORObject Add(Object obj) {
       if (this.getType() == CBORType.Array) {
         List<CBORObject> list = this.AsList();
-        list.add(CBORObject.FromObject(obj));
+        list.add(FromObject(obj));
         return this;
       }
       throw new IllegalStateException("Not an array");
-    }
-
-    /**
-     * Converts this object to an arbitrary-precision integer. See the ToObject
-     * overload taking a type for more information.
-     * @return The closest arbitrary-precision integer to this object.
-     * @throws IllegalStateException This object does not represent a number (for
-     * the purposes of this method, infinity and not-a-number values, but not
-     * {@code CBORObject.Null}, are considered numbers).
-     * @throws ArithmeticException This object's value is infinity or not-a-number
-     * (NaN).
-     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EInteger&amp;gt;\u0028)
- * in\u0020.NET or
- * \u0020.getToObject()\u0028com.upokecenter.numbers.EInteger.class)
- * in\u0020Java.
- */
-@Deprecated
-    public EInteger AsEInteger() {
-      return (EInteger)this.ToObject(EInteger.class);
     }
 
     /**
@@ -4220,28 +4043,6 @@ public static void Write(
      */
     public boolean AsBoolean() {
       return !this.isFalse() && !this.isNull() && !this.isUndefined();
-    }
-
-    /**
-     * Converts this object to a byte (0 to 255). Floating point values are
-     * converted to integers by discarding their fractional parts.
-     * @return The closest byte-sized integer to this object.
-     * @throws IllegalStateException This object does not represent a number (for
-     * this purpose, infinities and not-a-number or NaN values, but not
-     * CBORObject.Null, are considered numbers).
-     * @throws ArithmeticException This object's value exceeds the range of a byte
-     * (would be less than 0 or greater than 255 when converted to an integer by
-     * discarding its fractional part).
-     * @deprecated Instead, use.getToObject()&amp;lt;byte&amp;gt;\u0028) in\u0020.NET or
- * \u0020.getToObject()\u0028Byte.class) in\u0020Java.
- */
-@Deprecated
-    public byte AsByte() {
-      return (byte)this.AsInt32(0, 255);
-    }
-
-    byte AsByteLegacy() {
-      return (byte)this.AsInt32(0, 255);
     }
 
     /**
@@ -4256,75 +4057,10 @@ public static void Write(
     public double AsDouble() {
       CBORNumber cn = CBORNumber.FromCBORObject(this);
       if (cn == null) {
-        throw new IllegalStateException("Not a number type");
-      }
-      return cn.GetNumberInterface().AsDouble(cn.GetValue());
-    }
-
-    /**
-     * Converts this object to a decimal number.
-     * @return A decimal number for this object's value.
-     * @throws IllegalStateException This object does not represent a number (for
-     * the purposes of this method, infinity and not-a-number values, but not
-     * {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EDecimal&amp;gt;\u0028)
- * in\u0020.NET or
- * \u0020.getToObject()\u0028com.upokecenter.numbers.EDecimal.class)
- * in\u0020Java.
- */
-@Deprecated
-    public EDecimal AsEDecimal() {
-      return (EDecimal)this.ToObject(EDecimal.class);
-    }
-
-    /**
-     * Converts this object to an arbitrary-precision binary floating point number.
-     * See the ToObject overload taking a type for more information.
-     * @return An arbitrary-precision binary floating-point number for this
-     * object's value.
-     * @throws IllegalStateException This object does not represent a number (for
-     * the purposes of this method, infinity and not-a-number values, but not
-     * {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.EFloat&amp;gt;\u0028) in.NET
- * or \u0020.getToObject()\u0028com.upokecenter.numbers.EFloat.class)
- * in\u0020Java.
- */
-@Deprecated
-    public EFloat AsEFloat() {
-      return (EFloat)this.ToObject(EFloat.class);
-    }
-
-    /**
-     * Converts this object to a rational number. See the ToObject overload taking
-     * a type for more information.
-     * @return A rational number for this object's value.
-     * @throws IllegalStateException This object does not represent a number (for
-     * the purposes of this method, infinity and not-a-number values, but not
-     * {@code CBORObject.Null}, are considered numbers).
-     * @deprecated Instead, use.getToObject()&amp;lt;PeterO.Numbers.ERational&amp;gt;\u0028) in
- *.NET\u0020or.getToObject()\u0028com.upokecenter.numbers.ERational.class)
- * in\u0020Java.
- */
-@Deprecated
-    public ERational AsERational() {
-      return (ERational)this.ToObject(ERational.class);
-    }
-
-    /**
-     * Converts this object to a 16-bit signed integer. Floating point values are
-     * converted to integers by discarding their fractional parts.
-     * @return The closest 16-bit signed integer to this object.
-     * @throws IllegalStateException This object does not represent a number (for
-     * this purpose, infinities and not-a-number or NaN values, but not
-     * CBORObject.Null, are considered numbers).
-     * @throws ArithmeticException This object's value exceeds the range of a 16-bit
-     * signed integer.
-     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt16Checked()),
- * or\u0020.getToObject()&amp;lt;short&amp;gt;() in\u0020.NET.
- */
-@Deprecated
-    public short AsInt16() {
-      return (short)this.AsInt32(Short.MIN_VALUE, Short.MAX_VALUE);
+ throw new IllegalStateException("Not a number" +
+"\u0020type");
+}
+ return cn.GetNumberInterface().AsDouble(cn.GetValue());
     }
 
     /**
@@ -4345,16 +4081,16 @@ public static void Write(
     public int AsInt32Value() {
       switch (this.getItemType()) {
         case CBORObjectTypeInteger: {
-          long longValue = (((Long)this.getThisItem()).longValue());
-          if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
-            throw new ArithmeticException();
+            long longValue = (((Long)this.getThisItem()).longValue());
+            if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+              throw new ArithmeticException();
+            }
+ return (int)longValue;
           }
-          return (int)longValue;
-        }
         case CBORObjectTypeEInteger: {
-          EInteger ei = (EInteger)this.getThisItem();
-          return ei.ToInt32Checked();
-        }
+            EInteger ei = (EInteger)this.getThisItem();
+            return ei.ToInt32Checked();
+          }
         default: throw new IllegalStateException("Not an integer type");
       }
     }
@@ -4379,9 +4115,9 @@ public static void Write(
         case CBORObjectTypeInteger:
           return ((Long)this.getThisItem()).longValue();
         case CBORObjectTypeEInteger: {
-          EInteger ei = (EInteger)this.getThisItem();
-          return ei.ToInt64Checked();
-        }
+            EInteger ei = (EInteger)this.getThisItem();
+            return ei.ToInt64Checked();
+          }
         default: throw new IllegalStateException("Not an integer type");
       }
     }
@@ -4399,9 +4135,9 @@ public static void Write(
         case CBORObjectTypeInteger:
           return true;
         case CBORObjectTypeEInteger: {
-          EInteger ei = (EInteger)this.getThisItem();
-          return ei.CanFitInInt64();
-        }
+            EInteger ei = (EInteger)this.getThisItem();
+            return ei.CanFitInInt64();
+          }
         default: return false;
       }
     }
@@ -4417,15 +4153,14 @@ public static void Write(
     public boolean CanValueFitInInt32() {
       switch (this.getItemType()) {
         case CBORObjectTypeInteger: {
-          long elong = (((Long)this.getThisItem()).longValue());
-          return elong >= Integer.MIN_VALUE && elong <= Integer.MAX_VALUE;
-        }
+            long elong = (((Long)this.getThisItem()).longValue());
+            return elong >= Integer.MIN_VALUE && elong <= Integer.MAX_VALUE;
+          }
         case CBORObjectTypeEInteger: {
-          EInteger ei = (EInteger)this.getThisItem();
-          return ei.CanFitInInt32();
-        }
-        default:
-          return false;
+            EInteger ei = (EInteger)this.getThisItem();
+            return ei.CanFitInInt32();
+          }
+        default: return false;
       }
     }
 
@@ -4500,9 +4235,9 @@ public static void Write(
     public CBORNumber AsNumber() {
       CBORNumber num = CBORNumber.FromCBORObject(this);
       if (num == null) {
-        throw new IllegalStateException("Not a number type");
-      }
-      return num;
+ throw new IllegalStateException("Not a number type");
+}
+ return num;
     }
 
     /**
@@ -4529,33 +4264,6 @@ public static void Write(
     }
 
     /**
-     * <p>Converts this object to a 64-bit signed integer. Non-integer numbers are
-     * converted to integers by discarding their fractional parts. (NOTE: To
-     * determine whether this method call can succeed, call
-     * <b>AsNumber().getCanTruncatedIntFitInInt64()</b> before calling this method. See
-     * the example.).</p><p>The following example code (originally written in C#
-     * for the.NET Framework) shows a way to check whether a given CBOR object
-     * stores a 64-bit signed integer before getting its value.</p> <pre>CBORObject
-     * obj = CBORObject.FromInt64(99999); if (obj.isIntegral() &amp;&amp;
-     * obj.AsNumber().CanFitInInt64()) { /* Not an Int64; handle the error &#x2a;&#x2f;
-     * System.out.println("Not a 64-bit integer."); } else {
-     * System.out.println("The value is " + obj.AsInt64()); }</pre> .
-     * @return The closest 64-bit signed integer to this object.
-     * @throws IllegalStateException This object does not represent a number (for
-     * this purpose, infinities and not-a-number or NaN values, but not
-     * CBORObject.Null, are considered numbers).
-     * @throws ArithmeticException This object's value exceeds the range of a 64-bit
-     * signed integer.
-     * @deprecated Instead, use the following:\u0020\u0028cbor.AsNumber().ToInt64Checked()), or
- *.ToObject&amp;lt;long&amp;gt;()\u0020in.NET.
- */
-@Deprecated
-    public long AsInt64() {
-      CBORNumber cn = this.AsNumber();
-      return cn.GetNumberInterface().AsInt64(cn.GetValue());
-    }
-
-    /**
      * Converts this object to a 32-bit floating point number.
      * @return The closest 32-bit floating point number to this object. The return
      * value can be positive infinity or negative infinity if this object's value
@@ -4571,10 +4279,10 @@ public static void Write(
 
     /**
      * <p>Gets the value of this object as a text string.</p> <p>This method is not
-     * the "reverse" of the {@code FromObject} method in the sense that FromObject
+     * the "reverse" of the {@code FromString} method in the sense that FromString
      * can take either a text string or {@code null}, but this method can accept
      * only text strings. The {@code ToObject} method is closer to a "reverse"
-     * version to {@code FromObject} than the {@code AsString} method: {@code
+     * version to {@code FromString} than the {@code AsString} method: {@code
      * ToObject&lt;string&gt;(cbor)} in DotNet, or {@code ToObject(string.class)}
      * in Java, will convert a CBOR object to a DotNet or Java string if it
      * represents a text string, or to {@code null} if {@code IsNull} returns
@@ -4592,120 +4300,14 @@ public static void Write(
       switch (type) {
         case CBORObjectTypeTextString:
         case CBORObjectTypeTextStringAscii: {
-          return (String)this.getThisItem();
-        }
+            return (String)this.getThisItem();
+          }
         case CBORObjectTypeTextStringUtf8: {
-          return com.upokecenter.util.DataUtilities.GetUtf8String((byte[])this.getThisItem(), false);
-        }
+            return com.upokecenter.util.DataUtilities.GetUtf8String((byte[])this.getThisItem(), false);
+          }
         default:
           throw new IllegalStateException("Not a text String type");
       }
-    }
-
-    /**
-     * Returns whether this object's value can be converted to a 64-bit floating
-     * point number without its value being rounded to another numerical value.
-     * @return {@code true} if this object's value can be converted to a 64-bit
-     * floating point number without its value being rounded to another numerical
-     * value, or if this is a not-a-number value, even if the value's diagnostic
-     * information can't fit in a 64-bit floating point number; otherwise, {@code
-     * false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().CanFitInDouble()).
- */
-@Deprecated
-    public boolean CanFitInDouble() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return (cn != null) &&
-        cn.GetNumberInterface().CanFitInDouble(cn.GetValue());
-    }
-
-    /**
-     * Returns whether this object's numerical value is an integer, is -(2^31) or
-     * greater, and is less than 2^31.
-     * @return {@code true} if this object's numerical value is an integer, is
-     * -(2^31) or greater, and is less than 2^31; otherwise, {@code false}.
-     * @deprecated Instead, use.CanValueFitInInt32(), if the application allows\u0020only CBOR
- * integers, or \u0028cbor.isNumber()
- * &amp;&amp;cbor.AsNumber().CanFitInInt32()), \u0020 if the application
- * allows any CBOR Object convertible to an integer.
- */
-@Deprecated
-    public boolean CanFitInInt32() {
-      if (!this.CanFitInInt64()) {
-        return false;
-      }
-      long v = this.AsInt64();
-      return v >= Integer.MIN_VALUE && v <= Integer.MAX_VALUE;
-    }
-
-    /**
-     * Returns whether this object's numerical value is an integer, is -(2^63) or
-     * greater, and is less than 2^63.
-     * @return {@code true} if this object's numerical value is an integer, is
-     * -(2^63) or greater, and is less than 2^63; otherwise, {@code false}.
-     * @deprecated Instead, use CanValueFitInInt64(), if the application allows\u0020only CBOR
- * integers, or \u0028cbor.isNumber()
- * &amp;&amp;cbor.AsNumber().CanFitInInt64()), \u0020 if the application
- * allows any CBOR Object convertible to an integer.
- */
-@Deprecated
-    public boolean CanFitInInt64() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return (cn != null) &&
-        cn.GetNumberInterface().CanFitInInt64(cn.GetValue());
-    }
-
-    /**
-     * Returns whether this object's value can be converted to a 32-bit floating
-     * point number without its value being rounded to another numerical value.
-     * @return {@code true} if this object's value can be converted to a 32-bit
-     * floating point number without its value being rounded to another numerical
-     * value, or if this is a not-a-number value, even if the value's diagnostic
-     * information can' t fit in a 32-bit floating point number; otherwise, {@code
-     * false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().CanFitInSingle()).
- */
-@Deprecated
-    public boolean CanFitInSingle() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return (cn != null) &&
-        cn.GetNumberInterface().CanFitInSingle(cn.GetValue());
-    }
-
-    /**
-     * Returns whether this object's value, converted to an integer by discarding
-     * its fractional part, would be -(2^31) or greater, and less than 2^31.
-     * @return {@code true} if this object's value, converted to an integer by
-     * discarding its fractional part, would be -(2^31) or greater, and less than
-     * 2^31; otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.CanValueFitInInt32()\u0020if only
- * integers of any tag are allowed, or\u0020\u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().CanTruncatedIntFitInInt32()).
- */
-@Deprecated
-    public boolean CanTruncatedIntFitInInt32() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return (cn != null) &&
-        cn.GetNumberInterface().CanTruncatedIntFitInInt32(cn.GetValue());
-    }
-
-    /**
-     * Returns whether this object's value, converted to an integer by discarding
-     * its fractional part, would be -(2^63) or greater, and less than 2^63.
-     * @return {@code true} if this object's value, converted to an integer by
-     * discarding its fractional part, would be -(2^63) or greater, and less than
-     * 2^63; otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.CanValueFitInInt64()\u0020if only
- * integers of any tag are allowed, or\u0020\u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().CanTruncatedIntFitInInt64()).
- */
-@Deprecated
-    public boolean CanTruncatedIntFitInInt64() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return cn != null &&
-        cn.GetNumberInterface().CanTruncatedIntFitInInt64(cn.GetValue());
     }
 
     private static String Chop(String str) {
@@ -4766,57 +4368,57 @@ public int compareTo(CBORObject other) {
       if (typeA == typeB) {
         switch (typeA) {
           case CBORObjectTypeInteger: {
-            long a = (((Long)objA).longValue());
-            long b = (((Long)objB).longValue());
-            if (a >= 0 && b >= 0) {
-              cmp = (a == b) ? 0 : ((a < b) ? -1 : 1);
-            } else if (a <= 0 && b <= 0) {
-              cmp = (a == b) ? 0 : ((a < b) ? 1 : -1);
-            } else if (a < 0 && b >= 0) {
-              // NOTE: Negative integers sort after
-              // nonnegative integers in the bytewise
-              // ordering of CBOR encodings
-              cmp = 1;
-            } else {
-              cmp = -1;
+              long a = (((Long)objA).longValue());
+              long b = (((Long)objB).longValue());
+              if (a >= 0 && b >= 0) {
+                cmp = (a == b) ? 0 : ((a < b) ? -1 : 1);
+              } else if (a <= 0 && b <= 0) {
+                cmp = (a == b) ? 0 : ((a < b) ? 1 : -1);
+              } else if (a < 0 && b >= 0) {
+                // NOTE: Negative integers sort after
+                // nonnegative integers in the bytewise
+                // ordering of CBOR encodings
+                cmp = 1;
+              } else {
+                cmp = -1;
+              }
+              break;
             }
-            break;
-          }
           case CBORObjectTypeEInteger: {
-            cmp = CBORUtilities.ByteArrayCompare(
-                this.EncodeToBytes(),
-                other.EncodeToBytes());
-            break;
-          }
+              cmp = CBORUtilities.ByteArrayCompare(
+                  this.EncodeToBytes(),
+                  other.EncodeToBytes());
+              break;
+            }
           case CBORObjectTypeByteString:
           case CBORObjectTypeTextStringUtf8: {
-            cmp = CBORUtilities.ByteArrayCompareLengthFirst((byte[])objA,
-                (byte[])objB);
-            break;
-          }
+              cmp = CBORUtilities.ByteArrayCompareLengthFirst((byte[])objA,
+                  (byte[])objB);
+              break;
+            }
           case CBORObjectTypeTextStringAscii: {
-            String strA = (String)objA;
-            String strB = (String)objB;
-            int alen = strA.length();
-            int blen = strB.length();
-            cmp = (alen < blen) ? (-1) : ((alen > blen) ? 1 :
-strA.compareTo(strB));
-            break;
-          }
+              String strA = (String)objA;
+              String strB = (String)objB;
+              int alen = strA.length();
+              int blen = strB.length();
+              cmp = (alen < blen) ? (-1) : ((alen > blen) ? 1 :
+  strA.compareTo(strB));
+              break;
+            }
           case CBORObjectTypeTextString: {
-            String strA = (String)objA;
-            String strB = (String)objB;
-            cmp = CBORUtilities.CompareStringsAsUtf8LengthFirst(
-                strA,
-                strB);
-            break;
-          }
+              String strA = (String)objA;
+              String strB = (String)objB;
+              cmp = CBORUtilities.CompareStringsAsUtf8LengthFirst(
+                  strA,
+                  strB);
+              break;
+            }
           case CBORObjectTypeArray: {
-            cmp = ListCompare(
-                (ArrayList<CBORObject>)objA,
-                (ArrayList<CBORObject>)objB);
-            break;
-          }
+              cmp = ListCompare(
+                  (ArrayList<CBORObject>)objA,
+                  (ArrayList<CBORObject>)objB);
+              break;
+            }
           case CBORObjectTypeMap:
             cmp = MapCompare(
                 (Map<CBORObject, CBORObject>)objA,
@@ -4829,17 +4431,17 @@ strA.compareTo(strB));
             }
             break;
           case CBORObjectTypeSimpleValue: {
-            int valueA = ((Integer)objA).intValue();
-            int valueB = ((Integer)objB).intValue();
-            cmp = (valueA == valueB) ? 0 : ((valueA < valueB) ? -1 : 1);
-            break;
-          }
+              int valueA = ((Integer)objA).intValue();
+              int valueB = ((Integer)objB).intValue();
+              cmp = (valueA == valueB) ? 0 : ((valueA < valueB) ? -1 : 1);
+              break;
+            }
           case CBORObjectTypeDouble: {
-            cmp = CBORUtilities.ByteArrayCompare(
-                GetDoubleBytes(this.AsDoubleBits(), 0),
-                GetDoubleBytes(other.AsDoubleBits(), 0));
-            break;
-          }
+              cmp = CBORUtilities.ByteArrayCompare(
+                  GetDoubleBytes(this.AsDoubleBits(), 0),
+                  GetDoubleBytes(other.AsDoubleBits(), 0));
+              break;
+            }
           default: throw new IllegalStateException("Unexpected data " +
               "type");
         }
@@ -4911,9 +4513,10 @@ CBORObjectTypeTextStringAscii) ?
      * @return {@code true} if the given key is found, or {@code false} if the
      * given key is not found or this object is not a map.
      */
+
     public boolean ContainsKey(Object objKey) {
-      return (this.getType() == CBORType.Map) ?
-        this.ContainsKey(CBORObject.FromObject(objKey)) : false;
+      return (this.getType() == CBORType.Map) &&
+this.ContainsKey(CBORObject.FromObject(objKey));
     }
 
     /**
@@ -4941,8 +4544,7 @@ CBORObjectTypeTextStringAscii) ?
      */
     public boolean ContainsKey(String key) {
       if (this.getType() == CBORType.Map) {
-        CBORObject ckey = key == null ? CBORObject.Null :
-          CBORObject.FromObject(key);
+        CBORObject ckey = key == null ? Null : FromString(key);
         Map<CBORObject, CBORObject> map = this.AsMap();
         return map.containsKey(ckey);
       }
@@ -5033,91 +4635,83 @@ CBORObjectTypeTextStringAscii) ?
           (this.tagLow >> 16) != 0 || this.tagLow >= 24) {
           hasComplexTag = true;
         } else {
-          tagbyte = (byte)(0xc0 + (int)this.tagLow);
+          tagbyte = (byte)(0xc0 + this.tagLow);
         }
       }
       if (!hasComplexTag) {
         switch (this.getItemType()) {
           case CBORObjectTypeTextString:
           case CBORObjectTypeTextStringAscii: {
-            byte[] ret = GetOptimizedBytesIfShortAscii(
-                this.AsString(), tagged ? (((int)tagbyte) & 0xff) : -1);
-            if (ret != null) {
-              return ret;
+              byte[] ret = GetOptimizedBytesIfShortAscii(
+                this.AsString(),
+                tagged ? (tagbyte & 0xff) : -1);
+              if (ret != null) {
+                return ret;
+              }
+              break;
             }
-            break;
-          }
           case CBORObjectTypeTextStringUtf8: {
-            if (!tagged && !options.getUseIndefLengthStrings()) {
-              byte[] bytes = (byte[])this.getThisItem();
-              return SerializeUtf8(bytes);
+              if (!tagged && !options.getUseIndefLengthStrings()) {
+                byte[] bytes = (byte[])this.getThisItem();
+                return SerializeUtf8(bytes);
+              }
+              break;
             }
-            break;
-          }
           case CBORObjectTypeSimpleValue: {
-            if (tagged) {
-              byte[] simpleBytes = new byte[] { tagbyte, (byte)0xf4 };
-              if (this.isFalse()) {
-                simpleBytes[1] = (byte)0xf4;
-                return simpleBytes;
+              if (tagged) {
+                if (this.isFalse()) {
+                  return new byte[] { (byte)tagbyte, (byte)0xf4 };
+                }
+                if (this.isTrue()) {
+                  return new byte[] { (byte)tagbyte, (byte)0xf5 };
+                }
+                if (this.isNull()) {
+                  return new byte[] { (byte)tagbyte, (byte)0xf6 };
+                }
+                if (this.isUndefined()) {
+                  return new byte[] { (byte)tagbyte, (byte)0xf7 };
+                }
+              } else {
+                if (this.isFalse()) {
+                  return new byte[] { (byte)0xf4 };
+                }
+                if (this.isTrue()) {
+                  return new byte[] { (byte)0xf5 };
+                }
+                if (this.isNull()) {
+                  return new byte[] { (byte)0xf6 };
+                }
+                if (this.isUndefined()) {
+                  return new byte[] { (byte)0xf7 };
+                }
               }
-              if (this.isTrue()) {
-                simpleBytes[1] = (byte)0xf5;
-                return simpleBytes;
-              }
-              if (this.isNull()) {
-                simpleBytes[1] = (byte)0xf6;
-                return simpleBytes;
-              }
-              if (this.isUndefined()) {
-                simpleBytes[1] = (byte)0xf7;
-                return simpleBytes;
-              }
-            } else {
-              if (this.isFalse()) {
-                return new byte[] { (byte)0xf4 };
-              }
-              if (this.isTrue()) {
-                return new byte[] { (byte)0xf5 };
-              }
-              if (this.isNull()) {
-                return new byte[] { (byte)0xf6 };
-              }
-              if (this.isUndefined()) {
-                return new byte[] { (byte)0xf7 };
-              }
+              break;
             }
-            break;
-          }
           case CBORObjectTypeInteger: {
-            long value = (((Long)this.getThisItem()).longValue());
-            byte[] intBytes = null;
-            if (value >= 0) {
-              intBytes = GetPositiveInt64Bytes(0, value);
-            } else {
-              ++value;
-              value = -value; // Will never overflow
-              intBytes = GetPositiveInt64Bytes(1, value);
+              long value = (((Long)this.getThisItem()).longValue());
+              byte[] intBytes;
+              if (value >= 0) {
+                intBytes = GetPositiveInt64Bytes(0, value);
+              } else {
+                ++value;
+                value = -value; // Will never overflow
+                intBytes = GetPositiveInt64Bytes(1, value);
+              }
+              if (!tagged) {
+                return intBytes;
+              }
+              byte[] ret2 = new byte[intBytes.length + 1];
+              System.arraycopy(intBytes, 0, ret2, 1, intBytes.length);
+              ret2[0] = tagbyte;
+              return ret2;
             }
-            if (!tagged) {
-              return intBytes;
-            }
-            byte[] ret2 = new byte[intBytes.length + 1];
-            System.arraycopy(intBytes, 0, ret2, 1, intBytes.length);
-            ret2[0] = tagbyte;
-            return ret2;
-          }
           case CBORObjectTypeDouble: {
-            if (options.getFloat64()) {
-            return GetDoubleBytes64(
-                this.AsDoubleBits(),
-                ((int)tagbyte) & 0xff);
-            } else {
-            return GetDoubleBytes(
-                this.AsDoubleBits(),
-                ((int)tagbyte) & 0xff);
+              return options.getFloat64() ?
+                GetDoubleBytes64(this.AsDoubleBits(), tagbyte & 0xff) :
+                GetDoubleBytes(this.AsDoubleBits(), tagbyte & 0xff);
             }
-          }
+          default:
+            break;
         }
       }
       try {
@@ -5154,9 +4748,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public CBORObject AtJSONPointer(String pointer) {
       CBORObject ret = this.AtJSONPointer(pointer, null);
       if (ret == null) {
-         throw new CBORException("Invalid JSON pointer");
-      }
-      return ret;
+ throw new CBORException("Invalid JSON pointer");
+}
+ return ret;
     }
 
     /**
@@ -5188,30 +4782,30 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       return JSONPointer.GetObject(this, pointer, null);
     }
 
-  /**
-   * <p>Returns a copy of this object after applying the operations in a JSON
-   * patch, in the form of a CBOR object. JSON patches are specified in RFC 6902
-   * and their format is summarized in the remarks below.</p> <p><b>Remarks:</b>
-   * A JSON patch is an array with one or more maps. Each map has the following
-   * keys: </p> <ul> <li>"op" - Required. This key's value is the patch operation
-   * and must be "add", "remove", "move", "copy", "test", or "replace", in basic
-   * lower case letters and no other case combination.</li><li>"value" - Required
-   * if the operation is "add", "replace", or "test" and specifies the item to
-   * add (insert), or that will replace the existing item, or to check an
-   * existing item for equality, respectively. (For "test", the operation fails
-   * if the existing item doesn't match the specified value.)</li><li>"path" -
-   * Required for all operations. A JSON Pointer (RFC 6901) specifying the
-   * destination path in the CBOR object for the operation. For more information,
-   * see RFC 6901 or the documentation for AtJSONPointer(pointer,
-   * defaultValue).</li><li>"from" - Required if the operation is "move" or
-   * "copy". A JSON Pointer (RFC 6901) specifying the path in the CBOR object
-   * where the source value is located.</li></ul>
-   * @param patch A JSON patch in the form of a CBOR object; it has the form
-   * summarized in the remarks.
-   * @return The result of the patch operation.
-   * @throws com.upokecenter.cbor.CBORException The parameter {@code patch} is
-   * null or the patch operation failed.
-   */
+    /**
+     * <p>Returns a copy of this object after applying the operations in a JSON
+     * patch, in the form of a CBOR object. JSON patches are specified in RFC 6902
+     * and their format is summarized in the remarks below.</p> <p><b>Remarks:</b>
+     * A JSON patch is an array with one or more maps. Each map has the following
+     * keys: </p> <ul> <li>"op" - Required. This key's value is the patch operation
+     * and must be "add", "remove", "move", "copy", "test", or "replace", in basic
+     * lower case letters and no other case combination.</li><li>"value" - Required
+     * if the operation is "add", "replace", or "test" and specifies the item to
+     * add (insert), or that will replace the existing item, or to check an
+     * existing item for equality, respectively. (For "test", the operation fails
+     * if the existing item doesn't match the specified value.)</li><li>"path" -
+     * Required for all operations. A JSON Pointer (RFC 6901) specifying the
+     * destination path in the CBOR object for the operation. For more information,
+     * see RFC 6901 or the documentation for AtJSONPointer(pointer,
+     * defaultValue).</li><li>"from" - Required if the operation is "move" or
+     * "copy". A JSON Pointer (RFC 6901) specifying the path in the CBOR object
+     * where the source value is located.</li></ul>
+     * @param patch A JSON patch in the form of a CBOR object; it has the form
+     * summarized in the remarks.
+     * @return The result of the patch operation.
+     * @throws com.upokecenter.cbor.CBORException The parameter {@code patch} is
+     * null or the patch operation failed.
+     */
     public CBORObject ApplyJSONPatch(CBORObject patch) {
       return JSONPatch.Patch(this, patch);
     }
@@ -5238,7 +4832,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      */
     @SuppressWarnings("unchecked")
 public boolean equals(CBORObject other) {
-      CBORObject otherValue = ((other instanceof CBORObject) ? (CBORObject)other : null);
+      CBORObject otherValue = other;
       if (otherValue == null) {
         return false;
       }
@@ -5275,10 +4869,10 @@ CBORObjectTypeTextStringAscii)) {
               (byte[])this.itemValue,
               ((otherValue.itemValue instanceof byte[]) ? (byte[])otherValue.itemValue : null));
         case CBORObjectTypeMap: {
-          Map<CBORObject, CBORObject> cbordict =
-            ((otherValue.itemValue instanceof Map<?, ?>) ? (Map<CBORObject, CBORObject>)otherValue.itemValue : null);
-          return CBORMapEquals(this.AsMap(), cbordict);
-        }
+            return CBORMapEquals(
+              this.AsMap(),
+              ((otherValue.itemValue instanceof Map<?, ?>) ? (Map<CBORObject, CBORObject>)otherValue.itemValue : null));
+          }
         case CBORObjectTypeArray:
           return CBORArrayEquals(
               this.AsList(),
@@ -5302,10 +4896,11 @@ CBORObjectTypeTextStringAscii)) {
      * @throws IllegalStateException This object is not a byte string.
      */
     public byte[] GetByteString() {
-      if (this.getItemType() == CBORObjectTypeByteString) {
-        return (byte[])this.getThisItem();
-      }
-      throw new IllegalStateException("Not a byte String");
+      if (!(this.getItemType() == CBORObjectTypeByteString)) {
+ throw new IllegalStateException("Not a byte" +
+"\u0020string");
+}
+ return (byte[])this.getThisItem();
     }
 
     /**
@@ -5319,8 +4914,8 @@ CBORObjectTypeTextStringAscii)) {
       int valueHashCode = 651869431;
       {
         if (this.itemValue != null) {
-          int itemHashCode = 0;
-          long longValue = 0L;
+          int itemHashCode;
+          long longValue;
           switch (this.itemtypeValue) {
             case CBORObjectTypeByteString:
               itemHashCode =
@@ -5379,15 +4974,15 @@ CBORObjectTypeTextStringAscii)) {
       }
       CBORObject curitem = this;
       if (curitem.isTagged()) {
-        ArrayList<EInteger> list = new ArrayList<EInteger>();
+        ArrayList<EInteger> extIntegerList = new ArrayList<EInteger>();
         while (curitem.isTagged()) {
-          list.add(
+          extIntegerList.add(
             LowHighToEInteger(
               curitem.tagLow,
               curitem.tagHigh));
           curitem = (CBORObject)curitem.itemValue;
         }
-        return list.toArray(new EInteger[] { });
+        return extIntegerList.toArray(new EInteger[] { });
       }
       return new EInteger[] { LowHighToEInteger(this.tagLow, this.tagHigh) };
     }
@@ -5450,10 +5045,10 @@ CBORObjectTypeTextStringAscii)) {
      */
     public boolean HasMostInnerTag(int tagValue) {
       if (tagValue < 0) {
-        throw new IllegalArgumentException("tagValue(" + tagValue +
+ throw new IllegalArgumentException("tagValue(" + tagValue +
           ") is less than 0");
-      }
-      return this.isTagged() && this.HasMostInnerTag(
+}
+ return this.isTagged() && this.HasMostInnerTag(
           EInteger.FromInt32(tagValue));
     }
 
@@ -5468,13 +5063,13 @@ CBORObjectTypeTextStringAscii)) {
      */
     public boolean HasMostInnerTag(EInteger bigTagValue) {
       if (bigTagValue == null) {
-        throw new NullPointerException("bigTagValue");
-      }
-      if (bigTagValue.signum() < 0) {
-        throw new IllegalArgumentException("bigTagValue(" + bigTagValue +
+ throw new NullPointerException("bigTagValue");
+}
+ if (bigTagValue.signum() < 0) {
+ throw new IllegalArgumentException("bigTagValue(" + bigTagValue +
           ") is less than 0");
-      }
-      return (!this.isTagged()) ? false : this.getMostInnerTag().equals(bigTagValue);
+}
+ return this.isTagged() && this.getMostInnerTag().equals(bigTagValue);
     }
 
     /**
@@ -5487,10 +5082,10 @@ CBORObjectTypeTextStringAscii)) {
      */
     public boolean HasMostOuterTag(int tagValue) {
       if (tagValue < 0) {
-        throw new IllegalArgumentException("tagValue(" + tagValue +
+ throw new IllegalArgumentException("tagValue(" + tagValue +
           ") is less than 0");
-      }
-      return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
+}
+ return this.isTagged() && this.tagHigh == 0 && this.tagLow == tagValue;
     }
 
     /**
@@ -5504,13 +5099,13 @@ CBORObjectTypeTextStringAscii)) {
      */
     public boolean HasMostOuterTag(EInteger bigTagValue) {
       if (bigTagValue == null) {
-        throw new NullPointerException("bigTagValue");
-      }
-      if (bigTagValue.signum() < 0) {
-        throw new IllegalArgumentException("bigTagValue(" + bigTagValue +
+ throw new NullPointerException("bigTagValue");
+}
+ if (bigTagValue.signum() < 0) {
+ throw new IllegalArgumentException("bigTagValue(" + bigTagValue +
           ") is less than 0");
-      }
-      return (!this.isTagged()) ? false : this.getMostOuterTag().equals(bigTagValue);
+}
+ return this.isTagged() && this.getMostOuterTag().equals(bigTagValue);
     }
 
     /**
@@ -5572,7 +5167,9 @@ CBORObjectTypeTextStringAscii)) {
      * @throws IllegalStateException This object is not an array.
      * @throws IllegalArgumentException The parameter {@code valueOb} has an unsupported
      * type; or {@code index} is not a valid index into this array.
-     */
+     * @deprecated Use the CBORObject overload instead.
+ */
+@Deprecated
     public CBORObject Insert(int index, Object valueOb) {
       if (this.getType() == CBORType.Array) {
         CBORObject mapValue;
@@ -5596,90 +5193,27 @@ CBORObjectTypeTextStringAscii)) {
     }
 
     /**
-     * Gets a value indicating whether this CBOR object represents infinity.
-     * @return {@code true} if this CBOR object represents infinity; otherwise,
-     * {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsInfinity()).
- */
-@Deprecated
-    public boolean IsInfinity() {
-      return this.isNumber() && this.AsNumber().IsInfinity();
-    }
-
-    /**
-     * Gets a value indicating whether this CBOR object represents a not-a-number
-     * value (as opposed to whether this object does not express a number).
-     * @return {@code true} if this CBOR object represents a not-a-number value (as
-     * opposed to whether this object does not represent a number as defined by the
-     * IsNumber property or {@code isNumber()} method in Java); otherwise, {@code
-     * false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsNaN()).
- */
-@Deprecated
-    public boolean IsNaN() {
-      return this.isNumber() && this.AsNumber().IsNaN();
-    }
-
-    /**
-     * Gets a value indicating whether this CBOR object represents negative
-     * infinity.
-     * @return {@code true} if this CBOR object represents negative infinity;
-     * otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsNegativeInfinity()).
- */
-@Deprecated
-    public boolean IsNegativeInfinity() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return cn != null &&
-        cn.GetNumberInterface().IsNegativeInfinity(cn.GetValue());
-    }
-
-    /**
-     * Gets a value indicating whether this CBOR object represents positive
-     * infinity.
-     * @return {@code true} if this CBOR object represents positive infinity;
-     * otherwise, {@code false}.
-     * @deprecated Instead, use the following: \u0028cbor.isNumber()
- * &amp;&amp;\u0020cbor.AsNumber().IsPositiveInfinity()).
- */
-@Deprecated
-    public boolean IsPositiveInfinity() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      return cn != null &&
-        cn.GetNumberInterface().IsPositiveInfinity(cn.GetValue());
-    }
-
-    /**
-     * Gets this object's value with the sign reversed.
-     * @return The reversed-sign form of this number.
-     * @throws IllegalStateException This object does not represent a number (for
-     * this purpose, infinities and not-a-number or NaN values, but not
-     * CBORObject.Null, are considered numbers).
-     * @deprecated Instead, convert this object to a number \u0028with\u0020.AsNumber()), and
- * use that number's.Negate() method.
- */
-@Deprecated
-    public CBORObject Negate() {
-      CBORNumber cn = CBORNumber.FromCBORObject(this);
-      if (cn == null) {
-        throw new IllegalStateException("This Object is not a number.");
+     * Inserts a CBORObject at the specified position in this CBOR array.
+     * @param index Index starting at 0 to insert at.
+     * @param cborObj A CBORObject representing the value.
+     * @return This instance.
+     * @throws IllegalStateException This object is not an array.
+     * @throws IllegalArgumentException The parameter {@code index} is not a valid index
+     * into this array.
+     */
+    public CBORObject Insert(int index, CBORObject cborObj) {
+      if (this.getType() == CBORType.Array) {
+        List<CBORObject> list = this.AsList();
+        if (index < 0 || index > list.size()) {
+          throw new IllegalArgumentException("index");
+        }
+        list.add(
+          index,
+          cborObj);
+      } else {
+        throw new IllegalStateException("Not an array");
       }
-      Object newItem = cn.GetNumberInterface().Negate(cn.GetValue());
-      if (newItem instanceof EDecimal) {
-        return CBORObject.FromObject((EDecimal)newItem);
-      }
-      if (newItem instanceof EInteger) {
-        return CBORObject.FromObject((EInteger)newItem);
-      }
-      if (newItem instanceof EFloat) {
-        return CBORObject.FromObject((EFloat)newItem);
-      }
-      ERational rat = ((newItem instanceof ERational) ? (ERational)newItem : null);
-      return (rat != null) ? CBORObject.FromObject(rat) :
-        CBORObject.FromObject(newItem);
+      return this;
     }
 
     /**
@@ -5710,6 +5244,7 @@ CBORObjectTypeTextStringAscii)) {
      * to CBORObject.Null).
      * @throws IllegalStateException The object is not an array or map.
      */
+
     public boolean Remove(Object obj) {
       return this.Remove(CBORObject.FromObject(obj));
     }
@@ -5750,12 +5285,7 @@ CBORObjectTypeTextStringAscii)) {
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> dict = this.AsMap();
-        boolean hasKey = dict.containsKey(obj);
-        if (hasKey) {
-          dict.remove(obj);
-          return true;
-        }
-        return false;
+        return PropertyMap.DictRemove(dict, obj);
       }
       if (this.getType() == CBORType.Array) {
         List<CBORObject> list = this.AsList();
@@ -5783,7 +5313,9 @@ CBORObjectTypeTextStringAscii)) {
      * an unsupported type, or this instance is a CBOR array and {@code key} is
      * less than 0, is the size of this array or greater, or is not a 32-bit signed
      * integer ({@code int}).
-     */
+     * @deprecated Use the CBORObject overload instead.
+ */
+@Deprecated
     public CBORObject Set(Object key, Object valueOb) {
       if (this.getType() == CBORType.Map) {
         CBORObject mapKey;
@@ -5801,11 +5333,7 @@ CBORObjectTypeTextStringAscii)) {
           mapValue = (mapValue == null) ? (CBORObject.FromObject(valueOb)) : mapValue;
         }
         Map<CBORObject, CBORObject> map = this.AsMap();
-        if (map.containsKey(mapKey)) {
-          map.put(mapKey, mapValue);
-        } else {
-          map.put(mapKey, mapValue);
-        }
+        map.put(mapKey, mapValue);
       } else if (this.getType() == CBORType.Array) {
         if (key instanceof Integer) {
           List<CBORObject> list = this.AsList();
@@ -5826,6 +5354,59 @@ CBORObjectTypeTextStringAscii)) {
         }
       } else {
         throw new IllegalStateException("Not a map or array");
+      }
+      return this;
+    }
+
+    /**
+     * Maps an object to a key in this CBOR map, or adds the value if the key
+     * doesn't exist.
+     * @param mapKey If this instance is a CBOR map, this parameter is an object
+     * representing the key, which will be converted to a CBORObject; in this case,
+     * this parameter can be null, in which case this value is converted to
+     * CBORObject.Null.
+     * @param mapValue A CBORObject representing the value, which should be of type
+     * CBORType.Map.
+     * @return This instance.
+     * @throws IllegalStateException This object is not a map.
+     * @throws IllegalArgumentException The parameter {@code mapValue} or this instance is
+     * a CBOR array.
+     */
+    public CBORObject Set(CBORObject mapKey, CBORObject mapValue) {
+      if (this.getType() == CBORType.Map) {
+        Map<CBORObject, CBORObject> map = this.AsMap();
+        map.put(mapKey, mapValue);
+      } else if (this.getType() == CBORType.Array) {
+        throw new IllegalArgumentException("mapValue is an array, but key is not int");
+      } else {
+        throw new IllegalArgumentException("mapValue i not a map or array");
+      }
+      return this;
+    }
+
+    /**
+     * Sets the value of a CBORObject of type Array at the given index to the given
+     * value.
+     * @param key This parameter must be a 32-bit signed integer({@code int})
+     * identifying the index (starting from 0) of the item to set in the array.
+     * @param mapValue An CBORObject representing the value.
+     * @return This instance.
+     * @throws IllegalStateException MapValue is not a an array.
+     */
+    public CBORObject Set(int key, CBORObject mapValue) {
+      if (this.getType() == CBORType.Map) {
+        CBORObject mapKey = CBORObject.FromInt32(key);
+        Map<CBORObject, CBORObject> map = this.AsMap();
+        map.put(mapKey, mapValue);
+      } else if (this.getType() == CBORType.Array) {
+        List<CBORObject> list = this.AsList();
+        int index = ((Integer)key).intValue();
+        if (index < 0 || index >= this.size()) {
+          throw new IllegalArgumentException("key");
+        }
+        list.set(index, mapValue);
+      } else {
+        throw new IllegalStateException("Not an array");
       }
       return this;
     }
@@ -5887,16 +5468,16 @@ CBORObjectTypeTextStringAscii)) {
      * A byte string will instead be converted to traditional base64 without
      * whitespace and with padding if it has tag 22, or base16 for tag 23. (To
      * create a CBOR object with a given tag, call the {@code
-     * CBORObject.FromObjectAndTag} method and pass the CBOR object and the desired
-     * tag number to that method.)</li><li>Rational numbers will be converted to
-     * their exact form, if possible, otherwise to a high-precision approximation.
-     * (The resulting approximation could overflow to infinity, in which case the
-     * rational number is converted to null.)</li><li>Simple values other than true
-     * and false will be converted to null. (This doesn't include floating-point
-     * numbers.)</li><li>Infinity and not-a-number will be converted to
-     * null.</li></ul> <p><b>Warning:</b> In general, if this CBOR object contains
-     * integer map keys or uses other features not supported in JSON, and the
-     * application converts this CBOR object to JSON and back to CBOR, the
+     * CBORObject.FromCBORObjectAndTag} method and pass the CBOR object and the
+     * desired tag number to that method.)</li><li>Rational numbers will be
+     * converted to their exact form, if possible, otherwise to a high-precision
+     * approximation. (The resulting approximation could overflow to infinity, in
+     * which case the rational number is converted to null.)</li><li>Simple values
+     * other than true and false will be converted to null. (This doesn't include
+     * floating-point numbers.)</li><li>Infinity and not-a-number will be converted
+     * to null.</li></ul> <p><b>Warning:</b> In general, if this CBOR object
+     * contains integer map keys or uses other features not supported in JSON, and
+     * the application converts this CBOR object to JSON and back to CBOR, the
      * application <i>should not</i> expect the new CBOR object to be exactly the
      * same as the original. This is because the conversion in many cases may have
      * to convert unsupported features in JSON to supported features which
@@ -5930,29 +5511,30 @@ CBORObjectTypeTextStringAscii)) {
       switch (type) {
         case Boolean:
         case SimpleValue: {
-          return this.isTrue() ? "true" : (this.isFalse() ? "false" : "null");
-        }
-        case Integer: {
-          return this.AsEIntegerValue().toString();
-        }
-        case FloatingPoint: {
-          long dblbits = this.AsDoubleBits();
-          return CBORUtilities.DoubleBitsFinite(dblbits) ?
-               CBORUtilities.DoubleBitsToString(dblbits) : "null";
-        }
-        default: {
-          StringBuilder sb = new StringBuilder();
-          try {
-            CBORJsonWriter.WriteJSONToInternal(
-              this,
-              new StringOutput(sb),
-              options);
-          } catch (IOException ex) {
-            // This is truly exceptional
-            throw new IllegalStateException("Internal error", ex);
+            return this.isTrue() ? "true" : (this.isFalse() ? "false" : "null");
           }
-          return sb.toString();
-        }
+        case Integer: {
+            return this.AsEIntegerValue().toString();
+          }
+        case FloatingPoint: {
+            long dblbits = this.AsDoubleBits();
+            return CBORUtilities.DoubleBitsFinite(dblbits) ?
+                 CBORUtilities.DoubleBitsToString(dblbits) : "null";
+          }
+        default:
+          {
+            StringBuilder sb = new StringBuilder();
+            try {
+              CBORJsonWriter.WriteJSONToInternal(
+                this,
+                new StringOutput(sb),
+                options);
+            } catch (IOException ex) {
+              // This is truly exceptional
+              throw new IllegalStateException("Internal error", ex);
+            }
+            return sb.toString();
+          }
       }
     }
 
@@ -6203,17 +5785,17 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           int bits =
             CBORUtilities.DoubleToHalfPrecisionIfSameValue(floatingBits);
           if (bits != -1) {
-            return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
+            return WriteFloatingPointBits(outputStream, bits, 2, false);
           }
           if (CBORUtilities.DoubleRetainsSameValueInSingle(floatingBits)) {
             bits = CBORUtilities.DoubleToRoundedSinglePrecision(floatingBits);
-            return WriteFloatingPointBits(outputStream, (long)bits, 4, false);
+            return WriteFloatingPointBits(outputStream, bits, 4, false);
           }
         } else if (byteCount == 4) {
           int bits =
             CBORUtilities.SingleToHalfPrecisionIfSameValue(floatingBits);
           if (bits != -1) {
-            return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
+            return WriteFloatingPointBits(outputStream, bits, 2, false);
           }
         }
       }
@@ -6251,8 +5833,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
            };
           outputStream.write(bytes, 0, 9);
           return 9;
-        default:
-          throw new IllegalArgumentException("byteCount");
+        default: throw new IllegalArgumentException("byteCount");
       }
     }
 
@@ -6279,7 +5860,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (outputStream == null) {
         throw new NullPointerException("outputStream");
       }
-      long bits = 0;
+      long bits;
       switch (byteCount) {
         case 2:
           bits = CBORUtilities.DoubleToInt64Bits(doubleVal);
@@ -6320,8 +5901,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (outputStream == null) {
         throw new NullPointerException("outputStream");
       }
-      int bits = 0;
-      long longbits = 0L;
+
+      int bits;
+      long longbits;
       switch (byteCount) {
         case 2:
           bits = Float.floatToRawIntBits(singleVal);
@@ -6330,7 +5912,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           return WriteFloatingPointBits(outputStream, bits, 2);
         case 4:
           bits = Float.floatToRawIntBits(singleVal);
-          longbits = ((long)bits) & 0xffffffffL;
+          longbits = bits & 0xffffffffL;
           return WriteFloatingPointBits(outputStream, longbits, 4);
         case 8:
           bits = Float.floatToRawIntBits(singleVal);
@@ -6399,7 +5981,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalArgumentException("value is from 24 to 31 and major" +
             " type is 7");
         } else {
-          outputStream.write((byte)0xf8);
+          outputStream.write(0xf8);
           outputStream.write((byte)value);
           return 2;
         }
@@ -6479,7 +6061,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           throw new IllegalArgumentException("value is from 24 to 31 and major" +
             "\u0020type" + "\u0020is 7");
         } else {
-          outputStream.write((byte)0xf8);
+          outputStream.write(0xf8);
           outputStream.write((byte)value);
           return 2;
         }
@@ -6692,58 +6274,58 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int type = this.getItemType();
       switch (type) {
         case CBORObjectTypeInteger: {
-          Write((((Long)this.getThisItem()).longValue()), stream);
-          break;
-        }
+            Write((((Long)this.getThisItem()).longValue()), stream);
+            break;
+          }
         case CBORObjectTypeEInteger: {
-          Write((EInteger)this.getThisItem(), stream);
-          break;
-        }
+            Write((EInteger)this.getThisItem(), stream);
+            break;
+          }
         case CBORObjectTypeByteString:
         case CBORObjectTypeTextStringUtf8: {
-          byte[] arr = (byte[])this.getThisItem();
-          WritePositiveInt(
-            (this.getType() == CBORType.ByteString) ? 2 : 3,
-            arr.length,
-            stream);
-          stream.write(arr, 0, arr.length);
-          break;
-        }
+            byte[] arr = (byte[])this.getThisItem();
+            WritePositiveInt(
+              (this.getType() == CBORType.ByteString) ? 2 : 3,
+              arr.length,
+              stream);
+            stream.write(arr, 0, arr.length);
+            break;
+          }
         case CBORObjectTypeTextString:
         case CBORObjectTypeTextStringAscii: {
-          Write((String)this.getThisItem(), stream, options);
-          break;
-        }
-        case CBORObjectTypeArray: {
-          WriteObjectArray(this.AsList(), stream, options);
-          break;
-        }
-        case CBORObjectTypeMap: {
-          WriteObjectMap(this.AsMap(), stream, options);
-          break;
-        }
-        case CBORObjectTypeSimpleValue: {
-          int value = this.getSimpleValue();
-          if (value < 24) {
-            stream.write((byte)(0xe0 + value));
-          } else {
-            stream.write(0xf8);
-            stream.write((byte)value);
+            Write((String)this.getThisItem(), stream, options);
+            break;
           }
+        case CBORObjectTypeArray: {
+            WriteObjectArray(this.AsList(), stream, options);
+            break;
+          }
+        case CBORObjectTypeMap: {
+            WriteObjectMap(this.AsMap(), stream, options);
+            break;
+          }
+        case CBORObjectTypeSimpleValue: {
+            int value = this.getSimpleValue();
+            if (value < 24) {
+              stream.write((byte)(0xe0 + value));
+            } else {
+              stream.write(0xf8);
+              stream.write((byte)value);
+            }
 
-          break;
-        }
+            break;
+          }
         case CBORObjectTypeDouble: {
-          WriteFloatingPointBits(
-             stream,
-             this.AsDoubleBits(),
-             8,
-             !options.getFloat64());
-          break;
-        }
+            WriteFloatingPointBits(
+               stream,
+               this.AsDoubleBits(),
+               8,
+               !options.getFloat64());
+            break;
+          }
         default: {
-          throw new IllegalArgumentException("Unexpected data type");
-        }
+            throw new IllegalArgumentException("Unexpected data type");
+          }
       }
     }
 
@@ -6785,20 +6367,20 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int majortype = firstbyte >> 5;
       if ((firstbyte & 0x1c) == 0x18) {
         // contains 1 to 8 extra bytes of additional information
-        long uadditional = 0;
+        long uadditional;
         switch (firstbyte & 0x1f) {
           case 24:
-            uadditional = (int)(data[1] & (int)0xff);
+            uadditional = data[1] & 0xff;
             break;
           case 25:
             uadditional = (data[1] & 0xffL) << 8;
-            uadditional |= (long)(data[2] & 0xffL);
+            uadditional |= data[2] & 0xffL;
             break;
           case 26:
             uadditional = (data[1] & 0xffL) << 24;
             uadditional |= (data[2] & 0xffL) << 16;
             uadditional |= (data[3] & 0xffL) << 8;
-            uadditional |= (long)(data[4] & 0xffL);
+            uadditional |= data[4] & 0xffL;
             break;
           case 27:
             uadditional = (data[1] & 0xffL) << 56;
@@ -6808,10 +6390,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             uadditional |= (data[5] & 0xffL) << 24;
             uadditional |= (data[6] & 0xffL) << 16;
             uadditional |= (data[7] & 0xffL) << 8;
-            uadditional |= (long)(data[8] & 0xffL);
+            uadditional |= data[8] & 0xffL;
             break;
-          default:
-            throw new CBORException("Unexpected data encountered");
+          default: throw new CBORException("Unexpected data encountered");
         }
         switch (majortype) {
           case 0:
@@ -6822,7 +6403,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             } else {
               int low = ((int)(uadditional & 0xffffffffL));
               int high = ((int)((uadditional >> 32) & 0xffffffffL));
-              return FromObject(LowHighToEInteger(low, high));
+              return FromEInteger(LowHighToEInteger(low, high));
             }
           case 1:
             if ((uadditional >> 63) == 0) {
@@ -6835,13 +6416,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
               int low = ((int)(uadditional & 0xffffffffL));
               int high = ((int)((uadditional >> 32) & 0xffffffffL));
               EInteger bigintAdditional = LowHighToEInteger(low, high);
-              EInteger minusOne = EInteger.FromInt64(-1);
+              EInteger minusOne = EInteger.FromInt32(-1);
               bigintAdditional = minusOne.Subtract(bigintAdditional);
-              return FromObject(bigintAdditional);
+              return FromEInteger(bigintAdditional);
             }
           case 7:
             if (firstbyte >= 0xf9 && firstbyte <= 0xfb) {
-              long dblbits = (long)uadditional;
+              long dblbits = uadditional;
               if (firstbyte == 0xf9) {
                 dblbits = CBORUtilities.HalfToDoublePrecision(
                     ((int)uadditional));
@@ -6855,9 +6436,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             }
             if (firstbyte == 0xf8) {
               if ((int)uadditional < 32) {
-                throw new CBORException("Invalid overlong simple value");
-              }
-              return new CBORObject(
+ throw new CBORException("Invalid overlong simple value");
+}
+ return new CBORObject(
                   CBORObjectTypeSimpleValue,
                   (int)uadditional);
             }
@@ -6874,9 +6455,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         byte[] ret = new byte[firstbyte - 0x60];
         System.arraycopy(data, 1, ret, 0, firstbyte - 0x60);
         if (!CBORUtilities.CheckUtf8(ret)) {
-          throw new CBORException("Invalid encoding");
-        }
-        return new CBORObject(CBORObjectTypeTextStringUtf8, ret);
+ throw new CBORException("Invalid encoding");
+}
+ return new CBORObject(CBORObjectTypeTextStringUtf8, ret);
       }
       if (firstbyte == 0x80) {
         // empty array
@@ -6971,16 +6552,15 @@ private Map<CBORObject, CBORObject> AsMap() {
         return false;
       }
       for (Map.Entry<CBORObject, CBORObject> kvp : mapA.entrySet()) {
-        CBORObject valueB = null;
-        boolean hasKey;
-valueB = mapB.get(kvp.getKey());
-hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
-        if (hasKey) {
-          CBORObject valueA = kvp.getValue();
-          if (!(valueA == null ? valueB == null : valueA.equals(valueB))) {
-            return false;
-          }
-        } else {
+        CBORObject valueB = PropertyMap.GetOrDefault(mapB, kvp.getKey(), null);
+        if (valueB == null) {
+          return false;
+        }
+        if (kvp.getValue() == null) {
+          // Null (as opposed to CBORObject.Null) values not supported in CBOR maps.
+          throw new IllegalStateException();
+        }
+        if (!kvp.getValue().equals(valueB)) {
           return false;
         }
       }
@@ -7079,7 +6659,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       int offset) {
       int length = data.length;
       if (length > offset) {
-        int nextbyte = (int)(data[offset] & (int)0xff);
+        int nextbyte = data[offset] & 0xff;
         if (nextbyte >= 0x60 && nextbyte < 0x78) {
           int offsetp1 = 1 + offset;
           // Check for type 3 String of short length
@@ -7089,7 +6669,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
             length);
           // Check for all ASCII text
           for (int i = offsetp1; i < length; ++i) {
-            if ((data[i] & ((byte)0x80)) != 0) {
+            if ((data[i] & 0x80) != 0) {
               return null;
             }
           }
@@ -7098,7 +6678,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
           // convert from UTF-8 first
           char[] c = new char[length - offsetp1];
           for (int i = offsetp1; i < length; ++i) {
-            c[i - offsetp1] = (char)(data[i] & (int)0xff);
+            c[i - offsetp1] = (char)(data[i] & 0xff);
           }
           return new String(c);
         }
@@ -7141,53 +6721,35 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         throw new IllegalArgumentException("value(" + value + ") is less than " +
           "0");
       }
-      if (value < 24) {
-        return new byte[] { (byte)((byte)value | (byte)(type << 5)) };
-      }
-      if (value <= 0xffL) {
-        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
-         };
-      }
-      if (value <= 0xffffL) {
-        return new byte[] { (byte)(25 | (type << 5)),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-         };
-      }
-      if (value <= 0xffffffffL) {
-        return new byte[] { (byte)(26 | (type << 5)),
-          (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-         };
-      }
-      return new byte[] { (byte)(27 | (type << 5)), (byte)((value >> 56) & 0xff),
-        (byte)((value >> 48) & 0xff), (byte)((value >> 40) & 0xff),
-        (byte)((value >> 32) & 0xff), (byte)((value >> 24) & 0xff),
-        (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff),
-       };
+      return value < 24 ? new byte[] { (byte)((byte)value | (byte)(type << 5)) } :
+        value <= 0xffL ? new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
+         } : value <= 0xffffL ? new byte[] { (byte)(25 | (type << 5)),
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : value <= 0xffffffffL ? new byte[] { (byte)(26 | (type << 5)),
+   (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : new byte[] { (byte)(27 | (type << 5)), (byte)((value >> 56) & 0xff),
+   (byte)((value >> 48) & 0xff), (byte)((value >> 40) & 0xff),
+   (byte)((value >> 32) & 0xff), (byte)((value >> 24) & 0xff),
+   (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
+   (byte)(value & 0xff),
+  };
     }
 
     private static byte[] GetPositiveIntBytes(int type, int value) {
       if (value < 0) {
-        throw new IllegalArgumentException("value(" + value + ") is less than " +
+ throw new IllegalArgumentException("value(" + value + ") is less than " +
           "0");
-      }
-      if (value < 24) {
-        return new byte[] { (byte)((byte)value | (byte)(type << 5)) };
-      }
-      if (value <= 0xff) {
-        return new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
-         };
-      }
-      if (value <= 0xffff) {
-        return new byte[] { (byte)(25 | (type << 5)),
-          (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-         };
-      }
-      return new byte[] { (byte)(26 | (type << 5)), (byte)((value >> 24) & 0xff),
-        (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff),
-       };
+}
+ return value < 24 ?
+        new byte[] { (byte)((byte)value | (byte)(type << 5)) } :
+        value <= 0xff ? new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
+         } : value <= 0xffff ? new byte[] { (byte)(25 | (type << 5)),
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : new byte[] { (byte)(26 | (type << 5)), (byte)((value >> 24) & 0xff),
+   (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
+   (byte)(value & 0xff),
+  };
     }
 
     // Initialize fixed values for certain
@@ -7208,7 +6770,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       for (int i = 0xe0; i < 0xf8; ++i) {
         fixedObjects[i] = new CBORObject(
           CBORObjectTypeSimpleValue,
-          (int)(i - 0xe0));
+          i - 0xe0);
       }
       return fixedObjects;
     }
@@ -7239,7 +6801,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
     }
 
     private static EInteger LowHighToEInteger(int tagLow, int tagHigh) {
-      byte[] uabytes = null;
+      byte[] uabytes;
       if (tagHigh != 0) {
         uabytes = new byte[9];
         uabytes[7] = (byte)((tagHigh >> 24) & 0xff);
@@ -7297,7 +6859,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       ArrayList<CBORObject> sortedBSet = new ArrayList<CBORObject>(PropertyMap.GetSortedKeys(mapB));
       // System.out.println("---done sorting");
       listACount = sortedASet.size();
-      listBCount = sortedBSet.size();
+      sortedBSet.size();
       // Compare the keys
       /* for (int i = 0; i < listACount; ++i) {
         String str = sortedASet.get(i).toString();
@@ -7341,8 +6903,8 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       Object parent,
       Object child) {
       if (stack == null) {
-        stack = new ArrayList<Object>(4);
-        stack.add(parent);
+        stack = new java.util.ArrayList<Object>(java.util.Arrays.asList(
+          parent));
       }
       for (Object o : stack) {
         if (o == child) {
@@ -7489,7 +7051,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
           if (byteIndex >= StreamedStringBufferLength) {
             // Write bytes retrieved so far
             if (!streaming) {
-              stream.write((byte)0x7f);
+              stream.write(0x7f);
             }
             WritePositiveInt(3, byteIndex, stream);
             stream.write(bytes, 0, byteIndex);
@@ -7503,7 +7065,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
             // would exceed the length, and the CBOR spec forbids
             // splitting characters when generating text strings
             if (!streaming) {
-              stream.write((byte)0x7f);
+              stream.write(0x7f);
             }
             WritePositiveInt(3, byteIndex, stream);
             stream.write(bytes, 0, byteIndex);
@@ -7528,7 +7090,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
               // would exceed the length, and the CBOR spec forbids
               // splitting characters when generating text strings
               if (!streaming) {
-                stream.write((byte)0x7f);
+                stream.write(0x7f);
               }
               WritePositiveInt(3, byteIndex, stream);
               stream.write(bytes, 0, byteIndex);
@@ -7544,7 +7106,7 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
               // would exceed the length, and the CBOR spec forbids
               // splitting characters when generating text strings
               if (!streaming) {
-                stream.write((byte)0x7f);
+                stream.write(0x7f);
               }
               WritePositiveInt(3, byteIndex, stream);
               stream.write(bytes, 0, byteIndex);
@@ -7561,16 +7123,16 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
       WritePositiveInt(3, byteIndex, stream);
       stream.write(bytes, 0, byteIndex);
       if (streaming) {
-        stream.write((byte)0xff);
+        stream.write(0xff);
       }
     }
 
     private int AsInt32(int minValue, int maxValue) {
       CBORNumber cn = CBORNumber.FromCBORObject(this);
       if (cn == null) {
-        throw new IllegalStateException("not a number type");
-      }
-      return cn.GetNumberInterface().AsInt32(
+ throw new IllegalStateException("not a number type");
+}
+ return cn.GetNumberInterface().AsInt32(
           cn.GetValue(),
           minValue,
           maxValue);
@@ -7584,11 +7146,11 @@ hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         if (high == 0 && (low >> 16) == 0) {
           WritePositiveInt(6, low, s);
         } else if (high == 0) {
-          long value = ((long)low) & 0xffffffffL;
+          long value = low & 0xffffffffL;
           WritePositiveInt64(6, value, s);
         } else if ((high >> 16) == 0) {
-          long value = ((long)low) & 0xffffffffL;
-          long highValue = ((long)high) & 0xffffffffL;
+          long value = low & 0xffffffffL;
+          long highValue = high & 0xffffffffL;
           value |= highValue << 32;
           WritePositiveInt64(6, value, s);
         } else {
