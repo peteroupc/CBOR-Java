@@ -262,14 +262,19 @@ CBORObject.FromEInteger(ei);
             chars,
             initialOffset,
             endPos - initialOffset);
-        return ed.isZero() && negative ? ed.getExponent().isZero() ?
-            preserveNegativeZero ?
+        if (ed.isZero() && negative) {
+          if (ed.getExponent().isZero()) {
+            return preserveNegativeZero ?
               CBORObject.FromEDecimal(EDecimal.NegativeZero) :
-              CBORObject.FromInt32(0) :
-            !preserveNegativeZero ? CBORObject.FromEDecimal(ed.Negate()) :
-CBORObject.FromEDecimal(ed) :
-          ed.getExponent().isZero() ? CBORObject.FromEInteger(ed.getMantissa()) :
+              CBORObject.FromInt32(0);
+          } else {
+            return !preserveNegativeZero ?
+CBORObject.FromEDecimal(ed.Negate()) : CBORObject.FromEDecimal(ed);
+          }
+        } else {
+          return ed.getExponent().isZero() ? CBORObject.FromEInteger(ed.getMantissa()) :
             CBORObject.FromEDecimal(ed);
+        }
       } else if (kind == JSONOptions.ConversionMode.Double) {
         EFloat ef = EFloat.FromString(
             chars,
