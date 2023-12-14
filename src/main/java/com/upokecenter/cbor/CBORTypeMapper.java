@@ -1,7 +1,6 @@
 package com.upokecenter.cbor;
 
 import java.util.*;
-using System.Diagnostics.CodeAnalysis;
 
   /**
    * Holds converters to customize the serialization and deserialization behavior

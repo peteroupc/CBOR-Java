@@ -8,7 +8,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-using System.Diagnostics.CodeAnalysis;
 import com.upokecenter.numbers.*;
 
   /**

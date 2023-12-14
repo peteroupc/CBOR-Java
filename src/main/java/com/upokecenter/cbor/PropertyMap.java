@@ -795,7 +795,7 @@ throw new CBORException("Can't convert to char");
       }
 
       if (t.equals(java.math.BigDecimal.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         EDecimal ei = objThis.AsNumber().ToEDecimal();
         if (!ei.isFinite()) {
           throw new CBORException("Can't convert to BigDecimal");
@@ -809,25 +809,25 @@ throw new CBORException("Can't convert to char");
         }
       }
       if (t.equals(java.math.BigInteger.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         EInteger ei = objThis.AsNumber().ToEInteger();
         return new BigInteger(ei.ToBytes(false));
       }
 
       if (t.equals(EInteger.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToEInteger();
       }
       if (t.equals(EDecimal.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToEDecimal();
       }
       if (t.equals(EFloat.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToEFloat();
       }
       if (t.equals(ERational.class)) {
-        if(!objThis.isNumber())throw new IllegalStateException("Not a CBOR number");
+        if(!objThis.isNumber())throw new CBORException("Not a CBOR number");
         return objThis.AsNumber().ToERational();
       }
       if(t instanceof Class<?> && Enum.class.isAssignableFrom((Class<?>)t)){

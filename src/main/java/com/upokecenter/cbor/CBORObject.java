@@ -9,7 +9,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
-using System.Diagnostics.CodeAnalysis;
+
 import java.io.*;
 
 import com.upokecenter.util.*;
@@ -535,8 +535,7 @@ defaultValue) {
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> map = this.AsMap();
-        var ckey = cborkey;
-        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
+        return PropertyMap.GetOrDefault(map, cborkey, defaultValue);
       }
       return defaultValue;
     }
@@ -565,8 +564,10 @@ defaultValue) {
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> map = this.AsMap();
-        var ckey = FromInt32(key);
-        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
+        return PropertyMap.GetOrDefault(
+          map,
+          FromInt32(key),
+          defaultValue);
       }
       return defaultValue;
     }
@@ -589,8 +590,10 @@ defaultValue) {
       }
       if (this.getType() == CBORType.Map) {
         Map<CBORObject, CBORObject> map = this.AsMap();
-        var ckey = FromString(key);
-        return PropertyMap.GetOrDefault(map, ckey, defaultValue);
+        return PropertyMap.GetOrDefault(
+          map,
+          FromString(key),
+          defaultValue);
       }
       return defaultValue;
     }
@@ -701,8 +704,7 @@ defaultValue) {
         if (key == null) {
           throw new NullPointerException("key");
         }
-        var objkey = FromString(key);
-        return this.get(objkey);
+        return this.get(FromString(key));
       }
 
     /**
@@ -718,9 +720,9 @@ defaultValue) {
         if (value == null) {
           throw new NullPointerException("value");
         }
-        var objkey = FromString(key);
         if (this.getType() == CBORType.Map) {
           Map<CBORObject, CBORObject> map = this.AsMap();
+          CBORObject objkey = FromString(key);
           map.put(objkey, value);
         } else {
           throw new IllegalStateException("Not a map");
@@ -1698,7 +1700,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * @deprecated Use FromInt64 instead.
  */
 @Deprecated
-    public static CBORObject FromObject(long value) => FromInt64(value);
+    public static CBORObject FromObject(long value) { return FromInt64(value); }
 
     /**
      * Generates a CBOR object from a CBOR object.
@@ -1874,8 +1876,7 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
      * @deprecated Use FromEInteger instead.
  */
 @Deprecated
-    public static CBORObject FromObject(EInteger bigintValue) =>
-FromEInteger(bigintValue);
+    public static CBORObject FromObject(EInteger bigintValue) { return FromEInteger(bigintValue); }
 
     /**
      * <p>Generates a CBOR object from an arbitrary-precision binary floating-point
@@ -1941,8 +1942,7 @@ FromEInteger(bigintValue);
      * @deprecated Use FromEFloat instead.
  */
 @Deprecated
-    public static CBORObject FromObject(EFloat bigValue) =>
-FromEFloat(bigValue);
+    public static CBORObject FromObject(EFloat bigValue) { return FromEFloat(bigValue); }
 
     /**
      * <p>Generates a CBOR object from an arbitrary-precision rational number. The
@@ -1995,8 +1995,7 @@ FromEFloat(bigValue);
      * @deprecated Use FromERational instead.
  */
 @Deprecated
-    public static CBORObject FromObject(ERational bigValue) =>
-FromERational(bigValue);
+    public static CBORObject FromObject(ERational bigValue) { return FromERational(bigValue); }
 
     /**
      * <p>Generates a CBOR object from a decimal number. The CBOR object is
@@ -2059,8 +2058,7 @@ FromERational(bigValue);
      * @deprecated Use FromEDecimal instead.
  */
 @Deprecated
-    public static CBORObject FromObject(EDecimal bigValue) =>
-FromEDecimal(bigValue);
+    public static CBORObject FromObject(EDecimal bigValue) { return FromEDecimal(bigValue); }
 
     /**
      * Generates a CBOR object from a text string.
@@ -2095,8 +2093,7 @@ FromEDecimal(bigValue);
      * @deprecated Use FromString instead.
  */
 @Deprecated
-    public static CBORObject FromObject(String strValue) =>
-FromString(strValue);
+    public static CBORObject FromObject(String strValue) { return FromString(strValue); }
 
     /**
      * Generates a CBOR object from a 32-bit signed integer.
@@ -2116,7 +2113,7 @@ FromString(strValue);
      * @deprecated Use FromInt instead.
  */
 @Deprecated
-    public static CBORObject FromObject(int value) => FromInt32(value);
+    public static CBORObject FromObject(int value) { return FromInt32(value); }
 
     /**
      * Generates a CBOR object from a 16-bit signed integer.
@@ -2136,7 +2133,7 @@ FromString(strValue);
      * @deprecated Use FromInt16 instead.
  */
 @Deprecated
-    public static CBORObject FromObject(short value) => FromInt16(value);
+    public static CBORObject FromObject(short value) { return FromInt16(value); }
 
     /**
      * Returns the CBOR true value or false value, depending on "value".
@@ -2154,7 +2151,7 @@ FromString(strValue);
      * @deprecated Use FromBool instead.
  */
 @Deprecated
-    public static CBORObject FromObject(boolean value) => FromBool(value);
+    public static CBORObject FromObject(boolean value) { return FromBool(value); }
 
     /**
      * Generates a CBOR object from a byte (0 to 255).
@@ -2172,7 +2169,7 @@ FromString(strValue);
      * @deprecated Use FromByte instead.
  */
 @Deprecated
-    public static CBORObject FromObject(byte value) => FromByte(value);
+    public static CBORObject FromObject(byte value) { return FromByte(value); }
 
     /**
      * Generates a CBOR object from a 32-bit floating-point number. The input value
@@ -2201,7 +2198,7 @@ FromString(strValue);
      * @deprecated Use FromFloat instead.
  */
 @Deprecated
-    public static CBORObject FromObject(float value) => FromSingle(value);
+    public static CBORObject FromObject(float value) { return FromSingle(value); }
 
     /**
      * Generates a CBOR object from a 64-bit floating-point number. The input value
@@ -2227,7 +2224,7 @@ FromString(strValue);
      * @deprecated Use FromDouble instead.
  */
 @Deprecated
-    public static CBORObject FromObject(double value) => FromDouble(value);
+    public static CBORObject FromObject(double value) { return FromDouble(value); }
 
     /**
      * <p>Generates a CBOR object from an array of 8-bit bytes; the byte array is
@@ -2255,7 +2252,7 @@ FromString(strValue);
      * @deprecated Use FromByteArray instead.
  */
 @Deprecated
-    public static CBORObject FromObject(byte[] bytes) => FromByteArray(bytes);
+    public static CBORObject FromObject(byte[] bytes) { return FromByteArray(bytes); }
 
     /**
      * Generates a CBOR object from an array of CBOR objects.
@@ -2281,8 +2278,7 @@ FromString(strValue);
      * @deprecated Use FromCBORArray instead.
  */
 @Deprecated
-    public static CBORObject FromObject(CBORObject[] array) =>
-FromCBORArray(array);
+    public static CBORObject FromObject(CBORObject[] array) { return FromCBORArray(array); }
 
     static CBORObject FromArrayBackedObject(CBORObject[] array) {
       if (array == null) {
@@ -2765,8 +2761,7 @@ FromCBORArray(array);
 @Deprecated
 
     public static CBORObject FromObjectAndTag(Object valueObValue, EInteger
-bigintTag) =>
-      FromCBORObjectAndTag(FromObject(valueObValue), bigintTag);
+bigintTag) { return FromCBORObjectAndTag(FromObject(valueObValue), bigintTag); }
 
     /**
      * Generates a CBOR object from an arbitrary object and gives the resulting
@@ -2838,8 +2833,7 @@ bigintTag) =>
 @Deprecated
 
     public static CBORObject FromObjectAndTag(Object valueObValue, int
-smallTag) =>
-      FromCBORObjectAndTag(FromObject(valueObValue), smallTag);
+smallTag) { return FromCBORObjectAndTag(FromObject(valueObValue), smallTag); }
 
     /**
      * Creates a CBOR object from a simple value number.

@@ -179,11 +179,6 @@ Tries to extract the fields of a date and time in the form of a CBOR object.
 * Either <code>true</code> if the method is successful, or <code>false</code>
  otherwise.
 
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>year</code> or <code>
- lesserFields</code> is null, or contains fewer elements than required.
-
 ### DateTimeFieldsToCBORObject
     public CBORObject DateTimeFieldsToCBORObject(int smallYear, int month, int day)
 Converts a date/time in the form of a year, month, and day to a CBOR object.

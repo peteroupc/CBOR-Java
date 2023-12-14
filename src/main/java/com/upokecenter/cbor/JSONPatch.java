@@ -8,8 +8,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 */
 
-using System.Diagnostics.CodeAnalysis;
-
   final class JSONPatch {
 private JSONPatch() {
 }

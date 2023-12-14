@@ -99,7 +99,7 @@ import com.upokecenter.numbers.*;
      */
     public CBORObject ToCBORObject() {
       Object obj = this.value;
-      long l = ((obj instanceof Long) ? (long)obj : null); if (l != null) {
+      long l = (obj instanceof Long) ? ((Long)(obj)).longValue() : 0L; if (obj instanceof Long) {
         return CBORObject.FromInt64(l);
       }
       EInteger eif = ((obj instanceof EInteger) ? (EInteger)obj : null); if (eif != null) {
@@ -114,7 +114,7 @@ import com.upokecenter.numbers.*;
       ERational erf = ((obj instanceof ERational) ? (ERational)obj : null); if (erf != null) {
         return CBORObject.FromERational(erf);
       }
-      throw new Exception("Unexpected type: " + obj.getClass());
+      throw new IllegalStateException("Unexpected type: " + obj.getClass());
     }
 
     /**
