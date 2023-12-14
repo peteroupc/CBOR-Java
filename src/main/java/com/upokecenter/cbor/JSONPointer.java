@@ -9,7 +9,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
 */
 
 import java.util.*;
-using System.Diagnostics.CodeAnalysis;
 
 import com.upokecenter.numbers.*;
 
@@ -31,7 +30,7 @@ import com.upokecenter.numbers.*;
       }
       while (true) {
         if (obj == null) {
-          throw new CBORException("Invalid pointer: obj is null");
+            throw new CBORException("Invalid pointer: obj is null");
         }
         if (obj.getType() == CBORType.Array) {
           if (index >= pointer.length() || pointer.charAt(index) != '/') {
@@ -55,10 +54,10 @@ import com.upokecenter.numbers.*;
           } else if (value[0] > obj.size()) {
             throw new CBORException("Invalid array index in pointer");
           } else if (value[0] == obj.size()) {
-            if (!(newIndex + 1 == pointer.length())) {
- throw new CBORException("Invalid array index in pointer");
-}
- return new JSONPointer(obj, pointer.substring(index));
+            if (newIndex + 1 == pointer.length()) {
+              return new JSONPointer(obj, pointer.substring(index));
+            }
+            throw new CBORException("Invalid array index in pointer");
           } else {
             obj = obj.get(value[0]);
 
@@ -131,6 +130,7 @@ import com.upokecenter.numbers.*;
         }
       }
     }
+
     public static CBORObject GetObject(
       CBORObject obj,
       String pointer,
@@ -148,10 +148,10 @@ import com.upokecenter.numbers.*;
         return defaultValue;
       }
       try {
-        CBORObject cobj = JSONPointer.FromPointer(obj, pointer).GetValue();
-        return (cobj == null) ? (defaultValue) : cobj;
+         CBORObject cobj = JSONPointer.FromPointer(obj, pointer).GetValue();
+         return cobj == null ? defaultValue : cobj;
       } catch (CBORException ex) {
-        return defaultValue;
+         return defaultValue;
       }
     }
 
@@ -176,8 +176,8 @@ import com.upokecenter.numbers.*;
         return index + 1;
       }
       if (str.charAt(index) == '0') {
-        // NOTE: Leading zeros not allowed in JSON Pointer numbers
-        return index;
+         // NOTE: Leading zeros not allowed in JSON Pointer numbers
+         return index;
       }
       long lvalue = 0;
       while (index < str.length()) {
@@ -223,12 +223,13 @@ import com.upokecenter.numbers.*;
           return false;
         }
         EInteger eivalue = EInteger.FromString(this.refValue);
-        int icount = this.jsonobj.size();
+        int icount = ((CBORObject)this.jsonobj).size();
         return eivalue.signum() >= 0 &&
           eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
-      } else {
-        return this.jsonobj.getType() == CBORType.Map ?
-this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
+        } else if (this.jsonobj.getType() == CBORType.Map) {
+          return ((CBORObject)this.jsonobj).ContainsKey(this.refValue);
+        } else {
+        return this.refValue.length() == 0;
       }
     }
 
@@ -241,10 +242,10 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
     public int GetIndex() {
       if (this.jsonobj.getType() == CBORType.Array) {
         if (this.refValue.equals("-")) {
-          return this.jsonobj.size();
+          return ((CBORObject)this.jsonobj).size();
         }
         EInteger value = EInteger.FromString(this.refValue);
-        int icount = this.jsonobj.size();
+        int icount = ((CBORObject)this.jsonobj).size();
         return (value.signum() < 0) ? (-1) :
 ((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
 
@@ -267,10 +268,10 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
         // Root always exists
         return this.jsonobj;
       }
-      CBORObject tmpcbor;
+      CBORObject tmpcbor = null;
       if (this.jsonobj.getType() == CBORType.Array) {
         int index = this.GetIndex();
-        if (index >= 0 && index < this.jsonobj.size()) {
+        if (index >= 0 && index < ((CBORObject)this.jsonobj).size()) {
           tmpcbor = this.jsonobj;
           return tmpcbor.get(index);
         } else {
@@ -359,7 +360,11 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       sb.append(str.substring(0, j));
       sb.append(srep);
       for (int i = j + 1; i < str.length(); ++i) {
-        sb = str.charAt(i) == c ? sb.append(srep) : sb.append(str.charAt(i));
+        if (str.charAt(i) == c) {
+          sb.append(srep);
+        } else {
+          sb.append(str.charAt(i));
+        }
       }
       return sb.toString();
     }
@@ -371,7 +376,7 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       Map<String, CBORObject> pointerList,
       boolean remove) {
       if (root.getType() == CBORType.Map) {
-        CBORObject rootObj = root;
+        CBORObject rootObj = (CBORObject)root;
         if (rootObj.ContainsKey(keyToFind)) {
           // Key found in this object,
           // add this object's JSON pointer
@@ -380,7 +385,7 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
           // and remove the key from the Object
           // if necessary
           if (remove) {
-            rootObj.Remove(CBORObject.FromString(keyToFind));
+            rootObj.Remove(CBORObject.FromObject(keyToFind));
           }
         }
         // Search the key's values

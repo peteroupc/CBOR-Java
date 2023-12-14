@@ -13,8 +13,7 @@ private CBORCanonical() {
     ByteComparer = new CtapByteComparer();
 
     private static final class CtapByteComparer implements Comparator<Map.Entry<byte[],
-      byte[]>>
-    {
+      byte[]>> {
       public int compare(
         Map.Entry<byte[], byte[]> kva,
         Map.Entry<byte[], byte[]> kvb) {
@@ -37,8 +36,8 @@ private CBORCanonical() {
           return 0;
         }
         // check major types
-        if ((bytesA[0] & 0xe0) != (bytesB[0] & 0xe0)) {
-          return (bytesA[0] & 0xe0) < (bytesB[0] & 0xe0) ? -1 : 1;
+        if (((int)bytesA[0] & 0xe0) != ((int)bytesB[0] & 0xe0)) {
+          return ((int)bytesA[0] & 0xe0) < ((int)bytesB[0] & 0xe0) ? -1 : 1;
         }
         // check lengths
         if (bytesA.length != bytesB.length) {
@@ -47,8 +46,8 @@ private CBORCanonical() {
         // check bytes
         for (int i = 0; i < bytesA.length; ++i) {
           if (bytesA[i] != bytesB[i]) {
-            int ai = bytesA[i] & 0xff;
-            int bi = bytesB[i] & 0xff;
+            int ai = ((int)bytesA[i]) & 0xff;
+            int bi = ((int)bytesB[i]) & 0xff;
             return (ai < bi) ? -1 : 1;
           }
         }
@@ -56,8 +55,7 @@ private CBORCanonical() {
       }
     }
 
-    private static final class CtapComparer implements Comparator<CBORObject>
-    {
+    private static final class CtapComparer implements Comparator<CBORObject> {
       private static int MajorType(CBORObject a) {
         if (a.isTagged()) {
           return 6;
@@ -120,8 +118,8 @@ private CBORCanonical() {
         }
         for (int i = 0; i < abs.length; ++i) {
           if (abs[i] != bbs[i]) {
-            int ai = abs[i] & 0xff;
-            int bi = bbs[i] & 0xff;
+            int ai = ((int)abs[i]) & 0xff;
+            int bi = ((int)bbs[i]) & 0xff;
             return (ai < bi) ? -1 : 1;
           }
         }
@@ -156,22 +154,23 @@ private CBORCanonical() {
     }
 
     private static void CheckDepth(CBORObject cbor, int depth) {
-      if (cbor.getType() == CBORType.Array) {
-        for (int i = 0; i < cbor.size(); ++i) {
-          if (depth >= 3 && IsArrayOrMap(cbor.get(i))) {
-            throw new CBORException("Nesting level too deep");
+        if (cbor.getType() == CBORType.Array) {
+          for (int i = 0; i < cbor.size(); ++i) {
+              if (depth >= 3 && IsArrayOrMap(cbor.get(i))) {
+                throw new CBORException("Nesting level too deep");
+              }
+              CheckDepth(cbor.get(i), depth + 1);
+            }
+        } else if (cbor.getType() == CBORType.Map) {
+          for (CBORObject key : cbor.getKeys()) {
+            if (depth >= 3 && (IsArrayOrMap(key) ||
+                IsArrayOrMap(cbor.get(key)))) {
+              throw new CBORException("Nesting level too deep");
+            }
+            CheckDepth(key, depth + 1);
+            CheckDepth(cbor.get(key), depth + 1);
           }
-          CheckDepth(cbor.get(i), depth + 1);
         }
-      } else if (cbor.getType() == CBORType.Map) {
-        for (CBORObject key : cbor.getKeys()) {
-          if (depth >= 3 && (IsArrayOrMap(key) || IsArrayOrMap(cbor.get(key)))) {
-            throw new CBORException("Nesting level too deep");
-          }
-          CheckDepth(key, depth + 1);
-          CheckDepth(cbor.get(key), depth + 1);
-        }
-      }
     }
 
     private static byte[] CtapCanonicalEncode(CBORObject a, int depth) {
@@ -203,7 +202,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ArrayList<Map.Entry<byte[], byte[]>> sortedKeys;
           sortedKeys = new ArrayList<Map.Entry<byte[], byte[]>>();
           for (CBORObject key : cbor.getKeys()) {
-            if (depth >= 3 && (IsArrayOrMap(key) || IsArrayOrMap(cbor.get(key)))) {
+            if (depth >= 3 && (IsArrayOrMap(key) ||
+                IsArrayOrMap(cbor.get(key)))) {
               throw new CBORException("Nesting level too deep");
             }
             CheckDepth(key, depth + 1);
@@ -261,11 +261,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           (byte)((bits >> 8) & 0xffL),
           (byte)(bits & 0xffL),
          };
+      } else if (valueAType == CBORType.Integer) {
+        return cbor.EncodeToBytes(CBOREncodeOptions.Default);
       } else {
-        if (!(valueAType == CBORType.Integer)) {
- throw new IllegalArgumentException("Invalid CBOR type.");
-}
- return cbor.EncodeToBytes(CBOREncodeOptions.Default);
+        throw new IllegalArgumentException("Invalid CBOR type.");
       }
     }
   }

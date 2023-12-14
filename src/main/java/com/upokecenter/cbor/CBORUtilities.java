@@ -8,6 +8,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   /**
@@ -16,7 +17,7 @@ import com.upokecenter.numbers.*;
   final class CBORUtilities {
 private CBORUtilities() {
 }
-    private static final long DoublePosInfinity = (0x7ffL << 52);
+    private static final long DoublePosInfinity = ((long)(0x7ffL << 52));
     private static final String HexAlphabet = "0123456789ABCDEF";
     // Fractional seconds used in date conversion methods
     public static final int FractionalSeconds = 1000 * 1000 * 1000;
@@ -39,7 +40,7 @@ private CBORUtilities() {
       if (blen == 0) {
         return alen == 0 ? 0 : 1;
       }
-      int cmp;
+      int cmp = 0;
       if (alen < 128 && blen < 128) {
         int istrAUpperBound = alen * 3;
         if (istrAUpperBound < blen) {
@@ -260,33 +261,36 @@ private CBORUtilities() {
       if (offset < 0 || offset >= endPos) {
         return -1;
       }
-      int c = utf8[offset] & 0xff;
+      int c = ((int)utf8[offset]) & 0xff;
       if (c <= 0x7f) {
         return c;
       } else if (c >= 0xc2 && c <= 0xdf) {
         ++offset;
-        int c1 = offset < endPos ? utf8[offset] & 0xff : -1;
+        int c1 = offset < endPos ?
+          ((int)utf8[offset]) & 0xff : -1;
         return (
             c1 < 0x80 || c1 > 0xbf) ? -2 : (((c - 0xc0) << 6) |
             (c1 - 0x80));
       } else if (c >= 0xe0 && c <= 0xef) {
         ++offset;
-        int c1 = offset < endPos ? utf8[offset++] & 0xff : -1;
-        int c2 = offset < endPos ? utf8[offset] & 0xff : -1;
+        int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c2 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
         int lower = (c == 0xe0) ? 0xa0 : 0x80;
         int upper = (c == 0xed) ? 0x9f : 0xbf;
         return (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) ?
           -2 : (((c - 0xe0) << 12) | ((c1 - 0x80) << 6) | (c2 - 0x80));
       } else if (c >= 0xf0 && c <= 0xf4) {
         ++offset;
-        int c1 = offset < endPos ? utf8[offset++] & 0xff : -1;
-        int c2 = offset < endPos ? utf8[offset++] & 0xff : -1;
-        int c3 = offset < endPos ? utf8[offset] & 0xff : -1;
+        int c1 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c2 = offset < endPos ? ((int)utf8[offset++]) & 0xff : -1;
+        int c3 = offset < endPos ? ((int)utf8[offset]) & 0xff : -1;
         int lower = (c == 0xf0) ? 0x90 : 0x80;
         int upper = (c == 0xf4) ? 0x8f : 0xbf;
-        return c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
-          c3 < 0x80 || c3 > 0xbf ? -2 :
-          ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
+        if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
+          c3 < 0x80 || c3 > 0xbf) {
+          return -2;
+        }
+        return ((c - 0xf0) << 18) | ((c1 - 0x80) << 12) | ((c2 - 0x80) <<
             6) | (c3 - 0x80);
       } else {
         return -2;
@@ -470,7 +474,7 @@ private CBORUtilities() {
         byte ai = a[i];
         byte bi = b[i];
         if (ai != bi) {
-          return ((ai & 0xff) < (bi & 0xff)) ? -1 : 1;
+          return ((((int)ai) & 0xff) < (((int)bi) & 0xff)) ? -1 : 1;
         }
       }
       return (a.length != b.length) ? ((a.length < b.length) ? -1 : 1) : 0;
@@ -490,7 +494,7 @@ private CBORUtilities() {
         byte ai = a[i];
         byte bi = b[i];
         if (ai != bi) {
-          return ((ai & 0xff) < (bi & 0xff)) ? -1 : 1;
+          return ((((int)ai) & 0xff) < (((int)bi) & 0xff)) ? -1 : 1;
         }
       }
       return 0;
@@ -545,14 +549,14 @@ private CBORUtilities() {
       if (longValue == 0L) {
         return "0";
       }
-      if (longValue == Integer.MIN_VALUE) {
+      if (longValue == (long)Integer.MIN_VALUE) {
         return "-2147483648";
       }
       boolean neg = longValue < 0;
+      int count = 0;
       char[] chars;
       int intlongValue = ((int)longValue);
-      int count;
-      if (intlongValue == longValue) {
+      if ((long)intlongValue == longValue) {
         chars = new char[12];
         count = 11;
         if (neg) {
@@ -560,20 +564,20 @@ private CBORUtilities() {
         }
         while (intlongValue > 43698) {
           int intdivValue = intlongValue / 10;
-          char digit = HexAlphabet.charAt(intlongValue - (intdivValue *
-                  10));
+          char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue *
+                  10)));
           chars[count--] = digit;
           intlongValue = intdivValue;
         }
         while (intlongValue > 9) {
           int intdivValue = (intlongValue * 26215) >> 18;
-          char digit = HexAlphabet.charAt(intlongValue - (intdivValue *
-                  10));
+          char digit = HexAlphabet.charAt((int)(intlongValue - (intdivValue *
+                  10)));
           chars[count--] = digit;
           intlongValue = intdivValue;
         }
         if (intlongValue != 0) {
-          chars[count--] = HexAlphabet.charAt(intlongValue);
+          chars[count--] = HexAlphabet.charAt((int)intlongValue);
         }
         if (neg) {
           chars[count] = '-';
@@ -842,12 +846,15 @@ ValueNormalDays :
             numDays = numDays.Subtract(1);
           }
         }
-        numDays = year.Remainder(4).signum() != 0 || (
-            year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0) ?
-          numDays.Subtract(365 - ValueNormalToMonth[month])
-            .Subtract(ValueNormalDays[month] - mday + 1) :
-          numDays.Subtract(366 - ValueLeapToMonth[month])
+        if (year.Remainder(4).signum() != 0 || (
+            year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0)) {
+          numDays = numDays.Subtract(365 - ValueNormalToMonth[month])
+            .Subtract(ValueNormalDays[month] - mday + 1);
+        } else {
+          numDays = numDays
+            .Subtract(366 - ValueLeapToMonth[month])
             .Subtract(ValueLeapDays[month] - mday + 1);
+        }
       } else {
         boolean isNormalYear = year.Remainder(4).signum() != 0 ||
           (year.Remainder(100).signum() == 0 && year.Remainder(400).signum() != 0);
@@ -1025,7 +1032,8 @@ ValueNormalDays :
           bad |= str.charAt(i) != 'T';
           /*lowercase t not used to separate date/time,
           following RFC 4287 sec. 3.3*/ } else {
-          bad |= str.charAt(i) < '0' || str.charAt(i) > '9';
+          bad |= str.charAt(i) < '0' || str.charAt(i) >
+            '9';
         }
       }
       if (bad) {
@@ -1058,10 +1066,11 @@ ValueNormalDays :
           ++icount;
         }
       }
-      int utcToLocal;
+      int utcToLocal = 0;
       if (index + 1 == str.length() && str.charAt(index) == 'Z') {
         /*lowercase z not used to indicate UTC,
-          following RFC 4287 sec. 3.3*/ utcToLocal = 0;
+          following RFC 4287 sec. 3.3*/
+        utcToLocal = 0;
       } else if (index + 6 == str.length()) {
         bad = false;
         for (int i = 0; i < 6 && !bad; ++i) {
@@ -1082,7 +1091,7 @@ ValueNormalDays :
         if (tzminute >= 60) {
           throw new IllegalArgumentException("Invalid date/time");
         }
-        utcToLocal = ((neg ? -1 : 1) * tzhour * 60) + tzminute;
+        utcToLocal = ((neg ? -1 : 1) * (tzhour * 60)) + tzminute;
       } else {
         throw new IllegalArgumentException("Invalid date/time");
       }
@@ -1091,10 +1100,9 @@ ValueNormalDays :
         nanoSeconds, utcToLocal,
       };
       if (!IsValidDateTime(dt)) {
- throw new IllegalArgumentException("Invalid" +
-"\u0020date/time");
-}
- return dt;
+        throw new IllegalArgumentException("Invalid date/time");
+      }
+      return dt;
     }
 
     public static EFloat DateTimeToIntegerOrDouble(
@@ -1307,7 +1315,7 @@ ValueNormalDays :
       if (fracSeconds > 0) {
         charbuf[19] = '.';
         ++charbufLength;
-        int digitdiv = FractionalSeconds;
+        int digitdiv = (int)FractionalSeconds;
         digitdiv /= 10;
         int index = 20;
         while (digitdiv > 0 && fracSeconds != 0) {
@@ -1347,9 +1355,10 @@ ValueNormalDays :
       longmant &= 0xfffffffffffffL;
       longmant |= (long)(expo + 1075) << 52;
       if (i < 0) {
-        longmant |= (1L << 63);
+        longmant |= ((long)(1L << 63));
       }
-      /* System.out.println("" + i + "->" + (longmant==DoubleToInt64Bits(i)));
+      /*
+      System.out.println("" + i + "->" + (longmant==DoubleToInt64Bits(i)));
       */ return longmant;
     }
 
@@ -1420,7 +1429,7 @@ ValueNormalDays :
     public static EInteger EIntegerFromDoubleBits(long lvalue) {
       int value0 = ((int)(lvalue & 0xffffffffL));
       int value1 = ((int)((lvalue >> 32) & 0xffffffffL));
-      int floatExponent = (value1 >> 20) & 0x7ff;
+      int floatExponent = (int)((value1 >> 20) & 0x7ff);
       boolean neg = (value1 >> 31) != 0;
       if (floatExponent == 2047) {
         throw new ArithmeticException("Value is infinity or NaN");
@@ -1451,7 +1460,7 @@ ValueNormalDays :
       bytes[5] = (byte)((value1 >> 8) & 0xff);
       bytes[6] = (byte)((value1 >> 16) & 0xff);
       bytes[7] = (byte)((value1 >> 24) & 0xff);
-      bytes[8] = 0;
+      bytes[8] = (byte)0;
       bigmantissa = EInteger.FromBytes(bytes, true);
       if (floatExponent == 0) {
         if (neg) {
@@ -1463,7 +1472,7 @@ ValueNormalDays :
         // Value is an integer
         bigmantissa = bigmantissa.ShiftLeft(floatExponent);
         if (neg) {
-          bigmantissa = bigmantissa.Negate();
+          bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       } else {
@@ -1471,7 +1480,7 @@ ValueNormalDays :
         int exp = -floatExponent;
         bigmantissa = bigmantissa.ShiftRight(exp);
         if (neg) {
-          bigmantissa = bigmantissa.Negate();
+          bigmantissa=(bigmantissa).Negate();
         }
         return bigmantissa;
       }
@@ -1480,13 +1489,13 @@ ValueNormalDays :
     public static boolean DoubleBitsNaN(long bits) {
       // Is NaN
       bits &= ~(1L << 63);
-      return bits > (0x7ffL << 52);
+      return bits > ((long)(0x7ffL << 52));
     }
 
     public static boolean DoubleBitsFinite(long bits) {
       // Neither NaN nor infinity
       bits &= ~(1L << 63);
-      return bits < (0x7ffL << 52);
+      return bits < ((long)(0x7ffL << 52));
     }
 
     private static int RoundedShift(long mant, int shift) {
@@ -1529,8 +1538,10 @@ ValueNormalDays :
       } else { // subnormal and nonzero
         int rs = RoundedShift(mant | (1L << 52), 42 - (sexp - 1));
         // System.out.println("mant=" + mant + " rs=" + (rs));
-        return sexp == -10 && rs == 0 ? -1 :
-          ((mant & ((1L << (42 - (sexp - 1))) - 1)) == 0) ? (sign | rs) :
+        if (sexp == -10 && rs == 0) {
+          return -1;
+        }
+        return ((mant & ((1L << (42 - (sexp - 1))) - 1)) == 0) ? (sign | rs) :
           -1;
       }
     }
@@ -1543,29 +1554,39 @@ ValueNormalDays :
       long mant = bits & 0xfffffffffffffL;
       int sexp = exp - 896;
       // System.out.println("sng mant={0:X8}, exp=" + exp + " sexp=" + (sexp));
-      return exp == 2047 ? (mant & ((1L << 29) - 1)) == 0 :
-        sexp >= -23 && sexp < 255 && (sexp > 0 ?
-                (mant & ((1L << 29) - 1)) == 0 : sexp == -23 ?
-                (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0 &&
-                RoundedShift(mant | (1L << 52), 29 - (sexp - 1)) != 0 :
-                          (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0);
+      if (exp == 2047) { // Infinity and NaN
+        return (mant & ((1L << 29) - 1)) == 0;
+      } else if (sexp < -23 || sexp >= 255) { // underflow or overflow
+        return false;
+      } else if (sexp > 0) { // normal
+        return (mant & ((1L << 29) - 1)) == 0;
+      } else if (sexp == -23) {
+        return (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0 &&
+          RoundedShift(mant | (1L << 52), 29 - (sexp - 1)) != 0;
+      } else { // subnormal and zero
+        return (mant & ((1L << (29 - (sexp - 1))) - 1)) == 0;
+      }
     }
 
     // NOTE: Rounds to nearest, ties to even
     public static int SingleToRoundedHalfPrecision(int bits) {
-      int exp = ((bits >> 23) & 0xff);
+      int exp = ((int)((bits >> 23) & 0xff));
       int mant = bits & 0x7fffff;
       int sign = (bits >> 16) & (1 << 15);
       int sexp = exp - 112;
       if (exp == 255) { // Infinity and NaN
-        int newmant = (mant >> 13);
+        int newmant = ((int)(mant >> 13));
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
-      } else { // overflow
-        return sexp >= 31 ? sign | 0x7c00 : sexp < -10 ? sign :
-                  sexp > 0 ? sign | (sexp << 10) | RoundedShift(mant, 13) :
-sign | RoundedShift(mant | (1 << 23), 13 - (sexp - 1));
+      } else if (sexp >= 31) { // overflow
+        return sign | 0x7c00;
+      } else if (sexp < -10) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 10) | RoundedShift(mant, 13);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1 << 23), 13 - (sexp - 1));
       }
     }
 
@@ -1580,10 +1601,14 @@ sign | RoundedShift(mant | (1 << 23), 13 - (sexp - 1));
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7c01) : (sign | 0x7c00 | newmant);
-      } else { // overflow
-        return sexp >= 31 ? sign | 0x7c00 : sexp < -10 ? sign :
-                  sexp > 0 ? sign | (sexp << 10) | RoundedShift(mant, 42) :
-sign | RoundedShift(mant | (1L << 52), 42 - (sexp - 1));
+      } else if (sexp >= 31) { // overflow
+        return sign | 0x7c00;
+      } else if (sexp < -10) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 10) | RoundedShift(mant, 42);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1L << 52), 42 - (sexp - 1));
       }
     }
 
@@ -1598,10 +1623,14 @@ sign | RoundedShift(mant | (1L << 52), 42 - (sexp - 1));
         return (mant != 0 && newmant == 0) ?
           // signaling NaN truncated to have mantissa 0
           (sign | 0x7f800001) : (sign | 0x7f800000 | newmant);
-      } else { // overflow
-        return sexp >= 255 ? sign | 0x7f800000 : sexp < -23 ? sign :
-                  sexp > 0 ? sign | (sexp << 23) | RoundedShift(mant, 29) :
-sign | RoundedShift(mant | (1L << 52), 29 - (sexp - 1));
+      } else if (sexp >= 255) { // overflow
+        return sign | 0x7f800000;
+      } else if (sexp < -23) { // underflow
+        return sign;
+      } else if (sexp > 0) { // normal
+        return sign | (sexp << 23) | RoundedShift(mant, 29);
+      } else { // subnormal and zero
+        return sign | RoundedShift(mant | (1L << 52), 29 - (sexp - 1));
       }
     }
 
@@ -1632,7 +1661,7 @@ sign | RoundedShift(mant | (1L << 52), 29 - (sexp - 1));
       long negvalue = (long)((bits >> 31) & 1) << 63;
       int exp = (bits >> 23) & 0xff;
       int mant = bits & 0x7fffff;
-      long value;
+      long value = 0;
       if (exp == 255) {
         value = 0x7ff0000000000000L | ((long)mant << 29) | negvalue;
       } else if (exp == 0) {
@@ -1657,7 +1686,7 @@ sign | RoundedShift(mant | (1L << 52), 29 - (sexp - 1));
       long negvalue = (long)(bits & 0x8000) << 48;
       int exp = (bits >> 10) & 31;
       int mant = bits & 0x3ff;
-      long value;
+      long value = 0;
       if (exp == 31) {
         value = 0x7ff0000000000000L | ((long)mant << 42) | negvalue;
       } else if (exp == 0) {

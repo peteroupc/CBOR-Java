@@ -1,4 +1,5 @@
 package com.upokecenter.test;
+
 import java.io.*;
 import com.upokecenter.cbor.*;
 
@@ -7,12 +8,8 @@ import com.upokecenter.cbor.*;
    * suggestions by GitHub user "sbernard31".
    */
   public final class CBORWriterHelper {
-    private final OutputStream outputStream;
+    private OutputStream outputStream;
 
-    /**
-     * Initializes a new instance of the {@link CBORWriterHelper} class.
-     * @param outputStream
-     */
     public CBORWriterHelper(OutputStream outputStream) {
       this.outputStream = outputStream;
     }
@@ -38,22 +35,22 @@ import com.upokecenter.cbor.*;
     }
 
     public CBORWriterHelper WriteStartArray() throws java.io.IOException {
-      this.outputStream.write(0x9f);
+      this.outputStream.write((int)0x9f);
       return this;
     }
 
     public CBORWriterHelper WriteStartMap() throws java.io.IOException {
-      this.outputStream.write(0xbf);
+      this.outputStream.write((int)0xbf);
       return this;
     }
 
     public CBORWriterHelper WriteEndArray() throws java.io.IOException {
-      this.outputStream.write(0xff);
+      this.outputStream.write((int)0xff);
       return this;
     }
 
     public CBORWriterHelper WriteEndMap() throws java.io.IOException {
-      this.outputStream.write(0xff);
+      this.outputStream.write((int)0xff);
       return this;
     }
 

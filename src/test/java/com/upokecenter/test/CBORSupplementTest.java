@@ -11,6 +11,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
@@ -203,10 +204,10 @@ import com.upokecenter.numbers.*;
     public void TestCBORObjectArgumentValidation() {
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip(null));
+        ToObjectTest.TestToFromObjectRoundTrip((byte[])null));
       Assert.assertEquals(
         CBORObject.Null,
-        ToObjectTest.TestToFromObjectRoundTrip(null));
+        ToObjectTest.TestToFromObjectRoundTrip((CBORObject[])null));
       Assert.assertEquals(
         CBORObject.True,
         ToObjectTest.TestToFromObjectRoundTrip(true));
@@ -262,6 +263,47 @@ import com.upokecenter.numbers.*;
         CBORObject.DecodeFromBytes(bytes);
         Assert.fail("Should have failed");
       } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void TestObsoleteAbs() {
+      try {
+        CBORObject.True.Abs();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.False.Abs();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.NewArray().Abs();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        CBORObject.NewMap().Abs();
+        Assert.fail("Should have failed");
+      } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -355,59 +397,63 @@ try { if (memoryStream != null) { memoryStream.close(); } } catch (java.io.IOExc
     public void TestNestingDepth() {
       try {
         {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          for (int i = 0; i < 2000; ++i) {
-            // Write beginning of indefinite-length array
-            ms.write(0x9f);
-          }
-          for (int i = 0; i < 2000; ++i) {
-            // Write end of indefinite-length array
-            ms.write(0xff);
-          }
-          // Assert throwing CBOR exception for reaching maximum
-          // nesting depth
-          try {
-            CBORObject.DecodeFromBytes(ms.toByteArray());
-            Assert.fail("Should have failed");
-          } catch (CBORException ex) {
-            // NOTE: Intentionally empty
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
+            for (int i = 0; i < 2000; ++i) {
+              // Write beginning of indefinite-length array
+              ms.write((byte)0x9f);
+            }
+            for (int i = 0; i < 2000; ++i) {
+              // Write end of indefinite-length array
+              ms.write((byte)0xff);
+            }
+            // Assert throwing CBOR exception for reaching maximum
+            // nesting depth
+            try {
+              CBORObject.DecodeFromBytes(ms.toByteArray());
+              Assert.fail("Should have failed");
+            } catch (CBORException ex) {
+              // NOTE: Intentionally empty
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+        }
         {
-          java.io.ByteArrayOutputStream ms = null;
+          {
+            java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          for (int i = 0; i < 495; ++i) {
-            // Write beginning of indefinite-length array
-            ms.write(0x9f);
-          }
-          for (int i = 0; i < 495; ++i) {
-            // Write end of indefinite-length array
-            ms.write(0xff);
-          }
-          // Maximum nesting depth not reached, so shouldn't throw
-          try {
-            CBORObject.DecodeFromBytes(ms.toByteArray());
-          } catch (Exception ex) {
-            Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
-          }
+            for (int i = 0; i < 495; ++i) {
+              // Write beginning of indefinite-length array
+              ms.write((byte)0x9f);
+            }
+            for (int i = 0; i < 495; ++i) {
+              // Write end of indefinite-length array
+              ms.write((byte)0xff);
+            }
+            // Maximum nesting depth not reached, so shouldn't throw
+            try {
+              CBORObject.DecodeFromBytes(ms.toByteArray());
+            } catch (Exception ex) {
+              Assert.fail(ex.toString());
+              throw new IllegalStateException("", ex);
+            }
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+        }
       } catch (Exception ex) {
         throw new IllegalStateException(ex.getMessage(), ex);
       }
@@ -1000,27 +1046,9 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
     }
 
     @Test
-    public void TestPodCompareTo() {
-      CPOD3 cpod = new CPOD3();
-      CBORObject cbor, cbor2;
-      cpod.setAa("Gg");
-      cpod.setBb("Jj");
-      cpod.setCc("Hh");
-      cbor = CBORObject.FromObject(cpod);
-      cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc",
-  "Hh");
-      TestCommon.CompareTestEqual(cbor, cbor2);
-      cbor2 = CBORObject.FromInt32(100);
-      TestCommon.CompareTestGreater(cbor, cbor2);
-      cbor2 = CBORObject.FromSimpleValue(10);
-      TestCommon.CompareTestLess(cbor, cbor2);
-    }
-
-    @Test
     public void TestCPOD() {
       CPOD m = new CPOD();
-m.setAa("Test");
-
+      m.setAa("Test");
       CBORObject cbor = CBORObject.FromObject(m);
       if (cbor.ContainsKey("bb")) {
  Assert.fail(cbor.toString());

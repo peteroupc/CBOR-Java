@@ -9,6 +9,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
   class SharedRefs {
@@ -32,9 +33,9 @@ import com.upokecenter.numbers.*;
       }
       int index = (int)smallIndex;
       if (index >= this.sharedObjects.size()) {
- throw new CBORException("Index " + index + " is not valid");
-}
- return this.sharedObjects.get(index);
+        throw new CBORException("Index " + index + " is not valid");
+      }
+      return this.sharedObjects.get(index);
     }
 
     public CBORObject GetObject(EInteger bigIndex) {
@@ -47,8 +48,8 @@ import com.upokecenter.numbers.*;
       }
       int index = bigIndex.ToInt32Checked();
       if (index >= this.sharedObjects.size()) {
- throw new CBORException("Index " + index + " is not valid");
-}
- return this.sharedObjects.get(index);
+        throw new CBORException("Index " + index + " is not valid");
+      }
+      return this.sharedObjects.get(index);
     }
   }

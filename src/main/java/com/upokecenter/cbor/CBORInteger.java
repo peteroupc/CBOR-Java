@@ -8,10 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORInteger implements ICBORNumber
-  {
+  class CBORInteger implements ICBORNumber {
     public Object Abs(Object obj) {
       long val = (((Long)obj).longValue());
       return (val == Integer.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) : ((val < 0) ?
@@ -23,7 +23,7 @@ import com.upokecenter.numbers.*;
     }
 
     public double AsDouble(Object obj) {
-      return ((Long)obj).longValue();
+      return ((Long)obj).doubleValue();
     }
 
     public EDecimal AsEDecimal(Object obj) {
@@ -40,10 +40,10 @@ import com.upokecenter.numbers.*;
 
     public int AsInt32(Object obj, int minValue, int maxValue) {
       long val = (((Long)obj).longValue());
-      if (!(val >= minValue && val <= maxValue)) {
- throw new ArithmeticException("This Object's value is out of range");
-}
- return (int)val;
+      if (val >= minValue && val <= maxValue) {
+        return (int)val;
+      }
+      throw new ArithmeticException("This Object's value is out of range");
     }
 
     public long AsInt64(Object obj) {
@@ -51,7 +51,7 @@ import com.upokecenter.numbers.*;
     }
 
     public float AsSingle(Object obj) {
-      return ((Long)obj).longValue();
+      return ((Long)obj).floatValue();
     }
 
     public boolean CanFitInDouble(Object obj) {
@@ -136,7 +136,7 @@ import com.upokecenter.numbers.*;
 
     public Object Negate(Object obj) {
       return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) :
-(-(((Long)obj).longValue()));
+(-((((Long)obj).longValue())));
     }
 
     public int Sign(Object obj) {

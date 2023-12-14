@@ -3,9 +3,6 @@ package com.upokecenter.test;
 // One property returns an array for testing purposes
 
   public final class PODClass {
-    /**
-     * Initializes a new instance of the {@link PODClass} class.
-     */
     public PODClass() {
       this.setPropA(0);
       this.setPropB(1);

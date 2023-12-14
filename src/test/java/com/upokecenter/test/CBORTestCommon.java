@@ -1,5 +1,7 @@
 package com.upokecenter.test;
 
+import java.util.*;
+
 import org.junit.Assert;
 
 import com.upokecenter.util.*;
@@ -29,24 +31,24 @@ private CBORTestCommon() {
 
     private static EFloat RandomEFloatLowExponent(IRandomGenExtended rand) {
       while (true) {
-        EFloat ef = RandomObjects.RandomEFloat(rand);
-        if (
-          ef.getExponent().compareTo(-20000) >= 0 &&
+         EFloat ef = RandomObjects.RandomEFloat(rand);
+         if (
+           ef.getExponent().compareTo(-20000) >= 0 &&
 ef.getExponent().compareTo(20000) <= 0) {
-          return ef;
-        }
-      }
+           return ef;
+         }
+       }
     }
 
     private static EDecimal RandomEDecimalLowExponent(IRandomGenExtended rand) {
       while (true) {
-        EDecimal ef = RandomObjects.RandomEDecimal(rand);
-        if (
-          ef.getExponent().compareTo(-20000) >= 0 &&
+         EDecimal ef = RandomObjects.RandomEDecimal(rand);
+         if (
+           ef.getExponent().compareTo(-20000) >= 0 &&
 ef.getExponent().compareTo(20000) <= 0) {
-          return ef;
-        }
-      }
+           return ef;
+         }
+       }
     }
 
     public static CBORObject RandomNumber(IRandomGenExtended rand) {
@@ -55,7 +57,7 @@ ef.getExponent().compareTo(20000) <= 0) {
 
     public static CBORObject RandomNumber(IRandomGenExtended rand, boolean
 lowExponent) {
-      Object o;
+      Object o = null;
       switch (rand.GetInt32(6)) {
         case 0:
           o = RandomObjects.RandomDouble(
@@ -68,7 +70,7 @@ lowExponent) {
             Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 2:
-          return CBORObject.FromEInteger(
+          return CBORObject.FromObject(
               RandomObjects.RandomEInteger(rand));
         case 3:
           o = lowExponent ? RandomEFloatLowExponent(rand) :
@@ -86,7 +88,7 @@ lowExponent) {
     }
 
     public static CBORObject RandomNumberOrRational(IRandomGenExtended rand) {
-      Object o;
+      Object o = null;
       switch (rand.GetInt32(7)) {
         case 0:
           o = RandomObjects.RandomDouble(
@@ -99,10 +101,10 @@ lowExponent) {
             Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 2:
-          return CBORObject.FromEInteger(
+          return CBORObject.FromObject(
               RandomObjects.RandomEInteger(rand));
         case 3:
-          return CBORObject.FromEFloat(
+          return CBORObject.FromObject(
               RandomObjects.RandomEFloat(rand));
         case 4:
           o = RandomObjects.RandomEDecimal(rand);
@@ -155,18 +157,19 @@ rand) {
     public static CBORObject RandomCBORTaggedObject(
       IRandomGenExtended rand,
       int depth) {
-      int tag;
+      int tag = 0;
       if (rand.GetInt32(2) == 0) {
         int[] tagselection = {
           2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 30, 30,
           30, 0, 1, 25, 26, 27,
         };
         tag = tagselection[rand.GetInt32(tagselection.length)];
-      } else {
-        return rand.GetInt32(100) < 90 ?
-          CBORObject.FromCBORObjectAndTag(
+      } else if (rand.GetInt32(100) < 90) {
+        return CBORObject.FromObjectAndTag(
             RandomCBORObject(rand, depth + 1),
-            rand.GetInt32(0x100000)) : CBORObject.FromCBORObjectAndTag(
+            rand.GetInt32(0x100000));
+      } else {
+        return CBORObject.FromObjectAndTag(
             RandomCBORObject(rand, depth + 1),
             RandomEIntegerMajorType0(rand));
       }
@@ -201,7 +204,7 @@ rand) {
         } else {
           cbor = RandomCBORObject(rand, depth + 1);
         }
-        return CBORObject.FromCBORObjectAndTag(cbor, tag);
+        return CBORObject.FromObjectAndTag(cbor, tag);
       }
     }
 
@@ -224,31 +227,110 @@ depth) {
       depth) {
       int nextval = rand.GetInt32(11);
       switch (nextval) {
-case 0:
- case 1:
- case 2:
- case 3:
-return RandomNumberOrRational(rand);
-case 4:
-return rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False;
-case 5:
-return rand.GetInt32(2) == 0 ? CBORObject.Null :
-                    CBORObject.Undefined;
-case 6:
-return CBORObject.FromString(
-                      RandomObjects.RandomTextString(rand));
-case 7:
-return CBORObject.FromByteArray(
-                      RandomObjects.RandomByteString(rand));
-case 8:
-return RandomCBORArray(rand, depth);
-case 9:
-return RandomCBORMap(rand, depth);
-case 10:
-return RandomCBORTaggedObject(rand, depth);
-default:
-return RandomNumber(rand);
-}
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+          return RandomNumberOrRational(rand);
+        case 4:
+          return rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False;
+        case 5:
+          return rand.GetInt32(2) == 0 ? CBORObject.Null :
+            CBORObject.Undefined;
+        case 6:
+          return CBORObject.FromObject(
+              RandomObjects.RandomTextString(rand));
+        case 7:
+          return CBORObject.FromObject(
+              RandomObjects.RandomByteString(rand));
+        case 8:
+          return RandomCBORArray(rand, depth);
+        case 9:
+          return RandomCBORMap(rand, depth);
+        case 10:
+          return RandomCBORTaggedObject(rand, depth);
+        default: return RandomNumber(rand);
+      }
+    }
+
+@SuppressWarnings("deprecation")
+    public static void TestNumber(CBORObject o) {
+      if (o.getType() != CBORType.Number) {
+        return;
+      }
+      if (o.IsPositiveInfinity() || o.IsNegativeInfinity() ||
+        o.IsNaN()) {
+        try {
+          o.AsByte();
+          Assert.fail("Should have failed");
+        } catch (ArithmeticException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsInt16();
+          Assert.fail("Should have failed");
+        } catch (ArithmeticException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsInt32();
+          Assert.fail("Should have failed");
+        } catch (ArithmeticException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsInt64();
+          Assert.fail("Should have failed");
+        } catch (ArithmeticException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsSingle();
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsDouble();
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+        try {
+          o.AsEInteger();
+          Assert.fail("Should have failed");
+        } catch (ArithmeticException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail("Object: " + o + ", " + ex);
+          throw new IllegalStateException("", ex);
+        }
+        return;
+      }
+      try {
+        o.AsSingle();
+      } catch (Exception ex) {
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        o.AsDouble();
+      } catch (Exception ex) {
+        Assert.fail("Object: " + o + ", " + ex);
+        throw new IllegalStateException("", ex);
+      }
     }
 
     public static byte[] CheckEncodeToBytes(CBORObject o) {
@@ -264,6 +346,7 @@ return RandomNumber(rand);
     public static void AssertRoundTrip(CBORObject o) {
       CBORObject o2 = FromBytesTestAB(CheckEncodeToBytes(o));
       TestCommon.CompareTestEqual(o, o2);
+      TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
@@ -281,6 +364,7 @@ return RandomNumber(rand);
           "\no2string = " + o2.toString();
         Assert.assertEquals(msg, s, o2.ToJSONString());
       }
+      TestNumber(o);
       TestCommon.AssertEqualsHashCode(o, o2);
     }
 
@@ -300,22 +384,23 @@ options) {
     }
 
     private static CBORObject FromBytesB(byte[] b, CBOREncodeOptions options) {
-java.io.ByteArrayInputStream ms = null;
+      {
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
 
-      CBORObject o = CBORObject.Read(ms, options);
-      if ((startingAvailable - ms.available()) != startingAvailable) {
- throw new CBORException("not at" +
-"\u0020EOF");
-}
- return o;
+        CBORObject o = CBORObject.Read(ms, options);
+        if ((startingAvailable - ms.available()) != startingAvailable) {
+          throw new CBORException("not at EOF");
+        }
+        return o;
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+    }
 
     // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b) {
@@ -332,20 +417,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static CBORObject FromBytesB(byte[] b) {
-java.io.ByteArrayInputStream ms = null;
+      {
+        java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(b);
 int startingAvailable = ms.available();
 
-      CBORObject o = CBORObject.Read(ms);
-      if ((startingAvailable - ms.available()) != startingAvailable) {
- throw new CBORException("not at" +
-"\u0020EOF");
-}
- return o;
+        CBORObject o = CBORObject.Read(ms);
+        if ((startingAvailable - ms.available()) != startingAvailable) {
+          throw new CBORException("not at EOF");
+        }
+        return o;
 }
 finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+    }
   }

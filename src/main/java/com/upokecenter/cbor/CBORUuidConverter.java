@@ -8,18 +8,16 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-  class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID>
-  {
+  class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID> {
     private static CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.ByteString) {
         throw new CBORException("UUID must be a byte String");
       }
       byte[] bytes = obj.GetByteString();
       if (bytes.length != 16) {
- throw new CBORException("UUID must be 16" +
-"\u0020bytes long");
-}
- return obj;
+        throw new CBORException("UUID must be 16 bytes long");
+      }
+      return obj;
     }
 
     /**
@@ -29,7 +27,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
      */
     public CBORObject ToCBORObject(java.util.UUID obj) {
       byte[] bytes = PropertyMap.UUIDToBytes(obj);
-      return CBORObject.FromByteArray(bytes).WithTag(37);
+      return CBORObject.FromObjectAndTag(bytes, (int)37);
     }
 
     public java.util.UUID FromCBORObject(CBORObject obj) {
@@ -45,8 +43,8 @@ https://creativecommons.org/publicdomain/zero/1.0/
         if (i == 4 || i == 6 || i == 8 || i == 10) {
           guidChars[index++] = '-';
         }
-        guidChars[index++] = hex.charAt((bytes[i] >> 4) & 15);
-        guidChars[index++] = hex.charAt(bytes[i] & 15);
+        guidChars[index++] = hex.charAt((int)(bytes[i] >> 4) & 15);
+        guidChars[index++] = hex.charAt((int)bytes[i] & 15);
       }
       String guidString = new String(guidChars);
       return java.util.UUID.fromString(guidString);

@@ -7,47 +7,46 @@ import com.upokecenter.util.*;
   public final class JSONGenerator {
     private static final class ByteWriter {
       private byte[] bytes = new byte[64];
+      private int pos;
 
       public ByteWriter Write(int b) {
-        if (this.getByteLength() < this.bytes.length) {
-          this.bytes[this.getByteLength()] = (byte)b;
-          this.setByteLength(1 + this.getByteLength());
+        if (this.pos < this.bytes.length) {
+          this.bytes[this.pos++] = (byte)b;
         } else {
           byte[] newbytes = new byte[this.bytes.length * 2];
           System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
           this.bytes = newbytes;
-          this.bytes[this.getByteLength()] = (byte)b;
-          this.setByteLength(1 + this.getByteLength());
+          this.bytes[this.pos++] = (byte)b;
         }
         return this;
       }
 
-      public final int getByteLength() { return propVarbytelength; }
-public final void setByteLength(int value) { propVarbytelength = value; }
-private int propVarbytelength;
+      public final int getByteLength() {
+          return this.pos;
+        }
 
       public byte[] ToBytes() {
-        byte[] newbytes = new byte[this.getByteLength()];
-        System.arraycopy(this.bytes, 0, newbytes, 0, this.getByteLength());
+        byte[] newbytes = new byte[this.pos];
+        System.arraycopy(this.bytes, 0, newbytes, 0, this.pos);
         return newbytes;
       }
     }
 
-    private static final int[] ValueMajorTypes = {
+    private static int[] valueMajorTypes = {
       0, 1, 3, 4, 5,
     };
 
-    private static final int[] ValueMajorTypesTop = {
+    private static int[] valueMajorTypesTop = {
       0, 1, 3, 4, 4, 4, 4, 4, 5, 5, 5,
       5, 5, 5, 5, 5, 5, 5, 5, 5,
     };
 
-    private static final int[] ValueEscapes = {
-      '\\', '/', '\"',
-      'b', 'f', 'n', 'r', 't', 'u',
+    private static int[] valueEscapes = {
+      (int)'\\', (int)'/', (int)'\"',
+      (int)'b', (int)'f', (int)'n', (int)'r', (int)'t', (int)'u',
     };
 
-    private static final char[] ValueEscapeChars = {
+    private static char[] valueEscapeChars = {
       '\\', '/', '\"',
       (char)8, (char)12, '\n', '\r', '\t', (char)0,
     };
@@ -60,9 +59,11 @@ private int propVarbytelength;
       int shift = 12;
       for (int i = 0; i < 4; ++i) {
         c = (cu >> shift) & 0xf;
-        int bw = c < 10 ? (0x30 + c) : (0x41 + (c - 10) +
-          (ra.GetInt32(2) * 0x20));
-        bs.Write(bw);
+        if (c < 10) {
+          bs.Write(0x30 + c);
+        } else {
+          bs.Write(0x41 + (c - 10) + (ra.GetInt32(2) * 0x20));
+        }
         shift -= 4;
       }
     }
@@ -81,8 +82,8 @@ private int propVarbytelength;
         if (sb != null) {
           sb.append((char)rc);
         }
-        bs.Write('\\');
-        bs.Write('u');
+        bs.Write((int)'\\');
+        bs.Write((int)'u');
         rc = ((r - 0x10000) & 0x3ff) | 0xdc00;
         GenerateCodeUnit(ra, bs, rc);
         if (sb != null) {
@@ -115,17 +116,17 @@ private int propVarbytelength;
         IRandomGenExtended ra,
         ByteWriter bs) {
       if (ra.GetInt32(2) == 0) {
-        bs.Write('-');
+        bs.Write((int)'-');
       }
       boolean shortLen = ra.GetInt32(100) < 75;
-      int len;
+      int len = 0;
       if (ra.GetInt32(100) < 2) {
         // Integer part is zero
         bs.Write(0x30);
       } else {
         // Integer part
         len = shortLen ? ra.GetInt32(10) + 1 :
-           (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
+           ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000) + 1;
         bs.Write(0x31 + ra.GetInt32(9));
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
@@ -133,25 +134,25 @@ private int propVarbytelength;
       }
       // Fractional part
       if (ra.GetInt32(2) == 0) {
-        bs.Write(0x2e);
-        len = shortLen ? ra.GetInt32(10) + 1 :
-         (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
-        for (int i = 0; i < len; ++i) {
-          bs.Write(0x30 + ra.GetInt32(10));
-        }
+          bs.Write(0x2e);
+          len = shortLen ? ra.GetInt32(10) + 1 :
+           ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000) + 1;
+          for (int i = 0; i < len; ++i) {
+            bs.Write(0x30 + ra.GetInt32(10));
+          }
       }
       if (ra.GetInt32(2) == 0) {
         int rr = ra.GetInt32(3);
         if (rr == 0) {
-          bs.Write('E');
+          bs.Write((int)'E');
         } else if (rr == 1) {
-          bs.Write('E').Write('+');
+          bs.Write((int)'E').Write((int)'+');
         } else if (rr == 2) {
-          bs.Write('E').Write('-');
+          bs.Write((int)'E').Write((int)'-');
         }
         len = 1 + ra.GetInt32(5);
         if (ra.GetInt32(10) == 0) {
-          len = 1 + (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000);
+          len = 1 + ((ra.GetInt32(2000) * ra.GetInt32(2000)) / 2000);
         }
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
@@ -167,7 +168,7 @@ private int propVarbytelength;
       int r = ra.GetInt32(3);
       int r2, r3, r4;
       if (r == 0 && len >= 2) {
-        r = 0xc2 + ra.GetInt32(0xdf - 0xc2 + 1);
+        r = 0xc2 + ra.GetInt32((0xdf - 0xc2) + 1);
         bs.Write(r);
         r2 = 0x80 + ra.GetInt32(0x40);
         bs.Write(r2);
@@ -180,7 +181,7 @@ private int propVarbytelength;
         bs.Write(r);
         int lower = (r == 0xe0) ? 0xa0 : 0x80;
         int upper = (r == 0xed) ? 0x9f : 0xbf;
-        r2 = lower + ra.GetInt32(upper - lower + 1);
+        r2 = lower + ra.GetInt32((upper - lower) + 1);
         bs.Write(r2);
         r3 = 0x80 + ra.GetInt32(0x40);
         bs.Write(r3);
@@ -193,7 +194,7 @@ private int propVarbytelength;
         bs.Write(r);
         int lower = (r == 0xf0) ? 0x90 : 0x80;
         int upper = (r == 0xf4) ? 0x8f : 0xbf;
-        r2 = lower + ra.GetInt32(upper - lower + 1);
+        r2 = lower + ra.GetInt32((upper - lower) + 1);
         bs.Write(r2);
         r3 = 0x80 + ra.GetInt32(0x40);
         bs.Write(r3);
@@ -229,11 +230,11 @@ private int propVarbytelength;
           int r = ra.GetInt32(10);
           if (r > 2) {
             int x = 0x20 + ra.GetInt32(60);
-            if (x == '\"') {
-              bs.Write('\\').Write(x);
+            if (x == (int)'\"') {
+              bs.Write((int)'\\').Write(x);
               sb.append('\"');
-            } else if (x == '\\') {
-              bs.Write('\\').Write(x);
+            } else if (x == (int)'\\') {
+              bs.Write((int)'\\').Write(x);
               sb.append('\\');
             } else {
               bs.Write(x);
@@ -241,14 +242,14 @@ private int propVarbytelength;
             }
             ++i;
           } else if (r == 1) {
-            bs.Write('\\');
-            int escindex = ra.GetInt32(ValueEscapes.length);
-            int esc = ValueEscapes[escindex];
-            bs.Write(esc);
-            if (esc == 'u') {
+            bs.Write((int)'\\');
+            int escindex = ra.GetInt32(valueEscapes.length);
+            int esc = valueEscapes[escindex];
+            bs.Write((int)esc);
+            if (esc == (int)'u') {
               GenerateUtf16(ra, bs, sb);
             } else {
-              sb.append(ValueEscapeChars[escindex]);
+              sb.append(valueEscapeChars[escindex]);
             }
           } else {
             GenerateUtf8(ra, bs, sb, len - i);
@@ -260,7 +261,7 @@ private int propVarbytelength;
           keys.put(key,"");
           byte[] bytes = bs.ToBytes();
           for (int i = 0; i < bytes.length; ++i) {
-            bskey.Write(bytes[i] & 0xff);
+            bskey.Write(((int)bytes[i]) & 0xff);
           }
           return;
         }
@@ -283,16 +284,19 @@ private int propVarbytelength;
         int r = ra.GetInt32(10);
         if (r > 2) {
           int x = 0x20 + ra.GetInt32(60);
-          if (x == '\"' || x == '\\') {
-            bs.Write('\\');
+          if (x == (int)'\"') {
+            bs.Write((int)'\\').Write(x);
+          } else if (x == (int)'\\') {
+            bs.Write((int)'\\').Write(x);
+          } else {
+            bs.Write(x);
           }
-          bs.Write(x);
           ++i;
         } else if (r == 1) {
-          bs.Write('\\');
-          int esc = ValueEscapes[ra.GetInt32(ValueEscapes.length)];
-          bs.Write(esc);
-          if (esc == 'u') {
+          bs.Write((int)'\\');
+          int esc = valueEscapes[ra.GetInt32(valueEscapes.length)];
+          bs.Write((int)esc);
+          if (esc == (int)'u') {
             GenerateUtf16(ra, bs, null);
           }
         } else {
@@ -304,9 +308,9 @@ private int propVarbytelength;
 
     private void Generate(IRandomGenExtended r, int depth, ByteWriter bs) {
       int majorType;
-      majorType = ValueMajorTypes[r.GetInt32(ValueMajorTypes.length)];
+      majorType = valueMajorTypes[r.GetInt32(valueMajorTypes.length)];
       if (depth == 0) {
-        majorType = ValueMajorTypesTop[r.GetInt32(ValueMajorTypes.length)];
+        majorType = valueMajorTypesTop[r.GetInt32(valueMajorTypes.length)];
       }
       GenerateWhitespace(r, bs);
       if (bs.getByteLength() > 2000000) {
@@ -317,18 +321,18 @@ private int propVarbytelength;
       } else if (majorType == 1) {
         switch (r.GetInt32(3)) {
           case 0:
-            bs.Write('t').Write('r').Write('u').Write(
-              'e');
+            bs.Write((int)'t').Write((int)'r').Write((int)'u').Write(
+              (int)'e');
             break;
           case 1:
-            bs.Write('n').Write('u').Write('l').Write(
-              'l');
+            bs.Write((int)'n').Write((int)'u').Write((int)'l').Write(
+              (int)'l');
             break;
           case 2:
 
-            bs.Write('f').Write('a').Write('l').Write(
-  's').Write(
-                    'e');
+            bs.Write((int)'f').Write((int)'a').Write((int)'l').Write(
+  (int)'s').Write(
+                    (int)'e');
             break;
         }
       } else if (majorType == 3) {
@@ -343,30 +347,30 @@ private int propVarbytelength;
           len = r.GetInt32(100) == 0 ? 1 : 0;
         }
         if (majorType == 4) {
-          bs.Write('[');
+          bs.Write((int)'[');
           for (int i = 0; i < len; ++i) {
             if (i > 0) {
-              bs.Write(',');
+              bs.Write((int)',');
             }
             this.Generate(r, depth + 1, bs);
           }
-          bs.Write(']');
+          bs.Write((int)']');
         }
         if (majorType == 5) {
-          bs.Write('{');
+          bs.Write((int)'{');
           HashMap<String, String> keys = new HashMap<String, String>();
           for (int i = 0; i < len; ++i) {
             if (i > 0) {
-              bs.Write(',');
+              bs.Write((int)',');
             }
             GenerateWhitespace(r, bs);
             GenerateJsonKey(r, bs, depth, keys);
             GenerateWhitespace(r, bs);
-            bs.Write(':');
+            bs.Write((int)':');
             GenerateWhitespace(r, bs);
             this.Generate(r, depth + 1, bs);
           }
-          bs.Write('}');
+          bs.Write((int)'}');
         }
       }
       GenerateWhitespace(r, bs);

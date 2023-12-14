@@ -29,59 +29,36 @@ private MiniCBOR() {
       byte[] bytes,
       int offset,
       int count) throws java.io.IOException {
-      if (bytes == null) {
-        throw new NullPointerException("bytes");
-      }
-      if (offset < 0) {
-        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
-"\u0020greater or equal to 0");
-      }
-      if (offset > bytes.length) {
-        throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
-"\u0020or equal to " + bytes.length);
-      }
-      if (count < 0) {
-        throw new IllegalArgumentException(" (" + count + ") is not greater or" +
-"\u0020equal to 0");
-      }
-      if (count > bytes.length) {
-        throw new IllegalArgumentException(" (" + count + ") is not less or equal" +
-"\u0020to " + bytes.length);
-      }
-      if (bytes.length - offset < count) {
-        throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
-"\u0020offset (" + (bytes.length - offset) + ") is not greater or equal to " +
-count);
-      }
-      int t = count;
-      int tpos = offset;
-      while (t > 0) {
-        int rcount = stream.read(bytes, tpos, t);
-        if (rcount <= 0) {
-          throw new IOException("Premature end of data");
-        }
-        if (rcount > t) {
-          throw new IOException("Internal error");
-        }
-        tpos = (tpos + rcount);
-        t = (t - rcount);
-      }
-      if (t != 0) {
-        throw new IOException("Internal error");
-      }
+      // Assert.CheckBuffer(bytes, offset, count);
+           int t = count;
+           int tpos = offset;
+           while (t > 0) {
+              int rcount = stream.read(bytes, tpos, t);
+              if (rcount <= 0) {
+                 throw new IOException("Premature end of data");
+              }
+              if (rcount > t) {
+                 throw new IOException("Internal error");
+              }
+              tpos = (tpos + rcount);
+              t = (t - rcount);
+           }
+           if (t != 0) {
+             throw new IOException("Internal error");
+           }
     }
 
     private static float HalfPrecisionToSingle(int value) {
       int negvalue = (value >= 0x8000) ? (1 << 31) : 0;
       value &= 0x7fff;
       if (value >= 0x7c00) {
-        return ToSingle(((0x3fc00 | (value & 0x3ff)) << 13) | negvalue);
+        return ToSingle((int)(0x3fc00 | (value & 0x3ff)) << 13 | negvalue);
       }
       if (value > 0x400) {
-        return ToSingle(((value + 0x1c000) << 13) | negvalue);
+        return ToSingle((int)((value + 0x1c000) << 13) | negvalue);
       }
       if ((value & 0x400) == value) {
-        return ToSingle(((value == 0) ? 0 : 0x38800000) | negvalue);
+        return ToSingle((int)((value == 0) ? 0 : 0x38800000) | negvalue);
       } else {
         // denormalized
         int m = value & 0x3ff;
@@ -121,14 +98,13 @@ count);
         }
         b = stream.read();
       }
-      switch (b) {
-case 0xf4:
-return false;
-case 0xf5:
-return true;
-default:
-throw new IOException("Not a boolean");
-}
+      if (b == 0xf4) {
+        return false;
+      }
+      if (b == 0xf5) {
+        return true;
+      }
+      throw new IOException("Not a boolean");
     }
 
     public static void WriteBoolean(boolean value, OutputStream stream) throws java.io.IOException {
@@ -176,16 +152,16 @@ throw new IOException("Not a boolean");
       if (kind == 0x18) {
         int b = stream.read();
         if (b < 0) {
- throw new IOException("Premature end of stream");
-}
- return (headByte != 0x38) ? b : -1 - b;
+          throw new IOException("Premature end of stream");
+        }
+        return (headByte != 0x38) ? b : -1 - b;
       }
       if (kind == 0x19) {
         byte[] bytes = new byte[2];
         ReadHelper(stream, bytes, 0, bytes.length);
-        int b = bytes[0] & 0xff;
+        int b = ((int)bytes[0]) & 0xff;
         b <<= 8;
-        b |= bytes[1] & 0xff;
+        b |= ((int)bytes[1]) & 0xff;
         return (headByte != 0x39) ? b : -1 - b;
       }
       if (kind == 0x1a || kind == 0x3a) {
@@ -199,10 +175,9 @@ throw new IOException("Not a boolean");
         b <<= 8;
         b |= ((long)bytes[3]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
- throw new IOException("Not a" +
-"\u002032-bit integer");
-}
- return (headByte != 0x3a) ? b : -1 - b;
+          throw new IOException("Not a 32-bit integer");
+        }
+        return (headByte != 0x3a) ? b : -1 - b;
       }
       if (headByte == 0x1b || headByte == 0x3b) {
         byte[] bytes = new byte[8];
@@ -212,6 +187,16 @@ throw new IOException("Not a boolean");
             bytes[3] != 0)) {
           throw new IOException("Not a 32-bit integer");
         }
+        if (!check32bit) {
+          b = ((long)bytes[0]) & 0xff;
+          b <<= 8;
+          b |= ((long)bytes[1]) & 0xff;
+          b <<= 8;
+          b |= ((long)bytes[2]) & 0xff;
+          b <<= 8;
+          b |= ((long)bytes[3]) & 0xff;
+          b <<= 8;
+        }
         b = ((long)bytes[4]) & 0xff;
         b <<= 8;
         b |= ((long)bytes[5]) & 0xff;
@@ -220,10 +205,9 @@ throw new IOException("Not a boolean");
         b <<= 8;
         b |= ((long)bytes[7]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
- throw new IOException("Not a" +
-"\u002032-bit integer");
-}
- return (headByte != 0x3b) ? b : -1 - b;
+          throw new IOException("Not a 32-bit integer");
+        }
+        return (headByte != 0x3b) ? b : -1 - b;
       }
       throw new IOException("Not a 32-bit integer");
     }
@@ -234,21 +218,21 @@ throw new IOException("Not a boolean");
         // Half-precision
         byte[] bytes = new byte[2];
         ReadHelper(stream, bytes, 0, bytes.length);
-        b = bytes[0] & 0xff;
+        b = ((int)bytes[0]) & 0xff;
         b <<= 8;
-        b |= bytes[1] & 0xff;
+        b |= ((int)bytes[1]) & 0xff;
         return (double)HalfPrecisionToSingle(b);
       }
       if (headByte == 0xfa) {
         byte[] bytes = new byte[4];
         ReadHelper(stream, bytes, 0, bytes.length);
-        b = bytes[0] & 0xff;
+        b = ((int)bytes[0]) & 0xff;
         b <<= 8;
-        b |= bytes[1] & 0xff;
+        b |= ((int)bytes[1]) & 0xff;
         b <<= 8;
-        b |= bytes[2] & 0xff;
+        b |= ((int)bytes[2]) & 0xff;
         b <<= 8;
-        b |= bytes[3] & 0xff;
+        b |= ((int)bytes[3]) & 0xff;
         return (double)ToSingle(b);
       }
       if (headByte == 0xfb) {
@@ -290,10 +274,10 @@ throw new IOException("Not a boolean");
       }
       int b = stream.read();
       if (b >= 0x00 && b < 0x18) {
-        return b;
+        return (double)b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return -1 - (b & 0x1f);
+        return (double)(-1 - (b & 0x1f));
       }
       while ((b >> 5) == 6) {
         // Skip tags until a tag character is no longer read
@@ -311,19 +295,20 @@ throw new IOException("Not a boolean");
         b = stream.read();
       }
       if (b >= 0x00 && b < 0x18) {
-        return b;
+        return (double)b;
       }
       if (b >= 0x20 && b < 0x38) {
-        return -1 - (b & 0x1f);
+        return (double)(-1 - (b & 0x1f));
       }
       if (b == 0xf9 || b == 0xfa || b == 0xfb) {
         // Read a floating-point number
         return ReadFP(stream, b);
       }
-      if (!(b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 || b == 0x39 || b == 0x3a)) {
- throw new IOException("Not a double");
-}
- return ReadInteger(stream, b, false);
+      if (b == 0x18 || b == 0x19 || b == 0x1a || b == 0x38 ||
+        b == 0x39 || b == 0x3a) { // covers headbytes 0x18-0x1a and 0x38-0x3A
+        return (double)ReadInteger(stream, b, false);
+      }
+      throw new IOException("Not a double");
     }
 
     /**
@@ -377,14 +362,14 @@ throw new IOException("Not a boolean");
         }
         dbl = (dbl < 0) ? Math.ceil(dbl) : Math.floor(dbl);
         if (dbl < Integer.MIN_VALUE || dbl > Integer.MAX_VALUE) {
- throw new IOException("Not a 32-bit integer");
-}
- return (int)dbl;
+          throw new IOException("Not a 32-bit integer");
+        }
+        return (int)dbl;
       }
-      if (!((b & 0xdc) == 0x18)) {
- throw new IOException("Not a 32-bit integer");
-}
- return (int)ReadInteger(stream, b, true);
+      if ((b & 0xdc) == 0x18) { // covers headbytes 0x18-0x1b and 0x38-0x3B
+        return (int)ReadInteger(stream, b, true);
+      }
+      throw new IOException("Not a 32-bit integer");
     }
 
     public static int ReadInt32MajorType1Or2(InputStream stream) throws java.io.IOException {

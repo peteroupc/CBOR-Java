@@ -8,10 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
+import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBOREInteger implements ICBORNumber
-  {
+  class CBOREInteger implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return false;
     }
@@ -51,10 +51,9 @@ import com.upokecenter.numbers.*;
     public long AsInt64(Object obj) {
       EInteger bi = (EInteger)obj;
       if (!bi.CanFitInInt64()) {
- throw new ArithmeticException("This" +
-"\u0020object's value is out of range");
-}
- return bi.ToInt64Checked();
+        throw new ArithmeticException("This Object's value is out of range");
+      }
+      return bi.ToInt64Checked();
     }
 
     public boolean CanFitInSingle(Object obj) {
@@ -123,7 +122,7 @@ import com.upokecenter.numbers.*;
 
     public Object Negate(Object obj) {
       EInteger bigobj = (EInteger)obj;
-      bigobj = bigobj.Negate();
+      bigobj=(bigobj).Negate();
       return bigobj;
     }
 
