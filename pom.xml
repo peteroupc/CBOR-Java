@@ -108,7 +108,7 @@
       <groupId>org.sonatype.plugins</groupId>
       <artifactId>nexus-staging-maven-plugin</artifactId>
       <extensions>true</extensions>
-      <version>1.6.1</version>
+      <version>1.6.13</version>
       <configuration>
         <serverId>ossrh</serverId>
         <autoReleaseAfterClose>true</autoReleaseAfterClose>
@@ -122,6 +122,10 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+        <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
   </distributionManagement>
   <dependencies>
     <dependency>
