@@ -1,7 +1,7 @@
 package com.upokecenter.test;
 
 import java.util.*;
-import java.io.*;numberinfo.get("int16").AsBoolean()
+import java.io.*;
 
 import org.junit.Assert;
 import org.junit.Test;
