@@ -686,8 +686,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString(numberinfo.get("number").AsString()));
         if (numberinfo.get("int16").AsBoolean()) {
-          int intForShort =
-TestCommon.StringToInt(numberinfo.get("integer").AsString());
+          int intForShort = TestCommon.StringToInt(
+             numberinfo.get("integer").AsString());
           Assert.assertEquals(
             (short)intForShort,
             cbornumber.ToObject(short.class));
@@ -10753,4 +10753,1284 @@ CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(dbl), 1);
       }
       {
         Object objectTemp = 0L;
-        Object obje
+        Object objectTemp2 = EFloat.FromString(decstr,
+            EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "0E-100441809235791722330759976";
+      Assert.assertEquals(0L, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(0L, EFloat.FromString(decstr).ToDoubleBits());
+      {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+            EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = 0L;
+        Object objectTemp2 = EFloat.FromString(decstr,
+            EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "-0E100441809235791722330759976";
+      long negzero = 1L << 63;
+      Assert.assertEquals(negzero, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(negzero, EFloat.FromString(decstr).ToDoubleBits());
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+            EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EFloat.FromString(decstr,
+            EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      decstr = "-0E-100441809235791722330759976";
+      Assert.assertEquals(negzero, EDecimal.FromString(decstr).ToDoubleBits());
+      Assert.assertEquals(negzero, EFloat.FromString(decstr).ToDoubleBits());
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EDecimal.FromString(decstr,
+            EContext.Decimal32).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+      {
+        Object objectTemp = negzero;
+        Object objectTemp2 = EFloat.FromString(decstr,
+            EContext.Binary64).ToDoubleBits();
+        Assert.assertEquals(objectTemp, objectTemp2);
+      }
+    }
+
+    @Test
+    public void TestFromJsonStringZeroWithHighExponent() {
+      String decstr = "0E100441809235791722330759976";
+      EDecimal ed = EDecimal.FromString(decstr);
+      double dbl = ed.ToDouble();
+      Assert.assertEquals((double)0.0d, dbl, 0);
+      AssertJSONDouble(decstr, "double", dbl);
+      AssertJSONInteger(decstr, "intorfloat", 0);
+      decstr = "0E1321909565013040040586";
+      ed = EDecimal.FromString(decstr);
+      dbl = ed.ToDouble();
+      Assert.assertEquals((double)0.0d, dbl, 0);
+      AssertJSONDouble(decstr, "double", dbl);
+      AssertJSONInteger(decstr, "intorfloat", 0);
+      double dblnegzero = EFloat.FromString("-0").ToDouble();
+      AssertJSONDouble("0E-1321909565013040040586", "double", 0.0);
+      AssertJSONInteger("0E-1321909565013040040586", "intorfloat", 0);
+      AssertJSONDouble("-0E1321909565013040040586", "double", dblnegzero);
+      AssertJSONInteger("-0E1321909565013040040586", "intorfloat", 0);
+      AssertJSONDouble("-0E-1321909565013040040586", "double", dblnegzero);
+      AssertJSONInteger("-0E-1321909565013040040586", "intorfloat", 0);
+
+      AssertJSONDouble("0E-100441809235791722330759976", "double", 0.0);
+      AssertJSONInteger("0E-100441809235791722330759976", "intorfloat", 0);
+      AssertJSONDouble("-0E100441809235791722330759976", "double", dblnegzero);
+      AssertJSONInteger("-0E100441809235791722330759976", "intorfloat", 0);
+      AssertJSONDouble("-0E-100441809235791722330759976", "double", dblnegzero);
+      AssertJSONInteger("-0E-100441809235791722330759976", "intorfloat", 0);
+    }
+
+    @Test
+    public void TestFromJsonStringEDecimalSpec() {
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 2000; ++i) {
+        String[] decstring = new String[1];
+        EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
+        if (decstring[0] == null) {
+          Assert.fail();
+        }
+        double dbl = ed.ToDouble();
+        if (((dbl) == Double.POSITIVE_INFINITY) ||
+                 ((dbl) == Double.NEGATIVE_INFINITY) ||
+                 Double.isNaN(dbl)) {
+          continue;
+        }
+        AssertJSONDouble(
+          decstring[0],
+          "double",
+          dbl);
+      }
+    }
+
+    @Test
+    public void TestFromJsonCTLInString() {
+      for (int i = 0; i <= 0x20; ++i) {
+        byte[] bytes = { 0x22, (byte)i, 0x22 };
+        char[] chars = { (char)0x22, (char)i, (char)0x22 };
+        String str = new String(chars, 0, chars.length);
+        if (i == 0x20) {
+          try {
+            CBORObject.FromJSONString(str);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.FromJSONBytes(bytes);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+        } else {
+          try {
+            CBORObject.FromJSONString(str);
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+          try {
+            CBORObject.FromJSONBytes(bytes);
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+        }
+      }
+    }
+
+    // @Test
+    public void TestFromJsonLeadingTrailingCTLBytes() {
+      // TODO: Reenable eventually, once UTF-8 only support
+      // for CBORObject.FromJSONBytes is implemented
+      for (int i = 0; i <= 0x20; ++i) {
+        // Leading CTL
+        byte[] bytes = { (byte)i, 0x31 };
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+          try {
+            CBORObject.FromJSONBytes(bytes);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "bytes " + i);
+            throw new IllegalStateException("", ex);
+          }
+        } else {
+          try {
+            CBORObject.FromJSONBytes(bytes);
+            Assert.fail("Should have failed bytes " + i);
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+        }
+        // Trailing CTL
+        bytes = new byte[] { 0x31, (byte)i };
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+          try {
+            CBORObject.FromJSONBytes(bytes);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "bytes " + i);
+            throw new IllegalStateException("", ex);
+          }
+        } else {
+          try {
+            CBORObject.FromJSONBytes(bytes);
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "bytes " + i);
+            throw new IllegalStateException("", ex);
+          }
+        }
+      }
+    }
+
+    @Test
+    public void TestFromJsonLeadingTrailingCTL() {
+      for (int i = 0; i <= 0x20; ++i) {
+        // Leading CTL
+        char[] chars = { (char)i, (char)0x31 };
+        String str = new String(chars, 0, chars.length);
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+          try {
+            CBORObject.FromJSONString(str);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "String " + i);
+            throw new IllegalStateException("", ex);
+          }
+        } else {
+          try {
+            CBORObject.FromJSONString(str);
+            Assert.fail("Should have failed String " + i);
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString());
+            throw new IllegalStateException("", ex);
+          }
+        }
+        // Trailing CTL
+        chars = new char[] { (char)0x31, (char)i };
+        str = new String(chars, 0, chars.length);
+        if (i == 0x09 || i == 0x0d || i == 0x0a || i == 0x20) {
+          try {
+            CBORObject.FromJSONString(str);
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "String " + i);
+            throw new IllegalStateException("", ex);
+          }
+        } else {
+          try {
+            CBORObject.FromJSONString(str);
+            Assert.fail("Should have failed");
+          } catch (CBORException ex) {
+            // NOTE: Intentionally empty
+          } catch (Exception ex) {
+            Assert.fail(ex.toString() + "String " + i);
+            throw new IllegalStateException("", ex);
+          }
+        }
+      }
+    }
+
+    @Test
+    public void TestFromJsonStringSmallDoubleSpec() {
+      RandomGenerator rg = new RandomGenerator();
+      for (int i = 0; i < 10000; ++i) {
+        int rv = rg.GetInt32(Integer.MAX_VALUE) * ((rg.GetInt32(2) * 2) - 1);
+        String rvstring = TestCommon.IntToString(rv);
+        AssertJSONDouble(
+          rvstring,
+          "double",
+          rv);
+        AssertJSONInteger(
+          rvstring,
+          "intorfloat",
+          rv);
+      }
+      AssertJSONDouble("511", "double", 511);
+      AssertJSONDouble("-511", "double", -511);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MAX_VALUE),
+        "double",
+        Integer.MAX_VALUE);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MAX_VALUE),
+        "double",
+        Integer.MAX_VALUE);
+      AssertJSONDouble(
+        TestCommon.IntToString(Integer.MIN_VALUE),
+        "double",
+        Integer.MIN_VALUE);
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringSmallDouble() {
+      CBORObject cbor;
+      AssertJSONDouble("0", "double", 0.0);
+      cbor = FromJSON("[0, 1, 2, 3]", "double");
+      Assert.assertEquals(4, cbor.size());
+      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+      Assert.assertEquals(1.0, cbor.get(1).AsDouble());
+      Assert.assertEquals(2.0, cbor.get(2).AsDouble());
+      Assert.assertEquals(3.0, cbor.get(3).AsDouble());
+      cbor = FromJSON("[0]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+      cbor = FromJSON("[-0]", "double");
+      Assert.assertEquals(1, cbor.size());
+      cbor = FromJSON("[1]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals(1.0, cbor.get(0).AsDouble());
+      cbor = FromJSON("[-1]", "double");
+      Assert.assertEquals(1, cbor.size());
+      Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
+      cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
+          "double");
+      Assert.assertEquals(8, cbor.size());
+      Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
+      Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
+      Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
+      Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
+      Assert.assertEquals(1022.0, cbor.get(4).AsDouble());
+      Assert.assertEquals(1023.0, cbor.get(5).AsDouble());
+      Assert.assertEquals(1024.0, cbor.get(6).AsDouble());
+      Assert.assertEquals(1025.0, cbor.get(7).AsDouble());
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindFull() {
+      JSONOptions jsonop = new JSONOptions("numberconversion=full");
+      String json = TestCommon.Repeat("7", 100000);
+      CBORObject cbor = FromJSON(json, jsonop);
+      if (!(cbor.isTagged())) {
+ Assert.fail();
+ }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindFull2() {
+      JSONOptions jsonop = new JSONOptions("numberconversion=full");
+      String json = TestCommon.Repeat("7", 100000) + ".0";
+      CBORObject cbor = FromJSON(json, jsonop);
+      if (!(cbor.isTagged())) {
+ Assert.fail();
+ }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindFullBad() {
+      System.out.println("FullBad 1");
+      JSONOptions jsonop = new JSONOptions("numberconversion=full");
+      String manysevens = TestCommon.Repeat("7", 1000000);
+      String[] badjson = {
+        manysevens + "x",
+        "7x" + manysevens,
+        manysevens + "e0x",
+        "-" + manysevens + "x",
+        "-7x" + manysevens,
+        "-" + manysevens + "e0x",
+      };
+      for (String str : badjson) {
+        try {
+          FromJSON(str, jsonop);
+          Assert.fail("Should have failed");
+        } catch (CBORException ex) {
+          // NOTE: Intentionally empty
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
+      }
+      System.out.println("FullBad 2");
+      String json = TestCommon.Repeat("0", 1000000);
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindsBad() {
+      JSONOptions jsonop;
+      String json = TestCommon.Repeat("7", 1000000) + "x";
+      jsonop = new JSONOptions("numberconversion=double");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      jsonop = new JSONOptions("numberconversion=intorfloat");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      json = TestCommon.Repeat("0", 1000000);
+      jsonop = new JSONOptions("numberconversion=double");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      jsonop = new JSONOptions("numberconversion=intorfloat");
+      try {
+        FromJSON(json, jsonop);
+        Assert.fail("Should have failed");
+      } catch (CBORException ex) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindIntOrFloatFromDouble() {
+      JSONOptions jsonop = new JSONOptions("numberconversion=intorfloatfromdouble");
+      String manysevens = TestCommon.Repeat("7", 1000000);
+      String json = manysevens;
+      CBORObject cbor = FromJSON(json, jsonop);
+      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+      json = manysevens + "e+0";
+      cbor = FromJSON(json, jsonop);
+      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+      json = manysevens + "e0";
+      cbor = FromJSON(json, jsonop);
+      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindIntOrFloat() {
+      JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
+      String json = TestCommon.Repeat("7", 1000000);
+      CBORObject cbor = FromJSON(json, jsonop);
+      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      if (!(cbor.AsDoubleValue() == Double.POSITIVE_INFINITY)) {
+ Assert.fail();
+ }
+    }
+
+    @Test(timeout = 10000)
+    public void TestFromJsonStringLongKindIntOrFloat2() {
+      JSONOptions jsonop = new JSONOptions("numberconversion=intorfloat");
+      String json = "-" + TestCommon.Repeat("7", 1000000);
+      CBORObject cbor = FromJSON(json, jsonop);
+      Assert.assertEquals(CBORType.FloatingPoint, cbor.getType());
+      if (!(cbor.AsDoubleValue() == Double.NEGATIVE_INFINITY)) {
+ Assert.fail();
+ }
+    }
+
+    @Test
+    public void TestRoundTripRegressions() {
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xba, 0x00, 0x00, 0x00, 0x03, (byte)0xf9, (byte)0x83,
+          0x1d, (byte)0xda, (byte)0xb6, (byte)0xda, 0x50, 0x56, 0x1a, 0x50, (byte)0xe3, 0x2c, 0x7a, 0x16,
+          (byte)0xfa, 0x50, 0x32, 0x73, 0x07, (byte)0xfa, (byte)0xb9, 0x2d, 0x73, (byte)0xce, 0x38, (byte)0xd0,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, (byte)0x9f, (byte)0xbf, 0x39, 0x20, (byte)0x8f, 0x4a,
+          0x1f, 0x46, 0x26, 0x0b, 0x3e, 0x72, 0x2c, 0x7f, 0x11, 0x2e, 0x39, (byte)0x9d,
+          (byte)0xba, 0x1a, 0x11, (byte)0x8d, (byte)0xc0, (byte)0xb4, 0x38, (byte)0xb6, (byte)0x9b, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x01, (byte)0xd8, 0x3b, (byte)0x99, 0x00, 0x02, 0x3b, 0x05,
+          (byte)0xbb, (byte)0xea, (byte)0x8e, 0x4b, (byte)0xd3, 0x5e, 0x22, (byte)0x9f, 0x59, 0x00, 0x00, (byte)0xbb,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x41, 0x20, (byte)0xbf, 0x1a,
+          0x00, 0x00, 0x00, 0x61, (byte)0xb9, 0x00, 0x01, 0x1a, 0x00, 0x00, 0x00, 0x0e,
+          (byte)0xba, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd8, 0x22, (byte)0xf8, (byte)0x93,
+          (byte)0xd9, (byte)0xaf, 0x33, 0x19, (byte)0xf0, (byte)0xf0, (byte)0xf9, (byte)0x85, (byte)0x93, (byte)0x99, 0x00, 0x01,
+          0x3a, (byte)0xb5, (byte)0xfb, 0x4d, 0x43, (byte)0x98, 0x00, (byte)0xff, (byte)0xfa, (byte)0xb0, (byte)0xb4, (byte)0xdc,
+          0x6d, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xdb, 0x0d, (byte)0xcb, 0x5d, 0x78, (byte)0x92, (byte)0xc2,
+          (byte)0xc7, 0x2b, (byte)0xb9, 0x00, 0x02, 0x39, (byte)0xee, (byte)0xa0, (byte)0xa0, 0x1a, 0x0e, (byte)0xd9,
+          (byte)0xec, (byte)0xca, (byte)0xf2,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, (byte)0xfb, (byte)0xb1, 0x21, (byte)0x93, (byte)0x8c, (byte)0xc6,
+          (byte)0xf3, (byte)0xcf, (byte)0xb7, (byte)0xf8, 0x76, 0x18, (byte)0xda, 0x39, 0x60, (byte)0xf4, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbb, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x02, (byte)0xf0, 0x0d, 0x2a, 0x21,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xba, 0x00, 0x00, 0x00, 0x02, (byte)0xf9, 0x48,
+          0x37, (byte)0xda, (byte)0xb5, 0x72, (byte)0xcf, (byte)0xf8, 0x31, 0x3b, 0x06, 0x78, (byte)0xdb, 0x44,
+          0x7d, (byte)0xba, (byte)0xbd, 0x7d, 0x39, (byte)0x98, (byte)0xb9,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+          (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a, 0x00,
+          0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80,
+          (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, 0x23, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x69, (byte)0xc2, (byte)0xa8, 0x7f, 0x39,
+          0x7f, (byte)0xe4, (byte)0xa1, (byte)0xae, 0x1c, (byte)0xff, 0x17, 0x7f, 0x69, 0x05, 0x47, 0x76,
+          0x4f, 0x01, (byte)0xec, (byte)0x90, (byte)0xb2, 0x0a, (byte)0xff, (byte)0xfa, 0x12, 0x49, 0x20, 0x61,
+          (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x01, (byte)0xd8, 0x52, (byte)0xbf, 0x0c, (byte)0xf9, 0x68, 0x67, 0x3b, (byte)0xdb, (byte)0x85,
+          0x5b, 0x59, (byte)0xfd, 0x03, 0x6c, (byte)0x80, (byte)0xf8, (byte)0xc4, 0x7f, 0x67, 0x73, 0x2b,
+          0x51, 0x31, 0x5d, 0x26, 0x67, (byte)0xff, 0x5f, 0x5b, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x08, (byte)0xc7, (byte)0xb9, 0x6b, (byte)0xb0, (byte)0xb6, (byte)0xbe, 0x6d, (byte)0x9e,
+          0x41, 0x34, 0x5a, 0x00, 0x00, 0x00, 0x02, (byte)0xc4, 0x4a, (byte)0xff, 0x67, (byte)0xe1,
+          (byte)0x99, (byte)0x92, (byte)0xf0, (byte)0xb5, (byte)0xa4, (byte)0xa2, 0x3a, 0x77, 0x11, 0x4c, 0x6f, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x01, (byte)0x9f, (byte)0xf9, 0x03, (byte)0xf1, 0x3b, 0x1a, 0x6f, (byte)0xc2, 0x1b, (byte)0xce,
+          0x23, (byte)0xcb, 0x2e, (byte)0xbf, (byte)0xf8, 0x25, (byte)0xfb, 0x01, 0x54, 0x4a, 0x78, 0x13,
+          (byte)0xff, 0x12, (byte)0x91, (byte)0xff, (byte)0xbf, 0x78, 0x04, 0x7a, 0x43, 0x30, 0x04, 0x41,
+          0x55, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x03, (byte)0xda, (byte)0xb3, 0x64, 0x7b, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x58, (byte)0xff, 0x39, (byte)0xa2, 0x48,
+          (byte)0xff, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+        byte[] bytes = new byte[] {
+          (byte)0x81, (byte)0xda, (byte)0x8a, 0x18, 0x00, 0x00, (byte)0xda,
+          (byte)0xd5, (byte)0xf5, (byte)0x96, 0x10, (byte)0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x01, (byte)0xbf, 0x6f, 0x22, 0x65, 0x65, (byte)0xf1, (byte)0x86, (byte)0x9d, (byte)0xad, 0x22, 0x42,
+          (byte)0xc5, (byte)0xb1, 0x62, 0x58, 0x01, 0x5e, (byte)0xda, 0x47, 0x47, (byte)0x87, (byte)0x94, (byte)0xed,
+          0x7f, 0x6c, (byte)0xf0, (byte)0x9c, (byte)0xbc, (byte)0x96, 0x2f, 0x47, 0x7c, 0x00, 0x50, 0x67,
+          0x67, 0x10, 0x78, 0x03, (byte)0xc3, (byte)0x90, 0x17, (byte)0xff, 0x19, (byte)0xd2, (byte)0xe7, (byte)0x99,
+          0x00, 0x01, 0x1b, 0x2a, 0x6e, 0x6f, 0x67, 0x4b, 0x18, 0x60, 0x51, 0x1b,
+          0x46, (byte)0x9f, (byte)0xd3, (byte)0xb7, (byte)0xf4, 0x74, (byte)0xad, 0x6c, (byte)0xff,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+      {
+        CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1;keepkeyorder=1");
+        byte[] bytes = new byte[] {
+          (byte)0xda, (byte)0xcf, (byte)0xf0, (byte)0xbe, 0x18, (byte)0x99, 0x00,
+          0x01, (byte)0xb9, 0x00, 0x01, (byte)0xbf, 0x7f, 0x61, 0x5d, 0x7a, 0x00, 0x00, 0x00,
+          0x06, 0x00, 0x00, 0x20, 0x5a, 0x66, 0x1c, 0x7a, 0x00, 0x00, 0x00, 0x02,
+          0x7d, 0x7f, 0x60, 0x78, 0x01, 0x43, (byte)0xff, 0x1a, (byte)0xca, 0x5c, (byte)0x83, 0x47,
+          0x7f, 0x79, 0x00, 0x0a, (byte)0xcc, (byte)0x88, 0x00, 0x73, 0x5f, 0x00, 0x26, 0x08,
+          0x72, 0x60, (byte)0xff, 0x00, (byte)0xff, 0x1b, (byte)0xbb, 0x19, (byte)0xbf, (byte)0x9f, 0x55, (byte)0xee,
+          0x56, 0x09,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes,
+  options));
+      }
+    }
+    @Test
+    public void TestMapCompareRegressions() {
+      CBORObject m1, m2;
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      Assert.assertEquals(0, m1.compareTo(m2));
+      TestCommon.CompareTestEqualAndConsistent(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 2).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestLess(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 7).Add(1, 2);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestGreater(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 0);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestLess(m1, m2);
+      m1 = CBORObject.NewMap().Add(3, 4).Add(1, 7);
+      m2 = CBORObject.NewOrderedMap().Add(3, 4).Add(1, 2);
+      TestCommon.CompareTestGreater(m1, m2);
+    }
+    @Test
+    public void TestToObject_TypeMapper() {
+      CBORTypeMapper mapper = new CBORTypeMapper()
+      .AddConverter(String.class, new TestConverter());
+      CBORObject cbor = CBORObject.FromObject("UpPeR");
+      {
+        String stringTemp = (String)cbor.ToObject(String.class, mapper);
+        Assert.assertEquals(
+          "upper",
+          stringTemp);
+      }
+      cbor = CBORObject.FromObject("TRUE");
+      {
+        String stringTemp = (String)cbor.ToObject(String.class, mapper);
+        Assert.assertEquals(
+          "true",
+          stringTemp);
+      }
+      cbor = CBORObject.FromObject("false");
+      {
+        String stringTemp = (String)cbor.ToObject(String.class, mapper);
+        Assert.assertEquals(
+          "false",
+          stringTemp);
+      }
+      cbor = CBORObject.FromObject("FALSE");
+      {
+        String stringTemp = (String)cbor.ToObject(String.class, mapper);
+        Assert.assertEquals(
+          "false",
+          stringTemp);
+      }
+    }
+
+    @Test
+    public void TestRegressionFour() {
+      CBORObject o1 = CBORObject.FromObject(new byte[] { 5, 2 });
+      CBORObject o2 = CBORObject.FromObject(new byte[] { (byte)0x85, 2 });
+      TestCommon.CompareTestLess(o1, o2);
+    }
+
+    @Test
+    public void TestRegressionOne() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xbf, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5, 0x1e,
+          (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+          (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a, 0x00,
+          0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80,
+          (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, (byte)0xff,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa1, 0x0d, (byte)0xdb, 0x7f, 0x53, (byte)0xd5,
+          0x1e, (byte)0xab, 0x1f, (byte)0xb2, (byte)0xc2, (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, 0x69, (byte)0xf0, (byte)0xb8,
+          (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31, (byte)0xdf,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
+
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
+
+    @Test
+    public void TestRegressionTwo() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
+          0x09, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0x1a,
+          0x00, 0x46, 0x31, (byte)0xdf, 0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4,
+          (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
+          0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0x3a, 0x0a, (byte)0xaa, (byte)0xf2, 0x00, 0x69, (byte)0xf0,
+          (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0x1a, 0x00, 0x46, 0x31,
+          (byte)0xdf,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
+
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
+
+    @Test
+    public void TestRegressionThree() {
+      {
+        new CBOREncodeOptions();
+        byte[] bytes = new byte[] {
+          (byte)0xb8, 0x02, 0x7f, 0x7a, 0x00, 0x00, 0x00,
+          0x09, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00, (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, (byte)0xff, 0, 0x7f,
+          0x69, 0x05, 0x47, 0x76, 0x4f, 0x01, (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, (byte)0xff, 0,
+         };
+        byte[] encodedBytes = new byte[] {
+          (byte)0xa2, 0x69, 0x05, 0x47, 0x76, 0x4f,
+          0x01,
+          (byte)0xf4, (byte)0x80, (byte)0x80, (byte)0x80, 0, 0x69, (byte)0xf0, (byte)0xb8, (byte)0xbf, (byte)0xbf, 0x00,
+          (byte)0xf0, (byte)0x9d, (byte)0x84, (byte)0xa1, 0,
+         };
+        CBORTestCommon.AssertRoundTrip(CBORObject.DecodeFromBytes(bytes));
+
+        CBORTestCommon.AssertRoundTrip(
+          CBORObject.DecodeFromBytes(encodedBytes));
+      }
+    }
+
+    @Test
+    public void TestStringCompareBug() {
+      CBORObject a, b, c, d;
+      byte[] bytes = new byte[] {
+        0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+        (byte)0xf4,
+        (byte)0x80,
+        (byte)0x80,
+        (byte)0x80,
+       };
+      a = CBORObject.DecodeFromBytes(bytes);
+      c = a;
+      bytes = new byte[] {
+        0x7f, 0x69, 0x05, 0x47, 0x76, 0x4f, 0x01,
+        (byte)0xf4,
+        (byte)0x80,
+        (byte)0x80,
+        (byte)0x80, (byte)0xff,
+       };
+      b = CBORObject.DecodeFromBytes(bytes);
+      d = b;
+      TestCommon.CompareTestEqual(a, b);
+      bytes = new byte[] {
+        0x7f, 0x7a, 0x00, 0x00, 0x00, 0x09,
+        (byte)0xf0,
+        (byte)0xb8,
+        (byte)0xbf,
+        (byte)0xbf, 0x00,
+        (byte)0xf0,
+        (byte)0x9d,
+        (byte)0x84,
+        (byte)0xa1,
+        (byte)0xff,
+       };
+      a = CBORObject.DecodeFromBytes(bytes);
+      bytes = new byte[] {
+        0x7f, 0x69,
+        (byte)0xf0,
+        (byte)0xb8,
+        (byte)0xbf,
+        (byte)0xbf, 0x00,
+        (byte)0xf0,
+        (byte)0x9d,
+        (byte)0x84,
+        (byte)0xa1,
+        (byte)0xff,
+       };
+      b = CBORObject.DecodeFromBytes(bytes);
+      TestCommon.CompareTestEqual(a, b);
+      TestCommon.CompareTestLess(c, a);
+      TestCommon.CompareTestLess(c, b);
+      TestCommon.CompareTestLess(d, a);
+      TestCommon.CompareTestLess(d, b);
+      CBORObject o1 = CBORObject.NewMap();
+      o1.Add(b, CBORObject.FromObject(0));
+      o1.Add(c, CBORObject.FromObject(0));
+      CBORObject o2 = CBORObject.NewMap();
+      o2.Add(c, CBORObject.FromObject(0));
+      o2.Add(b, CBORObject.FromObject(0));
+      TestCommon.CompareTestEqual(a, b);
+    }
+
+    @Test(timeout = 2000)
+    public void TestSlowDecode() {
+      byte[] bytes = new byte[] {
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0, 0x02,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x02,
+        (byte)0xf7,
+        (byte)0xa0, 0x02,
+        (byte)0xa3,
+        (byte)0xf0, 0x01,
+        (byte)0xf1, 0x01,
+        (byte)0xf2,
+        (byte)0xf7,
+        (byte)0xf7,
+        (byte)0xf5,
+        (byte)0xa0, 0x01,
+        (byte)0xa3,
+        (byte)0xa3, 0x00,
+        (byte)0xf5, 0x01,
+        (byte)0xf4, 0x02, 0x02, 0x02,
+        (byte)0xa0, 0x01,
+        (byte)0xa3, 0x00,
+        (byte)0xa0, 0x01,
+        (byte)0xa0, 0x02, 0x02,
+        (byte)0xf6, 0x02, 0x40,
+        (byte)0xf5, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0, 0x02,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf6, 0x00,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x02,
+        (byte)0xf3, 0x01, 0x02,
+        (byte)0xa0,
+        (byte)0xa0,
+        (byte)0xa3,
+        (byte)0xf0, 0x00,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf5, 0x00, 0x40,
+        (byte)0xf4,
+        (byte)0xf4,
+        (byte)0xa4, 0x00,
+        (byte)0xf6, 0x01,
+        (byte)0xf4, 0x02, 0x00, 0x40, 0x01,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xa0,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2,
+        (byte)0xf4, 0x40, 0x00, 0x02, 0x01,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xa0,
+        (byte)0xa3, 0x00, 0x00, 0x01,
+        (byte)0xf4, 0x02,
+        (byte)0xf7,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3, 0x01, 0x40,
+        (byte)0xa0, 0x00,
+        (byte)0xa4, 0x00, 0x02, 0x01,
+        (byte)0xa0, 0x02, 0x01, 0x40, 0x00,
+        (byte)0xf4,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf5,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf7,
+        (byte)0xf4,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01, 0x02, 0x02,
+        (byte)0xf5,
+        (byte)0xf5,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6, 0x01,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x02, 0x01,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x00,
+        (byte)0xf3, 0x01, 0x01,
+        (byte)0xf4,
+        (byte)0xa3,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf6,
+        (byte)0xf5,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xa0,
+        (byte)0xf3,
+        (byte)0xf6,
+        (byte)0xf4, 0x40, 0x02, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf7, 0x40, 0x01, 0x00,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x40,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3, 0x00, 0x00, 0x01,
+        (byte)0xf5, 0x02,
+        (byte)0xf6, 0x00,
+        (byte)0xa0, 0x00,
+        (byte)0xa3, 0x00, 0x02, 0x01, 0x02, 0x02, 0x00, 0x02, 0x40, 0x02, 0x00,
+        (byte)0xf6,
+        (byte)0xa3, 0x00,
+        (byte)0xf7, 0x01, 0x00, 0x02, 0x01, 0x02,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa4, 0x00,
+        (byte)0xf4, 0x01,
+        (byte)0xf5, 0x02, 0x00, 0x40,
+        (byte)0xf7, 0x00,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf5, 0x40,
+        (byte)0xa0,
+        (byte)0xf7,
+        (byte)0xa4, 0x00, 0x00, 0x01,
+        (byte)0xa0, 0x02,
+        (byte)0xf5, 0x40, 0x00, 0x02, 0x40, 0x01,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01,
+        (byte)0xf4, 0x02,
+        (byte)0xf4, 0x02,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x01,
+        (byte)0xf4,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xa0,
+        (byte)0xf3, 0x01,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf5,
+        (byte)0xf1, 0x00,
+        (byte)0xf2,
+        (byte)0xf5, 0x02, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xf0, 0x01,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xf6, 0x40,
+        (byte)0xf4,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xa4, 0x00,
+        (byte)0xa0, 0x01, 0x00, 0x02,
+        (byte)0xf6, 0x40,
+        (byte)0xf4, 0x00,
+        (byte)0xa4,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x40,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa4, 0x00, 0x00, 0x01, 0x02, 0x02, 0x02, 0x40,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf5,
+        (byte)0xa0, 0x40,
+        (byte)0xf7, 0x02,
+        (byte)0xa4,
+        (byte)0xa4, 0x00, 0x02, 0x01, 0x02, 0x02, 0x01, 0x40,
+        (byte)0xf5,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf6,
+        (byte)0xf4,
+        (byte)0xa4,
+        (byte)0xf0, 0x00,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x02, 0x40,
+        (byte)0xf4,
+        (byte)0xf4, 0x40, 0x02,
+        (byte)0xf4,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf6,
+        (byte)0xf3, 0x00,
+        (byte)0xf7,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf7,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2, 0x00, 0x01, 0x40, 0x01, 0x01, 0x00,
+        (byte)0xf7,
+        (byte)0xa0, 0x00,
+        (byte)0xa3,
+        (byte)0xa4,
+        (byte)0xf1, 0x02,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf7, 0x40,
+        (byte)0xf6,
+        (byte)0xf7,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf4,
+        (byte)0xf3,
+        (byte)0xf4, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3, 0x00, 0x01, 0x01,
+        (byte)0xa0, 0x02, 0x01,
+        (byte)0xa0, 0x40, 0x02, 0x00,
+        (byte)0xf5, 0x40,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xa4,
+        (byte)0xa3, 0x00,
+        (byte)0xf5, 0x01, 0x02, 0x02, 0x00,
+        (byte)0xf6,
+        (byte)0xa0,
+        (byte)0xf6,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2,
+        (byte)0xf5,
+        (byte)0xf3,
+        (byte)0xf5, 0x00, 0x40,
+        (byte)0xf5,
+        (byte)0xf6, 0x02, 0x40, 0x01, 0x01,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2, 0x01,
+        (byte)0xf3,
+        (byte)0xf5, 0x40, 0x00, 0x02,
+        (byte)0xa0,
+        (byte)0xa0, 0x00,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xa0,
+        (byte)0xf2, 0x00, 0x01, 0x40, 0x02, 0x00,
+        (byte)0xa4,
+        (byte)0xf0, 0x01,
+        (byte)0xf1, 0x02,
+        (byte)0xf2,
+        (byte)0xa0, 0x40,
+        (byte)0xf5, 0x02,
+        (byte)0xa4,
+        (byte)0xa3,
+        (byte)0xf0, 0x00,
+        (byte)0xf1, 0x01,
+        (byte)0xf2,
+        (byte)0xf5,
+        (byte)0xf7,
+        (byte)0xa3,
+        (byte)0xa3,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x01,
+        (byte)0xf3, 0x01,
+        (byte)0xa0,
+        (byte)0xa0, 0x01,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xf4,
+        (byte)0xf6, 0x02,
+        (byte)0xa3,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2, 0x01,
+        (byte)0xf3,
+        (byte)0xf4, 0x02, 0x40, 0x00,
+        (byte)0xa0, 0x40,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf7,
+        (byte)0xf1,
+        (byte)0xf4,
+        (byte)0xf2,
+        (byte)0xa0, 0x40,
+        (byte)0xa0, 0x00,
+        (byte)0xa4, 0x00, 0x00, 0x01,
+        (byte)0xa0, 0x02,
+        (byte)0xf5, 0x40,
+        (byte)0xf7,
+        (byte)0xf7, 0x00,
+        (byte)0xa3, 0x00, 0x01, 0x01, 0x01, 0x02,
+        (byte)0xf4,
+        (byte)0xf7,
+        (byte)0xf7,
+        (byte)0xa0,
+        (byte)0xa0,
+        (byte)0xa3,
+        (byte)0xf0,
+        (byte)0xf6,
+        (byte)0xf1, 0x01,
+        (byte)0xf2, 0x01, 0x00,
+        (byte)0xf6, 0x40,
+        (byte)0xf6,
+        (byte)0xf6,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf7,
+        (byte)0xf2, 0x01,
+        (byte)0xf3, 0x01, 0x40,
+        (byte)0xf7,
+        (byte)0xf5,
+        (byte)0xa4,
+        (byte)0xf1,
+        (byte)0xf6,
+        (byte)0xf2, 0x00,
+        (byte)0xf3,
+        (byte)0xa0, 0x40, 0x01, 0x02, 0x40, 0x01,
+        (byte)0xa0,
+        (byte)0xa0, 0x02, 0x40, 0x01, 0x02,
+        (byte)0xa4,
+        (byte)0xf0,
+        (byte)0xf4,
+        (byte)0xf1,
+        (byte)0xf5,
+        (byte)0xf2,
+        (byte)0xf5, 0x40,
+        (byte)0xf7,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa0,
+        (byte)0xf5,
+        (byte)0xa3, 0x00,
+        (byte)0xf6, 0x01, (byte)0xf6, 0x02, (byte)0xa0, (byte)0xf4, 0x40,
+        (byte)0xf7,
+       };
+      CBOREncodeOptions options = new CBOREncodeOptions("allowduplicatekeys=1");
+      for (int i = 0; i < 10; ++i) {
+        CBORObject.DecodeFromBytes(bytes, options);
+      }
+    }
+  }
