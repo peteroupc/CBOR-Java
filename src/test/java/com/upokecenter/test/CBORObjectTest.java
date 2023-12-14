@@ -11028,7 +11028,7 @@ CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(dbl), 1);
 
     private static void AreEqualDouble(double a, double b) {
       if (a != b) {
-        Assert.fail(a+ ", " + b);
+        Assert.fail(a + ", " + b);
       }
     }
 

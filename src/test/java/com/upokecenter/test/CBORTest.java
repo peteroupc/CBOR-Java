@@ -1817,6 +1817,12 @@ import com.upokecenter.numbers.*;
       System.out.println(CBORPlistWriter.ToPlistString(o));
     }
 
+    private static void AreEqualDouble(double a, double b) {
+      if (a != b) {
+        Assert.fail(a + ", " + b);
+      }
+    }
+
     @Test
     public void TestJSON() {
       CBORObject o;
@@ -1830,7 +1836,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals("", o.get(5).AsString());
       o = CBORObject.FromJSONString("[1.5,2.6,3.7,4.0,222.22]");
       double actual = o.get(0).AsDouble();
-      Assert.assertEquals(1.5, actual);
+      AreEqualDouble(1.5, actual);
       {
         java.io.ByteArrayInputStream ms2a = null;
 try {
