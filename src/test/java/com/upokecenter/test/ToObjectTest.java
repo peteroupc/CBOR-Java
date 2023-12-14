@@ -1,7 +1,6 @@
 package com.upokecenter.test;
 
 import java.util.*;
-import java.io.*;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -130,22 +129,21 @@ import com.upokecenter.numbers.*;
           stringTemp);
       }
       {
-        String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip((float)328323f)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(328323f)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "328323",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip((double)0.75)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(0.75)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip((double)0.99)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(0.99)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
@@ -153,28 +151,28 @@ import com.upokecenter.numbers.*;
       }
       {
         String stringTemp =
-          ToObjectTest.TestToFromObjectRoundTrip((double)0.0000000000000001)
+          ToObjectTest.TestToFromObjectRoundTrip(0.0000000000000001)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip((double)0.5)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(0.5)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "0",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip((double)1.5)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(1.5)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "1",
           stringTemp);
       }
       {
-        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip((double)2.5)
+        String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(2.5)
           .ToObject(EInteger.class).toString();
         Assert.assertEquals(
           "2",
@@ -255,13 +253,14 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(true, CBORObject.True.ToObject(boolean.class));
       {
         Object objectTemp = true;
-        Object objectTemp2 = (Object)ToObjectTest.TestToFromObjectRoundTrip(0)
+        Object objectTemp2 = ToObjectTest.TestToFromObjectRoundTrip(0)
           .ToObject(boolean.class);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
       {
         Object objectTemp = true;
-        Object objectTemp2 = (Object)ToObjectTest.TestToFromObjectRoundTrip("")
+        Object objectTemp2 =
+          ToObjectTest.TestToFromObjectRoundTrip("")
 
           .ToObject(boolean.class);
         Assert.assertEquals(objectTemp, objectTemp2);
@@ -343,10 +342,10 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               (String)numberinfo.get("number").ToObject(String.class)));
 
-        if ((boolean)numberinfo.get("byte").AsBoolean()) {
+        if (numberinfo.get("byte").AsBoolean()) {
           int i1 = TestCommon.StringToInt((String)numberinfo.get("integer")
               .ToObject(String.class));
-          int i2 = ((int)(Byte)cbornumber.ToObject(byte.class)) & 0xff;
+          int i2 = (byte)cbornumber.ToObject(byte.class) & 0xff;
           Assert.assertEquals(i1, i2);
         } else {
           try {
@@ -711,7 +710,7 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString((String)numberinfo.get("number").ToObject(
                 String.class)));
-        if ((boolean)numberinfo.get("int16").AsBoolean()) {
+        if (numberinfo.get("int16").AsBoolean()) {
           short sh = (short)TestCommon.StringToInt(
               (String)numberinfo.get("integer").ToObject(String.class));
           Object o = cbornumber.ToObject(short.class);
@@ -791,19 +790,17 @@ import com.upokecenter.numbers.*;
       CBORObject numbers = CBORObjectTest.GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-        EDecimal edec =
-
-  EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
+        EDecimal edec = EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
         boolean isdouble;
-        isdouble = (boolean)numberinfo.get("double").AsBoolean();
+        isdouble = numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToDouble());
         boolean issingle;
-        issingle = (boolean)numberinfo.get("single").AsBoolean();
+        issingle = numberinfo.get("single").AsBoolean();
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
-        if ((boolean)numberinfo.get("int32").AsBoolean()) {
+        if (numberinfo.get("int32").AsBoolean()) {
           Object o = cbornumber.ToObject(int.class);
           Assert.assertEquals(
             TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
@@ -919,19 +916,17 @@ import com.upokecenter.numbers.*;
       CBORObject numbers = CBORObjectTest.GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
         CBORObject numberinfo = numbers.get(i);
-        EDecimal edec =
-
-  EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
+        EDecimal edec = EDecimal.FromString((String)numberinfo.get("number").ToObject(String.class));
         CBORObject cbornumber = ToObjectTest.TestToFromObjectRoundTrip(edec);
         boolean isdouble;
-        isdouble = (boolean)numberinfo.get("double").AsBoolean();
+        isdouble = numberinfo.get("double").AsBoolean();
         CBORObject cbornumberdouble =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToDouble());
         boolean issingle;
-        issingle = (boolean)numberinfo.get("single").AsBoolean();
+        issingle = numberinfo.get("single").AsBoolean();
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
-        if ((boolean)numberinfo.get("int64").AsBoolean()) {
+        if (numberinfo.get("int64").AsBoolean()) {
           Object o = cbornumber.ToObject(long.class);
           Assert.assertEquals(
             TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(
@@ -1053,11 +1048,13 @@ import com.upokecenter.numbers.*;
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
               (String)numberinfo.get("number").ToObject(String.class)));
 
-        float f1 = (float)EDecimal.FromString((String)numberinfo.get("number").ToObject(
+        float f1, f2;
+        f1 = (float)EDecimal.FromString(
+            (String)numberinfo.get("number").ToObject(
               String.class)).ToSingle();
-        Object f2 = cbornumber.ToObject(float.class);
-        if (!((Object)f1).equals(f2)) {
-          Assert.fail();
+        f2 = (float)cbornumber.ToObject(float.class);
+        if (!EFloat.FromSingle(f1).equals(EFloat.FromSingle(f2))) {
+          Assert.fail("f1=" + f1 + "\nf2=" + f2);
         }
       }
     }
@@ -1169,8 +1166,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestToObjectDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
-      HashMap<String, String> stringDict =
-        (HashMap<String, String>)cbor.ToObject(
+      HashMap<String, String> stringDict = (HashMap<String, String>)cbor.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict.size());
       if (!(stringDict.containsKey("a"))) {
@@ -1185,8 +1181,7 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestToObjectIDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
-      Map<String, String> stringDict2 =
-        (Map<String, String>)cbor.ToObject(
+      Map<String, String> stringDict2 = (Map<String, String>)cbor.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict2.size());
       if (!(stringDict2.containsKey("a"))) {
@@ -1271,8 +1266,7 @@ import com.upokecenter.numbers.*;
       co = CBORObject.NewMap();
       co.Add("a", 1);
       co.Add("b", 2);
-      HashMap<String, Integer> intDict =
-        (HashMap<String, Integer>)co.ToObject(
+      HashMap<String, Integer> intDict = (HashMap<String, Integer>)co.ToObject(
           (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, intDict.size());
       if (!(intDict.containsKey("a"))) {
@@ -1302,8 +1296,8 @@ import com.upokecenter.numbers.*;
       if (iintDict.get("b") != 2) {
         Assert.fail();
       }
-      co = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:00:00Z",
+      co = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:00:00Z"),
           0);
       try {
         co.ToObject(java.util.Date.class);
@@ -1365,7 +1359,7 @@ import com.upokecenter.numbers.*;
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
@@ -1381,20 +1375,18 @@ import com.upokecenter.numbers.*;
          CBORDateConverter.TaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
         CBORObject cborNumber = CBORObject.FromObject(dtime, typemapper);
-        if (!(cborNumber.getType() == CBORType.Integer ||
-           cborNumber.getType() == CBORType.FloatingPoint)) {
+        if (!(cborNumber.getType() == CBORType.Integer || cborNumber.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
   typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
-        if (!(cbor2.getType() == CBORType.Integer ||
-           cbor2.getType() == CBORType.FloatingPoint)) {
+        if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         Assert.assertEquals(s, cbor2, cborNumber);
@@ -1410,20 +1402,18 @@ import com.upokecenter.numbers.*;
          CBORDateConverter.UntaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
-        CBORObject cbor = CBORObject.FromObjectAndTag(s, 0);
+        CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
         java.util.Date dtime = (java.util.Date)cbor.ToObject(java.util.Date.class);
         CBORObject cbor2 = CBORObject.FromObject(dtime);
         Assert.assertEquals(s, cbor2.AsString());
         CBORObject cborNumber = CBORObject.FromObject(dtime, typemapper);
-        if (!(cborNumber.getType() == CBORType.Integer ||
-           cborNumber.getType() == CBORType.FloatingPoint)) {
+        if (!(cborNumber.getType() == CBORType.Integer || cborNumber.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
   typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
-        if (!(cbor2.getType() == CBORType.Integer ||
-           cbor2.getType() == CBORType.FloatingPoint)) {
+        if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
  }
         Assert.assertEquals(s, cbor2, cborNumber);
@@ -1433,8 +1423,8 @@ import com.upokecenter.numbers.*;
 
     @Test
     public void TestBadDate() {
-      CBORObject cbor = CBORObject.FromObjectAndTag(
-          "2000-1-01T00:00:00Z",
+      CBORObject cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-1-01T00:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1445,8 +1435,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-1T00:00:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-1T00:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1457,8 +1447,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T0:00:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T0:00:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1469,8 +1459,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:0:00Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:0:00Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1481,8 +1471,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "2000-01-01T00:00:0Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("2000-01-01T00:00:0Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1493,8 +1483,8 @@ import com.upokecenter.numbers.*;
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      cbor = CBORObject.FromObjectAndTag(
-          "T01:01:01Z",
+      cbor = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromString("T01:01:01Z"),
           0);
       try {
         cbor.ToObject(java.util.Date.class);
@@ -1517,7 +1507,8 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    private static class CPOD3Converter implements ICBORToFromConverter<CPOD3> {
+    private static class CPOD3Converter implements ICBORToFromConverter<CPOD3>
+    {
       public CBORObject ToCBORObject(CPOD3 cpod) {
         return CBORObject.NewMap().Add(0, cpod.getAa())
           .Add(1, cpod.getBb()).Add(2, cpod.getCc());
@@ -1527,9 +1518,10 @@ import com.upokecenter.numbers.*;
           throw new CBORException();
         }
         CPOD3 ret = new CPOD3();
-        ret.setAa(obj.get(0).AsString());
-        ret.setBb(obj.get(1).AsString());
-        ret.setCc(obj.get(2).AsString());
+ret.setAa(obj.get(0).AsString());
+ret.setBb(obj.get(1).AsString());
+ret.setCc(obj.get(2).AsString());
+
         return ret;
       }
     }
@@ -1537,13 +1529,15 @@ import com.upokecenter.numbers.*;
     @Test
     public void TestCBORTypeMapper() {
       CPOD3 cp = new CPOD3();
-      cp.setAa("aa");
-      cp.setBb("bb");
-      cp.setCc("cc");
+cp.setAa("aa");
+cp.setBb("bb");
+cp.setCc("cc");
+
       CPOD3 cp2 = new CPOD3();
-      cp2.setAa("AA");
-      cp2.setBb("BB");
-      cp2.setCc("CC");
+cp2.setAa("AA");
+cp2.setBb("BB");
+cp2.setCc("CC");
+
       CBORTypeMapper tm = new CBORTypeMapper().AddConverter(
         CPOD3.class,
         new CPOD3Converter());
@@ -1675,7 +1669,7 @@ import com.upokecenter.numbers.*;
     public static CBORObject TestToFromObjectRoundTrip(Object obj) {
       CBORObject cbor = CBORObject.FromObject(obj);
       if (obj != null) {
-        Object obj2 = null;
+        Object obj2;
         try {
           obj2 = cbor.ToObject(obj.getClass());
         } catch (Exception ex) {
@@ -1695,8 +1689,21 @@ import com.upokecenter.numbers.*;
         }
         // Tests for DecodeObjectFromBytes
         byte[] encdata = cbor.EncodeToBytes();
-        Object obj3 =
-          CBORObject.DecodeFromBytes(encdata).ToObject(obj.getClass());
+        CBORObject cbor2 = null;
+        try {
+          cbor2 = CBORObject.DecodeFromBytes(encdata);
+        } catch (Exception ex) {
+          String failString = "" + encdata.length;
+          if (encdata.length < 200) {
+            failString += " ";
+            failString += TestCommon.ToByteArrayString(encdata);
+          }
+          throw new IllegalStateException(failString, ex);
+        }
+        if (cbor2 == null) {
+          Assert.fail();
+        }
+        Object obj3 = cbor2.ToObject(obj.getClass());
         Object obj4 = CBORObject.DecodeObjectFromBytes(encdata, obj.getClass());
         TestCommon.AssertEqualsHashCode(obj, obj2);
         TestCommon.AssertEqualsHashCode(obj, obj3);

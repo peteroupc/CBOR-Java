@@ -1,10 +1,7 @@
 package com.upokecenter.cbor;
 
-import java.io.*;
-import com.upokecenter.util.*;
-import com.upokecenter.numbers.*;
-
-  class CharacterInputWithCount implements ICharacterInput {
+  class CharacterInputWithCount implements ICharacterInput
+  {
     private final ICharacterInput ci;
     private int offset;
 

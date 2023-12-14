@@ -8,10 +8,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
  */
 
-import com.upokecenter.util.*;
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedDecimal implements ICBORNumber {
+  class CBORExtendedDecimal implements ICBORNumber
+  {
     public boolean IsPositiveInfinity(Object obj) {
       EDecimal ed = (EDecimal)obj;
       return ed.IsPositiveInfinity();

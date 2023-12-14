@@ -3,7 +3,6 @@ package com.upokecenter.test;
 import java.util.*;
 import java.io.*;
 
-import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
@@ -19,8 +18,7 @@ private CBORPlistWriter() {
       int i = 0;
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (c < 0x20 || c >= 0x7f || c == '\\' || c == '"' || c == '&' ||
-          c == '<' || c == '>') {
+        if (c <  (char)0x20 || c >= (char)0x7f || c == '\\' || c == '"' || c == '&' || c == '<' || c == '>') {
           sb.WriteString(str, 0, i);
           break;
         }
@@ -31,24 +29,20 @@ private CBORPlistWriter() {
       }
       for (; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if ((c < 0x20 && (c != 0x09 || c != 0x0a || c != 0x0d)) || c ==
-          0xfffe || c == 0xffff) {
+        if ((c < (char)0x20 && (c != (char)0x09 || c != (char)0x0a || c != (char)0x0d)) || c == (char)0xfffe || c == (char)0xffff) {
           // XML doesn't support certain code points even if escaped.
           // Therefore, replace all unsupported code points with replacement
           // characters.
           sb.WriteCodePoint(0xfffd);
         } else if (c == '\\' || c == '"') {
-          sb.WriteCodePoint((int)'\\');
-          sb.WriteCodePoint((int)c);
-        } else if (c < 0x20 || c == '&' || c == '<' || c == '>' || (c >= 0x7f &&
-            (c == 0x2028 || c == 0x2029 ||
-              (c >= 0x7f && c <= 0xa0) || c == 0xfeff || c == 0xfffe ||
-              c == 0xffff))) {
+          sb.WriteCodePoint('\\');
+          sb.WriteCodePoint(c);
+        } else if (c < (char)0x20 || c == '&' || c == '<' || c == '>' || (c >= (char)0x7f && (c == (char)0x2028 || c == (char)0x2029 || (c >= (char)0x7f && c <= (char)0xa0) || c == (char)0xfeff || c == (char)0xfffe || c == (char)0xffff))) {
           sb.WriteString("&#x");
-          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 12) & 15)));
-          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 8) & 15)));
-          sb.WriteCodePoint((int)Hex16.charAt((int)((c >> 4) & 15)));
-          sb.WriteCodePoint((int)Hex16.charAt((int)(c & 15)));
+          sb.WriteCodePoint(Hex16.charAt((c >> 12) & 15));
+          sb.WriteCodePoint(Hex16.charAt((c >> 8) & 15));
+          sb.WriteCodePoint(Hex16.charAt((c >> 4) & 15));
+          sb.WriteCodePoint(Hex16.charAt(c & 15));
           sb.WriteString(";");
         } else if ((c & 0xfc00) == 0xd800) {
           if (i >= str.length() - 1 || (str.charAt(i + 1) & 0xfc00) != 0xdc00) {
@@ -63,7 +57,7 @@ private CBORPlistWriter() {
             ++i;
           }
         } else {
-          sb.WriteCodePoint((int)c);
+          sb.WriteCodePoint(c);
         }
       }
     }
@@ -171,182 +165,183 @@ private CBORPlistWriter() {
       }
       switch (obj.getType()) {
         case Integer: {
-          CBORObject untaggedObj = obj.Untag();
-          writer.WriteString("<integer>");
-          writer.WriteString(untaggedObj.ToJSONString());
-          writer.WriteString("</integer>");
-          break;
-        }
+            CBORObject untaggedObj = obj.Untag();
+            writer.WriteString("<integer>");
+            writer.WriteString(untaggedObj.ToJSONString());
+            writer.WriteString("</integer>");
+            break;
+          }
         case FloatingPoint: {
-          CBORObject untaggedObj = obj.Untag();
-          writer.WriteString("<real>");
-          writer.WriteString(untaggedObj.ToJSONString());
-          writer.WriteString("</real>");
-          break;
-        }
+            CBORObject untaggedObj = obj.Untag();
+            writer.WriteString("<real>");
+            writer.WriteString(untaggedObj.ToJSONString());
+            writer.WriteString("</real>");
+            break;
+          }
         case Boolean: {
-          if (obj.isTrue()) {
-            writer.WriteString("<true/>");
+            if (obj.isTrue()) {
+              writer.WriteString("<true/>");
+              return;
+            }
+            if (obj.isFalse()) {
+              writer.WriteString("<false/>");
+              return;
+            }
             return;
           }
-          if (obj.isFalse()) {
-            writer.WriteString("<false/>");
-            return;
-          }
-          return;
-        }
         case SimpleValue: {
-          // Write all CBOR simple values (other than true and false) as the text String
-          // "null".
-          writer.WriteString("<str");
-          writer.WriteString("ing>");
-          writer.WriteString("null");
-          writer.WriteString("</str");
-          writer.WriteString("ing>");
-          return;
-        }
+            // Write all CBOR simple values (other than true and false) as the text String
+            // "null".
+            writer.WriteString("<str");
+            writer.WriteString("ing>");
+            writer.WriteString("null");
+            writer.WriteString("</str");
+            writer.WriteString("ing>");
+            return;
+          }
         case ByteString: {
-          byte[] byteArray = obj.GetByteString();
-          if (byteArray.length == 0) {
-            writer.WriteString("<data></data>");
-            return;
-          }
-          if (obj.HasTag(22)) {
-            writer.WriteString("<data>");
-            // Base64 with padding
-            Base64.WriteBase64(
-              writer,
-              byteArray,
-              0,
-              byteArray.length,
-              true);
-            writer.WriteString("</data>");
-          } else if (obj.HasTag(23)) {
-            writer.WriteString("<str");
-            writer.WriteString("ing>");
-            // Write as base16
-            for (int i = 0; i < byteArray.length; ++i) {
-              writer.WriteCodePoint((int)Hex16.charAt((byteArray[i] >> 4) & 15));
-              writer.WriteCodePoint((int)Hex16.charAt(byteArray[i] & 15));
+            byte[] byteArray = obj.GetByteString();
+            if (byteArray.length == 0) {
+              writer.WriteString("<data></data>");
+              return;
             }
-            writer.WriteString("</str");
-            writer.WriteString("ing>");
-          } else {
-            writer.WriteString("<data>");
-            // Base64 with padding
-            Base64.WriteBase64(
-              writer,
-              byteArray,
-              0,
-              byteArray.length,
-              true);
-            writer.WriteString("</data>");
+            if (obj.HasTag(22)) {
+              writer.WriteString("<data>");
+              // Base64 with padding
+              Base64.WriteBase64(
+                writer,
+                byteArray,
+                0,
+                byteArray.length,
+                true);
+              writer.WriteString("</data>");
+            } else if (obj.HasTag(23)) {
+              writer.WriteString("<str");
+              writer.WriteString("ing>");
+              // Write as base16
+              for (int i = 0; i < byteArray.length; ++i) {
+                writer.WriteCodePoint(Hex16.charAt((byteArray[i] >> 4) & 15));
+                writer.WriteCodePoint(Hex16.charAt(byteArray[i] & 15));
+              }
+              writer.WriteString("</str");
+              writer.WriteString("ing>");
+            } else {
+              writer.WriteString("<data>");
+              // Base64 with padding
+              Base64.WriteBase64(
+                writer,
+                byteArray,
+                0,
+                byteArray.length,
+                true);
+              writer.WriteString("</data>");
+            }
+            break;
           }
-          break;
-        }
         case TextString: {
-          String thisString = obj.AsString();
-          if (thisString.length() == 0) {
+            String thisString = obj.AsString();
+            if (thisString.length() == 0) {
+              writer.WriteString("<str");
+              writer.WriteString("ing>");
+              writer.WriteString("</str");
+              writer.WriteString("ing>");
+              return;
+            }
             writer.WriteString("<str");
             writer.WriteString("ing>");
+            WritePlistStringUnquoted(thisString, writer, options);
             writer.WriteString("</str");
             writer.WriteString("ing>");
-            return;
+            break;
           }
-          writer.WriteString("<str");
-          writer.WriteString("ing>");
-          WritePlistStringUnquoted(thisString, writer, options);
-          writer.WriteString("</str");
-          writer.WriteString("ing>");
-          break;
-        }
         case Array: {
-          writer.WriteString("<array>");
-          for (int i = 0; i < obj.size(); ++i) {
-            boolean pop = CheckCircularRef(stack, obj, obj.get(i));
-            WritePlistToInternalCore(obj.get(i), writer, options, stack);
-            PopRefIfNeeded(stack, pop);
+            writer.WriteString("<array>");
+            for (int i = 0; i < obj.size(); ++i) {
+              boolean pop = CheckCircularRef(stack, obj, obj.get(i));
+              WritePlistToInternalCore(obj.get(i), writer, options, stack);
+              PopRefIfNeeded(stack, pop);
+            }
+            writer.WriteString("</array>");
+            break;
           }
-          writer.WriteString("</array>");
-          break;
-        }
         case Map: {
-          boolean hasNonStringKeys = false;
-          Collection<Map.Entry<CBORObject, CBORObject>> entries =
-            obj.getEntries();
-          for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-            CBORObject key = entry.getKey();
-            if (key.getType() != CBORType.TextString ||
-              key.isTagged()) {
-              // treat a non-text-String item or a tagged item
-              // as having non-String keys
-              hasNonStringKeys = true;
-              break;
-            }
-          }
-          if (!hasNonStringKeys) {
-            writer.WriteString("<dict>");
+            boolean hasNonStringKeys = false;
+            Collection<Map.Entry<CBORObject, CBORObject>> entries =
+              obj.getEntries();
             for (Map.Entry<CBORObject, CBORObject> entry : entries) {
               CBORObject key = entry.getKey();
-              CBORObject value = entry.getValue();
-              writer.WriteString("<key>");
-              WritePlistStringUnquoted(key.AsString(), writer, options);
-              writer.WriteString("</key>");
-              boolean pop = CheckCircularRef(stack, obj, value);
-              WritePlistToInternalCore(value, writer, options, stack);
-              PopRefIfNeeded(stack, pop);
+              if (key.getType() != CBORType.TextString || key.isTagged()) {
+                // treat a non-text-String item or a tagged item
+                // as having non-String keys
+                hasNonStringKeys = true;
+                break;
+              }
             }
-            writer.WriteString("</dict>");
-          } else {
-            // This map has non-String keys
-            Map<String, CBORObject> stringMap = new
-            HashMap<String, CBORObject>();
-            // Copy to a map with String keys, since
-            // some keys could be duplicates
-            // when serialized to strings
-            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-              CBORObject key = entry.getKey();
-              CBORObject value = entry.getValue();
-              String str = null;
-              switch (key.getType()) {
-                case TextString:
-                  str = key.AsString();
-                  break;
-                case Array:
-                case Map: {
-                  StringBuilder sb = new StringBuilder();
-                  StringOutput sw = new StringOutput(sb);
-                  boolean pop = CheckCircularRef(stack, obj, key);
-                  WritePlistToInternalCore(key, sw, options, stack);
-                  PopRefIfNeeded(stack, pop);
-                  str = sb.toString();
-                  break;
+            if (!hasNonStringKeys) {
+              writer.WriteString("<dict>");
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+                CBORObject key = entry.getKey();
+                CBORObject value = entry.getValue();
+                writer.WriteString("<key>");
+                WritePlistStringUnquoted(key.AsString(), writer, options);
+                writer.WriteString("</key>");
+                boolean pop = CheckCircularRef(stack, obj, value);
+                WritePlistToInternalCore(value, writer, options, stack);
+                PopRefIfNeeded(stack, pop);
+              }
+              writer.WriteString("</dict>");
+            } else {
+              // This map has non-String keys
+              Map<String, CBORObject> stringMap = new
+              HashMap<String, CBORObject>();
+              // Copy to a map with String keys, since
+              // some keys could be duplicates
+              // when serialized to strings
+              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+                CBORObject key = entry.getKey();
+                CBORObject value = entry.getValue();
+                String str = null;
+                switch (key.getType()) {
+                  case TextString:
+                    str = key.AsString();
+                    break;
+                  case Array:
+                  case Map: {
+                      StringBuilder sb = new StringBuilder();
+                      StringOutput sw = new StringOutput(sb);
+                      boolean pop = CheckCircularRef(stack, obj, key);
+                      WritePlistToInternalCore(key, sw, options, stack);
+                      PopRefIfNeeded(stack, pop);
+                      str = sb.toString();
+                      break;
+                    }
+                    default: {
+                      str = key.ToJSONString(options);
+                      break;
+                    }
                 }
-                default: str = key.ToJSONString(options);
-                  break;
+                if (stringMap.containsKey(str)) {
+                  throw new CBORException(
+                    "Duplicate Plist String equivalents of map" +
+                    "\u0020keys");
+                }
+                stringMap.put(str, value);
               }
-              if (stringMap.containsKey(str)) {
-                throw new CBORException(
-                  "Duplicate Plist String equivalents of map" +
-                  "\u0020keys");
+              writer.WriteString("<dict>");
+              for (Map.Entry<String, CBORObject> entry : stringMap.entrySet()) {
+                String key = entry.getKey();
+                CBORObject value = entry.getValue();
+                writer.WriteString("<key>");
+                WritePlistStringUnquoted(key, writer, options);
+                writer.WriteString("</key>");
+                boolean pop = CheckCircularRef(stack, obj, value);
+                WritePlistToInternalCore(value, writer, options, stack);
+                PopRefIfNeeded(stack, pop);
               }
-              stringMap.put(str, value);
+              writer.WriteString("</dict>");
             }
-            writer.WriteString("<dict>");
-            for (Map.Entry<String, CBORObject> entry : stringMap.entrySet()) {
-              String key = entry.getKey();
-              CBORObject value = entry.getValue();
-              writer.WriteString("<key>");
-              WritePlistStringUnquoted((String)key, writer, options);
-              writer.WriteString("</key>");
-              boolean pop = CheckCircularRef(stack, obj, value);
-              WritePlistToInternalCore(value, writer, options, stack);
-              PopRefIfNeeded(stack, pop);
-            }
-            writer.WriteString("</dict>");
+            break;
           }
-          break;
-        }
         default: throw new IllegalStateException("Unexpected item" +
             "\u0020type");
       }

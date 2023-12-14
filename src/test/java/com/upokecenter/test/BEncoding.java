@@ -9,7 +9,6 @@ https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 import java.util.*;
-
 import java.io.*;
 
 import com.upokecenter.cbor.*;
@@ -53,10 +52,10 @@ private BEncoding() {
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c >= (int)'0' && c <= (int)'9') {
+        if (c >= '0' && c <= '9') {
           builder.append((char)c);
           start = false;
-        } else if (c == (int)'e') {
+        } else if (c == 'e') {
           break;
         } else if (start && c == '-') {
           start = false;
@@ -67,12 +66,12 @@ private BEncoding() {
       }
       String s = builder.toString();
       if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
-          throw new CBORException("Invalid integer encoding");
-      }
-      if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) == '0') {
-          throw new CBORException("Invalid integer encoding");
-      }
-      return CBORObject.FromObject(
+ throw new CBORException("Invalid integer encoding");
+}
+ if (s.length() >= 3 && s.charAt(0) == '-' && s.charAt(1) == '0' && s.charAt(2) == '0') {
+ throw new CBORException("Invalid integer encoding");
+}
+ return CBORObject.FromEInteger(
           EInteger.FromString(s));
     }
 
@@ -90,47 +89,53 @@ private BEncoding() {
 
     public static CBORObject Read(InputStream stream) throws java.io.IOException {
       if (stream == null) {
-        throw new NullPointerException("stream");
-      }
-      return ReadObject(stream, false);
+ throw new NullPointerException("stream");
+}
+ return ReadObject(stream, false);
     }
 
     private static CBORObject ReadObject(InputStream stream, boolean allowEnd) throws java.io.IOException {
       int c = stream.read();
-      if (c == 'd') {
-        return ReadDictionary(stream);
-      }
-      if (c == 'l') {
-        return ReadList(stream);
-      }
-      if (allowEnd && c == 'e') {
-        return null;
-      }
-      if (c == 'i') {
-        return ReadInteger(stream);
-      }
-      if (c >= '0' && c <= '9') {
-        return ReadString(stream, (char)c);
-      }
-      throw new CBORException("Object expected");
+      switch (c) {
+case 'd':
+return ReadDictionary(stream);
+case 'l':
+return ReadList(stream);
+case 'i':
+return ReadInteger(stream);
+case 'e':
+if (!(allowEnd)) {
+ throw new CBORException("Object expected");
+}
+ return null;
+case '0':
+ case '1':
+ case '2':
+ case '3':
+ case '4':
+ case '5':
+ case '6':
+ case '7':
+ case '8':
+ case '9':
+return ReadString(stream, (char)c);
+default:
+throw new CBORException("Object expected");
+}
     }
 
     private static final String ValueDigits = "0123456789";
 
     public static String LongToString(long longValue) {
-      if (longValue == Long.MIN_VALUE) {
-        return "-9223372036854775808";
-      }
-      if (longValue == 0L) {
-        return "0";
-      }
-      return (longValue == (long)Integer.MIN_VALUE) ? "-2147483648" :
+      return longValue == Long.MIN_VALUE ?
+        "-9223372036854775808" : longValue == 0L ?
+        "0" : (longValue == Integer.MIN_VALUE) ? "-2147483648" :
 EInteger.FromInt64(longValue).toString();
     }
 
     private static CBORObject ReadString(InputStream stream, char firstChar) throws java.io.IOException {
       StringBuilder builder = new StringBuilder();
-      if (firstChar < (int)'0' && firstChar > (int)'9') {
+      if (firstChar < '0' || firstChar > '9') {
         throw new CBORException("Invalid integer encoding");
       }
       builder.append(firstChar);
@@ -139,9 +144,9 @@ EInteger.FromInt64(longValue).toString();
         if (c < 0) {
           throw new CBORException("Premature end of data");
         }
-        if (c >= (int)'0' && c <= (int)'9') {
+        if (c >= '0' && c <= '9') {
           builder.append((char)c);
-        } else if (c == (int)':') {
+        } else if (c == ':') {
           break;
         } else {
           throw new CBORException("Invalid integer encoding");
@@ -149,7 +154,7 @@ EInteger.FromInt64(longValue).toString();
       }
       String s = builder.toString();
       if (s.length() >= 2 && s.charAt(0) == '0' && s.charAt(1) == '0') {
-          throw new CBORException("Invalid integer encoding");
+        throw new CBORException("Invalid integer encoding");
       }
       EInteger numlength = EInteger.FromString(s);
       if (!numlength.CanFitInInt32()) {
@@ -161,12 +166,13 @@ EInteger.FromInt64(longValue).toString();
         numlength.ToInt32Checked(),
         builder,
         false)) {
-        case -2:
-          throw new CBORException("Premature end of data");
-        case -1:
-          throw new CBORException("Invalid UTF-8");
-      }
-      return CBORObject.FromObject(builder.toString());
+case -2:
+throw new CBORException("Premature end of data");
+case -1:
+throw new CBORException("Invalid UTF-8");
+default:
+return CBORObject.FromString(builder.toString());
+}
     }
 
     public static void Write(CBORObject obj, OutputStream stream) throws java.io.IOException {
@@ -177,9 +183,9 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)0x69)));
+        stream.write((0x69));
         WriteUtf8(obj.ToObject(EInteger.class).toString(), stream);
-        stream.write(((byte)((byte)0x65)));
+        stream.write((0x65));
       } else if (obj.getType() == CBORType.TextString) {
         String s = obj.AsString();
         long length = com.upokecenter.util.DataUtilities.GetUtf8Length(s, false);
@@ -190,7 +196,7 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)':')));
+        stream.write(((byte)':'));
         WriteUtf8(s, stream);
       } else if (obj.getType() == CBORType.Map) {
         boolean hasNonStringKeys = false;
@@ -214,7 +220,7 @@ EInteger.FromInt64(longValue).toString();
           if (stream == null) {
             throw new NullPointerException("stream");
           }
-          stream.write(((byte)((byte)0x64)));
+          stream.write((0x64));
           for (Map.Entry<String, CBORObject> entry : valueSMap.entrySet()) {
             String key = entry.getKey();
             CBORObject value = entry.getValue();
@@ -225,16 +231,16 @@ EInteger.FromInt64(longValue).toString();
             WriteUtf8(
               LongToString(length),
               stream);
-            stream.write(((byte)((byte)':')));
+            stream.write(((byte)':'));
             WriteUtf8(key, stream);
             Write(value, stream);
           }
-          stream.write(((byte)((byte)0x65)));
+          stream.write((0x65));
         } else {
           if (stream == null) {
             throw new NullPointerException("stream");
           }
-          stream.write(((byte)((byte)0x64)));
+          stream.write((0x64));
           for (CBORObject key : obj.getKeys()) {
             String str = key.AsString();
             long length = com.upokecenter.util.DataUtilities.GetUtf8Length(str, false);
@@ -242,21 +248,21 @@ EInteger.FromInt64(longValue).toString();
               throw new CBORException("invalid String");
             }
             WriteUtf8(LongToString(length), stream);
-            stream.write(((byte)((byte)':')));
+            stream.write(((byte)':'));
             WriteUtf8(str, stream);
             Write(obj.get(key), stream);
           }
-          stream.write(((byte)((byte)0x65)));
+          stream.write((0x65));
         }
       } else if (obj.getType() == CBORType.Array) {
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)0x6c)));
+        stream.write((0x6c));
         for (int i = 0; i < obj.size(); ++i) {
           Write(obj.get(i), stream);
         }
-        stream.write(((byte)((byte)0x65)));
+        stream.write((0x65));
       } else {
         String str = obj.ToJSONString();
         long length = com.upokecenter.util.DataUtilities.GetUtf8Length(str, false);
@@ -267,7 +273,7 @@ EInteger.FromInt64(longValue).toString();
         if (stream == null) {
           throw new NullPointerException("stream");
         }
-        stream.write(((byte)((byte)':')));
+        stream.write(((byte)':'));
         WriteUtf8(str, stream);
       }
     }

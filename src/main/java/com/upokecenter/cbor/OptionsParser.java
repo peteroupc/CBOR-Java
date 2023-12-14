@@ -2,8 +2,6 @@ package com.upokecenter.cbor;
 
 import java.util.*;
 
-import com.upokecenter.util.*;
-
   final class OptionsParser {
     private final Map<String, String> dict = new
     HashMap<String, String>();
@@ -42,7 +40,7 @@ import com.upokecenter.util.*;
           index = index2 + delimLength;
         }
       }
-      return (String[])strings.toArray(new String[] { });
+      return strings.toArray(new String[] { });
     }
 
     public OptionsParser(String options) {
@@ -66,8 +64,8 @@ import com.upokecenter.util.*;
 
     public String GetLCString(String key, String defaultValue) {
       String lckey = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(key);
-      if (this.dict.containsKey(lckey)) {
-        String lcvalue = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
+      String val = null; if ((val = this.dict.getOrDefault(lckey, null)) != null) {
+        String lcvalue = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(val);
         return lcvalue;
       }
       return defaultValue;
@@ -75,8 +73,8 @@ import com.upokecenter.util.*;
 
     public boolean GetBoolean(String key, boolean defaultValue) {
       String lckey = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(key);
-      if (this.dict.containsKey(lckey)) {
-        String lcvalue = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(this.dict.get(lckey));
+      String val = null; if ((val = this.dict.getOrDefault(lckey, null)) != null) {
+        String lcvalue = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(val);
         return lcvalue.equals("1") ||
           lcvalue.equals("yes") ||
           lcvalue.equals("on") ||

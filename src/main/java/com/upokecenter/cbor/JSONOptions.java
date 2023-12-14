@@ -1,7 +1,5 @@
 package com.upokecenter.cbor;
 
-import java.util.*;
-
   /**
    * Includes options to control how CBOR objects are converted to and from
    * JavaScript object Notation (JSON).
@@ -13,83 +11,84 @@ import java.util.*;
      * conversion modes affects how CBOR objects are later encoded (such as via
      * {@code EncodeToBytes}).
      */
-    public enum ConversionMode {
-       /**
-        * JSON numbers are decoded to CBOR using the full precision given in the JSON
-        * text. The number will be converted to a CBOR object as follows: If the
-        * number's exponent is 0 (after shifting the decimal point to the end of the
-        * number without changing its value), use the rules given in the {@code
-        * CBORObject.FromObject(EInteger)} method; otherwise, use the rules given in
-        * the {@code CBORObject.FromObject(EDecimal)} method. An exception in version
-        * 4.x involves negative zeros; if the negative zero's exponent is 0, it's
-        * written as a CBOR floating-point number; otherwise the negative zero is
-        * written as an EDecimal.
-        */
-       Full,
+    public enum ConversionMode
+    {
+      /**
+       * JSON numbers are decoded to CBOR using the full precision given in the JSON
+       * text. The number will be converted to a CBOR object as follows: If the
+       * number's exponent is 0 (after shifting the decimal point to the end of the
+       * number without changing its value), use the rules given in the {@code
+       * CBORObject.FromObject(EInteger)} method; otherwise, use the rules given in
+       * the {@code CBORObject.FromObject(EDecimal)} method. An exception in version
+       * 4.x involves negative zeros; if the negative zero's exponent is 0, it's
+       * written as a CBOR floating-point number; otherwise the negative zero is
+       * written as an EDecimal.
+       */
+      Full,
 
-       /**
-        * <p>JSON numbers are decoded to CBOR as their closest-rounded approximation
-        * as 64-bit binary floating-point numbers (using the
-        * round-to-nearest/ties-to-even rounding mode). (In some cases, numbers
-        * extremely close to zero may underflow to positive or negative zero, and
-        * numbers of extremely large absolute value may overflow to infinity.). It's
-        * important to note that this mode affects only how JSON numbers are
-        * <i>decoded</i> to a CBOR object; it doesn't affect how {@code EncodeToBytes}
-        * and other methods encode CBOR objects. Notably, by default, {@code
-        * EncodeToBytes} encodes CBOR floating-point values to the CBOR format in
-        * their 16-bit ("half-float"), 32-bit ("single-precision"), or 64-bit
-        * ("double-precision") encoding form depending on the value.</p>
-        */
-       Double,
+      /**
+       * <p>JSON numbers are decoded to CBOR as their closest-rounded approximation
+       * as 64-bit binary floating-point numbers (using the
+       * round-to-nearest/ties-to-even rounding mode). (In some cases, numbers
+       * extremely close to zero may underflow to positive or negative zero, and
+       * numbers of extremely large absolute value may overflow to infinity.). It's
+       * important to note that this mode affects only how JSON numbers are
+       * <i>decoded</i> to a CBOR object; it doesn't affect how {@code EncodeToBytes}
+       * and other methods encode CBOR objects. Notably, by default, {@code
+       * EncodeToBytes} encodes CBOR floating-point values to the CBOR format in
+       * their 16-bit ("half-float"), 32-bit ("single-precision"), or 64-bit
+       * ("double-precision") encoding form depending on the value.</p>
+       */
+      Double,
 
-       /**
-        * <p>A JSON number is decoded to CBOR objects either as a CBOR integer (major
-        * type 0 or 1) if the JSON number represents an integer at least -(2^53)+1 and
-        * less than 2^53, or as their closest-rounded approximation as 64-bit binary
-        * floating-point numbers (using the round-to-nearest/ties-to-even rounding
-        * mode) otherwise. For example, the JSON number
-        * 0.99999999999999999999999999999999999 is not an integer, so it's converted
-        * to its closest 64-bit binary floating-point approximation, namely 1.0. (In
-        * some cases, numbers extremely close to zero may underflow to positive or
-        * negative zero, and numbers of extremely large absolute value may overflow to
-        * infinity.). It's important to note that this mode affects only how JSON
-        * numbers are <i>decoded</i> to a CBOR object; it doesn't affect how {@code
-        * EncodeToBytes} and other methods encode CBOR objects. Notably, by default,
-        * {@code EncodeToBytes} encodes CBOR floating-point values to the CBOR format
-        * in their 16-bit ("half-float"), 32-bit ("single-precision"), or 64-bit
-        * ("double-precision") encoding form depending on the value.</p>
-        */
-       IntOrFloat,
+      /**
+       * <p>A JSON number is decoded to CBOR objects either as a CBOR integer (major
+       * type 0 or 1) if the JSON number represents an integer at least -(2^53)+1 and
+       * less than 2^53, or as their closest-rounded approximation as 64-bit binary
+       * floating-point numbers (using the round-to-nearest/ties-to-even rounding
+       * mode) otherwise. For example, the JSON number
+       * 0.99999999999999999999999999999999999 is not an integer, so it's converted
+       * to its closest 64-bit binary floating-point approximation, namely 1.0. (In
+       * some cases, numbers extremely close to zero may underflow to positive or
+       * negative zero, and numbers of extremely large absolute value may overflow to
+       * infinity.). It's important to note that this mode affects only how JSON
+       * numbers are <i>decoded</i> to a CBOR object; it doesn't affect how {@code
+       * EncodeToBytes} and other methods encode CBOR objects. Notably, by default,
+       * {@code EncodeToBytes} encodes CBOR floating-point values to the CBOR format
+       * in their 16-bit ("half-float"), 32-bit ("single-precision"), or 64-bit
+       * ("double-precision") encoding form depending on the value.</p>
+       */
+      IntOrFloat,
 
-       /**
-        * <p>A JSON number is decoded to CBOR objects either as a CBOR integer (major
-        * type 0 or 1) if the number's closest-rounded approximation as a 64-bit
-        * binary floating-point number (using the round-to-nearest/ties-to-even
-        * rounding mode) represents an integer at least -(2^53)+1 and less than 2^53,
-        * or as that approximation otherwise. For example, the JSON number
-        * 0.99999999999999999999999999999999999 is the integer 1 when rounded to its
-        * closest 64-bit binary floating-point approximation (1.0), so it's converted
-        * to the CBOR integer 1 (major type 0). (In some cases, numbers extremely
-        * close to zero may underflow to zero, and numbers of extremely large absolute
-        * value may overflow to infinity.). It's important to note that this mode
-        * affects only how JSON numbers are <i>decoded</i> to a CBOR object; it
-        * doesn't affect how {@code EncodeToBytes} and other methods encode CBOR
-        * objects. Notably, by default, {@code EncodeToBytes} encodes CBOR
-        * floating-point values to the CBOR format in their 16-bit ("half-float"),
-        * 32-bit ("single-precision"), or 64-bit ("double-precision") encoding form
-        * depending on the value.</p>
-        */
-       IntOrFloatFromDouble,
+      /**
+       * <p>A JSON number is decoded to CBOR objects either as a CBOR integer (major
+       * type 0 or 1) if the number's closest-rounded approximation as a 64-bit
+       * binary floating-point number (using the round-to-nearest/ties-to-even
+       * rounding mode) represents an integer at least -(2^53)+1 and less than 2^53,
+       * or as that approximation otherwise. For example, the JSON number
+       * 0.99999999999999999999999999999999999 is the integer 1 when rounded to its
+       * closest 64-bit binary floating-point approximation (1.0), so it's converted
+       * to the CBOR integer 1 (major type 0). (In some cases, numbers extremely
+       * close to zero may underflow to zero, and numbers of extremely large absolute
+       * value may overflow to infinity.). It's important to note that this mode
+       * affects only how JSON numbers are <i>decoded</i> to a CBOR object; it
+       * doesn't affect how {@code EncodeToBytes} and other methods encode CBOR
+       * objects. Notably, by default, {@code EncodeToBytes} encodes CBOR
+       * floating-point values to the CBOR format in their 16-bit ("half-float"),
+       * 32-bit ("single-precision"), or 64-bit ("double-precision") encoding form
+       * depending on the value.</p>
+       */
+      IntOrFloatFromDouble,
 
-       /**
-        * JSON numbers are decoded to CBOR as their closest-rounded approximation to
-        * an IEEE 854 decimal128 value, using the round-to-nearest/ties-to-even
-        * rounding mode and the rules for the EDecimal form of that approximation as
-        * given in the {@code CBORObject.FromObject(EDecimal)} method. (In some cases,
-        * numbers extremely close to zero may underflow to zero, and numbers of
-        * extremely large absolute value may overflow to infinity.).
-        */
-       Decimal128,
+      /**
+       * JSON numbers are decoded to CBOR as their closest-rounded approximation to
+       * an IEEE 854 decimal128 value, using the round-to-nearest/ties-to-even
+       * rounding mode and the rules for the EDecimal form of that approximation as
+       * given in the {@code CBORObject.FromObject(EDecimal)} method. (In some cases,
+       * numbers extremely close to zero may underflow to zero, and numbers of
+       * extremely large absolute value may overflow to infinity.).
+       */
+      Decimal128,
     }
 
     /**
@@ -162,11 +161,12 @@ import java.util.*;
      * enumeration (where the letters can be any combination of basic upper-case
      * and/or basic lower-case letters), and any other value is unrecognized. (If
      * the {@code numberconversion} key is not given, its value is treated as
-     * {@code full}. If that key is given, but has an unrecognized value, an
-     * exception is thrown.) For example, {@code base64padding = Yes} and {@code
-     * base64padding = 1} both set the {@code Base64Padding} property to true, and
-     * {@code numberconversion = double} sets the {@code NumberConversion} property
-     * to {@code ConversionMode.Double} .
+     * {@code intorfloat} (formerly {@code full} in versions earlier than 5.0). If
+     * that key is given, but has an unrecognized value, an exception is thrown.)
+     * For example, {@code base64padding = Yes} and {@code base64padding = 1} both set
+     * the {@code Base64Padding} property to true, and {@code
+     * numberconversion = double} sets the {@code NumberConversion} property to
+     * {@code ConversionMode.Double} .
      * @throws NullPointerException The parameter {@code paramString} is null. In
      * the future, this class may allow other keys to store other kinds of values,
      * not just true or false.
@@ -242,19 +242,11 @@ private final boolean propVarbase64padding;
 
     private String FromNumberConversion() {
       ConversionMode kind = this.getNumberConversion();
-      if (kind == ConversionMode.Full) {
-        return "full";
-      }
-      if (kind == ConversionMode.Double) {
-        return "double";
-      }
-      if (kind == ConversionMode.Decimal128) {
-        return "decimal128";
-      }
-      if (kind == ConversionMode.IntOrFloat) {
-        return "intorfloat";
-      }
-      return (kind == ConversionMode.IntOrFloatFromDouble) ?
+      return kind == ConversionMode.Full ? "full" :
+        kind == ConversionMode.Double ? "double" :
+        kind == ConversionMode.Decimal128 ? "decimal128" :
+        kind == ConversionMode.IntOrFloat ? "intorfloat" :
+        (kind == ConversionMode.IntOrFloatFromDouble) ?
 "intorfloatfromdouble" : "full";
     }
 
@@ -276,7 +268,7 @@ private final boolean propVarbase64padding;
           return ConversionMode.IntOrFloatFromDouble;
         }
       } else {
-        return ConversionMode.Full;
+        return ConversionMode.IntOrFloat;
       }
       throw new IllegalArgumentException("Unrecognized conversion mode");
     }
