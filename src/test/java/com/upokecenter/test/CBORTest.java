@@ -2517,7 +2517,7 @@ try { if (inputStream != null) { inputStream.close(); } } catch (java.io.IOExcep
       for (int i = 0; i < 2000; ++i) {
         CBORObject originalObject = CBORTestCommon.RandomCBORObject(rand);
         byte[] array = originalObject.EncodeToBytes();
-        System.out.println("i=" + i + " obj=" + array.length);
+        // System.out.println("i=" + i + " obj=" + array.length);
         TestRandomOne(SlightlyModify(array, rand));
       }
     }

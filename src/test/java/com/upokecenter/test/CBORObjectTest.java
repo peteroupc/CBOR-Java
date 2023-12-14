@@ -11026,38 +11026,44 @@ CBORObject.FromCBORObjectAndTag(CBORObject.FromObject(dbl), 1);
         Integer.MIN_VALUE);
     }
 
+    private static void AreEqualDouble(double a, double b) {
+      if (a != b) {
+        Assert.fail(a+ ", " + b);
+      }
+    }
+
     @Test(timeout = 10000)
     public void TestFromJsonStringSmallDouble() {
       CBORObject cbor;
       AssertJSONDouble("0", "double", 0.0);
       cbor = FromJSON("[0, 1, 2, 3]", "double");
       Assert.assertEquals(4, cbor.size());
-      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
-      Assert.assertEquals(1.0, cbor.get(1).AsDouble());
-      Assert.assertEquals(2.0, cbor.get(2).AsDouble());
-      Assert.assertEquals(3.0, cbor.get(3).AsDouble());
+      AreEqualDouble(0.0, cbor.get(0).AsDouble());
+      AreEqualDouble(1.0, cbor.get(1).AsDouble());
+      AreEqualDouble(2.0, cbor.get(2).AsDouble());
+      AreEqualDouble(3.0, cbor.get(3).AsDouble());
       cbor = FromJSON("[0]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals(0.0, cbor.get(0).AsDouble());
+      AreEqualDouble(0.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-0]", "double");
       Assert.assertEquals(1, cbor.size());
       cbor = FromJSON("[1]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals(1.0, cbor.get(0).AsDouble());
+      AreEqualDouble(1.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-1]", "double");
       Assert.assertEquals(1, cbor.size());
-      Assert.assertEquals(-1.0, cbor.get(0).AsDouble());
+      AreEqualDouble(-1.0, cbor.get(0).AsDouble());
       cbor = FromJSON("[-1022,-1023,-1024,-1025,1022,1023,1024,1025]",
           "double");
       Assert.assertEquals(8, cbor.size());
-      Assert.assertEquals(-1022.0, cbor.get(0).AsDouble());
-      Assert.assertEquals(-1023.0, cbor.get(1).AsDouble());
-      Assert.assertEquals(-1024.0, cbor.get(2).AsDouble());
-      Assert.assertEquals(-1025.0, cbor.get(3).AsDouble());
-      Assert.assertEquals(1022.0, cbor.get(4).AsDouble());
-      Assert.assertEquals(1023.0, cbor.get(5).AsDouble());
-      Assert.assertEquals(1024.0, cbor.get(6).AsDouble());
-      Assert.assertEquals(1025.0, cbor.get(7).AsDouble());
+      AreEqualDouble(-1022.0, cbor.get(0).AsDouble());
+      AreEqualDouble(-1023.0, cbor.get(1).AsDouble());
+      AreEqualDouble(-1024.0, cbor.get(2).AsDouble());
+      AreEqualDouble(-1025.0, cbor.get(3).AsDouble());
+      AreEqualDouble(1022.0, cbor.get(4).AsDouble());
+      AreEqualDouble(1023.0, cbor.get(5).AsDouble());
+      AreEqualDouble(1024.0, cbor.get(6).AsDouble());
+      AreEqualDouble(1025.0, cbor.get(7).AsDouble());
     }
 
     @Test(timeout = 10000)

@@ -590,21 +590,21 @@ if(!setters){
       return ret;
   }
 
-  /**
-   * <p>FindOneArgumentMethod.</p>
-   *
-   * @param obj a {@link java.lang.Object} object.
-   * @param name a {@link java.lang.String} object.
-   * @param argtype a {@link java.lang.Class} object.
-   * @return a {@link java.lang.Object} object.
-   */
-  public static Object FindOneArgumentMethod(final Object obj, final String name, final Type argtype) {
-    if(!(argtype instanceof Class<?>))return null;
+  public static Object FindOneArgumentMethod(final Class<?> objClass, final String name, final Type argtype) {
+    if(!(argtype instanceof Class<?>)) {
+      //System.out.println("Not a class: "+argtype);
+      return null;
+    }
+    if(objClass==null)return null;
+    //System.out.println("Finding one arg method "+name+" "+argtype);
     try {
-      return obj.getClass().getMethod(name, (Class<?>)argtype);
+      //System.out.println("Finding one arg method "+Arrays.toString(objClass.getMethods()));
+      return objClass.getMethod(name, (Class<?>)argtype);
     } catch (SecurityException e) {
+      //System.out.println("Security exception");
       return null;
     } catch (NoSuchMethodException e) {
+      //System.out.println("No such method exception "+obj);
       return null;
     }
   }
