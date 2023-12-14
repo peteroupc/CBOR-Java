@@ -20,47 +20,47 @@ import com.upokecenter.numbers.*;
       try {
         CBORObject.True.ToObject(BigInteger.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.False.ToObject(BigInteger.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.Undefined.ToObject(BigInteger.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.NewArray().ToObject(BigInteger.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.NewMap().ToObject(BigInteger.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       CBORObject numbers = CBORObjectTest.GetNumberData();
       for (int i = 0; i < numbers.size(); ++i) {
@@ -90,7 +90,7 @@ import com.upokecenter.numbers.*;
             // NOTE: Intentionally empty
           } catch (Exception ex) {
             Assert.fail(ex.toString());
-            throw new IllegalStateException("", ex);
+            throw new CBORException("", ex);
           }
         }
       }
@@ -206,7 +206,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
@@ -216,7 +216,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
@@ -226,7 +226,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
@@ -236,7 +236,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
@@ -246,7 +246,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
@@ -256,7 +256,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
     }
 
@@ -359,7 +359,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         Object objectTemp = CBORTestCommon.DecNegInf;
@@ -371,7 +371,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         String stringTemp = ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
@@ -381,7 +381,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         Object objectTemp = CBORTestCommon.DecPosInf;
@@ -393,7 +393,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         Object objectTemp = CBORTestCommon.DecNegInf;
@@ -405,7 +405,7 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         Object objectTemp = "NaN";
@@ -417,62 +417,62 @@ import com.upokecenter.numbers.*;
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.NewArray().ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.NewMap().ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.True.ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.False.ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         CBORObject.Undefined.ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
         .ToObject(BigDecimal.class);
         Assert.fail("Should have failed");
-      } catch (IllegalStateException ex) {
+      } catch (CBORException ex) {
         // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+        throw new CBORException("", ex);
       }
     }
   }
