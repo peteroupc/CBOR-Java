@@ -101,40 +101,6 @@ package com.upokecenter.cbor;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with the given value for the Base64Padding option.
-     * @param base64Padding Whether padding is included when writing data in
-     * base64url or traditional base64 format to JSON.
-     * @deprecated Use the more readable String constructor instead.
- */
-@Deprecated
-    public JSONOptions(boolean base64Padding) {
- this("base64Padding=" + (base64Padding ? "1" : "0"));
-    }
-
-    /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
-     * class with the given values for the options.
-     * @param base64Padding Whether padding is included when writing data in
-     * base64url or traditional base64 format to JSON.
-     * @param replaceSurrogates Whether surrogate code points not part of a
-     * surrogate pair (which consists of two consecutive {@code char} s forming one
-     * Unicode code point) are each replaced with a replacement character (U+FFFD).
-     * The default is false; an exception is thrown when such code points are
-     * encountered.
-     */
-@SuppressWarnings("deprecation")
-
-/**
- * @deprecated Use the more readable String constructor instead.
- */
-@Deprecated
-    public JSONOptions(boolean base64Padding, boolean replaceSurrogates) {
- this("base64Padding=" + (base64Padding ? "1" : "0") +
-           ";replacesurrogates=" + (replaceSurrogates ? "1" : "0"));
-    }
-
-    /**
-     * Initializes a new instance of the {@link com.upokecenter.cbor.JSONOptions}
      * class.
      * @param paramString A string setting forth the options to use. This is a
      * semicolon-separated list of options, each of which has a key and a value
@@ -142,31 +108,30 @@ package com.upokecenter.cbor;
      * allowed to appear between the semicolons or between the equal signs, nor may
      * the string begin or end with whitespace. The string can be empty, but cannot
      * be null. The following is an example of this parameter: {@code
-     * base64padding = false;replacesurrogates = true}. The key can be any one of the
+     * writebasic = false;replacesurrogates = true}. The key can be any one of the
      * following where the letters can be any combination of basic upper-case
-     * and/or basic lower-case letters: {@code base64padding}, {@code
-     * replacesurrogates}, {@code allowduplicatekeys}, {@code
-     * preservenegativezero}, {@code numberconversion}, {@code writebasic}, {@code
-     * keepkeyorder}. Other keys are ignored in this version of the CBOR library.
-     * (Keys are compared using a basic case-insensitive comparison, in which two
-     * strings are equal if they match after converting the basic upper-case
-     * letters A to Z (U+0041 to U+005A) in both strings to basic lower-case
-     * letters.) If two or more key/value pairs have equal keys (in a basic
-     * case-insensitive comparison), the value given for the last such key is used.
-     * The first four keys just given can have a value of {@code 1}, {@code true},
-     * {@code yes}, or {@code on} (where the letters can be any combination of
-     * basic upper-case and/or basic lower-case letters), which means true, and any
-     * other value meaning false. The last key, {@code numberconversion}, can have
-     * a value of any name given in the {@code JSONOptions.ConversionMode}
-     * enumeration (where the letters can be any combination of basic upper-case
-     * and/or basic lower-case letters), and any other value is unrecognized. (If
-     * the {@code numberconversion} key is not given, its value is treated as
-     * {@code intorfloat} (formerly {@code full} in versions earlier than 5.0). If
-     * that key is given, but has an unrecognized value, an exception is thrown.)
-     * For example, {@code base64padding = Yes} and {@code base64padding = 1} both set
-     * the {@code Base64Padding} property to true, and {@code
-     * numberconversion = double} sets the {@code NumberConversion} property to
-     * {@code ConversionMode.Double} .
+     * and/or basic lower-case letters: {@code replacesurrogates}, {@code
+     * allowduplicatekeys}, {@code preservenegativezero}, {@code numberconversion},
+     * {@code writebasic}, {@code keepkeyorder}. Other keys are ignored in this
+     * version of the CBOR library. (Keys are compared using a basic
+     * case-insensitive comparison, in which two strings are equal if they match
+     * after converting the basic upper-case letters A to Z (U+0041 to U+005A) in
+     * both strings to basic lower-case letters.) If two or more key/value pairs
+     * have equal keys (in a basic case-insensitive comparison), the value given
+     * for the last such key is used. The first four keys just given can have a
+     * value of {@code 1}, {@code true}, {@code yes}, or {@code on} (where the
+     * letters can be any combination of basic upper-case and/or basic lower-case
+     * letters), which means true, and any other value meaning false. The last key,
+     * {@code numberconversion}, can have a value of any name given in the {@code
+     * JSONOptions.ConversionMode} enumeration (where the letters can be any
+     * combination of basic upper-case and/or basic lower-case letters), and any
+     * other value is unrecognized. (If the {@code numberconversion} key is not
+     * given, its value is treated as {@code intorfloat} (formerly {@code full} in
+     * versions earlier than 5.0). If that key is given, but has an unrecognized
+     * value, an exception is thrown.) For example, {@code allowduplicatekeys = Yes}
+     * and {@code allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
+     * property to true, and {@code numberconversion = double} sets the {@code
+     * NumberConversion} property to {@code ConversionMode.Double}.
      * @throws NullPointerException The parameter {@code paramString} is null. In
      * the future, this class may allow other keys to store other kinds of values,
      * not just true or false.
@@ -187,7 +152,6 @@ package com.upokecenter.cbor;
       this.propVarkeepkeyorder = parser.GetBoolean(
         "keepkeyorder",
         false);
-      this.propVarbase64padding = parser.GetBoolean("base64padding", true);
       this.propVarreplacesurrogates = parser.GetBoolean(
         "replacesurrogates",
         false);
@@ -207,7 +171,6 @@ package com.upokecenter.cbor;
      */
     @Override public String toString() {
       return new StringBuilder()
-        .append("base64padding=").append(this.getBase64Padding() ? "true" : "false")
         .append(";replacesurrogates=")
         .append(this.getReplaceSurrogates() ? "true" : "false")
         .append(";preservenegativezero=")
@@ -224,21 +187,6 @@ package com.upokecenter.cbor;
      * The default options for converting CBOR objects to JSON.
      */
     public static final JSONOptions Default = new JSONOptions();
-
-    /**
-     * Gets a value indicating whether the Base64Padding property is true. This
-     * property has no effect; in previous versions, this property meant that
-     * padding was written out when writing base64url or traditional base64 to
-     * JSON.
-     * @return A value indicating whether the Base64Padding property is true.
-     * @deprecated This property now has no effect. This library now includes \u0020necessary
- * padding when writing traditional base64 to JSON and\u0020includes no
- * padding when writing base64url to JSON, in \u0020accordance with the
- * revision of the CBOR specification.
- */
-@Deprecated
-    public final boolean getBase64Padding() { return propVarbase64padding; }
-private final boolean propVarbase64padding;
 
     private String FromNumberConversion() {
       ConversionMode kind = this.getNumberConversion();
