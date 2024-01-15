@@ -171,7 +171,7 @@ package com.upokecenter.cbor;
      */
     @Override public String toString() {
       return new StringBuilder()
-        .append(";replacesurrogates=")
+        .append("replacesurrogates=")
         .append(this.getReplaceSurrogates() ? "true" : "false")
         .append(";preservenegativezero=")
         .append(this.getPreserveNegativeZero() ? "true" : "false")
