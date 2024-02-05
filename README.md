@@ -22,12 +22,12 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 <dependency>
   <groupId>com.upokecenter</groupId>
   <artifactId>cbor</artifactId>
-  <version>5.0.0-alpha1</version>
+  <version>4.5.3</version>
 </dependency>
 ```
 
 In other Java-based environments, the library can be referred to by its
-group ID (`com.upokecenter`), artifact ID (`cbor`), and version, as given above.
+group ID (`com.upokecenter`), artifact ID (`cbor`), and version, as given above.  A non-release version of this library is `5.0.0-alpha` rather than the version number given above.
 
 ## Documentation
 
@@ -94,7 +94,7 @@ licensed under Creative Commons Zero (CC0):
 
 ## Signing Key
 
-Release versions of the Java version of this library are signed with the following signing key.
+Release versions, in the Central Repository, of the Java version of this library are signed with the following signing key.
 
 - ID: `Peter Occil (Maven key) <poccil14@gmail.com>`
 - Fingerprint: 1A82D51407003717A4171AAC87522D618F2B2338
