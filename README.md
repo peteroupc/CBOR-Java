@@ -92,23 +92,12 @@ In case this is not possible, this work is also
 licensed under Creative Commons Zero (CC0):
 [https://creativecommons.org/publicdomain/zero/1.0/](https://creativecommons.org/publicdomain/zero/1.0/)
 
-## Clarifications
+## Signing Key
 
-The following are some clarifications to RFC 7049.
+Release versions of the Java version of this library are signed with the following signing key.
 
-- Section 2.4.2 doesn't specify what happens if a bignum's byte
-  string has a length of 0. This implementation treats a positive
-  bignum with length 0 as having a value of 0 and a negative
-  bignum with length 0 as having a value of -1.
-- Section 2.4.1 specifies the number of seconds since the start of 1970. It is
-  based on the POSIX definition of "seconds since the Epoch", which
-  the RFC cites as a normative reference. This definition does not
-  count leap seconds. When this implementation supports date
-  conversion, it won't count leap seconds, either. This implementation
-  treats values of infinity and NaN as invalid.
-- For tag 32, this implementation accepts strings that are valid
-  Internationalized Resource Identifiers (IRIs) in addition to URIs.
-  IRI are like URIs except that they also allow non-ASCII characters.
+- ID: `Peter Occil (Maven key) <poccil14@gmail.com>`
+- Fingerprint: 1A82D51407003717A4171AAC87522D618F2B2338
 
 ## Release Notes
 
