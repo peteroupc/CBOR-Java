@@ -22,7 +22,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 <dependency>
   <groupId>com.upokecenter</groupId>
   <artifactId>cbor</artifactId>
-  <version>4.5.2</version>
+  <version>4.5.4</version>
 </dependency>
 ```
 
@@ -91,6 +91,13 @@ Any copyright to this work is released to the Public Domain.
 In case this is not possible, this work is also
 licensed under Creative Commons Zero (CC0):
 [https://creativecommons.org/publicdomain/zero/1.0/](https://creativecommons.org/publicdomain/zero/1.0/)
+
+## Signing Key
+
+Release versions, in the Central Repository, of the Java version of this library are signed with the following signing key.
+
+- ID: `Peter Occil (Maven key) <poccil14@gmail.com>`
+- Fingerprint: 1A82D51407003717A4171AAC87522D618F2B2338
 
 ## Clarifications
 
