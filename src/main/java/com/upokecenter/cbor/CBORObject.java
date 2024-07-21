@@ -2107,6 +2107,14 @@ CBORUtilities.DoubleToHalfPrecisionIfSameValue(valueBits);
     }
 
     /**
+     * Generates a CBOR object from a java.util.UUID.
+     * @param value The parameter {@code value} is a java.util.UUID.
+     * @return A CBOR object.
+     */
+    public static CBORObject FromGuid(java.util.UUID value) { return new
+CBORUuidConverter().ToCBORObject(value); }
+
+    /**
      * Generates a CBOR object from a 32-bit signed integer.
      * @param value The parameter {@code value} is a 32-bit signed integer.
      * @return A CBOR object.
@@ -2899,6 +2907,22 @@ smallTag) { return FromCBORObjectAndTag(FromObject(valueObValue), smallTag); }
     }
 
     /**
+     * Creates a new CBOR map that stores its keys in an undefined order.
+     * @param keysAndValues A sequence of key-value pairs.
+     * @return A new CBOR map.
+     */
+    public static CBORObject FromMap(Iterable<Tuple<CBORObject,
+  CBORObject >> keysAndValues) {
+      TreeMap<CBORObject, CBORObject> sd = new TreeMap<CBORObject, CBORObject>();
+      foreach (Tuple<CBORObject, CBORObject> kv in keysAndValues) {
+        sd.put(kv.getItem1(), kv.getItem2());
+      }
+      return new CBORObject(
+          CBORObjectTypeMap,
+          sd);
+    }
+
+    /**
      * Creates a new empty CBOR map that ensures that keys are stored in the order
      * in which they are first inserted.
      * @return A new CBOR map.
@@ -2907,6 +2931,22 @@ smallTag) { return FromCBORObjectAndTag(FromObject(valueObValue), smallTag); }
       return new CBORObject(
           CBORObjectTypeMap,
           PropertyMap.NewOrderedDict());
+    }
+
+    /**
+     * Creates a new CBOR map that ensures that keys are stored in order.
+     * @param keysAndValues A sequence of key-value pairs.
+     * @return A new CBOR map.
+     */
+    public static CBORObject FromOrderedMap(Iterable<Tuple<CBORObject,
+  CBORObject >> keysAndValues) {
+      PropertyMap oDict = PropertyMap.NewOrderedDict();
+      foreach (Tuple<CBORObject, CBORObject> kv in keysAndValues) {
+        oDict.Add(kv.getItem1(), kv.getItem2());
+      }
+      return new CBORObject(
+          CBORObjectTypeMap,
+          oDict);
     }
 
     /**
@@ -4269,6 +4309,16 @@ public static void Write(
     public float AsSingle() {
       CBORNumber cn = this.AsNumber();
       return cn.GetNumberInterface().AsSingle(cn.GetValue());
+    }
+
+    /**
+     * Converts this object to a java.util.UUID.
+     * @return A java.util.UUID.
+     * @throws IllegalStateException This object does not represent a java.util.UUID.
+     * @throws CBORException This object does not have the expected tag.
+     */
+    public java.util.UUID AsGuid() {
+      return new CBORUuidConverter().FromCBORObject(this);
     }
 
     /**

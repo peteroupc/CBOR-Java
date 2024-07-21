@@ -37,18 +37,11 @@ https://creativecommons.org/publicdomain/zero/1.0/
         throw new CBORException("Must have outermost tag 37");
       }
       ValidateObject(obj);
-      byte[] bytes = obj.GetByteString();
-      char[] guidChars = new char[36];
-      String hex = "0123456789abcdef";
-      int index = 0;
-      for (int i = 0; i < 16; ++i) {
-        if (i == 4 || i == 6 || i == 8 || i == 10) {
-          guidChars[index++] = '-';
-        }
-        guidChars[index++] = hex.charAt((bytes[i] >> 4) & 15);
-        guidChars[index++] = hex.charAt(bytes[i] & 15);
-      }
-      String guidString = new String(guidChars);
-      return java.util.UUID.fromString(guidString);
+      byte[] b2 = obj.GetByteString();
+      byte[] bytes = {
+        b2[3], b2[2], b2[1], b2[0], b2[5], b2[4], b2[7],
+        b2[6], b2[8], b2[9], b2[10], b2[11], b2[12], b2[13], b2[14], b2[15],
+       };
+      return java.util.UUID.fromString(bytes);
     }
   }

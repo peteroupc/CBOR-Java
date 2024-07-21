@@ -675,6 +675,34 @@ if(!setters){
       return bytes2;
   }
 
+  public static java.util.UUID UUIDFromDotNetBytes(byte[] bytes) {
+     char[] guidChars=new char[36];
+     String hex = "0123456789abcdef";
+     int index = 0;
+     guidChars[index++]=bytes[3];
+     guidChars[index++]=bytes[2];
+     guidChars[index++]=bytes[1];
+     guidChars[index++]=bytes[0];
+     guidChars[index++]='-';
+     guidChars[index++]=bytes[5];
+     guidChars[index++]=bytes[4];
+     guidChars[index++]='-';
+     guidChars[index++]=bytes[7];
+     guidChars[index++]=bytes[6];
+     guidChars[index++]='-';
+     guidChars[index++]=bytes[8];
+     guidChars[index++]=bytes[9];
+     guidChars[index++]='-';
+     guidChars[index++]=bytes[10];
+     guidChars[index++]=bytes[11];
+     guidChars[index++]=bytes[12];
+     guidChars[index++]=bytes[13];
+     guidChars[index++]=bytes[14];
+     guidChars[index++]=bytes[15];
+     String guidString = new String(guidChars);
+     return java.util.UUID.fromString(guidString);
+  }
+
     public static CBORObject FromObjectOther(Object obj) {
       if (obj instanceof BigDecimal) {
         // TODO: Avoid going through EDecimal

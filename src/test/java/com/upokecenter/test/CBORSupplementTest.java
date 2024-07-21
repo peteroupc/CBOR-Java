@@ -11,6 +11,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
 import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
@@ -705,6 +706,19 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       Assert.assertEquals((byte)0xdd, bytes[13]);
       Assert.assertEquals((byte)0xee, bytes[14]);
       Assert.assertEquals((byte)0xff, bytes[15]);
+      bytes = new byte[] {
+        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        (byte)0x88, (byte)0x99, (byte)0xaa, (byte)0xbb, (byte)0xcc, (byte)0xdd, (byte)0xee, (byte)0xff,
+       };
+      obj = CBORObject.FromCBORObjectAndTag(
+          CBORObject.FromByteArray(bytes),
+          37);
+      {
+        String stringTemp = com.upokecenter.util.DataUtilities.ToLowerCaseAscii(obj.AsGuid().toString());
+        Assert.assertEquals(
+          "00112233-4455-6677-8899-aabbccddeeff",
+          stringTemp);
+}
     }
 
     // @Test
