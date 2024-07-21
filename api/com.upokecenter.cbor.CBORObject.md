@@ -134,6 +134,9 @@
  Converts this object to an arbitrary-precision integer if this CBOR object's
  type is Integer.
 
+* `UUID AsGuid()`<br>
+ Converts this object to a java.util.UUID.
+
 * `int AsInt32()`<br>
  Converts this object to a 32-bit signed integer.
 
@@ -300,6 +303,9 @@
  Generates a CBOR object from a floating-point number represented by its
  bits.
 
+* `static CBORObject FromGuid(UUID value)`<br>
+ Generates a CBOR object from a java.util.UUID.
+
 * `static CBORObject FromInt16(short value)`<br>
  Generates a CBOR object from a 16-bit signed integer.
 
@@ -362,6 +368,9 @@
  JSONOptions jsonoptions)`<br>
  Generates a CBOR object from a text string in JavaScript object Notation
  (JSON) format, using the specified options to control the decoding process.
+
+* `static CBORObject FromMap(Iterable<Map.Entry<CBORObject,CBORObject>> keysAndValues)`<br>
+ Creates a new CBOR map that stores its keys in an undefined order.
 
 * `static CBORObject FromObject(boolean value)`<br>
  Deprecated.
@@ -456,6 +465,9 @@ Use FromCBORObjectAndTag instead.
  com.upokecenter.numbers.EInteger bigintTag)`<br>
  Deprecated.
 Use FromCBORObjectAndTag instead.
+
+* `static CBORObject FromOrderedMap(Iterable<Map.Entry<CBORObject,CBORObject>> keysAndValues)`<br>
+ Creates a new CBOR map that ensures that keys are stored in order.
 
 * `static CBORObject FromSimpleValue(int simpleValue)`<br>
  Creates a CBOR object from a simple value number.
@@ -2327,6 +2339,18 @@ Generates a CBOR object from a 32-bit signed integer.
 
 * A CBOR object.
 
+### FromGuid
+    public static CBORObject FromGuid(UUID value)
+Generates a CBOR object from a java.util.UUID.
+
+**Parameters:**
+
+* <code>value</code> - The parameter <code>value</code> is a java.util.UUID.
+
+**Returns:**
+
+* A CBOR object.
+
 ### FromObject
     @Deprecated public static CBORObject FromObject(int value)
 Generates a CBOR object from a 32-bit signed integer.
@@ -2960,10 +2984,34 @@ Creates a new empty CBOR map that stores its keys in an undefined order.
 
 * A new CBOR map.
 
+### FromMap
+    public static CBORObject FromMap(Iterable<Map.Entry<CBORObject,CBORObject>> keysAndValues)
+Creates a new CBOR map that stores its keys in an undefined order.
+
+**Parameters:**
+
+* <code>keysAndValues</code> - A sequence of key-value pairs.
+
+**Returns:**
+
+* A new CBOR map.
+
 ### NewOrderedMap
     public static CBORObject NewOrderedMap()
 Creates a new empty CBOR map that ensures that keys are stored in the order
  in which they are first inserted.
+
+**Returns:**
+
+* A new CBOR map.
+
+### FromOrderedMap
+    public static CBORObject FromOrderedMap(Iterable<Map.Entry<CBORObject,CBORObject>> keysAndValues)
+Creates a new CBOR map that ensures that keys are stored in order.
+
+**Parameters:**
+
+* <code>keysAndValues</code> - A sequence of key-value pairs.
 
 **Returns:**
 
@@ -3985,6 +4033,20 @@ Converts this object to a 32-bit floating point number.
 * <code>IllegalStateException</code> - This object does not represent a number (for
  this purpose, infinities and not-a-number or NaN values, but not
  CBORObject.Null, are considered numbers).
+
+### AsGuid
+    public UUID AsGuid()
+Converts this object to a java.util.UUID.
+
+**Returns:**
+
+* A java.util.UUID.
+
+**Throws:**
+
+* <code>IllegalStateException</code> - This object does not represent a java.util.UUID.
+
+* <code>CBORException</code> - This object does not have the expected tag.
 
 ### AsString
     public String AsString()

@@ -329,6 +329,13 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       }
     }
 
+    public static void AreShortsEqual(short shortA, short shortB) {
+      Assert.assertEquals(shortA, shortB);
+    }
+    public static void AreLongsEqual(long longA, long longB) {
+      Assert.assertEquals(longA, longB);
+    }
+
     public static String CharString(int cp, boolean quoted, char[] charbuf) {
       int index = 0;
       if (quoted) {
@@ -688,9 +695,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         if (numberinfo.get("int16").AsBoolean()) {
           int intForShort = TestCommon.StringToInt(
              numberinfo.get("integer").AsString());
-          Assert.assertEquals(
+          AreShortsEqual(
             (short)intForShort,
-            cbornumber.ToObject(short.class));
+            (short)cbornumber.ToObject(short.class));
         } else {
           try {
             cbornumber.ToObject(short.class);
@@ -891,18 +898,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         CBORObject cbornumbersingle =
           ToObjectTest.TestToFromObjectRoundTrip(edec.ToSingle());
         if (numberinfo.get("int64").AsBoolean()) {
-          Assert.assertEquals(
+          AreLongsEqual(
             TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-            cbornumber.ToObject(long.class));
+            (long)cbornumber.ToObject(long.class));
           if (isdouble) {
-            Assert.assertEquals(
+            AreLongsEqual(
               TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-              cbornumberdouble.ToObject(long.class));
+              (long)cbornumberdouble.ToObject(long.class));
           }
           if (issingle) {
-            Assert.assertEquals(
+            AreLongsEqual(
               TestCommon.StringToLong(numberinfo.get("integer").AsString()),
-              cbornumbersingle.ToObject(long.class));
+              (long)cbornumbersingle.ToObject(long.class));
           }
         } else {
           try {

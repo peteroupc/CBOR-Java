@@ -675,30 +675,36 @@ if(!setters){
       return bytes2;
   }
 
+  private static int setGuidBytes(char[] guidChars, int index, byte b) {
+    String hex = "0123456789abcdef";
+    guidChars[index++]=hex.charAt((((int)b)>>4)&0xF);
+    guidChars[index++]=hex.charAt((((int)b))&0xF);
+    return index;
+  }
+
   public static java.util.UUID UUIDFromDotNetBytes(byte[] bytes) {
      char[] guidChars=new char[36];
-     String hex = "0123456789abcdef";
      int index = 0;
-     guidChars[index++]=bytes[3];
-     guidChars[index++]=bytes[2];
-     guidChars[index++]=bytes[1];
-     guidChars[index++]=bytes[0];
+     index=setGuidBytes(guidChars,index,bytes[3]);
+     index=setGuidBytes(guidChars,index,bytes[2]);
+     index=setGuidBytes(guidChars,index,bytes[1]);
+     index=setGuidBytes(guidChars,index,bytes[0]);
      guidChars[index++]='-';
-     guidChars[index++]=bytes[5];
-     guidChars[index++]=bytes[4];
+     index=setGuidBytes(guidChars,index,bytes[5]);
+     index=setGuidBytes(guidChars,index,bytes[4]);
      guidChars[index++]='-';
-     guidChars[index++]=bytes[7];
-     guidChars[index++]=bytes[6];
+     index=setGuidBytes(guidChars,index,bytes[7]);
+     index=setGuidBytes(guidChars,index,bytes[6]);
      guidChars[index++]='-';
-     guidChars[index++]=bytes[8];
-     guidChars[index++]=bytes[9];
+     index=setGuidBytes(guidChars,index,bytes[8]);
+     index=setGuidBytes(guidChars,index,bytes[9]);
      guidChars[index++]='-';
-     guidChars[index++]=bytes[10];
-     guidChars[index++]=bytes[11];
-     guidChars[index++]=bytes[12];
-     guidChars[index++]=bytes[13];
-     guidChars[index++]=bytes[14];
-     guidChars[index++]=bytes[15];
+     index=setGuidBytes(guidChars,index,bytes[10]);
+     index=setGuidBytes(guidChars,index,bytes[11]);
+     index=setGuidBytes(guidChars,index,bytes[12]);
+     index=setGuidBytes(guidChars,index,bytes[13]);
+     index=setGuidBytes(guidChars,index,bytes[14]);
+     index=setGuidBytes(guidChars,index,bytes[15]);
      String guidString = new String(guidChars);
      return java.util.UUID.fromString(guidString);
   }

@@ -2911,11 +2911,11 @@ smallTag) { return FromCBORObjectAndTag(FromObject(valueObValue), smallTag); }
      * @param keysAndValues A sequence of key-value pairs.
      * @return A new CBOR map.
      */
-    public static CBORObject FromMap(Iterable<Tuple<CBORObject,
+    public static CBORObject FromMap(Iterable<Map.Entry<CBORObject,
   CBORObject >> keysAndValues) {
       TreeMap<CBORObject, CBORObject> sd = new TreeMap<CBORObject, CBORObject>();
-      foreach (Tuple<CBORObject, CBORObject> kv in keysAndValues) {
-        sd.put(kv.getItem1(), kv.getItem2());
+      for (Map.Entry<CBORObject, CBORObject> kv : keysAndValues) {
+        sd.put(kv.getKey(), kv.getValue());
       }
       return new CBORObject(
           CBORObjectTypeMap,
@@ -2938,11 +2938,12 @@ smallTag) { return FromCBORObjectAndTag(FromObject(valueObValue), smallTag); }
      * @param keysAndValues A sequence of key-value pairs.
      * @return A new CBOR map.
      */
-    public static CBORObject FromOrderedMap(Iterable<Tuple<CBORObject,
+    public static CBORObject FromOrderedMap(Iterable<Map.Entry<CBORObject,
   CBORObject >> keysAndValues) {
-      PropertyMap oDict = PropertyMap.NewOrderedDict();
-      foreach (Tuple<CBORObject, CBORObject> kv in keysAndValues) {
-        oDict.Add(kv.getItem1(), kv.getItem2());
+      Map<CBORObject, CBORObject> oDict;
+      oDict = PropertyMap.NewOrderedDict();
+      for (Map.Entry<CBORObject, CBORObject> kv : keysAndValues) {
+        oDict.put(kv.getKey(), kv.getValue());
       }
       return new CBORObject(
           CBORObjectTypeMap,
