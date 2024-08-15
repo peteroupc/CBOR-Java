@@ -7801,6 +7801,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private void TestWriteUnchangedFloatBits(int bits) {
+       try {
           {
             java.io.ByteArrayOutputStream ms = null;
 try {
@@ -7811,7 +7812,7 @@ ms = new java.io.ByteArrayOutputStream();
               (byte)((bits >> 24) & 0xff),
               (byte)((bits >> 16) & 0xff),
               (byte)((bits >> 8) & 0xff),
-              (byte)(bits & 0xff)
+              (byte)(bits & 0xff),
              };
             CBORObject.WriteFloatingPointBits(ms, bits, 4, true);
             TestCommon.AssertByteArraysEqual(expectedBytes, ms.toByteArray());
@@ -7820,9 +7821,14 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
     }
 
     private void TestWriteUnchangedDoubleBits(long bits) {
+       try {
           {
             java.io.ByteArrayOutputStream ms = null;
 try {
@@ -7837,7 +7843,7 @@ ms = new java.io.ByteArrayOutputStream();
               (byte)((bits >> 24) & 0xffL),
               (byte)((bits >> 16) & 0xffL),
               (byte)((bits >> 8) & 0xffL),
-              (byte)(bits & 0xffL)
+              (byte)(bits & 0xffL),
              };
             CBORObject.WriteFloatingPointBits(ms, bits, 8, true);
             TestCommon.AssertByteArraysEqual(expectedBytes, ms.toByteArray());
@@ -7846,6 +7852,10 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 }
+      } catch (IOException ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException(ex.toString(), ex);
+      }
     }
 
     @Test
