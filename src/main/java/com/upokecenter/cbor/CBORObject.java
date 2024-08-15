@@ -5837,7 +5837,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
         } else if (byteCount == 4) {
           int bits =
-            CBORUtilities.SingleToHalfPrecisionIfSameValue(floatingBits);
+
+            CBORUtilities.SingleToHalfPrecisionIfSameValue(
+              ((int)floatingBits));
           if (bits != -1) {
             return WriteFloatingPointBits(outputStream, bits, 2, false);
           }
