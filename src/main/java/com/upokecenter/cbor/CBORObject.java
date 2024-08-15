@@ -3,8 +3,7 @@ package com.upokecenter.cbor;
 Written by Peter O.
 Any copyright to this work is released to the Public Domain.
 In case this is not possible, this work is also
-licensed under Creative Commons Zero (CC0):
-https://creativecommons.org/publicdomain/zero/1.0/
+licensed under the Unlicense: https://unlicense.org/
 
  */
 
@@ -6211,7 +6210,9 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
         } else if (byteCount == 4) {
           int bits =
-            CBORUtilities.SingleToHalfPrecisionIfSameValue(floatingBits);
+
+            CBORUtilities.SingleToHalfPrecisionIfSameValue(
+              ((int)floatingBits));
           if (bits != -1) {
             return WriteFloatingPointBits(outputStream, (long)bits, 2, false);
           }
