@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.upokecenter.cbor.*;
 
   public class CBORTypeMapperTest {
-    @Test
+    @Test(timeout = 30000)
     public void TestAddTypeName() {
       CBORTypeMapper tm = new CBORTypeMapper();
       try {
@@ -34,7 +34,7 @@ import com.upokecenter.cbor.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAddTypePrefix() {
       CBORTypeMapper tm = new CBORTypeMapper();
       try {

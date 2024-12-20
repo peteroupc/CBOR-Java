@@ -13,7 +13,7 @@ import com.upokecenter.numbers.*;
       CBORTestCommon.AssertRoundTrip(obj);
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestPreserveNegativeZero() {
       CBORObject cbor;
       JSONOptions pnz = new JSONOptions("numberconversion=full;preservenegativezero=true");
@@ -82,7 +82,7 @@ import com.upokecenter.numbers.*;
     }
 
     // testing obsolete method
-    @Test
+    @Test(timeout = 30000)
     public void TestParseJSONNumberSubstring() {
       String tstr =
 
@@ -99,7 +99,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestParseJSONNumberNegativeZero() {
       String[] strings = new String[] {
         "-0", "0", "-0E+0", "0", "-0E-0", "0", "-0E-1", "0.0",
@@ -151,7 +151,7 @@ import com.upokecenter.numbers.*;
       "23.", "23.e-2", "23.e0", "23.e1", "0.",
     };
 
-    @Test
+    @Test(timeout = 30000)
     public void TestParseJSONNumber() {
       for (String str : BadJsonNumbers) {
         if (CBORDataUtilities.ParseJSONNumber(str) != null) {

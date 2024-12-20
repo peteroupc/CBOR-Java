@@ -101,7 +101,7 @@ ValueNormalDays[month];
       };
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void DateConverterRoundTrip() {
       CBORDateConverter[] dtcs = new CBORDateConverter[] {
         CBORDateConverter.TaggedString,

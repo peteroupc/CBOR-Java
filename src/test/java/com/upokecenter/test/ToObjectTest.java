@@ -9,7 +9,7 @@ import com.upokecenter.cbor.*;
 import com.upokecenter.numbers.*;
 
   public class ToObjectTest {
-    @Test
+    @Test(timeout = 30000)
     public void TestAsEInteger() {
       if (CBORObject.Null.ToObject(EInteger.class) != null) {
         Assert.fail();
@@ -248,7 +248,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsBoolean() {
       Assert.assertEquals(true, CBORObject.True.ToObject(boolean.class));
       {
@@ -271,14 +271,14 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(true, CBORObject.NewMap().ToObject(boolean.class));
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestNullBoolean() {
       if (CBORObject.Null.ToObject(boolean.class) != null) {
         Assert.fail();
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsByte() {
       try {
         CBORObject.NewArray().ToObject(byte.class);
@@ -386,7 +386,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsDouble() {
       try {
         CBORObject.NewArray().ToObject(double.class);
@@ -460,7 +460,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsEDecimal() {
       {
         Object objectTemp = CBORTestCommon.DecPosInf;
@@ -561,7 +561,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsEFloat() {
       {
         Object objectTemp = CBORTestCommon.FloatPosInf;
@@ -603,7 +603,7 @@ import com.upokecenter.numbers.*;
  }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsERational() {
       {
         Object objectTemp = CBORTestCommon.RatPosInf;
@@ -646,7 +646,7 @@ import com.upokecenter.numbers.*;
           .ToObject(ERational.class)).AsNumber().IsNaN());
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsInt16() {
       try {
         CBORObject.NewArray().ToObject(short.class);
@@ -729,7 +729,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsInt32() {
       try {
         CBORObject.NewArray().ToObject(int.class);
@@ -856,7 +856,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsInt64() {
       try {
         CBORObject.NewArray().ToObject(long.class);
@@ -984,7 +984,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsSingle() {
       try {
         CBORObject.NewArray().ToObject(float.class);
@@ -1059,7 +1059,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestAsString() {
       {
         String stringTemp = (String)ToObjectTest.TestToFromObjectRoundTrip("test")
@@ -1120,7 +1120,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestToObjectFieldClass() {
       FieldClass fc = new FieldClass();
       CBORObject co = CBORObject.FromObject(fc);
@@ -1163,7 +1163,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals(999, fc.publicFieldA);
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestToObjectDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
       HashMap<String, String> stringDict = (HashMap<String, String>)cbor.ToObject(
@@ -1178,7 +1178,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals("b", stringDict.get("a"));
       Assert.assertEquals("d", stringDict.get("c"));
     }
-    @Test
+    @Test(timeout = 30000)
     public void TestToObjectIDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
       Map<String, String> stringDict2 = (Map<String, String>)cbor.ToObject(
@@ -1307,7 +1307,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestShortRoundTrip() {
       for (int i = -32768; i < 32768; ++i) {
         short c = (short)i;
@@ -1315,7 +1315,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestCharRoundTrip() {
       for (int i = 0; i < 0x10000; ++i) {
         char c = (char)i;
@@ -1354,7 +1354,7 @@ import com.upokecenter.numbers.*;
       return new String(dt);
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestDateRoundTrip() {
       RandomGenerator rand = new RandomGenerator();
       for (int i = 0; i < 5000; ++i) {
@@ -1367,7 +1367,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestDateRoundTripNumber() {
       RandomGenerator rand = new RandomGenerator();
       CBORTypeMapper typemapper = new CBORTypeMapper().AddConverter(
@@ -1394,7 +1394,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestDateRoundTripUntaggedNumber() {
       RandomGenerator rand = new RandomGenerator();
       CBORTypeMapper typemapper = new CBORTypeMapper().AddConverter(
@@ -1421,7 +1421,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestBadDate() {
       CBORObject cbor = CBORObject.FromCBORObjectAndTag(
           CBORObject.FromString("2000-1-01T00:00:00Z"),
@@ -1497,7 +1497,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestUriRoundTrip() {
       try {
         java.net.URI uri = new java.net.URI("http://example.com/path/path2?query#fragment");
@@ -1526,7 +1526,7 @@ ret.setCc(obj.get(2).AsString());
       }
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestCBORTypeMapper() {
       CPOD3 cp = new CPOD3();
 cp.setAa("aa");
@@ -1627,7 +1627,7 @@ cp2.setCc("CC");
       Assert.assertEquals("CC", cpx.getCc());
     }
 
-    @Test
+    @Test(timeout = 30000)
     public void TestUUIDRoundTrip() {
       RandomGenerator rng = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
