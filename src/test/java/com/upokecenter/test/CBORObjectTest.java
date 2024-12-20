@@ -6323,7 +6323,8 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }}
+      }
+    }
     @Test(timeout = 10001)
     public void TestCalcEncodedSizeCircularRefs3bc2a() {
       CBORObject cbor;
