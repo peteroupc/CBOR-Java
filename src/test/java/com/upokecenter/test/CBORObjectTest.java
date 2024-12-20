@@ -6281,7 +6281,7 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
     }
 
     @Test(timeout = 10001)
-    public void TestCalcEncodedSizeCircularRefs3bc() {
+    public void TestCalcEncodedSizeCircularRefs3bc0() {
       CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       cbor.Add(CBORObject.NewOrderedMap().Add("jkl", cbor), "test");
@@ -6294,6 +6294,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc1() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       cbor.Add("test", CBORObject.NewOrderedMap().Add("jkl", cbor));
       try {
@@ -6305,6 +6309,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+    }
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc2() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       cbor.Add(CBORObject.NewOrderedMap().Add(cbor, "jkl"), "test");
       try {
@@ -6315,7 +6323,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc2a() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       cbor.Add("test", CBORObject.NewOrderedMap().Add(cbor, "jkl"));
       try {
@@ -6326,7 +6337,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc3() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = CBORObject.NewOrderedMap().Add(cbor,
@@ -6343,7 +6357,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc4() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = "test";
@@ -6359,7 +6376,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc5() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = "test";
@@ -6375,7 +6395,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc6() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = CBORObject.NewOrderedMap().Add("mno", 1).Add(cbor,
@@ -6391,7 +6414,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
+      }}
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc7() {
+      CBORObject cbor;
       // No circular refs
       cbor = CBORObject.NewOrderedMap().Add(1, 2).Add(3, 4);
       cbor.Add("test", CBORObject.NewOrderedMap());
@@ -6418,6 +6444,10 @@ try { if (msjson != null) { msjson.close(); } } catch (java.io.IOException ex) {
       if (!(cbor.CalcEncodedSize() > 2)) {
  Assert.fail();
  }
+    }
+    @Test(timeout = 10001)
+    public void TestCalcEncodedSizeCircularRefs3bc8() {
+      CBORObject cbor;
       cbor = CBORObject.NewOrderedMap().Add("ghi", 2).Add("abc", 4);
       {
         Object objectTemp = "test";
