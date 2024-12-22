@@ -10,7 +10,8 @@ licensed under the Unlicense: https://unlicense.org/
 import com.upokecenter.numbers.*;
 
   /**
-   * Contains utility methods that may have use outside of the CBORObject class.
+   * Contains auxiliary methods that may have use outside of the CBORObject
+   * class.
    */
   final class CBORUtilities {
 private CBORUtilities() {

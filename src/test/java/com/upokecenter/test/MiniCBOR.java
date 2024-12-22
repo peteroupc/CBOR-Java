@@ -116,7 +116,7 @@ count);
         } else if (b == 0xdb) {
           stream.skip(8);
         } else if (b > 0xdb) {
-          throw new IOException("Not a boolean");
+          throw new IOException("Not a Boolean");
         }
         b = stream.read();
       }
@@ -126,7 +126,7 @@ return false;
 case 0xf5:
 return true;
 default:
-throw new IOException("Not a boolean");
+throw new IOException("Not a Boolean");
 }
     }
 
