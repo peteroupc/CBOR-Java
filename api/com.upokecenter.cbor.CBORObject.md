@@ -1863,7 +1863,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  fields with the same name, those properties and fields are
  ignored.</li><li>(*) In the Java version, eligible setters are public,
  nonstatic methods starting with "set" followed by a character other than a
- basic digit or lower-case letter, that is, other than "a" to "z" or "0" to
+ basic digit or lowercase letter, that is, other than "a" to "z" or "0" to
  "9", that take one parameter. The class containing an eligible setter must
  have a public, nonstatic method with the same name, but starting with "get"
  or "is" rather than "set", that takes no parameters and does not return
@@ -2722,7 +2722,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  multiple properties and/or fields with the same name, those properties and
  fields are ignored.</li><li>(*) In the Java version, eligible getters are
  public, nonstatic methods starting with "get" or "is" (either word followed
- by a character other than a basic digit or lower-case letter, that is, other
+ by a character other than a basic digit or lowercase letter, that is, other
  than "a" to "z" or "0" to "9"), that take no parameters and do not return
  void, except that methods named "getClass" are not eligible getters. In
  addition, public, nonstatic, nonfinal fields are also eligible getters. If a
@@ -4273,7 +4273,7 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
  A JSON patch is an array with one or more maps. Each map has the following
  keys: </p> <ul> <li>"op" - Required. This key's value is the patch operation
  and must be "add", "remove", "move", "copy", "test", or "replace", in basic
- lower case letters and no other case combination.</li><li>"value" - Required
+ lowercase letters and no other case combination.</li><li>"value" - Required
  if the operation is "add", "replace", or "test" and specifies the item to
  add (insert), or that will replace the existing item, or to check an
  existing item for equality, respectively. (For "test", the operation fails

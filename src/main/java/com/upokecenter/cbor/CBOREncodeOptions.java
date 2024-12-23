@@ -79,25 +79,24 @@ package com.upokecenter.cbor;
      * the string begin or end with whitespace. The string can be empty, but cannot
      * be null. The following is an example of this parameter: {@code
      * allowduplicatekeys = true;ctap2Canonical = true}. The key can be any one of the
-     * following where the letters can be any combination of basic upper-case
-     * and/or basic lower-case letters: {@code allowduplicatekeys}, {@code
-     * ctap2canonical}, {@code resolvereferences}, {@code useindeflengthstrings},
-     * {@code allowempty}, {@code float64}, {@code keepkeyorder}. Keys other than
-     * these are ignored in this version of the CBOR library. The key {@code
-     * float64} was introduced in version 4.4 of this library. The key {@code
-     * keepkeyorder} was introduced in version 4.5 of this library.(Keys are
-     * compared using a basic case-insensitive comparison, in which two strings are
-     * equal if they match after converting the basic upper-case letters A to Z
-     * (U+0041 to U+005A) in both strings to basic lower-case letters.) If two or
-     * more key/value pairs have equal keys (in a basic case-insensitive
-     * comparison), the value given for the last such key is used. The four keys
-     * just given can have a value of {@code 1}, {@code true}, {@code yes}, or
-     * {@code on} (where the letters can be any combination of basic upper-case
-     * and/or basic lower-case letters), which means true, and any other value
-     * meaning false. For example, {@code allowduplicatekeys = Yes} and {@code
-     * allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys} property to
-     * true. In the future, this class may allow other keys to store other kinds of
-     * values, not just true or false.
+     * following where the letters can be any combination of basic uppercase and/or
+     * basic lowercase letters: {@code allowduplicatekeys}, {@code ctap2canonical},
+     * {@code resolvereferences}, {@code useindeflengthstrings}, {@code
+     * allowempty}, {@code float64}, {@code keepkeyorder}. Keys other than these
+     * are ignored in this version of the CBOR library. The key {@code float64} was
+     * introduced in version 4.4 of this library. The key {@code keepkeyorder} was
+     * introduced in version 4.5 of this library.(Keys are compared using a basic
+     * case-insensitive comparison, in which two strings are equal if they match
+     * after converting the basic uppercase letters A to Z (U+0041 to U+005A) in
+     * both strings to basic lowercase letters.) If two or more key/value pairs
+     * have equal keys (in a basic case-insensitive comparison), the value given
+     * for the last such key is used. The four keys just given can have a value of
+     * {@code 1}, {@code true}, {@code yes}, or {@code on} (where the letters can
+     * be any combination of basic uppercase and/or basic lowercase letters), which
+     * means true, and any other value meaning false. For example, {@code
+     * allowduplicatekeys = Yes} and {@code allowduplicatekeys = 1} both set the {@code
+     * AllowDuplicateKeys} property to true. In the future, this class may allow
+     * other keys to store other kinds of values, not just true or false.
      * @throws NullPointerException The parameter {@code paramString} is null.
      */
     public CBOREncodeOptions(String paramString) {

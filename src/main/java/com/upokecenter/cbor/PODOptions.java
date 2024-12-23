@@ -36,16 +36,16 @@ package com.upokecenter.cbor;
      * the string begin or end with whitespace. The string can be empty, but cannot
      * be null. The following is an example of this parameter: {@code
      * usecamelcase = true}. The key can be any one of the following where the
-     * letters can be any combination of basic upper-case and/or basic lower-case
+     * letters can be any combination of basic uppercase and/or basic lowercase
      * letters: {@code usecamelcase}. Other keys are ignored in this version of the
      * CBOR library. (Keys are compared using a basic case-insensitive comparison,
      * in which two strings are equal if they match after converting the basic
-     * upper-case letters A to Z (U+0041 to U+005A) in both strings to basic
-     * lower-case letters.) If two or more key/value pairs have equal keys (in a
+     * uppercase letters A to Z (U+0041 to U+005A) in both strings to basic
+     * lowercase letters.) If two or more key/value pairs have equal keys (in a
      * basic case-insensitive comparison), the value given for the last such key is
      * used. The key just given can have a value of {@code 1}, {@code true}, {@code
      * yes}, or {@code on} (where the letters can be any combination of basic
-     * upper-case and/or basic lower-case letters), which means true, and any other
+     * uppercase and/or basic lowercase letters), which means true, and any other
      * value meaning false. For example, {@code usecamelcase = Yes} and {@code
      * usecamelcase = 1} both set the {@code UseCamelCase} property to true. In the
      * future, this class may allow other keys to store other kinds of values, not
@@ -84,7 +84,7 @@ package com.upokecenter.cbor;
      * the behavior of key name serialization as follows. If "useCamelCase" is
      * {@code false} :</p> <ul> <li>In the .NET version, all key names are
      * capitalized, meaning the first letter in the name is converted to a basic
-     * upper-case letter if it's a basic lower-case letter ("a" to "z"). (For
+     * uppercase letter if it's a basic lowercase letter ("a" to "z"). (For
      * example, "Name" and "IsName" both remain unchanged.)</li><li>In the Java
      * version, all field names are capitalized, and for each eligible method name,
      * the word "get" or "set" is removed from the name if the name starts with
@@ -93,8 +93,8 @@ package com.upokecenter.cbor;
      * <p>If "useCamelCase" is {@code true} :</p> <ul> <li>In the .NET version, for
      * each eligible property or field name, the word "Is" is removed from the name
      * if the name starts with that word, then the name is converted to camel case,
-     * meaning the first letter in the name is converted to a basic lower-case
-     * letter if it's a basic upper-case letter ("A" to "Z"). (For example, "Name"
+     * meaning the first letter in the name is converted to a basic lowercase
+     * letter if it's a basic uppercase letter ("A" to "Z"). (For example, "Name"
      * and "IsName" both become "name", and "IsIsName" becomes
      * "isName".)</li><li>In the Java version: For each eligible method name, the
      * word "get", "set", or "is" is removed from the name if the name starts with
@@ -104,8 +104,8 @@ package com.upokecenter.cbor;
      * that word, then the name is converted to camel case. (For example, "name"
      * and "isName" both become "name".)</li></ul> <p>In the description above, a
      * name "starts with" a word if that word begins the name and is followed by a
-     * character other than a basic digit or basic lower-case letter, that is,
-     * other than "a" to "z" or "0" to "9".</p>
+     * character other than a basic digit or basic lowercase letter, that is, other
+     * than "a" to "z" or "0" to "9".</p>
      * @return {@code true} If the names are converted to camel case; otherwise,
      * {@code false}. This property is {@code true} by default.
      */
