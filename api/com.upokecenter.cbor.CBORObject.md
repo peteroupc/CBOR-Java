@@ -1640,7 +1640,7 @@ Converts this object to a byte array in JavaScript object Notation (JSON)
  method (such as <code>int</code> or <code>string</code>) or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 **Returns:**
 
@@ -1670,7 +1670,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  method (such as <code>int</code> or <code>string</code>) or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 * <code>mapper</code> - This parameter controls which data types are eligible for
  Plain-Old-Data deserialization and includes custom converters from CBOR
@@ -1706,7 +1706,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  method (such as <code>int</code> or <code>string</code>) or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 * <code>options</code> - Specifies options for controlling deserialization of CBOR
  objects.
@@ -1909,7 +1909,7 @@ Converts this CBOR object to an object of an arbitrary type. See the
  method, such as <code>int</code> or <code>string</code> , or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 * <code>mapper</code> - This parameter controls which data types are eligible for
  Plain-Old-Data deserialization and includes custom converters from CBOR
@@ -1953,7 +1953,7 @@ Generates an object of an arbitrary type from an array of CBOR-encoded
  method, such as <code>int</code> or <code>string</code>, or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 * <code>mapper</code> - This parameter controls which data types are eligible for
  Plain-Old-Data deserialization and includes custom converters from CBOR
@@ -2004,7 +2004,7 @@ Generates an object of an arbitrary type from an array of CBOR-encoded
  method, such as <code>int</code> or <code>string</code>, or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 **Returns:**
 
@@ -2043,7 +2043,7 @@ Generates an object of an arbitrary type from an array of CBOR-encoded
  method, such as <code>int</code> or <code>string</code>, or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 * <code>mapper</code> - This parameter controls which data types are eligible for
  Plain-Old-Data deserialization and includes custom converters from CBOR
@@ -2089,7 +2089,7 @@ Generates an object of an arbitrary type from an array of CBOR-encoded
  method, such as <code>int</code> or <code>string</code>, or a plain-old-data type
  (POCO or POJO type) within the control of the application. If the
  plain-old-data type references other data types, those types should likewise
- meet either criterion above.</p>
+ meet either criterion given earlier.</p>
 
 **Returns:**
 

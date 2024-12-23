@@ -1153,7 +1153,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * method (such as {@code int} or {@code string}) or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @return The converted object.
      * @throws com.upokecenter.cbor.CBORException The given type {@code t} , or
      * this object's CBOR type, is not supported, or the given object's nesting is
@@ -1178,7 +1178,7 @@ public <T> T ToObject(java.lang.reflect.Type t) {
      * method (such as {@code int} or {@code string}) or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from CBOR
      * objects to certain data types.
@@ -1211,7 +1211,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
      * method (such as {@code int} or {@code string}) or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @param options Specifies options for controlling deserialization of CBOR
      * objects.
      * @return The converted object.
@@ -1412,7 +1412,7 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
      * method, such as {@code int} or {@code string} , or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from CBOR
      * objects to certain data types. Can be null.
@@ -1451,7 +1451,7 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper, PODOption
      * method, such as {@code int} or {@code string}, or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from CBOR
      * objects to certain data types. Can be null.
@@ -1504,7 +1504,7 @@ public static <T> T DecodeObjectFromBytes(
      * method, such as {@code int} or {@code string}, or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @return An object of the given type decoded from the given byte array.
      * Returns null (as opposed to CBORObject.Null) if {@code data} is empty and
      * the AllowEmpty property is set on the given CBOREncodeOptions object.
@@ -1540,7 +1540,7 @@ public static <T> T DecodeObjectFromBytes(
      * method, such as {@code int} or {@code string}, or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @param mapper This parameter controls which data types are eligible for
      * Plain-Old-Data deserialization and includes custom converters from CBOR
      * objects to certain data types. Can be null.
@@ -1582,7 +1582,7 @@ public static <T> T DecodeObjectFromBytes(
      * method, such as {@code int} or {@code string}, or a plain-old-data type
      * (POCO or POJO type) within the control of the application. If the
      * plain-old-data type references other data types, those types should likewise
-     * meet either criterion above.</p>
+     * meet either criterion given earlier.</p>
      * @return An object of the given type decoded from the given byte array.
      * Returns null (as opposed to CBORObject.Null) if {@code data} is empty and
      * the AllowEmpty property is set on the given CBOREncodeOptions object.
@@ -7108,7 +7108,7 @@ private Map<CBORObject, CBORObject> AsMap() {
         } else if (c <= 0x7ff) {
           if (byteIndex + 2 > StreamedStringBufferLength) {
             // Write bytes retrieved so far - the next two bytes
-            // would exceed the length, and the CBOR spec forbids
+            // would exceed the length, and the CBOR specification forbids
             // splitting characters when generating text strings
             if (!streaming) {
               stream.write(0x7f);
@@ -7133,7 +7133,7 @@ private Map<CBORObject, CBORObject> AsMap() {
           if (c <= 0xffff) {
             if (byteIndex + 3 > StreamedStringBufferLength) {
               // Write bytes retrieved so far - the next three bytes
-              // would exceed the length, and the CBOR spec forbids
+              // would exceed the length, and the CBOR specification forbids
               // splitting characters when generating text strings
               if (!streaming) {
                 stream.write(0x7f);
@@ -7149,7 +7149,7 @@ private Map<CBORObject, CBORObject> AsMap() {
           } else {
             if (byteIndex + 4 > StreamedStringBufferLength) {
               // Write bytes retrieved so far - the next four bytes
-              // would exceed the length, and the CBOR spec forbids
+              // would exceed the length, and the CBOR specification forbids
               // splitting characters when generating text strings
               if (!streaming) {
                 stream.write(0x7f);
