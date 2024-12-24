@@ -335,7 +335,7 @@ private static CBORObject ConvertListsToCBOR(List<Object> dict) {
       for (int i = 0; i < dict.size(); ++i) {
         Object di = dict.get(i);
         Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-        // A list contains only indexes 0, 1, 2, and so on,
+        // A list contains only integer indices,
         // with no gaps.
         if (IsList(value)) {
           List<Object> newList = ConvertToList(value);
@@ -358,7 +358,7 @@ private static CBORObject ConvertListsToCBOR(Map<String, Object>
       for (String key : new ArrayList<String>(dict.keySet())) {
         Object di = dict.get(key);
         Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-        // A list contains only indexes 0, 1, 2, and so on,
+        // A list contains only integer indices,
         // with no gaps.
         if (IsList(value)) {
           List<Object> newList = ConvertToList(value);
