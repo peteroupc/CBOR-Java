@@ -634,7 +634,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
  throw new CBORException("Premature end of data");
 }
  if (!allowNonShortest && tmp < 24) {
- throw new CBORException("Non-shortest CBOR form");
+ throw new CBORException("Nonshortest CBOR form");
 }
  return tmp;
           }
@@ -643,7 +643,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             int lowAdditional = (data[0] & 0xff) << 8;
             lowAdditional |= data[1] & 0xff;
             if (!allowNonShortest && lowAdditional < 256) {
- throw new CBORException("Non-shortest CBOR form");
+ throw new CBORException("Nonshortest CBOR form");
 }
  return lowAdditional;
           }
@@ -654,7 +654,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             uadditional |= (data[2] & 0xffL) << 8;
             uadditional |= data[3] & 0xffL;
             if (!allowNonShortest && (uadditional >> 16) == 0) {
- throw new CBORException("Non-shortest CBOR form");
+ throw new CBORException("Nonshortest CBOR form");
 }
  return uadditional;
           }
@@ -670,7 +670,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             uadditional |= (data[6] & 0xffL) << 8;
             uadditional |= data[7] & 0xffL;
             if (!allowNonShortest && (uadditional >> 32) == 0) {
- throw new CBORException("Non-shortest CBOR form");
+ throw new CBORException("Nonshortest CBOR form");
 }
  return uadditional;
           }

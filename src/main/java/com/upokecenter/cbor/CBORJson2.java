@@ -189,7 +189,7 @@ jbytes[this.index++] : -1;
                       }
                     }
                     if ((c & 0xf800) != 0xd800) {
-                      // Non-surrogate
+                      // Nonsurrogate
                       if (batchEnd > batchIndex) {
                         ms.write(jbytes, batchIndex, batchEnd - batchIndex);
                       }

@@ -236,8 +236,8 @@ private CBORJsonWriter() {
             for (Map.Entry<CBORObject, CBORObject> entry : entries) {
               CBORObject key = entry.getKey();
               if (key.getType() != CBORType.TextString || key.isTagged()) {
-                // treat a non-text-String item or a tagged item
-                // as having non-String keys
+                // treat a nontext-String item or a tagged item
+                // as having nonstring keys
                 hasNonStringKeys = true;
                 break;
               }
@@ -261,7 +261,7 @@ private CBORJsonWriter() {
               }
               writer.WriteCodePoint('}');
             } else {
-              // This map has non-String keys
+              // This map has nonstring keys
               Map<String, CBORObject> stringMap = new
               HashMap<String, CBORObject>();
               // Copy to a map with String keys, since

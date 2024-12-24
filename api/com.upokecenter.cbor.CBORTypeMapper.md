@@ -68,8 +68,9 @@ Returns whether the given Java or.NET type name fits the filters given in
 
 **Parameters:**
 
-* <code>typeName</code> - The fully qualified name of a Java or.NET class (e.g.,
- <code>java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
+* <code>typeName</code> - The fully qualified name of a Java or.NET class (for
+ example, <code>java.math.BigInteger</code> or <code>
+ System.Globalization.CultureInfo</code>).
 
 **Returns:**
 
@@ -84,7 +85,7 @@ Adds a prefix of a Java or.NET type for use in type matching. A type matches
 
 **Parameters:**
 
-* <code>prefix</code> - The prefix of a Java or.NET type (e.g., `java.math.` or
+* <code>prefix</code> - The prefix of a Java or.NET type (for example, `java.math.` or
  `System.Globalization`).
 
 **Returns:**
@@ -104,8 +105,8 @@ Adds the fully qualified name of a Java or.NET type for use in type
 
 **Parameters:**
 
-* <code>name</code> - The fully qualified name of a Java or.NET class (e.g., <code>
- java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
+* <code>name</code> - The fully qualified name of a Java or.NET class (for example,
+ <code>java.math.BigInteger</code> or <code>System.Globalization.CultureInfo</code>).
 
 **Returns:**
 

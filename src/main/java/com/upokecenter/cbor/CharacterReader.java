@@ -172,13 +172,13 @@ import java.io.*;
     // <param name='mode'>The method to use when detecting encodings other
     // than UTF-8 in the byte stream. This usually involves checking
     // whether the stream begins with a byte-order mark (BOM, U+FEFF) or a
-    // non-zero basic code point (U+0001 to U+007F) before reading the
-    // rest of the stream. This value can be one of the following:
+    // nonzero basic code point (U+0001 to U+007F) before reading the rest
+    // of the stream. This value can be one of the following:
     // <list>
     // <item>0: UTF-8 only.</item>
-    // <item>1: Detect UTF-16 using BOM or non-zero basic code point,
+    // <item>1: Detect UTF-16 using BOM or nonzero basic code point,
     // otherwise UTF-8.</item>
-    // <item>2: Detect UTF-16/UTF-32 using BOM or non-zero basic code
+    // <item>2: Detect UTF-16/UTF-32 using BOM or nonzero basic code
     // point, otherwise UTF-8. (Tries to detect UTF-32 first.)</item>
     // <item>3: Detect UTF-16 using BOM, otherwise UTF-8.</item>
     // <item>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to
@@ -199,13 +199,13 @@ import java.io.*;
     // <param name='mode'>The method to use when detecting encodings other
     // than UTF-8 in the byte stream. This usually involves checking
     // whether the stream begins with a byte-order mark (BOM, U+FEFF) or a
-    // non-zero basic code point (U+0001 to U+007F) before reading the
-    // rest of the stream. This value can be one of the following:
+    // nonzero basic code point (U+0001 to U+007F) before reading the rest
+    // of the stream. This value can be one of the following:
     // <list>
     // <item>0: UTF-8 only.</item>
-    // <item>1: Detect UTF-16 using BOM or non-zero basic code point,
+    // <item>1: Detect UTF-16 using BOM or nonzero basic code point,
     // otherwise UTF-8.</item>
-    // <item>2: Detect UTF-16/UTF-32 using BOM or non-zero basic code
+    // <item>2: Detect UTF-16/UTF-32 using BOM or nonzero basic code
     // point, otherwise UTF-8. (Tries to detect UTF-32 first.)</item>
     // <item>3: Detect UTF-16 using BOM, otherwise UTF-8.</item>
     // <item>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to
@@ -222,13 +222,13 @@ import java.io.*;
     // <param name='mode'>The method to use when detecting encodings other
     // than UTF-8 in the byte stream. This usually involves checking
     // whether the stream begins with a byte-order mark (BOM, U+FEFF) or a
-    // non-zero basic code point (U+0001 to U+007F) before reading the
-    // rest of the stream. This value can be one of the following:
+    // nonzero basic code point (U+0001 to U+007F) before reading the rest
+    // of the stream. This value can be one of the following:
     // <list>
     // <item>0: UTF-8 only.</item>
-    // <item>1: Detect UTF-16 using BOM or non-zero basic code point,
+    // <item>1: Detect UTF-16 using BOM or nonzero basic code point,
     // otherwise UTF-8.</item>
-    // <item>2: Detect UTF-16/UTF-32 using BOM or non-zero basic code
+    // <item>2: Detect UTF-16/UTF-32 using BOM or nonzero basic code
     // point, otherwise UTF-8. (Tries to detect UTF-32 first.)</item>
     // <item>3: Detect UTF-16 using BOM, otherwise UTF-8.</item>
     // <item>4: Detect UTF-16/UTF-32 using BOM, otherwise UTF-8. (Tries to

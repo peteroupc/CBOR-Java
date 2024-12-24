@@ -45,7 +45,7 @@ package com.upokecenter.cbor;
      * basic case-insensitive comparison), the value given for the last such key is
      * used. The key just given can have a value of {@code 1}, {@code true}, {@code
      * yes}, or {@code on} (where the letters can be any combination of basic
-     * uppercase and/or basic lowercase letters), which means true, and any other
+     * uppercase and basic lowercase letters), which means true, and any other
      * value meaning false. For example, {@code usecamelcase = Yes} and {@code
      * usecamelcase = 1} both set the {@code UseCamelCase} property to true. In the
      * future, this class may allow other keys to store other kinds of values, not

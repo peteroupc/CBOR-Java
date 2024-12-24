@@ -2369,7 +2369,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Shared ref is non-integer
+      // Shared ref is noninteger
       bytes = new byte[] {
         (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
         0x1d, (byte)0xc4, (byte)0x82,
@@ -2384,7 +2384,7 @@ try { if (lms != null) { lms.close(); } } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Shared ref is non-number
+      // Shared ref is nonnumber
       bytes = new byte[] {
         (byte)0x82, (byte)0xd8, 0x1c, 0x00, (byte)0xd8,
         0x1d, 0x61, 0x41,

@@ -4022,7 +4022,7 @@ aodict.put("PropValue",new PODClass());
   numberinfo.get("number").AsString());
  }
         }
-        // NOTE: A nonintegral number is not necessarily non-finite
+        // NOTE: A nonintegral number is not necessarily nonfinite
       }
     }
 

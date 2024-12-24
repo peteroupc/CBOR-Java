@@ -93,8 +93,9 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
     /**
      * Returns whether the given Java or.NET type name fits the filters given in
      * this mapper.
-     * @param typeName The fully qualified name of a Java or.NET class (e.g.,
-     * {@code java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
+     * @param typeName The fully qualified name of a Java or.NET class (for
+     * example, {@code java.math.BigInteger} or {@code
+     * System.Globalization.CultureInfo}).
      * @return Either {@code true} if the given Java or.NET type name fits the
      * filters given in this mapper, or {@code false} otherwise.
      */
@@ -120,7 +121,7 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
      * Adds a prefix of a Java or.NET type for use in type matching. A type matches
      * a prefix if its fully qualified name is or begins with that prefix, using
      * codepoint-by-codepoint (case-sensitive) matching.
-     * @param prefix The prefix of a Java or.NET type (e.g., `java.math.` or
+     * @param prefix The prefix of a Java or.NET type (for example, `java.math.` or
      * `System.Globalization`).
      * @return This object.
      * @throws NullPointerException The parameter {@code prefix} is null.
@@ -140,8 +141,8 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
     /**
      * Adds the fully qualified name of a Java or.NET type for use in type
      * matching.
-     * @param name The fully qualified name of a Java or.NET class (e.g., {@code
-     * java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
+     * @param name The fully qualified name of a Java or.NET class (for example,
+     * {@code java.math.BigInteger} or {@code System.Globalization.CultureInfo}).
      * @return This object.
      * @throws NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.

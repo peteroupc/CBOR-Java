@@ -1797,59 +1797,59 @@ Converts this CBOR object to an object of an arbitrary type. See the
  denominator and discarding the fractional part of the result, and this
  method throws an exception (currently ArithmeticException, but may change in
  the next major version) if this object expresses infinity or a not-a-number
- value.</li><li>In the.NET version, if the type is a nullable (e.g., <code>
- Nullable&amp;lt;int&amp;gt;</code> or <code>int?</code> , returns <code>null</code> if this CBOR
- object is null, or this object's value converted to the nullable's
- underlying type, e.g., <code>int</code> .</li><li>If the type is an enumeration(
- <code>Enum</code>) type and this CBOR object is a text string or an integer,
- returns the appropriate enumerated constant. (For example, if <code>MyEnum</code>
- includes an entry for <code>MyValue</code> , this method will return <code>
- MyEnum.MyValue</code> if the CBOR object represents <code>"MyValue"</code> or the
- underlying value for <code>MyEnum.MyValue</code> .) <b>Note:</b> If an integer is
- converted to a.NET Enum constant, and that integer is shared by more than
- one constant of the same type, it is undefined which constant from among
- them is returned. (For example, if <code>MyEnum.Zero = 0</code> and <code>
- MyEnum.Null = 0</code> , converting 0 to <code>MyEnum</code> may return either <code>
- MyEnum.Zero</code> or <code>MyEnum.Null</code> .) As a result, .NET Enum types with
- constants that share an underlying value should not be passed to this
- method.</li><li>If the type is <code>byte[]</code> (a one-dimensional byte array)
- and this CBOR object is a byte string, returns a byte array which this CBOR
- byte string's data will be copied to. (This method can't be used to encode
- CBOR data to a byte array; for that, use the EncodeToBytes method
- instead.)</li><li>If the type is a one-dimensional or multidimensional array
- type and this CBOR object is an array, returns an array containing the items
- in this CBOR object.</li><li>If the type is List, ReadOnlyCollection or the
- generic or non-generic List, ICollection, Iterable, IReadOnlyCollection, or
- IReadOnlyList (or ArrayList, List, Collection, or Iterable in Java), and if
- this CBOR object is an array, returns an object conforming to the type,
- class, or interface passed to this method, where the object will contain all
- items in this CBOR array.</li><li>If the type is Dictionary,
- ReadOnlyDictionary or the generic or non-generic Map or IReadOnlyDictionary
- (or HashMap or Map in Java), and if this CBOR object is a map, returns an
- object conforming to the type, class, or interface passed to this method,
- where the object will contain all keys and values in this CBOR
- map.</li><li>If the type is an enumeration constant ("enum"), and this CBOR
- object is an integer or text string, returns the enumeration constant with
- the given number or name, respectively. (Enumeration constants made up of
- multiple enumeration constants, as allowed by .NET, can only be matched by
- number this way.)</li><li>If the type is <code>java.util.Date</code> (or <code>Date</code>
- in Java) , returns a date/time object if the CBOR object's outermost tag ==
- 0 || tag == 1. For tag 1, this method treats the CBOR object as a number of
- seconds since the start of 1970, which is based on the POSIX definition of
- "seconds since the Epoch", a definition that does not count leap seconds. In
- this method, this number of seconds assumes the use of a proleptic Gregorian
- calendar, in which the rules regarding the number of days in each month and
- which years are leap years are the same for all years as they were in 1970
- (including without regard to time zone differences or transitions from other
- calendars to the Gregorian). The string format used in tag 0 supports only
- years up to 4 decimal digits long. For tag 1, CBOR objects that express
- infinity or not-a-number (NaN) are treated as invalid by this method. This
- default behavior for <code>java.util.Date</code> and <code>Date</code> can be changed by
- passing a suitable CBORTypeMapper to this method, such as a CBORTypeMapper
- that registers a CBORDateConverter for <code>java.util.Date</code> or <code>Date</code>
- objects. See the examples.</li><li>If the type is <code>java.net.URI</code> (or <code>
- URI</code> in Java), returns a URI object if possible.</li><li>If the type is
- <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a UUID object if
+ value.</li><li>In the.NET version, if the type is a nullable (for example,
+ <code>Nullable&amp;lt;int&amp;gt;</code> or <code>int?</code> , returns <code>null</code> if this
+ CBOR object is null, or this object's value converted to the nullable's
+ underlying type, for example, <code>int</code> .</li><li>If the type is an
+ enumeration (<code>Enum</code>) type and this CBOR object is a text string or
+ an integer, returns the appropriate enumerated constant. (For example, if
+ <code>MyEnum</code> includes an entry for <code>MyValue</code> , this method will
+ return <code>MyEnum.MyValue</code> if the CBOR object represents <code>
+ "MyValue"</code> or the underlying value for <code>MyEnum.MyValue</code> .)
+ <b>Note:</b> If an integer is converted to a.NET Enum constant, and that
+ integer is shared by more than one constant of the same type, it is
+ undefined which constant from among them is returned. (For example, if
+ <code>MyEnum.Zero = 0</code> and <code>MyEnum.Null = 0</code> , converting 0 to <code>
+ MyEnum</code> may return either <code>MyEnum.Zero</code> or <code>MyEnum.Null</code> .) As a
+ result, .NET Enum types with constants that share an underlying value should
+ not be passed to this method.</li><li>If the type is <code>byte[]</code> (a
+ one-dimensional byte array) and this CBOR object is a byte string, returns a
+ byte array which this CBOR byte string's data will be copied to. (This
+ method can't be used to encode CBOR data to a byte array; for that, use the
+ EncodeToBytes method instead.)</li><li>If the type is a one-dimensional or
+ multidimensional array type and this CBOR object is an array, returns an
+ array containing the items in this CBOR object.</li><li>If the type is List,
+ ReadOnlyCollection or the generic or nongeneric List, ICollection, Iterable,
+ IReadOnlyCollection, or IReadOnlyList (or ArrayList, List, Collection, or
+ Iterable in Java), and if this CBOR object is an array, returns an object
+ conforming to the type, class, or interface passed to this method, where the
+ object will contain all items in this CBOR array.</li><li>If the type is
+ Dictionary, ReadOnlyDictionary or the generic or nongeneric Map or
+ IReadOnlyDictionary (or HashMap or Map in Java), and if this CBOR object is
+ a map, returns an object conforming to the type, class, or interface passed
+ to this method, where the object will contain all keys and values in this
+ CBOR map.</li><li>If the type is an enumeration constant ("enum"), and this
+ CBOR object is an integer or text string, returns the enumeration constant
+ with the given number or name, respectively. (Enumeration constants made up
+ of multiple enumeration constants, as allowed by .NET, can only be matched
+ by number this way.)</li><li>If the type is <code>java.util.Date</code> (or <code>
+ Date</code> in Java) , returns a date/time object if the CBOR object's outermost
+ tag == 0 || tag == 1. For tag 1, this method treats the CBOR object as a
+ number of seconds since the start of 1970, which is based on the POSIX
+ definition of "seconds since the Epoch", a definition that does not count
+ leap seconds. In this method, this number of seconds assumes the use of a
+ proleptic Gregorian calendar, in which the rules regarding the number of
+ days in each month and which years are leap years are the same for all years
+ as they were in 1970 (including without regard to time zone differences or
+ transitions from other calendars to the Gregorian). The string format used
+ in tag 0 supports only years up to 4 decimal digits long. For tag 1, CBOR
+ objects that express infinity or not-a-number (NaN) are treated as invalid
+ by this method. This default behavior for <code>java.util.Date</code> and <code>Date</code>
+ can be changed by passing a suitable CBORTypeMapper to this method, such as
+ a CBORTypeMapper that registers a CBORDateConverter for <code>java.util.Date</code> or
+ <code>Date</code> objects. See the examples.</li><li>If the type is <code>java.net.URI</code>
+ (or <code>URI</code> in Java), returns a URI object if possible.</li><li>If the
+ type is <code>java.util.UUID</code> (or <code>UUID</code> in Java), returns a UUID object if
  possible.</li><li>Plain-Old-Data deserialization: If the object is a type
  not specially handled above, the type includes a zero-parameter constructor
  (default or not), this CBOR object is a CBOR map, and the "mapper" parameter
@@ -2738,7 +2738,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  eligible getters.</li></ul> <p><b>REMARK:</b> .NET enumeration (<code>
  Enum</code>) constants could also have been converted to text strings with <code>
  toString()</code> , but that method will return multiple names if the given Enum
- object is a combination of Enum objects (e.g. if the object is <code>
+ object is a combination of Enum objects (for example if the object is <code>
  FileAccess.Read | FileAccess.Write</code>). More generally, if Enums are
  converted to text strings, constants from Enum types with the <code>Flags</code>
  attribute, and constants from the same Enum type that share an underlying
@@ -3993,9 +3993,9 @@ Converts this object to a 64-bit floating-point number if this CBOR object's
 
 ### AsInt32
     public int AsInt32()
-<p>Converts this object to a 32-bit signed integer. Non-integer number
- values are converted to integers by discarding their fractional parts.
- (NOTE: To determine whether this method call can succeed, call
+<p>Converts this object to a 32-bit signed integer. Noninteger number values
+ are converted to integers by discarding their fractional parts. (NOTE: To
+ determine whether this method call can succeed, call
  <b>AsNumber().getCanTruncatedIntFitInInt32()</b> before calling this method. See
  the example.).</p><p>The following example code (originally written in C#
  for the.NET Framework) shows a way to check whether a given CBOR object
@@ -4088,16 +4088,15 @@ Converts this object to a java.util.UUID.
  tag).</li><li>If both objects are arrays, they are compared item by item. In
  this case, if the arrays have different numbers of items, the array with
  more items is treated as greater than the other array.</li><li>If both
- objects are maps, their key-value pairs, sorted by key in accordance with
- this method, are compared, where each pair is compared first by key and then
- by value. In this case, if the maps have different numbers of key-value
- pairs, the map with more pairs is treated as greater than the other
- map.</li><li>If the two objects have different types, the object whose type
- comes first in the order of untagged integers, untagged byte strings,
- untagged text strings, untagged arrays, untagged maps, tagged objects,
- untagged simple values (including True and False) and untagged floating
- point values sorts before the other object.</li></ul> <p>This method is
- consistent with the Equals method.</p>
+ objects are maps, their key-value pairs, sorted by key per this method, are
+ compared, where each pair is compared first by key and then by value. In
+ this case, if the maps have different numbers of key-value pairs, the map
+ with more pairs is treated as greater than the other map.</li><li>If the two
+ objects have different types, the object whose type comes first in the order
+ of untagged integers, untagged byte strings, untagged text strings, untagged
+ arrays, untagged maps, tagged objects, untagged simple values (including
+ True and False) and untagged floating point values sorts before the other
+ object.</li></ul> <p>This method is consistent with the Equals method.</p>
 
 **Specified by:**
 
@@ -4229,7 +4228,7 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
 * <code>CBORException</code> - Thrown if the pointer is null, or
  if the pointer is invalid, or if there is no object at the given pointer, or
  the special key "-" appears in the pointer in the context of an array (not a
- map), or if the pointer is non-empty and this object has a CBOR type other
+ map), or if the pointer is nonempty and this object has a CBOR type other
  than array or map.
 
 ### AtJSONPointer
@@ -4237,7 +4236,7 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
 <p>Gets the CBOR object referred to by a JSON Pointer according to RFC6901,
  or a default value if the operation fails. The syntax for a JSON Pointer is:
  </p><pre>'/' KEY '/' KEY.get(...)</pre> where KEY represents a key into the
- JSON object or its sub-objects in the hierarchy. For example,
+ JSON object or its subobjects in the hierarchy. For example,
  <pre>/foo/2/bar</pre> means the same as <pre>obj.get('foo')[2]['bar']</pre>
  in JavaScript. If "~" and/or "/" occurs in a key, it must be escaped with
  "~0" or "~1", respectively, in a JSON pointer. JSON pointers also support
@@ -4262,7 +4261,7 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
  array or map). Returns <code>defaultValue</code> if the pointer is null, or if
  the pointer is invalid, or if there is no object at the given pointer, or
  the special key "-" appears in the pointer in the context of an array (not a
- map), or if the pointer is non-empty and this object has a CBOR type other
+ map), or if the pointer is nonempty and this object has a CBOR type other
  than array or map.
 
 ### ApplyJSONPatch
@@ -4767,7 +4766,7 @@ Sets the value of a CBORObject of type Array at the given index to the given
  (JSON) format, using the specified options to control the encoding process.
  This function works not only with arrays and maps, but also integers,
  strings, byte arrays, and other JSON data types. Notes: </p><ul><li>If this
- object contains maps with non-string keys, the keys are converted to JSON
+ object contains maps with nonstring keys, the keys are converted to JSON
  strings before writing the map as a JSON string.</li><li>If this object
  represents a number (the IsNumber property, or isNumber() method in Java,
  returns true), then it is written out as a number.</li><li>If the CBOR
@@ -4905,7 +4904,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 } </pre> <p>The
  following example (written in Java for the Java version) shows how to use a
- subclassed <code>OutputStream</code> together with a <code>
+ subclass of <code>OutputStream</code> together with a <code>
  ByteArrayOutputStream</code> to limit the size of supported JSON serializations of
  CBOR objects.</p> <pre> /* maximum supported JSON size in bytes*/ final int
  maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream(); /*
@@ -5338,7 +5337,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 } </pre> <p>The following example (written in Java for the
- Java version) shows how to use a subclassed <code>OutputStream</code> together
+ Java version) shows how to use a subclass of <code>OutputStream</code> together
  with a <code>ByteArrayOutputStream</code> to limit the size of supported CBOR
  serializations.</p> <pre> /* maximum supported CBOR size in bytes*/ final
  int maxSize = 20000; ByteArrayOutputStream ba = new ByteArrayOutputStream();

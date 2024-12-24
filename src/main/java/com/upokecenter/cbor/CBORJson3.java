@@ -113,7 +113,7 @@ import java.util.*;
                     }
                   }
                   if ((c & 0xf800) != 0xd800) {
-                    // Non-surrogate
+                    // Nonsurrogate
                     this.sb.append((char)c);
                   } else if ((c & 0xfc00) == 0xd800) {
                     int ch = this.index < ep ? js.charAt(this.index++) : -1;
@@ -162,7 +162,7 @@ import java.util.*;
             {
               // NOTE: Differs from CBORJson2
               if ((c & 0xf800) != 0xd800) {
-                // Non-surrogate
+                // Nonsurrogate
                 this.sb.append((char)c);
               } else if ((c & 0xfc00) == 0xd800 && this.index < ep &&
                 (js.charAt(this.index) & 0xfc00) == 0xdc00) {

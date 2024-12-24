@@ -27,7 +27,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
 ```
 
 In other Java-based environments, the library can be referred to by its
-group ID (`com.upokecenter`), artifact ID (`cbor`), and version, as given earlier.  A non-release version of this library is `5.0.0-alpha` rather than the version number given earlier.
+group ID (`com.upokecenter`), artifact ID (`cbor`), and version, as given earlier.  A nonrelease version of this library is `5.0.0-alpha` rather than the version number given earlier.
 
 ## Documentation
 

@@ -115,7 +115,7 @@ import com.upokecenter.numbers.*;
     /**
      * Gets the JSON object referred to by a JSON Pointer according to RFC6901. The
      * syntax for pointers is: <pre>'/' KEY '/' KEY.get(...)</pre> where
-     * KEY represents a key into the JSON object or its sub-objects in the
+     * KEY represents a key into the JSON object or its subobjects in the
      * hierarchy. For example, <pre>/foo/2/bar</pre> means the same as
      *  <pre>obj.get('foo')[2]['bar']</pre> in JavaScript. If "~" and/or "/"
      *  occurs in a key, it must be escaped with "~0" or "~1", respectively,

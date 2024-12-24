@@ -10,8 +10,7 @@ licensed under the Unlicense: https://unlicense.org/
 import com.upokecenter.numbers.*;
 
   /**
-   * Contains auxiliary methods that may have use outside of the CBORObject
-   * class.
+   * Contains auxiliary methods that may have use outside the CBORObject class.
    */
   final class CBORUtilities {
 private CBORUtilities() {
@@ -1369,7 +1368,7 @@ ValueNormalDays :
       if (bits >= DoublePosInfinity) {
         return false;
       }
-      // Beyond non-integer range
+      // Beyond noninteger range
       if ((bits >> 52) >= 0x433) {
         return true;
       }

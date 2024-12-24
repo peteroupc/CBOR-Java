@@ -120,13 +120,13 @@ package com.upokecenter.cbor;
      * have equal keys (in a basic case-insensitive comparison), the value given
      * for the last such key is used. The first four keys just given can have a
      * value of {@code 1}, {@code true}, {@code yes}, or {@code on} (where the
-     * letters can be any combination of basic uppercase and/or basic lowercase
+     * letters can be any combination of basic uppercase and basic lowercase
      * letters), which means true, and any other value meaning false. The last key,
      * {@code numberconversion}, can have a value of any name given in the {@code
      * JSONOptions.ConversionMode} enumeration (where the letters can be any
-     * combination of basic uppercase and/or basic lowercase letters), and any
-     * other value is unrecognized. (If the {@code numberconversion} key is not
-     * given, its value is treated as {@code intorfloat} (formerly {@code full} in
+     * combination of basic uppercase and basic lowercase letters), and any other
+     * value is unrecognized. (If the {@code numberconversion} key is not given,
+     * its value is treated as {@code intorfloat} (formerly {@code full} in
      * versions earlier than 5.0). If that key is given, but has an unrecognized
      * value, an exception is thrown.) For example, {@code allowduplicatekeys = Yes}
      * and {@code allowduplicatekeys = 1} both set the {@code AllowDuplicateKeys}
