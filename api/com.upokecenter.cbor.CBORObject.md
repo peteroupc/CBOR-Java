@@ -2593,8 +2593,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  parameter's inputs to types specially handled by this method (such as <code>
  int</code> or <code>string</code>) and/or to plain-old-data types (POCO or POJO types)
  within the control of the application. If the plain-old-data type references
- other data types, those types should likewise meet either criterion
- above.</p>.
+ other data types, those types should likewise meet either criterion given earlier.</p>.
 
 **Returns:**
 
@@ -2615,7 +2614,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>options</code> - An object containing options to control how certain objects
  are converted to CBOR objects.
@@ -2643,7 +2642,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>mapper</code> - An object containing optional converters to convert objects of
  certain types to CBOR objects.
@@ -2772,7 +2771,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>mapper</code> - An object containing optional converters to convert objects of
  certain types to CBOR objects. Can be null.
@@ -2833,7 +2832,7 @@ Generates a CBOR object from an arbitrary object and gives the resulting
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>bigintTag</code> - <p>Tag number. The tag number 55799 can be used to mark a
  "self-described CBOR" object. This document does not attempt to list all
@@ -2910,7 +2909,7 @@ Generates a CBOR object from an arbitrary object and gives the resulting
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>smallTag</code> - <p>A 32-bit integer that specifies a tag number. The tag
  number 55799 can be used to mark a "self-described CBOR" object. This
@@ -3693,7 +3692,7 @@ Writes a CBOR object to a CBOR data stream. See the three-parameter Write
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>output</code> - A writable data stream.
 
@@ -3729,7 +3728,7 @@ Writes a CBOR object to a CBOR data stream. See the three-parameter Write
  inputs to types specially handled by this method (such as <code>int</code> or
  <code>string</code>) and/or to plain-old-data types (POCO or POJO types) within
  the control of the application. If the plain-old-data type references other
- data types, those types should likewise meet either criterion above.</p>.
+ data types, those types should likewise meet either criterion given earlier.</p>.
 
 * <code>outputStream</code> - A writable data stream.
 
