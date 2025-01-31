@@ -3443,8 +3443,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     @Test(timeout = 10001)
     public void TestFromObject_Dictionary() {
       Map<String, String> dict = new HashMap<String, String>();
-dict.["TestKey"] = "TestValue";
-dict.["TestKey2"] = "TestValue2";
+dict.put("TestKey","TestValue");
+dict.put("TestKey2","TestValue2");
 
       CBORObject c = CBORObject.FromObject(dict);
       CheckKeyValue(c, "TestKey", "TestValue");
@@ -3579,7 +3579,7 @@ private final PODClass propVarpropvalue;
         "propB",
         "propC");
       HashMap<String, Object> aodict = new HashMap<String, Object>();
-aodict.["PropValue"] = new PODClass();
+aodict.put("PropValue",new PODClass());
 
       CBORObjectTest.CheckPODInDictPropertyNames(
         CBORObject.FromObject(aodict, valueCcTF),
