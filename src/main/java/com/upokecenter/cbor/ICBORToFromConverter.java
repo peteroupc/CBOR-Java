@@ -12,8 +12,7 @@ licensed under the Unlicense: https://unlicense.org/
    * objects to a custom type and back.
    * @param <T> Type of objects to convert to and from CBOR objects.
    */
-  public interface ICBORToFromConverter<T> extends ICBORConverter<T>
-  {
+  public interface ICBORToFromConverter<T> extends ICBORConverter<T> {
     /**
      * Converts a CBOR object to a custom type.
      * @param obj A CBOR object to convert to the custom type.

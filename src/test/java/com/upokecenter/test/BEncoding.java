@@ -129,7 +129,7 @@ throw new CBORException("Object expected");
       return longValue == Long.MIN_VALUE ?
         "-9223372036854775808" : longValue == 0L ?
         "0" : (longValue == Integer.MIN_VALUE) ? "-2147483648" :
-EInteger.FromInt64(longValue).toString();
+        EInteger.FromInt64(longValue).toString();
     }
 
     private static CBORObject ReadString(InputStream stream, char firstChar) throws java.io.IOException {
@@ -161,10 +161,10 @@ EInteger.FromInt64(longValue).toString();
       }
       builder = new StringBuilder();
       switch (com.upokecenter.util.DataUtilities.ReadUtf8(
-        stream,
-        numlength.ToInt32Checked(),
-        builder,
-        false)) {
+          stream,
+          numlength.ToInt32Checked(),
+          builder,
+      false)) {
 case -2:
 throw new CBORException("Premature end of data");
 case -1:

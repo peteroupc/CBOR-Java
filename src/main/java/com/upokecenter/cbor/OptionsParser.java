@@ -22,7 +22,7 @@ import java.util.*;
       int delimLength = delimiter.length();
       while (true) {
         int index2 = str.indexOf(
-          delimiter, index);
+            delimiter, index);
         if (index2 < 0) {
           if (first) {
             String[] strret = new String[1];

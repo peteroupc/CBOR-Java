@@ -25,12 +25,17 @@ Options for controlling how certain DotNET or Java objects, such as
 ## Field Details
 
 ### Default
+
     public static final PODOptions Default
+
 The default settings for "plain old data" options.
+
 ## Method Details
 
 ### toString
+
     public String toString()
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
@@ -44,7 +49,9 @@ Gets the values of this options object's properties in text form.
  string constructor for this class.
 
 ### getUseCamelCase
+
     public final boolean getUseCamelCase()
+
 <p>Gets a value indicating whether property, field, and method names are
  converted to camel case before they are used as keys. This option changes
  the behavior of key name serialization as follows. If "useCamelCase" is

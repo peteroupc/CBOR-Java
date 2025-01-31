@@ -60,15 +60,15 @@ private final EInteger propVarbigintvalue;
         count += 4;
         int bits = rand.GetInt32(16);
         builder = (bits & 0x01) == 0 ? builder.append(ValueDigits.charAt(digit)) :
-builder.append(ValueDigitsLower.charAt(digit));
+          builder.append(ValueDigitsLower.charAt(digit));
         builder = (bits & 0x02) == 0 ? builder.append(ValueDigits.charAt(digit2)) :
-builder.append(ValueDigitsLower.charAt(digit2));
+          builder.append(ValueDigitsLower.charAt(digit2));
         builder = (bits & 0x04) == 0 ? builder.append(ValueDigits.charAt(digit3)) :
-builder.append(ValueDigitsLower.charAt(digit3));
+          builder.append(ValueDigitsLower.charAt(digit3));
         builder = (bits & 0x08) == 0 ? builder.append(ValueDigits.charAt(digit4)) :
-builder.append(ValueDigitsLower.charAt(digit4));
+          builder.append(ValueDigitsLower.charAt(digit4));
         int digits = (((((digit * radix) + digit2) *
-                radix) + digit3) * radix) + digit4;
+          radix) + digit3) * radix) + digit4;
         bv = bv.Multiply(radixpow4);
         EInteger bigintTmp = EInteger.FromInt32(digits);
         bv = bv.Add(bigintTmp);
@@ -76,7 +76,7 @@ builder.append(ValueDigitsLower.charAt(digit4));
       for (int i = count; i < numDigits; ++i) {
         int digit = rand.GetInt32(radix);
         builder = rand.GetInt32(2) == 0 ? builder.append(ValueDigits.charAt(digit)) :
-builder.append(ValueDigitsLower.charAt(digit));
+          builder.append(ValueDigitsLower.charAt(digit));
         bv = bv.Multiply(radixpow1);
         EInteger bigintTmp = EInteger.FromInt32(digit);
         bv = bv.Add(bigintTmp);

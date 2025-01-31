@@ -51,12 +51,17 @@ Includes options to control how CBOR objects are converted to and from
 ## Field Details
 
 ### Default
+
     public static final JSONOptions Default
+
 The default options for converting CBOR objects to JSON.
+
 ## Method Details
 
 ### toString
+
     public String toString()
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
@@ -70,7 +75,9 @@ Gets the values of this options object's properties in text form.
  string constructor for this class.
 
 ### getPreserveNegativeZero
+
     public final boolean getPreserveNegativeZero()
+
 Gets a value indicating whether the JSON decoder should preserve the
  distinction between positive zero and negative zero when the decoder decodes
  JSON to a floating-point number format that makes this distinction. For a
@@ -85,7 +92,9 @@ Gets a value indicating whether the JSON decoder should preserve the
  positive zero and negative zero when decoding JSON. The default is true.
 
 ### getNumberConversion
+
     public final JSONOptions.ConversionMode getNumberConversion()
+
 Gets a value indicating how JSON numbers are decoded to CBOR objects. None
  of the conversion modes affects how CBOR objects are later encoded (such as
  via <code>EncodeToBytes</code>).
@@ -96,7 +105,9 @@ Gets a value indicating how JSON numbers are decoded to CBOR objects. None
  is <code>ConversionMode.Full</code>.
 
 ### getWriteBasic
+
     public final boolean getWriteBasic()
+
 Gets a value indicating whether JSON is written using only code points from
  the Basic Latin block (U+0000 to U+007F), also known as ASCII.
 
@@ -107,7 +118,9 @@ Gets a value indicating whether JSON is written using only code points from
  is false.
 
 ### getKeepKeyOrder
+
     public final boolean getKeepKeyOrder()
+
 Gets a value indicating whether to preserve the order in which a map's keys
  appear when decoding JSON, by using maps created as though by
  CBORObject.NewOrderedMap. If false, key order is not guaranteed to be
@@ -119,7 +132,9 @@ Gets a value indicating whether to preserve the order in which a map's keys
  map's keys appear when decoding JSON. The default is false.
 
 ### getAllowDuplicateKeys
+
     public final boolean getAllowDuplicateKeys()
+
 Gets a value indicating whether to allow duplicate keys when reading JSON.
  Used only when decoding JSON. If this property is <code>true</code> and a JSON
  object has two or more values with the same key, the last value of that key
@@ -131,7 +146,9 @@ Gets a value indicating whether to allow duplicate keys when reading JSON.
  JSON. The default is false.
 
 ### getReplaceSurrogates
+
     public final boolean getReplaceSurrogates()
+
 Gets a value indicating whether surrogate code points not part of a
  surrogate pair (which consists of two consecutive <code>char</code> s forming one
  Unicode code point) are each replaced with a replacement character (U+FFFD).

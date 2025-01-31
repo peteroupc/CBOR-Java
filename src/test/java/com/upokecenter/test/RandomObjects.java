@@ -347,7 +347,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     }
 
     private static EInteger DigitHeavyEInteger(IRandomGenExtended rg, int
-count) {
+      count) {
       StringBuilder sb = new StringBuilder();
       int[] oneChances = {
         999, 1, 980, 20, 750, 250, 980,
@@ -368,9 +368,9 @@ count) {
       if (selection < 10) {
         int count = r.GetInt32(MaxNumberLength);
         count = (int)((long)count * r.GetInt32(MaxNumberLength) /
-            MaxNumberLength);
+          MaxNumberLength);
         count = (int)((long)count * r.GetInt32(MaxNumberLength) /
-            MaxNumberLength);
+          MaxNumberLength);
         count = Math.max(count, 1);
         if (selection == 0 || selection == 1) {
           return BitHeavyEInteger(r, count);
@@ -398,7 +398,7 @@ count) {
     }
 
     private static int IntInRange(IRandomGenExtended rg, int minInc, int
-maxExc) {
+      maxExc) {
       return minInc + rg.GetInt32(maxExc - minInc);
     }
 
@@ -411,8 +411,8 @@ maxExc) {
       int pwr2 = pwr - (rg.GetInt32(100) < 80 ? IntInRange(rg, 51, 61) :
         IntInRange(rg, 2, 300));
       EFloat ef = rg.GetInt32(2) == 0 ? EFloat.Create(1,
-  pwr).Add(EFloat.Create(1, pwr2)) : EFloat.Create(1,
-  pwr).Subtract(EFloat.Create(1, pwr2));
+        pwr).Add(EFloat.Create(1, pwr2)) : EFloat.Create(1,
+          pwr).Subtract(EFloat.Create(1, pwr2));
       if (rg.GetInt32(10) == 0) {
         pwr2 = pwr - (rg.GetInt32(100) < 80 ? IntInRange(rg, 51, 61) :
           IntInRange(rg, 2, 300));
@@ -440,8 +440,8 @@ maxExc) {
       }
       return r.GetInt32(100) == 3 ?
         CloseToPowerOfTwo(r) : EFloat.Create(
-          RandomEInteger(r),
-          EInteger.FromInt64(r.GetInt32(400) - 200));
+        RandomEInteger(r),
+        EInteger.FromInt64(r.GetInt32(400) - 200));
     }
 
     public static String RandomBigIntString(IRandomGenExtended r) {
@@ -570,7 +570,7 @@ maxExc) {
         return RandomDecimalStringShort(r, extended);
       }
       long count = (long)r.GetInt32(MaxNumberLength) *
-          r.GetInt32(MaxNumberLength) / MaxNumberLength;
+        r.GetInt32(MaxNumberLength) / MaxNumberLength;
       count *= r.GetInt32(MaxNumberLength) / MaxNumberLength;
       count = Math.max(1, count);
       long afterPointCount = 0;
@@ -578,9 +578,9 @@ maxExc) {
       boolean smallExponent = false;
       if (r.GetInt32(2) == 0) {
         afterPointCount = (long)r.GetInt32(MaxNumberLength) *
-            r.GetInt32(MaxNumberLength) / MaxNumberLength;
+          r.GetInt32(MaxNumberLength) / MaxNumberLength;
         afterPointCount = afterPointCount *
-            r.GetInt32(MaxNumberLength) / MaxNumberLength;
+          r.GetInt32(MaxNumberLength) / MaxNumberLength;
         afterPointCount = Math.max(1, afterPointCount);
       }
       if (r.GetInt32(2) == 0) {
@@ -588,17 +588,17 @@ maxExc) {
           exponentCount = 5;
         } else {
           exponentCount = (long)r.GetInt32(MaxNumberLength) *
-              r.GetInt32(MaxNumberLength) / MaxNumberLength;
+            r.GetInt32(MaxNumberLength) / MaxNumberLength;
           exponentCount = exponentCount *
-              r.GetInt32(MaxNumberLength) / MaxNumberLength;
+            r.GetInt32(MaxNumberLength) / MaxNumberLength;
           exponentCount = exponentCount *
-              r.GetInt32(MaxNumberLength) / MaxNumberLength;
+            r.GetInt32(MaxNumberLength) / MaxNumberLength;
           exponentCount = Math.max(1, exponentCount);
         }
       }
       int bufferSize = (int)Math.min(
-          Integer.MAX_VALUE,
-          8 + count + afterPointCount + exponentCount);
+        Integer.MAX_VALUE,
+        8 + count + afterPointCount + exponentCount);
       StringBuilder sb = new StringBuilder(bufferSize);
       if (r.GetInt32(2) == 0) {
         sb.append('-');

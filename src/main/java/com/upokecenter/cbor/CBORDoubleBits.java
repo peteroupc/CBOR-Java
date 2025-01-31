@@ -9,8 +9,7 @@ licensed under the Unlicense: https://unlicense.org/
 
 import com.upokecenter.numbers.*;
 
-  class CBORDoubleBits implements ICBORNumber
-  {
+  class CBORDoubleBits implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((((Long)obj).longValue())) == (0x7ffL << 52);
     }
@@ -41,7 +40,7 @@ import com.upokecenter.numbers.*;
 
     public float AsSingle(Object obj) {
       return CBORUtilities.Int32BitsToSingle(
-        CBORUtilities.DoubleToRoundedSinglePrecision((((Long)obj).longValue())));
+          CBORUtilities.DoubleToRoundedSinglePrecision((((Long)obj).longValue())));
     }
 
     public EInteger AsEInteger(Object obj) {
@@ -81,7 +80,7 @@ import com.upokecenter.numbers.*;
 
     public boolean CanFitInSingle(Object obj) {
       return this.IsNaN(obj) ||
-CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
+        CBORUtilities.DoubleRetainsSameValueInSingle((((Long)obj).longValue()));
     }
 
     public boolean CanFitInDouble(Object obj) {

@@ -78,8 +78,7 @@ private Base64() {
         buffer[bufferOffset++] = (byte)alphabet.charAt(((data[i] & 3) << 4) +
             ((data[i + 1] >> 4) & 15));
         buffer[bufferOffset++] = (byte)alphabet.charAt(((data[i + 1] & 15) << 2) +
-((data[i +
-                  2] >> 6) & 3));
+            ((data[i + 2] >> 6) & 3));
         buffer[bufferOffset++] = (byte)alphabet.charAt(data[i + 2] & 63);
       }
       int lenmod3 = count % 3;
@@ -92,8 +91,7 @@ private Base64() {
         buffer[bufferOffset++] = (byte)alphabet.charAt((data[i] >> 2) & 63);
         if (lenmod3 == 2) {
           buffer[bufferOffset++] = (byte)alphabet.charAt(((data[i] & 3) << 4) +
-((data[i + 1] >>
-                  4) & 15));
+              ((data[i + 1] >> 4) & 15));
           buffer[bufferOffset++] = (byte)alphabet.charAt((data[i + 1] & 15) << 2);
           if (padding) {
             buffer[bufferOffset++] = (byte)'=';

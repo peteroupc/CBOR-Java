@@ -9,8 +9,7 @@ licensed under the Unlicense: https://unlicense.org/
 
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedFloat implements ICBORNumber
-  {
+  class CBORExtendedFloat implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       EFloat ef = (EFloat)obj;
       return ef.IsPositiveInfinity();
@@ -68,13 +67,13 @@ import com.upokecenter.numbers.*;
     public boolean CanFitInSingle(Object obj) {
       EFloat ef = (EFloat)obj;
       return (!ef.isFinite()) || (ef.compareTo(EFloat.FromSingle(
-            ef.ToSingle())) == 0);
+        ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
       EFloat ef = (EFloat)obj;
       return (!ef.isFinite()) || (ef.compareTo(EFloat.FromDouble(
-            ef.ToDouble())) == 0);
+        ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {

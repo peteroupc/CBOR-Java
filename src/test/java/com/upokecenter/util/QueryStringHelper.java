@@ -1,11 +1,13 @@
-package com.upokecenter.test;
+package com.upokecenter.util;
 // Written by Peter O.
 // Any copyright to this work is released to the Public Domain.
-// https://creativecommons.org/publicdomain/zero/1.0/
+// In case this is not possible, this work is also
+// licensed under the Unlicense: https://unlicense.org/
+// NOTE: For the latest version of this code, see the
+// file CBORTest/QueryStringHelper.cs in the following repository:
+// https://github.com/peteroupc/CBOR/
 
 import java.util.*;
-
-import com.upokecenter.cbor.*;
 
   public final class QueryStringHelper {
     private QueryStringHelper() {
@@ -23,7 +25,7 @@ import com.upokecenter.cbor.*;
       int delimLength = delimiter.length();
       while (true) {
         int index2 = stringToSplit.indexOf(
-          delimiter, index);
+            delimiter, index);
         if (index2 < 0) {
           if (first) {
             return new String[] { stringToSplit };
@@ -45,7 +47,7 @@ import com.upokecenter.cbor.*;
 
     private static int ToHexNumber(int c) {
       return c >= 'A' && c <= 'Z' ? 10 + c - 'A' : c >= 'a' && c <= 'z' ?
-10 + c - 'a' : (c >= '0' && c <= '9') ? (c - '0') : (-1);
+        10 + c - 'a' : (c >= '0' && c <= '9') ? (c - '0') : (-1);
     }
     private static String PercentDecodeUTF8(String str) {
       int len = str.length();
@@ -130,9 +132,9 @@ import com.upokecenter.cbor.*;
                   }
                 } else {
                   retString.append((char)((((ret - 0x10000) >> 10) &
-                        0x3ff) | 0xd800));
+                    0x3ff) | 0xd800));
                   retString.append((char)(((ret - 0x10000) & 0x3ff) |
-                      0xdc00));
+                    0xdc00));
                 }
                 continue;
               }
@@ -292,7 +294,7 @@ import com.upokecenter.cbor.*;
       return new String(chars, count, 12 - count);
     }
 
-    private static boolean IsList(Map<String, Object> dict) {
+    static boolean IsList(Map<String, Object> dict) {
       if (dict == null) {
         return false;
       }
@@ -313,7 +315,7 @@ import com.upokecenter.cbor.*;
       }
     }
 
-    private static List<Object> ConvertToList(Map<String, Object>
+    static List<Object> ConvertToList(Map<String, Object>
       dict) {
       ArrayList<Object> ret = new ArrayList<Object>();
       int index = 0;
@@ -327,51 +329,6 @@ import com.upokecenter.cbor.*;
         ++index;
       }
       return ret;
-    }
-
-    @SuppressWarnings("unchecked")
-private static CBORObject ConvertListsToCBOR(List<Object> dict) {
-      CBORObject cbor = CBORObject.NewArray();
-      for (int i = 0; i < dict.size(); ++i) {
-        Object di = dict.get(i);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-        // A list contains only integer indices,
-        // with no gaps.
-        if (IsList(value)) {
-          List<Object> newList = ConvertToList(value);
-          cbor.Add(ConvertListsToCBOR(newList));
-        } else if (value != null) {
-          // Convert the list's descendents
-          // if they are lists
-          cbor.Add(ConvertListsToCBOR(value));
-        } else {
-          cbor.Add(dict.get(i));
-        }
-      }
-      return cbor;
-    }
-
-    @SuppressWarnings("unchecked")
-private static CBORObject ConvertListsToCBOR(Map<String, Object>
-      dict) {
-      CBORObject cbor = CBORObject.NewMap();
-      for (String key : new ArrayList<String>(dict.keySet())) {
-        Object di = dict.get(key);
-        Map<String, Object> value = ((di instanceof Map<?, ?>) ? (Map<String, Object>)di : null);
-        // A list contains only integer indices,
-        // with no gaps.
-        if (IsList(value)) {
-          List<Object> newList = ConvertToList(value);
-          cbor.Add(key, ConvertListsToCBOR(newList));
-        } else if (value != null) {
-          // Convert the dictionary's descendents
-          // if they are lists
-          cbor.Add(key, ConvertListsToCBOR(value));
-        } else {
-          cbor.Add(key, dict.get(key));
-        }
-      }
-      return cbor;
     }
 
     @SuppressWarnings("unchecked")
@@ -414,16 +371,12 @@ private static Map<String, Object> ConvertLists(
       return dict;
     }
 
-    public static CBORObject QueryStringToCBOR(String query) {
-      return QueryStringToCBOR(query, "&");
-    }
-
     public static Map<String, Object> QueryStringToDict(String query) {
       return QueryStringToDict(query, "&");
     }
 
     @SuppressWarnings("unchecked")
-private static Map<String, Object> QueryStringToDictInternal(
+static Map<String, Object> QueryStringToDictInternal(
       String query,
       String delimiter) {
       Map<String, Object> root = new HashMap<String, Object>();
@@ -463,11 +416,5 @@ private static Map<String, Object> QueryStringToDictInternal(
       String delimiter) {
       // Convert array-like dictionaries to ILists
       return ConvertLists(QueryStringToDictInternal(query, delimiter));
-    }
-
-    public static CBORObject QueryStringToCBOR(String query,
-      String delimiter) {
-      // Convert array-like dictionaries to ILists
-      return ConvertListsToCBOR(QueryStringToDictInternal(query, delimiter));
     }
   }

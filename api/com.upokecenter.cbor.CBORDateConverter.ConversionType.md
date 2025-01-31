@@ -36,6 +36,9 @@ the order they are declared.
 ## Method Details
 
 ### values
+
     public static CBORDateConverter.ConversionType[] values()
+
 ### valueOf
+
     public static CBORDateConverter.ConversionType valueOf(String name)

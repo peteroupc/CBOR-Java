@@ -9,8 +9,7 @@ licensed under the Unlicense: https://unlicense.org/
 
 import com.upokecenter.numbers.*;
 
-  class CBOREInteger implements ICBORNumber
-  {
+  class CBOREInteger implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return false;
     }
@@ -51,7 +50,7 @@ import com.upokecenter.numbers.*;
       EInteger bi = (EInteger)obj;
       if (!bi.CanFitInInt64()) {
  throw new ArithmeticException("This" +
-"\u0020object's value is out of range");
+        "\u0020object's value is out of range");
 }
  return bi.ToInt64Checked();
     }

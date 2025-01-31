@@ -188,7 +188,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.POSITIVE_INFINITY)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -198,7 +198,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.NEGATIVE_INFINITY)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -208,7 +208,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Float.NaN)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -218,7 +218,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.POSITIVE_INFINITY)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -228,7 +228,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.NEGATIVE_INFINITY)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -238,7 +238,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip(Double.NaN)
-        .ToObject(EInteger.class);
+          .ToObject(EInteger.class);
         Assert.fail("Should have failed");
       } catch (ArithmeticException ex) {
         // NOTE: Intentionally empty
@@ -327,7 +327,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(byte.class);
+          .ToObject(byte.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -340,11 +340,11 @@ import com.upokecenter.numbers.*;
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-              (String)numberinfo.get("number").ToObject(String.class)));
+          (String)numberinfo.get("number").ToObject(String.class)));
 
         if (numberinfo.get("byte").AsBoolean()) {
           int i1 = TestCommon.StringToInt((String)numberinfo.get("integer")
-              .ToObject(String.class));
+            .ToObject(String.class));
           int i2 = (byte)cbornumber.ToObject(byte.class) & 0xff;
           Assert.assertEquals(i1, i2);
         } else {
@@ -435,7 +435,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(double.class);
+          .ToObject(double.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -449,9 +449,9 @@ import com.upokecenter.numbers.*;
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-              (String)numberinfo.get("number").ToObject(String.class)));
+          (String)numberinfo.get("number").ToObject(String.class)));
         dbl = (double)EDecimal.FromString(
-            (String)numberinfo.get("number").ToObject(String.class))
+          (String)numberinfo.get("number").ToObject(String.class))
           .ToDouble();
         Object dblobj = cbornumber.ToObject(double.class);
         CBORObjectTest.AreEqualExact(
@@ -551,7 +551,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(EDecimal.class);
+          .ToObject(EDecimal.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -695,7 +695,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(short.class);
+          .ToObject(short.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -709,10 +709,10 @@ import com.upokecenter.numbers.*;
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(
             EDecimal.FromString((String)numberinfo.get("number").ToObject(
-                String.class)));
+          String.class)));
         if (numberinfo.get("int16").AsBoolean()) {
           short sh = (short)TestCommon.StringToInt(
-              (String)numberinfo.get("integer").ToObject(String.class));
+            (String)numberinfo.get("integer").ToObject(String.class));
           Object o = cbornumber.ToObject(short.class);
           Assert.assertEquals(sh, ((Short)o).shortValue());
         } else {
@@ -804,20 +804,20 @@ import com.upokecenter.numbers.*;
           Object o = cbornumber.ToObject(int.class);
           Assert.assertEquals(
             TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
-                String.class)),
+            String.class)),
             ((Integer)o).intValue());
           if (isdouble) {
             o = cbornumberdouble.ToObject(int.class);
             Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
-                  String.class)),
+              String.class)),
               ((Integer)o).intValue());
           }
           if (issingle) {
             o = cbornumbersingle.ToObject(int.class);
             Assert.assertEquals(
               TestCommon.StringToInt((String)numberinfo.get("integer").ToObject(
-                  String.class)),
+              String.class)),
               ((Integer)o).intValue());
           }
         } else {
@@ -905,7 +905,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(long.class);
+          .ToObject(long.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -930,7 +930,7 @@ import com.upokecenter.numbers.*;
           Object o = cbornumber.ToObject(long.class);
           Assert.assertEquals(
             TestCommon.StringToLong((String)numberinfo.get("integer").ToObject(
-                String.class)),
+            String.class)),
             (((Long)o).longValue()));
           if (isdouble) {
             long strlong = TestCommon.StringToLong(
@@ -1033,7 +1033,7 @@ import com.upokecenter.numbers.*;
       }
       try {
         ToObjectTest.TestToFromObjectRoundTrip("")
-        .ToObject(float.class);
+          .ToObject(float.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -1046,12 +1046,12 @@ import com.upokecenter.numbers.*;
         CBORObject numberinfo = numbers.get(i);
         CBORObject cbornumber =
           ToObjectTest.TestToFromObjectRoundTrip(EDecimal.FromString(
-              (String)numberinfo.get("number").ToObject(String.class)));
+          (String)numberinfo.get("number").ToObject(String.class)));
 
         float f1, f2;
         f1 = (float)EDecimal.FromString(
-            (String)numberinfo.get("number").ToObject(
-              String.class)).ToSingle();
+          (String)numberinfo.get("number").ToObject(
+          String.class)).ToSingle();
         f2 = (float)cbornumber.ToObject(float.class);
         if (!EFloat.FromSingle(f1).equals(EFloat.FromSingle(f2))) {
           Assert.fail("f1=" + f1 + "\nf2=" + f2);
@@ -1083,7 +1083,8 @@ import com.upokecenter.numbers.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        ToObjectTest.TestToFromObjectRoundTrip(false).ToObject(String.class);
+        ToObjectTest.TestToFromObjectRoundTrip(
+            false).ToObject(String.class);
         Assert.fail("Should have failed");
       } catch (IllegalStateException ex) {
         // NOTE: Intentionally empty
@@ -1167,7 +1168,7 @@ import com.upokecenter.numbers.*;
     public void TestToObjectDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
       HashMap<String, String> stringDict = (HashMap<String, String>)cbor.ToObject(
-          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict.size());
       if (!(stringDict.containsKey("a"))) {
  Assert.fail();
@@ -1182,7 +1183,7 @@ import com.upokecenter.numbers.*;
     public void TestToObjectIDictStringString() {
       CBORObject cbor = CBORObject.NewMap().Add("a", "b").Add("c", "d");
       Map<String, String> stringDict2 = (Map<String, String>)cbor.ToObject(
-          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, String.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, stringDict2.size());
       if (!(stringDict2.containsKey("a"))) {
  Assert.fail();
@@ -1258,7 +1259,7 @@ import com.upokecenter.numbers.*;
       Assert.assertEquals("hello", stringList.get(0));
       Assert.assertEquals("world", stringList.get(1));
       List<String> istringList = (List<String>)co.ToObject(
-          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class };}public java.lang.reflect.Type getRawType() { return List.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class };}public java.lang.reflect.Type getRawType() { return List.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
 
       Assert.assertEquals(2, istringList.size());
       Assert.assertEquals("hello", istringList.get(0));
@@ -1267,7 +1268,7 @@ import com.upokecenter.numbers.*;
       co.Add("a", 1);
       co.Add("b", 2);
       HashMap<String, Integer> intDict = (HashMap<String, Integer>)co.ToObject(
-          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return HashMap.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, intDict.size());
       if (!(intDict.containsKey("a"))) {
  Assert.fail();
@@ -1282,7 +1283,7 @@ import com.upokecenter.numbers.*;
         Assert.fail();
       }
       Map<String, Integer> iintDict = (Map<String, Integer>)co.ToObject(
-          (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
+        (new java.lang.reflect.ParameterizedType() {public java.lang.reflect.Type[] getActualTypeArguments() {return new java.lang.reflect.Type[] { String.class, Integer.class };}public java.lang.reflect.Type getRawType() { return Map.class; } public java.lang.reflect.Type getOwnerType() { return null; }}));
       Assert.assertEquals(2, iintDict.size());
       if (!(iintDict.containsKey("a"))) {
  Assert.fail();
@@ -1371,8 +1372,8 @@ import com.upokecenter.numbers.*;
     public void TestDateRoundTripNumber() {
       RandomGenerator rand = new RandomGenerator();
       CBORTypeMapper typemapper = new CBORTypeMapper().AddConverter(
-         java.util.Date.class,
-         CBORDateConverter.TaggedNumber);
+        java.util.Date.class,
+        CBORDateConverter.TaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
         CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
@@ -1384,7 +1385,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
-  typemapper);
+          typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
         if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
@@ -1398,8 +1399,8 @@ import com.upokecenter.numbers.*;
     public void TestDateRoundTripUntaggedNumber() {
       RandomGenerator rand = new RandomGenerator();
       CBORTypeMapper typemapper = new CBORTypeMapper().AddConverter(
-         java.util.Date.class,
-         CBORDateConverter.UntaggedNumber);
+        java.util.Date.class,
+        CBORDateConverter.UntaggedNumber);
       for (int i = 0; i < 5000; ++i) {
         String s = RandomDate(rand);
         CBORObject cbor = CBORObject.FromCBORObjectAndTag(CBORObject.FromString(s), 0);
@@ -1411,7 +1412,7 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
         java.util.Date dtime2 = (java.util.Date)cborNumber.ToObject(java.util.Date.class,
-  typemapper);
+          typemapper);
         cbor2 = CBORObject.FromObject(dtime2, typemapper);
         if (!(cbor2.getType() == CBORType.Integer || cbor2.getType() == CBORType.FloatingPoint)) {
  Assert.fail();
@@ -1507,8 +1508,7 @@ import com.upokecenter.numbers.*;
       }
     }
 
-    private static class CPOD3Converter implements ICBORToFromConverter<CPOD3>
-    {
+    private static class CPOD3Converter implements ICBORToFromConverter<CPOD3> {
       public CBORObject ToCBORObject(CPOD3 cpod) {
         return CBORObject.NewMap().Add(0, cpod.getAa())
           .Add(1, cpod.getBb()).Add(2, cpod.getCc());

@@ -38,6 +38,9 @@ the order they are declared.
 ## Method Details
 
 ### values
+
     public static CBORNumber.NumberKind[] values()
+
 ### valueOf
+
     public static CBORNumber.NumberKind valueOf(String name)

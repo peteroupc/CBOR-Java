@@ -342,7 +342,8 @@ private CBORPlistWriter() {
           }
           break;
         }
-        default: throw new IllegalStateException("Unexpected item" +
+        default:
+          throw new IllegalStateException("Unexpected item" +
             "\u0020type");
       }
     }

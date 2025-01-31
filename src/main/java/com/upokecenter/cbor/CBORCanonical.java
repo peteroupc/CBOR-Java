@@ -77,7 +77,8 @@ private CBORCanonical() {
             return 4;
           case Map:
             return 5;
-          default: throw new IllegalStateException();
+          default:
+            throw new IllegalStateException();
         }
       }
 

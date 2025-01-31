@@ -23,13 +23,15 @@ Holds converters to customize the serialization and deserialization behavior
  Adds a prefix of a Java or.NET type for use in type matching.
 
 * `boolean FilterTypeName(String typeName)`<br>
- Returns whether the given Java or.NET type name fits the filters given in
- this mapper.
+ Returns whether the specified Java or.NET type name fits the filters given
+ in this mapper.
 
 ## Method Details
 
 ### AddConverter
+
     public <T> CBORTypeMapper AddConverter(Type type, ICBORConverter<T> converter)
+
 Registers an object that converts objects of a given type to CBOR objects
  (called a CBOR converter). If the CBOR converter converts to and from CBOR
  objects, it should implement the ICBORToFromConverter interface and provide
@@ -62,9 +64,11 @@ Registers an object that converts objects of a given type to CBOR objects
  method".
 
 ### FilterTypeName
+
     public boolean FilterTypeName(String typeName)
-Returns whether the given Java or.NET type name fits the filters given in
- this mapper.
+
+Returns whether the specified Java or.NET type name fits the filters given
+ in this mapper.
 
 **Parameters:**
 
@@ -74,11 +78,13 @@ Returns whether the given Java or.NET type name fits the filters given in
 
 **Returns:**
 
-* Either <code>true</code> if the given Java or.NET type name fits the
+* Either <code>true</code> if the specified Java or.NET type name fits the
  filters given in this mapper, or <code>false</code> otherwise.
 
 ### AddTypePrefix
+
     public CBORTypeMapper AddTypePrefix(String prefix)
+
 Adds a prefix of a Java or.NET type for use in type matching. A type matches
  a prefix if its fully qualified name is or begins with that prefix, using
  codepoint-by-codepoint (case-sensitive) matching.
@@ -99,7 +105,9 @@ Adds a prefix of a Java or.NET type for use in type matching. A type matches
 * <code>IllegalArgumentException</code> - The parameter <code>prefix</code> is empty.
 
 ### AddTypeName
+
     public CBORTypeMapper AddTypeName(String name)
+
 Adds the fully qualified name of a Java or.NET type for use in type
  matching.
 

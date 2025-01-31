@@ -73,9 +73,9 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
       CBORObject cbor,
       java.lang.reflect.Type type) {
       ConverterInfo convinfo = PropertyMap.GetOrDefault(
-        this.converters,
-        type,
-        null);
+          this.converters,
+          type,
+          null);
       return (T)(convinfo == null ? null : (convinfo.getFromObject() == null) ? null :
         PropertyMap.CallFromObject(convinfo, cbor));
     }
@@ -83,20 +83,20 @@ ci.setToObject(PropertyMap.FindOneArgumentMethod(
     CBORObject ConvertWithConverter(Object obj) {
       Object type = obj.getClass();
       ConverterInfo convinfo = PropertyMap.GetOrDefault(
-        this.converters,
-        type,
-        null);
+          this.converters,
+          type,
+          null);
       return (convinfo == null) ? null :
         PropertyMap.CallToObject(convinfo, obj);
     }
 
     /**
-     * Returns whether the given Java or.NET type name fits the filters given in
-     * this mapper.
+     * Returns whether the specified Java or.NET type name fits the filters given
+     * in this mapper.
      * @param typeName The fully qualified name of a Java or.NET class (for
      * example, {@code java.math.BigInteger} or {@code
      * System.Globalization.CultureInfo}).
-     * @return Either {@code true} if the given Java or.NET type name fits the
+     * @return Either {@code true} if the specified Java or.NET type name fits the
      * filters given in this mapper, or {@code false} otherwise.
      */
     public boolean FilterTypeName(String typeName) {

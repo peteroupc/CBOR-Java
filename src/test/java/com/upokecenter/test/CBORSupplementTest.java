@@ -684,7 +684,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public void TestUUID() {
       CBORObject obj =
         ToObjectTest.TestToFromObjectRoundTrip(java.util.UUID.fromString(
-            "00112233-4455-6677-8899-AABBCCDDEEFF"));
+        "00112233-4455-6677-8899-AABBCCDDEEFF"));
       Assert.assertEquals(CBORType.ByteString, obj.getType());
       Assert.assertEquals(EInteger.FromString("37"), obj.getMostInnerTag());
       byte[] bytes = obj.GetByteString();
@@ -717,7 +717,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         Assert.assertEquals(
           "00112233-4455-6677-8899-aabbccddeeff",
           stringTemp);
-}
+      }
     }
 
     // @Test(timeout = 30000)
@@ -1008,7 +1008,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
        },
       encodeOptions);
       expected =
-  "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
+        "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 
@@ -1021,7 +1021,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
       cpod.setCc("Hh");
       cbor = CBORObject.FromObject(cpod);
       cbor2 = CBORObject.NewMap().Add("aa", "Gg").Add("bb", "Jj").Add("cc",
-  "Hh");
+        "Hh");
       TestCommon.CompareTestEqual(cbor, cbor2);
       cbor2 = CBORObject.FromInt32(100);
       TestCommon.CompareTestGreater(cbor, cbor2);

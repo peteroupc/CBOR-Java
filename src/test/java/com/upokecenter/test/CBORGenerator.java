@@ -38,7 +38,7 @@ private int propVarbytelength;
       ByteWriter bs) {
       int maxArg = 4;
       int minArg = (len < 0x18) ? 0 : ((len <= 0xff) ? 1 :
-          ((len <= 0xffff) ? 2 : 3));
+        ((len <= 0xffff) ? 2 : 3));
       int arg = minArg + r.GetInt32(maxArg - minArg + 1);
       int sh;
       switch (arg) {

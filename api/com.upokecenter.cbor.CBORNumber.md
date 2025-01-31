@@ -106,8 +106,8 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
  Gets a value indicating whether this object's value equals 0.
 
 * `CBORNumber Multiply(CBORNumber b)`<br>
- Returns a CBOR number expressing the product of this number and the given
- number.
+ Returns a CBOR number expressing the product of this number and the
+ specified number.
 
 * `CBORNumber Negate()`<br>
  Returns a CBOR number with the same value as this one but with the sign
@@ -204,7 +204,9 @@ An instance of a number that CBOR or certain CBOR tags can represent. For
 ## Method Details
 
 ### ToCBORObject
+
     public CBORObject ToCBORObject()
+
 Converts this object's value to a CBOR object.
 
 **Returns:**
@@ -212,7 +214,9 @@ Converts this object's value to a CBOR object.
 * A CBOR object that stores this object's value.
 
 ### signum
+
     public final int signum()
+
 Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
  positive; 0 if zero. Not-a-number (NaN) values are positive or negative
  depending on what sign is stored in their underlying forms.
@@ -222,7 +226,9 @@ Gets this value's sign: -1 if nonzero and negative; 1 if nonzero and
 * This value's sign.
 
 ### FromCBORObject
+
     public static CBORNumber FromCBORObject(CBORObject o)
+
 Creates a CBOR number object from a CBOR object representing a number (that
  is, one for which the IsNumber property in.NET or the isNumber() method in
  Java returns true).
@@ -233,11 +239,13 @@ Creates a CBOR number object from a CBOR object representing a number (that
 
 **Returns:**
 
-* A CBOR number object, or null if the given CBOR object is null or
- does not represent a number.
+* A CBOR number object, or null if the specified CBOR object is null
+ or does not represent a number.
 
 ### getKind
+
     public final CBORNumber.NumberKind getKind()
+
 Gets the underlying form of this CBOR number object.
 
 **Returns:**
@@ -245,7 +253,9 @@ Gets the underlying form of this CBOR number object.
 * The underlying form of this CBOR number object.
 
 ### CanTruncatedIntFitInInt32
+
     public boolean CanTruncatedIntFitInInt32()
+
 Returns whether this object's value, converted to an integer by discarding
  its fractional part, would be -(2^31) or greater, and less than 2^31.
 
@@ -256,7 +266,9 @@ Returns whether this object's value, converted to an integer by discarding
  2^31; otherwise, <code>false</code>.
 
 ### CanTruncatedIntFitInInt64
+
     public boolean CanTruncatedIntFitInInt64()
+
 Returns whether this object's value, converted to an integer by discarding
  its fractional part, would be -(2^63) or greater, and less than 2^63.
 
@@ -267,7 +279,9 @@ Returns whether this object's value, converted to an integer by discarding
  2^63; otherwise, <code>false</code>.
 
 ### CanTruncatedIntFitInUInt64
+
     public boolean CanTruncatedIntFitInUInt64()
+
 Returns whether this object's value, converted to an integer by discarding
  its fractional part, would be 0 or greater, and less than 2^64.
 
@@ -278,7 +292,9 @@ Returns whether this object's value, converted to an integer by discarding
  otherwise, <code>false</code>.
 
 ### CanFitInSingle
+
     public boolean CanFitInSingle()
+
 Returns whether this object's value can be converted to a 32-bit floating
  point number without its value being rounded to another numerical value.
 
@@ -291,7 +307,9 @@ Returns whether this object's value can be converted to a 32-bit floating
  false</code>.
 
 ### CanFitInDouble
+
     public boolean CanFitInDouble()
+
 Returns whether this object's value can be converted to a 64-bit floating
  point number without its value being rounded to another numerical value.
 
@@ -304,7 +322,9 @@ Returns whether this object's value can be converted to a 64-bit floating
  false</code>.
 
 ### IsFinite
+
     public boolean IsFinite()
+
 Gets a value indicating whether this CBOR object represents a finite number.
 
 **Returns:**
@@ -313,7 +333,9 @@ Gets a value indicating whether this CBOR object represents a finite number.
  otherwise, <code>false</code>.
 
 ### IsInteger
+
     public boolean IsInteger()
+
 Gets a value indicating whether this object represents an integer number,
  that is, a number without a fractional part. Infinity and not-a-number are
  not considered integers.
@@ -324,7 +346,9 @@ Gets a value indicating whether this object represents an integer number,
  number without a fractional part; otherwise, <code>false</code>.
 
 ### IsNegative
+
     public boolean IsNegative()
+
 Gets a value indicating whether this object is a negative number.
 
 **Returns:**
@@ -333,7 +357,9 @@ Gets a value indicating whether this object is a negative number.
  false</code>.
 
 ### IsZero
+
     public boolean IsZero()
+
 Gets a value indicating whether this object's value equals 0.
 
 **Returns:**
@@ -342,7 +368,9 @@ Gets a value indicating whether this object's value equals 0.
  false</code>.
 
 ### ToEInteger
+
     public com.upokecenter.numbers.EInteger ToEInteger()
+
 Converts this object to an arbitrary-precision integer. See the ToObject
  overload taking a type for more information.
 
@@ -355,7 +383,9 @@ Converts this object to an arbitrary-precision integer. See the ToObject
 * <code>ArithmeticException</code> - This value is infinity or not-a-number.
 
 ### ToEIntegerIfExact
+
     public com.upokecenter.numbers.EInteger ToEIntegerIfExact()
+
 Converts this object to an arbitrary-precision integer if its value is an
  integer.
 
@@ -369,7 +399,9 @@ Converts this object to an arbitrary-precision integer if its value is an
  an exact integer.
 
 ### ToByteChecked
+
     public byte ToByteChecked()
+
 Converts this number's value to a byte (from 0 to 255) if it can fit in a
  byte (from 0 to 255) after converting it to an integer by discarding its
  fractional part.
@@ -385,7 +417,9 @@ Converts this number's value to a byte (from 0 to 255) if it can fit in a
  less than 0 or greater than 255.
 
 ### ToByteUnchecked
+
     public byte ToByteUnchecked()
+
 Converts this number's value to an integer by discarding its fractional
  part, and returns the least-significant bits of its two's-complement form as
  a byte (from 0 to 255).
@@ -396,7 +430,9 @@ Converts this number's value to an integer by discarding its fractional
  value is infinity or not-a-number.
 
 ### ToByteIfExact
+
     public byte ToByteIfExact()
+
 Converts this number's value to a byte (from 0 to 255) if it can fit in a
  byte (from 0 to 255) without rounding to a different numerical value.
 
@@ -410,7 +446,9 @@ Converts this number's value to a byte (from 0 to 255) if it can fit in a
  an exact integer, or is less than 0 or greater than 255.
 
 ### FromByte
+
     public static CBORNumber FromByte(byte inputByte)
+
 Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
 
 **Parameters:**
@@ -422,7 +460,9 @@ Converts a byte (from 0 to 255) to an arbitrary-precision decimal number.
 * This number's value as an arbitrary-precision decimal number.
 
 ### ToInt16Checked
+
     public short ToInt16Checked()
+
 Converts this number's value to a 16-bit signed integer if it can fit in a
  16-bit signed integer after converting it to an integer by discarding its
  fractional part.
@@ -438,7 +478,9 @@ Converts this number's value to a 16-bit signed integer if it can fit in a
  less than -32768 or greater than 32767.
 
 ### ToInt16Unchecked
+
     public short ToInt16Unchecked()
+
 Converts this number's value to an integer by discarding its fractional
  part, and returns the least-significant bits of its two's-complement form as
  a 16-bit signed integer.
@@ -449,7 +491,9 @@ Converts this number's value to an integer by discarding its fractional
  value is infinity or not-a-number.
 
 ### ToInt16IfExact
+
     public short ToInt16IfExact()
+
 Converts this number's value to a 16-bit signed integer if it can fit in a
  16-bit signed integer without rounding to a different numerical value.
 
@@ -463,7 +507,9 @@ Converts this number's value to a 16-bit signed integer if it can fit in a
  an exact integer, or is less than -32768 or greater than 32767.
 
 ### FromInt16
+
     public static CBORNumber FromInt16(short inputInt16)
+
 Converts a 16-bit signed integer to an arbitrary-precision decimal number.
 
 **Parameters:**
@@ -475,7 +521,9 @@ Converts a 16-bit signed integer to an arbitrary-precision decimal number.
 * This number's value as an arbitrary-precision decimal number.
 
 ### ToInt32Checked
+
     public int ToInt32Checked()
+
 Converts this number's value to a 32-bit signed integer if it can fit in a
  32-bit signed integer after converting it to an integer by discarding its
  fractional part.
@@ -491,7 +539,9 @@ Converts this number's value to a 32-bit signed integer if it can fit in a
  less than -2147483648 or greater than 2147483647.
 
 ### ToInt32Unchecked
+
     public int ToInt32Unchecked()
+
 Converts this number's value to an integer by discarding its fractional
  part, and returns the least-significant bits of its two's-complement form as
  a 32-bit signed integer.
@@ -502,7 +552,9 @@ Converts this number's value to an integer by discarding its fractional
  value is infinity or not-a-number.
 
 ### ToInt32IfExact
+
     public int ToInt32IfExact()
+
 Converts this number's value to a 32-bit signed integer if it can fit in a
  32-bit signed integer without rounding to a different numerical value.
 
@@ -516,7 +568,9 @@ Converts this number's value to a 32-bit signed integer if it can fit in a
  an exact integer, or is less than -2147483648 or greater than 2147483647.
 
 ### ToInt64Checked
+
     public long ToInt64Checked()
+
 Converts this number's value to a 64-bit signed integer if it can fit in a
  64-bit signed integer after converting it to an integer by discarding its
  fractional part.
@@ -532,7 +586,9 @@ Converts this number's value to a 64-bit signed integer if it can fit in a
  less than -9223372036854775808 or greater than 9223372036854775807.
 
 ### ToInt64Unchecked
+
     public long ToInt64Unchecked()
+
 Converts this number's value to an integer by discarding its fractional
  part, and returns the least-significant bits of its two's-complement form as
  a 64-bit signed integer.
@@ -543,7 +599,9 @@ Converts this number's value to an integer by discarding its fractional
  value is infinity or not-a-number.
 
 ### ToInt64IfExact
+
     public long ToInt64IfExact()
+
 Converts this number's value to a 64-bit signed integer if it can fit in a
  64-bit signed integer without rounding to a different numerical value.
 
@@ -558,7 +616,9 @@ Converts this number's value to a 64-bit signed integer if it can fit in a
  9223372036854775807.
 
 ### toString
+
     public String toString()
+
 Returns the value of this object in text form.
 
 **Overrides:**
@@ -570,7 +630,9 @@ Returns the value of this object in text form.
 * A text string representing the value of this object.
 
 ### CanFitInInt32
+
     public boolean CanFitInInt32()
+
 Returns whether this object's numerical value is an integer, is -(2^31) or
  greater, and is less than 2^31.
 
@@ -580,7 +642,9 @@ Returns whether this object's numerical value is an integer, is -(2^31) or
  -(2^31) or greater, and is less than 2^31; otherwise, <code>false</code>.
 
 ### CanFitInInt64
+
     public boolean CanFitInInt64()
+
 Returns whether this object's numerical value is an integer, is -(2^63) or
  greater, and is less than 2^63.
 
@@ -590,7 +654,9 @@ Returns whether this object's numerical value is an integer, is -(2^63) or
  -(2^63) or greater, and is less than 2^63; otherwise, <code>false</code>.
 
 ### CanFitInUInt64
+
     public boolean CanFitInUInt64()
+
 Returns whether this object's numerical value is an integer, is 0 or
  greater, and is less than 2^64.
 
@@ -600,7 +666,9 @@ Returns whether this object's numerical value is an integer, is 0 or
  greater, and is less than 2^64; otherwise, <code>false</code>.
 
 ### IsInfinity
+
     public boolean IsInfinity()
+
 Gets a value indicating whether this object represents infinity.
 
 **Returns:**
@@ -609,7 +677,9 @@ Gets a value indicating whether this object represents infinity.
  false</code>.
 
 ### IsPositiveInfinity
+
     public boolean IsPositiveInfinity()
+
 Gets a value indicating whether this object represents positive infinity.
 
 **Returns:**
@@ -618,7 +688,9 @@ Gets a value indicating whether this object represents positive infinity.
  <code>false</code>.
 
 ### IsNegativeInfinity
+
     public boolean IsNegativeInfinity()
+
 Gets a value indicating whether this object represents negative infinity.
 
 **Returns:**
@@ -627,7 +699,9 @@ Gets a value indicating whether this object represents negative infinity.
  <code>false</code>.
 
 ### IsNaN
+
     public boolean IsNaN()
+
 Gets a value indicating whether this object represents a not-a-number value.
 
 **Returns:**
@@ -636,7 +710,9 @@ Gets a value indicating whether this object represents a not-a-number value.
  otherwise, <code>false</code>.
 
 ### ToEDecimal
+
     public com.upokecenter.numbers.EDecimal ToEDecimal()
+
 Converts this object to a decimal number.
 
 **Returns:**
@@ -644,7 +720,9 @@ Converts this object to a decimal number.
 * A decimal number for this object's value.
 
 ### ToEFloat
+
     public com.upokecenter.numbers.EFloat ToEFloat()
+
 Converts this object to an arbitrary-precision binary floating point number.
  See the ToObject overload taking a type for more information.
 
@@ -654,7 +732,9 @@ Converts this object to an arbitrary-precision binary floating point number.
  object's value.
 
 ### ToERational
+
     public com.upokecenter.numbers.ERational ToERational()
+
 Converts this object to a rational number. See the ToObject overload taking
  a type for more information.
 
@@ -663,7 +743,9 @@ Converts this object to a rational number. See the ToObject overload taking
 * A rational number for this object's value.
 
 ### Abs
+
     public CBORNumber Abs()
+
 Returns the absolute value of this CBOR number.
 
 **Returns:**
@@ -671,7 +753,9 @@ Returns the absolute value of this CBOR number.
 * This object's absolute value without its negative sign.
 
 ### Negate
+
     public CBORNumber Negate()
+
 Returns a CBOR number with the same value as this one but with the sign
  reversed.
 
@@ -681,7 +765,9 @@ Returns a CBOR number with the same value as this one but with the sign
  reversed.
 
 ### Add
+
     public CBORNumber Add(CBORNumber b)
+
 Returns the sum of this number and another number.
 
 **Parameters:**
@@ -701,7 +787,9 @@ Returns the sum of this number and another number.
  store).
 
 ### Subtract
+
     public CBORNumber Subtract(CBORNumber b)
+
 Returns a number that expresses this number minus another.
 
 **Parameters:**
@@ -710,7 +798,7 @@ Returns a number that expresses this number minus another.
 
 **Returns:**
 
-* A CBOR number that expresses this number minus the given number.
+* A CBOR number that expresses this number minus the specified number.
 
 **Throws:**
 
@@ -721,9 +809,11 @@ Returns a number that expresses this number minus another.
  store).
 
 ### Multiply
+
     public CBORNumber Multiply(CBORNumber b)
-Returns a CBOR number expressing the product of this number and the given
- number.
+
+Returns a CBOR number expressing the product of this number and the
+ specified number.
 
 **Parameters:**
 
@@ -731,7 +821,8 @@ Returns a CBOR number expressing the product of this number and the given
 
 **Returns:**
 
-* A number expressing the product of this number and the given number.
+* A number expressing the product of this number and the specified
+ number.
 
 **Throws:**
 
@@ -742,7 +833,9 @@ Returns a CBOR number expressing the product of this number and the given
  store).
 
 ### Divide
+
     public CBORNumber Divide(CBORNumber b)
+
 Returns the quotient of this number and another number.
 
 **Parameters:**
@@ -762,7 +855,9 @@ Returns the quotient of this number and another number.
  store).
 
 ### Remainder
+
     public CBORNumber Remainder(CBORNumber b)
+
 Returns the remainder when this number is divided by another number.
 
 **Parameters:**
@@ -782,7 +877,9 @@ Returns the remainder when this number is divided by another number.
  store).
 
 ### compareTo
+
     public int compareTo(int other)
+
 Compares this CBOR number with a 32-bit signed integer. In this
  implementation, the two numbers' mathematical values are compared. Here, NaN
  (not-a-number) is considered greater than any number.
@@ -799,7 +896,9 @@ Compares this CBOR number with a 32-bit signed integer. In this
  returns a positive number if.
 
 ### compareTo
+
     public int compareTo(long other)
+
 Compares this CBOR number with a 64-bit signed integer. In this
  implementation, the two numbers' mathematical values are compared. Here, NaN
  (not-a-number) is considered greater than any number.
@@ -816,7 +915,9 @@ Compares this CBOR number with a 64-bit signed integer. In this
  returns a positive number if.
 
 ### compareTo
+
     public int compareTo(CBORNumber other)
+
 Compares this CBOR number with another. In this implementation, the two
  numbers' mathematical values are compared. Here, NaN (not-a-number) is
  considered greater than any number.

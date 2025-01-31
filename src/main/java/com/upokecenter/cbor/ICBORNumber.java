@@ -11,8 +11,7 @@ import com.upokecenter.numbers.*;
   /**
    * This is an internal API.
    */
-  interface ICBORNumber
-  {
+  interface ICBORNumber {
     /**
      * This is an internal API.
      * @param obj The parameter {@code obj} is an arbitrary object.

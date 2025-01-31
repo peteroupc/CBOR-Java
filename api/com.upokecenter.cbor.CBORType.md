@@ -51,6 +51,9 @@ the order they are declared.
 ## Method Details
 
 ### values
+
     public static CBORType[] values()
+
 ### valueOf
+
     public static CBORType valueOf(String name)

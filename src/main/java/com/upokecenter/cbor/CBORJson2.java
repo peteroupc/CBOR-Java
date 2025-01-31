@@ -168,93 +168,93 @@ ms = new java.io.ByteArrayOutputStream();
                   ms.write((byte)'\t');
                   break;
                 case 'u':
-                  { // Unicode escape
-                    c = 0;
-                    // Consists of 4 hex digits
+                { // Unicode escape
+                  c = 0;
+                  // Consists of 4 hex digits
+                  for (int i = 0; i < 4; ++i) {
+                    int ch = this.index < this.endPos ?
+                      jbytes[this.index++] : -1;
+                    if (ch >= '0' && ch <= '9') {
+                      c <<= 4;
+                      c |= ch - '0';
+                    } else if (ch >= 'A' && ch <= 'F') {
+                      c <<= 4;
+                      c |= ch + 10 - 'A';
+                    } else if (ch >= 'a' && ch <= 'f') {
+                      c <<= 4;
+                      c |= ch + 10 - 'a';
+                    } else {
+                      this.RaiseError(
+                        "Invalid Unicode escaped character");
+                    }
+                  }
+                  if ((c & 0xf800) != 0xd800) {
+                    // Nonsurrogate
+                    if (batchEnd > batchIndex) {
+                      ms.write(jbytes, batchIndex, batchEnd - batchIndex);
+                    }
+                    batchIndex = this.index;
+                    int ic = c;
+                    if (c >= 0x800) {
+                      ms.write((byte)(0xe0 | ((ic >> 12) & 0x0f)));
+                      ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
+                      ms.write((byte)(0x80 | (ic & 0x3f)));
+                    } else if (c >= 0x80) {
+                      ms.write((byte)(0xc0 | ((ic >> 6) & 0x1f)));
+                      ms.write((byte)(0x80 | (ic & 0x3f)));
+                    } else {
+                      ms.write((byte)ic);
+                    }
+                  } else if ((c & 0xfc00) == 0xd800) {
+                    int ch;
+                    if (this.index >= this.endPos - 1 ||
+                      jbytes[this.index] != (byte)'\\' ||
+                      jbytes[this.index + 1] != 0x75) {
+                      this.RaiseError("Invalid escaped character");
+                    }
+                    this.index += 2;
+                    int c2 = 0;
                     for (int i = 0; i < 4; ++i) {
-                      int ch = this.index < this.endPos ?
-jbytes[this.index++] : -1;
+                      ch = this.index < this.endPos ?
+                        jbytes[this.index++] & 0xff : -1;
                       if (ch >= '0' && ch <= '9') {
-                        c <<= 4;
-                        c |= ch - '0';
+                        c2 <<= 4;
+                        c2 |= ch - '0';
                       } else if (ch >= 'A' && ch <= 'F') {
-                        c <<= 4;
-                        c |= ch + 10 - 'A';
+                        c2 <<= 4;
+                        c2 |= ch + 10 - 'A';
                       } else if (ch >= 'a' && ch <= 'f') {
-                        c <<= 4;
-                        c |= ch + 10 - 'a';
+                        c2 <<= 4;
+                        c2 |= ch + 10 - 'a';
                       } else {
                         this.RaiseError(
                           "Invalid Unicode escaped character");
                       }
                     }
-                    if ((c & 0xf800) != 0xd800) {
-                      // Nonsurrogate
+                    if ((c2 & 0xfc00) != 0xdc00) {
+                      this.RaiseError("Unpaired surrogate code point");
+                    } else {
                       if (batchEnd > batchIndex) {
                         ms.write(jbytes, batchIndex, batchEnd - batchIndex);
                       }
                       batchIndex = this.index;
-                      int ic = c;
-                      if (c >= 0x800) {
-                        ms.write((byte)(0xe0 | ((ic >> 12) & 0x0f)));
-                        ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
-                        ms.write((byte)(0x80 | (ic & 0x3f)));
-                      } else if (c >= 0x80) {
-                        ms.write((byte)(0xc0 | ((ic >> 6) & 0x1f)));
-                        ms.write((byte)(0x80 | (ic & 0x3f)));
-                      } else {
-                        ms.write((byte)ic);
-                      }
-                    } else if ((c & 0xfc00) == 0xd800) {
-                      int ch;
-                      if (this.index >= this.endPos - 1 ||
-                        jbytes[this.index] != (byte)'\\' ||
-                        jbytes[this.index + 1] != 0x75) {
-                        this.RaiseError("Invalid escaped character");
-                      }
-                      this.index += 2;
-                      int c2 = 0;
-                      for (int i = 0; i < 4; ++i) {
-                        ch = this.index < this.endPos ?
-                          jbytes[this.index++] & 0xff : -1;
-                        if (ch >= '0' && ch <= '9') {
-                          c2 <<= 4;
-                          c2 |= ch - '0';
-                        } else if (ch >= 'A' && ch <= 'F') {
-                          c2 <<= 4;
-                          c2 |= ch + 10 - 'A';
-                        } else if (ch >= 'a' && ch <= 'f') {
-                          c2 <<= 4;
-                          c2 |= ch + 10 - 'a';
-                        } else {
-                          this.RaiseError(
-                            "Invalid Unicode escaped character");
-                        }
-                      }
-                      if ((c2 & 0xfc00) != 0xdc00) {
-                        this.RaiseError("Unpaired surrogate code point");
-                      } else {
-                        if (batchEnd > batchIndex) {
-                          ms.write(jbytes, batchIndex, batchEnd - batchIndex);
-                        }
-                        batchIndex = this.index;
-                        int ic = 0x10000 + (
+                      int ic = 0x10000 + (
                           (c & 0x3ff) << 10) + (c2 & 0x3ff);
-                        ms.write((byte)(0xf0 | ((ic >> 18) & 0x07)));
-                        ms.write((byte)(0x80 | ((ic >> 12) & 0x3f)));
-                        ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
-                        ms.write((byte)(0x80 | (ic & 0x3f)));
-                      }
-                    } else {
-                      this.RaiseError("Unpaired surrogate code point");
+                      ms.write((byte)(0xf0 | ((ic >> 18) & 0x07)));
+                      ms.write((byte)(0x80 | ((ic >> 12) & 0x3f)));
+                      ms.write((byte)(0x80 | ((ic >> 6) & 0x3f)));
+                      ms.write((byte)(0x80 | (ic & 0x3f)));
                     }
-                    break;
+                  } else {
+                    this.RaiseError("Unpaired surrogate code point");
                   }
+                  break;
+                }
                 default:
-                  {
-                    this.RaiseError("Invalid escaped character");
-                    break;
-                  }
+                {
+                  this.RaiseError("Invalid escaped character");
+                  break;
+                }
               }
               break;
             case 0x22: // double quote
@@ -263,42 +263,42 @@ jbytes[this.index++] : -1;
               }
               return ms.toByteArray();
             default: {
-                if (c <= 0x7f) {
-                  // Deliberately empty
-                } else if (c >= 0xc2 && c <= 0xdf) {
-                  int c1 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  if (c1 < 0x80 || c1 > 0xbf) {
-                    this.RaiseError("Invalid encoding");
-                  }
-                } else if (c >= 0xe0 && c <= 0xef) {
-                  int c1 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  int c2 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  int lower = (c == 0xe0) ? 0xa0 : 0x80;
-                  int upper = (c == 0xed) ? 0x9f : 0xbf;
-                  if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) {
-                    this.RaiseError("Invalid encoding");
-                  }
-                } else if (c >= 0xf0 && c <= 0xf4) {
-                  int c1 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  int c2 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  int c3 = this.index < this.endPos ?
-                    jbytes[this.index++] & 0xff : -1;
-                  int lower = (c == 0xf0) ? 0x90 : 0x80;
-                  int upper = (c == 0xf4) ? 0x8f : 0xbf;
-                  if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
-                c3 < 0x80 || c3 > 0xbf) {
-                    this.RaiseError("Invalid encoding");
-                  }
-                } else {
+              if (c <= 0x7f) {
+                // Deliberately empty
+              } else if (c >= 0xc2 && c <= 0xdf) {
+                int c1 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                if (c1 < 0x80 || c1 > 0xbf) {
                   this.RaiseError("Invalid encoding");
                 }
-                break;
+              } else if (c >= 0xe0 && c <= 0xef) {
+                int c1 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                int c2 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                int lower = (c == 0xe0) ? 0xa0 : 0x80;
+                int upper = (c == 0xed) ? 0x9f : 0xbf;
+                if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf) {
+                  this.RaiseError("Invalid encoding");
+                }
+              } else if (c >= 0xf0 && c <= 0xf4) {
+                int c1 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                int c2 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                int c3 = this.index < this.endPos ?
+                  jbytes[this.index++] & 0xff : -1;
+                int lower = (c == 0xf0) ? 0x90 : 0x80;
+                int upper = (c == 0xf4) ? 0x8f : 0xbf;
+                if (c1 < lower || c1 > upper || c2 < 0x80 || c2 > 0xbf ||
+                  c3 < 0x80 || c3 > 0xbf) {
+                  this.RaiseError("Invalid encoding");
+                }
+              } else {
+                this.RaiseError("Invalid encoding");
               }
+              break;
+            }
           }
         }
 }
@@ -334,7 +334,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       if (numberEndIndex - numberStartIndex == 2 && cstart != '0') {
         // Negative single digit other than negative zero
         obj = CBORDataUtilities.ParseSmallNumberAsNegative(cstart
-              - '0',
+            - '0',
             this.options);
       } else {
         obj = CBORDataUtilities.ParseJSONNumber(
@@ -350,7 +350,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
       nextChar[0] = c == -1 || (c != 0x20 && c != 0x0a && c != 0x0d && c !=
-0x09) ? c : this.SkipWhitespaceJSON();
+          0x09) ? c : this.SkipWhitespaceJSON();
       return obj;
     }
 
@@ -365,7 +365,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       c = this.index < this.endPos ? this.bytes[this.index++] &
         0xff : -1;
       if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
-          c == 'e' || c == 'E')) {
+        c == 'e' || c == 'E')) {
         // Optimize for common case where JSON number
         // is a single digit without sign or exponent
         obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
@@ -387,14 +387,14 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             ++digits;
           }
           if (!(c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
-                '9'))) {
+            '9'))) {
             // All-digit number that's short enough
             obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
 
             needObj = false;
           }
         } else if (!(c == '-' || c == '+' || c == '.' || c == 'e' || c
-            == 'E')) {
+          == 'E')) {
           // Optimize for common case where JSON number
           // is two digits without sign, decimal point, or exponent
           obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
@@ -415,10 +415,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         int numberEndIndex = c < 0 ? this.endPos : this.index - 1;
         obj = CBORDataUtilities.ParseJSONNumber(
-           this.bytes,
-           numberStartIndex,
-           numberEndIndex - numberStartIndex,
-           this.options);
+            this.bytes,
+            numberStartIndex,
+            numberEndIndex - numberStartIndex,
+            this.options);
 
         if (obj == null) {
           String errstr = "";
@@ -433,7 +433,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
       }
       nextChar[0] = c == -1 || (c != 0x20 && c != 0x0a && c != 0x0d && c !=
-0x09) ? c : this.SkipWhitespaceJSON();
+          0x09) ? c : this.SkipWhitespaceJSON();
       return obj;
     }
 
@@ -448,74 +448,71 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       CBORObject obj;
       switch (c) {
         case '"':
-          {
-            // Parse a String
-            // The tokenizer already checked the String for invalid
-            // surrogate pairs, so just call the CBORObject
-            // constructor directly
-            obj = CBORObject.FromRawUtf8(this.NextJSONString());
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse a String
+          // The tokenizer already checked the String for invalid
+          // surrogate pairs, so just call the CBORObject
+          // constructor directly
+          obj = CBORObject.FromRawUtf8(this.NextJSONString());
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '{':
-          {
-            // Parse an object
-            obj = this.ParseJSONObject(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an object
+          obj = this.ParseJSONObject(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '[':
-          {
-            // Parse an array
-            obj = this.ParseJSONArray(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an array
+          obj = this.ParseJSONArray(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case 't':
-          {
-            // Parse true
-            if (this.endPos - this.index <= 2 ||
-              this.bytes[this.index] != 0x72 ||
-              this.bytes[this.index + 1] != 0x75 ||
-              this.bytes[this.index + 2] != 0x65) {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 3;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.True;
+        {
+          // Parse true
+          if (this.endPos - this.index <= 2 || this.bytes[this.index] != 0x72 ||
+            this.bytes[this.index + 1] != 0x75 ||
+            this.bytes[this.index + 2] != 0x65) {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 3;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.True;
+        }
         case 'f':
-          {
-            // Parse false
-            if (this.endPos - this.index <= 3 ||
-              this.bytes[this.index] != 0x61 ||
-              this.bytes[this.index + 1] != 0x6c ||
-              this.bytes[this.index + 2] != 0x73 ||
-              this.bytes[this.index + 3] != 0x65) {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 4;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.False;
+        {
+          // Parse false
+          if (this.endPos - this.index <= 3 || this.bytes[this.index] != 0x61 ||
+            this.bytes[this.index + 1] != 0x6c ||
+            this.bytes[this.index + 2] != 0x73 ||
+            this.bytes[this.index + 3] != 0x65) {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 4;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.False;
+        }
         case 'n':
-          {
-            // Parse null
-            if (this.endPos - this.index <= 2 ||
-              this.bytes[this.index] != 0x75 ||
-              this.bytes[this.index + 1] != 0x6c ||
-              this.bytes[this.index + 2] != 0x6c) {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 3;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.Null;
+        {
+          // Parse null
+          if (this.endPos - this.index <= 2 || this.bytes[this.index] != 0x75 ||
+            this.bytes[this.index + 1] != 0x6c ||
+            this.bytes[this.index + 2] != 0x6c) {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 3;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.Null;
+        }
         case '-':
-          {
-            // Parse a negative number
-            return this.NextJSONNegativeNumber(nextChar);
-          }
+        {
+          // Parse a negative number
+          return this.NextJSONNegativeNumber(nextChar);
+        }
         case '0':
         case '1':
         case '2':
@@ -526,10 +523,10 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         case '7':
         case '8':
         case '9':
-          {
-            // Parse a nonnegative number
-            return this.NextJSONNonnegativeNumber(c, nextChar);
-          }
+        {
+          // Parse a nonnegative number
+          return this.NextJSONNonnegativeNumber(c, nextChar);
+        }
         default:
           this.RaiseError("Value can't be parsed.");
           break;
@@ -597,8 +594,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       int[] nextchar = new int[1];
       boolean seenComma = false;
       Map<CBORObject, CBORObject> myHashMap =
-this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
-TreeMap<CBORObject, CBORObject>();
+        this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
+        TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {
@@ -613,23 +610,23 @@ TreeMap<CBORObject, CBORObject>();
             }
             return CBORObject.FromRaw(myHashMap);
           default: {
-              // Read the next String
-              if (c < 0) {
-                this.RaiseError("Unexpected end of data");
-                return null;
-              }
-              if (c != '"') {
-                this.RaiseError("Expected a String as a key");
-                return null;
-              }
-              // Parse a String that represents the Object's key
-              // The tokenizer already checked the String for invalid
-              // surrogate pairs, so just call the CBORObject
-              // constructor directly
-              obj = CBORObject.FromRawUtf8(this.NextJSONString());
-              key = obj;
-              break;
+            // Read the next String
+            if (c < 0) {
+              this.RaiseError("Unexpected end of data");
+              return null;
             }
+            if (c != '"') {
+              this.RaiseError("Expected a String as a key");
+              return null;
+            }
+            // Parse a String that represents the Object's key
+            // The tokenizer already checked the String for invalid
+            // surrogate pairs, so just call the CBORObject
+            // constructor directly
+            obj = CBORObject.FromRawUtf8(this.NextJSONString());
+            key = obj;
+            break;
+          }
         }
         if (this.SkipWhitespaceJSON() != ':') {
           this.RaiseError("Expected a ':' after a key");
@@ -642,7 +639,7 @@ TreeMap<CBORObject, CBORObject>();
             depth));
         int newCount = myHashMap.size();
         if (!this.options.getAllowDuplicateKeys() &&
-              oldCount == newCount) {
+          oldCount == newCount) {
           this.RaiseError("Duplicate key already exists");
           return null;
         }
@@ -652,7 +649,8 @@ TreeMap<CBORObject, CBORObject>();
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-          default: this.RaiseError("Expected a ',' or '}'");
+          default:
+            this.RaiseError ("Expected a ',' or '}'");
             break;
         }
       }
@@ -691,7 +689,8 @@ TreeMap<CBORObject, CBORObject>();
             break;
           case ']':
             return CBORObject.FromRaw(myArrayList);
-          default: this.RaiseError("Expected a ',' or ']'");
+          default:
+            this.RaiseError ("Expected a ',' or ']'");
             break;
         }
       }

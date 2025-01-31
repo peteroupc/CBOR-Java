@@ -111,12 +111,12 @@ private TestCommon() {
       int length,
       byte[] arr2) {
       if (!ByteArraysEqual(
-         arr1,
-         offset,
-         length,
-         arr2,
-         0,
-         arr2 == null ? 0 : arr2.length)) {
+        arr1,
+        offset,
+        length,
+        arr2,
+        0,
+        arr2 == null ? 0 : arr2.length)) {
         Assert.fail("Expected " + ToByteArrayString(arr1) + ",\ngot..... " +
           ToByteArrayString(arr2));
       }
@@ -158,9 +158,9 @@ private TestCommon() {
       }
       if (o.equals(o2)) {
         String str = msg + "\r\n" + ObjectMessages(
-          o,
-          o2,
-          "Unexpectedly equal");
+            o,
+            o2,
+            "Unexpectedly equal");
         Assert.fail(str);
       }
     }
@@ -180,9 +180,9 @@ private TestCommon() {
       }
       if (o.equals(o2)) {
         String str = ObjectMessages(
-          o,
-          o2,
-          "Unexpectedly equal");
+            o,
+            o2,
+            "Unexpectedly equal");
         Assert.fail(str);
       }
     }
@@ -264,9 +264,9 @@ private TestCommon() {
     public static <T extends Comparable<T>> void CompareTestNotEqual(T o1, T o2) {
       if (CompareTestReciprocal(o1, o2) == 0) {
         Assert.fail(ObjectMessages(
-            o1,
-            o2,
-            "Unexpectedly equal: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Unexpectedly equal: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
@@ -283,9 +283,9 @@ private TestCommon() {
     public static <T extends Comparable<T>> void CompareTestEqual(T o1, T o2) {
       if (CompareTestReciprocal(o1, o2) != 0) {
         Assert.fail(ObjectMessages(
-            o1,
-            o2,
-            "Not equal: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Not equal: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
@@ -332,9 +332,9 @@ private TestCommon() {
     public static <T extends Comparable<T>> void CompareTestLess(T o1, T o2) {
       if (CompareTestReciprocal(o1, o2) >= 0) {
         Assert.fail(ObjectMessages(
-            o1,
-            o2,
-            "Not less: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Not less: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
@@ -345,9 +345,9 @@ private TestCommon() {
     public static <T extends Comparable<T>> void CompareTestLessEqual(T o1, T o2) {
       if (CompareTestReciprocal(o1, o2) > 0) {
         Assert.fail(ObjectMessages(
-            o1,
-            o2,
-            "Not less or equal: " + CompareTestReciprocal(o1, o2)));
+          o1,
+          o2,
+          "Not less or equal: " + CompareTestReciprocal(o1, o2)));
       }
     }
 
@@ -579,7 +579,7 @@ private TestCommon() {
     public static String Repeat(char c, int num) {
       if (num < 0) {
         throw new IllegalArgumentException("num (" + num +
-           ") is not greater or equal to 0");
+          ") is not greater or equal to 0");
       }
       StringBuilder sb = new StringBuilder(num);
       if (num > RepeatDivideThreshold) {
@@ -603,7 +603,7 @@ private TestCommon() {
     public static String Repeat(String str, int num) {
       if (num < 0) {
         throw new IllegalArgumentException("num (" + num +
-           ") is not greater or equal to 0");
+          ") is not greater or equal to 0");
       }
       if (str == null) {
         throw new NullPointerException("str");
@@ -620,15 +620,15 @@ private TestCommon() {
 
     public static String ToByteArrayString(byte[] bytes) {
       return (bytes == null) ? "null" : ToByteArrayString(
-         bytes,
-         0,
-         bytes.length);
+        bytes,
+        0,
+        bytes.length);
     }
 
     public static String ToByteArrayString(
-       byte[] bytes,
-       int offset,
-       int length) {
+      byte[] bytes,
+      int offset,
+      int length) {
       if (bytes == null) {
         return "null";
       }
@@ -637,24 +637,24 @@ private TestCommon() {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
-"\u0020greater or equal to 0");
+          "\u0020greater or equal to 0");
       }
       if (offset > bytes.length) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
-"\u0020or equal to " + bytes.length);
+          "\u0020or equal to " + bytes.length);
       }
       if (length < 0) {
         throw new IllegalArgumentException(" (" + length + ") is not greater or" +
-"\u0020equal to 0");
+          "\u0020equal to 0");
       }
       if (length > bytes.length) {
         throw new IllegalArgumentException(" (" + length + ") is not less or equal" +
-"\u0020to " + bytes.length);
+          "\u0020to " + bytes.length);
       }
       if (bytes.length - offset < length) {
         throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
-"\u0020offset (" + (bytes.length - offset) + ") is not greater or equal to " +
-length);
+          "\u0020offset (" + (bytes.length - offset) + ") is not greater or" +
+          "\u0020 equal to " + length);
       }
       StringBuilder sb = new StringBuilder();
       String ValueHex = "0123456789ABCDEF";
@@ -689,48 +689,48 @@ length);
       }
       if (offset < 0) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
-"\u0020greater or equal to 0");
+          "\u0020greater or equal to 0");
       }
       if (offset > arr1.length) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
-"\u0020or equal to " + arr1.length);
+          "\u0020or equal to " + arr1.length);
       }
       if (length < 0) {
         throw new IllegalArgumentException(" (" + length + ") is not greater or" +
-"\u0020equal to 0");
+          "\u0020equal to 0");
       }
       if (length > arr1.length) {
         throw new IllegalArgumentException(" (" + length + ") is not less or equal" +
-"\u0020to " + arr1.length);
+          "\u0020to " + arr1.length);
       }
       if (arr1.length - offset < length) {
         throw new IllegalArgumentException("\"arr1\" + \"'s length minus \" +" +
-"\u0020offset (" + (arr1.length - offset) + ") is not greater or equal to " +
-length);
+          "\u0020offset (" + (arr1.length - offset) + ") is not greater or" +
+          "\u0020 equal to " + length);
       }
       if (arr2 == null) {
         throw new NullPointerException("arr2");
       }
       if (offset2 < 0) {
         throw new IllegalArgumentException("\"offset2\" (" + offset2 + ") is not" +
-"\u0020greater or equal to 0");
+          "\u0020greater or equal to 0");
       }
       if (offset2 > arr2.length) {
         throw new IllegalArgumentException("\"offset2\" (" + offset2 + ") is not" +
-"\u0020less or equal to " + arr2.length);
+          "\u0020less or equal to " + arr2.length);
       }
       if (length2 < 0) {
         throw new IllegalArgumentException(" (" + length2 + ") is not greater or" +
-"\u0020equal to 0");
+          "\u0020equal to 0");
       }
       if (length2 > arr2.length) {
         throw new IllegalArgumentException(" (" + length2 + ") is not less or equal" +
-"\u0020to " + arr2.length);
+          "\u0020to " + arr2.length);
       }
       if (arr2.length - offset2 < length2) {
         throw new IllegalArgumentException("\"arr2\"'s length minus " +
-"\u0020offset2 (" + (arr2.length - offset2) + ") is not greater or equal to " +
-length2);
+          "\u0020offset2 (" + (arr2.length - offset2) + ") is not greater or" +
+          "\u0020 equal to " + length2);
       }
       if (length != length2) {
         return false;

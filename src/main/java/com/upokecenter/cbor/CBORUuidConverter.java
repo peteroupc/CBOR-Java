@@ -7,8 +7,7 @@ licensed under the Unlicense: https://unlicense.org/
 
  */
 
-  class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID>
-  {
+  class CBORUuidConverter implements ICBORToFromConverter<java.util.UUID> {
     private static CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.ByteString) {
         throw new CBORException("UUID must be a byte String");
@@ -16,7 +15,7 @@ licensed under the Unlicense: https://unlicense.org/
       byte[] bytes = obj.GetByteString();
       if (bytes.length != 16) {
  throw new CBORException("UUID must be 16" +
-"\u0020bytes long");
+          "\u0020bytes long");
 }
  return obj;
     }

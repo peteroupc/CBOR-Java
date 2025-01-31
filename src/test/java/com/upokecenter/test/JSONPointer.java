@@ -124,7 +124,7 @@ import com.upokecenter.numbers.*;
      * @param pointer A JSON pointer according to RFC 6901.
      * @return An object within the specified JSON object, or {@code obj} if
      * pointer is the empty string, if the pointer is null, if the pointer
-     * is invalid , if there is no JSON object at the given pointer, or if
+     * is invalid , if there is no JSON object at the specified pointer, or if
      * {@code obj} is not of type CBORObject, unless pointer is the empty
      * string.
      * @throws NullPointerException The parameter {@code pointer} is null.

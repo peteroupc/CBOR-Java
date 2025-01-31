@@ -79,7 +79,9 @@ Contains methods useful for reading and writing data, with a focus on CBOR.
 ## Method Details
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(String str)
+
 Parses a number whose format follows the JSON specification. The method uses
  a JSONOptions with all default properties.
 
@@ -93,7 +95,9 @@ Parses a number whose format follows the JSON specification. The method uses
  parsing fails, including if the string is null or empty.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(String str, JSONOptions options)
+
 <p>Parses a number whose format follows the JSON specification (RFC 8259)
  and converts that number to a CBOR object.</p> <p>Roughly speaking, a valid
  JSON number consists of an optional minus sign, one or more basic digits
@@ -118,7 +122,9 @@ Parses a number whose format follows the JSON specification. The method uses
  parsing fails, including if the string is null or empty.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(String str, int offset, int count)
+
 <p>Parses a number whose format follows the JSON specification (RFC 8259)
  from a portion of a text string, and converts that number to a CBOR
  object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
@@ -153,7 +159,9 @@ Parses a number whose format follows the JSON specification. The method uses
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(String str, int offset, int count, JSONOptions options)
+
 <p>Parses a number whose format follows the JSON specification (RFC 8259)
  and converts that number to a CBOR object.</p> <p>Roughly speaking, a valid
  JSON number consists of an optional minus sign, one or more basic digits
@@ -191,7 +199,9 @@ Parses a number whose format follows the JSON specification. The method uses
 * <code>IllegalArgumentException</code> - Unsupported conversion kind.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(byte[] bytes, int offset, int count, JSONOptions options)
+
 <p>Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR object.</p>
  <p>Roughly speaking, a valid JSON number consists of an optional minus sign,
@@ -229,7 +239,9 @@ Parses a number whose format follows the JSON specification. The method uses
 * <code>IllegalArgumentException</code> - Unsupported conversion kind.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(byte[] bytes, JSONOptions options)
+
 <p>Parses a number from a byte sequence whose format follows the JSON
  specification (RFC 8259) and converts that number to a CBOR object.</p>
  <p>Roughly speaking, a valid JSON number consists of an optional minus sign,
@@ -254,7 +266,9 @@ Parses a number whose format follows the JSON specification. The method uses
  parsing fails, including if the byte sequence is null or empty.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(byte[] bytes, int offset, int count)
+
 <p>Parses a number whose format follows the JSON specification (RFC 8259)
  from a portion of a byte sequence, and converts that number to a CBOR
  object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
@@ -289,7 +303,9 @@ Parses a number whose format follows the JSON specification. The method uses
 * <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(byte[] bytes)
+
 Parses a number from a byte sequence whose format follows the JSON
  specification. The method uses a JSONOptions with all default properties.
 
@@ -303,7 +319,9 @@ Parses a number from a byte sequence whose format follows the JSON
  parsing fails, including if the byte sequence is null or empty.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(char[] chars, int offset, int count, JSONOptions options)
+
 <p>Parses a number from a sequence of <code>char</code> s whose format follows
  the JSON specification (RFC 8259) and converts that number to a CBOR
  object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
@@ -341,7 +359,9 @@ Parses a number from a byte sequence whose format follows the JSON
 * <code>IllegalArgumentException</code> - Unsupported conversion kind.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(char[] chars, JSONOptions options)
+
 <p>Parses a number from a sequence of <code>char</code> s whose format follows
  the JSON specification (RFC 8259) and converts that number to a CBOR
  object.</p> <p>Roughly speaking, a valid JSON number consists of an optional
@@ -366,7 +386,9 @@ Parses a number from a byte sequence whose format follows the JSON
  parsing fails, including if the sequence of <code>char</code> s is null or empty.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(char[] chars, int offset, int count)
+
 <p>Parses a number whose format follows the JSON specification (RFC 8259)
  from a portion of a sequence of <code>char</code> s, and converts that number to
  a CBOR object.</p> <p>Roughly speaking, a valid JSON number consists of an
@@ -401,7 +423,9 @@ Parses a number from a byte sequence whose format follows the JSON
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### ParseJSONNumber
+
     public static CBORObject ParseJSONNumber(char[] chars)
+
 Parses a number from a sequence of <code>char</code> s whose format follows the
  JSON specification. The method uses a JSONOptions with all default
  properties.

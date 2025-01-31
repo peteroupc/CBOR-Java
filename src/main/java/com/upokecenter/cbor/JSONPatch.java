@@ -50,7 +50,8 @@ private JSONPatch() {
         case Map:
         case Array:
           return CBORObject.DecodeFromBytes(o.EncodeToBytes());
-        default: return o;
+        default:
+          return o;
       }
     }
 
@@ -61,7 +62,7 @@ private JSONPatch() {
 }
  if (co.getType() != CBORType.TextString) {
  throw new CBORException("Not a" +
-"\u0020text String type");
+          "\u0020text String type");
 }
  return co.AsString();
     }

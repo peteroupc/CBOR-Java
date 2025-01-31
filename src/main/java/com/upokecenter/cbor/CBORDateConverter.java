@@ -20,8 +20,7 @@ import com.upokecenter.numbers.*;
    * regard to time zone differences or transitions from other calendars to the
    * Gregorian).</p>
    */
-  public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date>
-  {
+  public final class CBORDateConverter implements ICBORToFromConverter<java.util.Date> {
     /**
      * A converter object where FromCBORObject accepts CBOR objects with tag 0
      * (date/time strings) and tag 1 (number of seconds since the start of 1970),
@@ -149,7 +148,7 @@ private final ConversionType propVartype;
         throw new CBORException(str);
       }
  return PropertyMap.BuildUpDateTime(outYear[0],
-  lesserFields);
+          lesserFields);
     }
 
     /**
@@ -307,14 +306,14 @@ private final ConversionType propVartype;
      * @param smallYear The year.
      * @param month Month of the year, from 1 (January) through 12 (December).
      * @param day Day of the month, from 1 through 31.
-     * @return A CBOR object encoding the given date fields according to the
+     * @return A CBOR object encoding the specified date fields according to the
      * conversion type used to create this date converter.
      * @throws com.upokecenter.cbor.CBORException An error occurred in conversion.
      */
     public CBORObject DateTimeFieldsToCBORObject(int smallYear, int month, int
       day) {
       return this.DateTimeFieldsToCBORObject(EInteger.FromInt32(smallYear),
-          new int[] { month, day, 0, 0, 0, 0, 0 });
+        new int[] { month, day, 0, 0, 0, 0, 0 });
     }
 
     /**
@@ -326,7 +325,7 @@ private final ConversionType propVartype;
      * @param hour Hour of the day, from 0 through 23.
      * @param minute Minute of the hour, from 0 through 59.
      * @param second Second of the minute, from 0 through 59.
-     * @return A CBOR object encoding the given date fields according to the
+     * @return A CBOR object encoding the specified date fields according to the
      * conversion type used to create this date converter.
      * @throws com.upokecenter.cbor.CBORException An error occurred in conversion.
      */
@@ -338,7 +337,7 @@ private final ConversionType propVartype;
       int minute,
       int second) {
       return this.DateTimeFieldsToCBORObject(EInteger.FromInt32(smallYear),
-          new int[] { month, day, hour, minute, second, 0, 0 });
+        new int[] { month, day, hour, minute, second, 0, 0 });
     }
 
     /**
@@ -348,7 +347,7 @@ private final ConversionType propVartype;
      * @param lesserFields An array that will store the fields (other than the
      * year) of the date and time. See the TryGetDateTimeFields method for
      * information on the "lesserFields" parameter.
-     * @return A CBOR object encoding the given date fields according to the
+     * @return A CBOR object encoding the specified date fields according to the
      * conversion type used to create this date converter.
      * @throws NullPointerException The parameter {@code lesserFields} is null.
      * @throws com.upokecenter.cbor.CBORException An error occurred in conversion.
@@ -356,7 +355,7 @@ private final ConversionType propVartype;
     public CBORObject DateTimeFieldsToCBORObject(int year, int[]
       lesserFields) {
       return this.DateTimeFieldsToCBORObject(EInteger.FromInt32(year),
-  lesserFields);
+        lesserFields);
     }
 
     /**
@@ -366,7 +365,7 @@ private final ConversionType propVartype;
      * @param lesserFields An array that will store the fields (other than the
      * year) of the date and time. See the TryGetDateTimeFields method for
      * information on the "lesserFields" parameter.
-     * @return A CBOR object encoding the given date fields according to the
+     * @return A CBOR object encoding the specified date fields according to the
      * conversion type used to create this date converter.
      * @throws NullPointerException The parameter {@code bigYear} or {@code
      * lesserFields} is null.
@@ -390,10 +389,10 @@ private final ConversionType propVartype;
         ConversionType thisType = this.getType();
         switch (thisType) {
           case TaggedString: {
-              String str = CBORUtilities.ToAtomDateTimeString(bigYear,
-                  lesserFields);
-              return CBORObject.FromString(str).WithTag(0);
-            }
+            String str = CBORUtilities.ToAtomDateTimeString(bigYear,
+                lesserFields);
+            return CBORObject.FromString(str).WithTag(0);
+          }
           case TaggedNumber:
           case UntaggedNumber:
             try {
@@ -404,23 +403,25 @@ private final ConversionType propVartype;
                   status);
               switch (status[0]) {
                 case 0: {
-                    CBORObject cbor = CBORObject.FromEInteger(ef.ToEInteger());
-                    return thisType == ConversionType.TaggedNumber ?
-                      CBORObject.FromCBORObjectAndTag(cbor, 1) :
-                      cbor;
-                  }
+                  CBORObject cbor = CBORObject.FromEInteger(ef.ToEInteger());
+                  return thisType == ConversionType.TaggedNumber ?
+                    CBORObject.FromCBORObjectAndTag(cbor, 1) :
+                    cbor;
+                }
                 case 1:
                   return thisType == ConversionType.TaggedNumber ?
                     CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8)
                     .WithTag(1) :
                     CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8);
-                default: throw new CBORException("Too big or small to fit an" +
+                default:
+                  throw new CBORException("Too big or small to fit an" +
                     "\u0020integer" + "\u0020or floating-point number");
               }
             } catch (IllegalArgumentException ex) {
               throw new CBORException(ex.getMessage(), ex);
             }
-          default: throw new CBORException("Internal error");
+          default:
+            throw new CBORException("Internal error");
         }
       } catch (IllegalArgumentException ex) {
         throw new CBORException(ex.getMessage(), ex);

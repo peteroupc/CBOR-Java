@@ -84,106 +84,106 @@ private CBORDataUtilities() {
           sb.append(simvalue);
           break;
         case FloatingPoint: {
-            long bits = obj.AsDoubleBits();
-            simvalue = bits == DoubleNegInfinity ? "-Infinity" : (
-                bits == DoublePosInfinity ? "Infinity" : (
-                  CBORUtilities.DoubleBitsNaN(bits) ? "NaN" :
-  obj.Untag().ToJSONString()));
-            if (sb == null) {
-              return simvalue;
-            }
-            sb.append(simvalue);
-            break;
+          long bits = obj.AsDoubleBits();
+          simvalue = bits == DoubleNegInfinity ? "-Infinity" : (
+              bits == DoublePosInfinity ? "Infinity" : (
+                CBORUtilities.DoubleBitsNaN(bits) ? "NaN" :
+                obj.Untag().ToJSONString()));
+          if (sb == null) {
+            return simvalue;
           }
+          sb.append(simvalue);
+          break;
+        }
         case ByteString: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            sb.append("h'");
-            byte[] data = obj.GetByteString();
-            int length = data.length;
-            for (int i = 0; i < length; ++i) {
-              sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
-              sb.append(HexAlphabet.charAt(data[i] & 15));
-            }
-            sb.append((char)0x27);
-            break;
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          sb.append("h'");
+          byte[] data = obj.GetByteString();
+          int length = data.length;
+          for (int i = 0; i < length; ++i) {
+            sb.append(HexAlphabet.charAt((data[i] >> 4) & 15));
+            sb.append(HexAlphabet.charAt(data[i] & 15));
           }
+          sb.append((char)0x27);
+          break;
+        }
         case TextString: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            sb.append('\"');
-            String ostring = obj.AsString();
-            int length = ostring.length();
-            for (int i = 0; i < length; ++i) {
-              int cp = com.upokecenter.util.DataUtilities.CodePointAt(ostring, i, 0);
-              if (cp >= 0x10000) {
-                sb.append("\\U");
-                sb.append(HexAlphabet.charAt((cp >> 20) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 16) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 12) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 8) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 4) & 15));
-                sb.append(HexAlphabet.charAt(cp & 15));
-                ++i;
-              } else if (cp >= 0x7F || cp < 0x20 || cp == '\\' || cp ==
-  '\"') {
-                sb.append("\\u");
-                sb.append(HexAlphabet.charAt((cp >> 12) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 8) & 15));
-                sb.append(HexAlphabet.charAt((cp >> 4) & 15));
-                sb.append(HexAlphabet.charAt(cp & 15));
-              } else {
-                sb.append((char)cp);
-              }
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          sb.append('\"');
+          String ostring = obj.AsString();
+          int length = ostring.length();
+          for (int i = 0; i < length; ++i) {
+            int cp = com.upokecenter.util.DataUtilities.CodePointAt(ostring, i, 0);
+            if (cp >= 0x10000) {
+              sb.append("\\U");
+              sb.append(HexAlphabet.charAt((cp >> 20) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 16) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 12) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 8) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 4) & 15));
+              sb.append(HexAlphabet.charAt(cp & 15));
+              ++i;
+            } else if (cp >= 0x7F || cp < 0x20 || cp == '\\' || cp ==
+              '\"') {
+              sb.append("\\u");
+              sb.append(HexAlphabet.charAt((cp >> 12) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 8) & 15));
+              sb.append(HexAlphabet.charAt((cp >> 4) & 15));
+              sb.append(HexAlphabet.charAt(cp & 15));
+            } else {
+              sb.append((char)cp);
             }
-            sb.append('\"');
-            break;
           }
+          sb.append('\"');
+          break;
+        }
         case Array: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            boolean first = true;
-            sb.append('[');
-            if (depth >= 50) {
-              sb.append("...");
-            } else {
-              for (int i = 0; i < obj.size(); ++i) {
-                if (!first) {
-                  sb.append(", ");
-                }
-                sb.append(ToStringHelper(obj.get(i), depth + 1));
-                first = false;
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          boolean first = true;
+          sb.append('[');
+          if (depth >= 50) {
+            sb.append("...");
+          } else {
+            for (int i = 0; i < obj.size(); ++i) {
+              if (!first) {
+                sb.append(", ");
               }
+              sb.append(ToStringHelper(obj.get(i), depth + 1));
+              first = false;
             }
-            sb.append(']');
-            break;
           }
+          sb.append(']');
+          break;
+        }
         case Map: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            boolean first = true;
-            sb.append('{');
-            if (depth >= 50) {
-              sb.append("...");
-            } else {
-              Collection<Map.Entry<CBORObject, CBORObject>> entries =
-                obj.getEntries();
-              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-                CBORObject key = entry.getKey();
-                CBORObject value = entry.getValue();
-                if (!first) {
-                  sb.append(", ");
-                }
-                sb.append(ToStringHelper(key, depth + 1));
-                sb.append(": ");
-                sb.append(ToStringHelper(value, depth + 1));
-                first = false;
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          boolean first = true;
+          sb.append('{');
+          if (depth >= 50) {
+            sb.append("...");
+          } else {
+            Collection<Map.Entry<CBORObject, CBORObject>> entries =
+              obj.getEntries();
+            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+              CBORObject key = entry.getKey();
+              CBORObject value = entry.getValue();
+              if (!first) {
+                sb.append(", ");
               }
+              sb.append(ToStringHelper(key, depth + 1));
+              sb.append(": ");
+              sb.append(ToStringHelper(value, depth + 1));
+              first = false;
             }
-            sb.append('}');
-            break;
           }
+          sb.append('}');
+          break;
+        }
         default: {
-            sb = (sb == null) ? (new StringBuilder()) : sb;
-            sb.append("???");
-            break;
-          }
+          sb = (sb == null) ? (new StringBuilder()) : sb;
+          sb.append("???");
+          break;
+        }
       }
       // Append closing tags if needed
       curobject = obj;
@@ -278,8 +278,8 @@ private CBORDataUtilities() {
       if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Double) {
         return CBORObject.FromFloatingPointBits(
-           CBORUtilities.IntegerToDoubleBits(-digit),
-           8);
+            CBORUtilities.IntegerToDoubleBits(-digit),
+            8);
       } else if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Decimal128) {
         return CBORObject.FromEDecimal(EDecimal.FromInt32(-digit));
@@ -295,8 +295,8 @@ private CBORDataUtilities() {
       if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Double) {
         return CBORObject.FromFloatingPointBits(
-           CBORUtilities.IntegerToDoubleBits(digit),
-           8);
+            CBORUtilities.IntegerToDoubleBits(digit),
+            8);
       } else if (options != null && options.getNumberConversion() ==
         JSONOptions.ConversionMode.Decimal128) {
         return CBORObject.FromEDecimal(EDecimal.FromInt32(digit));
@@ -336,11 +336,11 @@ private CBORDataUtilities() {
       int count,
       JSONOptions options) {
       return CBORDataUtilitiesTextString.ParseJSONNumber(
-        str,
-        offset,
-        count,
-        options,
-        null);
+          str,
+          offset,
+          count,
+          options,
+          null);
     }
 
     /**
@@ -373,11 +373,11 @@ private CBORDataUtilities() {
       int count,
       JSONOptions options) {
       return CBORDataUtilitiesByteArrayString.ParseJSONNumber(
-        bytes,
-        offset,
-        count,
-        options,
-        null);
+          bytes,
+          offset,
+          count,
+          options,
+          null);
     }
 
     /**
@@ -481,11 +481,11 @@ private CBORDataUtilities() {
       int count,
       JSONOptions options) {
       return CBORDataUtilitiesCharArrayString.ParseJSONNumber(
-        chars,
-        offset,
-        count,
-        options,
-        null);
+          chars,
+          offset,
+          count,
+          options,
+          null);
     }
 
     /**

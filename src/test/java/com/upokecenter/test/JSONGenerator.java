@@ -112,8 +112,8 @@ private int propVarbytelength;
     }
 
     private static void GenerateJsonNumber(
-        IRandomGenExtended ra,
-        ByteWriter bs) {
+      IRandomGenExtended ra,
+      ByteWriter bs) {
       if (ra.GetInt32(2) == 0) {
         bs.Write('-');
       }
@@ -125,7 +125,7 @@ private int propVarbytelength;
       } else {
         // Integer part
         len = shortLen ? ra.GetInt32(10) + 1 :
-           (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
+          (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
         bs.Write(0x31 + ra.GetInt32(9));
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
@@ -135,7 +135,7 @@ private int propVarbytelength;
       if (ra.GetInt32(2) == 0) {
         bs.Write(0x2e);
         len = shortLen ? ra.GetInt32(10) + 1 :
-         (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
+          (ra.GetInt32(2000) * ra.GetInt32(2000) / 2000) + 1;
         for (int i = 0; i < len; ++i) {
           bs.Write(0x30 + ra.GetInt32(10));
         }
@@ -327,8 +327,8 @@ private int propVarbytelength;
           case 2:
 
             bs.Write('f').Write('a').Write('l').Write(
-  's').Write(
-                    'e');
+              's').Write(
+                'e');
             break;
         }
       } else if (majorType == 3) {

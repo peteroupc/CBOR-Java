@@ -77,8 +77,8 @@ import com.upokecenter.cbor.*;
         if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') || c == 'e' || c == 'E')) {
           numberEndIndex = c < 0 ? this.index : this.index - 1;
           obj = CBORDataUtilities.ParseJSONNumber(
-            this.jstring.substring(numberStartIndex, (numberEndIndex)),
-            this.options);
+              this.jstring.substring(numberStartIndex, (numberEndIndex)),
+              this.options);
           if (obj == null) {
             this.RaiseError("Invalid JSON number");
           }
@@ -105,71 +105,71 @@ import com.upokecenter.cbor.*;
       CBORObject obj;
       switch (c) {
         case '"':
-          {
-            // Parse a String
-            obj = this.NextJSONString();
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse a String
+          obj = this.NextJSONString();
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '{':
-          {
-            // Parse an object
-            obj = this.ParseJSONObject(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an object
+          obj = this.ParseJSONObject(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '[':
-          {
-            // Parse an array
-            obj = this.ParseJSONArray(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an array
+          obj = this.ParseJSONArray(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case 't':
-          {
-            // Parse true
-            if (this.endPos - this.index <= 2 ||
-              (this.jstring.charAt(this.index) & 0xFF) != 'r' ||
-              (this.jstring.charAt(this.index + 1) & 0xFF) != 'u' ||
-              (this.jstring.charAt(this.index + 2) & 0xFF) != 'e') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 3;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.True;
+        {
+          // Parse true
+          if (this.endPos - this.index <= 2 ||
+            (this.jstring.charAt(this.index) & 0xFF) != 'r' ||
+            (this.jstring.charAt(this.index + 1) & 0xFF) != 'u' ||
+            (this.jstring.charAt(this.index + 2) & 0xFF) != 'e') {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 3;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.True;
+        }
         case 'f':
-          {
-            // Parse false
-            if (this.endPos - this.index <= 3 ||
-              (this.jstring.charAt(this.index) & 0xFF) != 'a' ||
-              (this.jstring.charAt(this.index + 1) & 0xFF) != 'l' ||
-              (this.jstring.charAt(this.index + 2) & 0xFF) != 's' ||
-              (this.jstring.charAt(this.index + 3) & 0xFF) != 'e') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 4;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.False;
+        {
+          // Parse false
+          if (this.endPos - this.index <= 3 ||
+            (this.jstring.charAt(this.index) & 0xFF) != 'a' ||
+            (this.jstring.charAt(this.index + 1) & 0xFF) != 'l' ||
+            (this.jstring.charAt(this.index + 2) & 0xFF) != 's' ||
+            (this.jstring.charAt(this.index + 3) & 0xFF) != 'e') {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 4;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.False;
+        }
         case 'n':
-          {
-            // Parse null
-            if (this.endPos - this.index <= 2 ||
-              (this.jstring.charAt(this.index) & 0xFF) != 'u' ||
-              (this.jstring.charAt(this.index + 1) & 0xFF) != 'l' ||
-              (this.jstring.charAt(this.index + 2) & 0xFF) != 'l') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            this.index += 3;
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return CBORObject.Null;
+        {
+          // Parse null
+          if (this.endPos - this.index <= 2 ||
+            (this.jstring.charAt(this.index) & 0xFF) != 'u' ||
+            (this.jstring.charAt(this.index + 1) & 0xFF) != 'l' ||
+            (this.jstring.charAt(this.index + 2) & 0xFF) != 'l') {
+            this.RaiseError("Value can't be parsed.");
           }
+          this.index += 3;
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return CBORObject.Null;
+        }
         case '-':
-          {
-            // Parse a negative number
-            return this.NextJSONNumber(nextChar);
-          }
+        {
+          // Parse a negative number
+          return this.NextJSONNumber(nextChar);
+        }
         case '0':
         case '1':
         case '2':
@@ -180,11 +180,12 @@ import com.upokecenter.cbor.*;
         case '7':
         case '8':
         case '9':
-          {
-            // Parse a nonnegative number
-            return this.NextJSONNumber(nextChar);
-          }
-        default: this.RaiseError("Value can't be parsed.");
+        {
+          // Parse a nonnegative number
+          return this.NextJSONNumber(nextChar);
+        }
+        default:
+          this.RaiseError("Value can't be parsed.");
           break;
       }
       return null;
@@ -224,7 +225,7 @@ import com.upokecenter.cbor.*;
  throw new NullPointerException("jstring");
 }
  return FromJSONString(jstring,
-  JSONOptions.Default);
+        JSONOptions.Default);
     }
 
     public static CBORObject FromJSONString(
@@ -398,7 +399,7 @@ private final List<String[]> propVarpointers;
           String str = obj.AsString();
           for (int j = 0; j < str.length(); ++j) {
             sb = str.charAt(j) == '/' ? sb.append("~1") : str.charAt(j) == '~' ?
-sb.append("~0") : sb.append(str.charAt(j));
+              sb.append("~0") : sb.append(str.charAt(j));
           }
         } else {
           this.RaiseError("Internal error");
@@ -449,20 +450,20 @@ sb.append("~0") : sb.append(str.charAt(j));
             this.PopPointer();
             return CBORObject.FromObject(myHashMap);
           default: {
-              // Read the next String
-              if (c < 0) {
-                this.RaiseError("Unexpected end of data");
-                return null;
-              }
-              if (c != '"') {
-                this.RaiseError("Expected a String as a key");
-                return null;
-              }
-              // Parse a String that represents the Object's key
-              obj = this.NextJSONString();
-              key = obj;
-              break;
+            // Read the next String
+            if (c < 0) {
+              this.RaiseError("Unexpected end of data");
+              return null;
             }
+            if (c != '"') {
+              this.RaiseError("Expected a String as a key");
+              return null;
+            }
+            // Parse a String that represents the Object's key
+            obj = this.NextJSONString();
+            key = obj;
+            break;
+          }
         }
         if (this.SkipWhitespaceJSON() != ':') {
           this.RaiseError("Expected a ':' after a key");
@@ -547,10 +548,10 @@ sb.append("~0") : sb.append(str.charAt(j));
         this.SetPointer(CBORObject.FromInt64(arrayIndex));
         arrayIndex = (arrayIndex + 1);
         myArrayList.Add(
-          this.NextJSONValue(
-            c,
-            nextchar,
-            depth));
+            this.NextJSONValue(
+              c,
+              nextchar,
+              depth));
         c = nextchar[0];
         switch (c) {
           case ',':
@@ -558,7 +559,8 @@ sb.append("~0") : sb.append(str.charAt(j));
             break;
           case ']':
             return myArrayList;
-          default: this.RaiseError("Expected a ',' or ']'");
+          default:
+            this.RaiseError("Expected a ',' or ']'");
             break;
         }
       }

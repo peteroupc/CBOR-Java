@@ -33,24 +33,24 @@ private MiniCBOR() {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not" +
-"\u0020greater or equal to 0");
+          "\u0020greater or equal to 0");
       }
       if (offset > bytes.length) {
         throw new IllegalArgumentException("\"offset\" (" + offset + ") is not less" +
-"\u0020or equal to " + bytes.length);
+          "\u0020or equal to " + bytes.length);
       }
       if (count < 0) {
         throw new IllegalArgumentException(" (" + count + ") is not greater or" +
-"\u0020equal to 0");
+          "\u0020equal to 0");
       }
       if (count > bytes.length) {
         throw new IllegalArgumentException(" (" + count + ") is not less or equal" +
-"\u0020to " + bytes.length);
+          "\u0020to " + bytes.length);
       }
       if (bytes.length - offset < count) {
         throw new IllegalArgumentException("\"bytes\" + \"'s length minus \" +" +
-"\u0020offset (" + (bytes.length - offset) + ") is not greater or equal to " +
-count);
+          "\u0020offset (" + (bytes.length - offset) + ") is not greater or" +
+          "\u0020 equal to " + count);
       }
       int t = count;
       int tpos = offset;
@@ -199,7 +199,7 @@ throw new IOException("Not a Boolean");
         b |= ((long)bytes[3]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
  throw new IOException("Not a" +
-"\u002032-bit integer");
+          "\u002032-bit integer");
 }
  return (headByte != 0x3a) ? b : -1 - b;
       }
@@ -208,7 +208,7 @@ throw new IOException("Not a Boolean");
         ReadHelper(stream, bytes, 0, bytes.length);
         long b;
         if (check32bit && (bytes[0] != 0 || bytes[1] != 0 || bytes[2] != 0 ||
-            bytes[3] != 0)) {
+          bytes[3] != 0)) {
           throw new IOException("Not a 32-bit integer");
         }
         b = ((long)bytes[4]) & 0xff;
@@ -220,7 +220,7 @@ throw new IOException("Not a Boolean");
         b |= ((long)bytes[7]) & 0xff;
         if (check32bit && (b >> 31) != 0) {
  throw new IOException("Not a" +
-"\u002032-bit integer");
+          "\u002032-bit integer");
 }
  return (headByte != 0x3b) ? b : -1 - b;
       }
@@ -408,8 +408,8 @@ throw new IOException("Not a Boolean");
       }
       if (b == 0x19 || b == 0x39 || b == 0x1a || b == 0x3a) {
         if ((b & 0x1f) == 0x1a && (stream.read() != 0 ||
-            stream.read() != 0 || stream.read() != 0 ||
-            stream.read() != 0)) {
+          stream.read() != 0 || stream.read() != 0 ||
+          stream.read() != 0)) {
           throw new IOException();
         }
         int b1 = stream.read();

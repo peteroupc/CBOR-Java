@@ -43,7 +43,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public static void DoTestLong(long value) {
       String b = "i" + TestCommon.LongToString(value) + "e";
       CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b,
-            false));
+        false));
       Assert.assertEquals(value, beo.AsNumber().ToInt64Checked());
       String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);
@@ -52,7 +52,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     public static void DoTestString(String value) {
       String b = com.upokecenter.util.DataUtilities.GetUtf8Length(value, false) + ":" + value;
       CBORObject beo = EncodingFromBytes(com.upokecenter.util.DataUtilities.GetUtf8Bytes(b,
-            false));
+        false));
       Assert.assertEquals(value, beo.AsString());
       String newb = com.upokecenter.util.DataUtilities.GetUtf8String(EncodingToBytes(beo), false);
       Assert.assertEquals(b, newb);

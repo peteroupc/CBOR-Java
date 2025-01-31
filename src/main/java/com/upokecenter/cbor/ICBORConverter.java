@@ -12,8 +12,7 @@ licensed under the Unlicense: https://unlicense.org/
    * CBOR objects.
    * @param <T> Type to convert to a CBOR object.
    */
-  public interface ICBORConverter<T>
-  {
+  public interface ICBORConverter<T> {
     /**
      * Converts an object to a CBOR object.
      * @param obj An object to convert to a CBOR object.

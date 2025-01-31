@@ -32,7 +32,7 @@ private CBORTestCommon() {
         EFloat ef = RandomObjects.RandomEFloat(rand);
         if (
           ef.getExponent().compareTo(-20000) >= 0 &&
-ef.getExponent().compareTo(20000) <= 0) {
+          ef.getExponent().compareTo(20000) <= 0) {
           return ef;
         }
       }
@@ -43,7 +43,7 @@ ef.getExponent().compareTo(20000) <= 0) {
         EDecimal ef = RandomObjects.RandomEDecimal(rand);
         if (
           ef.getExponent().compareTo(-20000) >= 0 &&
-ef.getExponent().compareTo(20000) <= 0) {
+          ef.getExponent().compareTo(20000) <= 0) {
           return ef;
         }
       }
@@ -54,34 +54,35 @@ ef.getExponent().compareTo(20000) <= 0) {
     }
 
     public static CBORObject RandomNumber(IRandomGenExtended rand, boolean
-lowExponent) {
+      lowExponent) {
       Object o;
       switch (rand.GetInt32(6)) {
         case 0:
           o = RandomObjects.RandomDouble(
-            rand,
-            Integer.MAX_VALUE);
+              rand,
+              Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 1:
           o = RandomObjects.RandomSingle(
-            rand,
-            Integer.MAX_VALUE);
+              rand,
+              Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 2:
           return CBORObject.FromEInteger(
               RandomObjects.RandomEInteger(rand));
         case 3:
           o = lowExponent ? RandomEFloatLowExponent(rand) :
-               RandomObjects.RandomEFloat(rand);
+            RandomObjects.RandomEFloat(rand);
           return CBORObject.FromObject(o);
         case 4:
           o = lowExponent ? RandomEDecimalLowExponent(rand) :
-               RandomObjects.RandomEDecimal(rand);
+            RandomObjects.RandomEDecimal(rand);
           return CBORObject.FromObject(o);
         case 5:
           o = RandomObjects.RandomInt64(rand);
           return CBORObject.FromObject(o);
-        default: throw new IllegalStateException();
+        default:
+          throw new IllegalStateException();
       }
     }
 
@@ -90,13 +91,13 @@ lowExponent) {
       switch (rand.GetInt32(7)) {
         case 0:
           o = RandomObjects.RandomDouble(
-            rand,
-            Integer.MAX_VALUE);
+              rand,
+              Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 1:
           o = RandomObjects.RandomSingle(
-            rand,
-            Integer.MAX_VALUE);
+              rand,
+              Integer.MAX_VALUE);
           return CBORObject.FromObject(o);
         case 2:
           return CBORObject.FromEInteger(
@@ -113,7 +114,8 @@ lowExponent) {
         case 6:
           o = RandomObjects.RandomERational(rand);
           return CBORObject.FromObject(o);
-        default: throw new IllegalStateException();
+        default:
+          throw new IllegalStateException();
       }
     }
 
@@ -121,7 +123,7 @@ lowExponent) {
       int x = rand.GetInt32(100);
       int count = (x < 80) ? 2 : ((x < 93) ? 1 : ((x < 98) ? 0 : 10));
       CBORObject cborRet = rand.GetInt32(100) < 30 ?
-         CBORObject.NewOrderedMap() : CBORObject.NewMap();
+        CBORObject.NewOrderedMap() : CBORObject.NewMap();
       for (int i = 0; i < count; ++i) {
         CBORObject key = RandomCBORObject(rand, depth + 1);
         CBORObject value = RandomCBORObject(rand, depth + 1);
@@ -140,7 +142,7 @@ lowExponent) {
     }
 
     public static EInteger RandomEIntegerMajorType0Or1(IRandomGenExtended
-rand) {
+      rand) {
       int v = rand.GetInt32(0x10000);
       EInteger ei = EInteger.FromInt32(v);
       ei = ei.ShiftLeft(16).Add(rand.GetInt32(0x10000));
@@ -206,7 +208,7 @@ rand) {
     }
 
     public static CBORObject RandomCBORArray(IRandomGenExtended rand, int
-depth) {
+      depth) {
       int x = rand.GetInt32(100);
       int count = (x < 80) ? 2 : ((x < 93) ? 1 : ((x < 98) ? 0 : 10));
       CBORObject cborRet = CBORObject.NewArray();
@@ -233,13 +235,13 @@ case 4:
 return rand.GetInt32(2) == 0 ? CBORObject.True : CBORObject.False;
 case 5:
 return rand.GetInt32(2) == 0 ? CBORObject.Null :
-                    CBORObject.Undefined;
+          CBORObject.Undefined;
 case 6:
 return CBORObject.FromString(
-                      RandomObjects.RandomTextString(rand));
+            RandomObjects.RandomTextString(rand));
 case 7:
 return CBORObject.FromByteArray(
-                      RandomObjects.RandomByteString(rand));
+            RandomObjects.RandomByteString(rand));
 case 8:
 return RandomCBORArray(rand, depth);
 case 9:
@@ -286,7 +288,7 @@ return RandomNumber(rand);
 
     // Tests the equivalence of the DecodeFromBytes and Read methods.
     public static CBORObject FromBytesTestAB(byte[] b, CBOREncodeOptions
-options) {
+      options) {
       CBORObject oa = FromBytesA(b, options);
       CBORObject ob = FromBytesB(b, options);
       if (!oa.equals(ob)) {
@@ -308,7 +310,7 @@ int startingAvailable = ms.available();
       CBORObject o = CBORObject.Read(ms, options);
       if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
-"\u0020EOF");
+          "\u0020EOF");
 }
  return o;
 }
@@ -340,7 +342,7 @@ int startingAvailable = ms.available();
       CBORObject o = CBORObject.Read(ms);
       if ((startingAvailable - ms.available()) != startingAvailable) {
  throw new CBORException("not at" +
-"\u0020EOF");
+          "\u0020EOF");
 }
  return o;
 }

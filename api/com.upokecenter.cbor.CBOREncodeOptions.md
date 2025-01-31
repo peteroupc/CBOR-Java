@@ -53,18 +53,26 @@ Specifies options for encoding and decoding CBOR objects.
 ## Field Details
 
 ### Default
+
     public static final CBOREncodeOptions Default
+
 Default options for CBOR objects. Disallow duplicate keys, and always encode
  strings using definite-length encoding.
+
 ### DefaultCtap2Canonical
+
     public static final CBOREncodeOptions DefaultCtap2Canonical
+
 Default options for CBOR objects serialized using the CTAP2 canonicalization
  (used in Web Authentication, among other specifications). Disallow duplicate
  keys, and always encode strings using definite-length encoding.
+
 ## Method Details
 
 ### toString
+
     public String toString()
+
 Gets the values of this options object's properties in text form.
 
 **Overrides:**
@@ -78,7 +86,9 @@ Gets the values of this options object's properties in text form.
  string constructor for this class.
 
 ### getResolveReferences
+
     public final boolean getResolveReferences()
+
 <p>Gets a value indicating whether to resolve references to sharable objects
  and sharable strings in the process of decoding a CBOR object. Enabling this
  property, however, can cause a security risk if a decoded CBOR object is
@@ -130,7 +140,9 @@ Gets the values of this options object's properties in text form.
  and sharable strings. The default is false.
 
 ### getUseIndefLengthStrings
+
     public final boolean getUseIndefLengthStrings()
+
 Gets a value indicating whether to encode strings with an indefinite-length
  encoding under certain circumstances.
 
@@ -141,7 +153,9 @@ Gets a value indicating whether to encode strings with an indefinite-length
  false.
 
 ### getKeepKeyOrder
+
     public final boolean getKeepKeyOrder()
+
 Gets a value indicating whether to preserve the order in which a CBOR map's
  keys appear when decoding a CBOR object, by using maps created as though by
  CBORObject.NewOrderedMap. If false, key order is not guaranteed to be
@@ -153,7 +167,9 @@ Gets a value indicating whether to preserve the order in which a CBOR map's
  map's keys appear when decoding a CBOR object. The default is false.
 
 ### getAllowEmpty
+
     public final boolean getAllowEmpty()
+
 Gets a value indicating whether decoding a CBOR object will return <code>
  null</code> instead of a CBOR object if the stream has no content or the end of
  the stream is reached before decoding begins. Used only when decoding CBOR
@@ -166,7 +182,9 @@ Gets a value indicating whether decoding a CBOR object will return <code>
  the stream is reached before decoding begins. The default is false.
 
 ### getAllowDuplicateKeys
+
     public final boolean getAllowDuplicateKeys()
+
 Gets a value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. Used only when decoding CBOR objects. If this
  property is <code>true</code> and a CBOR map has two or more values with the same
@@ -178,7 +196,9 @@ Gets a value indicating whether to allow duplicate keys when reading CBOR
  objects from a data stream. The default is false.
 
 ### getFloat64
+
     public final boolean getFloat64()
+
 Gets a value indicating whether to encode floating-point numbers in a CBOR
  object in their 64-bit encoding form regardless of whether their value can
  be encoded without loss in a smaller form. Used only when encoding CBOR
@@ -192,7 +212,9 @@ Gets a value indicating whether to encode floating-point numbers in a CBOR
  CBOR objects. The default is false.
 
 ### getCtap2Canonical
+
     public final boolean getCtap2Canonical()
+
 <p>Gets a value indicating whether CBOR objects: </p><ul> <li>When encoding,
  are written out using the CTAP2 canonical CBOR encoding form, which is
  useful for implementing Web Authentication (WebAuthn).</li><li>When

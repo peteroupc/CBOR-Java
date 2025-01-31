@@ -7,8 +7,7 @@ package com.upokecenter.util;
    * the underlying implementation. This class is safe for concurrent use among
    * multiple threads.</p>
    */
-  public class XorShift128Plus implements IRandomGen
-  {
+  public class XorShift128Plus implements IRandomGen {
     private final long[] s = new long[2];
     private final Object syncRoot = new Object();
 

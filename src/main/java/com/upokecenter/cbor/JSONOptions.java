@@ -109,7 +109,7 @@ package com.upokecenter.cbor;
      * the string begin or end with whitespace. The string can be empty, but cannot
      * be null. The following is an example of this parameter: {@code
      * writebasic = false;replacesurrogates = true}. The key can be any one of the
-     * following where the letters can be any combination of basic uppercase and/or
+     * following where the letters can be any combination of basic uppercase and
      * basic lowercase letters: {@code replacesurrogates}, {@code
      * allowduplicatekeys}, {@code preservenegativezero}, {@code numberconversion},
      * {@code writebasic}, {@code keepkeyorder}. Other keys are ignored in this
@@ -144,23 +144,23 @@ package com.upokecenter.cbor;
       }
       OptionsParser parser = new OptionsParser(paramString);
       this.propVarpreservenegativezero = parser.GetBoolean(
-        "preservenegativezero",
-        true);
+          "preservenegativezero",
+          true);
       this.propVarallowduplicatekeys = parser.GetBoolean(
-        "allowduplicatekeys",
-        false);
+          "allowduplicatekeys",
+          false);
       this.propVarkeepkeyorder = parser.GetBoolean(
-        "keepkeyorder",
-        false);
+          "keepkeyorder",
+          false);
       this.propVarreplacesurrogates = parser.GetBoolean(
-        "replacesurrogates",
-        false);
+          "replacesurrogates",
+          false);
       this.propVarnumberconversion = ToNumberConversion(parser.GetLCString(
         "numberconversion",
         null));
       this.propVarwritebasic = parser.GetBoolean(
-        "writebasic",
-        false);
+          "writebasic",
+          false);
     }
 
     /**
@@ -195,7 +195,7 @@ package com.upokecenter.cbor;
         kind == ConversionMode.Decimal128 ? "decimal128" :
         kind == ConversionMode.IntOrFloat ? "intorfloat" :
         (kind == ConversionMode.IntOrFloatFromDouble) ?
-"intorfloatfromdouble" : "full";
+        "intorfloatfromdouble" : "full";
     }
 
     private static ConversionMode ToNumberConversion(String str) {

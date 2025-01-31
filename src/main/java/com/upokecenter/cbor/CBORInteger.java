@@ -9,12 +9,11 @@ licensed under the Unlicense: https://unlicense.org/
 
 import com.upokecenter.numbers.*;
 
-  class CBORInteger implements ICBORNumber
-  {
+  class CBORInteger implements ICBORNumber {
     public Object Abs(Object obj) {
       long val = (((Long)obj).longValue());
       return (val == Integer.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) : ((val < 0) ?
-          -val : obj);
+        -val : obj);
     }
 
     public EInteger AsEInteger(Object obj) {
@@ -135,7 +134,7 @@ import com.upokecenter.numbers.*;
 
     public Object Negate(Object obj) {
       return (((((Long)obj).longValue())) == Long.MIN_VALUE) ? (EInteger.FromInt32(1).ShiftLeft(63)) :
-(-(((Long)obj).longValue()));
+        (-(((Long)obj).longValue()));
     }
 
     public int Sign(Object obj) {

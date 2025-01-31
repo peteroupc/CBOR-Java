@@ -13,7 +13,9 @@ Classes that implement this interface can support conversions from CBOR
 ## Method Details
 
 ### FromCBORObject
+
     T FromCBORObject(CBORObject obj)
+
 Converts a CBOR object to a custom type.
 
 **Parameters:**

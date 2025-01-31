@@ -7,8 +7,9 @@ licensed under the Unlicense: https://unlicense.org/
 
  */
 
-  class CBORUriConverter implements ICBORToFromConverter<java.net.URI>
-  {
+import com.upokecenter.util.*;
+
+  class CBORUriConverter implements ICBORToFromConverter<java.net.URI> {
     private static CBORObject ValidateObject(CBORObject obj) {
       if (obj.getType() != CBORType.TextString) {
         throw new CBORException("URI/IRI must be a text String");
@@ -17,18 +18,18 @@ licensed under the Unlicense: https://unlicense.org/
       boolean isiriref = obj.HasMostOuterTag(267);
       if (isiriref && !URIUtility.IsValidIRI(
           obj.AsString(),
-          URIUtility.ParseMode.IRIStrict)) {
+          com.upokecenter.util.URIUtility.ParseMode.IRIStrict)) {
  throw new CBORException("String is not a valid IRI Reference");
 }
  if (isiri && (!URIUtility.IsValidIRI(
-            obj.AsString(),
-            URIUtility.ParseMode.IRIStrict) ||
-          !URIUtility.HasScheme(obj.AsString()))) {
+        obj.AsString(),
+        com.upokecenter.util.URIUtility.ParseMode.IRIStrict) ||
+        !URIUtility.HasScheme(obj.AsString()))) {
  throw new CBORException("String is not a valid IRI");
 }
  if (!URIUtility.IsValidIRI(
           obj.AsString(),
-          URIUtility.ParseMode.URIStrict) ||
+          com.upokecenter.util.URIUtility.ParseMode.URIStrict) ||
         !URIUtility.HasScheme(obj.AsString())) {
  throw new CBORException("String is not a valid URI");
 }
@@ -37,8 +38,8 @@ licensed under the Unlicense: https://unlicense.org/
 
     public java.net.URI FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(32) ||
-             obj.HasMostOuterTag(266) ||
-             obj.HasMostOuterTag(267)) {
+        obj.HasMostOuterTag(266) ||
+        obj.HasMostOuterTag(267)) {
         ValidateObject(obj);
         try {
           return new java.net.URI(obj.AsString());

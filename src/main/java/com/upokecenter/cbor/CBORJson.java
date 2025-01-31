@@ -97,85 +97,85 @@ import java.util.*;
                 this.sb.append('\t');
                 break;
               case 'u':
-                { // Unicode escape
-                  c = 0;
-                  // Consists of 4 hex digits
+              { // Unicode escape
+                c = 0;
+                // Consists of 4 hex digits
+                for (int i = 0; i < 4; ++i) {
+                  int ch = this.ReadChar();
+                  if (ch >= '0' && ch <= '9') {
+                    c <<= 4;
+                    c |= ch - '0';
+                  } else if (ch >= 'A' && ch <= 'F') {
+                    c <<= 4;
+                    c |= ch + 10 - 'A';
+                  } else if (ch >= 'a' && ch <= 'f') {
+                    c <<= 4;
+                    c |= ch + 10 - 'a';
+                  } else {
+                    this.RaiseError(
+                      "Invalid Unicode escaped character");
+                  }
+                }
+                if ((c & 0xf800) != 0xd800) {
+                  // Nonsurrogate
+                  this.sb.append((char)c);
+                } else if ((c & 0xfc00) == 0xd800) {
+                  int ch = this.ReadChar();
+                  if (ch != '\\' || this.ReadChar() != 'u') {
+                    this.RaiseError("Invalid escaped character");
+                  }
+                  int c2 = 0;
                   for (int i = 0; i < 4; ++i) {
-                    int ch = this.ReadChar();
+                    ch = this.ReadChar();
                     if (ch >= '0' && ch <= '9') {
-                      c <<= 4;
-                      c |= ch - '0';
+                      c2 <<= 4;
+                      c2 |= ch - '0';
                     } else if (ch >= 'A' && ch <= 'F') {
-                      c <<= 4;
-                      c |= ch + 10 - 'A';
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'A';
                     } else if (ch >= 'a' && ch <= 'f') {
-                      c <<= 4;
-                      c |= ch + 10 - 'a';
+                      c2 <<= 4;
+                      c2 |= ch + 10 - 'a';
                     } else {
                       this.RaiseError(
                         "Invalid Unicode escaped character");
                     }
                   }
-                  if ((c & 0xf800) != 0xd800) {
-                    // Nonsurrogate
-                    this.sb.append((char)c);
-                  } else if ((c & 0xfc00) == 0xd800) {
-                    int ch = this.ReadChar();
-                    if (ch != '\\' || this.ReadChar() != 'u') {
-                      this.RaiseError("Invalid escaped character");
-                    }
-                    int c2 = 0;
-                    for (int i = 0; i < 4; ++i) {
-                      ch = this.ReadChar();
-                      if (ch >= '0' && ch <= '9') {
-                        c2 <<= 4;
-                        c2 |= ch - '0';
-                      } else if (ch >= 'A' && ch <= 'F') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'A';
-                      } else if (ch >= 'a' && ch <= 'f') {
-                        c2 <<= 4;
-                        c2 |= ch + 10 - 'a';
-                      } else {
-                        this.RaiseError(
-                          "Invalid Unicode escaped character");
-                      }
-                    }
-                    if ((c2 & 0xfc00) != 0xdc00) {
-                      this.RaiseError("Unpaired surrogate code point");
-                    } else {
-                      this.sb.append((char)c);
-                      this.sb.append((char)c2);
-                    }
-                  } else {
+                  if ((c2 & 0xfc00) != 0xdc00) {
                     this.RaiseError("Unpaired surrogate code point");
+                  } else {
+                    this.sb.append((char)c);
+                    this.sb.append((char)c2);
                   }
-                  break;
+                } else {
+                  this.RaiseError("Unpaired surrogate code point");
                 }
+                break;
+              }
               default:
-                {
-                  this.RaiseError("Invalid escaped character");
-                  break;
-                }
+              {
+                this.RaiseError("Invalid escaped character");
+                break;
+              }
             }
             break;
           case 0x22: // double quote
             return this.sb.toString();
           default:
-            {
-              // NOTE: Assumes the character reader
-              // throws an error on finding illegal surrogate
-              // pairs in the String or invalid encoding
-              // in the stream
-              if ((c >> 16) == 0) {
-                this.sb.append((char)c);
-              } else {
-                this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
-                    0xd800));
-                this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
-              }
-              break;
+          {
+            // NOTE: Assumes the character reader
+            // throws an error on finding illegal surrogate
+            // pairs in the String or invalid encoding
+            // in the stream
+            if ((c >> 16) == 0) {
+              this.sb.append((char)c);
+            } else {
+              this.sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) |
+                0xd800));
+              this.sb.append((char)(((c - 0x10000) & 0x3ff) | 0xdc00));
             }
+            break;
+          }
         }
       }
     }
@@ -249,91 +249,91 @@ import java.util.*;
       }
       switch (c) {
         case '"':
-          {
-            // Parse a String
-            // The tokenizer already checked the String for invalid
-            // surrogate pairs, so just call the CBORObject
-            // constructor directly
-            obj = CBORObject.FromRaw(this.NextJSONString());
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse a String
+          // The tokenizer already checked the String for invalid
+          // surrogate pairs, so just call the CBORObject
+          // constructor directly
+          obj = CBORObject.FromRaw(this.NextJSONString());
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '{':
-          {
-            // Parse an object
-            obj = this.ParseJSONObject(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an object
+          obj = this.ParseJSONObject(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case '[':
-          {
-            // Parse an array
-            obj = this.ParseJSONArray(depth + 1);
-            nextChar[0] = this.SkipWhitespaceJSON();
-            return obj;
-          }
+        {
+          // Parse an array
+          obj = this.ParseJSONArray(depth + 1);
+          nextChar[0] = this.SkipWhitespaceJSON();
+          return obj;
+        }
         case 't':
-          {
-            // Parse true
-            if (this.ReadChar() != 'r' || this.ReadChar() != 'u' ||
-this.ReadChar() != 'e') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            c = this.ReadChar();
-            if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
-              nextChar[0] = this.SkipWhitespaceJSON();
-            } else if (this.jsonSequenceMode && depth == 0) {
-              nextChar[0] = c;
-              this.RaiseError("JSON whitespace expected after top-level " +
-                "number in JSON sequence");
-            } else {
-              nextChar[0] = c;
-            }
-            return CBORObject.True;
+        {
+          // Parse true
+          if (this.ReadChar() != 'r' || this.ReadChar() != 'u' ||
+            this.ReadChar() != 'e') {
+            this.RaiseError("Value can't be parsed.");
           }
+          c = this.ReadChar();
+          if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
+            nextChar[0] = this.SkipWhitespaceJSON();
+          } else if (this.jsonSequenceMode && depth == 0) {
+            nextChar[0] = c;
+            this.RaiseError("JSON whitespace expected after top-level " +
+              "number in JSON sequence");
+          } else {
+            nextChar[0] = c;
+          }
+          return CBORObject.True;
+        }
         case 'f':
-          {
-            // Parse false
-            if (this.ReadChar() != 'a' || this.ReadChar() != 'l' ||
-this.ReadChar() != 's' || this.ReadChar() != 'e') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            c = this.ReadChar();
-            if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
-              nextChar[0] = this.SkipWhitespaceJSON();
-            } else if (this.jsonSequenceMode && depth == 0) {
-              nextChar[0] = c;
-              this.RaiseError("JSON whitespace expected after top-level " +
-                "number in JSON sequence");
-            } else {
-              nextChar[0] = c;
-            }
-            return CBORObject.False;
+        {
+          // Parse false
+          if (this.ReadChar() != 'a' || this.ReadChar() != 'l' ||
+            this.ReadChar() != 's' || this.ReadChar() != 'e') {
+            this.RaiseError("Value can't be parsed.");
           }
+          c = this.ReadChar();
+          if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
+            nextChar[0] = this.SkipWhitespaceJSON();
+          } else if (this.jsonSequenceMode && depth == 0) {
+            nextChar[0] = c;
+            this.RaiseError("JSON whitespace expected after top-level " +
+              "number in JSON sequence");
+          } else {
+            nextChar[0] = c;
+          }
+          return CBORObject.False;
+        }
         case 'n':
-          {
-            // Parse null
-            if (this.ReadChar() != 'u' || this.ReadChar() != 'l' ||
-this.ReadChar() != 'l') {
-              this.RaiseError("Value can't be parsed.");
-            }
-            c = this.ReadChar();
-            if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
-              nextChar[0] = this.SkipWhitespaceJSON();
-            } else if (this.jsonSequenceMode && depth == 0) {
-              nextChar[0] = c;
-              this.RaiseError("JSON whitespace expected after top-level " +
-                "number in JSON sequence");
-            } else {
-              nextChar[0] = c;
-            }
-            return CBORObject.Null;
+        {
+          // Parse null
+          if (this.ReadChar() != 'u' || this.ReadChar() != 'l' ||
+            this.ReadChar() != 'l') {
+            this.RaiseError("Value can't be parsed.");
           }
+          c = this.ReadChar();
+          if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
+            nextChar[0] = this.SkipWhitespaceJSON();
+          } else if (this.jsonSequenceMode && depth == 0) {
+            nextChar[0] = c;
+            this.RaiseError("JSON whitespace expected after top-level " +
+              "number in JSON sequence");
+          } else {
+            nextChar[0] = c;
+          }
+          return CBORObject.Null;
+        }
         case '-':
-          {
-            // Parse a negative number
-            return this.NextJSONNegativeNumber(nextChar, depth);
-          }
+        {
+          // Parse a negative number
+          return this.NextJSONNegativeNumber(nextChar, depth);
+        }
         case '0':
         case '1':
         case '2':
@@ -344,111 +344,112 @@ this.ReadChar() != 'l') {
         case '7':
         case '8':
         case '9':
-          {
-            // Parse a nonnegative number
-            int cval = c - '0';
-            int cstart = c;
-            boolean needObj = true;
+        {
+          // Parse a nonnegative number
+          int cval = c - '0';
+          int cstart = c;
+          boolean needObj = true;
+          c = this.ReadChar();
+          if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
+            c == 'e' || c == 'E')) {
+            // Optimize for common case where JSON number
+            // is a single digit without sign or exponent
+            obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
+            needObj = false;
+          } else if (c >= '0' && c <= '9') {
+            int csecond = c;
+            if (cstart == '0') {
+              // Leading zero followed by any digit is not allowed
+              this.RaiseError("JSON number can't be parsed.");
+            }
+            cval = (cval * 10) + (c - '0');
             c = this.ReadChar();
-            if (!(c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
-                c == 'e' || c == 'E')) {
-              // Optimize for common case where JSON number
-              // is a single digit without sign or exponent
-              obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
-              needObj = false;
-            } else if (c >= '0' && c <= '9') {
-              int csecond = c;
-              if (cstart == '0') {
-                // Leading zero followed by any digit is not allowed
-                this.RaiseError("JSON number can't be parsed.");
+            if (c >= '0' && c <= '9') {
+              int digits = 2;
+              int[] ctmp = new int[10];
+              ctmp[0] = cstart;
+              ctmp[1] = csecond;
+              while (digits < 9 && c >= '0' && c <= '9') {
+                cval = (cval * 10) + (c - '0');
+                ctmp[digits++] = c;
+                c = this.ReadChar();
               }
-              cval = (cval * 10) + (c - '0');
-              c = this.ReadChar();
-              if (c >= '0' && c <= '9') {
-                int digits = 2;
-                int[] ctmp = new int[10];
-                ctmp[0] = cstart;
-                ctmp[1] = csecond;
-                while (digits < 9 && c >= '0' && c <= '9') {
-                  cval = (cval * 10) + (c - '0');
-                  ctmp[digits++] = c;
-                  c = this.ReadChar();
-                }
-                if (c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
-'9')) {
-                  // Not an all-digit number, or too long
-                  this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
-                  this.sb.delete(0, this.sb.length());
-                  for (int vi = 0; vi < digits; ++vi) {
-                    this.sb.append((char)ctmp[vi]);
-                  }
-                } else {
-                  obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
-                  needObj = false;
-                }
-              } else if (!(c == '-' || c == '+' || c == '.' || c == 'e' || c
-                == 'E')) {
-                // Optimize for common case where JSON number
-                // is two digits without sign, decimal point, or exponent
-                obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
-                needObj = false;
-              } else {
+              if (c == 'e' || c == 'E' || c == '.' || (c >= '0' && c <=
+                '9')) {
+                // Not an all-digit number, or too long
                 this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
                 this.sb.delete(0, this.sb.length());
-                this.sb.append((char)cstart);
-                this.sb.append((char)csecond);
+                for (int vi = 0; vi < digits; ++vi) {
+                  this.sb.append((char)ctmp[vi]);
+                }
+              } else {
+                obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
+                needObj = false;
               }
+            } else if (!(c == '-' || c == '+' || c == '.' || c == 'e' || c
+              == 'E')) {
+              // Optimize for common case where JSON number
+              // is two digits without sign, decimal point, or exponent
+              obj = CBORDataUtilities.ParseSmallNumber(cval, this.options);
+              needObj = false;
             } else {
               this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
               this.sb.delete(0, this.sb.length());
               this.sb.append((char)cstart);
+              this.sb.append((char)csecond);
             }
-            if (needObj) {
-              char[] charbuf = new char[32];
-              int charbufptr = 0;
-              while (
-                c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
-                c == 'e' || c == 'E') {
-                charbuf[charbufptr++] = (char)c;
-                if (charbufptr >= 32) {
-                  this.sb.append(charbuf, 0, 32);
-                  charbufptr = 0;
-                }
-                c = this.ReadChar();
-              }
-              if (charbufptr > 0) {
-                this.sb.append(charbuf, 0, charbufptr);
-              }
-              // check if character can validly appear after a JSON number
-              if (c != ',' && c != ']' && c != '}' && c != -1 &&
-                c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
-                this.RaiseError("Invalid character after JSON number");
-              }
-              str = this.sb.toString();
-              obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
-              if (obj == null) {
-                String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");
-                this.RaiseError("JSON number can't be parsed. " + errstr);
-              }
-            } else {
-              // check if character can validly appear after a JSON number
-              if (c != ',' && c != ']' && c != '}' && c != -1 &&
-                c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
-                this.RaiseError("Invalid character after JSON number");
-              }
-            }
-            if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
-              nextChar[0] = this.SkipWhitespaceJSON();
-            } else if (this.jsonSequenceMode && depth == 0) {
-              nextChar[0] = c;
-              this.RaiseError("JSON whitespace expected after top-level " +
-                "number in JSON sequence");
-            } else {
-              nextChar[0] = c;
-            }
-            return obj;
+          } else {
+            this.sb = (this.sb == null) ? (new StringBuilder()) : this.sb;
+            this.sb.delete(0, this.sb.length());
+            this.sb.append((char)cstart);
           }
-        default: this.RaiseError("Value can't be parsed.");
+          if (needObj) {
+            char[] charbuf = new char[32];
+            int charbufptr = 0;
+            while (
+              c == '-' || c == '+' || c == '.' || (c >= '0' && c <= '9') ||
+              c == 'e' || c == 'E') {
+              charbuf[charbufptr++] = (char)c;
+              if (charbufptr >= 32) {
+                this.sb.append(charbuf, 0, 32);
+                charbufptr = 0;
+              }
+              c = this.ReadChar();
+            }
+            if (charbufptr > 0) {
+              this.sb.append(charbuf, 0, charbufptr);
+            }
+            // check if character can validly appear after a JSON number
+            if (c != ',' && c != ']' && c != '}' && c != -1 &&
+              c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+              this.RaiseError("Invalid character after JSON number");
+            }
+            str = this.sb.toString();
+            obj = CBORDataUtilities.ParseJSONNumber(str, this.options);
+            if (obj == null) {
+              String errstr = (str.length() <= 100) ? str : (str.substring(0,100) + "...");
+              this.RaiseError("JSON number can't be parsed. " + errstr);
+            }
+          } else {
+            // check if character can validly appear after a JSON number
+            if (c != ',' && c != ']' && c != '}' && c != -1 &&
+              c != 0x20 && c != 0x0a && c != 0x0d && c != 0x09) {
+              this.RaiseError("Invalid character after JSON number");
+            }
+          }
+          if (c == 0x20 || c == 0x0a || c == 0x0d || c == 0x09) {
+            nextChar[0] = this.SkipWhitespaceJSON();
+          } else if (this.jsonSequenceMode && depth == 0) {
+            nextChar[0] = c;
+            this.RaiseError("JSON whitespace expected after top-level " +
+              "number in JSON sequence");
+          } else {
+            nextChar[0] = c;
+          }
+          return obj;
+        }
+        default:
+          this.RaiseError("Value can't be parsed.");
           break;
       }
       return null;
@@ -581,8 +582,8 @@ this.ReadChar() != 'l') {
       int[] nextChar = new int[1];
       boolean seenComma = false;
       Map<CBORObject, CBORObject> myHashMap =
-this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
-TreeMap<CBORObject, CBORObject>();
+        this.options.getKeepKeyOrder() ? PropertyMap.NewOrderedDict() : new
+        TreeMap<CBORObject, CBORObject>();
       while (true) {
         c = this.SkipWhitespaceJSON();
         switch (c) {
@@ -597,23 +598,23 @@ TreeMap<CBORObject, CBORObject>();
             }
             return CBORObject.FromRaw(myHashMap);
           default: {
-              // Read the next String
-              if (c < 0) {
-                this.RaiseError("Unexpected end of data");
-                return null;
-              }
-              if (c != '"') {
-                this.RaiseError("Expected a String as a key");
-                return null;
-              }
-              // Parse a String that represents the Object's key.
-              // The tokenizer already checked the String for invalid
-              // surrogate pairs, so just call the CBORObject
-              // constructor directly
-              obj = CBORObject.FromRaw(this.NextJSONString());
-              key = obj;
-              break;
+            // Read the next String
+            if (c < 0) {
+              this.RaiseError("Unexpected end of data");
+              return null;
             }
+            if (c != '"') {
+              this.RaiseError("Expected a String as a key");
+              return null;
+            }
+            // Parse a String that represents the Object's key.
+            // The tokenizer already checked the String for invalid
+            // surrogate pairs, so just call the CBORObject
+            // constructor directly
+            obj = CBORObject.FromRaw(this.NextJSONString());
+            key = obj;
+            break;
+          }
         }
         if (this.SkipWhitespaceJSON() != ':') {
           this.RaiseError("Expected a ':' after a key");
@@ -626,7 +627,7 @@ TreeMap<CBORObject, CBORObject>();
             depth));
         int newCount = myHashMap.size();
         if (!this.options.getAllowDuplicateKeys() &&
-              oldCount == newCount) {
+          oldCount == newCount) {
           this.RaiseError("Duplicate key already exists");
           return null;
         }
@@ -636,7 +637,8 @@ TreeMap<CBORObject, CBORObject>();
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-          default: this.RaiseError("Expected a ',' or '}'");
+          default:
+            this.RaiseError ("Expected a ',' or '}'");
             break;
         }
       }
@@ -675,7 +677,8 @@ TreeMap<CBORObject, CBORObject>();
             break;
           case ']':
             return CBORObject.FromRaw(myArrayList);
-          default: this.RaiseError("Expected a ',' or ']'");
+          default:
+            this.RaiseError ("Expected a ',' or ']'");
             break;
         }
       }

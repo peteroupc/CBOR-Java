@@ -1,7 +1,6 @@
 package com.upokecenter.cbor;
 
-  class CharacterInputWithCount implements ICharacterInput
-  {
+  class CharacterInputWithCount implements ICharacterInput {
     private final ICharacterInput ci;
     private int offset;
 
@@ -20,12 +19,12 @@ package com.upokecenter.cbor;
     public void RaiseError(Exception ex) {
       if (ex.getCause() == null) {
         throw new CBORException(
-            this.NewErrorString(ex.getMessage()),
-            ex);
+          this.NewErrorString(ex.getMessage()),
+          ex);
       } else {
         throw new CBORException(
-            this.NewErrorString(ex.getMessage()),
-            ex.getCause());
+          this.NewErrorString(ex.getMessage()),
+          ex.getCause());
       }
     }
 

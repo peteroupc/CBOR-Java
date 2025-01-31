@@ -36,7 +36,7 @@ package com.upokecenter.cbor;
      * the string begin or end with whitespace. The string can be empty, but cannot
      * be null. The following is an example of this parameter: {@code
      * usecamelcase = true}. The key can be any one of the following where the
-     * letters can be any combination of basic uppercase and/or basic lowercase
+     * letters can be any combination of basic uppercase and basic lowercase
      * letters: {@code usecamelcase}. Other keys are ignored in this version of the
      * CBOR library. (Keys are compared using a basic case-insensitive comparison,
      * in which two strings are equal if they match after converting the basic
@@ -69,8 +69,7 @@ package com.upokecenter.cbor;
     @Override public String toString() {
       return new StringBuilder()
         .append("usecamelcase=").append(this.getUseCamelCase() ? "true" :
-"false")
-        .toString();
+        "false").toString();
     }
 
     /**

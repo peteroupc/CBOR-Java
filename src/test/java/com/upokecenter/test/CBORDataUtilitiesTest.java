@@ -86,13 +86,13 @@ import com.upokecenter.numbers.*;
     public void TestParseJSONNumberSubstring() {
       String tstr =
 
-  "-3.00931381333368754713014659613049757554804012787921371662913692598770508705049030832574634419795955864174175076186656951904296875000E-49";
+        "-3.00931381333368754713014659613049757554804012787921371662913692598770508705049030832574634419795955864174175076186656951904296875000E-49";
       try {
         CBORDataUtilities.ParseJSONNumber(
-          "xyzxyz" + tstr,
-          6,
-          tstr.length(),
-          new JSONOptions("numberconversion=full"));
+            "xyzxyz" + tstr,
+            6,
+            tstr.length(),
+            new JSONOptions("numberconversion=full"));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -110,7 +110,8 @@ import com.upokecenter.numbers.*;
         EDecimal jsonDecimal = (EDecimal)CBORDataUtilities
           .ParseJSONNumber(strings[i], new
 
-  JSONOptions("numberconversion=full;preservenegativezero=false")).ToObject(EDecimal.class);
+            JSONOptions("numberconversion=full;preservenegativezero=false")).ToObject(
+            EDecimal.class);
         Assert.assertEquals(
           strings[i + 1],
           jsonDecimal.toString());
@@ -158,56 +159,56 @@ import com.upokecenter.numbers.*;
           Assert.fail(str);
         }
         if (CBORDataUtilities.ParseJSONNumber(str,
-              new JSONOptions("numberconversion=full")) != null) {
+          new JSONOptions("numberconversion=full")) != null) {
           Assert.fail(str);
         }
         if (CBORDataUtilities.ParseJSONNumber(str, new
-JSONOptions("numberconversion=full;preservenegativezero=true")) !=
+          JSONOptions("numberconversion=full;preservenegativezero=true")) !=
           null) {
           Assert.fail(str);
         }
         if (CBORDataUtilities.ParseJSONNumber(str, new
-JSONOptions("numberconversion=full;preservenegativezero=false")) !=
+          JSONOptions("numberconversion=full;preservenegativezero=false")) !=
           null) {
           Assert.fail(str);
         }
       }
       CBORObject cbor = CBORDataUtilities.ParseJSONNumber("2e-2147483648",
-  new JSONOptions("numberconversion=full"));
+          new JSONOptions("numberconversion=full"));
       CBORTestCommon.AssertJSONSer(cbor, "2E-2147483648");
       for (String str : GoodJsonNumbers) {
         if (CBORDataUtilities.ParseJSONNumber(str) == null) {
           Assert.fail(str);
         }
         if (CBORDataUtilities.ParseJSONNumber(str, new
-JSONOptions("numberconversion=full;preservenegativezero=true")) ==
+          JSONOptions("numberconversion=full;preservenegativezero=true")) ==
           null) {
           Assert.fail(str);
         }
         if (CBORDataUtilities.ParseJSONNumber(str, new
-JSONOptions("numberconversion=full;preservenegativezero=false")) ==
+          JSONOptions("numberconversion=full;preservenegativezero=false")) ==
           null) {
           Assert.fail(str);
         }
       }
       {
         CBORNumber objectTemp =
-ToObjectTest.TestToFromObjectRoundTrip(230).AsNumber();
+          ToObjectTest.TestToFromObjectRoundTrip(230).AsNumber();
         CBORNumber objectTemp2 = CBORDataUtilities.ParseJSONNumber("23.0e01",
-  new JSONOptions("numberconversion=full")).AsNumber();
+            new JSONOptions("numberconversion=full")).AsNumber();
         TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
       {
         CBORNumber objectTemp =
-ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber();
+          ToObjectTest.TestToFromObjectRoundTrip(23).AsNumber();
         CBORNumber objectTemp2 =
-CBORDataUtilities.ParseJSONNumber("23.0e00", new
-        JSONOptions("numberconversion=full")).AsNumber();
+          CBORDataUtilities.ParseJSONNumber("23.0e00", new
+            JSONOptions("numberconversion=full")).AsNumber();
         TestCommon.CompareTestEqual(objectTemp, objectTemp2);
       }
       cbor = CBORDataUtilities.ParseJSONNumber(
-        "1e+99999999999999999999999999",
-        new JSONOptions("numberconversion=full"));
+          "1e+99999999999999999999999999",
+          new JSONOptions("numberconversion=full"));
       if (!(cbor != null)) {
  Assert.fail();
  }

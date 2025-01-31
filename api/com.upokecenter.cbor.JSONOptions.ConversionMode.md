@@ -52,6 +52,9 @@ the order they are declared.
 ## Method Details
 
 ### values
+
     public static JSONOptions.ConversionMode[] values()
+
 ### valueOf
+
     public static JSONOptions.ConversionMode valueOf(String name)

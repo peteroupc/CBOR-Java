@@ -9,8 +9,7 @@ licensed under the Unlicense: https://unlicense.org/
 
 import com.upokecenter.numbers.*;
 
-  class CBORExtendedRational implements ICBORNumber
-  {
+  class CBORExtendedRational implements ICBORNumber {
     public boolean IsPositiveInfinity(Object obj) {
       return ((ERational)obj).IsPositiveInfinity();
     }
@@ -72,13 +71,13 @@ import com.upokecenter.numbers.*;
     public boolean CanFitInSingle(Object obj) {
       ERational ef = (ERational)obj;
       return (!ef.isFinite()) || (ef.compareTo(ERational.FromSingle(
-            ef.ToSingle())) == 0);
+        ef.ToSingle())) == 0);
     }
 
     public boolean CanFitInDouble(Object obj) {
       ERational ef = (ERational)obj;
       return (!ef.isFinite()) || (ef.compareTo(ERational.FromDouble(
-            ef.ToDouble())) == 0);
+        ef.ToDouble())) == 0);
     }
 
     public boolean CanFitInInt32(Object obj) {

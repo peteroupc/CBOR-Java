@@ -29,8 +29,8 @@ private CBORJsonWriter() {
           sb.WriteCodePoint('\\');
           sb.WriteCodePoint(c);
         } else if (c < 0x20 || (c >= 0x7f && (c == 0x2028 || c == 0x2029 ||
-              (c >= 0x7f && c <= 0xa0) || c == 0xfeff || c == 0xfffe ||
-              c == 0xffff))) {
+          (c >= 0x7f && c <= 0xa0) || c == 0xfeff || c == 0xfffe ||
+          c == 0xffff))) {
           // Control characters, and also the line and paragraph separators
           // which apparently can't appear in JavaScript (as opposed to
           // JSON) strings
@@ -151,171 +151,172 @@ private CBORJsonWriter() {
       switch (obj.getType()) {
         case Integer:
         case FloatingPoint: {
-            CBORObject untaggedObj = obj.Untag();
-            writer.WriteString(
-              CBORNumber.FromCBORObject(untaggedObj).ToJSONString());
-            break;
-          }
+          CBORObject untaggedObj = obj.Untag();
+          writer.WriteString(
+            CBORNumber.FromCBORObject(untaggedObj).ToJSONString());
+          break;
+        }
         case Boolean: {
-            if (obj.isTrue()) {
-              writer.WriteString("true");
-              return;
-            }
-            if (obj.isFalse()) {
-              writer.WriteString("false");
-              return;
-            }
+          if (obj.isTrue()) {
+            writer.WriteString("true");
             return;
           }
+          if (obj.isFalse()) {
+            writer.WriteString("false");
+            return;
+          }
+          return;
+        }
         case SimpleValue: {
-            writer.WriteString("null");
+          writer.WriteString("null");
+          return;
+        }
+        case ByteString: {
+          byte[] byteArray = obj.GetByteString();
+          if (byteArray.length == 0) {
+            writer.WriteString("\"\"");
             return;
           }
-        case ByteString: {
-            byte[] byteArray = obj.GetByteString();
-            if (byteArray.length == 0) {
-              writer.WriteString("\"\"");
-              return;
+          writer.WriteCodePoint('\"');
+          if (obj.HasTag(22)) {
+            // Base64 with padding
+            Base64.WriteBase64(
+              writer,
+              byteArray,
+              0,
+              byteArray.length,
+              true);
+          } else if (obj.HasTag(23)) {
+            // Write as base16
+            for (int i = 0; i < byteArray.length; ++i) {
+              writer.WriteCodePoint(Hex16.charAt((byteArray[i] >> 4) & 15));
+              writer.WriteCodePoint(Hex16.charAt(byteArray[i] & 15));
             }
-            writer.WriteCodePoint('\"');
-            if (obj.HasTag(22)) {
-              // Base64 with padding
-              Base64.WriteBase64(
-                writer,
-                byteArray,
-                0,
-                byteArray.length,
-                true);
-            } else if (obj.HasTag(23)) {
-              // Write as base16
-              for (int i = 0; i < byteArray.length; ++i) {
-                writer.WriteCodePoint(Hex16.charAt((byteArray[i] >> 4) & 15));
-                writer.WriteCodePoint(Hex16.charAt(byteArray[i] & 15));
-              }
-            } else {
-              // Base64url no padding
-              Base64.WriteBase64URL(
-                writer,
-                byteArray,
-                0,
-                byteArray.length,
-                false);
-            }
-            writer.WriteCodePoint('\"');
-            break;
+          } else {
+            // Base64url no padding
+            Base64.WriteBase64URL(
+              writer,
+              byteArray,
+              0,
+              byteArray.length,
+              false);
           }
+          writer.WriteCodePoint('\"');
+          break;
+        }
         case TextString: {
-            String thisString = obj.AsString();
-            if (thisString.length() == 0) {
-              writer.WriteString("\"\"");
-              return;
-            }
-            writer.WriteCodePoint('\"');
-            WriteJSONStringUnquoted(thisString, writer, options);
-            writer.WriteCodePoint('\"');
-            break;
+          String thisString = obj.AsString();
+          if (thisString.length() == 0) {
+            writer.WriteString("\"\"");
+            return;
           }
+          writer.WriteCodePoint('\"');
+          WriteJSONStringUnquoted(thisString, writer, options);
+          writer.WriteCodePoint('\"');
+          break;
+        }
         case Array: {
-            writer.WriteCodePoint('[');
-            for (int i = 0; i < obj.size(); ++i) {
-              if (i > 0) {
-                writer.WriteCodePoint(',');
-              }
-              boolean pop = CheckCircularRef(stack, obj, obj.get(i));
-              WriteJSONToInternal(obj.get(i), writer, options, stack);
-              PopRefIfNeeded(stack, pop);
+          writer.WriteCodePoint('[');
+          for (int i = 0; i < obj.size(); ++i) {
+            if (i > 0) {
+              writer.WriteCodePoint(',');
             }
-            writer.WriteCodePoint(']');
-            break;
+            boolean pop = CheckCircularRef(stack, obj, obj.get(i));
+            WriteJSONToInternal(obj.get(i), writer, options, stack);
+            PopRefIfNeeded(stack, pop);
           }
+          writer.WriteCodePoint(']');
+          break;
+        }
         case Map: {
-            boolean first = true;
-            boolean hasNonStringKeys = false;
-            Collection<Map.Entry<CBORObject, CBORObject>> entries =
-              obj.getEntries();
+          boolean first = true;
+          boolean hasNonStringKeys = false;
+          Collection<Map.Entry<CBORObject, CBORObject>> entries =
+            obj.getEntries();
+          for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+            CBORObject key = entry.getKey();
+            if (key.getType() != CBORType.TextString || key.isTagged()) {
+              // treat a nontext-String item or a tagged item
+              // as having nonstring keys
+              hasNonStringKeys = true;
+              break;
+            }
+          }
+          if (!hasNonStringKeys) {
+            writer.WriteCodePoint('{');
             for (Map.Entry<CBORObject, CBORObject> entry : entries) {
               CBORObject key = entry.getKey();
-              if (key.getType() != CBORType.TextString || key.isTagged()) {
-                // treat a nontext-String item or a tagged item
-                // as having nonstring keys
-                hasNonStringKeys = true;
-                break;
+              CBORObject value = entry.getValue();
+              if (!first) {
+                writer.WriteCodePoint(',');
               }
+              writer.WriteCodePoint('\"');
+              WriteJSONStringUnquoted(key.AsString(), writer, options);
+              writer.WriteCodePoint('\"');
+              writer.WriteCodePoint(':');
+              boolean pop = CheckCircularRef(stack, obj, value);
+              WriteJSONToInternal(value, writer, options, stack);
+              PopRefIfNeeded(stack, pop);
+              first = false;
             }
-            if (!hasNonStringKeys) {
-              writer.WriteCodePoint('{');
-              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-                CBORObject key = entry.getKey();
-                CBORObject value = entry.getValue();
-                if (!first) {
-                  writer.WriteCodePoint(',');
+            writer.WriteCodePoint('}');
+          } else {
+            // This map has nonstring keys
+            Map<String, CBORObject> stringMap = new
+            HashMap<String, CBORObject>();
+            // Copy to a map with String keys, since
+            // some keys could be duplicates
+            // when serialized to strings
+            for (Map.Entry<CBORObject, CBORObject> entry : entries) {
+              CBORObject key = entry.getKey();
+              CBORObject value = entry.getValue();
+              String str = null;
+              switch (key.getType()) {
+                case TextString:
+                  str = key.AsString();
+                  break;
+                case Array:
+                case Map: {
+                  StringBuilder sb = new StringBuilder();
+                  StringOutput sw = new StringOutput(sb);
+                  boolean pop = CheckCircularRef(stack, obj, key);
+                  WriteJSONToInternal(key, sw, options, stack);
+                  PopRefIfNeeded(stack, pop);
+                  str = sb.toString();
+                  break;
                 }
-                writer.WriteCodePoint('\"');
-                WriteJSONStringUnquoted(key.AsString(), writer, options);
-                writer.WriteCodePoint('\"');
-                writer.WriteCodePoint(':');
-                boolean pop = CheckCircularRef(stack, obj, value);
-                WriteJSONToInternal(value, writer, options, stack);
-                PopRefIfNeeded(stack, pop);
-                first = false;
+                default:
+                  str = key.ToJSONString (options);
+                  break;
               }
-              writer.WriteCodePoint('}');
-            } else {
-              // This map has nonstring keys
-              Map<String, CBORObject> stringMap = new
-              HashMap<String, CBORObject>();
-              // Copy to a map with String keys, since
-              // some keys could be duplicates
-              // when serialized to strings
-              for (Map.Entry<CBORObject, CBORObject> entry : entries) {
-                CBORObject key = entry.getKey();
-                CBORObject value = entry.getValue();
-                String str = null;
-                switch (key.getType()) {
-                  case TextString:
-                    str = key.AsString();
-                    break;
-                  case Array:
-                  case Map: {
-                      StringBuilder sb = new StringBuilder();
-                      StringOutput sw = new StringOutput(sb);
-                      boolean pop = CheckCircularRef(stack, obj, key);
-                      WriteJSONToInternal(key, sw, options, stack);
-                      PopRefIfNeeded(stack, pop);
-                      str = sb.toString();
-                      break;
-                    }
-                  default: str = key.ToJSONString(options);
-                    break;
-                }
-                if (stringMap.containsKey(str)) {
-                  throw new CBORException(
-                    "Duplicate JSON String equivalents of map" +
-                    "\u0020keys");
-                }
-                stringMap.put(str, value);
+              if (stringMap.containsKey(str)) {
+                throw new CBORException(
+                  "Duplicate JSON String equivalents of map" +
+                  "\u0020keys");
               }
-              first = true;
-              writer.WriteCodePoint('{');
-              for (Map.Entry<String, CBORObject> entry : stringMap.entrySet()) {
-                String key = entry.getKey();
-                CBORObject value = entry.getValue();
-                if (!first) {
-                  writer.WriteCodePoint(',');
-                }
-                writer.WriteCodePoint('\"');
-                WriteJSONStringUnquoted(key, writer, options);
-                writer.WriteCodePoint('\"');
-                writer.WriteCodePoint(':');
-                boolean pop = CheckCircularRef(stack, obj, value);
-                WriteJSONToInternal(value, writer, options, stack);
-                PopRefIfNeeded(stack, pop);
-                first = false;
-              }
-              writer.WriteCodePoint('}');
+              stringMap.put(str, value);
             }
-            break;
+            first = true;
+            writer.WriteCodePoint('{');
+            for (Map.Entry<String, CBORObject> entry : stringMap.entrySet()) {
+              String key = entry.getKey();
+              CBORObject value = entry.getValue();
+              if (!first) {
+                writer.WriteCodePoint(',');
+              }
+              writer.WriteCodePoint('\"');
+              WriteJSONStringUnquoted(key, writer, options);
+              writer.WriteCodePoint('\"');
+              writer.WriteCodePoint(':');
+              boolean pop = CheckCircularRef(stack, obj, value);
+              WriteJSONToInternal(value, writer, options, stack);
+              PopRefIfNeeded(stack, pop);
+              first = false;
+            }
+            writer.WriteCodePoint('}');
           }
+          break;
+        }
         default:
           throw new IllegalStateException("Unexpected item" +
             "\u0020type");

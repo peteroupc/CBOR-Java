@@ -13,7 +13,9 @@ Interface implemented by classes that convert objects of arbitrary types to
 ## Method Details
 
 ### ToCBORObject
+
     CBORObject ToCBORObject(T obj)
+
 Converts an object to a CBOR object.
 
 **Parameters:**

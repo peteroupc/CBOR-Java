@@ -86,8 +86,8 @@ import com.upokecenter.numbers.*;
           }
           if (!tilde) {
             key = pointer.substring(
-              oldIndex, (
-              oldIndex)+(index - oldIndex));
+                oldIndex, (
+                oldIndex)+(index - oldIndex));
           } else {
             index = oldIndex;
             StringBuilder sb = new StringBuilder();
@@ -169,7 +169,7 @@ import com.upokecenter.numbers.*;
         return index + 1;
       }
       if (str.length() - 1 > index && str.charAt(index) == '0' && str.charAt(index + 1) !=
-'0') {
+        '0') {
         result[0] = 0;
         return index + 1;
       }
@@ -226,7 +226,7 @@ import com.upokecenter.numbers.*;
           eivalue.compareTo(EInteger.FromInt32(icount)) < 0;
       } else {
         return this.jsonobj.getType() == CBORType.Map ?
-this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
+          this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
       }
     }
 
@@ -244,9 +244,9 @@ this.jsonobj.ContainsKey(this.refValue) : this.refValue.length() == 0;
         EInteger value = EInteger.FromString(this.refValue);
         int icount = this.jsonobj.size();
         return (value.signum() < 0) ? (-1) :
-((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
+          ((value.compareTo(EInteger.FromInt32(icount)) > 0) ? (-1) :
 
-            value.ToInt32Unchecked());
+          value.ToInt32Unchecked());
       } else {
         return -1;
       }
