@@ -1194,9 +1194,11 @@ public <T> T ToObject(java.lang.reflect.Type t, CBORTypeMapper mapper) {
       if (mapper == null) {
  throw new NullPointerException("mapper");
 }
- return (T)(this.ToObject(t, mapper,
-        null,
-        0));
+ return (T)(this.ToObject(
+          t,
+          mapper,
+          null,
+          0));
     }
 
     /**
@@ -1229,9 +1231,11 @@ public <T> T ToObject(java.lang.reflect.Type t, PODOptions options) {
       if (options == null) {
  throw new NullPointerException("options");
 }
- return (T)(this.ToObject(t, null,
-        options,
-        0));
+ return (T)(this.ToObject(
+          t,
+          null,
+          options,
+          0));
     }
 
     /**
@@ -2544,9 +2548,11 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
       if (mapper == null) {
  throw new NullPointerException("mapper");
 }
- return FromObject(obj, options,
-        mapper,
-        0);
+ return FromObject(
+          obj,
+          options,
+          mapper,
+          0);
     }
 
     static CBORObject FromObject(
