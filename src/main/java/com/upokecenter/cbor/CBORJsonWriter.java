@@ -285,8 +285,7 @@ private CBORJsonWriter() {
                   str = sb.toString();
                   break;
                 }
-                default:
-                  str = key.ToJSONString (options);
+                default: str = key.ToJSONString(options);
                   break;
               }
               if (stringMap.containsKey(str)) {

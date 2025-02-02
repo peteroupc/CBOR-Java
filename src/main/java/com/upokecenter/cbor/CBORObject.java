@@ -1841,8 +1841,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           return size + 1;
         case SimpleValue:
           return size + (cbor.getSimpleValue() >= 24 ? 2 : 1);
-        default:
-          throw new IllegalStateException();
+        default: throw new IllegalStateException();
       }
     }
 
@@ -2089,9 +2088,8 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
           "surrogate code point.");
 }
  return new CBORObject(
-          strValue.length() == utf8Length ? CBORObjectTypeTextStringAscii :
-          CBORObjectTypeTextString,
-          strValue);
+            strValue.length() == utf8Length ? CBORObjectTypeTextStringAscii : CBORObjectTypeTextString,
+            strValue);
     }
 
     /**
@@ -3688,8 +3686,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             stream.write((byte)((datatype << 5) | 27));
             stream.write(bytes, 0, byteCount);
             break;
-          default:
-            stream.write ((datatype == 0) ?
+          default: stream.write((datatype == 0) ?
               (byte)0xc2 : (byte)0xc3);
             WritePositiveInt(2, byteCount, stream);
             stream.write(bytes, 0, byteCount);
@@ -4173,8 +4170,7 @@ public static void Write(
           EInteger ei = (EInteger)this.getThisItem();
           return ei.ToInt64Checked();
         }
-        default:
-          throw new IllegalStateException("Not an integer type");
+        default: throw new IllegalStateException("Not an integer type");
       }
     }
 
@@ -4194,8 +4190,7 @@ public static void Write(
           EInteger ei = (EInteger)this.getThisItem();
           return ei.CanFitInInt64();
         }
-        default:
-          return false;
+        default: return false;
       }
     }
 
@@ -4237,8 +4232,7 @@ public static void Write(
           return EInteger.FromInt64((((Long)this.getThisItem()).longValue()));
         case CBORObjectTypeEInteger:
           return (EInteger)this.getThisItem();
-        default:
-          throw new IllegalStateException("Not an integer type");
+        default: throw new IllegalStateException("Not an integer type");
       }
     }
 
@@ -4260,8 +4254,7 @@ public static void Write(
       switch (this.getType()) {
         case FloatingPoint:
           return ((Long)this.getThisItem()).longValue();
-        default:
-          throw new IllegalStateException("Not a floating-point" +
+        default: throw new IllegalStateException("Not a floating-point" +
             "\u0020type");
       }
     }
@@ -4278,8 +4271,7 @@ public static void Write(
       switch (this.getType()) {
         case FloatingPoint:
           return CBORUtilities.Int64BitsToDouble((((Long)this.getThisItem()).longValue()));
-        default:
-          throw new IllegalStateException("Not a floating-point" +
+        default: throw new IllegalStateException("Not a floating-point" +
             "\u0020type");
       }
     }
@@ -4512,8 +4504,7 @@ public int compareTo(CBORObject other) {
                 GetDoubleBytes(other.AsDoubleBits(), 0));
             break;
           }
-          default:
-            throw new IllegalStateException("Unexpected data " +
+          default: throw new IllegalStateException("Unexpected data " +
               "type");
         }
       } else if ((typeB == CBORObjectTypeInteger && typeA ==
@@ -4628,11 +4619,11 @@ public int compareTo(CBORObject other) {
         (byte)((valueBits >> 24) & 0xff), (byte)((valueBits >> 16) & 0xff),
         (byte)((valueBits >> 8) & 0xff), (byte)(valueBits & 0xff),
        } : new byte[] { (byte)0xfb, (byte)((valueBits >> 56) & 0xff),
-        (byte)((valueBits >> 48) & 0xff), (byte)((valueBits >> 40) & 0xff),
-        (byte)((valueBits >> 32) & 0xff), (byte)((valueBits >> 24) & 0xff),
-        (byte)((valueBits >> 16) & 0xff), (byte)((valueBits >> 8) & 0xff),
-        (byte)(valueBits & 0xff),
-       };
+   (byte)((valueBits >> 48) & 0xff), (byte)((valueBits >> 40) & 0xff),
+   (byte)((valueBits >> 32) & 0xff), (byte)((valueBits >> 24) & 0xff),
+   (byte)((valueBits >> 16) & 0xff), (byte)((valueBits >> 8) & 0xff),
+   (byte)(valueBits & 0xff),
+  };
     }
 
     private static byte[] GetDoubleBytes(long valueBits, int tagbyte) {
@@ -4641,8 +4632,8 @@ public int compareTo(CBORObject other) {
         return tagbyte != 0 ? new byte[] { (byte)tagbyte, (byte)0xf9,
           (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff),
          } : new byte[] { (byte)0xf9, (byte)((bits >> 8) & 0xff),
-          (byte)(bits & 0xff),
-         };
+   (byte)(bits & 0xff),
+  };
       }
       if (CBORUtilities.DoubleRetainsSameValueInSingle(valueBits)) {
         bits = CBORUtilities.DoubleToRoundedSinglePrecision(valueBits);
@@ -4650,9 +4641,9 @@ public int compareTo(CBORObject other) {
           (byte)((bits >> 24) & 0xff), (byte)((bits >> 16) & 0xff),
           (byte)((bits >> 8) & 0xff), (byte)(bits & 0xff),
          } : new byte[] { (byte)0xfa, (byte)((bits >> 24) & 0xff),
-          (byte)((bits >> 16) & 0xff), (byte)((bits >> 8) & 0xff),
-          (byte)(bits & 0xff),
-         };
+   (byte)((bits >> 16) & 0xff), (byte)((bits >> 8) & 0xff),
+   (byte)(bits & 0xff),
+  };
       }
       return GetDoubleBytes64(valueBits, tagbyte);
     }
@@ -4953,8 +4944,7 @@ public boolean equals(CBORObject other) {
             (((this.itemValue) == null) ? ((otherValue.itemValue) == null) : (this.itemValue).equals(otherValue.itemValue));
         case CBORObjectTypeDouble:
           return this.AsDoubleBits() == otherValue.AsDoubleBits();
-        default:
-          return ((this.itemValue) == null) ? ((otherValue.itemValue) == null) : (this.itemValue).equals(otherValue.itemValue);
+        default: return ((this.itemValue) == null) ? ((otherValue.itemValue) == null) : (this.itemValue).equals(otherValue.itemValue);
       }
     }
 
@@ -5790,8 +5780,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           return new CBORObject(CBORObjectTypeDouble, value);
         case 8:
           return new CBORObject(CBORObjectTypeDouble, floatingBits);
-        default:
-          throw new IllegalArgumentException("byteCount");
+        default: throw new IllegalArgumentException("byteCount");
       }
     }
 
@@ -5951,8 +5940,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         case 8:
           bits = CBORUtilities.DoubleToInt64Bits(doubleVal);
           return WriteFloatingPointBits(outputStream, bits, 8);
-        default:
-          throw new IllegalArgumentException("byteCount");
+        default: throw new IllegalArgumentException("byteCount");
       }
     }
 
@@ -5995,8 +5983,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           bits = Float.floatToRawIntBits(singleVal);
           longbits = CBORUtilities.SingleToDoublePrecision(bits);
           return WriteFloatingPointBits(outputStream, longbits, 8);
-        default:
-          throw new IllegalArgumentException("byteCount");
+        default: throw new IllegalArgumentException("byteCount");
       }
     }
 
@@ -6522,8 +6509,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
                   (int)uadditional);
             }
             throw new CBORException("Unexpected data encountered");
-          default:
-            throw new CBORException("Unexpected data encountered");
+          default: throw new CBORException("Unexpected data encountered");
         }
       }
       if (majortype == 2) { // short byte String
@@ -6804,16 +6790,16 @@ private Map<CBORObject, CBORObject> AsMap() {
       return value < 24 ? new byte[] { (byte)((byte)value | (byte)(type << 5)) } :
       value <= 0xffL ? new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
        } : value <= 0xffffL ? new byte[] { (byte)(25 | (type << 5)),
-        (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-       } : value <= 0xffffffffL ? new byte[] { (byte)(26 | (type << 5)),
-        (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
-        (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-       } : new byte[] { (byte)(27 | (type << 5)), (byte)((value >> 56) & 0xff),
-        (byte)((value >> 48) & 0xff), (byte)((value >> 40) & 0xff),
-        (byte)((value >> 32) & 0xff), (byte)((value >> 24) & 0xff),
-        (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff),
-       };
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : value <= 0xffffffffL ? new byte[] { (byte)(26 | (type << 5)),
+   (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff),
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : new byte[] { (byte)(27 | (type << 5)), (byte)((value >> 56) & 0xff),
+   (byte)((value >> 48) & 0xff), (byte)((value >> 40) & 0xff),
+   (byte)((value >> 32) & 0xff), (byte)((value >> 24) & 0xff),
+   (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
+   (byte)(value & 0xff),
+  };
     }
 
     private static byte[] GetPositiveIntBytes(int type, int value) {
@@ -6824,11 +6810,11 @@ private Map<CBORObject, CBORObject> AsMap() {
  return value < 24 ? new byte[] { (byte)((byte)value | (byte)(type << 5)) } :
       value <= 0xff ? new byte[] { (byte)(24 | (type << 5)), (byte)(value & 0xff),
        } : value <= 0xffff ? new byte[] { (byte)(25 | (type << 5)),
-        (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
-       } : new byte[] { (byte)(26 | (type << 5)), (byte)((value >> 24) & 0xff),
-        (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
-        (byte)(value & 0xff),
-       };
+   (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+  } : new byte[] { (byte)(26 | (type << 5)), (byte)((value >> 24) & 0xff),
+   (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff),
+   (byte)(value & 0xff),
+  };
     }
 
     // Initialize fixed values for certain

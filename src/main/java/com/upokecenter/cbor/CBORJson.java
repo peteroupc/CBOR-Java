@@ -448,8 +448,7 @@ import java.util.*;
           }
           return obj;
         }
-        default:
-          this.RaiseError("Value can't be parsed.");
+        default: this.RaiseError("Value can't be parsed.");
           break;
       }
       return null;
@@ -637,8 +636,7 @@ import java.util.*;
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-          default:
-            this.RaiseError ("Expected a ',' or '}'");
+          default: this.RaiseError("Expected a ',' or '}'");
             break;
         }
       }
@@ -677,8 +675,7 @@ import java.util.*;
             break;
           case ']':
             return CBORObject.FromRaw(myArrayList);
-          default:
-            this.RaiseError ("Expected a ',' or ']'");
+          default: this.RaiseError("Expected a ',' or ']'");
             break;
         }
       }

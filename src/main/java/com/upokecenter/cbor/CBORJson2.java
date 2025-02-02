@@ -649,8 +649,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           case '}':
             return CBORObject.FromRaw(myHashMap);
-          default:
-            this.RaiseError ("Expected a ',' or '}'");
+          default: this.RaiseError("Expected a ',' or '}'");
             break;
         }
       }
@@ -689,8 +688,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             break;
           case ']':
             return CBORObject.FromRaw(myArrayList);
-          default:
-            this.RaiseError ("Expected a ',' or ']'");
+          default: this.RaiseError("Expected a ',' or ']'");
             break;
         }
       }

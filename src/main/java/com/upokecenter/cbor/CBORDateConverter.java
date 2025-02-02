@@ -413,15 +413,13 @@ private final ConversionType propVartype;
                     CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8)
                     .WithTag(1) :
                     CBORObject.FromFloatingPointBits(ef.ToDoubleBits(), 8);
-                default:
-                  throw new CBORException("Too big or small to fit an" +
+                default: throw new CBORException("Too big or small to fit an" +
                     "\u0020integer" + "\u0020or floating-point number");
               }
             } catch (IllegalArgumentException ex) {
               throw new CBORException(ex.getMessage(), ex);
             }
-          default:
-            throw new CBORException("Internal error");
+          default: throw new CBORException("Internal error");
         }
       } catch (IllegalArgumentException ex) {
         throw new CBORException(ex.getMessage(), ex);

@@ -259,8 +259,7 @@ import com.upokecenter.numbers.*;
                 options >= 6,
                 options == 5 || options == 7);
             break;
-          default:
-            return null; // "Invalid options");
+          default: return null; // "Invalid options");
         }
         return CBORNumber.FromERational(erat);
       } else {
@@ -1637,8 +1636,7 @@ private final NumberKind propVarkind;
               (ERational)objB);
             break;
           }
-          default:
-            throw new IllegalStateException(
+          default: throw new IllegalStateException(
               "Unexpected data type");
         }
       } else {
