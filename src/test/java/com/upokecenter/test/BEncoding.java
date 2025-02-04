@@ -164,7 +164,7 @@ throw new CBORException("Object expected");
           stream,
           numlength.ToInt32Checked(),
           builder,
-      false)) {
+          false)) {
 case -2:
 throw new CBORException("Premature end of data");
 case -1:

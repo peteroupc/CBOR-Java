@@ -4896,7 +4896,7 @@ try {
 ms = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb,
           (byte)0xbf, 0x7b, 0x7d,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(ms);
@@ -4916,7 +4916,7 @@ try {
 ms2 = new java.io.ByteArrayInputStream(new byte[] {
           0x20, (byte)0xef,
           (byte)0xbb, (byte)0xbf, 0x7b, 0x7d,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(ms2);
@@ -4938,7 +4938,7 @@ try {
 ms2a = new java.io.ByteArrayInputStream(new byte[] {
           0x7b, 0x05,
           0x7d,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(ms2a);
@@ -4960,7 +4960,7 @@ try {
 ms2b = new java.io.ByteArrayInputStream(new byte[] {
           0x05, 0x7b,
           0x7d,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(ms2b);
@@ -4983,7 +4983,7 @@ try {
 ms3 = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb,
           (byte)0xbf, (byte)0xef, (byte)0xbb, (byte)0xbf, 0x7b, 0x7d,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(ms3);
@@ -5009,7 +5009,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0,
           0x74, 0, 0, 0, 0x72, 0, 0, 0, 0x75, 0, 0, 0,
           0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5025,7 +5025,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0, 0,
           0, 0x72, 0,
           0, 0, 0x75, 0, 0, 0, 0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5041,7 +5041,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0,
           0x74, 0, 0, 0,
           0x72, 0, 0, 0, 0x75, 0, 0, 0, 0x65, 0, 0, 0,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5059,7 +5059,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0,
           0,
           0x75, 0, 0, 0, 0x65, 0, 0, 0,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5075,7 +5075,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x74,
           0, 0x72, 0,
           0x75, 0, 0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5090,7 +5090,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x74, 0,
           0x72, 0,
           0x75, 0, 0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5108,7 +5108,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0,
           0x75,
           0, 0x65, 0,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5123,7 +5123,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0,
           0x72, 0,
           0x75, 0, 0x65, 0,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5137,7 +5137,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xef, (byte)0xbb,
           (byte)0xbf, 0x74, 0x72, 0x75, 0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5151,7 +5151,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x74, 0x72,
           0x75, 0x65,
-           });
+         });
 
           Assert.assertEquals(CBORObject.True, CBORObject.ReadJSON(msjson));
 }
@@ -5167,7 +5167,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, 0,
           0, 0, 0x22,
           0, 1, 0, 0, 0, 0, 0, 0x22,
-           });
+         });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5188,7 +5188,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 1,
           0, 0, 0, 0,
           0, 0x22,
-           });
+         });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5209,7 +5209,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0,
           0x22, 0, 0, 0,
           0, 0, 1, 0, 0x22, 0, 0, 0,
-           });
+         });
 
           String stringTemp = CBORObject.ReadJSON(msjson).AsString();
           Assert.assertEquals(
@@ -5229,7 +5229,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           1, 0, 0x22,
           0,
           0, 0,
-           });
+         });
 
           String stringTemp = CBORObject.ReadJSON(msjson).AsString();
           Assert.assertEquals(
@@ -5248,7 +5248,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, (byte)0xd8,
           0,
           (byte)0xdc, 0, 0, 0x22,
-           });
+         });
 
           String stringTemp = CBORObject.ReadJSON(msjson).AsString();
           Assert.assertEquals(
@@ -5266,7 +5266,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x22,
           (byte)0xd8, 0,
           (byte)0xdc, 0, 0, 0x22,
-           });
+         });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5287,7 +5287,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0,
           0, (byte)0xd8, 0,
           (byte)0xdc, 0x22, 0,
-           });
+         });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5307,7 +5307,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0,
           (byte)0xd8, 0,
           (byte)0xdc, 0x22, 0,
-           });
+         });
 
           {
             String stringTemp = CBORObject.ReadJSON(msjson).AsString();
@@ -5328,7 +5328,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, 0,
           0, 0, 0x22,
           0, 0, (byte)0xd8, 0, 0, 0, 0, 0x22,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5353,7 +5353,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xd8, 0, 0,
           0,
           0, 0x22,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5377,7 +5377,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0,
           0x22, 0, 0, 0,
           0, (byte)0xd8, 0, 0, 0x22, 0, 0, 0,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5403,7 +5403,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0,
           0,
           0x22, 0, 0, 0,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5427,7 +5427,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0x22,
           0, (byte)0xdc, 0,
           (byte)0xdc, 0, 0, 0x22,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5451,7 +5451,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xdc, 0,
           (byte)0xdc, 0, 0,
           0x22,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5475,7 +5475,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0,
           0, (byte)0xdc, 0,
           (byte)0xdc, 0x22, 0,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5498,7 +5498,7 @@ msjson = new java.io.ByteArrayInputStream(new byte[] {
           0x22, 0, 0,
           (byte)0xdc, 0,
           (byte)0xdc, 0x22, 0,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5559,7 +5559,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           0x20, 0x20, 0x20,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5581,7 +5581,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x20, 0x20, 0x20,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5603,7 +5603,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xd8, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5625,7 +5625,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xdc, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5647,7 +5647,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xd8, 0x00, 0x20, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5669,7 +5669,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xdc, 0x00, 0x20, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5691,7 +5691,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xd8, 0x00, (byte)0xd8, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5713,7 +5713,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xdc, 0x00, (byte)0xd8, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5735,7 +5735,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xdc, 0x00, (byte)0xd8, 0x00, (byte)0xdc, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5757,7 +5757,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xfe, (byte)0xff,
           (byte)0xdc, 0x00, (byte)0xdc, 0x00,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5780,7 +5780,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xd8,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5802,7 +5802,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xdc,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5824,7 +5824,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xd8, 0x00, 0x20,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5846,7 +5846,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xdc, 0x00, 0x20,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5868,7 +5868,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xd8, 0x00, (byte)0xd8,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5890,7 +5890,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xdc, 0x00, (byte)0xd8,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5912,7 +5912,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xdc, 0x00, (byte)0xd8, 0x00, (byte)0xdc,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5934,7 +5934,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           (byte)0xff, (byte)0xfe,
           0x00, (byte)0xdc, 0x00, (byte)0xdc,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -5958,7 +5958,7 @@ try {
 msjson = new java.io.ByteArrayInputStream(new byte[] {
           0, 0, 0,
           0x20, 0,
-           });
+         });
 
           try {
             CBORObject.ReadJSON(msjson);
@@ -10965,8 +10965,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
         }
         double dbl = ed.ToDouble();
         if (((dbl) == Double.POSITIVE_INFINITY) ||
-          ((dbl) == Double.NEGATIVE_INFINITY) ||
-          Double.isNaN(dbl)) {
+                 ((dbl) == Double.NEGATIVE_INFINITY) ||
+                 Double.isNaN(dbl)) {
           continue;
         }
         AssertJSONDouble(
