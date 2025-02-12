@@ -50,8 +50,7 @@ private JSONPatch() {
         case Map:
         case Array:
           return CBORObject.DecodeFromBytes(o.EncodeToBytes());
-        default:
-          return o;
+        default: return o;
       }
     }
 

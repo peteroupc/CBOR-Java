@@ -1022,8 +1022,7 @@ private CBORUtilities() {
         } else if (i == 10) {
           bad |= str.charAt(i) != 'T';
           /*lowercase t not used to separate date/time,
-          following RFC 4287 sec. 3.3*/
-        } else {
+          following RFC 4287 sec. 3.3*/ } else {
           bad |= str.charAt(i) < '0' || str.charAt(i) > '9';
         }
       }
@@ -1146,8 +1145,8 @@ private CBORUtilities() {
         .Add(EDecimal.FromEInteger(seconds));
       double dbl = d.ToDouble();
       if (((dbl) == Double.POSITIVE_INFINITY) ||
-        ((dbl) == Double.NEGATIVE_INFINITY) ||
-        Double.isNaN(dbl)) {
+             ((dbl) == Double.NEGATIVE_INFINITY) ||
+             Double.isNaN(dbl)) {
         status[0] = 2;
         return null;
       }

@@ -86,7 +86,7 @@ import com.upokecenter.numbers.*;
     public void TestParseJSONNumberSubstring() {
       String tstr =
 
-        "-3.00931381333368754713014659613049757554804012787921371662913692598770508705049030832574634419795955864174175076186656951904296875000E-49";
+  "-3.00931381333368754713014659613049757554804012787921371662913692598770508705049030832574634419795955864174175076186656951904296875000E-49";
       try {
         CBORDataUtilities.ParseJSONNumber(
             "xyzxyz" + tstr,
@@ -110,7 +110,7 @@ import com.upokecenter.numbers.*;
         EDecimal jsonDecimal = (EDecimal)CBORDataUtilities
           .ParseJSONNumber(strings[i], new
 
-            JSONOptions("numberconversion=full;preservenegativezero=false")).ToObject(
+  JSONOptions("numberconversion=full;preservenegativezero=false")).ToObject(
             EDecimal.class);
         Assert.assertEquals(
           strings[i + 1],

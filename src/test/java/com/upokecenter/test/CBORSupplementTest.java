@@ -1008,7 +1008,7 @@ try { if (ms6 != null) { ms6.close(); } } catch (java.io.IOException ex) {}
        },
       encodeOptions);
       expected =
-        "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
+  "[\"abcd\",\"aa\",\"abcd\",\"abcd\",\"bbcd\",\"bbcd\",\"abcd\",\"bbcd\"]";
       Assert.assertEquals(expected, cbor.ToJSONString());
     }
 

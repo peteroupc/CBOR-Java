@@ -38,8 +38,8 @@ import com.upokecenter.util.*;
 
     public java.net.URI FromCBORObject(CBORObject obj) {
       if (obj.HasMostOuterTag(32) ||
-        obj.HasMostOuterTag(266) ||
-        obj.HasMostOuterTag(267)) {
+             obj.HasMostOuterTag(266) ||
+             obj.HasMostOuterTag(267)) {
         ValidateObject(obj);
         try {
           return new java.net.URI(obj.AsString());

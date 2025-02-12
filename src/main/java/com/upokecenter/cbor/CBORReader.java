@@ -492,8 +492,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
             }
             return cbor;
           }
-          default:
-            throw new CBORException("Unexpected data encountered");
+          default: throw new CBORException("Unexpected data encountered");
         }
       }
 
