@@ -91,6 +91,7 @@ import com.upokecenter.numbers.*;
       "[0E+6]", "[\"\ud800\udc00\"]", "[\"\\ud800\\udc00\"]",
       "[\"\\ud800\\udc00\ud800\udc00\"]", "23.0e01", "23.0e00", "[23.0e01]",
       "[23.0e00]", "0", "1", "0.2", "0.05", "-0.2", "-0.05",
+      "2", "3","4","5","6","7","8","9",
     };
 
     private static final JSONOptions ValueNoDuplicateKeys = new JSONOptions("allowduplicatekeys=false");
@@ -324,7 +325,7 @@ finally {
 try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 } catch (Exception ex) {
-        Assert.fail(ex.toString() + "\n" + str);
+        // Assert.fail(ex.toString() + "\n" + str);
         throw new IllegalStateException("", ex);
       }
     }
