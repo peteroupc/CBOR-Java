@@ -4040,6 +4040,15 @@ aodict.put("PropValue",new PODClass());
        }).AsNumber().IsInfinity()))Assert.fail();
     }
 
+@Test(timeout = 30000)
+public void TestValidJsonOverflowedExponent() {
+  CBORObject cbo = CBORObject.FromJSONString("5137.46038043E+8235685134",
+    new JSONOptions("numberconversion=intorfloat"));
+  if (!(cbo.AsNumber().IsInfinity())) {
+ Assert.fail();
+ }
+}
+
     @Test(timeout = 10001)
     public void TestIsIntegral() {
       CBORObject cbor;
@@ -4866,6 +4875,18 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       bytes = new byte[] { 0x31, 0, 0, 0, 0x31, 0, 0, 0 };
       cbor = CBORObject.FromJSONBytes(bytes);
       Assert.assertEquals(CBORObject.FromObject(11), cbor);
+    }
+
+    @Test(timeout = 30000)
+    public void TestNonUtf8FromJSONBytes2() {
+      byte[] bytes;
+      CBORObject cbor;
+      bytes = new byte[] { 0x39, 0 };
+      cbor = CBORObject.FromJSONBytes(bytes);
+      Assert.assertEquals(CBORObject.FromObject(9), cbor);
+      bytes = new byte[] { 0, 0x39 };
+      cbor = CBORObject.FromJSONBytes(bytes);
+      Assert.assertEquals(CBORObject.FromObject(9), cbor);
     }
 
     @Test(timeout = 10001)

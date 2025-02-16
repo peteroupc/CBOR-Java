@@ -517,24 +517,8 @@ private CBORUtilities() {
       return Float.intBitsToFloat(bits);
     }
 
-/**
- * @deprecated
- */
-@Deprecated
-    public static String DoubleToString(double dbl) {
-      return EFloat.FromDouble(dbl).ToShortestString(EContext.Binary64);
-    }
-
     public static String DoubleBitsToString(long dblbits) {
       return EFloat.FromDoubleBits(dblbits).ToShortestString(EContext.Binary64);
-    }
-
-/**
- * @deprecated
- */
-@Deprecated
-    public static String SingleToString(float sing) {
-      return EFloat.FromSingle(sing).ToShortestString(EContext.Binary32);
     }
 
     public static String LongToString(long longValue) {
@@ -1405,14 +1389,6 @@ private CBORUtilities() {
       mant |= 1L << 52;
       int shift = 52 - (exp - 0x3ff);
       return (mant >> shift) * sgn;
-    }
-
-/**
- * @deprecated
- */
-@Deprecated
-    public static EInteger EIntegerFromDouble(double dbl) {
-      return EIntegerFromDoubleBits(Double.doubleToRawLongBits(dbl));
     }
 
     public static EInteger EIntegerFromDoubleBits(long lvalue) {

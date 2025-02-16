@@ -322,7 +322,7 @@ import com.upokecenter.numbers.*;
           return new BigDecimal(str);
         }
       }
-      EInteger emant = RandomObjects.RandomEInteger(r);
+      EInteger emant = RandomNumerics.RandomEInteger(r);
       int exp = (r.GetInt32(100) < 80) ? (r.GetInt32(50) - 25) :
           (r.GetInt32(5000) - 2500);
       BigDecimal ed = new BigDecimal(new BigInteger(emant.ToBytes(false)), -exp);
