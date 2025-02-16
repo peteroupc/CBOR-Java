@@ -8186,7 +8186,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
 }
 
         for (int i = 0; i < 50; ++i) {
-          EFloat ef = RandomObjects.RandomEFloat(fr);
+          EFloat ef = RandomNumerics.RandomEFloat(fr);
           if (!ef.IsNaN()) {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
             CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
@@ -8221,8 +8221,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
 
           ef = EFloat.Create(
-              RandomObjects.RandomEInteger(fr),
-              RandomObjects.RandomEInteger(fr));
+              RandomNumerics.RandomEInteger(fr),
+              RandomNumerics.RandomEInteger(fr));
           {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ef);
             CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ef);
@@ -8262,7 +8262,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
         }
         for (int i = 0; i < 50; ++i) {
-          EDecimal ed = RandomObjects.RandomEDecimal(fr);
+          EDecimal ed = RandomNumerics.RandomEDecimal(fr);
           if (!ed.IsNaN()) {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ed);
             CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ed);
@@ -8305,8 +8305,8 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           }
 
           ed = EDecimal.Create(
-              RandomObjects.RandomEInteger(fr),
-              RandomObjects.RandomEInteger(fr));
+              RandomNumerics.RandomEInteger(fr),
+              RandomNumerics.RandomEInteger(fr));
           {
             CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(ed);
             CBORObject cborTemp2 = ToObjectTest.TestToFromObjectRoundTrip(ed);
@@ -8453,7 +8453,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
           TestWriteObj(er, null);
         }
         do {
-          er = RandomObjects.RandomERational(fr);
+          er = RandomNumerics.RandomERational(fr);
         } while (er.isNegative() && er.isZero());
         {
           CBORObject cborTemp1 = ToObjectTest.TestToFromObjectRoundTrip(er);
@@ -10959,7 +10959,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       RandomGenerator rg = new RandomGenerator();
       for (int i = 0; i < 2000; ++i) {
         String[] decstring = new String[1];
-        EDecimal ed = RandomObjects.RandomEDecimal(rg, decstring);
+        EDecimal ed = RandomNumerics.RandomEDecimal(rg, decstring);
         if (decstring[0] == null) {
           Assert.fail();
         }

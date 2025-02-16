@@ -346,7 +346,7 @@ import com.upokecenter.numbers.*;
     public void TestEInteger() {
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 500; ++i) {
-        EInteger bi = RandomObjects.RandomEInteger(r);
+        EInteger bi = RandomNumerics.RandomEInteger(r);
         CBORTestCommon.AssertJSONSer(
           ToObjectTest.TestToFromObjectRoundTrip(bi),
           bi.toString());
@@ -1510,10 +1510,10 @@ import com.upokecenter.numbers.*;
       RandomGenerator r = new RandomGenerator();
       for (int i = 0; i < 3000; ++i) {
         CBORObject o1 = ToObjectTest.TestToFromObjectRoundTrip(
-            RandomObjects.RandomEInteger(r));
+            RandomNumerics.RandomEInteger(r));
 
         CBORObject o2 = ToObjectTest.TestToFromObjectRoundTrip(
-            RandomObjects.RandomEInteger(r));
+            RandomNumerics.RandomEInteger(r));
 
         if (o2.AsNumber().IsZero()) {
           continue;

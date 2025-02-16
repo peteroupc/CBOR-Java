@@ -280,7 +280,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
       sb.append((char)('1' + r.GetInt32(9)));
       --count;
       AppendRandomDecimals(r, sb, count);
-      return EInteger.FromString(sb.toString());
+      return sb.toString();
     }
 
     public static String RandomDecimalString(IRandomGenExtended r) {
