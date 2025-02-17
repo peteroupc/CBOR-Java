@@ -130,6 +130,21 @@ import com.upokecenter.numbers.*;
       }
     }
 
+public void JsonTestSuiteTest(String fn, byte[] jsonBytes) {
+              CBORObject json = null;
+              try {
+                 json = CBORObject.ReadJSONBytes(jsonBytes, new
+JSONOptions("allowduplicatekeys=1"));
+              } catch (CBORException ex) {
+                 json = null;
+              }
+              if (fn.startsWith("y_") && json == null) {
+                 Assert.fail("should have succeeded: " + fn);
+              } else if (fn.startsWith("n_") && json != null) {
+                 Assert.fail("should have failed: " + fn);
+              }
+}
+
     @Test(timeout = 30000)
     public void TestCorrectUtf8() {
       RandomGenerator rg = new RandomGenerator();
@@ -1024,14 +1039,17 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       if (!cbo.equals(cbo2)) {
-        System.out.print("jsonstring");
-        System.out.print(TestCommon.ToByteArrayString(bytes));
-        System.out.print(com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true));
-        System.out.print("old " + TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
-        System.out.print(cbo.ToJSONString());
-        System.out.print("new " +
+        if (bytes.length < 16) {
+        System.out.println("jsonstring");
+        System.out.println(TestCommon.ToByteArrayString(bytes));
+        System.out.println(com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true));
+        System.out.println("old " +
+TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
+        System.out.println(cbo.ToJSONString());
+        System.out.println("new " +
           TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
-        System.out.print(cbo2.ToJSONString());
+        System.out.println(cbo2.ToJSONString());
+        }
         Assert.assertEquals(cbo, cbo2);
       }
       cbo2 = CBORObject.FromJSONBytes(cbo.ToJSONBytes());
@@ -1039,14 +1057,16 @@ import com.upokecenter.numbers.*;
  Assert.fail();
  }
       if (!cbo.equals(cbo2)) {
-        System.out.print("jsonbytes");
-        System.out.print(TestCommon.ToByteArrayString(bytes));
-        System.out.print(com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true));
-        System.out.print("old " + TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
-        System.out.print(cbo.ToJSONString());
-        System.out.print("new " +
+        if (bytes.length < 16) {
+          System.out.println("jsonbytes");
+        System.out.println(TestCommon.ToByteArrayString(bytes));
+      System.out.println(com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true));
+    System.out.println("old " + TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
+      System.out.println(cbo.ToJSONString());
+    System.out.println("new " +
           TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
-        System.out.print(cbo2.ToJSONString());
+        System.out.println(cbo2.ToJSONString());
+        }
         Assert.assertEquals(cbo, cbo2);
       }
       return true;
