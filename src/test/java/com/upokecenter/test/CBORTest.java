@@ -133,7 +133,7 @@ import com.upokecenter.numbers.*;
 public void JsonTestSuiteTest(String fn, byte[] jsonBytes) {
               CBORObject json = null;
               try {
-                 json = CBORObject.ReadJSONBytes(jsonBytes, new
+                 json = CBORObject.FromJSONBytes(jsonBytes, new
 JSONOptions("allowduplicatekeys=1"));
               } catch (CBORException ex) {
                  json = null;
@@ -1062,9 +1062,8 @@ TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
         System.out.println(TestCommon.ToByteArrayString(bytes));
       System.out.println(com.upokecenter.util.DataUtilities.GetUtf8String(bytes, true));
     System.out.println("old " + TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
-      System.out.println(cbo.ToJSONString());
-    System.out.println("new " +
-          TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
+  System.out.println(cbo.ToJSONString());
+  System.out.println("new " + TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
         System.out.println(cbo2.ToJSONString());
         }
         Assert.assertEquals(cbo, cbo2);
