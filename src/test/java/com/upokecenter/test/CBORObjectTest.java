@@ -91,7 +91,7 @@ import com.upokecenter.numbers.*;
       "[0E+6]", "[\"\ud800\udc00\"]", "[\"\\ud800\\udc00\"]",
       "[\"\\ud800\\udc00\ud800\udc00\"]", "23.0e01", "23.0e00", "[23.0e01]",
       "[23.0e00]", "0", "1", "0.2", "0.05", "-0.2", "-0.05",
-      "2", "3", "4", "5", "6", "7","8","9",
+      "2", "3", "4", "5", "6", "7", "8", "9",
     };
 
     private static final JSONOptions ValueNoDuplicateKeys = new JSONOptions("allowduplicatekeys=false");

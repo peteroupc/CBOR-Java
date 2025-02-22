@@ -1064,7 +1064,7 @@ TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
     System.out.println("old " + TestCommon.ToByteArrayString(cbo.ToJSONBytes()));
   System.out.println(cbo.ToJSONString());
   System.out.println("new " + TestCommon.ToByteArrayString(cbo2.ToJSONBytes()));
-        System.out.println(cbo2.ToJSONString());
+  System.out.println(cbo2.ToJSONString());
         }
         Assert.assertEquals(cbo, cbo2);
       }
