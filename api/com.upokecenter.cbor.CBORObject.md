@@ -6,7 +6,7 @@
  contains methods for reading and writing CBOR data. CBOR is an Internet
  Standard and defined in RFC 8949.</p><p><b>Converting CBOR objects</b></p>
  <p>There are many ways to get a CBOR object, including from bytes, objects,
- streams and JSON, as described below.</p> <p><b>To and from byte arrays:</b>
+ streams and JSON, as described later.</p> <p><b>To and from byte arrays:</b>
  The CBORObject.DecodeFromBytes method converts a byte array in CBOR format
  to a CBOR object. The EncodeToBytes method converts a CBOR object to its
  corresponding byte array in CBOR format.</p> <p><b>To and from data
@@ -2923,7 +2923,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  getters.</li><li>Then, the method returns a CBOR map with each eligible
  getter's name or property name as each key, and with the corresponding value
  returned by that getter as that key's value. Before adding a key-value pair
- to the map, the key's name is adjusted according to the rules described in
+ to the map, the key's name adjusts according to the rules described in
  the <code>PODOptions</code> documentation. Note that for
  security reasons, certain types are not supported even if they contain
  eligible getters.</li></ul> <p><b>REMARK:</b> .NET enumeration (<code>
@@ -4600,7 +4600,7 @@ Gets the CBOR object referred to by a JSON Pointer according to RFC6901. For
 
 <p>Returns a copy of this object after applying the operations in a JSON
  patch, in the form of a CBOR object. JSON patches are specified in RFC 6902
- and their format is summarized in the remarks below.</p> <p><b>Remarks:</b>
+ and their format is summarized in the remarks given later.</p> <p><b>Remarks:</b>
  A JSON patch is an array with one or more maps. Each map has the following
  keys: </p> <ul> <li>"op" - Required. This key's value is the patch operation
  and must be "add", "remove", "move", "copy", "test", or "replace", in basic
