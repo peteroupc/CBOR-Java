@@ -2491,8 +2491,8 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * getters.</li><li>Then, the method returns a CBOR map with each eligible
      * getter's name or property name as each key, and with the corresponding value
      * returned by that getter as that key's value. Before adding a key-value pair
-     * to the map, the key's name adjusts according to the rules described in
-     * the {@link com.upokecenter.cbor.PODOptions} documentation. Note that for
+     * to the map, the key's name adjusts according to the rules described in the
+     * {@link com.upokecenter.cbor.PODOptions} documentation. Note that for
      * security reasons, certain types are not supported even if they contain
      * eligible getters.</li></ul> <p><b>REMARK:</b> .NET enumeration ({@code
      * Enum}) constants could also have been converted to text strings with {@code
@@ -4851,21 +4851,21 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
     /**
      * <p>Returns a copy of this object after applying the operations in a JSON
      * patch, in the form of a CBOR object. JSON patches are specified in RFC 6902
-     * and their format is summarized in the remarks given later.</p> <p><b>Remarks:</b>
-     * A JSON patch is an array with one or more maps. Each map has the following
-     * keys: </p> <ul> <li>"op" - Required. This key's value is the patch operation
-     * and must be "add", "remove", "move", "copy", "test", or "replace", in basic
-     * lowercase letters and no other case combination.</li><li>"value" - Required
-     * if the operation is "add", "replace", or "test" and specifies the item to
-     * add (insert), or that will replace the existing item, or to check an
-     * existing item for equality, respectively. (For "test", the operation fails
-     * if the existing item doesn't match the specified value.)</li><li>"path" -
-     * Required for all operations. A JSON Pointer (RFC 6901) specifying the
-     * destination path in the CBOR object for the operation. For more information,
-     * see RFC 6901 or the documentation for AtJSONPointer(pointer,
-     * defaultValue).</li><li>"from" - Required if the operation is "move" or
-     * "copy". A JSON Pointer (RFC 6901) specifying the path in the CBOR object
-     * where the source value is located.</li></ul>
+     * and their format is summarized in the remarks given later.</p>
+     * <p><b>Remarks:</b> A JSON patch is an array with one or more maps. Each map
+     * has the following keys: </p> <ul> <li>"op" - Required. This key's value is
+     * the patch operation and must be "add", "remove", "move", "copy", "test", or
+     * "replace", in basic lowercase letters and no other case
+     * combination.</li><li>"value" - Required if the operation is "add",
+     * "replace", or "test" and specifies the item to add (insert), or that will
+     * replace the existing item, or to check an existing item for equality,
+     * respectively. (For "test", the operation fails if the existing item doesn't
+     * match the specified value.)</li><li>"path" - Required for all operations. A
+     * JSON Pointer (RFC 6901) specifying the destination path in the CBOR object
+     * for the operation. For more information, see RFC 6901 or the documentation
+     * for AtJSONPointer(pointer, defaultValue).</li><li>"from" - Required if the
+     * operation is "move" or "copy". A JSON Pointer (RFC 6901) specifying the path
+     * in the CBOR object where the source value is located.</li></ul>
      * @param patch A JSON patch in the form of a CBOR object; it has the form
      * summarized in the remarks.
      * @return The result of the patch operation.
