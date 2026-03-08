@@ -1576,7 +1576,7 @@ Converts this object to a byte array in JavaScript object Notation (JSON)
  object is converted to JSON with <code>ToJSONString</code>, then the JSON is
  converted back to CBOR with this method, the new CBOR object will not
  necessarily be the same as the old CBOR object, especially if the old CBOR
- object uses data types not supported in JSON, such as integers in map
+ object uses data types not available in JSON, such as integers in map
  keys.</p>
 
 **Parameters:**
@@ -1614,7 +1614,7 @@ Converts this object to a byte array in JavaScript object Notation (JSON)
  </p> <p>Note that if a CBOR object is converted to JSON with <code>
  ToJSONString</code>, then the JSON is converted back to CBOR with this method, the
  new CBOR object will not necessarily be the same as the old CBOR object,
- especially if the old CBOR object uses data types not supported in JSON,
+ especially if the old CBOR object uses data types not available in JSON,
  such as integers in map keys.</p>
 
 **Parameters:**
@@ -1646,7 +1646,7 @@ Converts this object to a byte array in JavaScript object Notation (JSON)
  object is converted to JSON with <code>ToJSONString</code>, then the JSON is
  converted back to CBOR with this method, the new CBOR object will not
  necessarily be the same as the old CBOR object, especially if the old CBOR
- object uses data types not supported in JSON, such as integers in map
+ object uses data types not available in JSON, such as integers in map
  keys.</p>
 
 **Parameters:**
@@ -1674,7 +1674,7 @@ Converts this object to a byte array in JavaScript object Notation (JSON)
  </p> <p>Note that if a CBOR object is converted to JSON with <code>
  ToJSONString</code>, then the JSON is converted back to CBOR with this method, the
  new CBOR object will not necessarily be the same as the old CBOR object,
- especially if the old CBOR object uses data types not supported in JSON,
+ especially if the old CBOR object uses data types not available in JSON,
  such as integers in map keys.</p>
 
 **Parameters:**
@@ -2876,7 +2876,7 @@ Generates a CBORObject from an arbitrary object. See the overload of this
  com.upokecenter.cbor.CBORObject.FromObject(System.Byte[])</code>.</li><li>In
  the.NET version, a nullable is converted to <code>CBORObject.Null</code> if the
  nullable's value is <code>null</code> , or converted according to the nullable's
- underlying type, if that type is supported by this method.</li><li>In the
+ underlying type, if that type is allowed for this method.</li><li>In the
  Java version, a number of type <code>BigInteger</code> or <code>BigDecimal</code> is
  converted to the corresponding CBOR number.</li><li>A number of type <code>
  EDecimal</code> , <code>EFloat</code> , <code>EInteger</code> , and <code>ERational</code> in the
@@ -3492,7 +3492,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  is thrown.</p> <p>Note that if a CBOR object is converted to JSON with
  <code>ToJSONBytes</code>, then the JSON is converted back to CBOR with this
  method, the new CBOR object will not necessarily be the same as the old CBOR
- object, especially if the old CBOR object uses data types not supported in
+ object, especially if the old CBOR object uses data types not available in
  JSON, such as integers in map keys.</p>
 
 **Parameters:**
@@ -3527,7 +3527,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  </p> <p>Note that if a CBOR object is converted to JSON with <code>
  ToJSONBytes</code>, then the JSON is converted back to CBOR with this method, the
  new CBOR object will not necessarily be the same as the old CBOR object,
- especially if the old CBOR object uses data types not supported in JSON,
+ especially if the old CBOR object uses data types not available in JSON,
  such as integers in map keys.</p>
 
 **Parameters:**
@@ -3566,7 +3566,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  is thrown.</p> <p>Note that if a CBOR object is converted to JSON with
  <code>ToJSONBytes</code>, then the JSON is converted back to CBOR with this
  method, the new CBOR object will not necessarily be the same as the old CBOR
- object, especially if the old CBOR object uses data types not supported in
+ object, especially if the old CBOR object uses data types not available in
  JSON, such as integers in map keys.</p>
 
 **Parameters:**
@@ -3611,7 +3611,7 @@ Generates a CBOR object from a data stream in JavaScript object Notation
  </p> <p>Note that if a CBOR object is converted to JSON with <code>
  ToJSONBytes</code>, then the JSON is converted back to CBOR with this method, the
  new CBOR object will not necessarily be the same as the old CBOR object,
- especially if the old CBOR object uses data types not supported in JSON,
+ especially if the old CBOR object uses data types not available in JSON,
  such as integers in map keys.</p>
 
 **Parameters:**
@@ -5129,7 +5129,7 @@ Sets the value of a CBORObject of type Array at the specified index to the
  can be used to write out certain keys of a CBOR map in a given order to a
  JSON string, or to write out a CBOR object as part of a JSON text
  sequence.</p> <p><b>Warning:</b> In general, if this CBOR object contains
- integer map keys or uses other features not supported in JSON, and the
+ integer map keys or uses other features not available in JSON, and the
  application converts this CBOR object to JSON and back to CBOR, the
  application <i>should not</i> expect the new CBOR object to be exactly the
  same as the original. This is because the conversion in many cases may have
@@ -5181,7 +5181,7 @@ Sets the value of a CBORObject of type Array at the specified index to the
  other than true and false will be converted to null. (This doesn't include
  floating-point numbers.)</li><li>Infinity and not-a-number will be converted
  to null.</li></ul> <p><b>Warning:</b> In general, if this CBOR object
- contains integer map keys or uses other features not supported in JSON, and
+ contains integer map keys or uses other features not available in JSON, and
  the application converts this CBOR object to JSON and back to CBOR, the
  application <i>should not</i> expect the new CBOR object to be exactly the
  same as the original. This is because the conversion in many cases may have
