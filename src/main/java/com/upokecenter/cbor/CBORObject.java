@@ -1012,7 +1012,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * object is converted to JSON with {@code ToJSONString}, then the JSON is
      * converted back to CBOR with this method, the new CBOR object will not
      * necessarily be the same as the old CBOR object, especially if the old CBOR
-     * object uses data types not available in JSON, such as integers in map
+     * object uses data types not supported in JSON, such as integers in map
      * keys.</p>
      * @param str A text string in JSON format. The entire string must contain a
      * single JSON object and not multiple objects. The string may not begin with a
@@ -1041,7 +1041,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * </p> <p>Note that if a CBOR object is converted to JSON with {@code
      * ToJSONString}, then the JSON is converted back to CBOR with this method, the
      * new CBOR object will not necessarily be the same as the old CBOR object,
-     * especially if the old CBOR object uses data types not available in JSON,
+     * especially if the old CBOR object uses data types not supported in JSON,
      * such as integers in map keys.</p>
      * @param str A text string in JSON format. The entire string must contain a
      * single JSON object and not multiple objects. The string may not begin with a
@@ -1071,7 +1071,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * object is converted to JSON with {@code ToJSONString}, then the JSON is
      * converted back to CBOR with this method, the new CBOR object will not
      * necessarily be the same as the old CBOR object, especially if the old CBOR
-     * object uses data types not available in JSON, such as integers in map
+     * object uses data types not supported in JSON, such as integers in map
      * keys.</p>
      * @param str A text string in JSON format. The entire string must contain a
      * single JSON object and not multiple objects. The string may not begin with a
@@ -1090,7 +1090,7 @@ try { if (ms != null) { ms.close(); } } catch (java.io.IOException ex) {}
      * </p> <p>Note that if a CBOR object is converted to JSON with {@code
      * ToJSONString}, then the JSON is converted back to CBOR with this method, the
      * new CBOR object will not necessarily be the same as the old CBOR object,
-     * especially if the old CBOR object uses data types not available in JSON,
+     * especially if the old CBOR object uses data types not supported in JSON,
      * such as integers in map keys.</p>
      * @param str The parameter {@code str} is a text string.
      * @param offset An index, starting at 0, showing where the desired portion of
@@ -2443,7 +2443,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * com.upokecenter.cbor.CBORObject.FromObject(System.Byte[])}.</li><li>In
      * the.NET version, a nullable is converted to {@code CBORObject.Null} if the
      * nullable's value is {@code null} , or converted according to the nullable's
-     * underlying type, if that type is allowed for this method.</li><li>In the
+     * underlying type, if that type is supported by this method.</li><li>In the
      * Java version, a number of type {@code BigInteger} or {@code BigDecimal} is
      * converted to the corresponding CBOR number.</li><li>A number of type {@code
      * EDecimal} , {@code EFloat} , {@code EInteger} , and {@code ERational} in the
@@ -3237,7 +3237,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * is thrown.</p> <p>Note that if a CBOR object is converted to JSON with
      * {@code ToJSONBytes}, then the JSON is converted back to CBOR with this
      * method, the new CBOR object will not necessarily be the same as the old CBOR
-     * object, especially if the old CBOR object uses data types not available in
+     * object, especially if the old CBOR object uses data types not supported in
      * JSON, such as integers in map keys.</p>
      * @param bytes A byte array in JSON format. The entire byte array must contain
      * a single JSON object and not multiple objects. The byte array may begin with
@@ -3264,7 +3264,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * </p> <p>Note that if a CBOR object is converted to JSON with {@code
      * ToJSONBytes}, then the JSON is converted back to CBOR with this method, the
      * new CBOR object will not necessarily be the same as the old CBOR object,
-     * especially if the old CBOR object uses data types not available in JSON,
+     * especially if the old CBOR object uses data types not supported in JSON,
      * such as integers in map keys.</p>
      * @param bytes A byte array in JSON format. The entire byte array must contain
      * a single JSON object and not multiple objects. The byte array may begin with
@@ -3305,7 +3305,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * is thrown.</p> <p>Note that if a CBOR object is converted to JSON with
      * {@code ToJSONBytes}, then the JSON is converted back to CBOR with this
      * method, the new CBOR object will not necessarily be the same as the old CBOR
-     * object, especially if the old CBOR object uses data types not available in
+     * object, especially if the old CBOR object uses data types not supported in
      * JSON, such as integers in map keys.</p>
      * @param bytes A byte array, the specified portion of which is in JSON format.
      * The specified portion of the byte array must contain a single JSON object
@@ -3339,7 +3339,7 @@ public static <T> T DecodeObjectFromBytes(byte[] data, java.lang.reflect.Type t)
      * </p> <p>Note that if a CBOR object is converted to JSON with {@code
      * ToJSONBytes}, then the JSON is converted back to CBOR with this method, the
      * new CBOR object will not necessarily be the same as the old CBOR object,
-     * especially if the old CBOR object uses data types not available in JSON,
+     * especially if the old CBOR object uses data types not supported in JSON,
      * such as integers in map keys.</p>
      * @param bytes A byte array, the specified portion of which is in JSON format.
      * The specified portion of the byte array must contain a single JSON object
@@ -5493,7 +5493,7 @@ public boolean equals(CBORObject other) {
      * can be used to write out certain keys of a CBOR map in a given order to a
      * JSON string, or to write out a CBOR object as part of a JSON text
      * sequence.</p> <p><b>Warning:</b> In general, if this CBOR object contains
-     * integer map keys or uses other features not available in JSON, and the
+     * integer map keys or uses other features not supported in JSON, and the
      * application converts this CBOR object to JSON and back to CBOR, the
      * application <i>should not</i> expect the new CBOR object to be exactly the
      * same as the original. This is because the conversion in many cases may have
@@ -5543,7 +5543,7 @@ public boolean equals(CBORObject other) {
      * other than true and false will be converted to null. (This doesn't include
      * floating-point numbers.)</li><li>Infinity and not-a-number will be converted
      * to null.</li></ul> <p><b>Warning:</b> In general, if this CBOR object
-     * contains integer map keys or uses other features not available in JSON, and
+     * contains integer map keys or uses other features not supported in JSON, and
      * the application converts this CBOR object to JSON and back to CBOR, the
      * application <i>should not</i> expect the new CBOR object to be exactly the
      * same as the original. This is because the conversion in many cases may have
@@ -6629,7 +6629,7 @@ private Map<CBORObject, CBORObject> AsMap() {
           return false;
         }
         if (kvp.getValue() == null) {
-          // Null (as opposed to CBORObject.Null) values not available in CBOR maps.
+          // Null (as opposed to CBORObject.Null) values not supported in CBOR maps.
           throw new IllegalStateException();
         }
         if (!kvp.getValue().equals(valueB)) {
