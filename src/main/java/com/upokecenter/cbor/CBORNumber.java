@@ -1186,8 +1186,8 @@ private final NumberKind propVarkind;
      * @return The sum of this number and another number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory to
-     * store).
+     * to fit in system memory (or might require more than 2 gigabytes of system
+     * memory to store).
      */
     public CBORNumber Add(CBORNumber b) {
       if (b == null) {
@@ -1259,8 +1259,8 @@ private final NumberKind propVarkind;
      * @return A CBOR number that expresses this number minus the specified number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory to
-     * store).
+     * to fit in system memory (or might require more than 2 gigabytes of system
+     * memory to store).
      */
     public CBORNumber Subtract(CBORNumber b) {
       if (b == null) {
@@ -1327,8 +1327,8 @@ private final NumberKind propVarkind;
      * number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory to
-     * store).
+     * to fit in system memory (or might require more than 2 gigabytes of system
+     * memory to store).
      */
     public CBORNumber Multiply(CBORNumber b) {
       if (b == null) {
@@ -1391,8 +1391,8 @@ private final NumberKind propVarkind;
      * @return The quotient of this number and another one.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory to
-     * store).
+     * to fit in system memory (or might require more than 2 gigabytes of system
+     * memory to store).
      */
     public CBORNumber Divide(CBORNumber b) {
       if (b == null) {
@@ -1500,8 +1500,8 @@ private final NumberKind propVarkind;
      * @return The remainder when this number is divided by the other number.
      * @throws NullPointerException The parameter {@code b} is null.
      * @throws OutOfMemoryError The exact result of the operation might be too big
-     * to fit in memory (or might require more than 2 gigabytes of memory to
-     * store).
+     * to fit in system memory (or might require more than 2 gigabytes of system
+     * memory to store).
      */
     public CBORNumber Remainder(CBORNumber b) {
       if (b == null) {
