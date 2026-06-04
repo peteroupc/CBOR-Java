@@ -783,7 +783,7 @@ Returns the sum of this number and another number.
 * <code>NullPointerException</code> - The parameter <code>b</code> is null.
 
 * <code>OutOfMemoryError</code> - The exact result of the operation might be too big
- to fit in memory (or might require more than 2 gigabytes of memory to
+ to fit in system memory (or might require more than 2 gigabytes of system memory to
  store).
 
 ### Subtract
@@ -805,7 +805,7 @@ Returns a number that expresses this number minus another.
 * <code>NullPointerException</code> - The parameter <code>b</code> is null.
 
 * <code>OutOfMemoryError</code> - The exact result of the operation might be too big
- to fit in memory (or might require more than 2 gigabytes of memory to
+ to fit in system memory (or might require more than 2 gigabytes of system memory to
  store).
 
 ### Multiply
@@ -829,7 +829,7 @@ Returns a CBOR number expressing the product of this number and the
 * <code>NullPointerException</code> - The parameter <code>b</code> is null.
 
 * <code>OutOfMemoryError</code> - The exact result of the operation might be too big
- to fit in memory (or might require more than 2 gigabytes of memory to
+ to fit in system memory (or might require more than 2 gigabytes of system memory to
  store).
 
 ### Divide
@@ -851,7 +851,7 @@ Returns the quotient of this number and another number.
 * <code>NullPointerException</code> - The parameter <code>b</code> is null.
 
 * <code>OutOfMemoryError</code> - The exact result of the operation might be too big
- to fit in memory (or might require more than 2 gigabytes of memory to
+ to fit in system memory (or might require more than 2 gigabytes of system memory to
  store).
 
 ### Remainder
@@ -873,7 +873,7 @@ Returns the remainder when this number is divided by another number.
 * <code>NullPointerException</code> - The parameter <code>b</code> is null.
 
 * <code>OutOfMemoryError</code> - The exact result of the operation might be too big
- to fit in memory (or might require more than 2 gigabytes of memory to
+ to fit in system memory (or might require more than 2 gigabytes of system memory to
  store).
 
 ### compareTo
